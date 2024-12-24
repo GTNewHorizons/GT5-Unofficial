@@ -2,8 +2,6 @@ package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.util.ArrayList;
-
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -11,14 +9,13 @@ import net.minecraft.util.ResourceLocation;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.config.Configuration;
 
 public class TexturesGtBlock {
 
     private static final boolean mAnimated = Configuration.visual.enableAnimatedTextures;
-    private static final ArrayList<Runnable> mCustomiconMap = new ArrayList<>();
 
     /*
      * Handles Custom Textures.
@@ -37,7 +34,6 @@ public class TexturesGtBlock {
         public CustomIcon(final String aModID, final String aIconName) {
             this.mIconName = aIconName;
             this.mModID = aModID;
-            mCustomiconMap.add(this);
             Logger.WARNING("Constructing a Custom Texture. " + this.mIconName);
             GregTechAPI.sGTBlockIconload.add(this);
         }
@@ -665,25 +661,6 @@ public class TexturesGtBlock {
     public static final CustomIcon TEXTURE_STONE_RED_A = new CustomIcon("metro/TEXTURE_STONE_RED_A");
     public static final CustomIcon TEXTURE_STONE_RED_B = new CustomIcon("metro/TEXTURE_STONE_RED_B");
 
-    public static final CustomIcon OVERLAY_SC_TURBINE1 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL1");
-    public static final CustomIcon OVERLAY_SC_TURBINE2 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL2");
-    public static final CustomIcon OVERLAY_SC_TURBINE3 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL3");
-    public static final CustomIcon OVERLAY_SC_TURBINE4 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL4");
-    public static final CustomIcon OVERLAY_SC_TURBINE5 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL5");
-    public static final CustomIcon OVERLAY_SC_TURBINE6 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL6");
-    public static final CustomIcon OVERLAY_SC_TURBINE7 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL7");
-    public static final CustomIcon OVERLAY_SC_TURBINE8 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL8");
-    public static final CustomIcon OVERLAY_SC_TURBINE9 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL9");
-
-    public static final CustomIcon OVERLAY_SC_TURBINE1_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE1");
-    public static final CustomIcon OVERLAY_SC_TURBINE2_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE2");
-    public static final CustomIcon OVERLAY_SC_TURBINE3_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE3");
-    public static final CustomIcon OVERLAY_SC_TURBINE4_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE4");
-    public static final CustomIcon OVERLAY_SC_TURBINE5_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE5");
-    public static final CustomIcon OVERLAY_SC_TURBINE6_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE6");
-    public static final CustomIcon OVERLAY_SC_TURBINE7_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE7");
-    public static final CustomIcon OVERLAY_SC_TURBINE8_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE8");
-    public static final CustomIcon OVERLAY_SC_TURBINE9_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE9");
     public static final CustomIcon TEXTURE_TECH_A = new CustomIcon("metro/TEXTURE_TECH_A");
     public static final CustomIcon TEXTURE_TECH_B = new CustomIcon("metro/TEXTURE_TECH_B");
     public static final CustomIcon TEXTURE_TECH_C = new CustomIcon("metro/TEXTURE_TECH_C");
@@ -692,16 +669,16 @@ public class TexturesGtBlock {
     public static final CustomIcon TEXTURE_TECH_PANEL_H = new CustomIcon("metro/TEXTURE_TECH_PANEL_H");
 
     public static ITexture[] OVERLAYS_ENERGY_OUT_MULTI_BUFFER = new ITexture[] {
-        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 220, 220, 220, 0 }),
-        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 220, 220, 220, 0 }),
-        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 255, 100, 0, 0 }),
-        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 255, 255, 30, 0 }),
-        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 128, 128, 128, 0 }),
-        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }) };
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 220, 220, 220, 0 }),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 220, 220, 220, 0 }),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 255, 100, 0, 0 }),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 255, 255, 30, 0 }),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 128, 128, 128, 0 }),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }) };
 
     public static IIconContainer[] CONNECTED_FUSION_HULLS = new IIconContainer[] { TEXTURE_CASING_FUSION_COIL_II_1,
         TEXTURE_CASING_FUSION_COIL_II_2, TEXTURE_CASING_FUSION_COIL_II_3, TEXTURE_CASING_FUSION_COIL_II_4,
