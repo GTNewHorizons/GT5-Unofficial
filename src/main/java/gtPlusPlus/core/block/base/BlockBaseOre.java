@@ -3,7 +3,8 @@ package gtPlusPlus.core.block.base;
 import java.util.ArrayList;
 import java.util.Random;
 
-import net.minecraft.block.Block;
+import javax.annotation.Nullable;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EnumCreatureType;
@@ -14,24 +15,22 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.StoneType;
+import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.api.interfaces.ITexturedBlock;
-import gtPlusPlus.core.client.renderer.CustomOreBlockRenderer;
+import gregtech.common.render.GTRendererBlock;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockOre;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.gregtech.api.objects.GTPPCopiedBlockTexture;
-import gtPlusPlus.xmod.gregtech.api.objects.GTPPRenderedTexture;
 
-public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
+public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
 
     private final Material blockMaterial;
     protected static boolean shouldFortune = false;
@@ -76,18 +75,6 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
     }
 
     @Override
-    public int getRenderType() {
-        try {
-            if (CustomOreBlockRenderer.INSTANCE != null) {
-                return CustomOreBlockRenderer.INSTANCE.mRenderID;
-            }
-            return super.getRenderType();
-        } catch (NullPointerException n) {
-            return 0;
-        }
-    }
-
-    @Override
     public IIcon getIcon(IBlockAccess aIBlockAccess, int aX, int aY, int aZ, int ordinalSide) {
         return Blocks.stone.getIcon(0, 0);
     }
@@ -98,20 +85,20 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
     }
 
     @Override
-    public ITexture[] getTexture(ForgeDirection side) {
-        return getTexture(null, side);
+    public int getRenderType() {
+        return GTRendererBlock.mRenderID;
     }
 
     @Override
-    public ITexture[] getTexture(Block block, ForgeDirection side) {
-        if (this.blockMaterial != null) {
-            GTPPRenderedTexture aIconSet = new GTPPRenderedTexture(
-                blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex],
-                this.blockMaterial.getRGBA());
-            return new ITexture[] { new GTPPCopiedBlockTexture(Blocks.stone, 0, 0), aIconSet };
-        }
-        return new ITexture[] {
-            new GTPPRenderedTexture(Textures.BlockIcons.STONES[0], new short[] { 240, 240, 240, 0 }) };
+    @Nullable
+    public ITexture[][] getTextures(int metadata) {
+        ITexture[] layers;
+
+        ITexture aIconSet = TextureFactory
+            .of(blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex], blockMaterial.getRGBA());
+        layers = new ITexture[] { StoneType.Stone.getTexture(0), aIconSet };
+
+        return new ITexture[][] { layers, layers, layers, layers, layers, layers };
     }
 
     @Override

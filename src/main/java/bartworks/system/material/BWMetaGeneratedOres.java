@@ -13,8 +13,12 @@
 
 package bartworks.system.material;
 
-import java.util.Arrays;
+import static bartworks.system.material.BWMetaGeneratedItems.metaTab;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -24,60 +28,69 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
-import bartworks.util.MathUtils;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
+import gregtech.api.interfaces.IBlockWithTextures;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.ores.BWOreAdapter;
+import gregtech.common.ores.OreInfo;
+import gregtech.common.render.GTRendererBlock;
 
-public class BWMetaGeneratedOres extends BWMetaGeneratedBlocks {
+public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
 
-    public BWMetaGeneratedOres(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
-        super(p_i45386_1_, tileEntity, blockName);
-        this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
-            "bw.blocktype." + OrePrefixes.ore,
-            OrePrefixes.ore.mLocalizedMaterialPre + "%material" + OrePrefixes.ore.mLocalizedMaterialPost);
+    public final String blockName;
+    public final String blockTypeLocalizedName;
+    public final StoneType stoneType;
+    public final boolean isSmall, isNatural;
+
+    public BWMetaGeneratedOres(String blockName, StoneType stoneType, boolean small, boolean natural) {
+        super(Material.rock);
+
+        this.setBlockName(blockName);
+        this.setHardness(5.0F);
+        this.setResistance(5.0F);
+        this.setCreativeTab(metaTab);
+
+        if (small) {
+            this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
+                blockName,
+                OrePrefixes.oreSmall.mLocalizedMaterialPre + "%material" + OrePrefixes.oreSmall.mLocalizedMaterialPost);
+        } else {
+            this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
+                blockName,
+                OrePrefixes.ore.mLocalizedMaterialPre + "%material" + OrePrefixes.ore.mLocalizedMaterialPost);
+        }
+
+        this.blockName = blockName;
+        this.stoneType = stoneType;
+        this.isSmall = small;
+        this.isNatural = natural;
     }
 
-    @Override
+    public void registerOredict() {
+        Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
+    }
+
     protected void doRegistrationStuff(Werkstoff w) {
-        if (w != null) {
-            if (!w.hasItemType(OrePrefixes.ore) || (w.getGenerationFeatures().blacklist & 0b1000) != 0) return;
-            GTModHandler.addValuableOre(this, w.getmID(), 1);
-        }
-    }
+        if (w == null) return;
+        if (!w.hasItemType(OrePrefixes.ore)) return;
+        if ((w.getGenerationFeatures().blacklist & 0b1000) != 0) return;
 
-    public static boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean air, Block block,
-        int[] aBlockMeta) {
-        if (!air) {
-            aY = MathUtils.clamp(aY, 1, aWorld.getActualHeight());
-        }
+        GTModHandler.addValuableOre(this, w.getmID(), 1);
 
-        Block tBlock = aWorld.getBlock(aX, aY, aZ);
-        Block tOreBlock = WerkstoffLoader.BWOres;
-        if (aMetaData < 0 || tBlock == Blocks.air && !air
-            || Block.getIdFromBlock(tBlock) != Block.getIdFromBlock(block)) {
-            return false;
-        }
-        final int aaY = aY;
-        if (Arrays.stream(aBlockMeta)
-            .noneMatch(e -> e == aWorld.getBlockMetadata(aX, aaY, aZ))) {
-            return false;
-        }
+        ItemStack self = new ItemStack(this, 1, w.getmID());
+        OrePrefixes prefix = isSmall ? OrePrefixes.oreSmall : OrePrefixes.ore;
 
-        aWorld.setBlock(aX, aY, aZ, tOreBlock, aMetaData, 0);
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof BWTileEntityMetaGeneratedOre metaTE) {
-            metaTE.mMetaData = (short) aMetaData;
-            metaTE.mNatural = true;
-        }
-
-        return true;
+        GTOreDictUnificator.registerOre(prefix + w.getVarName(), self);
     }
 
     @Override
@@ -96,38 +109,64 @@ public class BWMetaGeneratedOres extends BWMetaGeneratedBlocks {
     }
 
     @Override
+    public int damageDropped(int meta) {
+        return meta;
+    }
+
+    @Override
     public String getUnlocalizedName() {
-        return "bw.blockores.01";
+        return blockName;
     }
 
     @Override
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {
-        for (Werkstoff tMaterial : Werkstoff.werkstoffHashSet) {
-            if (tMaterial != null && tMaterial.hasItemType(OrePrefixes.ore)
-                && (tMaterial.getGenerationFeatures().blacklist & 0x8) == 0) {
-                aList.add(new ItemStack(aItem, 1, tMaterial.getmID()));
+        if (!isNatural) {
+            for (Werkstoff tMaterial : Werkstoff.werkstoffHashSet) {
+                if (tMaterial != null && tMaterial.hasItemType(OrePrefixes.ore)
+                    && (tMaterial.getGenerationFeatures().blacklist & 0x8) == 0) {
+                    aList.add(new ItemStack(aItem, 1, tMaterial.getmID()));
+                }
             }
         }
     }
 
     @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, int x, int y, int z, int meta) {
-        if (EnchantmentHelper.getSilkTouchModifier(player)) {
-            BWTileEntityMetaGeneratedOre.shouldSilkTouch = true;
-            super.harvestBlock(worldIn, player, x, y, z, meta);
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+        EntityPlayer harvester = this.harvesters.get();
 
-            if (BWTileEntityMetaGeneratedOre.shouldSilkTouch) {
-                BWTileEntityMetaGeneratedOre.shouldSilkTouch = false;
-            }
-            return;
+        boolean doFortune = !(harvester instanceof FakePlayer);
+        boolean doSilktouch = harvester != null && EnchantmentHelper.getSilkTouchModifier(harvester);
+
+        try (OreInfo<Werkstoff> info = BWOreAdapter.INSTANCE.getOreInfo(this, metadata)) {
+            return (ArrayList<ItemStack>) BWOreAdapter.INSTANCE.getOreDrops(info, doSilktouch, doFortune ? fortune : 0);
+        }
+    }
+
+    @Override
+    public int getRenderType() {
+        return GTRendererBlock.mRenderID;
+    }
+
+    @Override
+    @Nullable
+    public ITexture[][] getTextures(int metadata) {
+        Werkstoff material = Werkstoff.werkstoffHashMap.get((short) metadata);
+
+        ITexture[] layers;
+
+        if (material != null) {
+            ITexture aIconSet = TextureFactory.of(
+                material.getTexSet().mTextures[isSmall ? OrePrefixes.oreSmall.mTextureIndex
+                    : OrePrefixes.ore.mTextureIndex],
+                material.getRGBA());
+            layers = new ITexture[] { stoneType.getTexture(0), aIconSet };
+        } else {
+            layers = new ITexture[] { stoneType.getTexture(0),
+                TextureFactory.of(
+                    gregtech.api.enums.TextureSet.SET_NONE.mTextures[isSmall ? OrePrefixes.oreSmall.mTextureIndex
+                        : OrePrefixes.ore.mTextureIndex]) };
         }
 
-        if (!(player instanceof FakePlayer)) {
-            BWTileEntityMetaGeneratedOre.shouldFortune = true;
-        }
-        super.harvestBlock(worldIn, player, x, y, z, meta);
-        if (BWTileEntityMetaGeneratedOre.shouldFortune) {
-            BWTileEntityMetaGeneratedOre.shouldFortune = false;
-        }
+        return new ITexture[][] { layers, layers, layers, layers, layers, layers };
     }
 }
