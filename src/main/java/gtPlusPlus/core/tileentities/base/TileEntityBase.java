@@ -753,7 +753,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     public final int getMetaID(int aX, int aY, int aZ) {
         return this.ignoreUnloadedChunks && this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ)
             ? 0
-            : (byte) this.worldObj.getBlockMetadata(aX, aY, aZ);
+            : this.worldObj.getBlockMetadata(aX, aY, aZ);
     }
 
     @Override

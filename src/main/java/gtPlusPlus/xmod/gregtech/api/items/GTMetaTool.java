@@ -441,7 +441,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
         if ((tStats == null) || (Math.max(0, this.getHarvestLevel(aStack, "")) < aBlock.getHarvestLevel(aMetaData))) {
             return 0.0F;
         }
-        return tStats.isMinableBlock(aBlock, (byte) aMetaData)
+        return tStats.isMinableBlock(aBlock, aMetaData)
             ? Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed)
             : 0.0F;
     }
