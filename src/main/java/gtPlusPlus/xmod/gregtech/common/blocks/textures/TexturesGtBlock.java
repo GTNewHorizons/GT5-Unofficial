@@ -2,8 +2,6 @@ package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.util.ArrayList;
-
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -11,14 +9,13 @@ import net.minecraft.util.ResourceLocation;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.config.Configuration;
 
 public class TexturesGtBlock {
 
     private static final boolean mAnimated = Configuration.visual.enableAnimatedTextures;
-    private static final ArrayList<Runnable> mCustomiconMap = new ArrayList<>();
 
     /*
      * Handles Custom Textures.
@@ -37,7 +34,6 @@ public class TexturesGtBlock {
         public CustomIcon(final String aModID, final String aIconName) {
             this.mIconName = aIconName;
             this.mModID = aModID;
-            mCustomiconMap.add(this);
             Logger.WARNING("Constructing a Custom Texture. " + this.mIconName);
             GregTechAPI.sGTBlockIconload.add(this);
         }
@@ -317,64 +313,115 @@ public class TexturesGtBlock {
 
     public static final CustomIcon oMCDIndustrialWireMill = new CustomIcon(
         "iconsets/controllerFaces/industrialWiremill");
+    public static final CustomIcon oMCDIndustrialWireMillGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialWiremillGlow");
     public static final CustomIcon oMCDIndustrialWireMillActive = new CustomIcon(
         "iconsets/controllerFaces/industrialWiremillActive");
+    public static final CustomIcon oMCDIndustrialWireMillActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialWiremillActiveGlow");
 
     public static final CustomIcon oMCDIndustrialSifter = new CustomIcon("iconsets/controllerFaces/industrialSifter");
+    public static final CustomIcon oMCDIndustrialSifterGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialSifterGlow");
     public static final CustomIcon oMCDIndustrialSifterActive = new CustomIcon(
         "iconsets/controllerFaces/industrialSifterActive");
+    public static final CustomIcon oMCDIndustrialSifterActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialSifterActiveGlow");
 
     public static final CustomIcon oMCDAlgaePondBase = new CustomIcon("iconsets/controllerFaces/algaePondBase");
+    public static final CustomIcon oMCDAlgaePondBaseGlow = new CustomIcon("iconsets/controllerFaces/algaePondBaseGlow");
     public static final CustomIcon oMCDAlgaePondBaseActive = new CustomIcon(
         "iconsets/controllerFaces/algaePondBaseActive");
+    public static final CustomIcon oMCDAlgaePondBaseActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/algaePondBaseActiveGlow");
 
     public static final CustomIcon oMCDIndustrialMixer = new CustomIcon("iconsets/controllerFaces/industrialMixer");
+    public static final CustomIcon oMCDIndustrialMixerGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialMixerGlow");
     public static final CustomIcon oMCDIndustrialMixerActive = new CustomIcon(
         "iconsets/controllerFaces/industrialMixerActive");
+    public static final CustomIcon oMCDIndustrialMixerActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialMixerActiveGlow");
 
     public static final CustomIcon oMCDIndustrialThermalCentrifuge = new CustomIcon(
         "iconsets/controllerFaces/industrialThermalCentrifuge");
+    public static final CustomIcon oMCDIndustrialThermalCentrifugeGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialThermalCentrifugeGlow");
     public static final CustomIcon oMCDIndustrialThermalCentrifugeActive = new CustomIcon(
         "iconsets/controllerFaces/industrialThermalCentrifugeActive");
+    public static final CustomIcon oMCDIndustrialThermalCentrifugeActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialThermalCentrifugeActiveGlow");
 
     public static final CustomIcon oMCDIndustrialExtruder = new CustomIcon(
         "iconsets/controllerFaces/industrialExtruder");
+    public static final CustomIcon oMCDIndustrialExtruderGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialExtruderGlow");
     public static final CustomIcon oMCDIndustrialExtruderActive = new CustomIcon(
         "iconsets/controllerFaces/industrialExtruderActive");
+    public static final CustomIcon oMCDIndustrialExtruderActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialExtruderActiveGlow");
 
     public static final CustomIcon oMCDIndustrialWashPlant = new CustomIcon(
         "iconsets/controllerFaces/industrialWashPlant");
+    public static final CustomIcon oMCDIndustrialWashPlantGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialWashPlantGlow");
     public static final CustomIcon oMCDIndustrialWashPlantActive = new CustomIcon(
         "iconsets/controllerFaces/industrialWashPlantActive");
+    public static final CustomIcon oMCDIndustrialWashPlantActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialWashPlantActiveGlow");
 
     public static final CustomIcon oMCDAlloyBlastSmelter = new CustomIcon("iconsets/controllerFaces/alloyBlastSmelter");
+    public static final CustomIcon oMCDAlloyBlastSmelterGlow = new CustomIcon(
+        "iconsets/controllerFaces/alloyBlastSmelterGlow");
     public static final CustomIcon oMCDAlloyBlastSmelterActive = new CustomIcon(
         "iconsets/controllerFaces/alloyBlastSmelterActive");
+    public static final CustomIcon oMCDAlloyBlastSmelterActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/alloyBlastSmelterActiveGlow");
 
     public static final CustomIcon oMCDIndustrialArcFurnace = new CustomIcon(
         "iconsets/controllerFaces/industrialArcFurnace");
+    public static final CustomIcon oMCDIndustrialArcFurnaceGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialArcFurnaceGlow");
     public static final CustomIcon oMCDIndustrialArcFurnaceActive = new CustomIcon(
         "iconsets/controllerFaces/industrialArcFurnaceActive");
+    public static final CustomIcon oMCDIndustrialArcFurnaceActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialArcFurnaceActiveGlow");
 
     public static final CustomIcon oMCDIndustrialCuttingMachine = new CustomIcon(
         "iconsets/controllerFaces/industrialCuttingMachine");
+    public static final CustomIcon oMCDIndustrialCuttingMachineGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialCuttingMachineGlow");
     public static final CustomIcon oMCDIndustrialCuttingMachineActive = new CustomIcon(
         "iconsets/controllerFaces/industrialCuttingMachineActive");
+    public static final CustomIcon oMCDIndustrialCuttingMachineActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialCuttingMachineActiveGlow");
 
     public static final CustomIcon oMCDIndustrialPlatePress = new CustomIcon(
         "iconsets/controllerFaces/industrialPlatePress");
+    public static final CustomIcon oMCDIndustrialPlatePressGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialPlatePressGlow");
     public static final CustomIcon oMCDIndustrialPlatePressActive = new CustomIcon(
         "iconsets/controllerFaces/industrialPlatePressActive");
+    public static final CustomIcon oMCDIndustrialPlatePressActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialPlatePressActiveGlow");
 
     public static final CustomIcon oMCDIndustrialElectrolyzer = new CustomIcon(
         "iconsets/controllerFaces/industrialElectrolyzer");
+    public static final CustomIcon oMCDIndustrialElectrolyzerGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialElectrolyzerGlow");
     public static final CustomIcon oMCDIndustrialElectrolyzerActive = new CustomIcon(
         "iconsets/controllerFaces/industrialElectrolyzerActive");
+    public static final CustomIcon oMCDIndustrialElectrolyzerActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialElectrolyzerActiveGlow");
 
     public static final CustomIcon oMCDFrothFlotationCell = new CustomIcon(
         "iconsets/controllerFaces/frothFlotationCell");
+    public static final CustomIcon oMCDFrothFlotationCellGlow = new CustomIcon(
+        "iconsets/controllerFaces/frothFlotationCellGlow");
     public static final CustomIcon oMCDFrothFlotationCellActive = new CustomIcon(
         "iconsets/controllerFaces/frothFlotationCellActive");
+    public static final CustomIcon oMCDFrothFlotationCellActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/frothFlotationCellActiveGlow");
 
     public static final CustomIcon Overlay_Machine_Controller_Advanced = new CustomIcon(
         "iconsets/OVERLAY_FRONT_ADVANCED_MULTIBLOCK_ANIMATED");
@@ -383,83 +430,148 @@ public class TexturesGtBlock {
 
     // oMCA = Overlay_Machine_Controller_Advanced
     public static final CustomIcon oMCACokeOven = new CustomIcon("iconsets/controllerFaces/cokeOven");
+    public static final CustomIcon oMCACokeOvenGlow = new CustomIcon("iconsets/controllerFaces/cokeOvenGlow");
     public static final CustomIcon oMCACokeOvenActive = new CustomIcon("iconsets/controllerFaces/cokeOvenActive");
+    public static final CustomIcon oMCACokeOvenActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/cokeOvenActiveGlow");
 
     public static final CustomIcon oMCAChemicalPlant = new CustomIcon("iconsets/controllerFaces/chemicalPlant");
+    public static final CustomIcon oMCAChemicalPlantGlow = new CustomIcon("iconsets/controllerFaces/chemicalPlantGlow");
     public static final CustomIcon oMCAChemicalPlantActive = new CustomIcon(
         "iconsets/controllerFaces/chemicalPlantActive");
+    public static final CustomIcon oMCAChemicalPlantActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/chemicalPlantActiveGlow");
 
     public static final CustomIcon oMCAMegaAlloyBlastSmelter = new CustomIcon(
         "iconsets/controllerFaces/megaAlloyBlastSmelter");
+    public static final CustomIcon oMCAMegaAlloyBlastSmelterGlow = new CustomIcon(
+        "iconsets/controllerFaces/megaAlloyBlastSmelterGlow");
     public static final CustomIcon oMCAMegaAlloyBlastSmelterActive = new CustomIcon(
         "iconsets/controllerFaces/megaAlloyBlastSmelterActive");
+    public static final CustomIcon oMCAMegaAlloyBlastSmelterActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/megaAlloyBlastSmelterActiveGlow");
 
     public static final CustomIcon oMCATreeFarm = new CustomIcon("iconsets/controllerFaces/treeFarm");
     public static final CustomIcon oMCATreeFarmActive = new CustomIcon("iconsets/controllerFaces/treeFarmActive");
 
     public static final CustomIcon oMCAIndustrialRockBreaker = new CustomIcon(
         "iconsets/controllerFaces/industrialRockBreaker");
+    public static final CustomIcon oMCAIndustrialRockBreakerGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialRockBreakerGlow");
     public static final CustomIcon oMCAIndustrialRockBreakerActive = new CustomIcon(
         "iconsets/controllerFaces/industrialRockBreakerActive");
+    public static final CustomIcon oMCAIndustrialRockBreakerActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialRockBreakerActiveGlow");
 
     public static final CustomIcon oMCAAdvancedHeatExchanger = new CustomIcon(
         "iconsets/controllerFaces/advancedHeatExchanger");
+    public static final CustomIcon oMCAAdvancedHeatExchangerGlow = new CustomIcon(
+        "iconsets/controllerFaces/advancedHeatExchangerGlow");
     public static final CustomIcon oMCAAdvancedHeatExchangerActive = new CustomIcon(
         "iconsets/controllerFaces/advancedHeatExchangerActive");
+    public static final CustomIcon oMCAAdvancedHeatExchangerActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/advancedHeatExchangerActiveGlow");
 
     public static final CustomIcon oMCALargeRocketEngine = new CustomIcon("iconsets/controllerFaces/largeRocketEngine");
+    public static final CustomIcon oMCALargeRocketEngineGlow = new CustomIcon(
+        "iconsets/controllerFaces/largeRocketEngineGlow");
     public static final CustomIcon oMCALargeRocketEngineActive = new CustomIcon(
         "iconsets/controllerFaces/largeRocketEngineActive");
+    public static final CustomIcon oMCALargeRocketEngineActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/largeRocketEngineActiveGlow");
 
     public static final CustomIcon oMCAIndustrialChisel = new CustomIcon("iconsets/controllerFaces/industrialChisel");
+    public static final CustomIcon oMCAIndustrialChiselGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialChiselGlow");
     public static final CustomIcon oMCAIndustrialChiselActive = new CustomIcon(
         "iconsets/controllerFaces/industrialChiselActive");
+    public static final CustomIcon oMCAIndustrialChiselActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialChiselActiveGlow");
 
     public static final CustomIcon oMCAIndustrialMolecularTransformer = new CustomIcon(
         "iconsets/controllerFaces/industrialMolecularTransformer");
+    public static final CustomIcon oMCAIndustrialMolecularTransformerGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialMolecularTransformerGlow");
     public static final CustomIcon oMCAIndustrialMolecularTransformerActive = new CustomIcon(
         "iconsets/controllerFaces/industrialMolecularTransformerActive");
+    public static final CustomIcon oMCAIndustrialMolecularTransformerActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialMolecularTransformerActiveGlow");
 
     public static final CustomIcon oMCAElementalDuplicator = new CustomIcon(
         "iconsets/controllerFaces/elementalDuplicator");
+    public static final CustomIcon oMCAElementalDuplicatorGlow = new CustomIcon(
+        "iconsets/controllerFaces/elementalDuplicatorGlow");
     public static final CustomIcon oMCAElementalDuplicatorActive = new CustomIcon(
         "iconsets/controllerFaces/elementalDuplicatorActive");
+    public static final CustomIcon oMCAElementalDuplicatorActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/elementalDuplicatorActiveGlow");
 
     public static final CustomIcon oMCAFluidHeater = new CustomIcon("iconsets/controllerFaces/fluidHeater");
+    public static final CustomIcon oMCAFluidHeaterGlow = new CustomIcon("iconsets/controllerFaces/fluidHeaterGlow");
     public static final CustomIcon oMCAFluidHeaterActive = new CustomIcon("iconsets/controllerFaces/fluidHeaterActive");
+    public static final CustomIcon oMCAFluidHeaterActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/fluidHeaterActiveGlow");
 
     public static final CustomIcon oMCAAmazonPackager = new CustomIcon("iconsets/controllerFaces/amazonPackager");
+    public static final CustomIcon oMCAAmazonPackagerGlow = new CustomIcon(
+        "iconsets/controllerFaces/amazonPackagerGlow");
     public static final CustomIcon oMCAAmazonPackagerActive = new CustomIcon(
         "iconsets/controllerFaces/amazonPackagerActive");
+    public static final CustomIcon oMCAAmazonPackagerActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/amazonPackagerActiveGlow");
 
     public static final CustomIcon oMCAIndustrialDehydrator = new CustomIcon(
         "iconsets/controllerFaces/industrialDehydrator");
+    public static final CustomIcon oMCAIndustrialDehydratorGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialDehydratorGlow");
     public static final CustomIcon oMCAIndustrialDehydratorActive = new CustomIcon(
         "iconsets/controllerFaces/industrialDehydratorActive");
+    public static final CustomIcon oMCAIndustrialDehydratorActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialDehydratorActiveGlow");
 
     public static final CustomIcon oMCAIndustrialForgeHammer = new CustomIcon(
         "iconsets/controllerFaces/industrialForgeHammer");
+    public static final CustomIcon oMCAIndustrialForgeHammerGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialForgeHammerGlow");
     public static final CustomIcon oMCAIndustrialForgeHammerActive = new CustomIcon(
         "iconsets/controllerFaces/industrialForgeHammerActive");
+    public static final CustomIcon oMCAIndustrialForgeHammerActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialForgeHammerActiveGlow");
 
     public static final CustomIcon oMCAAdvancedEBF = new CustomIcon("iconsets/controllerFaces/advancedEBF");
+    public static final CustomIcon oMCAAdvancedEBFGlow = new CustomIcon("iconsets/controllerFaces/advancedEBFGlow");
     public static final CustomIcon oMCAAdvancedEBFActive = new CustomIcon("iconsets/controllerFaces/advancedEBFActive");
+    public static final CustomIcon oMCAAdvancedEBFActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/advancedEBFActiveGlow");
 
     public static final CustomIcon oMCASpargeTower = new CustomIcon("iconsets/controllerFaces/spargeTower");
+    public static final CustomIcon oMCASpargeTowerGlow = new CustomIcon("iconsets/controllerFaces/spargeTowerGlow");
     public static final CustomIcon oMCASpargeTowerActive = new CustomIcon("iconsets/controllerFaces/spargeTowerActive");
+    public static final CustomIcon oMCASpargeTowerActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/spargeTowerActiveGlow");
 
     public static final CustomIcon oMCAIndustrialVacuumFreezer = new CustomIcon(
         "iconsets/controllerFaces/industrialVacuumFreezer");
+    public static final CustomIcon oMCAIndustrialVacuumFreezerGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialVacuumFreezerGlow");
     public static final CustomIcon oMCAIndustrialVacuumFreezerActive = new CustomIcon(
         "iconsets/controllerFaces/industrialVacuumFreezerActive");
+    public static final CustomIcon oMCAIndustrialVacuumFreezerActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/industrialVacuumFreezerActiveGlow");
 
     public static final CustomIcon oMCAThermalBoiler = new CustomIcon("iconsets/controllerFaces/thermalBoiler");
+    public static final CustomIcon oMCAThermalBoilerGlow = new CustomIcon("iconsets/controllerFaces/thermalBoilerGlow");
     public static final CustomIcon oMCAThermalBoilerActive = new CustomIcon(
         "iconsets/controllerFaces/thermalBoilerActive");
+    public static final CustomIcon oMCAThermalBoilerActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/thermalBoilerActiveGlow");
 
     public static final CustomIcon oMCAQFT = new CustomIcon("iconsets/controllerFaces/quantumForceTransformer");
+    public static final CustomIcon oMCAQFTGlow = new CustomIcon("iconsets/controllerFaces/quantumForceTransformerGlow");
     public static final CustomIcon oMCAQFTActive = new CustomIcon(
         "iconsets/controllerFaces/quantumForceTransformerActive");
+    public static final CustomIcon oMCAQFTActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/quantumForceTransformerActiveGlow");
 
     public static final CustomIcon oMCAIndustrialMultiMachine = new CustomIcon(
         "iconsets/controllerFaces/industrialMultiMachine");
@@ -467,8 +579,12 @@ public class TexturesGtBlock {
         "iconsets/controllerFaces/industrialMultiMachineActive");
 
     public static final CustomIcon oMCAAdvancedImplosion = new CustomIcon("iconsets/controllerFaces/advancedImplosion");
+    public static final CustomIcon oMCAAdvancedImplosionGlow = new CustomIcon(
+        "iconsets/controllerFaces/advancedImplosionGlow");
     public static final CustomIcon oMCAAdvancedImplosionActive = new CustomIcon(
         "iconsets/controllerFaces/advancedImplosionActive");
+    public static final CustomIcon oMCAAdvancedImplosionActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/advancedImplosionActiveGlow");
 
     // Crafting Overlays
     public static final CustomIcon Casing_Adv_Workbench_Crafting_Overlay = new CustomIcon(
@@ -496,14 +612,24 @@ public class TexturesGtBlock {
     // Dimensional
     public static final CustomIcon Overlay_Machine_Dimensional_Orange = new CustomIcon(
         "TileEntities/adv_machine_dimensional_cover_orange");
+
     // Icons
     public static final CustomIcon Overlay_MatterFab = new CustomIcon("TileEntities/adv_machine_matterfab");
+    public static final CustomIcon Overlay_MatterFab_Glow = new CustomIcon("TileEntities/adv_machine_matterfab_glow");
     public static final CustomIcon Overlay_MatterFab_Active = new CustomIcon(
         "TileEntities/adv_machine_matterfab_active");
+    public static final CustomIcon Overlay_MatterFab_Active_Glow = new CustomIcon(
+        "TileEntities/adv_machine_matterfab_active_glow");
+
     public static final CustomIcon Overlay_MatterFab_Animated = new CustomIcon(
         "TileEntities/adv_machine_matterfab_animated");
+    public static final CustomIcon Overlay_MatterFab_Animated_Glow = new CustomIcon(
+        "TileEntities/adv_machine_matterfab_animated_glow");
     public static final CustomIcon Overlay_MatterFab_Active_Animated = new CustomIcon(
         "TileEntities/adv_machine_matterfab_active_animated");
+    public static final CustomIcon Overlay_MatterFab_Active_Animated_Glow = new CustomIcon(
+        "TileEntities/adv_machine_matterfab_active_animated_glow");
+
     public static final CustomIcon Overlay_Water = new CustomIcon("TileEntities/adv_machine_water");
     public static final CustomIcon Overlay_UU_Matter = new CustomIcon("TileEntities/adv_machine_uum");
 
@@ -535,25 +661,6 @@ public class TexturesGtBlock {
     public static final CustomIcon TEXTURE_STONE_RED_A = new CustomIcon("metro/TEXTURE_STONE_RED_A");
     public static final CustomIcon TEXTURE_STONE_RED_B = new CustomIcon("metro/TEXTURE_STONE_RED_B");
 
-    public static final CustomIcon OVERLAY_SC_TURBINE1 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL1");
-    public static final CustomIcon OVERLAY_SC_TURBINE2 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL2");
-    public static final CustomIcon OVERLAY_SC_TURBINE3 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL3");
-    public static final CustomIcon OVERLAY_SC_TURBINE4 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL4");
-    public static final CustomIcon OVERLAY_SC_TURBINE5 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL5");
-    public static final CustomIcon OVERLAY_SC_TURBINE6 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL6");
-    public static final CustomIcon OVERLAY_SC_TURBINE7 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL7");
-    public static final CustomIcon OVERLAY_SC_TURBINE8 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL8");
-    public static final CustomIcon OVERLAY_SC_TURBINE9 = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE_IDEL9");
-
-    public static final CustomIcon OVERLAY_SC_TURBINE1_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE1");
-    public static final CustomIcon OVERLAY_SC_TURBINE2_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE2");
-    public static final CustomIcon OVERLAY_SC_TURBINE3_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE3");
-    public static final CustomIcon OVERLAY_SC_TURBINE4_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE4");
-    public static final CustomIcon OVERLAY_SC_TURBINE5_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE5");
-    public static final CustomIcon OVERLAY_SC_TURBINE6_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE6");
-    public static final CustomIcon OVERLAY_SC_TURBINE7_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE7");
-    public static final CustomIcon OVERLAY_SC_TURBINE8_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE8");
-    public static final CustomIcon OVERLAY_SC_TURBINE9_ACTIVE = new TexturesGtBlock.CustomIcon("iconsets/SC_TURBINE9");
     public static final CustomIcon TEXTURE_TECH_A = new CustomIcon("metro/TEXTURE_TECH_A");
     public static final CustomIcon TEXTURE_TECH_B = new CustomIcon("metro/TEXTURE_TECH_B");
     public static final CustomIcon TEXTURE_TECH_C = new CustomIcon("metro/TEXTURE_TECH_C");
@@ -562,16 +669,16 @@ public class TexturesGtBlock {
     public static final CustomIcon TEXTURE_TECH_PANEL_H = new CustomIcon("metro/TEXTURE_TECH_PANEL_H");
 
     public static ITexture[] OVERLAYS_ENERGY_OUT_MULTI_BUFFER = new ITexture[] {
-        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 220, 220, 220, 0 }),
-        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 220, 220, 220, 0 }),
-        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 255, 100, 0, 0 }),
-        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 255, 255, 30, 0 }),
-        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 128, 128, 128, 0 }),
-        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
-        new GTRenderedTexture(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }) };
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 220, 220, 220, 0 }),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 220, 220, 220, 0 }),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 255, 100, 0, 0 }),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 255, 255, 30, 0 }),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 128, 128, 128, 0 }),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }),
+        TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_BUFFER, new short[] { 240, 240, 245, 0 }) };
 
     public static IIconContainer[] CONNECTED_FUSION_HULLS = new IIconContainer[] { TEXTURE_CASING_FUSION_COIL_II_1,
         TEXTURE_CASING_FUSION_COIL_II_2, TEXTURE_CASING_FUSION_COIL_II_3, TEXTURE_CASING_FUSION_COIL_II_4,

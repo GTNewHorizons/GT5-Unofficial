@@ -56,7 +56,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -415,14 +414,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         return mFocusingTier;
     }
 
-    protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.oMCAQFTActive;
-    }
-
-    protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.oMCAQFT;
-    }
-
     protected int getCasingTextureId() {
         return TAE.getIndexFromPage(0, 10);
     }
@@ -774,14 +765,28 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(getActiveOverlay())
-                .extFacing()
-                .build() };
-            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(getInactiveOverlay())
-                .extFacing()
-                .build() };
+            if (aActive) {
+                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(15)),
+                    TextureFactory.builder()
+                        .addIcon(TexturesGtBlock.oMCAQFTActive)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(TexturesGtBlock.oMCAQFTActiveGlow)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            }
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(15)),
+                TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.oMCAQFT)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.oMCAQFTGlow)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { getCasingTexture() };
     }

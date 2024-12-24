@@ -41,14 +41,11 @@ import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
 
 public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCentrifuge>
     implements ISurvivalConstructable {
 
     private boolean mIsAnimated;
-    private static final CustomIcon frontFaceActive = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE5");
-    private static final CustomIcon frontFace = new CustomIcon("iconsets/LARGECENTRIFUGE5");
     private int mCasing;
     private static IStructureDefinition<MTEIndustrialCentrifuge> STRUCTURE_DEFINITION = null;
     // public static double recipesComplete = 0;
