@@ -2959,6 +2959,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                         "/n ",
                         "Stores energy globally in a network, up to 2^(2^31) EU.",
                         "Does not connect to wires. This cover withdraws EU from the network.",
+                        "Ignores voltage limitations (no explosions).",
                         "Amperage: " + EnumChatFormatting.YELLOW + "2" + EnumChatFormatting.GRAY,
                         "Voltage IN: " + EnumChatFormatting.GREEN
                             + GTUtility.formatNumbers(GTValues.V[i])
