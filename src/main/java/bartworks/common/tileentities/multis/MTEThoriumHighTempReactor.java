@@ -308,11 +308,6 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     }
 
     @Override
-    public int getPollutionPerTick(ItemStack itemStack) {
-        return 0;
-    }
-
-    @Override
     public int getDamageToComponent(ItemStack itemStack) {
         return 0;
     }

@@ -1390,7 +1390,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                     .dynamicString(
                         () -> StatCollector.translateToLocal("GTPP.multiblock.pollution") + ": "
                             + EnumChatFormatting.RED
-                            + (getPollutionPerTick(null) * 20)
+                            + getPollutionPerSecond(null)
                             + EnumChatFormatting.RESET
                             + "/sec")
                     .setTextAlignment(Alignment.CenterLeft)

@@ -77,6 +77,7 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Process that milled ore!")
+            .addInfo("Performs perfect overclocks")
             .addInfo("You can only ever process one type of material per controller")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, true)
