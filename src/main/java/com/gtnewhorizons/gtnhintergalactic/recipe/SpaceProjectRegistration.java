@@ -9,12 +9,12 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
 import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
 import com.gtnewhorizons.gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 
 import bartworks.common.loaders.ItemRegistry;
 import cpw.mods.fml.common.Loader;
-import galaxyspace.core.register.GSBlocks;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
@@ -89,7 +89,7 @@ public class SpaceProjectRegistration implements Runnable {
                         // Osmium Borosilicate Glass
                         new ItemStack(glass, 16, 5),
                         // Ultra High Strength Concrete
-                        new ItemStack(GSBlocks.DysonSwarmBlocks, 32, 9),
+                        new ItemStack(IGBlocks.DysonSwarmCasing, 32, 9),
                         getModItem("supersolarpanel", "SingularSolarPanel", 1L, 0),
                         ItemList.Block_NeutroniumPlate.get(16),
                         ItemList.Sensor_UV.get(1),

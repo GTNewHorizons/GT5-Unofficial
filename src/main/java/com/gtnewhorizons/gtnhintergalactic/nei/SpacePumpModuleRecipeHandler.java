@@ -84,7 +84,7 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
      */
     @Override
     public String getGuiTexture() {
-        return "galaxyspace:textures/gui/guiBase.png";
+        return "gtnhintergalactic:textures/gui/background/guiBase.png";
     }
 
     /**

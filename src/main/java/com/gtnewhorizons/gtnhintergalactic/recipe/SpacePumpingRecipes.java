@@ -9,9 +9,8 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 
 import bartworks.system.material.WerkstoffLoader;
-import cpw.mods.fml.common.Loader;
-import galaxyspace.BarnardsSystem.BRFluids;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 
 /**
  * Available fluids for space pumping are defined here
@@ -64,17 +63,21 @@ public class SpacePumpingRecipes {
         RECIPES.put(Pair.of(8, 1), Materials.Hydrogen.getGas(1568000));
         RECIPES.put(Pair.of(8, 2), Materials.LiquidAir.getFluid(875000));
         RECIPES.put(Pair.of(8, 3), Materials.Copper.getMolten(672000));
-        RECIPES.put(Pair.of(8, 4), new FluidStack(BRFluids.UnknowWater, 672000));
         RECIPES.put(Pair.of(8, 5), FluidRegistry.getFluidStack("ic2distilledwater", 17920000));
         RECIPES.put(Pair.of(8, 6), Materials.Radon.getGas(64000));
 
-        if (Loader.isModLoaded("bartworks")) {
+        if (Mods.BartWorks.isModLoaded()) {
             // T5
             RECIPES.put(Pair.of(5, 6), WerkstoffLoader.Neon.getFluidOrGas(32000));
             RECIPES.put(Pair.of(5, 8), WerkstoffLoader.Krypton.getFluidOrGas(8000));
 
             // T6
             RECIPES.put(Pair.of(6, 4), WerkstoffLoader.Xenon.getFluidOrGas(16000));
+        }
+
+        if (Mods.GalaxySpace.isModLoaded()) {
+            // T8
+            RECIPES.put(Pair.of(8, 4), FluidRegistry.getFluidStack("unknowwater", 672000));
         }
     }
 }

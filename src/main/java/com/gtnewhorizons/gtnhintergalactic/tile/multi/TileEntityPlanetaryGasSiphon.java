@@ -34,6 +34,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
+import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
 import com.gtnewhorizons.gtnhintergalactic.client.IGTextures;
 import com.gtnewhorizons.gtnhintergalactic.recipe.GasSiphonRecipes;
 
@@ -41,7 +42,6 @@ import bartworks.client.textures.PrefixTextureLinker;
 import bartworks.system.material.BWTileEntityMetaGeneratedBlocksCasingAdvanced;
 import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.Loader;
-import galaxyspace.core.register.GSBlocks;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -96,21 +96,21 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
                     StructureUtility.ofChain(
                             GTStructureUtility.ofHatchAdder(
                                     TileEntityPlanetaryGasSiphon::addMaintenanceToMachineList,
-                                    IGTextures.ADVANCED_MACHINE_FRAME_INDEX,
+                                    IGTextures.CASING_INDEX_SIPHON,
                                     1),
                             GTStructureUtility.ofHatchAdder(
                                     TileEntityPlanetaryGasSiphon::addEnergyInputToMachineList,
-                                    IGTextures.ADVANCED_MACHINE_FRAME_INDEX,
+                                    IGTextures.CASING_INDEX_SIPHON,
                                     1),
                             GTStructureUtility.ofHatchAdder(
                                     TileEntityPlanetaryGasSiphon::addInputToMachineList,
-                                    IGTextures.ADVANCED_MACHINE_FRAME_INDEX,
+                                    IGTextures.CASING_INDEX_SIPHON,
                                     1),
                             GTStructureUtility.ofHatchAdder(
                                     TileEntityPlanetaryGasSiphon::addOutputToMachineList,
-                                    IGTextures.ADVANCED_MACHINE_FRAME_INDEX,
+                                    IGTextures.CASING_INDEX_SIPHON,
                                     1),
-                            StructureUtility.ofBlock(GSBlocks.MachineFrames, 0)))
+                            StructureUtility.ofBlock(IGBlocks.GasSiphonCasing, 0)))
             .build();
 
     /**
@@ -187,7 +187,7 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
                 .beginStructureBlock(3, 7, 3, false)
                 .addController(GCCoreUtil.translate("ig.siphon.structure.ControllerPos"))
                 .addOtherStructurePart(
-                        GCCoreUtil.translate("ig.siphon.structure.AdvMachineFrame"),
+                        GCCoreUtil.translate("ig.siphon.structure.SiphonCasing"),
                         GCCoreUtil.translate("ig.siphon.structure.Base"))
                 .addOtherStructurePart(
                         GCCoreUtil.translate("ig.siphon.structure.ReboltedRhodiumPalladiumCasing"),
@@ -195,10 +195,10 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
                 .addOtherStructurePart(
                         GCCoreUtil.translate("ig.siphon.structure.FrameTungstensteel"),
                         GCCoreUtil.translate("ig.siphon.structure.Sides"))
-                .addEnergyHatch(GCCoreUtil.translate("ig.siphon.structure.AnyAdvMachineFrame"), 1)
-                .addMaintenanceHatch(GCCoreUtil.translate("ig.siphon.structure.AnyAdvMachineFrame"), 1)
-                .addInputBus(GCCoreUtil.translate("ig.siphon.structure.AnyAdvMachineFrame"), 1)
-                .addOutputHatch(GCCoreUtil.translate("ig.siphon.structure.AnyAdvMachineFrame"), 1).toolTipFinisher();
+                .addEnergyHatch(GCCoreUtil.translate("ig.siphon.structure.AnySiphonCasing"), 1)
+                .addMaintenanceHatch(GCCoreUtil.translate("ig.siphon.structure.AnySiphonCasing"), 1)
+                .addInputBus(GCCoreUtil.translate("ig.siphon.structure.AnySiphonCasing"), 1)
+                .addOutputHatch(GCCoreUtil.translate("ig.siphon.structure.AnySiphonCasing"), 1).toolTipFinisher();
         return tt;
     }
 
@@ -236,15 +236,15 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
             int colorIndex, boolean active, boolean redstone) {
         if (side == facing) {
-            if (active) return new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(IGTextures.ADVANCED_MACHINE_FRAME_INDEX),
-                    TextureFactory.of(IGTextures.SIPHON_OVERLAY_FRONT),
-                    TextureFactory.builder().addIcon(IGTextures.SIPHON_OVERLAY_FRONT_ACTIVE_GLOW).glow().build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.ADVANCED_MACHINE_FRAME_INDEX),
+            if (active)
+                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_SIPHON),
+                        TextureFactory.of(IGTextures.SIPHON_OVERLAY_FRONT),
+                        TextureFactory.builder().addIcon(IGTextures.SIPHON_OVERLAY_FRONT_ACTIVE_GLOW).glow().build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_SIPHON),
                     TextureFactory.of(IGTextures.SIPHON_OVERLAY_FRONT),
                     TextureFactory.builder().addIcon(IGTextures.SIPHON_OVERLAY_FRONT_GLOW).glow().build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.ADVANCED_MACHINE_FRAME_INDEX) };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_SIPHON) };
     }
 
     /**

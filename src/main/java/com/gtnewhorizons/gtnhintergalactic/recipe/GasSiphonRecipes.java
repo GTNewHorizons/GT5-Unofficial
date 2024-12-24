@@ -7,7 +7,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.Loader;
-import galaxyspace.SolarSystem.SolarSystemPlanets;
 import gregtech.api.enums.Materials;
 
 /**
@@ -54,9 +53,9 @@ public class GasSiphonRecipes {
             neptuneRecipes.put(4, WerkstoffLoader.Xenon.getFluidOrGas(350));
         }
 
-        RECIPES.put(SolarSystemPlanets.planetJupiter.getUnlocalizedName(), jupiterRecipes);
-        RECIPES.put(SolarSystemPlanets.planetSaturn.getUnlocalizedName(), saturnRecipes);
-        RECIPES.put(SolarSystemPlanets.planetUranus.getUnlocalizedName(), uranusRecipes);
-        RECIPES.put(SolarSystemPlanets.planetNeptune.getUnlocalizedName(), neptuneRecipes);
+        RECIPES.put("planet.jupiter", jupiterRecipes);
+        RECIPES.put("planet.saturn", saturnRecipes);
+        RECIPES.put("planet.uranus", uranusRecipes);
+        RECIPES.put("planet.neptune", neptuneRecipes);
     }
 }

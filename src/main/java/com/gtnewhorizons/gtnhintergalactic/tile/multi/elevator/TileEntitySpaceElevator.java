@@ -52,7 +52,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import blockrenderer6343.client.world.ClientFakePlayer;
-import galaxyspace.core.register.GSBlocks;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -239,7 +238,7 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
                         0,
                         TileEntitySpaceElevator::setMotorTier,
                         TileEntitySpaceElevator::getMotorTier))) // Motors
-            .addElement('A', StructureUtility.ofBlock(GSBlocks.DysonSwarmBlocks, 9)) // Concrete
+            .addElement('A', StructureUtility.ofBlock(IGBlocks.DysonSwarmCasing, 9)) // Concrete
             .addElement('D', StructureUtility.ofBlock(IGBlocks.SpaceElevatorCasing, 0)) // Base Casing
             .addElement(
                 'I',

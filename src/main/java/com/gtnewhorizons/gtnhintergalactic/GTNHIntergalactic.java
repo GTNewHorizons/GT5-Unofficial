@@ -32,7 +32,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
                 + "required-after:gtnhlib@[0.5.21,);"
                 + "required-after:tectech;"
                 + "required-after:structurelib;"
-                + "required-after:GalaxySpace;"
+                + "after:GalaxySpace;"
                 + "after:bartworks;"
                 + "after:GoodGenerator;"
                 + "after:miscutils;"
@@ -100,33 +100,26 @@ public class GTNHIntergalactic {
         for (FMLMissingMappingsEvent.MissingMapping mapping : event.getAll()) {
             if (mapping.type == GameRegistry.Type.BLOCK) {
                 switch (mapping.name) {
-                    case "GalaxySpace:spaceelevatorparts":
-                        mapping.remap(IGBlocks.SpaceElevatorCasing);
-                        break;
-                    case "GalaxySpace:spaceelevatormotors":
-                        mapping.remap(IGBlocks.SpaceElevatorMotor);
-                        break;
-                    case "GalaxySpace:spaceelevatorcable":
-                        mapping.remap(IGBlocks.SpaceElevatorCable);
-                        break;
+                    case "GalaxySpace:spaceelevatorparts" -> mapping.remap(IGBlocks.SpaceElevatorCasing);
+                    case "GalaxySpace:spaceelevatormotors" -> mapping.remap(IGBlocks.SpaceElevatorMotor);
+                    case "GalaxySpace:spaceelevatorcable" -> mapping.remap(IGBlocks.SpaceElevatorCable);
+                    case "GalaxySpace:dysonswarmparts" -> mapping.remap(IGBlocks.DysonSwarmCasing);
+                    case "GalaxySpace:machineframes" -> mapping.remap(IGBlocks.GasSiphonCasing);
                 }
             } else if (mapping.type == GameRegistry.Type.ITEM) {
                 switch (mapping.name) {
-                    case "GalaxySpace:spaceelevatorparts":
-                        mapping.remap(Item.getItemFromBlock(IGBlocks.SpaceElevatorCasing));
-                        break;
-                    case "GalaxySpace:spaceelevatormotors":
-                        mapping.remap(Item.getItemFromBlock(IGBlocks.SpaceElevatorMotor));
-                        break;
-                    case "GalaxySpace:spaceelevatorcable":
-                        mapping.remap(Item.getItemFromBlock(IGBlocks.SpaceElevatorCable));
-                        break;
-                    case "GalaxySpace:item.SpaceElevatorParts":
-                        mapping.remap(IGItems.SpaceElevatorItems);
-                        break;
-                    case "GalaxySpace:item.MiningDrone":
-                        mapping.remap(IGItems.MiningDrones);
-                        break;
+                    case "GalaxySpace:spaceelevatorparts" -> mapping
+                            .remap(Item.getItemFromBlock(IGBlocks.SpaceElevatorCasing));
+                    case "GalaxySpace:spaceelevatormotors" -> mapping
+                            .remap(Item.getItemFromBlock(IGBlocks.SpaceElevatorMotor));
+                    case "GalaxySpace:spaceelevatorcable" -> mapping
+                            .remap(Item.getItemFromBlock(IGBlocks.SpaceElevatorCable));
+                    case "GalaxySpace:dysonswarmparts" -> mapping
+                            .remap(Item.getItemFromBlock(IGBlocks.DysonSwarmCasing));
+                    case "GalaxySpace:machineframes" -> mapping.remap(Item.getItemFromBlock(IGBlocks.GasSiphonCasing));
+                    case "GalaxySpace:item.SpaceElevatorParts" -> mapping.remap(IGItems.SpaceElevatorItems);
+                    case "GalaxySpace:item.MiningDrone" -> mapping.remap(IGItems.MiningDrones);
+                    case "GalaxySpace:item.DysonSwarmParts" -> mapping.remap(IGItems.DysonSwarmItems);
                 }
             }
         }

@@ -15,6 +15,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.SpaceElevatorModulePumpT3;
 import static gregtech.api.enums.MetaTileEntityIDs.SpaceElevatorModuleResearch;
 
 import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
+import com.gtnewhorizons.gtnhintergalactic.tile.multi.TileEntityDysonSwarm;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.TileEntityPlanetaryGasSiphon;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleAssembler;
@@ -43,6 +44,12 @@ public class MachineLoader implements Runnable {
                 PlanetaryGasSiphonController.ID,
                 "PlanetaryGasSiphon",
                 GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.name")).getStackForm(1);
+
+        IGItems.DysonSwarmController = new TileEntityDysonSwarm(
+                14001, // TODO Use MTE ID when 5u PR is merged and tagged
+                "DysonSwarm",
+                GCCoreUtil.translate("gt.blockmachines.multimachine.ig.dyson.name")).getStackForm(1);
+        // TODO populate ItemList field for this (and Siphon above)?
 
         IGItems.SpaceElevatorController = new TileEntitySpaceElevator(
                 SpaceElevatorController.ID,

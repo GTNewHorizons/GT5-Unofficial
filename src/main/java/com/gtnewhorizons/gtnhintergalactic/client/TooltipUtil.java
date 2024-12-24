@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 
 import com.gtnewhorizon.gtnhlib.client.tooltip.LoreHandler;
 import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
+import com.gtnewhorizons.gtnhintergalactic.tile.multi.TileEntityDysonSwarm;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.TileEntityPlanetaryGasSiphon;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 
@@ -21,6 +22,7 @@ public class TooltipUtil {
      */
     public static void postInit() {
         LoreHandler.registerLoreHolder(TileEntityPlanetaryGasSiphon.class);
+        LoreHandler.registerLoreHolder(TileEntityDysonSwarm.class);
         LoreHandler.registerLoreHolder(TileEntitySpaceElevator.class);
 
         Supplier<String> AUTHOR_GLOWREDMAN = chain(
@@ -52,5 +54,6 @@ public class TooltipUtil {
                         DARK_BLUE + OBFUSCATED));
 
         addItemTooltip(IGItems.PlanetaryGasSiphon, AUTHOR_GLOWREDMAN);
+        addItemTooltip(IGItems.DysonSwarmController, AUTHOR_GLOWREDMAN);
     }
 }
