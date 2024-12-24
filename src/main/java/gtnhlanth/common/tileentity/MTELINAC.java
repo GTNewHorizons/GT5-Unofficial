@@ -25,6 +25,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.StructureLib;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -40,6 +42,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -246,8 +250,9 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         return false;
     }
 
+    @NotNull
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
+    public CheckRecipeResult checkProcessing() {
 
         float tempFactor = 0;
         // Focus as determined by multi properties
@@ -277,7 +282,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         if (tFluidInputs.isEmpty()) {
             this.doRandomMaintenanceDamage(); // Penalise letting coolant run dry
             this.stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.nocoolant"));
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         // Coolant input
@@ -291,12 +296,12 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         this.mEfficiencyIncrease = 10000;
 
         if (this.getInputInformation() == null) {
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         if (this.getInputInformation()
             .getEnergy() == 0) {
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         particleId = this.getInputInformation()
@@ -305,7 +310,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         if (!inputParticle.canAccelerate()) {
             stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         mMaxProgresstime = 1 * TickTime.SECOND;
@@ -364,7 +369,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         if (Util.coolantFluidCheck(primFluid, fluidConsumed)) {
 
             this.stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.inscoolant"));
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
 
         }
 
@@ -374,17 +379,17 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             primFluid.getFluid()
                 .getName());
 
-        if (Objects.isNull(fluidOutput)) return false;
+        if (Objects.isNull(fluidOutput)) return CheckRecipeResultRegistry.NO_RECIPE;
 
         FluidStack fluidOutputStack = new FluidStack(fluidOutput, fluidConsumed);
 
-        if (Objects.isNull(fluidOutputStack)) return false;
+        if (Objects.isNull(fluidOutputStack)) return CheckRecipeResultRegistry.NO_RECIPE;
 
         this.addFluidOutputs(new FluidStack[] { fluidOutputStack });
 
         outputAfterRecipe();
 
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     private void outputAfterRecipe() {
@@ -402,18 +407,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     }
 
     @Override
-    public void stopMachine() {
-
-        outputFocus = 0;
-        outputEnergy = 0;
-        outputParticle = 0;
-        outputRate = 0;
-        machineTemp = 0;
-        super.stopMachine();
-    }
-
-    @Override
-    public void stopMachine(ShutDownReason reason) {
+    public void stopMachine(@NotNull ShutDownReason reason) {
 
         outputFocus = 0;
         outputEnergy = 0;

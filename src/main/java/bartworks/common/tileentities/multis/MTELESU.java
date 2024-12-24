@@ -28,6 +28,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -59,6 +61,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 
@@ -138,11 +142,6 @@ public class MTELESU extends MTEMultiBlockBase {
     @Override
     public long maxEUOutput() {
         return Math.min(Math.max(this.mStorage / Configuration.multiblocks.energyPerCell, 1L), 32768L);
-    }
-
-    @Override
-    public int rechargerSlotStartIndex() {
-        return 0;
     }
 
     @Override
@@ -312,8 +311,8 @@ public class MTELESU extends MTEMultiBlockBase {
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
-        return true;
+    public @NotNull CheckRecipeResult checkProcessing() {
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override
