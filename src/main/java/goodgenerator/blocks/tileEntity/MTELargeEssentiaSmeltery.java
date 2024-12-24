@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 
-import gregtech.api.util.shutdown.ShutDownReason;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,6 +41,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.shutdown.ShutDownReason;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -155,7 +155,8 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
                 .addElement('D', ofBlock(ConfigBlocks.blockCosmeticOpaque, 2))
                 .addElement(
                     'F',
-                    ThaumicBases.isModLoaded() ? ofBlock(Objects.requireNonNull(Block.getBlockFromName("thaumicbases:advAlchFurnace")), 0)
+                    ThaumicBases.isModLoaded()
+                        ? ofBlock(Objects.requireNonNull(Block.getBlockFromName("thaumicbases:advAlchFurnace")), 0)
                         : ofBlock(ConfigBlocks.blockStoneDevice, 0))
                 .addElement(
                     'E',
@@ -448,7 +449,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
-    public void stopMachine(@NotNull ShutDownReason reason){
+    public void stopMachine(@NotNull ShutDownReason reason) {
         super.stopMachine(reason);
         this.mOutputAspects.aspects.clear();
     }
