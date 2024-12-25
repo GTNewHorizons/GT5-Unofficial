@@ -558,7 +558,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                         }
                     }
                 }
-                maxParallel = (int) Math.max(Math.ceil(Math.log(numberOfNanites) / Math.log(2) + 0.00001), 1);
+                maxParallel = (int) Math.min(Math.max(Math.ceil(Math.pow(numberOfNanites, 0.75)), 1), 256);
                 mMaxParallel = maxParallel;
 
                 PCBFactoryUpgrade requiredUpgrade = recipe.getMetadata(PCBFactoryUpgradeKey.INSTANCE);
@@ -846,8 +846,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addInfo("Each tier and upgrade requires additional structures.")
             .addInfo("Power consumption is multiplied by Sqrt(structures).")
             .addInfo("Tier 2 and 3 allow parallel by using extra nanites.")
-            .addInfo("Every doubling of nanites adds one parallel.")
-            .addInfo("1x->1, 2x->2, 4x->3, 8x->4 with no limit.")
+            .addInfo("The formula for parallels is the amount of nanites^0.75, rounded up.")
+            .addInfo("Maximum parallel is 256.")
             .addInfo("Recipes require a cooling upgrade to be overclocked.")
             .addInfo("Liquid Cooling uses 10 L/s of distilled water and enables default overclocks.")
             .addInfo("Thermosink uses 10 L/s of Super Coolant and enables perfect overclocks.")
