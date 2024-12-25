@@ -72,9 +72,12 @@ public class GTBaseMuTERender implements MuTERender {
 
     @Override
     public void render(Entity entity, RenderBlocks render, int x, int y, int z, IBlockAccess world) {
-        Block block = world.getBlock(x, y, z);
-        if (!(block instanceof MultiTileEntityBlock muteBlock)) {
-            return;
+        Block block = null;
+        if (world != null) {
+            block = world.getBlock(x, y, z);
+            if (!(block instanceof MultiTileEntityBlock)) {
+                return;
+            }
         }
         ExtendedFacingComponent extFacingComp = entity.getComponent(ExtendedFacingComponent.class);
         ExtendedFacing facing = extFacingComp.getExtendedFacing();
