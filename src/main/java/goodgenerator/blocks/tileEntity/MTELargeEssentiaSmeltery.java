@@ -23,6 +23,11 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.loader.Loaders;
@@ -78,6 +83,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     protected int nodePower = 0;
     protected int nodePurificationEfficiency = 0;
     protected int nodeIncrease = 0;
+    protected int nodePowerDisplay;
 
     private IStructureDefinition<MTELargeEssentiaSmeltery> multiDefinition = null;
     private final ArrayList<MTEEssentiaOutputHatch> mEssentiaOutputHatches = new ArrayList<>();
@@ -132,7 +138,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
         if (this.mCasing >= 24 && this.mMaintenanceHatches.size() == 1
             && !this.mInputBusses.isEmpty()
             && !this.mEssentiaOutputHatches.isEmpty()) {
-            this.mParallel = Math.floor(this.mParallel += 1 << this.pTier);
+            this.mParallel = (len + 1) * Math.pow(2, this.pTier);
             return true;
         }
         return false;
@@ -220,7 +226,11 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[8] = "Node Power: " + EnumChatFormatting.RED
+        info[8] = "Parallel: " + EnumChatFormatting.YELLOW
+            + Math.round(this.mParallel)
+            + EnumChatFormatting.RESET
+            + " Node Power: "
+            + EnumChatFormatting.RED
             + this.nodePower
             + EnumChatFormatting.RESET
             + " Purification Efficiency: "
@@ -259,8 +269,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     }
 
     protected void onEssentiaCellFound(int tier) {
-        this.mParallel += (1 << tier) * 0.25f;
-        this.pTier = Math.max(this.pTier, tier);
+        this.pTier = tier;
     }
 
     private boolean addEnergyHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -294,6 +303,30 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (!this.isFullPower()) return;
         super.runMachine(aBaseMetaTileEntity, aTick);
+    }
+
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+
+        screenElements
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> EnumChatFormatting.WHITE + "Requires "
+                            + EnumChatFormatting.YELLOW
+                            + numberFormat.format(nodePowerDisplay)
+                            + EnumChatFormatting.WHITE
+                            + " total "
+                            + EnumChatFormatting.AQUA
+                            + "Aqua"
+                            + EnumChatFormatting.WHITE
+                            + " and "
+                            + EnumChatFormatting.RED
+                            + "Ignis "
+                            + EnumChatFormatting.WHITE
+                            + "centivis to function.")
+                    .setTextAlignment((Alignment.CenterLeft)))
+            .widget(new FakeSyncWidget.IntegerSyncer(this::expectedPower, val -> nodePowerDisplay = val));
     }
 
     @Override
@@ -365,7 +398,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
             .setEUt(getMaxInputEu())
             .setDuration(
                 (int) Math.ceil(this.mOutputAspects.visSize() * RECIPE_DURATION * (1 - this.nodeIncrease * 0.005)))
-            .setDurationDecreasePerOC(4)
+            .enablePerfectOC()
             .calculate();
 
         useLongPower = true;

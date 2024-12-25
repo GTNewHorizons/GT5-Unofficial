@@ -10,6 +10,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.util.GTRecipeConstants.SPARGE_MAX_BYPRODUCT;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 
@@ -30,21 +31,17 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.GasSpargingRecipe;
-import gregtech.api.util.GasSpargingRecipeMap;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.ParallelHelper;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -161,136 +158,45 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        if (GTPPRecipeMaps.spargeTowerFakeRecipes.getAllRecipes()
-            .isEmpty()) {
-            generateRecipes();
-        }
-        return GTPPRecipeMaps.spargeTowerFakeRecipes;
-    }
-
-    private static boolean generateRecipes() {
-        for (GasSpargingRecipe aRecipe : GasSpargingRecipeMap.mRecipes) {
-            GTRecipe newRecipe = new GTRecipe(
-                false,
-                new ItemStack[] {},
-                new ItemStack[] {},
-                null,
-                null,
-                aRecipe.mFluidInputs.clone(),
-                new FluidStack[] {},
-                aRecipe.mDuration,
-                aRecipe.mEUt,
-                0);
-            GTPPRecipeMaps.spargeTowerFakeRecipes.add(newRecipe);
-        }
-        return !GTPPRecipeMaps.spargeTowerFakeRecipes.getAllRecipes()
-            .isEmpty();
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public @NotNull CheckRecipeResult checkProcessing() {
-        ArrayList<FluidStack> tFluidList = getStoredFluids();
-        long tVoltage = GTUtility.roundUpVoltage(this.getMaxInputVoltage());
-        byte tTier = (byte) Math.max(0, GTUtility.getTier(tVoltage));
-        FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
-        if (tFluids.length > 0) {
-            GTRecipe tRecipe = getRecipeMap().findRecipeQuery()
-                .fluids(tFluids)
-                .voltage(GTValues.V[tTier])
-                .find();
-            if (tRecipe != null) {
-                FluidStack[] possibleOutputs = getPossibleByproductsOfSparge(
-                    tRecipe.mFluidInputs[0],
-                    tRecipe.mFluidInputs[1]).toArray(new FluidStack[0]);
-                if (canOutputAll(possibleOutputs) && tRecipe.isRecipeInputEqual(true, tFluids)) {
-                    this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-                    this.mEfficiencyIncrease = 10000;
-
-                    calculateOverclockedNessMulti((long) tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
-                    mMaxProgresstime = Math.max(1, mMaxProgresstime);
-                    ArrayList<FluidStack> aFluidOutputs = getByproductsOfSparge(
-                        tRecipe.mFluidInputs[0],
-                        tRecipe.mFluidInputs[1]);
-                    this.mOutputFluids = aFluidOutputs.toArray(new FluidStack[0]);
-                    updateSlots();
-
-                    if (lEUt > 0) {
-                        lEUt = (-lEUt);
-                    }
-
-                    return CheckRecipeResultRegistry.SUCCESSFUL;
-                }
-            }
-        }
-        this.lEUt = 0;
-        this.mEfficiency = 0;
-        return CheckRecipeResultRegistry.NO_RECIPE;
-    }
-
-    private static List<FluidStack> getPossibleByproductsOfSparge(final FluidStack aSpargeGas,
-        final FluidStack aSpentFuel) {
-        GasSpargingRecipe aSpargeRecipe = GasSpargingRecipeMap.findRecipe(aSpargeGas, aSpentFuel);
-        ArrayList<FluidStack> aOutputGases = new ArrayList<>();
-        if (aSpargeRecipe == null) {
-            return aOutputGases;
-        }
-
-        aOutputGases.add(aSpargeRecipe.mOutputSpargedFuel.copy());
-        ArrayList<FluidStack> aTempMap = new ArrayList<>();
-        for (int i = 2; i < aSpargeRecipe.mFluidOutputs.length; i++) {
-            int aGasAmount = aSpargeRecipe.mMaxOutputQuantity[i - 2] / 100;
-            FluidStack aOutput = aSpargeRecipe.mFluidOutputs[i].copy();
-            FluidStack aSpargeOutput = null;
-            if (aGasAmount > 0) {
-                aSpargeOutput = new FluidStack(aOutput.getFluid(), aGasAmount);
-            }
-            aTempMap.add(aSpargeOutput);
-        }
-        aOutputGases.add(new FluidStack(aSpargeRecipe.mInputGas.getFluid(), aSpargeRecipe.mInputGas.amount));
-        aOutputGases.addAll(aTempMap);
-        return aOutputGases;
-    }
-
-    private static ArrayList<FluidStack> getByproductsOfSparge(final FluidStack aSpargeGas,
-        final FluidStack aSpentFuel) {
-        GasSpargingRecipe aSpargeRecipe = GasSpargingRecipeMap.findRecipe(aSpargeGas, aSpentFuel);
-        ArrayList<FluidStack> aOutputGases = new ArrayList<>();
-        if (aSpargeRecipe == null) {
-            Logger.INFO("Did not find sparge recipe!");
-            return aOutputGases;
-        }
-        int aSpargeGasAmount = aSpargeRecipe.mInputGas.amount;
-
-        aOutputGases.add(aSpargeRecipe.mOutputSpargedFuel.copy());
-        ArrayList<FluidStack> aTempMap = new ArrayList<>();
-        for (int i = 2; i < aSpargeRecipe.mFluidOutputs.length; i++) {
-            int aGasAmount = MathUtils.randInt(0, (aSpargeRecipe.mMaxOutputQuantity[i - 2] / 100));
-            FluidStack aOutput = aSpargeRecipe.mFluidOutputs[i].copy();
-            aSpargeGasAmount -= aGasAmount;
-            FluidStack aSpargeOutput = null;
-            if (aGasAmount > 0) {
-                aSpargeOutput = new FluidStack(aOutput.getFluid(), aGasAmount);
-            }
-            aTempMap.add(aSpargeOutput);
-        }
-        Logger.INFO("Sparge gas left: " + aSpargeGasAmount);
-        if (aSpargeGasAmount > 0) {
-            aOutputGases.add(new FluidStack(aSpargeRecipe.mInputGas.getFluid(), aSpargeGasAmount));
-        }
-        // Logger.INFO("Sparge Outputs: "+ItemUtils.getArrayStackNames(aTempMap));
-        aOutputGases.addAll(aTempMap);
-        Logger.INFO("Sparge output size: " + aOutputGases.size());
-        // Logger.INFO("Output of sparging: "+ItemUtils.getArrayStackNames(aOutputGases));
-        return aOutputGases;
+        return GTPPRecipeMaps.spargeTowerRecipes;
     }
 
     protected void onCasingFound() {
         mCasing++;
+    }
+
+    private static FluidStack[] randomizeByproducts(FluidStack[] outputFluids, int maximum, FluidStack spargeGas) {
+        int byproductTotal = 0;
+
+        for (int i = 2; i < outputFluids.length; i++) {
+            // At least 1L so all output hatches are guaranteed to be used, and a maximum that shifts so there
+            // can always be at least 1L of overflow for the same reason.
+            int gasAmount = MathUtils.randInt(1, Math.min(maximum, spargeGas.amount - byproductTotal - 1));
+            outputFluids[i] = new FluidStack(outputFluids[i], gasAmount);
+            byproductTotal += gasAmount;
+        }
+
+        outputFluids[1] = new FluidStack(spargeGas, spargeGas.amount - byproductTotal);
+        return outputFluids;
+    }
+
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+
+            @Override
+            protected @NotNull ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
+                return super.createParallelHelper(modifyRecipe(recipe));
+            }
+
+            private GTRecipe modifyRecipe(GTRecipe recipe) {
+                GTRecipe newRecipe = recipe.copy();
+                newRecipe.mFluidOutputs = randomizeByproducts(
+                    recipe.mFluidOutputs,
+                    recipe.getMetadataOrDefault(SPARGE_MAX_BYPRODUCT, 0),
+                    recipe.mFluidInputs[0]);
+                return newRecipe;
+            }
+        };
     }
 
     protected void onTopLayerFound(boolean aIsCasing) {
@@ -375,11 +281,6 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return 10000;
-    }
-
-    @Override
-    public int getPollutionPerTick(ItemStack aStack) {
-        return 0;
     }
 
     @Override
