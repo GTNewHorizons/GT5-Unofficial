@@ -938,17 +938,23 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         if (astralArrayAmount != 0) {
-            while (astralArrayAmount >= 64) {
-                if (aPlayer.inventory.getFirstEmptyStack() != -1) {
-                    aPlayer.inventory.addItemStackToInventory(CustomItemList.astralArrayFabricator.get(64));
-                    astralArrayAmount -= 64;
-                } else {
-                    break;
+            if (mMaxProgresstime > 0) {
+                GTUtility
+                    .sendChatToPlayer(aPlayer, "Can't retrieve Astral Array Fabricators when the machine is working!");
+            } else {
+                while (astralArrayAmount >= 64) {
+                    if (aPlayer.inventory.getFirstEmptyStack() != -1) {
+                        aPlayer.inventory.addItemStackToInventory(CustomItemList.astralArrayFabricator.get(64));
+                        astralArrayAmount -= 64;
+                    } else {
+                        break;
+                    }
                 }
-            }
-            if (aPlayer.inventory.getFirstEmptyStack() != -1) {
-                aPlayer.inventory.addItemStackToInventory(CustomItemList.astralArrayFabricator.get(astralArrayAmount));
-                astralArrayAmount = 0;
+                if (aPlayer.inventory.getFirstEmptyStack() != -1) {
+                    aPlayer.inventory
+                        .addItemStackToInventory(CustomItemList.astralArrayFabricator.get(astralArrayAmount));
+                    astralArrayAmount = 0;
+                }
             }
         }
         return true;
@@ -1503,7 +1509,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             strongCheckOrAddUser(userUUID);
         }
 
-        if (!recipeRunning && mMachine) {
+        if (!recipeRunning && mMachine && aBaseMetaTileEntity.isAllowedToWork()) {
             if ((aTick % TICKS_BETWEEN_HATCH_DRAIN) == 0) {
                 drainFluidFromHatchesAndStoreInternally();
             }
