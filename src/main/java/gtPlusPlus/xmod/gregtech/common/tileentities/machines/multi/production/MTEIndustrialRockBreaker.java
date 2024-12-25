@@ -38,6 +38,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -78,8 +79,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Speed: +0% | EU Usage: 75%")
-            .addInfo("Perform perfect overclocks")
+            .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 8")
             .addInfo("Use Integrated Circuit to determine recipe")
             .addInfo("1 = cobble, 2 = stone, 3 = obsidian")
             .addInfo("Needs Water and Lava in input hatch")
@@ -178,11 +178,6 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
     }
 
     @Override
-    public boolean isCorrectMachinePart(final ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
@@ -207,14 +202,15 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        }.enablePerfectOverclock()
-            .setEuModifier(0.75);
+        }.setSpeedBonus(1 / 3.0)
+            .setEuModifier(0.75)
+            .setMaxParallelSupplier(this::getMaxParallelRecipes);
 
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return 1;
+        return 8 * GTUtility.getTier(this.getMaxInputVoltage());
     }
 
     @Override
@@ -225,15 +221,5 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialRockBreaker;
-    }
-
-    @Override
-    public int getDamageToComponent(final ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 }
