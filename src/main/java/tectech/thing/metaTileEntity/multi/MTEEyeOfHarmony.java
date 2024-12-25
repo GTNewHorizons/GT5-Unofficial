@@ -46,6 +46,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -939,9 +940,9 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         float aX, float aY, float aZ, ItemStack aTool) {
         if (astralArrayAmount != 0) {
             if (mMaxProgresstime > 0) {
-                GTUtility
-                    .sendChatToPlayer(aPlayer, "Can't retrieve Astral Array Fabricators when the machine is working!");
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("eoh.rightclick.wirecutter.1"));
             } else {
+                long originalAmount = astralArrayAmount;
                 while (astralArrayAmount >= 64) {
                     if (aPlayer.inventory.getFirstEmptyStack() != -1) {
                         aPlayer.inventory.addItemStackToInventory(CustomItemList.astralArrayFabricator.get(64));
@@ -954,6 +955,13 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     aPlayer.inventory
                         .addItemStackToInventory(CustomItemList.astralArrayFabricator.get(astralArrayAmount));
                     astralArrayAmount = 0;
+                }
+                if (originalAmount - astralArrayAmount > 0) {
+                    GTUtility.sendChatToPlayer(
+                        aPlayer,
+                        StatCollector.translateToLocalFormatted(
+                            "eoh.rightclick.wirecutter.2",
+                            GTUtility.formatNumbers(originalAmount - astralArrayAmount)));
                 }
             }
         }
