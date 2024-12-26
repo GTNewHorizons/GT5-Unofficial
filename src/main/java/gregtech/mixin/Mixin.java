@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import gregtech.common.config.Gregtech;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import bartworks.common.configs.Configuration;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
+import gregtech.common.config.Gregtech;
 import gregtech.common.pollution.PollutionConfig;
 
 public enum Mixin {
@@ -62,13 +62,12 @@ public enum Mixin {
         .setPhase(Phase.EARLY)
         .setSide(Side.BOTH)),
 
-    VanillaToolChanges(new Builder("Changes wooden tools to be a little faster")
-        .addMixinClasses("minecraft.ItemToolMaterialMixin")
-        .addTargetedMod(VANILLA)
-        .setApplyIf(() -> Gregtech.general.changedWoodenVanillaTools)
-        .setPhase(Phase.EARLY)
-        .setSide(Side.BOTH)
-    ),
+    VanillaToolChanges(
+        new Builder("Changes wooden tools to be a little faster").addMixinClasses("minecraft.ItemToolMaterialMixin")
+            .addTargetedMod(VANILLA)
+            .setApplyIf(() -> Gregtech.general.changedWoodenVanillaTools)
+            .setPhase(Phase.EARLY)
+            .setSide(Side.BOTH)),
 
     IC2_MACHINE_WRENCHING(new Builder("Changes the behavior of the wrenching mechanic for IC2 machines")
         .addMixinClasses("ic2.MixinDamageDropped", "ic2.MixinHarvestTool", "ic2.MixinItemDropped")
