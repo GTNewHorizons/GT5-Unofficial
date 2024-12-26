@@ -11,9 +11,9 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -25,28 +25,24 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.ParallelHelper;
 import gregtech.common.pollution.PollutionConfig;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -84,7 +80,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 8")
-            .addInfo("Circuit goes in the GUI slot")
+            .addInfo("Use Integrated Circuit to determine recipe")
             .addInfo("1 = cobble, 2 = stone, 3 = obsidian")
             .addInfo("Needs Water and Lava in input hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -167,7 +163,13 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.rockBreakerFakeRecipes;
+        return GTPPRecipeMaps.multiblockRockBreakerRecipes;
+    }
+
+    @NotNull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Collections.singleton(RecipeMaps.rockBreakerFakeRecipes);
     }
 
     @Override
@@ -176,161 +178,39 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
     }
 
     @Override
-    public boolean isCorrectMachinePart(final ItemStack aStack) {
-        return true;
-    }
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-    private static GTRecipe sRecipe_Cobblestone;
-    private static GTRecipe sRecipe_SmoothStone;
-    private static GTRecipe sRecipe_Redstone;
-
-    private static void generateRecipes() {
-        sRecipe_Cobblestone = new GTRecipe(
-            false,
-            new ItemStack[] { GTUtility.getIntegratedCircuit(1) },
-            new ItemStack[] { ItemUtils.getSimpleStack(Blocks.cobblestone) },
-            null,
-            new int[] { 10000 },
-            null,
-            null,
-            16,
-            32,
-            0);
-        sRecipe_SmoothStone = new GTRecipe(
-            false,
-            new ItemStack[] { GTUtility.getIntegratedCircuit(2) },
-            new ItemStack[] { ItemUtils.getSimpleStack(Blocks.stone) },
-            null,
-            new int[] { 10000 },
-            null,
-            null,
-            16,
-            32,
-            0);
-        sRecipe_Redstone = new GTRecipe(
-            false,
-            new ItemStack[] { GTUtility.getIntegratedCircuit(3),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L) },
-            new ItemStack[] { ItemUtils.getSimpleStack(Blocks.obsidian) },
-            null,
-            new int[] { 10000 },
-            null,
-            null,
-            128,
-            32,
-            0);
-    }
-
-    @Override
-    public @NotNull CheckRecipeResult checkProcessing() {
-        ArrayList<FluidStack> aFluids = this.getStoredFluids();
-        if (aFluids.isEmpty()) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        boolean aHasWater = false;
-        boolean aHasLava = false;
-        for (FluidStack aFluid : aFluids) {
-            if (aFluid.getFluid() == FluidRegistry.WATER) {
-                aHasWater = true;
-            } else if (aFluid.getFluid() == FluidRegistry.LAVA) {
-                aHasLava = true;
-            }
-        }
-        ArrayList<ItemStack> aItems = this.getStoredInputs();
-        boolean aHasRedstone = false;
-        if (!aItems.isEmpty()) {
-            for (ItemStack aItem : aItems) {
-                if (GTUtility
-                    .areStacksEqual(aItem, GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
-                    aHasRedstone = true;
-                    break;
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                if (inputFluids.length == 0) return CheckRecipeResultRegistry.NO_RECIPE;
+                boolean aHasWater = false;
+                boolean aHasLava = false;
+                for (FluidStack aFluid : inputFluids) {
+                    if (aFluid.getFluid() == FluidRegistry.WATER) {
+                        aHasWater = true;
+                    } else if (aFluid.getFluid() == FluidRegistry.LAVA) {
+                        aHasLava = true;
+                    }
                 }
-            }
-        }
-
-        if (!aHasWater) {
-            return SimpleCheckRecipeResult.ofFailure("no_water");
-        }
-        if (!aHasLava) {
-            return SimpleCheckRecipeResult.ofFailure("no_lava");
-        }
-        ItemStack aGuiCircuit = this.getControllerSlot();
-        if (!ItemUtils.isControlCircuit(aGuiCircuit)) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        if (sRecipe_Cobblestone == null || sRecipe_SmoothStone == null || sRecipe_Redstone == null) {
-            generateRecipes();
-        }
-
-        int aCircuit = aGuiCircuit.getItemDamage();
-
-        GTRecipe tRecipe = null;
-        switch (aCircuit) {
-            case 1 -> tRecipe = sRecipe_Cobblestone;
-            case 2 -> tRecipe = sRecipe_SmoothStone;
-            case 3 -> {
-                if (aHasRedstone) {
-                    tRecipe = sRecipe_Redstone;
+                if (!aHasWater) {
+                    return SimpleCheckRecipeResult.ofFailure("no_water");
                 }
+                if (!aHasLava) {
+                    return SimpleCheckRecipeResult.ofFailure("no_lava");
+                }
+                return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        }
-
-        if (tRecipe == null) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        ItemStack[] aItemInputs = aItems.toArray(new ItemStack[0]);
-        FluidStack[] aFluidInputs = new FluidStack[] {};
-
-        long tEnergy = getMaxInputEnergy();
-        // Remember last recipe - an optimization for findRecipe()
-        this.mLastRecipe = tRecipe;
-
-        ParallelHelper helper = new ParallelHelper().setRecipe(tRecipe)
-            .setItemInputs(aItemInputs)
-            .setFluidInputs(aFluidInputs)
-            .setAvailableEUt(tEnergy)
-            .setMaxParallel(getMaxParallelRecipes())
-            .setConsumption(true)
-            .setOutputCalculation(true)
-            .setEUtModifier(0.75F)
-            .setMachine(this);
-
-        if (batchMode) {
-            helper.enableBatchMode(128);
-        }
-
-        helper.build();
-
-        if (helper.getCurrentParallel() == 0) {
-            return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
-        }
-
-        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-
-        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(tRecipe.mEUt)
-            .setEUt(tEnergy)
-            .setDuration(tRecipe.mDuration)
-            .setEUtDiscount(0.75)
-            .setSpeedBoost(1 / 3.0)
-            .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplierDouble()))
-            .calculate();
-        lEUt = -calculator.getConsumption();
-        mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplierDouble());
-
-        mOutputItems = helper.getItemOutputs();
-        mOutputFluids = helper.getFluidOutputs();
-        updateSlots();
-        return CheckRecipeResultRegistry.SUCCESSFUL;
+        }.setSpeedBonus(1 / 3.0)
+            .setEuModifier(0.75)
+            .setMaxParallelSupplier(this::getMaxParallelRecipes);
 
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return (8 * GTUtility.getTier(this.getMaxInputVoltage()));
+        return 8 * GTUtility.getTier(this.getMaxInputVoltage());
     }
 
     @Override
@@ -341,24 +221,5 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialRockBreaker;
-    }
-
-    @Override
-    public int getDamageToComponent(final ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public ArrayList<ItemStack> getStoredInputs() {
-        ArrayList<ItemStack> aInputs = super.getStoredInputs();
-        if (this.getControllerSlot() != null) {
-            aInputs.add(this.getControllerSlot());
-        }
-        return aInputs;
     }
 }
