@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -368,17 +369,17 @@ public class GTPostLoad {
         }
 
         GTLog.out.println("GTMod: Nerfing Vanilla Tool Durability");
-        Items.wooden_sword.setMaxDamage(12);
-        Items.wooden_pickaxe.setMaxDamage(12);
-        Items.wooden_shovel.setMaxDamage(12);
-        Items.wooden_axe.setMaxDamage(12);
-        Items.wooden_hoe.setMaxDamage(12);
+        Items.wooden_sword.setMaxDamage(64);
+        Items.wooden_pickaxe.setMaxDamage(64);
+        Items.wooden_shovel.setMaxDamage(64);
+        Items.wooden_axe.setMaxDamage(64);
+        Items.wooden_hoe.setMaxDamage(64);
 
-        Items.stone_sword.setMaxDamage(48);
-        Items.stone_pickaxe.setMaxDamage(48);
-        Items.stone_shovel.setMaxDamage(48);
-        Items.stone_axe.setMaxDamage(48);
-        Items.stone_hoe.setMaxDamage(48);
+        Items.stone_sword.setMaxDamage(128);
+        Items.stone_pickaxe.setMaxDamage(128);
+        Items.stone_shovel.setMaxDamage(128);
+        Items.stone_axe.setMaxDamage(128);
+        Items.stone_hoe.setMaxDamage(128);
 
         Items.iron_sword.setMaxDamage(256);
         Items.iron_pickaxe.setMaxDamage(256);
