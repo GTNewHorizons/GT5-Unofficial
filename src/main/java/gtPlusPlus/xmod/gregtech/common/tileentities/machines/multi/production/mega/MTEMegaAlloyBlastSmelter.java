@@ -390,12 +390,22 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                     TextureFactory.builder()
                         .addIcon(TexturesGtBlock.oMCAMegaAlloyBlastSmelterActive)
                         .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(TexturesGtBlock.oMCAMegaAlloyBlastSmelterActiveGlow)
+                        .extFacing()
+                        .glow()
                         .build() };
             }
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(15)),
                 TextureFactory.builder()
                     .addIcon(TexturesGtBlock.oMCAMegaAlloyBlastSmelter)
                     .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.oMCAMegaAlloyBlastSmelterGlow)
+                    .extFacing()
+                    .glow()
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(15)) };
