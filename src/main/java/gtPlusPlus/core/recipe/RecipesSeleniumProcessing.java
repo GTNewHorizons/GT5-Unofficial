@@ -48,7 +48,7 @@ public class RecipesSeleniumProcessing {
             .itemInputs(GTUtility.getIntegratedCircuit(14), MaterialsElements.getInstance().CARBON.getDust(16))
             .fluidInputs(MaterialMisc.SELENIOUS_ACID.getFluidStack(750), Materials.SulfuricAcid.getFluid(8000))
             .fluidOutputs(
-                MaterialsElements.getInstance().SELENIUM.getFluidStack(324),
+                MaterialsElements.getInstance().SELENIUM.getFluidStack(144 * 2 + 36),
                 Materials.DilutedSulfuricAcid.getFluid(12000))
             .eut(TierEU.RECIPE_IV)
             .noOptimize()
