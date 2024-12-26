@@ -63,15 +63,8 @@ public class RecipesSeleniumProcessing {
             .itemInputs(ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Copper, 1))
             .itemOutputs(
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Copper, 1),
-                MaterialMisc.SELENIUM_DIOXIDE.getDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getSmallDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getSmallDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getSmallDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getTinyDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getTinyDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getTinyDust(1))
-            .outputChances(100_00, 1_00, 1_00, 5_00, 5_00, 5_00, 10_00, 10_00, 10_00)
+                MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
+            .outputChances(100_00, 3_00)
             .fluidInputs(FluidUtils.getHotWater(1000))
             .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(20))
             .eut(1024)
@@ -83,15 +76,8 @@ public class RecipesSeleniumProcessing {
             .itemInputs(ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Tetrahedrite, 1))
             .itemOutputs(
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Tetrahedrite, 1),
-                MaterialMisc.SELENIUM_DIOXIDE.getDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getSmallDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getSmallDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getSmallDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getTinyDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getTinyDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getTinyDust(1))
-            .outputChances(100_00, 1_00, 1_00, 3_00, 3_00, 3_00, 8_00, 8_00, 8_00)
+                MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
+            .outputChances(100_00, 2_50)
             .fluidInputs(FluidUtils.getHotWater(1000))
             .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(10))
             .eut(1024)
@@ -103,15 +89,8 @@ public class RecipesSeleniumProcessing {
             .itemInputs(ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Chalcopyrite, 1))
             .itemOutputs(
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Chalcopyrite, 1),
-                MaterialMisc.SELENIUM_DIOXIDE.getDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getSmallDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getSmallDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getSmallDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getTinyDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getTinyDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getTinyDust(1))
-            .outputChances(100_00, 1_00, 1_00, 3_00, 3_00, 3_00, 8_00, 8_00, 8_00)
+                MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
+            .outputChances(100_00, 2_50)
             .fluidInputs(FluidUtils.getHotWater(1000))
             .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(10))
             .eut(1024)
@@ -123,15 +102,8 @@ public class RecipesSeleniumProcessing {
             .itemInputs(ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Malachite, 1))
             .itemOutputs(
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Malachite, 1),
-                MaterialMisc.SELENIUM_DIOXIDE.getDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getSmallDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getSmallDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getSmallDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getTinyDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getTinyDust(1),
-                MaterialMisc.SELENIUM_DIOXIDE.getTinyDust(1))
-            .outputChances(100_00, 1_00, 1_00, 3_00, 3_00, 3_00, 8_00, 8_00, 8_00)
+                MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
+            .outputChances(100_00, 2_50)
             .fluidInputs(FluidUtils.getHotWater(1000))
             .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(10))
             .eut(1024)
