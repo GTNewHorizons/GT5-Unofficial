@@ -1626,8 +1626,9 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         try {
             aEvent.Ore.stackSize = 1;
 
-            // skipping TinkerConstruct ore registration
-            if (this.mIgnoreTcon && aOriginalMod.equals(TinkerConstruct.ID)) {
+            // skipping TinkerConstruct ore registration except for blocks
+            if (this.mIgnoreTcon && aOriginalMod.equals(TinkerConstruct.ID)
+                && !(aEvent.Ore.getItem() instanceof ItemBlock)) {
                 return;
             }
             String tModToName = aMod + " -> " + aEvent.Name;
