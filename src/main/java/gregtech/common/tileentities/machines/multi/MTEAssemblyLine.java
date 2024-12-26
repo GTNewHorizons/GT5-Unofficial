@@ -14,6 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
@@ -48,7 +49,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -83,7 +83,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings3, 10)) // grate machine casing
         .addElement('l', ofBlock(GregTechAPI.sBlockCasings2, 9)) // assembler machine casing
         .addElement('m', ofBlock(GregTechAPI.sBlockCasings2, 5)) // assembling line casing
-        .addElement('g', Glasses.chainAllGlasses())
+        .addElement('g', chainAllGlasses())
         .addElement(
             'e',
             ofChain(

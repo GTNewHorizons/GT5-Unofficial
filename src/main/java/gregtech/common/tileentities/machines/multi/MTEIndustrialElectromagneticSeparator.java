@@ -7,6 +7,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.Arrays;
@@ -43,7 +44,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchMagnet;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -122,7 +122,7 @@ public class MTEIndustrialElectromagneticSeparator
                 { "CC   CC", "       ", " BBBBB ", " A   A ", " BBBBB ", "BBBBBBB" },
                 { " CC CC ", "       ", "  BBB  ", "  AAA  ", "  BBB  ", " BBBBB " },
                 { "  CCC  ", "   C   ", "   C   ", "   C   ", "   C   ", "  BBB  " } }))
-        .addElement('A', Glasses.chainAllGlasses())
+        .addElement('A', chainAllGlasses())
         .addElement(
             'B',
             ofChain(

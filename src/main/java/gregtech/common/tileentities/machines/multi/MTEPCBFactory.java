@@ -15,6 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.ArrayList;
@@ -72,7 +73,6 @@ import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -230,7 +230,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         .addElement('E', ofFrame(Materials.DamascusSteel))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 11))
         .addElement('D', ofBlock(GregTechAPI.sBlockReinforced, 2))
-        .addElement('A', Glasses.chainAllGlasses())
+        .addElement('A', chainAllGlasses())
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings3, 10))
         .addElement('F', ofFrame(Materials.VibrantAlloy))
         .addElement(
