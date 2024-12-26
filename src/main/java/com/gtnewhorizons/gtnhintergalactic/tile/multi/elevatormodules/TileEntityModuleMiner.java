@@ -67,6 +67,7 @@ import gregtech.api.util.ParallelHelper;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
+import gtPlusPlus.core.material.MaterialsElements;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
@@ -84,8 +85,6 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  */
 public abstract class TileEntityModuleMiner extends TileEntityModuleBase implements IOverclockDescriptionProvider {
 
-    /** Base chance to get a bonus stack from space mining, will be multiplied with other factors */
-    protected static int BONUS_STACK_BASE_CHANCE = 5000;
     /** Max chance to get a bonus stack from space mining */
     protected static int BONUS_STACK_MAX_CHANCE = 7500;
 
@@ -97,11 +96,15 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
     // Tiered plasmas, the mining operation uses one of them. Using higher tier plasmas boosts the mining operation
     /** Usage of helium plasma per mining operation */
-    protected static int PLASMA_HELIUM_USAGE = 1000;
+    protected static int PLASMA_HELIUM_USAGE = 825;
     /** Usage of bismuth plasma per mining operation */
-    protected static int PLASMA_BISMUTH_USAGE = 500;
+    protected static int PLASMA_BISMUTH_USAGE = 550;
     /** Usage of radon plasma per mining operation */
-    protected static int PLASMA_RADON_USAGE = 300;
+    protected static int PLASMA_RADON_USAGE = 375;
+    /** Usage of technetium plasma per mining operation */
+    protected static int PLASMA_TECHNETIUM_USAGE = 250;
+    /** Usage of plutonium 241 plasma per mining operation */
+    protected static int PLASMA_PLUTONIUM241_USAGE = 150;
 
     /* Size of the whitelist in stacks **/
     protected static int WHITELIST_SIZE = 64;
@@ -474,15 +477,23 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         if (fluidStack == null) {
             return 0;
         }
-        if (fluidStack.isFluidEqual(Materials.Radon.getPlasma(1)) && fluidStack.amount >= PLASMA_RADON_USAGE) {
-            return 3;
-        } else
-            if (fluidStack.isFluidEqual(Materials.Bismuth.getPlasma(1)) && fluidStack.amount >= PLASMA_BISMUTH_USAGE) {
-                return 2;
-            } else if (fluidStack.isFluidEqual(Materials.Helium.getPlasma(1))
-                    && fluidStack.amount >= PLASMA_HELIUM_USAGE) {
-                        return 1;
-                    }
+        if ((fluidStack.isFluidEqual(Materials.Plutonium241.getPlasma(1))
+                && fluidStack.amount >= PLASMA_PLUTONIUM241_USAGE)) {
+            return 5;
+        } else if ((fluidStack.isFluidEqual(new FluidStack(MaterialsElements.getInstance().TECHNETIUM.getPlasma(), 1))
+                && fluidStack.amount >= PLASMA_TECHNETIUM_USAGE)) {
+                    return 4;
+                } else
+            if (fluidStack.isFluidEqual(Materials.Radon.getPlasma(1)) && fluidStack.amount >= PLASMA_RADON_USAGE) {
+                return 3;
+            } else if (fluidStack.isFluidEqual(Materials.Bismuth.getPlasma(1))
+                    && fluidStack.amount >= PLASMA_BISMUTH_USAGE) {
+                        return 2;
+                    } else
+                if (fluidStack.isFluidEqual(Materials.Helium.getPlasma(1))
+                        && fluidStack.amount >= PLASMA_HELIUM_USAGE) {
+                            return 1;
+                        }
         return 0;
     }
 
@@ -497,6 +508,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             case 1 -> PLASMA_HELIUM_USAGE;
             case 2 -> PLASMA_BISMUTH_USAGE;
             case 3 -> PLASMA_RADON_USAGE;
+            case 4 -> PLASMA_TECHNETIUM_USAGE;
+            case 5 -> PLASMA_PLUTONIUM241_USAGE;
             default -> 0;
         };
     }
@@ -508,13 +521,18 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
      * @return Chance for the bonus stack
      */
     protected int getBonusStackChance(int plasmaTier) {
-        if (plasmaTier <= 0 || plasmaTier > 3) {
+        if (plasmaTier <= 0 || plasmaTier > 5) {
             return 0;
         }
-        // Base chance is 50% + 10% for every plasma tier above T1. The whole chance is multiplied by 2 - overdrive
-        // setting
+        // getBonusStackChance with tiered plasmas:
+        // T1: 0.004
+        // T2: 0.037
+        // T3: 0.125
+        // T4: 0.296
+        // T5: 0.578
+        // The whole chance is multiplied by 2 - overdrive setting
         return Math.min(
-                (int) ((double) (BONUS_STACK_BASE_CHANCE + 1000 * (plasmaTier - 1)) * (2.0D - overdriveSetting.get())),
+                (int) ((Math.pow((double) plasmaTier / 6, 3) * 10000) * (2.0D - overdriveSetting.get())),
                 BONUS_STACK_MAX_CHANCE);
     }
 
