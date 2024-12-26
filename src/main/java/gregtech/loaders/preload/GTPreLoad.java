@@ -378,7 +378,6 @@ public class GTPreLoad {
         GTMod.gregtechproxy.mGTBees = Gregtech.general.GTBees;
         GTMod.gregtechproxy.mCraftingUnification = Gregtech.general.craftingUnification;
         GTMod.gregtechproxy.mNerfedWoodPlank = Gregtech.general.nerfedWoodPlank;
-        GTMod.gregtechproxy.mNerfedVanillaTools = Gregtech.general.nerfedVanillaTools;
         GTMod.gregtechproxy.mAchievements = Gregtech.general.achievements;
         GTMod.gregtechproxy.mHideUnusedOres = Gregtech.general.hideUnusedOres;
         GTMod.gregtechproxy.mEnableAllMaterials = Gregtech.general.enableAllMaterials;
