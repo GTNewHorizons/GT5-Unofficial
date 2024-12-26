@@ -80,7 +80,7 @@ public class GTBaseMuTERender implements MuTERender {
             }
         }
         ExtendedFacingComponent extFacingComp = entity.getComponent(ExtendedFacingComponent.class);
-        ExtendedFacing facing = extFacingComp.getExtendedFacing();
+        ExtendedFacing facing = extFacingComp != null ? extFacingComp.getExtendedFacing() : ExtendedFacing.WEST_NORMAL_NONE;
         renderYNegative(world, render, x, y, z, block, bottom, facing.getRelativeUpInWorld());
         renderYPositive(world, render, x, y, z, block, top, facing.getRelativeDownInWorld());
         renderXNegative(world, render, x, y, z, block, front, facing.getRelativeForwardInWorld());
