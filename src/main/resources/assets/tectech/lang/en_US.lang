@@ -1058,6 +1058,9 @@ fog.text.tooltip.parallel=Maximum parallel amount
 fog.text.tooltip.speedbonus=Multiplier for base recipe time, making it shorter
 fog.text.tooltip.energydiscount=Multiplier for base energy usage, reducing it
 fog.text.tooltip.ocdivisor=Divisor for recipe time reduction per overclock (does not affect perfect OCs)
+fog.text.tooltip.processingvoltage=Base processing voltage for recipes
+fog.text.tooltip.factorpreview=Enter fuel factor to simulate calculations with
+fog.text.tooltip.applysimulationchanges=Simulate new values
 
 
 achievement.gt.blockmachines.multimachine.em.forge_of_gods=Forge of the Gods
@@ -1150,6 +1153,8 @@ gt.blockmachines.multimachine.FOG.effectiveheat=Effective Heat
 gt.blockmachines.multimachine.FOG.speedbonus=Speed Bonus
 gt.blockmachines.multimachine.FOG.energydiscount=Energy Discount
 gt.blockmachines.multimachine.FOG.ocdivisor=OC Divisor
+gt.blockmachines.multimachine.FOG.processingvoltage=Processing Voltage
+gt.blockmachines.multimachine.FOG.factorpreview=Preview Fuel Factor:
 gt.blockmachines.multimachine.FOG.clickstat=Click to view value breakdown
 
 gt.blockmachines.multimachine.FOG.hint.0=1 - Classic Hatches or Transcendentally Amplified Magnetic Confinement Casing
