@@ -4,7 +4,14 @@ import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceRes
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.ACCEPT_STOP;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.REJECT;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.SKIP;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUnlocalizedName;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode.EXACT;
+import static gregtech.api.enums.Mods.BartWorks;
+import static gregtech.api.enums.Mods.Botania;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.enums.Mods.Thaumcraft;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +41,7 @@ import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.IStructureElementChain;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
@@ -654,5 +662,26 @@ public class GTStructureUtility {
             return tile instanceof MTETieredMachineBlock && ((MTETieredMachineBlock) tile).mTier <= aMaxTier
                 && ((MTETieredMachineBlock) tile).mTier >= aMinTier;
         };
+    }
+
+    /** support all Bart, Botania, Ic2, Thaumcraft glasses for multiblock structure **/
+    public static <T> IStructureElementChain<T> chainAllGlasses() {
+        return ofChain(
+            // IndustrialCraft2 glass
+            ofBlockUnlocalizedName(IndustrialCraft2.ID, "blockAlloyGlass", 0, true),
+
+            // Botania glass
+            ofBlockUnlocalizedName(Botania.ID, "manaGlass", 0, false),
+            ofBlockUnlocalizedName(Botania.ID, "elfGlass", 0, false),
+
+            // BartWorks glass
+            ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks", 0, true),
+            ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks2", 0, true),
+
+            // Tinted Industrial Glass
+            ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass, 0),
+
+            // warded glass
+            ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false));
     }
 }
