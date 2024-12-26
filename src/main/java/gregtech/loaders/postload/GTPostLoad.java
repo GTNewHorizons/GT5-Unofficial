@@ -362,6 +362,19 @@ public class GTPostLoad {
             .addTo(rockBreakerFakeRecipes);
     }
 
+    public static void changeWoodenVanillaTools() {
+        if (!GTMod.gregtechproxy.mChangeWoodenVanillaTools) {
+            return;
+        }
+
+        GTLog.out.println("GTMod: Updating Vanilla Wooden Tools");
+        Items.wooden_sword.setMaxDamage(64);
+        Items.wooden_pickaxe.setMaxDamage(64);
+        Items.wooden_shovel.setMaxDamage(64);
+        Items.wooden_axe.setMaxDamage(64);
+        Items.wooden_hoe.setMaxDamage(64);
+    }
+
     public static void replaceVanillaMaterials() {
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();

@@ -535,6 +535,8 @@ public class GTMod implements IGTMod {
             .map(tName -> GTModHandler.getIC2Item(tName, 1L))
             .forEach(GTModHandler::removeRecipeByOutputDelayed);
 
+        GTPostLoad.changeWoodenVanillaTools();
+
         // Register postea transformers
         new PosteaTransformers().run();
 
