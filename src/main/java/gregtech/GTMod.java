@@ -119,7 +119,6 @@ import gregtech.loaders.postload.PosteaTransformers;
 import gregtech.loaders.postload.RecyclerBlacklistLoader;
 import gregtech.loaders.postload.ScrapboxDropLoader;
 import gregtech.loaders.preload.GTPreLoad;
-import gregtech.loaders.preload.GT_Loader_MultiTileEntities;
 import gregtech.loaders.preload.LoaderCircuitBehaviors;
 import gregtech.loaders.preload.LoaderGTBlockFluid;
 import gregtech.loaders.preload.LoaderGTItemData;
@@ -298,9 +297,6 @@ public class GTMod implements IGTMod {
         new LoaderGTItemData().run();
         new LoaderGTBlockFluid().run();
         new LoaderMetaTileEntities().run();
-        if (GTValues.enableMultiTileEntities) {
-            new GT_Loader_MultiTileEntities().run();
-        }
 
         new LoaderCircuitBehaviors().run();
         new CoverBehaviorLoader().run();

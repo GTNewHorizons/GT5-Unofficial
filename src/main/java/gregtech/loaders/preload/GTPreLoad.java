@@ -416,8 +416,6 @@ public class GTPreLoad {
         GTValues.alwaysReloadChunkloaders = Gregtech.machines.alwaysReloadChunkloaders;
         GTValues.debugChunkloaders = Gregtech.debug.debugChunkloaders;
         GTValues.disableDigitalChestsExternalAccess = Gregtech.machines.disableDigitalChestsExternalAccess;
-        GTValues.enableMultiTileEntities = Gregtech.machines.enableMultiTileEntities
-            || (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
         GregTechAPI.sMachineExplosions = Gregtech.machines.machineExplosions;
         GregTechAPI.sMachineFlammable = Gregtech.machines.machineFlammable;
         GregTechAPI.sMachineNonWrenchExplosions = Gregtech.machines.machineNonWrenchExplosions;
