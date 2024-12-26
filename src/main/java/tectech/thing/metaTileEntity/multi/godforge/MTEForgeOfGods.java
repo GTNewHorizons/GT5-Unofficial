@@ -799,6 +799,20 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     @Override
+    public boolean isFlipChangeAllowed() {
+        // If the machine is formed, or if rings are taken into the controller
+        if (mMachine || isRenderActive) return false;
+        return super.isFlipChangeAllowed();
+    }
+
+    @Override
+    public boolean isRotationChangeAllowed() {
+        // If the machine is formed, or if rings are taken into the controller
+        if (mMachine || isRenderActive) return false;
+        return super.isRotationChangeAllowed();
+    }
+
+    @Override
     public void onBlockDestroyed() {
         super.onBlockDestroyed();
         if (isRenderActive) {
