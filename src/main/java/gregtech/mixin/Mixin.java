@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 
+import gregtech.common.config.Gregtech;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -64,7 +65,7 @@ public enum Mixin {
     VanillaToolChanges(new Builder("Changes wooden tools to be a little faster")
         .addMixinClasses("minecraft.ItemToolMaterialMixin")
         .addTargetedMod(VANILLA)
-        .setApplyIf(() -> true)
+        .setApplyIf(() -> Gregtech.general.changedWoodenVanillaTools)
         .setPhase(Phase.EARLY)
         .setSide(Side.BOTH)
     ),

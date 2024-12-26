@@ -238,10 +238,10 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean nerfedWoodPlank;
 
-        @Config.Comment("if true, reduces the durability of the vanilla tools.")
+        @Config.Comment("if true, change the default durability of wooden vanilla tools to 64 and increase speed to match stone")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
-        public boolean nerfedVanillaTools;
+        public boolean changedWoodenVanillaTools;
 
         @Config.Comment("if true, enables GT5U achievements.")
         @Config.DefaultBoolean(true)
