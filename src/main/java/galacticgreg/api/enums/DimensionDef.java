@@ -1,13 +1,49 @@
 package galacticgreg.api.enums;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkProviderEnd;
+import net.minecraft.world.gen.ChunkProviderGenerate;
+import net.minecraft.world.gen.ChunkProviderHell;
 
 import galacticgreg.api.Enums;
+import galacticgreg.api.Enums.DimensionType;
 import galacticgreg.api.ModDimensionDef;
+import gtPlusPlus.everglades.chunk.ChunkProviderModded;
 
 public enum DimensionDef {
 
-    EndAsteroids(new ModDimensionDef(DimNames.ENDASTEROIDS, ChunkProviderEnd.class, Enums.DimensionType.Asteroid)),
+    // spotless:off
+    Overworld(new ModDimensionDef(
+        DimNames.OW,
+        ChunkProviderGenerate.class,
+        DimensionType.Planet)),
+    Nether(new ModDimensionDef(
+        DimNames.NETHER,
+        ChunkProviderHell.class,
+        DimensionType.Planet)),
+    TheEnd(new ModDimensionDef(
+        DimNames.THE_END,
+        ChunkProviderEnd.class,
+        DimensionType.Planet)),
+    EndAsteroids(new ModDimensionDef(
+        DimNames.ENDASTEROID,
+        ChunkProviderEnd.class,
+        Enums.DimensionType.Asteroid)),
+    TwilightForest(new ModDimensionDef(
+        DimNames.TWILIGHT_FOREST,
+        "twilightforest.world.ChunkProviderTwilightForest",
+        DimensionType.Planet)),
+    Everglades(new ModDimensionDef(
+        DimNames.EVERGLADES,
+        ChunkProviderModded.class,
+        DimensionType.Planet)
+        .setOreVeinChance(66)
+        .disableEoHRecipe()),
+
+
     Moon(new ModDimensionDef(
         DimNames.MOON,
         "micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderMoon",
@@ -21,7 +57,18 @@ public enum DimensionDef {
     Asteroids(new ModDimensionDef(
         DimNames.ASTEROIDS,
         "micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids",
-        Enums.DimensionType.Asteroid)),
+        Enums.DimensionType.Asteroid)
+        .disableVoidMining()),
+    Ross128b(new ModDimensionDef(
+        DimNames.ROSS128B,
+        "bwcrossmod.galacticraft.planets.ross128b.ChunkProviderRoss128b",
+        Enums.DimensionType.Planet)
+        .disableEoHRecipe()),
+    Ross128ba(new ModDimensionDef(
+        DimNames.ROSS128BA,
+        "bwcrossmod.galacticraft.planets.ross128ba.ChunkProviderRoss128ba",
+        Enums.DimensionType.Planet)
+        .disableEoHRecipe()),
     Pluto(new ModDimensionDef(
         DimNames.PLUTO,
         "galaxyspace.SolarSystem.planets.pluto.dimension.ChunkProviderPluto",
@@ -145,7 +192,8 @@ public enum DimensionDef {
     KuiperBelt(new ModDimensionDef(
         DimNames.KUIPERBELT,
         "galaxyspace.SolarSystem.planets.kuiperbelt.dimension.ChunkProviderKuiper",
-        Enums.DimensionType.Asteroid)),
+        Enums.DimensionType.Asteroid)
+        .disableVoidMining()),
 
     Neper(new ModDimensionDef(
         DimNames.NEPER,
@@ -175,11 +223,54 @@ public enum DimensionDef {
     MehenBelt(new ModDimensionDef(
         DimNames.MEHENBELT,
         "de.katzenpapst.amunra.world.mehen.MehenChunkProvider",
-        Enums.DimensionType.Asteroid));
+        Enums.DimensionType.Asteroid)
+        .disableVoidMining()),
+
+    DeepDark(new ModDimensionDef(
+        DimNames.DEEPDARK,
+        "",
+        Enums.DimensionType.Planet)),
+    ;
+    // spotless:on
+
+    public final ModDimensionDef modDimensionDef;
+
+    DimensionDef(ModDimensionDef modDimDef) {
+        this.modDimensionDef = modDimDef;
+    }
+
+    public static final Map<String, ModDimensionDef> DEF_BY_WORLD_NAME = new HashMap<>();
+
+    static {
+        for (DimensionDef def : values()) {
+            DEF_BY_WORLD_NAME.put(def.modDimensionDef.getDimensionName(), def.modDimensionDef);
+        }
+    }
+
+    public static ModDimensionDef getDefForWorld(World world, int chunkX, int chunkZ) {
+        ModDimensionDef def = DEF_BY_WORLD_NAME.get(world.provider.getDimensionName());
+
+        if (def == null) return null;
+
+        if (def.getDimensionName()
+            .equals(DimNames.THE_END)) {
+            if (chunkX * chunkX + chunkZ * chunkZ > 16 * 16) {
+                def = DimensionDef.EndAsteroids.modDimensionDef;
+            }
+        }
+
+        return def;
+    }
 
     public static class DimNames {
 
-        public static final String ENDASTEROIDS = "EndAsteroids";
+        public static final String OW = "Overworld";
+        public static final String NETHER = "Nether";
+        public static final String THE_END = "The End";
+        public static final String ENDASTEROID = "EndAsteroid";
+        public static final String TWILIGHT_FOREST = "Twilight Forest";
+        public static final String EVERGLADES = "dimensionDarkWorld";
+
         public static final String MOON = "Moon";
         public static final String MARS = "Mars";
         public static final String ASTEROIDS = "Asteroids";
@@ -209,7 +300,7 @@ public enum DimensionDef {
         public static final String BARNARDF = "BarnardF";
         public static final String TCETIE = "TcetiE";
         public static final String MIRANDA = "Miranda";
-        public static final String KUIPERBELT = "Kuiperbelt";
+        public static final String KUIPERBELT = "Kuiper Belt";
         public static final String NEPER = "Neper";
         public static final String MAAHES = "Maahes";
         public static final String ANUBIS = "Anubis";
@@ -218,11 +309,5 @@ public enum DimensionDef {
         public static final String MEHENBELT = "MehenBelt";
         public static final String DEEPDARK = "Underdark";
 
-    }
-
-    public final ModDimensionDef modDimensionDef;
-
-    DimensionDef(ModDimensionDef modDimDef) {
-        this.modDimensionDef = modDimDef;
     }
 }

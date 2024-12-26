@@ -44,6 +44,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IAllSidedTexturedTileEntity;
@@ -54,8 +55,6 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockMachines;
-import gregtech.common.blocks.BlockOresAbstract;
-import gregtech.common.blocks.TileEntityOres;
 
 @ThreadSafeISBRH(perThread = true)
 public class GTRendererBlock implements ISimpleBlockRenderingHandler {
@@ -543,8 +542,6 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         }
     }
 
-    final TileEntityOres tTileEntity = new TileEntityOres();
-
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
         aRenderer.enableAO = false;
@@ -552,38 +549,23 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        if (aBlock instanceof BlockOresAbstract) {
-            tTileEntity.mMetaData = ((short) aMeta);
-
-            aBlock.setBlockBoundsForItemRender();
-            aRenderer.setRenderBoundsFromBlock(aBlock);
-            // spotless:off
-            ITexture[] texture = tTileEntity.getTexture(aBlock);
-            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-            // spotless:on
-        } else if (aMeta > 0 && (aMeta < GregTechAPI.METATILEENTITIES.length)
-            && aBlock instanceof BlockMachines
-            && (GregTechAPI.METATILEENTITIES[aMeta] != null)
-            && (!GregTechAPI.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer))) {
-                renderNormalInventoryMetaTileEntity(aBlock, aMeta, aRenderer);
-            } else if (aBlock instanceof BlockFrameBox) {
-                ITexture[] texture = ((BlockFrameBox) aBlock).getTexture(aMeta);
+        // spotless:off
+        if (aMeta > 0 && (aMeta < GregTechAPI.METATILEENTITIES.length) && aBlock instanceof BlockMachines && (GregTechAPI.METATILEENTITIES[aMeta] != null) && (!GregTechAPI.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer))) {
+            renderNormalInventoryMetaTileEntity(aBlock, aMeta, aRenderer);
+        } else if (aBlock instanceof IBlockWithTextures texturedBlock) {
+            ITexture[][] texture = texturedBlock.getTextures(aMeta);
+            if (texture != null) {
                 aBlock.setBlockBoundsForItemRender();
                 aRenderer.setRenderBoundsFromBlock(aBlock);
-                // spotless:off
-                renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-                renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-                renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-                renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-                renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-                renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-                // spotless:on
+                renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.DOWN.ordinal()], true);
+                renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.UP.ordinal()], true);
+                renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.NORTH.ordinal()], true);
+                renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.SOUTH.ordinal()], true);
+                renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.WEST.ordinal()], true);
+                renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.EAST.ordinal()], true);
             }
+        }
+        // spotless:on
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
 
         aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -733,15 +715,17 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         // Otherwise, render the TE instead.
         if (tileEntity == null && aBlock instanceof BlockFrameBox frameBlock) {
             int meta = aWorld.getBlockMetadata(aX, aY, aZ);
-            ITexture[] texture = frameBlock.getTexture(meta);
+            ITexture[][] texture = frameBlock.getTextures(meta);
             if (texture == null) return false;
-            textureArray[0] = texture;
-            textureArray[1] = texture;
-            textureArray[2] = texture;
-            textureArray[3] = texture;
-            textureArray[4] = texture;
-            textureArray[5] = texture;
-            renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
+            renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, texture);
+            return true;
+        }
+
+        if (aBlock instanceof IBlockWithTextures texturedBlock) {
+            int meta = aWorld.getBlockMetadata(aX, aY, aZ);
+            ITexture[][] texture = texturedBlock.getTextures(meta);
+            if (texture == null) return false;
+            renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, texture);
             return true;
         }
 

@@ -380,7 +380,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     }
 
     @Override
-    public byte getMetaIDAtSide(ForgeDirection side) {
+    public int getMetaIDAtSide(ForgeDirection side) {
         return getBaseMetaTileEntity().getMetaIDAtSide(side);
     }
 

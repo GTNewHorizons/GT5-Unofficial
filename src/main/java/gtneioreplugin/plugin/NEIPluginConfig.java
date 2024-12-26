@@ -14,8 +14,9 @@ import codechicken.nei.recipe.HandlerInfo;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.StoneType;
+import gregtech.common.ores.OreInfo;
+import gregtech.common.ores.OreManager;
 import gtneioreplugin.GTNEIOrePlugin;
 import gtneioreplugin.plugin.gregtech5.PluginGT5SmallOreStat;
 import gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid;
@@ -62,8 +63,21 @@ public class NEIPluginConfig implements IConfigureNEI {
         // Though first two handlers are already registered in NEI jar, we need to re-register
         // because new DimensionDisplayItems made tabs a bit taller.
         Map<String, ItemStack> handlers = new HashMap<>();
-        handlers.put("PluginGT5VeinStat", GTOreDictUnificator.get(OrePrefixes.ore, Materials.Manyullyn, 1));
-        handlers.put("PluginGT5SmallOreStat", GTOreDictUnificator.get(OrePrefixes.ore, Materials.Platinum, 1));
+
+        OreInfo<Materials> info = OreInfo.getNewInfo();
+
+        info.stoneType = StoneType.Stone;
+        info.material = Materials.Manyullyn;
+
+        handlers.put("PluginGT5VeinStat", OreManager.getStack(info, 1));
+
+        info.material = Materials.Platinum;
+        info.isSmall = true;
+
+        handlers.put("PluginGT5SmallOreStat", OreManager.getStack(info, 1));
+
+        info.release();
+
         handlers.put("PluginGT5UndergroundFluid", ItemList.Electric_Pump_UEV.get(1));
         for (Map.Entry<String, ItemStack> handler : handlers.entrySet()) {
             event.registerHandlerInfo(
