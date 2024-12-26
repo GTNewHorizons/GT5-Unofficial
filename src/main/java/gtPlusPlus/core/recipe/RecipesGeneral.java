@@ -163,6 +163,7 @@ public class RecipesGeneral {
             ItemUtils.simpleMetaStack(ModItems.itemBasicTurbine, 2, 1));
 
         GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Large_Fluid_Cell_Aluminium.get(1))
             .itemOutputs(VolumetricFlaskHelper.getLargeVolumetricFlask(2))
             .fluidInputs(FluidUtils.getFluidStack("molten.borosilicateglass", 4000))
             .duration(15 * SECONDS)
