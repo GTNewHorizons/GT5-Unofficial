@@ -543,9 +543,9 @@ public class DistilleryRecipes implements Runnable {
             .itemInputs(GTUtility.getIntegratedCircuit(9))
             .fluidInputs(Materials.OilHeavy.getFluid(1000))
             .fluidOutputs(
-                Materials.SulfuricHeavyFuel.getFluid(450),
-                Materials.SulfuricLightFuel.getFluid(150),
-                Materials.SulfuricNaphtha.getFluid(300),
+                Materials.SulfuricHeavyFuel.getFluid(1000),
+                Materials.SulfuricLightFuel.getFluid(450),
+                Materials.SulfuricNaphtha.getFluid(150),
                 MaterialsKevlar.NaphthenicAcid.getFluid(50),
                 Materials.SulfuricGas.getGas(600))
             .duration(5 * SECONDS)
