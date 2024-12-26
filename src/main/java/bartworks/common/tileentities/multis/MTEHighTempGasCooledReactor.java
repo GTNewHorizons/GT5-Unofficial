@@ -60,6 +60,7 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.api.util.shutdown.SimpleShutDownReason;
 
 public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHighTempGasCooledReactor> {
 
@@ -349,7 +350,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
         }
         // USE DA POWAH
         if (!this.drainEnergyInput(-this.mEUt)) {
-            this.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
+            this.stopMachine(ShutDownReasonRegistry.POWER_LOSS);
             return false;
         }
 
@@ -371,7 +372,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
 
             this.updateSlots();
 
-            if (takecoolant > 0) this.stopMachine(ShutDownReasonRegistry.NONE);
+            if (takecoolant > 0) this.stopMachine(SimpleShutDownReason.ofNormal("no_coolant"));
         }
 
         return true;
