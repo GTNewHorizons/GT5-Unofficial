@@ -281,14 +281,5 @@ public class NaniteChain {
             .duration(16 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(nanoForgeRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsUEVplus.Eternity.getIngots(1), Materials.Iron.getIngots(1))
-            .fluidInputs(Materials.Water.getFluid(1000))
-            .itemOutputs(Materials.Iron.getNanite(1))
-            .metadata(NANO_FORGE_TIER, 4)
-            .duration(16 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.RECIPE_MAX)
-            .addTo(nanoForgeRecipes);
     }
 }
