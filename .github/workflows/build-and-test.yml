@@ -9,7 +9,7 @@ on:
 
 jobs:
   build-and-test:
-    uses: GTNewHorizons/GTNH-Actions-Workflows/.github/workflows/build-and-test.yml@master
+    uses: GTNewHorizons/GTNH-Actions-Workflows/.github/workflows/build-and-test.yml@raven/further-gradle-action-update
     secrets: inherit
     with:
      timeout: 150
