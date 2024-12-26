@@ -122,8 +122,18 @@ public class MTEndustrialElectrolyzer extends GTPPMultiBlockBase<MTEndustrialEle
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCDIndustrialElectrolyzerActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCDIndustrialElectrolyzer;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCDIndustrialElectrolyzerGlow;
     }
 
     @Override

@@ -538,7 +538,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public boolean mAxeWhenAdventure = true;
     public boolean mSurvivalIntoAdventure = false;
     public boolean mNerfedWoodPlank = true;
-    public boolean mNerfedVanillaTools = true;
+    public boolean mChangeWoodenVanillaTools = true;
     public boolean mHungerEffect = true;
     public boolean mIgnoreTcon = true;
     public boolean mAchievements = true;
