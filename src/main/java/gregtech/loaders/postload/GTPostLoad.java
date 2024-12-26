@@ -362,44 +362,6 @@ public class GTPostLoad {
             .addTo(rockBreakerFakeRecipes);
     }
 
-    public static void nerfVanillaTools() {
-        if (!GTMod.gregtechproxy.mNerfedVanillaTools) {
-            return;
-        }
-
-        GTLog.out.println("GTMod: Nerfing Vanilla Tool Durability");
-        Items.wooden_sword.setMaxDamage(12);
-        Items.wooden_pickaxe.setMaxDamage(12);
-        Items.wooden_shovel.setMaxDamage(12);
-        Items.wooden_axe.setMaxDamage(12);
-        Items.wooden_hoe.setMaxDamage(12);
-
-        Items.stone_sword.setMaxDamage(48);
-        Items.stone_pickaxe.setMaxDamage(48);
-        Items.stone_shovel.setMaxDamage(48);
-        Items.stone_axe.setMaxDamage(48);
-        Items.stone_hoe.setMaxDamage(48);
-
-        Items.iron_sword.setMaxDamage(256);
-        Items.iron_pickaxe.setMaxDamage(256);
-        Items.iron_shovel.setMaxDamage(256);
-        Items.iron_axe.setMaxDamage(256);
-        Items.iron_hoe.setMaxDamage(256);
-
-        Items.golden_sword.setMaxDamage(24);
-        Items.golden_pickaxe.setMaxDamage(24);
-        Items.golden_shovel.setMaxDamage(24);
-        Items.golden_axe.setMaxDamage(24);
-        Items.golden_hoe.setMaxDamage(24);
-
-        Items.diamond_sword.setMaxDamage(768);
-        Items.diamond_pickaxe.setMaxDamage(768);
-        Items.diamond_shovel.setMaxDamage(768);
-        Items.diamond_axe.setMaxDamage(768);
-        Items.diamond_hoe.setMaxDamage(768);
-
-    }
-
     public static void replaceVanillaMaterials() {
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
