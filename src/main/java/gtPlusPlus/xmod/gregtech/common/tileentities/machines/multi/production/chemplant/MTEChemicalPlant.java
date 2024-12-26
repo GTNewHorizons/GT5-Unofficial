@@ -429,8 +429,18 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCAChemicalPlantActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCAChemicalPlant;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCAChemicalPlantGlow;
     }
 
     @Override
@@ -517,11 +527,6 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     @Override
     public int getMaxEfficiency(final ItemStack aStack) {
         return 10000;
-    }
-
-    @Override
-    public int getPollutionPerTick(final ItemStack aStack) {
-        return 0;
     }
 
     @Override

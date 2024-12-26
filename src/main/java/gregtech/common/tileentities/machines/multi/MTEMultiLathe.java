@@ -8,13 +8,13 @@ import static gregtech.api.enums.GTValues.AuthorVolence;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static net.minecraft.util.EnumChatFormatting.BLUE;
 import static net.minecraft.util.EnumChatFormatting.DARK_AQUA;
 
@@ -52,7 +52,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -147,12 +146,12 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
                     { "ACCCCBA", "ACCCCBA", "ACCCCBA", "       " }, { "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA" } })))
         .addElement(
             'A',
-            buildHatchAdder(MTEMultiLathe.class).atLeast(InputBus, OutputBus, Maintenance, Muffler, Energy)
+            buildHatchAdder(MTEMultiLathe.class).atLeast(InputBus, OutputBus, Maintenance, Energy)
                 .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
                 .dot(1)
                 .buildAndChain(onElementPass(MTEMultiLathe::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0))))
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings3, 10)) // Steel Casings
-        .addElement('C', Glasses.chainAllGlasses()) // Glass
+        .addElement('C', chainAllGlasses()) // Glass
         .addElement(
             'F',
             ofBlocksTiered(
@@ -248,7 +247,6 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
             .addOutputBus("Any Solid Steel Casing", 1)
             .addEnergyHatch("Any Solid Steel Casing", 1)
             .addMaintenanceHatch("Any Solid Steel Casing", 1)
-            .addMufflerHatch("Any Solid Steel Casing", 1)
             .addOtherStructurePart("4 Item Pipe Casings", "Center of the glass", 4)
             .toolTipFinisher(AuthorVolence);
         return tt;
@@ -292,10 +290,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         if (!checkPiece(STRUCTURE_PIECE_BODY, 3, 4, -1) && !checkPiece(STRUCTURE_PIECE_BODY_ALT, 3, 4, -1))
             return false;
-        return this.mMaintenanceHatches.size() == 1 && pipeTier > 0
-            && !mEnergyHatches.isEmpty()
-            && mCasingAmount >= 42
-            && mMufflerHatches.size() == 1;
+        return this.mMaintenanceHatches.size() == 1 && pipeTier > 0 && !mEnergyHatches.isEmpty() && mCasingAmount >= 42;
     }
 
     public float speedBoost(float speedBoost, byte voltageTier) {

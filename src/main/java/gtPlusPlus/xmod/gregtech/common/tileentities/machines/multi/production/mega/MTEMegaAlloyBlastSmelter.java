@@ -304,6 +304,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                 EnumChatFormatting.ITALIC + "\"all it does is make metals hot\""
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY)
+            .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 20, 11, false)
             .addMaintenanceHatch("Around the controller", 2)
             .addOtherStructurePart("Input Bus, Output Bus, Input Hatch, Output Bus, Energy Hatch", "Bottom Casing", 1)
@@ -389,12 +390,22 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                     TextureFactory.builder()
                         .addIcon(TexturesGtBlock.oMCAMegaAlloyBlastSmelterActive)
                         .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(TexturesGtBlock.oMCAMegaAlloyBlastSmelterActiveGlow)
+                        .extFacing()
+                        .glow()
                         .build() };
             }
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(15)),
                 TextureFactory.builder()
                     .addIcon(TexturesGtBlock.oMCAMegaAlloyBlastSmelter)
                     .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.oMCAMegaAlloyBlastSmelterGlow)
+                    .extFacing()
+                    .glow()
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(15)) };
