@@ -883,11 +883,12 @@ public class RecipesGregTech {
                 GTUtility.getIntegratedCircuit(21),
                 MaterialMisc.STRONTIUM_OXIDE.getDust(8),
                 MaterialsElements.getInstance().ALUMINIUM.getDust(8))
-            .itemOutputs(
-                MaterialsElements.getInstance().ALUMINIUM.getIngot(8),
-                MaterialsElements.getInstance().STRONTIUM.getIngot(8))
-            .fluidOutputs(MaterialsElements.getInstance().OXYGEN.getFluidStack(8000))
+            .fluidOutputs(
+                MaterialsElements.getInstance().OXYGEN.getFluidStack(8000),
+                MaterialsElements.getInstance().ALUMINIUM.getFluidStack(144 * 8),
+                MaterialsElements.getInstance().STRONTIUM.getFluidStack(144 * 8))
             .eut(TierEU.RECIPE_EV)
+            .noOptimize()
             .duration(2 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
 
