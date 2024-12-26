@@ -88,7 +88,6 @@ import gregtech.common.config.OPStuff;
 import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
 import gregtech.common.covers.CoverFacadeAE;
-import gregtech.common.items.flinttools.FlintTools;
 import gregtech.common.misc.GTCommand;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
@@ -325,11 +324,6 @@ public class GTMod implements IGTMod {
         if (FMLCommonHandler.instance()
             .getEffectiveSide()
             .isServer()) AssemblyLineServer.fillMap(aEvent);
-
-        // Flint tool setup.
-        FlintTools.registerTools();
-        FlintTools.registerPosteaTransformations();
-        FlintTools.registerRecipes();
     }
 
     @Mod.EventHandler
@@ -537,7 +531,7 @@ public class GTMod implements IGTMod {
             .map(tName -> GTModHandler.getIC2Item(tName, 1L))
             .forEach(GTModHandler::removeRecipeByOutputDelayed);
 
-        GTPostLoad.nerfVanillaTools();
+        GTPostLoad.changeWoodenVanillaTools();
 
         // Register postea transformers
         new PosteaTransformers().run();
