@@ -22,7 +22,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -329,7 +328,6 @@ public class GenericChem extends ItemPackage {
     @Override
     public boolean generateRecipes() {
 
-        recipeAdvancedChip();
         recipeCatalystRed();
         recipeCatalystYellow();
         recipeCatalystBlue();
@@ -830,110 +828,5 @@ public class GenericChem extends ItemPackage {
             .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
 
-    }
-
-    private static void recipeAdvancedChip() {
-        GTModHandler.addShapelessCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 0L),
-            0,
-            new Object[] { OrePrefixes.circuit.get(Materials.HV) });
-
-        final long bits = 0;
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 1L),
-            bits,
-            new Object[] { "d  ", " P ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 2L),
-            bits,
-            new Object[] { " d ", " P ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 3L),
-            bits,
-            new Object[] { "  d", " P ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 4L),
-            bits,
-            new Object[] { "   ", " Pd", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 5L),
-            bits,
-            new Object[] { "   ", " P ", "  d", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 6L),
-            bits,
-            new Object[] { "   ", " P ", " d ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 7L),
-            bits,
-            new Object[] { "   ", " P ", "d  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 8L),
-            bits,
-            new Object[] { "   ", "dP ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 9L),
-            bits,
-            new Object[] { "P d", "   ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 10L),
-            bits,
-            new Object[] { "P  ", "  d", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 11L),
-            bits,
-            new Object[] { "P  ", "   ", "  d", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 12L),
-            bits,
-            new Object[] { "P  ", "   ", " d ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 13L),
-            bits,
-            new Object[] { "  P", "   ", "  d", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 14L),
-            bits,
-            new Object[] { "  P", "   ", " d ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 15L),
-            bits,
-            new Object[] { "  P", "   ", "d  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 16L),
-            bits,
-            new Object[] { "  P", "d  ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 17L),
-            bits,
-            new Object[] { "   ", "   ", "d P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 18L),
-            bits,
-            new Object[] { "   ", "d  ", "  P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 19L),
-            bits,
-            new Object[] { "d  ", "   ", "  P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 20L),
-            bits,
-            new Object[] { " d ", "   ", "  P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 21L),
-            bits,
-            new Object[] { "d  ", "   ", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 22L),
-            bits,
-            new Object[] { " d ", "   ", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 23L),
-            bits,
-            new Object[] { "  d", "   ", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 24L),
-            bits,
-            new Object[] { "   ", "  d", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
     }
 }
