@@ -187,10 +187,11 @@ public class GTPPRecipeMaps {
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_CAULDRON : null)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
         .build();
-    public static final RecipeMap<RecipeMapBackend> spargeTowerFakeRecipes = RecipeMapBuilder
-        .of("gtpp.recipe.spargetower")
+    public static final RecipeMap<RecipeMapBackend> spargeTowerRecipes = RecipeMapBuilder
+        .of("gtpp.recipe.lftr.sparging")
+        .frontend(SpargeTowerFrontend::new)
+        .disableOptimize()
         .maxIO(0, 0, 9, 9)
-        .disableRegisterNEI()
         .build();
     public static final RecipeMap<RecipeMapBackend> advancedFreezerRecipes = RecipeMapBuilder
         .of("gtpp.recipe.cryogenicfreezer")
@@ -234,5 +235,10 @@ public class GTPPRecipeMaps {
         .minInputs(1, 0)
         .useSpecialSlot()
         .frontend(TGSFrontend::new)
+        .build();
+    public static final RecipeMap<RecipeMapBackend> multiblockRockBreakerRecipes = RecipeMapBuilder
+        .of("gt.recipe.multiblockrockbreaker")
+        .maxIO(2, 1, 0, 0)
+        .disableRegisterNEI()
         .build();
 }

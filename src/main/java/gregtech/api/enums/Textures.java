@@ -133,6 +133,8 @@ public class Textures {
         SOLARPANEL_LuV,
         SOLARPANEL_ZPM,
 
+        OVERLAY_SOLAR_PANEL,
+
         SOLARPANEL_UV,
         SOLARPANEL_UHV,
         SOLARPANEL_UEV,
