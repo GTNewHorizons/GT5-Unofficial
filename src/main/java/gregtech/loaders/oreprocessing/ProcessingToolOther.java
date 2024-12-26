@@ -119,6 +119,15 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                         OrePrefixes.plate.get(Materials.AnySyntheticRubber), 'S',
                         OrePrefixes.stick.get(Materials.StainlessSteel), 'L', ItemList.Battery_RE_HV_Lithium.get(1L) });
 
+                GTModHandler.addCraftingRecipe(
+                    (MetaGeneratedTool01.INSTANCE
+                        .getToolWithStats(IDMetaTool01.POCKET_MULTITOOL.ID, 1, aMaterial, aMaterial, null)),
+                    GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
+                    new Object[] { "ABC", "DEF", "CFG", 'A', OrePrefixes.stickLong.get(aMaterial), 'B',
+                        OrePrefixes.toolHeadSaw.get(aMaterial), 'C', OrePrefixes.ring.get(aMaterial), 'D',
+                        OrePrefixes.toolHeadFile.get(aMaterial), 'E', OrePrefixes.plate.get(aMaterial), 'F',
+                        OrePrefixes.spring.get(aMaterial), 'G', Dyes.dyeBlue });
+
             }
         }
     }
