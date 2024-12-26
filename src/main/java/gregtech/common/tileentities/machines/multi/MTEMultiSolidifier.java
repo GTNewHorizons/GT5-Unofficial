@@ -325,6 +325,12 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     }
 
     @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
+        logic.setAvailableAmperage(1L);
+    }
+
+    @Override
     public boolean onRunningTick(ItemStack aStack) {
         runningTickCounter++;
         if (runningTickCounter % 10 == 0 && speedup < 3) {

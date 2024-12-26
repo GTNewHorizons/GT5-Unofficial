@@ -6,15 +6,10 @@ import net.minecraft.item.ItemStack;
 
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
-import codechicken.nei.event.NEIRegisterHandlerInfosEvent;
-import codechicken.nei.recipe.HandlerInfo;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMaps;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -31,10 +26,6 @@ public class NEIGTPPConfig implements IConfigureNEI {
         API.registerRecipeHandler(new DecayableRecipeHandler());
         API.registerUsageHandler(new DecayableRecipeHandler());
         API.addRecipeCatalyst(new ItemStack(ModBlocks.blockDecayablesChest, 1), "GTPP_Decayables");
-
-        Logger.INFO("NEI Registration: Registering NEI handler for " + LFTRSpargingNEIHandler.mNEIName);
-        new LFTRSpargingNEIHandler();
-        API.addRecipeCatalyst(GregtechItemList.Controller_Sparge_Tower.get(1), "gtpp.recipe.lftr.sparging");
 
         for (GregtechItemList item : Arrays.asList(
             GregtechItemList.GT4_Electric_Auto_Workbench_LV,
@@ -75,19 +66,9 @@ public class NEIGTPPConfig implements IConfigureNEI {
         if (Utils.isClient()) {
             API.addItemListEntry(GregtechItemList.VOLUMETRIC_FLASK_8k.get(1));
             API.addItemListEntry(GregtechItemList.VOLUMETRIC_FLASK_32k.get(1));
+            API.addItemListEntry(GregtechItemList.KLEIN_BOTTLE.get(1));
         }
         sIsAdded = true;
-    }
-
-    @SubscribeEvent
-    public void registerHandlerInfo(NEIRegisterHandlerInfosEvent event) {
-        event.registerHandlerInfo(
-            new HandlerInfo.Builder("gtpp.recipe.lftr.sparging", GTPPCore.name, Mods.GTPlusPlus.ID)
-                .setDisplayStack(GregtechItemList.Controller_Sparge_Tower.get(1))
-                .setShiftY(6)
-                .setHeight(135)
-                .setMaxRecipesPerPage(1)
-                .build());
     }
 
     @Override
