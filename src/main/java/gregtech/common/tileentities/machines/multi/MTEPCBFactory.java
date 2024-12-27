@@ -90,6 +90,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -555,7 +556,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.pcbFactoryRecipes;
+        return RecipeMaps.pcbFactoryRecipesNoNanites;
     }
 
     @Override
@@ -567,13 +568,12 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
                 // Here we check the dynamic parallels, which depend on the recipe
                 int numberOfNanites = 0;
-                ItemStack nanite = recipe.getRepresentativeInput(1);
-                ItemData naniteData = GTOreDictUnificator.getAssociation(nanite);
-                if (naniteData != null && naniteData.mMaterial != null
-                    && naniteData.mPrefix != null
-                    && naniteData.mPrefix.equals(OrePrefixes.nanite)) {
-                    Materials mat = naniteData.mMaterial.mMaterial;
-                    numberOfNanites = storedNanites.get(mat);
+                Materials naniteMaterial = recipe.getMetadata(GTRecipeConstants.PCB_NANITE_MATERIAL);
+                if (naniteMaterial != null) {
+                    numberOfNanites = storedNanites.get(naniteMaterial);
+                    if (numberOfNanites == 0) {
+                        return SimpleCheckRecipeResult.ofFailure("nanites_missing");
+                    }
                 }
                 maxParallel = (int) Math.min(Math.max(Math.ceil(Math.pow(numberOfNanites, 0.75)), 1), 256);
                 mMaxParallel = maxParallel;

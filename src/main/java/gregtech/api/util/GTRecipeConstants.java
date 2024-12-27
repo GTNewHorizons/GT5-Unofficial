@@ -114,6 +114,12 @@ public class GTRecipeConstants {
         .create(Integer.class, "nano_forge_tier");
 
     /**
+     * PCB Factory nanite material
+     */
+    public static final RecipeMetadataKey<Materials> PCB_NANITE_MATERIAL = SimpleRecipeMetadataKey
+        .create(Materials.class, "pcb_nanite_material");
+
+    /**
      * FOG Exotic recipe tier.
      */
     public static final RecipeMetadataKey<Integer> FOG_EXOTIC_TIER = SimpleRecipeMetadataKey
