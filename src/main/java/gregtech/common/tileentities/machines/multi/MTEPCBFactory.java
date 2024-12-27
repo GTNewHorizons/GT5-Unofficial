@@ -134,6 +134,10 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private static final int mTier1BitMap = 0b1;
     private static final int COOLANT_CONSUMED_PER_SEC = 10;
     private static final int MAX_NANITE_COUNT = 2048;
+    private static final int BIO_OFFSET_X = -5;
+    private static final int BIO_OFFSET_Y = -1;
+    private static final int COOLING_OFFSET_X = 2;
+    private static final int COOLING_OFFSET_Y = -11;
     private static final List<Materials> VALID_NANITE_MATERIALS = Arrays.asList(Materials.Silver, Materials.Gold);
     private static final IStructureDefinition<MTEPCBFactory> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEPCBFactory>builder()
@@ -563,14 +567,13 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
                 // Here we check the dynamic parallels, which depend on the recipe
                 int numberOfNanites = 0;
-                ItemStack aNanite = recipe.getRepresentativeInput(1);
-                ItemData naniteData = GTOreDictUnificator.getAssociation(aNanite);
-                if (naniteData != null && naniteData.mPrefix != null && naniteData.mPrefix.equals(OrePrefixes.nanite)) {
-                    for (ItemStack aItem : inputItems) {
-                        if (aItem != null && aItem.isItemEqual(aNanite)) {
-                            numberOfNanites += aItem.stackSize;
-                        }
-                    }
+                ItemStack nanite = recipe.getRepresentativeInput(1);
+                ItemData naniteData = GTOreDictUnificator.getAssociation(nanite);
+                if (naniteData != null && naniteData.mMaterial != null
+                    && naniteData.mPrefix != null
+                    && naniteData.mPrefix.equals(OrePrefixes.nanite)) {
+                    Materials mat = naniteData.mMaterial.mMaterial;
+                    numberOfNanites = storedNanites.get(mat);
                 }
                 maxParallel = (int) Math.min(Math.max(Math.ceil(Math.pow(numberOfNanites, 0.75)), 1), 256);
                 mMaxParallel = maxParallel;
@@ -1052,16 +1055,16 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         }
         mBioUpgrade = NBT.getBoolean("mBioUpgrade");
         mBioRotate = NBT.getBoolean("mBioRotate");
-        mBioOffsets[0] = NBT.getInteger("mBioOffsetX");
-        mBioOffsets[1] = NBT.getInteger("mBioOffsetZ");
+        mBioOffsets[0] = NBT.hasKey("mRoughnessMultiplier") ? NBT.getInteger("mBioOffsetX") : BIO_OFFSET_X;
+        mBioOffsets[1] = NBT.hasKey("mRoughnessMultiplier") ? NBT.getInteger("mBioOffsetZ") : BIO_OFFSET_Y;
         mOCTier1 = NBT.getBoolean("mOCTier1Upgrade");
-        mOCTier1Offsets[0] = NBT.getInteger("mOCTier1OffsetX");
-        mOCTier1Offsets[1] = NBT.getInteger("mOCTier1OffsetZ");
+        mOCTier1Offsets[0] = NBT.hasKey("mRoughnessMultiplier") ? NBT.getInteger("mOCTier1OffsetX") : COOLING_OFFSET_X;
+        mOCTier1Offsets[1] = NBT.hasKey("mRoughnessMultiplier") ? NBT.getInteger("mOCTier1OffsetZ") : COOLING_OFFSET_Y;
         mOCTier2 = NBT.getBoolean("mOCTier2Upgrade");
-        mOCTier2Offsets[0] = NBT.getInteger("mOCTier2OffsetX");
-        mOCTier2Offsets[1] = NBT.getInteger("mOCTier2OffsetZ");
-        mRoughnessMultiplier = NBT.getFloat("mRoughnessMultiplier");
-        mSetTier = NBT.getInteger("mSetTier");
+        mOCTier2Offsets[0] = NBT.hasKey("mRoughnessMultiplier") ? NBT.getInteger("mOCTier2OffsetX") : COOLING_OFFSET_X;
+        mOCTier2Offsets[1] = NBT.hasKey("mRoughnessMultiplier") ? NBT.getInteger("mOCTier2OffsetZ") : COOLING_OFFSET_Y;
+        mRoughnessMultiplier = NBT.hasKey("mRoughnessMultiplier") ? NBT.getFloat("mRoughnessMultiplier") : 1;
+        mSetTier = NBT.hasKey("mRoughnessMultiplier") ? NBT.getInteger("mSetTier") : 1;
 
         NBTTagCompound naniteTag = NBT.getCompoundTag("storedNanites");
         for (Materials material : storedNanites.keySet()) {
