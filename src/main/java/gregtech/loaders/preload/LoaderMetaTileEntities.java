@@ -991,6 +991,7 @@ import gregtech.common.tileentities.generators.MTEMagicEnergyConverter;
 import gregtech.common.tileentities.generators.MTEMagicalEnergyAbsorber;
 import gregtech.common.tileentities.generators.MTENaquadahReactor;
 import gregtech.common.tileentities.generators.MTEPlasmaGenerator;
+import gregtech.common.tileentities.generators.MTESolarGenerator;
 import gregtech.common.tileentities.generators.MTESteamTurbine;
 import gregtech.common.tileentities.machines.MTEBasicHullBronze;
 import gregtech.common.tileentities.machines.MTEBasicHullBronzeBricks;
@@ -12164,6 +12165,33 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1));
     }
 
+    private static void registerSolarPanels() {
+        ItemList.Machine_LV_SolarPanel.set(
+            new MTESolarGenerator(SOLAR_PANEL_LV.ID, "basicgenerator.solarpanel.01", "Basic Solar Panel", 1)
+                .getStackForm(1));
+        ItemList.Machine_MV_SolarPanel.set(
+            new MTESolarGenerator(SOLAR_PANEL_MV.ID, "basicgenerator.solarpanel.02", "Advanced Solar Panel", 2)
+                .getStackForm(1));
+        ItemList.Machine_HV_SolarPanel.set(
+            new MTESolarGenerator(SOLAR_PANEL_HV.ID, "basicgenerator.solarpanel.03", "Advanced Solar Panel II", 3)
+                .getStackForm(1));
+        ItemList.Machine_EV_SolarPanel.set(
+            new MTESolarGenerator(SOLAR_PANEL_EV.ID, "basicgenerator.solarpanel.04", "Advanced Solar Panel III", 4)
+                .getStackForm(1));
+        ItemList.Machine_IV_SolarPanel.set(
+            new MTESolarGenerator(SOLAR_PANEL_IV.ID, "basicgenerator.solarpanel.05", "Advanced Solar Panel IV", 5)
+                .getStackForm(1));
+        ItemList.Machine_LuV_SolarPanel.set(
+            new MTESolarGenerator(SOLAR_PANEL_LuV.ID, "basicgenerator.solarpanel.06", "Elite Solar Panel", 6)
+                .getStackForm(1));
+        ItemList.Machine_ZPM_SolarPanel.set(
+            new MTESolarGenerator(SOLAR_PANEL_ZPM.ID, "basicgenerator.solarpanel.07", "Elite Solar Panel II", 7)
+                .getStackForm(1));
+        ItemList.Machine_UV_SolarPanel.set(
+            new MTESolarGenerator(SOLAR_PANEL_UV.ID, "basicgenerator.solarpanel.08", "Ultimate Solar Panel", 8)
+                .getStackForm(1));
+    }
+
     private static void registerCombustionGenerators() {
         ItemList.Generator_Diesel_LV.set(
             new MTEDieselGenerator(
@@ -12846,6 +12874,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerItemDistributor();
         registerRecipeFilter();
         registerLightningRods();
+        registerSolarPanels();
         registerCombustionGenerators();
         registerGasTurbines();
         registerSteamTurbines();

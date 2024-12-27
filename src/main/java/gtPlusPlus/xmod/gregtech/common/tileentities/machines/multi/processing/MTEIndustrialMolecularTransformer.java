@@ -187,8 +187,18 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCAIndustrialMolecularTransformerActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCAIndustrialMolecularTransformer;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCAIndustrialMolecularTransformerGlow;
     }
 
     @Override
