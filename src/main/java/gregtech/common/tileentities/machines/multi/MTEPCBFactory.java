@@ -19,7 +19,10 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
@@ -73,6 +76,7 @@ import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -92,6 +96,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings8;
+import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory> implements ISurvivalConstructable {
@@ -108,6 +113,13 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private int mUpgradesInstalled = 0;
     private final int mCurrentParallel = 0;
     private int mMaxParallel = 0;
+    private Map<Materials, Integer> storedNanites = new HashMap<>() {
+
+        {
+            put(Materials.Silver, 0);
+            put(Materials.Gold, 0);
+        }
+    };
     private boolean mBioUpgrade = false, mBioRotate = false, mOCTier1 = false, mOCTier2 = false;
     private final int[] mBioOffsets = new int[] { -5, -1 };
     private final int[] mOCTier1Offsets = new int[] { 2, -11 };
@@ -121,6 +133,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private static final int mTier2BitMap = 0b10;
     private static final int mTier1BitMap = 0b1;
     private static final int COOLANT_CONSUMED_PER_SEC = 10;
+    private static final int MAX_NANITE_COUNT = 2048;
+    private static final List<Materials> VALID_NANITE_MATERIALS = Arrays.asList(Materials.Silver, Materials.Gold);
     private static final IStructureDefinition<MTEPCBFactory> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEPCBFactory>builder()
         .addShape(
@@ -630,6 +644,45 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             // TODO: Look for proper fix
             // Updates every 10 sec
             if (mUpdate <= -150) mUpdate = 50;
+
+            if (aTick % 100 == 0) {
+                for (MTEHatchInputBus inputBus : mInputBusses) {
+                    ItemStack[] busInventory = inputBus.getRealInventory();
+                    for (int j = 0; j < busInventory.length; j++) {
+                        ItemStack itemStack = busInventory[j];
+                        if (itemStack == null) {
+                            continue;
+                        }
+                        ItemData data = GTOreDictUnificator.getAssociation(itemStack);
+                        if (data == null) {
+                            continue;
+                        }
+                        OrePrefixes prefix = data.mPrefix;
+                        Materials mat = data.mMaterial.mMaterial;
+                        if (storedNanites.get(mat) == 2048) {
+                            continue;
+                        }
+                        if (prefix == OrePrefixes.nanite && VALID_NANITE_MATERIALS.contains(mat)) {
+                            int stacksize = itemStack.stackSize;
+                            startRecipeProcessing();
+                            if (inputBus instanceof MTEHatchInputBusME meBus) {
+                                ItemStack realItem = meBus.getRealInventory()[j + 16];
+                                if (realItem == null) {
+                                    break;
+                                }
+                                stacksize = realItem.stackSize;
+                            }
+                            int storedNaniteAmount = storedNanites.get(mat);
+                            int absorbedNanites = Math.min(stacksize, MAX_NANITE_COUNT - storedNaniteAmount);
+                            inputBus.decrStackSize(j, absorbedNanites);
+                            int updatedAmount = storedNaniteAmount + absorbedNanites;
+                            storedNanites.put(mat, updatedAmount);
+                            endRecipeProcessing();
+                        }
+                    }
+                    inputBus.updateSlots();
+                }
+            }
         }
     }
 
