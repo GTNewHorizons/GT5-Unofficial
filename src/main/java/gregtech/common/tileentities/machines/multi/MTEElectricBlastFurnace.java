@@ -65,8 +65,14 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
         .addShape(
             STRUCTURE_PIECE_MAIN,
             transpose(
-                new String[][] { { "bbb", "bmb", "bbb" }, { "CCC", "C-C", "CCC" }, { "CCC", "C-C", "CCC" },
+                new String[][] { { "fff", "fmf", "fff" }, { "CCC", "C-C", "CCC" }, { "CCC", "C-C", "CCC" },
                     { "b~b", "bbb", "bbb" } }))
+        .addElement(
+            'f',
+            buildHatchAdder(MTEElectricBlastFurnace.class).atLeast(OutputHatch)
+                .casingIndex(CASING_INDEX)
+                .dot(3)
+                .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
         .addElement('m', Muffler.newAny(CASING_INDEX, 2))
         .addElement('C', ofCoil(MTEElectricBlastFurnace::setCoilLevel, MTEElectricBlastFurnace::getCoilLevel))
         .addElement(
@@ -105,13 +111,13 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             .addController("Front bottom")
             .addCasingInfoRange("Heat Proof Machine Casing", 0, 15, false)
             .addOtherStructurePart("Heating Coils", "Two middle Layers")
-            .addEnergyHatch("Any Heat Proof Machine Casing", 3)
-            .addMaintenanceHatch("Any Heat Proof Machine Casing", 3)
+            .addEnergyHatch("Any bottom layer casing", 1)
+            .addMaintenanceHatch("Any bottom layer casing", 1)
             .addMufflerHatch("Top middle", 2)
-            .addInputBus("Any Heat Proof Machine Casing", 3)
-            .addInputHatch("Any Heat Proof Machine Casing", 3)
-            .addOutputBus("Any Heat Proof Machine Casing", 3)
-            .addOutputHatch("Any Heat Proof Machine Casing")
+            .addInputBus("Any bottom layer casing", 1)
+            .addInputHatch("Any bottom layer casing", 1)
+            .addOutputBus("Any bottom layer casing", 1)
+            .addOutputHatch("Any Heat Proof Machine Casing", 3)
             .toolTipFinisher();
         return tt;
     }
