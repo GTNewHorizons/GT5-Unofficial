@@ -8,6 +8,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY_INACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY_INACTIVE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.copyAmount;
 import static gregtech.api.util.GTUtility.copyAmountUnsafe;
@@ -43,7 +44,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -53,6 +53,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.SolarFactoryRecipeData;
 
@@ -66,18 +67,6 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
 
     int outputMultiplierCap = 2;
     double outputMultiplierSlope = 0.25;
-
-    ItemStack foundWaferStack;
-    int waferAmountInRecipe;
-    int foundWaferTier;
-    int minimumTierForRecipe;
-
-    private void clearVars() {
-        foundWaferStack = null;
-        waferAmountInRecipe = 0;
-        foundWaferTier = 0;
-        minimumTierForRecipe = 0;
-    }
 
     // Left side represents the wafers to look for, right side represents their tier.
     public static ImmutableList<Pair<ItemStack, Integer>> validWafers = ImmutableList.of(
@@ -142,7 +131,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                 .dot(1)
                 .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(sBlockCasings4, 0))))
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 5))
-        .addElement('B', Glasses.chainAllGlasses())
+        .addElement('B', chainAllGlasses())
         .addElement('E', ofFrame(Materials.Tungsten))
         .build();
 
@@ -209,38 +198,23 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         return new ItemStack[] { copyAmountUnsafe(outputSize, currentOutput) };
     }
 
-    @NotNull
-    @Override
-    public CheckRecipeResult checkProcessing() {
-        setupProcessingLogic(processingLogic);
-
-        CheckRecipeResult result = doCheckRecipe();
-        result = postCheckRecipe(result, processingLogic);
-        // inputs are consumed at this point
-        updateSlots();
-        if (!result.wasSuccessful()) return result;
-
-        mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        mEfficiencyIncrease = 10000;
-        mMaxProgresstime = processingLogic.getDuration();
-        setEnergyUsage(processingLogic);
-
-        if (minimumTierForRecipe != 0) {
-            mOutputItems = calculateNewOutput(
-                processingLogic.getOutputItems()[0],
-                (foundWaferTier - minimumTierForRecipe));
-        } else mOutputItems = processingLogic.getOutputItems();
-
-        mOutputFluids = processingLogic.getOutputFluids();
-
-        clearVars();
-
-        return result;
-    }
-
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
+
+            ItemStack foundWaferStack;
+            int waferAmountInRecipe;
+            int foundWaferTier;
+            int minimumTierForRecipe;
+            boolean shouldMultiplyOutputs = true;
+
+            private void clearVars() {
+                foundWaferStack = null;
+                waferAmountInRecipe = 0;
+                foundWaferTier = 0;
+                minimumTierForRecipe = 0;
+                shouldMultiplyOutputs = true;
+            }
 
             private void findWaferStack() {
                 for (ItemStack items : inputItems) {
@@ -254,14 +228,29 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                 }
             }
 
+            @Override
+            protected @NotNull CheckRecipeResult applyRecipe(@NotNull GTRecipe recipe, @NotNull ParallelHelper helper,
+                @NotNull OverclockCalculator calculator, @NotNull CheckRecipeResult result) {
+                result = super.applyRecipe(recipe, helper, calculator, result);
+                if (shouldMultiplyOutputs) {
+                    // We multiply outputs here since its after parallels are calculated, however this is after void
+                    // protection checks so void protection is not supported.
+                    outputItems = calculateNewOutput(outputItems[0], (foundWaferTier - minimumTierForRecipe));
+                }
+                clearVars();
+                return result;
+            }
+
             @NotNull
             @Override
             public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                SolarFactoryRecipeData data = recipe
-                    .getMetadataOrDefault(GTRecipeConstants.SOLAR_FACTORY_WAFER_DATA, new SolarFactoryRecipeData(0, 0));
+                SolarFactoryRecipeData data = recipe.getMetadata(GTRecipeConstants.SOLAR_FACTORY_RECIPE_DATA);
+                if (data == null) {
+                    shouldMultiplyOutputs = false;
+                    return CheckRecipeResultRegistry.SUCCESSFUL;
+                }
                 minimumTierForRecipe = data.minimumWaferTier;
                 waferAmountInRecipe = data.minimumWaferCount;
-                if (minimumTierForRecipe == 0 || waferAmountInRecipe == 0) return CheckRecipeResultRegistry.SUCCESSFUL;
                 findWaferStack();
                 if (foundWaferStack == null) {
                     clearVars();
@@ -279,16 +268,18 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             }
 
             @Nonnull
-            private GTRecipe recipeAfterAdjustments(@Nonnull GTRecipe recipe) {
+            private GTRecipe adjustRecipe(@Nonnull GTRecipe recipe) {
                 GTRecipe tRecipe = recipe.copy();
-                tRecipe.mInputs = ArrayUtils.add(tRecipe.mInputs, copyAmount(waferAmountInRecipe, foundWaferStack));
+                if (shouldMultiplyOutputs) {
+                    tRecipe.mInputs = ArrayUtils.add(tRecipe.mInputs, copyAmount(waferAmountInRecipe, foundWaferStack));
+                }
                 return tRecipe;
             }
 
             @NotNull
             @Override
             protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
-                return super.createParallelHelper(recipeAfterAdjustments(recipe));
+                return super.createParallelHelper(adjustRecipe(recipe));
             }
         }.setMaxParallelSupplier(this::getMaxParallel);
     }
@@ -376,16 +367,6 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
-    }
-
-    @Override
-    public boolean supportsBatchMode() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsVoidProtection() {
-        return true;
     }
 
     @Override

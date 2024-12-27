@@ -5,7 +5,7 @@ import static gregtech.api.enums.Mods.SuperSolarPanels;
 import static gregtech.api.recipe.RecipeMaps.solarFactoryRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeConstants.SOLAR_FACTORY_WAFER_DATA;
+import static gregtech.api.util.GTRecipeConstants.SOLAR_FACTORY_RECIPE_DATA;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -170,7 +170,7 @@ public class SolarFactoryRecipes implements Runnable {
             .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(288))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .metadata(SOLAR_FACTORY_WAFER_DATA, new SolarFactoryRecipeData(2, 4))
+            .metadata(SOLAR_FACTORY_RECIPE_DATA, new SolarFactoryRecipeData(2, 4))
             .hidden()
             .addTo(solarFactoryRecipes);
 
@@ -184,7 +184,7 @@ public class SolarFactoryRecipes implements Runnable {
             .fluidInputs(Materials.Epoxid.getMolten(576))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
-            .metadata(SOLAR_FACTORY_WAFER_DATA, new SolarFactoryRecipeData(2, 4))
+            .metadata(SOLAR_FACTORY_RECIPE_DATA, new SolarFactoryRecipeData(2, 4))
             .hidden()
             .addTo(solarFactoryRecipes);
 
@@ -199,7 +199,7 @@ public class SolarFactoryRecipes implements Runnable {
             .fluidInputs(Materials.Polybenzimidazole.getMolten(576))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
-            .metadata(SOLAR_FACTORY_WAFER_DATA, new SolarFactoryRecipeData(2, 4))
+            .metadata(SOLAR_FACTORY_RECIPE_DATA, new SolarFactoryRecipeData(2, 4))
             .hidden()
             .addTo(solarFactoryRecipes);
 
@@ -214,7 +214,7 @@ public class SolarFactoryRecipes implements Runnable {
             .fluidInputs(Materials.Polybenzimidazole.getMolten(576))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
-            .metadata(SOLAR_FACTORY_WAFER_DATA, new SolarFactoryRecipeData(3, 4))
+            .metadata(SOLAR_FACTORY_RECIPE_DATA, new SolarFactoryRecipeData(3, 4))
             .hidden()
             .addTo(solarFactoryRecipes);
 
@@ -229,7 +229,7 @@ public class SolarFactoryRecipes implements Runnable {
             .fluidInputs(Materials.Polybenzimidazole.getMolten(1152))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
-            .metadata(SOLAR_FACTORY_WAFER_DATA, new SolarFactoryRecipeData(3, 8))
+            .metadata(SOLAR_FACTORY_RECIPE_DATA, new SolarFactoryRecipeData(3, 8))
             .hidden()
             .addTo(solarFactoryRecipes);
 
@@ -246,7 +246,7 @@ public class SolarFactoryRecipes implements Runnable {
             .fluidInputs(Materials.Polybenzimidazole.getMolten(1728))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(SOLAR_FACTORY_WAFER_DATA, new SolarFactoryRecipeData(4, 8))
+            .metadata(SOLAR_FACTORY_RECIPE_DATA, new SolarFactoryRecipeData(4, 8))
             .hidden()
             .addTo(solarFactoryRecipes);
 
@@ -262,7 +262,7 @@ public class SolarFactoryRecipes implements Runnable {
             .fluidInputs(Materials.Polybenzimidazole.getMolten(2304))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
-            .metadata(SOLAR_FACTORY_WAFER_DATA, new SolarFactoryRecipeData(5, 8))
+            .metadata(SOLAR_FACTORY_RECIPE_DATA, new SolarFactoryRecipeData(5, 8))
             .hidden()
             .addTo(solarFactoryRecipes);
 
@@ -280,7 +280,7 @@ public class SolarFactoryRecipes implements Runnable {
             .fluidInputs(new FluidStack(solderIndalloy, 1152))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
-            .metadata(SOLAR_FACTORY_WAFER_DATA, new SolarFactoryRecipeData(5, 8))
+            .metadata(SOLAR_FACTORY_RECIPE_DATA, new SolarFactoryRecipeData(5, 8))
             .hidden()
             .addTo(solarFactoryRecipes);
     }

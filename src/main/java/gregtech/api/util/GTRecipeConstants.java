@@ -205,7 +205,7 @@ public class GTRecipeConstants {
     /**
      * Solar Factory recipe data containing minimum wafer tier and count
      */
-    public static final RecipeMetadataKey<SolarFactoryRecipeData> SOLAR_FACTORY_WAFER_DATA = SimpleRecipeMetadataKey
+    public static final RecipeMetadataKey<SolarFactoryRecipeData> SOLAR_FACTORY_RECIPE_DATA = SimpleRecipeMetadataKey
         .create(SolarFactoryRecipeData.class, "solar_factory_wafer_data");
 
     /**
