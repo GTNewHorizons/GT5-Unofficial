@@ -196,7 +196,7 @@ gt.blockmachines.multimachine.ig.siphon.lore3=The name is wrong by definition...
 gt.blockmachines.multimachine.ig.dyson.name=Dyson Swarm Ground Unit
 gt.blockmachines.multimachine.ig.dyson.type=Dyson Swarm
 gt.blockmachines.multimachine.ig.dyson.desc1=Put Dyson Swarm Modules in the Input Bus(ses) to send them to the next star.
-gt.blockmachines.multimachine.ig.dyson.desc2=Outputs %s*f EU/t, where f is a dimension-dependent factor.
+gt.blockmachines.multimachine.ig.dyson.desc2=Outputs %s*f EU/t per module up to 10000, where f is a dimension-dependent factor.
 gt.blockmachines.multimachine.ig.dyson.desc3=Each second, n of m Dyson Swarm Modules are destroyed according to this formula:
 gt.blockmachines.multimachine.ig.dyson.desc4=Each hour, n of m modules are destroyed according to this formula: n = m * (2 * %s) / (exp(-%s* (m - 1))+exp(%s * cps)), where cps is computation per second.
 gt.blockmachines.multimachine.ig.dyson.desc5=Requires %sL/h of %s.

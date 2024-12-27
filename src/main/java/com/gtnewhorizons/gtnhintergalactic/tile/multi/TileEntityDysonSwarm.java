@@ -418,7 +418,7 @@ public class TileEntityDysonSwarm extends GT_MetaTileEntity_EnhancedMultiBlockBa
                                 "gt.blockmachines.multimachine.ig.dyson.desc4",
                                 getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleChance),
                                 getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleA),
-                                IGConfig.dysonSwarm.destroyModuleChance))
+                                IGConfig.dysonSwarm.destroyModuleB))
                 .addInfo(
                         translateToLocalFormatted(
                                 "gt.blockmachines.multimachine.ig.dyson.desc5",
