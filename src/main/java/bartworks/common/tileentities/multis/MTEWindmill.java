@@ -159,6 +159,12 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             }
 
             @Override
+            public boolean couldBeValid(MTEWindmill mteWindmill, World world, int x, int y, int z, ItemStack trigger) {
+                TileEntity tileEntity = world.getTileEntity(x, y, z);
+                return tileEntity instanceof TileEntityRotorBlock;
+            }
+
+            @Override
             public boolean spawnHint(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger) {
                 StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), 0);
                 return true;

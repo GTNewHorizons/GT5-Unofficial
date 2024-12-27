@@ -116,7 +116,6 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                     'b',
                     lazy(
                         t -> buildHatchAdder(MTEDrillerBase.class).atLeastList(t.getAllowedHatches())
-                            .adder(MTEDrillerBase::addToMachineList)
                             .casingIndex(t.casingTextureIndex)
                             .dot(1)
                             .buildAndChain(

@@ -1,30 +1,29 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.ITierConverter;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
@@ -49,7 +48,6 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
 
     private IStructureDefinition<MTEFuelRefineFactory> multiDefinition = null;
     private int Tier = -1;
-    private final int[] cnt = new int[] { 0, 0, 0, 0 };
     private static final Block[] coils = new Block[] { Loaders.FRF_Coil_1, Loaders.FRF_Coil_2, Loaders.FRF_Coil_3,
         Loaders.FRF_Coil_4 };
 
@@ -112,64 +110,42 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
                 .addElement('G', ofBlock(Loaders.fieldRestrictingGlass, 0))
                 .addElement(
                     'F',
-                    ofChain(
-                        onElementPass(x -> ++x.cnt[0], ofFieldCoil(0)),
-                        onElementPass(x -> ++x.cnt[1], ofFieldCoil(1)),
-                        onElementPass(x -> ++x.cnt[2], ofFieldCoil(2)),
-                        onElementPass(x -> ++x.cnt[3], ofFieldCoil(3))))
+                    ofBlocksTiered(
+                        fieldCoilTierConverter(),
+                        getAllFieldCoilTiers(),
+                        -1,
+                        MTEFuelRefineFactory::setCoilTier,
+                        MTEFuelRefineFactory::getCoilTier))
                 .build();
         }
         return multiDefinition;
     }
 
-    public static <T> IStructureElement<T> ofFieldCoil(int aIndex) {
-        return new IStructureElement<>() {
-
-            @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                Block block = world.getBlock(x, y, z);
-                return block.equals(coils[aIndex]);
+    public static ITierConverter<Integer> fieldCoilTierConverter() {
+        return (block, meta) -> {
+            for (int i = 0; i < coils.length; i++) {
+                if (block.equals(coils[i])) {
+                    return i + 1;
+                }
             }
-
-            @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                StructureLibAPI.hintParticle(world, x, y, z, coils[getIndex(trigger)], 0);
-                return true;
-            }
-
-            private int getIndex(ItemStack trigger) {
-                int s = trigger.stackSize;
-                if (s > 4 || s <= 0) s = 4;
-                return s - 1;
-            }
-
-            @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return world.setBlock(x, y, z, coils[getIndex(trigger)], 0, 3);
-            }
-
-            @Override
-            public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
-                AutoPlaceEnvironment env) {
-                return BlocksToPlace.create(coils[getIndex(trigger)], 0);
-            }
-
-            @Override
-            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                AutoPlaceEnvironment env) {
-                if (check(t, world, x, y, z)) return PlaceResult.SKIP;
-                return StructureUtility.survivalPlaceBlock(
-                    coils[getIndex(trigger)],
-                    0,
-                    world,
-                    x,
-                    y,
-                    z,
-                    env.getSource(),
-                    env.getActor(),
-                    env.getChatter());
-            }
+            return null;
         };
+    }
+
+    public static List<Pair<Block, Integer>> getAllFieldCoilTiers() {
+        ArrayList<Pair<Block, Integer>> tiers = new ArrayList<>();
+        for (Block coil : coils) {
+            tiers.add(Pair.of(coil, 0));
+        }
+        return tiers;
+    }
+
+    private void setCoilTier(int tier) {
+        this.Tier = tier;
+    }
+
+    private int getCoilTier() {
+        return this.Tier;
     }
 
     @Override
@@ -210,22 +186,8 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        cnt[0] = 0;
-        cnt[1] = 0;
-        cnt[2] = 0;
-        cnt[3] = 0;
-        return structureCheck_EM(mName, 7, 12, 1) && getTier() != -1;
-    }
-
-    public int getTier() {
-        for (int i = 0; i < 4; i++) {
-            if (cnt[i] == 32) {
-                Tier = i + 1;
-                return i;
-            }
-        }
         Tier = -1;
-        return -1;
+        return structureCheck_EM(mName, 7, 12, 1);
     }
 
     @Override
