@@ -80,7 +80,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.metadata.Sieverts;
+import gregtech.api.recipe.metadata.Sievert;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
@@ -238,7 +238,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                Sieverts data = recipe.getMetadataOrDefault(GTRecipeConstants.SIEVERTS, new Sieverts(0, false));
+                Sievert data = recipe.getMetadataOrDefault(GTRecipeConstants.SIEVERT, new Sievert(0, false));
                 int sievert = data.sievert;
                 boolean isExact = data.isExact;
                 int glass = recipe.getMetadataOrDefault(GLASS, 0);

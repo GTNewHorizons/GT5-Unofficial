@@ -61,9 +61,11 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.metadata.Sievert;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -200,9 +202,12 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
 
                 if (!this.lastFail && this.lastUsedItem != null && this.lastRecipe != null) {
                     if (GTUtility.areStacksEqual(this.lastUsedItem, lStack, true)) {
-                        this.mass = (byte) this.lastRecipe.mDuration;
-                        this.decayTime = this.lastRecipe.mSpecialValue;
-                        this.sievert = this.lastRecipe.mEUt;
+                        Sievert data = this.lastRecipe
+                            .getMetadataOrDefault(GTRecipeConstants.SIEVERT, new Sievert(0, false));
+                        this.mass = this.lastRecipe.getMetadataOrDefault(GTRecipeConstants.MASS, 0)
+                            .byteValue();
+                        this.decayTime = calcDecayTicks(data.sievert);
+                        this.sievert = data.sievert;
                         this.material = this.lastUsedItem.getDisplayName();
                         lStack.stackSize--;
                         this.updateSlots();
@@ -219,16 +224,19 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
                         this.lastFail = true;
                         this.lastUsedItem = this.mInventory[0] == null ? null : this.mInventory[0].copy();
                     } else {
-                        if (this.lastRecipe.mDuration > this.cap) {
+                        if (this.lastRecipe.getMetadataOrDefault(GTRecipeConstants.MASS, 0) > this.cap) {
                             this.lastFail = true;
                             this.lastUsedItem = this.mInventory[0].copy();
                             return;
                         }
                         this.lastFail = false;
                         this.lastUsedItem = this.mInventory[0].copy();
-                        this.mass = (byte) this.lastRecipe.mDuration;
-                        this.decayTime = this.lastRecipe.mSpecialValue;
-                        this.sievert = this.lastRecipe.mEUt;
+                        Sievert data = this.lastRecipe
+                            .getMetadataOrDefault(GTRecipeConstants.SIEVERT, new Sievert(0, false));
+                        this.mass = this.lastRecipe.getMetadataOrDefault(GTRecipeConstants.MASS, 0)
+                            .byteValue();
+                        this.decayTime = calcDecayTicks(data.sievert);
+                        this.sievert = data.sievert;
                         this.material = lStack.getDisplayName();
                         lStack.stackSize--;
                         this.updateSlots();
@@ -487,5 +495,14 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
     public GUITextureSet getGUITextureSet() {
         return new GUITextureSet().setMainBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT)
             .setGregTechLogo(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT);
+    }
+
+    public static long calcDecayTicks(int x) {
+        long ret;
+        if (x == 43) ret = 5000;
+        else if (x == 61) ret = 4500;
+        else if (x <= 100) ret = MathUtils.ceilLong((8000D * Math.tanh(-x / 20D) + 8000D) * 1000D);
+        else ret = MathUtils.ceilLong(8000D * Math.tanh(-x / 65D) + 8000D);
+        return ret;
     }
 }

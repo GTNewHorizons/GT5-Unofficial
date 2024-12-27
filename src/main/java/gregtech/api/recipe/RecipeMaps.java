@@ -9,6 +9,7 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.GLASS;
+import static gregtech.api.util.GTRecipeConstants.SIEVERT;
 import static gregtech.api.util.GTRecipeMapUtil.GTRecipeTemplate;
 import static gregtech.api.util.GTRecipeMapUtil.asTemplate;
 import static gregtech.api.util.GTRecipeMapUtil.buildOrEmpty;
@@ -73,6 +74,7 @@ import gregtech.api.recipe.maps.UnpackagerBackend;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
+import gregtech.api.recipe.metadata.Sievert;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -1220,7 +1222,8 @@ public final class RecipeMaps {
                 b -> BartWorksRecipeMaps.bacterialVatRecipes.doAdd(
                     b.copy()
                         .special(BioItemList.getPetriDish(BioCultureLoader.generalPurposeFermentingBacteria))
-                        .metadata(GLASS, 3)
+                        .metadata(GLASS, 5)
+                        .metadata(SIEVERT, new Sievert(140, true))
                         .eut(b.getEUt()))));
         RecipeMaps.implosionRecipes.addDownstream(
             IRecipeMap.newRecipeMap(

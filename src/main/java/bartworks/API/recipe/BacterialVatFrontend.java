@@ -15,7 +15,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.recipe.metadata.Sieverts;
+import gregtech.api.recipe.metadata.Sievert;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.GTNEIDefaultHandler;
@@ -77,7 +77,7 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
     @Override
     protected void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
         int glassTier = recipeInfo.recipe.getMetadataOrDefault(GLASS, 3);
-        Sieverts data = recipeInfo.recipe.getMetadataOrDefault(GTRecipeConstants.SIEVERTS, new Sieverts(0, false));
+        Sievert data = recipeInfo.recipe.getMetadataOrDefault(GTRecipeConstants.SIEVERT, new Sievert(0, false));
         int sievert = data.sievert;
         boolean isExact = data.isExact;
         recipeInfo.drawText(StatCollector.translateToLocalFormatted("nei.biovat.0.name", GTValues.VN[glassTier]));

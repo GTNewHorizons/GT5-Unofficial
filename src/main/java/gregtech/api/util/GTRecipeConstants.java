@@ -26,7 +26,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
-import gregtech.api.recipe.metadata.Sieverts;
+import gregtech.api.recipe.metadata.Sievert;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
@@ -224,13 +224,11 @@ public class GTRecipeConstants {
      * sievert data required for the biovat recipes.
      */
 
-    public static final RecipeMetadataKey<Sieverts> SIEVERTS = SimpleRecipeMetadataKey
-        .create(Sieverts.class, "SIEVERTS");
+    public static final RecipeMetadataKey<Sievert> SIEVERT = SimpleRecipeMetadataKey.create(Sievert.class, "SIEVERT");
 
     public static final RecipeMetadataKey<Integer> GLASS = SimpleRecipeMetadataKey.create(Integer.class, "GLASS");
 
-    public static final RecipeMetadataKey<Integer> DECAY_TICKS = SimpleRecipeMetadataKey
-        .create(Integer.class, "decay_ticks");
+    public static final RecipeMetadataKey<Integer> MASS = SimpleRecipeMetadataKey.create(Integer.class, "mass");
 
     public static final RecipeMetadataKey<Boolean> NOBLE_GASES = SimpleRecipeMetadataKey
         .create(Boolean.class, "noble_gases");
@@ -720,7 +718,5 @@ public class GTRecipeConstants {
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(PRECISE_ASSEMBLER_CASING_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COAL_CASING_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(RESEARCH_STATION_DATA);
-        GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DECAY_TICKS);
-
     }
 }
