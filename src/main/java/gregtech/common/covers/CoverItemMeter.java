@@ -179,6 +179,12 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
     @Override
     protected int getTickRateImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable,
         ICoverable aTileEntity) {
+        return 1;
+    }
+
+    @Override
+    protected int getDefaultTickRateImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable,
+        ICoverable aTileEntity) {
         return 5;
     }
 
