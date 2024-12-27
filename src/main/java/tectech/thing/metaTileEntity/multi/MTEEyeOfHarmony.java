@@ -939,7 +939,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         if (astralArrayAmount != 0) {
-            if (mMaxProgresstime > 0) {
+            if (recipeRunning) {
                 GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("eoh.rightclick.wirecutter.1"));
             } else {
                 long originalAmount = astralArrayAmount;
@@ -1517,7 +1517,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             strongCheckOrAddUser(userUUID);
         }
 
-        if (!recipeRunning && mMachine && aBaseMetaTileEntity.isAllowedToWork()) {
+        if (!recipeRunning && mMachine) {
             if ((aTick % TICKS_BETWEEN_HATCH_DRAIN) == 0) {
                 drainFluidFromHatchesAndStoreInternally();
             }
