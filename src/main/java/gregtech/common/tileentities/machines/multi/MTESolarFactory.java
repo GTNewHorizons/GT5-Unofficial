@@ -291,6 +291,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
 
     @Override
     public RecipeMap<?> getRecipeMap() {
+        // The recipes for this map are added in NewHorizonsCoreMod
         return RecipeMaps.solarFactoryRecipes;
     }
 
