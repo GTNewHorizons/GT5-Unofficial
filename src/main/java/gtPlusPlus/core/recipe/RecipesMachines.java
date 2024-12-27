@@ -1576,7 +1576,7 @@ public class RecipesMachines {
                 CI.getTieredMachineHull(1, 1),
                 CI.getElectricMotor(1, 2),
                 CI.getElectricPiston(1, 2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Cobalt, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tin, 1L),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 1L),
                 CI.getGear(1, 2))
             .itemOutputs(GregtechItemList.Generator_SemiFluid_LV.get(1))
@@ -1650,7 +1650,7 @@ public class RecipesMachines {
             CI.bits,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_LV, 'P', ItemList.Electric_Piston_LV, 'E',
                 ItemList.Electric_Motor_LV, 'C', OrePrefixes.circuit.get(Materials.LV), 'W',
-                OrePrefixes.cableGt01.get(Materials.Cobalt), 'G', MaterialsAlloy.TUMBAGA.getGear(2) });
+                OrePrefixes.cableGt01.get(Materials.Tin), 'G', MaterialsAlloy.TUMBAGA.getGear(2) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Generator_SemiFluid_MV.get(1L),
             CI.bits,

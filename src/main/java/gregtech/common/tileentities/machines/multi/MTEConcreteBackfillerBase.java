@@ -5,6 +5,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.List;
@@ -125,7 +126,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
 
     @Override
     protected List<IHatchElement<? super MTEDrillerBase>> getAllowedHatches() {
-        return ImmutableList.of(InputHatch, InputBus, Maintenance, Energy);
+        return ImmutableList.of(InputHatch, InputBus, OutputBus, Maintenance, Energy);
     }
 
     @Override
