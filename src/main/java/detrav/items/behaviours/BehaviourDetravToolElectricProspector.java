@@ -117,8 +117,6 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                         Block block = c.getBlock(x, y, z);
                                         int meta = c.getBlockMetadata(x, y, z);
 
-                                        if (OreManager.getStoneType(block, meta) != null) continue;
-
                                         var p = OreManager.getOreInfo(block, meta);
 
                                         if (p != null) {
