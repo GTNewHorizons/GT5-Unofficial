@@ -851,7 +851,8 @@ gt.blockcasingsBA0.11.desc.1=Can survive at least one big bang, maybe two...
 achievement.gt.blockcasingsBA0.10=Reinforced Temporal Structure Casing
 gt.blockcasingsBA0.10.desc.0=Resistant to temporal shearing from time dilation differences.
 gt.blockcasingsBA0.10.desc.1=This block can last an eternity without any decay.
-
+eoh.rightclick.wirecutter.1=Can't retrieve Astral Array Fabricators when the machine is working!
+eoh.rightclick.wirecutter.2=Retrieved %s Astral Array Fabricators
 
 # Antimatter
 gt.blockmachines.antimatterForge.name=Semi-Stable Antimatter Stabilization Sequencer
