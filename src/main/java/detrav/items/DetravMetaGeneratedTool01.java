@@ -11,7 +11,6 @@ import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerLV;
 import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerLuV;
 import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerMV;
 import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerUHV;
-import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerULV;
 import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerUV;
 import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerZPM;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -47,15 +46,6 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
     public DetravMetaGeneratedTool01() {
         super("detrav.metatool.01");
         INSTANCE = this;
-        addTool(
-            ProspectorScannerULV.ID,
-            "Prospector's Scanner(ULV)",
-            "",
-            new DetravProspector(0),
-            DetravToolDictNames.craftingToolProspector.toString(),
-            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
-            new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
-            new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
             ProspectorScannerLV.ID,
             "Prospector's Scanner(LV)",
@@ -298,13 +288,6 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
         ItemStack dStack;
         if (NewHorizonsCoreMod.isModLoaded()) {
             // Materials at tiers
-            list.add(
-                getToolWithStats(
-                    ProspectorScannerULV.ID,
-                    1,
-                    Materials.Polycaprolactam,
-                    Materials.Polycaprolactam,
-                    null));
             list.add(getToolWithStats(ProspectorScannerLV.ID, 1, Materials.Steel, Materials.Steel, null));
             list.add(getToolWithStats(ProspectorScannerLV.ID, 1, Materials.Bronze, Materials.Steel, null));
             list.add(getToolWithStats(ProspectorScannerMV.ID, 1, Materials.Manyullyn, Materials.Aluminium, null));
@@ -346,7 +329,6 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
         }
 
         // Steel for comparison
-        list.add(getToolWithStats(ProspectorScannerULV.ID, 1, Materials.Steel, Materials.Steel, null));
         list.add(getToolWithStats(ProspectorScannerLV.ID, 1, Materials.Steel, Materials.Steel, null));
         list.add(getToolWithStats(ProspectorScannerMV.ID, 1, Materials.Steel, Materials.Steel, null));
         list.add(getToolWithStats(ProspectorScannerHV.ID, 1, Materials.Steel, Materials.Steel, null));

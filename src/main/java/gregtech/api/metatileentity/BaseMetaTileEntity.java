@@ -2230,6 +2230,10 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
         return getOutput();
     }
 
+    public long getStoredEUuncapped() {
+        return mMetaTileEntity.getEUVar();
+    }
+
     public int getOutput() {
         return (int) Math.min(Integer.MAX_VALUE, oOutput);
     }

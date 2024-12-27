@@ -1147,7 +1147,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         }
     }
 
-    enum Voltage {
+    public enum Voltage {
 
         ULV,
         LV,
