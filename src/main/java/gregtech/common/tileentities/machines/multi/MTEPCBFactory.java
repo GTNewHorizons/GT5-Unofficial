@@ -113,7 +113,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private int mUpgradesInstalled = 0;
     private final int mCurrentParallel = 0;
     private int mMaxParallel = 0;
-    private Map<Materials, Integer> storedNanites = new HashMap<>() {
+    private final Map<Materials, Integer> storedNanites = new HashMap<>() {
 
         {
             put(Materials.Silver, 0);
@@ -659,10 +659,10 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                         }
                         OrePrefixes prefix = data.mPrefix;
                         Materials mat = data.mMaterial.mMaterial;
-                        if (storedNanites.get(mat) == 2048) {
-                            continue;
-                        }
                         if (prefix == OrePrefixes.nanite && VALID_NANITE_MATERIALS.contains(mat)) {
+                            if (storedNanites.get(mat) == 2048) {
+                                continue;
+                            }
                             int stacksize = itemStack.stackSize;
                             startRecipeProcessing();
                             if (inputBus instanceof MTEHatchInputBusME meBus) {
@@ -1005,41 +1005,69 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setBoolean("mBioUpgrade", mBioUpgrade);
-        aNBT.setBoolean("mBioRotate", mBioRotate);
-        aNBT.setInteger("mBioOffsetX", mBioOffsets[0]);
-        aNBT.setInteger("mBioOffsetZ", mBioOffsets[1]);
-        aNBT.setBoolean("mOCTier1Upgrade", mOCTier1);
-        aNBT.setInteger("mOCTier1OffsetX", mOCTier1Offsets[0]);
-        aNBT.setInteger("mOCTier1OffsetZ", mOCTier1Offsets[1]);
-        aNBT.setBoolean("mOCTier2Upgrade", mOCTier2);
-        aNBT.setInteger("mOCTier2OffsetX", mOCTier2Offsets[0]);
-        aNBT.setInteger("mOCTier2OffsetZ", mOCTier2Offsets[1]);
-        aNBT.setFloat("mRoughnessMultiplier", mRoughnessMultiplier);
-        aNBT.setInteger("mSetTier", mSetTier);
+    public void setItemNBT(NBTTagCompound NBT) {
+        NBTTagCompound naniteTag = new NBTTagCompound();
+        boolean empty = true;
+        for (Materials naniteMat : storedNanites.keySet()) {
+            int naniteAmount = storedNanites.get(naniteMat);
+            if (naniteAmount != 0) {
+                empty = false;
+            }
+            naniteTag.setInteger(naniteMat.toString(), naniteAmount);
+        }
+        if (!empty) {
+            NBT.setTag("storedNanites", naniteTag);
+        }
     }
 
     @Override
-    public void loadNBTData(final NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        if (aNBT.hasKey("mSeparate")) {
-            // backward compatibility
-            inputSeparation = aNBT.getBoolean("mSeparate");
+    public void saveNBTData(NBTTagCompound NBT) {
+        super.saveNBTData(NBT);
+        NBT.setBoolean("mBioUpgrade", mBioUpgrade);
+        NBT.setBoolean("mBioRotate", mBioRotate);
+        NBT.setInteger("mBioOffsetX", mBioOffsets[0]);
+        NBT.setInteger("mBioOffsetZ", mBioOffsets[1]);
+        NBT.setBoolean("mOCTier1Upgrade", mOCTier1);
+        NBT.setInteger("mOCTier1OffsetX", mOCTier1Offsets[0]);
+        NBT.setInteger("mOCTier1OffsetZ", mOCTier1Offsets[1]);
+        NBT.setBoolean("mOCTier2Upgrade", mOCTier2);
+        NBT.setInteger("mOCTier2OffsetX", mOCTier2Offsets[0]);
+        NBT.setInteger("mOCTier2OffsetZ", mOCTier2Offsets[1]);
+        NBT.setFloat("mRoughnessMultiplier", mRoughnessMultiplier);
+        NBT.setInteger("mSetTier", mSetTier);
+
+        NBTTagCompound naniteTag = new NBTTagCompound();
+        for (Materials naniteMat : storedNanites.keySet()) {
+            naniteTag.setInteger(naniteMat.toString(), storedNanites.get(naniteMat));
         }
-        mBioUpgrade = aNBT.getBoolean("mBioUpgrade");
-        mBioRotate = aNBT.getBoolean("mBioRotate");
-        mBioOffsets[0] = aNBT.getInteger("mBioOffsetX");
-        mBioOffsets[1] = aNBT.getInteger("mBioOffsetZ");
-        mOCTier1 = aNBT.getBoolean("mOCTier1Upgrade");
-        mOCTier1Offsets[0] = aNBT.getInteger("mOCTier1OffsetX");
-        mOCTier1Offsets[1] = aNBT.getInteger("mOCTier1OffsetZ");
-        mOCTier2 = aNBT.getBoolean("mOCTier2Upgrade");
-        mOCTier2Offsets[0] = aNBT.getInteger("mOCTier2OffsetX");
-        mOCTier2Offsets[1] = aNBT.getInteger("mOCTier2OffsetZ");
-        mRoughnessMultiplier = aNBT.getFloat("mRoughnessMultiplier");
-        mSetTier = aNBT.getInteger("mSetTier");
+        NBT.setTag("storedNanites", naniteTag);
+    }
+
+    @Override
+    public void loadNBTData(final NBTTagCompound NBT) {
+        super.loadNBTData(NBT);
+        if (NBT.hasKey("mSeparate")) {
+            // backward compatibility
+            inputSeparation = NBT.getBoolean("mSeparate");
+        }
+        mBioUpgrade = NBT.getBoolean("mBioUpgrade");
+        mBioRotate = NBT.getBoolean("mBioRotate");
+        mBioOffsets[0] = NBT.getInteger("mBioOffsetX");
+        mBioOffsets[1] = NBT.getInteger("mBioOffsetZ");
+        mOCTier1 = NBT.getBoolean("mOCTier1Upgrade");
+        mOCTier1Offsets[0] = NBT.getInteger("mOCTier1OffsetX");
+        mOCTier1Offsets[1] = NBT.getInteger("mOCTier1OffsetZ");
+        mOCTier2 = NBT.getBoolean("mOCTier2Upgrade");
+        mOCTier2Offsets[0] = NBT.getInteger("mOCTier2OffsetX");
+        mOCTier2Offsets[1] = NBT.getInteger("mOCTier2OffsetZ");
+        mRoughnessMultiplier = NBT.getFloat("mRoughnessMultiplier");
+        mSetTier = NBT.getInteger("mSetTier");
+
+        NBTTagCompound naniteTag = NBT.getCompoundTag("storedNanites");
+        for (Materials material : storedNanites.keySet()) {
+            int storedAmount = naniteTag.getInteger(material.toString());
+            storedNanites.put(material, storedAmount);
+        }
     }
 
     @Override
@@ -1059,7 +1087,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             data += mTier1BitMap;
         } else if (mSetTier == 2) {
             data += mTier2BitMap;
-        } else {
+        } else if (mSetTier == 3) {
             data += mTier3BitMap;
         }
 
