@@ -184,7 +184,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             modifier = 1.02F;
         } else if (catalyst.isFluidEqual(Materials.SuperconductorUMVBase.getMolten(1L))) {
             modifier = 1.03F;
-        } else if (catalyst.isFluidEqual(MaterialsUEVplus.BlackDwarfMatter.getMolten(1L))) {
+        } else if (catalyst.isFluidEqual(MaterialsUEVplus.MagMatter.getMolten(1L))) {
             modifier = 1.04F;
         }
         long catalystCount = catalyst.amount;
@@ -332,7 +332,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addInfo("Molten Copper: 1.00")
             .addInfo("Molten SC UIV Base: 1.02")
             .addInfo("Molten SC UMV Base: 1.03")
-            .addInfo("Molten Black Dwarf Matter: 1.04")
+            .addInfo("Molten Magmatter: 1.04")
             .addSeparator()
             .addInfo("Enable wireless EU mode with screwdriver")
             .addInfo("Wireless mode requires SC UMV Base or better")
