@@ -14,6 +14,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static net.minecraft.util.EnumChatFormatting.BLUE;
+import static net.minecraft.util.EnumChatFormatting.DARK_AQUA
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -48,7 +51,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -113,7 +115,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
                 .dot(1)
                 .buildAndChain(onElementPass(MTEMultiLathe::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0))))
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings3, 10)) // Steel Casings
-        .addElement('C', Glasses.chainAllGlasses()) // Glass
+        .addElement('C', chainAllGlasses()) // Glass
         .addElement(
             'F',
             ofBlocksTiered(

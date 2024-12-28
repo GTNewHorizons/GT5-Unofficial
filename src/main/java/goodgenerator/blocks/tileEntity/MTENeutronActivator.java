@@ -2,6 +2,7 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.ArrayList;
@@ -47,7 +48,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -229,7 +229,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                         onElementPass(MTENeutronActivator::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
                 .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 6))
                 .addElement('F', ofFrame(Materials.Steel))
-                .addElement('G', Glasses.chainAllGlasses())
+                .addElement('G', chainAllGlasses())
                 .addElement('P', ofBlock(Loaders.speedingPipe, 0))
                 .addElement(
                     'X',
