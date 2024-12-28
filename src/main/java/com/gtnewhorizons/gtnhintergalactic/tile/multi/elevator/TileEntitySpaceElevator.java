@@ -680,7 +680,7 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc4"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc5"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc6"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc7"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc7")).addTecTechHatchInfo()
                 .beginStructureBlock(35, 43, 35, false)
                 .addOtherStructurePart(
                         GCCoreUtil.translate("ig.elevator.structure.ProjectModule"),

@@ -425,7 +425,7 @@ public class TileEntityDysonSwarm extends GT_MetaTileEntity_EnhancedMultiBlockBa
                                 getDecimalFormat().format(IGConfig.dysonSwarm.coolantConsumption),
                                 IGConfig.dysonSwarm.getCoolantStack().getLocalizedName()))
                 .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc6"))
-                .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc7"))
+                .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc7")).addTecTechHatchInfo()
                 .beginStructureBlock(16, 20, 16, false).addDynamoHatch(translateToLocal("ig.dyson.structure.dynamo"), 1)
                 .addInputBus("1 - 11", 2).addInputHatch("1 - 11", 2)
                 .addOtherStructurePart(translateToLocal("ig.dyson.structure.optical"), "1 - 24", 4).addStructureInfo("")
