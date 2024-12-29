@@ -1,4 +1,4 @@
-package gregtech.api.recipe.metadata;
+package gregtech.api.util.recipe;
 
 public class Sievert {
 
