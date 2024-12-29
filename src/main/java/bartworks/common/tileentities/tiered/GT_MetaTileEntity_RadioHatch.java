@@ -18,7 +18,6 @@ import static bartworks.common.loaders.RadioHatchMaterialLoader.getRadioHatchMat
 import static gregtech.api.enums.GTValues.ticksBetweenSounds;
 
 import java.util.Collections;
-import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -27,9 +26,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
@@ -87,10 +83,8 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
     private ItemStack lastUsedItem = null;
     private boolean lastFail = false;
     private RadioHatchMaterial radioHatchMaterial = null;
-    private final List<RadioHatchMaterial> radioHatchMaterials = getRadioHatchMaterialList();
 
-    public static final Logger LOGGER = LogManager.getLogger("Test");
-
+    // TODO: remove aNameRegional after removing the other tiers
     public GT_MetaTileEntity_RadioHatch(int aID, String aName, String aNameRegional, int aTier, boolean isDeprecated) {
         super(
             aID,
@@ -101,7 +95,7 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
             new String[] { StatCollector.translateToLocal("tooltip.tile.radhatch.0.name"),
                 (isDeprecated
                     ? EnumChatFormatting.RED
-                        + "DEPRECATED! This hatch will be removed in the next major update, use HV Radio Hatch instead"
+                        + "DEPRECATED! This hatch will be removed in the next major update, use \"Radio Hatch\" instead"
                     : StatCollector.translateToLocal("tooltip.tile.radhatch.1.name")),
                 BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get(), });
     }
@@ -162,12 +156,13 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-
         BaseMetaTileEntity myMetaTileEntity = (BaseMetaTileEntity) this.getBaseMetaTileEntity();
         if (myMetaTileEntity.isServerSide()) {
+
             if (this.mass > 0) {
                 ++this.timer;
             }
+
             if (this.mass > 0 && (this.decayTime == 0 || this.decayTime > 0 && this.timer % this.decayTime == 0)) {
                 this.mass--;
                 if (this.mass == 0) {
@@ -176,17 +171,21 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
                 }
                 this.timer = 1;
             }
+
             if (myMetaTileEntity.mTickTimer > myMetaTileEntity.mLastSoundTick + ticksBetweenSounds
                 && this.sievert > 0) {
                 this.sendLoopStart((byte) 1);
                 myMetaTileEntity.mLastSoundTick = myMetaTileEntity.mTickTimer;
             }
+
             if (this.mass == 0) {
                 ItemStack lStack = this.mInventory[0];
+
                 if (lStack == null) {
                     this.colorForGUI = new short[] { 0x37, 0x37, 0x37 };
                     return;
                 }
+
                 ItemData itemData = GTOreDictUnificator.getAssociation(lStack);
                 if (itemData != null) {
                     Materials mat = itemData.mMaterial.mMaterial;
@@ -199,7 +198,7 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
                 }
                 if (!this.lastFail && this.lastUsedItem != null && this.radioHatchMaterial != null) {
                     if (GTUtility.areStacksEqual(this.lastUsedItem, lStack, true)) {
-                        for (RadioHatchMaterial recipes : radioHatchMaterials) {
+                        for (RadioHatchMaterial recipes : getRadioHatchMaterialList()) {
                             this.radioHatchMaterial = getRadioHatchMaterialFromInput(recipes, this.lastUsedItem);
                         }
                         if (radioHatchMaterial.recipeSievert != 0) {
@@ -214,8 +213,9 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
                         this.radioHatchMaterial = null;
                     }
                 }
+
                 if (this.radioHatchMaterial == null || this.lastFail || this.radioHatchMaterial.recipeSievert == 0) {
-                    for (RadioHatchMaterial recipes : radioHatchMaterials) {
+                    for (RadioHatchMaterial recipes : getRadioHatchMaterialList()) {
                         this.radioHatchMaterial = getRadioHatchMaterialFromInput(recipes, this.mInventory[0]);
                         if (radioHatchMaterial.recipeSievert != 0) {
                             break;
