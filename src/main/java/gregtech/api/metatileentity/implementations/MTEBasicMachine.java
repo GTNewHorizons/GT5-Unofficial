@@ -59,6 +59,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.SteamTexture;
@@ -1298,6 +1299,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         if (!isSteampowered()) {
             builder.widget(createFluidAutoOutputButton());
             builder.widget(createItemAutoOutputButton());
+        } else {
+            builder.widget(createSteamProgressBar(builder));
         }
 
         BasicUIProperties uiProperties = getUIProperties();
@@ -1460,6 +1463,26 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(7, 62)
             .setSize(18, 18);
+    }
+
+    // Used for ui syncing
+    private long getSteamVar = 0;
+
+    protected Widget createSteamProgressBar(ModularWindow.Builder builder) {
+        builder.widget(new FakeSyncWidget.LongSyncer(this::getSteamVar, val -> getSteamVar = val));
+
+        return new ProgressBar().setProgress(() -> (float) getSteamVar() / maxSteamStore())
+            .setDirection(ProgressBar.Direction.UP)
+            .setTexture(
+                getSteamVariant() == SteamVariant.BRONZE ? GTUITextures.PROGRESSBAR_STEAM_FILL
+                    : GTUITextures.PROGRESSBAR_STEAM_FILL_STEEL,
+                54)
+            .setSynced(true, false)
+            .dynamicTooltip(() -> Collections.singletonList("Steam: " + getSteamVar + "/" + maxSteamStore() + "L"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setUpdateTooltipEveryTick(true)
+            .setSize(10, 54)
+            .setPos(7, 24);
     }
 
     protected Widget setNEITransferRect(Widget widget, String transferRectID) {

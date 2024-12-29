@@ -74,6 +74,7 @@ gtpp.recipe.chemicaldehydrator=Dehydrator
 gtpp.recipe.vacfurnace=Vacuum Furnace
 gtpp.recipe.alloyblastsmelter=Alloy Blast Smelter
 gtpp.recipe.lftr=Liquid Fluoride Thorium Reactor
+gtpp.recipe.lftr.sparging=LFTR Gas Sparging
 gtpp.recipe.nuclearsaltprocessingplant=Nuclear Salt Processing Plant
 gtpp.recipe.oremill=Milling
 gtpp.recipe.fissionfuel=Nuclear Fuel Processing

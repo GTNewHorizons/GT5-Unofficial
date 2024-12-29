@@ -208,6 +208,12 @@ public class GTRecipeConstants {
         .create(Integer.class, "lftr_output_power");
 
     /**
+     * Sparge Tower maximum byproduct outputs.
+     */
+    public static final RecipeMetadataKey<Integer> SPARGE_MAX_BYPRODUCT = SimpleRecipeMetadataKey
+        .create(Integer.class, "sparge_max_byproduct");
+
+    /**
      * Research Station data.
      */
     public static final RecipeMetadataKey<Integer> RESEARCH_STATION_DATA = SimpleRecipeMetadataKey

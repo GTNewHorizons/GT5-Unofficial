@@ -305,6 +305,18 @@ public class BWUtil {
             }
 
             @Override
+            public boolean couldBeValid(T te, World world, int x, int y, int z, ItemStack trigger) {
+                if (world.isAirBlock(x, y, z)) return false;
+                Block block = world.getBlock(x, y, z);
+                int meta = world.getBlockMetadata(x, y, z);
+
+                int glassTier = GlassTier.getGlassTier(block, meta);
+
+                // If it is not a glass, the tier will be 0.
+                return glassTier != 0 && glassTier != notset && glassTier >= mintier && glassTier <= maxtier;
+            }
+
+            @Override
             public boolean spawnHint(T te, World world, int x, int y, int z, ItemStack itemStack) {
                 StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), aDots - 1);
                 return true;
@@ -338,6 +350,11 @@ public class BWUtil {
 
                 if (glassTier == 0) return false; // Not a glass.
                 return glassTier >= mintier && glassTier <= maxtier;
+            }
+
+            @Override
+            public boolean couldBeValid(T te, World world, int x, int y, int z, ItemStack trigger) {
+                return check(te, world, x, y, z);
             }
 
             @Override

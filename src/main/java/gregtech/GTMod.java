@@ -88,7 +88,6 @@ import gregtech.common.config.OPStuff;
 import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
 import gregtech.common.covers.CoverFacadeAE;
-import gregtech.common.items.flinttools.FlintTools;
 import gregtech.common.misc.GTCommand;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
@@ -120,7 +119,6 @@ import gregtech.loaders.postload.PosteaTransformers;
 import gregtech.loaders.postload.RecyclerBlacklistLoader;
 import gregtech.loaders.postload.ScrapboxDropLoader;
 import gregtech.loaders.preload.GTPreLoad;
-import gregtech.loaders.preload.GT_Loader_MultiTileEntities;
 import gregtech.loaders.preload.LoaderCircuitBehaviors;
 import gregtech.loaders.preload.LoaderGTBlockFluid;
 import gregtech.loaders.preload.LoaderGTItemData;
@@ -295,9 +293,6 @@ public class GTMod implements IGTMod {
         new LoaderGTItemData().run();
         new LoaderGTBlockFluid().run();
         new LoaderMetaTileEntities().run();
-        if (GTValues.enableMultiTileEntities) {
-            new GT_Loader_MultiTileEntities().run();
-        }
 
         new LoaderCircuitBehaviors().run();
         new CoverBehaviorLoader().run();
@@ -321,11 +316,6 @@ public class GTMod implements IGTMod {
         if (FMLCommonHandler.instance()
             .getEffectiveSide()
             .isServer()) AssemblyLineServer.fillMap(aEvent);
-
-        // Flint tool setup.
-        FlintTools.registerTools();
-        FlintTools.registerPosteaTransformations();
-        FlintTools.registerRecipes();
     }
 
     @Mod.EventHandler
@@ -521,7 +511,7 @@ public class GTMod implements IGTMod {
             .map(tName -> GTModHandler.getIC2Item(tName, 1L))
             .forEach(GTModHandler::removeRecipeByOutputDelayed);
 
-        GTPostLoad.nerfVanillaTools();
+        GTPostLoad.changeWoodenVanillaTools();
 
         // Register postea transformers
         new PosteaTransformers().run();
