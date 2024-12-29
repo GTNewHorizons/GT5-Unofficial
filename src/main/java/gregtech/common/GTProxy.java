@@ -1555,7 +1555,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         if (stats == null) return;
 
         TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
-        stats.onBreakBlock(player, event.x, event.y, event.z, event.block, (byte) event.blockMetadata, tile, event);
+        stats.onBreakBlock(player, event.x, event.y, event.z, event.block, event.blockMetadata, tile, event);
     }
 
     @SubscribeEvent
@@ -1574,7 +1574,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                 aEvent.x,
                 aEvent.y,
                 aEvent.z,
-                (byte) aEvent.blockMetadata,
+                aEvent.blockMetadata,
                 aEvent.fortuneLevel,
                 aEvent.isSilkTouching,
                 aEvent);
@@ -2695,7 +2695,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                     aEvent.x,
                     aEvent.y,
                     aEvent.z,
-                    (byte) aEvent.metadata,
+                    aEvent.metadata,
                     aEvent);
             }
         }
