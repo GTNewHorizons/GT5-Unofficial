@@ -92,6 +92,8 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch {
 
     protected abstract int getItemCapacity();
 
+    protected abstract boolean isValidItem(ItemStack item);
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
 
@@ -100,7 +102,7 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch {
                 setItemStack(null);
                 setItemCount(0);
             }
-            if (getItemStack() == null && mInventory[0] != null) {
+            if (getItemStack() == null && mInventory[0] != null && isValidItem(mInventory[0])) {
                 setItemStack(mInventory[0].copy());
             }
             int count = getItemCount();
