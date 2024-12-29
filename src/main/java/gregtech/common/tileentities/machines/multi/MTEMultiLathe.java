@@ -192,7 +192,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
         tt.addMachineType("Lathe")
             .addInfo("300% faster than using single block machines of the same voltage")
             .addInfo("Gains 8 parallel per Pipe Casing Tier")
-            .addInfo("Only uses 80% of the EU/T normally required.")
+            .addInfo("Only uses 80% of the EU/t normally required.")
             .beginStructureBlock(7, 5, 5, true)
             .addController("Front Center")
             .addCasingInfoMin("Solid Steel Machine Casing", 42, false)
