@@ -1,11 +1,9 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_EMS_HOUSING;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_EMS_HOUSING_GLOW;
-
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -45,11 +43,11 @@ public class MTEHatchNanite extends MTEHatchNonConsumableBase {
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TextureFactory.builder()
-            .addIcon(OVERLAY_EMS_HOUSING)
+            .addIcon(Textures.BlockIcons.OVERLAY_NANITE_HATCH)
             .extFacing()
             .build(),
             TextureFactory.builder()
-                .addIcon(OVERLAY_EMS_HOUSING_GLOW)
+                .addIcon(Textures.BlockIcons.OVERLAY_NANITE_HATCH_GLOW)
                 .extFacing()
                 .glow()
                 .build() };
@@ -58,11 +56,11 @@ public class MTEHatchNanite extends MTEHatchNonConsumableBase {
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TextureFactory.builder()
-            .addIcon(OVERLAY_EMS_HOUSING)
+            .addIcon(Textures.BlockIcons.OVERLAY_NANITE_HATCH)
             .extFacing()
             .build(),
             TextureFactory.builder()
-                .addIcon(OVERLAY_EMS_HOUSING_GLOW)
+                .addIcon(Textures.BlockIcons.OVERLAY_NANITE_HATCH_GLOW)
                 .extFacing()
                 .glow()
                 .build() };
