@@ -1,6 +1,9 @@
 package tectech.thing.metaTileEntity.multi.base;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import tectech.thing.metaTileEntity.multi.base.Parameters.Group.ParameterIn;
 
 /**
  * Instantiate parameters as field in parametersInstantiation_EM();
@@ -91,6 +94,34 @@ public class Parameters {
 
     public Group getGroup(int hatchNo) {
         return groups[hatchNo] != null ? groups[hatchNo] : new Group(hatchNo, false);
+    }
+
+    public boolean hasInputs() {
+        return !parameterInArrayList.isEmpty();
+    }
+
+    public double[] getInputs() {
+        return Arrays.copyOf(iParamsIn, iParamsIn.length);
+    }
+
+    public void setInputs(double[] inputs) {
+        if (inputs.length != iParamsIn.length) {
+            throw new IllegalArgumentException("inputs must be the same length as iParamsIn (20)");
+        }
+
+        for (int i = 0; i < iParamsIn.length; i++) {
+            int hatch = i % 10;
+            int paramId = i / 10;
+
+            Group group = groups[hatch];
+
+            if (group != null && (parent.mMaxProgresstime <= 0 || group.updateWhileRunning)) {
+                ParameterIn param = group.parameterIn[paramId];
+                if (param != null) {
+                    param.set(inputs[i] < 0 ? 0 : inputs[i]);
+                }
+            }
+        }
     }
 
     public interface IParameter {

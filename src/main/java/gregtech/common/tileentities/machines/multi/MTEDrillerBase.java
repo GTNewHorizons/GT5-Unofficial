@@ -116,7 +116,6 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                     'b',
                     lazy(
                         t -> buildHatchAdder(MTEDrillerBase.class).atLeastList(t.getAllowedHatches())
-                            .adder(MTEDrillerBase::addToMachineList)
                             .casingIndex(t.casingTextureIndex)
                             .dot(1)
                             .buildAndChain(
@@ -703,6 +702,12 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     protected abstract boolean checkHatches();
 
     protected abstract void setElectricityStats();
+
+    public int calculateMaxProgressTime(int tier) {
+        return calculateMaxProgressTime(tier, false);
+    }
+
+    public abstract int calculateMaxProgressTime(int tier, boolean simulateWorking);
 
     public int getTotalConfigValue() {
         int config = 0;

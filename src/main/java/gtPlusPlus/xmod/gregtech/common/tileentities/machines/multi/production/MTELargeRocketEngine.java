@@ -190,8 +190,18 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCALargeRocketEngineActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCALargeRocketEngine;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCALargeRocketEngineGlow;
     }
 
     @Override
@@ -479,8 +489,8 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     }
 
     @Override
-    public int getPollutionPerTick(final ItemStack aStack) {
-        return 75 * (this.euProduction / 10000);
+    public int getPollutionPerSecond(ItemStack aStack) {
+        return 1500 * (this.euProduction / 10000);
     }
 
     @Override
@@ -491,7 +501,6 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     @Override
     public String[] getExtraInfoData() {
         return new String[] { "Rocket Engine", "Current Air: " + getAir(),
-            "Current Pollution: " + getPollutionPerTick(null),
             "Time until next fuel consumption: " + this.freeFuelTicks,
             "Current Output: " + this.lEUt * this.mEfficiency / 10000 + " EU/t",
             "Fuel Consumption: " + (this.fuelConsumption) + "L/s", "Fuel Value: " + this.fuelValue + " EU/L",

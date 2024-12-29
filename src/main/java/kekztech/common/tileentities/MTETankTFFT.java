@@ -134,6 +134,13 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             return true;
         }
 
+        @Override
+        public boolean couldBeValid(MTETankTFFT t, World world, int x, int y, int z, ItemStack trigger) {
+            Block worldBlock = world.getBlock(x, y, z);
+            int meta = worldBlock.getDamageValue(world, x, y, z);
+            return TFFT_FIELD == worldBlock && meta != 0;
+        }
+
         private int getHint(ItemStack stack) {
             return Math.min(Field.VALUES.length, ChannelDataAccessor.getChannelData(stack, "field"));
         }
@@ -590,11 +597,6 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     @Override
     public int getMaxEfficiency(ItemStack stack) {
         return 10000;
-    }
-
-    @Override
-    public int getPollutionPerTick(ItemStack stack) {
-        return 0;
     }
 
     @Override

@@ -106,6 +106,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
         tt.addMachineType(getMachineType())
             .addInfo("Speed: +0% | EU Usage: 80%")
             .addInfo("Parallel: Scrap = 64 | UU = 8 * Tier")
+            .addInfo("Performs perfect overclocks")
             .addInfo("Produces UU-A, UU-M & Scrap")
             .addInfo("Change mode with screwdriver")
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -131,8 +132,18 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.Overlay_MatterFab_Active_Animated_Glow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.Overlay_MatterFab_Animated;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.Overlay_MatterFab_Animated_Glow;
     }
 
     @Override

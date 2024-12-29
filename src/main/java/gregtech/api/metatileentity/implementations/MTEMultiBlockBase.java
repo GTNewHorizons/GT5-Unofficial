@@ -1007,6 +1007,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     /**
      * Gets the pollution this Device outputs to a Muffler per tick (10000 = one Pullution Block)
+     * 
+     * @param aStack what is in controller
      */
     public int getPollutionPerTick(ItemStack aStack) {
         return getPollutionPerSecond(aStack) / 20;
@@ -1017,6 +1019,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * the code of the multiblock.
      *
      * This returns the unmodified raw pollution value, not the one after muffler discounts.
+     * 
+     * @param aStack what is in controller
      */
     public int getPollutionPerSecond(ItemStack aStack) {
         return 0;
@@ -2072,18 +2076,24 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         tag.setBoolean("incompleteStructure", (getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0);
 
         if (mOutputItems != null) {
-            tag.setInteger("outputItemLength", mOutputItems.length);
-            for (int i = 0; i < mOutputItems.length; i++) {
-                tag.setString("outputItem" + i, mOutputItems[i].getDisplayName());
-                tag.setInteger("outputItemCount" + i, mOutputItems[i].stackSize);
+            int index = 0;
+            for (ItemStack stack : mOutputItems) {
+                if (stack == null) continue;
+                tag.setString("outputItem" + index, stack.getDisplayName());
+                tag.setInteger("outputItemCount" + index, stack.stackSize);
+                index++;
             }
+            if (index != 0) tag.setInteger("outputItemLength", index);
         }
         if (mOutputFluids != null) {
-            tag.setInteger("outputFluidLength", mOutputFluids.length);
-            for (int i = 0; i < mOutputFluids.length; i++) {
-                tag.setString("outputFluid" + i, mOutputFluids[i].getLocalizedName());
-                tag.setInteger("outputFluidCount" + i, mOutputFluids[i].amount);
+            int index = 0;
+            for (FluidStack stack : mOutputFluids) {
+                if (stack == null) continue;
+                tag.setString("outputFluid" + index, stack.getLocalizedName());
+                tag.setInteger("outputFluidCount" + index, stack.amount);
+                index++;
             }
+            if (index != 0) tag.setInteger("outputFluidLength", index);
         }
 
         final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();

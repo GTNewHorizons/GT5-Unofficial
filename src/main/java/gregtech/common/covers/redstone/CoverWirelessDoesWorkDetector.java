@@ -96,6 +96,12 @@ public class CoverWirelessDoesWorkDetector
     @Override
     public int getTickRateImpl(ForgeDirection side, int aCoverID, ActivityTransmitterData aCoverVariable,
         ICoverable aTileEntity) {
+        return 1;
+    }
+
+    @Override
+    protected int getDefaultTickRateImpl(ForgeDirection side, int aCoverID, ActivityTransmitterData aCoverVariable,
+        ICoverable aTileEntity) {
         return 5;
     }
 

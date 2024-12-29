@@ -1,6 +1,7 @@
 package kekztech.common.tileentities;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onlyIf;
@@ -240,6 +241,14 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                                 return true;
                             }
 
+                            @Override
+                            public boolean couldBeValid(MTELapotronicSuperCapacitor mteLapotronicSuperCapacitor,
+                                World world, int x, int y, int z, ItemStack trigger) {
+                                Block worldBlock = world.getBlock(x, y, z);
+                                int meta = worldBlock.getDamageValue(world, x, y, z);
+                                return LSC_PART == worldBlock && meta != 0;
+                            }
+
                             private int getHint(ItemStack stack) {
                                 return Capacitor.VALUES_BY_TIER[min(
                                     Capacitor.VALUES_BY_TIER.length,
@@ -288,7 +297,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                                     chatter);
                             }
                         }))))
-        .addElement('C', ofBlock(LSC_PART, 1))
+        .addElement('C', ofBlockAnyMeta(LSC_PART, 1))
         .build();
 
     private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
@@ -845,6 +854,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
      * @return EU amount
      */
     private long getPowerToDraw(long hatchWatts) {
+        if (stored.compareTo(capacity) >= 0) return 0;
         final BigInteger remcapActual = capacity.subtract(stored);
         final BigInteger recampLimited = (MAX_LONG.compareTo(remcapActual) > 0) ? remcapActual : MAX_LONG;
         return min(hatchWatts, recampLimited.longValue());
@@ -1227,11 +1237,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     @Override
     public int getMaxEfficiency(ItemStack stack) {
         return 10000;
-    }
-
-    @Override
-    public int getPollutionPerTick(ItemStack stack) {
-        return 0;
     }
 
     @Override
