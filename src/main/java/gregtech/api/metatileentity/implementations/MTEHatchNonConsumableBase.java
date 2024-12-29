@@ -3,11 +3,14 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -23,6 +26,7 @@ import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
 public abstract class MTEHatchNonConsumableBase extends MTEHatch {
@@ -32,7 +36,7 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch {
     private boolean isOutputSlotLocked = true;
 
     public MTEHatchNonConsumableBase(int ID, String name, String nameRegional, int tier, String description) {
-        super(ID, name, nameRegional, tier, 3, description);
+        super(ID, name, nameRegional, tier, 3, new String[] { description, "Will keep its contents when broken" });
     }
 
     public MTEHatchNonConsumableBase(String name, int tier, String[] description, ITexture[][][] textures) {
@@ -93,6 +97,27 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch {
                     .setSize(18, 18))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> itemCount, value -> clientItemCount = value));
 
+    }
+
+    @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("itemStack")) {
+            final ItemStack tContents = ItemStack
+                .loadItemStackFromNBT(stack.stackTagCompound.getCompoundTag("itemStack"));
+            final int tSize = stack.stackTagCompound.getInteger("itemCount");
+            if (tContents != null && tSize > 0) {
+                tooltip.add(
+                    GTLanguageManager.addStringLocalization("TileEntity_CHEST_INFO", "Contains Item: ")
+                        + EnumChatFormatting.YELLOW
+                        + tContents.getDisplayName()
+                        + EnumChatFormatting.GRAY);
+                tooltip.add(
+                    GTLanguageManager.addStringLocalization("TileEntity_CHEST_AMOUNT", "Item Amount: ")
+                        + EnumChatFormatting.GREEN
+                        + GTUtility.formatNumbers(tSize)
+                        + EnumChatFormatting.GRAY);
+            }
+        }
     }
 
     protected ItemStack getItemStack() {
