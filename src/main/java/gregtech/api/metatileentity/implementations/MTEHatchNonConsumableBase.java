@@ -4,8 +4,10 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -172,6 +174,31 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch {
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
+    }
+
+    @Override
+    public void setItemNBT(NBTTagCompound aNBT) {
+        NBTTagList invData = new NBTTagList();
+        boolean hasInvData = false;
+        for (int i = 0; i < 3; i++) {
+            if (mInventory[i] != null) {
+                NBTTagCompound tNBT = new NBTTagCompound();
+                tNBT.setByte("count", (byte) mInventory[i].stackSize);
+                tNBT.setShort("damage", (short) mInventory[i].getItemDamage());
+                tNBT.setShort("id", (short) Item.getIdFromItem(mInventory[i].getItem()));
+                tNBT.setInteger("intSlot", i);
+                if (mInventory[i].hasTagCompound()) {
+                    tNBT.setTag("tag", mInventory[i].getTagCompound());
+                }
+                invData.appendTag(tNBT);
+                hasInvData = true;
+            }
+        }
+        if (getItemStack() != null) aNBT.setTag("itemStack", getItemStack().writeToNBT(new NBTTagCompound()));
+        if (hasInvData) aNBT.setTag("inventory", invData);
+        if (getItemCount() > 0) aNBT.setInteger("itemCount", getItemCount());
+
+        super.setItemNBT(aNBT);
     }
 
     @Override
