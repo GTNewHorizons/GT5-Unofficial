@@ -1,12 +1,17 @@
 package gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -22,6 +27,7 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch {
 
     private ItemStack itemStack = null;
     private int itemCount = 0;
+    private boolean isOutputSlotLocked = true;
 
     public MTEHatchNonConsumableBase(int ID, String name, String nameRegional, int tier, String description) {
         super(ID, name, nameRegional, tier, 3, description);
@@ -69,6 +75,20 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch {
                 new TextWidget().setStringSupplier(() -> numberFormat.format(clientItemCount))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 30))
+            .widget(
+                new ButtonWidget().setOnClick((clickData, widget) -> { isOutputSlotLocked = !isOutputSlotLocked; })
+                    .setBackground(
+                        () -> new UITexture[] {
+                            isOutputSlotLocked ? GTUITextures.BUTTON_STANDARD_PRESSED : GTUITextures.BUTTON_STANDARD,
+                            isOutputSlotLocked ? GTUITextures.OVERLAY_BUTTON_RECIPE_LOCKED
+                                : GTUITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED })
+                    .addTooltip(translateToLocal("GT5U.gui.button.toggle_output_slot_lock"))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                    .attachSyncer(
+                        new FakeSyncWidget.BooleanSyncer(() -> isOutputSlotLocked, val -> isOutputSlotLocked = val),
+                        builder)
+                    .setPos(100, 52)
+                    .setSize(18, 18))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> itemCount, value -> clientItemCount = value));
 
     }
@@ -119,12 +139,13 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch {
                     count = getItemCapacity();
                 }
             }
-            if (mInventory[1] == null && stack != null) {
+            if (mInventory[1] == null && stack != null && !isOutputSlotLocked) {
                 mInventory[1] = stack.copy();
                 mInventory[1].stackSize = Math.min(stack.getMaxStackSize(), count);
                 count -= mInventory[1].stackSize;
             } else if ((count > 0) && GTUtility.areStacksEqual(mInventory[1], stack)
-                && mInventory[1].getMaxStackSize() > mInventory[1].stackSize) {
+                && mInventory[1].getMaxStackSize() > mInventory[1].stackSize
+                && !isOutputSlotLocked) {
                     int tmp = Math.min(count, mInventory[1].getMaxStackSize() - mInventory[1].stackSize);
                     mInventory[1].stackSize += tmp;
                     count -= tmp;
