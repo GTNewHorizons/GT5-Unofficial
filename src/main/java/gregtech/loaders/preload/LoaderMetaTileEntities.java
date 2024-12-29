@@ -956,6 +956,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchMagnet;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
+import gregtech.api.metatileentity.implementations.MTEHatchNanite;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchQuadrupleHumongous;
@@ -12974,6 +12975,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Hatch_LensIndicator.set(
             new MTEHatchLensIndicator(HATCH_LENS_INDICATOR.ID, "hatch.lensindicator", "Lens Indicator Hatch", 8)
                 .getStackForm(1L));
+        ItemList.Hatch_Nanite.set(
+            new MTEHatchNanite(HATCH_NANITE.ID, "hatch.nanite", "Nanite Containment Hatch", 8, 2048).getStackForm(1));
         generateWiresAndPipes();
     }
 
