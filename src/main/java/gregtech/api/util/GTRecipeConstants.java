@@ -27,7 +27,6 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
-import gregtech.api.util.recipe.SolarFactoryRecipeData;
 import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
 import gtnhlanth.common.item.ItemPhotolithographicMask;
@@ -201,12 +200,6 @@ public class GTRecipeConstants {
      */
     public static final RecipeMetadataKey<Integer> COAL_CASING_TIER = SimpleRecipeMetadataKey
         .create(Integer.class, "coal_casing_tier");
-
-    /**
-     * Solar Factory recipe data containing minimum wafer tier and count
-     */
-    public static final RecipeMetadataKey<SolarFactoryRecipeData> SOLAR_FACTORY_RECIPE_DATA = SimpleRecipeMetadataKey
-        .create(SolarFactoryRecipeData.class, "solar_factory_wafer_data");
 
     /**
      * LFTR output power.
