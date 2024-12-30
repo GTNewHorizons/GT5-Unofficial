@@ -12977,7 +12977,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchLensIndicator(HATCH_LENS_INDICATOR.ID, "hatch.lensindicator", "Lens Indicator Hatch", 8)
                 .getStackForm(1L));
         ItemList.Hatch_Nanite.set(
-            new MTEHatchNanite(HATCH_NANITE.ID, "hatch.nanite", "Nanite Containment Bus", 8, 2048).getStackForm(1));
+            new MTEHatchNanite(HATCH_NANITE.ID, "hatch.nanite", "Nanite Containment Bus", 9, 2048).getStackForm(1));
         ItemList.Hatch_Catalyst_Bulk.set(
             new MTEHatchBulkCatalystHousing(
                 HATCH_CATALYST_BULK.ID,
