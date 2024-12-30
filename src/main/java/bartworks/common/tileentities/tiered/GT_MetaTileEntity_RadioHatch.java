@@ -84,7 +84,6 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
     private boolean lastFail = false;
     private RadioHatchMaterial radioHatchMaterial = null;
 
-    // TODO: remove aNameRegional after removing the other tiers
     public GT_MetaTileEntity_RadioHatch(int aID, String aName, String aNameRegional, int aTier, boolean isDeprecated) {
         super(
             aID,
