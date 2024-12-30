@@ -200,8 +200,11 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
                     if (GTUtility.areStacksEqual(this.lastUsedItem, lStack, true)) {
                         for (RadioHatchMaterial recipes : getRadioHatchMaterialList()) {
                             this.radioHatchMaterial = getRadioHatchMaterialFromInput(recipes, this.lastUsedItem);
+                            if (radioHatchMaterial != null) {
+                                break;
+                            }
                         }
-                        if (radioHatchMaterial.recipeSievert != 0) {
+                        if (radioHatchMaterial != null) {
                             this.sievert = this.radioHatchMaterial.recipeSievert;
                             this.mass = this.radioHatchMaterial.recipeMass;
                             this.decayTime = calcDecayTicks(radioHatchMaterial.recipeSievert);
@@ -217,11 +220,11 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
                 if (this.radioHatchMaterial == null || this.lastFail || this.radioHatchMaterial.recipeSievert == 0) {
                     for (RadioHatchMaterial recipes : getRadioHatchMaterialList()) {
                         this.radioHatchMaterial = getRadioHatchMaterialFromInput(recipes, this.mInventory[0]);
-                        if (radioHatchMaterial.recipeSievert != 0) {
+                        if (radioHatchMaterial != null) {
                             break;
                         }
                     }
-                    if (this.radioHatchMaterial == null || radioHatchMaterial.recipeSievert == 0) {
+                    if (this.radioHatchMaterial == null) {
                         this.lastFail = true;
                         this.lastUsedItem = this.mInventory[0] == null ? null : this.mInventory[0].copy();
                     } else {
@@ -306,7 +309,7 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setByte("mMass", this.mass);
-        aNBT.setInteger("mSv", this.sievert);
+        aNBT.setInteger("mSievert", this.sievert);
         aNBT.setByte("mCoverage", this.coverage);
         aNBT.setInteger("mTextColor", BWColorUtil.getColorFromRGBArray(this.getColorForGUI()));
         if (this.material != null && !this.material.isEmpty()) aNBT.setString("mMaterial", this.material);
@@ -319,7 +322,7 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
     public void loadNBTData(NBTTagCompound aNBT) {
         this.timer = aNBT.getLong("timer");
         this.mass = aNBT.getByte("mMass");
-        this.sievert = (aNBT.getByte("mSv") != 0) ? aNBT.getByte("mSv") + 100 : aNBT.getInteger("mSv");
+        this.sievert = (aNBT.getByte("mSv") != 0) ? aNBT.getByte("mSv") + 100 : aNBT.getInteger("mSievert");
         this.coverage = aNBT.getByte("mCoverage");
         this.colorForGUI = BWColorUtil.splitColorToRBGArray(aNBT.getInteger("mTextColor"));
         this.material = aNBT.getString("mMaterial");

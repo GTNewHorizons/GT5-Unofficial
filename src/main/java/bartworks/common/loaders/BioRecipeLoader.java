@@ -131,6 +131,7 @@ public class BioRecipeLoader {
                     .special(BioItemList.getPetriDish(BioCultureLoader.CommonYeast))
                     .fluidInputs(new FluidStack(fluidStack, 100))
                     .fluidOutputs(FluidRegistry.getFluidStack("potion.ghp", 1))
+                    .metadata(GLASS, 3)
                     .duration(17 * SECONDS + 10 * TICKS)
                     .eut(TierEU.RECIPE_EV)
                     .noOptimize()

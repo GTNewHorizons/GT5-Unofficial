@@ -108,6 +108,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     private int mExpectedMultiplier = 0;
     private int mTimes = 0;
     private boolean isVisibleFluid = false;
+    private final Sievert defaultSievertData = new Sievert(0, false);
 
     public MTEBioVat(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -238,7 +239,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                Sievert data = recipe.getMetadataOrDefault(GTRecipeConstants.SIEVERT, new Sievert(0, false));
+                Sievert data = recipe.getMetadataOrDefault(GTRecipeConstants.SIEVERT, defaultSievertData);
                 int sievert = data.sievert;
                 boolean isExact = data.isExact;
                 int glass = recipe.getMetadataOrDefault(GLASS, 0);

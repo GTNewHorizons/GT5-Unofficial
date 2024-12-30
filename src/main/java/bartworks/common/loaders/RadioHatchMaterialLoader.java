@@ -215,7 +215,7 @@ public class RadioHatchMaterialLoader {
             .isItemEqual(Material)) {
             return recipe;
         }
-        return (new RadioHatchMaterial(null, 0, (byte) 0));
+        return null;
     }
 
     public static List<RadioHatchMaterial> getRadioHatchMaterialList() {

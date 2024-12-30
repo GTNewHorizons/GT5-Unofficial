@@ -524,7 +524,7 @@ public class CraftingRecipes implements Runnable {
             new GT_MetaTileEntity_RadioHatch(
                 RadioHatch_HV.ID,
                 "bw.radiohatchHV",
-                "" + StatCollector.translateToLocal("tile.radiohatch.name"),
+                StatCollector.translateToLocal("tile.radiohatch.name"),
                 3,
                 false).getStackForm(1L),
             RecipeLoader.BITSD,
