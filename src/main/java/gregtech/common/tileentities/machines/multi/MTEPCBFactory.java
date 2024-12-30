@@ -474,6 +474,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         mTier = 0;
         mUpgradesInstalled = 0;
         mCoolantInputHatch = null;
+        naniteBuses.clear();
         if (mSetTier < 3) {
             if (!checkPiece(tier1, 3, 5, 0)) {
                 return false;
