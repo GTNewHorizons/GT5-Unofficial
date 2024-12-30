@@ -14,6 +14,7 @@ item.gt.advancedsensorcard.name=GregTech Advanced Sensor Card
 GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was found
 GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found
 GT5U.autoplace.error.no_mte.class_name=§cSuggested to place machine with class name §4%d§c but none was found
+GT5U.providesfullhazmatprotection=Provides full hazmat protection.
 
 # Multiblock Tooltip Builder Keywords
 # Context can be found in the class gregtech.api.util.MultiblockTooltipBuilder
