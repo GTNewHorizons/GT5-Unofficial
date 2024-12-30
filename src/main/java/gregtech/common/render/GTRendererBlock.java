@@ -76,38 +76,39 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         RenderingRegistry.registerBlockHandler(INSTANCE);
     }
 
-    private final ITexture[][] textureArray = new ITexture[6][];
+    private final ThreadLocal<ITexture[][]> textureArray = ThreadLocal.withInitial(() -> new ITexture[6][]);
 
     public boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
         RenderBlocks aRenderer) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        ITexture[][] holder = textureArray.get();
         if (tTileEntity instanceof IPipeRenderedTileEntity pipeRenderedTileEntity) {
-            textureArray[0] = pipeRenderedTileEntity.getTextureCovered(DOWN);
-            textureArray[1] = pipeRenderedTileEntity.getTextureCovered(UP);
-            textureArray[2] = pipeRenderedTileEntity.getTextureCovered(NORTH);
-            textureArray[3] = pipeRenderedTileEntity.getTextureCovered(SOUTH);
-            textureArray[4] = pipeRenderedTileEntity.getTextureCovered(WEST);
-            textureArray[5] = pipeRenderedTileEntity.getTextureCovered(EAST);
-            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
+            holder[0] = pipeRenderedTileEntity.getTextureCovered(DOWN);
+            holder[1] = pipeRenderedTileEntity.getTextureCovered(UP);
+            holder[2] = pipeRenderedTileEntity.getTextureCovered(NORTH);
+            holder[3] = pipeRenderedTileEntity.getTextureCovered(SOUTH);
+            holder[4] = pipeRenderedTileEntity.getTextureCovered(WEST);
+            holder[5] = pipeRenderedTileEntity.getTextureCovered(EAST);
+            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, holder);
         }
         if (tTileEntity instanceof IAllSidedTexturedTileEntity allSidedTexturedTileEntity) {
             ITexture[] texture = allSidedTexturedTileEntity.getTexture(aBlock);
-            textureArray[0] = texture;
-            textureArray[1] = texture;
-            textureArray[2] = texture;
-            textureArray[3] = texture;
-            textureArray[4] = texture;
-            textureArray[5] = texture;
-            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
+            holder[0] = texture;
+            holder[1] = texture;
+            holder[2] = texture;
+            holder[3] = texture;
+            holder[4] = texture;
+            holder[5] = texture;
+            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, holder);
         }
         if (tTileEntity instanceof ITexturedTileEntity texturedTileEntity) {
-            textureArray[0] = texturedTileEntity.getTexture(aBlock, DOWN);
-            textureArray[1] = texturedTileEntity.getTexture(aBlock, UP);
-            textureArray[2] = texturedTileEntity.getTexture(aBlock, NORTH);
-            textureArray[3] = texturedTileEntity.getTexture(aBlock, SOUTH);
-            textureArray[4] = texturedTileEntity.getTexture(aBlock, WEST);
-            textureArray[5] = texturedTileEntity.getTexture(aBlock, EAST);
-            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
+            holder[0] = texturedTileEntity.getTexture(aBlock, DOWN);
+            holder[1] = texturedTileEntity.getTexture(aBlock, UP);
+            holder[2] = texturedTileEntity.getTexture(aBlock, NORTH);
+            holder[3] = texturedTileEntity.getTexture(aBlock, SOUTH);
+            holder[4] = texturedTileEntity.getTexture(aBlock, WEST);
+            holder[5] = texturedTileEntity.getTexture(aBlock, EAST);
+            return renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, holder);
         }
 
         return false;
@@ -735,13 +736,14 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             int meta = aWorld.getBlockMetadata(aX, aY, aZ);
             ITexture[] texture = frameBlock.getTexture(meta);
             if (texture == null) return false;
-            textureArray[0] = texture;
-            textureArray[1] = texture;
-            textureArray[2] = texture;
-            textureArray[3] = texture;
-            textureArray[4] = texture;
-            textureArray[5] = texture;
-            renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
+            ITexture[][] holder = textureArray.get();
+            holder[0] = texture;
+            holder[1] = texture;
+            holder[2] = texture;
+            holder[3] = texture;
+            holder[4] = texture;
+            holder[5] = texture;
+            renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, holder);
             return true;
         }
 
