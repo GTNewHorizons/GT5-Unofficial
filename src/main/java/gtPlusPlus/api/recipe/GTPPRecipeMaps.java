@@ -54,6 +54,12 @@ public class GTPPRecipeMaps {
         .frontend(QuantumForceTransformerFrontend::new)
         .disableOptimize()
         .build();
+    public static final RecipeMap<RecipeMapBackend> quantumForceTransformerRecipesNoCatalysts = RecipeMapBuilder
+        .of("gtpp.recipe.quantumforcesmelternocatalysts")
+        .maxIO(6, 6, 6, 6)
+        .minInputs(1, 0)
+        .disableOptimize()
+        .build();
     public static final RecipeMap<RecipeMapBackend> chemicalDehydratorRecipes = RecipeMapBuilder
         .of("gtpp.recipe.chemicaldehydrator")
         .maxIO(2, 9, 1, 1)
