@@ -830,22 +830,20 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             if (aActive) {
-                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(15)),
-                    TextureFactory.builder()
-                        .addIcon(TexturesGtBlock.oMCAQFTActive)
-                        .extFacing()
-                        .build(),
+                return new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.oMCAQFTActive)
+                    .extFacing()
+                    .build(),
                     TextureFactory.builder()
                         .addIcon(TexturesGtBlock.oMCAQFTActiveGlow)
                         .extFacing()
                         .glow()
                         .build() };
             }
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(15)),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAQFT)
-                    .extFacing()
-                    .build(),
+            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                .addIcon(TexturesGtBlock.oMCAQFT)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(TexturesGtBlock.oMCAQFTGlow)
                     .extFacing()
