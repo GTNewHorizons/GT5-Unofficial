@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -28,6 +29,13 @@ public class MTEHatchNanite extends MTEHatchNonConsumableBase {
     @Override
     protected int getItemCapacity() {
         return naniteCapacity;
+    }
+
+    public Materials getStoredNaniteMaterial() {
+        if (getItemStack() == null) return null;
+        ItemData data = GTOreDictUnificator.getAssociation(getItemStack());
+        if (data == null) return null;
+        return data.mMaterial.mMaterial;
     }
 
     @Override

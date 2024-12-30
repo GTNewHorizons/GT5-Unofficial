@@ -66,7 +66,7 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch implements IMEM
         return true;
     }
 
-    protected ItemStack getItemStack() {
+    public ItemStack getItemStack() {
         return itemStack;
     }
 
@@ -74,7 +74,7 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch implements IMEM
         itemStack = stack;
     }
 
-    protected int getItemCount() {
+    public int getItemCount() {
         return itemCount;
     }
 

@@ -20,9 +20,8 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 
@@ -64,10 +63,10 @@ import blockrenderer6343.client.world.ClientFakePlayer;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -76,8 +75,7 @@ import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.objects.ItemData;
+import gregtech.api.metatileentity.implementations.MTEHatchNanite;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -88,16 +86,15 @@ import gregtech.api.recipe.metadata.PCBFactoryUpgrade;
 import gregtech.api.recipe.metadata.PCBFactoryUpgradeKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings8;
-import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory> implements ISurvivalConstructable {
@@ -114,18 +111,12 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private int mUpgradesInstalled = 0;
     private final int mCurrentParallel = 0;
     private int mMaxParallel = 0;
-    private final Map<Materials, Integer> storedNanites = new HashMap<>() {
-
-        {
-            put(Materials.Silver, 0);
-            put(Materials.Gold, 0);
-        }
-    };
     private boolean mBioUpgrade = false, mBioRotate = false, mOCTier1 = false, mOCTier2 = false;
     private final int[] mBioOffsets = new int[] { -5, -1 };
     private final int[] mOCTier1Offsets = new int[] { 2, -11 };
     private final int[] mOCTier2Offsets = new int[] { 2, -11 };
     private MTEHatchInput mCoolantInputHatch;
+    private final ArrayList<MTEHatchNanite> naniteBuses = new ArrayList<>();
     private static final int mBioRotateBitMap = 0b1000000;
     private static final int mOCTier2BitMap = 0b100000;
     private static final int mOCTier1BitMap = 0b10000;
@@ -134,12 +125,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private static final int mTier2BitMap = 0b10;
     private static final int mTier1BitMap = 0b1;
     private static final int COOLANT_CONSUMED_PER_SEC = 10;
-    private static final int MAX_NANITE_COUNT = 2048;
-    private static final int BIO_OFFSET_X = -5;
-    private static final int BIO_OFFSET_Y = -1;
-    private static final int COOLING_OFFSET_X = 2;
-    private static final int COOLING_OFFSET_Y = -11;
-    private static final List<Materials> VALID_NANITE_MATERIALS = Arrays.asList(Materials.Silver, Materials.Gold);
     private static final IStructureDefinition<MTEPCBFactory> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEPCBFactory>builder()
         .addShape(
@@ -255,7 +240,13 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         .addElement(
             'P',
             buildHatchAdder(MTEPCBFactory.class)
-                .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
+                .atLeast(
+                    InputHatch,
+                    OutputBus,
+                    InputBus,
+                    Maintenance,
+                    Energy.or(ExoticEnergy),
+                    SpecialHatchElement.NaniteBus)
                 .dot(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(11))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 11))
@@ -266,7 +257,13 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         .addElement(
             'J',
             buildHatchAdder(MTEPCBFactory.class)
-                .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
+                .atLeast(
+                    InputHatch,
+                    OutputBus,
+                    InputBus,
+                    Maintenance,
+                    Energy.or(ExoticEnergy),
+                    SpecialHatchElement.NaniteBus)
                 .dot(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(13))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 13))
@@ -570,8 +567,21 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 int numberOfNanites = 0;
                 Materials naniteMaterial = recipe.getMetadata(GTRecipeConstants.PCB_NANITE_MATERIAL);
                 if (naniteMaterial != null) {
-                    numberOfNanites = storedNanites.get(naniteMaterial);
-                    if (numberOfNanites == 0) {
+                    if (naniteBuses.isEmpty()) {
+                        return SimpleCheckRecipeResult.ofFailure("nanites_missing");
+                    }
+                    boolean nanitesFound = false;
+                    for (MTEHatchNanite naniteBus : naniteBuses) {
+                        ItemStack storedNanites = naniteBus.getItemStack();
+                        Materials storedNaniteMaterial = naniteBus.getStoredNaniteMaterial();
+                        if (storedNanites == null || storedNaniteMaterial != naniteMaterial) {
+                            continue;
+                        }
+                        numberOfNanites = naniteBus.getItemCount();
+                        nanitesFound = true;
+                        break;
+                    }
+                    if (!nanitesFound) {
                         return SimpleCheckRecipeResult.ofFailure("nanites_missing");
                     }
                 }
@@ -647,45 +657,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             // TODO: Look for proper fix
             // Updates every 10 sec
             if (mUpdate <= -150) mUpdate = 50;
-
-            if (aTick % 100 == 0) {
-                for (MTEHatchInputBus inputBus : mInputBusses) {
-                    ItemStack[] busInventory = inputBus.getRealInventory();
-                    for (int j = 0; j < busInventory.length; j++) {
-                        ItemStack itemStack = busInventory[j];
-                        if (itemStack == null) {
-                            continue;
-                        }
-                        ItemData data = GTOreDictUnificator.getAssociation(itemStack);
-                        if (data == null) {
-                            continue;
-                        }
-                        OrePrefixes prefix = data.mPrefix;
-                        Materials mat = data.mMaterial.mMaterial;
-                        if (prefix == OrePrefixes.nanite && VALID_NANITE_MATERIALS.contains(mat)) {
-                            if (storedNanites.get(mat) == 2048) {
-                                continue;
-                            }
-                            int stacksize = itemStack.stackSize;
-                            startRecipeProcessing();
-                            if (inputBus instanceof MTEHatchInputBusME meBus) {
-                                ItemStack realItem = meBus.getRealInventory()[j + 16];
-                                if (realItem == null) {
-                                    break;
-                                }
-                                stacksize = realItem.stackSize;
-                            }
-                            int storedNaniteAmount = storedNanites.get(mat);
-                            int absorbedNanites = Math.min(stacksize, MAX_NANITE_COUNT - storedNaniteAmount);
-                            inputBus.decrStackSize(j, absorbedNanites);
-                            int updatedAmount = storedNaniteAmount + absorbedNanites;
-                            storedNanites.put(mat, updatedAmount);
-                            endRecipeProcessing();
-                        }
-                    }
-                    inputBus.updateSlots();
-                }
-            }
         }
     }
 
@@ -1008,69 +979,41 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     @Override
-    public void setItemNBT(NBTTagCompound NBT) {
-        NBTTagCompound naniteTag = new NBTTagCompound();
-        boolean empty = true;
-        for (Materials naniteMat : storedNanites.keySet()) {
-            int naniteAmount = storedNanites.get(naniteMat);
-            if (naniteAmount != 0) {
-                empty = false;
-            }
-            naniteTag.setInteger(naniteMat.toString(), naniteAmount);
-        }
-        if (!empty) {
-            NBT.setTag("storedNanites", naniteTag);
-        }
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("mBioUpgrade", mBioUpgrade);
+        aNBT.setBoolean("mBioRotate", mBioRotate);
+        aNBT.setInteger("mBioOffsetX", mBioOffsets[0]);
+        aNBT.setInteger("mBioOffsetZ", mBioOffsets[1]);
+        aNBT.setBoolean("mOCTier1Upgrade", mOCTier1);
+        aNBT.setInteger("mOCTier1OffsetX", mOCTier1Offsets[0]);
+        aNBT.setInteger("mOCTier1OffsetZ", mOCTier1Offsets[1]);
+        aNBT.setBoolean("mOCTier2Upgrade", mOCTier2);
+        aNBT.setInteger("mOCTier2OffsetX", mOCTier2Offsets[0]);
+        aNBT.setInteger("mOCTier2OffsetZ", mOCTier2Offsets[1]);
+        aNBT.setFloat("mRoughnessMultiplier", mRoughnessMultiplier);
+        aNBT.setInteger("mSetTier", mSetTier);
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound NBT) {
-        super.saveNBTData(NBT);
-        NBT.setBoolean("mBioUpgrade", mBioUpgrade);
-        NBT.setBoolean("mBioRotate", mBioRotate);
-        NBT.setInteger("mBioOffsetX", mBioOffsets[0]);
-        NBT.setInteger("mBioOffsetZ", mBioOffsets[1]);
-        NBT.setBoolean("mOCTier1Upgrade", mOCTier1);
-        NBT.setInteger("mOCTier1OffsetX", mOCTier1Offsets[0]);
-        NBT.setInteger("mOCTier1OffsetZ", mOCTier1Offsets[1]);
-        NBT.setBoolean("mOCTier2Upgrade", mOCTier2);
-        NBT.setInteger("mOCTier2OffsetX", mOCTier2Offsets[0]);
-        NBT.setInteger("mOCTier2OffsetZ", mOCTier2Offsets[1]);
-        NBT.setFloat("mRoughnessMultiplier", mRoughnessMultiplier);
-        NBT.setInteger("mSetTier", mSetTier);
-
-        NBTTagCompound naniteTag = new NBTTagCompound();
-        for (Materials naniteMat : storedNanites.keySet()) {
-            naniteTag.setInteger(naniteMat.toString(), storedNanites.get(naniteMat));
-        }
-        NBT.setTag("storedNanites", naniteTag);
-    }
-
-    @Override
-    public void loadNBTData(final NBTTagCompound NBT) {
-        super.loadNBTData(NBT);
-        if (NBT.hasKey("mSeparate")) {
+    public void loadNBTData(final NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if (aNBT.hasKey("mSeparate")) {
             // backward compatibility
-            inputSeparation = NBT.getBoolean("mSeparate");
+            inputSeparation = aNBT.getBoolean("mSeparate");
         }
-        mBioUpgrade = NBT.getBoolean("mBioUpgrade");
-        mBioRotate = NBT.getBoolean("mBioRotate");
-        mBioOffsets[0] = NBT.hasKey("mRoughnessMultiplier") ? NBT.getInteger("mBioOffsetX") : BIO_OFFSET_X;
-        mBioOffsets[1] = NBT.hasKey("mRoughnessMultiplier") ? NBT.getInteger("mBioOffsetZ") : BIO_OFFSET_Y;
-        mOCTier1 = NBT.getBoolean("mOCTier1Upgrade");
-        mOCTier1Offsets[0] = NBT.hasKey("mRoughnessMultiplier") ? NBT.getInteger("mOCTier1OffsetX") : COOLING_OFFSET_X;
-        mOCTier1Offsets[1] = NBT.hasKey("mRoughnessMultiplier") ? NBT.getInteger("mOCTier1OffsetZ") : COOLING_OFFSET_Y;
-        mOCTier2 = NBT.getBoolean("mOCTier2Upgrade");
-        mOCTier2Offsets[0] = NBT.hasKey("mRoughnessMultiplier") ? NBT.getInteger("mOCTier2OffsetX") : COOLING_OFFSET_X;
-        mOCTier2Offsets[1] = NBT.hasKey("mRoughnessMultiplier") ? NBT.getInteger("mOCTier2OffsetZ") : COOLING_OFFSET_Y;
-        mRoughnessMultiplier = NBT.hasKey("mRoughnessMultiplier") ? NBT.getFloat("mRoughnessMultiplier") : 1;
-        mSetTier = NBT.hasKey("mRoughnessMultiplier") ? NBT.getInteger("mSetTier") : 1;
-
-        NBTTagCompound naniteTag = NBT.getCompoundTag("storedNanites");
-        for (Materials material : storedNanites.keySet()) {
-            int storedAmount = naniteTag.getInteger(material.toString());
-            storedNanites.put(material, storedAmount);
-        }
+        mBioUpgrade = aNBT.getBoolean("mBioUpgrade");
+        mBioRotate = aNBT.getBoolean("mBioRotate");
+        mBioOffsets[0] = aNBT.getInteger("mBioOffsetX");
+        mBioOffsets[1] = aNBT.getInteger("mBioOffsetZ");
+        mOCTier1 = aNBT.getBoolean("mOCTier1Upgrade");
+        mOCTier1Offsets[0] = aNBT.getInteger("mOCTier1OffsetX");
+        mOCTier1Offsets[1] = aNBT.getInteger("mOCTier1OffsetZ");
+        mOCTier2 = aNBT.getBoolean("mOCTier2Upgrade");
+        mOCTier2Offsets[0] = aNBT.getInteger("mOCTier2OffsetX");
+        mOCTier2Offsets[1] = aNBT.getInteger("mOCTier2OffsetZ");
+        mRoughnessMultiplier = aNBT.getFloat("mRoughnessMultiplier");
+        mSetTier = aNBT.getInteger("mSetTier");
     }
 
     @Override
@@ -1344,6 +1287,46 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                             .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                     .setPos(110, 25));
         return builder.build();
+    }
+
+    public boolean addNaniteBusToMachineList(IGregTechTileEntity tileEntity, int baseCasingIndex) {
+        if (tileEntity == null) return false;
+        IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
+        if (metaTileEntity instanceof MTEHatchNanite naniteBus) {
+            naniteBus.updateTexture(baseCasingIndex);
+            this.naniteBuses.add(naniteBus);
+            return true;
+        }
+        return false;
+    }
+
+    private enum SpecialHatchElement implements IHatchElement<MTEPCBFactory> {
+
+        NaniteBus(MTEPCBFactory::addNaniteBusToMachineList, MTEHatchNanite.class) {
+
+            @Override
+            public long count(MTEPCBFactory gtMetaTileEntityPCBFactory) {
+                return gtMetaTileEntityPCBFactory.naniteBuses.size();
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<MTEPCBFactory> adder;
+
+        @SafeVarargs
+        SpecialHatchElement(IGTHatchAdder<MTEPCBFactory> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        public IGTHatchAdder<? super MTEPCBFactory> adder() {
+            return adder;
+        }
     }
 
     @Override
