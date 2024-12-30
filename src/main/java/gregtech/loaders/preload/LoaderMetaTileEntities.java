@@ -947,6 +947,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.metatileentity.implementations.MTEFluid;
 import gregtech.api.metatileentity.implementations.MTEFrame;
+import gregtech.api.metatileentity.implementations.MTEHatchBulkCatalystHousing;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
@@ -12977,6 +12978,13 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1L));
         ItemList.Hatch_Nanite.set(
             new MTEHatchNanite(HATCH_NANITE.ID, "hatch.nanite", "Nanite Containment Bus", 8, 2048).getStackForm(1));
+        ItemList.Hatch_Catalyst_Bulk.set(
+            new MTEHatchBulkCatalystHousing(
+                HATCH_CATALYST_BULK.ID,
+                "hatch.catalystbulk",
+                "Bulk Catalyst Housing",
+                10,
+                Integer.MAX_VALUE).getStackForm(1));
         generateWiresAndPipes();
     }
 
