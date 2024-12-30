@@ -900,7 +900,14 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addOutputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
             .addInputHatch(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
             .addStructureInfo(
-                "Coolant Hatch (Input Hatch): " + EnumChatFormatting.GOLD
+                EnumChatFormatting.WHITE + "Nanite Containment Bus: "
+                    + EnumChatFormatting.GOLD
+                    + "0"
+                    + EnumChatFormatting.GRAY
+                    + "+")
+            .addStructureInfo(
+                EnumChatFormatting.WHITE + "Coolant Hatch (Input Hatch): "
+                    + EnumChatFormatting.GOLD
                     + "1"
                     + EnumChatFormatting.GRAY
                     + " Center of the Liquid Cooling/Thermosink")

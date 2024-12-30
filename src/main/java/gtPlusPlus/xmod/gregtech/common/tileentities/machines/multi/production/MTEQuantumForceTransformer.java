@@ -283,6 +283,12 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addOutputBus(EnumChatFormatting.AQUA + "Top" + EnumChatFormatting.GRAY + " Layer", 5)
             .addEnergyHatch(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
             .addStructureInfo(
+                EnumChatFormatting.WHITE + "Bulk Catalyst Housing: "
+                    + EnumChatFormatting.BLUE
+                    + "Bottom"
+                    + EnumChatFormatting.GRAY
+                    + " Layer")
+            .addStructureInfo(
                 EnumChatFormatting.WHITE + "Neptunium Plasma Hatch: "
                     + EnumChatFormatting.GREEN
                     + "Left"
