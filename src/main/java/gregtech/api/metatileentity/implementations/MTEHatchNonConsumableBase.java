@@ -135,6 +135,7 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch implements IMEM
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        tooltip.add("Capacity: " + EnumChatFormatting.GOLD + getItemCapacity() + EnumChatFormatting.GRAY + " Items");
         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("itemStack")) {
             final ItemStack tContents = ItemStack
                 .loadItemStackFromNBT(stack.stackTagCompound.getCompoundTag("itemStack"));
