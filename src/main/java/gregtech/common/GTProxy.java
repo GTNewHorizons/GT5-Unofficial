@@ -2766,7 +2766,9 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             ItemStack aStackTemp = event.itemStack;
             GTItemStack aStack = new GTItemStack(aStackTemp);
             if (providesProtection(aStackTemp)) {
-                event.toolTip.add(EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal("GT5U.providesfullhazmatprotection"));
+                event.toolTip.add(
+                    EnumChatFormatting.LIGHT_PURPLE
+                        + StatCollector.translateToLocal("GT5U.providesfullhazmatprotection"));
             }
         }
     }
