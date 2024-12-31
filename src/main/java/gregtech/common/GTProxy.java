@@ -76,6 +76,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
@@ -538,7 +539,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public boolean mAxeWhenAdventure = true;
     public boolean mSurvivalIntoAdventure = false;
     public boolean mNerfedWoodPlank = true;
-    public boolean mNerfedVanillaTools = true;
+    public boolean mChangeWoodenVanillaTools = true;
     public boolean mHungerEffect = true;
     public boolean mIgnoreTcon = true;
     public boolean mAchievements = true;
@@ -2765,7 +2766,9 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             ItemStack aStackTemp = event.itemStack;
             GTItemStack aStack = new GTItemStack(aStackTemp);
             if (providesProtection(aStackTemp)) {
-                event.toolTip.add(EnumChatFormatting.LIGHT_PURPLE + "Provides full hazmat protection.");
+                event.toolTip.add(
+                    EnumChatFormatting.LIGHT_PURPLE
+                        + StatCollector.translateToLocal("GT5U.providesfullhazmatprotection"));
             }
         }
     }
