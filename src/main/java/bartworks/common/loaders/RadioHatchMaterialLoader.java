@@ -115,9 +115,9 @@ public class RadioHatchMaterialLoader {
         radioHatchMaterialAdder(ItemList.Moxcell_1.get(1), (int) Materials.Plutonium.getProtons(), (byte) 3);
         radioHatchMaterialAdder(ItemList.Moxcell_2.get(1), (int) Materials.Plutonium.getProtons(), (byte) 6);
         radioHatchMaterialAdder(ItemList.Moxcell_4.get(1), (int) Materials.Plutonium.getProtons(), (byte) 12);
-        radioHatchMaterialAdder(ItemList.Uraniumcell_1.get(1), (int) Materials.Duranium.getProtons(), (byte) 3);
-        radioHatchMaterialAdder(ItemList.Uraniumcell_2.get(1), (int) Materials.Duranium.getProtons(), (byte) 6);
-        radioHatchMaterialAdder(ItemList.Uraniumcell_4.get(1), (int) Materials.Duranium.getProtons(), (byte) 12);
+        radioHatchMaterialAdder(ItemList.Uraniumcell_1.get(1), (int) Materials.Uranium.getProtons(), (byte) 3);
+        radioHatchMaterialAdder(ItemList.Uraniumcell_2.get(1), (int) Materials.Uranium.getProtons(), (byte) 6);
+        radioHatchMaterialAdder(ItemList.Uraniumcell_4.get(1), (int) Materials.Uranium.getProtons(), (byte) 12);
         radioHatchMaterialAdder(
             BWNonMetaMaterialItems.TiberiumCell_1.get(1),
             (int) WerkstoffLoader.Tiberium.getBridgeMaterial()
