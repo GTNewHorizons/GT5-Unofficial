@@ -2205,7 +2205,6 @@ public enum ItemList implements IItemContainer {
     Hull_UMV,
     Hull_UXV,
     Hull_MAXV,
-    // todo: move them from gt.blockcasingsNH in NHCore to here
     Casing_UEV,
     Casing_UIV,
     Casing_UMV,
