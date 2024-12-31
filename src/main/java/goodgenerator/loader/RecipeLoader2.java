@@ -34,7 +34,6 @@ import static gregtech.api.util.GTRecipeConstants.PRECISE_ASSEMBLER_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_TIME;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-import static tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
