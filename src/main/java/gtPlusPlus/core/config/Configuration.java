@@ -54,6 +54,7 @@ public class Configuration {
 
         @Config.Comment("Rotors below this durability will be removed, prevents NEI clutter. Minimum Durability is N * x, where N is the new value set and x is the turbine size, where 1 is Tiny and 4 is Huge. Set to 0 to disable.")
         @Config.DefaultInt(25_500)
+        @Config.RequiresMcRestart // this affects item generation and cannot be changed at runtime easily
         public int turbineCutoffBase;
     }
 
