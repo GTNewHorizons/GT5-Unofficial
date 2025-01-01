@@ -18,6 +18,7 @@ import java.util.function.Predicate;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -838,6 +839,10 @@ public class GTMod implements IGTMod {
             if (mapping.type == GameRegistry.Type.BLOCK) {
                 if ("dreamcraft:gt.blockcasingsNH".equals(mapping.name)) {
                     mapping.remap(GregTechAPI.sBlockCasingsNH);
+                }
+            } else if (mapping.type == GameRegistry.Type.ITEM) {
+                if ("dreamcraft:gt.blockcasingsNH".equals(mapping.name)) {
+                    mapping.remap(Item.getItemFromBlock(GregTechAPI.sBlockCasingsNH));
                 }
             }
         }
