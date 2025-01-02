@@ -1,9 +1,9 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CHARCOAL_PIT;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CHARCOAL_PIT_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CHARCOAL_PIT_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CHARCOAL_PIT_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
@@ -266,13 +266,13 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == ForgeDirection.UP) {
             if (aActive) return new ITexture[] { casingTexturePages[0][10],
-                TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE), TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW)
+                TextureFactory.of(OVERLAY_CHARCOAL_PIT_ACTIVE), TextureFactory.builder()
+                    .addIcon(OVERLAY_CHARCOAL_PIT_ACTIVE_GLOW)
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[0][10], TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER),
+            return new ITexture[] { casingTexturePages[0][10], TextureFactory.of(OVERLAY_CHARCOAL_PIT),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ROCK_BREAKER_GLOW)
+                    .addIcon(OVERLAY_CHARCOAL_PIT_GLOW)
                     .glow()
                     .build(), };
         }
