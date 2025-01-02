@@ -100,7 +100,9 @@ achievement.item.dysonSwarmModule.desc=Pickup this item to see the recipe in NEI
 
 
 # Items
+item.SpaceElevatorParts.name=Space Elevator Component
 item.nanotubeSpool.name=Nanotube Spool
+item.MiningDrone.name=Mining Drone
 item.MiningDroneLV.name=Mining Drone MK-I
 item.MiningDroneMV.name=Mining Drone MK-II
 item.MiningDroneHV.name=Mining Drone MK-III
@@ -115,6 +117,7 @@ item.MiningDroneUIV.name=Mining Drone MK-XI
 item.MiningDroneUMV.name=Mining Drone MK-XII
 item.MiningDroneUXV.name=Mining Drone MK-XIII
 item.MiningDroneMAX.name=Mining Drone MK-XIV
+item.DysonSwarmParts.name=Dyson Swarm Component
 item.dysonSwarmModule.name=Dyson Swarm Module
 item.TaHfCNanofibers.name=Tantalum Hafnium Carbide Nanofibers
 item.NtNanofibers.name=Neutronium Nanofibers
@@ -123,6 +126,7 @@ item.TaHfNanoparticles.name=Tantalum Hafnium Carbide Nanoparticles
 item.NtNanoparticles.name=Neutronium Nanoparticles
 
 # Blocks
+gt.blockcasingsSE.name=Space Elevator Part
 gt.blockcasings.ig.0.name=Space Elevator Base Casing
 gt.blockcasings.ig.0.desc0=Strong enough to support the Space Elevator
 gt.blockcasings.ig.0.desc1=To the moon!
@@ -132,9 +136,11 @@ gt.blockcasings.ig.1.desc1=I sure hope they are strong enough
 gt.blockcasings.ig.2.name=Space Elevator Internal Structure
 gt.blockcasings.ig.2.desc0=Reinforces the structure of your Space Elevator
 gt.blockcasings.ig.2.desc1=Looks nice too!
+tile.SpaceElevatorCable.name=Space Elevator Cable
 gt.blockcasings.ig.cable.name=Space Elevator Cable
 gt.blockcasings.ig.cable.desc0=Connects the counter weight with the base structure
 gt.blockcasings.ig.cable.desc1=Would be a shame if this would tear
+gt.blockcasingsSEMotor.name=Space Elevator Motor
 gt.blockcasings.ig.motor.t1.name=Space Elevator Motor MK-I
 gt.blockcasings.ig.motor.t2.name=Space Elevator Motor MK-II
 gt.blockcasings.ig.motor.t3.name=Space Elevator Motor MK-III
@@ -147,6 +153,7 @@ gt.blockcasings.ig.motor.t3.desc1=Zooooom
 gt.blockcasings.ig.motor.t4.desc1=I AM SPEED
 gt.blockcasings.ig.motor.t5.desc1=Kachow
 gt.blockcasings.ig.motor.desc2=Unlocks %s Module-Slots in the Space Elevator
+tile.DysonSwarmPart.name=Dyson Swarm Part
 tile.DysonSwarmReceiverCasing.name=Dyson Swarm Energy Receiver Base Casing
 tile.DysonSwarmReceiverDish.name=Dyson Swarm Energy Receiver Dish Block
 tile.DysonSwarmDeploymentUnitCasing.name=Dyson Swarm Module Deployment Unit Base Casing
