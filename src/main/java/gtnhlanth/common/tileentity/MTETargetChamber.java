@@ -340,6 +340,8 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
         if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
 
+        if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
+
         if (batchAmount > maxParallel) batchAmount = (int) maxParallel;
 
         tRecipe.consumeInput(batchAmount, new FluidStack[] {}, tItemsWithFocusItemArray);
