@@ -524,8 +524,9 @@ public class CraftingRecipes implements Runnable {
             new GT_MetaTileEntity_RadioHatch(
                 RadioHatch_HV.ID,
                 "bw.radiohatchHV",
-                "HV " + StatCollector.translateToLocal("tile.radiohatch.name"),
-                3).getStackForm(1L),
+                StatCollector.translateToLocal("tile.radiohatch.name"),
+                3,
+                false).getStackForm(1L),
             RecipeLoader.BITSD,
             new Object[] { "DPD", "DCD", "DKD", 'D',
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 1L), 'C',
@@ -533,70 +534,39 @@ public class CraftingRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Gold, 1L), 'P',
                 ItemList.Electric_Piston_HV.get(1) });
 
-        GTModHandler.addCraftingRecipe(
-            new GT_MetaTileEntity_RadioHatch(
-                RadioHatch_EV.ID,
-                "bw.radiohatchEV",
-                "EV " + StatCollector.translateToLocal("tile.radiohatch.name"),
-                4).getStackForm(1L),
-            RecipeLoader.BITSD,
-            new Object[] { "DPD", "DCD", "DKD", 'D',
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 1L), 'C',
-                ItemList.MACHINE_HULLS[4].get(1L), 'K',
-                GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Aluminium, 1L), 'P',
-                ItemList.Electric_Piston_EV.get(1) });
+        new GT_MetaTileEntity_RadioHatch(
+            RadioHatch_EV.ID,
+            "bw.radiohatchEV",
+            "EV " + StatCollector.translateToLocal("tile.radiohatch.name"),
+            4,
+            true);
 
-        GTModHandler.addCraftingRecipe(
-            new GT_MetaTileEntity_RadioHatch(
-                RadioHatch_IV.ID,
-                "bw.radiohatchIV",
-                "IV " + StatCollector.translateToLocal("tile.radiohatch.name"),
-                5).getStackForm(1L),
-            RecipeLoader.BITSD,
-            new Object[] { "DPD", "DCD", "DKD", 'D',
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 1L), 'C',
-                ItemList.MACHINE_HULLS[5].get(1L), 'K',
-                GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Tungsten, 1L), 'P',
-                ItemList.Electric_Piston_IV.get(1) });
+        new GT_MetaTileEntity_RadioHatch(
+            RadioHatch_IV.ID,
+            "bw.radiohatchIV",
+            "IV " + StatCollector.translateToLocal("tile.radiohatch.name"),
+            5,
+            true);
 
-        GTModHandler.addCraftingRecipe(
-            new GT_MetaTileEntity_RadioHatch(
-                RadioHatch_LuV.ID,
-                "bw.radiohatchLuV",
-                "LuV " + StatCollector.translateToLocal("tile.radiohatch.name"),
-                6).getStackForm(1L),
-            RecipeLoader.BITSD,
-            new Object[] { "DPD", "DCD", "DKD", 'D',
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 1L), 'C',
-                ItemList.MACHINE_HULLS[6].get(1L), 'K',
-                GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.VanadiumGallium, 1L), 'P',
-                ItemList.Electric_Piston_LuV.get(1) });
+        new GT_MetaTileEntity_RadioHatch(
+            RadioHatch_LuV.ID,
+            "bw.radiohatchLuV",
+            "LuV " + StatCollector.translateToLocal("tile.radiohatch.name"),
+            6,
+            true);
 
-        GTModHandler.addCraftingRecipe(
-            new GT_MetaTileEntity_RadioHatch(
-                RadioHatch_ZPM.ID,
-                "bw.radiohatchZPM",
-                "ZPM " + StatCollector.translateToLocal("tile.radiohatch.name"),
-                7).getStackForm(1L),
-            RecipeLoader.BITSD,
-            new Object[] { "DPD", "DCD", "DKD", 'D',
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 1L), 'C',
-                ItemList.MACHINE_HULLS[7].get(1L), 'K',
-                GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Naquadah, 1L), 'P',
-                ItemList.Electric_Piston_ZPM.get(1) });
+        new GT_MetaTileEntity_RadioHatch(
+            RadioHatch_ZPM.ID,
+            "bw.radiohatchZPM",
+            "ZPM " + StatCollector.translateToLocal("tile.radiohatch.name"),
+            7,
+            true);
 
-        GTModHandler.addCraftingRecipe(
-            new GT_MetaTileEntity_RadioHatch(
-                RadioHatch_UV.ID,
-                "bw.radiohatchUV",
-                "UV " + StatCollector.translateToLocal("tile.radiohatch.name"),
-                8).getStackForm(1L),
-            RecipeLoader.BITSD,
-            new Object[] { "DPD", "DCD", "DKD", 'D',
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 1L), 'C',
-                ItemList.MACHINE_HULLS[8].get(1L), 'K',
-                GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.NaquadahAlloy, 1L), 'P',
-                ItemList.Electric_Piston_UV.get(1) });
-
+        new GT_MetaTileEntity_RadioHatch(
+            RadioHatch_UV.ID,
+            "bw.radiohatchUV",
+            "UV " + StatCollector.translateToLocal("tile.radiohatch.name"),
+            8,
+            true);
     }
 }

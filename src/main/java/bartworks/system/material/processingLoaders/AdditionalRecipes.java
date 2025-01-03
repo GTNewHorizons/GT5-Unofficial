@@ -15,7 +15,6 @@ package bartworks.system.material.processingLoaders;
 
 import static bartworks.API.recipe.BartWorksRecipeMaps.bacterialVatRecipes;
 import static bartworks.API.recipe.BartWorksRecipeMaps.bioLabRecipes;
-import static bartworks.util.BWRecipes.computeSieverts;
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.enums.OrePrefixes.bolt;
 import static gregtech.api.enums.OrePrefixes.crushed;
@@ -49,7 +48,7 @@ import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
-import static gregtech.api.util.GTRecipeConstants.SIEVERTS;
+import static gregtech.api.util.GTRecipeConstants.GLASS;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 
 import java.util.Arrays;
@@ -232,7 +231,7 @@ public class AdditionalRecipes {
                         .special(BioItemList.getPetriDish(bioCulture))
                         .fluidInputs(fluidStack)
                         .fluidOutputs(new FluidStack(bioCulture.getFluid(), 10))
-                        .metadata(SIEVERTS, computeSieverts(0, 3, false, false, false))
+                        .metadata(GLASS, 3)
                         .duration(50 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
                         .addTo(bacterialVatRecipes);
