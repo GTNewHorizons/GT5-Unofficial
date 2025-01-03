@@ -110,22 +110,22 @@ public interface ILazyCoverable extends ICoverable {
     }
 
     @Override
-    default byte getMetaID(int arg0, int arg1, int arg2) {
+    default int getMetaID(int arg0, int arg1, int arg2) {
         return 0;
     }
 
     @Override
-    default byte getMetaIDOffset(int arg0, int arg1, int arg2) {
+    default int getMetaIDOffset(int arg0, int arg1, int arg2) {
         return 0;
     }
 
     @Override
-    default byte getMetaIDAtSide(ForgeDirection side) {
+    default int getMetaIDAtSide(ForgeDirection side) {
         return 0;
     }
 
     @Override
-    default byte getMetaIDAtSideAndDistance(ForgeDirection side, int arg1) {
+    default int getMetaIDAtSideAndDistance(ForgeDirection side, int arg1) {
         return 0;
     }
 

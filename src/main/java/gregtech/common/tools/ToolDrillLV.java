@@ -90,7 +90,7 @@ public class ToolDrillLV extends GTTool {
     }
 
     @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+    public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "pickaxe", "shovel")
             || GTToolHarvestHelper.isAppropriateMaterial(
                 aBlock,

@@ -172,7 +172,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
     private void checkMachineProblem(String msg, int xOff, int yOff, int zOff) {
         final IGregTechTileEntity te = this.getBaseMetaTileEntity();
         final Block tBlock = te.getBlockOffset(xOff, yOff, zOff);
-        final byte tMeta = te.getMetaIDOffset(xOff, yOff, zOff);
+        final int tMeta = te.getMetaIDOffset(xOff, yOff, zOff);
         String name = tBlock.getLocalizedName();
         String problem = msg + ": (" + xOff + ", " + yOff + ", " + zOff + ") " + name + ":" + tMeta;
         checkMachineProblem(problem);

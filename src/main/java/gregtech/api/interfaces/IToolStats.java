@@ -47,7 +47,7 @@ public interface IToolStats {
      * @param tile     TileEntity of the block if exist
      * @param event    the event, cancel it to prevent the block from being broken
      */
-    default void onBreakBlock(@Nonnull EntityPlayer player, int x, int y, int z, @Nonnull Block block, byte metadata,
+    default void onBreakBlock(@Nonnull EntityPlayer player, int x, int y, int z, @Nonnull Block block, int metadata,
         @Nullable TileEntity tile, @Nonnull BlockEvent.BreakEvent event) {}
 
     /**
@@ -164,7 +164,7 @@ public interface IToolStats {
      * @return If this is a minable Block. Tool Quality checks (like Diamond Tier or something) are separate from this
      *         check.
      */
-    boolean isMinableBlock(Block aBlock, byte aMetaData);
+    boolean isMinableBlock(Block aBlock, int aMetaData);
 
     /**
      * This lets you modify the Drop List, when this type of Tool has been used.
@@ -172,7 +172,7 @@ public interface IToolStats {
      * @return the Amount of modified Items, used to determine the extra durability cost
      */
     int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY,
-        int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent);
+        int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent);
 
     /**
      * @return Returns a broken Version of the Item.
@@ -193,7 +193,7 @@ public interface IToolStats {
 
     short[] getRGBa(boolean aIsToolHead, ItemStack aStack);
 
-    float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World worldObj, int aX,
+    float getMiningSpeed(Block aBlock, int aMetaData, float aDefault, EntityPlayer aPlayer, World worldObj, int aX,
         int aY, int aZ);
 
     default String getToolTypeName() {
