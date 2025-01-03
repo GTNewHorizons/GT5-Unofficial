@@ -66,6 +66,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     private static final int CASING_INDEX_FRONT = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings3, 10); // Grate
     private static final int CASING_INDEX_CENTRE = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings5, 14); // Shielded
                                                                                                                     // Acc.
+    private RecipeTC lastRecipe;
 
     private float inputEnergy;
     private float inputRate;
@@ -275,6 +276,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
                     && !(inputInfo.getEnergy() < recipeTc.minEnergy || inputInfo.getEnergy() > recipeTc.maxEnergy));
 
             })
+            .cachedRecipe(this.lastRecipe)
             .find();
 
         if (tRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
@@ -335,6 +337,8 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
         if (maxParallel < 1) // Insufficient items
             return CheckRecipeResultRegistry.NO_RECIPE;
+
+        if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
 
         if (batchAmount > maxParallel) batchAmount = (int) maxParallel;
 
@@ -399,6 +403,8 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
         mInputBeamline.clear();
         mInputFocus.clear();
+
+        this.lastRecipe = null;
 
         if (!checkPiece("base", 2, 4, 0)) return false;
 
