@@ -428,7 +428,8 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         if (overflow > 0) {
             float overflowPct = (float) overflow / INPUT_CHEMICAL_PER_LEVEL;
             float penaltyMultiplier = (float) Math.pow(2.0f, overflowPct * -10.0);
-            return Math.max(0.0f, (this.currentRecipeChance + boost) * penaltyMultiplier);
+            // First cap to 100%, then apply penalty
+            return Math.max(0.0f, Math.min(100.0f, this.currentRecipeChance + boost) * penaltyMultiplier);
         } else {
             return Math.min(100.0f, this.currentRecipeChance + boost);
         }
