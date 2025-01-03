@@ -24,7 +24,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
@@ -106,7 +105,6 @@ public class GTUtil {
     public static TileEntity getTileEntity(World world, int x, int y, int z, boolean aLoadUnloadedChunks) {
         if (aLoadUnloadedChunks || world.blockExists(x, y, z)) {
             TileEntity tileEntity = world.getTileEntity(x, y, z);
-            if (tileEntity instanceof IMultiTileEntity && ((IMultiTileEntity) tileEntity).isDead()) return null;
             if (tileEntity != null) return tileEntity;
             tileEntity = LAST_BROKEN_TILEENTITY.get();
             if (tileEntity != null && tileEntity.xCoord == x && tileEntity.yCoord == y && tileEntity.zCoord == z)

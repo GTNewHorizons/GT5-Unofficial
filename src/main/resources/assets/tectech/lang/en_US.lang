@@ -18,6 +18,11 @@ tile.reactorSim.name=Reactor Simulator
 tile.reactorSim.desc.0=Fission Reaction Uncertainty Resolver 9001
 tile.reactorSim.desc.1=Explodes, but not as much...
 
+gt.spacetime_compression_field_generator.name=Spacetime Compression Field Generator
+gt.time_acceleration_field_generator.name=Time Dilation Field Generator
+
+tile.Forge of the Gods Renderer.name=Forge of the Gods Renderer
+
 #Items
 item.em.programmer.name=AVR programmer
 item.em.programmer.desc.0=Current PC
@@ -67,6 +72,7 @@ item.em.parametrizerMemoryCard.desc.1=Use on Multiblock Controller to configure 
 item.em.parametrizerMemoryCard.desc.2=Use on Multiblock Controller to store parameters
 item.em.parametrizerMemoryCard.desc.3=Sneak right click to lock/unlock
 
+item.tm.teslaCoilCapacitor.name=Tesla Capacitor
 item.tm.teslaCoilCapacitor.0.name=LV Tesla Capacitor
 item.tm.teslaCoilCapacitor.1.name=MV Tesla Capacitor
 item.tm.teslaCoilCapacitor.2.name=HV Tesla Capacitor
@@ -80,10 +86,12 @@ item.tm.teslaCoilCapacitor.desc.2=Yeet this broken item into some spicy water!
 item.tm.teslaCoilCapacitor.desc.3=Insert into a Capacitor hatch of a Tesla Tower
 item.tm.teslaCoilCapacitor.desc.4=Capacitors are the same thing as batteries, right?
 
+item.tm.itemTeslaComponent.name=Tesla Windings
 item.tm.itemTeslaComponent.0.name=Electrum Tesla Windings
 item.tm.itemTeslaComponent.1.name=Superconductive Tesla Windings
 item.tm.itemTeslaComponent.desc=Tesla bois need these!
 
+item.tm.teslaCover.name=Tesla Coil Cover
 item.tm.teslaCover.0.name=Tesla Coil Cover
 item.tm.teslaCover.1.name=Tesla Coil Cover Rich Edition
 item.tm.teslaCover.desc.0=Tesla-Enables Machines!
@@ -110,6 +118,8 @@ item.tm.itemAstralArrayFabricator.desc0=Parallel dimensions?!
 item.tm.itemAstralArrayFabricator.desc1=Device capable of enhancing the Eye of Harmony's spatial compression,
 item.tm.itemAstralArrayFabricator.desc2=reaching into the space beyond.
 item.tm.itemAstralArrayFabricator.desc3=Allows for recipe parallelism.
+
+item.tm.fakeItemQGP.name=Fake Item
 
 #Death Messages
 death.attack.microwaving=%1$s was dehydrated by radiation.
@@ -546,6 +556,7 @@ gt.blockmachines.hatch.capacitor.desc.0=For Tesla Tower
 gt.blockmachines.hatch.capacitor.desc.1=Stores 'nergy! (for a while)
 
 #Casings
+gt.godforgecasing.name=Machine Casing
 gt.blockcasingsNH.10.name=UEV Machine Casing
 gt.blockcasingsNH.11.name=UIV Machine Casing
 gt.blockcasingsNH.12.name=UMV Machine Casing
@@ -575,6 +586,7 @@ gt.blockhintTT.desc.4=Make sure it does not contain Air material.
 gt.blockhintTT.15.name=Hint error
 gt.blockhintTT.desc.5=ERROR, what did u expect?
 
+gt.blockcasingsTT.name=Machine Casing
 gt.blockcasingsTT.0.name=High Power Casing
 gt.blockcasingsTT.0.desc.0=Well suited for high power applications.
 gt.blockcasingsTT.0.desc.1=The power levels are rising!
@@ -624,6 +636,7 @@ gt.blockcasingsTT.15.name=Debug Sides
 gt.blockcasingsTT.15.desc.0=Lazy man way of determining sides.
 gt.blockcasingsTT.15.desc.1=0, 1, 2, 3, 4, 5, 6?!
 
+gt.blockcasingsBA0.name=Primary Tesla Windings
 gt.blockcasingsBA0.0.name=Redstone Alloy Primary Tesla Windings
 gt.blockcasingsBA0.1.name=MV Superconductor Primary Tesla Windings
 gt.blockcasingsBA0.2.name=HV Superconductor Primary Tesla Windings
@@ -851,7 +864,8 @@ gt.blockcasingsBA0.11.desc.1=Can survive at least one big bang, maybe two...
 achievement.gt.blockcasingsBA0.10=Reinforced Temporal Structure Casing
 gt.blockcasingsBA0.10.desc.0=Resistant to temporal shearing from time dilation differences.
 gt.blockcasingsBA0.10.desc.1=This block can last an eternity without any decay.
-
+eoh.rightclick.wirecutter.1=Can't retrieve Astral Array Fabricators when the machine is working!
+eoh.rightclick.wirecutter.2=Retrieved %s Astral Array Fabricators
 
 # Antimatter
 gt.blockmachines.antimatterForge.name=Semi-Stable Antimatter Stabilization Sequencer
