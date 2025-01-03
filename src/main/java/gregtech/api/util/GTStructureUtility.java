@@ -4,7 +4,14 @@ import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceRes
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.ACCEPT_STOP;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.REJECT;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.SKIP;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUnlocalizedName;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode.EXACT;
+import static gregtech.api.enums.Mods.BartWorks;
+import static gregtech.api.enums.Mods.Botania;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.enums.Mods.Thaumcraft;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +41,7 @@ import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.IStructureElementChain;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
@@ -47,6 +55,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.common.blocks.BlockCasings5;
 import gregtech.common.blocks.BlockCyclotronCoils;
@@ -88,6 +97,11 @@ public class GTStructureUtility {
             }
 
             @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                return check(t, world, x, y, z);
+            }
+
+            @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
                 world.setBlock(x, y, z, Blocks.water, 0, 2);
                 return true;
@@ -122,6 +136,11 @@ public class GTStructureUtility {
                     return aFrameMaterial == material;
                 }
                 return false;
+            }
+
+            @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                return check(t, world, x, y, z);
             }
 
             @Override
@@ -242,6 +261,12 @@ public class GTStructureUtility {
             }
 
             @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                TileEntity tileEntity = world.getTileEntity(x, y, z);
+                return tileEntity instanceof IGregTechTileEntity;
+            }
+
+            @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 StructureLibAPI.hintParticle(world, x, y, z, aHintBlock, aHintMeta);
                 return true;
@@ -315,6 +340,12 @@ public class GTStructureUtility {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
                 return tileEntity instanceof IGregTechTileEntity
                     && aHatchAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) aTextureIndex);
+            }
+
+            @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                TileEntity tileEntity = world.getTileEntity(x, y, z);
+                return tileEntity instanceof IGregTechTileEntity;
             }
 
             @Override
@@ -410,6 +441,14 @@ public class GTStructureUtility {
             }
 
             @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                TileEntity tileEntity = world.getTileEntity(x, y, z);
+                Block worldBlock = world.getBlock(x, y, z);
+                return (tileEntity instanceof IGregTechTileEntity)
+                    || (worldBlock == placeCasing && worldBlock.getDamageValue(world, x, y, z) == placeCasingMeta);
+            }
+
+            @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 StructureLibAPI.hintParticle(world, x, y, z, aHintBlock, hintMeta);
                 return true;
@@ -470,6 +509,15 @@ public class GTStructureUtility {
                 } else {
                     return newLevel == existingLevel;
                 }
+            }
+
+            @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                Block block = world.getBlock(x, y, z);
+                if (!(block instanceof IHeatingCoil)) return false;
+                HeatingCoilLevel blockLevel = ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z));
+                HeatingCoilLevel expectedLevel = getHeatFromHint(trigger);
+                return blockLevel == expectedLevel;
             }
 
             @Override
@@ -580,6 +628,17 @@ public class GTStructureUtility {
             }
 
             @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                Block block = world.getBlock(x, y, z);
+                if (block != GregTechAPI.sSolenoidCoilCasings) return false;
+
+                int expectedMeta = getMetaFromHint(trigger);
+                int blockMeta = world.getBlockMetadata(x, y, z);
+
+                return expectedMeta == blockMeta;
+            }
+
+            @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 StructureLibAPI
                     .hintParticle(world, x, y, z, GregTechAPI.sSolenoidCoilCasings, getMetaFromHint(trigger));
@@ -651,8 +710,34 @@ public class GTStructureUtility {
     public static Predicate<ItemStack> filterByMTETier(int aMinTier, int aMaxTier) {
         return is -> {
             IMetaTileEntity tile = ItemMachines.getMetaTileEntity(is);
+
+            if (tile instanceof MTEHatch hatch) {
+                if (hatch.getTierForStructure() <= aMaxTier && hatch.getTierForStructure() >= aMinTier) return true;
+            }
+
             return tile instanceof MTETieredMachineBlock && ((MTETieredMachineBlock) tile).mTier <= aMaxTier
                 && ((MTETieredMachineBlock) tile).mTier >= aMinTier;
         };
+    }
+
+    /** support all Bart, Botania, Ic2, Thaumcraft glasses for multiblock structure **/
+    public static <T> IStructureElementChain<T> chainAllGlasses() {
+        return ofChain(
+            // IndustrialCraft2 glass
+            ofBlockUnlocalizedName(IndustrialCraft2.ID, "blockAlloyGlass", 0, true),
+
+            // Botania glass
+            ofBlockUnlocalizedName(Botania.ID, "manaGlass", 0, false),
+            ofBlockUnlocalizedName(Botania.ID, "elfGlass", 0, false),
+
+            // BartWorks glass
+            ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks", 0, true),
+            ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks2", 0, true),
+
+            // Tinted Industrial Glass
+            ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass, 0),
+
+            // warded glass
+            ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false));
     }
 }

@@ -377,6 +377,16 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     /**
+     * Gets the initial tick rate for doCoverThings of the Cover
+     * <p/>
+     * Defaults to getTickRate(), override for different initial and minimum tick rates
+     */
+    public final int getDefaultTickRate(ForgeDirection side, int aCoverID, ISerializableObject aCoverVariable,
+        ICoverable aTileEntity) {
+        return getDefaultTickRateImpl(side, aCoverID, forceCast(aCoverVariable), aTileEntity);
+    }
+
+    /**
      * The MC Color of this Lens. -1 for no Color (meaning this isn't a Lens then).
      */
     public final byte getLensColor(ForgeDirection side, int aCoverID, ISerializableObject aCoverVariable,
@@ -758,6 +768,15 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
      */
     protected int getTickRateImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
         return 0;
+    }
+
+    /**
+     * Gets the initial tick rate for doCoverThings of the Cover
+     * <p/>
+     * Defaults to getTickRate(), override for different initial and minimum tick rates
+     */
+    protected int getDefaultTickRateImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+        return getTickRateImpl(side, aCoverID, aCoverVariable, aTileEntity);
     }
 
     /**

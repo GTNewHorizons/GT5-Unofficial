@@ -1180,6 +1180,10 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
         }
     }
 
+    public void setCableUpdateDelay(int delay) {
+        cableUpdateDelay = delay;
+    }
+
     @Override
     public long getOutputAmperage() {
         if (canAccessData() && mMetaTileEntity.isElectric()) return mMetaTileEntity.maxAmperesOut();
@@ -2224,6 +2228,10 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     public int getMaxEnergyOutput() {
         if (mReleaseEnergy) return Integer.MAX_VALUE;
         return getOutput();
+    }
+
+    public long getStoredEUuncapped() {
+        return mMetaTileEntity.getEUVar();
     }
 
     public int getOutput() {
