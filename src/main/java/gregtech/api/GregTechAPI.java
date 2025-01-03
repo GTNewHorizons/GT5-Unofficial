@@ -64,6 +64,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.item.ItemHolder;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.GTDummyWorld;
+import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.items.ItemIntegratedCircuit;
 
 /**
@@ -668,5 +669,19 @@ public class GregTechAPI {
         meta = GTUtility.clamp(meta, 0, 15);
         if (teCreators[meta] == null) return null;
         return teCreators[meta].apply(meta);
+    }
+
+    /**
+     * Get the texture index of a casing block and meta.
+     *
+     * @param block Block to check, must extend GT_Block_Casings_Abstract
+     * @param meta  Meta of the block to check
+     * @return A valid texture index
+     */
+    public static int getCasingTextureIndex(Block block, int meta) {
+        if (block instanceof BlockCasingsAbstract gtBlock) {
+            return gtBlock.getTextureIndex(meta);
+        }
+        throw new IllegalArgumentException("Passed non-gt casing block to getCasingTextureIndex");
     }
 }
