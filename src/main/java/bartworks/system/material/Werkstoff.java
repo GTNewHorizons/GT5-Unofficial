@@ -56,6 +56,7 @@ import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.core.config.Configuration;
 import thaumcraft.api.aspects.Aspect;
 
 public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
@@ -631,6 +632,10 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
      * Checks if the generation feature is enabled and if its not in the blacklist
      */
     public boolean hasItemType(OrePrefixes prefixes) {
+        if (prefixes == OrePrefixes.turbineBlade) {
+            return getDurability() >= Configuration.gregtech.turbineCutoffBase && hasItemType(OrePrefixes.plateDouble)
+                && hasItemType(OrePrefixes.cellMolten);
+        }
         int unpacked = Werkstoff.GenerationFeatures.getPrefixDataRaw(prefixes);
         return (this.getGenerationFeatures().toGenerate & unpacked) != 0
             && (this.getGenerationFeatures().blacklist & unpacked) == 0;
