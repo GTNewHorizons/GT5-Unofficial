@@ -10,7 +10,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -27,12 +27,28 @@ public class MTEHatchCatalysts extends MTEHatchNbtConsumable {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GTRenderedTexture(TexturesGtBlock.Overlay_Bus_Catalyst) };
+        return new ITexture[] { aBaseTexture, TextureFactory.builder()
+            .addIcon(TexturesGtBlock.Overlay_Bus_Catalyst)
+            .extFacing()
+            .build(),
+            TextureFactory.builder()
+                .addIcon(TexturesGtBlock.Overlay_Bus_Catalyst)
+                .extFacing()
+                .glow()
+                .build() };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GTRenderedTexture(TexturesGtBlock.Overlay_Bus_Catalyst) };
+        return new ITexture[] { aBaseTexture, TextureFactory.builder()
+            .addIcon(TexturesGtBlock.Overlay_Bus_Catalyst)
+            .extFacing()
+            .build(),
+            TextureFactory.builder()
+                .addIcon(TexturesGtBlock.Overlay_Bus_Catalyst)
+                .extFacing()
+                .glow()
+                .build() };
     }
 
     @Override

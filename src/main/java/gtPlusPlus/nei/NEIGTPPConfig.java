@@ -68,6 +68,10 @@ public class NEIGTPPConfig implements IConfigureNEI {
             API.addItemListEntry(GregtechItemList.VOLUMETRIC_FLASK_32k.get(1));
             API.addItemListEntry(GregtechItemList.KLEIN_BOTTLE.get(1));
         }
+        // QFT
+        API.addRecipeCatalyst(
+            GregtechItemList.QuantumForceTransformer.get(1),
+            GTPPRecipeMaps.quantumForceTransformerRecipes.unlocalizedName);
         sIsAdded = true;
     }
 

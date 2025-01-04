@@ -2593,6 +2593,8 @@ public enum ItemList implements IItemContainer {
     ResearchCompleter,
     SpaceElevatorController, // Populated in GTNH-Intergalactic
     Spray_Color_Infinite,
+    Hatch_Nanite,
+    Hatch_Catalyst_Bulk,
     // semicolon after the comment to reduce merge conflicts
     ;
 
