@@ -1101,10 +1101,17 @@ public final class RecipeMaps {
         .minInputs(3, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLE)
         .disableOptimize()
+        .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.PCBFactory.get(1)))
         .neiRecipeComparator(
             Comparator
                 .<GTRecipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(PCBFactoryTierKey.INSTANCE, 1))
                 .thenComparing(GTRecipe::compareTo))
+        .build();
+    public static final RecipeMap<RecipeMapBackend> pcbFactoryRecipesNoNanites = RecipeMapBuilder
+        .of("gt.recipe.pcbfactorynonanites")
+        .maxIO(6, 9, 3, 0)
+        .minInputs(3, 1)
+        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationClarifierRecipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantclarifier")
