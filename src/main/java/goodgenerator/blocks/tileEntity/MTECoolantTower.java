@@ -108,7 +108,7 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
         tt.addMachineType("Coolant Tower")
             .addInfo("Turn Steam back to Distilled Water.")
             .addController("Mid of the second layer")
-            .addCasingInfoExactly("Light Concrete Cobblestone", 277, false)
+            .addCasingInfoExactly("Light Concrete", 277, false)
             .addCasingInfoExactly("Tungstencarbide Frame Box", 28, false)
             .addInputHatch("Input Hatch", 1)
             .addOutputHatch("Output Hatch", 1)
