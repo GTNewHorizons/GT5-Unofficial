@@ -132,6 +132,10 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                                                                                            // wireless mode
             .addTecTechHatchInfo()
             .beginStructureBlock(5, 3, 3, false)
+            .addController("Front center")
+            .addCasingInfoExactly("Computer Heat Vent", 18, false)
+            .addCasingInfoExactly("High Power Casing", 7, false)
+            .addCasingInfoMin("Computer Casing", 3, false)
             .addOtherStructurePart(
                 translateToLocal("tt.keyword.Structure.DataAccessHatch"),
                 translateToLocal("tt.keyword.Structure.AnyComputerCasing"),

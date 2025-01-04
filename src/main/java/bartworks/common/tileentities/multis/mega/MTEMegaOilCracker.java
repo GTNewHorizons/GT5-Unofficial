@@ -169,10 +169,13 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
                     + "Tech"
                     + EnumChatFormatting.GRAY
                     + " Laser Hatches.")
+            .addInfo("Gets 10% EU/t reduction per coil tier, up to a maximum of 50%")
             .beginStructureBlock(13, 7, 9, true)
             .addController("Front bottom")
+            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 197, false)
+            .addCasingInfoExactly("Coil", 92, true)
+            .addCasingInfoExactly("Borosilicate Glass", 196, true)
             .addStructureInfo("The glass tier limits the Energy Input tier")
-            .addInfo("Gets 10% EU/t reduction per coil tier, up to a maximum of 50%")
             .addEnergyHatch("Hint block", 1)
             .addMaintenanceHatch("Hint block", 1)
             .addInputHatch("Hint block", 2, 3)

@@ -272,6 +272,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                     + EnumChatFormatting.ITALIC
                     + "atoms themselves and pass through the walls of the tank, ensuring the water is perfectly electrically polar.")
             .beginStructureBlock(13, 9, 9, true)
+            .addController("Front center")
             .addCasingInfoRangeColored(
                 "Naquadria-Reinforced Water Plant Casing",
                 EnumChatFormatting.GRAY,
@@ -297,7 +298,6 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 56,
                 EnumChatFormatting.GOLD,
                 false)
-            .addController("Front center")
             .addOtherStructurePart("Input Hatch, Output Hatch", EnumChatFormatting.GOLD + "1+", 1)
             .addOtherStructurePart("Lens Housing", EnumChatFormatting.GOLD + "1", 2)
             .addOtherStructurePart("Lens Indicator", EnumChatFormatting.GOLD + "1", 3)
