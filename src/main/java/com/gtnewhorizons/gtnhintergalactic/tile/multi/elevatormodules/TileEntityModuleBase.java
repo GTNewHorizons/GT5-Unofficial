@@ -9,7 +9,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
 import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
-import com.gtnewhorizons.gtnhintergalactic.tile.multi.GT_MetaTileEntity_EnhancedMultiBlockBase_EM;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -37,7 +36,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  *
  * @author minecraft7771
  */
-public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMultiBlockBase_EM {
+public abstract class TileEntityModuleBase extends TTMultiblockBase {
 
     /** Base size of the EU buffer at UV */
     protected static long EU_BUFFER_BASE_SIZE = 160008000L;

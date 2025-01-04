@@ -20,9 +20,6 @@ public class IG_UITextures {
     public static final UITexture OVERLAY_BUTTON_PROJECTS = UITexture
             .fullImage(ASSET_PREFIX, "gui/overlay_button/projects.png");
 
-    public static final UITexture OVERLAY_BUTTON_CHECK = UITexture
-            .fullImage(ASSET_PREFIX, "gui/overlay_button/check.png");
-
     public static final UITexture OVERLAY_BUTTON_CROSS = UITexture
             .fullImage(ASSET_PREFIX, "gui/overlay_button/cross.png");
 

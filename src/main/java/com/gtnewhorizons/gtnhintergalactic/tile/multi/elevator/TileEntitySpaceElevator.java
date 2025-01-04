@@ -35,7 +35,6 @@ import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
 import com.gtnewhorizons.gtnhintergalactic.config.IGConfig;
 import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
 import com.gtnewhorizons.gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
-import com.gtnewhorizons.gtnhintergalactic.tile.multi.GT_MetaTileEntity_EnhancedMultiBlockBase_EM;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleBase;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -80,8 +79,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  *
  * @author minecraft7771
  */
-public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBlockBase_EM
-        implements ISurvivalConstructable {
+public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurvivalConstructable {
     // region Structure and textures variables
 
     /** List of project modules in this elevator */

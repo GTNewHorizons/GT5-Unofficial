@@ -48,8 +48,7 @@ import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class TileEntityDysonSwarm extends GT_MetaTileEntity_EnhancedMultiBlockBase_EM
-        implements ISurvivalConstructable {
+public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalConstructable {
 
     @LoreHolder("gt.blockmachines.multimachine.ig.dyson.lore")
     private static String loreTooltip;

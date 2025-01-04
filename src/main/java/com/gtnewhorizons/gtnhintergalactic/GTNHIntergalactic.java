@@ -2,7 +2,6 @@ package com.gtnewhorizons.gtnhintergalactic;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.util.IIcon;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,7 +18,6 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(
@@ -55,9 +53,6 @@ public class GTNHIntergalactic {
     public static final String ASSET_PREFIX = "gtnhintergalactic";
     /** Creative tab for mod items */
     public static CreativeTabs tab;
-    /** Mod instance */
-    @Mod.Instance(Tags.MODID)
-    public static GTNHIntergalactic instance;
     /** Proxy used for loading */
     @SidedProxy(
             clientSide = "com.gtnewhorizons.gtnhintergalactic.proxy.ClientProxy",
@@ -65,14 +60,6 @@ public class GTNHIntergalactic {
     public static CommonProxy proxy;
 
     @Mod.EventHandler
-    // preInit "Run before anything else. Read your config, create blocks, items, etc, and register them with the
-    // GameRegistry." (Remove if not needed)
-    public void preInit(FMLPreInitializationEvent event) {
-        proxy.preInit(event);
-    }
-
-    @Mod.EventHandler
-    // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
     public void init(FMLInitializationEvent event) {
         tab = new CreativeTabs(CreativeTabs.getNextID(), Tags.MODNAME) {
 
@@ -90,7 +77,6 @@ public class GTNHIntergalactic {
     }
 
     @Mod.EventHandler
-    // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
     }
@@ -123,9 +109,5 @@ public class GTNHIntergalactic {
                 }
             }
         }
-    }
-
-    public void markTextureUsed(IIcon o) {
-        proxy.markTextureUsed(o);
     }
 }
