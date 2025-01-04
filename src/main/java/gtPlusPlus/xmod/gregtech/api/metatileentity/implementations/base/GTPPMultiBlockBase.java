@@ -987,7 +987,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
@@ -1002,7 +1002,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (supportsVoidProtection() && wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
             Set<VoidingMode> allowed = getAllowedVoidingModes();
             setVoidingMode(getVoidingMode().nextInCollection(allowed));
@@ -1011,7 +1011,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 StatCollector.translateToLocal("GT5U.gui.button.voiding_mode") + " "
                     + StatCollector.translateToLocal(getVoidingMode().getTransKey()));
             return true;
-        } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
+        } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
     // Only support to use meta to tier

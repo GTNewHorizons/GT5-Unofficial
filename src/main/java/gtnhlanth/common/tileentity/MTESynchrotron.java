@@ -28,6 +28,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -44,6 +46,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTUtility;
@@ -445,7 +449,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 ).addElement('c', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
                 .addElement('k', ofBlock(GregTechAPI.sBlockCasings1, 15)) // Superconducting coils
                 .addElement('d', ofBlock(LanthItemList.COOLANT_DELIVERY_CASING, 0))
-                
+
                 // Adder overriden due to ExoticEnergy originally calling its own adder, giving false positives
                 .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy.or(ExoticEnergy), 4)).adder(MTESynchrotron::addEnergyInputToMachineList).dot(6).casingIndex(CASING_INDEX).build())
                 .addElement('n', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
@@ -711,8 +715,9 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         return true;
     }
 
+    @NotNull
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
+    public CheckRecipeResult checkProcessing() {
 
         float inputEnergy = 0;
         float inputFocus = 0;
@@ -737,24 +742,24 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
             this.stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.nocoolant"));
 
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
         if (this.getInputInformation() == null) {
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         if (this.getInputInformation()
             .getEnergy() == 0) { // Only really applies if there's no input
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         if (this.getInputInformation()
             .getFocus() < MIN_INPUT_FOCUS) {
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         inputParticleId = this.getInputInformation()
@@ -764,7 +769,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
         if (!inputParticle.canAccelerate()) {
             stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         mMaxProgresstime = TickTime.SECOND;
@@ -823,13 +828,13 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
         if (outputRate == 0) {
             stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.low_input_eut"));
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         if (Util.coolantFluidCheck(primaryFluid, CONSUMED_FLUID)) {
 
             stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.inscoolant"));
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
 
         }
 
@@ -839,17 +844,17 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             primaryFluid.getFluid()
                 .getName());
 
-        if (Objects.isNull(fluidOutput)) return false;
+        if (Objects.isNull(fluidOutput)) return CheckRecipeResultRegistry.NO_RECIPE;
 
         FluidStack fluidOutputStack = new FluidStack(fluidOutput, CONSUMED_FLUID);
 
-        if (Objects.isNull(fluidOutputStack)) return false;
+        if (Objects.isNull(fluidOutputStack)) return CheckRecipeResultRegistry.NO_RECIPE;
 
         this.addFluidOutputs(new FluidStack[] { fluidOutputStack });
 
         outputAfterRecipe();
 
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     private void outputAfterRecipe() {
@@ -867,20 +872,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     }
 
     @Override
-    public void stopMachine() {
-
-        outputFocus = 0;
-        outputEnergy = 0;
-        outputParticle = 0;
-        outputRate = 0;
-        machineFocus = 0;
-        machineTemp = 0;
-        super.stopMachine();
-
-    }
-
-    @Override
-    public void stopMachine(ShutDownReason reason) {
+    public void stopMachine(@NotNull ShutDownReason reason) {
 
         outputFocus = 0;
         outputEnergy = 0;
