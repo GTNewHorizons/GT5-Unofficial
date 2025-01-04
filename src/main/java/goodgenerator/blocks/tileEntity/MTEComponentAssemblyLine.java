@@ -235,7 +235,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             .addTecTechHatchInfo()
             .beginStructureBlock(9, 10, 33, false)
             .addController("Mid of the eighth layer")
-            .addCasingInfoExactly("Advanced Iriridium Plated Machine Casing", 644, false)
+            .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 644, false)
             .addCasingInfoExactly("Advanced Filter Casing", 124, false)
             .addCasingInfoExactly("Borosilicate Glass (UV+)", 280, false)
             .addCasingInfoExactly("Assembler Machine Casing", 30, false)

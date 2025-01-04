@@ -428,7 +428,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
             .addController("Front bottom")
             .addCasingInfoExactly("Field Restriction Casing", 48, false)
             .addCasingInfoExactly("Radiation Proof Steel Frame Box", 36, false)
-            .addCasingInfoExactly("Tungstensteel pipe Casing", 6, false)
+            .addCasingInfoExactly("Tungstensteel Pipe Casing", 6, false)
             .addCasingInfoExactly("Radiation Proof Machine Casing", 121, false)
             .addDynamoHatch("Any bottom layer casing, only accept ONE!")
             .addInputHatch("Any bottom layer casing")
