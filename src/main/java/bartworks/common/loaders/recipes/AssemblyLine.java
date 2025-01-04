@@ -57,8 +57,8 @@ public class AssemblyLine implements Runnable {
                 WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 8))
             .fluidInputs(new FluidStack(solderIndalloy, 1440))
             .itemOutputs(ItemRegistry.cal.copy())
-            .eut(TierEU.RECIPE_LuV)
-            .duration(20 * MINUTES)
+            .eut(TierEU.RECIPE_ZPM)
+            .duration(60 * SECONDS)
             .addTo(AssemblyLine);
     }
 }
