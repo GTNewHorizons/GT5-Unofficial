@@ -68,6 +68,8 @@ public enum CustomItemList implements IItemContainer {
     Machine_DebugPollutor,
     DATApipe,
     LASERpipe,
+    TestPipe,
+    TestHatch,
     rack_Hatch,
     holder_Hatch,
     capacitor_Hatch,
