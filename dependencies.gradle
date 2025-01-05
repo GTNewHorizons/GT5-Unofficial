@@ -43,7 +43,7 @@ dependencies {
     api("com.github.GTNewHorizons:ModularUI2:2.2.0-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.8.2:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-518-GTNH:dev")
-    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.10-gtnh:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.12-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.6.0:dev')
     api("com.github.GTNewHorizons:Postea:1.0.13:dev")
 
@@ -60,7 +60,7 @@ dependencies {
 
     compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta28:api') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.4:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.41:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.42:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.9.2:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.10.1:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.11.0-GTNH:dev") { transitive = false }
