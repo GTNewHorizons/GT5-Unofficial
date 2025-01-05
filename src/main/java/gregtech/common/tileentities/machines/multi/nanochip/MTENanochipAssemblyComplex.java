@@ -1,7 +1,11 @@
 package gregtech.common.tileentities.machines.multi.nanochip;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.HatchElement.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
@@ -68,45 +72,50 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public static final IStructureDefinition<MTENanochipAssemblyComplex> STRUCTURE_DEFINITION = StructureDefinition
         .<MTENanochipAssemblyComplex>builder()
         .addShape(STRUCTURE_PIECE_MAIN, AssemblyComplexStructureString.MAIN_STRUCTURE)
+        // Dimensional Bridge
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings1, 14))
-        // Vacuum conveyor hatches that the main controller cares about go in specific slots
-        .addElement(
-            'B',
-            HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
-                .atLeastList(Arrays.asList(AssemblyHatchElement.VacuumConveyorHatch, InputBus, OutputBus))
-                .casingIndex(CASING_INDEX_WHITE)
-                .dot(2)
-                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 5)))
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 5))
-        .addElement('D', ofBlock(GregTechAPI.sBlockCasings8, 10))
-        // Either a white casing block or an ignored hatch (this hatch is on the module)
-        .addElement(
-            'E',
-            HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
-                .atLeast(AssemblyHatchElement.IgnoredHatch)
-                .casingIndex(CASING_INDEX_WHITE)
-                .dot(3)
-                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 5)))
-        // Crafting storage block
-        .addElement('F', ofBlock(getCraftingStorageBlock(), getCraftingStorageMeta()))
-        .addElement('G', ofFrame(Materials.Naquadah))
-        // Energy Hatch
-        .addElement(
-            'L',
-            HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
-                .atLeast(Energy, ExoticEnergy)
-                .casingIndex(CASING_INDEX_BASE)
-                .dot(1)
-                .buildAndChain(GregTechAPI.sBlockCasings8, 10))
+        // White casing block
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 5))
+        // Black casing block
+        .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        .addElement('D', ofFrame(Materials.Naquadah))
+        // Tinted glass, for now just black and gray because other options are for psychopaths
+        .addElement('E', ofChain(ofBlock(GregTechAPI.sBlockTintedGlass, 3), ofBlock(GregTechAPI.sBlockTintedGlass, 2)))
         // Module
         .addElement(
-            'M',
+            'F',
             HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
                 .atLeast(AssemblyHatchElement.AssemblyModule)
                 .casingIndex(CASING_INDEX_WHITE)
                 .dot(1)
                 // Base casing or assembly module
                 .buildAndChain(GregTechAPI.sBlockCasings8, 5))
+        // Energy Hatch
+        .addElement(
+            'G',
+            HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
+                .atLeast(Energy, ExoticEnergy)
+                .casingIndex(CASING_INDEX_BASE)
+                .dot(1)
+                .buildAndChain(GregTechAPI.sBlockCasings8, 10))
+        // Vacuum conveyor hatches that the main controller cares about go in specific slots
+        .addElement(
+            'H',
+            HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
+                .atLeastList(Arrays.asList(AssemblyHatchElement.VacuumConveyorHatch, InputBus, OutputBus))
+                .casingIndex(CASING_INDEX_WHITE)
+                .dot(2)
+                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 5)))
+        // Either a white casing block or an ignored hatch (this hatch is on the module)
+        .addElement(
+            'I',
+            HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
+                .atLeast(AssemblyHatchElement.IgnoredHatch)
+                .casingIndex(CASING_INDEX_WHITE)
+                .dot(3)
+                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 5)))
+        // Crafting storage block
+        .addElement('J', ofBlock(getCraftingStorageBlock(), getCraftingStorageMeta()))
         .build();
 
     public static final int MODULE_CONNECT_INTERVAL = 20;
