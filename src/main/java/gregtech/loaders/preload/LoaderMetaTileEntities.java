@@ -1,6 +1,8 @@
 package gregtech.loaders.preload;
 
+// spotless:off
 import static gregtech.api.enums.MetaTileEntityIDs.*;
+// spotless:on
 import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_DATA_ACCESS_HATCH;
 import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_DEBUG_STRUCTURE_WRITTER;
 import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_SEISMIC_PROSPECTOR_EV;
