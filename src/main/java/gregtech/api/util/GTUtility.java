@@ -114,6 +114,8 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.joml.Vector3i;
+
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
@@ -4541,10 +4543,26 @@ public class GTUtility {
         return val < lo ? lo : val > hi ? hi : val;
     }
 
+    public static int min(int first, int... rest) {
+        for (int i = 0; i < rest.length; i++) {
+            int l = rest[i];
+            if (l < first) first = l;
+        }
+        return first;
+    }
+
     public static long min(long first, long... rest) {
         for (int i = 0; i < rest.length; i++) {
             long l = rest[i];
             if (l < first) first = l;
+        }
+        return first;
+    }
+
+    public static int max(int first, int... rest) {
+        for (int i = 0; i < rest.length; i++) {
+            int l = rest[i];
+            if (l > first) first = l;
         }
         return first;
     }
@@ -4558,10 +4576,6 @@ public class GTUtility {
     }
 
     public static int ceilDiv(int lhs, int rhs) {
-        return (lhs + rhs - 1) / rhs;
-    }
-
-    public static long ceilDiv(long lhs, long rhs) {
         return (lhs + rhs - 1) / rhs;
     }
 
@@ -4580,12 +4594,24 @@ public class GTUtility {
         return unsigned * sign;
     }
 
+    public static long ceilDiv(long lhs, long rhs) {
+        return (lhs + rhs - 1) / rhs;
+    }
+
     public static int signum(int x) {
         return x < 0 ? -1 : x > 0 ? 1 : 0;
     }
 
     public static long signum(long x) {
         return x < 0 ? -1 : x > 0 ? 1 : 0;
+    }
+
+    public static Vector3i signum(Vector3i v) {
+        v.x = signum(v.x);
+        v.y = signum(v.y);
+        v.z = signum(v.z);
+
+        return v;
     }
 
     /**
@@ -4829,6 +4855,14 @@ public class GTUtility {
             return new AutoValue_GTUtility_ItemId(itemStack.getItem(), W, null, null);
         }
 
+        public static ItemId createAsWildcardWithNBT(ItemStack itemStack) {
+            NBTTagCompound nbt = itemStack.getTagCompound();
+            if (nbt != null) {
+                nbt = (NBTTagCompound) nbt.copy();
+            }
+            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), W, nbt, null);
+        }
+
         /**
          * This method stores NBT as null.
          */
@@ -4887,8 +4921,83 @@ public class GTUtility {
         @Nonnull
         public ItemStack getItemStack() {
             ItemStack itemStack = new ItemStack(item(), 1, metaData());
-            itemStack.setTagCompound(nbt());
+            NBTTagCompound nbt = nbt();
+            itemStack.setTagCompound(nbt == null ? null : (NBTTagCompound) nbt.copy());
             return itemStack;
+        }
+
+        @Nonnull
+        public ItemStack getItemStack(int stackSize) {
+            ItemStack itemStack = new ItemStack(item(), stackSize, metaData());
+            NBTTagCompound nbt = nbt();
+            itemStack.setTagCompound(nbt == null ? null : (NBTTagCompound) nbt.copy());
+            return itemStack;
+        }
+    }
+
+    @AutoValue
+    public abstract static class FluidId {
+
+        public static FluidId create(NBTTagCompound tag) {
+            return new AutoValue_GTUtility_FluidId(
+                FluidRegistry.getFluid(tag.getString("FluidName")),
+                tag.hasKey("Tag", Constants.NBT.TAG_COMPOUND) ? tag.getCompoundTag("Tag") : null,
+                tag.hasKey("Amount", Constants.NBT.TAG_INT) ? tag.getInteger("Amount") : null);
+        }
+
+        public NBTTagCompound writeToNBT() {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setString("FluidName", fluid().getName());
+            if (nbt() != null) tag.setTag("Tag", nbt());
+            Integer amount = amount();
+            if (amount != null) tag.setInteger("Amount", amount);
+            return tag;
+        }
+
+        public static FluidId create(FluidStack fluidStack) {
+            return createWithCopy(fluidStack.getFluid(), null, fluidStack.tag);
+        }
+
+        public static FluidId createWithAmount(FluidStack fluidStack) {
+            return createWithCopy(fluidStack.getFluid(), (Integer) fluidStack.amount, fluidStack.tag);
+        }
+
+        public static FluidId create(Fluid fluid) {
+            return createNoCopy(fluid, null, null);
+        }
+
+        public static FluidId createWithCopy(Fluid fluid, Integer amount, @Nullable NBTTagCompound nbt) {
+            if (nbt != null) {
+                nbt = (NBTTagCompound) nbt.copy();
+            }
+            return new AutoValue_GTUtility_FluidId(fluid, nbt, amount);
+        }
+
+        /**
+         * This method does not copy the NBT tag.
+         */
+        public static FluidId createNoCopy(Fluid fluid, Integer amount, @Nullable NBTTagCompound nbt) {
+            return new AutoValue_GTUtility_FluidId(fluid, nbt, amount);
+        }
+
+        protected abstract Fluid fluid();
+
+        @Nullable
+        protected abstract NBTTagCompound nbt();
+
+        @Nullable
+        protected abstract Integer amount();
+
+        @Nonnull
+        public FluidStack getFluidStack() {
+            NBTTagCompound nbt = nbt();
+            return new FluidStack(fluid(), 1, nbt != null ? (NBTTagCompound) nbt.copy() : null);
+        }
+
+        @Nonnull
+        public FluidStack getFluidStack(int amount) {
+            NBTTagCompound nbt = nbt();
+            return new FluidStack(fluid(), amount, nbt != null ? (NBTTagCompound) nbt.copy() : null);
         }
     }
 

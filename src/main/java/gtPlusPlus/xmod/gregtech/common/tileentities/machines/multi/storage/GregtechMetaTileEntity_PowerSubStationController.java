@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onlyIf;
@@ -15,6 +16,9 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTDynamo;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTEnergy;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -26,6 +30,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
@@ -35,6 +40,7 @@ import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.ITierConverter;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
@@ -286,10 +292,34 @@ public class GregtechMetaTileEntity_PowerSubStationController
                                         onElementPass(x -> ++x.cellCount[3], ofCell(7)),
                                         onElementPass(x -> ++x.cellCount[4], ofCell(8)),
                                         onElementPass(x -> ++x.cellCount[5], ofCell(9))))))))
-                .addElement('H', ofCell(4))
+                .addElement(
+                    'H',
+                    withChannel(
+                        "cell",
+                        // Adding this so preview looks correct
+                        ofBlocksTiered(cellTierConverter(), getAllCellTiers(), -1, (te, t) -> {}, (te) -> -1)))
                 .build();
         }
         return STRUCTURE_DEFINITION;
+    }
+
+    public static ITierConverter<Integer> cellTierConverter() {
+        return (block, meta) -> {
+            int tier = getCellTier(block, meta);
+            if (tier == -1) return null;
+            return tier;
+        };
+    }
+
+    public static List<Pair<Block, Integer>> getAllCellTiers() {
+        ArrayList<Pair<Block, Integer>> tiers = new ArrayList<>();
+        tiers.add(Pair.of(ModBlocks.blockCasings2Misc, 7));
+        tiers.add(Pair.of(ModBlocks.blockCasings3Misc, 4));
+        tiers.add(Pair.of(ModBlocks.blockCasings3Misc, 5));
+        tiers.add(Pair.of(ModBlocks.blockCasings3Misc, 6));
+        tiers.add(Pair.of(ModBlocks.blockCasings3Misc, 7));
+        tiers.add(Pair.of(ModBlocks.blockCasings3Misc, 8));
+        return tiers;
     }
 
     public static <T> IStructureElement<T> ofCell(int aIndex) {

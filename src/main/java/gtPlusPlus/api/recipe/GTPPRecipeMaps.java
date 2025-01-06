@@ -28,8 +28,8 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MT
 public class GTPPRecipeMaps {
 
     public static final RecipeMap<RecipeMapBackend> cokeOvenRecipes = RecipeMapBuilder.of("gtpp.recipe.cokeoven")
-        .maxIO(2, 9, 1, 1)
-        .minInputs(1, 0)
+        .maxIO(2, 9, 2, 1)
+        .minInputs(0, 0)
         .progressBar(GTUITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.DOWN)
         .build();
     public static final RecipeMap<RecipeMapBackend> multiblockMassFabricatorRecipes = RecipeMapBuilder
@@ -235,5 +235,10 @@ public class GTPPRecipeMaps {
         .minInputs(1, 0)
         .useSpecialSlot()
         .frontend(TGSFrontend::new)
+        .build();
+    public static final RecipeMap<RecipeMapBackend> multiblockRockBreakerRecipes = RecipeMapBuilder
+        .of("gt.recipe.multiblockrockbreaker")
+        .maxIO(2, 1, 0, 0)
+        .disableRegisterNEI()
         .build();
 }
