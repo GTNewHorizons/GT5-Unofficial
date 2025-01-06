@@ -68,10 +68,16 @@ public class BOPBlockRegistrator {
     }
 
     public static void addLogRecipes(final ItemStack aStack) {
-        RecipeUtils.addShapelessGregtechRecipe(
-            new ItemStack[] { aStack },
+        // this recipe is modified below, where the nerf is applied.
+        // so don't change the output, otherwise you'll only get 1 plank without tools. lol
+        // also, because the code below will get this recipe from the registry, so don't buffer it in the GTModHandler
+        // otherwise, it won't be able to retrieve it and fails everything below.
+        GTModHandler.addShapelessCraftingRecipe(
             ItemUtils
-                .getSimpleStack(Item.getItemFromBlock(Blocks.planks), GTMod.gregtechproxy.mNerfedWoodPlank ? 2 : 4));
+                .getSimpleStack(Item.getItemFromBlock(Blocks.planks), 4),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            new ItemStack[] { aStack });
+
         RecipeUtils.recipeBuilder(
             CI.craftingToolSaw,
             null,
