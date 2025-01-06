@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.recipe.RecipeMap;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -367,7 +368,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 .find();
             if (recipe == null) continue;
             // If one existed, we have the component now
-            CircuitComponent component = CircuitComponent.getFromFakeStack(recipe.mOutputs[0]);
+            CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
             // Find destination hatch. Note that we already know that this bus is a valid MTE, see
             // getStoredInputsWithBus
             byte busColor = stack.bus.getBaseMetaTileEntity()
@@ -477,6 +478,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         mEfficiencyIncrease = 0;
         mMaxProgresstime = 0;
         return CheckRecipeResultRegistry.NO_RECIPE;
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.nanochipConversionRecipes;
     }
 
     public static void registerLocalName(ItemStack stack, CircuitComponent component) {
