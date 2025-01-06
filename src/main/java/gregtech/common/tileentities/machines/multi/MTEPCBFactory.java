@@ -874,6 +874,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addInfo("Each tier and upgrade requires additional structures.")
             .addInfo("Power consumption is multiplied by Sqrt(structures).")
             .addInfo("Tier 2 and 3 allow parallel by using extra nanites.")
+            .addInfo("Nanites have to be placed in a Nanite Containment Bus.")
             .addInfo("The formula for parallels is the amount of nanites^0.75, rounded up.")
             .addInfo("Maximum parallel is 256.")
             .addInfo("Recipes require a cooling upgrade to be overclocked.")
