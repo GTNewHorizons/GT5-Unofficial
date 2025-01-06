@@ -78,10 +78,10 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     public Parameters.Group.ParameterIn batchSetting;
 
     /** Name of the batch setting */
-    public static final INameFunction<MTELargeFusionComputerPP> BATCH_SETTING_NAME = (base,
+    public static final INameFunction<MTELargeFusionComputer> BATCH_SETTING_NAME = (base,
         p) -> translateToLocal("batch_mode.cfgi.0"); // Batch size
     /** Status of the batch setting */
-    public static final IStatusFunction<MTELargeFusionComputerPP> BATCH_STATUS = (base, p) -> LedStatus
+    public static final IStatusFunction<MTELargeFusionComputer> BATCH_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 32, 128);
 
     public static final String MAIN_NAME = "largeFusion";
