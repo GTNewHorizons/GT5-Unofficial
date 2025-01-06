@@ -413,7 +413,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             return false;
         }
         // Look up component from this output fake stack and unify it with the packet inside the output hatch
-        CircuitComponent component = CircuitComponent.getFromFakeStack(aStack);
+        CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(aStack);
         CircuitComponentPacket outputPacket = new CircuitComponentPacket(component, aStack.stackSize);
         hatch.unifyPacket(outputPacket);
         return true;
