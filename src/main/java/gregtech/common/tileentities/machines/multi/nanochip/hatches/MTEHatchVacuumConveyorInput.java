@@ -62,7 +62,7 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor implemen
     // Try to consume a stack of fake input items from this hatch. Returns the amount of items consumed.
     public int tryConsume(ItemStack stack) {
         if (contents == null) return 0;
-        CircuitComponent component = CircuitComponent.getFromFakeStack(stack);
+        CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(stack);
         Map<CircuitComponent, Integer> inventory = contents.getComponents();
         // Find this component in the inventory
         Integer amount = inventory.get(component);

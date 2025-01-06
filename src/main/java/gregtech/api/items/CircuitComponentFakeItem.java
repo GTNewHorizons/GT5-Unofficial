@@ -17,13 +17,13 @@ public class CircuitComponentFakeItem extends GTGenericItem {
 
     @Override
     public String getUnlocalizedName(ItemStack aStack) {
-        CircuitComponent component = CircuitComponent.getFromFakeStack(aStack);
+        CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(aStack);
         return component.unlocalizedName;
     }
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        CircuitComponent component = CircuitComponent.getFromFakeStack(stack);
+        CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(stack);
         return component.getLocalizedName();
     }
 }

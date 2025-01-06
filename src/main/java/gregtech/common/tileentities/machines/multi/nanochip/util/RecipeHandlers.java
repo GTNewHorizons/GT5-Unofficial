@@ -19,13 +19,15 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
+
 public class RecipeHandlers {
 
     private static void addConversionRecipe(CircuitComponent component, ItemStack stack) {
         GTValues.RA.stdBuilder()
             .itemInputs(stack)
             .itemOutputs(component.getFakeStack(1))
-            .duration(1)
+            .duration(1 * TICKS)
             .eut(0)
             .addTo(RecipeMaps.nanochipConversionRecipes);
     }
@@ -42,10 +44,11 @@ public class RecipeHandlers {
         }
         GTValues.RA.stdBuilder()
             .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
-            .itemInputs(input.getFakeStack(info.baseParallel))
-            .itemOutputs(output.getFakeStack(info.baseParallel))
-            .duration(20)
+            .itemInputs(input.getFakeStack(info.getBaseParallel()))
+            .itemOutputs(output.getFakeStack(info.getBaseParallel()))
+            .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
             .eut(eut)
+            .noOptimize()
             .addTo(recipeMap);
     }
 
@@ -256,7 +259,7 @@ public class RecipeHandlers {
         // missing).
         if (result == null) return null;
         // This resulting item is a fake stack, so find the circuit component that corresponds to it
-        CircuitComponent component = CircuitComponent.getFromFakeStack(result);
+        CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(result);
         // Process this component further in the next recipe map
         return traverseCircuitRecipes(result, component.processingMap);
     }
@@ -306,16 +309,23 @@ public class RecipeHandlers {
             // does logically make sense and is a bit more explicit. As a bonus, this verifies that processedFakeInput
             // is in fact a circuit component, so this is another sanity check that can catch bugs in
             // traverseCircuitRecipes.
-            CircuitComponent componentInput = CircuitComponent.getFromFakeStack(processedFakeInput);
+            CircuitComponent componentInput = CircuitComponent.getFromFakeStackUnsafe(processedFakeInput);
             ItemStack fakeInputStack = componentInput.getFakeStack(input.stackSize);
             itemInputs.set(i, fakeInputStack);
         }
 
         ItemStack fakeOutput = outputComponent.getFakeStack(realOutput.stackSize);
-        return builder.itemInputs(itemInputs.toArray(new ItemStack[] {}))
-            // Note that we keep the EU/t of the original recipe, because we want to use this to tier the recipes
-            // and keep the overall power cost of assembling using CAL vs NAC similar.
-            .itemOutputs(fakeOutput)
-            .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes);
+        // Add two recipes: A hidden one that outputs the fake circuit CC, and a fake, visible one that outputs the real circuit.
+        // This is done so we can more easily look them up in NEI
+        builder = builder.itemInputs(itemInputs.toArray(new ItemStack[] {}));
+        return GTUtility.concat(
+            builder.copy()
+                .itemOutputs(fakeOutput)
+                .hidden()
+                .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes),
+            builder
+                .fake()
+                .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes)
+        );
     });
 }
