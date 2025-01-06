@@ -137,7 +137,12 @@ public enum CircuitComponent {
         return new ItemStack(CircuitComponentFakeItem.INSTANCE, amount, this.ordinal());
     }
 
-    public static CircuitComponent getFromFakeStack(ItemStack stack) {
+    public static CircuitComponent tryGetFromFakeStack(ItemStack stack) {
+        if (stack.getItemDamage() >= CircuitComponent.values().length) return null;
+        return getFromFakeStackUnsafe(stack);
+    }
+
+    public static CircuitComponent getFromFakeStackUnsafe(ItemStack stack) {
         // If this throws an IndexOutOfBounds exception, there is a bug
         return CircuitComponent.values()[stack.getItemDamage()];
     }

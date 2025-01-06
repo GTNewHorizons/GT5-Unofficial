@@ -1325,7 +1325,7 @@ public final class RecipeMaps {
         .recipeTransformer(recipe -> {
             // Register fallback localized name based on input item
             ItemStack input = recipe.mInputs[0];
-            CircuitComponent output = CircuitComponent.getFromFakeStack(recipe.mOutputs[0]);
+            CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
             MTENanochipAssemblyComplex.registerLocalName(input, output);
             return recipe;
         })
@@ -1337,7 +1337,9 @@ public final class RecipeMaps {
         .minInputs(0, 0)
         .disableOptimize()
         .recipeTransformer(recipe -> {
-            CircuitComponent output = CircuitComponent.getFromFakeStack(recipe.mOutputs[0]);
+            CircuitComponent output = CircuitComponent.tryGetFromFakeStack(recipe.mOutputs[0]);
+            // Fake recipes for the assembly matrix may not have this
+            if (output == null) return recipe;
             if (output.realCircuit != null) {
                 AssemblyMatrix.registerLocalName(output.realCircuit, output);
             }
@@ -1351,8 +1353,8 @@ public final class RecipeMaps {
         .minInputs(0, 0)
         .disableOptimize()
         .recipeTransformer(recipe -> {
-            CircuitComponent output = CircuitComponent.getFromFakeStack(recipe.mOutputs[0]);
-            CircuitComponent input = CircuitComponent.getFromFakeStack(recipe.mInputs[0]);
+            CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
             SMDProcessor.registerLocalName(input.getLocalizedName(), output);
             return recipe;
         })
@@ -1363,8 +1365,8 @@ public final class RecipeMaps {
         .minInputs(0, 0)
         .disableOptimize()
         .recipeTransformer(recipe -> {
-            CircuitComponent output = CircuitComponent.getFromFakeStack(recipe.mOutputs[0]);
-            CircuitComponent input = CircuitComponent.getFromFakeStack(recipe.mInputs[0]);
+            CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
             BoardProcessor.registerLocalName(input.getLocalizedName(), output);
             return recipe;
         })
@@ -1375,8 +1377,8 @@ public final class RecipeMaps {
         .minInputs(0, 0)
         .disableOptimize()
         .recipeTransformer(recipe -> {
-            CircuitComponent output = CircuitComponent.getFromFakeStack(recipe.mOutputs[0]);
-            CircuitComponent input = CircuitComponent.getFromFakeStack(recipe.mInputs[0]);
+            CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
             EtchingArray.registerLocalName(input.getLocalizedName(), output);
             return recipe;
         })
@@ -1387,8 +1389,8 @@ public final class RecipeMaps {
         .minInputs(0, 0)
         .disableOptimize()
         .recipeTransformer(recipe -> {
-            CircuitComponent output = CircuitComponent.getFromFakeStack(recipe.mOutputs[0]);
-            CircuitComponent input = CircuitComponent.getFromFakeStack(recipe.mInputs[0]);
+            CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
             CuttingChamber.registerLocalName(input.getLocalizedName(), output);
             return recipe;
         })
@@ -1399,8 +1401,8 @@ public final class RecipeMaps {
         .minInputs(0, 0)
         .disableOptimize()
         .recipeTransformer(recipe -> {
-            CircuitComponent output = CircuitComponent.getFromFakeStack(recipe.mOutputs[0]);
-            CircuitComponent input = CircuitComponent.getFromFakeStack(recipe.mInputs[0]);
+            CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
             WireTracer.registerLocalName(input.getLocalizedName(), output);
             return recipe;
         })
