@@ -1,10 +1,10 @@
 package gtPlusPlus.xmod.bop.blocks;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.bop.blocks.pine.LeavesPineTree;
 import gtPlusPlus.xmod.bop.blocks.pine.LogPineTree;

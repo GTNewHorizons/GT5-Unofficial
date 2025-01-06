@@ -1,13 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
-import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
-import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
-import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
-import static gregtech.api.recipe.RecipeMaps.latheRecipes;
-import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.*;
+import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
@@ -249,4 +244,104 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         }
     }
 
+    /**
+     * Add Pyrolyse Oven Recipes for Logs.
+     * Used in NHCoreMod.
+     */
+    @SuppressWarnings("unused")
+    public static void addPyrolyeOvenRecipes(ItemStack logStack) {
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidOutputs(Materials.Creosote.getFluid(4000))
+            .duration(32 * SECONDS)
+            .eut(64)
+            .noOptimize()
+            .addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(2))
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidInputs(Materials.Nitrogen.getGas(1000))
+            .fluidOutputs(Materials.Creosote.getFluid(4000))
+            .duration(16 * SECONDS)
+            .eut(96)
+            .noOptimize()
+            .addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(3))
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidOutputs(Materials.CharcoalByproducts.getGas(4000))
+            .duration(32 * SECONDS)
+            .eut(64)
+            .noOptimize()
+            .addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(4))
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidInputs(Materials.Nitrogen.getGas(1000))
+            .fluidOutputs(Materials.CharcoalByproducts.getGas(4000))
+            .duration(16 * SECONDS)
+            .eut(96)
+            .noOptimize()
+            .addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(5))
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidOutputs(Materials.WoodGas.getGas(1500))
+            .duration(32 * SECONDS)
+            .eut(64)
+            .noOptimize()
+            .addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(6))
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidInputs(Materials.Nitrogen.getGas(1000))
+            .fluidOutputs(Materials.WoodGas.getGas(1500))
+            .duration(16 * SECONDS)
+            .eut(96)
+            .noOptimize()
+            .addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(7))
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidOutputs(Materials.WoodVinegar.getFluid(3000))
+            .duration(32 * SECONDS)
+            .eut(64)
+            .noOptimize()
+            .addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(8))
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidInputs(Materials.Nitrogen.getGas(1000))
+            .fluidOutputs(Materials.WoodVinegar.getFluid(3000))
+            .duration(16 * SECONDS)
+            .eut(96)
+            .noOptimize()
+            .addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(9))
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidOutputs(Materials.WoodTar.getFluid(1500))
+            .duration(32 * SECONDS)
+            .eut(64)
+            .noOptimize()
+            .addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(10))
+            .itemOutputs(Materials.Charcoal.getGems(20))
+            .fluidInputs(Materials.Nitrogen.getGas(1000))
+            .fluidOutputs(Materials.WoodTar.getFluid(1500))
+            .duration(16 * SECONDS)
+            .eut(96)
+            .noOptimize()
+            .addTo(pyrolyseRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(11))
+            .itemOutputs(Materials.Ash.getDust(4))
+            .fluidOutputs(Materials.OilHeavy.getFluid(200))
+            .duration(16 * SECONDS)
+            .eut(192)
+            .noOptimize()
+            .addTo(pyrolyseRecipes);
+    }
 }
