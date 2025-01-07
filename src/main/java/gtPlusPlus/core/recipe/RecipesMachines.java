@@ -1529,15 +1529,15 @@ public class RecipesMachines {
             CI.component_Plate[5],
             GregtechItemList.GTFluidTank_MV.get(1));
         RecipeUtils.addShapedGregtechRecipe(
-            CI.circuitTier1,
-            CI.component_Plate[7],
-            CI.circuitTier1,
-            CI.component_Plate[8],
-            pipeTier4,
-            CI.component_Plate[8],
-            CI.circuitTier1,
-            CI.electricPump_MV,
-            CI.circuitTier1,
+            "circuitPrimitive",
+            "plateAluminium",
+            "circuitPrimitive",
+            "plateDarkSteel",
+            "pipeMediumSteel",
+            "plateDarkSteel",
+            "circuitPrimitive",
+            ItemList.Electric_Pump_MV.get(1L),
+            "circuitPrimitive",
             GregtechItemList.GTFluidTank_HV.get(1));
 
         // Industrial Multi Tank
