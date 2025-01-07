@@ -751,6 +751,16 @@ public enum MetaTileEntityIDs {
     INPUT_HATCH_ME(2717),
     INPUT_BUS_ME(2718),
     LARGE_FLUID_EXTRACTOR(2730),
+    MATTER_MANIPULATOR_UPLINK(2731),
+    HATCH_MATTER_MANIPULATOR_UPLINK_ME(2732),
+    SOLAR_PANEL_LV(2733),
+    SOLAR_PANEL_MV(2734),
+    SOLAR_PANEL_HV(2735),
+    SOLAR_PANEL_EV(2736),
+    SOLAR_PANEL_IV(2737),
+    SOLAR_PANEL_LuV(2738),
+    SOLAR_PANEL_ZPM(2739),
+    SOLAR_PANEL_UV(2740),
     INDUSTRIAL_LASER_ENGRAVER_CONTROLLER(3004),
     INDUSTRIAL_COMPRESSOR_CONTROLLER(3005),
     HIP_COMPRESSOR_CONTROLLER(3006),
@@ -1467,7 +1477,7 @@ public enum MetaTileEntityIDs {
     AcidGeneratorLV(12793),
     HumongousInputHatch(12799),
     CreativeScanner(12800),
-    ResearchCompleter(13001), // In EMT
+    ResearchCompleter(13001),
     sofc1(13101),
     sofc2(13102),
     tfft(13104),
@@ -1940,7 +1950,11 @@ public enum MetaTileEntityIDs {
     ComponentAssemblyLine(32026),
     AntimatterForge(32027),
     WireLumiium(32737),
-    WireSignalium(32749),;
+    WireSignalium(32749),
+    NeutronAcceleratorUHV(32761),
+    NeutronAcceleratorUEV(32762),
+    NeutronAcceleratorUIV(32763),
+    NeutronAcceleratorUMV(32764),;
 
     public final int ID;
 

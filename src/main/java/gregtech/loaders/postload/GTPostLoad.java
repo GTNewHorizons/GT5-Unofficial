@@ -15,16 +15,13 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -33,8 +30,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.google.common.base.Stopwatch;
 
 import cpw.mods.fml.common.ProgressManager;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -52,7 +47,6 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import ic2.api.recipe.IRecipeInput;
@@ -368,42 +362,17 @@ public class GTPostLoad {
             .addTo(rockBreakerFakeRecipes);
     }
 
-    public static void nerfVanillaTools() {
-        if (!GTMod.gregtechproxy.mNerfedVanillaTools) {
+    public static void changeWoodenVanillaTools() {
+        if (!GTMod.gregtechproxy.mChangeWoodenVanillaTools) {
             return;
         }
 
-        GTLog.out.println("GTMod: Nerfing Vanilla Tool Durability");
-        Items.wooden_sword.setMaxDamage(12);
-        Items.wooden_pickaxe.setMaxDamage(12);
-        Items.wooden_shovel.setMaxDamage(12);
-        Items.wooden_axe.setMaxDamage(12);
-        Items.wooden_hoe.setMaxDamage(12);
-
-        Items.stone_sword.setMaxDamage(48);
-        Items.stone_pickaxe.setMaxDamage(48);
-        Items.stone_shovel.setMaxDamage(48);
-        Items.stone_axe.setMaxDamage(48);
-        Items.stone_hoe.setMaxDamage(48);
-
-        Items.iron_sword.setMaxDamage(256);
-        Items.iron_pickaxe.setMaxDamage(256);
-        Items.iron_shovel.setMaxDamage(256);
-        Items.iron_axe.setMaxDamage(256);
-        Items.iron_hoe.setMaxDamage(256);
-
-        Items.golden_sword.setMaxDamage(24);
-        Items.golden_pickaxe.setMaxDamage(24);
-        Items.golden_shovel.setMaxDamage(24);
-        Items.golden_axe.setMaxDamage(24);
-        Items.golden_hoe.setMaxDamage(24);
-
-        Items.diamond_sword.setMaxDamage(768);
-        Items.diamond_pickaxe.setMaxDamage(768);
-        Items.diamond_shovel.setMaxDamage(768);
-        Items.diamond_axe.setMaxDamage(768);
-        Items.diamond_hoe.setMaxDamage(768);
-
+        GTLog.out.println("GTMod: Updating Vanilla Wooden Tools");
+        Items.wooden_sword.setMaxDamage(64);
+        Items.wooden_pickaxe.setMaxDamage(64);
+        Items.wooden_shovel.setMaxDamage(64);
+        Items.wooden_axe.setMaxDamage(64);
+        Items.wooden_hoe.setMaxDamage(64);
     }
 
     public static void replaceVanillaMaterials() {
@@ -437,53 +406,6 @@ public class GTPostLoad {
         if ((m.mTypes & 2) != 0) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getIngots(1));
         if ((m.mTypes & 4) != 0) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getGems(1));
         if (m.getBlocks(1) != null) GTRecipeRegistrator.registerUsagesForMaterials(null, noSmash, m.getBlocks(1));
-    }
-
-    public static void createGTtoolsCreativeTab() {
-        new CreativeTabs("GTtools") {
-
-            @SideOnly(Side.CLIENT)
-            @Override
-            public ItemStack getIconItemStack() {
-                return ItemList.Tool_Cheat.get(1, new ItemStack(Blocks.iron_block, 1));
-            }
-
-            @SideOnly(Side.CLIENT)
-            @Override
-            public Item getTabIconItem() {
-                return ItemList.Circuit_Integrated.getItem();
-            }
-
-            @Override
-            public void displayAllReleventItems(List<ItemStack> aList) {
-
-                for (int i = 0; i < 32766; i += 2) {
-                    if (MetaGeneratedTool01.INSTANCE.getToolStats(new ItemStack(MetaGeneratedTool01.INSTANCE, 1, i))
-                        == null) {
-                        continue;
-                    }
-
-                    ItemStack tStack = new ItemStack(MetaGeneratedTool01.INSTANCE, 1, i);
-                    MetaGeneratedTool01.INSTANCE.isItemStackUsable(tStack);
-                    aList
-                        .add(MetaGeneratedTool01.INSTANCE.getToolWithStats(i, 1, Materials.Lead, Materials.Lead, null));
-                    aList.add(
-                        MetaGeneratedTool01.INSTANCE.getToolWithStats(i, 1, Materials.Nickel, Materials.Nickel, null));
-                    aList.add(
-                        MetaGeneratedTool01.INSTANCE.getToolWithStats(i, 1, Materials.Cobalt, Materials.Cobalt, null));
-                    aList.add(
-                        MetaGeneratedTool01.INSTANCE.getToolWithStats(i, 1, Materials.Osmium, Materials.Osmium, null));
-                    aList.add(
-                        MetaGeneratedTool01.INSTANCE
-                            .getToolWithStats(i, 1, Materials.Adamantium, Materials.Adamantium, null));
-                    aList.add(
-                        MetaGeneratedTool01.INSTANCE
-                            .getToolWithStats(i, 1, Materials.Neutronium, Materials.Neutronium, null));
-
-                }
-                super.displayAllReleventItems(aList);
-            }
-        };
     }
 
     public static void addSolidFakeLargeBoilerFuels() {

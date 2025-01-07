@@ -62,6 +62,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
+import kekztech.common.blocks.BlockTFFTStorageField;
 
 public class Loaders {
 
@@ -281,7 +282,7 @@ public class Loaders {
     public static ItemStack CT;
     public static ItemStack[] LFC = new ItemStack[5];
 
-    public static ItemStack[] NeutronAccelerators = new ItemStack[9];
+    public static ItemStack[] NeutronAccelerators = new ItemStack[13];
     public static ItemStack[] Generator_Diesel = new ItemStack[2];
 
     public static ItemStack CompAssline;
@@ -303,8 +304,10 @@ public class Loaders {
             MetaTileEntityIDs.NeutronAcceleratorLV.ID, MetaTileEntityIDs.NeutronAcceleratorMV.ID,
             MetaTileEntityIDs.NeutronAcceleratorHV.ID, MetaTileEntityIDs.NeutronAcceleratorEV.ID,
             MetaTileEntityIDs.NeutronAcceleratorIV.ID, MetaTileEntityIDs.NeutronAcceleratorLuV.ID,
-            MetaTileEntityIDs.NeutronAcceleratorZPM.ID, MetaTileEntityIDs.NeutronAcceleratorUV.ID, };
-        for (int i = 0; i < 9; i++) {
+            MetaTileEntityIDs.NeutronAcceleratorZPM.ID, MetaTileEntityIDs.NeutronAcceleratorUV.ID,
+            MetaTileEntityIDs.NeutronAcceleratorUHV.ID, MetaTileEntityIDs.NeutronAcceleratorUEV.ID,
+            MetaTileEntityIDs.NeutronAcceleratorUIV.ID, MetaTileEntityIDs.NeutronAcceleratorUMV.ID, };
+        for (int i = 0; i < 13; i++) {
             Loaders.NeutronAccelerators[i] = new MTENeutronAccelerator(
                 neutronAcceleratorIDs[i],
                 "Neutron Accelerator " + GTValues.VN[i],
@@ -374,7 +377,7 @@ public class Loaders {
             "ComponentAssemblyLine",
             "Component Assembly Line").getStackForm(1L);
         CrackRecipeAdder.registerPipe(MetaTileEntityIDs.PipeIncoloy903.ID, GGMaterial.incoloy903, 15000, 8000, true);
-        CrackRecipeAdder.registerWire(MetaTileEntityIDs.WireSignalium.ID, GGMaterial.signalium, 12, 131072, 16, true);
+        CrackRecipeAdder.registerWire(MetaTileEntityIDs.WireSignalium.ID, GGMaterial.signalium, 12, 131072, 32, true);
         CrackRecipeAdder.registerWire(MetaTileEntityIDs.WireLumiium.ID, GGMaterial.lumiium, 8, 524288, 64, true);
         Loaders.AMForge = new AntimatterForge(
             IDs_GoodGenerator.AntimatterForge.ID,
@@ -516,6 +519,8 @@ public class Loaders {
                 .of(magneticFluxCasing, 0);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][10] = TextureFactory
                 .of(gravityStabilizationCasing, 0);
+            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][127] = TextureFactory
+                .of(BlockTFFTStorageField.TFFTCasingIcon.INSTANCE);
         }
     }
 

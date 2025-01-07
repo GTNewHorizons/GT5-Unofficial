@@ -349,14 +349,16 @@ public class MTEScanner extends MTEBasicMachine {
             if (ItemList.Tool_DataStick.isStackEqual(getSpecialSlot(), false, true)) {
                 for (GTRecipe.RecipeAssemblyLine tRecipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
                     if (GTUtility.areStacksEqual(tRecipe.mResearchItem, aStack, true)) {
-                        boolean failScanner = true;
+                        GTRecipe matchingRecipe = null;
+
                         for (GTRecipe scannerRecipe : scannerFakeRecipes.getAllRecipes()) {
                             if (GTUtility.areStacksEqual(scannerRecipe.mInputs[0], aStack, true)) {
-                                failScanner = false;
+                                matchingRecipe = scannerRecipe;
                                 break;
                             }
                         }
-                        if (failScanner) {
+
+                        if (matchingRecipe == null || aStack.stackSize < matchingRecipe.mInputs[0].stackSize) {
                             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                         }
 
@@ -364,7 +366,7 @@ public class MTEScanner extends MTEBasicMachine {
 
                         // Use Assline Utils
                         if (AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(this.mOutputItems[0], tRecipe)) {
-                            aStack.stackSize -= 1;
+                            aStack.stackSize -= matchingRecipe.mInputs[0].stackSize;
                             calculateOverclockedNess(30, tRecipe.mResearchTime);
                             // In case recipe is too OP for that machine
                             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)

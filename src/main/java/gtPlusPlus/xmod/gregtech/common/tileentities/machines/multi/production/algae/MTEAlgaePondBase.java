@@ -60,7 +60,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMult
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
-import tectech.thing.casing.TTCasingsContainer;
 
 public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> implements ISurvivalConstructable {
 
@@ -155,7 +154,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                         onElementPass(
                             x -> ++x.mCasing,
                             addTieredBlock(
-                                TTCasingsContainer.sBlockCasingsNH,
+                                GregTechAPI.sBlockCasingsNH,
                                 MTEAlgaePondBase::setMeta,
                                 MTEAlgaePondBase::getMeta,
                                 10,
@@ -214,8 +213,18 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCDAlgaePondBaseActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCDAlgaePondBase;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCDAlgaePondBaseGlow;
     }
 
     @Override
@@ -367,7 +376,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(xDir, -1, zDir);
             aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir, -1, zDir);
             if (aInitStructureCheck == GregTechAPI.sBlockCasings1
-                || aInitStructureCheck == TTCasingsContainer.sBlockCasingsNH) {
+                || aInitStructureCheck == GregTechAPI.sBlockCasingsNH) {
                 return aInitStructureCheckMeta;
             }
             return 0;

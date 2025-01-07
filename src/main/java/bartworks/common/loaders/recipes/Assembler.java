@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -26,19 +25,6 @@ public class Assembler implements Runnable {
 
     @Override
     public void run() {
-        Materials[] cables = { // Cable material used in the acid gen, diode and energy distributor below
-            Materials.Lead, // ULV
-            Materials.Tin, // LV
-            Materials.AnnealedCopper, // MV
-            Materials.Gold, // HV
-            Materials.Aluminium, // EV
-            Materials.Tungsten, // IV
-            Materials.VanadiumGallium, // LuV
-            Materials.Naquadah, // ZPM
-            Materials.NaquadahAlloy, // UV
-            Materials.SuperconductorUV // UHV
-        };
-
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 0),

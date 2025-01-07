@@ -721,6 +721,49 @@ public class RecipesGregTech {
 
     private static void blastSmelterRecipes() {
 
+        // Enderium
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(5),
+                Materials.Tin.getDust(2),
+                Materials.Platinum.getDust(1),
+                Materials.Silver.getDust(1),
+                Materials.Thaumium.getDust(2),
+                Materials.EnderPearl.getDust(2))
+            .fluidOutputs(Materials.Enderium.getMolten(8 * 144))
+            .eut(TierEU.RECIPE_EV)
+            .duration(20 * SECONDS + 1 * MINUTES)
+            .addTo(alloyBlastSmelterRecipes);
+
+        // Signalium
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(3),
+                Materials.AnnealedCopper.getDust(30),
+                Materials.Ardite.getDust(10),
+                Materials.Redstone.getDust(50))
+            .fluidOutputs(GGMaterial.signalium.getMolten(5 * 144))
+            .eut(TierEU.RECIPE_LuV)
+            .noOptimize()
+            .duration(5 * MINUTES)
+            .addTo(alloyBlastSmelterRecipes);
+
+        // Lumiium
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(6),
+                Materials.Tin.getDust(10),
+                Materials.Iron.getDust(10),
+                Materials.Copper.getDust(2),
+                Materials.Silver.getDust(8),
+                GGMaterial.lumiinessence.get(OrePrefixes.dust, 10),
+                Materials.Glowstone.getDust(10))
+            .fluidOutputs(GGMaterial.lumiium.getMolten(5 * 144))
+            .eut(TierEU.RECIPE_LuV)
+            .noOptimize()
+            .duration(5 * MINUTES)
+            .addTo(alloyBlastSmelterRecipes);
+
         // Eglin Steel
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -840,11 +883,12 @@ public class RecipesGregTech {
                 GTUtility.getIntegratedCircuit(21),
                 MaterialMisc.STRONTIUM_OXIDE.getDust(8),
                 MaterialsElements.getInstance().ALUMINIUM.getDust(8))
-            .itemOutputs(
-                MaterialsElements.getInstance().ALUMINIUM.getIngot(8),
-                MaterialsElements.getInstance().STRONTIUM.getIngot(8))
-            .fluidOutputs(MaterialsElements.getInstance().OXYGEN.getFluidStack(8000))
+            .fluidOutputs(
+                MaterialsElements.getInstance().OXYGEN.getFluidStack(8000),
+                MaterialsElements.getInstance().ALUMINIUM.getFluidStack(144 * 8),
+                MaterialsElements.getInstance().STRONTIUM.getFluidStack(144 * 8))
             .eut(TierEU.RECIPE_EV)
+            .noOptimize()
             .duration(2 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
 

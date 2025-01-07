@@ -241,6 +241,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     + EnumChatFormatting.ITALIC
                     + "purification processes, and this multiblock is the heart of the operation.")
             .beginStructureBlock(7, 9, 8, false)
+            .addController("Front center")
             .addCasingInfoExactlyColored(
                 "Superplasticizer-Treated High Strength Concrete",
                 EnumChatFormatting.GRAY,
@@ -272,7 +273,6 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 6,
                 EnumChatFormatting.GOLD,
                 false)
-            .addController("Front center")
             .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
             .addStructureInfo("Requires water to be placed in the tank.")
@@ -568,17 +568,18 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
     private void drawTopText(DynamicPositionedColumn screenElements) {
         screenElements.setSynced(false)
-            .setSpace(0)
-            .setPos(10, 8);
+            .setSpace(0);
 
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setDefaultColor(EnumChatFormatting.RED)
+                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(EnumChatFormatting.RED)
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 
         screenElements.widget(
-            new TextWidget("Hit with Soft Mallet to start.").setDefaultColor(EnumChatFormatting.BLACK)
+            new TextWidget("Hit with Soft Mallet to start.").setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(EnumChatFormatting.BLACK)
                 .setEnabled(
                     widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
             .widget(
@@ -590,7 +591,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     () -> getBaseMetaTileEntity().isActive(),
                     val -> getBaseMetaTileEntity().setActive(val)));
         screenElements.widget(
-            new TextWidget(GTUtility.trans("142", "Running perfectly.")).setDefaultColor(EnumChatFormatting.GREEN)
+            new TextWidget(GTUtility.trans("142", "Running perfectly.")).setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(EnumChatFormatting.GREEN)
                 .setEnabled(
                     widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
         screenElements.widget(
@@ -721,7 +723,11 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         // Draw basic recipe info
         final DynamicPositionedColumn controlTextArea = new DynamicPositionedColumn();
         drawTopText(controlTextArea);
-        builder.widget(controlTextArea);
+        builder.widget(
+            new Scrollable().setVerticalScroll()
+                .widget(controlTextArea)
+                .setPos(10, 7)
+                .setSize(182, 24));
 
         // Draw line separator
         builder.widget(

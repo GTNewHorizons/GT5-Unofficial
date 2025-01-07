@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import com.google.common.collect.ImmutableList;
 
@@ -25,7 +26,10 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTUtility.ItemId;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
+import it.unimi.dsi.fastutil.Pair;
+import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
 
@@ -240,35 +244,11 @@ public enum OrePrefixes {
     bulletGtLarge("Large Bullets", "Large ", " Bullet", true, true, false, false, true, false, true, false, true, false,
         B[6] | B[8], M / 3, 64, -1),
     /** consisting out of 2 Ingots. */
-    toolHeadSword("Sword Blades", "", " Sword Blade", true, true, false, false, false, false, true, true, false, false,
-        B[6], M * 2, 64, 32),
-    /** consisting out of 3 Ingots. */
-    toolHeadPickaxe("Pickaxe Heads", "", " Pickaxe Head", true, true, false, false, false, false, true, true, false,
-        false, B[6], M * 3, 64, 33),
-    /** consisting out of 1 Ingots. */
-    toolHeadShovel("Shovel Heads", "", " Shovel Head", true, true, false, false, false, false, true, true, false, false,
-        B[6], M * 1, 64, 34),
-    /** consisting out of 1 Ingots. */
-    toolHeadUniversalSpade("Universal Spade Heads", "", " Universal Spade Head", true, true, false, false, false, false,
-        true, true, false, false, B[6], M * 1, 64, 43),
-    /** consisting out of 3 Ingots. */
-    toolHeadAxe("Axe Heads", "", " Axe Head", true, true, false, false, false, false, true, true, false, false, B[6],
-        M * 3, 64, 35),
-    /** consisting out of 2 Ingots. */
-    toolHeadHoe("Hoe Heads", "", " Hoe Head", true, true, false, false, false, false, true, true, false, false, B[6],
-        M * 2, 64, 36),
-    /** consisting out of 3 Ingots. */
-    toolHeadSense("Sense Blades", "", " Sense Blade", true, true, false, false, false, false, true, true, false, false,
-        B[6], M * 3, 64, 44),
-    /** consisting out of 2 Ingots. */
     toolHeadFile("File Heads", "", " File Head", true, true, false, false, false, false, true, true, false, false, B[6],
         M * 2, 64, 38),
     /** consisting out of 6 Ingots. */
     toolHeadHammer("Hammer Heads", "", " Hammer Head", true, true, false, false, false, false, true, true, false, false,
         B[6], M * 6, 64, 37),
-    /** consisting out of 4 Ingots. */
-    toolHeadPlow("Plow Heads", "", " Plow Head", true, true, false, false, false, false, true, true, false, false, B[6],
-        M * 4, 64, 45),
     /** consisting out of 2 Ingots. */
     toolHeadSaw("Saw Blades", "", " Saw Blade", true, true, false, false, false, false, true, true, false, false, B[6],
         M * 2, 64, 39),
@@ -616,7 +596,10 @@ public enum OrePrefixes {
         false, false, 0, M * 1, 64, -1),
     // subatomic particles
     particle("A Subatomic Particle", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1,
-        64, -1);
+        64, -1),
+    // Beamline Masks
+    mask("A Photolithographic Mask", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1,
+        1, -1);
 
     public static final ImmutableList<OrePrefixes> CELL_TYPES = ImmutableList.of(
         cell,
@@ -1092,20 +1075,12 @@ public enum OrePrefixes {
             OrePrefixes.screw,
             OrePrefixes.ring,
             OrePrefixes.foil,
-            OrePrefixes.toolHeadSword,
-            OrePrefixes.toolHeadPickaxe,
-            OrePrefixes.toolHeadShovel,
-            OrePrefixes.toolHeadAxe,
-            OrePrefixes.toolHeadHoe,
             OrePrefixes.toolHeadHammer,
             OrePrefixes.toolHeadFile,
             OrePrefixes.toolHeadSaw,
             OrePrefixes.toolHeadDrill,
             OrePrefixes.toolHeadChainsaw,
             OrePrefixes.toolHeadWrench,
-            OrePrefixes.toolHeadUniversalSpade,
-            OrePrefixes.toolHeadSense,
-            OrePrefixes.toolHeadPlow,
             OrePrefixes.toolHeadBuzzSaw,
             OrePrefixes.turbineBlade,
             OrePrefixes.wireFine,
@@ -1211,6 +1186,53 @@ public enum OrePrefixes {
             }
         }
         return aOre;
+    }
+
+    public static Pair<OrePrefixes, String> detectPrefix(String oredictName) {
+        for (OrePrefixes prefix : values()) {
+            if (oredictName.startsWith(prefix.name())) {
+                return Pair.of(
+                    prefix,
+                    oredictName.substring(
+                        prefix.name()
+                            .length()));
+            }
+        }
+
+        return null;
+    }
+
+    private static final ThreadLocal<Object2ObjectLinkedOpenHashMap<ItemId, ImmutableList<Pair<OrePrefixes, String>>>> PREFIX_CACHE = ThreadLocal
+        .withInitial(Object2ObjectLinkedOpenHashMap::new);
+
+    public static ImmutableList<Pair<OrePrefixes, String>> detectPrefix(ItemStack stack) {
+        Object2ObjectLinkedOpenHashMap<ItemId, ImmutableList<Pair<OrePrefixes, String>>> cache = PREFIX_CACHE.get();
+
+        ItemId itemId = ItemId.create(stack);
+
+        var cacheResult = cache.getAndMoveToFirst(itemId);
+
+        if (cacheResult != null) return cacheResult;
+
+        ImmutableList.Builder<Pair<OrePrefixes, String>> result = ImmutableList.builder();
+
+        for (int id : OreDictionary.getOreIDs(stack)) {
+            Pair<OrePrefixes, String> p = detectPrefix(OreDictionary.getOreName(id));
+
+            if (p != null) {
+                result.add(p);
+            }
+        }
+
+        ImmutableList<Pair<OrePrefixes, String>> prefixes = result.build();
+
+        cache.putAndMoveToFirst(itemId, prefixes);
+
+        while (cache.size() > 1024) {
+            cache.removeLast();
+        }
+
+        return prefixes;
     }
 
     public static String replacePrefix(String aOre, OrePrefixes aPrefix) {
