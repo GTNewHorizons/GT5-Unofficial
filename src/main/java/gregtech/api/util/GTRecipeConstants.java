@@ -20,19 +20,18 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
+import gregtech.api.util.recipe.Scanning;
 import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
 import gtnhlanth.common.item.ItemPhotolithographicMask;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.LanthItemList;
-import gregtech.api.util.recipe.Scanning;
 
 // this class is intended to be import-static-ed on every recipe script
 // so take care to not put unrelated stuff here!
@@ -68,7 +67,8 @@ public class GTRecipeConstants {
 
     /**
      * Scanning data used for scanner for assembly line recipes (time and voltage)
-     * Scanning time should be between 4 and 24 minutes, and the voltage 2 tiers below the available scanner tier for the recipe
+     * Scanning time should be between 4 and 24 minutes, and the voltage 2 tiers below the available scanner tier for
+     * the recipe
      */
     public static final RecipeMetadataKey<Scanning> SCANNING = SimpleRecipeMetadataKey
         .create(Scanning.class, "scanning");

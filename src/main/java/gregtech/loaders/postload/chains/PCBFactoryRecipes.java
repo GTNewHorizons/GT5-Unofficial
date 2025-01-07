@@ -15,7 +15,6 @@ import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.util.recipe.Scanning;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -34,6 +33,7 @@ import gregtech.api.recipe.metadata.PCBFactoryUpgradeKey;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.PCBFactoryManager;
+import gregtech.api.util.recipe.Scanning;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class PCBFactoryRecipes {

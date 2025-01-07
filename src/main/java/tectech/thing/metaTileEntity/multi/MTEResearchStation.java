@@ -221,7 +221,9 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                                 }
                                 this.tRecipe = assRecipe;
                                 // Set property
-                                computationRequired = computationRemaining = (long) assRecipe.mResearchTime * assRecipe.mResearchVoltage / 30;
+                                computationRequired = computationRemaining = (long) assRecipe.mResearchTime
+                                    * assRecipe.mResearchVoltage
+                                    / 30;
                                 mMaxProgresstime = 20;
                                 mEfficiencyIncrease = 10000;
                                 eRequiredData = 1;

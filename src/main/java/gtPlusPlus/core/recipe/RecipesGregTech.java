@@ -35,6 +35,7 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
+import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
@@ -46,8 +47,6 @@ import static gtPlusPlus.core.material.MaterialsAlloy.TITANSTEEL;
 import java.util.Arrays;
 import java.util.List;
 
-import gregtech.api.util.recipe.Scanning;
-import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -68,6 +67,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
@@ -402,7 +402,7 @@ public class RecipesGregTech {
         for (int j = 6; j < 10; j++) {
             RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, aResearch[aCasingSlot])
-                .metadata(SCANNING, new Scanning(6 * MINUTES + 40 * SECONDS, GTValues.VP[aCasingSlot+4]))
+                .metadata(SCANNING, new Scanning(6 * MINUTES + 40 * SECONDS, GTValues.VP[aCasingSlot + 4]))
                 .itemInputs(
                     CI.getTieredComponent(OrePrefixes.plate, j - 1, 16),
                     CI.getTieredComponent(OrePrefixes.cableGt08, j + 1, 32),
@@ -433,7 +433,7 @@ public class RecipesGregTech {
         for (int j = 6; j < 10; j++) {
             RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, aExoticInputs[aCasingSlot])
-                .metadata(SCANNING, new Scanning(8 * MINUTES, GTValues.VP[aCasingSlot+6]))
+                .metadata(SCANNING, new Scanning(8 * MINUTES, GTValues.VP[aCasingSlot + 6]))
                 .itemInputs(
                     aGemCasings[aCasingSlot],
                     ItemUtils.getSimpleStack(aExoticInputs[aCasingSlot], 16),
@@ -495,7 +495,7 @@ public class RecipesGregTech {
             for (int h = 6; h < 10; h++) {
                 RA.stdBuilder()
                     .metadata(RESEARCH_ITEM, aChargeResearch[aCurrSlot])
-                    .metadata(SCANNING, new Scanning(4 * MINUTES + 40 * SECONDS,  GTValues.VP[aCurrSlot+4]))
+                    .metadata(SCANNING, new Scanning(4 * MINUTES + 40 * SECONDS, GTValues.VP[aCurrSlot + 4]))
                     .itemInputs(
                         ItemUtils.getSimpleStack(aGemBatteries[aCurrSlot], 2),
                         aCoilWire[aCurrSlot],

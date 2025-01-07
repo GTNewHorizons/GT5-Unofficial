@@ -1013,7 +1013,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
             GTItemStack thisOutput = new GTItemStack(mOutput);
             GTItemStack thisResearch = new GTItemStack(mResearchItem);
             int miscRecipeDataHash = Arrays.deepHashCode(
-                new Object[] { totalInputStackSize, mDuration, mEUt, thisOutput, thisResearch, mResearchTime, mResearchVoltage});
+                new Object[] { totalInputStackSize, mDuration, mEUt, thisOutput, thisResearch, mResearchTime,
+                    mResearchVoltage });
             result = prime * result + inputFluidHash;
             result = prime * result + inputHash;
             result = prime * result + miscRecipeDataHash;
@@ -1066,7 +1067,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
             }
 
             return this.mDuration == other.mDuration && this.mEUt == other.mEUt
-                && this.mResearchTime == other.mResearchTime && this.mResearchVoltage == other.mResearchVoltage;
+                && this.mResearchTime == other.mResearchTime
+                && this.mResearchVoltage == other.mResearchVoltage;
         }
 
         public int getPersistentHash() {

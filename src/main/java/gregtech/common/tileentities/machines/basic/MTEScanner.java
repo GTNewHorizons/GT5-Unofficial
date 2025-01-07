@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GTValues.D1;
-import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_SCANNER;
@@ -24,11 +23,8 @@ import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 
 import java.util.Objects;
 
-import com.google.common.primitives.Ints;
-import gregtech.api.objects.overclockdescriber.EUOverclockDescriber;
-import gregtech.api.objects.overclockdescriber.OverclockDescriber;
-import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.api.util.OverclockCalculator;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -48,6 +44,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.objects.ItemData;
+import gregtech.api.objects.overclockdescriber.EUOverclockDescriber;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AssemblyLineUtils;
@@ -56,9 +54,9 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
-
-import javax.annotation.ParametersAreNonnullByDefault;
 
 public class MTEScanner extends MTEBasicMachine {
 

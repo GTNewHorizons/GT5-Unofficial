@@ -121,7 +121,6 @@ import static gtnhlanth.common.register.WerkstoffMaterialPool.YtterbiumOreConcen
 
 import java.util.HashSet;
 
-import gregtech.api.util.recipe.Scanning;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -148,6 +147,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.recipe.Scanning;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 import gtPlusPlus.core.item.ModItems;
 import gtnhlanth.Tags;
