@@ -1,6 +1,8 @@
 package bartworks.common.loaders.recipes;
 
+import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -147,6 +149,18 @@ public class Assembler implements Runnable {
             .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(72))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Electric_Pump_HV.get(2),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 4),
+                getModItem(GregTech.ID, "gt.blockmachines",2,5143),
+                ItemList.MACHINE_HULLS[3].get(1L)
+            )
+            .itemOutputs(getModItem(GregTech.ID, "gt.blockmachines",1,1126))
+            .duration(10 * SECONDS)
+            .eut(30)
             .addTo(assemblerRecipes);
 
         ItemStack[][] converters = ItemRegistry.TecTechLaserAdditions[0];
