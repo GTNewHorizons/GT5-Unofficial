@@ -62,7 +62,7 @@ public class GTPPRecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> vacuumFurnaceRecipes = RecipeMapBuilder.of("gtpp.recipe.vacfurnace")
         .maxIO(9, 9, 3, 3)
-        .minInputs(1, 0)
+        .minInputs(0, 1)
         .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
         .frontend(LargeNEIFrontend::new)
         .disableOptimize()
