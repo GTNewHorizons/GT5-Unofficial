@@ -59,11 +59,6 @@ public class GTRecipeConstants {
      */
     public static final RecipeMetadataKey<Integer> FUSION_THRESHOLD = SimpleRecipeMetadataKey
         .create(Integer.class, "fusion_threshold");
-    /**
-     * Research time in a scanner used in ticks.
-     */
-    public static final RecipeMetadataKey<Integer> RESEARCH_TIME = SimpleRecipeMetadataKey
-        .create(Integer.class, "research_time");
 
     /**
      * Scanning data used for scanner for assembly line recipes (time and voltage)
