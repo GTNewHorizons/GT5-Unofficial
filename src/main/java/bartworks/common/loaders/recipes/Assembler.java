@@ -153,12 +153,12 @@ public class Assembler implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.MACHINE_HULLS[3].get(1L),
+                ItemList.MACHINE_HULLS[3].get(1),
                 ItemList.Electric_Pump_HV.get(2),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 4),
-                getModItem(GregTech.ID, "gt.blockmachines",2,5143)
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 2)
             )
-            .itemOutputs(getModItem(GregTech.ID, "gt.blockmachines",1,1126))
+            .itemOutputs(ItemList.Distillation_Tower.get(1))
             .duration(10 * SECONDS)
             .eut(30)
             .addTo(assemblerRecipes);
