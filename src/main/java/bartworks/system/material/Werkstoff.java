@@ -579,6 +579,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
     }
 
     @Override
+    public TextureSet getTextureSet() {
+        return texSet;
+    }
+
+    @Override
     public boolean contains(SubTag subTag) {
         if (!subTag.equals(WerkstoffLoader.NOBLE_GAS) && !subTag.equals(WerkstoffLoader.ANAEROBE_GAS)
             && !subTag.equals(WerkstoffLoader.NO_BLAST))

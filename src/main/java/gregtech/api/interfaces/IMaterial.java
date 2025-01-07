@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 
 import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TextureSet;
 import gtPlusPlus.core.material.Material;
 
 public interface IMaterial {
@@ -15,6 +16,8 @@ public interface IMaterial {
     public String getInternalName();
 
     public short[] getRGBA();
+
+    public TextureSet getTextureSet();
 
     public boolean isValidForStone(IStoneType stoneType);
 

@@ -3069,6 +3069,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     }
 
     @Override
+    public TextureSet getTextureSet() {
+        return mIconSet;
+    }
+
+    @Override
     public String toString() {
         return this.mName;
     }

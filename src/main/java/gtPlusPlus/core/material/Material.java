@@ -733,6 +733,7 @@ public class Material implements IMaterial {
         }
     }
 
+    @Override
     public final TextureSet getTextureSet() {
         synchronized (this) {
             return textureSet;
