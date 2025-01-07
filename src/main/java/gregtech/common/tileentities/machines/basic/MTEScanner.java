@@ -29,7 +29,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IIndividual;
@@ -127,6 +130,11 @@ public class MTEScanner extends MTEBasicMachine {
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEScanner(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return ArrayUtils.addAll(this.mDescriptionArray, StatCollector.translateToLocal("GT5U.machines  .perfectoc"));
     }
 
     @Override
@@ -437,7 +445,7 @@ public class MTEScanner extends MTEBasicMachine {
 
     @ParametersAreNonnullByDefault
     @MethodsReturnNonnullByDefault
-    protected class ScannerOverclockDescriber extends EUOverclockDescriber {
+    protected static class ScannerOverclockDescriber extends EUOverclockDescriber {
 
         protected ScannerOverclockDescriber(byte tier) {
             super(tier, 1);

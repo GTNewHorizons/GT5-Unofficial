@@ -300,6 +300,7 @@ gt.recipe.category.tic_part_extruding=TiC Part Extruding
 gt.recipe.category.tic_bolt_molding=TiC Bolt Molding
 
 GT5U.machines.tier=Tier
+GT5U.machines.perfectoc=Performs perfect overclocks
 GT5U.machines.workarea=Work Area
 GT5U.machines.workareaset=Work Area set to
 GT5U.machines.workarea_fail=Can't adjust work area while running
