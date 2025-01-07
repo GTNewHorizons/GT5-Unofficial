@@ -299,17 +299,18 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                         Block tBlock = chunk.getBlock(cx, cy, cz);
                         short tMetaID = (short) chunk.getBlockMetadata(cx, cy, cz);
 
-                        var p = OreManager.getOreInfo(tBlock, tMetaID);
-
-                        if (p != null) {
-                            try (OreInfo<?> info = p.right()) {
+                        try (OreInfo<?> info = OreManager.getOreInfo(tBlock, tMetaID)) {
+                            if (info != null) {
                                 if (!info.isNatural) continue;
                                 if (data != DetravMetaGeneratedTool01.MODE_ALL_ORES && info.isSmall) continue;
 
                                 ItemStack blockStack2 = new ItemStack(tBlock, 1, tMetaID);
                                 addOreToHashMap(blockStack2.getDisplayName(), aPlayer);
+                                continue;
                             }
-                        } else if (data == DetravMetaGeneratedTool01.MODE_ALL_ORES) {
+                        }
+
+                        if (data == DetravMetaGeneratedTool01.MODE_ALL_ORES) {
                             itemData = GTOreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                             if (itemData != null && itemData.mPrefix.toString()
                                 .startsWith("ore")) {

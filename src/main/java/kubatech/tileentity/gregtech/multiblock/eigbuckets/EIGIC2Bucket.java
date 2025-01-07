@@ -394,13 +394,11 @@ public class EIGIC2Bucket extends EIGBucket {
         if (b == Blocks.air || !(item instanceof ItemBlock)) return false;
         short tDamage = (short) item.getDamage(stack);
 
-        var p = OreManager.getOreInfo(b, tDamage);
-
-        if (p != null) {
-            try (OreInfo<?> info = p.right()) {
+        try (OreInfo<?> info = OreManager.getOreInfo(b, tDamage)) {
+            if (info != null) {
                 info.isNatural = true;
 
-                var oreBlock = p.left()
+                var oreBlock = OreManager.getAdapter(info)
                     .getBlock(info);
 
                 world.setBlock(x, y, z, oreBlock.left(), oreBlock.rightInt(), 3);

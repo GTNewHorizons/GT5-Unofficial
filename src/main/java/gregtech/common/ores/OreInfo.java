@@ -7,6 +7,7 @@ import gregtech.api.interfaces.IStoneType;
 
 public class OreInfo<TMat extends IMaterial> implements AutoCloseable {
 
+    public IOreAdapter<TMat> cachedAdapter;
     public TMat material;
     public IStoneType stoneType;
     public boolean isSmall;
@@ -37,6 +38,7 @@ public class OreInfo<TMat extends IMaterial> implements AutoCloseable {
     }
 
     public OreInfo<TMat> reset() {
+        cachedAdapter = null;
         material = null;
         stoneType = null;
         isSmall = false;
@@ -46,6 +48,7 @@ public class OreInfo<TMat extends IMaterial> implements AutoCloseable {
 
     public OreInfo<TMat> clone() {
         OreInfo<TMat> dup = getNewInfo();
+        dup.cachedAdapter = this.cachedAdapter;
         dup.material = this.material;
         dup.stoneType = this.stoneType;
         dup.isSmall = this.isSmall;

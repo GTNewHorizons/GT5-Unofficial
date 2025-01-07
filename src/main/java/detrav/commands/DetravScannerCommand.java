@@ -98,12 +98,8 @@ public class DetravScannerCommand implements ICommand {
                 Block b = c.getBlock(x, y, z);
                 int meta = c.getBlockMetadata(x, y, z);
 
-                var p = OreManager.getOreInfo(b, meta);
-
-                if (p == null) continue;
-
-                try (OreInfo<?> info = p.right()) {
-                    if (info.isSmall) continue;
+                try (OreInfo<?> info = OreManager.getOreInfo(b, meta)) {
+                    if (info == null || info.isSmall) continue;
 
                     String matName = info.material.getLocalizedName();
 
