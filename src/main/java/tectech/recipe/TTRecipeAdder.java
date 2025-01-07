@@ -56,6 +56,7 @@ public class TTRecipeAdder extends RecipeAdder {
         GTRecipe.RecipeAssemblyLine recipeGT = new GTRecipe.RecipeAssemblyLine(
             CustomItemList.UnusedStuff.get(1),
             totalComputationRequired / computationRequiredPerSec,
+            0,
             aInputs,
             aFluidInputs,
             aOutput,
@@ -64,6 +65,7 @@ public class TTRecipeAdder extends RecipeAdder {
         RecipeAssemblyLine recipeTT = new GTRecipe.RecipeAssemblyLine(
             aResearchItem,
             totalComputationRequired / computationRequiredPerSec,
+            0,
             aInputs,
             aFluidInputs,
             aOutput,
@@ -192,6 +194,7 @@ public class TTRecipeAdder extends RecipeAdder {
         GTRecipe.RecipeAssemblyLine recipeGT = new GTRecipe.RecipeAssemblyLine(
             CustomItemList.UnusedStuff.get(1),
             totalComputationRequired / computationRequiredPerSec,
+            0,
             tInputs,
             aFluidInputs,
             aOutput,
@@ -203,6 +206,7 @@ public class TTRecipeAdder extends RecipeAdder {
         GTRecipe.RecipeAssemblyLine recipeTT = new GTRecipe.RecipeAssemblyLine(
             aResearchItem,
             totalComputationRequired / computationRequiredPerSec,
+            0,
             tInputs,
             aFluidInputs,
             aOutput,

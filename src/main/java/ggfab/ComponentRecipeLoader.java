@@ -1,13 +1,14 @@
 package ggfab;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GTRecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
+import gregtech.api.enums.TierEU;
+import gregtech.api.util.recipe.Scanning;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -25,9 +26,10 @@ class ComponentRecipeLoader implements Runnable {
     public void run() {
         Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140");
 
+        // Advanced Assembly Line
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Machine_Multi_Assemblyline.get(1L))
-            .metadata(RESEARCH_TIME, 1 * HOURS + 6 * MINUTES)
+            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_EV))
             .itemInputs(
                 ItemList.Machine_Multi_Assemblyline.get(1L),
                 new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },

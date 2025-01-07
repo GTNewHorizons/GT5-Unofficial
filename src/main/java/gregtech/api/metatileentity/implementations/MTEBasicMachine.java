@@ -731,6 +731,20 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     /**
+     * Helper method for calculating simple perfect overclock.
+     */
+    protected void calculatePefectOverclockedNess(int eut, int duration) {
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(eut)
+            .setEUt(V[mTier] * mAmperage)
+            .setDuration(duration)
+            .setOneTickDiscount(true)
+            .enablePerfectOC()
+            .calculate();
+        mEUt = (int) calculator.getConsumption();
+        mMaxProgresstime = calculator.getDuration();
+    }
+
+    /**
      * Helper method for calculating simple overclock.
      */
     protected void calculateOverclockedNess(int eut, int duration) {

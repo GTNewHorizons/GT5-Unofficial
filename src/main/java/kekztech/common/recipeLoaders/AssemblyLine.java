@@ -5,14 +5,14 @@ import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.UniversalSingularities;
-import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GTRecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
 
+import gregtech.api.util.recipe.Scanning;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -43,7 +43,7 @@ public class AssemblyLine implements Runnable {
         // TFFTStorageField6
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, new ItemStack(Blocks.tfftStorageField, 1, 5))
-            .metadata(RESEARCH_TIME, 1 * HOURS + 6 * MINUTES + 40 * SECONDS)
+            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_EV))
             .itemInputs(
                 ItemList.Casing_Tank_7.get(4),
                 GTOreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.CrystallinePinkSlime, 6),
@@ -62,7 +62,7 @@ public class AssemblyLine implements Runnable {
         // TFFTStorageField7
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, new ItemStack(Blocks.tfftStorageField, 1, 6))
-            .metadata(RESEARCH_TIME, 1 * HOURS + 6 * MINUTES + 40 * SECONDS)
+            .metadata(SCANNING, new Scanning(12 * MINUTES + 40 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 ItemList.Casing_Tank_10.get(16),
                 GTOreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.MelodicAlloy, 6),
@@ -78,11 +78,10 @@ public class AssemblyLine implements Runnable {
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(AssemblyLine);
-
         // TFFTStorageField8
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, new ItemStack(Blocks.tfftStorageField, 1, 7))
-            .metadata(RESEARCH_TIME, 2 * HOURS + 40 * MINUTES)
+            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_LuV))
             .itemInputs(
                 ItemList.Quantum_Tank_IV.get(1),
                 ItemList.Machine_Multi_NeutroniumCompressor.get(1),
@@ -103,7 +102,7 @@ public class AssemblyLine implements Runnable {
 
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, new ItemStack(Blocks.tfftStorageField, 1, 8))
-            .metadata(RESEARCH_TIME, 2 * HOURS + 13 * MINUTES + 20 * SECONDS)
+            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_LuV))
             .itemInputs(
                 ItemList.Quantum_Tank_IV.get(4),
                 ItemList.Machine_Multi_NeutroniumCompressor.get(2),
@@ -125,7 +124,7 @@ public class AssemblyLine implements Runnable {
         // TFFTStorageField10
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, new ItemStack(Blocks.tfftStorageField, 1, 9))
-            .metadata(RESEARCH_TIME, 2 * HOURS + 46 * MINUTES + 40 * SECONDS)
+            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_UEV))
             .itemInputs(
                 ItemList.Quantum_Tank_IV.get(16),
                 ItemList.Machine_Multi_NeutroniumCompressor.get(4),
@@ -149,7 +148,7 @@ public class AssemblyLine implements Runnable {
         // LuV Capacitor
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1))
-            .metadata(RESEARCH_TIME, 4 * HOURS)
+            .metadata(SCANNING, new Scanning(5 * MINUTES + 20 * SECONDS, TierEU.RECIPE_EV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmiridium, 4),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Osmiridium, 24),
@@ -173,7 +172,7 @@ public class AssemblyLine implements Runnable {
         // ZPM Capacitor
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2))
-            .metadata(RESEARCH_TIME, 4 * HOURS)
+            .metadata(SCANNING, new Scanning(5 * MINUTES + 20 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 4),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.NaquadahAlloy, 24),
@@ -199,7 +198,7 @@ public class AssemblyLine implements Runnable {
         // UV Capacitor
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
-            .metadata(RESEARCH_TIME, 4 * HOURS)
+            .metadata(SCANNING, new Scanning(5 * MINUTES + 20 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 4),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 24),

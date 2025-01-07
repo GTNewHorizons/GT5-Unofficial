@@ -41,7 +41,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GTRecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static kubatech.api.enums.ItemList.BlackTea;
@@ -75,6 +75,7 @@ import static kubatech.api.enums.ItemList.WhiteTeaLeaf;
 import static kubatech.api.enums.ItemList.YellowTea;
 import static kubatech.api.enums.ItemList.YellowTeaLeaf;
 
+import gregtech.api.util.recipe.Scanning;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -145,9 +146,10 @@ public class RecipeLoader {
         }
 
         if (Forestry.isModLoaded()) {
+            // Industrial Apicultural Acclimatiser and Drone Domestication Station
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, gregtech.api.enums.ItemList.Machine_IndustrialApiary.get(1))
-                .metadata(RESEARCH_TIME, 8 * MINUTES + 20 * SECONDS)
+                .metadata(SCANNING, new Scanning(22 * MINUTES + 40 * SECONDS, TierEU.RECIPE_LuV))
                 .itemInputs(
                     gregtech.api.enums.ItemList.Machine_IndustrialApiary.get(64L),
                     gregtech.api.enums.ItemList.IndustrialApiary_Upgrade_Acceleration_8_Upgraded.get(64L),
@@ -333,9 +335,10 @@ public class RecipeLoader {
             GameRegistry.addSmelting(YellowTeaLeaf.get(1), YellowTea.get(1), 10);
         }
         if (Avaritia.isModLoaded() && NewHorizonsCoreMod.isModLoaded()) {
+            // Tea Acceptor
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, TeaAcceptorResearchNote.get(1))
-                .metadata(RESEARCH_TIME, 8 * MINUTES + 20 * SECONDS)
+                .metadata(SCANNING, new Scanning(13 * MINUTES + 20 * SECONDS, TierEU.RECIPE_ZPM))
                 .itemInputs(
                     LegendaryUltimateTea.get(0),
                     gregtech.api.enums.ItemList.Machine_Multi_NeutroniumCompressor.get(1),

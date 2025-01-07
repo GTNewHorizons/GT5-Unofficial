@@ -30,6 +30,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.DISSOLUTION_TANK_RATIO;
+import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gregtech.api.util.GTRecipeConstants.WaferEngravingRecipes;
 import static gregtech.common.items.MetaGeneratedItem01.registerCauldronCleaningFor;
@@ -120,6 +121,7 @@ import static gtnhlanth.common.register.WerkstoffMaterialPool.YtterbiumOreConcen
 
 import java.util.HashSet;
 
+import gregtech.api.util.recipe.Scanning;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -293,7 +295,7 @@ public class RecipeLoader {
             .fluidInputs(Materials.SolderingAlloy.getMolten(288), Materials.Lubricant.getFluid(1152))
             .itemOutputs(new ItemStack(LanthItemList.COOLANT_DELIVERY_CASING))
             .metadata(GTRecipeConstants.RESEARCH_ITEM, ItemList.Casing_Pipe_TungstenSteel.get(1L))
-            .metadata(GTRecipeConstants.RESEARCH_TIME, 72000)
+            .metadata(SCANNING, new Scanning(4 * MINUTES, TierEU.RECIPE_EV))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(AssemblyLine);
@@ -314,10 +316,8 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Gold, 32),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Electrum, 6))
             .itemOutputs(new ItemStack(LanthItemList.ANTENNA_CASING_T1))
-
             .metadata(GTRecipeConstants.RESEARCH_ITEM, Materials.Niobium.getBlocks(1))
-            .metadata(GTRecipeConstants.RESEARCH_TIME, 30 * GTRecipeBuilder.MINUTES)
-
+            .metadata(SCANNING, new Scanning(8 * MINUTES, TierEU.RECIPE_EV))
             .duration(30 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(AssemblyLine);
@@ -339,7 +339,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Electrum, 6))
             .itemOutputs(new ItemStack(LanthItemList.ANTENNA_CASING_T2))
             .metadata(GTRecipeConstants.RESEARCH_ITEM, new ItemStack(LanthItemList.ANTENNA_CASING_T1))
-            .metadata(GTRecipeConstants.RESEARCH_TIME, 40 * GTRecipeBuilder.MINUTES)
+            .metadata(SCANNING, new Scanning(9 * MINUTES + 20 * SECONDS, TierEU.RECIPE_IV))
             .duration(60 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(AssemblyLine);
@@ -371,7 +371,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tungsten, 2))
             .itemOutputs(new ItemStack(LanthItemList.FOCUS_MANIPULATION_CASING))
             .metadata(GTRecipeConstants.RESEARCH_ITEM, new ItemStack(LanthItemList.maskMap.get(MaskList.BLANK1)))
-            .metadata(GTRecipeConstants.RESEARCH_TIME, 20 * GTRecipeBuilder.MINUTES)
+            .metadata(SCANNING, new Scanning(8 * MINUTES, TierEU.RECIPE_EV))
             .duration(60 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(AssemblyLine);
@@ -433,7 +433,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tungsten, 2))
             .itemOutputs(new ItemStack(LanthItemList.TARGET_RECEPTACLE_CASING))
             .metadata(GTRecipeConstants.RESEARCH_ITEM, ItemList.Circuit_Silicon_Wafer.get(1))
-            .metadata(GTRecipeConstants.RESEARCH_TIME, 20 * GTRecipeBuilder.MINUTES)
+            .metadata(SCANNING, new Scanning(8 * MINUTES, TierEU.RECIPE_EV))
             .duration(60 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(AssemblyLine);
@@ -506,7 +506,7 @@ public class RecipeLoader {
             )
             .itemOutputs(LanthItemList.LUV_BEAMLINE_INPUT_HATCH)
             .metadata(GTRecipeConstants.RESEARCH_ITEM, ItemList.Hatch_Input_LuV.get(1))
-            .metadata(GTRecipeConstants.RESEARCH_TIME, 30 * GTRecipeBuilder.MINUTES)
+            .metadata(SCANNING, new Scanning(10 * MINUTES + 40 * SECONDS, TierEU.RECIPE_EV))
             .duration(2 * GTRecipeBuilder.MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .addTo(AssemblyLine);
@@ -532,7 +532,7 @@ public class RecipeLoader {
             )
             .itemOutputs(LanthItemList.LUV_BEAMLINE_OUTPUT_HATCH)
             .metadata(GTRecipeConstants.RESEARCH_ITEM, ItemList.Hatch_Output_LuV.get(1))
-            .metadata(GTRecipeConstants.RESEARCH_TIME, 40 * GTRecipeBuilder.MINUTES)
+            .metadata(SCANNING, new Scanning(10 * MINUTES + 40 * SECONDS, TierEU.RECIPE_EV))
             .duration(4 * GTRecipeBuilder.MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .addTo(AssemblyLine);

@@ -32,6 +32,7 @@ import gregtech.common.items.MetaGeneratedItem03;
 import gtnhlanth.common.item.ItemPhotolithographicMask;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.LanthItemList;
+import gregtech.api.util.recipe.Scanning;
 
 // this class is intended to be import-static-ed on every recipe script
 // so take care to not put unrelated stuff here!
@@ -64,6 +65,13 @@ public class GTRecipeConstants {
      */
     public static final RecipeMetadataKey<Integer> RESEARCH_TIME = SimpleRecipeMetadataKey
         .create(Integer.class, "research_time");
+
+    /**
+     * Scanning data used for scanner for assembly line recipes (time and voltage)
+     * Scanning time should be between 4 and 24 minutes, and the voltage 2 tiers below the available scanner tier for the recipe
+     */
+    public static final RecipeMetadataKey<Scanning> SCANNING = SimpleRecipeMetadataKey
+        .create(Scanning.class, "scanning");
     /**
      * Fuel type. TODO should we use enum directly?
      */
@@ -517,14 +525,16 @@ public class GTRecipeConstants {
             if (fluidInput == null) continue;
             tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(fluidInput, true, false);
         }
-        int aResearchTime = builder.getMetadataOrDefault(RESEARCH_TIME, 0);
-        tPersistentHash = tPersistentHash * 31 + aResearchTime;
+        Scanning scanningData = builder.getMetadataOrDefault(SCANNING, new Scanning(0, 0));
+        tPersistentHash = tPersistentHash * 31 + scanningData.time;
+        tPersistentHash = tPersistentHash * 31 + (int) scanningData.voltage;
         tPersistentHash = tPersistentHash * 31 + r.mDuration;
         tPersistentHash = tPersistentHash * 31 + r.mEUt;
 
         GTRecipe.RecipeAssemblyLine tRecipe = new GTRecipe.RecipeAssemblyLine(
             aResearchItem,
-            aResearchTime,
+            scanningData.time,
+            (int) scanningData.voltage,
             r.mInputs,
             r.mFluidInputs,
             aOutput,
@@ -541,8 +551,8 @@ public class GTRecipeConstants {
                 .itemInputs(aResearchItem)
                 .itemOutputs(aOutput)
                 .special(tRecipe.newDataStickForNEI("Writes Research result"))
-                .duration(aResearchTime)
-                .eut(TierEU.RECIPE_LV)
+                .duration(scanningData.time)
+                .eut(scanningData.voltage)
                 .specialValue(-201) // means it's scanned
                 .noOptimize()
                 .ignoreCollision()
