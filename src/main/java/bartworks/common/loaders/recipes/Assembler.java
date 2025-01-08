@@ -122,6 +122,17 @@ public class Assembler implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
+                ItemList.MACHINE_HULLS[3].get(1),
+                ItemList.Electric_Pump_HV.get(2),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 4),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 2))
+            .itemOutputs(ItemList.Distillation_Tower.get(1))
+            .duration(10 * SECONDS)
+            .eut(30)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
                 ItemList.Hatch_Input_HV.get(64),
                 Materials.LiquidAir.getCells(1),
                 GTUtility.getIntegratedCircuit(17))
