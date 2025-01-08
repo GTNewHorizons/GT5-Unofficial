@@ -28,6 +28,7 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
+import gtPlusPlus.core.config.Configuration;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
@@ -915,7 +916,8 @@ public enum OrePrefixes {
             new ICondition.Not<>(SubTag.BOUNCY));
         turbineBlade.mCondition = new ICondition.And<>(
             new ICondition.Not<>(SubTag.NO_SMASHING),
-            new ICondition.Not<>(SubTag.BOUNCY));
+            new ICondition.Not<>(SubTag.BOUNCY),
+            c -> !(c instanceof Materials m) || m.mDurability * 100 >= Configuration.gregtech.turbineCutoffBase);
 
         rotor.mCondition = new ICondition.Nor<>(SubTag.CRYSTAL, SubTag.STONE, SubTag.BOUNCY);
 
