@@ -159,6 +159,7 @@ beamline.pipe.desc.1=Signal does not cross or bend
 tile.recipe.tc=Target Chamber
 tile.recipe.sc=Source Chamber
 
+item.particle.name=Particle
 particle.electron=Electron
 particle.photon=Photon
 particle.alpha=Alpha

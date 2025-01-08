@@ -197,8 +197,18 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return getIconGlowOverlay();
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return getIconOverlay();
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return getIconGlowOverlay();
     }
 
     @Override
@@ -212,6 +222,14 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
             return TexturesGtBlock.Overlay_MatterFab_Active_Animated;
         }
         return TexturesGtBlock.Overlay_MatterFab_Animated;
+    }
+
+    public IIconContainer getIconGlowOverlay() {
+        if (this.getBaseMetaTileEntity()
+            .isActive()) {
+            return TexturesGtBlock.Overlay_MatterFab_Active_Animated_Glow;
+        }
+        return TexturesGtBlock.Overlay_MatterFab_Animated_Glow;
     }
 
     @Override

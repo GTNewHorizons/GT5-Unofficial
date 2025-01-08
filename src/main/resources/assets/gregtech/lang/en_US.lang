@@ -10,10 +10,52 @@ itemGroup.GregTech.Materials=Materials
 itemGroup.GregTech.Ores=Ores
 
 item.gt.advancedsensorcard.name=GregTech Advanced Sensor Card
+gt.blackholerenderer.name=Black Hole Renderer
+gt.block.longdistancepipe.name=Long Distance Pipeline Pipe
+gt.blockcasings.cyclotron_coils.name=Solenoid Superconductor Coil
+gt.blockcasings.name=Machine Casing
+gt.blockcasings2.name=Machine Casing
+gt.blockcasings3.name=Machine Casing
+gt.blockcasings4.name=Machine Casing
+gt.blockcasings5.name=Machine Casing
+gt.blockcasings6.name=Machine Casing
+gt.blockcasings8.name=Machine Casing
+gt.blockcasings9.name=Machine Casing
+gt.blockcasings10.name=Machine Casing
+gt.blockcasings11.name=Machine Casing
+gt.blockcasingsNH.name=Machine Casing
+gt.blockconcretes.name=Concrete
+gt.blockframes.name=Frame
+gt.blockgem1.name=Block
+gt.blockgem2.name=Block
+gt.blockgem3.name=Block
+gt.blockglass1.name=Glass
+gt.blockgranites.name=Granite
+gt.blockmachines.name=Machine
+gt.blockmetal1.name=Block
+gt.blockmetal2.name=Block
+gt.blockmetal3.name=Block
+gt.blockmetal4.name=Block
+gt.blockmetal5.name=Block
+gt.blockmetal6.name=Block
+gt.blockmetal7.name=Block
+gt.blockmetal8.name=Block
+gt.blockmetal9.name=Block
+gt.blockores.name=Ore
+gt.blockreinforced.name=Reinforced Block
+gt.blockstones.name=Stone
+gt.blocktintedglass.name=Tinted Industrial Glass
+gt.wormholerenderer.name=Wormhole Renderer
+item.gt.comb.name=Comb
+item.gt.drop.name=Drop
+item.gt.pollen.name=Pollen
+item.gt.propolis.name=Propolis
+tile.gt.dronerender.name=Drone Renderer
 
 GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was found
 GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found
 GT5U.autoplace.error.no_mte.class_name=§cSuggested to place machine with class name §4%d§c but none was found
+GT5U.providesfullhazmatprotection=Provides full hazmat protection.
 
 # Multiblock Tooltip Builder Keywords
 # Context can be found in the class gregtech.api.util.MultiblockTooltipBuilder
@@ -520,6 +562,7 @@ GT5U.gui.text.crash=§4Machine turned off due to crash. Refer to the log for mor
 GT5U.gui.text.no_fuel=§7No valid fuel found
 GT5U.gui.text.no_turbine=§7No valid turbine found
 GT5U.gui.text.no_lubricant=§7No lubricant found
+GT5U.gui.text.no_coolant=§7No coolant found
 GT5U.gui.text.cycle_idle=§6Waiting for cycle to start
 GT5U.gui.text.fuel_quality_too_high=§7Fuel quality too high to run without boost
 GT5U.gui.text.no_data_sticks=§7No Data Sticks found
@@ -1630,12 +1673,6 @@ gt.solar.system.mercury=Mercury
 gt.solar.system.titan=Titan
 gt.solar.system.phobos=Phobos
 
-item.flintSword.name=Flint Sword
-item.flintAxe.name=Flint Axe
-item.flintShovel.name=Flint Shovel
-item.flintPickaxe.name=Flint Pickaxe
-item.flintHoe.name=Flint Hoe
-
 gt.multiBlock.controller.cokeOven=Coke Oven
 
 gt.locker.waila_armor_slot_none=Slot %s: §7None
@@ -1664,6 +1701,9 @@ gt.cover.info.button.tick_rate.2=Left click to increase, right click to decrease
 gt.cover.info.button.tick_rate.3=Hold Ctrl to adjust by more steps per click
 gt.cover.info.button.bounds_notification.minimum=§7 (minimum)§r
 gt.cover.info.button.bounds_notification.maximum=§7 (maximum)§r
+gt.cover.wirelessdetector.redstone.tooltip=Changes this covers Redstone output behavior
+gt.cover.wirelessdetector.redstone.0=Only a wireless signal
+gt.cover.wirelessdetector.redstone.1=Wireless signal & direct Redstone
 gt.time.tick.singular=tick
 gt.time.tick.plural=ticks
 gt.time.second.singular=second
