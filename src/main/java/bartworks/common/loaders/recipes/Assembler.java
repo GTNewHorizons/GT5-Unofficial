@@ -1,13 +1,10 @@
 package bartworks.common.loaders.recipes;
 
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import bartworks.system.material.WerkstoffLoader;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -128,13 +125,12 @@ public class Assembler implements Runnable {
                 ItemList.MACHINE_HULLS[3].get(1),
                 ItemList.Electric_Pump_HV.get(2),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 4),
-                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 2)
-            )
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 2))
             .itemOutputs(ItemList.Distillation_Tower.get(1))
             .duration(10 * SECONDS)
             .eut(30)
             .addTo(assemblerRecipes);
-        
+
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hatch_Input_HV.get(64),
