@@ -29,7 +29,7 @@ class ComponentRecipeLoader implements Runnable {
         // Advanced Assembly Line
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Machine_Multi_Assemblyline.get(1L))
-            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_EV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 ItemList.Machine_Multi_Assemblyline.get(1L),
                 new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },

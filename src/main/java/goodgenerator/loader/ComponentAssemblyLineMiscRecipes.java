@@ -62,7 +62,7 @@ public class ComponentAssemblyLineMiscRecipes {
         // The controller itself
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, Compassline_Casing_EV.get(1))
-            .metadata(SCANNING, new Scanning(20 * MINUTES, TierEU.RECIPE_LuV))
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 30 * SECONDS, TierEU.RECIPE_ZPM))
             .itemInputs(
                 ItemList.Machine_Multi_Assemblyline.get(16L),
                 ItemList.Casing_Assembler.get(16L),
@@ -202,7 +202,7 @@ public class ComponentAssemblyLineMiscRecipes {
         t++;
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, Compassline_Casing_IV.get(1))
-            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_EV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Europium, 1),
                 WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plateDense, 6),
@@ -230,7 +230,7 @@ public class ComponentAssemblyLineMiscRecipes {
         t++;
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, Compassline_Casing_LuV.get(1))
-            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_IV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Iridium, 1),
@@ -259,7 +259,7 @@ public class ComponentAssemblyLineMiscRecipes {
 
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, Compassline_Casing_ZPM.get(1))
-            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_LuV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_ZPM))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmium, 1),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Osmium, 1),

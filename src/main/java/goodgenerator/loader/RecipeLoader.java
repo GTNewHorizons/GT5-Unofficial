@@ -93,7 +93,7 @@ public class RecipeLoader {
                 RESEARCH_ITEM,
                 ItemList.Generator_Naquadah_Mark_III.get(1)
                     .copy())
-            .metadata(SCANNING, new Scanning(20 * MINUTES, TierEU.RECIPE_IV))
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Adamantium, 8),
                 ItemRefer.Radiation_Protection_Plate.get(16),
@@ -654,7 +654,7 @@ public class RecipeLoader {
                 RESEARCH_ITEM,
                 ItemList.Generator_Naquadah_Mark_V.get(1)
                     .copy())
-            .metadata(SCANNING, new Scanning(20 * MINUTES, TierEU.RECIPE_ZPM))
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmiridium, 8),
                 ItemRefer.Advanced_Radiation_Protection_Plate.get(64),
@@ -679,7 +679,7 @@ public class RecipeLoader {
         // Advanced Radiation Proof Plate
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Radiation_Protection_Plate.get(1))
-            .metadata(SCANNING, new Scanning(5 * MINUTES + 20 * SECONDS, TierEU.RECIPE_EV))
+            .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 ItemRefer.Radiation_Protection_Plate.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.ElectrumFlux, 4),
@@ -697,7 +697,7 @@ public class RecipeLoader {
         // Naquadah Fuel Refinery Casing
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Field_Restriction_Casing.get(1))
-            .metadata(SCANNING, new Scanning(4 * MINUTES, TierEU.RECIPE_ZPM))
+            .metadata(SCANNING, new Scanning(30 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Thulium, 1),
                 ItemRefer.Advanced_Radiation_Protection_Plate.get(6),
@@ -719,7 +719,7 @@ public class RecipeLoader {
             // Field Restriction Coil
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, GGMaterial.extremelyUnstableNaquadah.get(OrePrefixes.ingot))
-                .metadata(SCANNING, new Scanning(5 * MINUTES + 20 * SECONDS, TierEU.RECIPE_LuV))
+                .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_ZPM))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmium, 1),
                     ItemList.Field_Generator_UV.get(2),
@@ -742,7 +742,7 @@ public class RecipeLoader {
             // Advanced Field Restriction Coil
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemRefer.Field_Restriction_Coil_T1.get(1))
-                .metadata(SCANNING, new Scanning(5 * MINUTES + 20 * SECONDS, TierEU.RECIPE_ZPM))
+                .metadata(SCANNING, new Scanning(50 * SECONDS, TierEU.RECIPE_UV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 1),
                     ItemList.Field_Generator_UHV.get(2),
@@ -765,7 +765,7 @@ public class RecipeLoader {
             // Ultimate Field Restriction Coil
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemRefer.Field_Restriction_Coil_T2.get(1))
-                .metadata(SCANNING, new Scanning(5 * MINUTES + 20 * SECONDS, TierEU.RECIPE_UV))
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_UHV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
                     ItemList.Field_Generator_UEV.get(2),
@@ -788,7 +788,7 @@ public class RecipeLoader {
             // Temporal Field Restriction Coil
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemRefer.Field_Restriction_Coil_T3.get(1))
-                .metadata(SCANNING, new Scanning(5 * MINUTES + 20 * SECONDS, TierEU.RECIPE_UHV))
+                .metadata(SCANNING, new Scanning(1 * MINUTES + 10 * SECONDS, TierEU.RECIPE_UEV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 1),
                     ItemList.Field_Generator_UIV.get(2),
@@ -1127,7 +1127,7 @@ public class RecipeLoader {
         // Neutron Accelerator LuV
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, Loaders.NeutronAccelerators[5].copy())
-            .metadata(SCANNING, new Scanning(8 * MINUTES, TierEU.RECIPE_EV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
             .itemInputs(
                 ItemRefer.Inverter.get(2),
                 ItemList.Hull_LuV.get(1L),
@@ -1146,7 +1146,7 @@ public class RecipeLoader {
         // Neutron Accelerator ZPM
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, Loaders.NeutronAccelerators[6].copy())
-            .metadata(SCANNING, new Scanning(8 * MINUTES, TierEU.RECIPE_IV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
             .itemInputs(
                 ItemRefer.Inverter.get(2),
                 ItemList.Hull_ZPM.get(1L),
@@ -1165,7 +1165,7 @@ public class RecipeLoader {
         // Neutron Accelerator UV
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, Loaders.NeutronAccelerators[7].copy())
-            .metadata(SCANNING, new Scanning(8 * MINUTES, TierEU.RECIPE_LuV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_ZPM))
             .itemInputs(
                 ItemRefer.Inverter.get(4),
                 ItemList.Hull_UV.get(1L),
@@ -1185,7 +1185,7 @@ public class RecipeLoader {
         // Neutron Accelerator UHV
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, Loaders.NeutronAccelerators[8].copy())
-            .metadata(SCANNING, new Scanning(8 * MINUTES, TierEU.RECIPE_ZPM))
+            .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_UV))
             .itemInputs(
                 ItemRefer.Inverter.get(8),
                 ItemList.Hull_MAX.get(1L),
@@ -1205,7 +1205,7 @@ public class RecipeLoader {
         // Neutron Accelerator UEV
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, Loaders.NeutronAccelerators[9].copy())
-            .metadata(SCANNING, new Scanning(8 * MINUTES, TierEU.RECIPE_UV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_UHV))
             .itemInputs(
                 ItemRefer.Inverter.get(16),
                 ItemList.Hull_UEV.get(1L),
@@ -1227,7 +1227,7 @@ public class RecipeLoader {
         // Neutron Accelerator UIV
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, Loaders.NeutronAccelerators[10].copy())
-            .metadata(SCANNING, new Scanning(8 * MINUTES, TierEU.RECIPE_UHV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_UEV))
             .itemInputs(
                 ItemRefer.Inverter.get(32),
                 ItemList.Hull_UIV.get(1L),
@@ -1251,7 +1251,7 @@ public class RecipeLoader {
         // Neutron Accelerator UMV
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, Loaders.NeutronAccelerators[11].copy())
-            .metadata(SCANNING, new Scanning(8 * MINUTES, TierEU.RECIPE_UEV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_UIV))
             .itemInputs(
                 ItemRefer.Inverter.get(64),
                 ItemList.Hull_UMV.get(1L),

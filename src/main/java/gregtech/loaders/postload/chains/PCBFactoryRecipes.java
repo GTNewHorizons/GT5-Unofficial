@@ -49,7 +49,7 @@ public class PCBFactoryRecipes {
         // Load Multi Recipes
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Circuit_Board_Wetware.get(1))
-            .metadata(SCANNING, new Scanning(18 * MINUTES + 40 * SECONDS, TierEU.RECIPE_IV))
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 20 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 32),
                 ItemList.Machine_ZPM_CircuitAssembler.get(4),

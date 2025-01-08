@@ -45,7 +45,7 @@ public class NaniteChain {
         // Nano Forge
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, Materials.Carbon.getNanite(1))
-            .metadata(SCANNING, new Scanning(20 * MINUTES, TierEU.RECIPE_LuV))
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 30 * SECONDS, TierEU.RECIPE_ZPM))
             .itemInputs(
                 ItemList.Hull_UV.get(16),
                 Materials.Carbon.getNanite(16),
@@ -67,7 +67,7 @@ public class NaniteChain {
         // Carbon Nanite Recipe Before Nano Forge
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Circuit_Crystalmainframe.get(1))
-            .metadata(SCANNING, new Scanning(18 * MINUTES, TierEU.RECIPE_LuV))
+            .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_ZPM))
             .itemInputs(
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 16 },
                 ItemList.Robot_Arm_UV.get(16),

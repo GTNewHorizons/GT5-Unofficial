@@ -263,7 +263,7 @@ public class PurifiedWaterRecipes {
         // Recipe for quark catalyst housing
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Electromagnet_Tengam.get(1))
-            .metadata(SCANNING, new Scanning(16 * MINUTES, TierEU.RECIPE_UV))
+            .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_UHV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 16),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 16),

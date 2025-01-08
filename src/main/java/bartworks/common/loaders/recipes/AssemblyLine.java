@@ -49,7 +49,7 @@ public class AssemblyLine implements Runnable {
         // Circuit Assembly Line
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Machine_LuV_CircuitAssembler.get(1L))
-            .metadata(SCANNING, new Scanning(13 * MINUTES + 20 * SECONDS, TierEU.RECIPE_EV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 40 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 ItemList.Machine_LuV_CircuitAssembler.get(1L),
                 ItemList.Robot_Arm_LuV.get(4L),

@@ -336,7 +336,7 @@ public class RecipeLoader2 {
         // Fluid Storage Core T3
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T2.get(1))
-            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_HV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_EV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.StainlessSteel, 4),
                 ItemList.Electric_Pump_HV.get(8),
@@ -353,7 +353,7 @@ public class RecipeLoader2 {
         // Fluid Storage Core T4
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T3.get(1))
-            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_EV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Titanium, 4),
                 ItemList.Electric_Pump_EV.get(8),
@@ -371,7 +371,7 @@ public class RecipeLoader2 {
         // Fluid Storage Core T5
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T4.get(1))
-            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_IV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.MysteriousCrystal, 4),
                 ItemList.Electric_Pump_IV.get(8),
@@ -392,7 +392,7 @@ public class RecipeLoader2 {
         // Fluid Storage Core T6
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T5.get(1))
-            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_LuV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 4),
                 ItemList.Electric_Pump_LuV.get(8),
@@ -413,7 +413,7 @@ public class RecipeLoader2 {
         // Fluid Storage Core T7
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T6.get(1))
-            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_ZPM))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UV))
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_ZPM.get(8),
@@ -434,7 +434,7 @@ public class RecipeLoader2 {
         // Fluid Storage Core T8
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T7.get(1))
-            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_UV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UHV))
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UV.get(8),
@@ -455,7 +455,7 @@ public class RecipeLoader2 {
         // Fluid Storage Core T9
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T8.get(1))
-            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_UHV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UEV))
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UHV.get(8),
@@ -477,7 +477,7 @@ public class RecipeLoader2 {
         // Fluid Storage Core T10
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T9.get(1))
-            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_UEV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UIV))
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UEV.get(8),
@@ -527,7 +527,7 @@ public class RecipeLoader2 {
         // Fluid Cell Block T3
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T2.get(1))
-            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_HV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_EV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Naquadah, 1),
                 ItemRefer.Fluid_Storage_Core_T3.get(10),
@@ -547,7 +547,7 @@ public class RecipeLoader2 {
         // Fluid Cell Block T4
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T3.get(1))
-            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_EV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1),
                 ItemRefer.Fluid_Storage_Core_T4.get(10),
@@ -567,7 +567,7 @@ public class RecipeLoader2 {
         // Fluid Cell Block T5
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T4.get(1))
-            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_IV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 1),
                 ItemRefer.Fluid_Storage_Core_T5.get(10),
@@ -587,7 +587,7 @@ public class RecipeLoader2 {
         // Fluid Cell Block T6
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T5.get(1))
-            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_LuV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
                 ItemRefer.Fluid_Storage_Core_T6.get(2),
@@ -607,7 +607,7 @@ public class RecipeLoader2 {
         // Fluid Cell Block T7
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T6.get(1))
-            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_ZPM))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
                 ItemRefer.Fluid_Storage_Core_T7.get(2),
@@ -628,7 +628,7 @@ public class RecipeLoader2 {
         // Fluid Cell Block T8
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T7.get(1))
-            .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_UV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UHV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
                 ItemRefer.Fluid_Storage_Core_T8.get(2),
@@ -651,7 +651,7 @@ public class RecipeLoader2 {
             // Fluid Cell Block T9
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T8.get(1))
-                .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_UHV))
+                .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UEV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 2),
                     ItemRefer.Fluid_Storage_Core_T9.get(2),
@@ -673,7 +673,7 @@ public class RecipeLoader2 {
             // Fluid Cell Block T10
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T9.get(1))
-                .metadata(SCANNING, new Scanning(12 * MINUTES, TierEU.RECIPE_UEV))
+                .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UIV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 2),
                     ItemRefer.Fluid_Storage_Core_T10.get(2),
@@ -1476,7 +1476,7 @@ public class RecipeLoader2 {
         // Compact Fusion Computer MK-II
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Compact_Fusion_MK1.get(1))
-            .metadata(SCANNING, new Scanning(20 * MINUTES, TierEU.RECIPE_IV))
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 ItemList.FusionComputer_ZPMV.get(48),
                 new Object[] { "circuitUltimate", 1 },
@@ -1501,7 +1501,7 @@ public class RecipeLoader2 {
         // Compact Fusion Computer MK-III
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Compact_Fusion_MK2.get(1))
-            .metadata(SCANNING, new Scanning(20 * MINUTES, TierEU.RECIPE_LuV))
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 30 * SECONDS, TierEU.RECIPE_ZPM))
             .itemInputs(
                 ItemList.FusionComputer_UV.get(48),
                 new Object[] { "circuitSuperconductor", 1 },

@@ -62,7 +62,8 @@ public class GTRecipeConstants {
 
     /**
      * Scanning data used for scanner for assembly line recipes (time and voltage)
-     * Scanning time should be between 4 and 24 minutes, and the voltage 2 tiers below the available scanner tier for
+     * Scanning time should be between 30 seconds and 3 minutes, and the voltage 1 tiers below the available scanner
+     * tier for
      * the recipe
      */
     public static final RecipeMetadataKey<Scanning> SCANNING = SimpleRecipeMetadataKey

@@ -149,7 +149,7 @@ public class RecipeLoader {
             // Industrial Apicultural Acclimatiser and Drone Domestication Station
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, gregtech.api.enums.ItemList.Machine_IndustrialApiary.get(1))
-                .metadata(SCANNING, new Scanning(22 * MINUTES + 40 * SECONDS, TierEU.RECIPE_LuV))
+                .metadata(SCANNING, new Scanning(2 * MINUTES + 50 * SECONDS, TierEU.RECIPE_ZPM))
                 .itemInputs(
                     gregtech.api.enums.ItemList.Machine_IndustrialApiary.get(64L),
                     gregtech.api.enums.ItemList.IndustrialApiary_Upgrade_Acceleration_8_Upgraded.get(64L),
@@ -338,7 +338,7 @@ public class RecipeLoader {
             // Tea Acceptor
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, TeaAcceptorResearchNote.get(1))
-                .metadata(SCANNING, new Scanning(13 * MINUTES + 20 * SECONDS, TierEU.RECIPE_ZPM))
+                .metadata(SCANNING, new Scanning(1 * MINUTES + 40 * SECONDS, TierEU.RECIPE_UV))
                 .itemInputs(
                     LegendaryUltimateTea.get(0),
                     gregtech.api.enums.ItemList.Machine_Multi_NeutroniumCompressor.get(1),
