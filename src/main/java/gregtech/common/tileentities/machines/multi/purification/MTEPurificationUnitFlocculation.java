@@ -320,6 +320,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.ITALIC
                     + "of aggregating dispersed suspended particles from a solution into larger clumps for further filtration.")
             .beginStructureBlock(7, 4, 7, false)
+            .addController("Front center")
             .addCasingInfoRangeColored(
                 "Slick Sterile Flocculation Casing",
                 EnumChatFormatting.GRAY,
@@ -357,7 +358,6 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                 9,
                 EnumChatFormatting.GOLD,
                 false)
-            .addController("Front center")
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addInputHatch(
                 EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "2",
@@ -428,7 +428,8 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         if (overflow > 0) {
             float overflowPct = (float) overflow / INPUT_CHEMICAL_PER_LEVEL;
             float penaltyMultiplier = (float) Math.pow(2.0f, overflowPct * -10.0);
-            return Math.max(0.0f, (this.currentRecipeChance + boost) * penaltyMultiplier);
+            // First cap to 100%, then apply penalty
+            return Math.max(0.0f, Math.min(100.0f, this.currentRecipeChance + boost) * penaltyMultiplier);
         } else {
             return Math.min(100.0f, this.currentRecipeChance + boost);
         }

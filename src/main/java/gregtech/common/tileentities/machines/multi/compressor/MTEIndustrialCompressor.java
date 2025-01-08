@@ -9,6 +9,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRES
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -27,7 +28,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -73,7 +73,7 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
                 .dot(1)
                 .buildAndChain(
                     onElementPass(MTEIndustrialCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 4))))
-        .addElement('A', Glasses.chainAllGlasses())
+        .addElement('A', chainAllGlasses())
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings10, 5))
         .build();
 
@@ -146,7 +146,7 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
             .addInfo("100% faster than singleblock machines of the same voltage")
             .addInfo("Only uses 90% of the EU/t normally required")
             .addInfo("Gains 2 parallels per voltage tier")
-            .beginStructureBlock(7, 5, 7, true)
+            .beginStructureBlock(7, 8, 7, true)
             .addController("Front Center")
             .addCasingInfoMin("Electric Compressor Casing", 95, false)
             .addCasingInfoMin("Compressor Pipe Casing", 45, false)

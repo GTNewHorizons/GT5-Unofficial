@@ -306,6 +306,11 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                     + EnumChatFormatting.GRAY)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 20, 11, false)
+            .addController("Mid of the fourth layer")
+            .addCasingInfoExactly("Blast Smelter Casing Block", 218, false)
+            .addCasingInfoExactly("Blast Smelter Heat Containment Coil", 56, false)
+            .addCasingInfoExactly("Coil", 360, true)
+            .addCasingInfoExactly("Borosilicate Glass", 339, true)
             .addMaintenanceHatch("Around the controller", 2)
             .addOtherStructurePart("Input Bus, Output Bus, Input Hatch, Output Bus, Energy Hatch", "Bottom Casing", 1)
             .addMufflerHatch("1 in the center of the top layer", 3)
@@ -390,12 +395,22 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                     TextureFactory.builder()
                         .addIcon(TexturesGtBlock.oMCAMegaAlloyBlastSmelterActive)
                         .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(TexturesGtBlock.oMCAMegaAlloyBlastSmelterActiveGlow)
+                        .extFacing()
+                        .glow()
                         .build() };
             }
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(15)),
                 TextureFactory.builder()
                     .addIcon(TexturesGtBlock.oMCAMegaAlloyBlastSmelter)
                     .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.oMCAMegaAlloyBlastSmelterGlow)
+                    .extFacing()
+                    .glow()
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(15)) };
@@ -429,7 +444,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         batchMode = !batchMode;
         if (batchMode) {
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));

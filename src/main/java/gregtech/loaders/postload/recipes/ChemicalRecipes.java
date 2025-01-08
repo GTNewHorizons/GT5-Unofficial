@@ -4938,29 +4938,7 @@ public class ChemicalRecipes implements Runnable {
         // 2CH3COOH = CH3COCH3 + CO2 + H
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(0, Materials.Calcite.getDust(5)), GTUtility.getIntegratedCircuit(24))
-            .fluidInputs(Materials.AceticAcid.getFluid(2000))
-            .fluidOutputs(
-                Materials.Acetone.getFluid(1000),
-                Materials.CarbonDioxide.getGas(1000),
-                Materials.Water.getFluid(1000))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, Materials.Calcium.getDust(1)), GTUtility.getIntegratedCircuit(24))
-            .fluidInputs(Materials.AceticAcid.getFluid(2000))
-            .fluidOutputs(
-                Materials.Acetone.getFluid(1000),
-                Materials.CarbonDioxide.getGas(1000),
-                Materials.Water.getFluid(1000))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(0, Materials.Quicklime.getDust(2)), GTUtility.getIntegratedCircuit(24))
             .fluidInputs(Materials.AceticAcid.getFluid(2000))
             .fluidOutputs(
                 Materials.Acetone.getFluid(1000),
