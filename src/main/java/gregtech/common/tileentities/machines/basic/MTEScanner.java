@@ -23,16 +23,11 @@ import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 
 import java.util.Objects;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IIndividual;
@@ -47,8 +42,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.objects.ItemData;
-import gregtech.api.objects.overclockdescriber.EUOverclockDescriber;
-import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AssemblyLineUtils;
@@ -57,8 +50,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 
 public class MTEScanner extends MTEBasicMachine {
@@ -133,11 +124,6 @@ public class MTEScanner extends MTEBasicMachine {
     }
 
     @Override
-    public String[] getDescription() {
-        return ArrayUtils.addAll(this.mDescriptionArray, StatCollector.translateToLocal("GT5U.machines  .perfectoc"));
-    }
-
-    @Override
     public int checkRecipe() {
         ItemStack aStack = getInputAt(0);
         if (getOutputAt(0) != null) {
@@ -154,7 +140,7 @@ public class MTEScanner extends MTEBasicMachine {
                             NBTTagCompound tNBT = new NBTTagCompound();
                             tIndividual.writeToNBT(tNBT);
                             this.mOutputItems[0].setTagCompound(tNBT);
-                            calculatePefectOverclockedNess(2, 500);
+                            calculateOverclockedNess(2, 500);
                             // In case recipe is too OP for that machine
                             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -179,7 +165,7 @@ public class MTEScanner extends MTEBasicMachine {
                 }
                 if (tNBT.getByte("scan") < 4) {
                     tNBT.setByte("scan", (byte) 4);
-                    calculatePefectOverclockedNess(8, 160);
+                    calculateOverclockedNess(8, 160);
                     // In case recipe is too OP for that machine
                     if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                         return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -197,7 +183,7 @@ public class MTEScanner extends MTEBasicMachine {
                 if (ItemList.Tool_DataOrb.isStackEqual(aStack, false, true)) {
                     aStack.stackSize -= 1;
                     this.mOutputItems[0] = GTUtility.copyAmount(1, getSpecialSlot());
-                    calculatePefectOverclockedNess(30, 512);
+                    calculateOverclockedNess(30, 512);
                     // In case recipe is too OP for that machine
                     if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                         return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -215,7 +201,7 @@ public class MTEScanner extends MTEBasicMachine {
                     this.mOutputItems[0] = ItemList.Tool_DataOrb.get(1L);
                     BehaviourDataOrb.setDataTitle(this.mOutputItems[0], "Elemental-Scan");
                     BehaviourDataOrb.setDataName(this.mOutputItems[0], tData.mMaterial.mMaterial.mElement.name());
-                    calculatePefectOverclockedNess(30, GTUtility.safeInt(tData.mMaterial.mMaterial.getMass() * 8192L));
+                    calculateOverclockedNess(30, GTUtility.safeInt(tData.mMaterial.mMaterial.getMass() * 8192L));
                     // In case recipe is too OP for that machine
                     if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                         return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -226,7 +212,7 @@ public class MTEScanner extends MTEBasicMachine {
                 if (ItemList.Tool_DataStick.isStackEqual(aStack, false, true)) {
                     aStack.stackSize -= 1;
                     this.mOutputItems[0] = GTUtility.copyAmount(1, getSpecialSlot());
-                    calculatePefectOverclockedNess(30, 128);
+                    calculateOverclockedNess(30, 128);
                     // In case recipe is too OP for that machine
                     if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                         return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -239,7 +225,7 @@ public class MTEScanner extends MTEBasicMachine {
                     this.mOutputItems[0] = GTUtility.copyAmount(1, getSpecialSlot());
                     assert this.mOutputItems[0] != null;
                     this.mOutputItems[0].setTagCompound(aStack.getTagCompound());
-                    calculatePefectOverclockedNess(30, 128);
+                    calculateOverclockedNess(30, 128);
                     // In case recipe is too OP for that machine
                     if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                         return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -254,7 +240,7 @@ public class MTEScanner extends MTEBasicMachine {
                     this.mOutputItems[0].setTagCompound(
                         GTUtility
                             .getNBTContainingShort(new NBTTagCompound(), "map_id", (short) aStack.getItemDamage()));
-                    calculatePefectOverclockedNess(30, 128);
+                    calculateOverclockedNess(30, 128);
                     // In case recipe is too OP for that machine
                     if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                         return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -338,7 +324,7 @@ public class MTEScanner extends MTEBasicMachine {
                     this.mOutputItems[0].setTagCompound(
                         GTUtility.getNBTContainingShort(new NBTTagCompound(), "rocket_tier", Short.parseShort(sTier)));
 
-                    calculatePefectOverclockedNess(480, 36000);
+                    calculateOverclockedNess(480, 36000);
                     // In case recipe is too OP for that machine
                     if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                         return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -353,7 +339,7 @@ public class MTEScanner extends MTEBasicMachine {
                     aStack.stackSize -= 1;
 
                     this.mOutputItems[0] = GTUtility.copyAmount(1, aStack);
-                    calculatePefectOverclockedNess(30, 1000);
+                    calculateOverclockedNess(30, 1000);
                     // In case recipe is too OP for that machine
                     if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                         return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -381,7 +367,7 @@ public class MTEScanner extends MTEBasicMachine {
                         // Use Assline Utils
                         if (AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(this.mOutputItems[0], tRecipe)) {
                             aStack.stackSize -= matchingRecipe.mInputs[0].stackSize;
-                            calculatePefectOverclockedNess(tRecipe.mResearchVoltage, tRecipe.mResearchTime);
+                            calculateOverclockedNess(tRecipe.mResearchVoltage, tRecipe.mResearchTime);
                             // In case recipe is too OP for that machine
                             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -437,22 +423,5 @@ public class MTEScanner extends MTEBasicMachine {
     @Override
     public void startProcess() {
         sendLoopStart((byte) 1);
-    }
-
-    protected OverclockDescriber createOverclockDescriber() {
-        return new ScannerOverclockDescriber(mTier);
-    }
-
-    @ParametersAreNonnullByDefault
-    @MethodsReturnNonnullByDefault
-    protected static class ScannerOverclockDescriber extends EUOverclockDescriber {
-
-        protected ScannerOverclockDescriber(byte tier) {
-            super(tier, 1);
-        }
-
-        public OverclockCalculator createCalculator(OverclockCalculator template, GTRecipe recipe) {
-            return super.createCalculator(template, recipe).setDurationDecreasePerOC(4.0);
-        }
     }
 }
