@@ -31,7 +31,7 @@ public class AssemblyLine implements Runnable {
         // Void Miner Mk1
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.OreDrill4.get(1L))
-            .metadata(SCANNING, new Scanning(16 * MINUTES, TierEU.RECIPE_IV))
+            .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_LuV))
             .itemInputs(
                 ItemList.OreDrill4.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 9L),
