@@ -96,8 +96,8 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         String[][] raw = new String[20][];
 
         raw[0] = new String[15];
-        String topCasing = "bbbbbbbbbbbbbbb";
-        String middleTopCasing = "bbbbbbbmbbbbbbb";
+        String topCasing = "ttttttttttttttt";
+        String middleTopCasing = "tttttttmttttttt";
         raw[0][0] = topCasing;
         for (int i = 1; i < 15; i++) {
             raw[0][i] = topCasing;
@@ -177,13 +177,13 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
             .addOtherStructurePart("864x Heating Coils", "Inner 13x18x13 (Hollow)")
             .addOtherStructurePart("1007x Borosilicate Glass", "Outer 15x18x15")
             .addStructureInfo("The glass tier limits the Energy Input tier")
-            .addEnergyHatch("Any Heat Proof Machine Casing")
-            .addMaintenanceHatch("Any Heat Proof Machine Casing")
+            .addEnergyHatch("Any bottom layer casing")
+            .addMaintenanceHatch("Any bottom layer casing")
             .addMufflerHatch("Top middle")
-            .addInputBus("Any Heat Proof Machine Casing")
-            .addInputHatch("Any Heat Proof Machine Casing")
-            .addOutputBus("Any Heat Proof Machine Casing")
-            .addOutputHatch("Any top layer casing")
+            .addInputBus("Any bottom layer casing")
+            .addInputHatch("Any bottom layer casing")
+            .addOutputBus("Any bottom layer casing")
+            .addOutputHatch("Any Heat Proof Machine Casing")
             .addStructureHint("This Mega Multiblock is too big to have its structure hologram displayed fully.")
             .toolTipFinisher();
         return tt;
