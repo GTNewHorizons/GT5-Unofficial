@@ -987,7 +987,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
@@ -1002,7 +1002,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (supportsVoidProtection() && wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
             Set<VoidingMode> allowed = getAllowedVoidingModes();
             setVoidingMode(getVoidingMode().nextInCollection(allowed));
@@ -1011,7 +1011,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 StatCollector.translateToLocal("GT5U.gui.button.voiding_mode") + " "
                     + StatCollector.translateToLocal(getVoidingMode().getTransKey()));
             return true;
-        } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
+        } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
     // Only support to use meta to tier
@@ -1069,6 +1069,18 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             }
 
             @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                Block tBlock = world.getBlock(x, y, z);
+                if (aBlock == tBlock) {
+                    int expectedMeta = getMeta(trigger);
+                    int blockMeta = tBlock.getDamageValue(world, x, y, z) + 1;
+                    if (blockMeta > maxMeta || blockMeta < minMeta + 1) return false;
+                    return expectedMeta == blockMeta;
+                }
+                return false;
+            }
+
+            @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 StructureLibAPI.hintParticle(world, x, y, z, aBlock, getMeta(trigger));
                 return true;
@@ -1119,24 +1131,53 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(getActiveOverlay())
-                .extFacing()
-                .build() };
-            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(getInactiveOverlay())
-                .extFacing()
-                .build() };
+        ITexture casingTexture = getCasingTexture();
+        if (side != facing) {
+            return new ITexture[] { casingTexture };
         }
-        return new ITexture[] { getCasingTexture() };
+
+        int textures = 1;
+        IIconContainer container = aActive ? getActiveOverlay() : getInactiveOverlay();
+        ITexture overlay = null;
+        if (container != null) {
+            textures++;
+            overlay = TextureFactory.builder()
+                .addIcon(container)
+                .extFacing()
+                .build();
+        }
+
+        IIconContainer glowContainer = aActive ? getActiveGlowOverlay() : getInactiveGlowOverlay();
+        ITexture glowOverlay = null;
+        if (glowContainer != null) {
+            textures++;
+            glowOverlay = TextureFactory.builder()
+                .addIcon(glowContainer)
+                .extFacing()
+                .glow()
+                .build();
+        }
+
+        ITexture[] retVal = new ITexture[textures];
+        retVal[0] = getCasingTexture();
+        if (overlay != null) retVal[1] = overlay;
+        if (glowOverlay != null) retVal[2] = glowOverlay;
+        return retVal;
     }
 
     protected IIconContainer getActiveOverlay() {
         return null;
     }
 
+    protected IIconContainer getActiveGlowOverlay() {
+        return null;
+    }
+
     protected IIconContainer getInactiveOverlay() {
+        return null;
+    }
+
+    protected IIconContainer getInactiveGlowOverlay() {
         return null;
     }
 

@@ -38,7 +38,7 @@ public class kubatechTestMod {
     public void preInit(FMLPreInitializationEvent ev) {
         // Disable GT5u messing with vanilla recipes for unit tests
         GTMod.gregtechproxy.mNerfedWoodPlank = false;
-        GTMod.gregtechproxy.mNerfedVanillaTools = false;
+        GTMod.gregtechproxy.mChangeWoodenVanillaTools = false;
     }
 
     @EventHandler
