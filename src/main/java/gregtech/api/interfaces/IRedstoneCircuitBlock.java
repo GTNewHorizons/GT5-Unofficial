@@ -50,7 +50,7 @@ public interface IRedstoneCircuitBlock {
     /**
      * returns whatever Meta-Value is adjacent to the Redstone Circuit Block
      */
-    byte getMetaIDAtSide(ForgeDirection side);
+    int getMetaIDAtSide(ForgeDirection side);
 
     /**
      * returns whatever TileEntity is adjacent to the Redstone Circuit Block
