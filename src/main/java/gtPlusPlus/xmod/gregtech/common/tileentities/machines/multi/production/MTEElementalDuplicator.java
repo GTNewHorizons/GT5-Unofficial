@@ -74,7 +74,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
         tt.addMachineType(getMachineType())
             .addInfo("Produces Elemental Material from UU Matter")
             .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 8 * Tier")
-            .addInfo(StatCollector.translateToLocal("GT5U.machines.perfectoc"))
+            .addInfo(StatCollector.translateToLocal("GT5U.machines.perfectoc.tooltip"))
             .addInfo("Maximum 1x of each bus/hatch.")
             .addInfo("Requires circuit 1-16 in your Data Orb Repository")
             .addInfo("depending on what Data Orb you want to prioritize")
