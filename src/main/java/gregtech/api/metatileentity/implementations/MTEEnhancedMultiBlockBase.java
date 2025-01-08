@@ -83,9 +83,9 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (wrenchingSide != getBaseMetaTileEntity().getFrontFacing())
-            return super.onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ);
+            return super.onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, aTool);
         if (entityPlayer.isSneaking()) {
             if (isFlipChangeAllowed()) {
                 toolSetFlip(getFlip().isHorizontallyFlipped() ? Flip.NONE : Flip.HORIZONTAL);

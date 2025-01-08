@@ -15,6 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
 import static gregtech.api.enums.TickTime.SECOND;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.ArrayList;
@@ -52,7 +53,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -93,7 +93,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                     { "EEEEEE     ", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEE     " } }))
         .addElement('i', ofBlock(GregTechAPI.sBlockCasings8, 7))
         .addElement('s', ofBlock(GregTechAPI.sBlockCasings4, 1))
-        .addElement('g', Glasses.chainAllGlasses())
+        .addElement('g', chainAllGlasses())
         .addElement('x', ofBlock(GregTechAPI.sBlockCasings2, 3))
         .addElement('p', ofBlock(GregTechAPI.sBlockCasings2, 15))
         .addElement('t', ofFrame(Materials.TungstenSteel))
@@ -197,12 +197,12 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(6, 12, 11, false)
             .addController("The third layer")
-            .addStructureInfo("128 Advanced Iridium Plated Machine Casing")
-            .addStructureInfo("105 Clean Stainless Steel Machine Casing")
-            .addStructureInfo("48 Reinforced Glass")
-            .addStructureInfo("30 Tungstensteel Pipe Casing")
-            .addStructureInfo("16 Tungstensteel Frame Box")
-            .addStructureInfo("16 Steel Gear Box Casing")
+            .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 128, false)
+            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 105, false)
+            .addCasingInfoExactly("Reinforced Glass", 48, false)
+            .addCasingInfoExactly("Tungstensteel Pipe Casing", 30, false)
+            .addCasingInfoExactly("Tungstensteel Frame Box", 16, false)
+            .addCasingInfoExactly("Steel Gear Box Casing", 16, false)
             .addEnergyHatch("Any bottom Casing", 1)
             .addMaintenanceHatch("Any bottom Casing", 1)
             .addInputBus("Input ore/crushed ore", 2)

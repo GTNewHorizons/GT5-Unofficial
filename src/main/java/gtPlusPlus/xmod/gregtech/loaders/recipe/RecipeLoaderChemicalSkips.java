@@ -223,7 +223,8 @@ public class RecipeLoaderChemicalSkips {
                 Materials.TungstenSteel.getDust(64),
                 Materials.Tantalum.getDust(64),
                 Materials.Indium.getDust(64),
-                Materials.Niobium.getDust(64))
+                Materials.Niobium.getDust(64),
+                MaterialsElements.getInstance().HAFNIUM.getDust(64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .metadata(QFT_FOCUS_TIER, 1)

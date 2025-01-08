@@ -24,6 +24,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -38,6 +40,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -62,6 +66,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     private static final int CASING_INDEX_FRONT = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings3, 10); // Grate
     private static final int CASING_INDEX_CENTRE = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings5, 14); // Shielded
                                                                                                                     // Acc.
+    private RecipeTC lastRecipe;
 
     private float inputEnergy;
     private float inputRate;
@@ -226,8 +231,9 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         return BeamlineRecipeAdder2.instance.TargetChamberRecipes;
     }
 
+    @NotNull
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
+    public CheckRecipeResult checkProcessing() {
 
         inputEnergy = 0;
         inputRate = 0;
@@ -270,27 +276,29 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
                     && !(inputInfo.getEnergy() < recipeTc.minEnergy || inputInfo.getEnergy() > recipeTc.maxEnergy));
 
             })
+            .cachedRecipe(this.lastRecipe)
             .find();
 
-        if (tRecipe == null) return false;
+        if (tRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
         BeamInformation inputInfo = this.getInputInformation();
 
-        if (inputInfo == null) return false;
+        if (inputInfo == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
         inputEnergy = inputInfo.getEnergy();
         inputRate = inputInfo.getRate();
         inputParticle = inputInfo.getParticleId();
         inputFocus = inputInfo.getFocus();
 
-        if (inputEnergy < tRecipe.minEnergy || inputEnergy > tRecipe.maxEnergy) return false;
+        if (inputEnergy < tRecipe.minEnergy || inputEnergy > tRecipe.maxEnergy)
+            return CheckRecipeResultRegistry.NO_RECIPE;
 
-        if (inputFocus < tRecipe.minFocus) return false;
+        if (inputFocus < tRecipe.minFocus) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        if (inputParticle != tRecipe.particleId) return false;
+        if (inputParticle != tRecipe.particleId) return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (tRecipe.focusItem != null) {
-            if (tRecipe.focusItem.getItem() != tFocusItem.getItem()) return false;
+            if (tRecipe.focusItem.getItem() != tFocusItem.getItem()) return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         int focusDurabilityDepletion = 1;
@@ -321,13 +329,16 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         // over the rate. E.g., 100a, 10r
         // would equal 50 seconds
 
-        if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) return false;
+        if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
+            return CheckRecipeResultRegistry.NO_RECIPE;
 
         double maxParallel = tRecipe
             .maxParallelCalculatedByInputs(batchAmount, new FluidStack[] {}, tItemsWithFocusItemArray);
 
         if (maxParallel < 1) // Insufficient items
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
+
+        if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
 
         if (batchAmount > maxParallel) batchAmount = (int) maxParallel;
 
@@ -358,7 +369,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
         this.updateSlots();
 
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     private BeamInformation getInputInformation() {
@@ -392,6 +403,8 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
         mInputBeamline.clear();
         mInputFocus.clear();
+
+        this.lastRecipe = null;
 
         if (!checkPiece("base", 2, 4, 0)) return false;
 
