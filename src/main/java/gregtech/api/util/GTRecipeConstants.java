@@ -208,6 +208,12 @@ public class GTRecipeConstants {
         .create(Integer.class, "lftr_output_power");
 
     /**
+     * Sparge Tower maximum byproduct outputs.
+     */
+    public static final RecipeMetadataKey<Integer> SPARGE_MAX_BYPRODUCT = SimpleRecipeMetadataKey
+        .create(Integer.class, "sparge_max_byproduct");
+
+    /**
      * Research Station data.
      */
     public static final RecipeMetadataKey<Integer> RESEARCH_STATION_DATA = SimpleRecipeMetadataKey
@@ -247,7 +253,7 @@ public class GTRecipeConstants {
         Collection<GTRecipe> ret = new ArrayList<>();
         for (Materials mat : new Materials[] { Materials.Argon, Materials.Nitrogen }) {
             builder.duration(Math.max(1, mat == Materials.Nitrogen ? aDuration / 4 : aDuration / 24));
-            int tPlasmaAmount = (int) Math.min(1L, aDuration / (mat.getMass() * 16L));
+            int tPlasmaAmount = (int) Math.max(1L, aDuration / (mat.getMass() * 16L));
             GTRecipeBuilder plasmaBuilder = builder.copy()
                 .fluidInputs(mat.getPlasma(tPlasmaAmount))
                 .fluidOutputs(mat.getGas(tPlasmaAmount));
