@@ -73,6 +73,12 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         .<MTEMegaBlastFurnace>builder()
         .addShape("main", createShape())
         .addElement('=', StructureElementAirNoHint.getInstance())
+        .addElement(
+            't',
+            buildHatchAdder(MTEMegaBlastFurnace.class).atLeast(OutputHatch)
+                .casingIndex(CASING_INDEX)
+                .dot(1)
+                .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
         .addElement('m', Muffler.newAny(CASING_INDEX, 2))
         .addElement(
             'C',
