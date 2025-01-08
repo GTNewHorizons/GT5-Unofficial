@@ -173,7 +173,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 20, 15, true)
             .addController("3rd layer center")
-            .addCasingInfoRange("Heat Proof Machine Casing", 0, 279, false)
+            .addCasingInfoRange("Heat Proof Machine Casing", 0, 447, false)
             .addOtherStructurePart("864x Heating Coils", "Inner 13x18x13 (Hollow)")
             .addOtherStructurePart("1007x Borosilicate Glass", "Outer 15x18x15")
             .addStructureInfo("The glass tier limits the Energy Input tier")
