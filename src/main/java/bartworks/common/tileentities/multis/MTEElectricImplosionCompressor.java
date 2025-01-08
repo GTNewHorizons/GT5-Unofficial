@@ -50,6 +50,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -89,6 +90,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.shutdown.ShutDownReason;
 
 public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEElectricImplosionCompressor>
     implements ISurvivalConstructable {
@@ -198,21 +200,15 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         .build();
 
     public static List<Pair<Block, Integer>> getAllBlockTiers() {
-        return new ArrayList<>() {
-
-            private static final long serialVersionUID = 8171991663102417651L;
-
-            {
-                this.add(Pair.of(GregTechAPI.sBlockMetal5, 2));
-                if (Mods.Avaritia.isModLoaded()) {
-                    this.add(Pair.of(LudicrousBlocks.resource_block, 1));
-                }
-                this.add(Pair.of(GregTechAPI.sBlockMetal9, 4));
-                this.add(Pair.of(GregTechAPI.sBlockMetal9, 3));
-                this.add(Pair.of(GregTechAPI.sBlockMetal9, 8));
-            }
-
-        };
+        ImmutableList.Builder<Pair<Block, Integer>> b = new ImmutableList.Builder<>();
+        b.add(Pair.of(GregTechAPI.sBlockMetal5, 2));
+        if (Mods.Avaritia.isModLoaded()) {
+            b.add(Pair.of(LudicrousBlocks.resource_block, 1));
+        }
+        b.add(Pair.of(GregTechAPI.sBlockMetal9, 4));
+        b.add(Pair.of(GregTechAPI.sBlockMetal9, 3));
+        b.add(Pair.of(GregTechAPI.sBlockMetal9, 8));
+        return b.build();
     }
 
     public static ITierConverter<Integer> tieredBlockConverter() {
@@ -374,9 +370,9 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     }
 
     @Override
-    public void stopMachine() {
+    public void stopMachine(@NotNull ShutDownReason reason) {
         this.resetPiston(this.mBlockTier);
-        super.stopMachine();
+        super.stopMachine(reason);
     }
 
     private void resetPiston(int tier) {
@@ -427,13 +423,12 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             aBaseMetaTileEntity.getWorld(),
             this.chunkCoordinates.get(2).posX,
             this.chunkCoordinates.get(2).posY,
-            this.chunkCoordinates.get(2).posZ,
-            10);
+            this.chunkCoordinates.get(2).posZ);
     }
 
     @SideOnly(Side.CLIENT)
-    private void spawnVisualPistonBlocks(World world, int x, int y, int z, int age) {
-        EICPistonVisualizer pistonVisualizer = new EICPistonVisualizer(world, x, y, z, age);
+    private void spawnVisualPistonBlocks(World world, int x, int y, int z) {
+        EICPistonVisualizer pistonVisualizer = new EICPistonVisualizer(world, x, y, z, 10);
         Minecraft.getMinecraft().effectRenderer.addEffect(pistonVisualizer);
     }
 
@@ -474,11 +469,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     @Override
     public int getMaxEfficiency(ItemStack itemStack) {
         return 10000;
-    }
-
-    @Override
-    public int getPollutionPerTick(ItemStack itemStack) {
-        return 0;
     }
 
     @Override
@@ -541,7 +531,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {

@@ -85,6 +85,8 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
             return 2;
         } else if (VolumetricFlaskHelper.isGiganticVolumetricFlask(aStack)) {
             return 3;
+        } else if (VolumetricFlaskHelper.isKleinBottle(aStack)) {
+            return 4;
         }
         return 0;
     }
@@ -201,6 +203,8 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
                         aOutput = VolumetricFlaskHelper.getLargeVolumetricFlask(1);
                     } else if (aTypeInSlot == 3) {
                         aOutput = VolumetricFlaskHelper.getGiganticVolumetricFlask(1);
+                    } else if (aTypeInSlot == 4) {
+                        aOutput = VolumetricFlaskHelper.getKleinBottle(1);
                     } else {
                         aOutput = null;
                     }

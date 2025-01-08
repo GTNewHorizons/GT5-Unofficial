@@ -654,17 +654,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     }
 
     /**
-     * get pollution per tick
-     *
-     * @param itemStack what is in controller
-     * @return how much pollution is produced
-     */
-    @Override
-    public int getPollutionPerTick(ItemStack itemStack) {
-        return 0;
-    }
-
-    /**
      * EM pollution per tick
      *
      * @param itemStack - item in controller
@@ -682,7 +671,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
      * should do it
      */
     protected void notAllowedToWork_stopMachine_EM() {
-        stopMachine();
+        stopMachine(ShutDownReasonRegistry.NONE);
     }
 
     /**

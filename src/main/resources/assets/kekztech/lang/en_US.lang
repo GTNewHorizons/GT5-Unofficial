@@ -23,6 +23,7 @@ tile.kekztech_gdcceramicelectrolyteunit_block.name=GDC Ceramic Electrolyte Unit
 tile.kekztech_yszceramicelectrolyteunit_block.name=YSZ Ceramic Electrolyte Unit
 
 # -------- Fuel Cell: Crafting Components
+item.kekztech_crafting_item.name=Crafting Component
 item.kekztech_crafting_item.9.name=YSZ Ceramic Dust
 item.kekztech_crafting_item.10.name=GDC Ceramic Dust
 item.kekztech_crafting_item.11.name=Yttria Dust
@@ -32,6 +33,7 @@ item.kekztech_crafting_item.14.name=YSZ Ceramic Plate
 item.kekztech_crafting_item.15.name=GDC Ceramic Plate
 
 # -------- TFFT: Structure Blocks
+tile.kekztech_tfftstoragefield_block.name=T.F.F.T Casing/Storage Field Block
 tile.kekztech_tfftstoragefield_block.0.name=T.F.F.T Casing
 tile.kekztech_tfftstoragefield_block.1.name=T.F.F.T Storage Field Block (Tier I)
 tile.kekztech_tfftstoragefield_block.2.name=T.F.F.T Storage Field Block (Tier II)
@@ -50,6 +52,7 @@ tile.kekztech_tfftstoragefield_block.hint.3=Hint 3 Dot: EV+ Tier Glass, T.F.F.T 
 tile.kekztech_tfftstoragefield_block.hint.4=Hint 4 Dot: EV+ Tier Glass
 
 # -------- Lapotronic Super Capacitor: Structure Blocks
+tile.kekztech_lapotronicenergyunit_block.name=Lapotronic Casing/Capacitor
 tile.kekztech_lapotronicenergyunit_block.0.name=Lapotronic Super Capacitor Casing
 tile.kekztech_lapotronicenergyunit_block.1.name=Lapotronic Capacitor (IV)
 tile.kekztech_lapotronicenergyunit_block.2.name=Lapotronic Capacitor (LuV)
@@ -64,6 +67,7 @@ tile.kekztech_lapotronicenergyunit_block.10.name=Mega Ultimate Capacitor (UMV)
 tile.kekztech_lapotronicenergyunit_block.desc=Part of the Lapotronic Super Capacitor
 
 # -------- Thaumium Reinforced Jar: Block
+tile.kekztech_thaumiumreinforcedjar_block.name=Thaumium Reinforced Jar
 tile.kekztech_thaumiumreinforcedjar_block.0.name=Thaumium Reinforced Jar
 tile.kekztech_thaumiumreinforcedjar_block.3.name=Thaumium Reinforced Void Jar
 
@@ -77,6 +81,7 @@ kekztech.research_page.THAUMIUMREINFORCEDJAR.0=You have heard your fellow Thauma
 kekztech.research_page.THAUMIUMREINFORCEDJAR.1=Compressing this much Essentia in such a tiny space causes some volatility. Picking up reinforced jars is probably a bad idea...<BR><BR>You imagine that you could get even more out of your jars if only you had some kind of material harder than even diamond or any of the other magical metal you have seen so far.
 
 # -------- Ichor Jar: Block
+tile.kekztech_ichorjar_block.name=Ichor Jar
 tile.kekztech_ichorjar_block.0.name=Ichor Jar
 tile.kekztech_ichorjar_block.3.name=Ichor Void Jar
 
