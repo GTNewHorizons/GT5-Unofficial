@@ -27,7 +27,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.Unmodifiable;
 
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.SetMultimap;
 
 import gregtech.api.GregTechAPI;
@@ -54,11 +54,11 @@ public class RecipeMapBackend {
     /**
      * Recipe index based on items.
      */
-    private final SetMultimap<GTItemStack, GTRecipe> itemIndex = HashMultimap.create();
+    private final SetMultimap<GTItemStack, GTRecipe> itemIndex = LinkedHashMultimap.create();
     /**
      * Recipe index based on fluids.
      */
-    private final SetMultimap<String, GTRecipe> fluidIndex = HashMultimap.create();
+    private final SetMultimap<String, GTRecipe> fluidIndex = LinkedHashMultimap.create();
 
     /**
      * All the recipes belonging to this backend, indexed by recipe category.
