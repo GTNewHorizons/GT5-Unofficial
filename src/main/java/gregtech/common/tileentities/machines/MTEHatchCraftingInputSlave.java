@@ -164,6 +164,11 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     @Override
+    public ItemStack[] getSharedItems() {
+        return getMaster() != null ? getMaster().getSharedItems() : new ItemStack[0];
+    }
+
+    @Override
     public boolean justUpdated() {
         return getMaster() != null && getMaster().justUpdated();
     }
@@ -290,5 +295,10 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     @Override
     public List<ItemStack> getItemsForHoloGlasses() {
         return getMaster() != null ? getMaster().getItemsForHoloGlasses() : null;
+    }
+
+    @Override
+    public boolean needClearRecipeMap() {
+        return getMaster() != null && getMaster().needClearRecipeMap();
     }
 }
