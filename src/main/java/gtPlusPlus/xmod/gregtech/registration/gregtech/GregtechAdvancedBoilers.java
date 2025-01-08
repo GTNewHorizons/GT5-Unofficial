@@ -15,7 +15,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.MTEBoilerHV;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.MTEBoilerLV;
@@ -36,13 +35,9 @@ public class GregtechAdvancedBoilers {
             .set(new MTEBoilerMV(Boiler_Advanced_MV.ID, "Advanced Boiler [MV]", 2).getStackForm(1L));
         GregtechItemList.Boiler_Advanced_HV
             .set(new MTEBoilerHV(Boiler_Advanced_HV.ID, "Advanced Boiler [HV]", 3).getStackForm(1L));
+    }
 
-        ItemStack chassisT1 = ItemUtils
-            .getItemStackWithMeta(true, "miscutils:itemBoilerChassis", "Boiler_Chassis_T1", 0, 1);
-        ItemStack chassisT2 = ItemUtils
-            .getItemStackWithMeta(true, "miscutils:itemBoilerChassis", "Boiler_Chassis_T1", 1, 1);
-        ItemStack chassisT3 = ItemUtils
-            .getItemStackWithMeta(true, "miscutils:itemBoilerChassis", "Boiler_Chassis_T1", 2, 1);
+    public static void addRecipes() {
 
         // Chassis Recipes
         GTModHandler.addCraftingRecipe(
@@ -74,7 +69,6 @@ public class GregtechAdvancedBoilers {
                 getModItem(IronTanks.ID, "titaniumTank", 1, 0) });
 
         // Boiler Recipes
-
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Boiler_Advanced_LV.get(1),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
@@ -83,7 +77,6 @@ public class GregtechAdvancedBoilers {
                 new ItemStack(ModItems.itemBoilerChassis, 1, 0), 'M', ItemList.Casing_LV.get(1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Steel, 1L), 'B',
                 ItemList.Machine_Steel_Boiler.get(1L) });
-
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Boiler_Advanced_MV.get(1),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
@@ -92,7 +85,6 @@ public class GregtechAdvancedBoilers {
                 new ItemStack(ModItems.itemBoilerChassis, 1, 1), 'M', ItemList.Casing_MV.get(1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.StainlessSteel, 1L), 'B',
                 ItemList.Machine_Steel_Boiler.get(1L) });
-
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Boiler_Advanced_HV.get(1),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
