@@ -15,5 +15,6 @@ public class PCBFactoryMaterialLoader {
         PCBFactoryManager.addPlasticTier(Materials.EpoxidFiberReinforced, 5);
         PCBFactoryManager.addPlasticTier(Materials.Polybenzimidazole, 6);
         PCBFactoryManager.addPlasticTier(MaterialsKevlar.Kevlar, 7);
+        PCBFactoryManager.addPlasticTier(Materials.RadoxPolymer, 8);
     }
 }
