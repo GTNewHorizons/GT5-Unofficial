@@ -1,5 +1,6 @@
 package gregtech.api.enums;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 public class MaterialsUEVplus {
@@ -899,6 +900,89 @@ public class MaterialsUEVplus {
             .setTransparent(false)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_MAX);
+
+    public static Materials Moebianite = new Materials(
+        161,
+        TextureSet.SET_LIGNITE,
+        1.0F,
+        1,
+        1,
+        1 | 8,
+        58,
+        26,
+        13,
+        0,
+        "Moebianite",
+        "Möebianite",
+        -1,
+        -1,
+        -1,
+        0,
+        false,
+        false,
+        20,
+        1,
+        1,
+        Dyes.dyeBrown,
+        Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4), new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1), new TCAspects.TC_AspectStack(TCAspects.SENSUS, 1)));
+
+    public static Materials MoebianiteSlag = new MaterialBuilder(
+        162,
+        TextureSet.SET_FLUID,
+        "Crude Möebianite Slag")
+        .addCell()
+        .addFluid()
+        .setLiquidTemperature(298)
+        .setRGBA(58, 26, 13, 0)
+        .setTransparent(true)
+        .setName("MoebianiteSlag")
+        .setColor(Dyes._NULL)
+        .constructMaterial()
+        .setHasCorrespondingFluid(true);
+
+    public static Materials MoebianiteCrystalSlurry = new MaterialBuilder(
+        163,
+        TextureSet.SET_EMERALD,
+        "Möebianite Crystal Slurry")
+        .addCell()
+        .addFluid()
+        .setLiquidTemperature(298)
+        .setRGBA(160, 74, 33, 0)
+        .setTransparent(true)
+        .setName("MoebianiteCrystalSlurry")
+        .setColor(Dyes._NULL)
+        .constructMaterial()
+        .setHasCorrespondingFluid(true);
+
+    public static Materials PurifiedMoebianite = new MaterialBuilder(
+        164,
+        TextureSet.SET_FLUID,
+        "Purified Möebianite")
+        .addCell()
+        .addFluid()
+        .setLiquidTemperature(298)
+        .setRGBA(254, 226, 139, 0)
+        .setTransparent(true)
+        .setName("PurifiedMoebianite")
+        .setColor(Dyes._NULL)
+        .constructMaterial()
+        .setHasCorrespondingFluid(true);
+
+    public static Materials NonOrientableMatter = new MaterialBuilder(
+        165,
+        TextureSet.SET_FIERY,
+        "Non-Orientable Matter")
+        .addCell()
+        .addFluid()
+        .setLiquidTemperature(298)
+        .setRGBA(58, 26, 13, 0)
+        .setTransparent(true)
+        .setName("NonOrientableMatter")
+        .setColor(Dyes._NULL)
+        .constructMaterial()
+        .setHasCorrespondingFluid(true);
+
+
 
     /**
      * called by Materials. Can be safely called multiple times. exists to allow Materials ensure this class is
