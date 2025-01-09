@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.TextureFactory;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.xmod.gregtech.api.objects.GTPPCopiedBlockTexture;
 
 public class TAE {
 
@@ -16,7 +16,7 @@ public class TAE {
     public static int gtPPLastUsedIndex = 64;
     public static int secondaryIndex = 0;
 
-    public static HashMap<Integer, GTPPCopiedBlockTexture> mTAE = new HashMap<>();
+    public static HashMap<Integer, ITexture> mTAE = new HashMap<>();
     private static final HashSet<Integer> mFreeSlots = new HashSet<>(64);
 
     static {
@@ -28,20 +28,20 @@ public class TAE {
 
     /**
      *
-     * @param aPage                  - The Texture page (0-3)
-     * @param aID                    - The ID on the specified page (0-15)
-     * @param GTPPCopiedBlockTexture - The Texture to register
+     * @param aPage   - The Texture page (0-3)
+     * @param aID     - The ID on the specified page (0-15)
+     * @param texture - The Texture to register
      * @return - Did it register correctly?
      */
-    public static boolean registerTexture(int aPage, int aID, GTPPCopiedBlockTexture GTPPCopiedBlockTexture) {
+    public static boolean registerTexture(int aPage, int aID, ITexture texture) {
         int aRealID = aID + (aPage * 16);
-        return registerTexture(64 + aRealID, GTPPCopiedBlockTexture);
+        return registerTexture(64 + aRealID, texture);
     }
 
-    public static boolean registerTexture(int aID, GTPPCopiedBlockTexture GTPPCopiedBlockTexture) {
+    public static boolean registerTexture(int aID, ITexture texture) {
         if (mFreeSlots.contains(aID)) {
             mFreeSlots.remove(aID);
-            mTAE.put(aID, GTPPCopiedBlockTexture);
+            mTAE.put(aID, texture);
             return true;
         } else {
             GTPPCore.crash("Tried to register texture with ID " + aID + " to TAE, but it is already in use.");
@@ -66,7 +66,7 @@ public class TAE {
         Logger.INFO("Free Page slots within TAE: " + aPageAndSlotFree);
         Logger.INFO("Filling them with ERROR textures.");
         for (int aFreeSlot : aTemp) {
-            registerTexture(aFreeSlot, new GTPPCopiedBlockTexture(ModBlocks.blockCasingsTieredGTPP, 1, 15));
+            registerTexture(aFreeSlot, TextureFactory.of(ModBlocks.blockCasingsTieredGTPP, 15));
         }
         Logger.INFO("Finalising TAE.");
         for (int aKeyTae : mTAE.keySet()) {

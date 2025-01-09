@@ -21,6 +21,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.interfaces.ITexturedBlock;
 import gtPlusPlus.core.client.renderer.CustomOreBlockRenderer;
@@ -28,7 +29,6 @@ import gtPlusPlus.core.item.base.itemblock.ItemBlockOre;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.gregtech.api.objects.GTPPCopiedBlockTexture;
 import gtPlusPlus.xmod.gregtech.api.objects.GTPPRenderedTexture;
 
 public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
@@ -108,7 +108,7 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
             GTPPRenderedTexture aIconSet = new GTPPRenderedTexture(
                 blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex],
                 this.blockMaterial.getRGBA());
-            return new ITexture[] { new GTPPCopiedBlockTexture(Blocks.stone, 0, 0), aIconSet };
+            return new ITexture[] { TextureFactory.of(Blocks.stone, 0), aIconSet };
         }
         return new ITexture[] {
             new GTPPRenderedTexture(Textures.BlockIcons.STONES[0], new short[] { 240, 240, 240, 0 }) };
