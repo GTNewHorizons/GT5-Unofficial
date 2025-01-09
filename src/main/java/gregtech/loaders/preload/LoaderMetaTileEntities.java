@@ -1012,6 +1012,7 @@ import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTEMicrowaveEnergyTransmitter;
 import gregtech.common.tileentities.machines.basic.MTEMiner;
 import gregtech.common.tileentities.machines.basic.MTEMonsterRepellent;
+import gregtech.common.tileentities.machines.basic.MTENameRemover;
 import gregtech.common.tileentities.machines.basic.MTEPotionBrewer;
 import gregtech.common.tileentities.machines.basic.MTEPump;
 import gregtech.common.tileentities.machines.basic.MTEReplicator;
@@ -12364,6 +12365,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 8).getStackForm(1L));
     }
 
+    private static void registerNameRemover() {
+        ItemList.NameRemover
+            .set(new MTENameRemover(NAME_REMOVER.ID, "fix.name.remover", "Name Remover", 0).getStackForm(1L));
+    }
+
     private static void generateWiresAndPipes() {
         for (int meta = 0; meta < GregTechAPI.sGeneratedMaterials.length; meta++) {
             Materials material = GregTechAPI.sGeneratedMaterials[meta];
@@ -12931,6 +12937,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerUnpackager();
         registerPrinter();
         registerOven();
+        registerNameRemover();
 
         ItemList.AdvDebugStructureWriter.set(
             new MTEAdvDebugStructureWriter(
