@@ -1463,7 +1463,7 @@ public class Textures {
         HAWKING_GLASS,
         OVERLAY_NANITE_HATCH,
         OVERLAY_NANITE_HATCH_GLOW
-        
+
         // semicolon after the comment to reduce merge conflicts
         ;
 
