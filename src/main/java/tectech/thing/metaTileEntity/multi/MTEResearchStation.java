@@ -221,7 +221,10 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                                 }
                                 this.tRecipe = assRecipe;
                                 // Set property
-                                computationRequired = computationRemaining = assRecipe.mResearchTime;
+                                computationRequired = computationRemaining = (long) assRecipe.mResearchTime
+                                    * assRecipe.mResearchVoltage
+                                    / 30;
+
                                 mMaxProgresstime = 20;
                                 mEfficiencyIncrease = 10000;
                                 eRequiredData = 1;
@@ -276,42 +279,34 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.research.type")) // Machine Type: Research
-                                                                                              // Station, Scanner
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.1")) // Used to scan Data
-                                                                                           // Sticks for
-            // Assembling Line Recipes
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.2")) // Needs to be fed with
-                                                                                           // computation to work
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.3")) // Does not consume the
-                                                                                           // item until
-            // the Data Stick is written
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.4")) // Use screwdriver to change
-                                                                                           // mode
+        // Machine Type: Research Station, Scanner
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.research.type"))
+            // Used to scan Data Sticks for Assembling Line Recipes
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.1"))
+            // Needs to be fed with computation to work
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.2"))
+            // Does not consume the item until the Data Stick is written
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.3"))
+            // Use screwdriver to change mode
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.4"))
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.5"))
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.6"))
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 7, 7, false)
+            // Object Holder: Center of the front pillar
             .addOtherStructurePart(
                 translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"),
                 translateToLocal("tt.keyword.Structure.CenterPillar"),
-                2) // Object Holder: Center of the front pillar
+                2)
+            // Optical Connector: Any Computer Casing on the backside of the main body
             .addOtherStructurePart(
                 translateToLocal("tt.keyword.Structure.DataConnector"),
                 translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"),
-                1) // Optical Connector: Any Computer Casing on the backside of the main body
-            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1) // Energy Hatch:
-                                                                                                   // Any Computer
-                                                                                                   // Casing on the
-                                                                                                   // backside of
-                                                                                                   // the main body
-            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1) // Maintenance
-                                                                                                        // Hatch:
-                                                                                                        // Any
-                                                                                                        // Computer
-                                                                                                        // Casing on
-                                                                                                        // the
-                                                                                                        // backside
-                                                                                                        // of the
-                                                                                                        // main body
+                1)
+            // Energy Hatch: Any Computer Casing on the backside of the main body
+            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1)
+            // Maintenance Hatch: Any Computer Casing on the backside of the main body
+            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1)
             .toolTipFinisher();
         return tt;
     }

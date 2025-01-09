@@ -1,12 +1,11 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GTRecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -21,6 +20,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.ExternalMaterials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.recipe.Scanning;
 import tectech.thing.CustomItemList;
 
 public class AssemblyLineRecipes implements Runnable {
@@ -53,7 +53,7 @@ public class AssemblyLineRecipes implements Runnable {
             // LuV motor
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Motor_IV.get(1))
-                .metadata(RESEARCH_TIME, 2 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 1),
                     GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSS, 2),
@@ -69,7 +69,7 @@ public class AssemblyLineRecipes implements Runnable {
             // ZPM motor
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Motor_LuV.get(1))
-                .metadata(RESEARCH_TIME, 2 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 2),
                     GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahAlloy, 4),
@@ -88,7 +88,7 @@ public class AssemblyLineRecipes implements Runnable {
             // UV motor
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Motor_ZPM.get(1))
-                .metadata(RESEARCH_TIME, 4 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SamariumMagnetic, 2),
                     GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Neutronium, 4),
@@ -116,7 +116,7 @@ public class AssemblyLineRecipes implements Runnable {
             // LuV Pump
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Pump_IV.get(1))
-                .metadata(RESEARCH_TIME, 2 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
                     ItemList.Electric_Motor_LuV.get(1),
                     GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.NiobiumTitanium, 2),
@@ -134,7 +134,7 @@ public class AssemblyLineRecipes implements Runnable {
             // ZPM Pump
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Pump_LuV.get(1))
-                .metadata(RESEARCH_TIME, 2 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
                     ItemList.Electric_Motor_ZPM.get(1),
                     GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Enderium, 2),
@@ -152,7 +152,7 @@ public class AssemblyLineRecipes implements Runnable {
             // UV Pump
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Pump_ZPM.get(1))
-                .metadata(RESEARCH_TIME, 4 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
                     ItemList.Electric_Motor_UV.get(1),
                     GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Naquadah, 2),
@@ -176,7 +176,7 @@ public class AssemblyLineRecipes implements Runnable {
             // LuV Conveyor
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Conveyor_Module_IV.get(1))
-                .metadata(RESEARCH_TIME, 2 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
                     ItemList.Electric_Motor_LuV.get(2),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.HSSS, 2),
@@ -193,7 +193,7 @@ public class AssemblyLineRecipes implements Runnable {
             // ZPM Conveyor
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Conveyor_Module_LuV.get(1))
-                .metadata(RESEARCH_TIME, 2 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
                     ItemList.Electric_Motor_ZPM.get(2),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 2),
@@ -210,7 +210,7 @@ public class AssemblyLineRecipes implements Runnable {
             // UV Conveyor
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Conveyor_Module_ZPM.get(1))
-                .metadata(RESEARCH_TIME, 4 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
                     ItemList.Electric_Motor_UV.get(2),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2),
@@ -233,7 +233,7 @@ public class AssemblyLineRecipes implements Runnable {
             // LuV Piston
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Piston_IV.get(1))
-                .metadata(RESEARCH_TIME, 2 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
                     ItemList.Electric_Motor_LuV.get(1),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.HSSS, 6),
@@ -252,7 +252,7 @@ public class AssemblyLineRecipes implements Runnable {
             // ZPM Pistons
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Piston_LuV.get(1))
-                .metadata(RESEARCH_TIME, 2 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
                     ItemList.Electric_Motor_ZPM.get(1),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 6),
@@ -271,7 +271,7 @@ public class AssemblyLineRecipes implements Runnable {
             // UV Piston
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Piston_ZPM.get(1))
-                .metadata(RESEARCH_TIME, 4 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
                     ItemList.Electric_Motor_UV.get(1),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 6),
@@ -296,7 +296,7 @@ public class AssemblyLineRecipes implements Runnable {
             // LuV Robot Arm
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Robot_Arm_IV.get(1))
-                .metadata(RESEARCH_TIME, 2 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSS, 4),
                     GTOreDictUnificator.get(OrePrefixes.gear, Materials.HSSS, 1),
@@ -316,7 +316,7 @@ public class AssemblyLineRecipes implements Runnable {
             // ZPM Robot Arm
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Robot_Arm_LuV.get(1))
-                .metadata(RESEARCH_TIME, 2 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahAlloy, 4),
                     GTOreDictUnificator.get(OrePrefixes.gear, Materials.NaquadahAlloy, 1),
@@ -336,7 +336,7 @@ public class AssemblyLineRecipes implements Runnable {
             // UV Robot Arm
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Robot_Arm_ZPM.get(1))
-                .metadata(RESEARCH_TIME, 4 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Neutronium, 4),
                     GTOreDictUnificator.get(OrePrefixes.gear, Materials.Neutronium, 1),
@@ -362,7 +362,7 @@ public class AssemblyLineRecipes implements Runnable {
             // LuV Emitter
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Emitter_IV.get(1))
-                .metadata(RESEARCH_TIME, 2 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 1),
                     ItemList.Electric_Motor_LuV.get(1),
@@ -382,7 +382,7 @@ public class AssemblyLineRecipes implements Runnable {
             // ZPM Emitter
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Emitter_LuV.get(1))
-                .metadata(RESEARCH_TIME, 2 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 1),
                     ItemList.Electric_Motor_ZPM.get(1),
@@ -402,7 +402,7 @@ public class AssemblyLineRecipes implements Runnable {
             // UV Emitter
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Emitter_ZPM.get(1))
-                .metadata(RESEARCH_TIME, 4 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1),
                     ItemList.Electric_Motor_UV.get(1),
@@ -425,7 +425,7 @@ public class AssemblyLineRecipes implements Runnable {
             // LuV Sensor
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Sensor_IV.get(1))
-                .metadata(RESEARCH_TIME, 2 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 1),
                     ItemList.Electric_Motor_LuV.get(1),
@@ -445,7 +445,7 @@ public class AssemblyLineRecipes implements Runnable {
             // ZPM Sensor
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Sensor_LuV.get(1))
-                .metadata(RESEARCH_TIME, 2 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 1),
                     ItemList.Electric_Motor_ZPM.get(1),
@@ -465,7 +465,7 @@ public class AssemblyLineRecipes implements Runnable {
             // UV Sensor
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Sensor_ZPM.get(1))
-                .metadata(RESEARCH_TIME, 4 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1),
                     ItemList.Electric_Motor_UV.get(1),
@@ -488,7 +488,7 @@ public class AssemblyLineRecipes implements Runnable {
             // LuV Field Generator
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Field_Generator_IV.get(1))
-                .metadata(RESEARCH_TIME, 2 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 1),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.HSSS, 6),
@@ -509,7 +509,7 @@ public class AssemblyLineRecipes implements Runnable {
             // ZPM Field Generator
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Field_Generator_LuV.get(1))
-                .metadata(RESEARCH_TIME, 2 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 1),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 6),
@@ -530,7 +530,7 @@ public class AssemblyLineRecipes implements Runnable {
             // UV Field Generator
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Field_Generator_ZPM.get(1))
-                .metadata(RESEARCH_TIME, 4 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 6),
@@ -556,7 +556,7 @@ public class AssemblyLineRecipes implements Runnable {
             // LuV Energy Hatch
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Hatch_Energy_IV.get(1))
-                .metadata(RESEARCH_TIME, 60 * MINUTES)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
                     ItemList.Hull_LuV.get(1),
                     GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 2),
@@ -579,7 +579,7 @@ public class AssemblyLineRecipes implements Runnable {
             // ZPM Energy Hatch
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Hatch_Energy_LuV.get(1))
-                .metadata(RESEARCH_TIME, 2 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
                     ItemList.Hull_ZPM.get(1),
                     GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorZPM, 2),
@@ -602,7 +602,7 @@ public class AssemblyLineRecipes implements Runnable {
             // UV Energy Hatch
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Hatch_Energy_ZPM.get(1))
-                .metadata(RESEARCH_TIME, 4 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_ZPM))
                 .itemInputs(
                     ItemList.Hull_UV.get(1),
                     GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUV, 2),
@@ -632,7 +632,7 @@ public class AssemblyLineRecipes implements Runnable {
             // LuV Dynamo Hatch
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Hatch_Dynamo_IV.get(1))
-                .metadata(RESEARCH_TIME, 60 * MINUTES)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
                     ItemList.Hull_LuV.get(1),
                     GTOreDictUnificator.get(
@@ -658,7 +658,7 @@ public class AssemblyLineRecipes implements Runnable {
             // ZPM Dynamo Hatch
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Hatch_Dynamo_LuV.get(1))
-                .metadata(RESEARCH_TIME, 2 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
                     ItemList.Hull_ZPM.get(1),
                     GTOreDictUnificator.get(OrePrefixes.spring, Materials.Tetranaquadahdiindiumhexaplatiumosminid, 4),
@@ -681,7 +681,7 @@ public class AssemblyLineRecipes implements Runnable {
             // UV Dynamo Hatch
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemList.Hatch_Dynamo_ZPM.get(1))
-                .metadata(RESEARCH_TIME, 4 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_ZPM))
                 .itemInputs(
                     ItemList.Hull_UV.get(1),
                     GTOreDictUnificator.get(OrePrefixes.spring, Materials.Longasssuperconductornameforuvwire, 4),
@@ -711,7 +711,7 @@ public class AssemblyLineRecipes implements Runnable {
             // mkI
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 1))
-                .metadata(RESEARCH_TIME, 2 * HOURS)
+                .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
                     ItemList.Casing_Fusion_Coil.get(1),
                     new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
@@ -732,7 +732,7 @@ public class AssemblyLineRecipes implements Runnable {
             // mkII
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, GTOreDictUnificator.get(OrePrefixes.block, Materials.Europium, 1))
-                .metadata(RESEARCH_TIME, 4 * HOURS)
+                .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
                     ItemList.Casing_Fusion_Coil.get(1),
                     new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
@@ -752,7 +752,7 @@ public class AssemblyLineRecipes implements Runnable {
             // mkIII
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, GTOreDictUnificator.get(OrePrefixes.block, Materials.Americium, 1))
-                .metadata(RESEARCH_TIME, 6 * HOURS)
+                .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_ZPM))
                 .itemInputs(
                     ItemList.Casing_Fusion_Coil.get(1),
                     new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1 },
@@ -772,7 +772,7 @@ public class AssemblyLineRecipes implements Runnable {
         // Energy Module
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Energy_LapotronicOrb2.get(1))
-            .metadata(RESEARCH_TIME, 4 * HOURS)
+            .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 16),
                 new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 1 },
@@ -796,7 +796,7 @@ public class AssemblyLineRecipes implements Runnable {
         // Energy Cluster
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Energy_Module.get(1))
-            .metadata(RESEARCH_TIME, 4 * HOURS)
+            .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_ZPM))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 32),
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 1 },
@@ -820,7 +820,7 @@ public class AssemblyLineRecipes implements Runnable {
         // Integrated Ore Factory
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Machine_IV_OreWasher.get(1))
-            .metadata(RESEARCH_TIME, 6 * HOURS)
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 30 * SECONDS, TierEU.RECIPE_ZPM))
             .itemInputs(
                 ItemList.Hull_MAX.get(1),
                 ItemList.Electric_Motor_UHV.get(32),
@@ -845,7 +845,7 @@ public class AssemblyLineRecipes implements Runnable {
         // Drone T2
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.TierdDrone0.get(1))
-            .metadata(RESEARCH_TIME, 2 * HOURS)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.NaquadahAlloy, 16),
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
@@ -866,7 +866,7 @@ public class AssemblyLineRecipes implements Runnable {
         // Drone T3
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.TierdDrone1.get(1))
-            .metadata(RESEARCH_TIME, 8 * HOURS)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 16),
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 },

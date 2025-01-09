@@ -156,6 +156,7 @@ public class AssemblyLineUtils {
                 new GTRecipe.RecipeAssemblyLine(
                     null,
                     0,
+                    0,
                     aInputs.toArray(new ItemStack[0]),
                     aFluidInputs.toArray(new FluidStack[0]),
                     aOutput,

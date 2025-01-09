@@ -1,11 +1,10 @@
 package tectech.loader.recipe;
 
-import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GTRecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -15,7 +14,9 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.recipe.Scanning;
 import tectech.thing.CustomItemList;
 
 public class AssemblyLine implements Runnable {
@@ -25,7 +26,7 @@ public class AssemblyLine implements Runnable {
         // Data Bank
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Hatch_DataAccess_EV.get(1))
-            .metadata(RESEARCH_TIME, 16 * MINUTES + 20 * SECONDS)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 CustomItemList.Machine_Multi_Switch.get(1),
                 new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2 },
@@ -40,7 +41,7 @@ public class AssemblyLine implements Runnable {
         // Hollow Casing
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, CustomItemList.eM_Containment.get(1))
-            .metadata(RESEARCH_TIME, 6 * MINUTES + 15 * SECONDS)
+            .metadata(SCANNING, new Scanning(50 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 CustomItemList.eM_Containment.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Europium, 2),
@@ -63,7 +64,7 @@ public class AssemblyLine implements Runnable {
         // EM Coil
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, CustomItemList.eM_Hollow.get(1))
-            .metadata(RESEARCH_TIME, 6 * MINUTES + 15 * SECONDS)
+            .metadata(SCANNING, new Scanning(50 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 CustomItemList.eM_Hollow.get(1),
                 ItemList.Casing_Fusion_Coil.get(2),
@@ -84,7 +85,7 @@ public class AssemblyLine implements Runnable {
         // Object Holder
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Hatch_Input_Bus_ZPM.get(1))
-            .metadata(RESEARCH_TIME, 8 * MINUTES + 20 * SECONDS)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 20 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 ItemList.Hatch_Input_Bus_ZPM.get(1),
                 CustomItemList.eM_Computer_Bus.get(1),
@@ -107,7 +108,7 @@ public class AssemblyLine implements Runnable {
         // Quantum Computer
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Tool_DataOrb.get(1))
-            .metadata(RESEARCH_TIME, 16 * MINUTES + 40 * SECONDS)
+            .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_LuV))
             .itemInputs(
                 CustomItemList.Machine_Multi_Switch.get(1),
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 2 },
@@ -130,7 +131,7 @@ public class AssemblyLine implements Runnable {
         // Research Station
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.ScannerZPM.get(1))
-            .metadata(RESEARCH_TIME, 1 * HOURS + 6 * MINUTES + 40 * SECONDS)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 CustomItemList.Machine_Multi_Switch.get(1),
                 ItemList.Sensor_ZPM.get(8),
@@ -153,7 +154,7 @@ public class AssemblyLine implements Runnable {
         // Multi Infuser
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, CustomItemList.Machine_Multi_Transformer.get(1))
-            .metadata(RESEARCH_TIME, 6 * MINUTES + 15 * SECONDS)
+            .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
             .itemInputs(
                 CustomItemList.Machine_Multi_Transformer.get(1),
                 CustomItemList.eM_Coil.get(8),

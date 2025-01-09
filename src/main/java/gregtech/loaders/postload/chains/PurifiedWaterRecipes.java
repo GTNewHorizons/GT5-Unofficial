@@ -17,13 +17,12 @@ import static gregtech.api.recipe.RecipeMaps.purificationParticleExtractionRecip
 import static gregtech.api.recipe.RecipeMaps.purificationPhAdjustmentRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationPlasmaHeatingRecipes;
 import static gregtech.api.recipe.RecipeMaps.purificationUVTreatmentRecipes;
-import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GTRecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -41,6 +40,7 @@ import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.recipe.Scanning;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationPlant;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitUVTreatment;
 import gtPlusPlus.core.material.Particle;
@@ -263,7 +263,7 @@ public class PurifiedWaterRecipes {
         // Recipe for quark catalyst housing
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Electromagnet_Tengam.get(1))
-            .metadata(RESEARCH_TIME, 1 * HOURS)
+            .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_UHV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 16),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 16),

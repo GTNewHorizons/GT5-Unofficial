@@ -16,7 +16,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GTRecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.List;
@@ -42,6 +42,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
@@ -349,11 +350,12 @@ public class RecipesMachines {
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
+        // Molecular Transformer
         GTValues.RA.stdBuilder()
             .metadata(
                 RESEARCH_ITEM,
                 ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_11_MOLECULAR_TRANSFORMER, 1))
-            .metadata(RESEARCH_TIME, 30 * MINUTES)
+            .metadata(SCANNING, new Scanning(50 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 MaterialsAlloy.HG1223.getFineWire(64),
                 MaterialsAlloy.HG1223.getFineWire(64),
@@ -641,9 +643,10 @@ public class RecipesMachines {
 
     private static void multiElementalDuplicator() {
 
+        // Elemental Duplicator
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Machine_IV_Replicator.get(1))
-            .metadata(RESEARCH_TIME, 12 * HOURS)
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 CI.getTieredMachineHull(7, 4),
                 CI.getFieldGenerator(5, 16),
@@ -667,9 +670,10 @@ public class RecipesMachines {
             .duration(10 * MINUTES)
             .addTo(AssemblyLine);
 
+        // Data Orb Repository
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, GregtechItemList.Modulator_III.get(1))
-            .metadata(RESEARCH_TIME, 4 * HOURS)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 CI.getTieredGTPPMachineCasing(7, 2),
                 CI.getFieldGenerator(4, 4),
@@ -690,9 +694,10 @@ public class RecipesMachines {
             .duration(2 * HOURS)
             .addTo(AssemblyLine);
 
+        // Elemental Confinement Shell
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, GregtechItemList.ResonanceChamber_III.get(1))
-            .metadata(RESEARCH_TIME, 2 * HOURS)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 CI.getTieredMachineHull(6, 5),
                 CI.getFieldGenerator(3, 16),
@@ -3040,7 +3045,7 @@ public class RecipesMachines {
         // Isa Mill Controller
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Machine_IV_Macerator.get(1))
-            .metadata(RESEARCH_TIME, 20 * MINUTES)
+            .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 GregtechItemList.Casing_IsaMill_Gearbox.get(4),
                 CI.getTieredGTPPMachineCasing(6, 4),
@@ -3110,7 +3115,7 @@ public class RecipesMachines {
         // Flotation Cell Controller
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Distillation_Tower.get(1))
-            .metadata(RESEARCH_TIME, 20 * MINUTES)
+            .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 GregtechItemList.Casing_Flotation_Cell.get(4),
                 CI.getTieredGTPPMachineCasing(5, 4),
@@ -3183,7 +3188,7 @@ public class RecipesMachines {
         // Sparge Tower Controller
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_10_SPARGING, 1))
-            .metadata(RESEARCH_TIME, 20 * MINUTES)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 20 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 GregtechItemList.Casing_Sparge_Tower_Exterior.get(4),
                 CI.getTieredGTPPMachineCasing(4, 4),
