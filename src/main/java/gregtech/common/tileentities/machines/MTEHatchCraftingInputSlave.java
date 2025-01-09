@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines;
 
+import static gregtech.api.enums.GTValues.TIER_COLORS;
+import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_CRAFTING_INPUT_SLAVE;
 
 import java.util.ArrayList;
@@ -41,9 +43,9 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
             aID,
             aName,
             aNameRegional,
-            6,
+            11,
             0,
-            new String[] { "Proxy for Crafting Input Buffer/Bus",
+            new String[] { "Proxy for Crafting Input Buffer/Bus", "Hatch Tier: " + TIER_COLORS[11] + VN[11],
                 "Link with Crafting Input Buffer/Bus using Data Stick to share inventory",
                 "Left click on the Crafting Input Buffer/Bus, then right click on this block to link them", });
         disableSort = true;
