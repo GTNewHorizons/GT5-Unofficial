@@ -115,14 +115,14 @@ public class ToolAngleGrinder extends GTTool {
     }
 
     @Override
-    public boolean isMinableBlock(final Block aBlock, final byte aMetaData) {
+    public boolean isMinableBlock(final Block aBlock, final int aMetaData) {
         final String tTool = aBlock.getHarvestTool(aMetaData);
         return (tTool != null) && (tTool.equals("sword") || tTool.equals("file"));
     }
 
     @Override
     public int convertBlockDrops(final List<ItemStack> aDrops, final ItemStack aStack, final EntityPlayer aPlayer,
-        final Block aBlock, final int aX, final int aY, final int aZ, final byte aMetaData, final int aFortune,
+        final Block aBlock, final int aX, final int aY, final int aZ, final int aMetaData, final int aFortune,
         final boolean aSilkTouch, final BlockEvent.HarvestDropsEvent aEvent) {
         return 0;
     }

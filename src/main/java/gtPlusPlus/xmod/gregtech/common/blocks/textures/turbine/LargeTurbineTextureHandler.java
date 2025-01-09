@@ -133,7 +133,7 @@ public class LargeTurbineTextureHandler {
         final ForgeDirection side, final GregtechMetaSpecialMultiCasings i) {
         final int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
 
-        return GregtechMetaSpecialMultiCasings.getStaticIcon(side.ordinal(), (byte) tMeta);
+        return GregtechMetaSpecialMultiCasings.getStaticIcon(side.ordinal(), tMeta);
     }
 
 }
