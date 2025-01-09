@@ -221,17 +221,17 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public final byte getMetaIDOffset(int x, int y, int z) {
+    public final int getMetaIDOffset(int x, int y, int z) {
         return getMetaID(xCoord + x, yCoord + y, zCoord + z);
     }
 
     @Override
-    public final byte getMetaIDAtSide(ForgeDirection side) {
+    public final int getMetaIDAtSide(ForgeDirection side) {
         return getMetaIDAtSideAndDistance(side, 1);
     }
 
     @Override
-    public final byte getMetaIDAtSideAndDistance(ForgeDirection side, int distance) {
+    public final int getMetaIDAtSideAndDistance(ForgeDirection side, int distance) {
         return getMetaID(getOffsetX(side, distance), getOffsetY(side, distance), getOffsetZ(side, distance));
     }
 
@@ -404,9 +404,9 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public final byte getMetaID(int x, int y, int z) {
+    public final int getMetaID(int x, int y, int z) {
         if (ignoreUnloadedChunks && crossedChunkBorder(x, z) && !worldObj.blockExists(x, y, z)) return 0;
-        return (byte) worldObj.getBlockMetadata(x, y, z);
+        return worldObj.getBlockMetadata(x, y, z);
     }
 
     @Override

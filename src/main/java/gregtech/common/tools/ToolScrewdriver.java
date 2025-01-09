@@ -117,7 +117,7 @@ public class ToolScrewdriver extends GTTool {
     }
 
     @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+    public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "screwdriver")
             || GTToolHarvestHelper.isAppropriateMaterial(aBlock, Material.circuits);
     }
