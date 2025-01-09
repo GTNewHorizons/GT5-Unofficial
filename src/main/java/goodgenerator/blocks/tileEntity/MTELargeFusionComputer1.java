@@ -72,7 +72,7 @@ public class MTELargeFusionComputer1 extends MTELargeFusionComputer {
             .addOutputHatch("1-16, Hint block with dot 1", 1)
             .addStructureInfo("Supports Crafting Input Buffer")
             .addStructureInfo(
-                "ALL Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) hatchTier())
+                "Energy Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) energyHatchTier())
                     + EnumChatFormatting.GRAY
                     + " or better")
             .toolTipFinisher();
@@ -120,7 +120,7 @@ public class MTELargeFusionComputer1 extends MTELargeFusionComputer {
     }
 
     @Override
-    public int hatchTier() {
+    public int energyHatchTier() {
         return 6;
     }
 
