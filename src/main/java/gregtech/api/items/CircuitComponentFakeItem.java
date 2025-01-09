@@ -1,8 +1,12 @@
 package gregtech.api.items;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
+import net.minecraft.util.IIcon;
+
+import java.util.List;
 
 public class CircuitComponentFakeItem extends GTGenericItem {
 
@@ -26,4 +30,21 @@ public class CircuitComponentFakeItem extends GTGenericItem {
         CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(stack);
         return component.getLocalizedName();
     }
+
+    @Override
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
+        aList.add("Item in the Nanochip Assembly Complex vacuum pipe system");
+        super.addInformation(aStack, aPlayer, aList, aF3_H);
+    }
+
+    @Override
+    public IIcon getIconFromDamage(int meta) {
+        // If the component stores an icon, use that
+        CircuitComponent component = CircuitComponent.getFromMetaDataUnsafe(meta);
+        if (component.icon != null) return component.icon;
+        // Else just use the texture that should be assigned to it
+        return super.getIconFromDamage(meta);
+    }
+
+
 }
