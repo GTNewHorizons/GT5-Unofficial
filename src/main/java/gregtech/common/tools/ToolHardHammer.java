@@ -120,7 +120,7 @@ public class ToolHardHammer extends GTTool {
     }
 
     @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+    public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "hammer", "pickaxe")
             || GTToolHarvestHelper
                 .isAppropriateMaterial(aBlock, Material.rock, Material.glass, Material.ice, Material.packedIce)
@@ -129,7 +129,7 @@ public class ToolHardHammer extends GTTool {
 
     @Override
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
-        int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+        int aY, int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         int rConversions = 0;
         GTRecipe tRecipe = RecipeMaps.hammerRecipes.findRecipeQuery()
             .items(new ItemStack(aBlock, 1, aMetaData))
