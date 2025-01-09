@@ -154,6 +154,7 @@ import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_ULPIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wetwarecomputer;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wetwaremainframe;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wetwaresupercomputer;
+import static gregtech.common.items.IDMetaItem03.Combined_Catalyst;
 import static gregtech.common.items.IDMetaItem03.Cover_Metrics_Transmitter;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UEV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UHV;
@@ -1196,6 +1197,10 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
             .set(addItem(Relativistic_Heat_Capacitor.ID, "Relativistic Heat Capacitor", "Thermal Resonance?", o));
         ItemList.Phononic_Seed_Crystal
             .set(addItem(Phononic_Seed_Crystal.ID, "Phononic Seed Crystal", "Perfect Thermal Conductance", o));
+
+        // Infinity Line Related Items
+        ItemList.Combined_Catalyst
+                .set(addItem(Combined_Catalyst.ID, "Combined Catalyst", "Who would have thought"));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(
