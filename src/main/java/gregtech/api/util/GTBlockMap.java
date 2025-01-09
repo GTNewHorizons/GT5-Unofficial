@@ -5,17 +5,17 @@ import java.util.function.BiFunction;
 
 import net.minecraft.block.Block;
 
-import gnu.trove.map.TByteObjectMap;
-import gnu.trove.map.hash.TByteObjectHashMap;
+import gnu.trove.map.TIntObjectMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 
 public class GTBlockMap<V> {
 
-    public static final byte WILDCARD = -1;
-    private final ConcurrentHashMap<Block, TByteObjectMap<V>> backing = new ConcurrentHashMap<>();
+    public static final int WILDCARD = -1;
+    private final ConcurrentHashMap<Block, TIntObjectMap<V>> backing = new ConcurrentHashMap<>();
     private int size = 0;
 
-    private TByteObjectMap<V> getSubmap(Block block) {
-        return backing.computeIfAbsent(block, b -> new TByteObjectHashMap<>());
+    private TIntObjectMap<V> getSubmap(Block block) {
+        return backing.computeIfAbsent(block, b -> new TIntObjectHashMap<>());
     }
 
     /**
@@ -25,7 +25,7 @@ public class GTBlockMap<V> {
      * @param meta  meta
      * @return old mapping, or null if that doesn't exist
      */
-    public V put(Block block, byte meta, V value) {
+    public V put(Block block, int meta, V value) {
         V v = getSubmap(block).put(meta, value);
         if (v == null) size++;
         return v;
@@ -38,7 +38,7 @@ public class GTBlockMap<V> {
      * @param meta  meta
      * @return old mapping, or null if that doesn't exist
      */
-    public V putIfAbsent(Block block, byte meta, V value) {
+    public V putIfAbsent(Block block, int meta, V value) {
         V v = getSubmap(block).putIfAbsent(meta, value);
         if (v == null) size++;
         return v;
@@ -51,8 +51,8 @@ public class GTBlockMap<V> {
      * @param meta  meta
      * @return old mapping, or null if that doesn't exist
      */
-    public V computeIfAbsent(Block block, byte meta, BiFunction<Block, Byte, V> function) {
-        TByteObjectMap<V> submap = getSubmap(block);
+    public V computeIfAbsent(Block block, int meta, BiFunction<Block, Integer, V> function) {
+        TIntObjectMap<V> submap = getSubmap(block);
         V v = submap.get(meta);
         if (v == null) {
             v = function.apply(block, meta);
@@ -69,8 +69,8 @@ public class GTBlockMap<V> {
      * @param meta  meta
      * @return current mapping OR wildcard of that mapping exists
      */
-    public boolean containsKey(Block block, byte meta) {
-        TByteObjectMap<V> submap = backing.get(block);
+    public boolean containsKey(Block block, int meta) {
+        TIntObjectMap<V> submap = backing.get(block);
         if (submap == null) return false;
         return submap.containsKey(meta) || submap.containsKey(WILDCARD);
     }
@@ -82,8 +82,8 @@ public class GTBlockMap<V> {
      * @param meta  meta
      * @return current mapping OR wildcard of that block. null if neither exists
      */
-    public V get(Block block, byte meta) {
-        TByteObjectMap<V> submap = backing.get(block);
+    public V get(Block block, int meta) {
+        TIntObjectMap<V> submap = backing.get(block);
         if (submap == null) return null;
         V v = submap.get(meta);
         if (v != null) return v;
@@ -97,8 +97,8 @@ public class GTBlockMap<V> {
      * @param meta  meta
      * @return old value, or null if none
      */
-    public V remove(Block block, byte meta) {
-        TByteObjectMap<V> submap = backing.get(block);
+    public V remove(Block block, int meta) {
+        TIntObjectMap<V> submap = backing.get(block);
         if (submap == null) return null;
         V v = submap.remove(meta);
         if (v != null) {

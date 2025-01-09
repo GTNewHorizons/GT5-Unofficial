@@ -220,6 +220,8 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/progressbar/steam_fill");
     public static final UITexture PROGRESSBAR_STEAM_FILL_STEEL = UITexture
         .fullImage(GregTech.ID, "gui/progressbar/steam_fill_steel");
+    public static final UITexture PROGRESSBAR_NAME_REMOVER = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/name_remover");
 
     public static FallbackableUITexture fallbackableProgressbar(String name, UITexture fallback) {
         return new FallbackableUITexture(UITexture.fullImage(GregTech.ID, "gui/progressbar/" + name), fallback);
