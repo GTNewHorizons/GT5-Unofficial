@@ -30,6 +30,7 @@ public class RecipeHandlers {
             .duration(1 * TICKS)
             .eut(0)
             .addTo(RecipeMaps.nanochipConversionRecipes);
+        component.icon = stack.getIconIndex();
     }
 
     // Adds a simple processing recipe for circuit components in a module. The recipe map used for processing is
