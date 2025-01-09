@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.ItemList;
@@ -94,6 +95,9 @@ public enum CircuitComponent {
 
     public final String unlocalizedName;
     public String fallbackLocalizedName = null;
+    // If this component is a direct conversion of some other item in the NAC main controller, this is the item used for that.
+    // Otherwise, this is null
+    public IIcon icon = null;
     public final Materials material;
     // This is the recipe map that this component is used in as an input item
     public final RecipeMap<?> processingMap;
@@ -145,6 +149,10 @@ public enum CircuitComponent {
     public static CircuitComponent getFromFakeStackUnsafe(ItemStack stack) {
         // If this throws an IndexOutOfBounds exception, there is a bug
         return CircuitComponent.values()[stack.getItemDamage()];
+    }
+
+    public static CircuitComponent getFromMetaDataUnsafe(int metadata) {
+        return CircuitComponent.values()[metadata];
     }
 
     static {
