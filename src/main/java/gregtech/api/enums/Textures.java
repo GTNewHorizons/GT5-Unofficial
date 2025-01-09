@@ -1462,7 +1462,10 @@ public class Textures {
         RADIATION_ABSORBENT_CASING,
         HAWKING_GLASS,
         OVERLAY_NANITE_HATCH,
-        OVERLAY_NANITE_HATCH_GLOW,;
+        OVERLAY_NANITE_HATCH_GLOW
+        
+        // semicolon after the comment to reduce merge conflicts
+        ;
 
         /**
          * Icon for Fresh CFoam
