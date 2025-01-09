@@ -2600,9 +2600,12 @@ public enum ItemList implements IItemContainer {
     Casing_AirFilter_Vent_T3,
     Casing_Pyrolyse,
     NameRemover,
+    Hatch_Nanite,
+    Hatch_Catalyst_Bulk,
     Machine_Multi_AirFilterT1,
     Machine_Multi_AirFilterT2,
     Machine_Multi_AirFilterT3,
+
     // semicolon after the comment to reduce merge conflicts
     ;
 
