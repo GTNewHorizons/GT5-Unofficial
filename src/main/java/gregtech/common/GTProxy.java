@@ -76,6 +76,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
@@ -1555,7 +1556,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         if (stats == null) return;
 
         TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
-        stats.onBreakBlock(player, event.x, event.y, event.z, event.block, (byte) event.blockMetadata, tile, event);
+        stats.onBreakBlock(player, event.x, event.y, event.z, event.block, event.blockMetadata, tile, event);
     }
 
     @SubscribeEvent
@@ -1574,7 +1575,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                 aEvent.x,
                 aEvent.y,
                 aEvent.z,
-                (byte) aEvent.blockMetadata,
+                aEvent.blockMetadata,
                 aEvent.fortuneLevel,
                 aEvent.isSilkTouching,
                 aEvent);
@@ -1626,8 +1627,9 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         try {
             aEvent.Ore.stackSize = 1;
 
-            // skipping TinkerConstruct ore registration
-            if (this.mIgnoreTcon && aOriginalMod.equals(TinkerConstruct.ID)) {
+            // skipping TinkerConstruct ore registration except for blocks
+            if (this.mIgnoreTcon && aOriginalMod.equals(TinkerConstruct.ID)
+                && !(aEvent.Ore.getItem() instanceof ItemBlock)) {
                 return;
             }
             String tModToName = aMod + " -> " + aEvent.Name;
@@ -2694,7 +2696,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                     aEvent.x,
                     aEvent.y,
                     aEvent.z,
-                    (byte) aEvent.metadata,
+                    aEvent.metadata,
                     aEvent);
             }
         }
@@ -2765,7 +2767,9 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             ItemStack aStackTemp = event.itemStack;
             GTItemStack aStack = new GTItemStack(aStackTemp);
             if (providesProtection(aStackTemp)) {
-                event.toolTip.add(EnumChatFormatting.LIGHT_PURPLE + "Provides full hazmat protection.");
+                event.toolTip.add(
+                    EnumChatFormatting.LIGHT_PURPLE
+                        + StatCollector.translateToLocal("GT5U.providesfullhazmatprotection"));
             }
         }
     }

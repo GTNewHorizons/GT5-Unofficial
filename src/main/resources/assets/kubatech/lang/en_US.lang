@@ -42,9 +42,11 @@ kubablock.tea_acceptor.name=§4§lTea Acceptor
 kubablock.tea_storage.name=§4§lTea Storage Extender
 
 #DEFC Casings
+defc.casing.name=Fusion Casing
 defc.casing.tip=Draconic Evolution Fusion Crafter Casing, Tier %d
 
 #Items
+item.kubaitems.name=Tea / Tea Leaf
 kubaitem.fromcollection=This item is from
 kubaitem.notyours=It looks like that item is not yours
 kubaitem.defc_schematic_t1.name=Draconic Core Schematic
