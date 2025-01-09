@@ -39,13 +39,6 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "h", "B", "I", 'I', material.getIngot(1), 'B', material.getIngot(1) });
 
-        if (ItemUtils.checkForInvalidItems(material.getPlate(1))
-            && ItemUtils.checkForInvalidItems(material.getIngot(1)))
-            GTModHandler.addShapelessCraftingRecipe(
-                material.getPlate(1),
-                new Object[] { gregtech.api.enums.ToolDictNames.craftingToolForgeHammer, material.getIngot(1),
-                    material.getIngot(1) });
-
         // Double Plate Shaped/Shapeless
         if (ItemUtils.checkForInvalidItems(material.getPlateDouble(1))
             && ItemUtils.checkForInvalidItems(material.getPlate(1)))
@@ -53,13 +46,6 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
                 material.getPlateDouble(1),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "I", "B", "h", 'I', material.getPlate(1), 'B', material.getPlate(1) });
-
-        if (ItemUtils.checkForInvalidItems(material.getPlateDouble(1))
-            && ItemUtils.checkForInvalidItems(material.getPlate(1)))
-            GTModHandler.addShapelessCraftingRecipe(
-                material.getPlateDouble(1),
-                new Object[] { gregtech.api.enums.ToolDictNames.craftingToolForgeHammer, material.getPlate(1),
-                    material.getPlate(1) });
 
         // Ring Recipe
         if (!material.isRadioactive && ItemUtils.checkForInvalidItems(material.getRing(1))
