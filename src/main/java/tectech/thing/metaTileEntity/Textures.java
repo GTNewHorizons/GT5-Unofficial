@@ -47,7 +47,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GTRenderedTexture;
-import gregtech.api.objects.GTSidedTexture;
 import gregtech.api.render.TextureFactory;
 
 public class Textures {
@@ -294,7 +293,7 @@ public class Textures {
     public static void run() {
         for (byte i = 0; i < MACHINE_CASINGS_TT.length; i++) {
             for (byte j = 0; j < MACHINE_CASINGS_TT[i].length; j++) {
-                MACHINE_CASINGS_TT[i][j] = new GTSidedTexture(
+                MACHINE_CASINGS_TT[i][j] = TextureFactory.of(
                     MACHINECASINGS_BOTTOM_TT[i],
                     MACHINECASINGS_TOP_TT[i],
                     MACHINECASINGS_SIDE_TT[i],
