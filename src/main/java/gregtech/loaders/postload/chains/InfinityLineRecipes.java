@@ -65,7 +65,11 @@ public class InfinityLineRecipes {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 64),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 64))
             .fluidInputs(MaterialsUEVplus.MoebianiteSlag.getFluid(1250))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartzCharged, 256))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartzCharged, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartzCharged, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartzCharged, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartzCharged, 64))
             .fluidOutputs(MaterialsUEVplus.MoebianiteCrystalSlurry.getFluid(8000))
             .duration(150 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
