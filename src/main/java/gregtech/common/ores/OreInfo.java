@@ -5,12 +5,45 @@ import com.gtnewhorizon.gtnhlib.util.ObjectPooler;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 
+/**
+ * This class represents an ore block. Not all combinations are valid, it depends on what the ore adapters support.
+ * 
+ * <p>
+ * 
+ * This class comes with a built-in pooling mechanism since these objects are used in several hot-paths.
+ * Any time the {@link OreManager} returns an {@link OreInfo}, it should be enclosed in a try-with-resources to release
+ * the object back to the pool automatically. If a try-with-resources clutters the code significantly, you can call
+ * {@link OreInfo#release()} manually. You should call {@link OreInfo#release()} unless you have a good reason not to
+ * (like making thousands of objects at a time, which would cause a memory leak).
+ * 
+ * <p>
+ * 
+ * If you don't know for certain what kind of ore you're dealing with, everything should be done through the
+ * {@link OreManager} where possible, and the ore adapter should be retrieved via
+ * {@link OreManager#getAdapter(OreInfo)}. It's fine to refer to a concrete ore adapter if you know the ore type for
+ * certain.
+ * 
+ * <pre>
+ * {@code
+ *  void foo(Block block, int meta) {
+ *   try (OreInfo<?> info = OreManager.getOreInfo(block, meta)) {
+ *     // do something with info
+ *   }
+ * }
+ * </pre>
+ */
 public class OreInfo<TMat extends IOreMaterial> implements AutoCloseable {
 
-    public IOreAdapter<TMat> cachedAdapter;
+    /**
+     * The cached adapter that produced this info. May not be valid, so use {@link OreManager#getAdapter(OreInfo)}
+     * instead.
+     */
+    IOreAdapter<TMat> cachedAdapter;
+
     public TMat material;
     public IStoneType stoneType;
     public boolean isSmall;
+    /** Natural ores can be mined by machines and can be fortuned. Ores placed by the player aren't natural. */
     public boolean isNatural;
 
     static final ObjectPooler<OreInfo<?>> ORE_INFO_POOL = new ObjectPooler<>(OreInfo::new);
