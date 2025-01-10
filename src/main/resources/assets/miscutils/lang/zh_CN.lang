@@ -2741,7 +2741,7 @@ item.itemDustNylon.name=尼龙粉
 item.itemDustTinyNylon.name=小撮尼龙粉
 item.itemDustSmallNylon.name=小堆尼龙粉
 item.itemNuggetNylon.name=尼龙粒
-item.itemPlateNylon.name=尼龙板 
+item.itemPlateNylon.name=尼龙板
 item.itemPlateDoubleNylon.name=双重尼龙板
 item.itemCellNylon.name=尼龙单元
 tile.Block of Nylon.name=尼龙块
@@ -3090,9 +3090,6 @@ item.BasicMetaFood.6.name=生猫肉
 item.BasicMetaFood.7.name=熟猫肉
 item.BasicMetaFood.8.name=烈焰人肉
 
-item.itemCellNaquadahFuel.name=硅岩燃料单元
-item.itemCellEnrichedNaquadahFuel.name=富集硅岩燃料单元
-item.itemCellNaquadriaFuel.name=超能硅岩燃料单元
 item.boricacid.name=硼酸单元
 item.hydrochloricacid.name=盐酸单元
 
