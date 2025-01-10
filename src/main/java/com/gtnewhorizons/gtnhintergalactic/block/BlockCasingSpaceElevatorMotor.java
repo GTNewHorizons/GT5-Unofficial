@@ -16,7 +16,7 @@ import com.gtnewhorizons.gtnhintergalactic.item.ItemCasingSpaceElevatorMotor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.objects.GTCopiedBlockTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.blocks.MaterialCasings;
@@ -42,7 +42,7 @@ public class BlockCasingSpaceElevatorMotor extends BlockCasingsAbstract {
         super(ItemCasingSpaceElevatorMotor.class, "gt.blockcasingsSEMotor", MaterialCasings.INSTANCE);
 
         for (byte b = 0; b < NUMBER_OF_MOTORS; b = (byte) (b + 1)) {
-            Textures.BlockIcons.casingTexturePages[32][b + 16] = new GTCopiedBlockTexture(this, 6, b);
+            Textures.BlockIcons.casingTexturePages[32][b + 16] = TextureFactory.of(this, b);
         }
 
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Space Elevator Motor MK-I");
