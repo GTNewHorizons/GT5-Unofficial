@@ -111,6 +111,7 @@ public class MTENameRemover extends MTEBasicMachine {
             boolean removeRepair = false;
             boolean removeDye = false;
             boolean removeSpray = false;
+            boolean removeMuffler = false;
             boolean removeCovers = false;
             switch (circuitSetting) {
                 case 1:
@@ -131,6 +132,9 @@ public class MTENameRemover extends MTEBasicMachine {
                 case 6:
                     removeSpray = true;
                     break;
+                case 7:
+                    removeMuffler = true;
+                    break;
                 case 24:
                     removeCovers = true;
                 default:
@@ -140,6 +144,7 @@ public class MTENameRemover extends MTEBasicMachine {
                     removeRepair = true;
                     removeDye = true;
                     removeSpray = true;
+                    removeMuffler = true;
             }
             if (removeName && nbt.hasKey("display")) {
                 nbt.getCompoundTag("display")
@@ -161,6 +166,7 @@ public class MTENameRemover extends MTEBasicMachine {
                 }
             }
             if (removeSpray) removeTag(nbt, "mColor");
+            if (removeMuffler) removeTag(nbt, "mMuffler");
             removeTag(nbt, "mTargetStackSize"); // MTEBuffer
             removeTag(nbt, "mOutputFluid"); // MTEDigitalTankBase
             removeTag(nbt, "mVoidOverflow"); // MTEDigitalTankBase & MTEQuantumChest
@@ -216,6 +222,7 @@ public class MTENameRemover extends MTEBasicMachine {
         description.add(BOLD + "Circuit 4:" + RESET + "  Remove Anvil repair tag");
         description.add(BOLD + "Circuit 5:" + RESET + "  Remove Dye from Leather armor");
         description.add(BOLD + "Circuit 6:" + RESET + "  Remove Spray color from GT items");
+        description.add(BOLD + "Circuit 7:" + RESET + "  Remove Muffler Upgrade from GT machines");
         description.add(
             BOLD + "Circuit 24:"
                 + RESET
