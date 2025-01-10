@@ -9,8 +9,8 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.MTERocketFuelGeneratorBase;
@@ -65,17 +65,14 @@ public class MTERocketFuelGenerator extends MTERocketFuelGeneratorBase {
         return rValue;
     }
 
-    private GTRenderedTexture getCasingTexture() {
+    private ITexture getCasingTexture() {
         if (this.mTier <= 4) {
-            return new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top);
+            return TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Top);
         } else if (this.mTier == 5) {
-
-            return new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Advanced);
+            return TextureFactory.of(TexturesGtBlock.Casing_Machine_Advanced);
         } else {
-
-            return new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Ultra);
+            return TextureFactory.of(TexturesGtBlock.Casing_Machine_Ultra);
         }
-        // return new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top);
     }
 
     @Override
@@ -87,25 +84,25 @@ public class MTERocketFuelGenerator extends MTERocketFuelGeneratorBase {
     @Override
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] { super.getBack(aColor)[0], this.getCasingTexture(),
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Vent) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Vent) };
     }
 
     @Override
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] { super.getBottom(aColor)[0],
-            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     @Override
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { super.getTop(aColor)[0],
-            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Redstone_Off) };
+            TextureFactory.of(TexturesGtBlock.Casing_Machine_Redstone_Off) };
     }
 
     @Override
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] { super.getSides(aColor)[0], this.getCasingTexture(),
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Diesel_Horizontal) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Diesel_Horizontal) };
     }
 
     @Override
@@ -117,24 +114,24 @@ public class MTERocketFuelGenerator extends MTERocketFuelGeneratorBase {
     @Override
     public ITexture[] getBackActive(final byte aColor) {
         return new ITexture[] { super.getBackActive(aColor)[0], this.getCasingTexture(),
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Vent_Fast) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Vent_Fast) };
     }
 
     @Override
     public ITexture[] getBottomActive(final byte aColor) {
         return new ITexture[] { super.getBottomActive(aColor)[0],
-            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     @Override
     public ITexture[] getTopActive(final byte aColor) {
         return new ITexture[] { super.getTopActive(aColor)[0],
-            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Redstone_On) };
+            TextureFactory.of(TexturesGtBlock.Casing_Machine_Redstone_On) };
     }
 
     @Override
     public ITexture[] getSidesActive(final byte aColor) {
         return new ITexture[] { super.getSidesActive(aColor)[0], this.getCasingTexture(),
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Diesel_Horizontal_Active) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Diesel_Horizontal_Active) };
     }
 }

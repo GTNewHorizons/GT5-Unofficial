@@ -36,7 +36,7 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
@@ -50,7 +50,7 @@ import tectech.util.TTUtility;
 public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     implements IConnectsToEnergyTunnel, IAddUIWidgets, IAddGregtechLogo {
 
-    public static GTRenderedTexture GENNY;
+    public static ITexture GENNY;
     private boolean LASER = false;
     public int EUT = 0, AMP = 0;
     public boolean producing = true;
@@ -92,7 +92,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        GENNY = new GTRenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/GENNY"));
+        GENNY = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/GENNY"));
     }
 
     @Override

@@ -19,7 +19,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
@@ -63,9 +63,9 @@ public class MTETieredTank extends MTEBasicTank {
         final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         return side == ForgeDirection.UP
             ? new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
-                new GTRenderedTexture(Textures.BlockIcons.OVERLAY_TOP_FLUIDTANK) }
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_FLUIDTANK) }
             : new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
-                new GTRenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_FLUIDTANK) };
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_FLUIDTANK) };
     }
 
     @Override

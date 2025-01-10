@@ -7,7 +7,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public abstract class MTETreeFarmerBase extends MTETieredMachineBlock {
@@ -139,23 +139,23 @@ public abstract class MTETreeFarmerBase extends MTETieredMachineBlock {
     }
 
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Farm_Manager) };
+        return new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Farm_Manager) };
     }
 
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Farm_Manager) };
+        return new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Farm_Manager) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Sterile_Casing) };
+        return new ITexture[] { TextureFactory.of(TexturesGtBlock.Sterile_Casing) };
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Podzol) };
+        return new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Podzol) };
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Farm_Manager) };
+        return new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Farm_Manager) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {

@@ -11,7 +11,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 
@@ -46,12 +46,12 @@ public class MTEHatchNaquadah extends MTEHatchInput {
 
     @Override
     public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GTRenderedTexture(BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE_ACTIVE) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GTRenderedTexture(BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE) };
     }
 
     public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
@@ -144,7 +144,7 @@ public class MTEHatchNaquadah extends MTEHatchInput {
         if (side == ForgeDirection.UP || side == ForgeDirection.DOWN) {
             ITexture g = textureIndex > 0 ? BlockIcons.casingTexturePages[a2][texturePointer]
                 : BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1];
-            return new ITexture[] { g, new GTRenderedTexture(BlockIcons.NAQUADAH_REACTOR_FLUID_TOP_ACTIVE) };
+            return new ITexture[] { g, TextureFactory.of(BlockIcons.NAQUADAH_REACTOR_FLUID_TOP_ACTIVE) };
         }
         return side != facing
             ? (textureIndex > 0 ? new ITexture[] { BlockIcons.casingTexturePages[a2][texturePointer] }

@@ -22,7 +22,7 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 
@@ -203,10 +203,10 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
         int aColorIndex, boolean aActive, boolean aRedstone) {
         return aBaseMetaTileEntity.getFrontFacing() == ForgeDirection.DOWN && side == ForgeDirection.WEST
             ? new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
-                new GTRenderedTexture(BlockIcons.OVERLAY_QCHEST) }
+                TextureFactory.of(BlockIcons.OVERLAY_QCHEST) }
             : (side == aBaseMetaTileEntity.getFrontFacing()
                 ? new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
-                    new GTRenderedTexture(BlockIcons.OVERLAY_QCHEST) }
+                    TextureFactory.of(BlockIcons.OVERLAY_QCHEST) }
                 : new ITexture[] { BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1] });
     }
 
