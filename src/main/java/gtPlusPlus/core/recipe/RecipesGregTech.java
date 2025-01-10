@@ -492,7 +492,7 @@ public class RecipesGregTech {
                 ItemUtils.getSimpleStack(ModItems.itemChargePack_High_4, 1), };
 
             int aCurrSlot = 0;
-            for (int h = 6; h < 10; h++) {
+            for (int h = 6; h < 9; h++) {
                 RA.stdBuilder()
                     .metadata(RESEARCH_ITEM, aChargeResearch[aCurrSlot])
                     .metadata(SCANNING, new Scanning(30 * SECONDS, GTValues.VP[aCurrSlot + 5]))
@@ -517,6 +517,28 @@ public class RecipesGregTech {
                     .addTo(AssemblyLine);
                 aCurrSlot++;
             }
+
+            RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, aChargeResearch[aCurrSlot])
+                .metadata(RESEARCH_TIME, 10 * (aCurrSlot + 1) * MINUTES)
+                .itemInputs(
+                    ItemUtils.getSimpleStack(aGemBatteries[aCurrSlot], 2),
+                    aCoilWire[aCurrSlot],
+                    CI.getTieredComponent(OrePrefixes.plate, 9, 8),
+                    new Object[] { CI.getTieredCircuitOreDictName(9), 4 },
+                    new Object[] { CI.getTieredCircuitOreDictName(8), 8 },
+                    CI.getTieredComponent(OrePrefixes.cableGt12, 8, 16),
+                    CI.getTieredComponent(OrePrefixes.screw, 9, 16),
+                    CI.getTieredComponent(OrePrefixes.bolt, 7, 32),
+                    CI.getFieldGenerator(8, 1))
+                .fluidInputs(
+                    CI.getTieredFluid(9, 144 * 4 * 8),
+                    CI.getTertiaryTieredFluid(8, 144 * 4 * 8 * 2),
+                    CI.getAlternativeTieredFluid(7, 144 * 4 * 8))
+                .itemOutputs(aChargeOutputs[aCurrSlot])
+                .eut(GTValues.VP[9])
+                .duration((aCurrSlot + 1) * HOURS)
+                .addTo(AssemblyLine);
 
             // Cloaking device
             RA.stdBuilder()
