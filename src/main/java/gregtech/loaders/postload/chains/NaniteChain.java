@@ -4,13 +4,12 @@ import static goodgenerator.loader.Loaders.huiCircuit;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.nanoForgeRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.NANO_FORGE_TIER;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GTRecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gtPlusPlus.core.block.ModBlocks.blockCompressedObsidian;
 
 import net.minecraft.item.ItemStack;
@@ -26,6 +25,7 @@ import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class NaniteChain {
@@ -38,14 +38,14 @@ public class NaniteChain {
         ItemStack aUIVTierLens = ItemList.EnergisedTesseract.get(0);
         ItemStack aUMVTierLens = GTOreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 0, false);
 
-        // Carbon Nanite Recipe Before Nano Forge
         Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
             ? FluidRegistry.getFluid("molten.indalloy140")
             : FluidRegistry.getFluid("molten.solderingalloy");
 
+        // Nano Forge
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, Materials.Carbon.getNanite(1))
-            .metadata(RESEARCH_TIME, 1 * HOURS)
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 30 * SECONDS, TierEU.RECIPE_ZPM))
             .itemInputs(
                 ItemList.Hull_UV.get(16),
                 Materials.Carbon.getNanite(16),
@@ -64,9 +64,10 @@ public class NaniteChain {
             .duration(5 * MINUTES)
             .addTo(AssemblyLine);
 
+        // Carbon Nanite Recipe Before Nano Forge
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Circuit_Crystalmainframe.get(1))
-            .metadata(RESEARCH_TIME, 2 * HOURS)
+            .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_ZPM))
             .itemInputs(
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 16 },
                 ItemList.Robot_Arm_UV.get(16),
