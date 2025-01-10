@@ -368,7 +368,7 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
         mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
         mEfficiencyIncrease = 10000;
         mMaxProgresstime = 20;
-        return SimpleCheckRecipeResult.ofSuccess("drilling");
+        return SimpleCheckRecipeResult.ofSuccess("siphoning");
     }
 
     /**
