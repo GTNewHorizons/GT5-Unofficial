@@ -520,7 +520,7 @@ public class RecipesGregTech {
 
             RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, aChargeResearch[aCurrSlot])
-                .metadata(RESEARCH_TIME, 10 * (aCurrSlot + 1) * MINUTES)
+                .metadata(SCANNING, new Scanning(30 * SECONDS, GTValues.VP[aCurrSlot + 5]))
                 .itemInputs(
                     ItemUtils.getSimpleStack(aGemBatteries[aCurrSlot], 2),
                     aCoilWire[aCurrSlot],
