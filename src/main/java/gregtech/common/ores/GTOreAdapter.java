@@ -30,7 +30,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.GTProxy.OreDropSystem;
-import gregtech.common.blocks.BlockOresAbstract;
+import gregtech.common.blocks.GTBlockOre;
 
 public final class GTOreAdapter implements IOreAdapter<Materials> {
 
@@ -38,13 +38,13 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
 
     private GTOreAdapter() {}
 
-    private final Map<StoneType, BlockOresAbstract> oreBlocksByStoneType = new EnumMap<>(StoneType.class);
+    private final Map<StoneType, GTBlockOre> oreBlocksByStoneType = new EnumMap<>(StoneType.class);
 
-    private BlockOresAbstract[] ores;
+    private GTBlockOre[] ores;
 
     public void init() {
         // spotless:off
-        BlockOresAbstract ores1 = new BlockOresAbstract(2, new StoneType[] {
+        GTBlockOre ores1 = new GTBlockOre(2, new StoneType[] {
             StoneType.Stone,
             StoneType.Netherrack,
             StoneType.Endstone,
@@ -54,7 +54,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
             StoneType.Basalt,
             StoneType.Moon,
         });
-        BlockOresAbstract ores2 = new BlockOresAbstract(3, new StoneType[] {
+        GTBlockOre ores2 = new GTBlockOre(3, new StoneType[] {
             StoneType.Mars,
             StoneType.Asteroid,
             StoneType.Phobos,
@@ -64,7 +64,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
             StoneType.Europa,
             StoneType.Ganymede,
         });
-        BlockOresAbstract ores3 = new BlockOresAbstract(4, new StoneType[] {
+        GTBlockOre ores3 = new GTBlockOre(4, new StoneType[] {
             StoneType.Callisto,
             StoneType.Enceladus,
             StoneType.Titan,
@@ -74,7 +74,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
             StoneType.Triton,
             StoneType.Pluto,
         });
-        BlockOresAbstract ores4 = new BlockOresAbstract(5, new StoneType[] {
+        GTBlockOre ores4 = new GTBlockOre(5, new StoneType[] {
             StoneType.Callisto,
             StoneType.Enceladus,
             StoneType.Titan,
@@ -84,7 +84,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
             StoneType.Triton,
             StoneType.Pluto,
         });
-        BlockOresAbstract ores5 = new BlockOresAbstract(6, new StoneType[] {
+        GTBlockOre ores5 = new GTBlockOre(6, new StoneType[] {
             StoneType.Haumea,
             StoneType.MakeMake,
             StoneType.AlphaCentauri,
@@ -94,14 +94,14 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
             StoneType.BarnardaF,
             StoneType.Horus,
         });
-        BlockOresAbstract ores6 = new BlockOresAbstract(7, new StoneType[] {
+        GTBlockOre ores6 = new GTBlockOre(7, new StoneType[] {
             StoneType.AnubisAndMaahes,
             StoneType.PackedIce,
             StoneType.SethIce,
             StoneType.SethClay,
         });
 
-        ores = new BlockOresAbstract[] { ores1, ores2, ores3, ores4, ores5, ores6 };
+        ores = new GTBlockOre[] { ores1, ores2, ores3, ores4, ores5, ores6 };
 
         StoneType[] legacyStones = {
             StoneType.Stone,
@@ -141,12 +141,12 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
         });
     }
 
-    public void registerOre(StoneType stoneType, BlockOresAbstract oreBlock) {
+    public void registerOre(StoneType stoneType, GTBlockOre oreBlock) {
         oreBlocksByStoneType.put(stoneType, oreBlock);
     }
 
     public void hideOres() {
-        for (BlockOresAbstract ore : ores) {
+        for (GTBlockOre ore : ores) {
             API.hideItem(new ItemStack(ore, 1, 0));
         }
     }
@@ -178,7 +178,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
 
     @Override
     public OreInfo<Materials> getOreInfo(Block block, int meta) {
-        if (!(block instanceof BlockOresAbstract oreBlock)) return null;
+        if (!(block instanceof GTBlockOre oreBlock)) return null;
 
         if (meta < 0) throw new IllegalArgumentException(
             "illegal metadata: " + meta + "; a tool may be casting an int to a byte, which is incompatible with NEID");
@@ -217,7 +217,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
         if (!stoneType.isEnabled()) return null;
         if (stoneType.getCategory() == StoneCategory.Ice && info.isSmall) return null;
 
-        BlockOresAbstract oreBlock = oreBlocksByStoneType.get(stoneType);
+        GTBlockOre oreBlock = oreBlocksByStoneType.get(stoneType);
 
         if (oreBlock == null) return null;
         int stoneIndex = oreBlock.stoneTypes.indexOf(stoneType);
@@ -240,7 +240,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
 
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
 
-        BlockOresAbstract oreBlock = oreBlocksByStoneType.get(info.stoneType);
+        GTBlockOre oreBlock = oreBlocksByStoneType.get(info.stoneType);
 
         if (oreBlock == null) return new ArrayList<>();
 

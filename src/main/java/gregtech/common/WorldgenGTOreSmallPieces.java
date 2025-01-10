@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
@@ -26,7 +26,7 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen implements IWorldgenLay
     public final short mMinY;
     public final short mMaxY;
     public final short mAmount;
-    private final IMaterial mMaterial;
+    private final IOreMaterial mMaterial;
 
     public final String mBiome;
     private final Set<String> mAllowedDimensions;
@@ -82,12 +82,12 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen implements IWorldgenLay
     }
 
     @Override
-    public boolean contains(IMaterial material) {
+    public boolean contains(IOreMaterial material) {
         return material == mMaterial;
     }
 
     @Override
-    public IMaterial getOre(float k) {
+    public IOreMaterial getOre(float k) {
         return mMaterial;
     }
 
@@ -105,7 +105,7 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen implements IWorldgenLay
         return mAllowedDimensions;
     }
 
-    public IMaterial getMaterial() {
+    public IOreMaterial getMaterial() {
         return mMaterial;
     }
 

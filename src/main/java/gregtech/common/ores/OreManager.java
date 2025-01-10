@@ -17,7 +17,7 @@ import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 
 import gregtech.api.enums.StoneType;
-import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 
 public final class OreManager {
@@ -79,7 +79,7 @@ public final class OreManager {
     }
 
     public static boolean setOreForWorldGen(World world, int x, int y, int z, IStoneType defaultStone,
-        IMaterial material, boolean small) {
+        IOreMaterial material, boolean small) {
         if (y < 0 || y >= world.getActualHeight()) return false;
 
         IStoneType existingStone = StoneType.findStoneType(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
@@ -94,7 +94,7 @@ public final class OreManager {
             }
         }
 
-        try (OreInfo<IMaterial> info = OreInfo.getNewInfo()) {
+        try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
             info.material = material;
             info.stoneType = existingStone;
             info.isSmall = small;
@@ -118,11 +118,11 @@ public final class OreManager {
         }
     }
 
-    public static boolean setOre(World world, int x, int y, int z, @Nullable IStoneType stoneType, IMaterial material,
-        boolean small) {
+    public static boolean setOre(World world, int x, int y, int z, @Nullable IStoneType stoneType,
+        IOreMaterial material, boolean small) {
         if (y < 0 || y >= world.getActualHeight()) return false;
 
-        try (OreInfo<IMaterial> info = OreInfo.getNewInfo()) {
+        try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
             info.material = material;
             info.stoneType = stoneType;
             info.isSmall = small;
@@ -201,13 +201,13 @@ public final class OreManager {
         return oreBlockDrops;
     }
 
-    public static IMaterial getMaterial(ItemStack stack) {
+    public static IOreMaterial getMaterial(ItemStack stack) {
         if (!(stack.getItem() instanceof ItemBlock itemBlock)) return null;
 
         return getMaterial(itemBlock.field_150939_a, Items.feather.getDamage(stack));
     }
 
-    public static IMaterial getMaterial(Block block, int meta) {
+    public static IOreMaterial getMaterial(Block block, int meta) {
         try (OreInfo<?> info = getOreInfo(block, meta)) {
             return info == null ? null : info.material;
         }

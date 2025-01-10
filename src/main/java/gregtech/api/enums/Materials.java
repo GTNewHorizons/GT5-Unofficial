@@ -29,8 +29,8 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.IColorModulationContainer;
-import gregtech.api.interfaces.IMaterial;
 import gregtech.api.interfaces.IMaterialHandler;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
@@ -49,7 +49,7 @@ import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import gregtech.loaders.materials.MaterialsInit1;
 
 @SuppressWarnings("unused") // API Legitimately has unused Members and Methods
-public class Materials implements IColorModulationContainer, ISubTagContainer, IMaterial {
+public class Materials implements IColorModulationContainer, ISubTagContainer, IOreMaterial {
 
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();
     private static final Map<String, Materials> MATERIALS_MAP = new LinkedHashMap<>();

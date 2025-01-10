@@ -5,11 +5,14 @@ import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class BlockOresOld extends BlockOresAbstractOld {
+/**
+ * The legacy ores. Must still be registered so that postea can transform them into the new ore blocks.
+ */
+public class BlockOresLegacy extends BlockOresAbstractLegacy {
 
     private static final String UNLOCALIZED_NAME = "gt.blockores";
 
-    public BlockOresOld() {
+    public BlockOresLegacy() {
         super(UNLOCALIZED_NAME, 7, false, Material.rock);
     }
 

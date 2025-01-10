@@ -13,9 +13,9 @@ import net.minecraft.world.World;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 
 import gregtech.api.enums.StoneType;
-import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IOreMaterial;
 
-public interface IOreAdapter<TMat extends IMaterial> {
+public interface IOreAdapter<TMat extends IOreMaterial> {
 
     /**
      * A fast check to see if this adapter can support this block/meta combination.

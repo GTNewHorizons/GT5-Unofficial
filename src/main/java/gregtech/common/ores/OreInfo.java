@@ -2,10 +2,10 @@ package gregtech.common.ores;
 
 import com.gtnewhorizon.gtnhlib.util.ObjectPooler;
 
-import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 
-public class OreInfo<TMat extends IMaterial> implements AutoCloseable {
+public class OreInfo<TMat extends IOreMaterial> implements AutoCloseable {
 
     public IOreAdapter<TMat> cachedAdapter;
     public TMat material;
@@ -16,7 +16,7 @@ public class OreInfo<TMat extends IMaterial> implements AutoCloseable {
     static final ObjectPooler<OreInfo<?>> ORE_INFO_POOL = new ObjectPooler<>(OreInfo::new);
 
     @SuppressWarnings("unchecked")
-    public static <T extends IMaterial> OreInfo<T> getNewInfo() {
+    public static <T extends IOreMaterial> OreInfo<T> getNewInfo() {
         synchronized (ORE_INFO_POOL) {
             return (OreInfo<T>) ORE_INFO_POOL.getInstance();
         }

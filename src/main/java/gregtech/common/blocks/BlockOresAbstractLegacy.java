@@ -12,11 +12,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.items.GTGenericBlock;
 
-public abstract class BlockOresAbstractOld extends GTGenericBlock implements ITileEntityProvider {
+/**
+ * The legacy ores. Must still be registered so that postea can transform them into the new ore blocks.
+ */
+public abstract class BlockOresAbstractLegacy extends GTGenericBlock implements ITileEntityProvider {
 
-    protected BlockOresAbstractOld(String aUnlocalizedName, int aOreMetaCount, boolean aHideFirstMeta,
+    protected BlockOresAbstractLegacy(String aUnlocalizedName, int aOreMetaCount, boolean aHideFirstMeta,
         Material aMaterial) {
-        super(ItemOresOld.class, aUnlocalizedName, aMaterial);
+        super(ItemOresLegacy.class, aUnlocalizedName, aMaterial);
         this.isBlockContainer = true;
     }
 

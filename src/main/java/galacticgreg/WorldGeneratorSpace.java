@@ -26,7 +26,7 @@ import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.dynconfig.DynamicDimensionConfig;
 import galacticgreg.dynconfig.DynamicDimensionConfig.AsteroidConfig;
 import gregtech.GTMod;
-import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.MurmurHash;
 import gregtech.api.objects.XSTR;
@@ -449,7 +449,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
     private static boolean generateOreBlock(AsteroidConfig asteroidConfig, Random rng, World pWorld, int pX, int pY,
         int pZ, IStoneType stoneType, IWorldgenLayer oreLayer, float control, float dist) {
         if (rng.nextFloat() <= oreLayer.getDensity() * asteroidConfig.OreDensityMultiplier) {
-            IMaterial mat = oreLayer.getOre(control);
+            IOreMaterial mat = oreLayer.getOre(control);
 
             if (mat != null) {
                 return OreManager.setOreForWorldGen(pWorld, pX, pY, pZ, stoneType, mat, false);
@@ -462,7 +462,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
     private static boolean generateSmallOreBlock(AsteroidConfig asteroidConfig, Random rng, World pWorld, int pX,
         int pY, int pZ, IStoneType stoneType, IWorldgenLayer oreLayer, float control) {
         if (rng.nextInt(100) < asteroidConfig.SmallOreChance) {
-            IMaterial mat = oreLayer.getOre(control);
+            IOreMaterial mat = oreLayer.getOre(control);
 
             if (mat != null) {
                 return OreManager.setOreForWorldGen(pWorld, pX, pY, pZ, stoneType, mat, true);

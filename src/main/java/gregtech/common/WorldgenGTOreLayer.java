@@ -14,7 +14,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 
 import gregtech.api.enums.StoneType;
 import gregtech.api.events.GTEventBus;
-import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
@@ -30,10 +30,10 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
     public final short mWeight;
     public final short mDensity;
     public final short mSize;
-    public final IMaterial mPrimary;
-    public final IMaterial mSecondary;
-    public final IMaterial mBetween;
-    public final IMaterial mSporadic;
+    public final IOreMaterial mPrimary;
+    public final IOreMaterial mSecondary;
+    public final IOreMaterial mBetween;
+    public final IOreMaterial mSporadic;
     public final String mRestrictBiome;
     /** {full dim name} */
     private final Set<String> mAllowedDimensions;
@@ -97,12 +97,12 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
     }
 
     @Override
-    public boolean contains(IMaterial material) {
+    public boolean contains(IOreMaterial material) {
         return mPrimary == material || mBetween == material || mSecondary == material || mSporadic == material;
     }
 
     @Override
-    public IMaterial getOre(float k) {
+    public IOreMaterial getOre(float k) {
         if (k < 1.0 / 7.0) {
             return mSporadic;
         }

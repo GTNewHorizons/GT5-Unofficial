@@ -21,7 +21,7 @@ import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.api.enums.DimensionDef.DimNames;
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.util.GTUtility;
 import gregtech.common.WorldgenGTOreLayer;
 import gregtech.common.WorldgenGTOreSmallPieces;
@@ -55,8 +55,8 @@ public class VoidMinerUtility {
          * @param weight   the non normalised weight
          * @param isBWOres true for BW ores, false for GT ores
          */
-        public void addDrop(IMaterial material, float weight) {
-            try (OreInfo<IMaterial> info = OreInfo.getNewInfo()) {
+        public void addDrop(IOreMaterial material, float weight) {
+            try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
                 info.material = material;
 
                 ItemStack stack = OreManager.getStack(info, 1);
@@ -181,7 +181,7 @@ public class VoidMinerUtility {
      * @param material the material with an ore version
      * @param weight   the non normalised version of the given weight
      */
-    public static void addMaterialToDimensionList(String dimName, IMaterial material, float weight) {
+    public static void addMaterialToDimensionList(String dimName, IOreMaterial material, float weight) {
         DropMap map = dropMapsByDimName.computeIfAbsent(dimName, ignored -> new DropMap());
 
         map.addDrop(material, weight);

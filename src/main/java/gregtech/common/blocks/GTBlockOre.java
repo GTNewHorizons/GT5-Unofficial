@@ -44,12 +44,12 @@ import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.nei.NEIGTConfig;
 
-public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextures {
+public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
 
     public final List<StoneType> stoneTypes;
 
-    public BlockOresAbstract(int series, StoneType[] stoneTypes) {
-        super(ItemOres.class, "gt.blockores" + series, Material.rock);
+    public GTBlockOre(int series, StoneType[] stoneTypes) {
+        super(GTItemOre.class, "gt.blockores" + series, Material.rock);
         setStepSound(soundTypeStone);
         setCreativeTab(GregTechAPI.TAB_GREGTECH_ORES);
 

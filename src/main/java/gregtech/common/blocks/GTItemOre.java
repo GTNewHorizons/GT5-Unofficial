@@ -13,17 +13,17 @@ import org.apache.commons.lang3.StringUtils;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 
-public class ItemOres extends ItemBlock {
+public class GTItemOre extends ItemBlock {
 
-    public final BlockOresAbstract blockOre;
+    public final GTBlockOre blockOre;
 
-    public ItemOres(Block block) {
+    public GTItemOre(Block block) {
         super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
         setCreativeTab(GregTechAPI.TAB_GREGTECH_MATERIALS);
 
-        blockOre = (BlockOresAbstract) block;
+        blockOre = (GTBlockOre) block;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ItemOres extends ItemBlock {
         boolean small = blockOre.isSmallOre(metadata);
 
         return this.field_150939_a.getUnlocalizedName() + "."
-            + (matId + (small ? BlockOresAbstract.SMALL_ORE_META_OFFSET : 0));
+            + (matId + (small ? GTBlockOre.SMALL_ORE_META_OFFSET : 0));
     }
 
     @Override

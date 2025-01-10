@@ -15,7 +15,7 @@ import net.minecraftforge.fluids.IFluidBlock;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.objects.ItemData;
@@ -63,7 +63,7 @@ public class BehaviourProspecting extends BehaviourNone {
 
         int aMeta = aWorld.getBlockMetadata(aX, aY, aZ);
 
-        IMaterial mat = OreManager.getMaterial(aBlock, aMeta);
+        IOreMaterial mat = OreManager.getMaterial(aBlock, aMeta);
         if (mat != null) {
             GTUtility.sendChatToPlayer(
                 aPlayer,

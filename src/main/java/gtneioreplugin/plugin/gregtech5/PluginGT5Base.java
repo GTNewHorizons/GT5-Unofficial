@@ -4,17 +4,17 @@ import net.minecraft.client.resources.I18n;
 
 import codechicken.lib.gui.GuiDraw;
 import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
 import gtneioreplugin.plugin.PluginBase;
 
 public abstract class PluginGT5Base extends PluginBase {
 
-    protected String getGTOreLocalizedName(IMaterial ore, boolean small) {
+    protected String getGTOreLocalizedName(IOreMaterial ore, boolean small) {
         if (ore == Materials.DraconiumAwakened) return "Aw. Draconium Ore";
 
-        try (OreInfo<IMaterial> info = OreInfo.getNewInfo()) {
+        try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
             info.material = ore;
             info.isSmall = small;
 

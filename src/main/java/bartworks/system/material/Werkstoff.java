@@ -55,7 +55,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IColorModulationContainer;
-import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTLanguageManager;
@@ -64,7 +64,7 @@ import it.unimi.dsi.fastutil.shorts.Short2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
 import thaumcraft.api.aspects.Aspect;
 
-public class Werkstoff implements IColorModulationContainer, ISubTagContainer, IMaterial {
+public class Werkstoff implements IColorModulationContainer, ISubTagContainer, IOreMaterial {
 
     public static final LinkedHashSet<Werkstoff> werkstoffHashSet = new LinkedHashSet<>();
     public static final Short2ObjectMap<Werkstoff> werkstoffHashMap = new Short2ObjectLinkedOpenHashMap<>();

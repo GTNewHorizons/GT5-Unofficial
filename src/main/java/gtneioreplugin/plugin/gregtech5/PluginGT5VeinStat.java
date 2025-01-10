@@ -14,7 +14,7 @@ import com.google.common.collect.ImmutableList;
 import codechicken.nei.PositionedStack;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.OrePrefixes.ParsedOreDictName;
-import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.OreManager;
 import gtneioreplugin.plugin.item.ItemDimensionDisplay;
@@ -64,7 +64,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
 
     @Override
     public void loadCraftingRecipes(ItemStack stack) {
-        IMaterial mat = OreManager.getMaterial(stack);
+        IOreMaterial mat = OreManager.getMaterial(stack);
 
         if (mat != null) {
             loadMatchingVeins(mat);
@@ -77,7 +77,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         for (ParsedOreDictName oredict : OrePrefixes.detectPrefix(stack)) {
             if (!PREFIX_WHITELIST.contains(oredict.prefix)) continue;
 
-            mat = IMaterial.findMaterial(oredict.material);
+            mat = IOreMaterial.findMaterial(oredict.material);
 
             if (mat != null) {
                 isMatItem |= loadMatchingVeins(mat);
@@ -89,7 +89,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         super.loadCraftingRecipes(stack);
     }
 
-    private boolean loadMatchingVeins(IMaterial ore) {
+    private boolean loadMatchingVeins(IOreMaterial ore) {
         boolean foundAny = false;
 
         for (OreLayerWrapper oreVein : getAllVeins()) {

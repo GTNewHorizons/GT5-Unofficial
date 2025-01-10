@@ -22,7 +22,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
@@ -38,7 +38,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.tinkers.material.BaseTinkersMaterial;
 
-public class Material implements IMaterial {
+public class Material implements IOreMaterial {
 
     public static final Set<Material> mMaterialMap = new HashSet<>();
     public static HashMap<String, Material> mMaterialCache = new HashMap<>();

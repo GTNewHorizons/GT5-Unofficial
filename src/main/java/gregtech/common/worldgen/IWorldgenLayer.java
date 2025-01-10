@@ -1,6 +1,6 @@
 package gregtech.common.worldgen;
 
-import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
 
 /** A worldgen layer that generates ore. */
@@ -29,7 +29,7 @@ public interface IWorldgenLayer {
     boolean generatesBigOre();
 
     /** Checks if this layer contains this material */
-    boolean contains(IMaterial ore);
+    boolean contains(IOreMaterial ore);
 
     /**
      * Selects an ore for worldgen.
@@ -37,7 +37,7 @@ public interface IWorldgenLayer {
      * @param k The weight, 0-1.
      * @return The ore.
      */
-    IMaterial getOre(float k);
+    IOreMaterial getOre(float k);
 
     String getName();
 }

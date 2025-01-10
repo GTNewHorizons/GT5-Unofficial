@@ -12,7 +12,7 @@ import gtPlusPlus.core.material.Material;
  * Once the new material system is finished, this should be removed and all the code referencing this should be migrated
  * to the new system.
  */
-public interface IMaterial {
+public interface IOreMaterial {
 
     String getLocalizedName();
 
@@ -26,12 +26,12 @@ public interface IMaterial {
 
     List<IStoneType> getValidStones();
 
-    public static IMaterial findMaterial(String name) {
+    public static IOreMaterial findMaterial(String name) {
         Werkstoff bw = Werkstoff.werkstoffVarNameHashMap.get(name);
 
         if (bw != null) return bw;
 
-        IMaterial gtpp = Material.mMaterialsByName.get(name);
+        IOreMaterial gtpp = Material.mMaterialsByName.get(name);
 
         if (gtpp != null) return gtpp;
 

@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import com.google.common.collect.ImmutableMap;
 
 import gregtech.api.enums.OreMixes;
-import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.common.OreMixBuilder;
 import gregtech.common.ores.OreInfo;
@@ -70,17 +70,17 @@ public class GT5OreLayerHelper {
     public static class OreLayerWrapper {
 
         public final String veinName, worldGenHeightRange, localizedName;
-        public final IMaterial[] ores = new IMaterial[4];
+        public final IOreMaterial[] ores = new IOreMaterial[4];
         public final short randomWeight, size, density;
         /** {full dim name} */
         public final Set<String> allowedDimWithOrigNames;
         /** {abbr dim name} */
         public final Set<String> abbrDimNames;
 
-        public final IMaterial mPrimaryVeinMaterial;
-        public final IMaterial mSecondaryMaterial;
-        public final IMaterial mBetweenMaterial;
-        public final IMaterial mSporadicMaterial;
+        public final IOreMaterial mPrimaryVeinMaterial;
+        public final IOreMaterial mSecondaryMaterial;
+        public final IOreMaterial mBetweenMaterial;
+        public final IOreMaterial mSporadicMaterial;
 
         public OreLayerWrapper(OreMixBuilder mix) {
             this.veinName = mix.oreMixName;
@@ -117,7 +117,7 @@ public class GT5OreLayerHelper {
         }
 
         public ItemStack getLayerOre(int veinLayer, IStoneType stoneType) {
-            try (OreInfo<IMaterial> info = OreInfo.getNewInfo()) {
+            try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
                 info.material = ores[veinLayer];
                 info.stoneType = stoneType;
 
@@ -127,7 +127,7 @@ public class GT5OreLayerHelper {
             }
         }
 
-        public boolean containsOre(IMaterial material) {
+        public boolean containsOre(IOreMaterial material) {
             return ores[OreVeinLayer.VEIN_PRIMARY] == material || ores[OreVeinLayer.VEIN_SECONDARY] == material
                 || ores[OreVeinLayer.VEIN_BETWEEN] == material
                 || ores[OreVeinLayer.VEIN_SPORADIC] == material;

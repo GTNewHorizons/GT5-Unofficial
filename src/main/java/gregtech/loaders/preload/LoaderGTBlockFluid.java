@@ -73,7 +73,7 @@ import gregtech.common.blocks.BlockGranites;
 import gregtech.common.blocks.BlockLaser;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.BlockMetal;
-import gregtech.common.blocks.BlockOresOld;
+import gregtech.common.blocks.BlockOresLegacy;
 import gregtech.common.blocks.BlockReinforced;
 import gregtech.common.blocks.BlockStones;
 import gregtech.common.blocks.BlockTintedIndustrialGlass;
@@ -549,7 +549,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockLongDistancePipes = new BlockLongDistancePipe();
         GregTechAPI.sBlockConcretes = new BlockConcretes();
         GregTechAPI.sBlockStones = new BlockStones();
-        GregTechAPI.sBlockOres1 = new BlockOresOld();
+        GregTechAPI.sBlockOres1 = new BlockOresLegacy();
         GregTechAPI.sBlockFrames = new BlockFrameBox();
         GregTechAPI.sDroneRender = new BlockDrone();
         GregTechAPI.sBlockGlass1 = new BlockGlass1();

@@ -7,7 +7,7 @@ import java.util.Set;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.StoneCategory;
-import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
 
 public class OreMixBuilder {
@@ -17,7 +17,7 @@ public class OreMixBuilder {
     /** {full dim name} */
     public Set<String> dimsEnabled = new HashSet<>();
     public int minY, maxY, weight, density, size;
-    public IMaterial primary, secondary, between, sporadic, representative;
+    public IOreMaterial primary, secondary, between, sporadic, representative;
     public String localizedName;
     public Set<IStoneCategory> stoneCategories = new HashSet<>(Arrays.asList(StoneCategory.Stone));
     public boolean defaultStoneCategories = true;
@@ -67,7 +67,7 @@ public class OreMixBuilder {
         return this;
     }
 
-    public OreMixBuilder primary(IMaterial primary) {
+    public OreMixBuilder primary(IOreMaterial primary) {
         this.primary = primary;
         if (representative == null || localizedName == null) {
             representative = primary;
@@ -76,17 +76,17 @@ public class OreMixBuilder {
         return this;
     }
 
-    public OreMixBuilder secondary(IMaterial secondary) {
+    public OreMixBuilder secondary(IOreMaterial secondary) {
         this.secondary = secondary;
         return this;
     }
 
-    public OreMixBuilder inBetween(IMaterial between) {
+    public OreMixBuilder inBetween(IOreMaterial between) {
         this.between = between;
         return this;
     }
 
-    public OreMixBuilder sporadic(IMaterial sporadic) {
+    public OreMixBuilder sporadic(IOreMaterial sporadic) {
         this.sporadic = sporadic;
         return this;
     }

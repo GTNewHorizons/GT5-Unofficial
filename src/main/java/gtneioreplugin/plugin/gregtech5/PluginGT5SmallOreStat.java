@@ -10,7 +10,7 @@ import codechicken.nei.PositionedStack;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.OrePrefixes.ParsedOreDictName;
 import gregtech.api.enums.StoneType;
-import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.common.ores.IOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
@@ -63,7 +63,7 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
 
     @Override
     public void loadCraftingRecipes(ItemStack stack) {
-        IMaterial mat = OreManager.getMaterial(stack);
+        IOreMaterial mat = OreManager.getMaterial(stack);
 
         if (mat == null) {
             mat = GT5OreSmallHelper.ORE_DROP_TO_MAT.get(stack.getUnlocalizedName());
@@ -79,7 +79,7 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
         for (ParsedOreDictName oredict : OrePrefixes.detectPrefix(stack)) {
             if (!PluginGT5VeinStat.PREFIX_WHITELIST.contains(oredict.prefix)) continue;
 
-            mat = IMaterial.findMaterial(oredict.material);
+            mat = IOreMaterial.findMaterial(oredict.material);
 
             if (mat != null) {
                 isMatItem |= loadSmallOre(mat);
@@ -104,7 +104,7 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
         }
     }
 
-    private boolean loadSmallOre(IMaterial material) {
+    private boolean loadSmallOre(IOreMaterial material) {
         OreSmallWrapper smallOre = GT5OreSmallHelper.SMALL_ORES_BY_MAT.get(material);
 
         if (smallOre != null) {
@@ -121,7 +121,7 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
         List<ItemStack> ores = smallOre.getOreVariants();
         List<ItemStack> dusts = new ArrayList<>();
 
-        try (OreInfo<IMaterial> info = OreInfo.getNewInfo()) {
+        try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
             info.material = smallOre.material;
             info.isSmall = true;
 
