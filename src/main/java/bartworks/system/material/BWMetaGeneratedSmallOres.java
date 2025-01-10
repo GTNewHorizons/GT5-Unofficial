@@ -23,7 +23,6 @@ import net.minecraft.world.World;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTModHandler;
 
 public class BWMetaGeneratedSmallOres extends BWMetaGeneratedOres {
 
@@ -35,12 +34,7 @@ public class BWMetaGeneratedSmallOres extends BWMetaGeneratedOres {
     }
 
     @Override
-    protected void doRegistrationStuff(Werkstoff w) {
-        if (w != null) {
-            if (!w.hasItemType(OrePrefixes.ore) || (w.getGenerationFeatures().blacklist & 0b1000) != 0) return;
-            GTModHandler.addValuableOre(this, w.getmID(), 1);
-        }
-    }
+    protected void doRegistrationStuff(Werkstoff w) {}
 
     @Override
     public String getUnlocalizedName() {
