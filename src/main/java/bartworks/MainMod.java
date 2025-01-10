@@ -71,7 +71,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderQFTNoCatalysts;
 import tectech.loader.recipe.Godforge;
 
 @Mod(
@@ -211,7 +210,6 @@ public final class MainMod {
 
         // because the above code runs so late that I couldn't find anywhere else to call this
         if (!recipesAdded) Godforge.initMoltenModuleRecipes();
-        if (!recipesAdded) RecipeLoaderQFTNoCatalysts.generate();
 
         recipesAdded = true;
     }

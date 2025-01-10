@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.init.Blocks;
@@ -1236,5 +1237,28 @@ public final class RecipeMaps {
                     b.copy()
                         .duration(1 * TICK)
                         .eut(TierEU.RECIPE_UEV))));
+        RecipeMaps.pcbFactoryRecipes.addDownstream(IRecipeMap.newRecipeMap(b -> {
+            b = b.copy();
+            List<ItemStack> itemInputs = new ArrayList<>();
+
+            Materials naniteMaterial = null;
+            for (int i = 0; i < b.getItemInputsBasic().length; i++) {
+                ItemStack stack = b.getItemInputBasic(i);
+                if (stack == null) continue;
+                ItemData data = GTOreDictUnificator.getAssociation(stack);
+                if (data != null && data.mPrefix != null && data.mPrefix.equals(OrePrefixes.nanite)) {
+                    naniteMaterial = data.mMaterial.mMaterial;
+                    continue;
+                }
+                itemInputs.add(stack);
+            }
+
+            if (naniteMaterial != null) {
+                b.metadata(GTRecipeConstants.PCB_NANITE_MATERIAL, naniteMaterial);
+            }
+            return RecipeMaps.pcbFactoryRecipesNoNanites.doAdd(
+                b.itemInputs(itemInputs.toArray(new ItemStack[0]))
+                    .hidden());
+        }));
     }
 }

@@ -4,7 +4,6 @@ import gregtech.api.enums.Materials;
 import gregtech.loaders.postload.chains.BauxiteRefineChain;
 import gregtech.loaders.postload.chains.NaniteChain;
 import gregtech.loaders.postload.chains.PCBFactoryRecipes;
-import gregtech.loaders.postload.chains.PCBFactoryRecipesNoNanites;
 import gregtech.loaders.postload.chains.PurifiedWaterRecipes;
 import gregtech.loaders.postload.recipes.AlloySmelterRecipes;
 import gregtech.loaders.postload.recipes.ArcFurnaceRecipes;
@@ -122,7 +121,6 @@ public class MachineRecipeLoader implements Runnable {
         BauxiteRefineChain.run();
         NaniteChain.run();
         PCBFactoryRecipes.load();
-        PCBFactoryRecipesNoNanites.load();
         PurifiedWaterRecipes.run();
     }
 }

@@ -1,15 +1,20 @@
 package gtPlusPlus.api.recipe;
 
 import static gregtech.api.util.GTRecipeConstants.LFTR_OUTPUT_POWER;
+import static gregtech.api.util.GTRecipeConstants.QFT_CATALYST_META;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
@@ -59,7 +64,7 @@ public class GTPPRecipeMaps {
     public static final RecipeMap<RecipeMapBackend> quantumForceTransformerRecipesNoCatalysts = RecipeMapBuilder
         .of("gtpp.recipe.quantumforcesmelternocatalysts")
         .maxIO(6, 6, 6, 6)
-        .minInputs(1, 0)
+        .minInputs(0, 0)
         .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> chemicalDehydratorRecipes = RecipeMapBuilder
@@ -249,4 +254,29 @@ public class GTPPRecipeMaps {
         .maxIO(2, 1, 0, 0)
         .disableRegisterNEI()
         .build();
+
+    static {
+        GTPPRecipeMaps.quantumForceTransformerRecipes.addDownstream(IRecipeMap.newRecipeMap(b -> {
+            b = b.copy();
+            List<ItemStack> itemInputs = new ArrayList<>();
+
+            int meta = -1;
+            for (int i = 0; i < b.getItemInputsBasic().length; i++) {
+                ItemStack stack = b.getItemInputBasic(i);
+                if (stack == null) continue;
+                if (ItemUtils.isCatalyst(stack)) {
+                    meta = stack.getItemDamage();
+                    continue;
+                }
+                itemInputs.add(stack);
+            }
+
+            if (meta != -1) {
+                b.metadata(QFT_CATALYST_META, meta);
+            }
+            return GTPPRecipeMaps.quantumForceTransformerRecipesNoCatalysts.doAdd(
+                b.itemInputs(itemInputs.toArray(new ItemStack[0]))
+                    .hidden());
+        }));
+    }
 }
