@@ -48,7 +48,7 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
      * leave a comment mentioning the old ID, so that we don't re-use it for a new fluid.
      */
     public enum FluidCell {
-        // Next unused ID: 32
+        // Next unused ID: 36
 
         // GregTech
         DRILLING_FLUID(5, "liquid_drillingfluid", CellType.REGULAR),
@@ -62,16 +62,20 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
         // New Horizons Core Mod
         UNKNOWN_NUTRIENT_AGAR(7, "unknownnutrientagar", CellType.REGULAR),
         SEAWEED_BROTH(8, "seaweedbroth", CellType.REGULAR),
+        GELATIN_MIXTURE(32, "gelatinmixture", CellType.REGULAR),
+        MEAT_EXTRACT(33, "meatextract", CellType.REGULAR),
         SUPER_HEAVY_RADOX(28, "superheavyradox", CellType.REGULAR),
         HEAVY_RADOX(29, "heavyradox", CellType.REGULAR),
         CRACKED_RADOX(30, "crackedradox", CellType.REGULAR),
         LIGHT_RADOX(31, "lightradox", CellType.REGULAR),
         SUPER_LIGHT_RADOX(9, "superlightradox", CellType.REGULAR),
+        RADOX_GAS(34, "radoxgas", CellType.REGULAR),
         SODIUM_POTASSIUM(18, "sodiumpotassium", CellType.REGULAR),
         ENRICHED_BACTERIAL_SLUDGE(19, "enrichedbacterialsludge", CellType.REGULAR),
         FERMENTED_BACTERIAL_SLUDGE(20, "fermentedbacterialsludge", CellType.REGULAR),
         POLLUTION(21, "pollution", CellType.REGULAR),
         XENOXENE(27, "xenoxene", CellType.REGULAR),
+        DILUTED_XENOXENE(35, "dilutedxenoxene", CellType.REGULAR),
 
         // BartWorks
         ENZYME_SOLUTION(10, "enzymessollution", CellType.REGULAR),
