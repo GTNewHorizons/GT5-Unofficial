@@ -13,7 +13,7 @@ kubatech.commandhandler.invalid=§cInvalid use ! The proper use of this command 
 kubatech.commandhandler.cant_find=§cCan't find command option %s
 kubatech.commandhandler.generic_help=§cYou can also use "/kubatech help" to get possible commands
 kubatech.commandhandler.usage=<option>
-kubatech.command.help.possible_commands=Possible commands: 
+kubatech.command.help.possible_commands=Possible commands:
 kubatech.command.help.usage=- Shows all possible commands
 kubatech.command.config.invalid_option=§cInvalid option ! Possible options: reload
 kubatech.command.config.success=§aConfig reloaded successfully !
@@ -36,6 +36,10 @@ GT5U.gui.text.EIG_slotoverflow=Too many seed types inside!
 GT5U.gui.text.EIG_seedOverflow=Too many seeds inside!
 GT5U.gui.text.EIG_missingwater=No water!
 GT5U.gui.text.EIG_ic2glass=Insufficient glass tier!
+
+#Waila
+kubatech.waila.eec.mob_type=Mob Type: %s
+kubatech.waila.eec.no_mob=None
 
 #Blocks
 kubablock.tea_acceptor.name=§4§lTea Acceptor
