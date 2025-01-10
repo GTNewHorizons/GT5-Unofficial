@@ -589,9 +589,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials HeavyFuel;
     public static Materials LPG;
 
-    public static Materials FluidNaquadahFuel;
-    public static Materials EnrichedNaquadria;
-
     public static Materials ReinforceGlass;
     public static Materials BioMediumRaw;
     public static Materials BioMediumSterilized;

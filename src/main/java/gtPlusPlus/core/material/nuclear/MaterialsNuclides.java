@@ -267,48 +267,6 @@ public final class MaterialsNuclides {
         new MaterialStack(MaterialsFluorides.URANIUM_HEXAFLUORIDE, 1),
         new MaterialStack(MaterialsElements.getInstance().FLUORINE, 2));
 
-    // Secondary material is molten metal
-    public static final Material NAQ_FUEL_T1 = new Material(
-        "Naquadah Fuel",
-        MaterialState.PURE_LIQUID, // State
-        null, // Material Colour
-        -1, // Melting Point in C
-        -1, // Boiling Point in C
-        -1, // Protons
-        -1,
-        false, // Uses Blast furnace?
-        // Material Stacks with Percentage of required elements.
-        new MaterialStack(MaterialsElements.getInstance().NAQUADAH, 2),
-        new MaterialStack(MaterialsElements.getInstance().TANTALUM, 3));
-
-    // Secondary material is a plasma
-    public static final Material NAQ_FUEL_T2 = new Material(
-        "Enriched Naquadah Fuel",
-        MaterialState.PURE_LIQUID, // State
-        null, // Material Colour
-        -1, // Melting Point in C
-        -1, // Boiling Point in C
-        -1, // Protons
-        -1,
-        false, // Uses Blast furnace?
-        // Material Stacks with Percentage of required elements.
-        new MaterialStack(MaterialsElements.getInstance().NAQUADAH_ENRICHED, 2),
-        new MaterialStack(MaterialsElements.getInstance().TITANIUM, 3));
-
-    // Secondary material is a plasma
-    public static final Material NAQ_FUEL_T3 = new Material(
-        "Naquadria Fuel",
-        MaterialState.PURE_LIQUID, // State
-        null, // Material Colour
-        -1, // Melting Point in C
-        -1, // Boiling Point in C
-        -1, // Protons
-        -1,
-        false, // Uses Blast furnace?
-        // Material Stacks with Percentage of required elements.
-        new MaterialStack(MaterialsElements.getInstance().NAQUADRIA, 2),
-        new MaterialStack(MaterialsElements.getInstance().AMERICIUM, 3));
-
     private static final MaterialsNuclides INSTANCE = new MaterialsNuclides();
 
     public static MaterialsNuclides getInstance() {

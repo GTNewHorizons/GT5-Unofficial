@@ -86,8 +86,6 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
         if (!w.hasItemType(OrePrefixes.ore)) return;
         if ((w.getGenerationFeatures().blacklist & 0b1000) != 0) return;
 
-        GTModHandler.addValuableOre(this, w.getmID(), 1);
-
         ItemStack self = new ItemStack(this, 1, w.getmID());
         OrePrefixes prefix = isSmall ? OrePrefixes.oreSmall : OrePrefixes.ore;
 

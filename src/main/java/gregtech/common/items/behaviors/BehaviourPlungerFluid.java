@@ -21,8 +21,9 @@ import gregtech.api.util.GTUtility;
 public class BehaviourPlungerFluid extends BehaviourNone {
 
     private final int mCosts;
-    private final String mTooltip = GTLanguageManager
-        .addStringLocalization("gt.behaviour.plunger.fluid", "Clears 1000 Liters of Fluid from Tanks");
+    private final String mTooltip = GTLanguageManager.addStringLocalization(
+        "gt.behaviour.plunger.fluid",
+        "Clears 1000 Liters of Fluid from Tanks. Fully clears when sneaking.");
 
     public BehaviourPlungerFluid(int aCosts) {
         this.mCosts = aCosts;
@@ -34,13 +35,14 @@ public class BehaviourPlungerFluid extends BehaviourNone {
         if (aWorld.isRemote) {
             return false;
         }
+        int drainAmount = aPlayer.isSneaking() ? Integer.MAX_VALUE : 1000;
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if ((aTileEntity instanceof IFluidHandler)) {
             for (ForgeDirection tDirection : ForgeDirection.VALID_DIRECTIONS) {
-                if (((IFluidHandler) aTileEntity).drain(tDirection, 1000, false) != null) {
+                if (((IFluidHandler) aTileEntity).drain(tDirection, drainAmount, false) != null) {
                     if ((aPlayer.capabilities.isCreativeMode)
                         || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts))) {
-                        ((IFluidHandler) aTileEntity).drain(tDirection, 1000, true);
+                        ((IFluidHandler) aTileEntity).drain(tDirection, drainAmount, true);
                         GTUtility.sendSoundToPlayers(
                             aWorld,
                             SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
@@ -58,7 +60,7 @@ public class BehaviourPlungerFluid extends BehaviourNone {
             IMetaTileEntity mTileEntity = tTileEntity.getMetaTileEntity();
             if (mTileEntity instanceof MTEBasicTank machine) {
                 if (machine.mFluid != null && machine.mFluid.amount > 0)
-                    machine.mFluid.amount = machine.mFluid.amount - Math.min(machine.mFluid.amount, 1000);
+                    machine.mFluid.amount = machine.mFluid.amount - Math.min(machine.mFluid.amount, drainAmount);
                 GTUtility
                     .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
                 return true;

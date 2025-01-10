@@ -146,25 +146,11 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                         new Object[] { "h", // craftingToolHardHammer
                             "X", "X", 'X', OrePrefixes.ingot.get(aMaterial) });
 
-                    // Only added if IC2 Forge Hammer is enabled in Recipes.cfg: B:ic2forgehammer_true=false
-                    GTModHandler.addCraftingRecipe(
-                        aMaterial.getPlates(1),
-                        tBits, // DO_NOT_CHECK_FOR_COLLISIONS|BUFFERED|ONLY_ADD_IF_RESULT_IS_NOT_NULL|NOT_REMOVABLE
-                        new Object[] { "H", // craftingToolForgeHammer
-                            "X", 'H', ToolDictNames.craftingToolForgeHammer, 'X', OrePrefixes.ingot.get(aMaterial) });
-
                     GTModHandler.addCraftingRecipe(
                         aMaterial.getPlates(1),
                         tBits, // DO_NOT_CHECK_FOR_COLLISIONS|BUFFERED|ONLY_ADD_IF_RESULT_IS_NOT_NULL|NOT_REMOVABLE
                         new Object[] { "h", // craftingToolHardHammer
                             "X", 'X', OrePrefixes.gem.get(aMaterial) });
-
-                    // Only added if IC2 Forge Hammer is enabled in Recipes.cfg: B:ic2forgehammer_true=false
-                    GTModHandler.addCraftingRecipe(
-                        aMaterial.getPlates(1),
-                        tBits, // DO_NOT_CHECK_FOR_COLLISIONS|BUFFERED|ONLY_ADD_IF_RESULT_IS_NOT_NULL|NOT_REMOVABLE
-                        new Object[] { "H", // craftingToolForgeHammer
-                            "X", 'H', ToolDictNames.craftingToolForgeHammer, 'X', OrePrefixes.gem.get(aMaterial) });
                 }
             }
 
@@ -276,12 +262,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
                     new Object[] { "I", "B", "h", // craftingToolHardHammer
                         'I', OrePrefixes.plateDouble.get(aMaterial), 'B', aPlateStack });
-
-                GTModHandler.addShapelessCraftingRecipe(
-                    GTUtility.copyAmount(1, aStack),
-                    DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
-                    new Object[] { gregtech.api.enums.ToolDictNames.craftingToolForgeHammer, aPlateStack, aPlateStack,
-                        aPlateStack });
             }
         }
 
@@ -334,12 +314,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
                     new Object[] { "I", "B", "h", // craftingToolHardHammer
                         'I', OrePrefixes.plateTriple.get(aMaterial), 'B', aPlateStack });
-
-                GTModHandler.addShapelessCraftingRecipe(
-                    GTUtility.copyAmount(1, aStack),
-                    DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
-                    new Object[] { gregtech.api.enums.ToolDictNames.craftingToolForgeHammer, aPlateStack, aPlateStack,
-                        aPlateStack, aPlateStack });
             }
         }
     }
@@ -380,12 +354,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
                     new Object[] { "I", "B", "h", // craftingToolHardHammer
                         'I', OrePrefixes.plateQuadruple.get(aMaterial), 'B', aPlateStack });
-
-                GTModHandler.addShapelessCraftingRecipe(
-                    GTUtility.copyAmount(1, aStack),
-                    DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
-                    new Object[] { ToolDictNames.craftingToolForgeHammer, aPlateStack, aPlateStack, aPlateStack,
-                        aPlateStack, aPlateStack });
             }
         }
     }
@@ -451,13 +419,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     GTOreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 1L),
                     tBits, // DO_NOT_CHECK_FOR_COLLISIONS|BUFFERED|ONLY_ADD_IF_RESULT_IS_NOT_NULL|NOT_REMOVABLE
                     new Object[] { "h X", 'X', OrePrefixes.plate.get(aMaterial) });
-
-                // Only added if IC2 Forge Hammer is enabled in Recipes.cfg: B:ic2forgehammer_true=false
-                GTModHandler.addCraftingRecipe(
-                    GTOreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 1L),
-                    tBits, // DO_NOT_CHECK_FOR_COLLISIONS|BUFFERED|ONLY_ADD_IF_RESULT_IS_NOT_NULL|NOT_REMOVABLE
-                    new Object[] { "H X", 'H', ToolDictNames.craftingToolForgeHammer, 'X',
-                        OrePrefixes.plate.get(aMaterial) });
             }
         }
 

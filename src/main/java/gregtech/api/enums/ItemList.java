@@ -2205,7 +2205,6 @@ public enum ItemList implements IItemContainer {
     Hull_UMV,
     Hull_UXV,
     Hull_MAXV,
-    // todo: move them from gt.blockcasingsNH in NHCore to here
     Casing_UEV,
     Casing_UIV,
     Casing_UMV,
@@ -2593,6 +2592,17 @@ public enum ItemList implements IItemContainer {
     ResearchCompleter,
     SpaceElevatorController, // Populated in GTNH-Intergalactic
     Spray_Color_Infinite,
+    Casing_AirFilter_Turbine_T1,
+    Casing_AirFilter_Vent_T1,
+    Casing_AirFilter_Turbine_T2,
+    Casing_AirFilter_Vent_T2,
+    Casing_AirFilter_Turbine_T3,
+    Casing_AirFilter_Vent_T3,
+    Casing_Pyrolyse,
+    NameRemover,
+    Machine_Multi_AirFilterT1,
+    Machine_Multi_AirFilterT2,
+    Machine_Multi_AirFilterT3,
     // semicolon after the comment to reduce merge conflicts
     ;
 

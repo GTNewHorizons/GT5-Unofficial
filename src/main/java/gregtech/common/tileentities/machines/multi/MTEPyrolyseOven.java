@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUnlocalizedName;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -11,7 +10,6 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PYROLYSE_OVEN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE_GLOW;
@@ -28,14 +26,12 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -53,37 +49,29 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
 
     private HeatingCoilLevel coilHeat;
     private static final int CASING_INDEX = 1090;
-    private static final IStructureDefinition<MTEPyrolyseOven> STRUCTURE_DEFINITION = createStructureDefinition();
-
-    private static IStructureDefinition<MTEPyrolyseOven> createStructureDefinition() {
-        IStructureElement<MTEPyrolyseOven> tCasingElement = NewHorizonsCoreMod.isModLoaded()
-            ? ofBlockUnlocalizedName(NewHorizonsCoreMod.ID, "gt.blockcasingsNH", 2)
-            : ofBlock(GregTechAPI.sBlockCasings1, 0);
-
-        return StructureDefinition.<MTEPyrolyseOven>builder()
-            .addShape(
-                "main",
-                transpose(
-                    new String[][] { { "ccccc", "ctttc", "ctttc", "ctttc", "ccccc" },
-                        { "ccccc", "c---c", "c---c", "c---c", "ccccc" },
-                        { "ccccc", "c---c", "c---c", "c---c", "ccccc" },
-                        { "bb~bb", "bCCCb", "bCCCb", "bCCCb", "bbbbb" }, }))
-            .addElement('c', onElementPass(MTEPyrolyseOven::onCasingAdded, tCasingElement))
-            .addElement('C', ofCoil(MTEPyrolyseOven::setCoilLevel, MTEPyrolyseOven::getCoilLevel))
-            .addElement(
-                'b',
-                buildHatchAdder(MTEPyrolyseOven.class).atLeast(OutputBus, OutputHatch, Energy, Maintenance)
-                    .casingIndex(CASING_INDEX)
-                    .dot(1)
-                    .buildAndChain(onElementPass(MTEPyrolyseOven::onCasingAdded, tCasingElement)))
-            .addElement(
-                't',
-                buildHatchAdder(MTEPyrolyseOven.class).atLeast(InputBus, InputHatch, Muffler)
-                    .casingIndex(CASING_INDEX)
-                    .dot(1)
-                    .buildAndChain(onElementPass(MTEPyrolyseOven::onCasingAdded, tCasingElement)))
-            .build();
-    }
+    private static final IStructureDefinition<MTEPyrolyseOven> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEPyrolyseOven>builder()
+        .addShape(
+            "main",
+            transpose(
+                new String[][] { { "ccccc", "ctttc", "ctttc", "ctttc", "ccccc" },
+                    { "ccccc", "c---c", "c---c", "c---c", "ccccc" }, { "ccccc", "c---c", "c---c", "c---c", "ccccc" },
+                    { "bb~bb", "bCCCb", "bCCCb", "bCCCb", "bbbbb" }, }))
+        .addElement('c', onElementPass(MTEPyrolyseOven::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsNH, 2)))
+        .addElement('C', ofCoil(MTEPyrolyseOven::setCoilLevel, MTEPyrolyseOven::getCoilLevel))
+        .addElement(
+            'b',
+            buildHatchAdder(MTEPyrolyseOven.class).atLeast(OutputBus, OutputHatch, Energy, Maintenance)
+                .casingIndex(CASING_INDEX)
+                .dot(1)
+                .buildAndChain(onElementPass(MTEPyrolyseOven::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsNH, 2))))
+        .addElement(
+            't',
+            buildHatchAdder(MTEPyrolyseOven.class).atLeast(InputBus, InputHatch, Muffler)
+                .casingIndex(CASING_INDEX)
+                .dot(1)
+                .buildAndChain(onElementPass(MTEPyrolyseOven::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsNH, 2))))
+        .build();
 
     private int mCasingAmount;
 
@@ -123,7 +111,7 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { BlockIcons.casingTexturePages[0][0], TextureFactory.builder()
+            if (active) return new ITexture[] { BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE)
                 .extFacing()
                 .build(),
@@ -132,7 +120,7 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { BlockIcons.casingTexturePages[0][0], TextureFactory.builder()
+            return new ITexture[] { BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN)
                 .extFacing()
                 .build(),
@@ -142,7 +130,7 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][0] };
+        return new ITexture[] { BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }
 
     @Override

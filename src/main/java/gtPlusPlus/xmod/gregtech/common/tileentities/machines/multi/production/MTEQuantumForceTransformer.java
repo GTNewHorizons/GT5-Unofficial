@@ -553,6 +553,11 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     }
                     return -1;
                 } else {
+                    for (ItemStack stack : inputItems) {
+                        if (GTUtility.isAnyIntegratedCircuit(stack)) {
+                            return stack.getItemDamage() - 1;
+                        }
+                    }
                     final ItemStack controllerStack = getControllerSlot();
                     return GTUtility.isAnyIntegratedCircuit(controllerStack) ? controllerStack.getItemDamage() - 1 : -1;
                 }

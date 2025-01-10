@@ -18,6 +18,7 @@ import gtPlusPlus.xmod.gregtech.loaders.ProcessingElectricSnips;
 import gtPlusPlus.xmod.gregtech.loaders.misc.AddCustomMachineToPA;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderMolecularTransformer;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderTreeFarm;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechAdvancedBoilers;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 
 public class HandlerGT {
@@ -56,6 +57,7 @@ public class HandlerGT {
 
         // Add recipes
         CokeAndPyrolyseOven.postInit();
+        GregtechAdvancedBoilers.addRecipes();
 
         // Register custom singles to the PA
         AddCustomMachineToPA.register();
