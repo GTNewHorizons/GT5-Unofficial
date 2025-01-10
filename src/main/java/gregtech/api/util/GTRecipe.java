@@ -938,6 +938,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
         public ItemStack mResearchItem;
         public int mResearchTime;
+        public int mResearchVoltage;
         public ItemStack[] mInputs;
         public FluidStack[] mFluidInputs;
         public ItemStack mOutput;
@@ -953,11 +954,12 @@ public class GTRecipe implements Comparable<GTRecipe> {
          * <p>
          * if you set one yourself, it will give you one of the RunetimeExceptions!
          */
-        public RecipeAssemblyLine(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs,
+        public RecipeAssemblyLine(ItemStack aResearchItem, int aResearchTime, int aResearchVoltage, ItemStack[] aInputs,
             FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
             this(
                 aResearchItem,
                 aResearchTime,
+                aResearchVoltage,
                 aInputs,
                 aFluidInputs,
                 aOutput,
@@ -972,6 +974,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
             for (FluidStack tFluidInput : aFluidInputs)
                 tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(tFluidInput, true, false);
             tPersistentHash = tPersistentHash * 31 + aResearchTime;
+            tPersistentHash = tPersistentHash * 31 + aResearchVoltage;
             tPersistentHash = tPersistentHash * 31 + aDuration;
             tPersistentHash = tPersistentHash * 31 + aEUt;
             setPersistentHash(tPersistentHash);
@@ -982,10 +985,11 @@ public class GTRecipe implements Comparable<GTRecipe> {
          * <p>
          * if you don't set one yourself, it will break a lot of stuff!
          */
-        public RecipeAssemblyLine(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs,
+        public RecipeAssemblyLine(ItemStack aResearchItem, int aResearchTime, int aResearchVoltage, ItemStack[] aInputs,
             FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt, ItemStack[][] aAlt) {
             mResearchItem = aResearchItem;
             mResearchTime = aResearchTime;
+            mResearchVoltage = aResearchVoltage;
             mInputs = aInputs;
             mFluidInputs = aFluidInputs;
             mOutput = aOutput;
@@ -1009,7 +1013,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
             GTItemStack thisOutput = new GTItemStack(mOutput);
             GTItemStack thisResearch = new GTItemStack(mResearchItem);
             int miscRecipeDataHash = Arrays.deepHashCode(
-                new Object[] { totalInputStackSize, mDuration, mEUt, thisOutput, thisResearch, mResearchTime });
+                new Object[] { totalInputStackSize, mDuration, mEUt, thisOutput, thisResearch, mResearchTime,
+                    mResearchVoltage });
             result = prime * result + inputFluidHash;
             result = prime * result + inputHash;
             result = prime * result + miscRecipeDataHash;
@@ -1062,7 +1067,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
             }
 
             return this.mDuration == other.mDuration && this.mEUt == other.mEUt
-                && this.mResearchTime == other.mResearchTime;
+                && this.mResearchTime == other.mResearchTime
+                && this.mResearchVoltage == other.mResearchVoltage;
         }
 
         public int getPersistentHash() {
