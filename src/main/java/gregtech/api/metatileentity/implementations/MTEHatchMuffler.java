@@ -26,8 +26,7 @@ public class MTEHatchMuffler extends MTEHatch {
     private static final String localizedDescFormat = GTLanguageManager.addStringLocalization(
         "gt.blockmachines.hatch.muffler.desc.format",
         "Outputs the Pollution (Might cause ... things)%n" + "DO NOT OBSTRUCT THE OUTPUT!%n"
-            + "Reduces Pollution to %d%%%n"
-            + "Recovers %d%% of CO2/CO/SO2");
+            + "Reduces Pollution to %d%%%n");
     private final int pollutionReduction = calculatePollutionReduction(100);
     private final int pollutionRecover = 100 - pollutionReduction;
     private final String[] description = String.format(localizedDescFormat, pollutionReduction, pollutionRecover)

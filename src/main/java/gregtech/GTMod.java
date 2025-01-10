@@ -18,6 +18,7 @@ import java.util.function.Predicate;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -41,6 +42,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLModIdMappingEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -48,6 +50,7 @@ import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import galacticgreg.SpaceDimRegisterer;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentEnderDamage;
@@ -114,7 +117,6 @@ import gregtech.loaders.postload.GTWorldgenloader;
 import gregtech.loaders.postload.ItemMaxStacksizeLoader;
 import gregtech.loaders.postload.MachineRecipeLoader;
 import gregtech.loaders.postload.MachineTooltipsLoader;
-import gregtech.loaders.postload.MinableRegistrator;
 import gregtech.loaders.postload.PosteaTransformers;
 import gregtech.loaders.postload.RecyclerBlacklistLoader;
 import gregtech.loaders.postload.ScrapboxDropLoader;
@@ -426,7 +428,6 @@ public class GTMod implements IGTMod {
         new ItemMaxStacksizeLoader().run();
         new BlockResistanceLoader().run();
         new RecyclerBlacklistLoader().run();
-        new MinableRegistrator().run();
         new FakeRecipeLoader().run();
         new MachineRecipeLoader().run();
         new ScrapboxDropLoader().run();
@@ -826,6 +827,21 @@ public class GTMod implements IGTMod {
         }
         // Interrupt IDLE Threads to close down cleanly
         RunnableMachineUpdate.shutdownExecutorService();
+    }
+
+    @Mod.EventHandler
+    public void onMissingMappings(FMLMissingMappingsEvent event) {
+        for (FMLMissingMappingsEvent.MissingMapping mapping : event.getAll()) {
+            if (mapping.type == GameRegistry.Type.BLOCK) {
+                if ("dreamcraft:gt.blockcasingsNH".equals(mapping.name)) {
+                    mapping.remap(GregTechAPI.sBlockCasingsNH);
+                }
+            } else if (mapping.type == GameRegistry.Type.ITEM) {
+                if ("dreamcraft:gt.blockcasingsNH".equals(mapping.name)) {
+                    mapping.remap(Item.getItemFromBlock(GregTechAPI.sBlockCasingsNH));
+                }
+            }
+        }
     }
 
     public static void logStackTrace(Throwable t) {

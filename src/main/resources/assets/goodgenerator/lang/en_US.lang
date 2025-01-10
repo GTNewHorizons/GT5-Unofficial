@@ -361,7 +361,7 @@ gui.AntimatterForge.2=Active Consumption
 gui.AntimatterForge.3=Antimatter Change
 gui.AntimatterGenerator.0=EU Produced
 gui.AntimatterGenerator.1=Efficiency
-gt.blockmachines.LargeFusionComputerPP.cfgi.0=Batch Size
+batch_mode.cfgi.0=Batch Size
 gt.blockmachines.YottaFluidTank.cfgi.0=Tick rate (Update I/O every x ticks)
 
 # RecipeMaps

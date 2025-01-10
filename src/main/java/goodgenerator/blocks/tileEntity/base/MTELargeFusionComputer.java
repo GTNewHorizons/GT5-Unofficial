@@ -6,12 +6,14 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.List;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -65,13 +67,26 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
+import tectech.thing.metaTileEntity.multi.base.INameFunction;
+import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
+import tectech.thing.metaTileEntity.multi.base.LedStatus;
+import tectech.thing.metaTileEntity.multi.base.Parameters;
 
 public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     implements IConstructable, ISurvivalConstructable, IOverclockDescriptionProvider {
 
+    public Parameters.Group.ParameterIn batchSetting;
+
+    /** Name of the batch setting */
+    public static final INameFunction<MTELargeFusionComputer> BATCH_SETTING_NAME = (base,
+        p) -> translateToLocal("batch_mode.cfgi.0"); // Batch size
+    /** Status of the batch setting */
+    public static final IStatusFunction<MTELargeFusionComputer> BATCH_STATUS = (base, p) -> LedStatus
+        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 32, 128);
+
     public static final String MAIN_NAME = "largeFusion";
     public static final int M = 1_000_000;
-    public GTRecipe mLastRecipe;
+    public GTRecipe lastRecipe;
     public int para;
     protected OverclockDescriber overclockDescriber;
     private static final ClassValue<IStructureDefinition<MTELargeFusionComputer>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -219,6 +234,19 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        if (getMaxBatchSize() == 1) {
+            parametrization.trySetParameters(batchSetting.hatchId(), batchSetting.parameterId(), 128);
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+        } else {
+            parametrization.trySetParameters(batchSetting.hatchId(), batchSetting.parameterId(), 1);
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        }
+        return true;
+    }
+
+    @Override
     public void construct(ItemStack itemStack, boolean b) {
         structureBuild_EM(MAIN_NAME, 23, 3, 40, itemStack, b);
     }
@@ -294,14 +322,13 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                             turnCasingActive(mMaxProgresstime > 0);
                             if (aBaseMetaTileEntity.isAllowedToWork()) {
                                 if (checkRecipe()) {
-                                    if (aBaseMetaTileEntity.getStoredEU()
-                                        < this.mLastRecipe.mSpecialValue + this.lEUt) {
+                                    if (aBaseMetaTileEntity.getStoredEU() < this.lastRecipe.mSpecialValue + this.lEUt) {
                                         mMaxProgresstime = 0;
                                         turnCasingActive(false);
                                         stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                                     }
                                     getBaseMetaTileEntity()
-                                        .decreaseStoredEnergyUnits(this.mLastRecipe.mSpecialValue + this.lEUt, false);
+                                        .decreaseStoredEnergyUnits(this.lastRecipe.mSpecialValue + this.lEUt, false);
                                 }
                             }
                             if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
@@ -309,7 +336,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                     }
                 } else if (aBaseMetaTileEntity.isAllowedToWork()) {
                     turnCasingActive(false);
-                    this.mLastRecipe = null;
+                    this.lastRecipe = null;
                     stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
                 }
             }
@@ -430,9 +457,9 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                 if (mRunningOnLoad) mRunningOnLoad = false;
                 turnCasingActive(result.wasSuccessful());
                 if (result.wasSuccessful()) {
-                    mLastRecipe = lastRecipe;
+                    MTELargeFusionComputer.this.lastRecipe = lastRecipe;
                 } else {
-                    mLastRecipe = null;
+                    MTELargeFusionComputer.this.lastRecipe = null;
                 }
                 para = getCurrentParallels();
                 return result;
@@ -594,6 +621,28 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
             .widget(new FakeSyncWidget.LongSyncer(this::getEUVar, this::setEUVar));
+    }
+
+    @Override
+    protected void parametersInstantiation_EM() {
+        batchSetting = parametrization.getGroup(9, false)
+            .makeInParameter(1, 1, BATCH_SETTING_NAME, BATCH_STATUS);
+    }
+
+    @Override
+    protected int getMaxBatchSize() {
+        // Batch size 1~128
+        return (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Override
+    public boolean getDefaultBatchMode() {
+        return true;
     }
 
     @Override

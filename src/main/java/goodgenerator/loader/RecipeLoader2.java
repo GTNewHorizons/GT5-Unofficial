@@ -34,7 +34,6 @@ import static gregtech.api.util.GTRecipeConstants.PRECISE_ASSEMBLER_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_TIME;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-import static tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -1388,7 +1387,7 @@ public class RecipeLoader2 {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    getItemContainer("Casing_UEV").get(3),
+                    ItemList.Casing_UEV.get(3),
                     ItemList.Field_Generator_UV.get(2),
                     GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.NetherStar, 8),
                     ItemRefer.HiC_T4.get(1),
