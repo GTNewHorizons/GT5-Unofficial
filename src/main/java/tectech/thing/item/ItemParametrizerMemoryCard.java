@@ -200,6 +200,27 @@ public final class ItemParametrizerMemoryCard extends Item {
                 "Value 1B: " + EnumChatFormatting.AQUA
                     + TTUtility.longBitsToShortString(Double.doubleToLongBits(temp)));
             aList.add("Value 1s: " + EnumChatFormatting.AQUA + tNBT.getString("value1s"));
+        } else if (tNBT != null && tNBT.hasKey("paramList", Constants.NBT.TAG_LIST)) {
+            NBTTagList tagList = tNBT.getTagList("paramList", Constants.NBT.TAG_COMPOUND);
+            for (int hatch = 0; hatch < 10; hatch++) {
+                NBTTagCompound tag = tagList.getCompoundTagAt(hatch);
+                if (tag.hasKey("value0D", Constants.NBT.TAG_DOUBLE)
+                    || tag.hasKey("value1D", Constants.NBT.TAG_DOUBLE)) {
+                    double zeroD = tag.getDouble("value0D");
+                    double oneD = tag.getDouble("value1D");
+                    aList.add(
+                        "Hatch ID: " + EnumChatFormatting.AQUA
+                            + hatch
+                            + EnumChatFormatting.GRAY
+                            + " - Value 0D: "
+                            + EnumChatFormatting.AQUA
+                            + zeroD
+                            + EnumChatFormatting.GRAY
+                            + ", Value 1D: "
+                            + EnumChatFormatting.AQUA
+                            + oneD);
+                }
+            }
         }
     }
 
