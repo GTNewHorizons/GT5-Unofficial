@@ -117,7 +117,6 @@ import gregtech.loaders.postload.GTWorldgenloader;
 import gregtech.loaders.postload.ItemMaxStacksizeLoader;
 import gregtech.loaders.postload.MachineRecipeLoader;
 import gregtech.loaders.postload.MachineTooltipsLoader;
-import gregtech.loaders.postload.MinableRegistrator;
 import gregtech.loaders.postload.PosteaTransformers;
 import gregtech.loaders.postload.RecyclerBlacklistLoader;
 import gregtech.loaders.postload.ScrapboxDropLoader;
@@ -429,7 +428,6 @@ public class GTMod implements IGTMod {
         new ItemMaxStacksizeLoader().run();
         new BlockResistanceLoader().run();
         new RecyclerBlacklistLoader().run();
-        new MinableRegistrator().run();
         new FakeRecipeLoader().run();
         new MachineRecipeLoader().run();
         new ScrapboxDropLoader().run();
