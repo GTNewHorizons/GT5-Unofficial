@@ -7,6 +7,7 @@ import static gregtech.api.enums.Mods.RemoteIO;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
+import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -1461,15 +1462,15 @@ public class RecipesMachines {
 
         // Industrial Wire Factory
         RecipeUtils.addShapedGregtechRecipe(
-            "plateZeron100",
-            CI.machineCasing_IV,
-            "plateZeron100",
-            CI.circuitTier5,
-            IV_MACHINE_Wiremill,
-            CI.circuitTier5,
-            "plateZeron100",
-            CI.machineCasing_IV,
-            "plateZeron100",
+            "plateBlueSteel",
+            ItemList.Casing_IV.get(1L),
+            "plateBlueSteel",
+            "circuitElite",
+            ItemList.Machine_IV_Wiremill.get(1L),
+            "circuitElite",
+            "plateBlueSteel",
+            ItemList.Casing_IV.get(1L),
+            "plateBlueSteel",
             RECIPE_IndustrialWireFactoryController);
 
         // Tiered Tanks
@@ -2130,27 +2131,15 @@ public class RecipesMachines {
         ItemStack centrifugeEV = ItemList.Machine_EV_Centrifuge.get(1);
 
         RecipeUtils.addShapedGregtechRecipe(
-            "craftingGeothermalGenerator",
-            centrifugeEV,
-            "craftingGeothermalGenerator",
-            "gearGtTitanium",
-            CI.getTieredCircuitOreDictName(6),
-            "gearGtTitanium",
-            "craftingGeothermalGenerator",
-            centrifugeEV,
-            "craftingGeothermalGenerator",
-            RECIPE_ThermalBoilerController);
-
-        RecipeUtils.addShapedGregtechRecipe(
-            "craftingGeothermalGenerator",
-            centrifugeEV,
-            "craftingGeothermalGenerator",
+            getModItem(RemoteIO.ID, "tile.machine", 1, 1),
+            ItemList.Machine_HV_Centrifuge.get(1L),
+            getModItem(RemoteIO.ID, "tile.machine", 1, 1),
             "gearGtTungstenSteel",
-            CI.getTieredCircuitOreDictName(5),
+            "circuitElite",
             "gearGtTungstenSteel",
-            "craftingGeothermalGenerator",
-            centrifugeEV,
-            "craftingGeothermalGenerator",
+            getModItem(RemoteIO.ID, "tile.machine", 1, 1),
+            ItemList.Machine_HV_Centrifuge.get(1L),
+            getModItem(RemoteIO.ID, "tile.machine", 1, 1),
             RECIPE_ThermalBoilerController);
 
         RecipeUtils.addShapedGregtechRecipe(

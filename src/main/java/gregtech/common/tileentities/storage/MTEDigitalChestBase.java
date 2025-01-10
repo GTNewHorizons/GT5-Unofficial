@@ -294,7 +294,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
 
-        if (getBaseMetaTileEntity().isServerSide() && getBaseMetaTileEntity().isAllowedToWork()) {
+        if (getBaseMetaTileEntity().isServerSide()) {
             if ((getItemCount() <= 0)) {
                 setItemStack(null);
                 setItemCount(0);
