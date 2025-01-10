@@ -1225,6 +1225,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             currenttip.add(
                 GTWaila.getMachineProgressString(
                     isActive,
+                    tag.getBoolean("isAllowedToWorkSingleBlock"),
                     tag.getInteger("maxProgressSingleBlock"),
                     tag.getInteger("progressSingleBlock")));
         }
@@ -1255,6 +1256,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
         if (tileEntity != null) {
             tag.setBoolean("isActiveSingleBlock", tileEntity.isActive());
+            tag.setBoolean("isAllowedToWorkSingleBlock", tileEntity.isAllowedToWork());
             tag.setInteger(
                 "outputFacingSingleBlock",
                 tileEntity.getFrontFacing()

@@ -1007,7 +1007,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     /**
      * Gets the pollution this Device outputs to a Muffler per tick (10000 = one Pullution Block)
-     * 
+     *
      * @param aStack what is in controller
      */
     public int getPollutionPerTick(ItemStack aStack) {
@@ -1019,7 +1019,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * the code of the multiblock.
      *
      * This returns the unmodified raw pollution value, not the one after muffler discounts.
-     * 
+     *
      * @param aStack what is in controller
      */
     public int getPollutionPerSecond(ItemStack aStack) {
@@ -2049,8 +2049,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 }
             }
         }
-        currentTip
-            .add(GTWaila.getMachineProgressString(isActive, tag.getInteger("maxProgress"), tag.getInteger("progress")));
+        currentTip.add(
+            GTWaila.getMachineProgressString(
+                isActive,
+                tag.getBoolean("isAllowedToWork"),
+                tag.getInteger("maxProgress"),
+                tag.getInteger("progress")));
         // Show ns on the tooltip
         if (GTMod.gregtechproxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
@@ -2099,6 +2103,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
         if (tileEntity != null) {
             tag.setBoolean("isActive", tileEntity.isActive());
+            tag.setBoolean("isAllowedToWork", tileEntity.isAllowedToWork());
             if (tileEntity.isActive()) {
                 if (mEUt < 0) tag.setLong("energyUsage", getActualEnergyUsage());
                 else tag.setLong("energyUsage", (long) -mEUt * mEfficiency / 10000);
