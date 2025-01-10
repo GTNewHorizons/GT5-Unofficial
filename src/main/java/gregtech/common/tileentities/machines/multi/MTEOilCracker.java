@@ -304,7 +304,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
             for (int yPos = tY - 1; yPos <= tY + 1; yPos++)
                 for (int zPos = tZ - 1; zPos <= tZ + 1; zPos += (xDir != 0 ? 2 : 1)) {
                     if ((yPos == tY) && (xPos == tX || zPos == tZ)) continue;
-                    final byte tUsedMeta = aBaseMetaTileEntity.getMetaID(xPos, yPos, zPos);
+                    final int tUsedMeta = aBaseMetaTileEntity.getMetaID(xPos, yPos, zPos);
                     if (tUsedMeta < 12) continue;
                     if (tUsedMeta > 14) continue;
                     if (aBaseMetaTileEntity.getBlock(xPos, yPos, zPos) != GregTechAPI.sBlockCasings1) continue;

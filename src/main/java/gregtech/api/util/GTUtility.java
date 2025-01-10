@@ -2527,7 +2527,7 @@ public class GTUtility {
      *
      * @return casing texture 0 to 16383
      */
-    public static int getTextureId(Block blockFromBlock, byte metaFromBlock) {
+    public static int getTextureId(Block blockFromBlock, int metaFromBlock) {
         for (int page = 0; page < Textures.BlockIcons.casingTexturePages.length; page++) {
             ITexture[] casingTexturePage = Textures.BlockIcons.casingTexturePages[page];
             if (casingTexturePage != null) {
@@ -2535,7 +2535,7 @@ public class GTUtility {
                     ITexture iTexture = casingTexturePage[index];
                     if (iTexture instanceof IBlockContainer) {
                         Block block = ((IBlockContainer) iTexture).getBlock();
-                        byte meta = ((IBlockContainer) iTexture).getMeta();
+                        int meta = ((IBlockContainer) iTexture).getMeta();
                         if (meta == metaFromBlock && blockFromBlock == block) {
                             return (page << 7) + index;
                         }

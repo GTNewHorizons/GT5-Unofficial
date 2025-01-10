@@ -43,7 +43,7 @@ dependencies {
     api("com.github.GTNewHorizons:ModularUI2:2.2.0-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.8.2:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-518-GTNH:dev")
-    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.12-gtnh:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.14-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.6.0:dev')
     api("com.github.GTNewHorizons:Postea:1.0.13:dev")
 
@@ -85,7 +85,7 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.5.0-GTNH:dev') { transitive = false }
     compileOnly rfg.deobf("curse.maven:extra-utilities-225561:2264384")
     compileOnly rfg.deobf('curse.maven:minefactory-reloaded-66672:2366150')
-    compileOnly("com.github.GTNewHorizons:OpenComputers:1.11.2-GTNH:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:OpenComputers:1.11.3-GTNH:dev") {transitive = false}
     // https://www.curseforge.com/minecraft/mc-mods/advancedsolarpanels
     compileOnlyApi rfg.deobf('curse.maven:advsolar-362768:2885953')
     compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.7.2-GTNH:dev') {transitive =  false}
