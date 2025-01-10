@@ -1199,8 +1199,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
             .set(addItem(Phononic_Seed_Crystal.ID, "Phononic Seed Crystal", "Perfect Thermal Conductance", o));
 
         // Infinity Line Related Items
-        ItemList.Combined_Catalyst
-                .set(addItem(Combined_Catalyst.ID, "Combined Catalyst", "Who would have thought"));
+        ItemList.Combined_Catalyst.set(addItem(Combined_Catalyst.ID, "Combined Catalyst", "Who would have thought"));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(
