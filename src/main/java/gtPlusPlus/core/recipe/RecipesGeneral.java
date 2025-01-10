@@ -463,18 +463,6 @@ public class RecipesGeneral {
             MaterialsAlloy.MARAGING250.getPlate(1),
             GregtechItemList.Hatch_Input_Pyrotheum.get(1L));
 
-        RecipeUtils.addShapedGregtechRecipe(
-            CI.component_Plate[8],
-            MaterialsAlloy.PIKYONIUM.getGear(1),
-            CI.component_Plate[9],
-            CI.getTieredCircuitOreDictName(7),
-            GregtechItemList.Casing_Naq_Reactor_A.get(1),
-            CI.getTieredCircuitOreDictName(7),
-            CI.component_Plate[9],
-            ItemList.Hatch_Input_ZPM.get(1),
-            CI.component_Plate[8],
-            GregtechItemList.Hatch_Input_Naquadah.get(1L));
-
         if (GTMod.gregtechproxy.mPollution) {
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Hatch_Muffler_Adv_LV.get(1L),
