@@ -1,12 +1,10 @@
 package gtPlusPlus.core.item.circuit;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.common.items.ItemIntegratedCircuit.findConfiguratorInInv;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.BiFunction;
-import java.util.function.Predicate;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -24,18 +22,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.gtnewhorizons.modularui.api.UIInfos;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.net.GTPacketUpdateItem;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -68,7 +62,7 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
+    public void addInformation(ItemStack aStack, EntityPlayer p_77624_2_, List<String> aList, boolean p_77624_4_) {
         try {
             aList.add("Configuration == " + aStack.getItemDamage());
             aList.add(
@@ -90,7 +84,7 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
     }
 
     @Override
-    public void getSubItems(Item aItem, CreativeTabs p_150895_2_, List aList) {
+    public void getSubItems(Item aItem, CreativeTabs p_150895_2_, List<ItemStack> aList) {
         aList.add(ItemUtils.simpleMetaStack(aItem, 0, 1));
     }
 
@@ -127,12 +121,7 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
         if (meta < 0 || meta > 24) return true;
 
         if (!player.capabilities.isCreativeMode) {
-            Pair<Integer, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> toolIndex = findConfiguratorInInv(player);
-            if (toolIndex == null) return true;
-
-            ItemStack[] mainInventory = player.inventory.mainInventory;
-            mainInventory[toolIndex.getKey()] = toolIndex.getValue()
-                .apply(mainInventory[toolIndex.getKey()], player);
+            findConfiguratorInInv(player, true); // damage the tool
         }
         stack.setItemDamage(meta);
 
@@ -148,8 +137,8 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
         if (player.capabilities.isCreativeMode) {
             configuratorStack = null;
         } else {
-            Pair<Integer, ?> configurator = findConfiguratorInInv(player);
-            if (configurator == null) {
+            configuratorStack = findConfiguratorInInv(player, false);
+            if (configuratorStack == null) {
                 int count;
                 try {
                     count = Integer
@@ -166,7 +155,6 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
                         "GT5U.item.programmed_circuit.no_screwdriver." + XSTR.XSTR_INSTANCE.nextInt(count)));
                 return stack;
             }
-            configuratorStack = player.inventory.mainInventory[configurator.getKey()];
         }
         openSelectorGui(configuratorStack, stack.getItemDamage(), player);
         return stack;
@@ -188,21 +176,5 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
         NBTTagCompound tag = new NBTTagCompound();
         tag.setByte("meta", (byte) stack.getItemDamage());
         GTValues.NW.sendToServer(new GTPacketUpdateItem(tag));
-    }
-
-    private static Pair<Integer, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> findConfiguratorInInv(
-        EntityPlayer player) {
-        ItemStack[] mainInventory = player.inventory.mainInventory;
-        for (int j = 0, mainInventoryLength = mainInventory.length; j < mainInventoryLength; j++) {
-            ItemStack toolStack = mainInventory[j];
-
-            if (!GTUtility.isStackValid(toolStack)) continue;
-
-            for (Map.Entry<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> p : GregTechAPI.sCircuitProgrammerList
-                .entrySet())
-                if (p.getKey()
-                    .test(toolStack)) return Pair.of(j, p.getValue());
-        }
-        return null;
     }
 }

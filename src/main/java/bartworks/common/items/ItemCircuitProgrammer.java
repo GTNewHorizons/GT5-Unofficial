@@ -40,7 +40,6 @@ import bartworks.MainMod;
 import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -63,12 +62,10 @@ public class ItemCircuitProgrammer extends GTGenericItem implements IElectricIte
         this.setNoRepair();
         this.setHasSubtypes(false);
         this.setCreativeTab(MainMod.BWT);
-        GregTechAPI.registerCircuitProgrammer(
-            s -> s.getItem() instanceof ItemCircuitProgrammer && ElectricItem.manager.canUse(s, COST_PER_USE),
-            (s, p) -> {
-                ElectricItem.manager.use(s, COST_PER_USE, p);
-                return s;
-            });
+    }
+
+    public void useItem(ItemStack stack, EntityPlayer player) {
+        ElectricItem.manager.use(stack, COST_PER_USE, player);
     }
 
     @Override

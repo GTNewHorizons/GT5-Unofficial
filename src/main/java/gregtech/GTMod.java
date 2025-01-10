@@ -3,7 +3,6 @@ package gregtech;
 import static gregtech.GT_Version.VERSION_MAJOR;
 import static gregtech.GT_Version.VERSION_MINOR;
 import static gregtech.GT_Version.VERSION_PATCH;
-import static gregtech.api.GregTechAPI.registerCircuitProgrammer;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.util.GTRecipe.setItemStacks;
 
@@ -13,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.Predicate;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -26,7 +24,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -353,17 +350,6 @@ public class GTMod implements IGTMod {
         }
 
         gregtechproxy.onLoad();
-
-        registerCircuitProgrammer(new Predicate<>() {
-
-            private final int screwdriverOreId = OreDictionary.getOreID("craftingToolScrewdriver");
-
-            @Override
-            public boolean test(ItemStack stack) {
-                for (int i : OreDictionary.getOreIDs(stack)) if (i == screwdriverOreId) return true;
-                return false;
-            }
-        }, true);
 
         new MTERecipeLoader().run();
 
