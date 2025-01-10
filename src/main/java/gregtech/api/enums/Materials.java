@@ -2,6 +2,7 @@ package gregtech.api.enums;
 
 import static gregtech.api.enums.FluidState.GAS;
 import static gregtech.api.enums.GTValues.M;
+import static gregtech.api.enums.MaterialsUEVplus.Manifold;
 import static gregtech.api.enums.Mods.Thaumcraft;
 
 import java.util.ArrayList;
@@ -2445,6 +2446,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         ConstructionFoam.add(SubTag.STONE, SubTag.NO_SMASHING, SubTag.EXPLOSIVE, SubTag.NO_SMELTING);
         ReinforceGlass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.SMELTING_TO_FLUID);
         BorosilicateGlass.add(SubTag.CRYSTAL, SubTag.NO_SMASHING, SubTag.NO_RECYCLING, SubTag.SMELTING_TO_FLUID);
+        Manifold.add(SubTag.CRYSTAL);
 
         Redstone.add(
             SubTag.STONE,
