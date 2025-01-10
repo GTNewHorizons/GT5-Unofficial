@@ -248,7 +248,7 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
                     x = aBaseMetaTileEntity.getXCoord() + oreBlockPos.chunkPosX;
                     y = aBaseMetaTileEntity.getYCoord() + oreBlockPos.chunkPosY;
                     z = aBaseMetaTileEntity.getZCoord() + oreBlockPos.chunkPosZ;
-                    isOre = GTUtility.isMinable(
+                    isOre = GTUtility.isOre(
                         oreBlock,
                         aBaseMetaTileEntity.getWorld()
                             .getBlockMetadata(x, y, z));
@@ -273,7 +273,7 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
                 Block block = aBaseMetaTileEntity.getBlockOffset(x, pipe.getTipDepth(), z);
                 int blockMeta = aBaseMetaTileEntity.getMetaIDOffset(x, pipe.getTipDepth(), z);
 
-                if (GTUtility.isMinable(block, blockMeta)) {
+                if (GTUtility.isOre(block, blockMeta)) {
                     oreBlockPositions.add(new ChunkPosition(x, pipe.getTipDepth(), z));
                 }
             }

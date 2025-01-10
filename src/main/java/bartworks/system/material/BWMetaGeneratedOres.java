@@ -17,6 +17,7 @@ import static bartworks.system.material.BWMetaGeneratedItems.metaTab;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.Nullable;
 
@@ -138,7 +139,8 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
         boolean doSilktouch = harvester != null && EnchantmentHelper.getSilkTouchModifier(harvester);
 
         try (OreInfo<Werkstoff> info = BWOreAdapter.INSTANCE.getOreInfo(this, metadata)) {
-            return (ArrayList<ItemStack>) BWOreAdapter.INSTANCE.getOreDrops(info, doSilktouch, doFortune ? fortune : 0);
+            return BWOreAdapter.INSTANCE
+                .getOreDrops(ThreadLocalRandom.current(), info, doSilktouch, doFortune ? fortune : 0);
         }
     }
 

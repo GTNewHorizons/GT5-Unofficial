@@ -51,7 +51,7 @@ public class ItemBlockOre extends ItemBlock {
 
             for (IMaterial mat : mats) {
                 if (mat instanceof Material gtppMat) {
-                    mMapOreBlockItemToDimName.put(gtppMat, oreLayer.mAllowedDimensions);
+                    mMapOreBlockItemToDimName.put(gtppMat, oreLayer.getAllowedDimensions());
                 }
             }
         }

@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
+
+import com.google.common.collect.ImmutableMap;
 
 import gregtech.api.enums.OreMixes;
 import gregtech.api.interfaces.IMaterial;
@@ -20,26 +23,48 @@ import gregtech.common.ores.OreManager;
 public class GT5OreLayerHelper {
 
     /** {vein ore mix name: wrapper} */
-    public static final HashMap<String, OreLayerWrapper> ORE_VEINS_BY_NAME = new HashMap<>();
+    private static Map<String, OreLayerWrapper> ORE_VEINS_BY_NAME;
+
     /** {abbr dim name: wrapper} */
-    public static final HashMap<String, NormalOreDimensionWrapper> ORE_VEINS_BY_DIM = new HashMap<>();
+    private static Map<String, NormalOreDimensionWrapper> ORE_VEINS_BY_DIM;
 
     public static void init() {
+        HashMap<String, OreLayerWrapper> byName = new HashMap<>();
+        HashMap<String, NormalOreDimensionWrapper> byDim = new HashMap<>();
+
         for (OreMixes mix : OreMixes.values()) {
             OreLayerWrapper wrapper = new OreLayerWrapper(mix.oreMixBuilder);
-            ORE_VEINS_BY_NAME.put(mix.oreMixBuilder.oreMixName, wrapper);
+            byName.put(mix.oreMixBuilder.oreMixName, wrapper);
 
             for (String dim : wrapper.abbrDimNames) {
-                NormalOreDimensionWrapper dimensionOres = ORE_VEINS_BY_DIM
-                    .getOrDefault(dim, new NormalOreDimensionWrapper());
+                NormalOreDimensionWrapper dimensionOres = byDim.getOrDefault(dim, new NormalOreDimensionWrapper());
                 dimensionOres.oreVeins.add(wrapper);
-                ORE_VEINS_BY_DIM.put(dim, dimensionOres);
+                byDim.put(dim, dimensionOres);
             }
         }
 
         // Calculate probabilities for each dim.
-        ORE_VEINS_BY_DIM.values()
+        byDim.values()
             .forEach(NormalOreDimensionWrapper::calculateWeights);
+
+        ORE_VEINS_BY_NAME = ImmutableMap.copyOf(byName);
+        ORE_VEINS_BY_DIM = ImmutableMap.copyOf(byDim);
+    }
+
+    public static OreLayerWrapper getVeinByName(String name) {
+        return ORE_VEINS_BY_NAME.get(name);
+    }
+
+    public static NormalOreDimensionWrapper getVeinByDim(String abbrName) {
+        return ORE_VEINS_BY_DIM.get(abbrName);
+    }
+
+    public static Map<String, OreLayerWrapper> getOreVeinsByName() {
+        return ORE_VEINS_BY_NAME;
+    }
+
+    public static Map<String, NormalOreDimensionWrapper> getOreVeinsByDim() {
+        return ORE_VEINS_BY_DIM;
     }
 
     public static class OreLayerWrapper {

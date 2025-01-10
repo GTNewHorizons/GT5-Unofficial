@@ -30,11 +30,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-
-import com.google.common.collect.ImmutableList;
 
 import bartworks.MainMod;
 import bartworks.system.oredict.OreDictHandler;
@@ -61,12 +60,14 @@ import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import it.unimi.dsi.fastutil.shorts.Short2ObjectLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
 import thaumcraft.api.aspects.Aspect;
 
 public class Werkstoff implements IColorModulationContainer, ISubTagContainer, IMaterial {
 
     public static final LinkedHashSet<Werkstoff> werkstoffHashSet = new LinkedHashSet<>();
-    public static final LinkedHashMap<Short, Werkstoff> werkstoffHashMap = new LinkedHashMap<>();
+    public static final Short2ObjectMap<Werkstoff> werkstoffHashMap = new Short2ObjectLinkedOpenHashMap<>();
     public static final LinkedHashMap<String, Werkstoff> werkstoffNameHashMap = new LinkedHashMap<>();
     public static final LinkedHashMap<String, Werkstoff> werkstoffVarNameHashMap = new LinkedHashMap<>();
 
@@ -402,7 +403,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
         return this;
     }
 
-    public HashSet<String> getAdditionalOredict() {
+    public Set<String> getAdditionalOredict() {
         return this.additionalOredict;
     }
 
@@ -543,12 +544,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
     }
 
     @Override
-    public boolean isValidForStone(IStoneType stoneType) {
-        return stoneType == StoneType.Stone;
-    }
-
-    @Override
-    public ImmutableList<IStoneType> getValidStones() {
+    public List<IStoneType> getValidStones() {
         return StoneType.STONE_ONLY;
     }
 

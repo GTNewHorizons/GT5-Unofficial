@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import galacticgreg.api.Enums.DimensionType;
-import gregtech.api.enums.StoneType;
+import gregtech.api.interfaces.IStoneType;
+import gregtech.api.objects.XSTR;
 import gregtech.common.config.Gregtech;
 
 // import galacticgreg.GalacticGreg;
@@ -23,7 +25,6 @@ public class ModDimensionDef {
     /** "modname_dimname" */
     private String internalDimIdentifier;
     private final String chunkProviderName;
-    private final ArrayList<ModDBMDef> replaceableBlocks;
     private DimensionType dimensionType;
 
     private final List<ISpaceObjectGenerator> spaceObjectGenerators;
@@ -34,63 +35,36 @@ public class ModDimensionDef {
     // ------
 
     // Asteroid stuff
-    private final List<AsteroidBlockComb> validAsteroidMaterials;
+    private final List<IStoneType> validAsteroidMaterials;
     private final List<SpecialBlockComb> specialBlocksForAsteroids;
 
-    private final Random random = new Random(System.currentTimeMillis());
+    private final XSTR random = new XSTR();
 
-    public boolean hasEoHRecipe = true;
-    public boolean canBeVoidMined = true;
+    private boolean hasEoHRecipe = true;
+    private boolean canBeVoidMined = true;
 
     /**
-     * Define a new dimension
-     *
-     * @param pDimensionName The human-readable. Spaces will be removed
-     * @param pChunkProvider The chunkprovider class that shall be observed for the oregen
+     * @param pDimensionName The provider dimension name (see {@link World#provider} and
+     *                       {@link WorldProvider#getDimensionName()})
+     * @param pChunkProvider The chunk provider class
+     * @param pDimType       The dimension type (whether it generates asteroids or ore veins)
      */
     public ModDimensionDef(String pDimensionName, Class<? extends IChunkProvider> pChunkProvider,
         DimensionType pDimType) {
-        this(pDimensionName, pChunkProvider.getName(), pDimType, null);
+        this(pDimensionName, pChunkProvider.getName(), pDimType);
     }
 
     /**
-     * Define a new dimension
-     *
-     * @param pDimensionName    The human-readable. Spaces will be removed
-     * @param pChunkProvider    The chunkprovider class that shall be observed for the oregen
-     * @param pBlockDefinitions The list of predefined blocks to be replaced by ores
-     */
-    public ModDimensionDef(String pDimensionName, Class<? extends IChunkProvider> pChunkProvider,
-        DimensionType pDimType, List<ModDBMDef> pBlockDefinitions) {
-        this(pDimensionName, pChunkProvider.getName(), pDimType, pBlockDefinitions);
-    }
-
-    /**
-     * Define a new dimension
-     *
-     * @param pDimensionName     The human-readable DimensionName. Spaces will be removed
-     * @param pChunkProviderName The human-readable, full-qualified classname for the chunkprovider
+     * @param pDimensionName The provider dimension name (see {@link World#provider} and
+     *                       {@link WorldProvider#getDimensionName()})
+     * @param pChunkProvider The chunk provider class name
+     * @param pDimType       The dimension type (whether it generates asteroids or ore veins)
      */
     public ModDimensionDef(String pDimensionName, String pChunkProviderName, DimensionType pDimType) {
-        this(pDimensionName, pChunkProviderName, pDimType, null);
-    }
-
-    /**
-     * Define a new dimension
-     *
-     * @param pDimensionName     The human-readable DimensionName. Spaces will be removed
-     * @param pChunkProviderName The human-readable, full-qualified classname for the chunkprovider
-     * @param pBlockDefinitions  The list of predefined blocks to be replaced by ores
-     */
-    public ModDimensionDef(String pDimensionName, String pChunkProviderName, DimensionType pDimType,
-        List<ModDBMDef> pBlockDefinitions) {
         internalDimIdentifier = STR_NOTDEFINED;
         dimensionName = pDimensionName;
         chunkProviderName = pChunkProviderName;
         dimensionType = pDimType;
-
-        replaceableBlocks = new ArrayList<>();
-        if (pBlockDefinitions != null) replaceableBlocks.addAll(pBlockDefinitions);
 
         validAsteroidMaterials = new ArrayList<>();
         specialBlocksForAsteroids = new ArrayList<>();
@@ -110,15 +84,6 @@ public class ModDimensionDef {
 
     public int getOreVeinChance() {
         return oreVeinChance;
-    }
-
-    /**
-     * Internal function
-     *
-     * @return A list of possible asteroid-mixes that shall be generated
-     */
-    public List<AsteroidBlockComb> getValidAsteroidMaterials() {
-        return validAsteroidMaterials;
     }
 
     // =================================================
@@ -226,37 +191,12 @@ public class ModDimensionDef {
     }
 
     /**
-     * Adds a new blockdefinition to this dimension. This block will then later be replaced by ores. You can add as many
-     * blocks as you want. Just don't add Blocks.Air, as there is another setting for allowing Air-Replacement
-     *
-     * @param pBlockDef
-     * @return
-     */
-    public boolean addBlockDefinition(ModDBMDef pBlockDef) {
-        if (replaceableBlocks.contains(pBlockDef)) {
-            return false;
-        } else {
-            replaceableBlocks.add(pBlockDef);
-            return true;
-        }
-    }
-
-    /**
      * Internal function
      *
      * @return The DimensionName in a Human-readable format
      */
     public String getDimensionName() {
         return dimensionName;
-    }
-
-    /**
-     * Internal function
-     *
-     * @return A list of all defined Blocks that can be replaced while generating ores
-     */
-    public ArrayList<ModDBMDef> getReplaceableBlocks() {
-        return replaceableBlocks;
     }
 
     /**
@@ -277,40 +217,11 @@ public class ModDimensionDef {
     /**
      * Internal function
      * <p>
-     * Check if pBlock can be replaced by an ore
-     *
-     * @param pBlock
-     * @param pMeta
-     * @return
-     */
-    public Enums.ReplaceState getReplaceStateForBlock(Block pBlock, int pMeta) {
-        Enums.ReplaceState tFlag = Enums.ReplaceState.Unknown;
-
-        for (ModDBMDef pDef : replaceableBlocks) {
-            Enums.ReplaceState tResult = pDef.blockEquals(pBlock, pMeta);
-            if (tResult == Enums.ReplaceState.Unknown) continue;
-
-            if (tResult == Enums.ReplaceState.CanReplace) {
-                // GalacticGreg.Logger.trace("Targetblock found and metadata match. Replacement allowed");
-                tFlag = Enums.ReplaceState.CanReplace;
-            } else if (tResult == Enums.ReplaceState.CannotReplace) {
-                // GalacticGreg.Logger.trace("Targetblock found but metadata mismatch. Replacement denied");
-                tFlag = Enums.ReplaceState.CannotReplace;
-            }
-            break;
-        }
-
-        return tFlag;
-    }
-
-    /**
-     * Internal function
-     * <p>
      * Randomly select one material out of all defined materials
      *
      * @return
      */
-    public AsteroidBlockComb getRandomAsteroidMaterial(Random rng) {
+    public IStoneType getRandomAsteroidMaterial(Random rng) {
         if (validAsteroidMaterials.isEmpty()) return null;
 
         if (validAsteroidMaterials.size() == 1) {
@@ -338,20 +249,11 @@ public class ModDimensionDef {
     }
 
     /**
-     * Define the material the asteroid shall be made of. Limited to GT-Based Ores and their stones
-     *
-     * @param pMaterial
-     */
-    public void addAsteroidMaterial(StoneType stoneType) {
-        addAsteroidMaterial(new AsteroidBlockComb(stoneType));
-    }
-
-    /**
      * Define the material the asteroid shall be made of, more advanced option to specify your own blocks
      *
      * @param pBlockComb
      */
-    public void addAsteroidMaterial(AsteroidBlockComb pBlockComb) {
+    public void addAsteroidMaterial(IStoneType pBlockComb) {
         if (!validAsteroidMaterials.contains(pBlockComb)) {
             validAsteroidMaterials.add(pBlockComb);
         }
@@ -370,25 +272,23 @@ public class ModDimensionDef {
         }
     }
 
-    /**
-     * Internal function Called when GalacticGreg will finalize all its internal structures. You should never call this
-     * yourself
-     */
-    public void finalizeReplaceableBlocks(String pParentModName) {
-        for (ModDBMDef rpb : replaceableBlocks) {
-            rpb.updateBlockName(pParentModName);
-        }
-    }
-
     public ModDimensionDef disableEoHRecipe() {
         hasEoHRecipe = false;
 
         return this;
     }
 
+    public boolean hasEoHRecipe() {
+        return hasEoHRecipe;
+    }
+
     public ModDimensionDef disableVoidMining() {
         canBeVoidMined = false;
 
         return this;
+    }
+
+    public boolean canBeVoidMined() {
+        return canBeVoidMined;
     }
 }

@@ -227,30 +227,20 @@ public class BaseOreComponent extends Item {
 
     public enum ComponentTypes {
 
-        DUST("dust", "", " Dust", true),
-        DUSTIMPURE("dustImpure", "Impure ", " Dust", true),
-        DUSTPURE("dustPure", "Purified ", " Dust", true),
-        CRUSHED("crushed", "Crushed ", " Ore", true),
-        CRUSHEDCENTRIFUGED("crushedCentrifuged", "Centrifuged Crushed ", " Ore", true),
-        CRUSHEDPURIFIED("crushedPurified", "Purified Crushed ", " Ore", true),
+        DUST("dust", OrePrefixes.dust, "", " Dust", true),
+        DUSTIMPURE("dustImpure", OrePrefixes.dustImpure, "Impure ", " Dust", true),
+        DUSTPURE("dustPure", OrePrefixes.dustPure, "Purified ", " Dust", true),
+        CRUSHED("crushed", OrePrefixes.crushed, "Crushed ", " Ore", true),
+        CRUSHEDCENTRIFUGED("crushedCentrifuged", OrePrefixes.crushedCentrifuged, "Centrifuged Crushed ", " Ore", true),
+        CRUSHEDPURIFIED("crushedPurified", OrePrefixes.crushedPurified, "Purified Crushed ", " Ore", true),
         RAWORE("oreRaw", OrePrefixes.rawOre, "Raw ", " Ore", true),
-        MILLED("milled", "Milled ", " Ore", true);
+        MILLED("milled", OrePrefixes.milled, "Milled ", " Ore", true);
 
         private final String COMPONENT_NAME;
         private final String PREFIX;
         private final String DISPLAY_NAME;
         private final boolean HAS_OVERLAY;
         private final String orePrefix;
-
-        ComponentTypes(final String LocalName, final String prefix, final String DisplayName, final boolean overlay) {
-            this.COMPONENT_NAME = LocalName;
-            this.orePrefix = LocalName;
-            this.PREFIX = prefix;
-            this.DISPLAY_NAME = DisplayName;
-            this.HAS_OVERLAY = overlay;
-            // dust + Dirty, Impure, Pure, Refined
-            // crushed + centrifuged, purified
-        }
 
         ComponentTypes(final String LocalName, final OrePrefixes orePrefix, final String prefix,
             final String DisplayName, final boolean overlay) {

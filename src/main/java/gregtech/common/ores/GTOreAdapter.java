@@ -12,10 +12,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
+import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
 
+import codechicken.nei.api.API;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -28,21 +31,20 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.GTProxy.OreDropSystem;
 import gregtech.common.blocks.BlockOresAbstract;
-import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 
-public enum GTOreAdapter implements IOreAdapter<Materials> {
+public final class GTOreAdapter implements IOreAdapter<Materials> {
 
-    INSTANCE;
+    public static GTOreAdapter INSTANCE = new GTOreAdapter();
+
+    private GTOreAdapter() {}
 
     private final Map<StoneType, BlockOresAbstract> oreBlocksByStoneType = new EnumMap<>(StoneType.class);
 
-    public BlockOresAbstract ores1, ores2, ores3, ores4, ores5, ores6;
-
-    public BlockOresAbstract[] ores;
+    private BlockOresAbstract[] ores;
 
     public void init() {
         // spotless:off
-        ores1 = new BlockOresAbstract(2, new StoneType[] {
+        BlockOresAbstract ores1 = new BlockOresAbstract(2, new StoneType[] {
             StoneType.Stone,
             StoneType.Netherrack,
             StoneType.Endstone,
@@ -52,7 +54,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
             StoneType.Basalt,
             StoneType.Moon,
         });
-        ores2 = new BlockOresAbstract(3, new StoneType[] {
+        BlockOresAbstract ores2 = new BlockOresAbstract(3, new StoneType[] {
             StoneType.Mars,
             StoneType.Asteroid,
             StoneType.Phobos,
@@ -62,7 +64,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
             StoneType.Europa,
             StoneType.Ganymede,
         });
-        ores3 = new BlockOresAbstract(4, new StoneType[] {
+        BlockOresAbstract ores3 = new BlockOresAbstract(4, new StoneType[] {
             StoneType.Callisto,
             StoneType.Enceladus,
             StoneType.Titan,
@@ -72,7 +74,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
             StoneType.Triton,
             StoneType.Pluto,
         });
-        ores4 = new BlockOresAbstract(5, new StoneType[] {
+        BlockOresAbstract ores4 = new BlockOresAbstract(5, new StoneType[] {
             StoneType.Callisto,
             StoneType.Enceladus,
             StoneType.Titan,
@@ -82,7 +84,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
             StoneType.Triton,
             StoneType.Pluto,
         });
-        ores5 = new BlockOresAbstract(6, new StoneType[] {
+        BlockOresAbstract ores5 = new BlockOresAbstract(6, new StoneType[] {
             StoneType.Haumea,
             StoneType.MakeMake,
             StoneType.AlphaCentauri,
@@ -92,9 +94,11 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
             StoneType.BarnardaF,
             StoneType.Horus,
         });
-        ores6 = new BlockOresAbstract(7, new StoneType[] {
-            StoneType.Anubis,
+        BlockOresAbstract ores6 = new BlockOresAbstract(7, new StoneType[] {
+            StoneType.AnubisAndMaahes,
             StoneType.PackedIce,
+            StoneType.SethIce,
+            StoneType.SethClay,
         });
 
         ores = new BlockOresAbstract[] { ores1, ores2, ores3, ores4, ores5, ores6 };
@@ -123,9 +127,9 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
                 if (!INSTANCE.supports(info)) {
                     return new BlockInfo(Blocks.air, 0);
                 } else {
-                    var p = INSTANCE.getBlock(info);
+                    ImmutableBlockMeta bm = INSTANCE.getBlock(info);
 
-                    return new BlockInfo(p.left(), p.rightInt());
+                    return new BlockInfo(bm.getBlock(), bm.getBlockMeta());
                 }
             }
         });
@@ -139,6 +143,12 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
 
     public void registerOre(StoneType stoneType, BlockOresAbstract oreBlock) {
         oreBlocksByStoneType.put(stoneType, oreBlock);
+    }
+
+    public void hideOres() {
+        for (BlockOresAbstract ore : ores) {
+            API.hideItem(new ItemStack(ore, 1, 0));
+        }
     }
 
     @Override
@@ -157,7 +167,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
         if (!(stoneType instanceof StoneType stoneType2)) return false;
         if (!oreBlocksByStoneType.containsKey(stoneType2)) return false;
         if (!stoneType2.isEnabled()) return false;
-        if (!info.material.isValidForStone(stoneType2)) return false;
+        if (!gtMat.isValidForStone(stoneType2)) return false;
         if (stoneType2.getCategory() == StoneCategory.Ice && info.isSmall) return false;
 
         return true;
@@ -197,7 +207,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
     }
 
     @Override
-    public ObjectIntPair<Block> getBlock(OreInfo<?> info) {
+    public ImmutableBlockMeta getBlock(OreInfo<?> info) {
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
 
         if (!(info.material instanceof Materials gtMat)) return null;
@@ -218,11 +228,11 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
         if (info.isSmall) meta += SMALL_ORE_META_OFFSET;
         if (info.isNatural) meta += NATURAL_ORE_META_OFFSET;
 
-        return ObjectIntPair.of(oreBlock, meta);
+        return new BlockMeta(oreBlock, meta);
     }
 
     @Override
-    public List<ItemStack> getOreDrops(OreInfo<?> info2, boolean silktouch, int fortune) {
+    public ArrayList<ItemStack> getOreDrops(Random random, OreInfo<?> info2, boolean silktouch, int fortune) {
         if (!supports(info2)) return new ArrayList<>();
 
         @SuppressWarnings("unchecked")
@@ -237,13 +247,13 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
         if (!info.isNatural) fortune = 0;
 
         if (info.isSmall) {
-            return getSmallOreDrops(ThreadLocalRandom.current(), info, fortune);
+            return getSmallOreDrops(random, info, fortune);
         } else {
             OreDropSystem oreDropSystem = GTMod.gregtechproxy.oreDropSystem;
 
             if (silktouch) oreDropSystem = OreDropSystem.Block;
 
-            return getBigOreDrops(ThreadLocalRandom.current(), oreDropSystem, info, fortune);
+            return getBigOreDrops(random, oreDropSystem, info, fortune);
         }
     }
 
@@ -255,7 +265,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
         OreInfo<Materials> info = (OreInfo<Materials>) info2;
 
         if (info.isSmall) {
-            List<ItemId> drops = new ArrayList<>();
+            ArrayList<ItemId> drops = new ArrayList<>();
 
             for (ItemStack stack : SmallOreDrops.getDropList(info.material)) {
                 ItemId id = ItemId.create(stack);
@@ -263,7 +273,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
                 if (!drops.contains(id)) drops.add(id);
             }
 
-            List<ItemStack> drops2 = new ArrayList<>();
+            ArrayList<ItemStack> drops2 = new ArrayList<>();
 
             for (ItemId id : drops) {
                 drops2.add(id.getItemStack());
@@ -275,7 +285,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
         }
     }
 
-    public ArrayList<ItemStack> getSmallOreDrops(Random random, OreInfo<Materials> info, int fortune) {
+    private ArrayList<ItemStack> getSmallOreDrops(Random random, OreInfo<Materials> info, int fortune) {
         ArrayList<ItemStack> possibleDrops = SmallOreDrops.getDropList(info.material);
         ArrayList<ItemStack> drops = new ArrayList<>();
 
@@ -297,7 +307,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
         return drops;
     }
 
-    public ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo<Materials> info,
+    private ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo<Materials> info,
         int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<>();
 

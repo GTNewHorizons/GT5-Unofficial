@@ -56,26 +56,6 @@ public class OreInfo<TMat extends IMaterial> implements AutoCloseable {
         return dup;
     }
 
-    public OreInfo<TMat> setMaterial(TMat material) {
-        this.material = material;
-        return this;
-    }
-
-    public OreInfo<TMat> setStoneType(IStoneType stoneType) {
-        this.stoneType = stoneType;
-        return this;
-    }
-
-    public OreInfo<TMat> setSmall(boolean isSmall) {
-        this.isSmall = isSmall;
-        return this;
-    }
-
-    public OreInfo<TMat> setNatural(boolean isNatural) {
-        this.isNatural = isNatural;
-        return this;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;

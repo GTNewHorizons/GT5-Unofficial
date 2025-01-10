@@ -24,8 +24,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.google.common.collect.ImmutableList;
-
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
@@ -3088,7 +3086,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         return mMetaItemSubID;
     }
 
-    @Override
     public boolean isValidForStone(IStoneType stoneType) {
         if (contains(SubTag.ICE_ORE)) {
             return stoneType.getCategory() == StoneCategory.Ice;
@@ -3098,7 +3095,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     }
 
     @Override
-    public ImmutableList<IStoneType> getValidStones() {
+    public List<IStoneType> getValidStones() {
         if (contains(SubTag.ICE_ORE)) {
             return StoneType.ICES;
         } else {

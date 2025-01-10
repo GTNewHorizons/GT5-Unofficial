@@ -16,6 +16,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.common.ores.OreInfo;
@@ -398,13 +400,12 @@ public class EIGIC2Bucket extends EIGBucket {
             if (info != null) {
                 info.isNatural = true;
 
-                var oreBlock = OreManager.getAdapter(info)
+                ImmutableBlockMeta oreBlock = OreManager.getAdapter(info)
                     .getBlock(info);
 
-                world.setBlock(x, y, z, oreBlock.left(), oreBlock.rightInt(), 3);
+                world.setBlock(x, y, z, oreBlock.getBlock(), oreBlock.getBlockMeta(), 3);
 
-                if (world.getBlock(x, y, z) == oreBlock.left()
-                    && world.getBlockMetadata(x, y, z) == oreBlock.rightInt()) return true;
+                if (oreBlock.matches(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z))) return true;
             }
         }
 

@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
 
-import net.minecraft.item.ItemStack;
-
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
@@ -28,7 +26,6 @@ import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
-import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.items.MetaGeneratedItem02;
 import gregtech.common.items.MetaGeneratedItem03;
@@ -127,9 +124,7 @@ public class NEIGTConfig implements IConfigureNEI {
     }
 
     private void hideItems() {
-        for (BlockOresAbstract ore : GTOreAdapter.INSTANCE.ores) {
-            API.hideItem(new ItemStack(ore, 1, 0));
-        }
+        GTOreAdapter.INSTANCE.hideOres();
     }
 
     @SubscribeEvent

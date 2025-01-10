@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.world.World;
 
 import galacticgreg.api.ModDimensionDef;
@@ -94,6 +96,7 @@ public class WorldgenQuery<TLayer extends IWorldgenLayer> {
         return this;
     }
 
+    @Nullable
     public TLayer find(Random random) {
         if (checkWeight) {
             return findWithWeight(random);

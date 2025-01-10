@@ -76,15 +76,15 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
             final List<Chunk> chunks = new ArrayList<>();
             aPlayer.addChatMessage(new ChatComponentText("Scanning..."));
 
-            int size;
+            final int radius = aItem.getHarvestLevel(aStack, "");
 
-            {
-                int size2 = aItem.getHarvestLevel(aStack, "") + 1;
-                for (int i = -size2; i <= size2; i++)
-                    for (int j = -size2; j <= size2; j++) if (i != -size2 && i != size2 && j != -size2 && j != size2)
+            int scanRadius = radius + 1;
+            for (int i = -scanRadius; i <= scanRadius; i++) {
+                for (int j = -scanRadius; j <= scanRadius; j++) {
+                    if (i != -scanRadius && i != scanRadius && j != -scanRadius && j != scanRadius) {
                         chunks.add(aWorld.getChunkFromChunkCoords(cX + i, cZ + j));
-
-                size = size2 - 1;
+                    }
+                }
             }
 
             final DetravMetaGeneratedTool01 tool = (DetravMetaGeneratedTool01) aItem;
@@ -95,7 +95,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                 cZ,
                 (int) aPlayer.posX,
                 (int) aPlayer.posZ,
-                size,
+                radius,
                 data);
 
             Future<?> task = CooperativeScheduler.INSTANCE.schedule(ctx -> {
@@ -154,7 +154,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                     aWorld.provider.dimensionId,
                                     (int) aPlayer.posX,
                                     (int) aPlayer.posZ,
-                                    size * 16),
+                                    radius * 16),
                                 new ArrayList<>());
                         } else if (data == MODE_FLUIDS) {
                             VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
@@ -164,7 +164,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                     aWorld,
                                     (int) aPlayer.posX,
                                     (int) aPlayer.posZ,
-                                    size * 16));
+                                    radius * 16));
                         }
                     }
                 });

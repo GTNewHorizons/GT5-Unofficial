@@ -9,6 +9,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
+import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
+import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
 
@@ -24,11 +26,12 @@ import gregtech.api.interfaces.IStoneType;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.GTProxy.OreDropSystem;
-import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 
-public enum BWOreAdapter implements IOreAdapter<Werkstoff> {
+public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
 
-    INSTANCE;
+    public static BWOreAdapter INSTANCE = new BWOreAdapter();
+
+    private BWOreAdapter() {}
 
     private final EnumMap<StoneType, Ores> ores = new EnumMap<>(StoneType.class);
 
@@ -130,7 +133,7 @@ public enum BWOreAdapter implements IOreAdapter<Werkstoff> {
         OreInfo<Werkstoff> info = OreInfo.getNewInfo();
 
         info.stoneType = oreBlock.stoneType;
-        info.material = Werkstoff.werkstoffHashMap.get((Short) (short) meta);
+        info.material = Werkstoff.werkstoffHashMap.get((short) meta);
         info.isSmall = oreBlock.isSmall;
         info.isNatural = oreBlock.isNatural;
 
@@ -138,7 +141,7 @@ public enum BWOreAdapter implements IOreAdapter<Werkstoff> {
     }
 
     @Override
-    public ObjectIntPair<Block> getBlock(OreInfo<?> info) {
+    public ImmutableBlockMeta getBlock(OreInfo<?> info) {
         IStoneType stone = info.stoneType;
         if (stone == null) stone = StoneType.Stone;
 
@@ -150,11 +153,11 @@ public enum BWOreAdapter implements IOreAdapter<Werkstoff> {
         Ores ores = this.ores.get(stoneType);
         if (ores == null) return null;
 
-        return ObjectIntPair.of(ores.get(info.isSmall, info.isNatural), w.getmID());
+        return new BlockMeta(ores.get(info.isSmall, info.isNatural), w.getmID());
     }
 
     @Override
-    public List<ItemStack> getOreDrops(OreInfo<?> info2, boolean silktouch, int fortune) {
+    public ArrayList<ItemStack> getOreDrops(Random random, OreInfo<?> info2, boolean silktouch, int fortune) {
         if (!supports(info2)) return new ArrayList<>();
 
         @SuppressWarnings("unchecked")
@@ -162,19 +165,19 @@ public enum BWOreAdapter implements IOreAdapter<Werkstoff> {
 
         IStoneType stone = info.stoneType;
         if (stone == null) stone = StoneType.Stone;
-        if (!(stone instanceof StoneType stoneType)) return null;
-        if (!this.ores.containsKey(stoneType)) return null;
+        if (!(stone instanceof StoneType stoneType)) return new ArrayList<>();
+        if (!this.ores.containsKey(stoneType)) return new ArrayList<>();
 
         if (!info.isNatural) fortune = 0;
 
         if (info.isSmall) {
-            return getSmallOreDrops(ThreadLocalRandom.current(), info, fortune);
+            return getSmallOreDrops(random, info, fortune);
         } else {
             OreDropSystem oreDropSystem = GTMod.gregtechproxy.oreDropSystem;
 
             if (silktouch) oreDropSystem = OreDropSystem.Block;
 
-            return getBigOreDrops(ThreadLocalRandom.current(), oreDropSystem, info, fortune);
+            return getBigOreDrops(random, oreDropSystem, info, fortune);
         }
     }
 
@@ -186,7 +189,7 @@ public enum BWOreAdapter implements IOreAdapter<Werkstoff> {
         OreInfo<Werkstoff> info = (OreInfo<Werkstoff>) info2;
 
         if (info.isSmall) {
-            List<ItemId> drops = new ArrayList<>();
+            ArrayList<ItemId> drops = new ArrayList<>();
 
             for (ItemStack stack : SmallOreDrops.getDropList(info.material.getBridgeMaterial())) {
                 ItemId id = ItemId.create(stack);
@@ -194,7 +197,7 @@ public enum BWOreAdapter implements IOreAdapter<Werkstoff> {
                 if (!drops.contains(id)) drops.add(id);
             }
 
-            List<ItemStack> drops2 = new ArrayList<>();
+            ArrayList<ItemStack> drops2 = new ArrayList<>();
 
             for (ItemId id : drops) {
                 drops2.add(id.getItemStack());
@@ -206,7 +209,7 @@ public enum BWOreAdapter implements IOreAdapter<Werkstoff> {
         }
     }
 
-    public ArrayList<ItemStack> getSmallOreDrops(Random random, OreInfo<Werkstoff> info, int fortune) {
+    private ArrayList<ItemStack> getSmallOreDrops(Random random, OreInfo<Werkstoff> info, int fortune) {
         Materials bridge = info.material.getBridgeMaterial();
 
         ArrayList<ItemStack> possibleDrops = SmallOreDrops.getDropList(bridge);
@@ -229,7 +232,7 @@ public enum BWOreAdapter implements IOreAdapter<Werkstoff> {
         return drops;
     }
 
-    public ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo<Werkstoff> info,
+    private ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo<Werkstoff> info,
         int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<>();
 

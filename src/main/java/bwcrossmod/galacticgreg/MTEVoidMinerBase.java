@@ -285,7 +285,7 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
             getBaseMetaTileEntity().getXCoord() >> 4,
             getBaseMetaTileEntity().getZCoord() >> 4);
 
-        if (dimensionDef == null || !dimensionDef.canBeVoidMined) return;
+        if (dimensionDef == null || !dimensionDef.canBeVoidMined()) return;
 
         this.canVoidMine = true;
 

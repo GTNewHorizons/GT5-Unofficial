@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
@@ -185,16 +186,6 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
         }
     }
 
-    public boolean isExtraneous() {
-        for (StoneType stoneType : stoneTypes) {
-            if (stoneType == null || stoneType.isExtraneous()) continue;
-
-            return false;
-        }
-
-        return true;
-    }
-
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         EntityPlayer harvester = this.harvesters.get();
@@ -205,7 +196,8 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
         try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, metadata)) {
             if (info == null) return new ArrayList<>();
 
-            return (ArrayList<ItemStack>) GTOreAdapter.INSTANCE.getOreDrops(info, doSilktouch, doFortune ? fortune : 0);
+            return GTOreAdapter.INSTANCE
+                .getOreDrops(ThreadLocalRandom.current(), info, doSilktouch, doFortune ? fortune : 0);
         }
     }
 
@@ -297,8 +289,10 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
         try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, meta)) {
             if (info == null) return 0;
 
-            return GTOreAdapter.INSTANCE.getBlock(info.setNatural(false))
-                .rightInt();
+            info.isNatural = false;
+
+            return GTOreAdapter.INSTANCE.getBlock(info)
+                .getBlockMeta();
         }
     }
 
@@ -319,17 +313,20 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
 
     @Override
     public float getBlockHardness(World world, int x, int y, int z) {
-        int meta = world.getBlockMetadata(x, y, z);
-
-        return 1.0F + getHarvestLevel(meta);
+        try (OreInfo<?> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z)) {
+            return info.stoneType.getStone()
+                .getBlock().blockHardness;
+        }
     }
 
     @Override
     public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX,
         double explosionY, double explosionZ) {
-        int meta = world.getBlockMetadata(x, y, z);
-
-        return 1.0F + getHarvestLevel(meta);
+        try (OreInfo<?> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z)) {
+            return info.stoneType.getStone()
+                .getBlock()
+                .getExplosionResistance(entity);
+        }
     }
 
     @Override
@@ -337,14 +334,14 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
         float subY, float subZ) {
         if (!world.isRemote && player.capabilities.isCreativeMode && player.getHeldItem() == null) {
             try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z);) {
-                info.setNatural(!info.isNatural);
+                info.isNatural = !info.isNatural;
 
                 world.setBlockMetadataWithNotify(
                     x,
                     y,
                     z,
                     GTOreAdapter.INSTANCE.getBlock(info)
-                        .rightInt(),
+                        .getBlockMeta(),
                     3);
                 GTUtility.sendChatToPlayer(player, "Set ore natural flag to " + info.isNatural);
             }

@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.FakePlayer;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -161,8 +162,11 @@ public class DrillingLogicDelegate {
             return;
         }
 
+        XSTR rng = new XSTR();
+
         // see if we can store all of the outputs
-        List<ItemStack> drops = OreManager.mineBlock(te.getWorld(), x, y, z, false, owner.getMachineTier(), true, true);
+        List<ItemStack> drops = OreManager
+            .mineBlock(rng, te.getWorld(), x, y, z, false, owner.getMachineTier(), true, true);
 
         for (ItemStack drop : drops) {
             if (!owner.pushOutputs(drop, drop.stackSize, true, false)) {
@@ -175,7 +179,7 @@ public class DrillingLogicDelegate {
         }
 
         // actually mine it
-        OreManager.mineBlock(te.getWorld(), x, y, z, false, owner.getMachineTier(), false, true);
+        OreManager.mineBlock(rng, te.getWorld(), x, y, z, false, owner.getMachineTier(), false, true);
     }
 
     /**

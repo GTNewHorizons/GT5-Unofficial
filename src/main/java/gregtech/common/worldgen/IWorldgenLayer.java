@@ -1,38 +1,43 @@
 package gregtech.common.worldgen;
 
-import com.google.common.collect.ImmutableList;
-
 import gregtech.api.interfaces.IMaterial;
 import gregtech.api.interfaces.IStoneCategory;
-import gregtech.api.interfaces.IStoneType;
 
+/** A worldgen layer that generates ore. */
 public interface IWorldgenLayer {
 
-    public int getMinY();
+    int getMinY();
 
-    public int getMaxY();
+    int getMaxY();
 
-    public int getWeight();
+    /** Gets the RNG weight. */
+    int getWeight();
 
-    public float getSize();
+    /** Gets the density. 1 = 100%, 0.5 = 50%, 0 = 0% */
+    float getDensity();
 
-    public float getDensity();
+    /** Checks if this layer can generate in the given dimension. */
+    boolean canGenerateIn(String dimName);
 
-    public boolean canGenerateIn(String dimName);
+    /** Checks if this layer can generate in the given stone category. */
+    boolean canGenerateIn(IStoneCategory stoneType);
 
-    public boolean canGenerateIn(IStoneType stoneType);
+    /** Whether this layer can only generate in specific stone types. */
+    boolean isStoneSpecific();
 
-    public boolean canGenerateIn(IStoneCategory stoneType);
+    /** If this layer generates big ore. Ignores small ore. */
+    boolean generatesBigOre();
 
-    public boolean isStoneSpecific();
+    /** Checks if this layer contains this material */
+    boolean contains(IMaterial ore);
 
-    public boolean generatesBigOre();
+    /**
+     * Selects an ore for worldgen.
+     * 
+     * @param k The weight, 0-1.
+     * @return The ore.
+     */
+    IMaterial getOre(float k);
 
-    public boolean contains(IMaterial ore);
-
-    public ImmutableList<IMaterial> getOres();
-
-    public IMaterial getOre(float k);
-
-    public String getName();
+    String getName();
 }

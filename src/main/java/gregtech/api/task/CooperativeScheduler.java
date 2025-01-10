@@ -25,9 +25,9 @@ import gregtech.common.config.Gregtech;
  * considering newer tasks.
  * This is to prevent it from becoming clogged if something's generating bad tasks.
  */
-public enum CooperativeScheduler {
+public final class CooperativeScheduler {
 
-    INSTANCE;
+    public static final CooperativeScheduler INSTANCE = new CooperativeScheduler();
 
     private final LinkedHashMap<String, CoopFuture<?>> tasks = new LinkedHashMap<>();
     private final List<CoopFuture<?>> newTasks = new ArrayList<>();

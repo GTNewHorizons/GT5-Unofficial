@@ -28,9 +28,13 @@ public class BWItemMetaGeneratedOre extends ItemBlock {
         return meta;
     }
 
+    private OrePrefixes getOrePrefix() {
+        return blockOre.isSmall ? OrePrefixes.oreSmall : OrePrefixes.ore;
+    }
+
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return blockOre.isSmall ? "bw.blocktype." + OrePrefixes.oreSmall : "bw.blocktype." + OrePrefixes.ore;
+        return "bw.blocktype." + getOrePrefix().name();
     }
 
     @Override

@@ -12,21 +12,19 @@ import java.util.Set;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
-import com.google.common.collect.ImmutableList;
-
 import gregtech.api.enums.StoneType;
+import gregtech.api.events.GTEventBus;
 import gregtech.api.interfaces.IMaterial;
 import gregtech.api.interfaces.IStoneCategory;
-import gregtech.api.interfaces.IStoneType;
 import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.ores.OreManager;
 import gregtech.common.worldgen.IWorldgenLayer;
+import gregtech.common.worldgen.VeinGenerateEvent;
 
 public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
 
-    public static ArrayList<WorldgenGTOreLayer> sList = new ArrayList<>();
-    public static int sWeight = 0;
+    public static final ArrayList<WorldgenGTOreLayer> sList = new ArrayList<>();
     public final short mMinY;
     public final short mMaxY;
     public final short mWeight;
@@ -38,14 +36,8 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
     public final IMaterial mSporadic;
     public final String mRestrictBiome;
     /** {full dim name} */
-    public final Set<String> mAllowedDimensions;
-    public final Set<IStoneCategory> mAllowedStone;
-    public static final int WRONG_BIOME = 0;
-    public static final int WRONG_DIMENSION = 1;
-    public static final int NO_ORE_IN_BOTTOM_LAYER = 2;
-    public static final int NO_OVERLAP = 3;
-    public static final int ORE_PLACED = 4;
-    public static final int NO_OVERLAP_AIR_BLOCK = 5;
+    private final Set<String> mAllowedDimensions;
+    private final Set<IStoneCategory> mAllowedStone;
     public final String aTextWorldgen = "worldgen.";
 
     public WorldgenGTOreLayer(OreMixBuilder mix) {
@@ -67,10 +59,6 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         this.mSporadic = mix.sporadic;
         this.mAllowedStone = mix.stoneCategories == null ? null : new HashSet<>(mix.stoneCategories);
         this.mRestrictBiome = "None";
-
-        if (this.mEnabled) {
-            sWeight += this.mWeight;
-        }
     }
 
     @Override
@@ -89,11 +77,6 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
     }
 
     @Override
-    public float getSize() {
-        return mSize / 2;
-    }
-
-    @Override
     public float getDensity() {
         return 1f / (float) mDensity;
     }
@@ -101,11 +84,6 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
     @Override
     public boolean canGenerateIn(String dimName) {
         return mAllowedDimensions.contains(dimName);
-    }
-
-    @Override
-    public boolean canGenerateIn(IStoneType stoneType) {
-        return mAllowedStone != null && mAllowedStone.contains(stoneType.getCategory());
     }
 
     @Override
@@ -121,18 +99,6 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
     @Override
     public boolean contains(IMaterial material) {
         return mPrimary == material || mBetween == material || mSecondary == material || mSporadic == material;
-    }
-
-    @Override
-    public ImmutableList<IMaterial> getOres() {
-        ImmutableList.Builder<IMaterial> ores = ImmutableList.builder();
-
-        if (mPrimary != null) ores.add(mPrimary);
-        if (mBetween != null) ores.add(mBetween);
-        if (mSecondary != null) ores.add(mSecondary);
-        if (mSporadic != null) ores.add(mSporadic);
-
-        return ores.build();
     }
 
     @Override
@@ -162,9 +128,20 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         return true;
     }
 
+    public Set<String> getAllowedDimensions() {
+        return mAllowedDimensions;
+    }
+
     @Override
-    public int executeWorldgenChunkified(World world, Random rng, String biome, int dimId, int chunkX, int chunkY,
-        int seedX, int seedZ, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+    public int executeWorldgenChunkified(World world, Random rng, String biome, int chunkX, int chunkZ, int seedX,
+        int seedZ, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+        VeinGenerateEvent event = new VeinGenerateEvent(world, chunkX, chunkZ, seedX, seedZ, this);
+
+        if (GTEventBus.bus()
+            .post(event)) {
+            return event.getOreGenResult();
+        }
+
         if (mWorldGenName.equals("NoOresInVein")) {
             if (debugOrevein) GTLog.out.println(" NoOresInVein");
             // Return a special empty orevein
@@ -193,7 +170,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
 
         if (limitWestX >= limitEastX) { // No overlap between orevein and this chunk exists in X
             // Check for stone at the center of the chunk and the bottom of the orevein.
-            if (StoneType.findStoneType(world, chunkX + 7, veinMinY, chunkY + 9) != null) {
+            if (StoneType.findStoneType(world, chunkX + 7, veinMinY, chunkZ + 9) != null) {
                 // Didn't reach, but could have placed. Save orevein for future use.
                 return NO_OVERLAP;
             } else {
@@ -206,12 +183,12 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         int veinNorthZ = seedZ - rng.nextInt(mSize);
         int veinSouthZ = seedZ + 16 + rng.nextInt(mSize);
 
-        int limitNorthZ = Math.max(veinNorthZ, chunkY + 2); // Bias placement by 2 blocks to prevent worldgen cascade.
-        int limitSouthZ = Math.min(veinSouthZ, chunkY + 2 + 16);
+        int limitNorthZ = Math.max(veinNorthZ, chunkZ + 2); // Bias placement by 2 blocks to prevent worldgen cascade.
+        int limitSouthZ = Math.min(veinSouthZ, chunkZ + 2 + 16);
 
         if (limitNorthZ >= limitSouthZ) { // No overlap between orevein and this chunk exists in Z
             // Check for stone at the center of the chunk and the bottom of the orevein.
-            if (StoneType.findStoneType(world, chunkX + 7, veinMinY, chunkY + 9) != null) {
+            if (StoneType.findStoneType(world, chunkX + 7, veinMinY, chunkZ + 9) != null) {
                 // Didn't reach, but could have placed. Save orevein for future use.
                 return NO_OVERLAP;
             } else {
@@ -228,7 +205,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
                     + " mX="
                     + chunkX / 16
                     + " mZ="
-                    + chunkY / 16
+                    + chunkZ / 16
                     + " oreseedX="
                     + seedX / 16
                     + " oreseedZ="
@@ -242,7 +219,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         int localDensity = Math.max(
             1,
             this.mDensity
-                / ((int) Math.sqrt(2 + Math.pow(chunkX / 16 - seedX / 16, 2) + Math.pow(chunkY / 16 - seedZ / 16, 2))));
+                / ((int) Math.sqrt(2 + Math.pow(chunkX / 16 - seedX / 16, 2) + Math.pow(chunkZ / 16 - seedZ / 16, 2))));
 
         LayerGenerator generator = new LayerGenerator();
 
@@ -291,28 +268,28 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
 
             for (int i = 0; i < smallOresToGenerate; i++) {
                 int tX = rng.nextInt(16) + chunkX + 2;
-                int tZ = rng.nextInt(16) + chunkY + 2;
+                int tZ = rng.nextInt(16) + chunkZ + 2;
                 int tY = rng.nextInt(160) + 10; // Y height can vary from 10 to 170 for small ores.
                 if (mPrimary != null) {
                     OreManager.setOreForWorldGen(world, tX, tY, tZ, null, mPrimary, true);
                 }
 
                 tX = rng.nextInt(16) + chunkX + 2;
-                tZ = rng.nextInt(16) + chunkY + 2;
+                tZ = rng.nextInt(16) + chunkZ + 2;
                 tY = rng.nextInt(160) + 10; // Y height can vary from 10 to 170 for small ores.
                 if (mSecondary != null) {
                     OreManager.setOreForWorldGen(world, tX, tY, tZ, null, mSecondary, true);
                 }
 
                 tX = rng.nextInt(16) + chunkX + 2;
-                tZ = rng.nextInt(16) + chunkY + 2;
+                tZ = rng.nextInt(16) + chunkZ + 2;
                 tY = rng.nextInt(160) + 10; // Y height can vary from 10 to 170 for small ores.
                 if (mBetween != null) {
                     OreManager.setOreForWorldGen(world, tX, tY, tZ, null, mBetween, true);
                 }
 
                 tX = rng.nextInt(16) + chunkX + 2;
-                tZ = rng.nextInt(16) + chunkY + 2;
+                tZ = rng.nextInt(16) + chunkZ + 2;
                 tY = rng.nextInt(190) + 10; // Y height can vary from 10 to 200 for small ores.
                 if (mSporadic != null) {
                     OreManager.setOreForWorldGen(world, tX, tY, tZ, null, mSporadic, true);

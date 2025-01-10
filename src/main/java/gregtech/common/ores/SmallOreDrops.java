@@ -1,6 +1,7 @@
 package gregtech.common.ores;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
@@ -20,11 +21,11 @@ public enum SmallOreDrops {
     gemChipped(OrePrefixes.gemChipped, OrePrefixes.dustImpure, 5),
     dustImpure(OrePrefixes.dustImpure, null, 10);
 
-    public static final ImmutableList<SmallOreDrops> DROPS = ImmutableList.copyOf(values());
+    public static final List<SmallOreDrops> DROPS = ImmutableList.copyOf(values());
 
-    public final OrePrefixes primary;
-    public final OrePrefixes fallback;
-    public final int weight;
+    private final OrePrefixes primary;
+    private final OrePrefixes fallback;
+    private final int weight;
 
     private SmallOreDrops(OrePrefixes primary, OrePrefixes fallback, int weight) {
         this.primary = primary;

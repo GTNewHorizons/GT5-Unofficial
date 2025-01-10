@@ -4,18 +4,16 @@ import static gregtech.api.enums.GTValues.debugSmallOres;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
-import com.google.common.collect.ImmutableList;
-
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IMaterial;
 import gregtech.api.interfaces.IStoneCategory;
-import gregtech.api.interfaces.IStoneType;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.world.GTWorldgen;
@@ -24,14 +22,15 @@ import gregtech.common.worldgen.IWorldgenLayer;
 
 public class WorldgenGTOreSmallPieces extends GTWorldgen implements IWorldgenLayer {
 
+    public static final List<WorldgenGTOreSmallPieces> sList = new ArrayList<>();
     public final short mMinY;
     public final short mMaxY;
     public final short mAmount;
-    public final IMaterial mMaterial;
+    private final IMaterial mMaterial;
+
     public final String mBiome;
-    public final Set<String> mAllowedDimensions;
-    public final Set<IStoneCategory> mAllowedStone;
-    public static ArrayList<WorldgenGTOreSmallPieces> sList = new ArrayList<>();
+    private final Set<String> mAllowedDimensions;
+    private final Set<IStoneCategory> mAllowedStone;
 
     public WorldgenGTOreSmallPieces(SmallOreBuilder ore) {
         super(ore.smallOreName, GregTechAPI.sWorldgenList, ore.enabledByDefault);
@@ -63,11 +62,6 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen implements IWorldgenLay
     }
 
     @Override
-    public float getSize() {
-        return mAmount / 2;
-    }
-
-    @Override
     public float getDensity() {
         return GTUtility.clamp(mAmount / 64.0f, 0f, 1f);
     }
@@ -75,11 +69,6 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen implements IWorldgenLay
     @Override
     public boolean canGenerateIn(String dimName) {
         return mAllowedDimensions.contains(dimName);
-    }
-
-    @Override
-    public boolean canGenerateIn(IStoneType stoneType) {
-        return mAllowedStone != null && mAllowedStone.contains(stoneType.getCategory());
     }
 
     @Override
@@ -98,11 +87,6 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen implements IWorldgenLay
     }
 
     @Override
-    public ImmutableList<IMaterial> getOres() {
-        return mMaterial == null ? ImmutableList.of() : ImmutableList.of(mMaterial);
-    }
-
-    @Override
     public IMaterial getOre(float k) {
         return mMaterial;
     }
@@ -117,8 +101,16 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen implements IWorldgenLay
         return false;
     }
 
+    public Set<String> getAllowedDimensions() {
+        return mAllowedDimensions;
+    }
+
+    public IMaterial getMaterial() {
+        return mMaterial;
+    }
+
     @Override
-    public boolean executeWorldgen(World world, Random random, String biome, int dimId, int chunkX, int chunkZ,
+    public boolean executeWorldgen(World world, Random random, String biome, int chunkX, int chunkZ,
         IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
         if (!this.mBiome.equals("None") && !(this.mBiome.equals(biome))) {
             return false; // Not the correct biome for ore mix
@@ -148,8 +140,8 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen implements IWorldgenLay
         if (debugSmallOres) {
             GTLog.out.println(
                 "Small Ore:" + this.mWorldGenName
-                    + " @ dim="
-                    + dimId
+                    + " @ DimName="
+                    + world.provider.getDimensionName()
                     + " mX="
                     + chunkX / 16
                     + " mZ="

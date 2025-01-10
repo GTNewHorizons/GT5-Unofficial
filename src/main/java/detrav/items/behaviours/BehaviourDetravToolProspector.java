@@ -88,7 +88,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         }
 
         if (block.getMaterial() == Material.rock || block.getMaterial() == Material.ground
-            || GTUtility.isMinable(block, meta)) {
+            || GTUtility.isOre(block, meta)) {
             prospectChunks(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aRandom, chance);
 
             return true;

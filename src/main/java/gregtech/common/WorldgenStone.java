@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTLog;
@@ -77,8 +78,8 @@ public class WorldgenStone extends GTWorldgen {
     }
 
     @Override
-    public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
-        int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+    public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aChunkX, int aChunkZ,
+        IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         XSTR stoneRNG = new XSTR();
         ArrayList<ValidSeeds> stones = new ArrayList<>();
 
@@ -128,7 +129,7 @@ public class WorldgenStone extends GTWorldgen {
             }
         }
 
-        IStoneType stoneType = OreManager.getStoneType(mBlock, mBlockMeta);
+        IStoneType stoneType = StoneType.findStoneType(mBlock, mBlockMeta);
 
         boolean result = !stones.isEmpty();
         // Now process each oreseed vs this requested chunk

@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 
 import codechicken.nei.PositionedStack;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.OrePrefixes.ParsedOreDictName;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IMaterial;
 import gregtech.common.ores.IOreAdapter;
@@ -75,10 +76,10 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
 
         boolean isMatItem = false;
 
-        for (var p : OrePrefixes.detectPrefix(stack)) {
-            if (!PluginGT5VeinStat.PREFIX_WHITELIST.contains(p.left())) continue;
+        for (ParsedOreDictName oredict : OrePrefixes.detectPrefix(stack)) {
+            if (!PluginGT5VeinStat.PREFIX_WHITELIST.contains(oredict.prefix)) continue;
 
-            mat = IMaterial.findMaterial(p.right());
+            mat = IMaterial.findMaterial(oredict.material);
 
             if (mat != null) {
                 isMatItem |= loadSmallOre(mat);
@@ -95,7 +96,7 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
         String abbr = ItemDimensionDisplay.getDimension(stack);
         if (abbr == null) return;
 
-        SmallOreDimensionWrapper wrapper = GT5OreSmallHelper.SMALL_ORES_BY_DIM.get(abbr);
+        SmallOreDimensionWrapper wrapper = GT5OreSmallHelper.getSmallOrebyDim(abbr);
         if (wrapper == null) return;
 
         for (OreSmallWrapper oreVein : wrapper.smallOres) {

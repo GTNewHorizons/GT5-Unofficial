@@ -7,6 +7,7 @@ import static gtPlusPlus.core.util.math.MathUtils.safeCast_LongToInt;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,8 +17,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-
-import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -95,6 +94,9 @@ public class Material implements IMaterial {
     public short werkstoffID;
 
     public static ArrayList<Materials> invalidMaterials = new ArrayList<>();
+
+    /** A cache field for raw ores to prevent constant map lookups. */
+    private ItemStack rawOre;
 
     public Material(final String materialName, final MaterialState defaultState, final MaterialStack... inputs) {
         this(materialName, defaultState, null, inputs);
@@ -871,12 +873,7 @@ public class Material implements IMaterial {
     }
 
     @Override
-    public boolean isValidForStone(IStoneType stoneType) {
-        return stoneType == StoneType.Stone;
-    }
-
-    @Override
-    public ImmutableList<IStoneType> getValidStones() {
+    public List<IStoneType> getValidStones() {
         return StoneType.STONE_ONLY;
     }
 
@@ -1227,8 +1224,6 @@ public class Material implements IMaterial {
     public final ItemStack getMilled(final int stacksize) {
         return getComponentByPrefix(OrePrefixes.milled, stacksize);
     }
-
-    ItemStack rawOre;
 
     public final ItemStack getRawOre(final int stacksize) {
         if (rawOre == null) {

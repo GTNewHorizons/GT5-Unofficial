@@ -138,10 +138,10 @@ public class VoidMinerUtility {
         for (WorldgenGTOreLayer layer : WorldgenGTOreLayer.sList) {
             if (!layer.mEnabled) continue;
 
-            for (String dim : layer.mAllowedDimensions) {
-                ModDimensionDef dimensionDef = DimensionDef.DEF_BY_WORLD_NAME.get(dim);
+            for (String dim : layer.getAllowedDimensions()) {
+                ModDimensionDef dimensionDef = DimensionDef.getDefByName(dim);
 
-                if (dimensionDef != null && !dimensionDef.canBeVoidMined) continue;
+                if (dimensionDef != null && !dimensionDef.canBeVoidMined()) continue;
 
                 DropMap map = dropMapsByDimName.computeIfAbsent(dim, ignored -> new DropMap());
 
@@ -155,14 +155,14 @@ public class VoidMinerUtility {
         for (WorldgenGTOreSmallPieces layer : WorldgenGTOreSmallPieces.sList) {
             if (!layer.mEnabled) continue;
 
-            for (String dim : layer.mAllowedDimensions) {
-                ModDimensionDef dimensionDef = DimensionDef.DEF_BY_WORLD_NAME.get(dim);
+            for (String dim : layer.getAllowedDimensions()) {
+                ModDimensionDef dimensionDef = DimensionDef.getDefByName(dim);
 
-                if (dimensionDef != null && !dimensionDef.canBeVoidMined) continue;
+                if (dimensionDef != null && !dimensionDef.canBeVoidMined()) continue;
 
                 DropMap map = dropMapsByDimName.computeIfAbsent(dim, ignored -> new DropMap());
 
-                map.addDrop(layer.mMaterial, layer.mAmount);
+                map.addDrop(layer.getMaterial(), layer.mAmount);
             }
         }
     }

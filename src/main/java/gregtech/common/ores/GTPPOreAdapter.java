@@ -8,16 +8,20 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
+import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
+import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
+
 import gregtech.GTMod;
 import gregtech.api.enums.StoneType;
 import gregtech.common.GTProxy.OreDropSystem;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.material.Material;
-import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 
-public enum GTPPOreAdapter implements IOreAdapter<Material> {
+public final class GTPPOreAdapter implements IOreAdapter<Material> {
 
-    INSTANCE;
+    public static GTPPOreAdapter INSTANCE = new GTPPOreAdapter();
+
+    private GTPPOreAdapter() {}
 
     @Override
     public boolean supports(Block block, int meta) {
@@ -47,7 +51,7 @@ public enum GTPPOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public ObjectIntPair<Block> getBlock(OreInfo<?> info) {
+    public ImmutableBlockMeta getBlock(OreInfo<?> info) {
         if (!supports(info)) return null;
 
         if (!(info.material instanceof Material gtppMat)) return null;
@@ -56,11 +60,11 @@ public enum GTPPOreAdapter implements IOreAdapter<Material> {
 
         if (ore == null) return null;
 
-        return ObjectIntPair.of(ore, 0);
+        return new BlockMeta(ore, 0);
     }
 
     @Override
-    public List<ItemStack> getOreDrops(OreInfo<?> info2, boolean silktouch, int fortune) {
+    public ArrayList<ItemStack> getOreDrops(Random random, OreInfo<?> info2, boolean silktouch, int fortune) {
         if (!supports(info2)) return new ArrayList<>();
 
         @SuppressWarnings("unchecked")
@@ -72,7 +76,7 @@ public enum GTPPOreAdapter implements IOreAdapter<Material> {
 
         if (silktouch) oreDropSystem = OreDropSystem.Block;
 
-        return getBigOreDrops(ThreadLocalRandom.current(), oreDropSystem, info, fortune);
+        return getBigOreDrops(random, oreDropSystem, info, fortune);
     }
 
     @Override
@@ -85,7 +89,7 @@ public enum GTPPOreAdapter implements IOreAdapter<Material> {
         return getBigOreDrops(ThreadLocalRandom.current(), GTMod.gregtechproxy.oreDropSystem, info, 0);
     }
 
-    public List<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo<Material> info,
+    private ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo<Material> info,
         int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<>();
 

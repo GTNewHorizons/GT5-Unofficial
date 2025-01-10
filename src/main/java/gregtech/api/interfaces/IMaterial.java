@@ -1,27 +1,30 @@
 package gregtech.api.interfaces;
 
-import com.google.common.collect.ImmutableList;
+import java.util.List;
 
 import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gtPlusPlus.core.material.Material;
 
+/**
+ * A temporary material interface to unify the three material systems.
+ * Once the new material system is finished, this should be removed and all the code referencing this should be migrated
+ * to the new system.
+ */
 public interface IMaterial {
 
-    public String getLocalizedName();
+    String getLocalizedName();
 
-    public int getId();
+    int getId();
 
-    public String getInternalName();
+    String getInternalName();
 
-    public short[] getRGBA();
+    short[] getRGBA();
 
-    public TextureSet getTextureSet();
+    TextureSet getTextureSet();
 
-    public boolean isValidForStone(IStoneType stoneType);
-
-    public ImmutableList<IStoneType> getValidStones();
+    List<IStoneType> getValidStones();
 
     public static IMaterial findMaterial(String name) {
         Werkstoff bw = Werkstoff.werkstoffVarNameHashMap.get(name);

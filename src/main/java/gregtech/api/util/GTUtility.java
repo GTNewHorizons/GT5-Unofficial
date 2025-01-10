@@ -4356,7 +4356,7 @@ public class GTUtility {
             && GTOreDictUnificator.getAssociation(aStack).mPrefix.equals(aPrefix);
     }
 
-    public static boolean isMinable(Block block, int meta) {
+    public static boolean isOre(Block block, int meta) {
         if (OreManager.isOre(block, meta)) return true;
 
         return isOre(new ItemStack(block, 1, meta));

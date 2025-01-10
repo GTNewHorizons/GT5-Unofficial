@@ -1,7 +1,6 @@
 package detrav.commands;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -13,6 +12,8 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.chunk.Chunk;
 
+import com.google.common.collect.ImmutableList;
+
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
 
@@ -21,7 +22,7 @@ import gregtech.common.ores.OreManager;
  */
 public class DetravScannerCommand implements ICommand {
 
-    private final List<String> aliases = new ArrayList<>(Arrays.asList("DetravScanner", "dscan"));
+    private final List<String> aliases = ImmutableList.of("DetravScanner", "dscan");
 
     @Override
     public String getCommandName() {

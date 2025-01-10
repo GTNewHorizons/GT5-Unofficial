@@ -42,7 +42,7 @@ public class GTWorldgenerator implements IWorldGenerator {
 
     private static final int MAX_VEIN_SIZE = 2; // in chunks
 
-    public static List<WorldGenContainer> pendingTasks = Collections.synchronizedList(new LinkedList<>());
+    private static final List<WorldGenContainer> PENDING_TASKS = Collections.synchronizedList(new LinkedList<>());
 
     // This is probably not going to work. Trying to create a fake orevein to put into hashtable when there will be no
     // ores in a vein.
@@ -79,34 +79,33 @@ public class GTWorldgenerator implements IWorldGenerator {
             return;
         }
 
-        pendingTasks.add(
+        PENDING_TASKS.add(
             new WorldGenContainer(
                 new XSTR(Math.abs(aRandom.nextInt()) + 1),
                 aX,
                 aZ,
-                aWorld.provider.dimensionId,
                 aWorld,
                 aChunkGenerator,
                 aChunkProvider,
                 aWorld.getBiomeGenForCoords(aX * 16 + 8, aZ * 16 + 8).biomeName));
         if (debugWorldGen) GTLog.out.println(
             "ADD WorldSeed:" + aWorld.getSeed()
-                + " DimId"
-                + aWorld.provider.dimensionId
+                + " DimName"
+                + aWorld.provider.getDimensionName()
                 + " chunk x:"
                 + aX
                 + " z:"
                 + aZ
                 + " SIZE: "
-                + pendingTasks.size());
+                + PENDING_TASKS.size());
 
         // hack to prevent cascading worldgen lag
         if (!this.mIsGenerating) {
             this.mIsGenerating = true;
 
             // Run a maximum of 5 chunks at a time through worldgen. Extra chunks get done later.
-            for (int i = 0; i < Math.min(pendingTasks.size(), 5); i++) {
-                WorldGenContainer task = pendingTasks.remove(0);
+            for (int i = 0; i < Math.min(PENDING_TASKS.size(), 5); i++) {
+                WorldGenContainer task = PENDING_TASKS.remove(0);
 
                 if (debugWorldGen) GTLog.out.println(
                     "RUN WorldSeed:" + aWorld.getSeed()
@@ -117,7 +116,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                         + " z:"
                         + task.mZ
                         + " SIZE: "
-                        + pendingTasks.size()
+                        + PENDING_TASKS.size()
                         + " i: "
                         + i);
 
@@ -210,7 +209,6 @@ public class GTWorldgenerator implements IWorldGenerator {
         public final Random mRandom;
         public final int mX;
         public final int mZ;
-        public final int mDimensionType;
         public final World mWorld;
         public final IChunkProvider mChunkGenerator;
         public final IChunkProvider mChunkProvider;
@@ -219,12 +217,11 @@ public class GTWorldgenerator implements IWorldGenerator {
         // static int test=0;
 
         // aX and aZ are now the by-chunk X and Z for the chunk of interest
-        public WorldGenContainer(Random aRandom, int aX, int aZ, int aDimensionType, World aWorld,
-            IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider, String aBiome) {
+        public WorldGenContainer(Random aRandom, int aX, int aZ, World aWorld, IChunkProvider aChunkGenerator,
+            IChunkProvider aChunkProvider, String aBiome) {
             this.mRandom = aRandom;
             this.mX = aX;
             this.mZ = aZ;
-            this.mDimensionType = aDimensionType;
             this.mWorld = aWorld;
             this.mChunkGenerator = aChunkGenerator;
             this.mChunkProvider = aChunkProvider;
@@ -305,7 +302,6 @@ public class GTWorldgenerator implements IWorldGenerator {
                     this.mWorld,
                     oreveinRNG,
                     this.mBiome,
-                    this.mDimensionType,
                     this.mX * 16,
                     this.mZ * 16,
                     oreseedX * 16,
@@ -346,6 +342,9 @@ public class GTWorldgenerator implements IWorldGenerator {
                         .inDimension(dimensionName)
                         .find(oreveinRNG);
 
+                    // there aren't any veins in this dimension so there's no point in retrying
+                    if (oreLayer == null) break;
+
                     int placementResult = 0;
 
                     try {
@@ -358,7 +357,6 @@ public class GTWorldgenerator implements IWorldGenerator {
                             this.mWorld,
                             new XSTR(oreveinSeed ^ (oreLayer.mPrimary.getId())),
                             this.mBiome,
-                            this.mDimensionType,
                             this.mX * 16,
                             this.mZ * 16,
                             oreseedX * 16,
@@ -486,7 +484,6 @@ public class GTWorldgenerator implements IWorldGenerator {
                         this.mWorld,
                         this.mRandom,
                         this.mBiome,
-                        this.mDimensionType,
                         this.mX * 16,
                         this.mZ * 16,
                         this.mChunkGenerator,

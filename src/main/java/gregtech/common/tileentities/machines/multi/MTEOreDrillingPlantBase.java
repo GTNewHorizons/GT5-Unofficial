@@ -10,6 +10,7 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -239,7 +240,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             Block block = world.getBlock(x, y, z);
             int meta = world.getBlockMetadata(x, y, z);
 
-            if (!GTUtility.isMinable(block, meta)) {
+            if (!GTUtility.isOre(block, meta)) {
                 // always remove non-ore blocks, even if we're simulating
                 iter.remove();
                 continue;
@@ -257,8 +258,16 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                 return false;
             }
 
-            List<ItemStack> oreBlockDrops = OreManager
-                .mineBlock(world, x, y, z, true, mTier + 3, simulate, replaceWithCobblestone);
+            List<ItemStack> oreBlockDrops = OreManager.mineBlock(
+                ThreadLocalRandom.current(),
+                world,
+                x,
+                y,
+                z,
+                true,
+                mTier + 3,
+                simulate,
+                replaceWithCobblestone);
 
             ItemStack[] toOutput = getOutputByDrops(oreBlockDrops);
 
@@ -585,7 +594,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         long pos = CoordinatePacker.pack(x, y, z);
 
         if (!oreBlockPositions.contains(pos)) {
-            if (GTUtility.isMinable(block, blockMeta)) oreBlockPositions.add(pos);
+            if (GTUtility.isOre(block, blockMeta)) oreBlockPositions.add(pos);
         }
     }
 

@@ -53,6 +53,7 @@ import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.XSTR;
+import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockMachines;
 
@@ -542,6 +543,12 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         }
     }
 
+    private IMetaTileEntity getMTE(Block block, int meta) {
+        if (!(block instanceof BlockMachines)) return null;
+
+        return GTUtility.getIndexSafe(GregTechAPI.METATILEENTITIES, meta);
+    }
+
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
         aRenderer.enableAO = false;
@@ -549,9 +556,10 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        // spotless:off
-        if (aMeta > 0 && (aMeta < GregTechAPI.METATILEENTITIES.length) && aBlock instanceof BlockMachines && (GregTechAPI.METATILEENTITIES[aMeta] != null) && (!GregTechAPI.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer))) {
-            renderNormalInventoryMetaTileEntity(aBlock, aMeta, aRenderer);
+
+        IMetaTileEntity imte = getMTE(aBlock, aMeta);
+        if (imte != null && !imte.renderInInventory(aBlock, aMeta, aRenderer)) {
+            renderNormalInventoryMetaTileEntity(aBlock, aMeta, imte, aRenderer);
         } else if (aBlock instanceof IBlockWithTextures texturedBlock) {
             ITexture[][] texture = texturedBlock.getTextures(aMeta);
             if (texture != null) {
@@ -565,7 +573,6 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
                 renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.EAST.ordinal()], true);
             }
         }
-        // spotless:on
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
 
         aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -574,41 +581,34 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         aRenderer.useInventoryTint = false;
     }
 
-    private static void renderNormalInventoryMetaTileEntity(Block aBlock, int aMeta, RenderBlocks aRenderer) {
-        if ((aMeta <= 0) || (aMeta >= GregTechAPI.METATILEENTITIES.length)) {
-            return;
-        }
-        final IMetaTileEntity tMetaTileEntity = GregTechAPI.METATILEENTITIES[aMeta];
-        if (tMetaTileEntity == null) {
-            return;
-        }
+    private static void renderNormalInventoryMetaTileEntity(Block aBlock, int aMeta, IMetaTileEntity imte,
+        RenderBlocks aRenderer) {
         aBlock.setBlockBoundsForItemRender();
         aRenderer.setRenderBoundsFromBlock(aBlock);
 
-        final IGregTechTileEntity iGregTechTileEntity = tMetaTileEntity.getBaseMetaTileEntity();
+        final IGregTechTileEntity igte = imte.getBaseMetaTileEntity();
 
         // spotless:off
-        if ((iGregTechTileEntity instanceof IPipeRenderedTileEntity renderedPipe)
-            && (tMetaTileEntity instanceof MetaPipeEntity pipeEntity)) {
+        if (igte instanceof IPipeRenderedTileEntity renderedPipe && imte instanceof MetaPipeEntity pipeEntity) {
             final float tThickness = renderedPipe.getThickNess();
             final float pipeMin = (blockMax - tThickness) / 2.0F;
             final float pipeMax = blockMax - pipeMin;
 
             aBlock.setBlockBounds(blockMin, pipeMin, pipeMin, blockMax, pipeMax, pipeMax);
             aRenderer.setRenderBoundsFromBlock(aBlock);
-            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, pipeEntity.getTexture(iGregTechTileEntity, DOWN, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false), true);
-            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, pipeEntity.getTexture(iGregTechTileEntity, UP, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false), true);
-            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, pipeEntity.getTexture(iGregTechTileEntity, NORTH, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false), true);
-            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, pipeEntity.getTexture(iGregTechTileEntity, SOUTH, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false), true);
-            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, pipeEntity.getTexture(iGregTechTileEntity, WEST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false), true);
-            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, pipeEntity.getTexture(iGregTechTileEntity, EAST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false), true);
+            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, pipeEntity.getTexture(igte, DOWN, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false), true);
+            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, pipeEntity.getTexture(igte, UP, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false), true);
+            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, pipeEntity.getTexture(igte, NORTH, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false), true);
+            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, pipeEntity.getTexture(igte, SOUTH, (CONNECTED_WEST | CONNECTED_EAST), -1, false, false), true);
+            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, pipeEntity.getTexture(igte, WEST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false), true);
+            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, pipeEntity.getTexture(igte, EAST, (CONNECTED_WEST | CONNECTED_EAST), -1, true, false), true);
         } else {
-            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, DOWN, WEST, -1, true, false), true);
-            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, UP, WEST, -1, true, false), true);
-            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, NORTH, WEST, -1, true, false), true);
-            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, SOUTH, WEST, -1, true, false), true);
-            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, WEST, WEST, -1, true, false), true);
-            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, tMetaTileEntity.getTexture(iGregTechTileEntity, EAST, WEST, -1, true, false), true);
+            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, imte.getTexture(igte, DOWN, WEST, -1, true, false), true);
+            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, imte.getTexture(igte, UP, WEST, -1, true, false), true);
+            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, imte.getTexture(igte, NORTH, WEST, -1, true, false), true);
+            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, imte.getTexture(igte, SOUTH, WEST, -1, true, false), true);
+            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, imte.getTexture(igte, WEST, WEST, -1, true, false), true);
+            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, imte.getTexture(igte, EAST, WEST, -1, true, false), true);
         }
         // spotless:on
     }
