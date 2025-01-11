@@ -931,6 +931,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         NBTTagCompound tag = accessor.getNBTData();
         String machineProgressString = GTWaila.getMachineProgressString(
             tag.getBoolean("isActive"),
+            tag.getBoolean("isAllowedToWork"),
             tag.getInteger("maxProgress"),
             tag.getInteger("progress"));
         currentTip.remove(machineProgressString);
