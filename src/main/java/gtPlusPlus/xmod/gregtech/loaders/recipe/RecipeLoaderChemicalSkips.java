@@ -178,6 +178,7 @@ public class RecipeLoaderChemicalSkips {
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(QFT_FOCUS_TIER, 1)
+            .noBuffer()
             .addTo(quantumForceTransformerRecipes);
         // Glues and Solders
         GTValues.RA.stdBuilder()

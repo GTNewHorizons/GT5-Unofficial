@@ -45,6 +45,5 @@ public class CompatIntermodStaging {
 
     public static void onLoadComplete(FMLLoadCompleteEvent event) {
         HandlerGT.onLoadComplete(event);
-        RecipeRemovals.onLoadComplete();
     }
 }
