@@ -370,11 +370,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     // large mixer
     Industrial_Mixer,
 
-    // Naq Reactor
-    Casing_Naq_Reactor_A,
-    Casing_Naq_Reactor_B,
-    Casing_Naq_Reactor_C,
-    /* Controller_Naq_Reactor, */
+    // Containment Casing
     Casing_Containment,
 
     // Arc Furnace
@@ -519,7 +515,6 @@ public enum GregtechItemList implements IGregtechItemContainer {
     // Custom Fluid Hatches
     Hatch_Input_Cryotheum,
     Hatch_Input_Pyrotheum,
-    Hatch_Input_Naquadah,
     Hatch_Input_Steam,
 
     // Steam Multi Buses
