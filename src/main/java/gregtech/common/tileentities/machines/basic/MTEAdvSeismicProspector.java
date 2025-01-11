@@ -99,11 +99,6 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
     }
 
     @Override
-    public ITexture[][][] getTextureSet(ITexture[] aTextures) {
-        return super.getTextureSet(aTextures);
-    }
-
-    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isServerSide()) {
             ItemStack aStack = aPlayer.getCurrentEquippedItem();
