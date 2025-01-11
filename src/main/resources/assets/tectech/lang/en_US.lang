@@ -785,6 +785,8 @@ gt.blockmachines.multimachine.em.research.desc.1=Used to scan Data Sticks for As
 gt.blockmachines.multimachine.em.research.desc.2=Needs to be fed with computation to work
 gt.blockmachines.multimachine.em.research.desc.3=Does not consume the item until the Data Stick is written
 gt.blockmachines.multimachine.em.research.desc.4=Use screwdriver to change mode
+gt.blockmachines.multimachine.em.research.desc.5=Computation required in scanner mode follows the formula:
+gt.blockmachines.multimachine.em.research.desc.6=(Recipe duration in seconds * Recipe voltage) / 30
 gt.blockmachines.multimachine.em.research.mode.Assembly_line=Mode: Research Station
 gt.blockmachines.multimachine.em.research.mode.Scanner=Mode: Scanner
 
