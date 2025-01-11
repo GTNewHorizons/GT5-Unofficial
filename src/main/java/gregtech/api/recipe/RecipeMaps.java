@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.init.Blocks;
@@ -1101,10 +1102,17 @@ public final class RecipeMaps {
         .minInputs(3, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLE)
         .disableOptimize()
+        .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.PCBFactory.get(1)))
         .neiRecipeComparator(
             Comparator
                 .<GTRecipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(PCBFactoryTierKey.INSTANCE, 1))
                 .thenComparing(GTRecipe::compareTo))
+        .build();
+    public static final RecipeMap<RecipeMapBackend> pcbFactoryRecipesNoNanites = RecipeMapBuilder
+        .of("gt.recipe.pcbfactorynonanites")
+        .maxIO(6, 9, 3, 0)
+        .minInputs(3, 1)
+        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationClarifierRecipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantclarifier")
@@ -1228,5 +1236,28 @@ public final class RecipeMaps {
                     b.copy()
                         .duration(1 * TICK)
                         .eut(TierEU.RECIPE_UEV))));
+        RecipeMaps.pcbFactoryRecipes.addDownstream(IRecipeMap.newRecipeMap(b -> {
+            b = b.copy();
+            List<ItemStack> itemInputs = new ArrayList<>();
+
+            Materials naniteMaterial = null;
+            for (int i = 0; i < b.getItemInputsBasic().length; i++) {
+                ItemStack stack = b.getItemInputBasic(i);
+                if (stack == null) continue;
+                ItemData data = GTOreDictUnificator.getAssociation(stack);
+                if (data != null && data.mPrefix != null && data.mPrefix.equals(OrePrefixes.nanite)) {
+                    naniteMaterial = data.mMaterial.mMaterial;
+                    continue;
+                }
+                itemInputs.add(stack);
+            }
+
+            if (naniteMaterial != null) {
+                b.metadata(GTRecipeConstants.PCB_NANITE_MATERIAL, naniteMaterial);
+            }
+            return RecipeMaps.pcbFactoryRecipesNoNanites.doAdd(
+                b.itemInputs(itemInputs.toArray(new ItemStack[0]))
+                    .hidden());
+        }));
     }
 }
