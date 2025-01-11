@@ -18,4 +18,8 @@ public interface IDualInputHatch {
     Optional<IDualInputInventory> getFirstNonEmptyInventory();
 
     boolean supportsFluids();
+
+    ItemStack[] getSharedItems();
+
+    boolean needClearRecipeMap();
 }
