@@ -1,6 +1,8 @@
 package gregtech.loaders.preload;
 
+// spotless:off
 import static gregtech.api.enums.MetaTileEntityIDs.*;
+// spotless:on
 import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_DATA_ACCESS_HATCH;
 import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_DEBUG_STRUCTURE_WRITTER;
 import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_SEISMIC_PROSPECTOR_EV;
@@ -1088,6 +1090,8 @@ import gregtech.common.tileentities.machines.multi.compressor.MTEIndustrialCompr
 import gregtech.common.tileentities.machines.multi.compressor.MTENeutroniumCompressor;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
+import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.*;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchDegasifierControl;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensIndicator;
@@ -1636,6 +1640,45 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.LargeFluidExtractor.set(
             new MTELargeFluidExtractor(LARGE_FLUID_EXTRACTOR.ID, "multimachine.fluidextractor", "Large Fluid Extractor")
+                .getStackForm(1));
+
+        ItemList.Machine_Multi_NanochipAssemblyComplex.set(
+            new MTENanochipAssemblyComplex(
+                NANOCHIP_ASSEMBLY_CONTROLLER.ID,
+                "multimachine.nanochipassemblycomplex",
+                "Nanochip Assembly Complex").getStackForm(1));
+        ItemList.NanoChipModule_AssemblyMatrix.set(
+            new AssemblyMatrix(
+                NANOCHIP_MODULE_ASSEMBLY_MATRIX.ID,
+                "multimachine.nanochipmodule.assemblymatrix",
+                "Nanochip Assembly Matrix").getStackForm(1));
+        ItemList.NanoChipModule_SMDProcessor.set(
+            new SMDProcessor(
+                NANOCHIP_MODULE_SMD_PROCESSOR.ID,
+                "multimachine.nanochipmodule.smdprocessor",
+                "Part Preparation Apparatus").getStackForm(1));
+        ItemList.NanoChipModule_BoardProcessor.set(
+            new BoardProcessor(
+                NANOCHIP_MODULE_BOARD_PROCESSOR.ID,
+                "multimachine.nanochipmodule.boadprocessor",
+                "Full-Board Immersion Device").getStackForm(1));
+        ItemList.NanoChipModule_EtchingArray.set(
+            new EtchingArray(
+                NANOCHIP_MODULE_ETCHING_ARRAY.ID,
+                "multimachine.nanochipmodule.etchingarray",
+                "Ultra-high Energy Etching Array").getStackForm(1));
+        ItemList.NanoChipModule_CuttingChamber.set(
+            new CuttingChamber(
+                NANOCHIP_MODULE_CUTTING_CHAMBER.ID,
+                "multimachine.nanochipmodule.cuttingchamber",
+                "Nanoprecision Cutting Chamber").getStackForm(1));
+        ItemList.NanoChipModule_WireTracer.set(
+            new WireTracer(
+                NANOCHIP_MODULE_WIRE_TRACER.ID,
+                "multimachine.nanochipmodule.wiretracer",
+                "Nanoprecision Wire Tracer").getStackForm(1));
+        ItemList.NanoChipModule_Splitter.set(
+            new Splitter(NANOCHIP_MODULE_SPLITTER.ID, "multimachine.nanochipmodule.splitter", "Nanopart Splitter")
                 .getStackForm(1));
 
         if (Thaumcraft.isModLoaded()) {
