@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.logic.ProcessingLogic;
+
 public interface IDualInputHatch {
 
     boolean justUpdated();
@@ -21,5 +23,5 @@ public interface IDualInputHatch {
 
     ItemStack[] getSharedItems();
 
-    boolean needClearRecipeMap();
+    void setProcessingLogic(ProcessingLogic pl);
 }

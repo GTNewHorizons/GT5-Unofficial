@@ -534,26 +534,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 }
             }
 
-            @Override
-            public GTRecipe getRecipeByInputs(ItemStack[] inItems, FluidStack[] inFluids) {
-                RecipeMap<?> map;
-                switch (getModeFromCircuit(inItems)) {
-                    case MACHINEMODE_COMPRESSOR -> {
-                        map = RecipeMaps.compressorRecipes;
-                    }
-                    case MACHINEMODE_BLACKHOLE -> {
-                        map = RecipeMaps.neutroniumCompressorRecipes;
-                    }
-                    default -> {
-                        return null;
-                    }
-                }
-                return map.findRecipeQuery()
-                    .items(inItems)
-                    .fluids(inFluids)
-                    .find();
-            }
-
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {

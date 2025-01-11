@@ -23,6 +23,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
@@ -298,7 +299,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     @Override
-    public boolean needClearRecipeMap() {
-        return getMaster() != null && getMaster().needClearRecipeMap();
+    public void setProcessingLogic(ProcessingLogic pl) {
+        if (getMaster() != null) getMaster().setProcessingLogic(pl);
     }
 }

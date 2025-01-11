@@ -438,18 +438,13 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         // check crafting input hatches first
         for (IDualInputHatch dualInputHatch : mDualInputHatches) {
             ItemStack[] sharedItems = dualInputHatch.getSharedItems();
-            if (dualInputHatch.needClearRecipeMap()) processingLogic.resetCribsRecipeMap();
             for (var it = dualInputHatch.inventories(); it.hasNext();) {
                 IDualInputInventory slot = it.next();
-                int slotHash = slot.hashCode();
 
-                if (!slot.isEmpty()) {
-                    if (!processingLogic.cribsHasRecipe(slotHash)
-                        && !processingLogic.setCribsSlotRecipe(slot.getPatternInputs(), slotHash)) continue;
+                if (!slot.isEmpty() && processingLogic.craftingPatternHandler(slot)) {
 
                     processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, slot.getItemInputs()));
                     processingLogic.setInputFluids(slot.getFluidInputs());
-                    processingLogic.setCribsSlotHash(slotHash);
 
                     CheckRecipeResult foundResult = processingLogic.process();
                     if (foundResult.wasSuccessful()) {

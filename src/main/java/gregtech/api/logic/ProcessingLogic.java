@@ -1,5 +1,8 @@
 package gregtech.api.logic;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +23,7 @@ import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
+import gregtech.common.tileentities.machines.IDualInputInventory;
 
 /**
  * Logic class to calculate result of recipe check from inputs, based on recipemap.
@@ -32,8 +36,8 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
     protected ItemStack[] inputItems;
     protected FluidStack[] inputFluids;
     protected boolean isRecipeLocked;
-    protected int cribsSlotHash;
-    protected Map<Integer, GTRecipe> cribsRecipeMap = new HashMap<>();
+    protected int craftingPatternHash;
+    protected Map<Integer, List<GTRecipe>> craftingPatternRecipeCache = new HashMap<>();
 
     public ProcessingLogic() {}
 
@@ -68,25 +72,35 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         return getThis();
     }
 
-    public void setCribsSlotHash(int hash) {
-        this.cribsSlotHash = hash;
-    }
-
-    public boolean cribsHasRecipe(int hash) {
-        return cribsRecipeMap.containsKey(hash);
-    }
-
-    public boolean setCribsSlotRecipe(GTDualInputs inputs, int hash) {
-        GTRecipe tempRecipe = getRecipeByInputs(inputs.inputItems, inputs.inputFluid);
-        if (tempRecipe != null) {
-            cribsRecipeMap.put(hash, tempRecipe);
-            return true;
+    public boolean craftingPatternHandler(IDualInputInventory slot) {
+        int hash = slot.hashCode();
+        if (needWipeCraftingPatternRecipeCache) {
+            craftingPatternRecipeCache.clear();
+            needWipeCraftingPatternRecipeCache = false;
         }
-        return false;
+        if (!craftingPatternRecipeCache.containsKey(hash)) {
+            GTDualInputs inputs = slot.getPatternInputs();
+            setInputItems(inputs.inputItems);
+            setInputFluids(inputs.inputFluid);
+            List<GTRecipe> recipes = new ArrayList<>();
+            for (GTRecipe recipe : findRecipeMatches(preProcess()).collect(toList())) {
+                if (!recipes.contains(recipe)) {
+                    recipes.add(recipe);
+                }
+            }
+            if (!recipes.isEmpty()) {
+                craftingPatternRecipeCache.put(hash, recipes);
+                craftingPatternHash = hash;
+                return true;
+            }
+            return false;
+        }
+        craftingPatternHash = hash;
+        return true;
     }
 
-    public void resetCribsRecipeMap() {
-        cribsRecipeMap.clear();
+    public void removeEntryCraftingPatternRecipeCache(int hash) {
+        craftingPatternRecipeCache.remove(hash);
     }
 
     /**
@@ -111,7 +125,7 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         this.calculatedEut = 0;
         this.duration = 0;
         this.calculatedParallels = 0;
-        this.cribsSlotHash = 0;
+        this.craftingPatternHash = 0;
         return getThis();
     }
 
@@ -133,11 +147,15 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
             inputFluids = new FluidStack[0];
         }
 
-        if (cribsSlotHash != 0 && cribsRecipeMap.containsKey(cribsSlotHash)) {
-            if (cribsRecipeMap.get(cribsSlotHash)
-                .maxParallelCalculatedByInputs(1, inputFluids, inputItems) == 1) {
-                return validateAndCalculateRecipe(cribsRecipeMap.get(cribsSlotHash)).checkRecipeResult;
+        if (craftingPatternHash != 0) {
+            List<GTRecipe> matchedRecipes = craftingPatternRecipeCache.get(craftingPatternHash);
+            for (GTRecipe matchedRecipe : matchedRecipes) {
+                if (matchedRecipe.maxParallelCalculatedByInputs(1, inputFluids, inputItems) == 1) {
+                    CalculationResult foundResult = validateAndCalculateRecipe(matchedRecipe);
+                    return foundResult.checkRecipeResult;
+                }
             }
+            craftingPatternHash = 0;
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
@@ -169,15 +187,6 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
             }
         }
         return checkRecipeResult;
-    }
-
-    public GTRecipe getRecipeByInputs(ItemStack[] inItems, FluidStack[] inFluids) {
-        RecipeMap<?> map = preProcess();
-        if (map == null) return null;
-        return map.findRecipeQuery()
-            .items(inItems)
-            .fluids(inFluids)
-            .find();
     }
 
     /**
