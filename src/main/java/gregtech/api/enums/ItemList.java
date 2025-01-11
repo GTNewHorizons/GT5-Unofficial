@@ -2070,6 +2070,7 @@ public enum ItemList implements IItemContainer {
 
     Hatch_Input_Bus_ME,
     Hatch_Input_Bus_ME_Advanced,
+    Hatch_Input_Bus_ME_OreDict,
     Hatch_Input_ME,
     Hatch_Input_ME_Advanced,
     Hatch_CraftingInput_Bus_ME,

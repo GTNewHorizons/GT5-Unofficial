@@ -1000,6 +1000,7 @@ import gregtech.common.tileentities.machines.MTEBasicHullSteelBricks;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
+import gregtech.common.tileentities.machines.MTEHatchInputBusMEOredict;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
@@ -10740,6 +10741,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 true,
                 "hatch.input_bus.me",
                 "Advanced Stocking Input Bus (ME)").getStackForm(1L));
+        ItemList.Hatch_Input_Bus_ME_OreDict.set(
+            new MTEHatchInputBusMEOredict(
+                INPUT_BUS_ME_OREDICT.ID,
+                "hatch.input_bus.me.ore_dict",
+                "Ore Dictionary Advanced Stocking Input Bus (ME)").getStackForm(1));
         ItemList.Hatch_Input_ME.set(
             new MTEHatchInputME(INPUT_HATCH_ME.ID, false, "hatch.input.me.basic", "Stocking Input Hatch (ME)")
                 .getStackForm(1L));
