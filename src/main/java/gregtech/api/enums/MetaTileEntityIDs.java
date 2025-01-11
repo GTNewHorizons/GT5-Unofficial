@@ -634,7 +634,6 @@ public enum MetaTileEntityIDs {
     FusionComputer_UV2(965),
     Hatch_Input_Cryotheum(967),
     Hatch_Input_Pyrotheum(968),
-    Hatch_Input_Naquadah(969),
     FusionComputer_UV3(975),
     Industrial_CuttingFactoryController(992),
     Generator_SemiFluid_EV(993),

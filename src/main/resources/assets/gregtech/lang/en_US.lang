@@ -376,6 +376,7 @@ GT5U.machines.stalled_vent.tooltip=§4Stalled: Cannot vent steam!
 GT5U.machines.stalled_vent.tooltip.1=§7Right-click with a wrench to
 GT5U.machines.stalled_vent.tooltip.2=§7point this machine's steam
 GT5U.machines.stalled_vent.tooltip.3=§7vent towards an empty space.
+GT5U.machines.perfectoc.tooltip=Performs perfect overclocks
 GT5U.GTPP_MULTI_ARC_FURNACE.mode.0=Electric
 GT5U.GTPP_MULTI_ARC_FURNACE.mode.1=Plasma
 GT5U.GTPP_MULTI_CUTTING_MACHINE.mode.0=Cutting

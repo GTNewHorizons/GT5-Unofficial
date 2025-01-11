@@ -20,13 +20,13 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
+import gregtech.api.util.recipe.Scanning;
 import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
 import gtnhlanth.common.item.ItemPhotolithographicMask;
@@ -59,11 +59,14 @@ public class GTRecipeConstants {
      */
     public static final RecipeMetadataKey<Integer> FUSION_THRESHOLD = SimpleRecipeMetadataKey
         .create(Integer.class, "fusion_threshold");
+
     /**
-     * Research time in a scanner used in ticks.
+     * Scanning data used for scanner for assembly line recipes (time and voltage).
+     * Scanning time should be between 30 seconds and 3 minutes, and the voltage 1 tiers below the available scanner
+     * tier for the recipe.
      */
-    public static final RecipeMetadataKey<Integer> RESEARCH_TIME = SimpleRecipeMetadataKey
-        .create(Integer.class, "research_time");
+    public static final RecipeMetadataKey<Scanning> SCANNING = SimpleRecipeMetadataKey
+        .create(Scanning.class, "scanning");
     /**
      * Fuel type. TODO should we use enum directly?
      */
@@ -465,8 +468,8 @@ public class GTRecipeConstants {
 
     /**
      * The one and only :tm: assline recipe adder.
-     * Uses {@link #RESEARCH_ITEM} metadata as research item, and {@link #RESEARCH_TIME} metadata as research time, unit
-     * in ticks.
+     * Uses {@link #RESEARCH_ITEM} metadata as research item, and {@link #SCANNING} metadata as research time and
+     * voltage.
      */
     public static final IRecipeMap AssemblyLine = IRecipeMap.newRecipeMap(builder -> {
         Optional<GTRecipe.GTRecipe_WithAlt> rr = builder.forceOreDictInput()
@@ -529,14 +532,16 @@ public class GTRecipeConstants {
             if (fluidInput == null) continue;
             tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(fluidInput, true, false);
         }
-        int aResearchTime = builder.getMetadataOrDefault(RESEARCH_TIME, 0);
-        tPersistentHash = tPersistentHash * 31 + aResearchTime;
+        Scanning scanningData = builder.getMetadataOrDefault(SCANNING, new Scanning(0, 0));
+        tPersistentHash = tPersistentHash * 31 + scanningData.time;
+        tPersistentHash = tPersistentHash * 31 + (int) scanningData.voltage;
         tPersistentHash = tPersistentHash * 31 + r.mDuration;
         tPersistentHash = tPersistentHash * 31 + r.mEUt;
 
         GTRecipe.RecipeAssemblyLine tRecipe = new GTRecipe.RecipeAssemblyLine(
             aResearchItem,
-            aResearchTime,
+            scanningData.time,
+            (int) scanningData.voltage,
             r.mInputs,
             r.mFluidInputs,
             aOutput,
@@ -553,8 +558,8 @@ public class GTRecipeConstants {
                 .itemInputs(aResearchItem)
                 .itemOutputs(aOutput)
                 .special(tRecipe.newDataStickForNEI("Writes Research result"))
-                .duration(aResearchTime)
-                .eut(TierEU.RECIPE_LV)
+                .duration(scanningData.time)
+                .eut(scanningData.voltage)
                 .specialValue(-201) // means it's scanned
                 .noOptimize()
                 .ignoreCollision()
