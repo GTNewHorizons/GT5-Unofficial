@@ -35,7 +35,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.render.GTRendererBlock;
@@ -58,9 +57,6 @@ public abstract class BlockOresAbstract extends GTGenericBlock implements ITileE
         tHideOres = NotEnoughItems.isModLoaded() && GTMod.gregtechproxy.mHideUnusedOres;
         if (aOreMetaCount > 8 || aOreMetaCount < 0) aOreMetaCount = 8;
 
-        for (int i = 0; i < 16; i++) {
-            GTModHandler.addValuableOre(this, i, 1);
-        }
         for (int i = 1; i < GregTechAPI.sGeneratedMaterials.length; i++) {
             if (GregTechAPI.sGeneratedMaterials[i] != null) {
                 for (int j = 0; j < aOreMetaCount; j++) {
