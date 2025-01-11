@@ -35,7 +35,7 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GTRecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
@@ -67,6 +67,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
@@ -329,7 +330,7 @@ public class RecipesGregTech {
             .metadata(
                 RESEARCH_ITEM,
                 ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_1_CONTAINMENT, 1))
-            .metadata(RESEARCH_TIME, 30 * MINUTES)
+            .metadata(SCANNING, new Scanning(50 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 ItemList.Field_Generator_IV.get(32),
                 ItemList.Electric_Motor_EV.get(64),
@@ -360,7 +361,7 @@ public class RecipesGregTech {
             .metadata(
                 RESEARCH_ITEM,
                 ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_8_TURBINE_AUTOMATION, 1))
-            .metadata(RESEARCH_TIME, 24 * HOURS)
+            .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_ZPM))
             .itemInputs(
                 CI.getTieredMachineHull(8, 4),
                 CI.getConveyor(8, 24),
@@ -401,7 +402,7 @@ public class RecipesGregTech {
         for (int j = 6; j < 10; j++) {
             RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, aResearch[aCasingSlot])
-                .metadata(RESEARCH_TIME, 1 * HOURS)
+                .metadata(SCANNING, new Scanning(50 * SECONDS, GTValues.VP[aCasingSlot + 5]))
                 .itemInputs(
                     CI.getTieredComponent(OrePrefixes.plate, j - 1, 16),
                     CI.getTieredComponent(OrePrefixes.cableGt08, j + 1, 32),
@@ -432,7 +433,7 @@ public class RecipesGregTech {
         for (int j = 6; j < 10; j++) {
             RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, aExoticInputs[aCasingSlot])
-                .metadata(RESEARCH_TIME, 5 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES, GTValues.VP[aCasingSlot + 7]))
                 .itemInputs(
                     aGemCasings[aCasingSlot],
                     ItemUtils.getSimpleStack(aExoticInputs[aCasingSlot], 16),
@@ -456,7 +457,7 @@ public class RecipesGregTech {
             // Nano Healer
             RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemUtils.simpleMetaStack(Items.golden_apple, 1, 1))
-                .metadata(RESEARCH_TIME, 10 * MINUTES)
+                .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
                     ItemUtils.getSimpleStack(aGemCasings[2], 4),
                     CI.getTieredComponent(OrePrefixes.plate, 8, 32),
@@ -491,10 +492,10 @@ public class RecipesGregTech {
                 ItemUtils.getSimpleStack(ModItems.itemChargePack_High_4, 1), };
 
             int aCurrSlot = 0;
-            for (int h = 6; h < 10; h++) {
+            for (int h = 6; h < 9; h++) {
                 RA.stdBuilder()
                     .metadata(RESEARCH_ITEM, aChargeResearch[aCurrSlot])
-                    .metadata(RESEARCH_TIME, 10 * (aCurrSlot + 1) * MINUTES)
+                    .metadata(SCANNING, new Scanning(30 * SECONDS, GTValues.VP[aCurrSlot + 5]))
                     .itemInputs(
                         ItemUtils.getSimpleStack(aGemBatteries[aCurrSlot], 2),
                         aCoilWire[aCurrSlot],
@@ -517,12 +518,34 @@ public class RecipesGregTech {
                 aCurrSlot++;
             }
 
+            RA.stdBuilder()
+                .metadata(RESEARCH_ITEM, aChargeResearch[aCurrSlot])
+                .metadata(SCANNING, new Scanning(30 * SECONDS, GTValues.VP[aCurrSlot + 5]))
+                .itemInputs(
+                    ItemUtils.getSimpleStack(aGemBatteries[aCurrSlot], 2),
+                    aCoilWire[aCurrSlot],
+                    CI.getTieredComponent(OrePrefixes.plate, 9, 8),
+                    new Object[] { CI.getTieredCircuitOreDictName(9), 4 },
+                    new Object[] { CI.getTieredCircuitOreDictName(8), 8 },
+                    CI.getTieredComponent(OrePrefixes.cableGt12, 8, 16),
+                    CI.getTieredComponent(OrePrefixes.screw, 9, 16),
+                    CI.getTieredComponent(OrePrefixes.bolt, 7, 32),
+                    CI.getFieldGenerator(8, 1))
+                .fluidInputs(
+                    CI.getTieredFluid(9, 144 * 4 * 8),
+                    CI.getTertiaryTieredFluid(8, 144 * 4 * 8 * 2),
+                    CI.getAlternativeTieredFluid(7, 144 * 4 * 8))
+                .itemOutputs(aChargeOutputs[aCurrSlot])
+                .eut(GTValues.VP[9])
+                .duration((aCurrSlot + 1) * HOURS)
+                .addTo(AssemblyLine);
+
             // Cloaking device
             RA.stdBuilder()
                 .metadata(
                     RESEARCH_ITEM,
                     ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_9_CLOAKING, 1))
-                .metadata(RESEARCH_TIME, 10 * MINUTES)
+                .metadata(SCANNING, new Scanning(1 * MINUTES + 40 * SECONDS, TierEU.RECIPE_ZPM))
                 .itemInputs(
                     ItemUtils.getSimpleStack(aGemCasings[3], 4),
                     CI.getTieredComponent(OrePrefixes.plate, 8, 32),
@@ -544,9 +567,10 @@ public class RecipesGregTech {
                 .addTo(AssemblyLine);
         }
 
+        // Mega Alloy Blast Smelter
         RA.stdBuilder()
             .metadata(RESEARCH_ITEM, GregtechItemList.Industrial_AlloyBlastSmelter.get(1, new Object() {}))
-            .metadata(RESEARCH_TIME, 30 * MINUTES)
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 20 * SECONDS, TierEU.RECIPE_ZPM))
             .itemInputs(
                 GregtechItemList.Industrial_AlloyBlastSmelter.get(64L, new Object() {}),
                 GregtechItemList.Industrial_AlloyBlastSmelter.get(64L, new Object() {}),
@@ -571,7 +595,7 @@ public class RecipesGregTech {
         // Expandable Hand Pump
         RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1))
-            .metadata(RESEARCH_TIME, 30 * MINUTES)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 ItemList.Electric_Pump_LuV.get(4),
                 ItemList.Electric_Motor_LuV.get(4),

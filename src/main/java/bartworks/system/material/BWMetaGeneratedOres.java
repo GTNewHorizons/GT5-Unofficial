@@ -33,7 +33,6 @@ import net.minecraftforge.common.util.FakePlayer;
 import bartworks.util.MathUtils;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTModHandler;
 
 public class BWMetaGeneratedOres extends BWMetaGeneratedBlocks {
 
@@ -45,12 +44,7 @@ public class BWMetaGeneratedOres extends BWMetaGeneratedBlocks {
     }
 
     @Override
-    protected void doRegistrationStuff(Werkstoff w) {
-        if (w != null) {
-            if (!w.hasItemType(OrePrefixes.ore) || (w.getGenerationFeatures().blacklist & 0b1000) != 0) return;
-            GTModHandler.addValuableOre(this, w.getmID(), 1);
-        }
-    }
+    protected void doRegistrationStuff(Werkstoff w) {}
 
     public static boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean air, Block block,
         int[] aBlockMeta) {
