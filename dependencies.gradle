@@ -36,14 +36,14 @@
 dependencies {
     api("com.github.GTNewHorizons:StructureLib:1.4.2:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-    api("com.github.GTNewHorizons:NotEnoughItems:2.7.13-GTNH:dev")
+    api("com.github.GTNewHorizons:NotEnoughItems:2.7.15-GTNH:dev")
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.6:dev")
-    api("com.github.GTNewHorizons:GTNHLib:0.6.0:dev")
+    api("com.github.GTNewHorizons:GTNHLib:0.6.1:dev")
     api("com.github.GTNewHorizons:ModularUI:1.2.17:dev")
     api("com.github.GTNewHorizons:ModularUI2:2.2.0-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.8.2:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-518-GTNH:dev")
-    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.14-gtnh:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.16-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.6.0:dev')
     api("com.github.GTNewHorizons:Postea:1.0.13:dev")
 
@@ -64,7 +64,7 @@ dependencies {
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.9.2:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.10.1:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.11.0-GTNH:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.16.1:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.16.2:dev") { transitive = false }
 
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.27:deobf") {transitive = false}
     compileOnly("com.github.GTNewHorizons:ThaumicBases:1.8.2:dev") { transitive = false }
@@ -88,7 +88,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:OpenComputers:1.11.3-GTNH:dev") {transitive = false}
     // https://www.curseforge.com/minecraft/mc-mods/advancedsolarpanels
     compileOnlyApi rfg.deobf('curse.maven:advsolar-362768:2885953')
-    compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.7.2-GTNH:dev') {transitive =  false}
+    compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.7.4-GTNH:dev') {transitive =  false}
     compileOnly("com.github.GTNewHorizons:BloodMagic:1.7.0:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:CraftTweaker:3.4.0:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.7.0-GTNH:dev") { transitive = false }
