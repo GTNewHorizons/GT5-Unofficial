@@ -206,7 +206,7 @@ public class IG_RecipeAdder extends RecipeAdder {
             builder.fluidInputs(aFluidInputs);
         }
 
-        builder.itemOutputs(aItemOutputs).outputChances(aChances).specialValue(minModuleTier)
+        builder.itemOutputs(aItemOutputs).outputChances(aChances).metadata(IGRecipeMaps.MODULE_TIER, minModuleTier)
                 .metadata(IGRecipeMaps.SPACE_MINING_DATA, miningData).duration(duration).eut(EUt)
                 .addTo(IGRecipeMaps.spaceMiningRecipes);
 

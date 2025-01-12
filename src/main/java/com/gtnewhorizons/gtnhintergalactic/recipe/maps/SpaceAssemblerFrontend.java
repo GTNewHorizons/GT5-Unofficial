@@ -69,7 +69,8 @@ public class SpaceAssemblerFrontend extends RecipeMapFrontend {
         @Override
         public List<String> format(RecipeDisplayInfo recipeInfo) {
             List<String> specialInfo = new ArrayList<>();
-            specialInfo.add(GCCoreUtil.translateWithFormat("ig.nei.module", recipeInfo.recipe.mSpecialValue));
+            int recipeTier = recipeInfo.recipe.getMetadataOrDefault(IGRecipeMaps.MODULE_TIER, 1);
+            specialInfo.add(GCCoreUtil.translateWithFormat("ig.nei.module", recipeTier));
 
             String neededProject = recipeInfo.recipe.getMetadata(IGRecipeMaps.SPACE_PROJECT);
             String neededProjectLocation = recipeInfo.recipe.getMetadata(IGRecipeMaps.SPACE_LOCATION);

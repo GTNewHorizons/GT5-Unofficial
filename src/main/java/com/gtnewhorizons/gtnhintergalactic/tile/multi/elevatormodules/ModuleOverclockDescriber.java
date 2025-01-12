@@ -5,6 +5,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.util.EnumChatFormatting;
 
+import com.gtnewhorizons.gtnhintergalactic.recipe.IGRecipeMaps;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.objects.overclockdescriber.EUNoOverclockDescriber;
 import gregtech.api.util.GTRecipe;
@@ -29,6 +31,6 @@ public class ModuleOverclockDescriber extends EUNoOverclockDescriber {
 
     @Override
     public boolean canHandle(GTRecipe recipe) {
-        return super.canHandle(recipe) && this.moduleTier >= recipe.mSpecialValue;
+        return super.canHandle(recipe) && this.moduleTier >= recipe.getMetadataOrDefault(IGRecipeMaps.MODULE_TIER, 1);
     }
 }

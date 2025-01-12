@@ -16,6 +16,8 @@ import gregtech.api.util.GTRecipe;
 
 public class IGRecipeMaps {
 
+    public static final RecipeMetadataKey<Integer> MODULE_TIER = SimpleRecipeMetadataKey
+            .create(Integer.class, "space_elevator_module_tier");
     public static final RecipeMetadataKey<String> SPACE_PROJECT = SimpleRecipeMetadataKey
             .create(String.class, "space_project");
     public static final RecipeMetadataKey<String> SPACE_LOCATION = SimpleRecipeMetadataKey
@@ -33,7 +35,7 @@ public class IGRecipeMaps {
             .of("gt.recipe.spaceAssembler").maxIO(16, 1, 4, 0).minInputs(1, 0).logo(IG_UITextures.PICTURE_ELEVATOR_LOGO)
             .logoSize(18, 18).neiTransferRect(124, 8, 16, 16)
             .neiRecipeComparator(
-                    Comparator.<GTRecipe, Integer>comparing(recipe -> recipe.mSpecialValue)
+                    Comparator.<GTRecipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(MODULE_TIER, 1))
                             .thenComparing(GTRecipe::compareTo))
             .disableOptimize().neiTransferRect(88, 8, 18, 72).neiTransferRect(124, 8, 18, 72).useCustomFilterForNEI()
             .frontend(SpaceAssemblerFrontend::new).build();
@@ -41,7 +43,7 @@ public class IGRecipeMaps {
     public static final RecipeMap<RecipeMapBackend> spaceMiningRecipes = RecipeMapBuilder.of("gt.recipe.spaceMining")
             .maxIO(5, 16, 2, 0).minInputs(1, 0)
             .neiRecipeComparator(
-                    Comparator.<GTRecipe, Integer>comparing(recipe -> recipe.mSpecialValue)
+                    Comparator.<GTRecipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(MODULE_TIER, 1))
                             .thenComparing(GTRecipe::compareTo))
             .logo(IG_UITextures.PICTURE_ELEVATOR_LOGO).logoPos(151, 58).logoSize(18, 18)
             .neiRecipeBackgroundSize(170, 78).neiTransferRect(46, 6, 23, 63).dontUseProgressBar()

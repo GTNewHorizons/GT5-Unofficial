@@ -332,7 +332,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     IGRecipeMaps.spaceMiningRecipes.findRecipeQuery().items(inputs).fluids(fluidInputs)
                             .voltage(tVoltage).findAll().filter(r -> {
                                 // Check module tier
-                                if (r.mSpecialValue > tModuleTier) return false;
+                                int recipeTier = r.getMetadataOrDefault(IGRecipeMaps.MODULE_TIER, 1);
+                                if (recipeTier > tModuleTier) return false;
 
                                 // Check mining recipe distance
                                 SpaceMiningData data = r.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);

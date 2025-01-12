@@ -139,8 +139,9 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
                     }
                 }
 
-                if (tModuleTier < recipe.mSpecialValue) {
-                    return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
+                int recipeTier = recipe.getMetadataOrDefault(IGRecipeMaps.MODULE_TIER, 1);
+                if (tModuleTier < recipeTier) {
+                    return CheckRecipeResultRegistry.insufficientMachineTier(recipeTier);
                 }
 
                 return CheckRecipeResultRegistry.SUCCESSFUL;

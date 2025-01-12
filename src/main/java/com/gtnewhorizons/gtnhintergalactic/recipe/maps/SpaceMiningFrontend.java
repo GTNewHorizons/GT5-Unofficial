@@ -54,7 +54,8 @@ public class SpaceMiningFrontend extends RecipeMapFrontend {
         @Override
         public List<String> format(RecipeDisplayInfo recipeInfo) {
             List<String> result = new ArrayList<>();
-            result.add(GCCoreUtil.translateWithFormat("ig.nei.module", recipeInfo.recipe.mSpecialValue));
+            int recipeTier = recipeInfo.recipe.getMetadataOrDefault(IGRecipeMaps.MODULE_TIER, 1);
+            result.add(GCCoreUtil.translateWithFormat("ig.nei.module", recipeTier));
 
             SpaceMiningData data = recipeInfo.recipe.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
             if (data != null) {
