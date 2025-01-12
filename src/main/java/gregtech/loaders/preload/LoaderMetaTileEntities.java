@@ -947,6 +947,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.metatileentity.implementations.MTEFluid;
 import gregtech.api.metatileentity.implementations.MTEFrame;
+import gregtech.api.metatileentity.implementations.MTEHatchBulkCatalystHousing;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
@@ -956,6 +957,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchMagnet;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
+import gregtech.api.metatileentity.implementations.MTEHatchNanite;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchQuadrupleHumongous;
@@ -12997,6 +12999,15 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Hatch_LensIndicator.set(
             new MTEHatchLensIndicator(HATCH_LENS_INDICATOR.ID, "hatch.lensindicator", "Lens Indicator Hatch", 8)
                 .getStackForm(1L));
+        ItemList.Hatch_Nanite.set(
+            new MTEHatchNanite(HATCH_NANITE.ID, "hatch.nanite", "Nanite Containment Bus", 9, 2048).getStackForm(1));
+        ItemList.Hatch_Catalyst_Bulk.set(
+            new MTEHatchBulkCatalystHousing(
+                HATCH_CATALYST_BULK.ID,
+                "hatch.catalystbulk",
+                "Bulk Catalyst Housing",
+                10,
+                Integer.MAX_VALUE).getStackForm(1));
         generateWiresAndPipes();
     }
 
