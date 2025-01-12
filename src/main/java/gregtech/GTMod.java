@@ -62,6 +62,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchNonConsumableBase;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.registries.LHECoolantRegistry;
@@ -499,6 +500,7 @@ public class GTMod implements IGTMod {
             GTForestryCompat.transferSqueezerRecipes();
         }
         MTEDigitalChestBase.registerAEIntegration();
+        MTEHatchNonConsumableBase.registerAEIntegration();
         ItemStack facade = AEApi.instance()
             .definitions()
             .items()
