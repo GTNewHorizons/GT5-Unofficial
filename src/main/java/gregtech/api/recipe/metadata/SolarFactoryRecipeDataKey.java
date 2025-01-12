@@ -20,7 +20,7 @@ public class SolarFactoryRecipeDataKey extends RecipeMetadataKey<SolarFactoryRec
     public void drawInfo(RecipeDisplayInfo recipeInfo, @Nullable Object value) {
         SolarFactoryRecipeData metadata = cast(value);
         if (metadata.tierRequired != 0) {
-            recipeInfo.drawText(trans("337", "Solar Factory Tier required: ") + metadata.tierRequired);
+            recipeInfo.drawText(trans("510", "Tier required: ") + metadata.tierRequired);
         }
     }
 }

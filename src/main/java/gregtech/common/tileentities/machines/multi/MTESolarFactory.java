@@ -30,7 +30,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
@@ -61,7 +60,10 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     implements IConstructable, ISurvivalConstructable {
 
     protected IStructureDefinition<MTESolarFactory> multiDefinition = null;
-    private static final int CASING_INDEX = 48;
+    private static final int CASING_T1_INDEX = 17;
+    private static final int CASING_T2_INDEX = 48;
+    private static final int CASING_T3_INDEX = 16;
+    int mTier;
     int casingAmount;
     int casingTier;
 
@@ -91,11 +93,16 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         return new MTESolarFactory(mName);
     }
 
-    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_TIER_1 = "t1";
+    private static final String STRUCTURE_TIER_2 = "t2";
+    private static final String STRUCTURE_TIER_3 = "t3";
     private static final IStructureDefinition<MTESolarFactory> STRUCTURE_DEFINITION = StructureDefinition
         .<MTESolarFactory>builder()
         .addShape(
-            STRUCTURE_PIECE_MAIN,
+            STRUCTURE_TIER_1,
+            new String[][] { { "YYY", "Y~Y", "YYY" }, { "YYY", "Y Y", "YYY" }, { "YYY", "YYY", "YYY" } })
+        .addShape(
+            STRUCTURE_TIER_2,
             transpose(
                 new String[][] {
                     { "   CCC   ", "  CCFCC  ", " CCFFFCC ", "CCFFFFFCC", " CCFFFCC ", "  CCFCC  ", "   CCC   " },
@@ -108,11 +115,35 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                     { "   CCC   ", "  CCCCC  ", " CCCCCCC ", "CCCCCCCCC", " CCCCCCC ", "  CCCCC  ", "   CCC   " },
                     { "   B~B   ", "  C   C  ", " B     B ", "C       C", " B     B ", "  C   C  ", "   BBB   " },
                     { "   CCC   ", "  CCFCC  ", " CCFFFCC ", "CCFFFFFCC", " CCFFFCC ", "  CCFCC  ", "   CCC   " } }))
+        .addShape(
+            STRUCTURE_TIER_3,
+            new String[][] { { "ZZZ", "Z~Z", "ZZZ" }, { "ZZZ", "Z Z", "ZZZ" }, { "ZZZ", "ZFZ", "ZZZ" } })
+        .addElement(
+            'Y',
+            buildHatchAdder(MTESolarFactory.class)
+                .atLeast(InputHatch, InputBus, OutputBus, OutputHatch, Maintenance, Energy, ExoticEnergy)
+                .casingIndex(CASING_T1_INDEX)
+                .dot(1)
+                .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 1))))
+        .addElement(
+            'C',
+            buildHatchAdder(MTESolarFactory.class)
+                .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                .casingIndex(CASING_T2_INDEX)
+                .dot(1)
+                .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(sBlockCasings4, 0))))
+        .addElement(
+            'Z',
+            buildHatchAdder(MTESolarFactory.class)
+                .atLeast(InputHatch, InputBus, OutputBus, OutputHatch, Maintenance, Energy, ExoticEnergy)
+                .casingIndex(CASING_T3_INDEX)
+                .dot(1)
+                .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0))))
         .addElement(
             'F',
             withChannel(
                 "unit casing",
-                StructureUtility.ofBlocksTiered(
+                ofBlocksTiered(
                     (block, meta) -> block == Loaders.preciseUnitCasing ? meta : -2,
                     // ^ if block is preciseUnitCasing return meta, otherwise return -2 & fail checkMachine
                     ImmutableList.of(
@@ -123,13 +154,6 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                     -3,
                     MTESolarFactory::setCasingTier,
                     MTESolarFactory::getCasingTier)))
-        .addElement(
-            'C',
-            buildHatchAdder(MTESolarFactory.class)
-                .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                .casingIndex(CASING_INDEX)
-                .dot(1)
-                .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(sBlockCasings4, 0))))
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 5))
         .addElement('B', chainAllGlasses())
         .addElement('E', ofFrame(Materials.Tungsten))
@@ -153,42 +177,61 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.casingAmount = 0;
-        this.casingTier = -3;
-        if (checkPiece(STRUCTURE_PIECE_MAIN, 4, 8, 0)) {
-            getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-            return casingAmount >= 8 && casingTier >= -1 && mMaintenanceHatches.size() == 1;
-        }
-        return false;
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         casingTier = aNBT.getInteger("casingTier");
+        mTier = aNBT.getInteger("multiTier");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("casingTier", casingTier);
+        aNBT.setInteger("multiTier", mTier);
         super.saveNBTData(aNBT);
     }
 
     @Override
-    public byte getUpdateData() {
-        return (byte) casingTier;
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        casingAmount = 0;
+        casingTier = -3;
+        mTier = 0;
+        if (checkPiece(STRUCTURE_TIER_1, 1, 1, 0)) {
+            mTier = 1;
+        } else if (checkPiece(STRUCTURE_TIER_2, 4, 8, 0)) {
+            mTier = 2;
+        } else if (checkPiece(STRUCTURE_TIER_3, 1, 1, 0)) {
+            mTier = 3;
+        } else mTier = 0;
+        getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
+        return mTier > 0 && casingAmount >= 8 && (mTier < 2 || casingTier >= -1);
     }
 
     @Override
-    public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 4, 8, 0);
+    public void construct(ItemStack holoStack, boolean hintsOnly) {
+        if (holoStack.stackSize == 1) {
+            buildPiece(STRUCTURE_TIER_1, holoStack, hintsOnly, 1, 1, 0);
+        }
+        if (holoStack.stackSize == 2) {
+            buildPiece(STRUCTURE_TIER_2, holoStack, hintsOnly, 4, 8, 0);
+        }
+        if (holoStack.stackSize >= 3) {
+            buildPiece(STRUCTURE_TIER_3, holoStack, hintsOnly, 1, 1, 0);
+        }
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+    public int survivalConstruct(ItemStack holoStack, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 8, 0, elementBudget, env, false, true);
+        if (holoStack.stackSize == 1) {
+            return survivialBuildPiece(STRUCTURE_TIER_1, holoStack, 1, 0, 1, elementBudget, env, false, true);
+        }
+        if (holoStack.stackSize == 2) {
+            return survivialBuildPiece(STRUCTURE_TIER_2, holoStack, 4, 8, 0, elementBudget, env, false, true);
+        }
+        if (holoStack.stackSize >= 3) {
+            return survivialBuildPiece(STRUCTURE_TIER_3, holoStack, 1, 0, 1, elementBudget, env, false, true);
+        }
+        return 0;
     }
 
     protected ItemStack[] calculateNewOutput(ItemStack currentOutput, int seed) {
@@ -245,9 +288,12 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             @Override
             public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 SolarFactoryRecipeData data = recipe.getMetadata(SolarFactoryRecipeDataKey.INSTANCE);
-                if (data == null) {
+                if (data == null || mTier < 2) {
                     shouldMultiplyOutputs = false;
                     return CheckRecipeResultRegistry.SUCCESSFUL;
+                }
+                if (mTier < data.tierRequired) {
+                    return CheckRecipeResultRegistry.insufficientMachineTier(data.tierRequired);
                 }
                 minimumTierForRecipe = data.minimumWaferTier;
                 waferAmountInRecipe = data.minimumWaferCount;
@@ -286,6 +332,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
 
     // 2^(casingTier + 3)
     protected int getMaxParallel() {
+        if (mTier <= 1) return 1;
         return (int) Math.pow(2, 1 + (casingTier + 2));
     }
 
@@ -323,11 +370,30 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         return tt;
     }
 
+    private int getIndex(int tier) {
+        if (tier <= 1) return CASING_T1_INDEX;
+        if (tier == 2) return CASING_T2_INDEX;
+        return CASING_T3_INDEX;
+    }
+
+    @Override
+    public byte getUpdateData() {
+        return (byte) mTier;
+    }
+
+    @Override
+    public void receiveClientEvent(byte aEventID, byte aValue) {
+        super.receiveClientEvent(aEventID, aValue);
+        if (aEventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA && ((aValue & 0x80) == 0 || aValue == -1)) {
+            mTier = aValue;
+        }
+    }
+
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getIndex(mTier)),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_SOLAR_FACTORY_ACTIVE)
                     .extFacing()
@@ -337,7 +403,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getIndex(mTier)), TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_SOLAR_FACTORY_INACTIVE)
                 .extFacing()
                 .build(),
@@ -347,7 +413,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getIndex(mTier)) };
     }
 
     @Override
