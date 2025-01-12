@@ -1941,7 +1941,7 @@ public class GTUtility {
         if (isStackInvalid(aStack)) return null;
         if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem
             && ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) > 0)
-            return ((IFluidContainerItem) aStack.getItem()).drain(copyAmount(1, aStack), Integer.MAX_VALUE, true);
+            return ((IFluidContainerItem) aStack.getItem()).drain(copyAmount(1, aStack), Integer.MAX_VALUE, false);
         FluidContainerData tData = sFilledContainerToData.get(new GTItemStack(aStack));
         return tData == null ? null : tData.fluid.copy();
     }
