@@ -4,7 +4,11 @@ import static bartworks.API.recipe.BartWorksRecipeMaps.electricImplosionCompress
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
+import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
+import static gregtech.api.recipe.RecipeMaps.neutroniumCompressorRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -27,6 +31,71 @@ import gtPlusPlus.core.material.MaterialsElements;
 public class InfinityLineRecipes {
 
     public static void run() {
+
+        // Taranium Draining Line
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Vyroxeres, 1),
+                getModItem(NewHorizonsCoreMod.ID, "item.LapotronDust", 64),
+                getModItem(NewHorizonsCoreMod.ID, "item.LapotronDust", 64),
+                getModItem(NewHorizonsCoreMod.ID, "item.LapotronDust", 64),
+                getModItem(NewHorizonsCoreMod.ID, "item.LapotronDust", 64),
+                getModItem(NewHorizonsCoreMod.ID, "item.LapotronDust", 64))
+            .fluidInputs(Materials.ElectrumFlux.getMolten(576))
+            .itemOutputs(ItemList.VyroxeresCanvas.get(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(vacuumFurnaceRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                // TODO add after Taranium - GTOreDictUnificator.get(OrePrefixes.plate, Materials.Taranium, 64),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Naquadria, 64),
+                ItemList.VyroxeresCanvas.get(1),
+                GTOreDictUnificator.get(OrePrefixes.lens, Materials.Force, 0, false),
+                getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.InertTaranium, 64),
+                ItemList.VyroxeresPlating.get(1)) // TODO make this item compatible with beamline
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(laserEngraverRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.InertTaranium, 16))
+            .fluidInputs(Materials.Neutronium.getMolten(576))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.HighlyStableTaranium, 16))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .noOptimize()
+            .addTo(chemicalBathRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.InertTaranium, 16))
+            .fluidInputs(Materials.DraconiumAwakened.getMolten(576))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.HighlyReactiveTaranium, 16))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .noOptimize()
+            .addTo(chemicalBathRecipes);
+
+        // UHV Infinity Recipe
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.InfinityCatalyst, 64))
+            .itemOutputs(ItemList.WeakInfinityCatalyst.get(1))
+            .duration(3 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(neutroniumCompressorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.CosmicNeutronium, 24),
+            ItemList.FractalAnomaly.get(1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Infinity, 1))
+            .duration(10 * TICKS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(hammerRecipes);
 
         // Non-Orientable Matter Line - Möebianite Processing
 

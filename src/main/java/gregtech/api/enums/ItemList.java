@@ -2592,6 +2592,11 @@ public enum ItemList implements IItemContainer {
     Relativistic_Heat_Capacitor,
     Phononic_Seed_Crystal,
     Combined_Catalyst,
+    VyroxeresCanvas,
+    VyroxeresPlating,
+    WeakInfinityCatalyst,
+    CrystalCube,
+    FractalAnomaly,
     ResearchCompleter,
     SpaceElevatorController, // Populated in GTNH-Intergalactic
     Spray_Color_Infinite,

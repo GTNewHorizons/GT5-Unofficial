@@ -198,6 +198,12 @@ public enum IDMetaItem02 {
     Cover_WirelessItemDetector(582),
     Cover_WirelessNeedsMaintainance(583),
     Cover_WirelessActivityDetector(584),
+    Combined_Catalyst(585),
+    VyroxeresCanvas(586),
+    VyroxeresPlating(587),
+    WeakInfinityCatalyst(588),
+    CrystalCube(589),
+    FractalAnomaly(590),
     Display_ITS_FREE(765);
 
     public final int ID;

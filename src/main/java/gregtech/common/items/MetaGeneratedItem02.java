@@ -54,6 +54,7 @@ import static gregtech.common.items.IDMetaItem02.Bottle_Vodka;
 import static gregtech.common.items.IDMetaItem02.Bottle_Wheaty_Hops_Juice;
 import static gregtech.common.items.IDMetaItem02.Bottle_Wheaty_Juice;
 import static gregtech.common.items.IDMetaItem02.Bottle_Wine;
+import static gregtech.common.items.IDMetaItem02.Combined_Catalyst;
 import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneReceiverExternal;
 import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneReceiverInternal;
 import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneTransmitterExternal;
@@ -97,6 +98,7 @@ import static gregtech.common.items.IDMetaItem02.Crop_Drop_UUABerry;
 import static gregtech.common.items.IDMetaItem02.Crop_Drop_UUMBerry;
 import static gregtech.common.items.IDMetaItem02.Crop_Drop_Uraninite;
 import static gregtech.common.items.IDMetaItem02.Crop_Drop_Zinc;
+import static gregtech.common.items.IDMetaItem02.CrystalCube;
 import static gregtech.common.items.IDMetaItem02.Display_ITS_FREE;
 import static gregtech.common.items.IDMetaItem02.Dye_Color_00;
 import static gregtech.common.items.IDMetaItem02.Dye_Color_01;
@@ -169,6 +171,7 @@ import static gregtech.common.items.IDMetaItem02.Food_Sliced_Cucumber;
 import static gregtech.common.items.IDMetaItem02.Food_Sliced_Lemon;
 import static gregtech.common.items.IDMetaItem02.Food_Sliced_Onion;
 import static gregtech.common.items.IDMetaItem02.Food_Sliced_Tomato;
+import static gregtech.common.items.IDMetaItem02.FractalAnomaly;
 import static gregtech.common.items.IDMetaItem02.GelledToluene;
 import static gregtech.common.items.IDMetaItem02.MSFMixture;
 import static gregtech.common.items.IDMetaItem02.Plank_Acacia;
@@ -212,6 +215,9 @@ import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Jesus_Latte;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Latte;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Tea;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Tea;
+import static gregtech.common.items.IDMetaItem02.VyroxeresCanvas;
+import static gregtech.common.items.IDMetaItem02.VyroxeresPlating;
+import static gregtech.common.items.IDMetaItem02.WeakInfinityCatalyst;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
@@ -2378,6 +2384,21 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.TERRA, 1L)));
+
+        // Infinity Line Related Items
+        ItemList.Combined_Catalyst.set(addItem(Combined_Catalyst.ID, "Combined Catalyst", "Who would have thought"));
+
+        ItemList.VyroxeresCanvas.set(
+            addItem(
+                VyroxeresCanvas.ID,
+                "Low-Potential Vyroxeres Canvas",
+                "Capable of absorbing humongous amounts of energy"));
+        ItemList.VyroxeresPlating
+            .set(addItem(VyroxeresPlating.ID, "High-Energy Vyroxeres Plating", "Enough energy to go back in time"));
+        ItemList.WeakInfinityCatalyst.set(addItem(WeakInfinityCatalyst.ID, "Weak Condensed Anomaly", "Not there yet"));
+        ItemList.CrystalCube.set(addItem(CrystalCube.ID, "Hollow Crystal Cube", "Infinite Reflection"));
+        ItemList.FractalAnomaly
+            .set(addItem(FractalAnomaly.ID, "Contained Fractal Anomaly", "You don't want to unleash this"));
 
         ItemList.Display_ITS_FREE.set(
             addItem(

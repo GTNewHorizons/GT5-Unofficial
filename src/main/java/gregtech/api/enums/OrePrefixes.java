@@ -723,6 +723,8 @@ public enum OrePrefixes {
 
         cell.disableComponent(MaterialsUEVplus.GravitonShard);
 
+        plate.mGeneratedItems.add(MaterialsUEVplus.InertTaranium);
+
         // ingot.mNotGeneratedItems.add(Materials.Ichorium);
         nugget.mNotGeneratedItems.add(Materials.Gold);
         plate.mNotGeneratedItems.add(Materials.Paper);
