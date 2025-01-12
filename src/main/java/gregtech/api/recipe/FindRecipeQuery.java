@@ -76,8 +76,7 @@ public final class FindRecipeQuery {
         if (fluids == null) {
             fluids = new FluidStack[0];
         }
-
-        return recipeMap.getBackend()
+        Stream<GTRecipe> test = recipeMap.getBackend()
             .matchRecipeStream(
                 items,
                 fluids,
@@ -85,8 +84,8 @@ public final class FindRecipeQuery {
                 cachedRecipe,
                 notUnificated,
                 dontCheckStackSizes,
-                forCollisionCheck)
-            .filter(recipe -> voltage * recipeMap.getAmperage() >= recipe.mEUt && filter.test(recipe));
+                forCollisionCheck);
+        return test.filter(recipe -> voltage * recipeMap.getAmperage() >= recipe.mEUt && filter.test(recipe));
     }
 
     /**

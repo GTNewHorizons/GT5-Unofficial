@@ -223,10 +223,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         }
 
         @Override
-        public int hashCode() {
-            return Objects.hashCode(patternDetails);
-        }
-
         public GTDualInputs getPatternInputs() {
             GTDualInputs dualInputs = new GTDualInputs();
 
@@ -356,7 +352,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private static final int MANUAL_SLOT_WINDOW = 10;
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
-    public ArrayList<ProcessingLogic> processingLogics = new ArrayList<>();
+    public List<ProcessingLogic> processingLogics = new ArrayList<>();
 
     // holds all internal inventories
     private final PatternSlot[] internalInventory = new PatternSlot[MAX_PATTERN_COUNT];
@@ -818,6 +814,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             if (originalPattern.hasChanged(newItem, world)) {
                 try {
                     originalPattern.refund(getProxy(), getRequest());
+                    for (ProcessingLogic pl : processingLogics) {
+                        pl.removeEntryCraftingPatternRecipeCache(originalPattern);
+                    }
                 } catch (GridAccessException ignored) {}
                 internalInventory[index] = null;
                 needPatternSync = true;
@@ -847,16 +846,15 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     @Override
     public void setProcessingLogic(ProcessingLogic pl) {
         if (!processingLogics.contains(pl)) {
-            processingLogics.add(pl);
+            processingLogics.add(Objects.requireNonNull(pl));
         }
     }
 
     private void resetCraftingInputRecipeMap() {
         for (ProcessingLogic pl : processingLogics) {
-            if (pl == null) continue;
-            for (PatternSlot slot : internalInventory) {
-                if (slot == null) continue;
-                pl.removeEntryCraftingPatternRecipeCache(slot.hashCode());
+            for (PatternSlot sl : internalInventory) {
+                if (sl == null) continue;
+                pl.removeEntryCraftingPatternRecipeCache(sl);
             }
         }
     }
