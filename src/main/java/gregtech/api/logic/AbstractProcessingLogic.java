@@ -43,6 +43,7 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
     protected double speedBoost = 1.0;
     protected boolean amperageOC = true;
     protected boolean isCleanroom;
+    protected boolean needWipeCraftingPatternRecipeCache;
 
     // #region Setters
 
@@ -213,6 +214,7 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
             recipeMap = recipeMapSupplier.get();
         }
         if (lastRecipeMap != recipeMap) {
+            if (lastRecipeMap != null) needWipeCraftingPatternRecipeCache = true;
             lastRecipe = null;
             lastRecipeMap = recipeMap;
         }
