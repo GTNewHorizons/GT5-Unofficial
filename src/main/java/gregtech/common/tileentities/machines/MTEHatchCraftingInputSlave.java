@@ -25,6 +25,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
@@ -166,6 +167,11 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     @Override
+    public ItemStack[] getSharedItems() {
+        return getMaster() != null ? getMaster().getSharedItems() : new ItemStack[0];
+    }
+
+    @Override
     public boolean justUpdated() {
         return getMaster() != null && getMaster().justUpdated();
     }
@@ -292,5 +298,10 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     @Override
     public List<ItemStack> getItemsForHoloGlasses() {
         return getMaster() != null ? getMaster().getItemsForHoloGlasses() : null;
+    }
+
+    @Override
+    public void setProcessingLogic(ProcessingLogic pl) {
+        if (getMaster() != null) getMaster().setProcessingLogic(pl);
     }
 }
