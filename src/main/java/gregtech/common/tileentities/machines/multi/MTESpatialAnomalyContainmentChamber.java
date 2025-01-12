@@ -15,8 +15,10 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -58,7 +60,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.blocks.BlockCasings9;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import tectech.thing.gui.TecTechUITextures;
 
 public class MTESpatialAnomalyContainmentChamber
@@ -115,6 +116,38 @@ public class MTESpatialAnomalyContainmentChamber
 
     public MTESpatialAnomalyContainmentChamber(String aName) {
         super(aName);
+    }
+
+    //Saves and Loads NBT to recover info on server restart and not crash
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        NBTTagCompound CurrentSeed = new NBTTagCompound();
+        ItemStack seed = catalyst;
+        seed.writeToNBT(CurrentSeed);
+        aNBT.setTag("Catalyst", CurrentSeed);
+        aNBT.setBoolean("Active", active);
+        aNBT.setByte("Tier", mAnomalyTier);
+        aNBT.setInteger("Seed Amount", numberOfFoci);
+        super.saveNBTData(aNBT);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        if (aNBT.hasKey("Catalyst")) {
+            this.catalyst = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("Catalyst"));
+        }
+        if (aNBT.hasKey("Active")) {
+            this.active = aNBT.getBoolean("Active");
+        }
+        if (aNBT.hasKey("Tier")) {
+            byte mTier = aNBT.getByte("Tier");
+            this.mAnomalyTier = mTier;
+        }
+        if (aNBT.hasKey("Seed Amount")) {
+            this.numberOfFoci = aNBT.getInteger("Seed Amount");
+        }
+        super.loadNBTData(aNBT);
     }
 
     @Override
@@ -227,8 +260,7 @@ public class MTESpatialAnomalyContainmentChamber
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0) && mCasingAmount >= 1;
+        return checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0);
     }
 
     @Override
@@ -237,7 +269,8 @@ public class MTESpatialAnomalyContainmentChamber
 
         if (!aBaseMetaTileEntity.isServerSide()) return;
 
-        if (!active || aTick % 20 != 0) return;
+        //Skips further logic if on the first seconds of the server to avoid crashing on restart
+        if ((!active || aTick % 20 != 0) || (aTick < 100)) return;
 
         if (drain(stabilizerHatch, stabilizer, false)) {
             drain(stabilizerHatch, stabilizer, true);
