@@ -62,7 +62,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             aNameRegional,
             aTier,
             3,
-            new String[] { "This Chest stores " + GTUtility.formatNumbers(commonSizeCompute(aTier)) + " Blocks",
+            new String[] { "Stores " + GTUtility.formatNumbers(commonSizeCompute(aTier)) + " items",
                 "Use a screwdriver to enable", "voiding items on overflow", "Will keep its contents when harvested", });
     }
 
