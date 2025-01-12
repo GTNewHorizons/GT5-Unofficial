@@ -929,6 +929,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
+import gregtech.common.tileentities.machines.multi.MTESpatialAnomalyContainmentChamber;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.GregTechAPI;
@@ -1638,6 +1639,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.LargeFluidExtractor.set(
             new MTELargeFluidExtractor(LARGE_FLUID_EXTRACTOR.ID, "multimachine.fluidextractor", "Large Fluid Extractor")
+                .getStackForm(1));
+
+        ItemList.SpatialAnomalyContainmentChamber.set(
+            new MTESpatialAnomalyContainmentChamber(SpatialAnomalyContainmentChamber.ID, "multimachine.containmentchamber", "Spatial Anomaly Containment Chamber")
                 .getStackForm(1));
 
         if (Thaumcraft.isModLoaded()) {
