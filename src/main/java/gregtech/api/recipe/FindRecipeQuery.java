@@ -76,6 +76,7 @@ public final class FindRecipeQuery {
         if (fluids == null) {
             fluids = new FluidStack[0];
         }
+
         return recipeMap.getBackend()
             .matchRecipeStream(
                 items,
