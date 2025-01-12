@@ -119,6 +119,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         private final List<ItemStack> itemInventory;
         private final List<FluidStack> fluidInventory;
         private final SharedItemGetter sharedItemGetter;
+        private final GTUtility.ItemId itemId;
 
         public PatternSlot(ItemStack pattern, World world, SharedItemGetter getter) {
             this.pattern = pattern;
@@ -127,6 +128,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             this.itemInventory = new ArrayList<>();
             this.fluidInventory = new ArrayList<>();
             this.sharedItemGetter = getter;
+            this.itemId = GTUtility.ItemId.create(pattern);
         }
 
         public PatternSlot(ItemStack pattern, NBTTagCompound nbt, World world, SharedItemGetter getter) {
@@ -136,6 +138,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             this.itemInventory = new ArrayList<>();
             this.fluidInventory = new ArrayList<>();
             this.sharedItemGetter = getter;
+            this.itemId = GTUtility.ItemId.create(pattern);
             NBTTagList inv = nbt.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < inv.tagCount(); i++) {
                 NBTTagCompound tagItemStack = inv.getCompoundTagAt(i);
@@ -244,6 +247,19 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             dualInputs.inputItems = inputItems;
             dualInputs.inputFluid = inputFluids;
             return dualInputs;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            PatternSlot that = (PatternSlot) o;
+            return Objects.equals(pattern, that.pattern);
+        }
+
+        @Override
+        public int hashCode() {
+            return itemId.hashCode();
         }
 
         public void refund(AENetworkProxy proxy, BaseActionSource src) throws GridAccessException {
