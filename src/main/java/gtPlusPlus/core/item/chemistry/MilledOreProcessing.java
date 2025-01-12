@@ -28,7 +28,6 @@ import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.base.ore.BaseItemMilledOre;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
@@ -628,7 +627,7 @@ public class MilledOreProcessing extends ItemPackage {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.getNumberedAdvancedCircuit(16), ItemUtils.getSimpleStack(aCrushedPine, 64))
+            .itemInputs(GTUtility.getIntegratedCircuit(16), ItemUtils.getSimpleStack(aCrushedPine, 64))
             .itemOutputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),
@@ -641,7 +640,7 @@ public class MilledOreProcessing extends ItemPackage {
             .metadata(CHEMPLANT_CASING_TIER, 3)
             .addTo(chemicalPlantRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.getNumberedAdvancedCircuit(18), ItemUtils.getSimpleStack(aCrushedPine, 64))
+            .itemInputs(GTUtility.getIntegratedCircuit(18), ItemUtils.getSimpleStack(aCrushedPine, 64))
             .itemOutputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),
@@ -669,7 +668,7 @@ public class MilledOreProcessing extends ItemPackage {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.getNumberedAdvancedCircuit(14), aInput)
+            .itemInputs(GTUtility.getIntegratedCircuit(14), aInput)
             .itemOutputs(aOutputs)
             .duration(aTime * 20)
             .eut(aEU)
