@@ -74,6 +74,7 @@ import gregtech.api.recipe.maps.UnpackagerBackend;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
+import gregtech.api.recipe.metadata.SpatialAnomalyTierKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -580,6 +581,18 @@ public final class RecipeMaps {
                 .setMaxRecipesPerPage(1))
         .frontend(TranscendentPlasmaMixerFrontend::new)
         .disableOptimize()
+        .build();
+    public static final RecipeMap<RecipeMapBackend> SpatialAnomalyRecipes = RecipeMapBuilder
+        .of("gt.recipe.spatialanomaly")
+        .maxIO(3, 3, 3, 3)
+        .minInputs(0, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
+        .logoPos(80, 50)
+        .disableOptimize()
+        .neiRecipeComparator(
+            Comparator
+                .<GTRecipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(SpatialAnomalyTierKey.INSTANCE, 0))
+                .thenComparing(GTRecipe::compareTo))
         .build();
     public static final RecipeMap<RecipeMapBackend> spaceProjectFakeRecipes = RecipeMapBuilder
         .of("gt.recipe.fakespaceprojects")

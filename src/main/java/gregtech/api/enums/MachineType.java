@@ -106,6 +106,7 @@ public enum MachineType {
         static final String THERMAL_CENTRIFUGE = "gt.recipe.thermalcentrifuge.description";
         static final String UNPACKAGER = "gt.recipe.unpackager.description";
         static final String WIREMILL = "gt.recipe.wiremill.description";
+        static final String SPATIAL_ANOMALY = "gt.recipe.spatialanomaly.description";
     }
 
     private static final String TT_machineType = "GT5U.MBTT.MachineType";
