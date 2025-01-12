@@ -1,6 +1,11 @@
 package gregtech.api.logic;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -10,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
+import gregtech.api.objects.GTDualInputs;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -17,6 +23,7 @@ import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
+import gregtech.common.tileentities.machines.IDualInputInventory;
 
 /**
  * Logic class to calculate result of recipe check from inputs, based on recipemap.
@@ -29,6 +36,8 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
     protected ItemStack[] inputItems;
     protected FluidStack[] inputFluids;
     protected boolean isRecipeLocked;
+    protected int craftingPatternHash;
+    protected Map<Integer, List<GTRecipe>> craftingPatternRecipeCache = new HashMap<>();
 
     public ProcessingLogic() {}
 
@@ -63,6 +72,37 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         return getThis();
     }
 
+    public boolean craftingPatternHandler(IDualInputInventory slot) {
+        int hash = slot.hashCode();
+        if (needWipeCraftingPatternRecipeCache) {
+            craftingPatternRecipeCache.clear();
+            needWipeCraftingPatternRecipeCache = false;
+        }
+        if (!craftingPatternRecipeCache.containsKey(hash)) {
+            GTDualInputs inputs = slot.getPatternInputs();
+            setInputItems(inputs.inputItems);
+            setInputFluids(inputs.inputFluid);
+            List<GTRecipe> recipes = new ArrayList<>();
+            for (GTRecipe recipe : findRecipeMatches(preProcess()).collect(toList())) {
+                if (!recipes.contains(recipe)) {
+                    recipes.add(recipe);
+                }
+            }
+            if (!recipes.isEmpty()) {
+                craftingPatternRecipeCache.put(hash, recipes);
+                craftingPatternHash = hash;
+                return true;
+            }
+            return false;
+        }
+        craftingPatternHash = hash;
+        return true;
+    }
+
+    public void removeEntryCraftingPatternRecipeCache(int hash) {
+        craftingPatternRecipeCache.remove(hash);
+    }
+
     /**
      * Enables single recipe locking mode.
      */
@@ -85,6 +125,7 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         this.calculatedEut = 0;
         this.duration = 0;
         this.calculatedParallels = 0;
+        this.craftingPatternHash = 0;
         return getThis();
     }
 
@@ -104,6 +145,18 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         }
         if (inputFluids == null) {
             inputFluids = new FluidStack[0];
+        }
+
+        if (craftingPatternHash != 0) {
+            List<GTRecipe> matchedRecipes = craftingPatternRecipeCache.get(craftingPatternHash);
+            for (GTRecipe matchedRecipe : matchedRecipes) {
+                if (matchedRecipe.maxParallelCalculatedByInputs(1, inputFluids, inputItems) == 1) {
+                    CalculationResult foundResult = validateAndCalculateRecipe(matchedRecipe);
+                    return foundResult.checkRecipeResult;
+                }
+            }
+            craftingPatternHash = 0;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         if (isRecipeLocked && recipeLockableMachine != null && recipeLockableMachine.getSingleRecipeCheck() != null) {

@@ -883,16 +883,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Nonnull
     protected CheckRecipeResult doCheckRecipe() {
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
+
         // check crafting input hatches first
-        if (supportsCraftingMEBuffer()) {
-            for (IDualInputHatch dualInputHatch : mDualInputHatches) {
-                for (var it = dualInputHatch.inventories(); it.hasNext();) {
-                    IDualInputInventory slot = it.next();
-                    // Reverse order of input items for consistent behavior with standard input buses.
-                    ItemStack[] inputItems = slot.getItemInputs();
-                    ArrayUtils.reverse(inputItems);
-                    processingLogic.setInputItems(inputItems);
+        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+            ItemStack[] sharedItems = dualInputHatch.getSharedItems();
+            for (var it = dualInputHatch.inventories(); it.hasNext();) {
+                IDualInputInventory slot = it.next();
+
+                if (!slot.isEmpty() && processingLogic.craftingPatternHandler(slot)) {
+
+                    processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, slot.getItemInputs()));
                     processingLogic.setInputFluids(slot.getFluidInputs());
+
                     CheckRecipeResult foundResult = processingLogic.process();
                     if (foundResult.wasSuccessful()) {
                         return foundResult;
@@ -1720,6 +1722,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.setProcessingLogic(processingLogic);
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
@@ -2049,12 +2052,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 }
             }
         }
-        currentTip.add(
-            GTWaila.getMachineProgressString(
-                isActive,
-                tag.getBoolean("isAllowedToWork"),
-                tag.getInteger("maxProgress"),
-                tag.getInteger("progress")));
+        currentTip
+            .add(GTWaila.getMachineProgressString(isActive, tag.getInteger("maxProgress"), tag.getInteger("progress")));
         // Show ns on the tooltip
         if (GTMod.gregtechproxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
@@ -2103,7 +2102,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
         if (tileEntity != null) {
             tag.setBoolean("isActive", tileEntity.isActive());
-            tag.setBoolean("isAllowedToWork", tileEntity.isAllowedToWork());
             if (tileEntity.isActive()) {
                 if (mEUt < 0) tag.setLong("energyUsage", getActualEnergyUsage());
                 else tag.setLong("energyUsage", (long) -mEUt * mEfficiency / 10000);
