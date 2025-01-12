@@ -138,6 +138,11 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
                         return new ResultNoSpaceProject(neededProject, neededLocation);
                     }
                 }
+
+                if (tModuleTier < recipe.mSpecialValue) {
+                    return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
+                }
+
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         }.setAmperageOC(false).setMaxParallelSupplier(() -> Math.min(getMaxParallels(), (int) parallelSetting.get()));
