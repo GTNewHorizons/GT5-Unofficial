@@ -378,10 +378,10 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             aID,
             aName,
             aNameRegional,
-            supportFluids ? 11 : 6,
+            supportFluids ? 10 : 6,
             MAX_INV_COUNT,
             new String[] { "Advanced item input for Multiblocks",
-                "Hatch Tier: " + TIER_COLORS[supportFluids ? 11 : 6] + VN[supportFluids ? 11 : 6],
+                "Hatch Tier: " + TIER_COLORS[supportFluids ? 10 : 6] + VN[supportFluids ? 10 : 6],
                 "Processes patterns directly from ME",
                 supportFluids ? "It supports patterns including fluids"
                     : "It does not support patterns including fluids",
