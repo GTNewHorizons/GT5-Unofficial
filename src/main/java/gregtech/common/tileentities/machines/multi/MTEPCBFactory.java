@@ -59,10 +59,8 @@ import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
-import blockrenderer6343.client.world.ClientFakePlayer;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -334,19 +332,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int built = 0;
-        if (Mods.BlockRenderer6343.isModLoaded() && env.getActor() instanceof ClientFakePlayer) {
-            if (stackSize.stackSize < 3) {
-                built = survivialBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, true);
-                if (built >= 0) return built;
-                if (stackSize.stackSize == 2) {
-                    built = survivialBuildPiece(tier2, stackSize, 7, 6, 2, elementBudget, env, false, true);
-                }
-            } else {
-                built = survivialBuildPiece(tier3, stackSize, 3, 21, 0, elementBudget, env, false, true);
-            }
-            return built;
-        }
-
         if (mMachine) return -1;
         if (mSetTier < 3) {
             built += survivialBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, true);
