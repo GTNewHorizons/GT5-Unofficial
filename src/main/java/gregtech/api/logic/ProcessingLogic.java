@@ -1,9 +1,9 @@
 package gregtech.api.logic;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,7 +36,7 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
     protected FluidStack[] inputFluids;
     protected boolean isRecipeLocked;
     protected IDualInputInventory craftingPattern;
-    protected Map<IDualInputInventory, HashSet<GTRecipe>> craftingPatternRecipeCache = new HashMap<>();
+    protected Map<IDualInputInventory, Set<GTRecipe>> craftingPatternRecipeCache = new HashMap<>();
 
     public ProcessingLogic() {}
 
@@ -84,7 +84,7 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
             GTDualInputs inputs = slot.getPatternInputs();
             setInputItems(inputs.inputItems);
             setInputFluids(inputs.inputFluid);
-            HashSet<GTRecipe> recipes = findRecipeMatches(preProcess()).collect(Collectors.toCollection(HashSet::new));
+            Set<GTRecipe> recipes = findRecipeMatches(preProcess()).collect(Collectors.toSet());
             if (!recipes.isEmpty()) {
                 craftingPatternRecipeCache.put(slot, recipes);
                 craftingPattern = slot;
@@ -143,7 +143,7 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         }
 
         if (craftingPattern != null) {
-            HashSet<GTRecipe> matchedRecipes = craftingPatternRecipeCache.get(craftingPattern);
+            Set<GTRecipe> matchedRecipes = craftingPatternRecipeCache.get(craftingPattern);
             for (GTRecipe matchedRecipe : matchedRecipes) {
                 if (matchedRecipe.maxParallelCalculatedByInputs(1, inputFluids, inputItems) == 1) {
                     CalculationResult foundResult = validateAndCalculateRecipe(matchedRecipe);
