@@ -4,6 +4,7 @@ import static gregtech.api.recipe.RecipeMaps.SpatialAnomalyRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.recipe.metadata.SpatialAnomalyTierKey;
@@ -15,6 +16,16 @@ public class SpatialAnomalyRecipes implements Runnable {
 
     @Override
     public void run() {
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.WeakInfinityCatalyst.get(11),
+                ItemList.CrystalCube.get(1))
+            .itemOutputs(ItemList.FractalAnomaly.get(1))
+            .duration(5 * SECONDS)
+            .metadata(ANOMALY_TYPE, 1)
+            .eut(0)
+            .addTo(SpatialAnomalyRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Vyroxeres, 1L))

@@ -929,7 +929,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
-import gregtech.common.tileentities.machines.multi.MTESpatialAnomalyContainmentChamber;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.GregTechAPI;
@@ -1081,6 +1080,7 @@ import gregtech.common.tileentities.machines.multi.MTEPlasmaForge;
 import gregtech.common.tileentities.machines.multi.MTEProcessingArray;
 import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
 import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
+import gregtech.common.tileentities.machines.multi.MTESpatialAnomalyContainmentChamber;
 import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTEVacuumFreezer;
 import gregtech.common.tileentities.machines.multi.MTEWormholeGenerator;
@@ -1642,8 +1642,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1));
 
         ItemList.SpatialAnomalyContainmentChamber.set(
-            new MTESpatialAnomalyContainmentChamber(SpatialAnomalyContainmentChamber.ID, "multimachine.containmentchamber", "Spatial Anomaly Containment Chamber")
-                .getStackForm(1));
+            new MTESpatialAnomalyContainmentChamber(
+                SpatialAnomalyContainmentChamber.ID,
+                "multimachine.containmentchamber",
+                "Spatial Anomaly Containment Chamber").getStackForm(1));
 
         if (Thaumcraft.isModLoaded()) {
             ItemList.ResearchCompleter.set(
