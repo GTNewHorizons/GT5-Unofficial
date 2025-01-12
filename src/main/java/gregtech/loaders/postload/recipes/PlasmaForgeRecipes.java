@@ -19,6 +19,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -32,7 +33,8 @@ public class PlasmaForgeRecipes implements Runnable {
             .itemInputs(
                 ItemList.Field_Generator_UEV.get(64),
                 ItemList.Field_Generator_UIV.get(64),
-                ItemList.Field_Generator_UMV.get(64))
+                ItemList.Field_Generator_UMV.get(64),
+                GTUtility.getIntegratedCircuit(4))
             .fluidInputs(
                 MaterialsUEVplus.ExcitedDTEC.getFluid(100_000_000),
                 MaterialsUEVplus.SpaceTime.getMolten(64 * 2 * 9 * 144))
@@ -47,7 +49,8 @@ public class PlasmaForgeRecipes implements Runnable {
             .itemInputs(
                 new ItemStack(ModItems.itemStandarParticleBase, 1, 24),
                 getModItem(NewHorizonsCoreMod.ID, "item.ChromaticLens", 0),
-                new ItemStack(huiCircuit, 0, 4))
+                new ItemStack(huiCircuit, 0, 4),
+                GTUtility.getIntegratedCircuit(3))
             .fluidInputs(MaterialsUEVplus.ExcitedDTRC.getFluid(92), Materials.Duranium.getMolten(144))
             .itemOutputs(GregtechItemList.Laser_Lens_Special.get(1))
             .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(46))
@@ -80,7 +83,7 @@ public class PlasmaForgeRecipes implements Runnable {
 
         // First recipe using AwDr coil and super heavy radox
         GTValues.RA.stdBuilder()
-            .itemInputs()
+            .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(
                 Materials.StableBaryonicMatter.getFluid(250),
                 GGMaterial.metastableOganesson.getMolten(144),
@@ -100,7 +103,7 @@ public class PlasmaForgeRecipes implements Runnable {
         // This recipe takes UMV power but processes 4x input and output as the original recipe, making it a free POC
         // over the original recipe. Only increases the cost of baryonic and water, making the ratio much cheaper.
         GTValues.RA.stdBuilder()
-            .itemInputs()
+            .itemInputs(GTUtility.getIntegratedCircuit(3))
             .fluidInputs(
                 Materials.StableBaryonicMatter.getFluid(1000),
                 GGMaterial.metastableOganesson.getMolten(144),
@@ -120,7 +123,7 @@ public class PlasmaForgeRecipes implements Runnable {
         // Doubles the cost across the board, but outputs 3x more.
         // Switches to Heavy Radox, which can be mass-produced with the QFT.
         GTValues.RA.stdBuilder()
-            .itemInputs()
+            .itemInputs(GTUtility.getIntegratedCircuit(4))
             .fluidInputs(
                 Materials.StableBaryonicMatter.getFluid(2000),
                 GGMaterial.metastableOganesson.getMolten(144 * 2),
@@ -140,7 +143,7 @@ public class PlasmaForgeRecipes implements Runnable {
         // Quadruples the cost of everything except for Metastable and Celestial, which are only doubled,
         // but gives 4x the output.
         GTValues.RA.stdBuilder()
-            .itemInputs()
+            .itemInputs(GTUtility.getIntegratedCircuit(5))
             .fluidInputs(
                 Materials.StableBaryonicMatter.getFluid(8000),
                 GGMaterial.metastableOganesson.getMolten(144 * 4),

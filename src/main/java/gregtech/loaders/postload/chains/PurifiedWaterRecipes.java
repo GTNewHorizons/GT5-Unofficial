@@ -251,7 +251,7 @@ public class PurifiedWaterRecipes {
 
         for (int i = 0; i < catalystInputs.length; ++i) {
             GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Quark_Catalyst_Housing.get(1), quarks[i])
+                .itemInputs(ItemList.Quark_Catalyst_Housing.get(1), quarks[i], GTUtility.getIntegratedCircuit(3))
                 .fluidInputs(MaterialsUEVplus.ExcitedDTRC.getFluid(10000L))
                 .itemOutputs(catalystInputs[i])
                 .metadata(COIL_HEAT, 10800)
