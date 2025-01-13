@@ -907,6 +907,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
         }
 
+        result = checkRecipeForCustomHatches(result);
+        if (result.wasSuccessful()) {
+            return result;
+        }
+
         processingLogic.setInputFluids(getStoredFluids());
 
         if (isInputSeparationEnabled()) {
@@ -934,7 +939,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
                         inputItems.add(getControllerSlot());
                     }
-                    processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+                    processingLogic.setInputItems(inputItems);
                     CheckRecipeResult foundResult = processingLogic.process();
                     if (foundResult.wasSuccessful()) {
                         return foundResult;
@@ -961,6 +966,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
         }
         return result;
+    }
+
+    /**
+     * Override to perform additional checkRecipe logic. It gets called after CRIBs and before ordinal hatches.
+     * 
+     * @param lastResult Last result of checkRecipe. It might contain interesting info about failure, so don't blindly
+     *                   overwrite it. Refer to {@link #doCheckRecipe} for how to handle it.
+     * @return Result of the checkRecipe.
+     */
+    @Nonnull
+    protected CheckRecipeResult checkRecipeForCustomHatches(CheckRecipeResult lastResult) {
+        return lastResult;
     }
 
     /**
