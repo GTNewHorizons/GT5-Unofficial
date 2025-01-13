@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTechAPI;
@@ -47,10 +49,10 @@ public class GTHashSet extends AbstractSet<GTItemStack> {
         return map;
     }
 
-    @SuppressWarnings("unchecked") // The downcasting below will throw ClassCastException unless E is GT_ItemStack.
+    @Nonnull
     @Override
     public Iterator<GTItemStack> iterator() {
-        return (Iterator<GTItemStack>) map.keySet()
+        return map.keySet()
             .iterator();
     }
 
