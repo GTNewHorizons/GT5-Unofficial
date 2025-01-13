@@ -13,6 +13,10 @@ public class CoverSteamRegulator extends CoverFluidRegulator {
 
     @Override
     protected boolean canTransferFluid(FluidStack fluid) {
-        return GTModHandler.isAnySteam(fluid) || GTModHandler.isSuperHeatedSteam(fluid);
+        String fluidname = fluid.getFluid()
+            .getName();
+        return GTModHandler.isAnySteam(fluid) || GTModHandler.isSuperHeatedSteam(fluid)
+            || fluidname.equals("supercriticalsteam")
+            || fluidname.equals("densesupercriticalsteam");
     }
 }
