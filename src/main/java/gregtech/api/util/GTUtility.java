@@ -164,7 +164,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.net.GTPacketSound;
 import gregtech.api.objects.CollectorUtils;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.objects.GTItemStack2;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
@@ -3019,21 +3018,9 @@ public class GTUtility {
         return isStackInList(new GTItemStack(aStack), aList);
     }
 
-    public static boolean isStackInList(ItemStack aStack, Set<GTItemStack2> aList) {
-        if (aStack == null) {
-            return false;
-        }
-        return isStackInList(new GTItemStack2(aStack), aList);
-    }
-
     public static boolean isStackInList(GTItemStack aStack, Collection<GTItemStack> aList) {
         return aStack != null
             && (aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, aStack.mStackSize, W)));
-    }
-
-    public static boolean isStackInList(GTItemStack2 aStack, Set<GTItemStack2> aList) {
-        return aStack != null
-            && (aList.contains(aStack) || aList.contains(new GTItemStack2(aStack.mItem, aStack.mStackSize, W)));
     }
 
     /**

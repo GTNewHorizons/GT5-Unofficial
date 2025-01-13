@@ -57,7 +57,6 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.item.ItemHolder;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.GTDummyWorld;
 import gregtech.common.items.ItemIntegratedCircuit;
@@ -89,7 +88,7 @@ public class GregTechAPI {
      * {@link GTItemStack}
      */
     public static final Collection<Map<?, ?>> sItemStackMappings = new ArrayList<>();
-    public static final Collection<SetMultimap<? extends ItemHolder, ?>> itemStackMultiMaps = new ArrayList<>();
+    public static final Collection<SetMultimap<GTItemStack, ?>> itemStackMultiMaps = new ArrayList<>();
 
     /**
      * The MetaTileEntity-ID-List-Length
@@ -146,17 +145,16 @@ public class GregTechAPI {
     /**
      * The List of Tools, which can be used. Accepts regular damageable Items and Electric Items
      */
-    public static final GTHashSet<GTItemStack> sToolList = new GTHashSet<>(), sCrowbarList = new GTHashSet<>(),
-        sScrewdriverList = new GTHashSet<>(), sWrenchList = new GTHashSet<>(), sSoftHammerList = new GTHashSet<>(),
-        sHardHammerList = new GTHashSet<>(), sWireCutterList = new GTHashSet<>(),
-        sSolderingToolList = new GTHashSet<>(), sSolderingMetalList = new GTHashSet<>(),
-        sJackhammerList = new GTHashSet<>();
+    public static final GTHashSet sToolList = new GTHashSet(), sCrowbarList = new GTHashSet(),
+        sScrewdriverList = new GTHashSet(), sWrenchList = new GTHashSet(), sSoftHammerList = new GTHashSet(),
+        sHardHammerList = new GTHashSet(), sWireCutterList = new GTHashSet(), sSolderingToolList = new GTHashSet(),
+        sSolderingMetalList = new GTHashSet(), sJackhammerList = new GTHashSet();
     /**
      * The List of Hazmat Armors
      */
-    public static final GTHashSet<GTItemStack> sGasHazmatList = new GTHashSet<>(), sBioHazmatList = new GTHashSet<>(),
-        sFrostHazmatList = new GTHashSet<>(), sHeatHazmatList = new GTHashSet<>(), sRadioHazmatList = new GTHashSet<>(),
-        sElectroHazmatList = new GTHashSet<>();
+    public static final GTHashSet sGasHazmatList = new GTHashSet(), sBioHazmatList = new GTHashSet(),
+        sFrostHazmatList = new GTHashSet(), sHeatHazmatList = new GTHashSet(), sRadioHazmatList = new GTHashSet(),
+        sElectroHazmatList = new GTHashSet();
 
     private static final Multimap<Integer, ItemStack> sRealConfigurationList = Multimaps
         .newListMultimap(new TreeMap<>(), ArrayList::new);
