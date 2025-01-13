@@ -66,6 +66,7 @@ import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchNonConsumableBase;
+import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.registries.LHECoolantRegistry;
@@ -80,7 +81,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTSpawnEventHandler;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.item.ItemHolder;
 import gregtech.common.GTDummyWorld;
 import gregtech.common.GTNetwork;
 import gregtech.common.GTProxy;
@@ -800,7 +800,7 @@ public class GTMod implements IGTMod {
             for (Map<?, ?> gt_itemStackMap : GregTechAPI.sItemStackMappings) {
                 GTUtility.reMap(gt_itemStackMap);
             }
-            for (SetMultimap<? extends ItemHolder, ?> gt_itemStackMap : GregTechAPI.itemStackMultiMaps) {
+            for (SetMultimap<GTItemStack, ?> gt_itemStackMap : GregTechAPI.itemStackMultiMaps) {
                 GTUtility.reMap(gt_itemStackMap);
             }
         } catch (Throwable e) {
