@@ -4,7 +4,6 @@ import static gregtech.api.enums.GTValues.D2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -26,8 +25,6 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.logic.FluidInventoryLogic;
-import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
@@ -40,7 +37,6 @@ import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.EmptyRecipeMetadataStorage;
 import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.util.extensions.ArrayExt;
-import gregtech.api.util.item.ItemHolder;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.nei.GTNEIDefaultHandler;
@@ -685,60 +681,6 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 || GTUtility.areStacksEqual(item, dataOrb, true);
         }
         return false;
-    }
-
-    public boolean isRecipePossible(@Nullable ItemInventoryLogic itemInput, @Nullable FluidInventoryLogic fluidInput) {
-        return getAmountOfRecipesDone(itemInput, fluidInput, 1, true) > 0;
-    }
-
-    public long getAmountOfRecipesDone(@Nullable ItemInventoryLogic itemInput, @Nullable FluidInventoryLogic fluidInput,
-        long maxParallel, boolean simulate) {
-        if (itemInput == null) {
-            itemInput = new ItemInventoryLogic(0);
-        }
-
-        if (fluidInput == null) {
-            fluidInput = new FluidInventoryLogic(0, 0);
-        }
-
-        itemInput.startRecipeCheck();
-        Map<ItemHolder, Long> recipeItems = getItemInputsAsItemMap();
-        for (Entry<ItemHolder, Long> entry : recipeItems.entrySet()) {
-            maxParallel = Math
-                .min(maxParallel, itemInput.calculateAmountOfTimesItemCanBeTaken(entry.getKey(), entry.getValue()));
-        }
-
-        for (FluidStack fluid : mFluidInputs) {
-            if (fluid == null) continue;
-            maxParallel = Math
-                .min(maxParallel, fluidInput.calculateAmountOfTimesFluidCanBeTaken(fluid.getFluid(), fluid.amount));
-        }
-
-        if (simulate) {
-            itemInput.stopRecipeCheck();
-            return maxParallel;
-        }
-
-        for (Entry<ItemHolder, Long> entry : recipeItems.entrySet()) {
-            itemInput.subtractItemAmount(entry.getKey(), entry.getValue() * maxParallel, false);
-        }
-
-        for (FluidStack fluid : mFluidInputs) {
-            if (fluid == null) continue;
-            fluidInput.drain(fluid.getFluid(), fluid.amount * maxParallel, false);
-        }
-        itemInput.stopRecipeCheck();
-        return maxParallel;
-    }
-
-    private Map<ItemHolder, Long> getItemInputsAsItemMap() {
-        Map<ItemHolder, Long> items = new HashMap<>();
-        for (ItemStack item : mInputs) {
-            if (item == null) continue;
-            ItemHolder itemHolder = new ItemHolder(item);
-            items.put(itemHolder, items.getOrDefault(itemHolder, 0L) + item.stackSize);
-        }
-        return items;
     }
 
     @Override
