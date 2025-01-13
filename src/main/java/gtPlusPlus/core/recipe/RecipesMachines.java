@@ -3396,8 +3396,9 @@ public class RecipesMachines {
     }
 
     private static void solidifierHatches() {
-        ItemStack[] mSuperBusesInput = new ItemStack[] { ItemList.Hatch_Input_IV.get(1),
-            ItemList.Hatch_Input_LuV.get(1), ItemList.Hatch_Input_ZPM.get(1), ItemList.Hatch_Input_UV.get(1), };
+        ItemStack[] mSuperBusesInput = new ItemStack[] { ItemList.Hatch_Input_Multi_2x2_IV.get(1),
+            ItemList.Hatch_Input_Multi_2x2_LuV.get(1), ItemList.Hatch_Input_Multi_2x2_ZPM.get(1),
+            ItemList.Hatch_Input_Multi_2x2_UV.get(1), };
 
         ItemStack[] mSolidifierHatches = new ItemStack[] { GregtechItemList.Hatch_Solidifier_I.get(1),
             GregtechItemList.Hatch_Solidifier_II.get(1), GregtechItemList.Hatch_Solidifier_III.get(1),
@@ -3412,7 +3413,7 @@ public class RecipesMachines {
                     CI.getSensor(componentTier, 1),
                     CI.getFluidRegulator(componentTier, 1),
                     CI.getTieredComponent(OrePrefixes.circuit, componentTier + 1, 4),
-                    ItemUtils.getSimpleStack(Blocks.chest))
+                    ItemList.Hatch_Input_Bus_ULV.get(1))
                 .itemOutputs(mSolidifierHatches[i])
                 .fluidInputs(CI.getTieredFluid(componentTier, 144 * 2))
                 .duration(30 * SECONDS)
