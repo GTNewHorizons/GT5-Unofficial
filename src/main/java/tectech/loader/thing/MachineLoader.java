@@ -2320,13 +2320,13 @@ public class MachineLoader implements Runnable {
         dataInAss_Wireless_Hatch.set(
             new MTEHatchWirelessDataItemsInput(
                 WirelessAssemblylineSlaveConnector.ID,
-                "hatch.datainass.wireless.tier.10",
+                "hatch.datainass.wireless.tier.12",
                 "Wireless Assembly line Reception Connector",
                 10).getStackForm(1L));
         dataOutAss_Wireless_Hatch.set(
             new MTEHatchWirelessDataItemsOutput(
                 WirelessDataBankMasterConnector.ID,
-                "hatch.dataoutass.wireless.tier.10",
+                "hatch.dataoutass.wireless.tier.12",
                 "Wireless Data Bank Transmission Connector",
                 10).getStackForm(1L));
         rack_Hatch.set(new MTEHatchRack(ComputerRack.ID, "hatch.rack.tier.08", "Computer Rack", 8).getStackForm(1L));
@@ -2515,7 +2515,7 @@ public class MachineLoader implements Runnable {
                 .getStackForm(1L));
         UnusedStuff.set(new ItemStack(Blocks.air));
         hatch_CreativeUncertainty.set(
-            new MTEHatchCreativeUncertainty(UncertaintyResolution.ID, "debug.tt.certain", "Uncertainty Resolution", 11)
+            new MTEHatchCreativeUncertainty(UncertaintyResolution.ID, "debug.tt.certain", "Uncertainty Resolution", 1)
                 .getStackForm(1));
 
         // ===================================================================================================
