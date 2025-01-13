@@ -883,16 +883,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Nonnull
     protected CheckRecipeResult doCheckRecipe() {
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
+
         // check crafting input hatches first
-        if (supportsCraftingMEBuffer()) {
-            for (IDualInputHatch dualInputHatch : mDualInputHatches) {
-                for (var it = dualInputHatch.inventories(); it.hasNext();) {
-                    IDualInputInventory slot = it.next();
-                    // Reverse order of input items for consistent behavior with standard input buses.
-                    ItemStack[] inputItems = slot.getItemInputs();
-                    ArrayUtils.reverse(inputItems);
-                    processingLogic.setInputItems(inputItems);
+        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+            ItemStack[] sharedItems = dualInputHatch.getSharedItems();
+            for (var it = dualInputHatch.inventories(); it.hasNext();) {
+                IDualInputInventory slot = it.next();
+
+                if (!slot.isEmpty() && processingLogic.craftingPatternHandler(slot)) {
+
+                    processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, slot.getItemInputs()));
                     processingLogic.setInputFluids(slot.getFluidInputs());
+
                     CheckRecipeResult foundResult = processingLogic.process();
                     if (foundResult.wasSuccessful()) {
                         return foundResult;
@@ -903,6 +905,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     }
                 }
             }
+        }
+
+        result = checkRecipeForCustomHatches(result);
+        if (result.wasSuccessful()) {
+            return result;
         }
 
         processingLogic.setInputFluids(getStoredFluids());
@@ -932,7 +939,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
                         inputItems.add(getControllerSlot());
                     }
-                    processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+                    processingLogic.setInputItems(inputItems);
                     CheckRecipeResult foundResult = processingLogic.process();
                     if (foundResult.wasSuccessful()) {
                         return foundResult;
@@ -959,6 +966,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
         }
         return result;
+    }
+
+    /**
+     * Override to perform additional checkRecipe logic. It gets called after CRIBs and before ordinal hatches.
+     * 
+     * @param lastResult Last result of checkRecipe. It might contain interesting info about failure, so don't blindly
+     *                   overwrite it. Refer to {@link #doCheckRecipe} for how to handle it.
+     * @return Result of the checkRecipe.
+     */
+    @Nonnull
+    protected CheckRecipeResult checkRecipeForCustomHatches(CheckRecipeResult lastResult) {
+        return lastResult;
     }
 
     /**
@@ -1720,6 +1739,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.setProcessingLogic(processingLogic);
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof ISmartInputHatch hatch) {

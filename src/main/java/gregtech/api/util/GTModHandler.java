@@ -102,7 +102,7 @@ public class GTModHandler {
     private static final List<InventoryCrafting> delayedRemovalByRecipe = new ArrayList<>();
 
     public static Collection<String> sNativeRecipeClasses = new HashSet<>(), sSpecialRecipeClasses = new HashSet<>();
-    public static GTHashSet<GTItemStack> sNonReplaceableItems = new GTHashSet<>();
+    public static GTHashSet sNonReplaceableItems = new GTHashSet();
     public static Object sBoxableWrapper = new GTIBoxableWrapper();
     public static Collection<GTItemStack> sBoxableItems = new ArrayList<>();
     private static final Map<IRecipeInput, RecipeOutput> emptyRecipeMap = new HashMap<>();

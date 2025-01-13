@@ -21,8 +21,6 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.PowerLogic;
-import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
@@ -235,15 +233,6 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
                         return;
                     }
                 } else {
-                    if (tGTTileEntity instanceof PowerLogicHost) {
-                        PowerLogic logic = ((PowerLogicHost) tGTTileEntity).getPowerLogic(opposite);
-                        if (logic == null || !logic.canUseLaser() || opposite != tGTTileEntity.getFrontFacing()) {
-                            return;
-                        }
-
-                        long ampsUsed = logic.injectEnergy(maxEUOutput(), Amperes);
-                        setEUVar(aBaseMetaTileEntity.getStoredEU() - ampsUsed * maxEUOutput());
-                    }
                     return;
                 }
             } else {

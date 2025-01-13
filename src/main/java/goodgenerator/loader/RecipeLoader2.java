@@ -56,7 +56,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
-import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.recipe.common.CI;
@@ -1556,8 +1555,8 @@ public class RecipeLoader2 {
                 MaterialsAlloy.TITANSTEEL.getPlateDense(8), ItemRefer.HiC_T4.get(8),
                 ItemList.Field_Generator_UHV.get(8),
                 GGMaterial.enrichedNaquadahAlloy.get(OrePrefixes.gearGtSmall, 64) },
-            new FluidStack[] { GenericChem.TEFLON.getFluidStack(2304), GGMaterial.dalisenite.getMolten(1152),
-                MaterialsAlloy.BOTMIUM.getFluidStack(288) },
+            new FluidStack[] { MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(144),
+                GGMaterial.dalisenite.getMolten(1152), MaterialsAlloy.BOTMIUM.getFluidStack(288) },
             ItemRefer.Compact_Fusion_MK4.get(1),
             6000,
             (int) TierEU.RECIPE_UV);
