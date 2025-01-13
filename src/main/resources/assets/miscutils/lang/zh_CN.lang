@@ -2745,15 +2745,6 @@ item.itemPlateNylon.name=尼龙板
 item.itemPlateDoubleNylon.name=双重尼龙板
 item.itemCellNylon.name=尼龙单元
 tile.Block of Nylon.name=尼龙块
-item.itemIngotTeflon.name=特氟龙锭
-item.itemDustTeflon.name=特氟龙粉
-item.itemDustTinyTeflon.name=小撮特氟龙粉
-item.itemDustSmallTeflon.name=小堆特氟龙粉
-item.itemNuggetTeflon.name=特氟龙粒
-item.itemPlateTeflon.name=特氟龙板
-item.itemPlateDoubleTeflon.name=双重特氟龙板
-item.itemCellTeflon.name=特氟龙单元
-tile.Block of Teflon.name=特氟龙块
 
 //Added 17/4/19
 //Spelling Corrections

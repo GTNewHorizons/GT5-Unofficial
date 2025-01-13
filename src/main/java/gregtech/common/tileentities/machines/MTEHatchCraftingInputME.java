@@ -122,13 +122,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         private final GTUtility.ItemId itemId;
 
         public PatternSlot(ItemStack pattern, World world, SharedItemGetter getter) {
-            this.pattern = pattern;
-            this.patternDetails = ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem()))
-                .getPatternForItem(pattern, world);
-            this.itemInventory = new ArrayList<>();
-            this.fluidInventory = new ArrayList<>();
-            this.sharedItemGetter = getter;
-            this.itemId = GTUtility.ItemId.create(pattern);
+            this(pattern, null, world, getter);
         }
 
         public PatternSlot(ItemStack pattern, NBTTagCompound nbt, World world, SharedItemGetter getter) {
@@ -139,6 +133,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             this.fluidInventory = new ArrayList<>();
             this.sharedItemGetter = getter;
             this.itemId = GTUtility.ItemId.create(pattern);
+            if (nbt == null) return;
             NBTTagList inv = nbt.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < inv.tagCount(); i++) {
                 NBTTagCompound tagItemStack = inv.getCompoundTagAt(i);
@@ -831,7 +826,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 try {
                     originalPattern.refund(getProxy(), getRequest());
                     for (ProcessingLogic pl : processingLogics) {
-                        pl.removeEntryCraftingPatternRecipeCache(originalPattern);
+                        pl.clearCraftingPatternRecipeCache(originalPattern);
                     }
                 } catch (GridAccessException ignored) {}
                 internalInventory[index] = null;
@@ -870,7 +865,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         for (ProcessingLogic pl : processingLogics) {
             for (PatternSlot sl : internalInventory) {
                 if (sl == null) continue;
-                pl.removeEntryCraftingPatternRecipeCache(sl);
+                pl.clearCraftingPatternRecipeCache(sl);
             }
         }
     }
