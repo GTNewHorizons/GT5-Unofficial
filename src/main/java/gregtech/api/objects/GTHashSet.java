@@ -7,12 +7,14 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.util.GTUtility;
 
-public class GTHashSet<E extends GTItemStack> extends AbstractSet<E> {
+public class GTHashSet extends AbstractSet<GTItemStack> {
 
     private static final Object OBJECT = new Object();
     private final transient HashMap<GTItemStack, Object> map;
@@ -22,7 +24,7 @@ public class GTHashSet<E extends GTItemStack> extends AbstractSet<E> {
         GregTechAPI.sItemStackMappings.add(map);
     }
 
-    public GTHashSet(Collection<? extends E> c) {
+    public GTHashSet(Collection<GTItemStack> c) {
         map = new HashMap<>(Math.max((int) (c.size() / .75f) + 1, 16));
         addAll(c);
         GregTechAPI.sItemStackMappings.add(map);
@@ -47,10 +49,10 @@ public class GTHashSet<E extends GTItemStack> extends AbstractSet<E> {
         return map;
     }
 
-    @SuppressWarnings("unchecked") // The downcasting below will throw ClassCastException unless E is GT_ItemStack.
+    @Nonnull
     @Override
-    public Iterator<E> iterator() {
-        return (Iterator<E>) map.keySet()
+    public Iterator<GTItemStack> iterator() {
+        return map.keySet()
             .iterator();
     }
 
@@ -75,7 +77,7 @@ public class GTHashSet<E extends GTItemStack> extends AbstractSet<E> {
     }
 
     @Override
-    public boolean add(E e) {
+    public boolean add(GTItemStack e) {
         return map.put(e, OBJECT) == null;
     }
 

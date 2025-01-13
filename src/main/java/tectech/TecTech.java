@@ -18,7 +18,6 @@ import gregtech.api.objects.XSTR;
 import tectech.loader.ConfigHandler;
 import tectech.loader.MainLoader;
 import tectech.loader.gui.CreativeTabTecTech;
-import tectech.loader.thing.MuTeLoader;
 import tectech.mechanics.enderStorage.EnderWorldSavedData;
 import tectech.proxy.CommonProxy;
 import tectech.recipe.EyeOfHarmonyRecipeStorage;
@@ -81,7 +80,6 @@ public class TecTech {
 
         TecTechRecipeMaps.init();
         MainLoader.preLoad();
-        new MuTeLoader().run();
     }
 
     @Mod.EventHandler
