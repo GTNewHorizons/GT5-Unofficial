@@ -39,7 +39,6 @@ import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
-import gregtech.nei.GTNEIDefaultHandler;
 import ic2.core.Ic2Items;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -381,18 +380,6 @@ public class GTRecipe implements Comparable<GTRecipe> {
     public ItemStack getOutput(int aIndex) {
         if (aIndex < 0 || aIndex >= mOutputs.length) return null;
         return GTUtility.copyOrNull(mOutputs[aIndex]);
-    }
-
-    /**
-     * Dictates the ItemStacks displayed in the output slots of any NEI page handled by the default GT NEI handler.
-     * Override to make shown items differ from a GTRecipe's item output array
-     *
-     * @see GTNEIDefaultHandler
-     * @param i Slot index
-     * @return ItemStack to be displayed in the slot
-     */
-    public ItemStack getRepresentativeOutput(int i) {
-        return getOutput(i);
     }
 
     public int getOutputChance(int aIndex) {
