@@ -1522,6 +1522,7 @@ public enum ItemList implements IItemContainer {
     Hawking_Glass,
     Black_Hole_Opener,
     Black_Hole_Closer,
+    Black_Hole_Stabilizer,
 
     Machine_Multi_IndustrialBrewery,
 
