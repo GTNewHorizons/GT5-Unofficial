@@ -149,17 +149,16 @@ public class GregTechAPI {
     /**
      * The List of Tools, which can be used. Accepts regular damageable Items and Electric Items
      */
-    public static final GTHashSet<GTItemStack> sToolList = new GTHashSet<>(), sCrowbarList = new GTHashSet<>(),
-        sScrewdriverList = new GTHashSet<>(), sWrenchList = new GTHashSet<>(), sSoftHammerList = new GTHashSet<>(),
-        sHardHammerList = new GTHashSet<>(), sWireCutterList = new GTHashSet<>(),
-        sSolderingToolList = new GTHashSet<>(), sSolderingMetalList = new GTHashSet<>(),
-        sJackhammerList = new GTHashSet<>();
+    public static final GTHashSet sToolList = new GTHashSet(), sCrowbarList = new GTHashSet(),
+        sScrewdriverList = new GTHashSet(), sWrenchList = new GTHashSet(), sSoftHammerList = new GTHashSet(),
+        sHardHammerList = new GTHashSet(), sWireCutterList = new GTHashSet(), sSolderingToolList = new GTHashSet(),
+        sSolderingMetalList = new GTHashSet(), sJackhammerList = new GTHashSet();
     /**
      * The List of Hazmat Armors
      */
-    public static final GTHashSet<GTItemStack> sGasHazmatList = new GTHashSet<>(), sBioHazmatList = new GTHashSet<>(),
-        sFrostHazmatList = new GTHashSet<>(), sHeatHazmatList = new GTHashSet<>(), sRadioHazmatList = new GTHashSet<>(),
-        sElectroHazmatList = new GTHashSet<>();
+    public static final GTHashSet sGasHazmatList = new GTHashSet(), sBioHazmatList = new GTHashSet(),
+        sFrostHazmatList = new GTHashSet(), sHeatHazmatList = new GTHashSet(), sRadioHazmatList = new GTHashSet(),
+        sElectroHazmatList = new GTHashSet();
 
     private static final Multimap<Integer, ItemStack> sRealConfigurationList = Multimaps
         .newListMultimap(new TreeMap<>(), ArrayList::new);
