@@ -61,7 +61,6 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.item.ItemHolder;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.GTDummyWorld;
 import gregtech.common.items.ItemIntegratedCircuit;
@@ -93,7 +92,7 @@ public class GregTechAPI {
      * {@link GTItemStack}
      */
     public static final Collection<Map<?, ?>> sItemStackMappings = new ArrayList<>();
-    public static final Collection<SetMultimap<? extends ItemHolder, ?>> itemStackMultiMaps = new ArrayList<>();
+    public static final Collection<SetMultimap<GTItemStack, ?>> itemStackMultiMaps = new ArrayList<>();
 
     /**
      * The MetaTileEntity-ID-List-Length
