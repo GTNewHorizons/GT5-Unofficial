@@ -92,11 +92,6 @@ public class MBItemFrame extends Item implements IHiveFrame {
         return false;
     }
 
-    @Override
-    public boolean isRepairable() {
-        return false;
-    }
-
     public float getTerritoryModifier(final IBeeGenome genome, final float currentModifier) {
         return this.type.getTerritoryModifier(genome, currentModifier);
     }
