@@ -443,6 +443,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setByte("blackHoleStatus", blackHoleStatus);
+        tag.setFloat("blackHoleStability", blackHoleStability);
         tag.setInteger("parallels", getMaxParallelRecipes());
     }
 
@@ -455,6 +457,18 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
                 + EnumChatFormatting.WHITE
                 + tag.getInteger("parallels"));
+        if (tag.getByte("blackHoleStatus") != 1) {
+            if (tag.getFloat("blackHoleStability") > 0) {
+                currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Active");
+                currentTip.add(
+                    EnumChatFormatting.DARK_PURPLE + "Stability: "
+                        + EnumChatFormatting.BOLD
+                        + Math.round(tag.getFloat("blackHoleStability"))
+                        + "%");
+            } else {
+                currentTip.add(EnumChatFormatting.RED + "BLACK HOLE UNSTABLE");
+            }
+        } else currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Offline");
     }
 
     private int getModeFromCircuit(ItemStack[] t) {
