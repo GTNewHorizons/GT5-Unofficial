@@ -45,6 +45,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
@@ -58,7 +59,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.MetaGeneratedTool01;
 
 public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELargeTurbine>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, INEIPreviewModifier {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final ClassValue<IStructureDefinition<MTELargeTurbine>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -146,18 +147,6 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
         if (getPollutionPerTick(null) == 0)
             return new IHatchElement[] { Maintenance, InputHatch, OutputHatch, OutputBus, InputBus };
         return new IHatchElement[] { Maintenance, InputHatch, OutputHatch, OutputBus, InputBus, Muffler };
-    }
-
-    @Override
-    public boolean checkStructure(boolean aForceReset, IGregTechTileEntity aBaseMetaTileEntity) {
-        boolean f = super.checkStructure(aForceReset, aBaseMetaTileEntity);
-        if (f && getBaseMetaTileEntity().isServerSide()) {
-            // while is this a client side field, blockrenderer will reuse the server world for client side rendering
-            // so we must set it as well...
-            mFormed = true;
-            return true;
-        }
-        return f;
     }
 
     @Override
@@ -448,5 +437,10 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_LARGE_TURBINES_LOOP;
+    }
+
+    @Override
+    public void onPreviewStructureComplete(@NotNull ItemStack trigger) {
+        mFormed = true;
     }
 }

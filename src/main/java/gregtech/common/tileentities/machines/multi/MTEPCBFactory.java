@@ -59,14 +59,13 @@ import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
-import blockrenderer6343.client.world.ClientFakePlayer;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -97,7 +96,8 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings8;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory> implements ISurvivalConstructable {
+public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
+    implements ISurvivalConstructable, INEIPreviewModifier {
 
     private static final String tier1 = "tier1";
     private static final String tier2 = "tier2";
@@ -332,19 +332,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int built = 0;
-        if (Mods.BlockRenderer6343.isModLoaded() && env.getActor() instanceof ClientFakePlayer) {
-            if (stackSize.stackSize < 3) {
-                built = survivialBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, true);
-                if (built >= 0) return built;
-                if (stackSize.stackSize == 2) {
-                    built = survivialBuildPiece(tier2, stackSize, 7, 6, 2, elementBudget, env, false, true);
-                }
-            } else {
-                built = survivialBuildPiece(tier3, stackSize, 3, 21, 0, elementBudget, env, false, true);
-            }
-            return built;
-        }
-
         if (mMachine) return -1;
         if (mSetTier < 3) {
             built += survivialBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, true);
@@ -1356,5 +1343,10 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     @Override
     public boolean supportsBatchMode() {
         return true;
+    }
+
+    @Override
+    public void onPreviewConstruct(@NotNull ItemStack trigger) {
+        mSetTier = trigger.stackSize;
     }
 }
