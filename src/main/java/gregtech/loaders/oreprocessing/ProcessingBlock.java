@@ -141,8 +141,8 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemInputs(ItemList.Shape_Mold_Block.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
                         .fluidInputs(aMaterial.getMolten(1296L))
-                        .duration(14 * SECONDS + 8 * TICKS)
-                        .eut(8)
+                        .duration(aMaterial.getMass() * 9 * TICKS)
+                        .eut(calculateRecipeEU(aMaterial, 8))
                         .addTo(fluidSolidifierRecipes);
                 }
             }
@@ -171,7 +171,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
-                .duration(15 * SECONDS)
+                .duration(aMaterial.getMass() * 2 * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 2))
                 .addTo(compressorRecipes);
         }
