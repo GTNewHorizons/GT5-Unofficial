@@ -12,6 +12,8 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.copyAmount;
 import static gregtech.api.util.GTUtility.copyAmountUnsafe;
+import static net.minecraft.util.EnumChatFormatting.AQUA;
+import static net.minecraft.util.EnumChatFormatting.BOLD;
 import static net.minecraft.util.EnumChatFormatting.WHITE;
 
 import javax.annotation.Nonnull;
@@ -56,6 +58,8 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.SolarFactoryRecipeData;
 
+// TODO: add actual structures and update tooltip structure info accordingly
+
 public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory>
     implements IConstructable, ISurvivalConstructable {
 
@@ -68,7 +72,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     int casingTier;
 
     int outputMultiplierCap = 2;
-    double outputMultiplierSlope = 0.25;
+    double outputMultiplierSlope;
 
     // Left side represents the wafers to look for, right side represents their tier.
     public static ImmutableList<Pair<ItemStack, Integer>> validWafers = ImmutableList.of(
@@ -201,7 +205,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             mTier = 2;
         } else if (checkPiece(STRUCTURE_TIER_3, 1, 1, 0)) {
             mTier = 3;
-        } else mTier = 0;
+        }
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         return mTier > 0 && casingAmount >= 8 && (mTier < 2 || casingTier >= -1);
     }
@@ -235,8 +239,8 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     }
 
     protected ItemStack[] calculateNewOutput(ItemStack currentOutput, int seed) {
-        double calculatedMultiplier = ((outputMultiplierSlope * seed) + 1) > outputMultiplierCap ? outputMultiplierCap
-            : ((outputMultiplierSlope * seed) + 1);
+        outputMultiplierSlope = mTier >= 3 ? 0.50 : 0.25;
+        double calculatedMultiplier = Math.min((outputMultiplierSlope * seed) + 1, outputMultiplierCap);
         int outputSize = (int) Math.floor(currentOutput.stackSize * calculatedMultiplier);
         return new ItemStack[] { copyAmountUnsafe(outputSize, currentOutput) };
     }
@@ -348,11 +352,16 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         tt.addMachineType("Solar Factory")
             .addInfo("Controller block for the Solar Factory")
             .addInfo("Produces solar panels in bulk")
-            .addInfo("Receives a 25% bonus to output for each Wafer tier above the minimum required")
-            .addInfo("The bonus to output occurs after parallels, and cannot be greater than 100%")
-            .addInfo("The recipes shown in NEI display the minimum wafer tier required")
-            .addInfo("Parallels are based on Precise Casing Tier")
-            .addInfo("MK-I = 8x, MK-II = 16x, MK-III = 32x, MK-IV = 64x")
+            .addInfo("The structure has 3 tiers, each allowing greater production than the last")
+            .addInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "2" + WHITE + BOLD + " and above:")
+            .addInfo("  25% more outputs for every Wafer tier used above the minimum required")
+            .addInfo("  The bonus to output occurs after parallels, and cannot be greater than 100%")
+            .addInfo("  The recipes shown in NEI display the minimum wafer tier required")
+            .addInfo("  Parallels are based on Precise Casing Tier")
+            .addInfo("  MK-I = 8x, MK-II = 16x, MK-III = 32x, MK-IV = 64x")
+            .addInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "3" + WHITE + BOLD + " and above:")
+            .addInfo("  Solar Panels can be made without the previous panel, but at a higher cost")
+            .addInfo("  Bonus per increased wafer tier is raised to 50%")
             .addTecTechHatchInfo()
             .beginStructureBlock(7, 10, 9, true)
             .addStructureInfo(WHITE + "Imprecise Unit Casings cannot be used")
