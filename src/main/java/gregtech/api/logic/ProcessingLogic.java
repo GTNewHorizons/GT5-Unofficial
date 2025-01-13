@@ -65,7 +65,6 @@ public class ProcessingLogic {
     protected RecipeMap<?> lastRecipeMap;
     protected GTRecipe lastRecipe;
     protected Map<IDualInputInventory, Set<GTRecipe>> craftingPatternRecipeCache = new HashMap<>();
-    protected boolean needWipeCraftingPatternRecipeCache;
 
     public ProcessingLogic() {}
 
@@ -118,29 +117,24 @@ public class ProcessingLogic {
     }
 
     public boolean craftingPatternHandler(IDualInputInventory slot) {
-        if (needWipeCraftingPatternRecipeCache) {
-            craftingPatternRecipeCache.clear();
-            needWipeCraftingPatternRecipeCache = false;
-        }
-
         if (craftingPatternRecipeCache.containsKey(slot)) {
             craftingPattern = slot;
             return true;
-        } else {
-            GTDualInputs inputs = slot.getPatternInputs();
-            setInputItems(inputs.inputItems);
-            setInputFluids(inputs.inputFluid);
-            Set<GTRecipe> recipes = findRecipeMatches(preProcess()).collect(Collectors.toSet());
-            if (!recipes.isEmpty()) {
-                craftingPatternRecipeCache.put(slot, recipes);
-                craftingPattern = slot;
-                return true;
-            }
-            return false;
         }
+
+        GTDualInputs inputs = slot.getPatternInputs();
+        setInputItems(inputs.inputItems);
+        setInputFluids(inputs.inputFluid);
+        Set<GTRecipe> recipes = findRecipeMatches(getCurrentRecipeMap()).collect(Collectors.toSet());
+        if (!recipes.isEmpty()) {
+            craftingPatternRecipeCache.put(slot, recipes);
+            craftingPattern = slot;
+            return true;
+        }
+        return false;
     }
 
-    public void removeEntryCraftingPatternRecipeCache(IDualInputInventory slot) {
+    public void clearCraftingPatternRecipeCache(IDualInputInventory slot) {
         craftingPatternRecipeCache.remove(slot);
     }
 
@@ -238,33 +232,33 @@ public class ProcessingLogic {
     // region Overwrite calculated result
 
     /**
-     * Overwrites item output result of the calculation.
+     * Overwrites calculated item output.
      */
-    public ProcessingLogic setOutputItems(ItemStack... itemOutputs) {
+    public ProcessingLogic overwriteOutputItems(ItemStack... itemOutputs) {
         this.outputItems = itemOutputs;
         return this;
     }
 
     /**
-     * Overwrites fluid output result of the calculation.
+     * Overwrites calculated fluid output.
      */
-    public ProcessingLogic setOutputFluids(FluidStack... fluidOutputs) {
+    public ProcessingLogic overwriteOutputFluids(FluidStack... fluidOutputs) {
         this.outputFluids = fluidOutputs;
         return this;
     }
 
     /**
-     * Overwrites EU/t result of the calculation.
+     * Overwrites calculated EU/t.
      */
-    public ProcessingLogic setCalculatedEut(long calculatedEut) {
+    public ProcessingLogic overwriteCalculatedEut(long calculatedEut) {
         this.calculatedEut = calculatedEut;
         return this;
     }
 
     /**
-     * Overwrites duration result of the calculation.
+     * Overwrites calculated duration.
      */
-    public ProcessingLogic setDuration(int duration) {
+    public ProcessingLogic overwriteCalculatedDuration(int duration) {
         this.duration = duration;
         return this;
     }
@@ -294,7 +288,7 @@ public class ProcessingLogic {
      *
      * @return Recipemap to use now
      */
-    protected RecipeMap<?> preProcess() {
+    protected RecipeMap<?> getCurrentRecipeMap() {
         RecipeMap<?> recipeMap;
         if (recipeMapSupplier == null) {
             recipeMap = null;
@@ -302,15 +296,12 @@ public class ProcessingLogic {
             recipeMap = recipeMapSupplier.get();
         }
         if (lastRecipeMap != recipeMap) {
-            if (lastRecipeMap != null) needWipeCraftingPatternRecipeCache = true;
+            if (lastRecipeMap != null) {
+                craftingPatternRecipeCache.clear();
+            }
             lastRecipe = null;
             lastRecipeMap = recipeMap;
         }
-
-        if (maxParallelSupplier != null) {
-            maxParallel = maxParallelSupplier.get();
-        }
-
         return recipeMap;
     }
 
@@ -319,7 +310,11 @@ public class ProcessingLogic {
      */
     @Nonnull
     public CheckRecipeResult process() {
-        RecipeMap<?> recipeMap = preProcess();
+        RecipeMap<?> recipeMap = getCurrentRecipeMap();
+
+        if (maxParallelSupplier != null) {
+            maxParallel = maxParallelSupplier.get();
+        }
 
         if (inputItems == null) {
             inputItems = new ItemStack[0];
