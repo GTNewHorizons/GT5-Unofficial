@@ -2328,13 +2328,13 @@ public class MachineLoader implements Runnable {
                 WirelessAssemblylineSlaveConnector.ID,
                 "hatch.datainass.wireless.tier.12",
                 "Wireless Assembly line Reception Connector",
-                12).getStackForm(1L));
+                10).getStackForm(1L));
         dataOutAss_Wireless_Hatch.set(
             new MTEHatchWirelessDataItemsOutput(
                 WirelessDataBankMasterConnector.ID,
                 "hatch.dataoutass.wireless.tier.12",
                 "Wireless Data Bank Transmission Connector",
-                12).getStackForm(1L));
+                10).getStackForm(1L));
         rack_Hatch.set(new MTEHatchRack(ComputerRack.ID, "hatch.rack.tier.08", "Computer Rack", 8).getStackForm(1L));
         holder_Hatch.set(
             new MTEHatchObjectHolder(ObjectHolder.ID, "hatch.holder.tier.09", "Object Holder", 8).getStackForm(1L));
@@ -2514,7 +2514,7 @@ public class MachineLoader implements Runnable {
                 AutoTapingMaintenanceHatch.ID,
                 "debug.tt.maintenance",
                 "Auto-Taping Maintenance Hatch",
-                14).getStackForm(1L));
+                8).getStackForm(1L));
         Machine_DebugGenny.set(
             new MTEDebugPowerGenerator(DebugPowerGenerator.ID, "debug.tt.genny", "Debug Power Generator", 14)
                 .getStackForm(1L));
@@ -2523,7 +2523,7 @@ public class MachineLoader implements Runnable {
                 .getStackForm(1L));
         UnusedStuff.set(new ItemStack(Blocks.air));
         hatch_CreativeUncertainty.set(
-            new MTEHatchCreativeUncertainty(UncertaintyResolution.ID, "debug.tt.certain", "Uncertainty Resolution", 14)
+            new MTEHatchCreativeUncertainty(UncertaintyResolution.ID, "debug.tt.certain", "Uncertainty Resolution", 11)
                 .getStackForm(1));
 
         // ===================================================================================================

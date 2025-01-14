@@ -62,7 +62,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             aNameRegional,
             aTier,
             3,
-            new String[] { "This Chest stores " + GTUtility.formatNumbers(commonSizeCompute(aTier)) + " Blocks",
+            new String[] { "Stores " + GTUtility.formatNumbers(commonSizeCompute(aTier)) + " items",
                 "Use a screwdriver to enable", "voiding items on overflow", "Will keep its contents when harvested", });
     }
 
@@ -294,7 +294,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
 
-        if (getBaseMetaTileEntity().isServerSide() && getBaseMetaTileEntity().isAllowedToWork()) {
+        if (getBaseMetaTileEntity().isServerSide()) {
             if ((getItemCount() <= 0)) {
                 setItemStack(null);
                 setItemCount(0);

@@ -3,7 +3,6 @@ package gregtech;
 import static gregtech.GT_Version.VERSION_MAJOR;
 import static gregtech.GT_Version.VERSION_MINOR;
 import static gregtech.GT_Version.VERSION_PATCH;
-import static gregtech.api.GregTechAPI.registerCircuitProgrammer;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.util.GTRecipe.setItemStacks;
 
@@ -13,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.Predicate;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -26,7 +24,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -65,6 +62,8 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchNonConsumableBase;
+import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.registries.LHECoolantRegistry;
@@ -79,7 +78,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTSpawnEventHandler;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.item.ItemHolder;
 import gregtech.common.GTDummyWorld;
 import gregtech.common.GTNetwork;
 import gregtech.common.GTProxy;
@@ -117,7 +115,6 @@ import gregtech.loaders.postload.GTWorldgenloader;
 import gregtech.loaders.postload.ItemMaxStacksizeLoader;
 import gregtech.loaders.postload.MachineRecipeLoader;
 import gregtech.loaders.postload.MachineTooltipsLoader;
-import gregtech.loaders.postload.MinableRegistrator;
 import gregtech.loaders.postload.PosteaTransformers;
 import gregtech.loaders.postload.RecyclerBlacklistLoader;
 import gregtech.loaders.postload.ScrapboxDropLoader;
@@ -354,17 +351,6 @@ public class GTMod implements IGTMod {
 
         gregtechproxy.onLoad();
 
-        registerCircuitProgrammer(new Predicate<>() {
-
-            private final int screwdriverOreId = OreDictionary.getOreID("craftingToolScrewdriver");
-
-            @Override
-            public boolean test(ItemStack stack) {
-                for (int i : OreDictionary.getOreIDs(stack)) if (i == screwdriverOreId) return true;
-                return false;
-            }
-        }, true);
-
         new MTERecipeLoader().run();
 
         new GTItemIterator().run();
@@ -429,7 +415,6 @@ public class GTMod implements IGTMod {
         new ItemMaxStacksizeLoader().run();
         new BlockResistanceLoader().run();
         new RecyclerBlacklistLoader().run();
-        new MinableRegistrator().run();
         new FakeRecipeLoader().run();
         new MachineRecipeLoader().run();
         new ScrapboxDropLoader().run();
@@ -515,6 +500,7 @@ public class GTMod implements IGTMod {
             GTForestryCompat.transferSqueezerRecipes();
         }
         MTEDigitalChestBase.registerAEIntegration();
+        MTEHatchNonConsumableBase.registerAEIntegration();
         ItemStack facade = AEApi.instance()
             .definitions()
             .items()
@@ -800,7 +786,7 @@ public class GTMod implements IGTMod {
             for (Map<?, ?> gt_itemStackMap : GregTechAPI.sItemStackMappings) {
                 GTUtility.reMap(gt_itemStackMap);
             }
-            for (SetMultimap<? extends ItemHolder, ?> gt_itemStackMap : GregTechAPI.itemStackMultiMaps) {
+            for (SetMultimap<GTItemStack, ?> gt_itemStackMap : GregTechAPI.itemStackMultiMaps) {
                 GTUtility.reMap(gt_itemStackMap);
             }
         } catch (Throwable e) {

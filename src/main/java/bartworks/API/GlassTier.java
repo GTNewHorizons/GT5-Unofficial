@@ -34,7 +34,7 @@ public class GlassTier {
 
     public static void addCustomGlass(@NotNull Block block, int meta, int tier) {
         Objects.requireNonNull(block, "Glass block cannot be null");
-        GlassTier.glasses.put(new BlockMetaPair(block, (byte) meta), tier);
+        GlassTier.glasses.put(new BlockMetaPair(block, meta), tier);
     }
 
     public static HashMap<BlockMetaPair, Integer> getGlassMap() {
@@ -42,7 +42,7 @@ public class GlassTier {
     }
 
     public static int getGlassTier(Block block, int meta) {
-        return glasses.getOrDefault(new BlockMetaPair(block, (byte) meta), 0);
+        return glasses.getOrDefault(new BlockMetaPair(block, meta), 0);
     }
 
     public static class BlockMetaPair {
