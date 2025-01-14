@@ -1024,7 +1024,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 + " K", // e.g. "137 K"
             StatCollector.translateToLocal("beamline.coolusage") + ": " // Coolant Usage:
                 + EnumChatFormatting.AQUA
-                + 32_000
+                + 32
                 + EnumChatFormatting.RESET
                 + " kL/s", // 32 kL/s
 
