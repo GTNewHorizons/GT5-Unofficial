@@ -76,7 +76,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -535,17 +534,29 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             int amount = (int) (getFocusingTier() * 4
                 * Math.sqrt(Math.min(mMaxParallel, processingLogic.getCurrentParallels())));
 
-            if (doFermium) {
-                FluidStack fermiumToConsume = new FluidStack(mFermium, amount);
-                if (!this.depleteInput(fermiumToConsume)) {
-                    stopMachine(ShutDownReasonRegistry.outOfFluid(fermiumToConsume));
-                }
-            }
-
-            if (doNeptunium) {
-                FluidStack neptuniumToConsume = new FluidStack(mNeptunium, amount);
-                if (!this.depleteInput(neptuniumToConsume)) {
-                    stopMachine(ShutDownReasonRegistry.outOfFluid(neptuniumToConsume));
+            if (doNeptunium || doFermium) {
+                List<FluidStack> fluids = getStoredFluids();
+                for (FluidStack fluid : fluids) {
+                    if (doNeptunium) {
+                        FluidStack neptuniumToConsume = new FluidStack(mNeptunium, amount);
+                        if (!this.depleteInput(neptuniumToConsume)) {
+                            this.depleteInput(fluid);
+                            doNeptunium = false;
+                            mOutputItems = null;
+                            mOutputFluids = null;
+                            mProgresstime = mMaxProgresstime;
+                        }
+                    }
+                    if (doFermium) {
+                        FluidStack fermiumToConsume = new FluidStack(mFermium, amount);
+                        if (!this.depleteInput(fermiumToConsume)) {
+                            this.depleteInput(fluid);
+                            doFermium = false;
+                            mOutputItems = null;
+                            mOutputFluids = null;
+                            mProgresstime = mMaxProgresstime;
+                        }
+                    }
                 }
             }
 
