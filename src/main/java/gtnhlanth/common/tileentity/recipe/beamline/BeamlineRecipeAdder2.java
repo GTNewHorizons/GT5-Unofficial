@@ -1,6 +1,8 @@
 package gtnhlanth.common.tileentity.recipe.beamline;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -11,6 +13,7 @@ import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.util.GTUtility;
 import gtnhlanth.common.beamline.Particle;
+import gtnhlanth.common.register.LanthItemList;
 
 public class BeamlineRecipeAdder2 {
 
@@ -47,8 +50,13 @@ public class BeamlineRecipeAdder2 {
 
         );
         })
-        // .slotOverlays(null)
-
+        .neiItemOutputsGetter(recipe -> {
+            RecipeSC scRecipe = (RecipeSC) recipe;
+            ItemStack particleStack = new ItemStack(LanthItemList.PARTICLE_ITEM, 1, scRecipe.particleId);
+            List<ItemStack> ret = new ArrayList<>(Arrays.asList(recipe.mOutputs));
+            ret.add(particleStack);
+            return ret.toArray(new ItemStack[0]);
+        })
         .build();
 
     public final RecipeMap<RecipeMapBackend> TargetChamberRecipes = RecipeMapBuilder.of("gtnhlanth.recipe.tc")
@@ -84,7 +92,14 @@ public class BeamlineRecipeAdder2 {
 
         );
         }))
-        // .slotOverlays(null)
+        .neiItemInputsGetter(recipe -> {
+            RecipeTC recipeTC = (RecipeTC) recipe;
+            ItemStack particleStack = new ItemStack(LanthItemList.PARTICLE_ITEM, 1, recipeTC.particleId);
+            List<ItemStack> ret = new ArrayList<>();
+            ret.add(particleStack);
+            ret.addAll(Arrays.asList(recipe.mInputs));
+            return ret.toArray(new ItemStack[0]);
+        })
         .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_1)
         .progressBarPos(108, 22)
         .neiTransferRect(100, 22, 28, 18)

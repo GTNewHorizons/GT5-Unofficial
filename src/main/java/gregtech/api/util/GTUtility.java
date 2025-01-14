@@ -4663,11 +4663,6 @@ public class GTUtility {
         return signal;
     }
 
-    public static ItemStack getNaniteAsCatalyst(Materials material) {
-        ItemStack aItem = material.getNanite(1);
-        return new ItemStack(aItem.getItem(), 0, aItem.getItemDamage());
-    }
-
     public static Stream<NBTTagCompound> streamCompounds(NBTTagList list) {
         if (list == null) return Stream.empty();
         return IntStream.range(0, list.tagCount())

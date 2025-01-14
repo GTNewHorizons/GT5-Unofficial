@@ -11,6 +11,9 @@ import java.util.function.UnaryOperator;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -472,6 +475,38 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      */
     public RecipeMapBuilder<B> disableRenderRealStackSizes() {
         neiPropertiesBuilder.disableRenderRealStackSizes();
+        return this;
+    }
+
+    /**
+     * Allows modifying what item inputs get displayed on NEI, without affecting GTRecipe object on backend.
+     */
+    public RecipeMapBuilder<B> neiItemInputsGetter(Function<GTRecipe, ItemStack[]> itemInputsGetter) {
+        neiPropertiesBuilder.itemInputsGetter(itemInputsGetter);
+        return this;
+    }
+
+    /**
+     * Allows modifying what fluid inputs get displayed on NEI, without affecting GTRecipe object on backend.
+     */
+    public RecipeMapBuilder<B> neiFluidInputsGetter(Function<GTRecipe, FluidStack[]> fluidInputsGetter) {
+        neiPropertiesBuilder.fluidInputsGetter(fluidInputsGetter);
+        return this;
+    }
+
+    /**
+     * Allows modifying what item outputs get displayed on NEI, without affecting GTRecipe object on backend.
+     */
+    public RecipeMapBuilder<B> neiItemOutputsGetter(Function<GTRecipe, ItemStack[]> itemOutputsGetter) {
+        neiPropertiesBuilder.itemOutputsGetter(itemOutputsGetter);
+        return this;
+    }
+
+    /**
+     * Allows modifying what fluid outputs get displayed on NEI, without affecting GTRecipe object on backend.
+     */
+    public RecipeMapBuilder<B> neiFluidOutputsGetter(Function<GTRecipe, FluidStack[]> fluidOutputsGetter) {
+        neiPropertiesBuilder.fluidOutputsGetter(fluidOutputsGetter);
         return this;
     }
 
