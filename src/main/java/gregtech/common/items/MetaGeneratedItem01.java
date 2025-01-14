@@ -89,6 +89,7 @@ import static gregtech.common.items.IDMetaItem01.Battery_SU_MV_Mercury;
 import static gregtech.common.items.IDMetaItem01.Battery_SU_MV_Sulfuric_Acid;
 import static gregtech.common.items.IDMetaItem01.Black_Hole_Closer;
 import static gregtech.common.items.IDMetaItem01.Black_Hole_Opener;
+import static gregtech.common.items.IDMetaItem01.Black_Hole_Stabilizer;
 import static gregtech.common.items.IDMetaItem01.Book_Written_01;
 import static gregtech.common.items.IDMetaItem01.Book_Written_02;
 import static gregtech.common.items.IDMetaItem01.Book_Written_03;
@@ -3255,6 +3256,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "Safely closes a pseudostable black hole",
                 new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 32),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 64)));
+        ItemList.Black_Hole_Stabilizer.set(
+            addItem(
+                Black_Hole_Stabilizer.ID,
+                "Superstable Black Hole Seed",
+                "Opens a superstable black hole/nBlack hole will never destabilize and will operate at maximum efficiency",
+                new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 32),
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 128)));
 
         // Empty battery hulls
         ItemList.BatteryHull_EV.set(

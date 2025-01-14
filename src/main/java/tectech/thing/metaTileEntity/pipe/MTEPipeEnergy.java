@@ -21,8 +21,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.PowerLogic;
-import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
@@ -114,14 +112,6 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
             if (tTileEntity instanceof IColoredTileEntity coloredTileEntity) {
                 byte tColor = coloredTileEntity.getColorization();
                 if (tColor != aBaseMetaTileEntity.getColorization()) {
-                    continue;
-                }
-            }
-            if (tTileEntity instanceof PowerLogicHost host) {
-                PowerLogic logic = host.getPowerLogic(oppositeSide);
-                if (logic != null && logic.canUseLaser()) {
-                    mConnections |= side.flag;
-                    connectionCount++;
                     continue;
                 }
             }
