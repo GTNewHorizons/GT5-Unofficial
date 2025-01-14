@@ -1,5 +1,5 @@
 package gtnhlanth.common.tileentity;
-
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -116,12 +116,13 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addElement('g', ofBlock(GregTechAPI.sBlockCasings3, 10)) // Grate Machine Casing
             .addElement(
                 'b',
+                withChannel("glass", 
                 BorosilicateGlass.ofBoroGlass(
                     (byte) 0,
                     MIN_GLASS_TIER,
                     Byte.MAX_VALUE,
                     (te, t) -> te.glassTier = t,
-                    te -> te.glassTier))
+                    te -> te.glassTier)))
             .addElement(
                 'i',
                 buildHatchAdder(MTELINAC.class).hatchClass(MTEHatchInputBeamline.class)
