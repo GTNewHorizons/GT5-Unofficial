@@ -19,6 +19,8 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -57,14 +59,13 @@ import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
-import blockrenderer6343.client.world.ClientFakePlayer;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -73,7 +74,7 @@ import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.objects.ItemData;
+import gregtech.api.metatileentity.implementations.MTEHatchNanite;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -84,9 +85,10 @@ import gregtech.api.recipe.metadata.PCBFactoryUpgrade;
 import gregtech.api.recipe.metadata.PCBFactoryUpgradeKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
@@ -94,7 +96,8 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings8;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory> implements ISurvivalConstructable {
+public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
+    implements ISurvivalConstructable, INEIPreviewModifier {
 
     private static final String tier1 = "tier1";
     private static final String tier2 = "tier2";
@@ -113,6 +116,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private final int[] mOCTier1Offsets = new int[] { 2, -11 };
     private final int[] mOCTier2Offsets = new int[] { 2, -11 };
     private MTEHatchInput mCoolantInputHatch;
+    private final ArrayList<MTEHatchNanite> naniteBuses = new ArrayList<>();
     private static final int mBioRotateBitMap = 0b1000000;
     private static final int mOCTier2BitMap = 0b100000;
     private static final int mOCTier1BitMap = 0b10000;
@@ -236,7 +240,13 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         .addElement(
             'P',
             buildHatchAdder(MTEPCBFactory.class)
-                .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
+                .atLeast(
+                    InputHatch,
+                    OutputBus,
+                    InputBus,
+                    Maintenance,
+                    Energy.or(ExoticEnergy),
+                    SpecialHatchElement.NaniteBus)
                 .dot(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(11))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 11))
@@ -247,7 +257,13 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         .addElement(
             'J',
             buildHatchAdder(MTEPCBFactory.class)
-                .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
+                .atLeast(
+                    InputHatch,
+                    OutputBus,
+                    InputBus,
+                    Maintenance,
+                    Energy.or(ExoticEnergy),
+                    SpecialHatchElement.NaniteBus)
                 .dot(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(13))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 13))
@@ -316,19 +332,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int built = 0;
-        if (Mods.BlockRenderer6343.isModLoaded() && env.getActor() instanceof ClientFakePlayer) {
-            if (stackSize.stackSize < 3) {
-                built = survivialBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, true);
-                if (built >= 0) return built;
-                if (stackSize.stackSize == 2) {
-                    built = survivialBuildPiece(tier2, stackSize, 7, 6, 2, elementBudget, env, false, true);
-                }
-            } else {
-                built = survivialBuildPiece(tier3, stackSize, 3, 21, 0, elementBudget, env, false, true);
-            }
-            return built;
-        }
-
         if (mMachine) return -1;
         if (mSetTier < 3) {
             built += survivialBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, true);
@@ -458,6 +461,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         mTier = 0;
         mUpgradesInstalled = 0;
         mCoolantInputHatch = null;
+        naniteBuses.clear();
         if (mSetTier < 3) {
             if (!checkPiece(tier1, 3, 5, 0)) {
                 return false;
@@ -537,7 +541,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.pcbFactoryRecipes;
+        return RecipeMaps.pcbFactoryRecipesNoNanites;
     }
 
     @Override
@@ -549,13 +553,24 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
                 // Here we check the dynamic parallels, which depend on the recipe
                 int numberOfNanites = 0;
-                ItemStack aNanite = recipe.getRepresentativeInput(1);
-                ItemData naniteData = GTOreDictUnificator.getAssociation(aNanite);
-                if (naniteData != null && naniteData.mPrefix != null && naniteData.mPrefix.equals(OrePrefixes.nanite)) {
-                    for (ItemStack aItem : inputItems) {
-                        if (aItem != null && aItem.isItemEqual(aNanite)) {
-                            numberOfNanites += aItem.stackSize;
+                Materials naniteMaterial = recipe.getMetadata(GTRecipeConstants.PCB_NANITE_MATERIAL);
+                if (naniteMaterial != null) {
+                    if (naniteBuses.isEmpty()) {
+                        return SimpleCheckRecipeResult.ofFailure("nanites_missing");
+                    }
+                    boolean nanitesFound = false;
+                    for (MTEHatchNanite naniteBus : naniteBuses) {
+                        ItemStack storedNanites = naniteBus.getItemStack();
+                        Materials storedNaniteMaterial = naniteBus.getStoredNaniteMaterial();
+                        if (storedNanites == null || storedNaniteMaterial != naniteMaterial) {
+                            continue;
                         }
+                        numberOfNanites = naniteBus.getItemCount();
+                        nanitesFound = true;
+                        break;
+                    }
+                    if (!nanitesFound) {
+                        return SimpleCheckRecipeResult.ofFailure("nanites_missing");
                     }
                 }
                 maxParallel = (int) Math.min(Math.max(Math.ceil(Math.pow(numberOfNanites, 0.75)), 1), 256);
@@ -846,6 +861,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addInfo("Each tier and upgrade requires additional structures.")
             .addInfo("Power consumption is multiplied by Sqrt(structures).")
             .addInfo("Tier 2 and 3 allow parallel by using extra nanites.")
+            .addInfo("Nanites have to be placed in a Nanite Containment Bus.")
             .addInfo("The formula for parallels is the amount of nanites^0.75, rounded up.")
             .addInfo("Maximum parallel is 256.")
             .addInfo("Recipes require a cooling upgrade to be overclocked.")
@@ -872,7 +888,14 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addOutputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
             .addInputHatch(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
             .addStructureInfo(
-                "Coolant Hatch (Input Hatch): " + EnumChatFormatting.GOLD
+                EnumChatFormatting.WHITE + "Nanite Containment Bus: "
+                    + EnumChatFormatting.GOLD
+                    + "0"
+                    + EnumChatFormatting.GRAY
+                    + "+")
+            .addStructureInfo(
+                EnumChatFormatting.WHITE + "Coolant Hatch (Input Hatch): "
+                    + EnumChatFormatting.GOLD
                     + "1"
                     + EnumChatFormatting.GRAY
                     + " Center of the Liquid Cooling/Thermosink")
@@ -1006,7 +1029,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             data += mTier1BitMap;
         } else if (mSetTier == 2) {
             data += mTier2BitMap;
-        } else {
+        } else if (mSetTier == 3) {
             data += mTier3BitMap;
         }
 
@@ -1262,6 +1285,46 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         return builder.build();
     }
 
+    public boolean addNaniteBusToMachineList(IGregTechTileEntity tileEntity, int baseCasingIndex) {
+        if (tileEntity == null) return false;
+        IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
+        if (metaTileEntity instanceof MTEHatchNanite naniteBus) {
+            naniteBus.updateTexture(baseCasingIndex);
+            this.naniteBuses.add(naniteBus);
+            return true;
+        }
+        return false;
+    }
+
+    private enum SpecialHatchElement implements IHatchElement<MTEPCBFactory> {
+
+        NaniteBus(MTEPCBFactory::addNaniteBusToMachineList, MTEHatchNanite.class) {
+
+            @Override
+            public long count(MTEPCBFactory gtMetaTileEntityPCBFactory) {
+                return gtMetaTileEntityPCBFactory.naniteBuses.size();
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<MTEPCBFactory> adder;
+
+        @SafeVarargs
+        SpecialHatchElement(IGTHatchAdder<MTEPCBFactory> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        public IGTHatchAdder<? super MTEPCBFactory> adder() {
+            return adder;
+        }
+    }
+
     @Override
     public boolean supportsVoidProtection() {
         return true;
@@ -1280,5 +1343,10 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     @Override
     public boolean supportsBatchMode() {
         return true;
+    }
+
+    @Override
+    public void onPreviewConstruct(@NotNull ItemStack trigger) {
+        mSetTier = trigger.stackSize;
     }
 }

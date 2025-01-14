@@ -2215,7 +2215,6 @@ block.Tantalloy61.frame.name=Tantalloy-61 Frame Box
 block.Tantalloy61.standard.name=Block of Tantalloy-61
 block.TantalumCarbide.frame.name=Tantalum Carbide Frame Box
 block.TantalumCarbide.standard.name=Block of Tantalum Carbide
-block.Teflon.standard.name=Block of Teflon
 block.Thallium.frame.name=Thallium Frame Box
 block.Thallium.standard.name=Block of Thallium
 block.Titansteel.frame.name=Titansteel Frame Box
@@ -3104,15 +3103,6 @@ item.itemPlateNylon.name=Nylon Plate
 item.itemPlateDoubleNylon.name=Double Nylon Plate
 item.itemCellNylon.name=Nylon Cell
 tile.Block of Nylon.name=Block of Nylon
-item.itemIngotTeflon.name=Teflon Ingot
-item.itemDustTeflon.name=Teflon Dust
-item.itemDustTinyTeflon.name=Tiny Pile of Teflon Dust
-item.itemDustSmallTeflon.name=Small Pile of Teflon Dust
-item.itemNuggetTeflon.name=Teflon Nugget
-item.itemPlateTeflon.name=Teflon Plate
-item.itemPlateDoubleTeflon.name=Double Teflon Plate
-item.itemCellTeflon.name=Teflon Cell
-tile.Block of Teflon.name=Block of Teflon
 
 # Added 17/4/19
 # Spelling Corrections
@@ -3694,9 +3684,6 @@ item.BasicMetaFood.6.name=Raw Ocelot Meat
 item.BasicMetaFood.7.name=Cooked Ocelot Meat
 item.BasicMetaFood.8.name=Blaze Flesh
 
-item.itemCellNaquadahFuel.name=Naquadah Fuel Cell
-item.itemCellEnrichedNaquadahFuel.name=Enriched Naquadah Fuel Cell
-item.itemCellNaquadriaFuel.name=Naquadria Fuel Cell
 item.boricacid.name=Boric Acid Cell
 item.hydrochloricacid.name=Hydrochloric Acid Cell
 
@@ -3808,8 +3795,8 @@ item.itemBasicTurbine_2.name=Basic Steel Turbine
 interaction.voidexcess.enabled=Void Excess Enabled
 interaction.voidexcess.disabled=Void Excess Disabled
 
-interaction.separateBusses.enabled=Input busses are separated
-interaction.separateBusses.disabled=Input busses are not separated
+interaction.separateBusses.enabled=Input buses are separated
+interaction.separateBusses.disabled=Input buses are not separated
 
 # Added 29/11/21
 

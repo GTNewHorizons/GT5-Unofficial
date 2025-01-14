@@ -6,15 +6,15 @@ public class GTBlockSet {
 
     private final GTBlockMap<Object> backing = new GTBlockMap<>();
 
-    public boolean add(Block block, byte meta) {
+    public boolean add(Block block, int meta) {
         return backing.put(block, meta, this) != this;
     }
 
-    public boolean contains(Block block, byte meta) {
+    public boolean contains(Block block, int meta) {
         return backing.get(block, meta) == this;
     }
 
-    public boolean remove(Block block, byte meta) {
+    public boolean remove(Block block, int meta) {
         return backing.remove(block, meta) == this;
     }
 

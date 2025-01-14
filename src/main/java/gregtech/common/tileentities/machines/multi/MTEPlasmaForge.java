@@ -669,7 +669,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + EnumChatFormatting.GOLD
                     + max_input_bus
                     + EnumChatFormatting.GRAY
-                    + " input busses.")
+                    + " input buses.")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + min_output_bus
@@ -678,7 +678,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + EnumChatFormatting.GOLD
                     + max_input_bus
                     + EnumChatFormatting.GRAY
-                    + " output busses.")
+                    + " output buses.")
             .addStructureInfo("")
             .toolTipFinisher(AuthorColen);
         return tt;

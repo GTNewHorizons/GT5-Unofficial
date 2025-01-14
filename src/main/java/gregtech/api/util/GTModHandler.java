@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -83,7 +82,6 @@ import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
 import ic2.api.recipe.Recipes;
-import ic2.core.IC2;
 import ic2.core.item.ItemToolbox;
 
 /**
@@ -104,7 +102,7 @@ public class GTModHandler {
     private static final List<InventoryCrafting> delayedRemovalByRecipe = new ArrayList<>();
 
     public static Collection<String> sNativeRecipeClasses = new HashSet<>(), sSpecialRecipeClasses = new HashSet<>();
-    public static GTHashSet<GTItemStack> sNonReplaceableItems = new GTHashSet<>();
+    public static GTHashSet sNonReplaceableItems = new GTHashSet();
     public static Object sBoxableWrapper = new GTIBoxableWrapper();
     public static Collection<GTItemStack> sBoxableItems = new ArrayList<>();
     private static final Map<IRecipeInput, RecipeOutput> emptyRecipeMap = new HashMap<>();
@@ -451,21 +449,6 @@ public class GTModHandler {
     @Deprecated
     public static boolean getJumpKeyDown(EntityPlayer aPlayer) {
         return false;
-    }
-
-    /**
-     * Adds a Valuable Ore to the Miner
-     */
-    public static boolean addValuableOre(Block aBlock, int aMeta, int aValue) {
-        if (aValue <= 0) return false;
-        try {
-            IC2.addValuableOre(new RecipeInputItemStack(new ItemStack(aBlock, 1, aMeta)), aValue);
-        } catch (Exception e) {
-            // TODO remove try catch
-            // TODO fix : why is bartworks registering items stacks with .getItem() == null
-            GTLog.err.println("Caught exception when calling IC2.addValuableOre");
-        }
-        return true;
     }
 
     /**

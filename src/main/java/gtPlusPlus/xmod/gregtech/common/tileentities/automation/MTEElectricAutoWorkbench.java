@@ -700,7 +700,7 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return mMode == 0 ? aIndex >= 10 : aIndex >= 18;
+        return mMode == 0 ? aIndex >= 9 : aIndex >= 18;
     }
 
     @Override

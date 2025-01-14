@@ -6,5 +6,5 @@ public interface IBlockContainer {
 
     Block getBlock();
 
-    byte getMeta();
+    int getMeta();
 }
