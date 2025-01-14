@@ -90,7 +90,7 @@ public class SpaceProjectRegistration implements Runnable {
                         new ItemStack(glass, 16, 5),
                         // Ultra High Strength Concrete
                         new ItemStack(IGBlocks.DysonSwarmCasing, 32, 9),
-                        getModItem("supersolarpanel", "SingularSolarPanel", 1L, 0),
+                        ItemList.Machine_LuV_SolarPanel.get(1),
                         ItemList.Block_NeutroniumPlate.get(16),
                         ItemList.Sensor_UV.get(1),
                         ItemList.Emitter_UV.get(1))
