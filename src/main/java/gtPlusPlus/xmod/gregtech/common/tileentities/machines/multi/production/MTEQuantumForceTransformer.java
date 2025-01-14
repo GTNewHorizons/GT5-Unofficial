@@ -259,7 +259,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("All inputs go on the bottom, all outputs go on the top")
             .addInfo("Put a circuit in the controller to specify the focused output")
             .addInfo("Check NEI to see the order of outputs, and which circuit number you need")
-            .addInfo("If separate input busses are enabled put the circuit in the circuit slot of the bus")
+            .addInfo("If separate input buses are enabled put the circuit in the circuit slot of the bus")
             .addInfo("Uses FocusTier*4*sqrt(parallels) Neptunium Plasma if focusing")
             .addInfo("Can use FocusTier*4*sqrt(parallels) Fermium Plasma for additional chance output")
             .addInfo("Use a screwdriver to enable Fluid mode")
