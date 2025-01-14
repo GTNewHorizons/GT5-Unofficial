@@ -4,7 +4,6 @@ import static gregtech.api.enums.GTValues.D2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -26,8 +25,6 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.logic.FluidInventoryLogic;
-import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
@@ -40,10 +37,8 @@ import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.EmptyRecipeMetadataStorage;
 import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.util.extensions.ArrayExt;
-import gregtech.api.util.item.ItemHolder;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
-import gregtech.nei.GTNEIDefaultHandler;
 import ic2.core.Ic2Items;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -387,18 +382,6 @@ public class GTRecipe implements Comparable<GTRecipe> {
         return GTUtility.copyOrNull(mOutputs[aIndex]);
     }
 
-    /**
-     * Dictates the ItemStacks displayed in the output slots of any NEI page handled by the default GT NEI handler.
-     * Override to make shown items differ from a GTRecipe's item output array
-     *
-     * @see GTNEIDefaultHandler
-     * @param i Slot index
-     * @return ItemStack to be displayed in the slot
-     */
-    public ItemStack getRepresentativeOutput(int i) {
-        return getOutput(i);
-    }
-
     public int getOutputChance(int aIndex) {
         if (mChances == null) return 10000;
         if (aIndex < 0 || aIndex >= mChances.length) return 10000;
@@ -685,60 +668,6 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 || GTUtility.areStacksEqual(item, dataOrb, true);
         }
         return false;
-    }
-
-    public boolean isRecipePossible(@Nullable ItemInventoryLogic itemInput, @Nullable FluidInventoryLogic fluidInput) {
-        return getAmountOfRecipesDone(itemInput, fluidInput, 1, true) > 0;
-    }
-
-    public long getAmountOfRecipesDone(@Nullable ItemInventoryLogic itemInput, @Nullable FluidInventoryLogic fluidInput,
-        long maxParallel, boolean simulate) {
-        if (itemInput == null) {
-            itemInput = new ItemInventoryLogic(0);
-        }
-
-        if (fluidInput == null) {
-            fluidInput = new FluidInventoryLogic(0, 0);
-        }
-
-        itemInput.startRecipeCheck();
-        Map<ItemHolder, Long> recipeItems = getItemInputsAsItemMap();
-        for (Entry<ItemHolder, Long> entry : recipeItems.entrySet()) {
-            maxParallel = Math
-                .min(maxParallel, itemInput.calculateAmountOfTimesItemCanBeTaken(entry.getKey(), entry.getValue()));
-        }
-
-        for (FluidStack fluid : mFluidInputs) {
-            if (fluid == null) continue;
-            maxParallel = Math
-                .min(maxParallel, fluidInput.calculateAmountOfTimesFluidCanBeTaken(fluid.getFluid(), fluid.amount));
-        }
-
-        if (simulate) {
-            itemInput.stopRecipeCheck();
-            return maxParallel;
-        }
-
-        for (Entry<ItemHolder, Long> entry : recipeItems.entrySet()) {
-            itemInput.subtractItemAmount(entry.getKey(), entry.getValue() * maxParallel, false);
-        }
-
-        for (FluidStack fluid : mFluidInputs) {
-            if (fluid == null) continue;
-            fluidInput.drain(fluid.getFluid(), fluid.amount * maxParallel, false);
-        }
-        itemInput.stopRecipeCheck();
-        return maxParallel;
-    }
-
-    private Map<ItemHolder, Long> getItemInputsAsItemMap() {
-        Map<ItemHolder, Long> items = new HashMap<>();
-        for (ItemStack item : mInputs) {
-            if (item == null) continue;
-            ItemHolder itemHolder = new ItemHolder(item);
-            items.put(itemHolder, items.getOrDefault(itemHolder, 0L) + item.stackSize);
-        }
-        return items;
     }
 
     @Override

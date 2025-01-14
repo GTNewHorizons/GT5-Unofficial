@@ -6,14 +6,13 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.item.ItemHolder;
 import it.unimi.dsi.fastutil.Hash;
 
 /**
  * An optimization of {@link ItemStack} to have a better {@code hashcode} and {@code equals} in order to improve
  * {@code HashMap} and {@code Set} performance
  */
-public class GTItemStack extends ItemHolder {
+public class GTItemStack {
 
     /**
      * A better {@link Hash.Strategy} for {@link ItemStack}. Implementation originally from {@code GT_ItemStack2}.
@@ -39,7 +38,6 @@ public class GTItemStack extends ItemHolder {
     public final short mMetaData;
 
     public GTItemStack(Item aItem, long aStackSize, long aMetaData) {
-        super(new ItemStack(aItem, 1, (int) aMetaData));
         mItem = aItem;
         mStackSize = (byte) aStackSize;
         mMetaData = (short) aMetaData;

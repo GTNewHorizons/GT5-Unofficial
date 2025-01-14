@@ -247,8 +247,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public void issueCoverUpdate(ForgeDirection side) {
-        // If we've got a null worldObj we're getting called as a part of readingNBT from a non tickable MultiTileEntity
-        // on chunk load before the world is set, so we'll want to send a cover update.
         final CoverInfo coverInfo = getCoverInfoAtSide(side);
         if (worldObj == null || (isServerSide() && coverInfo.isDataNeededOnClient())) coverInfo.setNeedsUpdate(true);
     }

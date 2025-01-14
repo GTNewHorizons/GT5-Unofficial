@@ -9,6 +9,7 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.GLASS;
+import static gregtech.api.util.GTRecipeConstants.PCB_NANITE_MATERIAL;
 import static gregtech.api.util.GTRecipeMapUtil.GTRecipeTemplate;
 import static gregtech.api.util.GTRecipeMapUtil.asTemplate;
 import static gregtech.api.util.GTRecipeMapUtil.buildOrEmpty;
@@ -20,6 +21,7 @@ import static gregtech.api.util.GTUtility.isArrayOfLength;
 import static gregtech.api.util.GTUtility.multiplyStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -1102,17 +1104,22 @@ public final class RecipeMaps {
         .minInputs(3, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLE)
         .disableOptimize()
-        .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.PCBFactory.get(1)))
+        .neiItemInputsGetter(recipe -> {
+            Materials naniteMaterial = recipe.getMetadata(PCB_NANITE_MATERIAL);
+            if (naniteMaterial == null) {
+                return recipe.mInputs;
+            }
+            List<ItemStack> inputs = new ArrayList<>();
+            inputs.add(recipe.mInputs[0]);
+            ItemStack naniteStack = naniteMaterial.getNanite(1);
+            inputs.add(new ItemStack(naniteStack.getItem(), 0, naniteStack.getItemDamage()));
+            inputs.addAll(Arrays.asList(Arrays.copyOfRange(recipe.mInputs, 1, recipe.mInputs.length)));
+            return inputs.toArray(new ItemStack[0]);
+        })
         .neiRecipeComparator(
             Comparator
                 .<GTRecipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(PCBFactoryTierKey.INSTANCE, 1))
                 .thenComparing(GTRecipe::compareTo))
-        .build();
-    public static final RecipeMap<RecipeMapBackend> pcbFactoryRecipesNoNanites = RecipeMapBuilder
-        .of("gt.recipe.pcbfactorynonanites")
-        .maxIO(6, 9, 3, 0)
-        .minInputs(3, 1)
-        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationClarifierRecipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantclarifier")
@@ -1236,28 +1243,5 @@ public final class RecipeMaps {
                     b.copy()
                         .duration(1 * TICK)
                         .eut(TierEU.RECIPE_UEV))));
-        RecipeMaps.pcbFactoryRecipes.addDownstream(IRecipeMap.newRecipeMap(b -> {
-            b = b.copy();
-            List<ItemStack> itemInputs = new ArrayList<>();
-
-            Materials naniteMaterial = null;
-            for (int i = 0; i < b.getItemInputsBasic().length; i++) {
-                ItemStack stack = b.getItemInputBasic(i);
-                if (stack == null) continue;
-                ItemData data = GTOreDictUnificator.getAssociation(stack);
-                if (data != null && data.mPrefix != null && data.mPrefix.equals(OrePrefixes.nanite)) {
-                    naniteMaterial = data.mMaterial.mMaterial;
-                    continue;
-                }
-                itemInputs.add(stack);
-            }
-
-            if (naniteMaterial != null) {
-                b.metadata(GTRecipeConstants.PCB_NANITE_MATERIAL, naniteMaterial);
-            }
-            return RecipeMaps.pcbFactoryRecipesNoNanites.doAdd(
-                b.itemInputs(itemInputs.toArray(new ItemStack[0]))
-                    .hidden());
-        }));
     }
 }
