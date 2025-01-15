@@ -14,7 +14,9 @@ import static gregtech.api.util.GTStructureUtility.filterByMTEClass;
 import static java.lang.Math.min;
 import static kekztech.util.Util.toPercentageFrom;
 import static kekztech.util.Util.toStandardForm;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -31,6 +33,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -57,6 +60,8 @@ import com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
@@ -64,6 +69,7 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import bartworks.API.BorosilicateGlass;
 import gregtech.api.enums.Dyes;
@@ -183,6 +189,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private static final int CASING_TEXTURE_ID = (42 << 7) | 127;
 
     private static final int DURATION_AVERAGE_TICKS = 100;
+    private static final int DEBUG_POWER_WINDOW_ID = 10;
 
     // height channel for height.
     // glass channel for glass
@@ -1324,6 +1331,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
+        buildContext.addSyncedWindow(DEBUG_POWER_WINDOW_ID, this::createPowerWindow);
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
             if (!widget.isClient()) {
                 canUseWireless = canUseWireless();
@@ -1370,6 +1378,72 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 .setEnabled((widget) -> wireless_mode && canUseWireless && !balanced)
                 .addTooltip(StatCollector.translateToLocal("gui.kekztech_lapotronicenergyunit.wireless_rebalance"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY));
+
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (!widget.isClient()) {
+                widget.getContext()
+                    .openSyncedWindow(DEBUG_POWER_WINDOW_ID);
+            }
+        })
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(GTUITextures.BUTTON_STANDARD);
+                ret.add(GTUITextures.OVERLAY_BUTTON_EMIT_ENERGY);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .addTooltip(translateToLocal("GT5U.multiblock.energy"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setEnabled($ -> Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
+            .setPos(174, 112)
+            .setSize(16, 16));
+    }
+
+    protected ModularWindow createPowerWindow(final EntityPlayer player) {
+        final int WIDTH = 158;
+        final int HEIGHT = 52;
+        final int PARENT_WIDTH = getGUIWidth();
+        final int PARENT_HEIGHT = getGUIHeight();
+        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        builder.setDraggable(true);
+        builder.setPos(
+            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
+                .add(
+                    Alignment.BottomRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
+                        .add(WIDTH - 3, 0)
+                        .subtract(0, 10)));
+        builder.widget(
+            TextWidget.localised("GT5U.multiblock.energy")
+                .setPos(3, 4)
+                .setSize(150, 20))
+            .widget(
+                new NumericWidget().setSetter(
+                    val -> stored = BigDecimal.valueOf(val)
+                        .toBigInteger())
+                    .setGetter(() -> stored.doubleValue())
+                    .setIntegerOnly(false)
+                    .setBounds(0, capacity.doubleValue())
+                    .setDefaultValue(stored.doubleValue())
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(150, 18)
+                    .setPos(4, 25)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+                    .attachSyncer(
+                        new FakeSyncWidget.DoubleSyncer(
+                            () -> capacity.doubleValue(),
+                            (val) -> capacity = BigDecimal.valueOf(val)
+                                .toBigInteger()),
+                        builder)
+                    .attachSyncer(
+                        new FakeSyncWidget.DoubleSyncer(
+                            () -> stored.doubleValue(),
+                            (val) -> stored = BigDecimal.valueOf(val)
+                                .toBigInteger()),
+                        builder));
+        return builder.build();
     }
 
     private enum LSCHatchElement implements IHatchElement<MTELapotronicSuperCapacitor> {
