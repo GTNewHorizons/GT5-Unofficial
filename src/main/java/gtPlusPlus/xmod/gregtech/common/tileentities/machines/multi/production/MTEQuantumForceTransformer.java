@@ -212,18 +212,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     + "Bottom"
                     + EnumChatFormatting.GRAY
                     + " Layer")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Neptunium Plasma Hatch: "
-                    + EnumChatFormatting.GREEN
-                    + "Bottom"
-                    + EnumChatFormatting.GRAY
-                    + " Layer")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Fermium Plasma Hatch: "
-                    + EnumChatFormatting.DARK_GREEN
-                    + "Bottom"
-                    + EnumChatFormatting.GRAY
-                    + " Layer")
             .toolTipFinisher(GTValues.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
         return tt;
     }
