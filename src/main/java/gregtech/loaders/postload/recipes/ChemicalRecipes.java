@@ -3947,17 +3947,6 @@ public class ChemicalRecipes implements Runnable {
             .eut(96)
             .addTo(chemicalReactorRecipes);
 
-        // Ca5(PO4)3Cl + 5H2SO4 + 10H2O = 5CaSO4(H2O)2 + HCl + 3H3PO4
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Apatite.getDust(9), Materials.SulfuricAcid.getCells(5))
-            .itemOutputs(Materials.HydrochloricAcid.getCells(1), Materials.Empty.getCells(4))
-            .fluidInputs(Materials.Water.getFluid(10000))
-            .fluidOutputs(Materials.PhosphoricAcid.getFluid(3000))
-            .duration(16 * SECONDS)
-            .eut(30)
-            .addTo(chemicalReactorRecipes);
-
         // 10O + 4P = P4O10
 
         GTValues.RA.stdBuilder()
@@ -5047,12 +5036,17 @@ public class ChemicalRecipes implements Runnable {
             .eut(30)
             .addTo(multiblockChemicalReactorRecipes);
 
+        // 9Ca5(PO4)3Cl + 5H2SO4 + 10H2O = 40CaSO4(H2O)2 + .6H3PO4 + HCl + 7.2H
+        // 5PO4 = P + O4, 3/5 = 0.6, hence the 0.6 H3PO4
+
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Apatite.getDust(9))
             .itemOutputs(Materials.Gypsum.getDust(40))
             .fluidInputs(Materials.SulfuricAcid.getFluid(5000), Materials.Water.getFluid(10000))
-            .fluidOutputs(Materials.PhosphoricAcid.getFluid(3000), Materials.HydrochloricAcid.getFluid(1000))
-            .duration(16 * SECONDS)
+            .fluidOutputs(Materials.PhosphoricAcid.getFluid(600),
+                Materials.HydrochloricAcid.getFluid(1000),
+                Materials.Hydrogen.getGas(7200))
+            .duration(3 * SECONDS)
             .eut(30)
             .addTo(multiblockChemicalReactorRecipes);
 
