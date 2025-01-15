@@ -231,8 +231,8 @@ public class GTPreLoad {
                                 String[] tags = new String[] {};
                                 if (mIt == 1) tags = new String[] { "dustTiny", "dustSmall", "dust", "dustImpure",
                                     "dustPure", "crushed", "crushedPurified", "crushedCentrifuged", "gem", "nugget",
-                                    null, "ingot", "ingotHot", "ingotDouble", "ingotTriple", "ingotQuadruple",
-                                    "ingotQuintuple", "plate", "plateDouble", "plateTriple", "plateQuadruple",
+                                    null, "ingot", "ingotHot", null, null, null,
+                                    null, "plate", "plateDouble", "plateTriple", "plateQuadruple",
                                     "plateQuintuple", "plateDense", "stick", "lens", "round", "bolt", "screw", "ring",
                                     "foil", "cell", "cellPlasma", "cellMolten", "rawOre", "plateSuperdense" };
                                 if (mIt == 2) tags = new String[] { "toolHeadSword", "toolHeadPickaxe",
@@ -258,8 +258,7 @@ public class GTPreLoad {
         }
 
         final String[] preS = new String[] { "dustTiny", "dustSmall", "dust", "dustImpure", "dustPure", "crushed",
-            "crushedPurified", "crushedCentrifuged", "gem", "nugget", "ingot", "ingotHot", "ingotDouble", "ingotTriple",
-            "ingotQuadruple", "ingotQuintuple", "plate", "plateDouble", "plateTriple", "plateQuadruple",
+            "crushedPurified", "crushedCentrifuged", "gem", "nugget", "ingot", "ingotHot", "plate", "plateDouble", "plateTriple", "plateQuadruple",
             "plateQuintuple", "plateDense", "stick", "lens", "round", "bolt", "screw", "ring", "foil", "cell",
             "cellPlasma", "toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe", "toolHeadHoe",
             "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench",

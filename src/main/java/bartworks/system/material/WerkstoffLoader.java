@@ -40,11 +40,7 @@ import static gregtech.api.enums.OrePrefixes.gemExquisite;
 import static gregtech.api.enums.OrePrefixes.gemFlawed;
 import static gregtech.api.enums.OrePrefixes.gemFlawless;
 import static gregtech.api.enums.OrePrefixes.ingot;
-import static gregtech.api.enums.OrePrefixes.ingotDouble;
 import static gregtech.api.enums.OrePrefixes.ingotHot;
-import static gregtech.api.enums.OrePrefixes.ingotQuadruple;
-import static gregtech.api.enums.OrePrefixes.ingotQuintuple;
-import static gregtech.api.enums.OrePrefixes.ingotTriple;
 import static gregtech.api.enums.OrePrefixes.lens;
 import static gregtech.api.enums.OrePrefixes.nugget;
 import static gregtech.api.enums.OrePrefixes.ore;
@@ -1976,11 +1972,7 @@ public class WerkstoffLoader {
             WerkstoffLoader.items.put(plateTriple, new BWMetaGeneratedItems(plateTriple));
             WerkstoffLoader.items.put(plateQuadruple, new BWMetaGeneratedItems(plateQuadruple));
             WerkstoffLoader.items.put(plateQuintuple, new BWMetaGeneratedItems(plateQuintuple));
-            WerkstoffLoader.items.put(plateDense, new BWMetaGeneratedItems(plateDense));
-            WerkstoffLoader.items.put(ingotDouble, new BWMetaGeneratedItems(ingotDouble));
-            WerkstoffLoader.items.put(ingotTriple, new BWMetaGeneratedItems(ingotTriple));
-            WerkstoffLoader.items.put(ingotQuadruple, new BWMetaGeneratedItems(ingotQuadruple));
-            WerkstoffLoader.items.put(ingotQuintuple, new BWMetaGeneratedItems(ingotQuintuple));
+            WerkstoffLoader.items.put(plateDense, new BWMetaGeneratedItems(plateDense));;
         }
         ENABLED_ORE_PREFIXES.addAll(WerkstoffLoader.items.keySet());
         ENABLED_ORE_PREFIXES.add(ore);
