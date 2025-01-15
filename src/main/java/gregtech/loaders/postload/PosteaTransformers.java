@@ -3,13 +3,10 @@ package gregtech.loaders.postload;
 import static gregtech.api.enums.Mods.AdvancedSolarPanel;
 import static gregtech.api.enums.Mods.SuperSolarPanels;
 
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.function.BiConsumer;
 
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
@@ -19,6 +16,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.MetaTileEntityIDs;
+import gregtech.api.util.MTEReplacementManager;
 import vexatos.tgregworks.reference.Mods;
 
 public class PosteaTransformers implements Runnable {
@@ -85,97 +83,72 @@ public class PosteaTransformers implements Runnable {
     }
 
     private void registerSolarPanelTransformers() {
-        Function<NBTTagCompound, NBTTagCompound> nbtTransformer = nbt -> {
-            NBTTagCompound newNbt = new NBTTagCompound();
-            newNbt.setLong("mStoredEnergy", nbt.getInteger("storage"));
-            return newNbt;
-        };
+        BiConsumer<NBTTagCompound, NBTTagCompound> nbtTransformer = (oldNbt, newNbt) -> newNbt
+            .setLong("mStoredEnergy", oldNbt.getInteger("storage"));
 
         // Advanced Solar Panels
-        TileEntityReplacementManager.tileEntityTransformer(
-            "Advanced Solar Panel",
-            getMTETileTransformer(MetaTileEntityIDs.SOLAR_PANEL_LV, nbtTransformer));
-        TileEntityReplacementManager.tileEntityTransformer(
-            "Hybrid Solar Panel",
-            getMTETileTransformer(MetaTileEntityIDs.SOLAR_PANEL_MV, nbtTransformer));
-        TileEntityReplacementManager.tileEntityTransformer(
-            "Ultimate Hybrid Solar Panel",
-            getMTETileTransformer(MetaTileEntityIDs.SOLAR_PANEL_HV, nbtTransformer));
-        TileEntityReplacementManager.tileEntityTransformer(
-            "Quantum Solar Panel",
-            getMTETileTransformer(MetaTileEntityIDs.SOLAR_PANEL_EV, nbtTransformer));
+        MTEReplacementManager.builder()
+            .fromTile("Advanced Solar Panel")
+            .toMTE(MetaTileEntityIDs.SOLAR_PANEL_LV)
+            .withCustomTileNBT(nbtTransformer)
+            .register();
 
-        ItemStackReplacementManager.addItemReplacement(
-            AdvancedSolarPanel.ID + ":BlockAdvSolarPanel",
-            getMTEItemTransformer(tag -> switch (tag.getInteger("Damage")) {
+        MTEReplacementManager.builder()
+            .fromTile("Hybrid Solar Panel")
+            .toMTE(MetaTileEntityIDs.SOLAR_PANEL_MV)
+            .withCustomTileNBT(nbtTransformer)
+            .register();
+
+        MTEReplacementManager.builder()
+            .fromTile("Ultimate Hybrid Solar Panel")
+            .toMTE(MetaTileEntityIDs.SOLAR_PANEL_HV)
+            .withCustomTileNBT(nbtTransformer)
+            .register();
+
+        MTEReplacementManager.builder()
+            .fromTile("Quantum Solar Panel")
+            .toMTE(MetaTileEntityIDs.SOLAR_PANEL_EV)
+            .withCustomTileNBT(nbtTransformer)
+            .register();
+
+        // Handle ItemStacks separately because they are meta items but not meta tiles
+        MTEReplacementManager.builder()
+            .fromItem(AdvancedSolarPanel.ID + ":BlockAdvSolarPanel")
+            .toMTE(metadata -> switch (metadata) {
             case 0 -> MetaTileEntityIDs.SOLAR_PANEL_LV;
             case 1 -> MetaTileEntityIDs.SOLAR_PANEL_MV;
             case 2 -> MetaTileEntityIDs.SOLAR_PANEL_HV;
             default -> MetaTileEntityIDs.SOLAR_PANEL_EV;
-            }));
+            })
+            .register();
 
         // Super Solar Panels
-        TileEntityReplacementManager.tileEntityTransformer(
-            "SpectralSolarPanel",
-            getMTETileTransformer(MetaTileEntityIDs.SOLAR_PANEL_IV, nbtTransformer));
-        TileEntityReplacementManager.tileEntityTransformer(
-            "SingularSolarPanel",
-            getMTETileTransformer(MetaTileEntityIDs.SOLAR_PANEL_LuV, nbtTransformer));
-        TileEntityReplacementManager.tileEntityTransformer(
-            "AdminSolarPanel",
-            getMTETileTransformer(MetaTileEntityIDs.SOLAR_PANEL_ZPM, nbtTransformer));
-        TileEntityReplacementManager.tileEntityTransformer(
-            "PhotonicSolarPanel",
-            getMTETileTransformer(MetaTileEntityIDs.SOLAR_PANEL_UV, nbtTransformer));
+        MTEReplacementManager.builder()
+            .fromTile("SpectralSolarPanel")
+            .fromItem(SuperSolarPanels.ID + ":SpectralSolarPanel")
+            .toMTE(MetaTileEntityIDs.SOLAR_PANEL_IV)
+            .withCustomTileNBT(nbtTransformer)
+            .register();
 
-        ItemStackReplacementManager.addItemReplacement(
-            SuperSolarPanels.ID + ":SpectralSolarPanel",
-            getMTEItemTransformer(MetaTileEntityIDs.SOLAR_PANEL_IV));
-        ItemStackReplacementManager.addItemReplacement(
-            SuperSolarPanels.ID + ":SingularSolarPanel",
-            getMTEItemTransformer(MetaTileEntityIDs.SOLAR_PANEL_LuV));
-        ItemStackReplacementManager.addItemReplacement(
-            SuperSolarPanels.ID + ":AdminSolarPanel",
-            getMTEItemTransformer(MetaTileEntityIDs.SOLAR_PANEL_ZPM));
-        ItemStackReplacementManager.addItemReplacement(
-            SuperSolarPanels.ID + ":PhotonicSolarPanel",
-            getMTEItemTransformer(MetaTileEntityIDs.SOLAR_PANEL_UV));
-    }
+        MTEReplacementManager.builder()
+            .fromTile("SingularSolarPanel")
+            .fromItem(SuperSolarPanels.ID + ":SingularSolarPanel")
+            .toMTE(MetaTileEntityIDs.SOLAR_PANEL_LuV)
+            .withCustomTileNBT(nbtTransformer)
+            .register();
 
-    private BiFunction<NBTTagCompound, World, BlockInfo> getMTETileTransformer(MetaTileEntityIDs mte) {
-        return getMTETileTransformer(mte, Function.identity());
-    }
+        MTEReplacementManager.builder()
+            .fromTile("AdminSolarPanel")
+            .fromItem(SuperSolarPanels.ID + ":AdminSolarPanel")
+            .toMTE(MetaTileEntityIDs.SOLAR_PANEL_ZPM)
+            .withCustomTileNBT(nbtTransformer)
+            .register();
 
-    private BiFunction<NBTTagCompound, World, BlockInfo> getMTETileTransformer(MetaTileEntityIDs mte,
-        Function<NBTTagCompound, NBTTagCompound> nbtTransformer) {
-        return (tag, world) -> new BlockInfo(GregTechAPI.sBlockMachines, mte.ID, oldTileTag -> {
-            oldTileTag = nbtTransformer.apply(oldTileTag);
-            oldTileTag.setInteger("mID", mte.ID);
-            oldTileTag.setString("mOwnerName", "Postea"); // set a name so that things don't npe
-            oldTileTag.setShort("mFacing", (short) ForgeDirection.NORTH.ordinal());
-            return oldTileTag;
-        });
-    }
-
-    private Function<NBTTagCompound, NBTTagCompound> getMTEItemTransformer(MetaTileEntityIDs mte) {
-        return tag -> {
-            Item mteItem = GameRegistry.findItem(Mods.GregTech, "gt.blockmachines");
-            int mteItemId = Item.getIdFromItem(mteItem);
-            tag.setInteger("id", mteItemId);
-            tag.setInteger("Damage", mte.ID);
-            return tag;
-        };
-    }
-
-    private Function<NBTTagCompound, NBTTagCompound> getMTEItemTransformer(
-        Function<NBTTagCompound, MetaTileEntityIDs> mteFinder) {
-        return tag -> {
-            MetaTileEntityIDs mte = mteFinder.apply(tag);
-            Item mteItem = GameRegistry.findItem(Mods.GregTech, "gt.blockmachines");
-            int mteItemId = Item.getIdFromItem(mteItem);
-            tag.setInteger("id", mteItemId);
-            tag.setInteger("Damage", mte.ID);
-            return tag;
-        };
+        MTEReplacementManager.builder()
+            .fromTile("PhotonicSolarPanel")
+            .fromItem(SuperSolarPanels.ID + ":PhotonicSolarPanel")
+            .toMTE(MetaTileEntityIDs.SOLAR_PANEL_UV)
+            .withCustomTileNBT(nbtTransformer)
+            .register();
     }
 }
