@@ -46,8 +46,7 @@ public class MTESolarGenerator extends MTETieredMachineBlock {
         if (sideDirection == ForgeDirection.UP) {
             return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
                 TextureFactory.of(Textures.BlockIcons.OVERLAY_SOLAR_PANEL) };
-        }
-        if (sideDirection == facingDirection) {
+        } else if (sideDirection != ForgeDirection.DOWN) {
             return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
                 OVERLAYS_ENERGY_OUT[mTier] };
         }
@@ -132,7 +131,7 @@ public class MTESolarGenerator extends MTETieredMachineBlock {
 
     @Override
     public boolean isOutputFacing(ForgeDirection side) {
-        return side == getBaseMetaTileEntity().getFrontFacing();
+        return side != ForgeDirection.UP;
     }
 
     @Override
