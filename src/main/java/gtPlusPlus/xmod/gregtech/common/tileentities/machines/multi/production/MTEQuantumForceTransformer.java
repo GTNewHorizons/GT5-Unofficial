@@ -63,9 +63,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchBulkCatalystHousing;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -78,7 +76,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -96,89 +93,29 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     private static final Fluid mNeptunium = MaterialsElements.getInstance().NEPTUNIUM.getPlasma();
     private static final Fluid mFermium = MaterialsElements.getInstance().FERMIUM.getPlasma();
     private static final String MAIN_PIECE = "main";
-    private MTEHatchInput mNeptuniumHatch;
-    private MTEHatchInput mFermiumHatch;
     private final ArrayList<MTEHatchBulkCatalystHousing> catalystHounsings = new ArrayList<>();
     private static final IStructureDefinition<MTEQuantumForceTransformer> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEQuantumForceTransformer>builder()
         .addShape(
             MAIN_PIECE,
             new String[][] { // A - 142, B - 234, C - 177, D - 96, E - 224, H - 36, M - 21
-                { "               ", "               ", "               ", "               ", "               ",
-                    "               ", "               ", "               ", "               ", "               ",
-                    "               ", "               ", "               ", "      BAB      ", "   BBBBABBBB   ",
-                    "   BAAAAAAAB   ", "   BABBABBAB   ", "   BA     AB   ", "    A     A    ", "    A     A    ",
-                    "    A     A    " },
-                { "               ", "               ", "               ", "               ", "               ",
-                    "               ", "               ", "               ", "               ", "               ",
-                    "               ", "               ", "      BAB      ", "   AAABBBAAA   ", "  BAAAAAAAAAB  ",
-                    "  B         B  ", "  A         A  ", "  A         A  ", "               ", "               ",
-                    "               " },
-                { "               ", "               ", "               ", "               ", "               ",
-                    "               ", "               ", "               ", "               ", "               ",
-                    "               ", "      BAB      ", "    AA   AA    ", "  AA       AA  ", " BAA       AAB ",
-                    " B           B ", " A           A ", " A           A ", "               ", "               ",
-                    "               " },
-                { "               ", "               ", "               ", "               ", "               ",
-                    "               ", "               ", "               ", "               ", "               ",
-                    "               ", "     BAAAB     ", "   AA     AA   ", " AA         AA ", "BAA         AAB",
-                    "B             B", "A             A", "A             A", "A             A", "A             A",
-                    "A             A" },
-                { "      TTT      ", "      EEE      ", "      EEE      ", "      EEE      ", "      DDD      ",
-                    "      EEE      ", "      DDD      ", "      EEE      ", "      EEE      ", "      EEE      ",
-                    "      DDD      ", "    BAEEEAB    ", "  AA  EEE  AA  ", " A    EEE    A ", "BA    DDD    AB",
-                    "B     EEE     B", "B     DDD     B", "      EEE      ", "      EEE      ", "      EEE      ",
-                    "      Z~X      " },
-                { "     TTTTT     ", "     ECCCE     ", "     ECCCE     ", "     ECCCE     ", "     D   D     ",
-                    "     ECCCE     ", "     D   D     ", "     ECCCE     ", "     ECCCE     ", "     ECCCE     ",
-                    "     D   D     ", "   BAECCCEAB   ", "  A  ECCCE  A  ", " A   ECCCE   A ", "BA   D   D   AB",
-                    "B    ECCCE    B", "B    D   D    B", "B    ECCCE    B", "     ECCCE     ", "     ECCCE     ",
-                    "     HHHHH     " },
-                { "    TTTTTTT    ", "    ECCCCCE    ", "    EC   CE    ", "    EC   CE    ", "    D     D    ",
-                    "    EC   CE    ", "    D     D    ", "    EC   CE    ", "    EC   CE    ", "    EC   CE    ",
-                    "    D     D    ", "  BAEC   CEAB  ", " B  EC   CE  B ", "BB  EC   CE  BB", "BA  D     D  AB",
-                    "A   EC   CE   A", "A   D     D   A", "A   EC   CE   A", "    EC   CE    ", "    EC   CE    ",
-                    "    HHHHHHH    " },
-                { "    TTTTTTT    ", "    ECCCCCE    ", "    EC   CE    ", "    EC   CE    ", "    D     D    ",
-                    "    EC   CE    ", "    D     D    ", "    EC   CE    ", "    EC   CE    ", "    EC   CE    ",
-                    "    D     D    ", "  AAEC   CEAA  ", " A  EC   CE  A ", "AB  EC   CE  BA", "AA  D     D  AA",
-                    "A   EC   CE   A", "A   D     D   A", "    EC   CE    ", "    EC   CE    ", "    EC   CE    ",
-                    "    HHHHHHH    " },
-                { "    TTTTTTT    ", "    ECCCCCE    ", "    EC   CE    ", "    EC   CE    ", "    D     D    ",
-                    "    EC   CE    ", "    D     D    ", "    EC   CE    ", "    EC   CE    ", "    EC   CE    ",
-                    "    D     D    ", "  BAEC   CEAB  ", " B  EC   CE  B ", "BB  EC   CE  BB", "BA  D     D  AB",
-                    "A   EC   CE   A", "A   D     D   A", "A   EC   CE   A", "    EC   CE    ", "    EC   CE    ",
-                    "    HHHHHHH    " },
-                { "     TTTTT     ", "     ECCCE     ", "     ECCCE     ", "     ECCCE     ", "     D   D     ",
-                    "     ECCCE     ", "     D   D     ", "     ECCCE     ", "     ECCCE     ", "     ECCCE     ",
-                    "     D   D     ", "   BAECCCEAB   ", "  A  ECCCE  A  ", " A   ECCCE   A ", "BA   D   D   AB",
-                    "B    ECCCE    B", "B    D   D    B", "B    ECCCE    B", "     ECCCE     ", "     ECCCE     ",
-                    "     HHHHH     " },
-                { "      TTT      ", "      EEE      ", "      EEE      ", "      EEE      ", "      DDD      ",
-                    "      EEE      ", "      DDD      ", "      EEE      ", "      EEE      ", "      EEE      ",
-                    "      DDD      ", "    BAEEEAB    ", "  AA  EEE  AA  ", " A    EEE    A ", "BA    DDD    AB",
-                    "B     EEE     B", "B     DDD     B", "      EEE      ", "      EEE      ", "      EEE      ",
-                    "      HHH      " },
-                { "               ", "               ", "               ", "               ", "               ",
-                    "               ", "               ", "               ", "               ", "               ",
-                    "               ", "     BAAAB     ", "   AA     AA   ", " AA         AA ", "BAA         AAB",
-                    "B             B", "A             A", "A             A", "A             A", "A             A",
-                    "A             A" },
-                { "               ", "               ", "               ", "               ", "               ",
-                    "               ", "               ", "               ", "               ", "               ",
-                    "               ", "      BAB      ", "    AA   AA    ", "  AA       AA  ", " BAA       AAB ",
-                    " B           B ", " A           A ", " A           A ", "               ", "               ",
-                    "               " },
-                { "               ", "               ", "               ", "               ", "               ",
-                    "               ", "               ", "               ", "               ", "               ",
-                    "               ", "               ", "      BAB      ", "   AAABBBAAA   ", "  BAAAAAAAAAB  ",
-                    "  B         B  ", "  A         A  ", "  A         A  ", "               ", "               ",
-                    "               " },
-                { "               ", "               ", "               ", "               ", "               ",
-                    "               ", "               ", "               ", "               ", "               ",
-                    "               ", "               ", "               ", "      BAB      ", "   BBBBABBBB   ",
-                    "   BBBAAABBB   ", "   ABBAAABBA   ", "   A BA AB A   ", "      A A      ", "      A A      ",
-                    "      A A      " }, })
+                // spotless:off
+                { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "      BAB      ", "   BBBBABBBB   ", "   BAAAAAAAB   ", "   BABBABBAB   ", "   BA     AB   ", "    A     A    ", "    A     A    ", "    A     A    " },
+                { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "      BAB      ", "   AAABBBAAA   ", "  BAAAAAAAAAB  ", "  B         B  ", "  A         A  ", "  A         A  ", "               ", "               ", "               " },
+                { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "      BAB      ", "    AA   AA    ", "  AA       AA  ", " BAA       AAB ", " B           B ", " A           A ", " A           A ", "               ", "               ", "               " },
+                { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "     BAAAB     ", "   AA     AA   ", " AA         AA ", "BAA         AAB", "B             B", "A             A", "A             A", "A             A", "A             A", "A             A" },
+                { "      TTT      ", "      EEE      ", "      EEE      ", "      EEE      ", "      DDD      ", "      EEE      ", "      DDD      ", "      EEE      ", "      EEE      ", "      EEE      ", "      DDD      ", "    BAEEEAB    ", "  AA  EEE  AA  ", " A    EEE    A ", "BA    DDD    AB", "B     EEE     B", "B     DDD     B", "      EEE      ", "      EEE      ", "      EEE      ", "      H~H      " },
+                { "     TTTTT     ", "     ECCCE     ", "     ECCCE     ", "     ECCCE     ", "     D   D     ", "     ECCCE     ", "     D   D     ", "     ECCCE     ", "     ECCCE     ", "     ECCCE     ", "     D   D     ", "   BAECCCEAB   ", "  A  ECCCE  A  ", " A   ECCCE   A ", "BA   D   D   AB", "B    ECCCE    B", "B    D   D    B", "B    ECCCE    B", "     ECCCE     ", "     ECCCE     ", "     HHHHH     " },
+                { "    TTTTTTT    ", "    ECCCCCE    ", "    EC   CE    ", "    EC   CE    ", "    D     D    ", "    EC   CE    ", "    D     D    ", "    EC   CE    ", "    EC   CE    ", "    EC   CE    ", "    D     D    ", "  BAEC   CEAB  ", " B  EC   CE  B ", "BB  EC   CE  BB", "BA  D     D  AB", "A   EC   CE   A", "A   D     D   A", "A   EC   CE   A", "    EC   CE    ", "    EC   CE    ", "    HHHHHHH    " },
+                { "    TTTTTTT    ", "    ECCCCCE    ", "    EC   CE    ", "    EC   CE    ", "    D     D    ", "    EC   CE    ", "    D     D    ", "    EC   CE    ", "    EC   CE    ", "    EC   CE    ", "    D     D    ", "  AAEC   CEAA  ", " A  EC   CE  A ", "AB  EC   CE  BA", "AA  D     D  AA", "A   EC   CE   A", "A   D     D   A", "    EC   CE    ", "    EC   CE    ", "    EC   CE    ", "    HHHHHHH    " },
+                { "    TTTTTTT    ", "    ECCCCCE    ", "    EC   CE    ", "    EC   CE    ", "    D     D    ", "    EC   CE    ", "    D     D    ", "    EC   CE    ", "    EC   CE    ", "    EC   CE    ", "    D     D    ", "  BAEC   CEAB  ", " B  EC   CE  B ", "BB  EC   CE  BB", "BA  D     D  AB", "A   EC   CE   A", "A   D     D   A", "A   EC   CE   A", "    EC   CE    ", "    EC   CE    ", "    HHHHHHH    " },
+                { "     TTTTT     ", "     ECCCE     ", "     ECCCE     ", "     ECCCE     ", "     D   D     ", "     ECCCE     ", "     D   D     ", "     ECCCE     ", "     ECCCE     ", "     ECCCE     ", "     D   D     ", "   BAECCCEAB   ", "  A  ECCCE  A  ", " A   ECCCE   A ", "BA   D   D   AB", "B    ECCCE    B", "B    D   D    B", "B    ECCCE    B", "     ECCCE     ", "     ECCCE     ", "     HHHHH     " },
+                { "      TTT      ", "      EEE      ", "      EEE      ", "      EEE      ", "      DDD      ", "      EEE      ", "      DDD      ", "      EEE      ", "      EEE      ", "      EEE      ", "      DDD      ", "    BAEEEAB    ", "  AA  EEE  AA  ", " A    EEE    A ", "BA    DDD    AB", "B     EEE     B", "B     DDD     B", "      EEE      ", "      EEE      ", "      EEE      ", "      HHH      " },
+                { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "     BAAAB     ", "   AA     AA   ", " AA         AA ", "BAA         AAB", "B             B", "A             A", "A             A", "A             A", "A             A", "A             A" },
+                { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "      BAB      ", "    AA   AA    ", "  AA       AA  ", " BAA       AAB ", " B           B ", " A           A ", " A           A ", "               ", "               ", "               " },
+                { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "      BAB      ", "   AAABBBAAA   ", "  BAAAAAAAAAB  ", "  B         B  ", "  A         A  ", "  A         A  ", "               ", "               ", "               " },
+                { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "      BAB      ", "   BBBBABBBB   ", "   BBBAAABBB   ", "   ABBAAABBA   ", "   A BA AB A   ", "      A A      ", "      A A      ", "      A A      " }, })
+                // spotless:on
         .addElement(
             'A',
             withChannel(
@@ -217,20 +154,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'T',
             buildHatchAdder(MTEQuantumForceTransformer.class).atLeast(OutputBus, OutputHatch, Maintenance)
-                .casingIndex(TAE.getIndexFromPage(0, 10))
-                .dot(5)
-                .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
-        .addElement(
-            'Z',
-            buildHatchAdder(MTEQuantumForceTransformer.class).hatchClass(MTEHatchInput.class)
-                .adder(MTEQuantumForceTransformer::addNeptuniumHatch)
-                .casingIndex(TAE.getIndexFromPage(0, 10))
-                .dot(5)
-                .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
-        .addElement(
-            'X',
-            buildHatchAdder(MTEQuantumForceTransformer.class).hatchClass(MTEHatchInput.class)
-                .adder(MTEQuantumForceTransformer::addFermiumHatch)
                 .casingIndex(TAE.getIndexFromPage(0, 10))
                 .dot(5)
                 .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
@@ -289,18 +212,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     + "Bottom"
                     + EnumChatFormatting.GRAY
                     + " Layer")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Neptunium Plasma Hatch: "
-                    + EnumChatFormatting.GREEN
-                    + "Left"
-                    + EnumChatFormatting.GRAY
-                    + " side of Controller")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Fermium Plasma Hatch: "
-                    + EnumChatFormatting.DARK_GREEN
-                    + "Right"
-                    + EnumChatFormatting.GRAY
-                    + " side of Controller")
             .toolTipFinisher(GTValues.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
         return tt;
     }
@@ -487,12 +398,17 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                 doFermium = false;
                 doNeptunium = false;
 
-                if (recipe.mSpecialValue <= getFocusingTier()) {
-                    if (drain(mFermiumHatch, new FluidStack(mFermium, 1), false)) {
-                        doFermium = true;
-                    }
-                    if (drain(mNeptuniumHatch, new FluidStack(mNeptunium, 1), false)) {
-                        doNeptunium = true;
+                if (recipe.getMetadataOrDefault(GTRecipeConstants.QFT_FOCUS_TIER, 1) <= getFocusingTier()) {
+                    List<FluidStack> fluids = getStoredFluids();
+                    for (FluidStack fluid : fluids) {
+                        if (fluid.getFluid()
+                            .equals(mNeptunium)) {
+                            doNeptunium = true;
+                        }
+                        if (fluid.getFluid()
+                            .equals(mFermium)) {
+                            doFermium = true;
+                        }
                     }
                 }
 
@@ -605,21 +521,30 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         if (runningTick % 20 == 0) {
             int amount = (int) (getFocusingTier() * 4
                 * Math.sqrt(Math.min(mMaxParallel, processingLogic.getCurrentParallels())));
-            if (doFermium) {
-                FluidStack fermiumToConsume = new FluidStack(mFermium, amount);
-                if (!drain(mFermiumHatch, fermiumToConsume, true)) {
-                    doFermium = false;
-                    stopMachine(ShutDownReasonRegistry.outOfFluid(fermiumToConsume));
-                    return false;
-                }
-            }
 
-            if (doNeptunium) {
-                FluidStack neptuniumToConsume = new FluidStack(mNeptunium, amount);
-                if (!drain(mNeptuniumHatch, neptuniumToConsume, true)) {
-                    doNeptunium = false;
-                    stopMachine(ShutDownReasonRegistry.outOfFluid(neptuniumToConsume));
-                    return false;
+            if (doNeptunium || doFermium) {
+                List<FluidStack> fluids = getStoredFluids();
+                for (FluidStack fluid : fluids) {
+                    if (doNeptunium) {
+                        FluidStack neptuniumToConsume = new FluidStack(mNeptunium, amount);
+                        if (!this.depleteInput(neptuniumToConsume)) {
+                            this.depleteInput(fluid);
+                            doNeptunium = false;
+                            mOutputItems = null;
+                            mOutputFluids = null;
+                            mProgresstime = mMaxProgresstime;
+                        }
+                    }
+                    if (doFermium) {
+                        FluidStack fermiumToConsume = new FluidStack(mFermium, amount);
+                        if (!this.depleteInput(fermiumToConsume)) {
+                            this.depleteInput(fluid);
+                            doFermium = false;
+                            mOutputItems = null;
+                            mOutputFluids = null;
+                            mProgresstime = mMaxProgresstime;
+                        }
+                    }
                 }
             }
 
@@ -729,32 +654,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         GTUtility.sendChatToPlayer(
             aPlayer,
             StatCollector.translateToLocal("miscutils.machines.QFTFluidMode") + " " + mFluidMode);
-    }
-
-    public boolean addNeptuniumHatch(IGregTechTileEntity aTileEntity, short aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchInput) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((MTEHatchInput) aMetaTileEntity).mRecipeMap = null;
-            mNeptuniumHatch = (MTEHatchInput) aMetaTileEntity;
-            return true;
-        }
-        return false;
-    }
-
-    public boolean addFermiumHatch(IGregTechTileEntity aTileEntity, short aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchInput) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((MTEHatchInput) aMetaTileEntity).mRecipeMap = null;
-            mFermiumHatch = (MTEHatchInput) aMetaTileEntity;
-            return true;
-        }
-        return false;
     }
 
     public boolean addCatalystHousingToMachineList(IGregTechTileEntity tileEntity, int baseCasingIndex) {
