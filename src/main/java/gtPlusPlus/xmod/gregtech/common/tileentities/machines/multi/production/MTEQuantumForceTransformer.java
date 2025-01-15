@@ -438,7 +438,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.quantumForceTransformerRecipesNoCatalysts;
+        return GTPPRecipeMaps.quantumForceTransformerRecipes;
     }
 
     @Override
@@ -461,25 +461,25 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                 }
 
                 int numberOfCatalyst = 0;
-                int catalystMeta = recipe.getMetadataOrDefault(GTRecipeConstants.QFT_CATALYST_META, -1);
-                if (catalystMeta != -1) {
-                    if (catalystHounsings.isEmpty()) {
-                        return SimpleCheckRecipeResult.ofFailure("no_catalyst");
+                ItemStack requiredCatalyst = recipe.getMetadata(GTRecipeConstants.QFT_CATALYST);
+                assert requiredCatalyst != null;
+                int catalystMeta = requiredCatalyst.getItemDamage();
+                if (catalystHounsings.isEmpty()) {
+                    return SimpleCheckRecipeResult.ofFailure("no_catalyst");
+                }
+                boolean catalystsFound = false;
+                for (MTEHatchBulkCatalystHousing catalystHousing : catalystHounsings) {
+                    ItemStack storedCatalysts = catalystHousing.getItemStack();
+                    int storedCatalystMeta = catalystHousing.getStoredCatalystMeta();
+                    if (storedCatalysts == null || storedCatalystMeta != catalystMeta) {
+                        continue;
                     }
-                    boolean catalystsFound = false;
-                    for (MTEHatchBulkCatalystHousing catalystHousing : catalystHounsings) {
-                        ItemStack storedCatalysts = catalystHousing.getItemStack();
-                        int storedCatalystMeta = catalystHousing.getStoredCatalystMeta();
-                        if (storedCatalysts == null || storedCatalystMeta != catalystMeta) {
-                            continue;
-                        }
-                        numberOfCatalyst = catalystHousing.getItemCount();
-                        catalystsFound = true;
-                        break;
-                    }
-                    if (!catalystsFound) {
-                        return SimpleCheckRecipeResult.ofFailure("no_catalyst");
-                    }
+                    numberOfCatalyst = catalystHousing.getItemCount();
+                    catalystsFound = true;
+                    break;
+                }
+                if (!catalystsFound) {
+                    return SimpleCheckRecipeResult.ofFailure("no_catalyst");
                 }
 
                 mMaxParallel = numberOfCatalyst;
