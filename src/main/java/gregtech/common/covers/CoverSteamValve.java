@@ -21,6 +21,11 @@ public class CoverSteamValve extends CoverPump {
 
     @Override
     protected boolean canTransferFluid(FluidStack fluid) {
-        return GTModHandler.isAnySteam(fluid) || GTModHandler.isSuperHeatedSteam(fluid);
+        if (fluid == null) return false;
+        String fluidname = fluid.getFluid()
+            .getName();
+        return GTModHandler.isAnySteam(fluid) || GTModHandler.isSuperHeatedSteam(fluid)
+            || fluidname.equals("supercriticalsteam")
+            || fluidname.equals("densesupercriticalsteam");
     }
 }

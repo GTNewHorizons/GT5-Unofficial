@@ -1,10 +1,14 @@
 package gregtech.api.recipe;
 
 import java.util.Comparator;
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
@@ -68,6 +72,23 @@ public final class NEIRecipeProperties {
     public final boolean renderRealStackSizes;
 
     /**
+     * Specifies what item inputs get displayed on NEI.
+     */
+    public final Function<GTRecipe, ItemStack[]> itemInputsGetter;
+    /**
+     * Specifies what fluid inputs get displayed on NEI.
+     */
+    public final Function<GTRecipe, FluidStack[]> fluidInputsGetter;
+    /**
+     * Specifies what item outputs get displayed on NEI.
+     */
+    public final Function<GTRecipe, ItemStack[]> itemOutputsGetter;
+    /**
+     * Specifies what fluid outputs get displayed on NEI.
+     */
+    public final Function<GTRecipe, FluidStack[]> fluidOutputsGetter;
+
+    /**
      * Comparator for NEI recipe sort. {@link GTRecipe#compareTo(GTRecipe)} by default.
      */
     public final Comparator<GTRecipe> comparator;
@@ -75,6 +96,8 @@ public final class NEIRecipeProperties {
     NEIRecipeProperties(boolean registerNEI, @Nullable UnaryOperator<HandlerInfo.Builder> handlerInfoCreator,
         Size recipeBackgroundSize, Pos2d recipeBackgroundOffset, INEISpecialInfoFormatter neiSpecialInfoFormatter,
         boolean unificateOutput, boolean useCustomFilter, boolean renderRealStackSizes,
+        Function<GTRecipe, ItemStack[]> itemInputsGetter, Function<GTRecipe, FluidStack[]> fluidInputsGetter,
+        Function<GTRecipe, ItemStack[]> itemOutputsGetter, Function<GTRecipe, FluidStack[]> fluidOutputsGetter,
         Comparator<GTRecipe> comparator) {
         this.registerNEI = registerNEI;
         this.handlerInfoCreator = handlerInfoCreator;
@@ -84,6 +107,10 @@ public final class NEIRecipeProperties {
         this.unificateOutput = unificateOutput;
         this.useCustomFilter = useCustomFilter;
         this.renderRealStackSizes = renderRealStackSizes;
+        this.itemInputsGetter = itemInputsGetter;
+        this.fluidInputsGetter = fluidInputsGetter;
+        this.itemOutputsGetter = itemOutputsGetter;
+        this.fluidOutputsGetter = fluidOutputsGetter;
         this.comparator = comparator;
     }
 }
