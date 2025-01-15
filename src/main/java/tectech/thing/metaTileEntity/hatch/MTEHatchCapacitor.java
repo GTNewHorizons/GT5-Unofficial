@@ -26,7 +26,7 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import tectech.Reference;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
@@ -73,12 +73,12 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GTRenderedTexture(TM_H_ACTIVE) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(TM_H_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GTRenderedTexture(TM_H) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(TM_H) };
     }
 
     @Override

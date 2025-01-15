@@ -23,7 +23,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
@@ -147,18 +147,14 @@ public class BaseItemComponent extends Item {
             if (componentType == ComponentTypes.PLATE) {
                 GregTechAPI.registerCover(
                     componentMaterial.getPlate(1),
-                    new GTRenderedTexture(
-                        componentMaterial.getTextureSet().mTextures[71],
-                        componentMaterial.getRGBA(),
-                        false),
+                    TextureFactory
+                        .of(componentMaterial.getTextureSet().mTextures[71], componentMaterial.getRGBA(), false),
                     null);
             } else if (componentType == ComponentTypes.PLATEDOUBLE) {
                 GregTechAPI.registerCover(
                     componentMaterial.getPlateDouble(1),
-                    new GTRenderedTexture(
-                        componentMaterial.getTextureSet().mTextures[72],
-                        componentMaterial.getRGBA(),
-                        false),
+                    TextureFactory
+                        .of(componentMaterial.getTextureSet().mTextures[72], componentMaterial.getRGBA(), false),
                     null);
             }
             return true;

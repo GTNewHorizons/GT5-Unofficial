@@ -17,7 +17,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.render.TextureFactory;
 import gtPlusPlus.core.lib.GTPPCore;
 
@@ -122,83 +121,83 @@ public class MTEHatchSteamBusOutput extends MTEHatch {
     }
 
     public ITexture[] getSideFacingActive(byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(
-            mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE) };
+        return new ITexture[] { TextureFactory
+            .of(mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE) };
     }
 
     public ITexture[] getSideFacingInactive(byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(
-            mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE) };
+        return new ITexture[] { TextureFactory
+            .of(mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE) };
     }
 
     public ITexture[] getFrontFacingActive(byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(
-            mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE) };
+        return new ITexture[] { TextureFactory
+            .of(mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE) };
     }
 
     public ITexture[] getFrontFacingInactive(byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(
-            mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE) };
+        return new ITexture[] { TextureFactory
+            .of(mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE) };
     }
 
     public ITexture[] getTopFacingActive(byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(
-            mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP : Textures.BlockIcons.MACHINE_BRONZE_TOP) };
+        return new ITexture[] { TextureFactory
+            .of(mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP : Textures.BlockIcons.MACHINE_BRONZE_TOP) };
     }
 
     public ITexture[] getTopFacingInactive(byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(
-            mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP : Textures.BlockIcons.MACHINE_BRONZE_TOP) };
+        return new ITexture[] { TextureFactory
+            .of(mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP : Textures.BlockIcons.MACHINE_BRONZE_TOP) };
     }
 
     public ITexture[] getBottomFacingActive(byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(
+        return new ITexture[] { TextureFactory.of(
             mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM : Textures.BlockIcons.MACHINE_BRONZE_BOTTOM) };
     }
 
     public ITexture[] getBottomFacingInactive(byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(
+        return new ITexture[] { TextureFactory.of(
             mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM : Textures.BlockIcons.MACHINE_BRONZE_BOTTOM) };
     }
 
     public ITexture[] getBottomFacingPipeActive(byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(
+        return new ITexture[] { TextureFactory.of(
             mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM : Textures.BlockIcons.MACHINE_BRONZE_BOTTOM),
-            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
+            TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
     }
 
     public ITexture[] getBottomFacingPipeInactive(byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(
+        return new ITexture[] { TextureFactory.of(
             mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM : Textures.BlockIcons.MACHINE_BRONZE_BOTTOM),
-            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
+            TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
     }
 
     public ITexture[] getTopFacingPipeActive(byte aColor) {
         return new ITexture[] {
-            new GTRenderedTexture(
-                mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP : Textures.BlockIcons.MACHINE_BRONZE_TOP),
-            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
+            TextureFactory
+                .of(mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP : Textures.BlockIcons.MACHINE_BRONZE_TOP),
+            TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
     }
 
     public ITexture[] getTopFacingPipeInactive(byte aColor) {
         return new ITexture[] {
-            new GTRenderedTexture(
-                mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP : Textures.BlockIcons.MACHINE_BRONZE_TOP),
-            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
+            TextureFactory
+                .of(mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP : Textures.BlockIcons.MACHINE_BRONZE_TOP),
+            TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
     }
 
     public ITexture[] getSideFacingPipeActive(byte aColor) {
         return new ITexture[] {
-            new GTRenderedTexture(
+            TextureFactory.of(
                 mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE),
-            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
+            TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
     }
 
     public ITexture[] getSideFacingPipeInactive(byte aColor) {
         return new ITexture[] {
-            new GTRenderedTexture(
+            TextureFactory.of(
                 mTier == 1 ? Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE : Textures.BlockIcons.MACHINE_BRONZE_SIDE),
-            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
+            TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
     }
 
     @Override

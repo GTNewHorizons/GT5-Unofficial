@@ -18,8 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.objects.GTMultiTexture;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
@@ -71,10 +70,7 @@ public class MetaCustomCoverItem extends Item {
             if (i > 0 && hide()) {
                 ItemUtils.hideItemFromNEI(thisStack);
             }
-            GregTechAPI.registerCover(
-                thisStack,
-                new GTMultiTexture(new GTRenderedTexture(mTextures[i])),
-                new CoverToggleVisual());
+            GregTechAPI.registerCover(thisStack, TextureFactory.of(mTextures[i]), new CoverToggleVisual());
         }
     }
 

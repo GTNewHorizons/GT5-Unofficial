@@ -9,7 +9,7 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEHatchReservoir extends MTEHatchFluidGenerator {
@@ -66,12 +66,12 @@ public class MTEHatchReservoir extends MTEHatchFluidGenerator {
 
     @Override
     public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GTRenderedTexture(TexturesGtBlock.Overlay_Water) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(TexturesGtBlock.Overlay_Water) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GTRenderedTexture(TexturesGtBlock.Overlay_Water) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(TexturesGtBlock.Overlay_Water) };
     }
 
     @Override

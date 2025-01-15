@@ -26,7 +26,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
 
 public class MTEWorldAccelerator extends MTETieredMachineBlock {
@@ -173,10 +173,10 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         int colorIndex, boolean pActive, boolean pRedstone) {
         if (mMode == 0) {
             return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1], side.offsetY != 0 ? null
-                : pActive ? new GTRenderedTexture(_mGTIco_Norm_Active) : new GTRenderedTexture(_mGTIco_Norm_Idle) };
+                : pActive ? TextureFactory.of(_mGTIco_Norm_Active) : TextureFactory.of(_mGTIco_Norm_Idle) };
         } else {
             return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1], side.offsetY != 0 ? null
-                : pActive ? new GTRenderedTexture(_mGTIco_TE_Active) : new GTRenderedTexture(_mGTIco_TE_Idle) };
+                : pActive ? TextureFactory.of(_mGTIco_TE_Active) : TextureFactory.of(_mGTIco_TE_Idle) };
         }
     }
 

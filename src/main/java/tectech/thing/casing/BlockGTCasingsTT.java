@@ -12,7 +12,7 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.objects.GTCopiedBlockTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.blocks.MaterialCasings;
@@ -35,7 +35,7 @@ public class BlockGTCasingsTT extends BlockCasingsAbstract {
         setCreativeTab(TecTech.creativeTabTecTech);
 
         for (byte b = 0; b < 16; b = (byte) (b + 1)) {
-            Textures.BlockIcons.casingTexturePages[texturePage][b] = new GTCopiedBlockTexture(this, 6, b);
+            Textures.BlockIcons.casingTexturePages[texturePage][b] = TextureFactory.of(this, b);
             /* IMPORTANT for block recoloring **/
         }
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "High Power Casing");

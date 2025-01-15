@@ -21,7 +21,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.boilers.MTEBoiler;
@@ -62,7 +62,7 @@ public class MTEBoilerBase extends MTEBoiler {
     }
 
     public ITexture getOverlayIcon() {
-        return new GTRenderedTexture(Textures.BlockIcons.BOILER_FRONT);
+        return TextureFactory.of(Textures.BlockIcons.BOILER_FRONT);
     }
 
     @Override
@@ -83,13 +83,13 @@ public class MTEBoilerBase extends MTEBoiler {
         return rTextures;
     }
 
-    protected GTRenderedTexture getCasingTexture() {
+    protected ITexture getCasingTexture() {
         if (this.tier == 1) {
-            return new GTRenderedTexture(Textures.BlockIcons.MACHINE_LV_SIDE);
+            return TextureFactory.of(Textures.BlockIcons.MACHINE_LV_SIDE);
         } else if (this.tier == 2) {
-            return new GTRenderedTexture(Textures.BlockIcons.MACHINE_MV_SIDE);
+            return TextureFactory.of(Textures.BlockIcons.MACHINE_MV_SIDE);
         } else {
-            return new GTRenderedTexture(Textures.BlockIcons.MACHINE_HV_SIDE);
+            return TextureFactory.of(Textures.BlockIcons.MACHINE_HV_SIDE);
         }
     }
 

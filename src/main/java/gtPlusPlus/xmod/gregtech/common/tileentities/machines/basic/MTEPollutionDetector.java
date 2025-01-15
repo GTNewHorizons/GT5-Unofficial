@@ -11,7 +11,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -51,10 +51,10 @@ public class MTEPollutionDetector extends GTPPMetaTileEntity {
     public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
         final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         return side == facing
-            ? new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
-                new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
-            : new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
-                new GTRenderedTexture(Textures.BlockIcons.VOID) };
+            ? new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
+                TextureFactory.of(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
+            : new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Dimensional),
+                TextureFactory.of(Textures.BlockIcons.VOID) };
     }
 
     @Override
@@ -84,52 +84,52 @@ public class MTEPollutionDetector extends GTPPMetaTileEntity {
 
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Screen_2) };
+            TextureFactory.of(TexturesGtBlock.Casing_Machine_Screen_2) };
     }
 
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Screen_2) };
+            TextureFactory.of(TexturesGtBlock.Casing_Machine_Screen_2) };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+            TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     @Override

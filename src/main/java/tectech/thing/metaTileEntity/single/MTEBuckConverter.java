@@ -32,14 +32,14 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import tectech.util.CommonValues;
 import tectech.util.TTUtility;
 
 public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWidgets, IAddGregtechLogo {
 
-    private static GTRenderedTexture BUCK, BUCK_ACTIVE;
+    private static ITexture BUCK, BUCK_ACTIVE;
     public int EUT = 0, AMP = 0;
     private static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
@@ -69,8 +69,8 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        BUCK = new GTRenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/BUCK"));
-        BUCK_ACTIVE = new GTRenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/BUCK_ACTIVE"));
+        BUCK = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/BUCK"));
+        BUCK_ACTIVE = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/BUCK_ACTIVE"));
     }
 
     @Override

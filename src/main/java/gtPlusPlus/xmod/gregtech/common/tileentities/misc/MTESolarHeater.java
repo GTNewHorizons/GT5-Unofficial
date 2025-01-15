@@ -13,7 +13,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTESolarTower;
@@ -68,49 +68,49 @@ public class MTESolarHeater extends MTETieredMachineBlock {
     }
 
     public ITexture[] getFront(final byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-            new GTRenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
+        return new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Top),
+            TextureFactory.of(Textures.BlockIcons.SOLARPANEL_IV) };
     }
 
     public ITexture[] getBack(final byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top) };
+        return new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Top) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+        return new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getTop(final byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-            new GTRenderedTexture(Textures.BlockIcons.SOLARPANEL_LuV) };
+        return new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Top),
+            TextureFactory.of(Textures.BlockIcons.SOLARPANEL_LuV) };
     }
 
     public ITexture[] getSides(final byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-            new GTRenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
+        return new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Top),
+            TextureFactory.of(Textures.BlockIcons.SOLARPANEL_IV) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-            new GTRenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
+        return new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Top),
+            TextureFactory.of(Textures.BlockIcons.SOLARPANEL_IV) };
     }
 
     public ITexture[] getBackActive(final byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top) };
+        return new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Top) };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
+        return new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Bottom) };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-            new GTRenderedTexture(Textures.BlockIcons.SOLARPANEL_LuV) };
+        return new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Top),
+            TextureFactory.of(Textures.BlockIcons.SOLARPANEL_LuV) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top),
-            new GTRenderedTexture(Textures.BlockIcons.SOLARPANEL_IV) };
+        return new ITexture[] { TextureFactory.of(TexturesGtBlock.Casing_Machine_Simple_Top),
+            TextureFactory.of(Textures.BlockIcons.SOLARPANEL_IV) };
     }
 
     @Override

@@ -43,6 +43,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
@@ -54,7 +55,6 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
-import gtPlusPlus.xmod.gregtech.api.objects.GTPPRenderedTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerTurbineBase>
@@ -121,9 +121,8 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     protected boolean looseFit = false;
     protected float[] flowMultipliers = new float[] { 1, 1, 1 };
 
-    public ITexture frontFace = new GTPPRenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
-    public ITexture frontFaceActive = new GTPPRenderedTexture(
-        TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active);
+    public ITexture frontFace = TextureFactory.of(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
+    public ITexture frontFaceActive = TextureFactory.of(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active);
 
     public ArrayList<MTEHatchTurbine> mTurbineRotorHatches = new ArrayList<>();
 

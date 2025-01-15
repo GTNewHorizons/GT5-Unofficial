@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
@@ -148,7 +148,7 @@ public class RecipeGenPlates extends RecipeGenBase {
 
             GregTechAPI.registerCover(
                 material.getFoil(1),
-                new GTRenderedTexture(material.getTextureSet().mTextures[70], material.getRGBA(), false),
+                TextureFactory.of(material.getTextureSet().mTextures[70], material.getRGBA(), false),
                 null);
             Logger.WARNING("Bender Foil Recipe: " + material.getLocalizedName() + " - Success");
         }
