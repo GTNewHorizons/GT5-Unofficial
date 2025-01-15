@@ -5,9 +5,6 @@ import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.BiFunction;
-import java.util.function.Predicate;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -16,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IIcon;
@@ -23,13 +21,14 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
-
-import org.apache.commons.lang3.tuple.Pair;
+import net.minecraftforge.oredict.OreDictionary;
 
 import com.gtnewhorizons.modularui.api.UIInfos;
 
+import bartworks.common.items.ItemCircuitProgrammer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -43,8 +42,10 @@ import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
+import ic2.core.IC2;
+import ic2.core.IHasGui;
+import ic2.core.item.ItemToolbox;
 
 public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpdatableItem {
 
@@ -222,12 +223,12 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
             GTLog.out.println("GTMod: Starting Item Icon Load Phase");
             GT_FML_LOGGER.info("GTMod: Starting Item Icon Load Phase");
             GregTechAPI.sItemIcons = aIconRegister;
-            try {
-                for (Runnable tRunnable : GregTechAPI.sGTItemIconload) {
+            for (Runnable tRunnable : GregTechAPI.sGTItemIconload) {
+                try {
                     tRunnable.run();
+                } catch (Throwable e) {
+                    GTMod.GT_FML_LOGGER.error("Error registering icons", e);
                 }
-            } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
             }
             GTLog.out.println("GTMod: Finished Item Icon Load Phase");
             GT_FML_LOGGER.info("GTMod: Finished Item Icon Load Phase");
@@ -246,12 +247,7 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
         if (meta < 0 || meta > 24) return true;
 
         if (!player.capabilities.isCreativeMode) {
-            Pair<Integer, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> toolIndex = findConfiguratorInInv(player);
-            if (toolIndex == null) return true;
-
-            ItemStack[] mainInventory = player.inventory.mainInventory;
-            mainInventory[toolIndex.getKey()] = toolIndex.getValue()
-                .apply(mainInventory[toolIndex.getKey()], player);
+            findConfiguratorInInv(player, true); // damage the tool
         }
         stack.setItemDamage(meta);
 
@@ -267,8 +263,8 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
         if (player.capabilities.isCreativeMode) {
             configuratorStack = null;
         } else {
-            Pair<Integer, ?> configurator = findConfiguratorInInv(player);
-            if (configurator == null) {
+            configuratorStack = findConfiguratorInInv(player, false);
+            if (configuratorStack == null) {
                 int count;
                 try {
                     count = Integer
@@ -285,7 +281,6 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
                         "GT5U.item.programmed_circuit.no_screwdriver." + XSTR.XSTR_INSTANCE.nextInt(count)));
                 return stack;
             }
-            configuratorStack = player.inventory.mainInventory[configurator.getKey()];
         }
         openSelectorGui(configuratorStack, stack.getItemDamage(), player);
         return stack;
@@ -309,19 +304,86 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
         GTValues.NW.sendToServer(new GTPacketUpdateItem(tag));
     }
 
-    private static Pair<Integer, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> findConfiguratorInInv(
-        EntityPlayer player) {
+    private static final int screwdriverOreId = OreDictionary.getOreID("craftingToolScrewdriver");
+
+    /**
+     * Test a player's inventory for a circuit configuring item.
+     *
+     * @param player   The player whose inventory will be tested.
+     * @param doDamage Whether a found item should be damaged.
+     *
+     * @return A display stack representing the item that was found. Do not modify this item!
+     */
+    public static ItemStack findConfiguratorInInv(EntityPlayer player, boolean doDamage) {
         ItemStack[] mainInventory = player.inventory.mainInventory;
-        for (int j = 0, mainInventoryLength = mainInventory.length; j < mainInventoryLength; j++) {
-            ItemStack toolStack = mainInventory[j];
+        for (int i = 0; i < mainInventory.length; i++) {
+            ItemStack potentialStack = mainInventory[i];
+            if (potentialStack == null || potentialStack.getItem() == null || potentialStack.stackSize <= 0) continue;
 
-            if (!GTUtility.isStackValid(toolStack)) continue;
+            // Circuit Configurator
+            if (potentialStack.getItem() instanceof ItemCircuitProgrammer programmer) {
+                if (doDamage) programmer.useItem(potentialStack, player);
+                return potentialStack;
+            }
 
-            for (Map.Entry<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> p : GregTechAPI.sCircuitProgrammerList
-                .entrySet())
-                if (p.getKey()
-                    .test(toolStack)) return Pair.of(j, p.getValue());
+            // Toolbox with Screwdriver inside
+            if (potentialStack.getItem() instanceof ItemToolbox toolbox) {
+                IHasGui toolboxInventory = toolbox.getInventory(player, potentialStack);
+                if (!IC2.platform.isSimulating()) {
+                    populateToolboxInventory(toolboxInventory, potentialStack);
+                }
+                for (int j = 0; j < toolboxInventory.getSizeInventory(); j++) {
+                    ItemStack toolboxStack = toolboxInventory.getStackInSlot(j);
+                    if (toolboxStack == null || toolboxStack.getItem() == null || toolboxStack.stackSize <= 0) continue;
+
+                    for (int id : OreDictionary.getOreIDs(toolboxStack)) {
+                        if (id == screwdriverOreId) {
+                            if (doDamage) {
+                                toolboxStack = toolboxStack.getItem()
+                                    .getContainerItem(toolboxStack);
+                                if (toolboxStack != null && toolboxStack.stackSize <= 0) {
+                                    toolboxInventory.setInventorySlotContents(j, null);
+                                } else {
+                                    toolboxInventory.setInventorySlotContents(j, toolboxStack);
+                                }
+                            }
+                            return potentialStack; // return the toolbox for display
+                        }
+                    }
+                }
+            }
+
+            // Screwdriver
+            for (int id : OreDictionary.getOreIDs(potentialStack)) {
+                if (id == screwdriverOreId) {
+                    if (doDamage) {
+                        potentialStack = potentialStack.getItem()
+                            .getContainerItem(potentialStack);
+                        if (potentialStack != null && potentialStack.stackSize <= 0) {
+                            mainInventory[i] = null;
+                        } else {
+                            mainInventory[i] = potentialStack;
+                        }
+                    }
+                    return potentialStack;
+                }
+            }
         }
         return null;
+    }
+
+    // Because for some reason, the toolbox inventory refuses to read the itemstack nbt
+    // on the client (according to IC2 this is in fact intentional).
+    private static void populateToolboxInventory(IHasGui toolboxInventory, ItemStack toolbox) {
+        NBTTagCompound nbt = toolbox.getTagCompound();
+        if (nbt == null) return;
+        NBTTagList stacks = nbt.getTagList("Items", 10);
+        for (int i = 0; i < stacks.tagCount(); i++) {
+            NBTTagCompound slotNbt = stacks.getCompoundTagAt(i);
+            int slot = slotNbt.getByte("Slot");
+            if (slot >= 0 && slot < toolboxInventory.getSizeInventory()) {
+                toolboxInventory.setInventorySlotContents(i, ItemStack.loadItemStackFromNBT(slotNbt));
+            }
+        }
     }
 }

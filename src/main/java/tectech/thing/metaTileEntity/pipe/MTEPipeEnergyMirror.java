@@ -17,8 +17,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.PowerLogic;
-import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.objects.GTRenderedTexture;
 import gregtech.common.GTClient;
 import tectech.TecTech;
@@ -108,15 +106,6 @@ public class MTEPipeEnergyMirror extends MTEPipeEnergy {
                                 continue;
                             }
                         }
-                        if (tTileEntity instanceof PowerLogicHost) {
-                            PowerLogic logic = ((PowerLogicHost) tTileEntity).getPowerLogic(oppositeSide);
-                            if (logic != null && logic.canUseLaser()) {
-                                mConnections |= 1 << side.ordinal();
-                                connectedSides[connectionCount] = side;
-                                connectionCount++;
-                                continue;
-                            }
-                        }
                         if (tTileEntity instanceof IConnectsToEnergyTunnel
                             && ((IConnectsToEnergyTunnel) tTileEntity).canConnect(oppositeSide)) {
                             mConnections |= 1 << side.ordinal();
@@ -197,12 +186,6 @@ public class MTEPipeEnergyMirror extends MTEPipeEnergy {
                             return null;
                         }
                     } else {
-                        if (tGTTileEntity instanceof PowerLogicHost) {
-                            PowerLogic logic = ((PowerLogicHost) tGTTileEntity).getPowerLogic(opposite);
-                            if (logic == null || !logic.canUseLaser() || opposite != tGTTileEntity.getFrontFacing()) {
-                                return tGTTileEntity;
-                            }
-                        }
                         return null;
                     }
                 } else {

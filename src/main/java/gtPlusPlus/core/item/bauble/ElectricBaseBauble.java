@@ -56,10 +56,9 @@ public abstract class ElectricBaseBauble extends BaseBauble implements IElectric
 
     public abstract String getTextureNameForBauble();
 
-    @SuppressWarnings("unchecked")
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List itemList) {
+    public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> itemList) {
         ItemStack itemStack = new ItemStack(this, 1);
         ItemStack charged;
         if (this.getEmptyItem(itemStack) == this) {
@@ -125,9 +124,9 @@ public abstract class ElectricBaseBauble extends BaseBauble implements IElectric
         return true;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list,
+        final boolean bool) {
         list.add("");
         String aEuInfo = StatCollector.translateToLocal("GTPP.info.euInfo");
         String aTier = StatCollector.translateToLocal("GTPP.machines.tier");

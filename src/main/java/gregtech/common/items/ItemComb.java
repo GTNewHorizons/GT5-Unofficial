@@ -653,7 +653,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             CombType.ENDDUST,
             new ItemStack[] { GTModHandler.getModItem(MagicBees.ID, "wax", 1L, 0),
                 GTBees.propolis.getStackForType(PropolisType.End), GTBees.drop.getStackForType(DropType.ENDERGOO),
-                Materials.Endstone.getBlocks(4) },
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1L) },
             new int[] { 20 * 100, 15 * 100, 10 * 100, 100 * 100 },
             Voltage.HV);
         addCentrifugeToItemStack(
