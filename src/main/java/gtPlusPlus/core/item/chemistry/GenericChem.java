@@ -21,7 +21,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -30,13 +29,8 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.item.circuit.GTPPIntegratedCircuitItem;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialMisc;
-import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.material.MaterialsOther;
-import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -44,28 +38,6 @@ import gtPlusPlus.plugin.agrichem.block.AgrichemFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class GenericChem extends ItemPackage {
-
-    /**
-     * Materials
-     */
-
-    // Refined PTFE
-    public static final Material TEFLON = new Material(
-        "Teflon",
-        MaterialState.SOLID,
-        TextureSet.SET_SHINY,
-        new short[] { 75, 45, 75 },
-        330,
-        640,
-        -1,
-        -1,
-        false,
-        null,
-        0,
-        new MaterialStack(MaterialsOther.PTFE, 75),
-        new MaterialStack(MaterialsOther.PLASTIC, 15),
-        new MaterialStack(MaterialsElements.getInstance().CARBON, 5),
-        new MaterialStack(MaterialsElements.getInstance().SODIUM, 5));
 
     /**
      * Fluids
@@ -139,8 +111,6 @@ public class GenericChem extends ItemPackage {
 
     @Override
     public void items() {
-
-        MaterialGenerator.generate(TEFLON, false);
 
         mGenericChemItem1 = new ItemGenericChemBase();
         mAdvancedCircuit = new GTPPIntegratedCircuitItem("T3RecipeSelector", "science/general/AdvancedCircuit");

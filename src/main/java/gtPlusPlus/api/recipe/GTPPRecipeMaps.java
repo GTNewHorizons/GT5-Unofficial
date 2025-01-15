@@ -1,7 +1,7 @@
 package gtPlusPlus.api.recipe;
 
 import static gregtech.api.util.GTRecipeConstants.LFTR_OUTPUT_POWER;
-import static gregtech.api.util.GTRecipeConstants.QFT_CATALYST_META;
+import static gregtech.api.util.GTRecipeConstants.QFT_CATALYST;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +14,6 @@ import net.minecraft.util.StatCollector;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
@@ -27,7 +26,6 @@ import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarm;
 
@@ -54,17 +52,23 @@ public class GTPPRecipeMaps {
     public static final RecipeMap<RecipeMapBackend> quantumForceTransformerRecipes = RecipeMapBuilder
         .of("gtpp.recipe.quantumforcesmelter")
         .maxIO(6, 6, 6, 6)
-        .minInputs(1, 0)
-        .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
-        .neiHandlerInfo(builder -> builder.setDisplayStack(GregtechItemList.QuantumForceTransformer.get(1)))
-        .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.tier"))
-        .frontend(QuantumForceTransformerFrontend::new)
-        .disableOptimize()
-        .build();
-    public static final RecipeMap<RecipeMapBackend> quantumForceTransformerRecipesNoCatalysts = RecipeMapBuilder
-        .of("gtpp.recipe.quantumforcesmelternocatalysts")
-        .maxIO(6, 6, 6, 6)
         .minInputs(0, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
+        .recipeTransformer(recipe -> {
+            ItemStack catalyst = recipe.getMetadata(QFT_CATALYST);
+            if (catalyst == null) {
+                throw new IllegalStateException("QFT catalyst must be set via metadata QFT_CATALYST");
+            }
+        })
+        .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.tier"))
+        .neiItemInputsGetter(recipe -> {
+            ItemStack catalyst = recipe.getMetadata(QFT_CATALYST);
+            assert catalyst != null;
+            List<ItemStack> inputs = new ArrayList<>(Arrays.asList(recipe.mInputs));
+            inputs.add(catalyst);
+            return inputs.toArray(new ItemStack[0]);
+        })
+        .frontend(QuantumForceTransformerFrontend::new)
         .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> chemicalDehydratorRecipes = RecipeMapBuilder
@@ -254,29 +258,4 @@ public class GTPPRecipeMaps {
         .maxIO(2, 1, 0, 0)
         .disableRegisterNEI()
         .build();
-
-    static {
-        GTPPRecipeMaps.quantumForceTransformerRecipes.addDownstream(IRecipeMap.newRecipeMap(b -> {
-            b = b.copy();
-            List<ItemStack> itemInputs = new ArrayList<>();
-
-            int meta = -1;
-            for (int i = 0; i < b.getItemInputsBasic().length; i++) {
-                ItemStack stack = b.getItemInputBasic(i);
-                if (stack == null) continue;
-                if (ItemUtils.isCatalyst(stack)) {
-                    meta = stack.getItemDamage();
-                    continue;
-                }
-                itemInputs.add(stack);
-            }
-
-            if (meta != -1) {
-                b.metadata(QFT_CATALYST_META, meta);
-            }
-            return GTPPRecipeMaps.quantumForceTransformerRecipesNoCatalysts.doAdd(
-                b.itemInputs(itemInputs.toArray(new ItemStack[0]))
-                    .hidden());
-        }));
-    }
 }
