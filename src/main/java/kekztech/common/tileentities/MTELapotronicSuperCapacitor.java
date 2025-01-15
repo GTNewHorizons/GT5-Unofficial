@@ -33,7 +33,6 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -117,6 +116,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private boolean wireless_mode = false;
     private int counter = 1;
     private boolean balanced = false;
+    private boolean warningReceived = false;
 
     private final LongRunningAverage energyInputValues1h = new LongRunningAverage(3600 * 20);
     private final LongRunningAverage energyOutputValues1h = new LongRunningAverage(3600 * 20);
@@ -190,6 +190,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     private static final int DURATION_AVERAGE_TICKS = 100;
     private static final int DEBUG_POWER_WINDOW_ID = 10;
+    private static final int WIRELESS_WARNING_WINDOW_ID = 11;
 
     // height channel for height.
     // glass channel for glass
@@ -484,7 +485,15 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     + EnumChatFormatting.GRAY
                     + ") EU in the LSC")
             .addInfo("it will withdraw from the network and add to the LSC.")
-            .addInfo("If there is more it will add the EU to the network and remove it from the LSC.")
+            .addInfo(
+                "If there is more it will add " + EnumChatFormatting.DARK_RED
+                    + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.UNDERLINE
+                    + "all excess"
+                    + EnumChatFormatting.RESET
+                    + EnumChatFormatting.GRAY
+                    + " EU to the network, removing it from the LSC.")
+            .addInfo("This can potentially brick your base, be careful.")
             .addInfo(
                 "The threshold increases " + EnumChatFormatting.DARK_RED
                     + "100"
@@ -1224,6 +1233,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         nbt.setByteArray("stored", stored.toByteArray());
         nbt.setBoolean("wireless_mode", wireless_mode);
         nbt.setInteger("wireless_mode_cooldown", counter);
+        nbt.setBoolean("warningReceived", warningReceived);
 
         super.saveNBTData(nbt);
     }
@@ -1236,6 +1246,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         stored = new BigInteger(nbt.getByteArray("stored"));
         wireless_mode = nbt.getBoolean("wireless_mode");
         counter = nbt.getInteger("wireless_mode_cooldown");
+        warningReceived = nbt.getBoolean("warningReceived");
 
         super.loadNBTData(nbt);
     }
@@ -1332,13 +1343,21 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
         buildContext.addSyncedWindow(DEBUG_POWER_WINDOW_ID, this::createPowerWindow);
+        buildContext.addSyncedWindow(WIRELESS_WARNING_WINDOW_ID, this::createWarningWindow);
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
             if (!widget.isClient()) {
                 canUseWireless = canUseWireless();
             }
             if (canUseWireless) {
-                wireless_mode = !wireless_mode;
+                if (!warningReceived) {
+                    warningReceived = true;
+                    widget.getContext()
+                        .openSyncedWindow(WIRELESS_WARNING_WINDOW_ID);
+                } else {
+                    wireless_mode = !wireless_mode;
+                }
             }
+
         })
             .setPlayClickSound(true)
             .setBackground(() -> {
@@ -1361,6 +1380,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> wireless_mode, val -> wireless_mode = val))
             .widget(new FakeSyncWidget.BooleanSyncer(this::canUseWireless, val -> canUseWireless = val))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> warningReceived, val -> warningReceived = val))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (mMachine && wireless_mode && canUseWireless && !balanced) {
                     counter = rebalance();
@@ -1443,6 +1463,33 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                             (val) -> stored = BigDecimal.valueOf(val)
                                 .toBigInteger()),
                         builder));
+        return builder.build();
+    }
+
+    protected ModularWindow createWarningWindow(final EntityPlayer player) {
+        final int WIDTH = 180;
+        final int HEIGHT = 75;
+        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        builder.setDraggable(true);
+        builder
+            .widget(
+                new TextWidget(
+                    EnumChatFormatting.BOLD + translateToLocal("gui.kekztech_lapotronicenergyunit.warning.header"))
+                        .setDefaultColor(0xff0000)
+                        .setScale(1.2f)
+                        .setTextAlignment(Alignment.Center)
+                        .setPos(0, 7)
+                        .setSize(180, 15))
+            .widget(
+                TextWidget.localised("gui.kekztech_lapotronicenergyunit.warning.text")
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(5, 20)
+                    .setSize(170, 50));
+        builder.widget(
+            ButtonWidget.closeWindowButton(true)
+                .setPos(164, 4));
         return builder.build();
     }
 
