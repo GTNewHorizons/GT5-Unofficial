@@ -1394,7 +1394,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             })
             .addTooltip(translateToLocal("GT5U.multiblock.energy"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setEnabled($ -> Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
+            .setEnabled($ -> buildContext.getPlayer().capabilities.isCreativeMode)
             .setPos(174, 112)
             .setSize(16, 16));
     }
