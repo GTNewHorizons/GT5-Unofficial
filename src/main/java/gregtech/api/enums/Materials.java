@@ -30,6 +30,8 @@ import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IMaterialHandler;
+import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
@@ -47,7 +49,7 @@ import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import gregtech.loaders.materials.MaterialsInit1;
 
 @SuppressWarnings("unused") // API Legitimately has unused Members and Methods
-public class Materials implements IColorModulationContainer, ISubTagContainer {
+public class Materials implements IColorModulationContainer, ISubTagContainer, IOreMaterial {
 
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();
     private static final Map<String, Materials> MATERIALS_MAP = new LinkedHashMap<>();
@@ -2518,6 +2520,22 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Boron.add(SubTag.SMELTING_TO_FLUID);
 
         MaterialsUEVplus.TranscendentMetal.add(SubTag.BLACK_HOLE);
+
+        Hydrogen.add(SubTag.ICE_ORE);
+        Nitrogen.add(SubTag.ICE_ORE);
+        Oxygen.add(SubTag.ICE_ORE);
+        Methane.add(SubTag.ICE_ORE);
+        CarbonDioxide.add(SubTag.ICE_ORE);
+        SulfurDioxide.add(SubTag.ICE_ORE);
+        Ammonia.add(SubTag.ICE_ORE);
+
+        Hydrogen.setOreMultiplier(4);
+        Nitrogen.setOreMultiplier(4);
+        Oxygen.setOreMultiplier(4);
+        Methane.setOreMultiplier(4);
+        CarbonDioxide.setOreMultiplier(4);
+        SulfurDioxide.setOreMultiplier(4);
+        Ammonia.setOreMultiplier(4);
     }
 
     public static void init() {
@@ -3046,8 +3064,45 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     @Override
+    public TextureSet getTextureSet() {
+        return mIconSet;
+    }
+
+    @Override
     public String toString() {
         return this.mName;
+    }
+
+    @Override
+    public String getLocalizedName() {
+        return mLocalizedName;
+    }
+
+    @Override
+    public int getId() {
+        return mMetaItemSubID;
+    }
+
+    public boolean isValidForStone(IStoneType stoneType) {
+        if (contains(SubTag.ICE_ORE)) {
+            return stoneType.getCategory() == StoneCategory.Ice;
+        } else {
+            return stoneType.getCategory() == StoneCategory.Stone;
+        }
+    }
+
+    @Override
+    public List<IStoneType> getValidStones() {
+        if (contains(SubTag.ICE_ORE)) {
+            return StoneType.ICES;
+        } else {
+            return StoneType.STONES;
+        }
+    }
+
+    @Override
+    public String getInternalName() {
+        return mName;
     }
 
     public String getDefaultLocalizedNameForItem(String aFormat) {

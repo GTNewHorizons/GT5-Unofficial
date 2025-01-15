@@ -35,6 +35,7 @@ public class ItemDimensionDisplay extends ItemBlock {
         return null;
     }
 
+    /** Gets the abbreviated dimension name for this block. */
     public static String getDimension(ItemStack stack) {
         if (stack.getItem() instanceof ItemDimensionDisplay) {
             return ((BlockDimensionDisplay) Block.getBlockFromItem(stack.getItem())).getDimension();
