@@ -39,6 +39,7 @@ public class GTPPRecipeMaps {
     public static final RecipeMap<RecipeMapBackend> multiblockMassFabricatorRecipes = RecipeMapBuilder
         .of("gtpp.recipe.matterfab2")
         .maxIO(2, 0, 1, 1)
+        .allowCircuitOnly(true)
         .build();
     public static final RecipeMap<FuelBackend> rocketFuels = RecipeMapBuilder
         .of("gtpp.recipe.rocketenginefuel", FuelBackend::new)

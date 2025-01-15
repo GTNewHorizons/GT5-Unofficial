@@ -95,10 +95,21 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
 
     /**
      * Sets minimum amount of inputs required for the recipes.
+     * This ignores programmed circuits; so if a machine requires one input item and a programmed circuit, set
+     * minItemInputs to 1.
      */
     public RecipeMapBuilder<B> minInputs(int minItemInputs, int minFluidInputs) {
         backendPropertiesBuilder.minItemInputs(minItemInputs)
             .minFluidInputs(minFluidInputs);
+        return this;
+    }
+
+    /**
+     * Whether to allow recipes which only use a programmed circuit, and no item/fluid inputs. If this is false, such
+     * recipes are optimized away.
+     */
+    public RecipeMapBuilder<B> allowCircuitOnly(boolean allowCircuitOnly) {
+        backendPropertiesBuilder.allowCircuitOnly(allowCircuitOnly);
         return this;
     }
 
