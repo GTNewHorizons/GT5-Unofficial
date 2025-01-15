@@ -168,8 +168,8 @@ public class GTRecipeConstants {
     /**
      * QFT catalyst meta.
      */
-    public static final RecipeMetadataKey<Integer> QFT_CATALYST_META = SimpleRecipeMetadataKey
-        .create(Integer.class, "qft_catalyst_meta");
+    public static final RecipeMetadataKey<ItemStack> QFT_CATALYST = SimpleRecipeMetadataKey
+        .create(ItemStack.class, "qft_catalyst");
 
     /**
      * Tier of advanced compression (HIP/black hole)

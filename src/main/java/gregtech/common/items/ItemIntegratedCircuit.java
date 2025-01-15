@@ -28,6 +28,7 @@ import com.gtnewhorizons.modularui.api.UIInfos;
 import bartworks.common.items.ItemCircuitProgrammer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -222,12 +223,12 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
             GTLog.out.println("GTMod: Starting Item Icon Load Phase");
             GT_FML_LOGGER.info("GTMod: Starting Item Icon Load Phase");
             GregTechAPI.sItemIcons = aIconRegister;
-            try {
-                for (Runnable tRunnable : GregTechAPI.sGTItemIconload) {
+            for (Runnable tRunnable : GregTechAPI.sGTItemIconload) {
+                try {
                     tRunnable.run();
+                } catch (Throwable e) {
+                    GTMod.GT_FML_LOGGER.error("Error registering icons", e);
                 }
-            } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
             }
             GTLog.out.println("GTMod: Finished Item Icon Load Phase");
             GT_FML_LOGGER.info("GTMod: Finished Item Icon Load Phase");
