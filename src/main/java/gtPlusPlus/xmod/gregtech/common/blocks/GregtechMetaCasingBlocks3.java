@@ -11,11 +11,11 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.TAE;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.objects.GTPPCopiedBlockTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler3;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.GregtechMetaTileEntity_PowerSubStationController;
@@ -23,7 +23,6 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.Gregt
 public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract {
 
     public static boolean mConnectedMachineTextures = false;
-    CasingTextureHandler3 TextureHandler = new CasingTextureHandler3();
 
     public static class GregtechMetaCasingItemBlocks3 extends GregtechMetaCasingItems {
 
@@ -50,7 +49,7 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
             if (i >= 4 && i <= 8) {
                 continue;
             }
-            TAE.registerTexture(2, i, new GTPPCopiedBlockTexture(this, 6, i));
+            TAE.registerTexture(2, i, TextureFactory.of(this, i));
         }
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Aquatic Casing");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Inconel Reinforced Casing");
