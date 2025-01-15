@@ -5043,7 +5043,8 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(Materials.Apatite.getDust(9))
             .itemOutputs(Materials.Gypsum.getDust(40))
             .fluidInputs(Materials.SulfuricAcid.getFluid(5000), Materials.Water.getFluid(10000))
-            .fluidOutputs(Materials.PhosphoricAcid.getFluid(600),
+            .fluidOutputs(
+                Materials.PhosphoricAcid.getFluid(600),
                 Materials.HydrochloricAcid.getFluid(1000),
                 Materials.Hydrogen.getGas(7200))
             .duration(3 * SECONDS)
