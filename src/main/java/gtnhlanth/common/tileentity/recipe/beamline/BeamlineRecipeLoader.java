@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -44,10 +45,7 @@ public class BeamlineRecipeLoader {
                 .getName(),
             Materials.Oxygen.getGas(1L)
                 .getFluid());
-        coolantMap.put(
-            "ic2coolant",
-            Materials.Water.getFluid(1L)
-                .getFluid());
+        coolantMap.put("ic2coolant", FluidRegistry.getFluid("ic2hotcoolant"));
         coolantMap.put(
             Materials.SuperCoolant.getFluid(1L)
                 .getFluid()
