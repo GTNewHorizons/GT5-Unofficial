@@ -1,8 +1,6 @@
 package gtnhlanth.common.tileentity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksFlat;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -21,6 +19,15 @@ import static gtnhlanth.util.DescTextLocalization.addDotText;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -61,14 +68,6 @@ import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import gtnhlanth.util.DescTextLocalization;
 import gtnhlanth.util.Util;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotron> implements ISurvivalConstructable {
 
@@ -84,7 +83,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
     public ArrayList<BlockAntennaCasing> mAntennaCasings = new ArrayList<>();
-    
+
     private static HashMap<Block, Integer> allowedAntennas = new HashMap<>(2);
 
     private static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings5, 14);
@@ -707,13 +706,13 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
          * return false;
          */
     }
-    
+
     public void setAntennaTier(int t) {
-    	this.antennaeTier = t;
+        this.antennaeTier = t;
     }
-    
+
     public int getAntennaTier() {
-    	return this.antennaeTier;
+        return this.antennaeTier;
     }
 
     @Override
@@ -1098,7 +1097,8 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         if (!checkPiece(STRUCTURE_PIECE_ENTRANCE, 16, 3, 1)) return false;
         if (!checkPiece(STRUCTURE_PIECE_BASE, 16, 3, 0)) return false;
 
-        return this.mInputBeamline.size() == 1 && this.mOutputBeamline.size() == 1 && this.antennaeTier > 0
+        return this.mInputBeamline.size() == 1 && this.mOutputBeamline.size() == 1
+            && this.antennaeTier > 0
             && this.mMaintenanceHatches.size() == 1
             && (this.mEnergyHatches.size() == 4 || this.mExoticEnergyHatches.size() == 4)
             && this.glassTier >= MIN_GLASS_TIER;
