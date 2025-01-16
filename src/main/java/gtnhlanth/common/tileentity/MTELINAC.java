@@ -324,16 +324,10 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         // Particle stays the same with this multiblock
         outputParticle = particleId;
 
-        if (primFluid.isFluidEqual(new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1))) {
-            tempFactor = calculateTemperatureFactor(60); // Default temp of 300 is unreasonable
-            machineTemp = 60; // Solely for tricorder use
-        } else {
-            tempFactor = calculateTemperatureFactor(
-                primFluid.getFluid()
-                    .getTemperature());
-            machineTemp = primFluid.getFluid()
-                .getTemperature(); // Solely for tricorder use
-        }
+        int coolantTemperature = Util.coolantFluidTemperature(primFluid);
+        
+        tempFactor = calculateTemperatureFactor(coolantTemperature);
+        machineTemp = coolantTemperature; // Solely for tricorder use
 
         machineFocus = Math.max(((-0.9f) * this.length * tempFactor) + 110, 5); // Min of 5
         if (machineFocus > 90) { // Max of 90

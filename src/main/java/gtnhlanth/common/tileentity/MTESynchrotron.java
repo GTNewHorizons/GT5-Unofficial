@@ -792,14 +792,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
         FluidStack primaryFluid = fluidList.get(0);
 
-        int fluidTemperature;
-
-        if (primaryFluid.isFluidEqual(new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1))) {
-            fluidTemperature = 60; // Default temp of 300 is unreasonable
-        } else {
-            fluidTemperature = primaryFluid.getFluid()
-                .getTemperature();
-        }
+        int fluidTemperature = Util.coolantFluidTemperature(primaryFluid);
 
         machineTemp = fluidTemperature; // Solely for tricorder info
 
