@@ -45,7 +45,7 @@ public class BeamlineRecipeLoader {
                 .getName(),
             Materials.Oxygen.getGas(1L)
                 .getFluid());
-        coolantMap.put("ic2coolant", FluidRegistry.getFluid("ic2hotcoolant"));
+        coolantMap.put("ic2coolant", Materials.Water.getFluid(1L).getFluid());
         coolantMap.put(
             Materials.SuperCoolant.getFluid(1L)
                 .getFluid()
