@@ -969,8 +969,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Override to perform additional checkRecipe logic. It gets called after CRIBs and before ordinal hatches.
-     * 
+     * Override to perform additional checkRecipe logic. It gets called after CRIBs and before ordinary hatches.
+     *
      * @param lastResult Last result of checkRecipe. It might contain interesting info about failure, so don't blindly
      *                   overwrite it. Refer to {@link #doCheckRecipe} for how to handle it.
      * @return Result of the checkRecipe.

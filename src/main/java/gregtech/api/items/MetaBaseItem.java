@@ -27,6 +27,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 import com.gtnewhorizons.modularui.api.KeyboardUtil;
 
+import gregtech.GTMod;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.util.GTLanguageManager;
@@ -146,7 +147,7 @@ public abstract class MetaBaseItem extends GTGenericItem
                 return false;
             }
         } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
+            GTMod.GT_FML_LOGGER.error("Error left clicking entity", e);
         }
         return false;
     }
@@ -168,7 +169,7 @@ public abstract class MetaBaseItem extends GTGenericItem
                 return false;
             }
         } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
+            GTMod.GT_FML_LOGGER.error("Error using item", e);
         }
         return false;
     }
@@ -200,7 +201,7 @@ public abstract class MetaBaseItem extends GTGenericItem
                 return false;
             }
         } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
+            GTMod.GT_FML_LOGGER.error("Error using item", e);
         }
         return false;
     }
@@ -214,7 +215,7 @@ public abstract class MetaBaseItem extends GTGenericItem
             if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList)
                 aStack = tBehavior.onItemRightClick(this, aStack, aWorld, aPlayer);
         } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
+            GTMod.GT_FML_LOGGER.error("Error right clicking item", e);
         }
         return aStack;
     }

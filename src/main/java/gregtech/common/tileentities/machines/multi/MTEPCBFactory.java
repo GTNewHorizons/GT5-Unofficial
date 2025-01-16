@@ -541,7 +541,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.pcbFactoryRecipesNoNanites;
+        return RecipeMaps.pcbFactoryRecipes;
     }
 
     @Override
