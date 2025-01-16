@@ -19,7 +19,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizon.gtnhlib.client.tooltip.LoreHolder;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -27,6 +26,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
 import com.gtnewhorizons.gtnhintergalactic.client.IGTextures;
+import com.gtnewhorizons.gtnhintergalactic.client.TooltipUtil;
 import com.gtnewhorizons.gtnhintergalactic.config.IGConfig;
 import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
 
@@ -49,9 +49,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
 public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalConstructable {
-
-    @LoreHolder("gt.blockmachines.multimachine.ig.dyson.lore")
-    private static String loreTooltip;
 
     private static final Map<Locale, DecimalFormat> DECIMAL_FORMATTERS = new HashMap<>();
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -404,7 +401,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.ig.dyson.type"));
-        if (loreTooltip != null) tt.addInfo(ITALIC + loreTooltip);
+        if (TooltipUtil.dysonLoreText != null) tt.addInfo(ITALIC + TooltipUtil.dysonLoreText);
 
         tt.addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc1"))
                 .addInfo(

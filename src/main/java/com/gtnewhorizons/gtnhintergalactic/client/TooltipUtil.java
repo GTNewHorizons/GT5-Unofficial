@@ -4,11 +4,8 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.*;
 
 import java.util.function.Supplier;
 
-import com.gtnewhorizon.gtnhlib.client.tooltip.LoreHandler;
+import com.gtnewhorizon.gtnhlib.client.tooltip.LoreHolder;
 import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
-import com.gtnewhorizons.gtnhintergalactic.tile.multi.TileEntityDysonSwarm;
-import com.gtnewhorizons.gtnhintergalactic.tile.multi.TileEntityPlanetaryGasSiphon;
-import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 
 /**
  * Utility functions for tooltips
@@ -17,14 +14,19 @@ import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceEl
  */
 public class TooltipUtil {
 
+    @LoreHolder("gt.blockmachines.multimachine.ig.siphon.lore")
+    public static String siphonLoreText;
+
+    @LoreHolder("gt.blockmachines.multimachine.ig.elevator.lore")
+    public static String elevatorLoreText;
+
+    @LoreHolder("gt.blockmachines.multimachine.ig.dyson.lore")
+    public static String dysonLoreText;
+
     /**
      * Initialize the tooltip utilities
      */
     public static void postInit() {
-        LoreHandler.registerLoreHolder(TileEntityPlanetaryGasSiphon.class);
-        LoreHandler.registerLoreHolder(TileEntityDysonSwarm.class);
-        LoreHandler.registerLoreHolder(TileEntitySpaceElevator.class);
-
         Supplier<String> AUTHOR_GLOWREDMAN = chain(
                 translatedText("ig.structure.author"),
                 text(": "),

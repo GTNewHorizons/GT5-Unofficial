@@ -23,7 +23,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.gtnhlib.client.tooltip.LoreHolder;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
@@ -32,6 +31,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
+import com.gtnewhorizons.gtnhintergalactic.client.TooltipUtil;
 import com.gtnewhorizons.gtnhintergalactic.config.IGConfig;
 import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
 import com.gtnewhorizons.gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
@@ -123,10 +123,6 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     private static final int STRUCTURE_PIECE_EXTENDED_HOR_OFFSET = 23;
     /** Depth offset of the extended structure piece */
     private static final int STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET = 20;
-
-    /** Lore tooltip of the machine. Randomly picked from a selection */
-    @LoreHolder("gt.blockmachines.multimachine.ig.elevator.lore")
-    private static String loreTooltip;
 
     // spotless:off
     /** Structure definition of this machine */
@@ -672,7 +668,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.name"));
-        if (loreTooltip != null) tt.addInfo(ITALIC + loreTooltip);
+        if (TooltipUtil.elevatorLoreText != null) tt.addInfo(ITALIC + TooltipUtil.elevatorLoreText);
         tt.addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc2"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc3"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc4"))

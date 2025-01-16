@@ -28,7 +28,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.gtnhlib.client.tooltip.LoreHolder;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -36,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
 import com.gtnewhorizons.gtnhintergalactic.client.IGTextures;
+import com.gtnewhorizons.gtnhintergalactic.client.TooltipUtil;
 import com.gtnewhorizons.gtnhintergalactic.recipe.GasSiphonRecipes;
 
 import bartworks.client.textures.PrefixTextureLinker;
@@ -73,10 +73,6 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<TileEntityPlanetaryGasSiphon>
         implements IChunkLoader {
 
-    /** Lore string, which will be randomly picked from a selection each time the resources are reloaded */
-    @LoreHolder("gt.blockmachines.multimachine.ig.siphon.lore")
-    @SuppressWarnings("unused")
-    private static String loreTooltip;
     /** Main structure of the machine */
     private static final String STRUCTURE_PIECE_MAIN = "main";
     /** Cached value of log10(4) */
@@ -178,7 +174,7 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.type"));
-        if (loreTooltip != null) tt.addInfo(ITALIC + loreTooltip);
+        if (TooltipUtil.siphonLoreText != null) tt.addInfo(ITALIC + TooltipUtil.siphonLoreText);
         tt.addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc1"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc2"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc3"))
