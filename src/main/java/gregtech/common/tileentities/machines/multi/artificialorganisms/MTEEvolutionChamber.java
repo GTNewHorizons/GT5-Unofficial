@@ -11,6 +11,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT_EMPTY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT_EMPTY_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,7 +70,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.objects.ArtificialOrganism;
 import gregtech.api.objects.ArtificialOrganism.Trait;
 import gregtech.api.render.TextureFactory;
@@ -110,7 +110,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                         -3,
                         MTEEvolutionChamber::setCasingTier,
                         MTEEvolutionChamber::getCasingTier))))
-        .addElement('A', Glasses.chainAllGlasses())
+        .addElement('A', chainAllGlasses())
         .build();
 
     private enum SpecialHatchElement implements IHatchElement<MTEEvolutionChamber> {

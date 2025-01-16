@@ -567,17 +567,17 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     @Override
-    public final byte getMetaIDOffset(int aX, int aY, int aZ) {
+    public final int getMetaIDOffset(int aX, int aY, int aZ) {
         return this.getMetaID(this.xCoord + aX, this.yCoord + aY, this.zCoord + aZ);
     }
 
     @Override
-    public final byte getMetaIDAtSide(ForgeDirection side) {
+    public final int getMetaIDAtSide(ForgeDirection side) {
         return this.getMetaIDAtSideAndDistance(side, 1);
     }
 
     @Override
-    public final byte getMetaIDAtSideAndDistance(ForgeDirection side, int aDistance) {
+    public final int getMetaIDAtSideAndDistance(ForgeDirection side, int aDistance) {
         return this.getMetaID(
             this.getOffsetX(side, aDistance),
             this.getOffsetY(side, aDistance),
@@ -750,10 +750,10 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     @Override
-    public final byte getMetaID(int aX, int aY, int aZ) {
+    public final int getMetaID(int aX, int aY, int aZ) {
         return this.ignoreUnloadedChunks && this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ)
             ? 0
-            : (byte) this.worldObj.getBlockMetadata(aX, aY, aZ);
+            : this.worldObj.getBlockMetadata(aX, aY, aZ);
     }
 
     @Override
@@ -1063,6 +1063,26 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
         return false;
     }
 
+    @Override
+    public ItemStack removeCoverAtSide(ForgeDirection side, boolean aForced) {
+        if (getCoverBehaviorAtSide(side)
+            .onCoverRemoval(side, getCoverIDAtSide(side), mCoverData[side.ordinal()], this, aForced) || aForced) {
+            ItemStack tStack = getCoverBehaviorAtSide(side)
+                .getDrop(side, getCoverIDAtSide(side), getCoverDataAtSide(side), this);
+            if (tStack != null) {
+                tStack.setTagCompound(null);
+            }
+            setCoverIDAtSide(side, 0);
+            if (mMetaTileEntity.hasSidedRedstoneOutputBehavior()) {
+                setOutputRedstoneSignal(side, (byte) 0);
+            } else {
+                setOutputRedstoneSignal(side, (byte) 15);
+            }
+            return tStack;
+        }
+        return null;
+    }
+
     public String getOwnerName() {
         if (GTUtility.isStringInvalid(mOwnerName)) return "Player";
         return mOwnerName;
@@ -1090,6 +1110,21 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     public void setStrongOutputRedstoneSignal(ForgeDirection side, byte aStrength) {
         mStrongRedstone |= (1 << side.ordinal());
         setOutputRedstoneSignal(side, aStrength);
+    }
+
+    @Override
+    public void setRedstoneOutputStrength(ForgeDirection side, boolean isStrong) {
+        if (isStrong) {
+            mStrongRedstone |= (byte) side.flag;
+        } else {
+            mStrongRedstone &= ~(byte) side.flag;
+        }
+        setOutputRedstoneSignal(side, mSidedRedstone[side.ordinal()]);
+    }
+
+    @Override
+    public boolean getRedstoneOutputStrength(ForgeDirection side) {
+        return (mStrongRedstone & side.flag) != 0;
     }
 
     @Override

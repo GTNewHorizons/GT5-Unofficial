@@ -16,12 +16,13 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import baubles.api.BaubleType;
+import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
+import gregtech.common.config.OPStuff;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -39,7 +40,7 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List itemList) {
+    public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> itemList) {
         ItemStack itemStack = new ItemStack(this, 1);
         ItemStack charged;
         if (this.getEmptyItem(itemStack) == this) {
@@ -61,30 +62,13 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
     }
 
     @Override
-    public boolean canProvideEnergy(final ItemStack itemStack) {
-        double aItemCharge = ElectricItem.manager.getCharge(itemStack);
-        return aItemCharge > 0;
-    }
-
-    @Override
     public String getItemStackDisplayName(final ItemStack p_77653_1_) {
         return (EnumChatFormatting.BLUE + super.getItemStackDisplayName(p_77653_1_) + EnumChatFormatting.GRAY);
     }
 
     @Override
-    public boolean showDurabilityBar(final ItemStack stack) {
-        return true;
-    }
-
-    public int secondsLeft(final ItemStack stack) {
-        double r = 0;
-        r = this.getCharge(stack) / (10000 * 20);
-        return (int) MathUtils.decimalRounding(r);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list,
+        final boolean bool) {
         list.add("");
         String aString1 = StatCollector.translateToLocal("GTPP.battpack.tooltip.1");
         String aString2 = StatCollector.translateToLocal("GTPP.battpack.tooltip.2");
@@ -122,110 +106,86 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
         return true;
     }
 
-    @Override // TODO
+    @Override
     public void onEquipped(final ItemStack arg0, final EntityLivingBase arg1) {}
 
-    @Override // TODO
+    @Override
     public void onUnequipped(final ItemStack arg0, final EntityLivingBase arg1) {}
 
-    @Override // TODO
-    public void onWornTick(final ItemStack aBaubleStack, final EntityLivingBase aPlayer) {
-        if (!aPlayer.worldObj.isRemote) {
-
+    @Override
+    public void onWornTick(final ItemStack aBaubleStack, final EntityLivingBase aLivingBase) {
+        if (!aLivingBase.worldObj.isRemote) {
             try {
-
                 if (this.getCharge(aBaubleStack) >= getTransferLimit(aBaubleStack)) {
-                    // Try To Iterate Armour Slots of Player
-                    if (aPlayer instanceof EntityPlayer) {
+                    if (aLivingBase instanceof EntityPlayer aPlayer) {
 
-                        // amour
-                        for (final ItemStack aInvStack : ((EntityPlayer) aPlayer).inventory.armorInventory) {
-                            if (aInvStack != null) {
-                                if (aInvStack == aBaubleStack) {
-                                    continue;
-                                }
-                                if (ChargingHelper.isItemValid(aInvStack)) {
-                                    double aTransferRate;
-                                    final IElectricItem electricItem = (IElectricItem) aInvStack.getItem();
-                                    if (electricItem != null) {
-                                        aTransferRate = electricItem.getTransferLimit(aInvStack);
-                                        double aItemCharge = ElectricItem.manager.getCharge(aInvStack);
-                                        if (aItemCharge >= 0 && aItemCharge != electricItem.getMaxCharge(aInvStack)) {
-                                            if (aItemCharge <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
-                                                if (ElectricItem.manager.getCharge(aBaubleStack) >= aTransferRate) {
-                                                    if (ElectricItem.manager.getCharge(aInvStack)
-                                                        <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
-                                                        double d = ElectricItem.manager
-                                                            .charge(aInvStack, aTransferRate * 16, mTier, false, true);
-                                                        if (d > 0) {
-                                                            d = ElectricItem.manager.charge(
-                                                                aInvStack,
-                                                                aTransferRate * 16,
-                                                                mTier,
-                                                                false,
-                                                                false);
-                                                            ElectricItem.manager
-                                                                .discharge(aBaubleStack, d, mTier, false, true, false);
-                                                        }
-                                                    }
-                                                }
-                                            }
-
-                                        }
-
-                                    }
-                                }
-                            }
-                            if (!(this.getCharge(aBaubleStack) > 0)) {
-                                break;
-                            }
-                        }
+                        // Armor
+                        ItemStack[] inv = aPlayer.inventory.armorInventory;
+                        chargeInventory(inv, inv.length, aBaubleStack);
 
                         // Hotbar Slots
-                        int aSlotCounter = 0;
-                        for (final ItemStack aInvStack : ((EntityPlayer) aPlayer).inventory.mainInventory) {
-                            if (aSlotCounter > (InventoryPlayer.getHotbarSize() - 1)) {
-                                break;
-                            }
-                            aSlotCounter++;
-                            if (aInvStack != null) {
-                                if (aInvStack == aBaubleStack) {
-                                    continue;
-                                }
-                                if (ChargingHelper.isItemValid(aInvStack)) {
-                                    double aTransferRate = 0;
-                                    final IElectricItem electricItem = (IElectricItem) aInvStack.getItem();
-                                    if (electricItem != null) {
-                                        aTransferRate = electricItem.getTransferLimit(aInvStack);
-                                        double aItemCharge = ElectricItem.manager.getCharge(aInvStack);
-                                        if (aItemCharge >= 0 && aItemCharge != electricItem.getMaxCharge(aInvStack)) {
-                                            if (aItemCharge <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
-                                                if (ElectricItem.manager.getCharge(aBaubleStack) >= aTransferRate) {
-                                                    if (ElectricItem.manager.getCharge(aInvStack)
-                                                        <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
-                                                        double d = ElectricItem.manager
-                                                            .charge(aInvStack, aTransferRate, mTier, false, true);
-                                                        if (d > 0) {
-                                                            d = ElectricItem.manager
-                                                                .charge(aInvStack, aTransferRate, mTier, false, false);
-                                                            ElectricItem.manager
-                                                                .discharge(aBaubleStack, d, mTier, false, true, false);
-                                                        }
-                                                    }
-                                                }
-                                            }
-
-                                        }
-                                    }
-                                }
-                            }
-                            if (!(this.getCharge(aBaubleStack) > 0)) {
-                                break;
-                            }
-                        }
+                        inv = aPlayer.inventory.mainInventory;
+                        chargeInventory(inv, InventoryPlayer.getHotbarSize(), aBaubleStack);
                     }
                 }
             } catch (Throwable ignored) {}
+        }
+    }
+
+    private void chargeInventory(ItemStack[] inventory, int endIndex, ItemStack aBaubleStack) {
+        for (int i = 0; i < endIndex && i < inventory.length; i++) {
+            ItemStack aInvStack = inventory[i];
+            if (aInvStack != null && aInvStack != aBaubleStack) {
+                Item aItem = aInvStack.getItem();
+
+                if (ChargingHelper.isItemValid(aInvStack)) {
+                    // IElectricItem (EU)
+                    final IElectricItem electricItem = (IElectricItem) aItem;
+                    if (electricItem != null) {
+                        double aTransferRate = electricItem.getTransferLimit(aInvStack);
+                        double aItemCharge = ElectricItem.manager.getCharge(aInvStack);
+                        if (aItemCharge >= 0 && aItemCharge != electricItem.getMaxCharge(aInvStack)) {
+                            if (aItemCharge <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
+                                if (ElectricItem.manager.getCharge(aBaubleStack) >= aTransferRate) {
+                                    if (ElectricItem.manager.getCharge(aInvStack)
+                                        <= (electricItem.getMaxCharge(aInvStack) - aTransferRate)) {
+                                        double d = ElectricItem.manager
+                                            .charge(aInvStack, aTransferRate * 16, mTier, false, true);
+                                        if (d > 0) {
+                                            d = ElectricItem.manager
+                                                .charge(aInvStack, aTransferRate * 16, mTier, false, false);
+                                            ElectricItem.manager.discharge(aBaubleStack, d, mTier, false, true, false);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else if (OPStuff.outputRF) {
+                    // IEnergyContainerItem (RF)
+                    if (aItem instanceof IEnergyContainerItem energyItem) {
+                        int aItemCharge = energyItem.getEnergyStored(aInvStack);
+                        int aItemMaxCharge = energyItem.getMaxEnergyStored(aInvStack);
+                        double aBaubleCharge = ElectricItem.manager.getCharge(aBaubleStack);
+                        if (aItemCharge >= 0 && aItemCharge < aItemMaxCharge && aBaubleCharge > 0) {
+                            int aMaxChargeAmount = aItemMaxCharge - aItemCharge;
+                            double aMaxChargeAmountInEU = Math
+                                .ceil(aMaxChargeAmount * 100.0D / OPStuff.howMuchRFWith100EUInInput);
+                            double aActualChargeInEU = Math.min(aBaubleCharge, aMaxChargeAmountInEU);
+                            int aActualCharge = (int) Math
+                                .floor(aActualChargeInEU * OPStuff.howMuchRFWith100EUInInput / 100);
+
+                            int aCharged = energyItem.receiveEnergy(aInvStack, aActualCharge, false);
+                            double aDischarge = Math.ceil(aCharged * 100.0D / OPStuff.howMuchRFWith100EUInInput);
+                            ElectricItem.manager.discharge(aBaubleStack, aDischarge, mTier, false, true, false);
+                        }
+                    }
+                }
+            }
+
+            if (this.getCharge(aBaubleStack) <= 0) {
+                break;
+            }
         }
     }
 

@@ -18,6 +18,11 @@ tile.reactorSim.name=Reactor Simulator
 tile.reactorSim.desc.0=Fission Reaction Uncertainty Resolver 9001
 tile.reactorSim.desc.1=Explodes, but not as much...
 
+gt.spacetime_compression_field_generator.name=Spacetime Compression Field Generator
+gt.time_acceleration_field_generator.name=Time Dilation Field Generator
+
+tile.Forge of the Gods Renderer.name=Forge of the Gods Renderer
+
 #Items
 item.em.programmer.name=AVR programmer
 item.em.programmer.desc.0=Current PC
@@ -67,6 +72,7 @@ item.em.parametrizerMemoryCard.desc.1=Use on Multiblock Controller to configure 
 item.em.parametrizerMemoryCard.desc.2=Use on Multiblock Controller to store parameters
 item.em.parametrizerMemoryCard.desc.3=Sneak right click to lock/unlock
 
+item.tm.teslaCoilCapacitor.name=Tesla Capacitor
 item.tm.teslaCoilCapacitor.0.name=LV Tesla Capacitor
 item.tm.teslaCoilCapacitor.1.name=MV Tesla Capacitor
 item.tm.teslaCoilCapacitor.2.name=HV Tesla Capacitor
@@ -80,10 +86,12 @@ item.tm.teslaCoilCapacitor.desc.2=Yeet this broken item into some spicy water!
 item.tm.teslaCoilCapacitor.desc.3=Insert into a Capacitor hatch of a Tesla Tower
 item.tm.teslaCoilCapacitor.desc.4=Capacitors are the same thing as batteries, right?
 
+item.tm.itemTeslaComponent.name=Tesla Windings
 item.tm.itemTeslaComponent.0.name=Electrum Tesla Windings
 item.tm.itemTeslaComponent.1.name=Superconductive Tesla Windings
 item.tm.itemTeslaComponent.desc=Tesla bois need these!
 
+item.tm.teslaCover.name=Tesla Coil Cover
 item.tm.teslaCover.0.name=Tesla Coil Cover
 item.tm.teslaCover.1.name=Tesla Coil Cover Rich Edition
 item.tm.teslaCover.desc.0=Tesla-Enables Machines!
@@ -110,6 +118,8 @@ item.tm.itemAstralArrayFabricator.desc0=Parallel dimensions?!
 item.tm.itemAstralArrayFabricator.desc1=Device capable of enhancing the Eye of Harmony's spatial compression,
 item.tm.itemAstralArrayFabricator.desc2=reaching into the space beyond.
 item.tm.itemAstralArrayFabricator.desc3=Allows for recipe parallelism.
+
+item.tm.fakeItemQGP.name=Fake Item
 
 #Death Messages
 death.attack.microwaving=%1$s was dehydrated by radiation.
@@ -503,10 +513,11 @@ gt.blockmachines.hatch.param.tier.10.name=Parametrizer tXt
 gt.blockmachines.hatch.param.desc.0=For parametrization of Multiblocks
 gt.blockmachines.hatch.param.desc.1=E=mine*craft
 
-gt.blockmachines.hatch.certain.tier.07.name=Uncertainty Resolver
-gt.blockmachines.hatch.certain.tier.10.name=Uncertainty Resolver X
+gt.blockmachines.hatch.certain.tier.05.name=Uncertainty Resolver
+gt.blockmachines.hatch.certain.tier.07.name=Uncertainty Resolver X
 gt.blockmachines.hatch.certain.desc.0=Feeling certain, or not?
 gt.blockmachines.hatch.certain.desc.1=Schrödinger equation in a box
+gt.blockmachines.hatch.certain.desc.2=Deprecated! Use Uncertainty Resolver X
 
 gt.blockmachines.hatch.datain.tier.07.name=Optical Reception Connector
 gt.blockmachines.hatch.datain.desc.0=Quantum Data Input for Multiblocks
@@ -545,6 +556,7 @@ gt.blockmachines.hatch.capacitor.desc.0=For Tesla Tower
 gt.blockmachines.hatch.capacitor.desc.1=Stores 'nergy! (for a while)
 
 #Casings
+gt.godforgecasing.name=Machine Casing
 gt.blockcasingsNH.10.name=UEV Machine Casing
 gt.blockcasingsNH.11.name=UIV Machine Casing
 gt.blockcasingsNH.12.name=UMV Machine Casing
@@ -574,6 +586,7 @@ gt.blockhintTT.desc.4=Make sure it does not contain Air material.
 gt.blockhintTT.15.name=Hint error
 gt.blockhintTT.desc.5=ERROR, what did u expect?
 
+gt.blockcasingsTT.name=Machine Casing
 gt.blockcasingsTT.0.name=High Power Casing
 gt.blockcasingsTT.0.desc.0=Well suited for high power applications.
 gt.blockcasingsTT.0.desc.1=The power levels are rising!
@@ -623,6 +636,7 @@ gt.blockcasingsTT.15.name=Debug Sides
 gt.blockcasingsTT.15.desc.0=Lazy man way of determining sides.
 gt.blockcasingsTT.15.desc.1=0, 1, 2, 3, 4, 5, 6?!
 
+gt.blockcasingsBA0.name=Primary Tesla Windings
 gt.blockcasingsBA0.0.name=Redstone Alloy Primary Tesla Windings
 gt.blockcasingsBA0.1.name=MV Superconductor Primary Tesla Windings
 gt.blockcasingsBA0.2.name=HV Superconductor Primary Tesla Windings
@@ -644,6 +658,7 @@ gt.blockcasingsBA0.8.desc.1=Who wouldn't want a 32k epoxy multi?
 
 #Multiblocks
 gt.blockmachines.multimachine.em.transformer.name=Active Transformer
+gt.blockmachines.multimachine.em.transformer.machinetype=Active Transformer, AT
 gt.blockmachines.multimachine.em.transformer.hint=1 - Energy IO Hatches or High Power Casing
 gt.blockmachines.multimachine.em.transformer.desc.1=Can transform to and from any voltage
 gt.blockmachines.multimachine.em.transformer.desc.2=Only 0.004% power loss, HAYO!
@@ -699,6 +714,7 @@ gt.blockmachines.multimachine.em.switch.desc.0=Controller block of the Network S
 gt.blockmachines.multimachine.em.switch.desc.1=Routes and distributes computation
 
 gt.blockmachines.multimachine.em.computer.name=Quantum Computer
+gt.blockmachines.multimachine.em.computer.machinetype=Quantum Computer, QC
 gt.blockmachines.multimachine.em.computer.hint.0=1 - Classic/Data Hatches or Computer casing
 gt.blockmachines.multimachine.em.computer.hint.1=2 - Rack Hatches or Advanced computer casing
 gt.blockmachines.multimachine.em.computer.desc=You need it to process the number above
@@ -769,6 +785,8 @@ gt.blockmachines.multimachine.em.research.desc.1=Used to scan Data Sticks for As
 gt.blockmachines.multimachine.em.research.desc.2=Needs to be fed with computation to work
 gt.blockmachines.multimachine.em.research.desc.3=Does not consume the item until the Data Stick is written
 gt.blockmachines.multimachine.em.research.desc.4=Use screwdriver to change mode
+gt.blockmachines.multimachine.em.research.desc.5=Computation required in scanner mode follows the formula:
+gt.blockmachines.multimachine.em.research.desc.6=(Recipe duration in seconds * Recipe voltage) / 30
 gt.blockmachines.multimachine.em.research.mode.Assembly_line=Mode: Research Station
 gt.blockmachines.multimachine.em.research.mode.Scanner=Mode: Scanner
 
@@ -848,7 +866,8 @@ gt.blockcasingsBA0.11.desc.1=Can survive at least one big bang, maybe two...
 achievement.gt.blockcasingsBA0.10=Reinforced Temporal Structure Casing
 gt.blockcasingsBA0.10.desc.0=Resistant to temporal shearing from time dilation differences.
 gt.blockcasingsBA0.10.desc.1=This block can last an eternity without any decay.
-
+eoh.rightclick.wirecutter.1=Can't retrieve Astral Array Fabricators when the machine is working!
+eoh.rightclick.wirecutter.2=Retrieved %s Astral Array Fabricators
 
 # Antimatter
 gt.blockmachines.antimatterForge.name=Semi-Stable Antimatter Stabilization Sequencer
@@ -1121,7 +1140,7 @@ gt.blockmachines.multimachine.FOG.milestones=Milestones
 gt.blockmachines.multimachine.FOG.fuelinfotext=Once the structure of the Forge is built and the multiblock is formed, just simply turning it on is not sufficient to make it functional. The Forge must be supplied with a certain amount of Star Fuel (the item) to actually boot up. The amount of Star Fuel needed depends on the current fuel consumption factor, which can be set in the fuel configuration menu. By default the maximum is 5, but it can be increased later on with upgrades. Star Fuel scaling is as follows: factor*25*1.2^factor. Star Fuel can be supplied via an input bus, it gets consumed periodically and stored internally. Once there is enough Star Fuel stored in the multi, it turns on for real (allowing modules to connect) and converts the consumed Star Fuel into stored Stellar Fuel. From this point onwards, the Forge must be fueled via one of the liquid fuels (type can be selected in the fuel config menu). If there isn't enough of the selected fuel present in the input hatch, the stored fuel amount will decrease and if it reaches 0, the Forge enters the previous 'off' state where modules disconnect and it has to be supplied with Star Fuel again. The amount of internally stored Stellar Fuel (liquid) can be increased by turning on battery charging, this will cause the fuel usage to double, but half of it will be stored in the internal battery.
 gt.blockmachines.multimachine.FOG.moduleinfotext=There are 4 types of modules that can be used in the Forge, the Helioflare Power Forge, Helioflux Melting Core, Heliothermal Plasma Fabricator and Heliofusion Exoticizer. These modules are separate multiblocks that have to be built into the Godforge structure at their designated spots. Once built, these modules have to connect to the Godforge, which happens automatically if all requirements for the respective module are met. Alternatively, there is a button to refresh their status without waiting for the timer. Each of these modules has its specialized functionality & requirements and is affected differently by certain upgrades. The first unlocked module is the §BHelioflare Power Forge§6, which simply put is a blast furnace even more powerful than the mega version. Additionally, this module has a furnace mode, turning it into a hyper powerful multi smelter. This module is unlocked by default and has 1024 base parallel. The second unlock is the §BHelioflux Melting Core§6, which also processes blast furnace recipes, but with a twist, the outputs are ejected in their molten form instead of hot/regular ingots. If an output does not have a molten form, it will output its regular form. This module has to be unlocked by an upgrade to function and has 512 base parallel. The third module is the §BHeliothermal Plasma Fabricator§6, which possesses a unique recipemap featuring direct material to plasma conversion recipes. These recipes are grouped by two properties, fusion tier and steps required, limiting which recipes can be processed before their respective upgrades are unlocked. Unlike regular fusion, these recipes produce the plasma of the input material. This module has 384 base parallel. The fourth and last module is the §BHeliofusion Exoticizer§6, a module capable of producing quark gluon plasma and later on magmatter. This module has unique automation challenges for both materials, so it is recommended to have two of these, as they have to be locked to either one of the materials. The common rule for both modes' automation challenges is as follows: the module outputs materials at the start of a recipe cycle and waits for the correct inputs to arrive before starting the actual processing of the output material. If producing quark-gluon plasma, the module outputs up to 7 different fluids/tiny piles with amounts between 1 and 64, and their corresponding plasmas and amounts have to be returned in order for the recipe to process. For each L of fluid, a bucket of plasma and for each tiny pile an ingot's worth of plasma must be returned for the recipe to work. The tiny piles are always ejected in multiples of 9. If magmatter mode is active, the automation challenge changes. Now the module outputs 1-50L of tachyon rich temporal fluid, 51-100L of spatially enlarged fluid and one tiny pile of a high tier material. The challenge is to return both the tachyon rich and spatially enlarged fluids, plus as much plasma of the tiny pile's material (in ingots) as the difference between the amounts of spatially enlarged and tachyon rich fluid. Once all of these have been returned in the correct amounts, the recipe will start to process and output magmatter. This module has 64 base parallel.
 gt.blockmachines.multimachine.FOG.upgradeinfotext=Upgrades are the heart and soul of the Godforge, they unlock most of its functionality and processing power. The upgrade tree can be accessed via its button on the main gui and each upgrade node can be clicked for more information on its effects and unlock requirements. In general, each upgrade can only be unlocked if the prior one is unlocked and there are enough available graviton shards. One exception to this is the first upgrade, as that one has no prior upgrade. Some upgrades can also have extra material costs, which are denoted next to the unlock button if applicable. If an upgrade has more than 1 connected prior upgrade, then there are two options, either the upgrade requires ALL connected prior upgrades or AT LEAST ONE (indicated by the connection's color, red means ALL, blue means AT LEAST ONE). Upgrades can be refunded by simply pressing the unlock button again, but this only works if ALL connected later upgrades are not active/unlocked. The block of upgrades following the unlock of the Heliufusion Exoticizer module are special, as they are what is considered §Bthe Split§6. As the name suggests, only one path out of the three may be chosen at first, and the others will be locked. Each path has specialized buffs that are primarily targeted towards a specific module, and thus affect other module types with reduced effect (unless stated otherwise). The amount of unlockable paths depends on the amount of rings the Godforge has, which in turn are limited by later upgrades.
-gt.blockmachines.multimachine.FOG.milestoneinfotext=Milestones are essential for upgrading the Godforge, as they are the source of graviton shards, the main currency needed for unlocking upgrades. In essence, milestones are just what their name suggests, thresholds that when reached, grant graviton shards. There are four types of milestones, Charge, Conversion, Catalyst and Composition, each referring to a stat of the Godforge. Each milestone has 7 tiers, each being harder to reach than the last, but also granting more graviton shards. The first tier grants 1 graviton shard, the second 2, etc. The §BCharge§6 milestone scales off total power consumption of all modules combined, the first tier being unlocked at 1e15 EU consumed, and each subsequent milestone scaling by 9x. The §BConversion§6 milestone scales off total recipes processed across all modules (excluding the Helioflare Power Forge's furnace mode) and its first tier is unlocked at 10M processed recipes. Following tiers scale by 6x. The §BCatalyst§6 milestone is based on the Forge's fuel consumption, counted in Stellar Fuel units (the number entered in the fuel config menu). Reaching the first tier requires 10,000 fuel units to be consumed, and each tier above scales by 3x. Last but not least, the §BComposition§6 milestone works a bit differently, as it scales off the Forge's structure. Milestone levels are granted for each unique type of module present in the structure (Heliofusion Exoticizer modules on quark-gluon and magmatter mode count as unique) and for each additional ring built. Your research suggests that something strange might happen if all milestones reach their final tier... Make sure to check back!
+gt.blockmachines.multimachine.FOG.milestoneinfotext=Milestones are essential for upgrading the Godforge, as they are the source of graviton shards, the main currency needed for unlocking upgrades. In essence, milestones are just what their name suggests, thresholds that when reached, grant graviton shards. There are four types of milestones, Charge, Conversion, Catalyst and Composition, each referring to a stat of the Godforge. Each milestone has 7 tiers, each being harder to reach than the last, but also granting more graviton shards. The first tier grants 1 graviton shard, the second 2, etc. The §BCharge§6 milestone scales off total power consumption of all modules combined, the first tier being unlocked at 1e15 EU consumed, and each subsequent milestone scaling by 9x. The §BConversion§6 milestone scales off total recipes processed across all modules (excluding the Helioflare Power Forge's furnace mode) and its first tier is unlocked at 10M processed recipes. Following tiers scale by 4x. The §BCatalyst§6 milestone is based on the Forge's fuel consumption, counted in Stellar Fuel units (the number entered in the fuel config menu). Reaching the first tier requires 10,000 fuel units to be consumed, and each tier above scales by 3x. Last but not least, the §BComposition§6 milestone works a bit differently, as it scales off the Forge's structure. Milestone levels are granted for each unique type of module present in the structure (Heliofusion Exoticizer modules on quark-gluon and magmatter mode count as unique) and for each additional ring built. Your research suggests that something strange might happen if all milestones reach their final tier... Make sure to check back!
 gt.blockmachines.multimachine.FOG.contributors=Contributors
 gt.blockmachines.multimachine.FOG.lead=Project Lead
 gt.blockmachines.multimachine.FOG.cloud=GDCloud

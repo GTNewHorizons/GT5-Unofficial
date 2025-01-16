@@ -52,6 +52,8 @@ public final class CoverInfo {
         coverBehavior = GregTechAPI.getCoverBehaviorNew(aID);
         coverData = aCoverData == null ? coverBehavior.createDataObject() : aCoverData;
         coveredTile = new WeakReference<>(aTile);
+        tickRateAddition = coverBehavior.getDefaultTickRate(coverSide, coverID, coverData, coveredTile.get())
+            - this.getMinimumTickRate();
     }
 
     public CoverInfo(ICoverable aTile, NBTTagCompound aNBT) {

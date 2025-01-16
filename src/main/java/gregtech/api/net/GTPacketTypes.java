@@ -25,7 +25,7 @@ public enum GTPacketTypes {
     UPDATE_ITEM(13, new GTPacketUpdateItem()),
     SEND_COVER_DATA(16, new GTPacketSendCoverData()),
     REQUEST_COVER_DATA(17, new GTPacketRequestCoverData()),
-    MULTI_TILE_ENTITY(18, new GTPacketMultiTileEntity()),
+    // Free ID 18
     SEND_OREGEN_PATTERN(19, new GTPacketSendOregenPattern()),
     TOOL_SWITCH_MODE(20, new GTPacketToolSwitchMode()),
     MUSIC_SYSTEM_DATA(21, new GTPacketMusicSystemData()),
@@ -36,6 +36,7 @@ public enum GTPacketTypes {
     SERVER_JOINED(26, new PacketServerJoined()),
     EIC(27, new PacketEIC()),
     CREATE_TILE_ENTITY(28, new GTPacketCreateTE()),
+    NODE_INFO(29, new GTPacketNodeInfo()),
     // merge conflict prevention comment, keep a trailing comma above
     ;
 

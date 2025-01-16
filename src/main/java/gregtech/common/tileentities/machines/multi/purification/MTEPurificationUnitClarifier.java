@@ -206,6 +206,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
                     + EnumChatFormatting.ITALIC
                     + "decreases so continual replacements must be supplied to maintain full function of the Clarifier.")
             .beginStructureBlock(11, 4, 11, false)
+            .addController("Front center")
             .addCasingInfoRangeColored(
                 "Reinforced Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
@@ -232,7 +233,6 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored("PTFE Pipe Casing", EnumChatFormatting.GRAY, 3, EnumChatFormatting.GOLD, false)
-            .addController("Front center")
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)

@@ -20,6 +20,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.thing.metaTileEntity.pipe.MTEPipeEnergy;
 
+@Deprecated
 public interface LowPowerLaser extends IMetaTileEntity, IConnectsToEnergyTunnel {
 
     boolean isSender();

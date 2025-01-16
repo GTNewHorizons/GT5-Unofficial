@@ -54,7 +54,7 @@ public class MTEVacuumFreezer extends MTECubicMultiBlockBase<MTEVacuumFreezer> {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Vacuum Freezer")
+        tt.addMachineType("Vacuum Freezer, VF")
             .addInfo("Cools hot ingots and cells")
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")

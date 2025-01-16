@@ -63,7 +63,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
 
     @Override
     public String getMachineType() {
-        return "Fluid Alloy Cooker";
+        return "Fluid Alloy Cooker, ABS";
     }
 
     @Override
@@ -146,8 +146,18 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCDAlloyBlastSmelterActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCDAlloyBlastSmelter;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCDAlloyBlastSmelterGlow;
     }
 
     @Override

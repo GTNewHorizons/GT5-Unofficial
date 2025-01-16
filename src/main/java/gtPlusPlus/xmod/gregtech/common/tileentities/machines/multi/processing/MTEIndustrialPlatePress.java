@@ -146,8 +146,18 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCDIndustrialPlatePressActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCDIndustrialPlatePress;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCDIndustrialPlatePressGlow;
     }
 
     @Override

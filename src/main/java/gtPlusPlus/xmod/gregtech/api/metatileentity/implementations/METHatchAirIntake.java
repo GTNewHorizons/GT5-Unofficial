@@ -4,6 +4,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
+import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
+
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -123,5 +126,10 @@ public class METHatchAirIntake extends MTEHatchFluidGenerator {
             xSpd,
             -ySpd,
             zSpd);
+    }
+
+    @Override
+    protected FluidSlotWidget createFluidSlot() {
+        return super.createFluidSlot().setFilter(f -> f == Materials.Air.mGas);
     }
 }

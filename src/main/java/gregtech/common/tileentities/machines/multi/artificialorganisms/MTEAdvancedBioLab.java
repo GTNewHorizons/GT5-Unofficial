@@ -16,6 +16,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import gregtech.api.util.ParallelHelper;
 import net.minecraft.item.ItemStack;
@@ -36,7 +37,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.objects.ArtificialOrganism;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -73,7 +73,7 @@ public class MTEAdvancedBioLab extends MTEAOUnitBase<MTEAdvancedBioLab> implemen
                     .dot(1)
                     .buildAndChain(
                         onElementPass(MTEAdvancedBioLab::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0)))))
-        .addElement('A', Glasses.chainAllGlasses())
+        .addElement('A', chainAllGlasses())
         .build();
 
     @Override

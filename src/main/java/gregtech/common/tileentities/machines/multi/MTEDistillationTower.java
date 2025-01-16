@@ -21,7 +21,9 @@ import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -46,6 +48,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
 
@@ -132,7 +135,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Distillery")
+        tt.addMachineType("Distillery, DT")
             .addInfo("Fluids are only put out at the correct height")
             .addInfo("The correct height equals the slot number in the NEI recipe")
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
@@ -353,6 +356,23 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
 
     @Override
     public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        batchMode = !batchMode;
+        if (batchMode) {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+        } else {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        }
         return true;
     }
 }

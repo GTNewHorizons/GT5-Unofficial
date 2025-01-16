@@ -180,8 +180,18 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCAIndustrialVacuumFreezerActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCAIndustrialVacuumFreezer;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCAIndustrialVacuumFreezerGlow;
     }
 
     @Override

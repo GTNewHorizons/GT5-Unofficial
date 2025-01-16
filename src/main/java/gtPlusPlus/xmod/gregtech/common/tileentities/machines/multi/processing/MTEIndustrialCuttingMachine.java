@@ -78,7 +78,7 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
 
     @Override
     public String getMachineType() {
-        return "Cutting Machine / Slicing Machine";
+        return "Cutting Machine, Slicing Machine";
     }
 
     @Override
@@ -146,8 +146,18 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCDIndustrialCuttingMachineActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCDIndustrialCuttingMachine;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCDIndustrialCuttingMachineGlow;
     }
 
     @Override

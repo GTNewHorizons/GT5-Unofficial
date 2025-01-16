@@ -136,6 +136,10 @@ public class GTChunkManager
             tag.setInteger("OwnerX", owner.xCoord);
             tag.setInteger("OwnerY", owner.yCoord);
             tag.setInteger("OwnerZ", owner.zCoord);
+            tag.setString(
+                "OwnerType",
+                owner.getClass()
+                    .getSimpleName());
             ForgeChunkManager.forceChunk(ticket, chunkXZ);
             if (GTValues.alwaysReloadChunkloaders)
                 ForgeChunkManager.forceChunk(ticket, new ChunkCoordIntPair(owner.xCoord >> 4, owner.zCoord >> 4));

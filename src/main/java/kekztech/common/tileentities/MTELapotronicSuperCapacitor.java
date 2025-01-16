@@ -1,6 +1,7 @@
 package kekztech.common.tileentities;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onlyIf;
@@ -13,7 +14,9 @@ import static gregtech.api.util.GTStructureUtility.filterByMTEClass;
 import static java.lang.Math.min;
 import static kekztech.util.Util.toPercentageFrom;
 import static kekztech.util.Util.toStandardForm;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -23,10 +26,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -43,6 +44,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
@@ -50,11 +53,14 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
@@ -62,6 +68,7 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import bartworks.API.BorosilicateGlass;
 import gregtech.api.enums.Dyes;
@@ -77,9 +84,13 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
+import gregtech.api.util.LongData;
+import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.misc.WirelessNetworkManager;
@@ -105,15 +116,16 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private boolean wireless_mode = false;
     private int counter = 1;
     private boolean balanced = false;
+    private boolean warningReceived = false;
 
-    private final Queue<Long> energyInputValues = new LinkedList<>();
-    private final Queue<Long> energyOutputValues = new LinkedList<>();
+    private final LongRunningAverage energyInputValues1h = new LongRunningAverage(3600 * 20);
+    private final LongRunningAverage energyOutputValues1h = new LongRunningAverage(3600 * 20);
 
-    private final Queue<Long> energyInputValues5m = new LinkedList<>();
-    private final Queue<Long> energyOutputValues5m = new LinkedList<>();
+    private final LongData energyInputValues = energyInputValues1h.view(DURATION_AVERAGE_TICKS);
+    private final LongData energyOutputValues = energyOutputValues1h.view(DURATION_AVERAGE_TICKS);
 
-    private final Queue<Long> energyInputValues1h = new LinkedList<>();
-    private final Queue<Long> energyOutputValues1h = new LinkedList<>();
+    private final LongData energyInputValues5m = energyInputValues1h.view(5 * 60 * 20);
+    private final LongData energyOutputValues5m = energyOutputValues1h.view(5 * 60 * 20);
 
     private final long max_passive_drain_eu_per_tick_per_uhv_cap = 1_000_000;
     private final long max_passive_drain_eu_per_tick_per_uev_cap = 100_000_000;
@@ -177,6 +189,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private static final int CASING_TEXTURE_ID = (42 << 7) | 127;
 
     private static final int DURATION_AVERAGE_TICKS = 100;
+    private static final int DEBUG_POWER_WINDOW_ID = 10;
+    private static final int WIRELESS_WARNING_WINDOW_ID = 11;
 
     // height channel for height.
     // glass channel for glass
@@ -239,8 +253,16 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                                 return true;
                             }
 
+                            @Override
+                            public boolean couldBeValid(MTELapotronicSuperCapacitor mteLapotronicSuperCapacitor,
+                                World world, int x, int y, int z, ItemStack trigger) {
+                                Block worldBlock = world.getBlock(x, y, z);
+                                int meta = worldBlock.getDamageValue(world, x, y, z);
+                                return LSC_PART == worldBlock && meta != 0;
+                            }
+
                             private int getHint(ItemStack stack) {
-                                return Capacitor.VALUES_BY_TIER[Math.min(
+                                return Capacitor.VALUES_BY_TIER[min(
                                     Capacitor.VALUES_BY_TIER.length,
                                     ChannelDataAccessor.getChannelData(stack, "capacitor")) - 1].getMinimalGlassTier()
                                     + 1;
@@ -266,13 +288,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                                 Consumer<IChatComponent> chatter) {
                                 if (check(t, world, x, y, z)) return PlaceResult.SKIP;
                                 int glassTier = ChannelDataAccessor.getChannelData(trigger, "glass") + 2;
-                                ItemStack targetStack = source
-                                    .takeOne(
-                                        s -> s != null && s.stackSize >= 0
-                                            && s.getItem() == LSC_PART_ITEM
-                                            && Capacitor.VALUES[Math.min(s.getItemDamage(), Capacitor.VALUES.length)
-                                                - 1].getMinimalGlassTier() > glassTier,
-                                        true);
+                                ItemStack targetStack = source.takeOne(
+                                    s -> s != null && s.stackSize >= 0
+                                        && s.getItem() == LSC_PART_ITEM
+                                        && Capacitor.VALUES[min(s.getItemDamage(), Capacitor.VALUES.length) - 1]
+                                            .getMinimalGlassTier() > glassTier,
+                                    true);
                                 if (targetStack == null) return PlaceResult.REJECT;
                                 return StructureUtility.survivalPlaceBlock(
                                     targetStack,
@@ -288,7 +309,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                                     chatter);
                             }
                         }))))
-        .addElement('C', ofBlock(LSC_PART, 1))
+        .addElement('C', ofBlockAnyMeta(LSC_PART, 1))
         .build();
 
     private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
@@ -408,7 +429,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Energy Storage")
+        tt.addMachineType("Energy Storage, LSC")
             .addInfo("Loses energy equal to 1% of the total capacity every 24 hours.")
             .addInfo(
                 "Capped at " + EnumChatFormatting.RED
@@ -464,7 +485,15 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     + EnumChatFormatting.GRAY
                     + ") EU in the LSC")
             .addInfo("it will withdraw from the network and add to the LSC.")
-            .addInfo("If there is more it will add the EU to the network and remove it from the LSC.")
+            .addInfo(
+                "If there is more it will add " + EnumChatFormatting.DARK_RED
+                    + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.UNDERLINE
+                    + "all excess"
+                    + EnumChatFormatting.RESET
+                    + EnumChatFormatting.GRAY
+                    + " EU to the network, removing it from the LSC.")
+            .addInfo("This can potentially brick your base, be careful.")
             .addInfo(
                 "The threshold increases " + EnumChatFormatting.DARK_RED
                     + "100"
@@ -543,12 +572,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     @Override
-    public boolean checkRecipe(ItemStack stack) {
+    public @NotNull CheckRecipeResult checkProcessing() {
         this.mProgresstime = 1;
         this.mMaxProgresstime = 1;
         this.mEUt = 0;
         this.mEfficiencyIncrease = 10000;
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override
@@ -629,45 +658,16 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int layer = Math.min(ChannelDataAccessor.getChannelData(stackSize, "height") + 3, 50);
+        int layer = min(ChannelDataAccessor.getChannelData(stackSize, "height") + 3, 50);
         int built;
-        built = survivialBuildPiece(
-            STRUCTURE_PIECE_BASE,
-            stackSize,
-            2,
-            1,
-            0,
-            elementBudget,
-            source,
-            actor,
-            false,
-            true);
+        built = survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 2, 1, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        for (int i = 2; i < layer - 1; i++) built = survivialBuildPiece(
-            STRUCTURE_PIECE_MID,
-            stackSize,
-            2,
-            i,
-            0,
-            elementBudget,
-            source,
-            actor,
-            false,
-            true);
+        for (int i = 2; i < layer - 1; i++)
+            built = survivialBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, i, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        return survivialBuildPiece(
-            STRUCTURE_PIECE_TOP,
-            stackSize,
-            2,
-            layer - 1,
-            0,
-            elementBudget,
-            source,
-            actor,
-            false,
-            true);
+        return survivialBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, layer - 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -788,42 +788,9 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         tBMTE.injectEnergyUnits(ForgeDirection.UNKNOWN, inputLastTick, 1L);
         tBMTE.drainEnergyUnits(ForgeDirection.UNKNOWN, outputLastTick, 1L);
 
-        // Add I/O values to Queues
-        if (energyInputValues.size() > DURATION_AVERAGE_TICKS) {
-            energyInputValues.remove();
-        }
-        energyInputValues.offer(inputLastTick);
-
-        if (energyOutputValues.size() > DURATION_AVERAGE_TICKS) {
-            energyOutputValues.remove();
-        }
-
-        energyOutputValues.offer(outputLastTick);
-
-        // Add I/O values to Queues 5 min
-        if (energyInputValues5m.size() > 6000) {
-            energyInputValues5m.remove();
-        }
-        energyInputValues5m.offer(inputLastTick);
-
-        if (energyOutputValues5m.size() > 6000) {
-            energyOutputValues5m.remove();
-        }
-
-        energyOutputValues5m.offer(outputLastTick);
-
-        // Add I/O values to Queues 1 hour
-        if (energyInputValues1h.size() > 72000) {
-            energyInputValues1h.remove();
-        }
-        energyInputValues1h.offer(inputLastTick);
-
-        if (energyOutputValues1h.size() > 72000) {
-            energyOutputValues1h.remove();
-        }
-
-        energyOutputValues1h.offer(outputLastTick);
-
+        // collect stats
+        energyInputValues1h.update(inputLastTick);
+        energyOutputValues1h.update(outputLastTick);
         return true;
     }
 
@@ -844,8 +811,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     ItemBlockLapotronicEnergyUnit.UMV_wireless_eu_cap
                         .multiply(BigInteger.valueOf(getUMVCapacitorCount()))));
 
-        if (transferred_eu.signum() == 1) {
-            inputLastTick += transferred_eu.longValue();
+        if (transferred_eu.signum() == -1) {
+            inputLastTick += Math.abs(transferred_eu.longValue());
         } else {
             outputLastTick += transferred_eu.longValue();
         }
@@ -907,6 +874,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
      * @return EU amount
      */
     private long getPowerToDraw(long hatchWatts) {
+        if (stored.compareTo(capacity) >= 0) return 0;
         final BigInteger remcapActual = capacity.subtract(stored);
         final BigInteger recampLimited = (MAX_LONG.compareTo(remcapActual) > 0) ? remcapActual : MAX_LONG;
         return min(hatchWatts, recampLimited.longValue());
@@ -923,57 +891,9 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         return min(hatchWatts, remStoredLimited.longValue());
     }
 
-    private long getAvgIn() {
-        long sum = 0L;
-        for (long l : energyInputValues) {
-            sum += l;
-        }
-        return sum / Math.max(energyInputValues.size(), 1);
-    }
-
-    private long getAvgOut() {
-        long sum = 0L;
-        for (long l : energyOutputValues) {
-            sum += l;
-        }
-        return sum / Math.max(energyOutputValues.size(), 1);
-    }
-
-    private long getAvgIn5m() {
-        double sum = 0;
-        for (long l : energyInputValues5m) {
-            sum += l;
-        }
-        return (long) sum / Math.max(energyInputValues5m.size(), 1);
-    }
-
-    private long getAvgOut5m() {
-        double sum = 0;
-        for (long l : energyOutputValues5m) {
-            sum += l;
-        }
-        return (long) sum / Math.max(energyOutputValues5m.size(), 1);
-    }
-
-    private long getAvgIn1h() {
-        double sum = 0;
-        for (long l : energyInputValues1h) {
-            sum += l;
-        }
-        return (long) sum / Math.max(energyInputValues1h.size(), 1);
-    }
-
-    private long getAvgOut1h() {
-        double sum = 0;
-        for (long l : energyOutputValues1h) {
-            sum += l;
-        }
-        return (long) sum / Math.max(energyOutputValues1h.size(), 1);
-    }
-
     private String getTimeTo() {
-        double avgIn = getAvgIn();
-        double avgOut = getAvgOut();
+        double avgIn = energyInputValues.avgLong();
+        double avgOut = energyOutputValues.avgLong();
         double passLoss = passiveDischargeAmount;
         double cap = capacity.doubleValue();
         double sto = stored.doubleValue();
@@ -1033,12 +953,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         ll.add("Passive Loss: " + nf.format(passiveDischargeAmount) + " EU/t");
         ll.add("EU IN: " + GTUtility.formatNumbers(inputLastTick) + " EU/t");
         ll.add("EU OUT: " + GTUtility.formatNumbers(outputLastTick) + " EU/t");
-        ll.add("Avg EU IN: " + nf.format(getAvgIn()) + " (last " + secInterval + " seconds)");
-        ll.add("Avg EU OUT: " + nf.format(getAvgOut()) + " (last " + secInterval + " seconds)");
-        ll.add("Avg EU IN: " + nf.format(getAvgIn5m()) + " (last " + 5 + " minutes)");
-        ll.add("Avg EU OUT: " + nf.format(getAvgOut5m()) + " (last " + 5 + " minutes)");
-        ll.add("Avg EU IN: " + nf.format(getAvgIn1h()) + " (last " + 1 + " hour)");
-        ll.add("Avg EU OUT: " + nf.format(getAvgOut1h()) + " (last " + 1 + " hour)");
+        ll.add("Avg EU IN: " + nf.format(energyInputValues.avgLong()) + " (last " + secInterval + " seconds)");
+        ll.add("Avg EU OUT: " + nf.format(energyOutputValues.avgLong()) + " (last " + secInterval + " seconds)");
+        ll.add("Avg EU IN: " + nf.format(energyInputValues5m.avgLong()) + " (last 5 minutes)");
+        ll.add("Avg EU OUT: " + nf.format(energyOutputValues5m.avgLong()) + " (last 5 minutes)");
+        ll.add("Avg EU IN: " + nf.format(energyInputValues1h.avgLong()) + " (last 1 hour)");
+        ll.add("Avg EU OUT: " + nf.format(energyOutputValues1h.avgLong()) + " (last 1 hour)");
 
         ll.add(getTimeTo());
 
@@ -1102,45 +1022,58 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         screenElements.setSynced(false)
-            .setSpace(0)
-            .setPos(10, 7);
+            .setSpace(0);
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("132", "Pipe is loose.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)")).setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mWrench))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("133", "Screws are loose.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.trans("133", "Screws are loose. (Screwdriver)"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mScrewdriver))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mScrewdriver, val -> mScrewdriver = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("134", "Something is stuck.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.trans("134", "Something is stuck. (Soft Mallet)"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mSoftHammer))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftHammer, val -> mSoftHammer = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("135", "Platings are dented.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.trans("135", "Platings are dented. (Hammer)"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mHardHammer))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("136", "Circuitry burned out.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.trans("136", "Circuitry burned out. (Soldering)"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mSolderingTool))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mSolderingTool, val -> mSolderingTool = val));
-        screenElements.widget(
-            new TextWidget(GTUtility.trans("137", "That doesn't belong there.")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> !mCrowbar))
+        screenElements
+            .widget(
+                new TextWidget(GTUtility.trans("137", "That doesn't belong there. (Crowbar)"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mCrowbar))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 
         screenElements.widget(
-            new TextWidget(GTUtility.trans("139", "Hit with Soft Mallet")).setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(GTUtility.trans("139", "Hit with Soft Mallet")).setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(
                     widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
             .widget(
@@ -1152,11 +1085,13 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     () -> getBaseMetaTileEntity().isActive(),
                     val -> getBaseMetaTileEntity().setActive(val)));
         screenElements.widget(
-            new TextWidget(GTUtility.trans("140", "to (re-)start the Machine")).setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(GTUtility.trans("140", "to (re-)start the Machine")).setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(
                     widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
         screenElements.widget(
-            new TextWidget(GTUtility.trans("141", "if it doesn't start.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(GTUtility.trans("141", "if it doesn't start.")).setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(
                     widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
 
@@ -1168,6 +1103,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 time.toMinutes() % 60,
                 time.getSeconds() % 60);
         })
+            .setSynced(false)
+            .setTextAlignment(Alignment.CenterLeft)
             .setEnabled(
                 widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
                     && getBaseMetaTileEntity().wasShutdown()))
@@ -1196,6 +1133,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         screenElements.widget(
             new TextWidget().setStringSupplier(
                 () -> "Total Capacity: " + EnumChatFormatting.BLUE + capacityCache + EnumChatFormatting.WHITE + " EU")
+                .setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.StringSyncer(this::getCapacityCache, val -> capacityCache = val))
@@ -1203,6 +1141,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 new TextWidget()
                     .setStringSupplier(
                         () -> "Stored: " + EnumChatFormatting.RED + storedEUCache + EnumChatFormatting.WHITE + " EU")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.StringSyncer(this::getStoredCache, val -> storedEUCache = val))
@@ -1218,6 +1157,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                             + passiveDischargeAmountCache
                             + EnumChatFormatting.WHITE
                             + " EU/t")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
             .widget(
@@ -1232,9 +1172,10 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                                 : numberFormat.format(avgInCache))
                             + EnumChatFormatting.WHITE
                             + " last 5s")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
-            .widget(new FakeSyncWidget.LongSyncer(this::getAvgIn, val -> avgInCache = val))
+            .widget(new FakeSyncWidget.LongSyncer(energyInputValues::avgLong, val -> avgInCache = val))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
@@ -1243,11 +1184,13 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                                 : numberFormat.format(avgOutCache))
                             + EnumChatFormatting.WHITE
                             + " last 5s")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
-            .widget(new FakeSyncWidget.LongSyncer(this::getAvgOut, val -> avgOutCache = val))
+            .widget(new FakeSyncWidget.LongSyncer(energyOutputValues::avgLong, val -> avgOutCache = val))
             .widget(
                 new TextWidget().setStringSupplier(() -> EnumChatFormatting.WHITE + timeToCache)
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.StringSyncer(this::getTimeTo, val -> timeToCache = val))
             .widget(
@@ -1257,6 +1200,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                             + wirelessStoreCache
                             + EnumChatFormatting.WHITE
                             + " EU")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.StringSyncer(this::getWirelessStoredCache, val -> wirelessStoreCache = val))
@@ -1289,6 +1233,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         nbt.setByteArray("stored", stored.toByteArray());
         nbt.setBoolean("wireless_mode", wireless_mode);
         nbt.setInteger("wireless_mode_cooldown", counter);
+        nbt.setBoolean("warningReceived", warningReceived);
 
         super.saveNBTData(nbt);
     }
@@ -1301,23 +1246,14 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         stored = new BigInteger(nbt.getByteArray("stored"));
         wireless_mode = nbt.getBoolean("wireless_mode");
         counter = nbt.getInteger("wireless_mode_cooldown");
+        warningReceived = nbt.getBoolean("warningReceived");
 
         super.loadNBTData(nbt);
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
     public int getMaxEfficiency(ItemStack stack) {
         return 10000;
-    }
-
-    @Override
-    public int getPollutionPerTick(ItemStack stack) {
-        return 0;
     }
 
     @Override
@@ -1406,13 +1342,22 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
+        buildContext.addSyncedWindow(DEBUG_POWER_WINDOW_ID, this::createPowerWindow);
+        buildContext.addSyncedWindow(WIRELESS_WARNING_WINDOW_ID, this::createWarningWindow);
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
             if (!widget.isClient()) {
                 canUseWireless = canUseWireless();
             }
             if (canUseWireless) {
-                wireless_mode = !wireless_mode;
+                if (!warningReceived) {
+                    warningReceived = true;
+                    widget.getContext()
+                        .openSyncedWindow(WIRELESS_WARNING_WINDOW_ID);
+                } else {
+                    wireless_mode = !wireless_mode;
+                }
             }
+
         })
             .setPlayClickSound(true)
             .setBackground(() -> {
@@ -1435,6 +1380,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> wireless_mode, val -> wireless_mode = val))
             .widget(new FakeSyncWidget.BooleanSyncer(this::canUseWireless, val -> canUseWireless = val))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> warningReceived, val -> warningReceived = val))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (mMachine && wireless_mode && canUseWireless && !balanced) {
                     counter = rebalance();
@@ -1452,6 +1398,99 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 .setEnabled((widget) -> wireless_mode && canUseWireless && !balanced)
                 .addTooltip(StatCollector.translateToLocal("gui.kekztech_lapotronicenergyunit.wireless_rebalance"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY));
+
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (!widget.isClient()) {
+                widget.getContext()
+                    .openSyncedWindow(DEBUG_POWER_WINDOW_ID);
+            }
+        })
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(GTUITextures.BUTTON_STANDARD);
+                ret.add(GTUITextures.OVERLAY_BUTTON_EMIT_ENERGY);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .addTooltip(translateToLocal("GT5U.multiblock.energy"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setEnabled($ -> buildContext.getPlayer().capabilities.isCreativeMode)
+            .setPos(174, 112)
+            .setSize(16, 16));
+    }
+
+    protected ModularWindow createPowerWindow(final EntityPlayer player) {
+        final int WIDTH = 158;
+        final int HEIGHT = 52;
+        final int PARENT_WIDTH = getGUIWidth();
+        final int PARENT_HEIGHT = getGUIHeight();
+        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        builder.setDraggable(true);
+        builder.setPos(
+            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
+                .add(
+                    Alignment.BottomRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
+                        .add(WIDTH - 3, 0)
+                        .subtract(0, 10)));
+        builder.widget(
+            TextWidget.localised("GT5U.multiblock.energy")
+                .setPos(3, 4)
+                .setSize(150, 20))
+            .widget(
+                new NumericWidget().setSetter(
+                    val -> stored = BigDecimal.valueOf(val)
+                        .toBigInteger())
+                    .setGetter(() -> stored.doubleValue())
+                    .setIntegerOnly(false)
+                    .setBounds(0, capacity.doubleValue())
+                    .setDefaultValue(stored.doubleValue())
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(150, 18)
+                    .setPos(4, 25)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+                    .attachSyncer(
+                        new FakeSyncWidget.DoubleSyncer(
+                            () -> capacity.doubleValue(),
+                            (val) -> capacity = BigDecimal.valueOf(val)
+                                .toBigInteger()),
+                        builder)
+                    .attachSyncer(
+                        new FakeSyncWidget.DoubleSyncer(
+                            () -> stored.doubleValue(),
+                            (val) -> stored = BigDecimal.valueOf(val)
+                                .toBigInteger()),
+                        builder));
+        return builder.build();
+    }
+
+    protected ModularWindow createWarningWindow(final EntityPlayer player) {
+        final int WIDTH = 180;
+        final int HEIGHT = 75;
+        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        builder.setDraggable(true);
+        builder
+            .widget(
+                new TextWidget(
+                    EnumChatFormatting.BOLD + translateToLocal("gui.kekztech_lapotronicenergyunit.warning.header"))
+                        .setDefaultColor(0xff0000)
+                        .setScale(1.2f)
+                        .setTextAlignment(Alignment.Center)
+                        .setPos(0, 7)
+                        .setSize(180, 15))
+            .widget(
+                TextWidget.localised("gui.kekztech_lapotronicenergyunit.warning.text")
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(5, 20)
+                    .setSize(170, 50));
+        builder.widget(
+            ButtonWidget.closeWindowButton(true)
+                .setPos(164, 4));
+        return builder.build();
     }
 
     private enum LSCHatchElement implements IHatchElement<MTELapotronicSuperCapacitor> {

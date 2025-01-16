@@ -151,6 +151,12 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
     @Override
     protected int getTickRateImpl(ForgeDirection side, int aCoverID, LiquidMeterData aCoverVariable,
         ICoverable aTileEntity) {
+        return 1;
+    }
+
+    @Override
+    protected int getDefaultTickRateImpl(ForgeDirection side, int aCoverID, LiquidMeterData aCoverVariable,
+        ICoverable aTileEntity) {
         return 5;
     }
 

@@ -77,6 +77,7 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Process that milled ore!")
+            .addInfo(StatCollector.translateToLocal("GT5U.machines.perfectoc.tooltip"))
             .addInfo("You can only ever process one type of material per controller")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, true)
@@ -103,8 +104,18 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCDFrothFlotationCellActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCDFrothFlotationCell;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCDFrothFlotationCellGlow;
     }
 
     @Override

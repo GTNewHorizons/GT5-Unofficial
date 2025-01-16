@@ -42,6 +42,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -1000,6 +1001,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addInfo("Right click the controller with a screwdriver to disable overclocking.")
             .addTecTechHatchInfo()
             .beginStructureBlock(7, 9, 7, false)
+            .addController("Front center")
             .addCasingInfoExactly("Molecular Casing", 2 * 12, false)
             .addCasingInfoExactly("Europium Reinforced Radiation Proof Machine Casing", 4, false)
             .addCasingInfoExactly("Fusion Coil Block", 3 * 4 + 5 * 2, false)
@@ -1150,7 +1152,8 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             }
 
             return "§7Wormhole status: Inactive§f";
-        }),
+        })
+            .setTextAlignment(Alignment.CenterLeft),
 
             TextWidget.dynamicString(() -> {
                 if (mLink == null) {
@@ -1162,6 +1165,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
                 return String.format("§7Wormhole diameter: §b%,d§7 Å§f", (long) (radius * 2));
             })
+                .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> mWormholeEnergy_UI > 0),
 
             TextWidget.dynamicString(() -> {
@@ -1175,6 +1179,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     return String.format("§7Max I/O per hatch: §b%,d§7 EU/t§f", (long) (mLink.mWormholeEnergy / 20));
                 }
             })
+                .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> mWormholeEnergy_UI > 0),
 
             new FakeSyncWidget.DoubleSyncer(

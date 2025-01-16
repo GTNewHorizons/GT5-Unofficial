@@ -70,7 +70,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .addTo(cannerRecipes);
                 }
                 if (!aMaterial.mBlastFurnaceRequired) {
-                    GTRecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
+                    GTRecipeRegistrator
+                        .registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null, false);
                     if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, aStack),
@@ -518,7 +519,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     .eut(4)
                     .addTo(packagerRecipes);
                 if (!aMaterial.mBlastFurnaceRequired) {
-                    GTRecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
+                    GTRecipeRegistrator
+                        .registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null, true);
                     if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, aStack),
@@ -538,7 +540,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     .eut(4)
                     .addTo(packagerRecipes);
                 if (!aMaterial.mBlastFurnaceRequired) {
-                    GTRecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
+                    GTRecipeRegistrator
+                        .registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null, true);
                     if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, aStack),

@@ -7,9 +7,11 @@ import javax.annotation.Nonnull;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -76,7 +78,11 @@ public class CoverWirelessDoesWorkDetector
         final long hash = hashCoverCoords(aTileEntity, side);
         setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
 
-        aTileEntity.setOutputRedstoneSignal(side, signal);
+        if (aCoverVariable.physical) {
+            aTileEntity.setOutputRedstoneSignal(side, signal);
+        } else {
+            aTileEntity.setOutputRedstoneSignal(side, (byte) 0);
+        }
 
         return aCoverVariable;
     }
@@ -96,6 +102,12 @@ public class CoverWirelessDoesWorkDetector
     @Override
     public int getTickRateImpl(ForgeDirection side, int aCoverID, ActivityTransmitterData aCoverVariable,
         ICoverable aTileEntity) {
+        return 1;
+    }
+
+    @Override
+    protected int getDefaultTickRateImpl(ForgeDirection side, int aCoverID, ActivityTransmitterData aCoverVariable,
+        ICoverable aTileEntity) {
         return 5;
     }
 
@@ -108,21 +120,25 @@ public class CoverWirelessDoesWorkDetector
     public static class ActivityTransmitterData extends CoverAdvancedRedstoneTransmitterBase.TransmitterData {
 
         private ActivityMode mode;
+        /** Whether the wireless detector cover also sets the tiles sided Redstone output */
+        private boolean physical;
 
-        public ActivityTransmitterData(int frequency, UUID uuid, boolean invert, ActivityMode mode) {
+        public ActivityTransmitterData(int frequency, UUID uuid, boolean invert, ActivityMode mode, boolean physical) {
             super(frequency, uuid, invert);
             this.mode = mode;
+            this.physical = physical;
         }
 
         public ActivityTransmitterData() {
             super();
             this.mode = ActivityMode.MACHINE_IDLE;
+            this.physical = true;
         }
 
         @Nonnull
         @Override
         public ISerializableObject copy() {
-            return new ActivityTransmitterData(frequency, uuid, invert, mode);
+            return new ActivityTransmitterData(frequency, uuid, invert, mode, physical);
         }
 
         @Nonnull
@@ -130,6 +146,7 @@ public class CoverWirelessDoesWorkDetector
         public NBTBase saveDataToNBT() {
             NBTTagCompound tag = (NBTTagCompound) super.saveDataToNBT();
             tag.setInteger("mode", mode.ordinal());
+            tag.setBoolean("physical", physical);
 
             return tag;
         }
@@ -138,6 +155,7 @@ public class CoverWirelessDoesWorkDetector
         public void writeToByteBuf(ByteBuf aBuf) {
             super.writeToByteBuf(aBuf);
             aBuf.writeInt(mode.ordinal());
+            aBuf.writeBoolean(physical);
         }
 
         @Override
@@ -146,6 +164,11 @@ public class CoverWirelessDoesWorkDetector
 
             NBTTagCompound tag = (NBTTagCompound) aNBT;
             mode = ActivityMode.values()[tag.getInteger("mode")];
+            if (tag.hasKey("physical")) {
+                physical = tag.getBoolean("physical");
+            } else {
+                physical = false;
+            }
         }
 
         @Nonnull
@@ -153,6 +176,7 @@ public class CoverWirelessDoesWorkDetector
         public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
             super.readFromPacket(aBuf, aPlayer);
             mode = ActivityMode.values()[aBuf.readInt()];
+            physical = aBuf.readBoolean();
 
             return this;
         }
@@ -171,7 +195,7 @@ public class CoverWirelessDoesWorkDetector
 
         @Override
         protected int getGUIHeight() {
-            return 107;
+            return 123;
         }
 
         @Override
@@ -202,7 +226,22 @@ public class CoverWirelessDoesWorkDetector
             })
                 .setSynced(false)
                 .setDefaultColor(COLOR_TEXT_GRAY.get())
-                .setPos(startX + spaceX * 3, 4 + startY + spaceY * 2));
+                .setPos(startX + spaceX * 3, 4 + startY + spaceY * 2))
+                .widget(TextWidget.dynamicString(() -> {
+                    ActivityTransmitterData coverData = getCoverData();
+                    if (coverData != null) {
+                        return getCoverData().physical
+                            ? StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.1")
+                            : StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.0");
+                    } else {
+                        return "";
+                    }
+                })
+                    .setSynced(false)
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(startX + spaceX, 4 + startY + spaceY * 3)
+                    .setSize(spaceX * 10, 12));
         }
 
         @Override
@@ -238,7 +277,17 @@ public class CoverWirelessDoesWorkDetector
                     },
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
                         .addTooltip(GTUtility.trans("271", "Machine enabled"))
-                        .setPos(spaceX * 2, spaceY * 2));
+                        .setPos(spaceX * 2, spaceY * 2))
+                .addFollower(
+                    CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                    coverData -> coverData.physical,
+                    (coverData, state) -> {
+                        coverData.physical = state;
+                        return coverData;
+                    },
+                    widget -> widget
+                        .addTooltip(StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.tooltip"))
+                        .setPos(0, 1 + spaceY * 3));
         }
     }
 

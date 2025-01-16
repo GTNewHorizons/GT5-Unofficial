@@ -14,6 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
@@ -48,7 +49,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -61,6 +61,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.VoidProtectionHelper;
 
 public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyLine> implements ISurvivalConstructable {
@@ -83,7 +84,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings3, 10)) // grate machine casing
         .addElement('l', ofBlock(GregTechAPI.sBlockCasings2, 9)) // assembler machine casing
         .addElement('m', ofBlock(GregTechAPI.sBlockCasings2, 5)) // assembling line casing
-        .addElement('g', Glasses.chainAllGlasses())
+        .addElement('g', chainAllGlasses())
         .addElement(
             'e',
             ofChain(
@@ -131,7 +132,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Assembly Line")
+        tt.addMachineType("Assembly Line, Assline, AL")
             .addInfo("Used to make complex machine parts (LuV+)")
             .addInfo("Does not make Assembler items")
             .addInfo("Recipe tier is at most Energy Hatch tier + 1.")
@@ -358,8 +359,9 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 GT_FML_LOGGER.info("Find available recipe");
             }
             result = CheckRecipeResultRegistry.SUCCESSFUL;
-            mOutputItems = new ItemStack[] { tRecipe.mOutput.copy() };
-            mOutputItems[0].stackSize *= maxParallelBeforeBatchMode * batchMultiplierMax;
+            ArrayList<ItemStack> outputs = new ArrayList<>();
+            ParallelHelper.addItemsLong(outputs, tRecipe.mOutput, (long) tRecipe.mOutput.stackSize * maxParallel);
+            mOutputItems = outputs.toArray(new ItemStack[0]);
             break;
         }
 

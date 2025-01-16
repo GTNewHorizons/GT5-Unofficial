@@ -148,7 +148,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             .addOutputHatch("Bottom Casing", 1)
             .addEnergyHatch("Bottom Casing", 1)
             .addMaintenanceHatch("Bottom Casing", 1)
-            .addSubChannelUsage("casing", "metal machine casing")
+            .addSubChannelUsage("casing", "metal machine casing (minimum 70)")
             .addSubChannelUsage("machine", "tier machine casing")
             .addSubChannelUsage("coil", "heating coil blocks")
             .addSubChannelUsage("pipe", "pipe casing blocks")
@@ -261,6 +261,12 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                     t.mCasing++;
                     return true;
                 } else return false;
+            }
+
+            @Override
+            public boolean couldBeValid(MTEChemicalPlant mteChemicalPlant, World world, int x, int y, int z,
+                ItemStack trigger) {
+                return check(aIndex, world, x, y, z);
             }
 
             private boolean check(int aIndex, World world, int x, int y, int z) {
@@ -429,8 +435,18 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCAChemicalPlantActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCAChemicalPlant;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCAChemicalPlantGlow;
     }
 
     @Override
@@ -517,11 +533,6 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     @Override
     public int getMaxEfficiency(final ItemStack aStack) {
         return 10000;
-    }
-
-    @Override
-    public int getPollutionPerTick(final ItemStack aStack) {
-        return 0;
     }
 
     @Override

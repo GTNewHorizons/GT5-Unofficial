@@ -40,6 +40,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -50,6 +52,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -76,11 +79,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 
@@ -150,6 +156,12 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             public boolean check(MTEWindmill t, World world, int x, int y, int z) {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
                 return t.setRotorBlock(tileEntity);
+            }
+
+            @Override
+            public boolean couldBeValid(MTEWindmill mteWindmill, World world, int x, int y, int z, ItemStack trigger) {
+                TileEntity tileEntity = world.getTileEntity(x, y, z);
+                return tileEntity instanceof TileEntityRotorBlock;
             }
 
             @Override
@@ -276,8 +288,9 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
-        if (itemStack == null || itemStack.getItem() == null) return false;
+    public @NotNull CheckRecipeResult checkProcessing() {
+        ItemStack itemStack = getControllerSlot();
+        if (itemStack == null || itemStack.getItem() == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (this.mOutputItems == null) this.mOutputItems = new ItemStack[2];
 
@@ -286,7 +299,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             .voltage(V[1])
             .find();
         if (tRecipe == null) {
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         if (tRecipe.getOutput(0) != null) {
@@ -324,11 +337,11 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         }
         this.mMaxProgresstime = tRecipe.mDuration * 2 * 100 * this.mMulti / this.getSpeed(this.rotorBlock);
         this.mMulti = 16;
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override
-    public void stopMachine() {
+    public void stopMachine(@NotNull ShutDownReason reason) {
         this.getBaseMetaTileEntity()
             .disableWorking();
     }
@@ -404,11 +417,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     public int getMaxEfficiency(ItemStack itemStack) {
         return 10000;
-    }
-
-    @Override
-    public int getPollutionPerTick(ItemStack itemStack) {
-        return 0;
     }
 
     @Override
@@ -522,30 +530,28 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     public float OutputMultiplier(TileEntityRotorBlock rotorBlock) {
-        try {
-            return ((ItemStonageRotors) rotorBlock.rotorSlot.get()
-                .getItem()).getmRotor();
-        } catch (Exception e) {
-            return 1f;
+        ItemStack stack = rotorBlock.rotorSlot.get();
+        if (stack == null || !(stack.getItem() instanceof ItemStonageRotors rotor)) {
+            return 1;
         }
+        return rotor.getmRotor();
     }
 
     public int getSpeed(TileEntityRotorBlock rotorBlock) {
-        try {
-            return ((ItemStonageRotors) rotorBlock.rotorSlot.get()
-                .getItem()).getSpeed();
-        } catch (Exception e) {
+        ItemStack stack = rotorBlock.rotorSlot.get();
+        if (stack == null || !(stack.getItem() instanceof ItemStonageRotors rotor)) {
             return 1;
         }
+        return rotor.getSpeed();
     }
 
     public void setRotorDamage(TileEntityRotorBlock rotorBlock, int damage) {
-        try {
-            ((ItemStonageRotors) rotorBlock.rotorSlot.get()
-                .getItem()).damageItemStack(rotorBlock.rotorSlot.get(), damage);
-        } catch (Exception e) {
+        ItemStack stack = rotorBlock.rotorSlot.get();
+        if (stack == null || !(stack.getItem() instanceof ItemStonageRotors rotor)) {
             rotorBlock.rotorSlot.damage(damage, false);
+            return;
         }
+        rotor.damageItemStack(stack, damage);
     }
 
     @Override
@@ -617,7 +623,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                     val -> this.getBaseMetaTileEntity()
                         .setActive(val)))
             .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure."))
+                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(this.COLOR_TEXT_WHITE.get())
                     .setMaxWidth(150)
                     .setEnabled(widget -> !this.mMachine)

@@ -7,7 +7,6 @@ import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
-import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.IC2NuclearControl;
 import static gregtech.api.enums.Mods.IronChests;
 import static gregtech.api.enums.Mods.IronTanks;
@@ -32,10 +31,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.common.loaders.ItemRegistry;
+import bartworks.system.material.WerkstoffLoader;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
@@ -50,6 +48,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
+import tectech.thing.CustomItemList;
 
 public class AssemblerRecipes implements Runnable {
 
@@ -59,7 +58,6 @@ public class AssemblerRecipes implements Runnable {
         this.withBartWorks();
         this.withGalacticraftMars();
         this.withRailcraft();
-        this.withGalaxySpace();
         this.withGTNHLanthAndGTPP();
         this.loadInputBusesRecipes();
         this.loadInputHatchesRecipes();
@@ -541,6 +539,20 @@ public class AssemblerRecipes implements Runnable {
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
+
+            for (int i = 0; i < ItemList.WIRELESS_ENERGY_COVERS.length; i++) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(
+                        GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 4L),
+                        CustomItemList.Machine_Multi_Transformer.get(1),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Infinity, 2L),
+                        ItemList.WIRELESS_ENERGY_HATCHES[i + 1].get(1))
+                    .itemOutputs(ItemList.WIRELESS_ENERGY_COVERS[i].get(1L))
+                    .fluidInputs(MaterialsUEVplus.ExcitedDTEC.getFluid(32_000L))
+                    .duration(10 * SECONDS)
+                    .eut(TierEU.RECIPE_UMV)
+                    .addTo(assemblerRecipes);
+            }
         }
 
         // If Cleanroom is enabled, add an assembler recipe
@@ -1900,6 +1912,117 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_MV.get(1),
                 GTUtility.getIntegratedCircuit(9))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorMV, 3))
+            .fluidInputs(WerkstoffLoader.LiquidHelium.getFluidOrGas(2000))
+            .duration(16 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Titaniumonabariumdecacoppereikosaoxid, 6),
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Titanium, 4),
+                ItemList.Electric_Pump_HV.get(1),
+                GTUtility.getIntegratedCircuit(9))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 6))
+            .fluidInputs(WerkstoffLoader.LiquidHelium.getFluidOrGas(4000))
+            .duration(16 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Uraniumtriplatinid, 9),
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.TungstenSteel, 6),
+                ItemList.Electric_Pump_EV.get(1),
+                GTUtility.getIntegratedCircuit(9))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 9))
+            .fluidInputs(WerkstoffLoader.LiquidHelium.getFluidOrGas(6000))
+            .duration(16 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Vanadiumtriindinid, 12),
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.NiobiumTitanium, 8),
+                ItemList.Electric_Pump_IV.get(1),
+                GTUtility.getIntegratedCircuit(9))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 12))
+            .fluidInputs(WerkstoffLoader.LiquidHelium.getFluidOrGas(8000))
+            .duration(32 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(
+                    OrePrefixes.wireGt01,
+                    Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
+                    15),
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Enderium, 10),
+                ItemList.Electric_Pump_LuV.get(1),
+                GTUtility.getIntegratedCircuit(9))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 15))
+            .fluidInputs(WerkstoffLoader.LiquidHelium.getFluidOrGas(12000))
+            .duration(32 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tetranaquadahdiindiumhexaplatiumosminid, 18),
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Naquadah, 12),
+                ItemList.Electric_Pump_ZPM.get(1),
+                GTUtility.getIntegratedCircuit(9))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 18))
+            .fluidInputs(WerkstoffLoader.LiquidHelium.getFluidOrGas(16000))
+            .duration(1 * MINUTES + 4 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Longasssuperconductornameforuvwire, 21),
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Neutronium, 14),
+                ItemList.Electric_Pump_UV.get(1),
+                GTUtility.getIntegratedCircuit(9))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 21))
+            .fluidInputs(WerkstoffLoader.LiquidHelium.getFluidOrGas(20000))
+            .duration(1 * MINUTES + 4 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Longasssuperconductornameforuhvwire, 24),
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Bedrockium, 16),
+                ItemList.Electric_Pump_UHV.get(1),
+                GTUtility.getIntegratedCircuit(9))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 24))
+            .fluidInputs(WerkstoffLoader.LiquidHelium.getFluidOrGas(24000))
+            .duration(2 * MINUTES + 8 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEVBase, 27),
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Infinity, 18),
+                ItemList.Electric_Pump_UEV.get(1),
+                GTUtility.getIntegratedCircuit(9))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 27))
+            .fluidInputs(WerkstoffLoader.LiquidHelium.getFluidOrGas(28000))
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Pentacadmiummagnesiumhexaoxid, 3),
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.StainlessSteel, 2),
+                ItemList.Electric_Pump_MV.get(1),
+                GTUtility.getIntegratedCircuit(9))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorMV, 3))
             .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(4))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -2937,356 +3060,6 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Blocks.torch, 6))
             .duration(2 * SECONDS)
             .eut(20)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadSword, Materials.Wood, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.wooden_sword, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadSword, Materials.Stone, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.stone_sword, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadSword, Materials.Iron, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.iron_sword, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadSword, Materials.Gold, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.golden_sword, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadSword, Materials.Diamond, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.diamond_sword, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadSword, Materials.Bronze, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Sword_Bronze.getUndamaged(1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadSword, Materials.Steel, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Sword_Steel.getUndamaged(1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadPickaxe, Materials.Wood, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.wooden_pickaxe, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadPickaxe, Materials.Stone, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.stone_pickaxe, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadPickaxe, Materials.Iron, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.iron_pickaxe, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadPickaxe, Materials.Gold, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.golden_pickaxe, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadPickaxe, Materials.Diamond, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.diamond_pickaxe, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadPickaxe, Materials.Bronze, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Pickaxe_Bronze.getUndamaged(1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadPickaxe, Materials.Steel, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Pickaxe_Steel.getUndamaged(1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadShovel, Materials.Wood, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.wooden_shovel, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadShovel, Materials.Stone, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.stone_shovel, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadShovel, Materials.Iron, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.iron_shovel, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadShovel, Materials.Gold, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.golden_shovel, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadShovel, Materials.Diamond, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.diamond_shovel, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadShovel, Materials.Bronze, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Shovel_Bronze.getUndamaged(1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadShovel, Materials.Steel, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Shovel_Steel.getUndamaged(1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadAxe, Materials.Wood, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.wooden_axe, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadAxe, Materials.Stone, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.stone_axe, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadAxe, Materials.Iron, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.iron_axe, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadAxe, Materials.Gold, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.golden_axe, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadAxe, Materials.Diamond, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.diamond_axe, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadAxe, Materials.Bronze, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Axe_Bronze.getUndamaged(1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadAxe, Materials.Steel, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Axe_Steel.getUndamaged(1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadHoe, Materials.Wood, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.wooden_hoe, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadHoe, Materials.Stone, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.stone_hoe, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadHoe, Materials.Iron, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.iron_hoe, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadHoe, Materials.Gold, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.golden_hoe, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadHoe, Materials.Diamond, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Items.diamond_hoe, 1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadHoe, Materials.Bronze, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Hoe_Bronze.getUndamaged(1))
-            .duration(5 * SECONDS)
-            .eut(16)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadHoe, Materials.Steel, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Tool_Hoe_Steel.getUndamaged(1))
-            .duration(5 * SECONDS)
-            .eut(16)
             .addTo(assemblerRecipes);
 
         // fuel rod assembler recipes
@@ -7147,123 +6920,6 @@ public class AssemblerRecipes implements Runnable {
             .fluidInputs(Materials.Platinum.getMolten(72))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
-    }
-
-    public void withGalaxySpace() {
-        if (!GalaxySpace.isModLoaded()) {
-            return;
-        }
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Pentacadmiummagnesiumhexaoxid, 3),
-                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.StainlessSteel, 2),
-                ItemList.Electric_Pump_MV.get(1),
-                GTUtility.getIntegratedCircuit(9))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorMV, 3))
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("liquid helium"), 2000))
-            .duration(16 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Titaniumonabariumdecacoppereikosaoxid, 6),
-                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Titanium, 4),
-                ItemList.Electric_Pump_HV.get(1),
-                GTUtility.getIntegratedCircuit(9))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 6))
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("liquid helium"), 4000))
-            .duration(16 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Uraniumtriplatinid, 9),
-                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.TungstenSteel, 6),
-                ItemList.Electric_Pump_EV.get(1),
-                GTUtility.getIntegratedCircuit(9))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 9))
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("liquid helium"), 6000))
-            .duration(16 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Vanadiumtriindinid, 12),
-                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.NiobiumTitanium, 8),
-                ItemList.Electric_Pump_IV.get(1),
-                GTUtility.getIntegratedCircuit(9))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 12))
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("liquid helium"), 8000))
-            .duration(32 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(
-                    OrePrefixes.wireGt01,
-                    Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
-                    15),
-                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Enderium, 10),
-                ItemList.Electric_Pump_LuV.get(1),
-                GTUtility.getIntegratedCircuit(9))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 15))
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("liquid helium"), 12000))
-            .duration(32 * SECONDS)
-            .eut(TierEU.RECIPE_LuV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tetranaquadahdiindiumhexaplatiumosminid, 18),
-                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Naquadah, 12),
-                ItemList.Electric_Pump_ZPM.get(1),
-                GTUtility.getIntegratedCircuit(9))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 18))
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("liquid helium"), 16000))
-            .duration(1 * MINUTES + 4 * SECONDS)
-            .eut(TierEU.RECIPE_ZPM)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Longasssuperconductornameforuvwire, 21),
-                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Neutronium, 14),
-                ItemList.Electric_Pump_UV.get(1),
-                GTUtility.getIntegratedCircuit(9))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 21))
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("liquid helium"), 20000))
-            .duration(1 * MINUTES + 4 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Longasssuperconductornameforuhvwire, 24),
-                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Bedrockium, 16),
-                ItemList.Electric_Pump_UHV.get(1),
-                GTUtility.getIntegratedCircuit(9))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 24))
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("liquid helium"), 24000))
-            .duration(2 * MINUTES + 8 * SECONDS)
-            .eut(TierEU.RECIPE_UHV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEVBase, 27),
-                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Infinity, 18),
-                ItemList.Electric_Pump_UEV.get(1),
-                GTUtility.getIntegratedCircuit(9))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 27))
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("liquid helium"), 28000))
-            .duration(2 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
     }
 

@@ -691,6 +691,7 @@ public final class ModItems {
         toolGregtechPump.registerPumpType(1, "Advanced Hand Pump", 32000, 1);
         toolGregtechPump.registerPumpType(2, "Super Hand Pump", 128000, 2);
         toolGregtechPump.registerPumpType(3, "Ultimate Hand Pump", 512000, 3);
+        toolGregtechPump.registerPumpType(4, "Expandable Hand Pump", 0, 4);
 
         // Xp Fluids - Dev
         if (!FluidRegistry.isFluidRegistered("mobessence")) {
@@ -741,11 +742,14 @@ public final class ModItems {
         itemIonParticleBase = new IonParticles();
         itemStandarParticleBase = new StandardBaseParticles();
 
-        Item a8kFlask = VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_8k", "Large Volumetric Flask", 8000);
+        Item a8kFlask = VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_8k", "Large Volumetric Flask", 16000);
         Item a64kFlask = VolumetricFlaskHelper
-            .generateNewFlask("Volumetric_Flask_32k", "Gigantic Volumetric Flask", 32000);
+            .generateNewFlask("Volumetric_Flask_32k", "Gigantic Volumetric Flask", 256000);
+        Item aMAXINTFlask = VolumetricFlaskHelper
+            .generateNewFlask("Volumetric_Flask_Infinite", "Klein Bottle", 2147483647);
         GregtechItemList.VOLUMETRIC_FLASK_8k.set(a8kFlask);
         GregtechItemList.VOLUMETRIC_FLASK_32k.set(a64kFlask);
+        GregtechItemList.KLEIN_BOTTLE.set(aMAXINTFlask);
 
         itemBoilerChassis = new ItemBoilerChassis();
         itemDehydratorCoilWire = new ItemDehydratorCoilWire();

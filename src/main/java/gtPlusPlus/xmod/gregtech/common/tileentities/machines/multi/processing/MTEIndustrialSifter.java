@@ -131,8 +131,18 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCDIndustrialSifterActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCDIndustrialSifter;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCDIndustrialSifterGlow;
     }
 
     @Override

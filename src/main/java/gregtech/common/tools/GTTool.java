@@ -142,7 +142,7 @@ public abstract class GTTool implements IToolStats {
 
     @Override
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
-        int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+        int aY, int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         return 0;
     }
 
@@ -184,7 +184,7 @@ public abstract class GTTool implements IToolStats {
     }
 
     @Override
-    public float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World worldObj,
+    public float getMiningSpeed(Block aBlock, int aMetaData, float aDefault, EntityPlayer aPlayer, World worldObj,
         int aX, int aY, int aZ) {
         return aDefault;
     }

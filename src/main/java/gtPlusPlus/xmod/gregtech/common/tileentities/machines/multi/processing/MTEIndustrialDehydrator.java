@@ -156,8 +156,18 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCAIndustrialDehydratorActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCAIndustrialDehydrator;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCAIndustrialDehydratorGlow;
     }
 
     @Override
@@ -194,7 +204,7 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
 
     @Override
     public String getMachineType() {
-        return "Vacuum Furnace / Dehydrator";
+        return "Vacuum Furnace, Dehydrator";
     }
 
     @Override

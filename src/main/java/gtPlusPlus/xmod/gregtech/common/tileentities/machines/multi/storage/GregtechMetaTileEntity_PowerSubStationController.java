@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onlyIf;
@@ -15,6 +16,9 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTDynamo;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTEnergy;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -26,6 +30,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
@@ -35,11 +40,13 @@ import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.ITierConverter;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.forge.PlayerMainInvWrapper;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -113,7 +120,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
 
     @Override
     public String getMachineType() {
-        return "Energy Buffer";
+        return "Energy Buffer, PSS";
     }
 
     @Override
@@ -165,7 +172,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
     private void checkMachineProblem(String msg, int xOff, int yOff, int zOff) {
         final IGregTechTileEntity te = this.getBaseMetaTileEntity();
         final Block tBlock = te.getBlockOffset(xOff, yOff, zOff);
-        final byte tMeta = te.getMetaIDOffset(xOff, yOff, zOff);
+        final int tMeta = te.getMetaIDOffset(xOff, yOff, zOff);
         String name = tBlock.getLocalizedName();
         String problem = msg + ": (" + xOff + ", " + yOff + ", " + zOff + ") " + name + ":" + tMeta;
         checkMachineProblem(problem);
@@ -285,10 +292,34 @@ public class GregtechMetaTileEntity_PowerSubStationController
                                         onElementPass(x -> ++x.cellCount[3], ofCell(7)),
                                         onElementPass(x -> ++x.cellCount[4], ofCell(8)),
                                         onElementPass(x -> ++x.cellCount[5], ofCell(9))))))))
-                .addElement('H', ofCell(4))
+                .addElement(
+                    'H',
+                    withChannel(
+                        "cell",
+                        // Adding this so preview looks correct
+                        ofBlocksTiered(cellTierConverter(), getAllCellTiers(), -1, (te, t) -> {}, (te) -> -1)))
                 .build();
         }
         return STRUCTURE_DEFINITION;
+    }
+
+    public static ITierConverter<Integer> cellTierConverter() {
+        return (block, meta) -> {
+            int tier = getCellTier(block, meta);
+            if (tier == -1) return null;
+            return tier;
+        };
+    }
+
+    public static List<Pair<Block, Integer>> getAllCellTiers() {
+        ArrayList<Pair<Block, Integer>> tiers = new ArrayList<>();
+        tiers.add(Pair.of(ModBlocks.blockCasings2Misc, 7));
+        tiers.add(Pair.of(ModBlocks.blockCasings3Misc, 4));
+        tiers.add(Pair.of(ModBlocks.blockCasings3Misc, 5));
+        tiers.add(Pair.of(ModBlocks.blockCasings3Misc, 6));
+        tiers.add(Pair.of(ModBlocks.blockCasings3Misc, 7));
+        tiers.add(Pair.of(ModBlocks.blockCasings3Misc, 8));
+        return tiers;
     }
 
     public static <T> IStructureElement<T> ofCell(int aIndex) {
@@ -857,6 +888,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
                             ? getBaseMetaTileEntity().isActive() ? "Running perfectly" : "Turn on with Mallet"
                             : "")
                     .setSynced(false)
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 8))
             .widget(
@@ -876,17 +908,20 @@ public class GregtechMetaTileEntity_PowerSubStationController
             .widget(new FakeSyncWidget.LongSyncer(this::getAverageEuAdded, val -> clientEUIn = val))
             .widget(
                 new TextWidget().setStringSupplier(() -> "Avg In: " + numberFormat.format(clientEUIn) + " EU")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 20))
             .widget(new FakeSyncWidget.LongSyncer(this::getAverageEuConsumed, val -> clientEUOut = val))
             .widget(
                 new TextWidget().setStringSupplier(() -> "Avg Out: " + numberFormat.format(clientEUOut) + " EU")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 30))
             .widget(new FakeSyncWidget.LongSyncer(this::computeEnergyTax, val -> clientEULoss = val))
             .widget(
                 new TextWidget()
                     .setStringSupplier(() -> "Powerloss: " + numberFormat.format(clientEULoss) + " EU per tick")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 40))
             .widget(
@@ -902,6 +937,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
                     .setSize(147, 5))
             .widget(
                 new TextWidget("Stored:").setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setPos(10, 132))
             .widget(
                 new FakeSyncWidget.LongSyncer(() -> getBaseMetaTileEntity().getStoredEU(), val -> clientEUStored = val))
@@ -910,6 +946,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
                 return new Text(numberFormat.format(clientEUStored) + " EU")
                     .color(Utils.rgbtoHexValue((255 - colorScale), colorScale, 0));
             })
+                .setTextAlignment(Alignment.CenterLeft)
                 .setPos(10, 142))
             .widget(
                 new TextWidget().setStringSupplier(() -> numberFormat.format(clientProgress * 100) + "%")

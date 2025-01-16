@@ -60,7 +60,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMult
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
-import tectech.thing.casing.TTCasingsContainer;
 
 public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> implements ISurvivalConstructable {
 
@@ -155,7 +154,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                         onElementPass(
                             x -> ++x.mCasing,
                             addTieredBlock(
-                                TTCasingsContainer.sBlockCasingsNH,
+                                GregTechAPI.sBlockCasingsNH,
                                 MTEAlgaePondBase::setMeta,
                                 MTEAlgaePondBase::getMeta,
                                 10,
@@ -214,8 +213,18 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCDAlgaePondBaseActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCDAlgaePondBase;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCDAlgaePondBaseGlow;
     }
 
     @Override
@@ -262,7 +271,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             for (int j = mOffsetZ_Lower + 1; j <= mOffsetZ_Upper - 1; ++j) {
                 for (int h = 0; h < 2; h++) {
                     Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-                    byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
+                    int tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
                     if (isNotStaticWater(tBlock, tMeta)) {
                         if (this.getStoredFluids() != null) {
                             for (FluidStack stored : this.getStoredFluids()) {
@@ -301,7 +310,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
         }
     }
 
-    private boolean isNotStaticWater(Block block, byte meta) {
+    private boolean isNotStaticWater(Block block, int meta) {
         return block == Blocks.air || block == Blocks.flowing_water
             || block == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)
             || (cofhWater != null && cofhWater.isAssignableFrom(block.getClass()) && meta != 0);
@@ -367,7 +376,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             aInitStructureCheck = aBaseMetaTileEntity.getBlockOffset(xDir, -1, zDir);
             aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir, -1, zDir);
             if (aInitStructureCheck == GregTechAPI.sBlockCasings1
-                || aInitStructureCheck == TTCasingsContainer.sBlockCasingsNH) {
+                || aInitStructureCheck == GregTechAPI.sBlockCasingsNH) {
                 return aInitStructureCheckMeta;
             }
             return 0;

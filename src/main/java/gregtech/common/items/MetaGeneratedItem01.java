@@ -89,6 +89,7 @@ import static gregtech.common.items.IDMetaItem01.Battery_SU_MV_Mercury;
 import static gregtech.common.items.IDMetaItem01.Battery_SU_MV_Sulfuric_Acid;
 import static gregtech.common.items.IDMetaItem01.Black_Hole_Closer;
 import static gregtech.common.items.IDMetaItem01.Black_Hole_Opener;
+import static gregtech.common.items.IDMetaItem01.Black_Hole_Stabilizer;
 import static gregtech.common.items.IDMetaItem01.Book_Written_01;
 import static gregtech.common.items.IDMetaItem01.Book_Written_02;
 import static gregtech.common.items.IDMetaItem01.Book_Written_03;
@@ -161,6 +162,7 @@ import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_LuV;
 import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_MV;
 import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_UV;
 import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_ZPM;
+import static gregtech.common.items.IDMetaItem01.Cover_Wireless_Energy_LV;
 import static gregtech.common.items.IDMetaItem01.Crate_Empty;
 import static gregtech.common.items.IDMetaItem01.Duct_Tape;
 import static gregtech.common.items.IDMetaItem01.Electric_Motor_EV;
@@ -512,6 +514,7 @@ import gregtech.common.covers.CoverCrafting;
 import gregtech.common.covers.CoverDoesWork;
 import gregtech.common.covers.CoverDrain;
 import gregtech.common.covers.CoverEUMeter;
+import gregtech.common.covers.CoverEnergyWireless;
 import gregtech.common.covers.CoverFluidLimiter;
 import gregtech.common.covers.CoverFluidRegulator;
 import gregtech.common.covers.CoverFluidStorageMonitor;
@@ -585,10 +588,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             null,
             OrePrefixes.ingot,
             OrePrefixes.ingotHot,
-            OrePrefixes.ingotDouble,
-            OrePrefixes.ingotTriple,
-            OrePrefixes.ingotQuadruple,
-            OrePrefixes.ingotQuintuple,
+            OrePrefixes.___placeholder___,
+            OrePrefixes.___placeholder___,
+            OrePrefixes.___placeholder___,
+            OrePrefixes.___placeholder___,
             OrePrefixes.plate,
             OrePrefixes.plateDouble,
             OrePrefixes.plateTriple,
@@ -2952,6 +2955,26 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "Holds 15 item for use within machine GUI (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
 
+        for (int i = 1; i < 15; i++) {
+            ItemList.WIRELESS_ENERGY_COVERS[i - 1].set(
+                addItem(
+                    Cover_Wireless_Energy_LV.ID + i - 1,
+                    GTValues.VN[i] + " Wireless Energy Cover",
+                    String.join(
+                        "/n ",
+                        "Stores energy globally in a network, up to 2^(2^31) EU.",
+                        "Does not connect to wires. This cover withdraws EU from the network.",
+                        "Ignores voltage limitations (no explosions).",
+                        "Amperage: " + EnumChatFormatting.YELLOW + "2" + EnumChatFormatting.GRAY,
+                        "Voltage IN: " + EnumChatFormatting.GREEN
+                            + GTUtility.formatNumbers(GTValues.V[i])
+                            + " ("
+                            + GTUtility.getColoredTierNameFromTier((byte) (i))
+                            + EnumChatFormatting.GREEN
+                            + ")"),
+                    new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
+        }
+
         ItemList.Cover_Screen.set(
             addItem(
                 Cover_Screen.ID,
@@ -3237,6 +3260,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "Safely closes a pseudostable black hole",
                 new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 32),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 64)));
+        ItemList.Black_Hole_Stabilizer.set(
+            addItem(
+                Black_Hole_Stabilizer.ID,
+                "Superstable Black Hole Seed",
+                "Opens a superstable black hole/nBlack hole will never destabilize and will operate at maximum efficiency",
+                new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 32),
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 128)));
 
         // AOs
         ItemList.Circuit_Tissue.set(
@@ -3490,7 +3520,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 OrePrefixes aPrefix = this.mGeneratedPrefixList[(aDamage / 1000)];
                 if ((aPrefix == OrePrefixes.dustImpure) || (aPrefix == OrePrefixes.dustPure)) {
                     Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
-                    byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
+                    int tMetaData = aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
                     if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
 
                         aMaterial = cauldronRemap.getOrDefault(aMaterial, aMaterial);
@@ -3503,7 +3533,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                     }
                 } else if (aPrefix == OrePrefixes.crushed) {
                     Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
-                    byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
+                    int tMetaData = aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
                     if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
                         aItemEntity.setEntityItemStack(
                             GTOreDictUnificator
@@ -3513,7 +3543,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                     }
                 } else if (aPrefix == OrePrefixes.dust && aMaterial == Materials.Wheat) {
                     Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
-                    byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
+                    int tMetaData = aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
                     if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
                         aItemEntity.setEntityItemStack(ItemList.Food_Dough.get(aItemEntity.getEntityItem().stackSize));
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
@@ -3984,6 +4014,14 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             ItemList.Cover_NeedsMaintainance.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_MAINTENANCE_DETECTOR)),
             new CoverNeedMaintainance(TextureFactory.of(OVERLAY_MAINTENANCE_DETECTOR)));
+
+        for (int i = 0; i < 14; i++) {
+            GregTechAPI.registerCover(
+                ItemList.WIRELESS_ENERGY_COVERS[i].get(1),
+                TextureFactory
+                    .of(MACHINE_CASINGS[i + 1][0], Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0]),
+                new CoverEnergyWireless((int) GTValues.V[i + 1]));
+        }
 
     }
 

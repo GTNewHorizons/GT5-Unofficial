@@ -76,9 +76,9 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSettings.GameType;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -109,6 +109,7 @@ import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -157,9 +158,7 @@ import gregtech.api.util.GTShapelessRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.config.OPStuff;
-import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedItem98;
-import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
@@ -540,7 +539,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public boolean mAxeWhenAdventure = true;
     public boolean mSurvivalIntoAdventure = false;
     public boolean mNerfedWoodPlank = true;
-    public boolean mNerfedVanillaTools = true;
+    public boolean mChangeWoodenVanillaTools = true;
     public boolean mHungerEffect = true;
     public boolean mIgnoreTcon = true;
     public boolean mAchievements = true;
@@ -1237,14 +1236,14 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             }
         }
         GTLog.out.println("GTMod: Adding Configs specific for MetaTileEntities");
-        try {
-            for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
-                if (GregTechAPI.METATILEENTITIES[i] != null) {
+        for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
+            if (GregTechAPI.METATILEENTITIES[i] != null) {
+                try {
                     GregTechAPI.METATILEENTITIES[i].onConfigLoad();
+                } catch (Throwable e) {
+                    GT_FML_LOGGER.error("Could not load config for MTE " + GregTechAPI.METATILEENTITIES[i], e);
                 }
             }
-        } catch (Throwable e) {
-            e.printStackTrace(GTLog.err);
         }
         GTLog.out.println("GTMod: Adding Tool Usage Crafting Recipes for OreDict Items.");
         for (Materials aMaterial : Materials.values()) {
@@ -1333,14 +1332,16 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                 break;
             }
         }
-        try {
-            for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
-                if (GregTechAPI.METATILEENTITIES[i] != null) {
+        for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
+            if (GregTechAPI.METATILEENTITIES[i] != null) {
+                try {
                     GregTechAPI.METATILEENTITIES[i].onServerStart();
+                } catch (Throwable e) {
+                    throw new RuntimeException(
+                        "Could not call onServerStart MTE " + GregTechAPI.METATILEENTITIES[i],
+                        e);
                 }
             }
-        } catch (Throwable e) {
-            e.printStackTrace(GTLog.err);
         }
     }
 
@@ -1376,19 +1377,19 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         File tSaveDirectory = getSaveDirectory();
         GregTechAPI.sWirelessRedstone.clear();
         if (tSaveDirectory != null) {
-            try {
-                for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
-                    if (GregTechAPI.METATILEENTITIES[i] != null) {
+            for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
+                if (GregTechAPI.METATILEENTITIES[i] != null) {
+                    try {
                         GregTechAPI.METATILEENTITIES[i].onWorldSave(tSaveDirectory);
+                    } catch (Throwable e) {
+                        throw new RuntimeException(
+                            "Could not call onWorldSave for MTE " + GregTechAPI.METATILEENTITIES[i],
+                            e);
                     }
                 }
-            } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
             }
         }
         this.mUniverse = null;
-        // GT_ChunkAssociatedData.saveAll(); todo: figure out if this is needed
-
     }
 
     @SubscribeEvent
@@ -1557,7 +1558,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         if (stats == null) return;
 
         TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
-        stats.onBreakBlock(player, event.x, event.y, event.z, event.block, (byte) event.blockMetadata, tile, event);
+        stats.onBreakBlock(player, event.x, event.y, event.z, event.block, event.blockMetadata, tile, event);
     }
 
     @SubscribeEvent
@@ -1576,7 +1577,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                 aEvent.x,
                 aEvent.y,
                 aEvent.z,
-                (byte) aEvent.blockMetadata,
+                aEvent.blockMetadata,
                 aEvent.fortuneLevel,
                 aEvent.isSilkTouching,
                 aEvent);
@@ -1628,8 +1629,9 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         try {
             aEvent.Ore.stackSize = 1;
 
-            // skipping TinkerConstruct ore registration
-            if (this.mIgnoreTcon && aOriginalMod.equals(TinkerConstruct.ID)) {
+            // skipping TinkerConstruct ore registration except for blocks
+            if (this.mIgnoreTcon && aOriginalMod.equals(TinkerConstruct.ID)
+                && !(aEvent.Ore.getItem() instanceof ItemBlock)) {
                 return;
             }
             String tModToName = aMod + " -> " + aEvent.Name;
@@ -2050,7 +2052,8 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                 registerRecipes(tOre);
             }
         } catch (Throwable e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER
+                .error("Could not register ore (oredict name=" + aEvent.Name + ", item stack=" + aEvent.Ore + ")", e);
         }
     }
 
@@ -2128,14 +2131,16 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                 File tSaveDiretory = getSaveDirectory();
                 if (tSaveDiretory != null) {
                     this.isFirstServerWorldTick = false;
-                    try {
-                        for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
-                            if (GregTechAPI.METATILEENTITIES[i] != null) {
+                    for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
+                        if (GregTechAPI.METATILEENTITIES[i] != null) {
+                            try {
                                 GregTechAPI.METATILEENTITIES[i].onWorldLoad(tSaveDiretory);
+                            } catch (Throwable e) {
+                                throw new RuntimeException(
+                                    "Could not call onWorldLoad for MTE " + GregTechAPI.METATILEENTITIES[i],
+                                    e);
                             }
                         }
-                    } catch (Throwable e) {
-                        e.printStackTrace(GTLog.err);
                     }
                 }
             }
@@ -2235,27 +2240,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             return;
         }
 
-        if ((aEvent.player.ticksExisted % 200 == 0) && (aEvent.player.capabilities.allowEdit)
-            && (!aEvent.player.capabilities.isCreativeMode)
-            && (this.mSurvivalIntoAdventure)) {
-            aEvent.player.setGameType(GameType.ADVENTURE);
-            aEvent.player.capabilities.allowEdit = false;
-            if (this.mAxeWhenAdventure) {
-                GTUtility.sendChatToPlayer(
-                    aEvent.player,
-                    GTLanguageManager.addStringLocalization(
-                        "Interaction_DESCRIPTION_Index_097",
-                        "It's dangerous to go alone! Take this."));
-                aEvent.player.worldObj.spawnEntityInWorld(
-                    new EntityItem(
-                        aEvent.player.worldObj,
-                        aEvent.player.posX,
-                        aEvent.player.posY,
-                        aEvent.player.posZ,
-                        MetaGeneratedTool01.INSTANCE
-                            .getToolWithStats(IDMetaTool01.AXE.ID, 1, Materials.Flint, Materials.Wood, null)));
-            }
-        }
         final boolean tHungerEffect = (this.mHungerEffect) && (aEvent.player.ticksExisted % 2400 == 1200);
 
         if (aEvent.player.ticksExisted % 120 != 0) {
@@ -2717,7 +2701,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                     aEvent.x,
                     aEvent.y,
                     aEvent.z,
-                    (byte) aEvent.metadata,
+                    aEvent.metadata,
                     aEvent);
             }
         }
@@ -2788,7 +2772,28 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             ItemStack aStackTemp = event.itemStack;
             GTItemStack aStack = new GTItemStack(aStackTemp);
             if (providesProtection(aStackTemp)) {
-                event.toolTip.add(EnumChatFormatting.LIGHT_PURPLE + "Provides full hazmat protection.");
+                event.toolTip.add(
+                    EnumChatFormatting.LIGHT_PURPLE
+                        + StatCollector.translateToLocal("GT5U.providesfullhazmatprotection"));
+            }
+        }
+    }
+
+    /// Used for tool sounds in the crafting grid
+    @SubscribeEvent
+    public void onPlayerCrafting(ItemCraftedEvent event) {
+        for (int i = 0; i < event.craftMatrix.getSizeInventory(); i++) {
+            ItemStack stack = event.craftMatrix.getStackInSlot(i);
+
+            if (stack != null && stack.getItem() instanceof MetaGeneratedTool mgt) {
+                if (this.mTicksUntilNextCraftSound <= 0) {
+                    this.mTicksUntilNextCraftSound = 10;
+                    IToolStats tStats = mgt.getToolStats(stack);
+                    boolean playBreak = (MetaGeneratedTool.getToolDamage(stack)
+                        + tStats.getToolDamagePerContainerCraft()) >= MetaGeneratedTool.getToolMaxDamage(stack);
+                    String sound = playBreak ? tStats.getBreakingSound() : tStats.getCraftingSound();
+                    GTUtility.doSoundAtClient(sound, 1, 1.0F);
+                }
             }
         }
     }

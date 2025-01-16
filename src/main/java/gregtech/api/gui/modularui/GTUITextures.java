@@ -224,6 +224,12 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/progressbar/uvtreatment");
     public static final UITexture PROGRESSBAR_SENTIENCE = UITexture
         .fullImage(GregTech.ID, "gui/progressbar/sentience_progress");
+    public static final UITexture PROGRESSBAR_STEAM_FILL = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/steam_fill");
+    public static final UITexture PROGRESSBAR_STEAM_FILL_STEEL = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/steam_fill_steel");
+    public static final UITexture PROGRESSBAR_NAME_REMOVER = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/name_remover");
 
     public static FallbackableUITexture fallbackableProgressbar(String name, UITexture fallback) {
         return new FallbackableUITexture(UITexture.fullImage(GregTech.ID, "gui/progressbar/" + name), fallback);
@@ -423,6 +429,7 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/hourglass");
     public static final UITexture OVERLAY_BUTTON_PATTERN_OPTIMIZE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/pattern_optimize");
+    public static final UITexture OVERLAY_BUTTON_X2 = UITexture.fullImage(GregTech.ID, "gui/overlay_button/x2");
 
     public static final UITexture OVERLAY_BUTTON_LIQUIDMODE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/LiquidMode");

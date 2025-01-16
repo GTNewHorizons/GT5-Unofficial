@@ -23,6 +23,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
 
+@Deprecated
 public class MTELowPowerLaserBox extends LowPowerLaserBase {
 
     public MTELowPowerLaserBox(int aID, String aName, String aNameRegional, int aTier, long aAmperes,
@@ -161,7 +162,8 @@ public class MTELowPowerLaserBox extends LowPowerLaserBase {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Like a transformer... but for LASERS!",
+        return new String[] { EnumChatFormatting.RED + "DEPRECATED! This will be removed in the next major update.",
+            "Like a transformer... but for LASERS!",
             "Transfer rate: " + EnumChatFormatting.YELLOW
                 + GTUtility.formatNumbers(this.getTotalPower())
                 + EnumChatFormatting.WHITE

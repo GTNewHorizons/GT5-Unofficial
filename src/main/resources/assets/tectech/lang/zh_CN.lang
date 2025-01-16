@@ -403,8 +403,8 @@ gt.blockmachines.hatch.param.tier.10.name=参数仪 tXt
 gt.blockmachines.hatch.param.desc.0=多方块机器的参数化
 gt.blockmachines.hatch.param.desc.1=E=mine*craft²
 
-gt.blockmachines.hatch.certain.tier.07.name=未定元解析器
-gt.blockmachines.hatch.certain.tier.10.name=未定元解析器 X
+gt.blockmachines.hatch.certain.tier.05.name=未定元解析器
+gt.blockmachines.hatch.certain.tier.07.name=未定元解析器 X
 gt.blockmachines.hatch.certain.desc.0=你真的很确定吗？
 gt.blockmachines.hatch.certain.desc.1=盒子里的薛定谔方程
 
@@ -590,7 +590,6 @@ gt.blockmachines.multimachine.em.switch.name=QoS网络交换机
 gt.blockmachines.multimachine.em.switch.hint=1 - 基础仓室、光学接口或电子计算机机械方块
 gt.blockmachines.multimachine.em.switch.desc.0=QoS网络交换机的控制器方块
 gt.blockmachines.multimachine.em.switch.desc.1=用于路由和分发算力
-gt.blockmachines.multimachine.em.switch.desc.2=需要通过参数仪进行配置
 
 
 gt.blockmachines.multimachine.em.computer.name=量子计算机

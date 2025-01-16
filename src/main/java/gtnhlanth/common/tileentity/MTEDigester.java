@@ -20,6 +20,7 @@ import static gregtech.api.util.GTStructureUtility.ofCoil;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -149,8 +150,8 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
     }
 
     @Override
-    public int getPollutionPerTick(ItemStack aStack) {
-        return 20;
+    public int getPollutionPerSecond(ItemStack aStack) {
+        return 400;
     }
 
     @Override
@@ -207,7 +208,14 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Digester")
             .addInfo("Input ores and fluid, output water.")
+            .addInfo(StatCollector.translateToLocal("GT5U.machines.perfectoc.tooltip"))
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(7, 7, 4, true)
             .addController("Front bottom")
+            .addCasingInfoExactly("Robust Tungstensteel Machine Casing", 52, false)
+            .addCasingInfoExactly("Heat Proof Machine Casing", 16, false)
+            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 9, false)
+            .addCasingInfoExactly("Coil", 16, true)
             .addInputHatch("Hint block with dot 1")
             .addInputBus("Hint block with dot 1")
             .addOutputHatch("Hint block with dot 1")

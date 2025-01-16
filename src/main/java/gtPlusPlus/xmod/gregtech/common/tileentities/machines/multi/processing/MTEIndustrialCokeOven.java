@@ -58,7 +58,7 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
 
     @Override
     public String getMachineType() {
-        return "Coke Oven";
+        return "Coke Oven, ICO";
     }
 
     @Override
@@ -159,8 +159,18 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCACokeOvenActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCACokeOven;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCACokeOvenGlow;
     }
 
     @Override

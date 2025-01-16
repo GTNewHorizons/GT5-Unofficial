@@ -103,7 +103,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chemical Reactor")
+        tt.addMachineType("Chemical Reactor, LCR")
             .addInfo("Does not lose efficiency when overclocked")
             .addInfo("Accepts fluids instead of fluid cells")
             .beginStructureBlock(3, 3, 3, false)
@@ -117,7 +117,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
             .addInputHatch("Any casing", 1, 2)
             .addOutputBus("Any casing", 1, 2)
             .addOutputHatch("Any casing", 1, 2)
-            .addStructureInfo("You can have multiple hatches/busses")
+            .addStructureInfo("You can have multiple hatches/buses")
             .toolTipFinisher();
         return tt;
     }
@@ -236,6 +236,13 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
         }
 
         @Override
+        public boolean couldBeValid(MTELargeChemicalReactor t, World world, int x, int y, int z, ItemStack trigger) {
+            Block block = world.getBlock(x, y, z);
+            return block instanceof IHeatingCoil
+                && ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z)) != HeatingCoilLevel.None;
+        }
+
+        @Override
         public boolean spawnHint(MTELargeChemicalReactor t, World world, int x, int y, int z, ItemStack trigger) {
             StructureLibAPI.hintParticle(world, x, y, z, GregTechAPI.sBlockCasings5, 0);
             return true;
@@ -297,7 +304,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         batchMode = !batchMode;
         if (batchMode) {
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));

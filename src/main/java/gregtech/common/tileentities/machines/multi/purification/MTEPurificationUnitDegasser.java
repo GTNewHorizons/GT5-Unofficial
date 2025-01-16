@@ -66,7 +66,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         { "      AAAAA      ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "      AAAAA      " },
         { "    AAAAAAAAA    ", "      AAAAA      ", "                 ", "           C     ", "         CC      ", "        C        ", "      CC         ", "     C           ", "                 ", "                 ", "                 ", "           C     ", "         CC      ", "        C        ", "      CC         ", "     C           ", "                 ", "                 ", "                 ", "           C     ", "         CC      ", "        C        ", "      CC         ", "    CCAA~AA      ", "    AAAAAAAAA    " },
         { "  AAAAAAAAAAAAA  ", "   CAAAAAAAAA    ", "      BBBBB CC   ", "      BBBBB      ", "      BBBBB      ", "       BBB       ", "        B        ", "                 ", "    C            ", "                 ", "            C    ", "                 ", "                 ", "                 ", "                 ", "                 ", "    C            ", "                 ", "        B   C    ", "       BBB       ", "      BBBBB      ", "      BBBBB      ", "      BBBBB      ", "    AAAAAAAAA    ", "  AAAAAAAAAAAAA  " },
-        { "  AAAAAAAAAAAAA  ", "   AAAAAAAAAAAC  ", "  C BBB    BB    ", "    BB     BB    ", "     B     B     ", "     BB   BB     ", "     BBB BBB     ", "      BBBBB      ", "       BBB       ", "   C         C   ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "       BBB       ", "   C  BBBBB  C   ", "     BBB BBB     ", "     BB   BB     ", "     B     B     ", "    BB     BB    ", "    BB     BB    ", "   AAAAAAAAAAA   ", "  AAAAAAAAAAAAA  " },
+        { "  AAAAAAAAAAAAA  ", "   AAAAAAAAAAAC  ", "  C BB     BB    ", "    BB     BB    ", "     B     B     ", "     BB   BB     ", "     BBB BBB     ", "      BBBBB      ", "       BBB       ", "   C         C   ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "       BBB       ", "   C  BBBBB  C   ", "     BBB BBB     ", "     BB   BB     ", "     B     B     ", "    BB     BB    ", "    BB     BB    ", "   AAAAAAAAAAA   ", "  AAAAAAAAAAAAA  " },
         { " AAAAAAAAAAAAAAA ", "  AAAAAAAAAAAAA  ", "  CB         B   ", "   B         B   ", "    B       B    ", "    B       B    ", "    B       B    ", "    BB     BB    ", "     BB   BB  C  ", "      BBBBB      ", "  C    BBB       ", "                 ", "                 ", "                 ", "       BBB       ", "      BBBBB      ", "     BB   BB  C  ", "    BB     BB    ", "  C B       B    ", "    B       B    ", "    B       B    ", "   B         B   ", "   B         B   ", "  AAAAAAAAAAAAAC ", " AAAAAAAAAAAAAAA " },
         { " AAAAAAAAAAAAAAA ", "  AAAAAAAAAAAAA  ", "   B         B   ", " C B         B   ", "   B         B   ", "   B         B   ", "   B         B   ", "    B       B  C ", "    B       B    ", "     B     B     ", "      B   B      ", " C     BBB       ", "                 ", "       BBB       ", "      B   B      ", "     B     B   C ", "    B       B    ", "    B       B    ", "   B         B   ", " C B         B   ", "   B         B   ", "   B         B   ", "   B         B   ", "  AAAAAAAAAAAAAC ", " AAAAAAAAAAAAAAA " },
         { "AAAAAAAAAAAAAAAAA", " AAAAAAAAAAAAAAA ", "  B           B  ", "  B           B  ", " CB           B  ", "   B         B   ", "   B         B C ", "   B         B   ", "    B       B    ", "    B       B    ", "     B     B     ", "      BBBBB      ", " C     BBB       ", "      BBBBB      ", "     B     B   C ", "    B       B    ", "    B       B    ", "   B         B   ", "   B         B   ", "   B         B   ", " CB           B  ", "  B           B  ", "  B           BC ", " AAAAAAAAAAAAAAA ", "AAAAAAAAAAAAAAAAA" },
@@ -460,6 +460,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + EnumChatFormatting.ITALIC
                     + "detects in the water, it will request various materials to complete the processes listed above.")
             .beginStructureBlock(17, 25, 17, false)
+            .addController("Front center")
             .addCasingInfoRangeColored(
                 "Heat-Resistant Trinium Plated Casing",
                 EnumChatFormatting.GRAY,
@@ -479,7 +480,6 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 124,
                 EnumChatFormatting.GOLD,
                 false)
-            .addController("Front center")
             .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+, Any Trinium Casing", 1)
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+, Any Trinium Casing", 1)
             .addOtherStructurePart(
@@ -722,6 +722,8 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         this.controlHatch = null;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
         if (casingCount < MIN_CASING) return false;
+        // Do not form without a valid control hatch
+        if (this.controlHatch == null || !this.controlHatch.isValid()) return false;
         return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 

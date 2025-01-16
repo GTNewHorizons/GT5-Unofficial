@@ -127,7 +127,7 @@ public class MachineStats {
         public int UUAPerUUM;
 
         @Config.Comment("Speed bonus delivered by the UUA.")
-        @Config.DefaultInt(40)
+        @Config.DefaultInt(4)
         @Config.RequiresMcRestart
         public int UUASpeedBonus;
     }

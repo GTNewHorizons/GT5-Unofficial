@@ -46,6 +46,7 @@ public class SaplingBase extends BlockSapling {
         this.setBlockName(blockName);
         ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(this), "treeSapling", true);
         this.setCreativeTab(AddToCreativeTab.tabBOP);
+        this.setStepSound(Block.soundTypeGrass);
     }
 
     /**

@@ -14,6 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_NEUTRONIUM_AC
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_NEUTRONIUM_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_NEUTRONIUM_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import net.minecraft.item.ItemStack;
@@ -35,7 +36,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -70,7 +70,7 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
                 {"  CEEEEEC  "," CE     EC ","CE       EC","E         E","E         E","E         E","E         E","E         E","CE       EC"," CE     EC ","  CEEEEEC  "}
             }))
             //spotless:on
-        .addElement('A', Glasses.chainAllGlasses())
+        .addElement('A', chainAllGlasses())
         .addElement(
             'B',
             buildHatchAdder(MTENeutroniumCompressor.class).atLeast(InputBus, OutputBus, Maintenance, Energy)

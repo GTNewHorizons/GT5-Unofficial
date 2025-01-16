@@ -21,6 +21,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -28,6 +30,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -41,14 +44,11 @@ import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
 
 public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCentrifuge>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, INEIPreviewModifier {
 
     private boolean mIsAnimated;
-    private static final CustomIcon frontFaceActive = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE5");
-    private static final CustomIcon frontFace = new CustomIcon("iconsets/LARGECENTRIFUGE5");
     private int mCasing;
     private static IStructureDefinition<MTEIndustrialCentrifuge> STRUCTURE_DEFINITION = null;
     // public static double recipesComplete = 0;
@@ -129,18 +129,6 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
-    }
-
-    @Override
-    public boolean checkStructure(boolean aForceReset, IGregTechTileEntity aBaseMetaTileEntity) {
-        boolean f = super.checkStructure(aForceReset, aBaseMetaTileEntity);
-        if (f && getBaseMetaTileEntity().isServerSide()) {
-            // while is this a client side field, blockrenderer will reuse the server world for client side rendering
-            // so we must set it as well...
-            mFormed = true;
-            return true;
-        }
-        return f;
     }
 
     @Override
@@ -265,5 +253,10 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     @Override
     public byte getUpdateData() {
         return (byte) ((mMachine ? 1 : 0));
+    }
+
+    @Override
+    public void onPreviewStructureComplete(@NotNull ItemStack trigger) {
+        mFormed = true;
     }
 }

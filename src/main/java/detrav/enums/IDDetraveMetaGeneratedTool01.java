@@ -2,7 +2,6 @@ package detrav.enums;
 
 public enum IDDetraveMetaGeneratedTool01 {
 
-    ProspectorScannerULV(0),
     ProspectorScannerLV(2),
     ProspectorScannerMV(4),
     ProspectorScannerHV(6),

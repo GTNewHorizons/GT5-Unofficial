@@ -33,6 +33,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -52,6 +54,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -132,6 +136,13 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             if (TFFT_FIELD != worldBlock || meta == 0) return false;
             t.FIELDS[meta - 1]++;
             return true;
+        }
+
+        @Override
+        public boolean couldBeValid(MTETankTFFT t, World world, int x, int y, int z, ItemStack trigger) {
+            Block worldBlock = world.getBlock(x, y, z);
+            int meta = worldBlock.getDamageValue(world, x, y, z);
+            return TFFT_FIELD == worldBlock && meta != 0;
         }
 
         private int getHint(ItemStack stack) {
@@ -350,7 +361,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             .addOtherStructurePart(
                 "Multi I/O Hatches",
                 "Instead of any casing or glass, has to touch storage field block")
-            .addStructureInfo("Use MIOH with conduits or fluid storage busses to see all fluids at once.")
+            .addStructureInfo("Use MIOH with conduits or fluid storage buses to see all fluids at once.")
             .addSubChannelUsage("field", "Maximum Field Tier")
             .addSubChannelUsage("height", "Height of structure")
             .toolTipFinisher();
@@ -432,12 +443,13 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
+    public @NotNull CheckRecipeResult checkProcessing() {
         mEfficiency = getCurrentEfficiency(null);
         mEfficiencyIncrease = 10000;
         mEUt = this.runningCost;
         mMaxProgresstime = 20;
 
+        ItemStack itemStack = getControllerSlot();
         this.fluidSelector = (itemStack != null && itemStack.getItem() instanceof ItemIntegratedCircuit)
             ? (byte) itemStack.getItemDamage()
             : -1;
@@ -504,7 +516,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
 
         if (this.mEUt > 0) this.mEUt = -this.mEUt;
 
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override
@@ -583,18 +595,8 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
     public int getMaxEfficiency(ItemStack stack) {
         return 10000;
-    }
-
-    @Override
-    public int getPollutionPerTick(ItemStack stack) {
-        return 0;
     }
 
     @Override

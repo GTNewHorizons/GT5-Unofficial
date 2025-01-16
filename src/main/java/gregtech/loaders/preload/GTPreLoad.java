@@ -231,10 +231,10 @@ public class GTPreLoad {
                                 String[] tags = new String[] {};
                                 if (mIt == 1) tags = new String[] { "dustTiny", "dustSmall", "dust", "dustImpure",
                                     "dustPure", "crushed", "crushedPurified", "crushedCentrifuged", "gem", "nugget",
-                                    null, "ingot", "ingotHot", "ingotDouble", "ingotTriple", "ingotQuadruple",
-                                    "ingotQuintuple", "plate", "plateDouble", "plateTriple", "plateQuadruple",
-                                    "plateQuintuple", "plateDense", "stick", "lens", "round", "bolt", "screw", "ring",
-                                    "foil", "cell", "cellPlasma", "cellMolten", "rawOre", "plateSuperdense" };
+                                    null, "ingot", "ingotHot", null, null, null, null, "plate", "plateDouble",
+                                    "plateTriple", "plateQuadruple", "plateQuintuple", "plateDense", "stick", "lens",
+                                    "round", "bolt", "screw", "ring", "foil", "cell", "cellPlasma", "cellMolten",
+                                    "rawOre", "plateSuperdense" };
                                 if (mIt == 2) tags = new String[] { "toolHeadSword", "toolHeadPickaxe",
                                     "toolHeadShovel", "toolHeadAxe", "toolHeadHoe", "toolHeadHammer", "toolHeadFile",
                                     "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench",
@@ -258,15 +258,14 @@ public class GTPreLoad {
         }
 
         final String[] preS = new String[] { "dustTiny", "dustSmall", "dust", "dustImpure", "dustPure", "crushed",
-            "crushedPurified", "crushedCentrifuged", "gem", "nugget", "ingot", "ingotHot", "ingotDouble", "ingotTriple",
-            "ingotQuadruple", "ingotQuintuple", "plate", "plateDouble", "plateTriple", "plateQuadruple",
-            "plateQuintuple", "plateDense", "stick", "lens", "round", "bolt", "screw", "ring", "foil", "cell",
-            "cellPlasma", "toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe", "toolHeadHoe",
-            "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw", "toolHeadWrench",
-            "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow", "toolHeadBuzzSaw",
-            "turbineBlade", "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall", "spring", "arrowGtWood",
-            "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt", "nanite",
-            "cellMolten", "rawOre", "plateSuperdense" };
+            "crushedPurified", "crushedCentrifuged", "gem", "nugget", "ingot", "ingotHot", "plate", "plateDouble",
+            "plateTriple", "plateQuadruple", "plateQuintuple", "plateDense", "stick", "lens", "round", "bolt", "screw",
+            "ring", "foil", "cell", "cellPlasma", "toolHeadSword", "toolHeadPickaxe", "toolHeadShovel", "toolHeadAxe",
+            "toolHeadHoe", "toolHeadHammer", "toolHeadFile", "toolHeadSaw", "toolHeadDrill", "toolHeadChainsaw",
+            "toolHeadWrench", "toolHeadUniversalSpade", "toolHeadSense", "toolHeadPlow", "toolHeadArrow",
+            "toolHeadBuzzSaw", "turbineBlade", "wireFine", "gearGtSmall", "rotor", "stickLong", "springSmall", "spring",
+            "arrowGtWood", "arrowGtPlastic", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gearGt",
+            "nanite", "cellMolten", "rawOre", "plateSuperdense" };
 
         List<String> mMTTags = new ArrayList<>();
         oreTags.stream()
@@ -378,7 +377,7 @@ public class GTPreLoad {
         GTMod.gregtechproxy.mGTBees = Gregtech.general.GTBees;
         GTMod.gregtechproxy.mCraftingUnification = Gregtech.general.craftingUnification;
         GTMod.gregtechproxy.mNerfedWoodPlank = Gregtech.general.nerfedWoodPlank;
-        GTMod.gregtechproxy.mNerfedVanillaTools = Gregtech.general.nerfedVanillaTools;
+        GTMod.gregtechproxy.mChangeWoodenVanillaTools = Gregtech.general.changedWoodenVanillaTools;
         GTMod.gregtechproxy.mAchievements = Gregtech.general.achievements;
         GTMod.gregtechproxy.mHideUnusedOres = Gregtech.general.hideUnusedOres;
         GTMod.gregtechproxy.mEnableAllMaterials = Gregtech.general.enableAllMaterials;
@@ -416,8 +415,6 @@ public class GTPreLoad {
         GTValues.alwaysReloadChunkloaders = Gregtech.machines.alwaysReloadChunkloaders;
         GTValues.debugChunkloaders = Gregtech.debug.debugChunkloaders;
         GTValues.disableDigitalChestsExternalAccess = Gregtech.machines.disableDigitalChestsExternalAccess;
-        GTValues.enableMultiTileEntities = Gregtech.machines.enableMultiTileEntities
-            || (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
         GregTechAPI.sMachineExplosions = Gregtech.machines.machineExplosions;
         GregTechAPI.sMachineFlammable = Gregtech.machines.machineFlammable;
         GregTechAPI.sMachineNonWrenchExplosions = Gregtech.machines.machineNonWrenchExplosions;

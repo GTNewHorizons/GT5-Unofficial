@@ -205,7 +205,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAmperageOC(true);
-        logic.setAvailableVoltage(this.getMaxInputEu());
+        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
         logic.setAvailableAmperage(1);
         logic.setEuModifier(getEUMultiplier());
         logic.setMaxParallel(getParallels());
@@ -422,7 +422,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         batchMode = !batchMode;
         if (batchMode) {
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));

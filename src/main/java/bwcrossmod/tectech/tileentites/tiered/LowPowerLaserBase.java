@@ -25,6 +25,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 
+@Deprecated
 public abstract class LowPowerLaserBase extends MTETieredMachineBlock implements LowPowerLaser {
 
     protected long AMPERES;

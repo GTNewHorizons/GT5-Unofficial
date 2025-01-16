@@ -235,10 +235,6 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
         return 10000;
     }
 
-    public int getPollutionPerTick(ItemStack aStack) {
-        return 0;
-    }
-
     public int getDamageToComponent(ItemStack aStack) {
         return 0;
     }

@@ -56,7 +56,7 @@ public class MTELargeTurbineGasAdvanced extends MTELargeTurbine {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Gas Turbine")
+        tt.addMachineType("Gas Turbine, ALGT")
             .addInfo(EnumChatFormatting.RED + "DEPRECATED! This machine will be removed in the next major update.")
             .addInfo("Needs a Turbine, place inside controller")
             .addInfo("Only accepts gases above 800k EU/bucket")

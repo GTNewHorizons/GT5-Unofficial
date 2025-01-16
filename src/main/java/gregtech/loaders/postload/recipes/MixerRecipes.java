@@ -74,6 +74,16 @@ public class MixerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 1),
+                GTUtility.getIntegratedCircuit(5))
+            .itemOutputs(GTOreDictUnificator.getDust(Materials.TinAlloy, 2L * OrePrefixes.dust.mMaterialAmount))
+            .duration(5 * SECONDS)
+            .eut(8)
+            .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Invar, 3),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Manganese, 1),
@@ -1604,7 +1614,7 @@ public class MixerRecipes implements Runnable {
                     MaterialsUEVplus.DimensionallyTranscendentExoticCatalyst.getFluid(1000L),
                     Materials.Lead.getPlasma(1000),
                     Materials.Thorium.getPlasma(1000),
-                    Materials.Naquadria.getPlasma(1000L),
+                    Materials.Naquadria.getPlasma(100L),
                     MaterialsUEVplus.RawStarMatter.getFluid(25L))
                 .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.getFluid(1000L))
                 .duration(41 * MINUTES + 40 * SECONDS)

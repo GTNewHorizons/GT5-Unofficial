@@ -49,7 +49,7 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
 
     @Override
     public String getMachineType() {
-        return "Assembler";
+        return "Assembler, LSAA";
     }
 
     @Override
@@ -109,8 +109,18 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE_GLOW;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_GLOW;
     }
 
     @Override

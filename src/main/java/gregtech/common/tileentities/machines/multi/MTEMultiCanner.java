@@ -139,7 +139,7 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Canner/Fluid Canner")
+        tt.addMachineType("Canner, Fluid Canner")
             .addInfo("Use screwdriver to switch mode")
             .addInfo("100% faster than single block machines of the same voltage")
             .addInfo("Gains 8 parallels per voltage tier")

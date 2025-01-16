@@ -201,8 +201,18 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCAAdvancedEBFActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCAAdvancedEBF;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCAAdvancedEBFGlow;
     }
 
     @Override

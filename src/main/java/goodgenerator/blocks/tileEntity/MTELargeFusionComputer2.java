@@ -61,8 +61,6 @@ public class MTELargeFusionComputer2 extends MTELargeFusionComputer {
                 "If the recipe requires a voltage tier over " + GTUtility.getColoredTierNameFromTier((byte) tier())
                     + EnumChatFormatting.GRAY
                     + " , you can't do it either")
-            .addInfo("Make sure the whole structure is built in the 3x3")
-            .addInfo("chunk area of the ring center (not controller).")
             .addInfo("Startup < 160,000,000 EU: 128x Parallel")
             .addInfo("Startup >= 160,000,000 EU: 64x Parallel")
             .addTecTechHatchInfo()
@@ -75,7 +73,7 @@ public class MTELargeFusionComputer2 extends MTELargeFusionComputer {
             .addOutputHatch("1-16, Hint block with dot 1", 1)
             .addStructureInfo("Supports Crafting Input Buffer")
             .addStructureInfo(
-                "ALL Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) hatchTier())
+                "Energy Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) energyHatchTier())
                     + EnumChatFormatting.GRAY
                     + " or better")
             .toolTipFinisher();
@@ -123,7 +121,7 @@ public class MTELargeFusionComputer2 extends MTELargeFusionComputer {
     }
 
     @Override
-    public int hatchTier() {
+    public int energyHatchTier() {
         return 7;
     }
 

@@ -16,6 +16,7 @@ import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.ThaumicBases;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -156,6 +157,7 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
     private static List<Pair<Block, Integer>> getAllAnvilTiers(Map<Block, Integer> anvilTiers) {
         return anvilTiers.entrySet()
             .stream()
+            .sorted(Comparator.comparingInt(Map.Entry<Block, Integer>::getValue))
             .map(e -> Pair.of(e.getKey(), e.getValue()))
             .collect(Collectors.toList());
     }
@@ -192,8 +194,18 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCAIndustrialForgeHammerActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCAIndustrialForgeHammer;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCAIndustrialForgeHammerGlow;
     }
 
     @Override

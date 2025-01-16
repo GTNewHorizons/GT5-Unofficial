@@ -259,20 +259,6 @@ public class BookAndLootLoader implements Runnable {
         ChestGenHooks.addItem(
             "mineshaftCorridor",
             new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1L), 1, 4, 2));
-        ChestGenHooks.addItem(
-            "mineshaftCorridor",
-            new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadPickaxe, Materials.DamascusSteel, 1L),
-                1,
-                4,
-                1));
-        ChestGenHooks.addItem(
-            "mineshaftCorridor",
-            new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadShovel, Materials.DamascusSteel, 1L),
-                1,
-                4,
-                1));
 
         ChestGenHooks
             .addItem("villageBlacksmith", new WeightedRandomChestContent(ItemList.McGuffium_239.get(1L), 1, 1, 1));
@@ -319,19 +305,5 @@ public class BookAndLootLoader implements Runnable {
         ChestGenHooks
             .addItem("strongholdCrossing", new WeightedRandomChestContent(ItemList.McGuffium_239.get(1L), 1, 1, 10));
 
-        ChestGenHooks.addItem(
-            "strongholdCorridor",
-            new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadSword, Materials.DamascusSteel, 1L),
-                1,
-                4,
-                6));
-        ChestGenHooks.addItem(
-            "strongholdCorridor",
-            new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.toolHeadAxe, Materials.DamascusSteel, 1L),
-                1,
-                4,
-                6));
     }
 }

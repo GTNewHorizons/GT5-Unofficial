@@ -247,8 +247,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public void issueCoverUpdate(ForgeDirection side) {
-        // If we've got a null worldObj we're getting called as a part of readingNBT from a non tickable MultiTileEntity
-        // on chunk load before the world is set, so we'll want to send a cover update.
         final CoverInfo coverInfo = getCoverInfoAtSide(side);
         if (worldObj == null || (isServerSide() && coverInfo.isDataNeededOnClient())) coverInfo.setNeedsUpdate(true);
     }
@@ -421,6 +419,21 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return true;
     }
 
+    @Override
+    public ItemStack removeCoverAtSide(ForgeDirection side, boolean aForced) {
+        final CoverInfo coverInfo = getCoverInfoAtSide(side);
+        if (!coverInfo.isValid()) return null;
+        if (!coverInfo.onCoverRemoval(aForced) && !aForced) return null;
+        final ItemStack tStack = coverInfo.getDrop();
+        if (tStack != null) {
+            coverInfo.onDropped();
+        }
+        clearCoverInfoAtSide(side);
+        updateOutputRedstoneSignal(side);
+
+        return tStack;
+    }
+
     protected void onBaseTEDestroyed() {
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             final CoverInfo coverInfo = getCoverInfoAtSide(side);
@@ -444,6 +457,21 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     public void setStrongOutputRedstoneSignal(ForgeDirection side, byte strength) {
         mStrongRedstone |= (byte) side.flag;
         setOutputRedstoneSignal(side, strength);
+    }
+
+    @Override
+    public void setRedstoneOutputStrength(ForgeDirection side, boolean isStrong) {
+        if (isStrong) {
+            mStrongRedstone |= (byte) side.flag;
+        } else {
+            mStrongRedstone &= ~(byte) side.flag;
+        }
+        setOutputRedstoneSignal(side, mSidedRedstone[side.ordinal()]);
+    }
+
+    @Override
+    public boolean getRedstoneOutputStrength(ForgeDirection side) {
+        return (mStrongRedstone & side.flag) != 0;
     }
 
     @Override

@@ -43,7 +43,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.api.tool.ITool;
 import forestry.api.arboriculture.IToolGrafter;
-import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.Materials;
@@ -256,7 +255,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
      */
     @Mod.EventHandler
     public void onHarvestBlockEvent(ArrayList<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock,
-        int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+        int aX, int aY, int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         IToolStats tStats = getToolStats(aStack);
         if (isItemStackUsable(aStack) && getDigSpeed(aStack, aBlock, aMetaData) > 0.0F) doDamage(
             aStack,
@@ -267,7 +266,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     @Mod.EventHandler
     public float onBlockBreakSpeedEvent(float aDefault, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
-        int aY, int aZ, byte aMetaData, PlayerEvent.BreakSpeed aEvent) {
+        int aY, int aZ, int aMetaData, PlayerEvent.BreakSpeed aEvent) {
         IToolStats tStats = getToolStats(aStack);
         return tStats == null ? aDefault
             : tStats.getMiningSpeed(aBlock, aMetaData, aDefault, aPlayer, aPlayer.worldObj, aX, aY, aZ);
@@ -649,6 +648,15 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return doDamage(aStack, aVanillaDamage * 100L);
     }
 
+    private static boolean playSound = true;
+
+    public final boolean doDamageNoSound(ItemStack aStack, long aAmount) {
+        playSound = false;
+        boolean ret = doDamage(aStack, aAmount);
+        playSound = true;
+        return ret;
+    }
+
     public final boolean doDamage(ItemStack aStack, long aAmount) {
         if (!isItemStackUsable(aStack)) return false;
         Long[] tElectric = getElectricStats(aStack);
@@ -658,7 +666,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             if (tNewDamage >= getToolMaxDamage(aStack)) {
                 IToolStats tStats = getToolStats(aStack);
                 if (tStats == null || GTUtility.setStack(aStack, tStats.getBrokenItem(aStack)) == null) {
-                    if (tStats != null) GTUtility.doSoundAtClient(tStats.getBreakingSound(), 1, 1.0F);
+                    if (tStats != null && playSound) GTUtility.doSoundAtClient(tStats.getBreakingSound(), 1, 1.0F);
                     if (aStack.stackSize > 0) aStack.stackSize--;
                 }
             }
@@ -672,7 +680,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 if (tNewDamage >= getToolMaxDamage(aStack)) {
                     IToolStats tStats = getToolStats(aStack);
                     if (tStats == null || GTUtility.setStack(aStack, tStats.getBrokenItem(aStack)) == null) {
-                        if (tStats != null) GTUtility.doSoundAtClient(tStats.getBreakingSound(), 1, 1.0F);
+                        if (tStats != null && playSound) GTUtility.doSoundAtClient(tStats.getBreakingSound(), 1, 1.0F);
                         if (aStack.stackSize > 0) aStack.stackSize--;
                     }
                 }
@@ -687,14 +695,14 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         if (!isItemStackUsable(aStack)) return 0.0F;
         IToolStats tStats = getToolStats(aStack);
         if (tStats == null || Math.max(0, getHarvestLevel(aStack, "")) < aBlock.getHarvestLevel(aMetaData)) return 0.0F;
-        return tStats.isMinableBlock(aBlock, (byte) aMetaData)
+        return tStats.isMinableBlock(aBlock, aMetaData)
             ? Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed)
             : 0.0F;
     }
 
     @Override
     public final boolean canHarvestBlock(Block aBlock, ItemStack aStack) {
-        return getDigSpeed(aStack, aBlock, (byte) 0) > 0.0F;
+        return getDigSpeed(aStack, aBlock, 0) > 0.0F;
     }
 
     @Override
@@ -731,13 +739,12 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         aStack = GTUtility.copyAmount(1, aStack);
         IToolStats tStats = getToolStats(aStack);
         if (tStats == null) return null;
-        doDamage(aStack, tStats.getToolDamagePerContainerCraft());
-        aStack = aStack.stackSize > 0 ? aStack : null;
-        if (playSound && GTMod.gregtechproxy.mTicksUntilNextCraftSound <= 0) {
-            GTMod.gregtechproxy.mTicksUntilNextCraftSound = 10;
-            String sound = (aStack == null) ? tStats.getBreakingSound() : tStats.getCraftingSound();
-            GTUtility.doSoundAtClient(sound, 1, 1.0F);
+        if (playSound) {
+            doDamage(aStack, tStats.getToolDamagePerContainerCraft());
+        } else {
+            doDamageNoSound(aStack, tStats.getToolDamagePerContainerCraft());
         }
+        aStack = aStack.stackSize > 0 ? aStack : null;
         return aStack;
     }
 

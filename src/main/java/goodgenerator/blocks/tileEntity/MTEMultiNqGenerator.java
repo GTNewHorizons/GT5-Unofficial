@@ -379,11 +379,6 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     @Override
-    public int getPollutionPerTick(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 0;
     }
@@ -431,6 +426,10 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
             .addTecTechHatchInfo()
             .beginStructureBlock(7, 8, 7, true)
             .addController("Front bottom")
+            .addCasingInfoExactly("Field Restriction Casing", 48, false)
+            .addCasingInfoExactly("Radiation Proof Steel Frame Box", 36, false)
+            .addCasingInfoExactly("Tungstensteel Pipe Casing", 6, false)
+            .addCasingInfoExactly("Radiation Proof Machine Casing", 121, false)
             .addDynamoHatch("Any bottom layer casing, only accept ONE!")
             .addInputHatch("Any bottom layer casing")
             .addOutputHatch("Any bottom layer casing")

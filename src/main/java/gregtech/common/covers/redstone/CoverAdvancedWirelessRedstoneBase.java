@@ -150,6 +150,11 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
 
     @Override
     public int getTickRateImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+        return 1;
+    }
+
+    @Override
+    protected int getDefaultTickRateImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
         return 5;
     }
 

@@ -101,8 +101,8 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
         tt.addMachineType(getMachineType())
             .addInfo("This Multiblock is used for EXTREME packaging requirements")
             .addInfo("Can be configured with a screwdriver to work as an Unpackager")
-            .addInfo("Dust Schematics are inserted into the input busses")
-            .addInfo("If inserted into the controller, it is shared across all busses")
+            .addInfo("Dust Schematics are inserted into the input buses")
+            .addInfo("If inserted into the controller, it is shared across all buses")
             .addInfo("1x, 2x, 3x & Other Schematics are to be placed into the controller GUI slot")
             .addInfo("500% faster than using single block machines of the same voltage")
             .addInfo("Only uses 75% of the EU/t normally required")
@@ -126,8 +126,18 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCAAmazonPackagerActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCAAmazonPackager;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCAAmazonPackagerGlow;
     }
 
     @Override

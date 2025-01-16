@@ -118,7 +118,7 @@ public class MTEIndustrialExtruder extends GTPPMultiBlockBase<MTEIndustrialExtru
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_COMPRESSOR_OP;
+        return SoundResource.IC2_MACHINES_INDUCTION_LOOP;
     }
 
     @Override
@@ -127,8 +127,18 @@ public class MTEIndustrialExtruder extends GTPPMultiBlockBase<MTEIndustrialExtru
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCDIndustrialExtruderActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCDIndustrialExtruder;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCDIndustrialExtruderGlow;
     }
 
     @Override

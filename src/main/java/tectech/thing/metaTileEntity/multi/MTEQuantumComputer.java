@@ -263,7 +263,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             return SimpleCheckRecipeResult.ofFailure("no_computing");
         }
         if (overclock.getStatus(true).isOk && overvolt.getStatus(true).isOk) {
-            float eut = V[7] * (float) overClockRatio * (float) overVoltageRatio;
+            float eut = Math.max(V[6], V[7] * (float) overClockRatio * (float) overVoltageRatio);
             if (eut < Integer.MAX_VALUE - 7) {
                 mEUt = -(int) eut;
             } else {
@@ -347,8 +347,9 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.computer.name")) // Machine Type: Quantum
-                                                                                              // Computer
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.computer.machinetype")) // Machine Type:
+                                                                                                     // Quantum
+            // Computer
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.0")) // Controller block of
                                                                                            // the Quantum Computer
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.1")) // Used to generate

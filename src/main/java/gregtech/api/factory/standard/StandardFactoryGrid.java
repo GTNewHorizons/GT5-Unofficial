@@ -198,6 +198,7 @@ public abstract class StandardFactoryGrid<TSelf extends StandardFactoryGrid<TSel
 
         long post = System.nanoTime();
 
+        // temporary logging so that I can see what the performance is like
         LOGGER.info(
             "Split network in " + (post - pre) / 1e3
                 + " us (added "
@@ -221,12 +222,15 @@ public abstract class StandardFactoryGrid<TSelf extends StandardFactoryGrid<TSel
 
     @Override
     public void subsume(TNetwork dest, TNetwork source) {
+        source.onNetworkSubsumedPre(dest);
+
         for (TElement element : new ArrayList<>(source.getElements())) {
             source.removeElement(element);
             element.setNetwork(dest);
             dest.addElement(element);
         }
 
+        source.onNetworkSubsumedPost(dest);
         source.onNetworkRemoved();
         this.networks.remove(source);
     }

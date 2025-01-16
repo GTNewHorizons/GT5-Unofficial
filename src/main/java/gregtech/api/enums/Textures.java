@@ -133,6 +133,8 @@ public class Textures {
         SOLARPANEL_LuV,
         SOLARPANEL_ZPM,
 
+        OVERLAY_SOLAR_PANEL,
+
         SOLARPANEL_UV,
         SOLARPANEL_UHV,
         SOLARPANEL_UEV,
@@ -1458,12 +1460,19 @@ public class Textures {
         BLOCK_QUARK_CONTAINMENT_CASING,
         COMPRESSOR_CASING,
         COMPRESSOR_PIPE_CASING,
+        HEATING_DUCT_CASING,
+        COOLANT_DUCT_CASING,
         NEUTRONIUM_CASING,
         NEUTRONIUM_ACTIVE_CASING,
         NEUTRONIUM_STABLE_CASING,
         EXTREME_DENSITY_CASING,
         RADIATION_ABSORBENT_CASING,
-        HAWKING_GLASS;
+        HAWKING_GLASS,
+        OVERLAY_NANITE_HATCH,
+        OVERLAY_NANITE_HATCH_GLOW
+
+        // semicolon after the comment to reduce merge conflicts
+        ;
 
         /**
          * Icon for Fresh CFoam

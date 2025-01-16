@@ -181,8 +181,18 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return TexturesGtBlock.oMCDIndustrialWashPlantActiveGlow;
+    }
+
+    @Override
     protected IIconContainer getInactiveOverlay() {
         return TexturesGtBlock.oMCDIndustrialWashPlant;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return TexturesGtBlock.oMCDIndustrialWashPlantGlow;
     }
 
     @Override
@@ -303,7 +313,6 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
             for (int j = mOffsetZ_Lower + 1; j <= mOffsetZ_Upper - 1; ++j) {
                 for (int h = 0; h < 2; ++h) {
                     Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-                    byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
                     if (tBlock == Blocks.air || tBlock == Blocks.flowing_water || tBlock == Blocks.water) {
                         if (this.getStoredFluids() != null) {
                             for (FluidStack stored : this.getStoredFluids()) {

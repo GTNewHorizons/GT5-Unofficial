@@ -65,6 +65,7 @@ import gregtech.common.blocks.BlockCasings5;
 import gregtech.common.blocks.BlockCasings6;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.blocks.BlockCasings9;
+import gregtech.common.blocks.BlockCasingsNH;
 import gregtech.common.blocks.BlockConcretes;
 import gregtech.common.blocks.BlockCyclotronCoils;
 import gregtech.common.blocks.BlockDrone;
@@ -546,6 +547,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockCasings10 = new BlockCasings10();
         GregTechAPI.sBlockCasings11 = new BlockCasings11();
         GregTechAPI.sBlockCasings12 = new BlockCasings12();
+        GregTechAPI.sBlockCasingsNH = new BlockCasingsNH();
         GregTechAPI.sBlockGranites = new BlockGranites();
         GregTechAPI.sBlockLongDistancePipes = new BlockLongDistancePipe();
         GregTechAPI.sBlockConcretes = new BlockConcretes();
@@ -2037,13 +2039,6 @@ public class LoaderGTBlockFluid implements Runnable {
                 API.hideItem(ItemList.Display_Fluid.getWildcard(1L));
             }
         }
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.cobblestone, 1, WILDCARD))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.gravel, 1, WILDCARD))

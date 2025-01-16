@@ -13,15 +13,12 @@ import net.minecraft.util.EnumChatFormatting;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
-import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
-import appeng.util.ReadableNumberConverter;
 import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.PositionedStack;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
@@ -85,19 +82,7 @@ public class SpaceProjectFrontend extends RecipeMapFrontend {
 
     @Override
     public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
-        for (PositionedStack stack : neiCachedRecipe.mInputs) {
-            if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack pStack && stack.item != null
-                && !pStack.isFluid()) {
-                int stackSize = ((GTNEIDefaultHandler.FixedPositionedStack) stack).realStackSize;
-                String displayString;
-                if (stack.item.stackSize > 9999) {
-                    displayString = ReadableNumberConverter.INSTANCE.toWideReadableForm(stackSize);
-                } else {
-                    displayString = String.valueOf(stackSize);
-                }
-                drawNEIOverlayText(displayString, stack, 0xffffff, 0.5f, true, Alignment.BottomRight);
-            }
-        }
+        super.drawNEIOverlays(neiCachedRecipe);
         if (neiCachedRecipe.mRecipe instanceof FakeSpaceProjectRecipe) {
             ISpaceProject project = SpaceProjectManager
                 .getProject(((FakeSpaceProjectRecipe) neiCachedRecipe.mRecipe).projectName);

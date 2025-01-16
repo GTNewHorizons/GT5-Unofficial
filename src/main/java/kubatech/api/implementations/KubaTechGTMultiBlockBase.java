@@ -314,9 +314,9 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
         drawTexts(screenElements, !slotWidgets.isEmpty() ? slotWidgets.get(0) : null);
         builder.widget(
             new Scrollable().setVerticalScroll()
-                .widget(screenElements.setPos(10, 0))
-                .setPos(0, 7)
-                .setSize(190, 79));
+                .widget(screenElements)
+                .setPos(10, 7)
+                .setSize(182, 79));
 
         builder.widget(createPowerSwitchButton(builder))
             .widget(createVoidExcessButton(builder))
