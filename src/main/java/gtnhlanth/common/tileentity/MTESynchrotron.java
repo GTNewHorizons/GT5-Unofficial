@@ -1,9 +1,9 @@
 package gtnhlanth.common.tileentity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksFlat;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
-
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
@@ -22,13 +22,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import bartworks.API.BorosilicateGlass;
 import gregtech.api.GregTechAPI;
@@ -460,8 +463,12 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 // Adder overriden due to ExoticEnergy originally calling its own adder, giving false positives
                 .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy.or(ExoticEnergy), 4)).adder(MTESynchrotron::addEnergyInputToMachineList).dot(6).casingIndex(CASING_INDEX).build())
                 .addElement('n', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
-                //.addElement('a', ofBlockAdder(MTESynchrotron::addAntenna, LanthItemList.ANTENNA_CASING_T1, 0)) //Antenna Casings
-                .addElement('a', ofBlocksFlat(allowedAntennas, LanthItemList.ANTENNA_CASING_T1, 0))
+                .addElement('a', withChannel("antenna", StructureUtility.ofBlocksTiered(
+                		(Block block, int meta) -> (block == LanthItemList.ANTENNA_CASING_T1 ? 1 : block == LanthItemList.ANTENNA_CASING_T2 ? 2 : -1), 
+                		ImmutableList.of(
+                				Pair.of(LanthItemList.ANTENNA_CASING_T1, 0),
+                				Pair.of(LanthItemList.ANTENNA_CASING_T2, 0)),
+                		-2, MTESynchrotron::setAntennaTier, MTESynchrotron::getAntennaTier)))
                 .addElement('i', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(InputHatch, 2)).dot(4).casingIndex(CASING_INDEX).build())
                 .addElement('o', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(OutputHatch, 2)).dot(5).casingIndex(CASING_INDEX).build())
                 .addElement('v', buildHatchAdder(MTESynchrotron.class).hatchClass(MTEHatchInputBeamline.class).casingIndex(CASING_INDEX)
@@ -472,7 +479,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 .addElement('j',
                 		buildHatchAdder(MTESynchrotron.class).atLeast(Maintenance).dot(3).casingIndex(CASING_INDEX)
                 		.buildAndChain(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-
+	
                 .build();
 
 
@@ -700,22 +707,13 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
          * return false;
          */
     }
-
-    private boolean addAntenna(Block block, int meta) {
-
-        if (block == null) return false;
-
-        if (!(block instanceof BlockAntennaCasing antennaBlock)) return false;
-
-        int antennaTier = antennaBlock.getTier();
-
-        // First antenna casing added
-        if (this.mAntennaCasings.isEmpty()) this.antennaeTier = antennaTier;
-
-        if (antennaTier != this.antennaeTier) return false;
-
-        return mAntennaCasings.add(antennaBlock);
-
+    
+    public void setAntennaTier(int t) {
+    	this.antennaeTier = t;
+    }
+    
+    public int getAntennaTier() {
+    	return this.antennaeTier;
     }
 
     @Override
@@ -1088,7 +1086,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         this.energyHatchAmperage = 0;
         this.usingExotic = false;
 
-        this.antennaeTier = 0;
+        this.antennaeTier = -2;
 
         this.glassTier = 0;
 
@@ -1100,7 +1098,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         if (!checkPiece(STRUCTURE_PIECE_ENTRANCE, 16, 3, 1)) return false;
         if (!checkPiece(STRUCTURE_PIECE_BASE, 16, 3, 0)) return false;
 
-        return this.mInputBeamline.size() == 1 && this.mOutputBeamline.size() == 1
+        return this.mInputBeamline.size() == 1 && this.mOutputBeamline.size() == 1 && this.antennaeTier > 0
             && this.mMaintenanceHatches.size() == 1
             && (this.mEnergyHatches.size() == 4 || this.mExoticEnergyHatches.size() == 4)
             && this.glassTier >= MIN_GLASS_TIER;
