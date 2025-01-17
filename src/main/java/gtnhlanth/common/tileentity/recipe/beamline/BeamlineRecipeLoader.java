@@ -151,8 +151,8 @@ public class BeamlineRecipeLoader {
             // Non-wafer recipes
 
             BeamlineRecipeAdder2.instance.addTargetChamberRecipe(
-                GTUtility.copyAmountUnsafe(1, mask.getTCTargetItem()),
-                GTUtility.copyAmountUnsafe(4, mask.getProducedItem()),
+                GTUtility.copyAmountUnsafe(mask.getTargetAmount(), mask.getTCTargetItem()),
+                GTUtility.copyAmountUnsafe(mask.getOutputAmount(), mask.getProducedItem()),
                 new ItemStack(LanthItemList.maskMap.get(mask), 0),
                 1,
                 mask.getBaselineAmount(),

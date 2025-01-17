@@ -173,7 +173,12 @@ public final class LanthItemList {
                     new ItemStack(maskItem));
             }
 
-            GTLanguageManager.addStringLocalization(maskItem.getUnlocalizedName() + ".name", "Mask (" + english + ")");
+            if (!mask.getHasCustomName()) {
+                GTLanguageManager
+                    .addStringLocalization(maskItem.getUnlocalizedName() + ".name", "Mask (" + english + ")");
+            } else {
+                GTLanguageManager.addStringLocalization(maskItem.getUnlocalizedName() + ".name", english);
+            }
 
             maskMap.put(mask, maskItem);
 

@@ -4,7 +4,10 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.GTOreDictUnificator;
 
 public enum MaskList {
 
@@ -90,15 +93,20 @@ public enum MaskList {
         ItemList.Circuit_Silicon_Wafer3, ItemList.Circuit_Silicon_Wafer4), // Different base mask to PIC
 
     CCPU("ccpu", "Crystal Central Processing Unit", 100, "", CBLANK, Dyes.dyeGreen, 10_000, 1, 3, 50, 6,
-        ItemList.Circuit_Chip_CrystalCPU.get(1), ItemList.Circuit_Parts_Crystal_Chip_Elite.get(1)), // For producing
-                                                                                                    // Crystal CPUs from
-                                                                                                    // Engraved CCs
+        ItemList.Circuit_Chip_CrystalCPU.get(1), ItemList.Circuit_Parts_Crystal_Chip_Elite.get(1), 1, 4, false), // For
+                                                                                                                 // producing
+    // Crystal CPUs from
+    // Engraved CCs
     CSOC("csoc", "Crystal SoC", 100, "", CBLANK, Dyes.dyeBlue, 40_000, 2, 7, 50, 8,
-        ItemList.Circuit_Chip_CrystalSoC.get(1), ItemList.Circuit_Chip_CrystalCPU.get(1)),
+        ItemList.Circuit_Chip_CrystalSoC.get(1), ItemList.Circuit_Chip_CrystalCPU.get(1), 1, 4, false),
     ACC("acc", "Advanced Crystal Chip", 100, "", CBLANK, Dyes.dyeLime, 80_000, 3, 9, 55, 12,
-        ItemList.Circuit_Chip_CrystalSoC2.get(1), ItemList.Circuit_Chip_CrystalSoC.get(1)),
+        ItemList.Circuit_Chip_CrystalSoC2.get(1), ItemList.Circuit_Chip_CrystalSoC.get(1), 1, 4, false),
     LCC("lcc", "Living Crystal Chip", 75, "", CBLANK, Dyes.dyeWhite, 160_000, 5, 12, 60, 16,
-        ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(1), ItemList.Circuit_Chip_CrystalSoC2.get(1))
+        ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(1), ItemList.Circuit_Chip_CrystalSoC2.get(1), 1, 4, false),
+
+    HEVP("hevp", "High energy Vyroxeres Plating", 512, "", null, Dyes._NULL, 160_000, 10, 20, 8, 12,
+        GTOreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 1),
+        GTOreDictUnificator.get(OrePrefixes.dust, Materials.InfinityCatalyst, 1), 64, 8, true)
 
     ;
 
@@ -122,7 +130,34 @@ public enum MaskList {
     ItemStack tcTargetItem;
     ItemStack producedItem;
 
+    int targetAmount;
+    int outputAmount;
+
+    boolean customName;
     ItemList[] forbiddenWafers;
+
+    MaskList(String name, String englishName, int maxUses, String spectrum, MaskList precursor, Dyes lensColour,
+        long engraverEUt, float minEnergy, float maxEnergy, float minFocus, int baselineAmount, ItemStack producedItem,
+        ItemStack tcTargetItem, int targetAmount, int outputAmount, boolean customName, ItemList... forbiddenWafers) {
+        this.name = name;
+        this.englishName = englishName;
+        this.spectrum = spectrum;
+        this.maxDamage = maxUses - 1; // 0-durability masks still function, so e.g. maxUses = 100 corresponds to
+                                      // durability levels 0-99
+        this.precursor = precursor;
+        this.lensColour = lensColour;
+        this.engraverEUt = engraverEUt;
+        this.minFocus = minFocus;
+        this.minEnergy = minEnergy;
+        this.maxEnergy = maxEnergy;
+        this.baselineAmount = baselineAmount;
+        this.tcTargetItem = tcTargetItem;
+        this.producedItem = producedItem;
+        this.forbiddenWafers = forbiddenWafers;
+        this.targetAmount = targetAmount;
+        this.outputAmount = outputAmount;
+        this.customName = customName;
+    }
 
     MaskList(String name, String englishName, int maxUses, String spectrum, MaskList precursor, Dyes lensColour,
         long engraverEUt, float minEnergy, float maxEnergy, float minFocus, int baselineAmount, ItemStack producedItem,
@@ -131,7 +166,7 @@ public enum MaskList {
         this.englishName = englishName;
         this.spectrum = spectrum;
         this.maxDamage = maxUses - 1; // 0-durability masks still function, so e.g. maxUses = 100 corresponds to
-                                      // durability levels 0-99
+        // durability levels 0-99
         this.precursor = precursor;
         this.lensColour = lensColour;
         this.engraverEUt = engraverEUt;
@@ -194,6 +229,18 @@ public enum MaskList {
 
     public ItemStack getProducedItem() {
         return this.producedItem;
+    }
+
+    public int getTargetAmount() {
+        return this.targetAmount;
+    }
+
+    public int getOutputAmount() {
+        return this.outputAmount;
+    }
+
+    public boolean getHasCustomName() {
+        return this.customName;
     }
 
     public ItemList[] getForbiddenWafers() {

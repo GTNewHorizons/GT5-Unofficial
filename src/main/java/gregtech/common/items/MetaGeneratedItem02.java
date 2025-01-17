@@ -2393,8 +2393,6 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 VyroxeresCanvas.ID,
                 "Low-Potential Vyroxeres Canvas",
                 "Capable of absorbing humongous amounts of energy"));
-        ItemList.VyroxeresPlating
-            .set(addItem(VyroxeresPlating.ID, "High-Energy Vyroxeres Plating", "Enough energy to go back in time"));
         ItemList.WeakInfinityCatalyst.set(addItem(WeakInfinityCatalyst.ID, "Weak Condensed Anomaly", "Not there yet"));
         ItemList.CrystalCube.set(addItem(CrystalCube.ID, "Hollow Crystal Cube", "Infinite Reflection"));
         ItemList.FractalAnomaly

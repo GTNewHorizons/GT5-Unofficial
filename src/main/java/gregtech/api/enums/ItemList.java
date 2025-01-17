@@ -2593,7 +2593,6 @@ public enum ItemList implements IItemContainer {
     Phononic_Seed_Crystal,
     Combined_Catalyst,
     VyroxeresCanvas,
-    VyroxeresPlating,
     WeakInfinityCatalyst,
     CrystalCube,
     FractalAnomaly,

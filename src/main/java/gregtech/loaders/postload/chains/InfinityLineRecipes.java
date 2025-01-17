@@ -16,6 +16,9 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.vacuumFurnaceRecipes;
 
+import gtnhlanth.common.item.MaskList;
+import gtnhlanth.common.register.LanthItemList;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
@@ -57,7 +60,7 @@ public class InfinityLineRecipes {
                 getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.InertTaranium, 64),
-                ItemList.VyroxeresPlating.get(1)) // TODO make this item compatible with beamline
+                new ItemStack(LanthItemList.maskMap.get(MaskList.HEVP),1)) // TODO make this item compatible with beamline
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(laserEngraverRecipes);
