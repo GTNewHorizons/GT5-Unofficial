@@ -355,9 +355,4 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
         tItems.removeAll(Collections.singleton(null));
         return tItems;
     }
-
-    @Override
-    public boolean doesBindPlayerInventory() {
-        return false;
-    }
 }
