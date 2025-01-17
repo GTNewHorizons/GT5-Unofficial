@@ -47,6 +47,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ggfab.mte.MTELinkedInputBus;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -54,6 +55,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.objects.XSTR;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
@@ -67,6 +69,7 @@ import gregtech.api.util.ParallelHelper;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
+import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gtPlusPlus.core.material.MaterialsElements;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import tectech.TecTech;
@@ -281,13 +284,16 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             return SimpleCheckRecipeResult.ofFailure("no_plasma");
         }
 
+        // Check for valid item inputs
+        ItemStack[] itemInputs = validInputs();
+
         // Look for a valid plasma to start a mining operation
         for (FluidStack fluidStack : inputFluids) {
             int availablePlasmaTier = getTierFromPlasma(fluidStack);
             if (availablePlasmaTier > 0) {
                 // Check if valid inputs for a mining operation are present
                 CheckRecipeResult result = process(
-                        getStoredInputs().toArray(new ItemStack[0]),
+                        itemInputs,
                         inputFluids.toArray(new FluidStack[0]),
                         availablePlasmaTier,
                         fluidStack,
@@ -300,6 +306,20 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         }
         cycleDistance();
         return CheckRecipeResultRegistry.NO_RECIPE;
+    }
+
+    /** Determine which drones and items are in the correct buses */
+    protected ItemStack[] validInputs() {
+        ArrayList<ItemStack> validatedInputs = new ArrayList<>();
+        for (MTEHatchInputBus inputBus : mInputBusses) {
+            ArrayList<ItemStack> busItems = new ArrayList<>(Arrays.asList(inputBus.getRealInventory()));
+            // No drone sharing
+            if (inputBus instanceof MTEHatchInputBusME || inputBus instanceof MTELinkedInputBus) {
+                busItems.removeIf(item -> item != null && item.getItem() instanceof ItemMiningDrones);
+            }
+            validatedInputs.addAll(busItems);
+        }
+        return validatedInputs.toArray(new ItemStack[0]);
     }
 
     /**
@@ -453,6 +473,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         for (ItemStack input : inputs) {
             // XXX: all space mining recipes are nbt insensitive, but if this ever changes, we would need to compare
             // items including nbt
+            if (input == null) continue;
             GTUtility.ItemId key = GTUtility.ItemId.createWithoutNBT(input);
             itemCounts.merge(key, (long) input.stackSize, Long::sum);
         }
@@ -997,6 +1018,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t1.desc5"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT1"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
@@ -1094,6 +1116,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t2.desc5"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
@@ -1191,6 +1214,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t3.desc5"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT3"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
