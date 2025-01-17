@@ -15,7 +15,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -60,6 +59,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.blocks.BlockCasings9;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import tectech.thing.gui.TecTechUITextures;
 
 public class MTESpatialAnomalyContainmentChamber
@@ -118,7 +118,7 @@ public class MTESpatialAnomalyContainmentChamber
         super(aName);
     }
 
-    //Saves and Loads NBT to recover info on server restart and not crash
+    // Saves and Loads NBT to recover info on server restart and not crash
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -269,7 +269,7 @@ public class MTESpatialAnomalyContainmentChamber
 
         if (!aBaseMetaTileEntity.isServerSide()) return;
 
-        //Skips further logic if on the first seconds of the server to avoid crashing on restart
+        // Skips further logic if on the first seconds of the server to avoid crashing on restart
         if ((!active || aTick % 20 != 0) || (aTick < 100)) return;
 
         if (drain(stabilizerHatch, stabilizer, false)) {

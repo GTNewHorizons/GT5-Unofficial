@@ -16,8 +16,6 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.vacuumFurnaceRecipes;
 
-import gtnhlanth.common.item.MaskList;
-import gtnhlanth.common.register.LanthItemList;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -30,6 +28,8 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsElements;
+import gtnhlanth.common.item.MaskList;
+import gtnhlanth.common.register.LanthItemList;
 
 public class InfinityLineRecipes {
 
@@ -60,7 +60,7 @@ public class InfinityLineRecipes {
                 getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.InertTaranium, 64),
-                new ItemStack(LanthItemList.maskMap.get(MaskList.HEVP),1)) // TODO make this item compatible with beamline
+                new ItemStack(LanthItemList.maskMap.get(MaskList.HEVP), 1))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(laserEngraverRecipes);
@@ -93,8 +93,9 @@ public class InfinityLineRecipes {
             .addTo(neutroniumCompressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.CosmicNeutronium, 24),
-            ItemList.FractalAnomaly.get(1))
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.CosmicNeutronium, 24),
+                ItemList.FractalAnomaly.get(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Infinity, 1))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_UEV)

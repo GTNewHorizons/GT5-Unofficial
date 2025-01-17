@@ -216,7 +216,6 @@ import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Latte;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Tea;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Tea;
 import static gregtech.common.items.IDMetaItem02.VyroxeresCanvas;
-import static gregtech.common.items.IDMetaItem02.VyroxeresPlating;
 import static gregtech.common.items.IDMetaItem02.WeakInfinityCatalyst;
 
 import net.minecraft.enchantment.Enchantment;

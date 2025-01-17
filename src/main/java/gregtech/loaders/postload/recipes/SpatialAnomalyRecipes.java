@@ -18,9 +18,7 @@ public class SpatialAnomalyRecipes implements Runnable {
     public void run() {
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.WeakInfinityCatalyst.get(11),
-                ItemList.CrystalCube.get(1))
+            .itemInputs(ItemList.WeakInfinityCatalyst.get(11), ItemList.CrystalCube.get(1))
             .itemOutputs(ItemList.FractalAnomaly.get(1))
             .duration(5 * SECONDS)
             .metadata(ANOMALY_TYPE, 1)
