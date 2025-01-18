@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
@@ -104,8 +105,9 @@ public enum MaskList {
     LCC("lcc", "Living Crystal Chip", 75, "", CBLANK, Dyes.dyeWhite, 160_000, 5, 12, 60, 16,
         ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(1), ItemList.Circuit_Chip_CrystalSoC2.get(1), 1, 4, false),
 
-    HEVP("hevp", "High energy Vyroxeres Plating", 512, "", null, Dyes._NULL, 160_000, 10, 20, 8, 12,
-        GTOreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 1),
+    // Vyroxeres Plating for Infline
+    HEVP("hevp", "High energy Vyroxeres Plating", 512, "", null, Dyes._NULL, 160_000, 0.5f, 3, 40, 1,
+        GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.QuanticalDisturbance, 1),
         GTOreDictUnificator.get(OrePrefixes.dust, Materials.InfinityCatalyst, 1), 64, 8, true)
 
     ;

@@ -117,6 +117,7 @@ import static gregtech.common.items.IDMetaItem02.Dye_Color_13;
 import static gregtech.common.items.IDMetaItem02.Dye_Color_14;
 import static gregtech.common.items.IDMetaItem02.Dye_Color_15;
 import static gregtech.common.items.IDMetaItem02.Dye_Indigo;
+import static gregtech.common.items.IDMetaItem02.FilledFractalCell;
 import static gregtech.common.items.IDMetaItem02.Food_Baked_Baguette;
 import static gregtech.common.items.IDMetaItem02.Food_Baked_Bun;
 import static gregtech.common.items.IDMetaItem02.Food_Baked_Cake;
@@ -172,6 +173,7 @@ import static gregtech.common.items.IDMetaItem02.Food_Sliced_Lemon;
 import static gregtech.common.items.IDMetaItem02.Food_Sliced_Onion;
 import static gregtech.common.items.IDMetaItem02.Food_Sliced_Tomato;
 import static gregtech.common.items.IDMetaItem02.FractalAnomaly;
+import static gregtech.common.items.IDMetaItem02.FractalCell;
 import static gregtech.common.items.IDMetaItem02.GelledToluene;
 import static gregtech.common.items.IDMetaItem02.MSFMixture;
 import static gregtech.common.items.IDMetaItem02.Plank_Acacia;
@@ -215,6 +217,7 @@ import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Jesus_Latte;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Latte;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Tea;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Tea;
+import static gregtech.common.items.IDMetaItem02.TransfiniteMatterCell;
 import static gregtech.common.items.IDMetaItem02.VyroxeresCanvas;
 import static gregtech.common.items.IDMetaItem02.WeakInfinityCatalyst;
 
@@ -2396,6 +2399,12 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.CrystalCube.set(addItem(CrystalCube.ID, "Hollow Crystal Cube", "Infinite Reflection"));
         ItemList.FractalAnomaly
             .set(addItem(FractalAnomaly.ID, "Contained Fractal Anomaly", "You don't want to unleash this"));
+        ItemList.FractalCell
+            .set(addItem(FractalCell.ID, "Fractal-Dimension Tolerant Cell", "4 dimensions might be too much."));
+        ItemList.FilledFractalCell
+            .set(addItem(FilledFractalCell.ID, "Fractal Helium Bose-Einstein Condensate Containment Cell", ""));
+        ItemList.TransfiniteMatterCell
+            .set(addItem(TransfiniteMatterCell.ID, "Transfinite Matter Cell", "Infinite Constraining"));
 
         ItemList.Display_ITS_FREE.set(
             addItem(

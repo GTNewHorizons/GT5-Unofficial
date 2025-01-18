@@ -1,14 +1,20 @@
 package gregtech.loaders.postload.chains;
 
 import static bartworks.API.recipe.BartWorksRecipeMaps.electricImplosionCompressorRecipes;
+import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
+import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
+import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.neutroniumCompressorRecipes;
+import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -172,6 +178,62 @@ public class InfinityLineRecipes {
             .metadata(FUSION_THRESHOLD, 1_000_000_000)
             .noOptimize()
             .addTo(fusionRecipes);
+
+        // Anomalous Processing
+
+        // Fractal Helium
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.QuanticalDisturbance, 256))
+            .fluidInputs(Materials.Helium_3.getFluid(4000000))
+            .fluidOutputs(MaterialsUEVplus.ParastableFractalHelium.getFluid(16000))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .noOptimize()
+            .addTo(compressorRecipes);
+
+        // Bose-Einstein Condensate
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.Helium_3.getFluid(64000)
+            // TODO add new coolant
+            )
+            .fluidOutputs(MaterialsUEVplus.FractalHeliumBoseEinsteinCondensate.getFluid(64000))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .noOptimize()
+            .addTo(vacuumFreezerRecipes);
+
+        // Cell Filling
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.FractalCell.get(1))
+            .fluidInputs(MaterialsUEVplus.FractalHeliumBoseEinsteinCondensate.getFluid(1000))
+            .itemOutputs(ItemList.FilledFractalCell.get(1))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .noOptimize()
+            .addTo(fluidCannerRecipes);
+
+        // Epsilon Reciprocation
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.FilledFractalCell.get(1))
+            .itemOutputs(ItemList.TransfiniteMatterCell.get(1))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_UIV)
+            .metadata(COIL_HEAT, 11700)
+            .noOptimize()
+            .addTo(blastFurnaceRecipes);
+
+        // Fractal Lining
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.TransfiniteMatterCell.get(1),
+                getModItem(EternalSingularity.ID, "eternal_singularity", 0))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.Fractal, 4),
+                ItemList.TransfiniteMatterCell.get(1))
+            .duration(7 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .noOptimize()
+            .addTo(formingPressRecipes);
     }
 
 }

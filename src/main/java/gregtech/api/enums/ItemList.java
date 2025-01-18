@@ -2593,9 +2593,12 @@ public enum ItemList implements IItemContainer {
     Phononic_Seed_Crystal,
     Combined_Catalyst,
     VyroxeresCanvas,
+    FractalCell,
     WeakInfinityCatalyst,
     CrystalCube,
     FractalAnomaly,
+    FilledFractalCell,
+    TransfiniteMatterCell,
     ResearchCompleter,
     SpaceElevatorController, // Populated in GTNH-Intergalactic
     Spray_Color_Infinite,

@@ -1,5 +1,7 @@
 package gregtech.common.render.items;
 
+import java.awt.*;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
@@ -43,9 +45,12 @@ public class TranscendentMetalRenderer extends GeneratedMaterialRenderer {
         GL11.glPushMatrix();
         applyEffect(type, itemRenderer.getRGBa(itemStack), shouldModulateColor);
 
+        long animationTicks = GTMod.gregtechproxy.getAnimationTicks();
+        float partialTicks = GTMod.gregtechproxy.getPartialRenderTicks();
+
         if (shouldModulateColor) {
-            short[] tModulation = itemRenderer.getRGBa(itemStack);
-            GL11.glColor3f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F);
+            Color color = Color.getHSBColor((animationTicks % 360 + partialTicks) % 180 / 180f, 0.4f, 0.9f);
+            GL11.glColor3f(color.getRed() / 255.0F, color.getGreen() / 255.0F, color.getBlue() / 255.0F);
         }
 
         if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
