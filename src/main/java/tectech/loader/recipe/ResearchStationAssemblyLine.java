@@ -2429,7 +2429,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 48), largeBedrockiumPlate,
                     largeCosmicNeutroniumPlate, largeShirabonPlate, largeInfinityPlate,
                     // UV Solar panel
-                    getModItem(SuperSolarPanels.ID, "PhotonicSolarPanel", 1, 0), ItemList.Quantum_Chest_IV.get(1),
+                    ItemList.Machine_UV_SolarPanel.get(1), ItemList.Quantum_Chest_IV.get(1),
                     // Gravitation Engine
                     getModItem(GraviSuite.ID, "itemSimpleItem", 64, 3), ItemList.EnergisedTesseract.get(1) },
 
@@ -2761,7 +2761,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     (absoluteTier + 1) * 8, // amperage
                     new Object[] { baseCasing, fusionReactors[absoluteTier], fusionCoils[absoluteTier],
                         // UV Solar panel
-                        getModItem(SuperSolarPanels.ID, "PhotonicSolarPanel", absoluteTier + 1, 0),
+                        ItemList.Machine_UV_SolarPanel.get(absoluteTier + 1),
 
                         new Object[] { OrePrefixes.circuit.get(Materials.UXV), absoluteTier + 1 },
                         // Red Spectral Component
@@ -2901,7 +2901,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     // Large Bedrockium Plate
                     largeBedrockiumPlate, largeCosmicNeutroniumPlate, largeShirabonPlate, largeInfinityPlate,
                     // UV Solar panel
-                    getModItem(SuperSolarPanels.ID, "PhotonicSolarPanel", 1, 0),
+                    ItemList.Machine_UV_SolarPanel.get(1),
                     // Ultimate Time Anomaly.
                     ItemList.AcceleratorUV.get(4),
                     // Gravitation Engine.
@@ -2925,7 +2925,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 32, // amperage
                 new Object[] { TileEntities.lsc.getStackForm(1),
                     // UV Solar panel
-                    getModItem(SuperSolarPanels.ID, "PhotonicSolarPanel", 1, 0),
+                    ItemList.Machine_UV_SolarPanel.get(1),
                     // UHV Capacitor block
                     new ItemStack(lscLapotronicEnergyUnit, 1, 5),
                     GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 4),
