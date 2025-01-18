@@ -14,6 +14,7 @@ import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.neutroniumCompressorRecipes;
+import static gregtech.api.recipe.RecipeMaps.polarizerRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -184,7 +185,7 @@ public class InfinityLineRecipes {
         // Fractal Helium
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.QuanticalDisturbance, 256))
-            .fluidInputs(Materials.Helium_3.getFluid(4000000))
+            .fluidInputs(Materials.Helium_3.getGas(4000000))
             .fluidOutputs(MaterialsUEVplus.ParastableFractalHelium.getFluid(16000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_UV)
@@ -193,16 +194,16 @@ public class InfinityLineRecipes {
 
         // Bose-Einstein Condensate
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Helium_3.getFluid(64000)
+            .fluidInputs(MaterialsUEVplus.ParastableFractalHelium.getFluid(100000)
             // TODO add new coolant
             )
-            .fluidOutputs(MaterialsUEVplus.FractalHeliumBoseEinsteinCondensate.getFluid(64000))
+            .fluidOutputs(MaterialsUEVplus.FractalHeliumBoseEinsteinCondensate.getFluid(100000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .noOptimize()
             .addTo(vacuumFreezerRecipes);
 
-        // Cell Filling
+        // Cell Filling //TODO add recipe for cell in coremod
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.FractalCell.get(1))
             .fluidInputs(MaterialsUEVplus.FractalHeliumBoseEinsteinCondensate.getFluid(1000))
@@ -228,12 +229,21 @@ public class InfinityLineRecipes {
                 ItemList.TransfiniteMatterCell.get(1),
                 getModItem(EternalSingularity.ID, "eternal_singularity", 0))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.Fractal, 4),
-                ItemList.TransfiniteMatterCell.get(1))
-            .duration(7 * SECONDS)
+                GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.Fractal, 1),
+                ItemList.FractalCell.get(1))
+            .duration(42 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .noOptimize()
             .addTo(formingPressRecipes);
+
+        // Fractal Aligning
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.Fractal, 64))
+            .fluidOutputs(MaterialsUEVplus.FractalJuice.getFluid(9216))
+            .duration(3 * SECONDS)
+            .eut(TierEU.RECIPE_UXV)
+            .noOptimize()
+            .addTo(polarizerRecipes);
     }
 
 }
