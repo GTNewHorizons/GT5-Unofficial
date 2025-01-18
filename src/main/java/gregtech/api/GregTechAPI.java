@@ -8,16 +8,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BiFunction;
 import java.util.function.IntFunction;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -25,7 +22,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -61,7 +57,6 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.item.ItemHolder;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.GTDummyWorld;
 import gregtech.common.items.ItemIntegratedCircuit;
@@ -93,7 +88,7 @@ public class GregTechAPI {
      * {@link GTItemStack}
      */
     public static final Collection<Map<?, ?>> sItemStackMappings = new ArrayList<>();
-    public static final Collection<SetMultimap<? extends ItemHolder, ?>> itemStackMultiMaps = new ArrayList<>();
+    public static final Collection<SetMultimap<GTItemStack, ?>> itemStackMultiMaps = new ArrayList<>();
 
     /**
      * The MetaTileEntity-ID-List-Length
@@ -150,24 +145,20 @@ public class GregTechAPI {
     /**
      * The List of Tools, which can be used. Accepts regular damageable Items and Electric Items
      */
-    public static final GTHashSet<GTItemStack> sToolList = new GTHashSet<>(), sCrowbarList = new GTHashSet<>(),
-        sScrewdriverList = new GTHashSet<>(), sWrenchList = new GTHashSet<>(), sSoftHammerList = new GTHashSet<>(),
-        sHardHammerList = new GTHashSet<>(), sWireCutterList = new GTHashSet<>(),
-        sSolderingToolList = new GTHashSet<>(), sSolderingMetalList = new GTHashSet<>(),
-        sJackhammerList = new GTHashSet<>();
+    public static final GTHashSet sToolList = new GTHashSet(), sCrowbarList = new GTHashSet(),
+        sScrewdriverList = new GTHashSet(), sWrenchList = new GTHashSet(), sSoftHammerList = new GTHashSet(),
+        sHardHammerList = new GTHashSet(), sWireCutterList = new GTHashSet(), sSolderingToolList = new GTHashSet(),
+        sSolderingMetalList = new GTHashSet(), sJackhammerList = new GTHashSet();
     /**
      * The List of Hazmat Armors
      */
-    public static final GTHashSet<GTItemStack> sGasHazmatList = new GTHashSet<>(), sBioHazmatList = new GTHashSet<>(),
-        sFrostHazmatList = new GTHashSet<>(), sHeatHazmatList = new GTHashSet<>(), sRadioHazmatList = new GTHashSet<>(),
-        sElectroHazmatList = new GTHashSet<>();
+    public static final GTHashSet sGasHazmatList = new GTHashSet(), sBioHazmatList = new GTHashSet(),
+        sFrostHazmatList = new GTHashSet(), sHeatHazmatList = new GTHashSet(), sRadioHazmatList = new GTHashSet(),
+        sElectroHazmatList = new GTHashSet();
 
     private static final Multimap<Integer, ItemStack> sRealConfigurationList = Multimaps
         .newListMultimap(new TreeMap<>(), ArrayList::new);
     private static final Map<Integer, List<ItemStack>> sConfigurationLists = new ConcurrentHashMap<>();
-    private static final Map<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> sRealCircuitProgrammerList = new LinkedHashMap<>();
-    public static final Map<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> sCircuitProgrammerList = Collections
-        .unmodifiableMap(sRealCircuitProgrammerList);
 
     /**
      * The List of Dimensions, which are Whitelisted for the Teleporter. This list should not contain other Planets.
@@ -449,22 +440,6 @@ public class GregTechAPI {
         return Comparator.comparingInt((ItemStack is) -> is.getItem() instanceof ItemIntegratedCircuit ? 0 : 1)
             .thenComparing(ItemStack::getUnlocalizedName)
             .thenComparing(ItemStack::getItemDamage);
-    }
-
-    public static void registerCircuitProgrammer(ItemStack stack, boolean ignoreNBT, boolean useContainer) {
-        registerCircuitProgrammer(rhs -> GTUtility.areStacksEqual(stack, rhs, ignoreNBT), useContainer);
-    }
-
-    public static void registerCircuitProgrammer(Predicate<ItemStack> predicate, boolean useContainer) {
-        sRealCircuitProgrammerList.put(
-            predicate,
-            useContainer ? (s, p) -> s.getItem()
-                .getContainerItem(s) : (s, p) -> s);
-    }
-
-    public static void registerCircuitProgrammer(Predicate<ItemStack> predicate,
-        BiFunction<ItemStack, EntityPlayerMP, ItemStack> doDamage) {
-        sRealCircuitProgrammerList.put(predicate, doDamage);
     }
 
     public static void registerCover(ItemStack aStack, ITexture aCover, CoverBehavior aBehavior) {

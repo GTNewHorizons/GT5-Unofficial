@@ -103,6 +103,7 @@ public class NEIGTConfig implements IConfigureNEI {
         API.addRecipeCatalyst(
             GTModHandler.getIC2Item("nuclearReactor", 1, null),
             RecipeMaps.ic2NuclearFakeRecipes.unlocalizedName);
+        API.addRecipeCatalyst(ItemList.PCBFactory.get(1), RecipeMaps.pcbFactoryRecipes.unlocalizedName);
     }
 
     private void registerItemEntries() {

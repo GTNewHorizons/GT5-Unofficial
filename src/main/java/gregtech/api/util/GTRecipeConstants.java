@@ -118,6 +118,12 @@ public class GTRecipeConstants {
         .create(Integer.class, "nano_forge_tier");
 
     /**
+     * PCB Factory nanite material
+     */
+    public static final RecipeMetadataKey<Materials> PCB_NANITE_MATERIAL = SimpleRecipeMetadataKey
+        .create(Materials.class, "pcb_nanite_material");
+
+    /**
      * FOG Exotic recipe tier.
      */
     public static final RecipeMetadataKey<Integer> FOG_EXOTIC_TIER = SimpleRecipeMetadataKey
@@ -158,6 +164,12 @@ public class GTRecipeConstants {
      */
     public static final RecipeMetadataKey<Integer> QFT_FOCUS_TIER = SimpleRecipeMetadataKey
         .create(Integer.class, "qft_focus_tier");
+
+    /**
+     * QFT catalyst meta.
+     */
+    public static final RecipeMetadataKey<ItemStack> QFT_CATALYST = SimpleRecipeMetadataKey
+        .create(ItemStack.class, "qft_catalyst");
 
     /**
      * Tier of advanced compression (HIP/black hole)

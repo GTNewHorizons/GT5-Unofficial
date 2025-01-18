@@ -129,7 +129,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                 mFloor = (lastRecipe.mSpecialValue % 10000) * 1000000;
                 mCeil = (lastRecipe.mSpecialValue / 10000) * 1000000;
                 if (eV > mCeil || eV < mFloor) {
-                    setOutputItems(ItemRefer.Radioactive_Waste.get(4));
+                    overwriteOutputItems(ItemRefer.Radioactive_Waste.get(4));
                 }
                 // NA does not consume power, its hatches do. Set it to 0 to be sure
                 calculatedEut = 0;

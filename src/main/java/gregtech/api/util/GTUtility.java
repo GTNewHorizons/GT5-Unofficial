@@ -131,6 +131,7 @@ import cofh.api.energy.IEnergyReceiver;
 import cofh.api.transport.IItemDuct;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.GTDamageSources;
 import gregtech.api.damagesources.GTDamageSources.DamageSourceHotItem;
@@ -164,7 +165,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.net.GTPacketSound;
 import gregtech.api.objects.CollectorUtils;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.objects.GTItemStack2;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
@@ -243,7 +243,7 @@ public class GTUtility {
             rField = aObject.getClass()
                 .getDeclaredField(aField);
         } catch (Throwable e) {
-            /* Do nothing */
+            if (D1) e.printStackTrace(GTLog.err);
         }
         return rField;
     }
@@ -255,7 +255,7 @@ public class GTUtility {
                 .getDeclaredField(aField);
             rField.setAccessible(true);
         } catch (Throwable e) {
-            /* Do nothing */
+            if (D1) e.printStackTrace(GTLog.err);
         }
         return rField;
     }
@@ -266,7 +266,7 @@ public class GTUtility {
             rField = aObject.getDeclaredField(aField);
             rField.setAccessible(true);
         } catch (Throwable e) {
-            /* Do nothing */
+            if (D1) e.printStackTrace(GTLog.err);
         }
         return rField;
     }
@@ -277,7 +277,7 @@ public class GTUtility {
             rMethod = aObject.getMethod(aMethod, aParameterTypes);
             rMethod.setAccessible(true);
         } catch (Throwable e) {
-            /* Do nothing */
+            if (D1) e.printStackTrace(GTLog.err);
         }
         return rMethod;
     }
@@ -289,7 +289,7 @@ public class GTUtility {
                 .getMethod(aMethod, aParameterTypes);
             rMethod.setAccessible(true);
         } catch (Throwable e) {
-            /* Do nothing */
+            if (D1) e.printStackTrace(GTLog.err);
         }
         return rMethod;
     }
@@ -372,7 +372,9 @@ public class GTUtility {
                 for (Constructor<?> tConstructor : aClass.getConstructors()) {
                     try {
                         return tConstructor.newInstance(aParameters);
-                    } catch (Throwable ignored) {}
+                    } catch (Throwable e) {
+                        if (D1) e.printStackTrace(GTLog.err);
+                    }
                 }
             } catch (Throwable e) {
                 if (aLogErrors) e.printStackTrace(GTLog.err);
@@ -509,21 +511,21 @@ public class GTUtility {
                 tClass.getCanonicalName();
                 TE_CHECK = true;
             } catch (Throwable e) {
-                /**/
+                if (D1) e.printStackTrace(GTLog.err);
             }
             try {
                 Class<IPipeTile> tClass = buildcraft.api.transport.IPipeTile.class;
                 tClass.getCanonicalName();
                 BC_CHECK = true;
             } catch (Throwable e) {
-                /**/
+                if (D1) e.printStackTrace(GTLog.err);
             }
             try {
                 Class<IEnergyReceiver> tClass = cofh.api.energy.IEnergyReceiver.class;
                 tClass.getCanonicalName();
                 RF_CHECK = true;
             } catch (Throwable e) {
-                /**/
+                if (D1) e.printStackTrace(GTLog.err);
             }
             CHECK_ALL = false;
         }
@@ -1941,7 +1943,7 @@ public class GTUtility {
         if (isStackInvalid(aStack)) return null;
         if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem
             && ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) > 0)
-            return ((IFluidContainerItem) aStack.getItem()).drain(copyAmount(1, aStack), Integer.MAX_VALUE, true);
+            return ((IFluidContainerItem) aStack.getItem()).drain(copyAmount(1, aStack), Integer.MAX_VALUE, false);
         FluidContainerData tData = sFilledContainerToData.get(new GTItemStack(aStack));
         return tData == null ? null : tData.fluid.copy();
     }
@@ -2727,7 +2729,11 @@ public class GTUtility {
 
     private static boolean applyHeatDamage(EntityLivingBase aEntity, float aDamage, DamageSource source) {
         if (aDamage > 0 && aEntity != null && !isWearingFullHeatHazmat(aEntity)) {
-            return aEntity.attackEntityFrom(source, aDamage);
+            try {
+                return aEntity.attackEntityFrom(source, aDamage);
+            } catch (Throwable t) {
+                GTMod.GT_FML_LOGGER.error("Error damaging entity", t);
+            }
         }
         return false;
     }
@@ -3019,21 +3025,9 @@ public class GTUtility {
         return isStackInList(new GTItemStack(aStack), aList);
     }
 
-    public static boolean isStackInList(ItemStack aStack, Set<GTItemStack2> aList) {
-        if (aStack == null) {
-            return false;
-        }
-        return isStackInList(new GTItemStack2(aStack), aList);
-    }
-
     public static boolean isStackInList(GTItemStack aStack, Collection<GTItemStack> aList) {
         return aStack != null
             && (aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, aStack.mStackSize, W)));
-    }
-
-    public static boolean isStackInList(GTItemStack2 aStack, Set<GTItemStack2> aList) {
-        return aStack != null
-            && (aList.contains(aStack) || aList.contains(new GTItemStack2(aStack.mItem, aStack.mStackSize, W)));
     }
 
     /**
@@ -3253,14 +3247,10 @@ public class GTUtility {
         if (tTileEntity != null) {
             rEUAmount += addFluidHandlerInfo(side, tList, tTileEntity);
 
-            try {
-                if (tTileEntity instanceof ic2.api.reactor.IReactorChamber chamber) {
-                    rEUAmount += 500;
-                    // Redirect the rest of the scans to the reactor itself
-                    tTileEntity = (TileEntity) chamber.getReactor();
-                }
-            } catch (Throwable e) {
-                if (D1) e.printStackTrace(GTLog.err);
+            if (tTileEntity instanceof ic2.api.reactor.IReactorChamber chamber) {
+                rEUAmount += 500;
+                // Redirect the rest of the scans to the reactor itself
+                tTileEntity = (TileEntity) chamber.getReactor();
             }
             rEUAmount += addReactorInfo(tList, tTileEntity);
             rEUAmount += addAlignmentInfo(tList, tTileEntity);
@@ -4671,11 +4661,6 @@ public class GTUtility {
         }
 
         return signal;
-    }
-
-    public static ItemStack getNaniteAsCatalyst(Materials material) {
-        ItemStack aItem = material.getNanite(1);
-        return new ItemStack(aItem.getItem(), 0, aItem.getItemDamage());
     }
 
     public static Stream<NBTTagCompound> streamCompounds(NBTTagList list) {

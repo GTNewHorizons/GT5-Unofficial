@@ -1,10 +1,14 @@
 package gtPlusPlus.api.recipe;
 
 import static gregtech.api.util.GTRecipeConstants.LFTR_OUTPUT_POWER;
+import static gregtech.api.util.GTRecipeConstants.QFT_CATALYST;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
@@ -48,9 +52,22 @@ public class GTPPRecipeMaps {
     public static final RecipeMap<RecipeMapBackend> quantumForceTransformerRecipes = RecipeMapBuilder
         .of("gtpp.recipe.quantumforcesmelter")
         .maxIO(6, 6, 6, 6)
-        .minInputs(1, 0)
+        .minInputs(0, 0)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
+        .recipeTransformer(recipe -> {
+            ItemStack catalyst = recipe.getMetadata(QFT_CATALYST);
+            if (catalyst == null) {
+                throw new IllegalStateException("QFT catalyst must be set via metadata QFT_CATALYST");
+            }
+        })
         .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.tier"))
+        .neiItemInputsGetter(recipe -> {
+            ItemStack catalyst = recipe.getMetadata(QFT_CATALYST);
+            assert catalyst != null;
+            List<ItemStack> inputs = new ArrayList<>(Arrays.asList(recipe.mInputs));
+            inputs.add(catalyst);
+            return inputs.toArray(new ItemStack[0]);
+        })
         .frontend(QuantumForceTransformerFrontend::new)
         .disableOptimize()
         .build();

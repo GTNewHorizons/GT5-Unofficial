@@ -361,7 +361,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             .addOtherStructurePart(
                 "Multi I/O Hatches",
                 "Instead of any casing or glass, has to touch storage field block")
-            .addStructureInfo("Use MIOH with conduits or fluid storage busses to see all fluids at once.")
+            .addStructureInfo("Use MIOH with conduits or fluid storage buses to see all fluids at once.")
             .addSubChannelUsage("field", "Maximum Field Tier")
             .addSubChannelUsage("height", "Height of structure")
             .toolTipFinisher();

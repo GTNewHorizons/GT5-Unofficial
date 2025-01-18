@@ -67,7 +67,7 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterForge>
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
-    private static final FluidStack[] magneticUpgrades = { Materials.TengamAttuned.getMolten(1L),
+    private static final FluidStack[] magneticUpgrades = { Materials.TengamPurified.getMolten(1L),
         MaterialsUEVplus.Time.getMolten(1L) };
     private static final FluidStack[] gravityUpgrades = { MaterialsUEVplus.SpaceTime.getMolten(1L),
         MaterialsUEVplus.Space.getMolten(1L), MaterialsUEVplus.Eternity.getMolten(1L) };
