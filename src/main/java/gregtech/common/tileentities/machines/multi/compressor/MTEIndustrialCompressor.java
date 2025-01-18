@@ -146,7 +146,7 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
             .addInfo("100% faster than singleblock machines of the same voltage")
             .addInfo("Only uses 90% of the EU/t normally required")
             .addInfo("Gains 2 parallels per voltage tier")
-            .beginStructureBlock(7, 5, 7, true)
+            .beginStructureBlock(7, 8, 7, true)
             .addController("Front Center")
             .addCasingInfoMin("Electric Compressor Casing", 95, false)
             .addCasingInfoMin("Compressor Pipe Casing", 45, false)

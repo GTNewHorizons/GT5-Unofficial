@@ -79,7 +79,7 @@ public class ToolSaw extends GTTool {
 
     @Override
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
-        int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+        int aY, int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         if ((aBlock.getMaterial() == Material.leaves) && ((aBlock instanceof IShearable))) {
             aPlayer.worldObj.setBlock(aX, aY, aZ, aBlock, aMetaData, 0);
             if (((IShearable) aBlock).isShearable(aStack, aPlayer.worldObj, aX, aY, aZ)) {
@@ -101,7 +101,7 @@ public class ToolSaw extends GTTool {
     }
 
     @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+    public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "axe", "saw")
             || GTToolHarvestHelper.isAppropriateMaterial(
                 aBlock,

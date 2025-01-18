@@ -207,6 +207,7 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
         public JsonElement serialize(HashMap<UUID, UUID> src, Type typeOfSrc, JsonSerializationContext context) {
             JsonArray map = new JsonArray();
             for (Entry<UUID, UUID> entry : src.entrySet()) {
+                if (entry.getKey() == null) continue;
                 JsonObject teamMap = new JsonObject();
 
                 teamMap.addProperty(

@@ -25,18 +25,12 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
             }
             TAE.registerTexture(3, i, new GTPPCopiedBlockTexture(this, 6, i));
         }
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Naquadah Reactor Base");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Reactor Piping");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Naquadah Containment Chamber");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Tempered Arc Furnace Casing");
         GTLanguageManager
             .addStringLocalization(this.getUnlocalizedName() + ".4.name", "Quantum Force Transformer Coil Casings");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Vacuum Casing");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Turbodyne Casing");
 
-        GregtechItemList.Casing_Naq_Reactor_A.set(new ItemStack(this, 1, 0));
-        GregtechItemList.Casing_Naq_Reactor_B.set(new ItemStack(this, 1, 1));
-        GregtechItemList.Casing_Naq_Reactor_C.set(new ItemStack(this, 1, 2));
         GregtechItemList.Casing_Industrial_Arc_Furnace.set(new ItemStack(this, 1, 3));
         GregtechItemList.Casing_Coil_QuantumForceTransformer.set(new ItemStack(this, 1, 4));
         GregtechItemList.Casing_Vacuum_Furnace.set(new ItemStack(this, 1, 10));
@@ -45,10 +39,10 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
 
     @Override
     public IIcon getIcon(final int ordinalSide, final int aMeta) {
-        return getStaticIcon((byte) ordinalSide, (byte) aMeta);
+        return getStaticIcon((byte) ordinalSide, aMeta);
     }
 
-    public static IIcon getStaticIcon(final byte aSide, final byte aMeta) {
+    public static IIcon getStaticIcon(final byte aSide, final int aMeta) {
         // Texture ID's. case 0 == ID[57]
         if ((aMeta >= 0) && (aMeta < 16)) {
             switch (aMeta) {

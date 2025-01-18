@@ -1350,7 +1350,7 @@ item.crushedCentrifugedLanthaniteNd.name=Centrifuged Crushed Lanthanite (Nd) Ore
 item.crushedPurifiedLanthaniteNd.name=Purified Crushed Lanthanite (Nd) Ore
 item.dustImpureLanthaniteNd.name=Impure Lanthanite (Nd) Dust
 item.dustPureLanthaniteNd.name=Purified Lanthanite (Nd) Dust
-item.itemDustAgarditeY.name=Пыль Агардита Y 
+item.itemDustAgarditeY.name=Пыль Агардита Y
 item.itemDustTinyAgarditeY.name=Tiny Pile of Agardite (Y) Dust
 item.itemDustSmallAgarditeY.name=Small Pile of Agardite (Y) Dust
 item.crushedAgarditeY.name=Crushed Agardite (Y) Ore
@@ -1784,7 +1784,7 @@ tile.Block of Actinium.name=Блок Актиния
 tile.Block of Protactinium.name=Блок Протактиния
 tile.Block of Neptunium.name=Блок Нептуния
 tile.Block of Curium.name=Блок Кюрия
-tile.Block of Berkelium.name=Блок Беркилия 
+tile.Block of Berkelium.name=Блок Беркилия
 tile.Block of Californium.name=Блок Калифорния
 tile.Block of Einsteinium.name=Блок Эйнштейния
 tile.Block of Fermium.name=Блок Фермия
@@ -1835,7 +1835,7 @@ tile.Tantalloy-61 Frame Box.name=Каркас Из Сплава Тантала 6
 tile.Block of Inconel-625.name=Блок Инконеля 625
 tile.Inconel-625 Frame Box.name=Каркас Из Инконеля 625
 tile.Block of Inconel-690.name=Блок Инконеля 690
-tile.Inconel-690 Frame Box.name=Каркас Из Инконеля 690 
+tile.Inconel-690 Frame Box.name=Каркас Из Инконеля 690
 tile.Block of Inconel-792.name=Блок Инконеля 792
 tile.Inconel-792 Frame Box.name=Каркас Из Инконеля 792
 tile.Block of Eglin Steel.name=Блок Эглиновой Стали
@@ -1856,12 +1856,12 @@ tile.Block of Hastelloy-X.name=Блок Хастеллоя X
 tile.Hastelloy-X Frame Box.name=Каркас Из Хастеллоя X
 tile.Block of Hastelloy-C276.name=Блок Хастеллоя C276
 tile.Hastelloy-C276 Frame Box.name=Каркас Из Хастеллоя C276
-tile.Block of Hastelloy-N.name=Блок Хастеллоя N 
-tile.Hastelloy-N Frame Box.name=Каркас Из Хастеллоя N 
+tile.Block of Hastelloy-N.name=Блок Хастеллоя N
+tile.Hastelloy-N Frame Box.name=Каркас Из Хастеллоя N
 tile.Block of Incoloy-020.name=Блок Инколоя 020
 tile.Incoloy-020 Frame Box.name=Каркас Из Инколоя 020
 tile.Block of Incoloy-DS.name=Блок Инколоя DS
-tile.Incoloy-DS Frame Box.name=Каркас Из Инколоя DS 
+tile.Incoloy-DS Frame Box.name=Каркас Из Инколоя DS
 tile.Block of Incoloy-MA956.name=Блок Инколоя MA956
 tile.Incoloy-MA956 Frame Box.name=Каркас Из Инколоя MA956
 tile.Block of Grisium.name=Блок Грисиума
@@ -1887,7 +1887,7 @@ tile.OreZirconolite.name=Руда Цирконолита
 tile.OreGadoliniteCe.name=Руда Гадолинита Ce
 tile.OreGadoliniteY.name=Руда Гадолинита Y
 tile.OreLepersonnite.name=Руда Леперсоннита
-tile.OreSamarskiteY.name=Руда Самарскита Y 
+tile.OreSamarskiteY.name=Руда Самарскита Y
 tile.OreSamarskiteYb.name=Руда Самарскита Yb
 tile.OreXenotime.name=Руда Ксенотима
 tile.OreYttriaite.name=Руда Иттриайта
@@ -1900,7 +1900,7 @@ tile.OreZirkelite.name=Руда Циркелита
 tile.OreLanthaniteLa.name=Руда Лантанита La
 tile.OreLanthaniteCe.name=Руда Лантанита Ce
 tile.OreLanthaniteNd.name=Руда Лантанита Nd
-tile.OreAgarditeY.name=Руда Агардита Y 
+tile.OreAgarditeY.name=Руда Агардита Y
 tile.OreAgarditeCd.name=Руда Агардита Cd
 tile.OreAgarditeLa.name=Руда Агардита La
 tile.OreAgarditeNd.name=Руда Агардита Nd
@@ -2745,15 +2745,6 @@ item.itemPlateNylon.name=Nylon Plate
 item.itemPlateDoubleNylon.name=Double Nylon Plate
 item.itemCellNylon.name=Nylon Cell
 tile.Block of Nylon.name=Block of Nylon
-item.itemIngotTeflon.name=Teflon Ingot
-item.itemDustTeflon.name=Teflon Dust
-item.itemDustTinyTeflon.name=Tiny Pile of Teflon Dust
-item.itemDustSmallTeflon.name=Small Pile of Teflon Dust
-item.itemNuggetTeflon.name=Teflon Nugget
-item.itemPlateTeflon.name=Teflon Plate
-item.itemPlateDoubleTeflon.name=Double Teflon Plate
-item.itemCellTeflon.name=Teflon Cell
-tile.Block of Teflon.name=Block of Teflon
 
 //Added 17/4/19
 //Spelling Corrections
@@ -3090,9 +3081,6 @@ item.BasicMetaFood.6.name=Raw Ocelot Meat
 item.BasicMetaFood.7.name=Cooked Ocelot Meat
 item.BasicMetaFood.8.name=Blaze Flesh
 
-item.itemCellNaquadahFuel.name=Naquadah Fuel Cell
-item.itemCellEnrichedNaquadahFuel.name=Enriched Naquadah Fuel Cell
-item.itemCellNaquadriaFuel.name=Naquadria Fuel Cell
 item.boricacid.name=Boric Acid Cell
 item.hydrochloricacid.name=Hydrochloric Acid Cell
 
@@ -3204,8 +3192,8 @@ item.itemBasicTurbine_2.name=Basic Steel Turbine
 interaction.voidexcess.enabled=Void Excess Enabled
 interaction.voidexcess.disabled=Void Excess Disabled
 
-interaction.separateBusses.enabled=Input busses are separated
-interaction.separateBusses.disabled=Input busses are not separated
+interaction.separateBusses.enabled=Input buses are separated
+interaction.separateBusses.disabled=Input buses are not separated
 
 //Added 29/11/21
 

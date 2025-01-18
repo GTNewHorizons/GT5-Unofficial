@@ -157,6 +157,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
      * 1: Off
      * 2: On, stable
      * 3: On, unstable
+     * 4: On, superstable
      */
     private byte blackHoleStatus = 1;
 
@@ -281,7 +282,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE;
                     GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_GLOW;
                 }
-                case 2 -> {
+                case 2, 4 -> {
                     MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE;
                     GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE_GLOW;
                 }
@@ -442,6 +443,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setByte("blackHoleStatus", blackHoleStatus);
+        tag.setFloat("blackHoleStability", blackHoleStability);
         tag.setInteger("parallels", getMaxParallelRecipes());
     }
 
@@ -454,6 +457,18 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
                 + EnumChatFormatting.WHITE
                 + tag.getInteger("parallels"));
+        if (tag.getByte("blackHoleStatus") != 1) {
+            if (tag.getFloat("blackHoleStability") > 0) {
+                currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Active");
+                currentTip.add(
+                    EnumChatFormatting.DARK_PURPLE + "Stability: "
+                        + EnumChatFormatting.BOLD
+                        + Math.round(tag.getFloat("blackHoleStability"))
+                        + "%");
+            } else {
+                currentTip.add(EnumChatFormatting.RED + "BLACK HOLE UNSTABLE");
+            }
+        } else currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Offline");
     }
 
     private int getModeFromCircuit(ItemStack[] t) {
@@ -479,7 +494,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 ItemStack inputItem = bus.getStackInSlot(i);
                 if (inputItem != null) {
                     if (inputItem.getItem() instanceof MetaGeneratedItem01) {
-                        if (inputItem.getItemDamage() == 32418 && (blackHoleStatus == 1)) {
+                        int metaid = inputItem.getItemDamage();
+                        if (metaid == 32418 && (blackHoleStatus == 1)) {
                             bus.decrStackSize(i, 1);
                             if (bus instanceof IRecipeProcessingAwareHatch aware) {
                                 setResultIfFailure(aware.endRecipeProcessing(this));
@@ -488,7 +504,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                             blackHoleStatus = 2;
                             createRenderBlock();
                             return;
-                        } else if (inputItem.getItemDamage() == 32419 && !(blackHoleStatus == 1)) {
+                        } else if (metaid == 32419 && !(blackHoleStatus == 1)) {
                             bus.decrStackSize(i, 1);
                             if (bus instanceof IRecipeProcessingAwareHatch aware) {
                                 setResultIfFailure(aware.endRecipeProcessing(this));
@@ -500,6 +516,15 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                             catalyzingCounter = 0;
                             if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
                             collapseTimer = 40;
+                            return;
+                        } else if (metaid == 32420 && blackHoleStatus == 1) {
+                            bus.decrStackSize(i, 1);
+                            if (bus instanceof IRecipeProcessingAwareHatch aware) {
+                                setResultIfFailure(aware.endRecipeProcessing(this));
+                                aware.startRecipeProcessing();
+                            }
+                            blackHoleStatus = 4;
+                            createRenderBlock();
                             return;
                         }
                     }
@@ -569,7 +594,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         // Void contents of active recipe without crashing machine if it becomes unstable
-        if (blackHoleStatus != 2) {
+        if (blackHoleStatus == 3) {
             mOutputItems = null;
             mOutputFluids = null;
         }
@@ -600,6 +625,15 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
         // Run stability checks once per second if a black hole is open
         if (blackHoleStatus == 1 || aTick % 20 != 0) return;
+
+        // Just render
+        if (blackHoleStatus == 4) {
+            if (rendererTileEntity != null) {
+                rendererTileEntity.toggleLaser(true);
+                rendererTileEntity.setLaserColor(0, 100, 120);
+            }
+            return;
+        }
 
         // Base 1 loss
         float stabilityDecrease = 1F;
@@ -652,7 +686,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     public int getMaxParallelRecipes() {
         int parallels = (8 * GTUtility.getTier(this.getMaxInputVoltage()));
-        if (blackHoleStability < 60) {
+        if (blackHoleStatus == 4) parallels *= 4;
+        else if (blackHoleStability < 60) {
             parallels *= 2;
             if (blackHoleStability < 20) parallels *= 2;
         }

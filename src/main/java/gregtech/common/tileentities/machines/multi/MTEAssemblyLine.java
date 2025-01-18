@@ -61,6 +61,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.VoidProtectionHelper;
 
 public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyLine> implements ISurvivalConstructable {
@@ -358,8 +359,9 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 GT_FML_LOGGER.info("Find available recipe");
             }
             result = CheckRecipeResultRegistry.SUCCESSFUL;
-            mOutputItems = new ItemStack[] { tRecipe.mOutput.copy() };
-            mOutputItems[0].stackSize *= maxParallelBeforeBatchMode * batchMultiplierMax;
+            ArrayList<ItemStack> outputs = new ArrayList<>();
+            ParallelHelper.addItemsLong(outputs, tRecipe.mOutput, (long) tRecipe.mOutput.stackSize * maxParallel);
+            mOutputItems = outputs.toArray(new ItemStack[0]);
             break;
         }
 

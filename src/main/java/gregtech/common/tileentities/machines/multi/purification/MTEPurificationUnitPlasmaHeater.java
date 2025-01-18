@@ -363,6 +363,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.ITALIC
                     + "supercritical while evaporating any remaining contaminants, ready for filtration.")
             .beginStructureBlock(23, 15, 15, false)
+            .addController("Front center")
             .addCasingInfoExactlyColored(
                 "Reinforced Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
@@ -394,7 +395,6 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                 9,
                 EnumChatFormatting.GOLD,
                 false)
-            .addController("Front center")
             .addOtherStructurePart("Input Hatch (Water)", EnumChatFormatting.GOLD + "1+", 1)
             .addOtherStructurePart("Output Hatch", EnumChatFormatting.GOLD + "1", 1)
             .addOtherStructurePart("Input Hatch (Coolant)", EnumChatFormatting.GOLD + "1", 2)
@@ -432,7 +432,8 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
     public void addRecipeOutputs() {
         super.addRecipeOutputs();
         // If the cycle was ruined, output steam
-        if (this.ruinedCycle) {
+        // currentRecipe is null when multi is unloaded and reloaded
+        if (this.ruinedCycle && currentRecipe != null) {
             FluidStack insertedWater = currentRecipe.mFluidInputs[0];
             // Multiply by 60 since that's the water:steam ratio in GTNH
             long steamAmount = insertedWater.amount * 60L;

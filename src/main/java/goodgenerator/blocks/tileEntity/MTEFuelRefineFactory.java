@@ -34,11 +34,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -48,7 +43,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
 
@@ -162,9 +156,13 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
             .addInfo("Produces naquadah fuels.")
             .addInfo("Needs field restriction coils to control the fatal radiation.")
             .addInfo("Use higher tier coils to unlock more fuel types and perform more overclocks.")
-            .addInfo("Performs perfect overclocks.")
+            .addInfo(StatCollector.translateToLocal("GT5U.machines.perfectoc.tooltip"))
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 15, 15, false)
+            .addController("Mid of the third layer")
+            .addCasingInfoExactly("Naquadah Fuel Refinery Casing", 114, false)
+            .addCasingInfoExactly("Field Restriction Coil", 32, true)
+            .addCasingInfoExactly("Field Restriction Glass", 8, false)
             .addInputHatch("The casings adjacent to field restriction glass.")
             .addInputBus("The casings adjacent to field restriction glass.", 1)
             .addOutputHatch("The casings adjacent to field restriction glass.", 1)
@@ -229,56 +227,13 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
         logic.setAvailableAmperage(1);
     }
 
-    public final boolean addToFRFList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity == null) {
-                return false;
-            } else {
-                if (aMetaTileEntity instanceof MTEHatch) {
-                    ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                }
-                if (aMetaTileEntity instanceof MTEHatchInput) {
-                    return this.mInputHatches.add((MTEHatchInput) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof MTEHatchOutput) {
-                    return this.mOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof MTEHatchInputBus) {
-                    return this.mInputBusses.add((MTEHatchInputBus) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof MTEHatchEnergy) {
-                    return this.mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
-                } else if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
-                    return this.eEnergyMulti.add((MTEHatchEnergyMulti) aMetaTileEntity);
-                } else {
-                    return false;
-                }
-            }
-        }
-    }
-
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEFuelRefineFactory(this.mName);
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
     }
 
@@ -292,7 +247,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         batchMode = !batchMode;
         if (batchMode) {
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));

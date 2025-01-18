@@ -20,8 +20,6 @@ import static gregtech.common.tileentities.machines.multi.MTEPlasmaForge.DIM_BRI
 import static gregtech.common.tileentities.machines.multi.MTEPlasmaForge.DIM_INJECTION_CASING;
 import static gregtech.common.tileentities.machines.multi.MTEPlasmaForge.DIM_TRANS_CASING;
 import static kekztech.util.Util.toStandardForm;
-import static net.minecraft.util.EnumChatFormatting.GOLD;
-import static net.minecraft.util.EnumChatFormatting.GRAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.math.BigInteger;
@@ -123,9 +121,19 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
             .addInfo("in the parallel menu. All inputs will scale, except time.")
             .addInfo("All EU is deducted from wireless EU networks only.")
             .beginStructureBlock(5, 7, 5, false)
-            .addStructureInfo(GOLD + "1+ " + GRAY + "Input Hatch")
-            .addStructureInfo(GOLD + "1+ " + GRAY + "Output Hatch")
-            .addStructureInfo(GOLD + "1+ " + GRAY + "Input Bus")
+            .addController("Front Center")
+            .addCasingInfoExactly("Dimensionally Transcendent Casing", 48, false)
+            .addCasingInfoExactly("Dimensional Bridge", 16, false)
+            .addCasingInfoRangeColored(
+                "Dimensional Injection Casing",
+                EnumChatFormatting.GRAY,
+                0,
+                33,
+                EnumChatFormatting.GOLD,
+                false)
+            .addInputBus("Any Dimensional Injection Casing", 1)
+            .addInputHatch("Any Dimensional Injection Casing", 1)
+            .addOutputHatch("Any Dimensional Injection Casing", 1)
             .toolTipFinisher(AuthorColen);
         return tt;
     }
@@ -202,7 +210,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
                     return CheckRecipeResultRegistry.insufficientStartupPower(finalConsumption);
                 }
                 // Energy consumed all at once from wireless net.
-                setCalculatedEut(0);
+                overwriteCalculatedEut(0);
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
