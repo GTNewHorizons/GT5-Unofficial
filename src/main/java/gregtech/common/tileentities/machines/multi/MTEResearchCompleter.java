@@ -155,7 +155,7 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        float progressAmount = ((float) this.mProgresstime) / this.mMaxProgresstime;
+        float progressAmount = ((float) this.mProgresstime + 1) / this.mMaxProgresstime;
         int requiredVis = (int) Math.ceil(progressAmount * recipeAspectCost - aspectsAbsorbed);
         syncTimer--;
 

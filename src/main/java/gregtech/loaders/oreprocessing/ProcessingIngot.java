@@ -30,10 +30,6 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
 
     public ProcessingIngot() {
         OrePrefixes.ingot.add(this);
-        OrePrefixes.ingotDouble.add(this);
-        OrePrefixes.ingotTriple.add(this);
-        OrePrefixes.ingotQuadruple.add(this);
-        OrePrefixes.ingotQuintuple.add(this);
         OrePrefixes.ingotHot.add(this);
     }
 
@@ -186,106 +182,6 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                                 .eut(calculateRecipeEU(aMaterial, 24))
                                 .addTo(benderRecipes);
                         }
-                    }
-                }
-            }
-            case ingotDouble -> {
-                if (!aNoSmashing || aStretchy) {
-                    // bender recipes
-                    {
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(1))
-                            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L))
-                            .duration(Math.max(aMaterialMass, 1L))
-                            .eut(calculateRecipeEU(aMaterial, 96))
-                            .addTo(benderRecipes);
-
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(2, aStack), GTUtility.getIntegratedCircuit(2))
-                            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L))
-                            .duration(Math.max(aMaterialMass * 2L, 1L))
-                            .eut(calculateRecipeEU(aMaterial, 96))
-                            .addTo(benderRecipes);
-                    }
-
-                    // Enable crafting with hammer if tier is < IV.
-                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV && aSpecialRecipeReq) {
-                        GTModHandler.addCraftingRecipe(
-                            GTOreDictUnificator.get(OrePrefixes.ingotDouble, aMaterial, 1L),
-                            GTProxy.tBits,
-                            new Object[] { "I", "I", "h", 'I', OrePrefixes.ingot.get(aMaterial) });
-                    }
-                }
-            }
-            case ingotTriple -> {
-                if (!aNoSmashing || aStretchy) {
-                    // Bender recipes
-                    {
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(1))
-                            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateTriple, aMaterial, 1L))
-                            .duration(Math.max(aMaterialMass, 1L))
-                            .eut(calculateRecipeEU(aMaterial, 96))
-                            .addTo(benderRecipes);
-
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(3, aStack), GTUtility.getIntegratedCircuit(3))
-                            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L))
-                            .duration(Math.max(aMaterialMass * 3L, 1L))
-                            .eut(calculateRecipeEU(aMaterial, 96))
-                            .addTo(benderRecipes);
-                    }
-
-                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV && aSpecialRecipeReq) {
-                        GTModHandler.addCraftingRecipe(
-                            GTOreDictUnificator.get(OrePrefixes.ingotTriple, aMaterial, 1L),
-                            GTProxy.tBits,
-                            new Object[] { "I", "B", "h", 'I', OrePrefixes.ingotDouble.get(aMaterial), 'B',
-                                OrePrefixes.ingot.get(aMaterial) });
-                    }
-                }
-            }
-            case ingotQuadruple -> {
-                if (!aNoSmashing || aStretchy) {
-                    // Bender recipes
-                    {
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(1))
-                            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L))
-                            .duration(Math.max(aMaterialMass, 1L))
-                            .eut(calculateRecipeEU(aMaterial, 96))
-                            .addTo(benderRecipes);
-                    }
-
-                    // If tier < IV add manual crafting.
-                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV && aSpecialRecipeReq) {
-                        GTModHandler.addCraftingRecipe(
-                            GTOreDictUnificator.get(OrePrefixes.ingotQuadruple, aMaterial, 1L),
-                            GTProxy.tBits,
-                            new Object[] { "I", "B", "h", 'I', OrePrefixes.ingotTriple.get(aMaterial), 'B',
-                                OrePrefixes.ingot.get(aMaterial) });
-                    }
-                }
-            }
-            case ingotQuintuple -> {
-                if (!aNoSmashing || aStretchy) {
-                    // Bender recipes
-                    {
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(1))
-                            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L))
-                            .duration(Math.max(aMaterialMass, 1L))
-                            .eut(calculateRecipeEU(aMaterial, 96))
-                            .addTo(benderRecipes);
-                    }
-
-                    // Crafting recipes
-                    if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV && aSpecialRecipeReq) {
-                        GTModHandler.addCraftingRecipe(
-                            GTOreDictUnificator.get(OrePrefixes.ingotQuintuple, aMaterial, 1L),
-                            GTProxy.tBits,
-                            new Object[] { "I", "B", "h", 'I', OrePrefixes.ingotQuadruple.get(aMaterial), 'B',
-                                OrePrefixes.ingot.get(aMaterial) });
                     }
                 }
             }
