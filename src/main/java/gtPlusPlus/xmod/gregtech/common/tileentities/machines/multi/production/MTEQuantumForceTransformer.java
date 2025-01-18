@@ -525,24 +525,29 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             if (doNeptunium || doFermium) {
                 List<FluidStack> fluids = getStoredFluids();
                 for (FluidStack fluid : fluids) {
+                    if (fluid.isFluidEqual(new FluidStack(mNeptunium,1))) {
                     if (doNeptunium) {
                         FluidStack neptuniumToConsume = new FluidStack(mNeptunium, amount);
-                        if (!this.depleteInput(neptuniumToConsume)) {
-                            this.depleteInput(fluid);
-                            doNeptunium = false;
-                            mOutputItems = null;
-                            mOutputFluids = null;
-                            mProgresstime = mMaxProgresstime;
+
+                            if (!this.depleteInput(neptuniumToConsume)) {
+                                this.depleteInput(fluid);
+                                doNeptunium = false;
+                                mOutputItems = null;
+                                mOutputFluids = null;
+                                mProgresstime = mMaxProgresstime;
+                            }
                         }
                     }
-                    if (doFermium) {
-                        FluidStack fermiumToConsume = new FluidStack(mFermium, amount);
-                        if (!this.depleteInput(fermiumToConsume)) {
-                            this.depleteInput(fluid);
-                            doFermium = false;
-                            mOutputItems = null;
-                            mOutputFluids = null;
-                            mProgresstime = mMaxProgresstime;
+                    if (fluid.isFluidEqual(new FluidStack(mFermium,1))) {
+                        if (doFermium) {
+                            FluidStack fermiumToConsume = new FluidStack(mFermium, amount);
+                            if (!this.depleteInput(fermiumToConsume)) {
+                                this.depleteInput(fluid);
+                                doFermium = false;
+                                mOutputItems = null;
+                                mOutputFluids = null;
+                                mProgresstime = mMaxProgresstime;
+                            }
                         }
                     }
                 }
