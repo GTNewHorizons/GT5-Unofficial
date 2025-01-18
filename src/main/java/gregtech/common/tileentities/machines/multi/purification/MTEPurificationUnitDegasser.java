@@ -668,8 +668,8 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     @Override
     public void addRecipeOutputs() {
         super.addRecipeOutputs();
-        if (outputMultiplier > 1.01f) {
-            FluidStack waterOutput = currentRecipe.mFluidOutputs[0];
+        if (outputMultiplier > 1.01f && mOutputFluids != null) {
+            FluidStack waterOutput = mOutputFluids[0];
             FluidStack bonusOutput = new FluidStack(
                 waterOutput.getFluid(),
                 (int) (this.effectiveParallel * waterOutput.amount * (outputMultiplier - 1.0f)));
