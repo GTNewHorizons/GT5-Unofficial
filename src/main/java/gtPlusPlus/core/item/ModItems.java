@@ -432,7 +432,7 @@ public final class ModItems {
             MaterialGenerator.generate(MaterialsAlloy.ARCANITE);
             MaterialGenerator.generate(MaterialsAlloy.OCTIRON);
 
-            MaterialGenerator.generate(MaterialsAlloy.BABBIT_ALLOY, false);
+            MaterialGenerator.generate(MaterialsAlloy.BABBITT_ALLOY, false);
             MaterialGenerator.generate(MaterialsAlloy.BLACK_TITANIUM, false);
             MaterialGenerator.generate(MaterialsAlloy.INDALLOY_140, false, false);
 
@@ -887,7 +887,7 @@ public final class ModItems {
         MaterialUtils
             .generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsElements.getInstance().ZIRCONIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsAlloy.LEAGRISIUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsAlloy.BABBIT_ALLOY);
+        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsAlloy.BABBITT_ALLOY);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsAlloy.KOBOLDITE);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsAlloy.HG1223);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsAlloy.QUANTUM);

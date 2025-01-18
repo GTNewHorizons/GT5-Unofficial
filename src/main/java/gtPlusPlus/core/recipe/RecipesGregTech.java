@@ -378,7 +378,7 @@ public class RecipesGregTech {
                 CI.getTieredFluid(8, 144 * 32),
                 CI.getAlternativeTieredFluid(7, 144 * 16),
                 CI.getTertiaryTieredFluid(7, 144 * 16),
-                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(128 * 144))
+                MaterialsAlloy.BABBITT_ALLOY.getFluidStack(128 * 144))
             .itemOutputs(GregtechItemList.Hatch_Input_TurbineHousing.get(4))
             .eut(TierEU.RECIPE_UV)
             .duration(2 * HOURS)
