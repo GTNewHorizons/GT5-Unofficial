@@ -11,11 +11,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import appeng.api.implementations.items.IStorageCell;
-import appeng.items.contents.CellConfig;
-import com.glodblock.github.common.item.FCBaseItemCell;
-import com.glodblock.github.common.storage.IStorageFluidCell;
-import com.gtnewhorizons.modularui.api.forge.ItemHandlerHelper;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -30,6 +25,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizons.modularui.api.forge.ItemHandlerHelper;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
@@ -43,6 +39,7 @@ import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
+import appeng.items.contents.CellConfig;
 import appeng.items.storage.ItemBasicStorageCell;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
@@ -63,11 +60,9 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidContainerItem;
 
 public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChannelState {
+
     protected static final long DEFAULT_CAPACITY = 1_600;
     protected long baseCapacity = DEFAULT_CAPACITY;
 
@@ -92,7 +87,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             new String[] { "Item Output for Multiblocks", "Stores directly into ME", "Can cache 1600 items by default",
                 "Change cache size by inserting a storage cell",
                 "Change ME connection behavior by right-clicking with wire cutter",
-                "To set output item filter, place an ME Disk that has the items in its filter settings into the slot"},
+                "To set output item filter, place an ME Disk that has the items in its filter settings into the slot" },
             1);
     }
 
@@ -306,7 +301,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
         if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof ItemBasicStorageCell) {
             if (this.lockedItems.isEmpty()) {
-                CellConfig cfg = (CellConfig) ((ItemBasicStorageCell) upgradeItemStack.getItem()).getConfigInventory(upgradeItemStack);
+                CellConfig cfg = (CellConfig) ((ItemBasicStorageCell) upgradeItemStack.getItem())
+                    .getConfigInventory(upgradeItemStack);
 
                 if (!cfg.isEmpty()) {
                     StringBuilder builder = new StringBuilder();
@@ -327,14 +323,17 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
                                 isFirst = false;
                             } else {
-                                builder.append(", ").append(stack.getDisplayName());
+                                builder.append(", ")
+                                    .append(stack.getDisplayName());
                             }
                         }
                     }
 
                     if (hadFilters) {
                         if (lastClickedPlayer != null) {
-                            GTUtility.sendChatToPlayer(lastClickedPlayer, StatCollector.translateToLocalFormatted("GT5U.hatch.item.filterchat", builder));
+                            GTUtility.sendChatToPlayer(
+                                lastClickedPlayer,
+                                StatCollector.translateToLocalFormatted("GT5U.hatch.item.filterchat", builder));
                         }
 
                         markDirty();

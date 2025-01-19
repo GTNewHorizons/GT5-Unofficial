@@ -11,7 +11,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import appeng.items.contents.CellConfig;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -27,6 +26,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidContainerItem;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.glodblock.github.common.item.FCBaseItemCell;
 import com.glodblock.github.common.storage.IStorageFluidCell;
@@ -49,6 +51,7 @@ import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
 import appeng.core.stats.Stats;
+import appeng.items.contents.CellConfig;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
@@ -67,10 +70,9 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import net.minecraftforge.fluids.IFluidContainerItem;
-import org.jetbrains.annotations.NotNull;
 
 public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState {
+
     private static final long DEFAULT_CAPACITY = 128_000;
     private long baseCapacity = DEFAULT_CAPACITY;
 
@@ -146,7 +148,9 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         }
 
         for (String lockedFluid : lockedFluids) {
-            if (lockedFluid.equals(fluidStack.getFluid().getName())) {
+            if (lockedFluid.equals(
+                fluidStack.getFluid()
+                    .getName())) {
                 return true;
             }
         }
@@ -164,7 +168,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
         if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof IStorageFluidCell) {
             if (this.mMode == 0) {
-                CellConfig cfg = (CellConfig) ((FCBaseItemCell) upgradeItemStack.getItem()).getConfigInventory(upgradeItemStack);
+                CellConfig cfg = (CellConfig) ((FCBaseItemCell) upgradeItemStack.getItem())
+                    .getConfigInventory(upgradeItemStack);
 
                 if (!cfg.isEmpty()) {
                     StringBuilder builder = new StringBuilder();
@@ -187,21 +192,26 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                         if (tFluid != null) {
                             hadFilters = true;
 
-                            lockedFluids.add(tFluid.getFluid().getName());
+                            lockedFluids.add(
+                                tFluid.getFluid()
+                                    .getName());
 
                             if (isFirst) {
                                 builder.append(tFluid.getLocalizedName());
 
                                 isFirst = false;
                             } else {
-                                builder.append(", ").append(tFluid.getLocalizedName());
+                                builder.append(", ")
+                                    .append(tFluid.getLocalizedName());
                             }
                         }
                     }
 
                     if (hadFilters) {
                         if (lastClickedPlayer != null) {
-                            GTUtility.sendChatToPlayer(lastClickedPlayer, StatCollector.translateToLocalFormatted("GT5U.hatch.fluid.filterchat", builder));
+                            GTUtility.sendChatToPlayer(
+                                lastClickedPlayer,
+                                StatCollector.translateToLocalFormatted("GT5U.hatch.fluid.filterchat", builder));
                         }
 
                         this.mMode = 10;
@@ -320,7 +330,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side).isGUIClickable()) return;
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
+            .isGUIClickable()) return;
     }
 
     @Override
