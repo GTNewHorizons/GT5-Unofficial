@@ -4,9 +4,14 @@ import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT;
 import static gregtech.api.util.GTUtility.formatNumbers;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -32,6 +37,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWidgets, IAddGregtechLogo {
 
@@ -223,6 +230,35 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
         seesSky = aBaseMetaTileEntity.getSkyAtSide(ForgeDirection.UP);
 
         valid = noRain && dayTime && seesSky;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        IGregTechTileEntity aBase = getBaseMetaTileEntity();
+        tag.setBoolean("valid", valid);
+        tag.setLong("storedeu", aBase.getStoredEU());
+        tag.setLong("maxeu", aBase.getEUCapacity());
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        final NBTTagCompound tag = accessor.getNBTData();
+        if (tag.hasKey("valid")) currenttip.add(
+            tag.getBoolean("valid")
+                ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.waila.generating.on")
+                : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.generating.off"));
+        if (tag.hasKey("storedeu") && tag.hasKey("maxeu")) currenttip.add(
+            EnumChatFormatting.GREEN + formatNumbers(tag.getLong("storedeu"))
+                + EnumChatFormatting.GRAY
+                + " / "
+                + EnumChatFormatting.YELLOW
+                + formatNumbers(tag.getLong("maxeu"))
+                + EnumChatFormatting.GRAY
+                + " EU");
+        super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
     @Override
