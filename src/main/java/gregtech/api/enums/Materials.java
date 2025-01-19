@@ -2298,6 +2298,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         SubTag.MULTI_PLATE.addTo(
             Adamantium,
             Aluminium,
+            Americium,
             Beryllium,
             BlackPlutonium,
             BlackSteel,
