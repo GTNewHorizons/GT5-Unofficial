@@ -364,8 +364,7 @@ public class RecipeLoaderNuclear {
 
         // 2 LiOH + CaCO3
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemUtils.getItemStackOfAmountFromOreDict("dustLi2CO3CaOH2", 11))
+            .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("dustLi2CO3CaOH2", 11))
             .itemOutputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 6),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumCarbonate", 5))
