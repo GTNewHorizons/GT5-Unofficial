@@ -286,9 +286,18 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             Block block = world.getBlock(x, y, z);
             int currentMeta = world.getBlockMetadata(x, y, z);
 
-            // Add the current block to the player's inventory
-            aPlayer.inventory
-                .addItemStackToInventory(new ItemStack(ItemMachines.getItemFromBlock(block), 1, currentMeta));
+            // Get the correct item for the block being swapped
+            ItemStack currentBlockItem = block.getPickBlock(null, world, x, y, z, aPlayer);
+            if (currentBlockItem == null) {
+                currentBlockItem = new ItemStack(block, 1, currentMeta);
+            }
+
+            // If the player is not in creative mode, add the current block to the player's inventory
+            if (!aPlayer.capabilities.isCreativeMode) {
+                if (!aPlayer.inventory.addItemStackToInventory(currentBlockItem)) {
+                    aPlayer.dropPlayerItemWithRandomChoice(currentBlockItem, false);
+                }
+            }
 
             // Create a new cable with the desired properties
             MTECable newCable = new MTECable(
@@ -315,6 +324,14 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             // Recheck connections and update the node
             newCable.mCheckConnections = true;
             newCable.onPostTick(baseTileEntity, 20);
+
+            // Remove one item from the player's hand if they are not in creative mode
+            if (!aPlayer.capabilities.isCreativeMode) {
+                handItem.stackSize--;
+                if (handItem.stackSize <= 0) {
+                    aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
+                }
+            }
 
             return true;
         }
