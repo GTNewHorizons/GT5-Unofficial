@@ -2321,7 +2321,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             Lead,
             Magnesium,
             MaterialsKevlar.Kevlar,
-            MaterialsKevlar.Kevlar,
             MaterialsUEVplus.Eternity,
             MaterialsUEVplus.ProtoHalkonite,
             MaterialsUEVplus.SpaceTime,
