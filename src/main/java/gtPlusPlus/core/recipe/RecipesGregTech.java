@@ -1000,7 +1000,7 @@ public class RecipesGregTech {
 
         // C8H10 = C8H8 + 2H
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(18), CI.emptyCells(3))
+            .itemInputs(GTUtility.getIntegratedCircuit(17), CI.emptyCells(3))
             .itemOutputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("cellStyrene", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 2))
@@ -1036,7 +1036,7 @@ public class RecipesGregTech {
         // Alternative ACETIC ANHYDRIDE recipe for Kevlar Line
         // 2C2H4O2 = C4H6O3 + H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(18), CI.emptyCells(1))
+            .itemInputs(CI.emptyCells(1))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 1))
             .fluidInputs(FluidUtils.getFluidStack("aceticacid", 2000))
             .fluidOutputs(MaterialMisc.ACETIC_ANHYDRIDE.getFluidStack(1000))

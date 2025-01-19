@@ -316,7 +316,6 @@ public class RecipeLoaderNuclear {
 
         // Makes 7-Lithium
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(14))
             .fluidInputs(FluidUtils.getFluidStack("sulfuriclithium", 1440))
             .itemOutputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 3),
@@ -366,7 +365,6 @@ public class RecipeLoaderNuclear {
         // 2 LiOH + CaCO3
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(20),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustLi2CO3CaOH2", 11))
             .itemOutputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 6),
@@ -377,7 +375,6 @@ public class RecipeLoaderNuclear {
 
         // LiOH Liquid to Dust
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(22))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 1))
             .fluidInputs(FluidUtils.getFluidStack("lithiumhydroxide", 144))
             .eut(64)
@@ -422,7 +419,7 @@ public class RecipeLoaderNuclear {
             .addTo(chemicalDehydratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsFluorides.BERYLLIUM_HYDROXIDE.getDust(3), GTUtility.getIntegratedCircuit(17))
+            .itemInputs(MaterialsFluorides.BERYLLIUM_HYDROXIDE.getDust(3))
             .fluidInputs(MaterialsFluorides.AMMONIUM_BIFLUORIDE.getFluidStack(1152))
             .fluidOutputs(
                 Materials.Water.getFluid(2000L),
