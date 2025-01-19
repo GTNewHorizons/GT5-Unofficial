@@ -835,7 +835,7 @@ public final class MaterialsAlloy {
         new MaterialStack(MaterialsElements.getInstance().NIOBIUM, 2),
         new MaterialStack(MaterialsElements.getInstance().ARGON, 5));
 
-    public static final Material BABBITT_ALLOY = new Material(
+    public static final Material BABBIT_ALLOY = new Material(
         "Babbitt Alloy", // Material Name
         MaterialState.SOLID, // State
         null, // Material Colour
