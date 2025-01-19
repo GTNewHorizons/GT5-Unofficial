@@ -2370,7 +2370,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public boolean canDumpItemToME() {
         for (MTEHatch tHatch : validMTEList(mOutputBusses)) {
             if (tHatch instanceof MTEHatchOutputBusME) {
-                if ((((MTEHatchOutputBusME) tHatch).canAcceptItem())) {
+                if (((MTEHatchOutputBusME) tHatch).isLocked()) {
+                    return false;
+                }
+
+                if (((MTEHatchOutputBusME) tHatch).canAcceptItem()) {
                     return true;
                 }
             }
@@ -2382,7 +2386,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public boolean canDumpFluidToME() {
         for (IFluidStore tHatch : getFluidOutputSlots(new FluidStack[0])) {
             if (tHatch instanceof MTEHatchOutputME) {
-                if ((((MTEHatchOutputME) tHatch).canAcceptFluid())) {
+                if (((MTEHatchOutputME) tHatch).isFluidLocked()) {
+                    return false;
+                }
+
+                if (((MTEHatchOutputME) tHatch).canAcceptFluid()) {
                     return true;
                 }
             }
