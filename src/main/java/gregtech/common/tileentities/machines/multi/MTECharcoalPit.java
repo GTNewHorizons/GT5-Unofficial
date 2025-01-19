@@ -1,9 +1,8 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CHARCOAL_PIT;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CHARCOAL_PIT_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CHARCOAL_PIT_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
@@ -29,7 +28,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETooltipMultiBlockBase;
-import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -233,11 +231,6 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
     }
 
     @Override
-    public RecipeMap<?> getRecipeMap() {
-        return null;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTECharcoalPit(mName);
     }
@@ -266,15 +259,11 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == ForgeDirection.UP) {
             if (aActive) return new ITexture[] { casingTexturePages[0][10],
-                TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE), TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW)
+                TextureFactory.of(OVERLAY_CHARCOAL_PIT_ACTIVE), TextureFactory.builder()
+                    .addIcon(OVERLAY_CHARCOAL_PIT_ACTIVE_GLOW)
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[0][10], TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ROCK_BREAKER_GLOW)
-                    .glow()
-                    .build(), };
+            return new ITexture[] { casingTexturePages[0][10], TextureFactory.of(OVERLAY_CHARCOAL_PIT) };
         }
         return new ITexture[] { casingTexturePages[0][10] };
     }
