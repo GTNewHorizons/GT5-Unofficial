@@ -346,7 +346,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
                 if (renderer != null) renderer.setShouldRender(false);
                 return super.clear();
             }
-        }.setSpeedBonus(1F / 3F)
+        }.setSpeedBonus(1F / 3.5F)
             .setEuModifier(0.8F)
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
