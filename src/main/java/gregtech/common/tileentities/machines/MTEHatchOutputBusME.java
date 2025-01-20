@@ -95,6 +95,10 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         super(aName, aTier, 1, aDescription, aTextures);
     }
 
+    public List<ItemStack> getLockedItems() {
+        return lockedItems;
+    }
+
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchOutputBusME(mName, mTier, mDescriptionArray, mTextures);
@@ -333,7 +337,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                         if (lastClickedPlayer != null) {
                             GTUtility.sendChatToPlayer(
                                 lastClickedPlayer,
-                                StatCollector.translateToLocalFormatted("GT5U.hatch.item.filterchat", builder));
+                                StatCollector.translateToLocalFormatted("GT5U.hatch.item.filter.enable", builder));
                         }
 
                         markDirty();
@@ -346,7 +350,9 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
                 markDirty();
 
-                GTUtility.sendChatToPlayer(lastClickedPlayer, "Fluid lock disabled");
+                GTUtility.sendChatToPlayer(
+                    lastClickedPlayer,
+                    StatCollector.translateToLocal("GT5U.hatch.item.filter.disable"));
             }
         }
     }

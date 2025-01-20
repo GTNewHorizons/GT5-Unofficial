@@ -2315,7 +2315,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
         List<ItemStack> ret = new ArrayList<>();
         for (final MTEHatch tBus : validMTEList(mOutputBusses)) {
-            if (!(tBus instanceof MTEHatchOutputBusME)) {
+            if (!(tBus instanceof MTEHatchOutputBusME meBus)) {
                 final IInventory tBusInv = tBus.getBaseMetaTileEntity();
                 for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
                     final ItemStack stackInSlot = tBus.getStackInSlot(i);
@@ -2331,6 +2331,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         ret.add(fakeItemStack);
                     } else {
                         ret.add(stackInSlot);
+                    }
+                }
+            } else {
+                if (meBus.isLocked()) {
+                    for (ItemStack stack : meBus.getLockedItems()) {
+                        ItemStack fakeItemStack = stack.copy();
+                        fakeItemStack.stackSize = 0;
+                        ret.add(fakeItemStack);
                     }
                 }
             }

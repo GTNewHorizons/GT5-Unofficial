@@ -211,7 +211,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                         if (lastClickedPlayer != null) {
                             GTUtility.sendChatToPlayer(
                                 lastClickedPlayer,
-                                StatCollector.translateToLocalFormatted("GT5U.hatch.fluid.filterchat", builder));
+                                StatCollector.translateToLocalFormatted("GT5U.hatch.fluid.filter.enable", builder));
                         }
 
                         this.mMode = 10;
@@ -228,7 +228,9 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
                 markDirty();
 
-                GTUtility.sendChatToPlayer(lastClickedPlayer, "Fluid lock disabled");
+                GTUtility.sendChatToPlayer(
+                    lastClickedPlayer,
+                    StatCollector.translateToLocal("GT5U.hatch.fluid.filter.disable"));
             }
         }
     }
