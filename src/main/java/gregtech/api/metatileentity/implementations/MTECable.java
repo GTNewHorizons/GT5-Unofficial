@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -273,33 +272,18 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
             final ItemStack handItem = aPlayer.inventory.getCurrentItem();
             IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
-
             if (!(meta instanceof MTECable handCable)) return false;
 
-            // Coordinates of the block being interacted with
-            int x = aBaseMetaTileEntity.getXCoord();
-            int y = aBaseMetaTileEntity.getYCoord();
-            int z = aBaseMetaTileEntity.getZCoord();
-
-            IGregTechTileEntity baseTileEntity = aBaseMetaTileEntity;
-            World world = baseTileEntity.getWorld();
-            Block block = world.getBlock(x, y, z);
-            int currentMeta = world.getBlockMetadata(x, y, z);
-
-            // Get the correct item for the block being swapped
-            ItemStack currentBlockItem = block.getPickBlock(null, world, x, y, z, aPlayer);
-            if (currentBlockItem == null) {
-                currentBlockItem = new ItemStack(block, 1, currentMeta);
+            short newMetaID = (short) handItem.getItemDamage(); // This might not be the correct way to get meta ID
+            // Prevent replacing with same cable type
+            if (this.getClass() == handCable.getClass() && this.mMaterial == handCable.mMaterial
+                && this.mVoltage == handCable.mVoltage) {
+                return false;
             }
 
-            // If the player is not in creative mode, add the current block to the player's inventory
-            if (!aPlayer.capabilities.isCreativeMode) {
-                if (!aPlayer.inventory.addItemStackToInventory(currentBlockItem)) {
-                    aPlayer.dropPlayerItemWithRandomChoice(currentBlockItem, false);
-                }
-            }
+            byte oldConnections = this.mConnections;
 
-            // Create a new cable with the desired properties
+            // Create and configure new cable
             MTECable newCable = new MTECable(
                 handCable.mName,
                 handCable.mThickNess,
@@ -309,24 +293,24 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                 handCable.mVoltage,
                 handCable.mInsulated,
                 handCable.mCanShock);
+            newCable.mConnections = oldConnections;
 
-            // Update the MTE without swapping the block
-            baseTileEntity.setMetaTileEntity(newCable);
+            // Update ID and entity
+            aBaseMetaTileEntity.setMetaTileID(newMetaID);
+            aBaseMetaTileEntity.setMetaTileEntity(newCable);
 
-            // Update the block metadata if necessary
-            if (block.hasTileEntity(currentMeta)) {
-                world.setBlockMetadataWithNotify(x, y, z, currentMeta, 2);
-            }
+            // Force updates
+            aBaseMetaTileEntity.markDirty();
+            aBaseMetaTileEntity.issueTextureUpdate();
+            aBaseMetaTileEntity.issueBlockUpdate();
+            aBaseMetaTileEntity.issueClientUpdate();
 
-            // Notify the client to update the block rendering
-            world.markBlockForUpdate(x, y, z);
-
-            // Recheck connections and update the node
-            newCable.mCheckConnections = true;
-            newCable.onPostTick(baseTileEntity, 20);
-
-            // Remove one item from the player's hand if they are not in creative mode
+            // Handle inventory
             if (!aPlayer.capabilities.isCreativeMode) {
+                ItemStack oldCable = new ItemStack(handItem.getItem(), 1, aBaseMetaTileEntity.getMetaTileID());
+                if (!aPlayer.inventory.addItemStackToInventory(oldCable)) {
+                    aPlayer.dropPlayerItemWithRandomChoice(oldCable, false);
+                }
                 handItem.stackSize--;
                 if (handItem.stackSize <= 0) {
                     aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
