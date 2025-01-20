@@ -66,6 +66,7 @@ import appeng.util.item.AEFluidStack;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IDataCopyable;
+import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -83,7 +84,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets,
-    IRecipeProcessingAwareHatch, ISmartInputHatch, IDataCopyable {
+    IRecipeProcessingAwareHatch, ISmartInputHatch, IDataCopyable, IMEConnectable {
 
     private static final int SLOT_COUNT = 16;
     public static final String COPIED_DATA_IDENTIFIER = "stockingHatch";
@@ -331,6 +332,17 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         aPlayer.addChatComponentMessage(
             new ChatComponentTranslation("GT5U.hatch.additionalConnection." + additionalConnection));
         return true;
+    }
+
+    @Override
+    public boolean connectsToAllSides() {
+        return additionalConnection;
+    }
+
+    @Override
+    public void setConnectsToAllSides(boolean connects) {
+        additionalConnection = connects;
+        updateValidGridProxySides();
     }
 
     @Override
