@@ -960,6 +960,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     @Override
     public boolean pushPattern(ICraftingPatternDetails patternDetails, InventoryCrafting table) {
         if (!isActive()) return false;
+        if (!getBaseMetaTileEntity().isAllowedToWork()) return false;
 
         if (!supportFluids) {
             for (int i = 0; i < table.getSizeInventory(); ++i) {
