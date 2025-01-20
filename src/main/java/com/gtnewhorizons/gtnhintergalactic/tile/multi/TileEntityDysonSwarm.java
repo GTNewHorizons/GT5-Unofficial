@@ -476,9 +476,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
 
         String className = provider.getClass().getName();
         return switch (className) {
-            case "zarkov.utilityworlds.UW_WorldProviderGarden" -> IGConfig.dysonSwarm.getPowerFactor("UW_Garden");
-            case "zarkov.utilityworlds.UW_WorldProviderMining" -> IGConfig.dysonSwarm.getPowerFactor("UW_Mining");
-            case "zarkov.utilityworlds.UW_WorldProviderVoid" -> IGConfig.dysonSwarm.getPowerFactor("UW_Void");
+            case "me.eigenraven.personalspace.world.PersonalWorldProvider" -> IGConfig.dysonSwarm.getPowerFactor("PS");
             default -> IGConfig.dysonSwarm.getPowerFactor(String.valueOf(provider.dimensionId));
         };
     }

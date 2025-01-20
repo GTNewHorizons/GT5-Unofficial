@@ -113,9 +113,7 @@ public class IGConfig {
                 "SS_planet.saturn:0.36", // Saturn Space Station
                 "SS_planet.uranus:0.25", // Uranus Space Station
                 "SS_planet.neptune:0.2", // Neptune Space Station
-                "UW_Garden:0.01", // Garden World
-                "UW_Mining:0.01", // Mining World
-                "UW_Void:0.01", // Void World
+                "PS:0.01", // Personal Space dimensions
         })
         @Config.RequiresMcRestart
         public String[] powerFactors;
