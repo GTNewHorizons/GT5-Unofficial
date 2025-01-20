@@ -275,6 +275,10 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             if (!(meta instanceof MTECable handCable)) return false;
 
             short newMetaID = (short) handItem.getItemDamage(); // This might not be the correct way to get meta ID
+            // Store old values for comparison
+            long oldVoltage = this.mVoltage;
+            long oldAmperage = this.mAmperage;
+
             // Prevent replacing with same cable type
             if (this.getClass() == handCable.getClass() && this.mMaterial == handCable.mMaterial
                 && this.mVoltage == handCable.mVoltage) {
@@ -342,6 +346,39 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                     aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
                 }
             }
+            // After setting new cable but before inventory handling
+            if (oldAmperage != handCable.mAmperage || oldVoltage != handCable.mVoltage) {
+                StringBuilder message = new StringBuilder();
+
+                // Amperage change
+                if (oldAmperage != handCable.mAmperage) {
+                    message.append(oldAmperage)
+                        .append("A → ")
+                        .append(handCable.mAmperage > oldAmperage ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                        .append(handCable.mAmperage)
+                        .append("A")
+                        .append(EnumChatFormatting.RESET);
+                }
+
+                // Separator if both changed
+                if (oldAmperage != handCable.mAmperage && oldVoltage != handCable.mVoltage) {
+                    message.append(" | ");
+                }
+
+                // Voltage change
+                if (oldVoltage != handCable.mVoltage) {
+                    message.append(oldVoltage)
+                        .append("V → ")
+                        .append(handCable.mVoltage > oldVoltage ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                        .append(handCable.mVoltage)
+                        .append("V")
+                        .append(EnumChatFormatting.RESET);
+                }
+
+                // Send the message using GT's utility method
+                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("215.1", " :") + message.toString());
+            }
+
             return true;
         }
         return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
