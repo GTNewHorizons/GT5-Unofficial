@@ -85,28 +85,6 @@ public class BlockPooCollector extends BlockContainer {
         } else {
             TileEntityBaseFluidCollector tank = (TileEntityBaseFluidCollector) world.getTileEntity(x, y, z);
             if (tank != null) {
-                // Item handItem;
-                // try {
-                // handItem = player.getHeldItem()
-                // .getItem();
-                // } catch (Throwable t) {}
-
-                // Fluid container code
-                /*
-                 * if (handItem != null && (handItem instanceof IFluidContainerItem || handItem instanceof
-                 * ItemFluidContainer || FluidContainerRegistry.isFilledContainer(player.getHeldItem()))) { if
-                 * (tank.tank.getFluid() == null) { try { if
-                 * (!FluidContainerRegistry.isFilledContainer(player.getHeldItem())) { ItemStack handItemStack =
-                 * player.getHeldItem(); IFluidContainerItem container = (IFluidContainerItem) handItem; FluidStack
-                 * containerFluid = container.getFluid(handItemStack); container.drain(handItemStack,
-                 * container.getFluid(handItemStack).amount, true); tank.tank.setFluid(containerFluid); } else {
-                 * ItemStack handItemStack = player.getHeldItem();
-                 * FluidContainerRegistry.drainFluidContainer(handItemStack); FluidStack containerFluid =
-                 * FluidContainerRegistry.getFluidForFilledItem(handItemStack); ItemStack emptyContainer =
-                 * FluidContainerRegistry.drainFluidContainer(handItemStack); player.setItemInUse(emptyContainer, 0);
-                 * tank.tank.setFluid(containerFluid); } } catch (Throwable t) { t.printStackTrace(); } } }
-                 */
-
                 if (!tank.mInventory.isEmpty()) {
                     PlayerUtils.messagePlayer(player, "Inventory contains:");
                     PlayerUtils.messagePlayer(player, ItemUtils.getArrayStackNames(tank.mInventory.getRealInventory()));
