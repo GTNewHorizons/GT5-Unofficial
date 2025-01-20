@@ -280,7 +280,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                 && this.mVoltage == handCable.mVoltage) {
                 return false;
             }
-
+            short oldMetaID = (short) aBaseMetaTileEntity.getMetaTileID();
             byte oldConnections = this.mConnections;
 
             // Create and configure new cable
@@ -305,18 +305,43 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             aBaseMetaTileEntity.issueBlockUpdate();
             aBaseMetaTileEntity.issueClientUpdate();
 
-            // Handle inventory
+            // Handle inventory swapping
             if (!aPlayer.capabilities.isCreativeMode) {
-                ItemStack oldCable = new ItemStack(handItem.getItem(), 1, aBaseMetaTileEntity.getMetaTileID());
-                if (!aPlayer.inventory.addItemStackToInventory(oldCable)) {
-                    aPlayer.dropPlayerItemWithRandomChoice(oldCable, false);
+                // Create ItemStack for the removed cable
+                ItemStack oldCable = new ItemStack(handItem.getItem(), 1, oldMetaID);
+
+                // Try to give the old cable to the player
+                boolean addedToInventory = false;
+                if (oldCable != null) {
+                    // First try to stack with existing cables
+                    for (int i = 0; i < aPlayer.inventory.mainInventory.length; i++) {
+                        ItemStack slot = aPlayer.inventory.mainInventory[i];
+                        if (slot != null && slot.getItem() == oldCable.getItem()
+                            && slot.getItemDamage() == oldCable.getItemDamage()
+                            && slot.stackSize < slot.getMaxStackSize()) {
+                            slot.stackSize++;
+                            addedToInventory = true;
+                            break;
+                        }
+                    }
+
+                    // If couldn't stack, try to find empty slot
+                    if (!addedToInventory) {
+                        addedToInventory = aPlayer.inventory.addItemStackToInventory(oldCable);
+                    }
+
+                    // If still couldn't add, drop in world
+                    if (!addedToInventory) {
+                        aPlayer.dropPlayerItemWithRandomChoice(oldCable, false);
+                    }
                 }
+
+                // Use one cable from player's hand
                 handItem.stackSize--;
                 if (handItem.stackSize <= 0) {
                     aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
                 }
             }
-
             return true;
         }
         return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
