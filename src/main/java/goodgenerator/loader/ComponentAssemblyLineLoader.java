@@ -69,7 +69,8 @@ import gregtech.api.util.GTUtility;
  * Fluid conversion rules:
  * <ul>
  *     <li>Convert metal items to fluid IF the stack size exceeds 64.
- *     <li>Convert fluids to their "basic" form (i.e., Magnetic Samarium -> Samarium).
+ *     <li>Convert fluids to their "basic" form when needed, like converting
+ *           Magnetic Samarium to normal, as magnetic has no molten form.
  * </ul>
  * Circuit Numbers (LuV+ only):
  * <ul>
