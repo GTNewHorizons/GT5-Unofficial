@@ -27,7 +27,7 @@ public class GregtechMetaCasingBlocksPipeGearbox extends GregtechMetaCasingBlock
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Pikyonium Gear Box Casing");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Titansteel Gear Box Casing");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Abyssal Gear Box Casing");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Babbitt Alloy Pipe Casing");
+        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Babbit Alloy Pipe Casing");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Inconel-690 Pipe Casing");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Stellite Pipe Casing");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Nitinol-60 Pipe Casing");
@@ -45,7 +45,7 @@ public class GregtechMetaCasingBlocksPipeGearbox extends GregtechMetaCasingBlock
         sMaterialMapping.put(aMappingID++, MaterialsAlloy.PIKYONIUM.getRgbAsHex());
         sMaterialMapping.put(aMappingID++, MaterialsAlloy.TITANSTEEL.getRgbAsHex());
         sMaterialMapping.put(aMappingID++, MaterialsAlloy.ABYSSAL.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.BABBITT_ALLOY.getRgbAsHex());
+        sMaterialMapping.put(aMappingID++, MaterialsAlloy.BABBIT_ALLOY.getRgbAsHex());
         sMaterialMapping.put(aMappingID++, MaterialsAlloy.INCONEL_690.getRgbAsHex());
         sMaterialMapping.put(aMappingID++, MaterialsAlloy.STELLITE.getRgbAsHex());
         sMaterialMapping.put(aMappingID++, MaterialsAlloy.NITINOL_60.getRgbAsHex());

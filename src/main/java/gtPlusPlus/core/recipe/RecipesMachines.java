@@ -330,7 +330,7 @@ public class RecipesMachines {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_IndustrialForgeHammer.get(1),
             CI.bitsd,
-            new Object[] { "IBI", "HCH", "IHI", 'I', CI.getPlate(4, 1), 'B', MaterialsAlloy.BABBITT_ALLOY.getPlate(1),
+            new Object[] { "IBI", "HCH", "IHI", 'I', CI.getPlate(4, 1), 'B', MaterialsAlloy.BABBIT_ALLOY.getPlate(1),
                 'C', ItemList.Casing_HeatProof.get(1), 'H', MaterialsAlloy.HASTELLOY_X.getRod(1) });
     }
 
@@ -365,7 +365,7 @@ public class RecipesMachines {
                 CI.getTieredComponent(OrePrefixes.wireGt16, 5, 32),
                 MaterialsAlloy.ZERON_100.getFrameBox(4),
                 MaterialsAlloy.ZIRCONIUM_CARBIDE.getPlateDouble(32),
-                MaterialsAlloy.BABBITT_ALLOY.getPlate(64),
+                MaterialsAlloy.BABBIT_ALLOY.getPlate(64),
                 MaterialsAlloy.LEAGRISIUM.getGear(8),
                 new Object[] { CI.getTieredCircuitOreDictName(4), 64 },
                 new Object[] { CI.getTieredCircuitOreDictName(5), 32 },
@@ -664,7 +664,7 @@ public class RecipesMachines {
                 CI.getTieredFluid(7, 144 * 32),
                 CI.getAlternativeTieredFluid(6, 144 * 16),
                 CI.getTertiaryTieredFluid(6, 144 * 16),
-                MaterialsAlloy.BABBITT_ALLOY.getFluidStack(128 * 144))
+                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(128 * 144))
             .itemOutputs(GregtechItemList.Controller_ElementalDuplicator.get(1))
             .eut(TierEU.RECIPE_ZPM)
             .duration(10 * MINUTES)
@@ -688,7 +688,7 @@ public class RecipesMachines {
                 CI.getTieredFluid(6, 144 * 16),
                 CI.getAlternativeTieredFluid(5, 144 * 8),
                 CI.getTertiaryTieredFluid(5, 144 * 8),
-                MaterialsAlloy.BABBITT_ALLOY.getFluidStack(64 * 144))
+                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(64 * 144))
             .itemOutputs(GregtechItemList.Hatch_Input_Elemental_Duplicator.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(2 * HOURS)
@@ -712,7 +712,7 @@ public class RecipesMachines {
                 CI.getTieredFluid(5, 144 * 16),
                 CI.getAlternativeTieredFluid(4, 144 * 8),
                 CI.getTertiaryTieredFluid(4, 144 * 8),
-                MaterialsAlloy.BABBITT_ALLOY.getFluidStack(16 * 144))
+                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(16 * 144))
             .itemOutputs(GregtechItemList.Casing_ElementalDuplicator.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(10 * MINUTES)
@@ -852,7 +852,7 @@ public class RecipesMachines {
             .itemOutputs(GregtechItemList.Machine_Adv_DistillationTower.get(1))
             .fluidInputs(
                 MaterialsAlloy.AQUATIC_STEEL.getFluidStack(144 * 32),
-                MaterialsAlloy.BABBITT_ALLOY.getFluidStack(144 * 16),
+                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(144 * 16),
                 MaterialsAlloy.BRONZE.getFluidStack(144 * 64),
                 MaterialsAlloy.KANTHAL.getFluidStack(144 * 16))
             .duration(10 * MINUTES)
