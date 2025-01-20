@@ -88,6 +88,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -104,7 +105,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEHatchCraftingInputME extends MTEHatchInputBus
     implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ICraftingProvider,
-    IGridProxyable, IDualInputHatch, ICustomNameObject, IInterfaceViewable {
+    IGridProxyable, IDualInputHatch, ICustomNameObject, IInterfaceViewable, IMEConnectable {
 
     // Each pattern slot in the crafting input hatch has its own internal inventory
     public static class PatternSlot implements IDualInputInventory {
@@ -475,6 +476,17 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         aPlayer.addChatComponentMessage(
             new ChatComponentTranslation("GT5U.hatch.additionalConnection." + additionalConnection));
         return true;
+    }
+
+    @Override
+    public boolean connectsToAllSides() {
+        return additionalConnection;
+    }
+
+    @Override
+    public void setConnectsToAllSides(boolean connects) {
+        additionalConnection = connects;
+        updateValidGridProxySides();
     }
 
     @Override
@@ -948,6 +960,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     @Override
     public boolean pushPattern(ICraftingPatternDetails patternDetails, InventoryCrafting table) {
         if (!isActive()) return false;
+        if (!getBaseMetaTileEntity().isAllowedToWork()) return false;
 
         if (!supportFluids) {
             for (int i = 0; i < table.getSizeInventory(); ++i) {
