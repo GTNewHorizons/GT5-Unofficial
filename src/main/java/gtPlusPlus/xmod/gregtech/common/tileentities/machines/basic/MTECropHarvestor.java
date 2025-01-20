@@ -495,7 +495,7 @@ public class MTECropHarvestor extends MTEBasicTank {
         if (aStack != null) {
             if (ItemList.IC2_Fertilizer.isStackEqual(aStack)) {
                 return aIndex >= SLOT_FERT_1 && aIndex <= SLOT_FERT_4;
-            } else if (ItemList.IC2_Spray_WeedEx.isStackEqual(aStack)) {
+            } else if (ItemList.IC2_Spray_WeedEx.isStackEqual(aStack, true, true)) {
                 return aIndex >= SLOT_WEEDEX_1 && aIndex <= SLOT_WEEDEX_2;
             }
         }
@@ -661,7 +661,7 @@ public class MTECropHarvestor extends MTEBasicTank {
                 .startFromSlot(SLOT_WEEDEX_1)
                 .endAtSlot(SLOT_WEEDEX_2)
                 .applyForWidget(
-                    widget -> widget.setFilter(ItemList.IC2_Spray_WeedEx::isStackEqual)
+                    widget -> widget.setFilter(x -> ItemList.IC2_Spray_WeedEx.isStackEqual(x, true, true))
                         .setBackground(getGUITextureSet().getItemSlot(), GTPPUITextures.OVERLAY_SLOT_WEED_EX))
                 .build()
                 .setPos(7, 13))
