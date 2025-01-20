@@ -81,7 +81,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import forestry.plugins.PluginCore;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -89,7 +88,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
-import ic2.core.Ic2Items;
 import kubatech.api.enums.ItemList;
 import kubatech.tileentity.gregtech.multiblock.MTEDEFusionCrafter;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher;
@@ -167,7 +165,7 @@ public class RecipeLoader {
                 .duration(5 * MINUTES)
                 .addTo(AssemblyLine);
 
-            MTEExtremeIndustrialGreenhouse.addFertilizerItem(PluginCore.items.fertilizerCompound.getItemStack(1));
+            MTEExtremeIndustrialGreenhouse.addFertilizerItem(gregtech.api.enums.ItemList.FR_Fertilizer.get(1));
         }
 
         GTModHandler.addCraftingRecipe(
@@ -179,8 +177,8 @@ public class RecipeLoader {
 
         // Vanilla should always be loaded
         MTEExtremeIndustrialGreenhouse.addFertilizerItem(new ItemStack(Items.dye, 1, 15));
-        // IC2 should always be loaded
-        MTEExtremeIndustrialGreenhouse.addFertilizerItem(Ic2Items.fertilizer);
+        // will need to be updated when ic2 goes the way of the dodo
+        MTEExtremeIndustrialGreenhouse.addFertilizerItem(gregtech.api.enums.ItemList.IC2_Fertilizer.get(1));
 
         if (DraconicEvolution.isModLoaded()) {
             // Controller recipe added in TecTech
