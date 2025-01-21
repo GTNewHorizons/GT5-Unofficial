@@ -450,6 +450,7 @@ public class GTUtility {
 
     /**
      * Gets the voltage tier corresponding to an amount of EU, capped to 15 (MAX+)
+     * 
      * @param l The amount of EU
      * @return Corresponding voltage tier in the range 0-15
      */
@@ -467,6 +468,7 @@ public class GTUtility {
 
     /**
      * Gets the voltage tier corresponding to an amount of EU, capped to 127
+     * 
      * @param l The amount of EU
      * @return Corresponding voltage tier
      */
