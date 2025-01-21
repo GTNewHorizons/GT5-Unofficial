@@ -551,6 +551,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 int mode = getModeFromCircuit(inputItems);
 
                 if (mode == -1) {
+                    lastMode = -1;
                     return Stream.empty();
                 }
                 if (!(mode == lastMode)) {
