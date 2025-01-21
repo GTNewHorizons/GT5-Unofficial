@@ -376,6 +376,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addInfo(
                 EnumChatFormatting.RED
                     + "Recipe tier is limited to hatch tier + 1. Will not perform overclocks above the hatch tier.")
+            .addInfo(EnumChatFormatting.RED + "Limit to one energy hatch if using a Multi-Amp or Laser hatch.")
             .beginStructureBlock(35, 33, 35, false)
             .addCasingInfoMin("Background Radiation Absorbent Casing", 950, false)
             .addCasingInfoExactly("Extreme Density Space-Bending Casing", 3667, false)
@@ -416,6 +417,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         spacetimeHatches.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 17, 27, 10)) return false;
+        // Allow only 1 energy hatch if laser/multiamp
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (!mEnergyHatches.isEmpty()) return false;
+            if (mExoticEnergyHatches.size() > 1) return false;
+        }
         return mCasingAmount >= 950;
     }
 
@@ -685,7 +691,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     public int getMaxParallelRecipes() {
-        int parallels = (8 * GTUtility.getTier(this.getMaxInputVoltage()));
+        int parallels = (8 * GTUtility.getTierExtended(this.getMaxInputEu()));
         if (blackHoleStatus == 4) parallels *= 4;
         else if (blackHoleStability < 60) {
             parallels *= 2;
