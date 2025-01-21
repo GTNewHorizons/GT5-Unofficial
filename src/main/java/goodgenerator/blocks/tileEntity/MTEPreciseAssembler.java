@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
@@ -159,11 +160,22 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                     withChannel(
                         "machine casing",
                         StructureUtility.ofBlocksTiered(
-                            (block, meta) -> (block == GregTechAPI.sBlockCasings1 && meta >= 0 && meta <= 9) ? meta
-                                : -2,
-                            IntStream.range(0, 10)
-                                .mapToObj(
-                                    meta -> org.apache.commons.lang3.tuple.Pair.of(GregTechAPI.sBlockCasings1, meta))
+                            (block,
+                                meta) -> (block == GregTechAPI.sBlockCasings1 && meta >= 0 && meta <= 9)
+                                    || (block == GregTechAPI.sBlockCasingsNH && meta >= 10 && meta <= 14) ? meta : -2,
+                            Stream.concat(
+                                IntStream.range(0, 10)
+                                    .mapToObj(
+                                        meta -> org.apache.commons.lang3.tuple.Pair
+                                            .of(GregTechAPI.sBlockCasings1, meta))
+                                    .collect(Collectors.toList())
+                                    .stream(),
+                                IntStream.range(10, 15)
+                                    .mapToObj(
+                                        meta -> org.apache.commons.lang3.tuple.Pair
+                                            .of(GregTechAPI.sBlockCasingsNH, meta))
+                                    .collect(Collectors.toList())
+                                    .stream())
                                 .collect(Collectors.toList()),
                             -1,
                             MTEPreciseAssembler::setMachineTier,
