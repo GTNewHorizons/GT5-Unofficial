@@ -1078,8 +1078,11 @@ fog.text.tooltip.processingvoltage=Base processing voltage for recipes
 fog.text.tooltip.factorpreview=Enter fuel factor to simulate calculations with
 fog.text.tooltip.applysimulationchanges=Simulate new values
 
-
 achievement.gt.blockmachines.multimachine.em.forge_of_gods=Forge of the Gods
+achievement.gt.blockmachines.multimachine.em.smelting_module=Helioflare Power Forge
+achievement.gt.blockmachines.multimachine.em.molten_module=Helioflux Melting Core
+achievement.gt.blockmachines.multimachine.em.plasma_module=Heliothermal Plasma Fabricator
+achievement.gt.blockmachines.multimachine.em.exotic_module=Heliofusion Exoticizer
 achievement.gt.godforgecasing.0=Singularity Reinforced Stellar Shielding Casing
 achievement.gt.godforgecasing.1=Celestial Matter Guidance Casing
 achievement.gt.godforgecasing.2=Boundless Gravitationally Severed Structure Casing
@@ -1088,6 +1091,20 @@ achievement.gt.godforgecasing.4=Stellar Energy Siphon Casing
 achievement.gt.godforgecasing.5=Remote Graviton Flow Modulator
 achievement.gt.godforgecasing.6=Medial Graviton Flow Modulator
 achievement.gt.godforgecasing.7=Central Graviton Flow Modulator
+
+achievement.gt.blockmachines.multimachine.em.forge_of_gods.desc=BEEEEEEEEEAAAAAAM
+achievement.gt.blockmachines.multimachine.em.smelting_module.desc=The one furnace to rule them all.
+achievement.gt.blockmachines.multimachine.em.molten_module.desc=Hope you have good fluid solidifiers!
+achievement.gt.blockmachines.multimachine.em.plasma_module.desc=Fusion? No thanks.
+achievement.gt.blockmachines.multimachine.em.exotic_module.desc=Creating static since 2024!
+achievement.gt.godforgecasing.0.desc=Building block of the Forge of the Gods
+achievement.gt.godforgecasing.1.desc=Building block of the Forge of the Gods
+achievement.gt.godforgecasing.2.desc=Building block of the Forge of the Gods
+achievement.gt.godforgecasing.3.desc=Building block of the Forge of the Gods
+achievement.gt.godforgecasing.4.desc=Building block of the Forge of the Gods
+achievement.gt.godforgecasing.5.desc=Building block of the Forge of the Gods
+achievement.gt.godforgecasing.6.desc=Building block of the Forge of the Gods
+achievement.gt.godforgecasing.7.desc=Building block of the Forge of the Gods
 
 gt.blockmachines.multimachine.FOG.parallel=Parallel
 gt.blockmachines.multimachine.FOG.batch=Batch Size
