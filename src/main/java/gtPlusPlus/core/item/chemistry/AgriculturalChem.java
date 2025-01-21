@@ -10,6 +10,9 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
+import static gtPlusPlus.core.recipe.common.CI.getNumberedAdvancedCircuit;
+import static gtPlusPlus.core.recipe.common.CI.getNumberedBioCircuit;
+import static gtPlusPlus.core.util.minecraft.ItemUtils.hideItemFromNEI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -151,6 +154,8 @@ public class AgriculturalChem extends ItemPackage {
         mAgrichemItem1 = new ItemAgrichemBase();
         mBioCircuit = new GTPPIntegratedCircuitItem("BioRecipeSelector", "bioscience/BioCircuit");
         GregtechItemList.Circuit_BioRecipeSelector.set(mBioCircuit);
+
+        hideItemFromNEI(getNumberedBioCircuit(0));
 
         mAlgaeBiosmass = ItemUtils.simpleMetaStack(mAgrichemItem1, 0, 1);
         mGreenAlgaeBiosmass = ItemUtils.simpleMetaStack(mAgrichemItem1, 1, 1);

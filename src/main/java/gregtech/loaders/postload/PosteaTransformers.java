@@ -75,6 +75,7 @@ public class PosteaTransformers implements Runnable {
         });
     }
 
+    // TODO: Remove this and bio and breakthrough circuits once 2.8 is released.
     private void registerProgrammedCircuitTransformers() {
         ItemStackReplacementManager.addItemReplacement("miscutils:item.BioRecipeSelector", (tag) -> {
             Item circuitItem = GameRegistry.findItem(Mods.GregTech, "gt.integrated_circuit");
