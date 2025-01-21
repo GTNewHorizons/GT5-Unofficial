@@ -284,7 +284,7 @@ public class GGMaterial implements Runnable {
             .addMetalItems()
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
-            .addMultipleIngotMetalWorkingItems()
+            .addDoubleAndDensePlates()
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         OffsetID + 21,
@@ -314,7 +314,7 @@ public class GGMaterial implements Runnable {
             .addMetalItems()
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
-            .addMultipleIngotMetalWorkingItems()
+            .addDoubleAndDensePlates()
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         OffsetID + 23,
@@ -1075,7 +1075,7 @@ public class GGMaterial implements Runnable {
             .addMetalItems()
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
-            .addMultipleIngotMetalWorkingItems()
+            .addDoubleAndDensePlates()
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes()
             .addMixerRecipes((short) 3),
@@ -1201,7 +1201,7 @@ public class GGMaterial implements Runnable {
             .addMetalItems()
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
-            .addMultipleIngotMetalWorkingItems()
+            .addDoubleAndDensePlates()
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes()
             .addMixerRecipes((short) 7),
@@ -1231,7 +1231,7 @@ public class GGMaterial implements Runnable {
             .addMetalItems()
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
-            .addMultipleIngotMetalWorkingItems()
+            .addDoubleAndDensePlates()
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         OffsetID + 96,
@@ -1446,7 +1446,7 @@ public class GGMaterial implements Runnable {
             .addMolten()
             .addMetalItems()
             .addCraftingMetalWorkingItems()
-            .addMultipleIngotMetalWorkingItems()
+            .addDoubleAndDensePlates()
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes()
             .addMixerRecipes((short) 6),
@@ -1472,7 +1472,7 @@ public class GGMaterial implements Runnable {
             .addMetalItems()
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
-            .addMultipleIngotMetalWorkingItems()
+            .addDoubleAndDensePlates()
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes()
             .addMixerRecipes((short) 4),
@@ -1497,7 +1497,7 @@ public class GGMaterial implements Runnable {
             .addMetalItems()
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
-            .addMultipleIngotMetalWorkingItems()
+            .addDoubleAndDensePlates()
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         OffsetID + 110,
@@ -1519,7 +1519,8 @@ public class GGMaterial implements Runnable {
             .addMetalItems()
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
-            .addMultipleIngotMetalWorkingItems()
+            .addDoubleAndDensePlates()
+            .addMultiPlates()
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         OffsetID + 111,
