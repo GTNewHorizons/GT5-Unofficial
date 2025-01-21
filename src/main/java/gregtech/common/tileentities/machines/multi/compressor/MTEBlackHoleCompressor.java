@@ -488,7 +488,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 }
             }
         }
-        return 0;
+        return -1;
     }
 
     private void searchAndDecrementCatalysts() {
@@ -549,10 +549,22 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
+            private int lastMode = -1;
+
             @NotNull
             @Override
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-                switch (getModeFromCircuit(inputItems)) {
+                int mode = getModeFromCircuit(inputItems);
+
+                if (mode == -1) {
+                    lastMode = -1;
+                    return Stream.empty();
+                }
+                if (!(mode == lastMode)) {
+                    lastRecipe = null;
+                    lastMode = mode;
+                }
+                switch (mode) {
                     case MACHINEMODE_COMPRESSOR -> {
                         return super.findRecipeMatches(RecipeMaps.compressorRecipes);
                     }
@@ -595,6 +607,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
             logic.setAvailableAmperage(1L);
         } else super.setProcessingLogicPower(logic);
+    }
+
+    @Override
+    public boolean isInputSeparationEnabled() {
+        return true;
     }
 
     @Override
@@ -731,11 +748,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     @Override
     public boolean supportsBatchMode() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsInputSeparation() {
         return true;
     }
 
