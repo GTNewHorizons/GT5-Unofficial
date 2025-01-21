@@ -3233,6 +3233,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "Safely closes a pseudostable black hole",
                 new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 32),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 64)));
+        ItemList.Black_Hole_Stabilizer.set(
+            addItem(
+                Black_Hole_Stabilizer.ID,
+                "Superstable Black Hole Seed",
+                "Opens a superstable black hole/n Black hole will never destabilize and will operate at maximum efficiency",
+                new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 32),
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 128)));
 
         // Empty battery hulls
         ItemList.BatteryHull_EV.set(
