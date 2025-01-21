@@ -1001,6 +1001,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addInfo("Right click the controller with a screwdriver to disable overclocking.")
             .addTecTechHatchInfo()
             .beginStructureBlock(7, 9, 7, false)
+            .addController("Front center")
             .addCasingInfoExactly("Molecular Casing", 2 * 12, false)
             .addCasingInfoExactly("Europium Reinforced Radiation Proof Machine Casing", 4, false)
             .addCasingInfoExactly("Fusion Coil Block", 3 * 4 + 5 * 2, false)

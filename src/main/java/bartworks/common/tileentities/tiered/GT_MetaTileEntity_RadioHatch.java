@@ -13,6 +13,8 @@
 
 package bartworks.common.tileentities.tiered;
 
+import static bartworks.common.loaders.RadioHatchMaterialLoader.getRadioHatchMaterialFromInput;
+import static bartworks.common.loaders.RadioHatchMaterialLoader.getRadioHatchMaterialList;
 import static gregtech.api.enums.GTValues.ticksBetweenSounds;
 
 import java.util.Collections;
@@ -20,6 +22,7 @@ import java.util.Collections;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -44,6 +47,7 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import bartworks.API.modularUI.BWUITextures;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.MainMod;
+import bartworks.common.loaders.RadioHatchMaterialLoader.RadioHatchMaterial;
 import bartworks.util.BWColorUtil;
 import bartworks.util.BWTooltipReference;
 import bartworks.util.MathUtils;
@@ -63,14 +67,12 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 
 public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGregtechLogo {
 
-    private final int cap;
     public int sievert;
     private long timer = 1;
     private long decayTime = 1;
@@ -80,9 +82,9 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
     private byte coverage;
     private ItemStack lastUsedItem = null;
     private boolean lastFail = false;
-    private GTRecipe lastRecipe = null;
+    private RadioHatchMaterial radioHatchMaterial = null;
 
-    public GT_MetaTileEntity_RadioHatch(int aID, String aName, String aNameRegional, int aTier) {
+    public GT_MetaTileEntity_RadioHatch(int aID, String aName, String aNameRegional, int aTier, boolean isDeprecated) {
         super(
             aID,
             aName,
@@ -90,19 +92,15 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
             aTier,
             1,
             new String[] { StatCollector.translateToLocal("tooltip.tile.radhatch.0.name"),
-                StatCollector.translateToLocal("tooltip.tile.tiereddsc.3.name") + " "
-                    + (aTier - 2)
-                    + " "
-                    + (aTier - 2 >= 2 ? StatCollector.translateToLocal("tooltip.bw.kg.1.name")
-                        : StatCollector.translateToLocal("tooltip.bw.kg.0.name")),
-                StatCollector.translateToLocal("tooltip.tile.radhatch.1.name"),
-                BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() });
-        this.cap = aTier - 2;
+                (isDeprecated
+                    ? EnumChatFormatting.RED
+                        + "DEPRECATED! This hatch will be removed in the next major update, use \"Radio Hatch\" instead"
+                    : StatCollector.translateToLocal("tooltip.tile.radhatch.1.name")),
+                BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get(), });
     }
 
     public GT_MetaTileEntity_RadioHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures);
-        this.cap = aTier - 2;
     }
 
     public int getSievert() {
@@ -186,6 +184,7 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
                     this.colorForGUI = new short[] { 0x37, 0x37, 0x37 };
                     return;
                 }
+
                 ItemData itemData = GTOreDictUnificator.getAssociation(lStack);
                 if (itemData != null) {
                     Materials mat = itemData.mMaterial.mMaterial;
@@ -193,42 +192,46 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
                 } else {
                     this.colorForGUI = new short[] { 0x37, 0x37, 0x37 };
                 }
-
                 if (this.lastFail && GTUtility.areStacksEqual(this.lastUsedItem, lStack, true)) {
                     return;
                 }
-
-                if (!this.lastFail && this.lastUsedItem != null && this.lastRecipe != null) {
+                if (!this.lastFail && this.lastUsedItem != null && this.radioHatchMaterial != null) {
                     if (GTUtility.areStacksEqual(this.lastUsedItem, lStack, true)) {
-                        this.mass = (byte) this.lastRecipe.mDuration;
-                        this.decayTime = this.lastRecipe.mSpecialValue;
-                        this.sievert = this.lastRecipe.mEUt;
-                        this.material = this.lastUsedItem.getDisplayName();
-                        lStack.stackSize--;
-                        this.updateSlots();
+                        for (RadioHatchMaterial recipes : getRadioHatchMaterialList()) {
+                            this.radioHatchMaterial = getRadioHatchMaterialFromInput(recipes, this.lastUsedItem);
+                            if (radioHatchMaterial != null) {
+                                break;
+                            }
+                        }
+                        if (radioHatchMaterial != null) {
+                            this.sievert = this.radioHatchMaterial.recipeSievert;
+                            this.mass = this.radioHatchMaterial.recipeMass;
+                            this.decayTime = calcDecayTicks(radioHatchMaterial.recipeSievert);
+                            this.material = this.lastUsedItem.getDisplayName();
+                            lStack.stackSize--;
+                            this.updateSlots();
+                        }
                     } else {
-                        this.lastRecipe = null;
+                        this.radioHatchMaterial = null;
                     }
                 }
 
-                if (this.lastRecipe == null || this.lastFail) {
-                    this.lastRecipe = BartWorksRecipeMaps.radioHatchRecipes.findRecipeQuery()
-                        .items(this.mInventory[0])
-                        .find();
-                    if (this.lastRecipe == null) {
+                if (this.radioHatchMaterial == null || this.lastFail || this.radioHatchMaterial.recipeSievert == 0) {
+                    for (RadioHatchMaterial recipes : getRadioHatchMaterialList()) {
+                        this.radioHatchMaterial = getRadioHatchMaterialFromInput(recipes, this.mInventory[0]);
+                        if (radioHatchMaterial != null) {
+                            break;
+                        }
+                    }
+                    if (this.radioHatchMaterial == null) {
                         this.lastFail = true;
                         this.lastUsedItem = this.mInventory[0] == null ? null : this.mInventory[0].copy();
                     } else {
-                        if (this.lastRecipe.mDuration > this.cap) {
-                            this.lastFail = true;
-                            this.lastUsedItem = this.mInventory[0].copy();
-                            return;
-                        }
                         this.lastFail = false;
                         this.lastUsedItem = this.mInventory[0].copy();
-                        this.mass = (byte) this.lastRecipe.mDuration;
-                        this.decayTime = this.lastRecipe.mSpecialValue;
-                        this.sievert = this.lastRecipe.mEUt;
+                        this.sievert = radioHatchMaterial.recipeSievert;
+                        this.mass = radioHatchMaterial.recipeMass;
+                        this.decayTime = calcDecayTicks(radioHatchMaterial.recipeSievert);
                         this.material = lStack.getDisplayName();
                         lStack.stackSize--;
                         this.updateSlots();
@@ -299,13 +302,13 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return side == this.getBaseMetaTileEntity()
-            .getFrontFacing() && BartWorksRecipeMaps.radioHatchRecipes.containsInput(aStack);
+            .getFrontFacing() && BartWorksRecipeMaps.radioHatchFakeRecipes.containsInput(aStack);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setByte("mMass", this.mass);
-        aNBT.setByte("mSv", (byte) (this.sievert - 100));
+        aNBT.setInteger("mSievert", this.sievert);
         aNBT.setByte("mCoverage", this.coverage);
         aNBT.setInteger("mTextColor", BWColorUtil.getColorFromRGBArray(this.getColorForGUI()));
         if (this.material != null && !this.material.isEmpty()) aNBT.setString("mMaterial", this.material);
@@ -318,7 +321,7 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
     public void loadNBTData(NBTTagCompound aNBT) {
         this.timer = aNBT.getLong("timer");
         this.mass = aNBT.getByte("mMass");
-        this.sievert = aNBT.getByte("mSv") + 100;
+        this.sievert = (aNBT.getByte("mSv") != 0) ? aNBT.getByte("mSv") + 100 : aNBT.getInteger("mSievert");
         this.coverage = aNBT.getByte("mCoverage");
         this.colorForGUI = BWColorUtil.splitColorToRBGArray(aNBT.getInteger("mTextColor"));
         this.material = aNBT.getString("mMaterial");
@@ -338,7 +341,7 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
     @Override
     public RecipeMap<?> getRecipeMap() {
         // Only for visual
-        return BartWorksRecipeMaps.radioHatchRecipes;
+        return BartWorksRecipeMaps.radioHatchFakeRecipes;
     }
 
     private static final int RADIATION_SHUTTER_WINDOW_ID = 999;
@@ -487,5 +490,14 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
     public GUITextureSet getGUITextureSet() {
         return new GUITextureSet().setMainBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT)
             .setGregTechLogo(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT);
+    }
+
+    public static long calcDecayTicks(int x) {
+        long ret;
+        if (x == 43) ret = 5000;
+        else if (x == 61) ret = 4500;
+        else if (x <= 100) ret = MathUtils.ceilLong((8000D * Math.tanh(-x / 20D) + 8000D) * 1000D);
+        else ret = MathUtils.ceilLong(8000D * Math.tanh(-x / 65D) + 8000D);
+        return ret;
     }
 }

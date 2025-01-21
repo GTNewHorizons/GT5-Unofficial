@@ -695,7 +695,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         /*
          * dust 1 metal 10 (ingot, nugget) gem 100 ore 1000 cell 10000 plasma 100000 molten 1000000 crafting metal
          * 10000000 (sticks, plates) meta crafting metal 100000000 (gears, screws, bolts, springs) multiple ingotWorth
-         * stuff 1000000000 (double, triple, quadruple, ingot/plates)
+         * stuff 1000000000 (double and dense plates) 1000000000 (triple, quadruple and quintuple plates)
          */
         private boolean isExtension;
         private static final NonNullWrappedHashMap<OrePrefixes, Integer> prefixLogic = new NonNullWrappedHashMap<>(0);
@@ -759,14 +759,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.wireFine, 0b100000000);
 
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plateDouble, 0x200);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plateTriple, 0x200);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plateQuadruple, 0x200);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plateQuintuple, 0x200);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plateDense, 0x200);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ingotDouble, 0x200);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ingotTriple, 0x200);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ingotQuadruple, 0x200);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ingotQuintuple, 0x200);
+
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plateTriple, 0x400);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plateQuadruple, 0x400);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plateQuintuple, 0x400);
 
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.blockCasing, 0x380);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.blockCasingAdvanced, 0x380);
@@ -974,8 +971,16 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             return this;
         }
 
-        public Werkstoff.GenerationFeatures addMultipleIngotMetalWorkingItems() {
+        public Werkstoff.GenerationFeatures addDoubleAndDensePlates() {
             this.toGenerate = this.toGenerate | 0x200;
+            return this;
+        }
+
+        /**
+         * Due to rebolted casings, double plates had to be excluded from this
+         */
+        public Werkstoff.GenerationFeatures addMultiPlates() {
+            this.toGenerate = this.toGenerate | 0x400;
             return this;
         }
 

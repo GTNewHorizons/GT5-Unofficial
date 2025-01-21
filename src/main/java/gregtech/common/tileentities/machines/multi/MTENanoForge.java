@@ -426,14 +426,14 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
                     + EnumChatFormatting.GRAY
                     + "+"
                     + EnumChatFormatting.GRAY
-                    + " input busses.")
+                    + " input buses.")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + 1
                     + EnumChatFormatting.GRAY
                     + "+"
                     + EnumChatFormatting.GRAY
-                    + " output busses.")
+                    + " output buses.")
             .toolTipFinisher(AuthorBlueWeabo);
         return tt;
     }

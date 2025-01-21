@@ -49,6 +49,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -58,13 +59,13 @@ import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChannelState {
+public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChannelState, IMEConnectable {
 
-    private static final long DEFAULT_CAPACITY = 1_600;
-    private long baseCapacity = DEFAULT_CAPACITY;
+    protected static final long DEFAULT_CAPACITY = 1_600;
+    protected long baseCapacity = DEFAULT_CAPACITY;
 
-    private BaseActionSource requestSource = null;
-    private @Nullable AENetworkProxy gridProxy = null;
+    protected BaseActionSource requestSource = null;
+    protected @Nullable AENetworkProxy gridProxy = null;
     final IItemList<IAEItemStack> itemCache = AEApi.instance()
         .storage()
         .createItemList();
@@ -116,7 +117,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         return aStack.stackSize == 0;
     }
 
-    private long getCachedAmount() {
+    protected long getCachedAmount() {
         long itemAmount = 0;
         for (IAEItemStack item : itemCache) {
             itemAmount += item.getStackSize();
@@ -124,7 +125,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         return itemAmount;
     }
 
-    private long getCacheCapacity() {
+    protected long getCacheCapacity() {
         ItemStack upgradeItemStack = mInventory[0];
         if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof ItemBasicStorageCell) {
             return ((ItemBasicStorageCell) upgradeItemStack.getItem()).getBytesLong(upgradeItemStack) * 8;
@@ -158,7 +159,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         return stack.stackSize;
     }
 
-    private BaseActionSource getRequest() {
+    protected BaseActionSource getRequest() {
         if (requestSource == null) requestSource = new MachineSource((IActionHost) getBaseMetaTileEntity());
         return requestSource;
     }
@@ -168,7 +169,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         return isOutputFacing(forgeDirection) ? AECableType.SMART : AECableType.NONE;
     }
 
-    private void updateValidGridProxySides() {
+    protected void updateValidGridProxySides() {
         if (additionalConnection) {
             getProxy().setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
         } else {
@@ -204,6 +205,17 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
+    public boolean connectsToAllSides() {
+        return additionalConnection;
+    }
+
+    @Override
+    public void setConnectsToAllSides(boolean connects) {
+        additionalConnection = connects;
+        updateValidGridProxySides();
+    }
+
+    @Override
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
@@ -222,7 +234,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         return this.gridProxy;
     }
 
-    private void flushCachedStack() {
+    protected void flushCachedStack() {
         AENetworkProxy proxy = getProxy();
         if (proxy == null) {
             return;

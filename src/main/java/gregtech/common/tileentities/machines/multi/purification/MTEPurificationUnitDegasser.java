@@ -460,6 +460,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + EnumChatFormatting.ITALIC
                     + "detects in the water, it will request various materials to complete the processes listed above.")
             .beginStructureBlock(17, 25, 17, false)
+            .addController("Front center")
             .addCasingInfoRangeColored(
                 "Heat-Resistant Trinium Plated Casing",
                 EnumChatFormatting.GRAY,
@@ -479,7 +480,6 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 124,
                 EnumChatFormatting.GOLD,
                 false)
-            .addController("Front center")
             .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+, Any Trinium Casing", 1)
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+, Any Trinium Casing", 1)
             .addOtherStructurePart(
@@ -668,8 +668,8 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     @Override
     public void addRecipeOutputs() {
         super.addRecipeOutputs();
-        if (outputMultiplier > 1.01f) {
-            FluidStack waterOutput = currentRecipe.mFluidOutputs[0];
+        if (outputMultiplier > 1.01f && mOutputFluids != null) {
+            FluidStack waterOutput = mOutputFluids[0];
             FluidStack bonusOutput = new FluidStack(
                 waterOutput.getFluid(),
                 (int) (this.effectiveParallel * waterOutput.amount * (outputMultiplier - 1.0f)));
@@ -722,6 +722,8 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         this.controlHatch = null;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
         if (casingCount < MIN_CASING) return false;
+        // Do not form without a valid control hatch
+        if (this.controlHatch == null || !this.controlHatch.isValid()) return false;
         return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 

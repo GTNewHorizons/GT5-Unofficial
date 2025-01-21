@@ -37,7 +37,7 @@ public class BehaviourCrowbar extends BehaviourNone {
         if (aBlock == null) {
             return false;
         }
-        byte aMeta = (byte) aWorld.getBlockMetadata(aX, aY, aZ);
+        int aMeta = aWorld.getBlockMetadata(aX, aY, aZ);
         if (aBlock == Blocks.rail) {
             if (GTModHandler.damageOrDechargeItem(aStack, this.mVanillaCosts, this.mEUCosts, aPlayer)) {
                 aWorld.isRemote = true;

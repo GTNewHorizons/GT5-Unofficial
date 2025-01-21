@@ -114,6 +114,8 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.joml.Vector3i;
+
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
@@ -129,6 +131,7 @@ import cofh.api.energy.IEnergyReceiver;
 import cofh.api.transport.IItemDuct;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.GTDamageSources;
 import gregtech.api.damagesources.GTDamageSources.DamageSourceHotItem;
@@ -162,7 +165,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.net.GTPacketSound;
 import gregtech.api.objects.CollectorUtils;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.objects.GTItemStack2;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
@@ -241,7 +243,7 @@ public class GTUtility {
             rField = aObject.getClass()
                 .getDeclaredField(aField);
         } catch (Throwable e) {
-            /* Do nothing */
+            if (D1) e.printStackTrace(GTLog.err);
         }
         return rField;
     }
@@ -253,7 +255,7 @@ public class GTUtility {
                 .getDeclaredField(aField);
             rField.setAccessible(true);
         } catch (Throwable e) {
-            /* Do nothing */
+            if (D1) e.printStackTrace(GTLog.err);
         }
         return rField;
     }
@@ -264,7 +266,7 @@ public class GTUtility {
             rField = aObject.getDeclaredField(aField);
             rField.setAccessible(true);
         } catch (Throwable e) {
-            /* Do nothing */
+            if (D1) e.printStackTrace(GTLog.err);
         }
         return rField;
     }
@@ -275,7 +277,7 @@ public class GTUtility {
             rMethod = aObject.getMethod(aMethod, aParameterTypes);
             rMethod.setAccessible(true);
         } catch (Throwable e) {
-            /* Do nothing */
+            if (D1) e.printStackTrace(GTLog.err);
         }
         return rMethod;
     }
@@ -287,7 +289,7 @@ public class GTUtility {
                 .getMethod(aMethod, aParameterTypes);
             rMethod.setAccessible(true);
         } catch (Throwable e) {
-            /* Do nothing */
+            if (D1) e.printStackTrace(GTLog.err);
         }
         return rMethod;
     }
@@ -370,7 +372,9 @@ public class GTUtility {
                 for (Constructor<?> tConstructor : aClass.getConstructors()) {
                     try {
                         return tConstructor.newInstance(aParameters);
-                    } catch (Throwable ignored) {}
+                    } catch (Throwable e) {
+                        if (D1) e.printStackTrace(GTLog.err);
+                    }
                 }
             } catch (Throwable e) {
                 if (aLogErrors) e.printStackTrace(GTLog.err);
@@ -507,21 +511,21 @@ public class GTUtility {
                 tClass.getCanonicalName();
                 TE_CHECK = true;
             } catch (Throwable e) {
-                /**/
+                if (D1) e.printStackTrace(GTLog.err);
             }
             try {
                 Class<IPipeTile> tClass = buildcraft.api.transport.IPipeTile.class;
                 tClass.getCanonicalName();
                 BC_CHECK = true;
             } catch (Throwable e) {
-                /**/
+                if (D1) e.printStackTrace(GTLog.err);
             }
             try {
                 Class<IEnergyReceiver> tClass = cofh.api.energy.IEnergyReceiver.class;
                 tClass.getCanonicalName();
                 RF_CHECK = true;
             } catch (Throwable e) {
-                /**/
+                if (D1) e.printStackTrace(GTLog.err);
             }
             CHECK_ALL = false;
         }
@@ -1939,7 +1943,7 @@ public class GTUtility {
         if (isStackInvalid(aStack)) return null;
         if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem
             && ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) > 0)
-            return ((IFluidContainerItem) aStack.getItem()).drain(copyAmount(1, aStack), Integer.MAX_VALUE, true);
+            return ((IFluidContainerItem) aStack.getItem()).drain(copyAmount(1, aStack), Integer.MAX_VALUE, false);
         FluidContainerData tData = sFilledContainerToData.get(new GTItemStack(aStack));
         return tData == null ? null : tData.fluid.copy();
     }
@@ -2525,7 +2529,7 @@ public class GTUtility {
      *
      * @return casing texture 0 to 16383
      */
-    public static int getTextureId(Block blockFromBlock, byte metaFromBlock) {
+    public static int getTextureId(Block blockFromBlock, int metaFromBlock) {
         for (int page = 0; page < Textures.BlockIcons.casingTexturePages.length; page++) {
             ITexture[] casingTexturePage = Textures.BlockIcons.casingTexturePages[page];
             if (casingTexturePage != null) {
@@ -2533,7 +2537,7 @@ public class GTUtility {
                     ITexture iTexture = casingTexturePage[index];
                     if (iTexture instanceof IBlockContainer) {
                         Block block = ((IBlockContainer) iTexture).getBlock();
-                        byte meta = ((IBlockContainer) iTexture).getMeta();
+                        int meta = ((IBlockContainer) iTexture).getMeta();
                         if (meta == metaFromBlock && blockFromBlock == block) {
                             return (page << 7) + index;
                         }
@@ -2725,7 +2729,11 @@ public class GTUtility {
 
     private static boolean applyHeatDamage(EntityLivingBase aEntity, float aDamage, DamageSource source) {
         if (aDamage > 0 && aEntity != null && !isWearingFullHeatHazmat(aEntity)) {
-            return aEntity.attackEntityFrom(source, aDamage);
+            try {
+                return aEntity.attackEntityFrom(source, aDamage);
+            } catch (Throwable t) {
+                GTMod.GT_FML_LOGGER.error("Error damaging entity", t);
+            }
         }
         return false;
     }
@@ -3017,21 +3025,9 @@ public class GTUtility {
         return isStackInList(new GTItemStack(aStack), aList);
     }
 
-    public static boolean isStackInList(ItemStack aStack, Set<GTItemStack2> aList) {
-        if (aStack == null) {
-            return false;
-        }
-        return isStackInList(new GTItemStack2(aStack), aList);
-    }
-
     public static boolean isStackInList(GTItemStack aStack, Collection<GTItemStack> aList) {
         return aStack != null
             && (aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, aStack.mStackSize, W)));
-    }
-
-    public static boolean isStackInList(GTItemStack2 aStack, Set<GTItemStack2> aList) {
-        return aStack != null
-            && (aList.contains(aStack) || aList.contains(new GTItemStack2(aStack.mItem, aStack.mStackSize, W)));
     }
 
     /**
@@ -3251,14 +3247,10 @@ public class GTUtility {
         if (tTileEntity != null) {
             rEUAmount += addFluidHandlerInfo(side, tList, tTileEntity);
 
-            try {
-                if (tTileEntity instanceof ic2.api.reactor.IReactorChamber chamber) {
-                    rEUAmount += 500;
-                    // Redirect the rest of the scans to the reactor itself
-                    tTileEntity = (TileEntity) chamber.getReactor();
-                }
-            } catch (Throwable e) {
-                if (D1) e.printStackTrace(GTLog.err);
+            if (tTileEntity instanceof ic2.api.reactor.IReactorChamber chamber) {
+                rEUAmount += 500;
+                // Redirect the rest of the scans to the reactor itself
+                tTileEntity = (TileEntity) chamber.getReactor();
             }
             rEUAmount += addReactorInfo(tList, tTileEntity);
             rEUAmount += addAlignmentInfo(tList, tTileEntity);
@@ -4516,10 +4508,26 @@ public class GTUtility {
         return MathHelper.clamp_int(val, lo, hi);
     }
 
+    public static int min(int first, int... rest) {
+        for (int i = 0; i < rest.length; i++) {
+            int l = rest[i];
+            if (l < first) first = l;
+        }
+        return first;
+    }
+
     public static long min(long first, long... rest) {
         for (int i = 0; i < rest.length; i++) {
             long l = rest[i];
             if (l < first) first = l;
+        }
+        return first;
+    }
+
+    public static int max(int first, int... rest) {
+        for (int i = 0; i < rest.length; i++) {
+            int l = rest[i];
+            if (l > first) first = l;
         }
         return first;
     }
@@ -4536,8 +4544,39 @@ public class GTUtility {
         return (lhs + rhs - 1) / rhs;
     }
 
+    /** Handles negatives properly, but it's slower than {@link #ceilDiv(int, int)}. */
+    public static int ceilDiv2(int lhs, int rhs) {
+        int sign = signum(lhs) * signum(rhs);
+
+        if (lhs == 0) return 0;
+        if (rhs == 0) throw new ArithmeticException("/ by zero");
+
+        lhs = Math.abs(lhs);
+        rhs = Math.abs(rhs);
+
+        int unsigned = 1 + ((lhs - 1) / rhs);
+
+        return unsigned * sign;
+    }
+
     public static long ceilDiv(long lhs, long rhs) {
         return (lhs + rhs - 1) / rhs;
+    }
+
+    public static int signum(int x) {
+        return x < 0 ? -1 : x > 0 ? 1 : 0;
+    }
+
+    public static long signum(long x) {
+        return x < 0 ? -1 : x > 0 ? 1 : 0;
+    }
+
+    public static Vector3i signum(Vector3i v) {
+        v.x = signum(v.x);
+        v.y = signum(v.y);
+        v.z = signum(v.z);
+
+        return v;
     }
 
     /**
@@ -4622,11 +4661,6 @@ public class GTUtility {
         }
 
         return signal;
-    }
-
-    public static ItemStack getNaniteAsCatalyst(Materials material) {
-        ItemStack aItem = material.getNanite(1);
-        return new ItemStack(aItem.getItem(), 0, aItem.getItemDamage());
     }
 
     public static Stream<NBTTagCompound> streamCompounds(NBTTagList list) {
@@ -4781,6 +4815,14 @@ public class GTUtility {
             return new AutoValue_GTUtility_ItemId(itemStack.getItem(), W, null, null);
         }
 
+        public static ItemId createAsWildcardWithNBT(ItemStack itemStack) {
+            NBTTagCompound nbt = itemStack.getTagCompound();
+            if (nbt != null) {
+                nbt = (NBTTagCompound) nbt.copy();
+            }
+            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), W, nbt, null);
+        }
+
         /**
          * This method stores NBT as null.
          */
@@ -4839,8 +4881,83 @@ public class GTUtility {
         @Nonnull
         public ItemStack getItemStack() {
             ItemStack itemStack = new ItemStack(item(), 1, metaData());
-            itemStack.setTagCompound(nbt());
+            NBTTagCompound nbt = nbt();
+            itemStack.setTagCompound(nbt == null ? null : (NBTTagCompound) nbt.copy());
             return itemStack;
+        }
+
+        @Nonnull
+        public ItemStack getItemStack(int stackSize) {
+            ItemStack itemStack = new ItemStack(item(), stackSize, metaData());
+            NBTTagCompound nbt = nbt();
+            itemStack.setTagCompound(nbt == null ? null : (NBTTagCompound) nbt.copy());
+            return itemStack;
+        }
+    }
+
+    @AutoValue
+    public abstract static class FluidId {
+
+        public static FluidId create(NBTTagCompound tag) {
+            return new AutoValue_GTUtility_FluidId(
+                FluidRegistry.getFluid(tag.getString("FluidName")),
+                tag.hasKey("Tag", Constants.NBT.TAG_COMPOUND) ? tag.getCompoundTag("Tag") : null,
+                tag.hasKey("Amount", Constants.NBT.TAG_INT) ? tag.getInteger("Amount") : null);
+        }
+
+        public NBTTagCompound writeToNBT() {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setString("FluidName", fluid().getName());
+            if (nbt() != null) tag.setTag("Tag", nbt());
+            Integer amount = amount();
+            if (amount != null) tag.setInteger("Amount", amount);
+            return tag;
+        }
+
+        public static FluidId create(FluidStack fluidStack) {
+            return createWithCopy(fluidStack.getFluid(), null, fluidStack.tag);
+        }
+
+        public static FluidId createWithAmount(FluidStack fluidStack) {
+            return createWithCopy(fluidStack.getFluid(), (Integer) fluidStack.amount, fluidStack.tag);
+        }
+
+        public static FluidId create(Fluid fluid) {
+            return createNoCopy(fluid, null, null);
+        }
+
+        public static FluidId createWithCopy(Fluid fluid, Integer amount, @Nullable NBTTagCompound nbt) {
+            if (nbt != null) {
+                nbt = (NBTTagCompound) nbt.copy();
+            }
+            return new AutoValue_GTUtility_FluidId(fluid, nbt, amount);
+        }
+
+        /**
+         * This method does not copy the NBT tag.
+         */
+        public static FluidId createNoCopy(Fluid fluid, Integer amount, @Nullable NBTTagCompound nbt) {
+            return new AutoValue_GTUtility_FluidId(fluid, nbt, amount);
+        }
+
+        protected abstract Fluid fluid();
+
+        @Nullable
+        protected abstract NBTTagCompound nbt();
+
+        @Nullable
+        protected abstract Integer amount();
+
+        @Nonnull
+        public FluidStack getFluidStack() {
+            NBTTagCompound nbt = nbt();
+            return new FluidStack(fluid(), 1, nbt != null ? (NBTTagCompound) nbt.copy() : null);
+        }
+
+        @Nonnull
+        public FluidStack getFluidStack(int amount) {
+            NBTTagCompound nbt = nbt();
+            return new FluidStack(fluid(), amount, nbt != null ? (NBTTagCompound) nbt.copy() : null);
         }
     }
 

@@ -78,6 +78,7 @@ import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
@@ -158,7 +159,8 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                     withChannel(
                         "machine casing",
                         StructureUtility.ofBlocksTiered(
-                            (block, meta) -> block == GregTechAPI.sBlockCasings1 ? meta : -2,
+                            (block, meta) -> (block == GregTechAPI.sBlockCasings1 && meta >= 0 && meta <= 9) ? meta
+                                : -2,
                             IntStream.range(0, 10)
                                 .mapToObj(
                                     meta -> org.apache.commons.lang3.tuple.Pair.of(GregTechAPI.sBlockCasings1, meta))
@@ -178,6 +180,12 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) {
             return false;
+        }
+        if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
+            // Only add them to be iterated if enabled for performance reasons
+            if (hatch.doFastRecipeCheck()) {
+                mSmartInputHatches.add(hatch);
+            }
         }
         if (aMetaTileEntity instanceof MTEHatchInput) {
             return mInputHatches.add((MTEHatchInput) aMetaTileEntity);

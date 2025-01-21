@@ -1166,18 +1166,23 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 if (outputsEnergyTo(side, false) || inputEnergyFrom(side, false)) {
                     final IGregTechTileEntity TE = getIGregTechTileEntityAtSide(side);
-                    if (TE instanceof BaseMetaPipeEntity) {
-                        final Node node = ((BaseMetaPipeEntity) TE).getNode();
+                    if (TE instanceof BaseMetaPipeEntity pipe
+                        && (pipe.getConnections() & side.getOpposite().flag) != 0) {
+                        final Node node = pipe.getNode();
                         if (node == null) {
-                            new GenerateNodeMapPower((BaseMetaPipeEntity) TE);
+                            new GenerateNodeMapPower(pipe);
                         } else if (node.mCreationTime != time) {
                             GenerateNodeMap.clearNodeMap(node, -1);
-                            new GenerateNodeMapPower((BaseMetaPipeEntity) TE);
+                            new GenerateNodeMapPower(pipe);
                         }
                     }
                 }
             }
         }
+    }
+
+    public void setCableUpdateDelay(int delay) {
+        cableUpdateDelay = delay;
     }
 
     @Override

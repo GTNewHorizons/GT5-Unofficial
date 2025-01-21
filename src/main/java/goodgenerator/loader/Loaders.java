@@ -62,6 +62,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
+import kekztech.common.blocks.BlockTFFTStorageField;
 
 public class Loaders {
 
@@ -518,6 +519,8 @@ public class Loaders {
                 .of(magneticFluxCasing, 0);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][10] = TextureFactory
                 .of(gravityStabilizationCasing, 0);
+            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][127] = TextureFactory
+                .of(BlockTFFTStorageField.TFFTCasingIcon.INSTANCE);
         }
     }
 

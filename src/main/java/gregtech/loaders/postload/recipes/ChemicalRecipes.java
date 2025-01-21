@@ -4938,29 +4938,7 @@ public class ChemicalRecipes implements Runnable {
         // 2CH3COOH = CH3COCH3 + CO2 + H
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(0, Materials.Calcite.getDust(5)), GTUtility.getIntegratedCircuit(24))
-            .fluidInputs(Materials.AceticAcid.getFluid(2000))
-            .fluidOutputs(
-                Materials.Acetone.getFluid(1000),
-                Materials.CarbonDioxide.getGas(1000),
-                Materials.Water.getFluid(1000))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, Materials.Calcium.getDust(1)), GTUtility.getIntegratedCircuit(24))
-            .fluidInputs(Materials.AceticAcid.getFluid(2000))
-            .fluidOutputs(
-                Materials.Acetone.getFluid(1000),
-                Materials.CarbonDioxide.getGas(1000),
-                Materials.Water.getFluid(1000))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(0, Materials.Quicklime.getDust(2)), GTUtility.getIntegratedCircuit(24))
             .fluidInputs(Materials.AceticAcid.getFluid(2000))
             .fluidOutputs(
                 Materials.Acetone.getFluid(1000),
@@ -5623,17 +5601,6 @@ public class ChemicalRecipes implements Runnable {
             .fluidOutputs(Materials.MTBEMixtureAlt.getGas(1000))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(24))
-            .fluidInputs(
-                Materials.Naquadria.getMolten(4608),
-                Materials.ElectrumFlux.getMolten(4608),
-                Materials.Radon.getGas(16000))
-            .fluidOutputs(Materials.EnrichedNaquadria.getFluid(9216))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
             .addTo(multiblockChemicalReactorRecipes);
 
         // CH2O + 2C6H7N + HCl = C13H14N2(HCl) + H2O

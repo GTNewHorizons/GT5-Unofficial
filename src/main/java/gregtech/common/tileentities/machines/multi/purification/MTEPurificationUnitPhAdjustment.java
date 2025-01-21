@@ -405,6 +405,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.ITALIC
                     + "materials. This necessitates the use of the corresponding neutralizing agents to pH balance the water.")
             .beginStructureBlock(7, 4, 7, false)
+            .addController("Front center")
             .addCasingInfoExactlyColored(
                 "Stabilized Naquadah Water Plant Casing",
                 EnumChatFormatting.GRAY,
@@ -429,7 +430,6 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                 67 * 2,
                 EnumChatFormatting.GOLD,
                 false)
-            .addController("Front center")
             .addOtherStructurePart("Input Hatch (Water)", EnumChatFormatting.GOLD + "1+", 1)
             .addOtherStructurePart("Output Hatch", EnumChatFormatting.GOLD + "1", 1)
             .addOtherStructurePart("pH Sensor Hatch", EnumChatFormatting.GOLD + "2", 2)

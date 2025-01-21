@@ -25,7 +25,6 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -33,8 +32,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.API.BorosilicateGlass;
@@ -86,10 +85,10 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
                     + " Laser Hatches.")
             .beginStructureBlock(5, 5, 9, false)
             .addController("Front center")
-            .addStructureInfo("46x Chemically Inert Machine Casing (minimum)")
-            .addStructureInfo("7x Fusion Coil Block")
-            .addStructureInfo("28x PTFE Pipe Casing")
-            .addStructureInfo("64x Borosilicate Glass Block (any tier)")
+            .addCasingInfoMin("Chemically Inert Machine Casing", 46, false)
+            .addCasingInfoExactly("Fusion Coil Block", 7, false)
+            .addCasingInfoExactly("PTFE Pipe Casing", 28, false)
+            .addCasingInfoExactly("Borosilicate Glass", 64, true)
             .addStructureInfo("The glass tier limits the Energy Input tier")
             .addEnergyHatch("Hint block ", 3)
             .addMaintenanceHatch("Hint block ", 2)
@@ -160,7 +159,7 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             this.batchMode = !this.batchMode;
             if (this.batchMode) {
@@ -185,11 +184,10 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return this
-            .survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 0, realBudget, source, actor, false, true);
+        return this.survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 0, realBudget, env, false, true);
     }
     // -------------- TEC TECH COMPAT ----------------
 

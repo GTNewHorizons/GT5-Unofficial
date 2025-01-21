@@ -183,6 +183,8 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             .addInfo("Distillery Mode: Tower Tier * (4*InputTier)")
             .addInfo("Distillery Mode require a full height tower")
             .addPollutionAmount(getPollutionPerSecond(null))
+            .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
+            .addController("Front bottom")
             .addCasingInfoMin("Clean Stainless Steel Machine Casing", 7, false)
             .addInputBus("Bottom Casing", 1)
             .addOutputBus("Bottom Casing", 1)

@@ -1,7 +1,7 @@
 package gtnhlanth.common.tileentity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
@@ -17,6 +17,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 import net.minecraft.block.Block;
@@ -28,11 +29,16 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import bartworks.API.BorosilicateGlass;
 import gregtech.api.GregTechAPI;
@@ -44,6 +50,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTUtility;
@@ -76,6 +84,8 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
     public ArrayList<BlockAntennaCasing> mAntennaCasings = new ArrayList<>();
 
+    private static HashMap<Block, Integer> allowedAntennas = new HashMap<>(2);
+
     private static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings5, 14);
 
     private static final byte MIN_GLASS_TIER = 6;
@@ -95,6 +105,9 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     // TODO: E > 1200eV for x-ray lithography
     // spotless:off
     static {
+    	
+    	allowedAntennas.put(LanthItemList.ANTENNA_CASING_T1, 0);
+    	allowedAntennas.put(LanthItemList.ANTENNA_CASING_T2, 0);
 
         STRUCTURE_DEFINITION = StructureDefinition.<MTESynchrotron>builder().addShape(
                 STRUCTURE_PIECE_ENTRANCE,
@@ -445,22 +458,27 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 ).addElement('c', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
                 .addElement('k', ofBlock(GregTechAPI.sBlockCasings1, 15)) // Superconducting coils
                 .addElement('d', ofBlock(LanthItemList.COOLANT_DELIVERY_CASING, 0))
-                
+
                 // Adder overriden due to ExoticEnergy originally calling its own adder, giving false positives
                 .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy.or(ExoticEnergy), 4)).adder(MTESynchrotron::addEnergyInputToMachineList).dot(6).casingIndex(CASING_INDEX).build())
                 .addElement('n', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
-                .addElement('a', ofBlockAdder(MTESynchrotron::addAntenna, LanthItemList.ANTENNA_CASING_T1, 0)) //Antenna Casings
+                .addElement('a', withChannel("antenna", StructureUtility.ofBlocksTiered(
+                		(Block block, int meta) -> (block == LanthItemList.ANTENNA_CASING_T1 ? 1 : block == LanthItemList.ANTENNA_CASING_T2 ? 2 : -1), 
+                		ImmutableList.of(
+                				Pair.of(LanthItemList.ANTENNA_CASING_T1, 0),
+                				Pair.of(LanthItemList.ANTENNA_CASING_T2, 0)),
+                		-2, MTESynchrotron::setAntennaTier, MTESynchrotron::getAntennaTier)))
                 .addElement('i', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(InputHatch, 2)).dot(4).casingIndex(CASING_INDEX).build())
                 .addElement('o', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(OutputHatch, 2)).dot(5).casingIndex(CASING_INDEX).build())
                 .addElement('v', buildHatchAdder(MTESynchrotron.class).hatchClass(MTEHatchInputBeamline.class).casingIndex(CASING_INDEX)
                         .dot(1).adder(MTESynchrotron::addBeamlineInputHatch).build())
                 .addElement('b', buildHatchAdder(MTESynchrotron.class).hatchClass(MTEHatchOutputBeamline.class).casingIndex(CASING_INDEX)
                         .dot(2).adder(MTESynchrotron::addBeamlineOutputHatch).build())
-                .addElement('g', BorosilicateGlass.ofBoroGlass((byte) 0, MIN_GLASS_TIER, Byte.MAX_VALUE, (te, t) ->  te.glassTier = t, te -> te.glassTier))
+                .addElement('g', withChannel("glass", BorosilicateGlass.ofBoroGlass((byte) 0, MIN_GLASS_TIER, Byte.MAX_VALUE, (te, t) ->  te.glassTier = t, te -> te.glassTier)))
                 .addElement('j',
                 		buildHatchAdder(MTESynchrotron.class).atLeast(Maintenance).dot(3).casingIndex(CASING_INDEX)
                 		.buildAndChain(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-
+	
                 .build();
 
 
@@ -689,21 +707,12 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
          */
     }
 
-    private boolean addAntenna(Block block, int meta) {
+    public void setAntennaTier(int t) {
+        this.antennaeTier = t;
+    }
 
-        if (block == null) return false;
-
-        if (!(block instanceof BlockAntennaCasing antennaBlock)) return false;
-
-        int antennaTier = antennaBlock.getTier();
-
-        // First antenna casing added
-        if (this.mAntennaCasings.isEmpty()) this.antennaeTier = antennaTier;
-
-        if (antennaTier != this.antennaeTier) return false;
-
-        return mAntennaCasings.add(antennaBlock);
-
+    public int getAntennaTier() {
+        return this.antennaeTier;
     }
 
     @Override
@@ -711,8 +720,9 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         return true;
     }
 
+    @NotNull
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
+    public CheckRecipeResult checkProcessing() {
 
         float inputEnergy = 0;
         float inputFocus = 0;
@@ -737,24 +747,24 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
             this.stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.nocoolant"));
 
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
         if (this.getInputInformation() == null) {
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         if (this.getInputInformation()
             .getEnergy() == 0) { // Only really applies if there's no input
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         if (this.getInputInformation()
             .getFocus() < MIN_INPUT_FOCUS) {
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         inputParticleId = this.getInputInformation()
@@ -764,7 +774,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
         if (!inputParticle.canAccelerate()) {
             stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         mMaxProgresstime = TickTime.SECOND;
@@ -779,14 +789,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
         FluidStack primaryFluid = fluidList.get(0);
 
-        int fluidTemperature;
-
-        if (primaryFluid.isFluidEqual(new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1))) {
-            fluidTemperature = 60; // Default temp of 300 is unreasonable
-        } else {
-            fluidTemperature = primaryFluid.getFluid()
-                .getTemperature();
-        }
+        int fluidTemperature = Util.coolantFluidTemperature(primaryFluid);
 
         machineTemp = fluidTemperature; // Solely for tricorder info
 
@@ -823,13 +826,13 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
         if (outputRate == 0) {
             stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.low_input_eut"));
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         if (Util.coolantFluidCheck(primaryFluid, CONSUMED_FLUID)) {
 
             stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.inscoolant"));
-            return false;
+            return CheckRecipeResultRegistry.NO_RECIPE;
 
         }
 
@@ -839,17 +842,17 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             primaryFluid.getFluid()
                 .getName());
 
-        if (Objects.isNull(fluidOutput)) return false;
+        if (Objects.isNull(fluidOutput)) return CheckRecipeResultRegistry.NO_RECIPE;
 
         FluidStack fluidOutputStack = new FluidStack(fluidOutput, CONSUMED_FLUID);
 
-        if (Objects.isNull(fluidOutputStack)) return false;
+        if (Objects.isNull(fluidOutputStack)) return CheckRecipeResultRegistry.NO_RECIPE;
 
         this.addFluidOutputs(new FluidStack[] { fluidOutputStack });
 
         outputAfterRecipe();
 
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     private void outputAfterRecipe() {
@@ -867,20 +870,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     }
 
     @Override
-    public void stopMachine() {
-
-        outputFocus = 0;
-        outputEnergy = 0;
-        outputParticle = 0;
-        outputRate = 0;
-        machineFocus = 0;
-        machineTemp = 0;
-        super.stopMachine();
-
-    }
-
-    @Override
-    public void stopMachine(ShutDownReason reason) {
+    public void stopMachine(@NotNull ShutDownReason reason) {
 
         outputFocus = 0;
         outputEnergy = 0;
@@ -1032,7 +1022,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 + " K", // e.g. "137 K"
             StatCollector.translateToLocal("beamline.coolusage") + ": " // Coolant Usage:
                 + EnumChatFormatting.AQUA
-                + 32_000
+                + 32
                 + EnumChatFormatting.RESET
                 + " kL/s", // 32 kL/s
 
@@ -1095,7 +1085,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         this.energyHatchAmperage = 0;
         this.usingExotic = false;
 
-        this.antennaeTier = 0;
+        this.antennaeTier = -2;
 
         this.glassTier = 0;
 
@@ -1108,6 +1098,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         if (!checkPiece(STRUCTURE_PIECE_BASE, 16, 3, 0)) return false;
 
         return this.mInputBeamline.size() == 1 && this.mOutputBeamline.size() == 1
+            && this.antennaeTier > 0
             && this.mMaintenanceHatches.size() == 1
             && (this.mEnergyHatches.size() == 4 || this.mExoticEnergyHatches.size() == 4)
             && this.glassTier >= MIN_GLASS_TIER;

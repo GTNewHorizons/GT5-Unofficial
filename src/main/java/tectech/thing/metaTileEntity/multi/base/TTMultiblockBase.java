@@ -671,7 +671,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
      * should do it
      */
     protected void notAllowedToWork_stopMachine_EM() {
-        stopMachine();
+        stopMachine(ShutDownReasonRegistry.NONE);
     }
 
     /**
