@@ -450,7 +450,7 @@ public class GTUtility {
 
     /**
      * Gets the voltage tier corresponding to an amount of EU, capped to 15 (MAX+)
-     * 
+     *
      * @param l The amount of EU
      * @return Corresponding voltage tier in the range 0-15
      */
@@ -467,15 +467,15 @@ public class GTUtility {
     }
 
     /**
-     * Gets the voltage tier corresponding to an amount of EU, capped to 127
-     * 
+     * Gets the voltage tier corresponding to an amount of EU
+     *
      * @param l The amount of EU
      * @return Corresponding voltage tier
      */
-    public static byte getTierExtended(long l) {
+    public static int getTierExtended(long l) {
         if (l <= V[0]) return 0;
         int log2L = 64 - Long.numberOfLeadingZeros(l - 1);
-        return (byte) Math.min(((log2L - 2) / 2), 127);
+        return ((log2L - 2) / 2);
     }
 
     public static long getAmperageForTier(long voltage, byte tier) {
