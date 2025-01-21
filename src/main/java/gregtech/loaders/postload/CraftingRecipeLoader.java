@@ -1616,13 +1616,15 @@ public class CraftingRecipeLoader implements Runnable {
             GTModHandler.getIC2Item("powerunit", 1L),
             bits_no_remove_buffered,
             new Object[] { "BCA", "BIM", "BCA", 'C', OrePrefixes.cableGt01.get(Materials.Copper), 'B',
-                OrePrefixes.battery.get(Materials.LV), 'A', ItemList.IC2_Item_Casing_Iron.get(1L), 'I',
+                OrePrefixes.battery.get(Materials.LV), 'A',
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Iron, 1L), 'I',
                 OrePrefixes.circuit.get(Materials.LV), 'M', GTModHandler.getIC2Item("elemotor", 1L) });
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("powerunitsmall", 1L),
             bits_no_remove_buffered,
             new Object[] { " CA", "BIM", " CA", 'C', OrePrefixes.cableGt01.get(Materials.Copper), 'B',
-                OrePrefixes.battery.get(Materials.LV), 'A', ItemList.IC2_Item_Casing_Iron.get(1L), 'I',
+                OrePrefixes.battery.get(Materials.LV), 'A',
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Iron, 1L), 'I',
                 OrePrefixes.circuit.get(Materials.LV), 'M', GTModHandler.getIC2Item("elemotor", 1L) });
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("remote", 1L),
@@ -1635,13 +1637,15 @@ public class CraftingRecipeLoader implements Runnable {
             bits_no_remove_buffered,
             new Object[] { "PGP", "CBC", "WWW", 'W', OrePrefixes.cableGt01.get(Materials.Copper), 'G',
                 OrePrefixes.dust.get(Materials.Glowstone), 'B', OrePrefixes.battery.get(Materials.HV), 'C',
-                OrePrefixes.circuit.get(Materials.HV), 'P', ItemList.IC2_Item_Casing_Gold.get(1L) });
+                OrePrefixes.circuit.get(Materials.HV), 'P',
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Gold, 1L) });
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("ovScanner", 1L),
             bits_no_remove_buffered,
             new Object[] { "PDP", "GCG", "WSW", 'W', OrePrefixes.cableGt01.get(Materials.Gold), 'G',
                 OrePrefixes.dust.get(Materials.Glowstone), 'D', OrePrefixes.battery.get(Materials.IV), 'C',
-                OrePrefixes.circuit.get(Materials.HV), 'P', ItemList.IC2_Item_Casing_Gold.get(1L), 'S',
+                OrePrefixes.circuit.get(Materials.HV), 'P',
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Gold, 1L), 'S',
                 GTModHandler.getIC2Item("odScanner", 1L) });
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("staticBoots", 1L),
@@ -2016,7 +2020,7 @@ public class CraftingRecipeLoader implements Runnable {
             new Object[] { "RIR", "VBV", "CCC", 'R', ItemList.Circuit_Parts_Resistor.get(1), 'C',
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.RedAlloy, 1), 'V',
                 ItemList.Circuit_Parts_Vacuum_Tube.get(1), 'B', ItemList.Circuit_Board_Coated_Basic.get(1), 'I',
-                ItemList.IC2_Item_Casing_Steel.get(1) });
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Steel, 1) });
         GTModHandler.addShapelessCraftingRecipe(
             GTModHandler.getIC2Item("electronicCircuit", 1L),
             new Object[] { ItemList.Circuit_Integrated.getWildcard(1L) });
