@@ -499,8 +499,7 @@ public class GTAchievements {
                 issueAchievement(player, "finalpreparations");
             }
         }
-        if (stack.getUnlocalizedName()
-            .equals("ic2.itemPartIndustrialDiamond")) {
+        if (ItemList.IC2_Industrial_Diamond.isStackEqual(stack)) {
             issueAchievement(player, "artificaldia");
             issueAchievement(player, "buildCoalDiamond");
         }

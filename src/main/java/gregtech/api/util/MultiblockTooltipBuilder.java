@@ -567,7 +567,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addTecTechHatchInfo() {
-        iLines.add(EnumChatFormatting.BLUE + TT_tectechhatch);
+        iLines.add(EnumChatFormatting.GREEN + TT_tectechhatch);
         return this;
     }
 
