@@ -161,8 +161,10 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                         "machine casing",
                         StructureUtility.ofBlocksTiered(
                             (block,
-                                meta) -> (block == GregTechAPI.sBlockCasings1 && meta >= 0 && meta <= 9)
-                                    || (block == GregTechAPI.sBlockCasingsNH && meta >= 10 && meta <= 14) ? meta : -2,
+                                meta) -> (block == GregTechAPI.sBlockCasings1 && meta >= 0
+                                    && meta <= checkEnergyHatchTier())
+                                    || (block == GregTechAPI.sBlockCasingsNH && meta >= 10
+                                        && meta <= checkEnergyHatchTier()) ? meta : -2,
                             Stream.concat(
                                 IntStream.range(0, 10)
                                     .mapToObj(
