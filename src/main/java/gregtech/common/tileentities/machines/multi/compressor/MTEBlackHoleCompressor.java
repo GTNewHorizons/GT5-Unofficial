@@ -555,6 +555,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 }
                 if (!(mode == lastMode)) {
                     lastRecipe = null;
+                    lastMode = mode;
                 }
                 switch (mode) {
                     case MACHINEMODE_COMPRESSOR -> {
@@ -599,6 +600,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
             logic.setAvailableAmperage(1L);
         } else super.setProcessingLogicPower(logic);
+    }
+
+    @Override
+    public boolean isInputSeparationEnabled() {
+        return true;
     }
 
     @Override
