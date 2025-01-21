@@ -43,6 +43,7 @@ import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.items.GTMetaTool;
@@ -855,8 +856,12 @@ public class ItemUtils {
     public static boolean isControlCircuit(ItemStack aStack) {
         if (aStack != null) {
             Item aItem = aStack.getItem();
-            return aItem == GTUtility.getIntegratedCircuit(0)
-                .getItem();
+            return aItem == CI.getNumberedBioCircuit(0)
+                .getItem() || aItem
+                    == GTUtility.getIntegratedCircuit(0)
+                        .getItem()
+                || aItem == CI.getNumberedAdvancedCircuit(0)
+                    .getItem();
         }
         return false;
     }

@@ -34,12 +34,14 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
+import gtPlusPlus.core.item.circuit.GTPPIntegratedCircuitItem;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.plugin.agrichem.BioRecipes;
 import gtPlusPlus.plugin.agrichem.item.algae.ItemAgrichemBase;
 import gtPlusPlus.plugin.agrichem.item.algae.ItemAlgaeBase;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class AgriculturalChem extends ItemPackage {
 
@@ -88,6 +90,7 @@ public class AgriculturalChem extends ItemPackage {
     // Fertilizer
 
     public static Item mAlgae;
+    public static Item mBioCircuit;
     public static Item mAgrichemItem1;
 
     /*
@@ -146,6 +149,8 @@ public class AgriculturalChem extends ItemPackage {
 
         mAlgae = new ItemAlgaeBase();
         mAgrichemItem1 = new ItemAgrichemBase();
+        mBioCircuit = new GTPPIntegratedCircuitItem("BioRecipeSelector", "bioscience/BioCircuit");
+        GregtechItemList.Circuit_BioRecipeSelector.set(mBioCircuit);
 
         mAlgaeBiosmass = ItemUtils.simpleMetaStack(mAgrichemItem1, 0, 1);
         mGreenAlgaeBiosmass = ItemUtils.simpleMetaStack(mAgrichemItem1, 1, 1);

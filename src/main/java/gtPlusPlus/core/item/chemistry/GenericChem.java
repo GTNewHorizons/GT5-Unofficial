@@ -12,6 +12,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -27,6 +28,7 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
+import gtPlusPlus.core.item.circuit.GTPPIntegratedCircuitItem;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -93,6 +95,7 @@ public class GenericChem extends ItemPackage {
     // Phenol Byproducts
 
     public static ItemGenericChemBase mGenericChemItem1;
+    public static Item mAdvancedCircuit;
 
     private ItemStack mCatalystCarrier;
 
@@ -139,6 +142,8 @@ public class GenericChem extends ItemPackage {
         MaterialGenerator.generate(TEFLON, false);
 
         mGenericChemItem1 = new ItemGenericChemBase();
+        mAdvancedCircuit = new GTPPIntegratedCircuitItem("T3RecipeSelector", "science/general/AdvancedCircuit");
+        GregtechItemList.Circuit_T3RecipeSelector.set(mAdvancedCircuit);
 
         registerItemStacks();
         registerOreDict();
