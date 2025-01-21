@@ -281,7 +281,8 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
             // Prevent replacing with same cable type
             if (this.getClass() == handCable.getClass() && this.mMaterial == handCable.mMaterial
-                && this.mVoltage == handCable.mVoltage && this.mAmperage == handCable.mAmperage) {
+                && this.mVoltage == handCable.mVoltage
+                && this.mAmperage == handCable.mAmperage) {
                 return false;
             }
             short oldMetaID = (short) aBaseMetaTileEntity.getMetaTileID();
