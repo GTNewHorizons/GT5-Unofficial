@@ -159,6 +159,7 @@ import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
+import gregtech.common.misc.teams.TeamWorldSavedData;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.nei.GTNEIDefaultHandler;
@@ -1083,6 +1084,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
 
         MinecraftForge.EVENT_BUS.register(new SpaceProjectWorldSavedData());
         MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
+        MinecraftForge.EVENT_BUS.register(TeamWorldSavedData.class);
         MinecraftForge.EVENT_BUS.register(new GTWorldgenerator.OregenPatternSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GlobalMetricsCoverDatabase());
         FMLCommonHandler.instance()
