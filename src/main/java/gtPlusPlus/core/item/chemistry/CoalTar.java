@@ -63,7 +63,6 @@ public class CoalTar extends ItemPackage {
         if (bioEth2 != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTUtility.getIntegratedCircuit(18),
                     ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 1))
                 .fluidInputs(bioEth2)
@@ -210,7 +209,6 @@ public class CoalTar extends ItemPackage {
 
     private static void recipePhthalicAcidToPhthalicAnhydride() {
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(15))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustPhthalicAnhydride", 15))
             .fluidInputs(Materials.PhthalicAcid.getFluid(1000))
             .eut(TierEU.RECIPE_MV)

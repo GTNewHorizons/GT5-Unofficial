@@ -347,7 +347,6 @@ public class RecipeLoaderNuclear {
             // CaO + H2O = Ca(OH)2
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTUtility.getIntegratedCircuit(20),
                     ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 2))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5))
                 .fluidInputs(FluidUtils.getFluidStack("water", 1000))

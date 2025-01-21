@@ -971,7 +971,7 @@ public class RecipesGregTech {
 
         if (cropGrape != null && foodRaisins != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.getIntegratedCircuit(20), cropGrape)
+                .itemInputs(cropGrape)
                 .itemOutputs(foodRaisins)
                 .eut(2)
                 .duration(10 * TICKS)
@@ -980,7 +980,6 @@ public class RecipesGregTech {
 
         // Process Waste Water
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(21))
             .itemOutputs(
                 ItemUtils.getSimpleStack(Blocks.dirt),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1),

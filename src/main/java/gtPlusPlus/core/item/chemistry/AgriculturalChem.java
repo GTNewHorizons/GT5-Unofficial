@@ -417,7 +417,6 @@ public class AgriculturalChem extends ItemPackage {
 
         // Poop Juice to Basic Slurry
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(10))
             .itemOutputs(aDirtDust, aDirtDust, aManureByprod1, aManureByprod1, aManureByprod1, aManureByprod1)
             .outputChances(2000, 2000, 500, 500, 250, 250)
             .fluidInputs(FluidUtils.getFluidStack(PoopJuice, 1000))
