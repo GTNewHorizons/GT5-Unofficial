@@ -4,7 +4,7 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GTRecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -18,6 +18,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.recipe.Scanning;
 
 public class AssemblyLine implements Runnable {
 
@@ -27,9 +28,10 @@ public class AssemblyLine implements Runnable {
             ? FluidRegistry.getFluid("molten.indalloy140")
             : FluidRegistry.getFluid("molten.solderingalloy");
 
+        // Void Miner Mk1
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.OreDrill4.get(1L))
-            .metadata(RESEARCH_TIME, 25 * MINUTES + 36 * SECONDS)
+            .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_LuV))
             .itemInputs(
                 ItemList.OreDrill4.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 9L),
@@ -44,9 +46,10 @@ public class AssemblyLine implements Runnable {
             .duration(5 * MINUTES)
             .addTo(AssemblyLine);
 
+        // Circuit Assembly Line
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Machine_LuV_CircuitAssembler.get(1L))
-            .metadata(RESEARCH_TIME, 20 * MINUTES)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 40 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 ItemList.Machine_LuV_CircuitAssembler.get(1L),
                 ItemList.Robot_Arm_LuV.get(4L),
@@ -57,8 +60,8 @@ public class AssemblyLine implements Runnable {
                 WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 8))
             .fluidInputs(new FluidStack(solderIndalloy, 1440))
             .itemOutputs(ItemRegistry.cal.copy())
-            .eut(TierEU.RECIPE_LuV)
-            .duration(20 * MINUTES)
+            .eut(TierEU.RECIPE_ZPM)
+            .duration(60 * SECONDS)
             .addTo(AssemblyLine);
     }
 }

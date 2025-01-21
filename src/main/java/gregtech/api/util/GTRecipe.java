@@ -4,7 +4,6 @@ import static gregtech.api.enums.GTValues.D2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -26,8 +25,6 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.logic.FluidInventoryLogic;
-import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
@@ -40,11 +37,8 @@ import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.EmptyRecipeMetadataStorage;
 import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.util.extensions.ArrayExt;
-import gregtech.api.util.item.ItemHolder;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
-import gregtech.nei.GTNEIDefaultHandler;
-import ic2.core.Ic2Items;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.Reference2LongArrayMap;
@@ -58,7 +52,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
     private static ItemStack ic2FluidCell;
 
     public static void setItemStacks() {
-        ic2FluidCell = Ic2Items.FluidCell.copy();
+        ic2FluidCell = ItemList.Cell_Universal_Fluid.get(1);
         dataStick = ItemList.Tool_DataStick.get(1L);
         dataOrb = ItemList.Tool_DataOrb.get(1L);
     }
@@ -387,18 +381,6 @@ public class GTRecipe implements Comparable<GTRecipe> {
         return GTUtility.copyOrNull(mOutputs[aIndex]);
     }
 
-    /**
-     * Dictates the ItemStacks displayed in the output slots of any NEI page handled by the default GT NEI handler.
-     * Override to make shown items differ from a GTRecipe's item output array
-     *
-     * @see GTNEIDefaultHandler
-     * @param i Slot index
-     * @return ItemStack to be displayed in the slot
-     */
-    public ItemStack getRepresentativeOutput(int i) {
-        return getOutput(i);
-    }
-
     public int getOutputChance(int aIndex) {
         if (mChances == null) return 10000;
         if (aIndex < 0 || aIndex >= mChances.length) return 10000;
@@ -687,60 +669,6 @@ public class GTRecipe implements Comparable<GTRecipe> {
         return false;
     }
 
-    public boolean isRecipePossible(@Nullable ItemInventoryLogic itemInput, @Nullable FluidInventoryLogic fluidInput) {
-        return getAmountOfRecipesDone(itemInput, fluidInput, 1, true) > 0;
-    }
-
-    public long getAmountOfRecipesDone(@Nullable ItemInventoryLogic itemInput, @Nullable FluidInventoryLogic fluidInput,
-        long maxParallel, boolean simulate) {
-        if (itemInput == null) {
-            itemInput = new ItemInventoryLogic(0);
-        }
-
-        if (fluidInput == null) {
-            fluidInput = new FluidInventoryLogic(0, 0);
-        }
-
-        itemInput.startRecipeCheck();
-        Map<ItemHolder, Long> recipeItems = getItemInputsAsItemMap();
-        for (Entry<ItemHolder, Long> entry : recipeItems.entrySet()) {
-            maxParallel = Math
-                .min(maxParallel, itemInput.calculateAmountOfTimesItemCanBeTaken(entry.getKey(), entry.getValue()));
-        }
-
-        for (FluidStack fluid : mFluidInputs) {
-            if (fluid == null) continue;
-            maxParallel = Math
-                .min(maxParallel, fluidInput.calculateAmountOfTimesFluidCanBeTaken(fluid.getFluid(), fluid.amount));
-        }
-
-        if (simulate) {
-            itemInput.stopRecipeCheck();
-            return maxParallel;
-        }
-
-        for (Entry<ItemHolder, Long> entry : recipeItems.entrySet()) {
-            itemInput.subtractItemAmount(entry.getKey(), entry.getValue() * maxParallel, false);
-        }
-
-        for (FluidStack fluid : mFluidInputs) {
-            if (fluid == null) continue;
-            fluidInput.drain(fluid.getFluid(), fluid.amount * maxParallel, false);
-        }
-        itemInput.stopRecipeCheck();
-        return maxParallel;
-    }
-
-    private Map<ItemHolder, Long> getItemInputsAsItemMap() {
-        Map<ItemHolder, Long> items = new HashMap<>();
-        for (ItemStack item : mInputs) {
-            if (item == null) continue;
-            ItemHolder itemHolder = new ItemHolder(item);
-            items.put(itemHolder, items.getOrDefault(itemHolder, 0L) + item.stackSize);
-        }
-        return items;
-    }
-
     @Override
     public int compareTo(GTRecipe recipe) {
         // first lowest tier recipes
@@ -938,6 +866,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
         public ItemStack mResearchItem;
         public int mResearchTime;
+        public int mResearchVoltage;
         public ItemStack[] mInputs;
         public FluidStack[] mFluidInputs;
         public ItemStack mOutput;
@@ -953,11 +882,12 @@ public class GTRecipe implements Comparable<GTRecipe> {
          * <p>
          * if you set one yourself, it will give you one of the RunetimeExceptions!
          */
-        public RecipeAssemblyLine(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs,
+        public RecipeAssemblyLine(ItemStack aResearchItem, int aResearchTime, int aResearchVoltage, ItemStack[] aInputs,
             FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
             this(
                 aResearchItem,
                 aResearchTime,
+                aResearchVoltage,
                 aInputs,
                 aFluidInputs,
                 aOutput,
@@ -972,6 +902,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
             for (FluidStack tFluidInput : aFluidInputs)
                 tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(tFluidInput, true, false);
             tPersistentHash = tPersistentHash * 31 + aResearchTime;
+            tPersistentHash = tPersistentHash * 31 + aResearchVoltage;
             tPersistentHash = tPersistentHash * 31 + aDuration;
             tPersistentHash = tPersistentHash * 31 + aEUt;
             setPersistentHash(tPersistentHash);
@@ -982,10 +913,11 @@ public class GTRecipe implements Comparable<GTRecipe> {
          * <p>
          * if you don't set one yourself, it will break a lot of stuff!
          */
-        public RecipeAssemblyLine(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs,
+        public RecipeAssemblyLine(ItemStack aResearchItem, int aResearchTime, int aResearchVoltage, ItemStack[] aInputs,
             FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt, ItemStack[][] aAlt) {
             mResearchItem = aResearchItem;
             mResearchTime = aResearchTime;
+            mResearchVoltage = aResearchVoltage;
             mInputs = aInputs;
             mFluidInputs = aFluidInputs;
             mOutput = aOutput;
@@ -1009,7 +941,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
             GTItemStack thisOutput = new GTItemStack(mOutput);
             GTItemStack thisResearch = new GTItemStack(mResearchItem);
             int miscRecipeDataHash = Arrays.deepHashCode(
-                new Object[] { totalInputStackSize, mDuration, mEUt, thisOutput, thisResearch, mResearchTime });
+                new Object[] { totalInputStackSize, mDuration, mEUt, thisOutput, thisResearch, mResearchTime,
+                    mResearchVoltage });
             result = prime * result + inputFluidHash;
             result = prime * result + inputHash;
             result = prime * result + miscRecipeDataHash;
@@ -1062,7 +995,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
             }
 
             return this.mDuration == other.mDuration && this.mEUt == other.mEUt
-                && this.mResearchTime == other.mResearchTime;
+                && this.mResearchTime == other.mResearchTime
+                && this.mResearchVoltage == other.mResearchVoltage;
         }
 
         public int getPersistentHash() {

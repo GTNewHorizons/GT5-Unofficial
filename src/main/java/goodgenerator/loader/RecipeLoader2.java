@@ -23,7 +23,6 @@ import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.plasmaForgeRecipes;
 import static gregtech.api.recipe.RecipeMaps.unpackagerRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
-import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
@@ -32,9 +31,8 @@ import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GTRecipeConstants.NKE_RANGE;
 import static gregtech.api.util.GTRecipeConstants.PRECISE_ASSEMBLER_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
-import static gregtech.api.util.GTRecipeConstants.RESEARCH_TIME;
+import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-import static tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -57,7 +55,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.item.chemistry.GenericChem;
+import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.recipe.common.CI;
@@ -334,9 +332,10 @@ public class RecipeLoader2 {
             ? FluidRegistry.getFluid("molten.indalloy140")
             : FluidRegistry.getFluid("molten.solderingalloy");
 
+        // Fluid Storage Core T3
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T2.get(1))
-            .metadata(RESEARCH_TIME, 17 * MINUTES)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_EV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.StainlessSteel, 4),
                 ItemList.Electric_Pump_HV.get(8),
@@ -350,9 +349,10 @@ public class RecipeLoader2 {
             .duration(20 * SECONDS)
             .addTo(AssemblyLine);
 
+        // Fluid Storage Core T4
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T3.get(1))
-            .metadata(RESEARCH_TIME, 34 * MINUTES)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Titanium, 4),
                 ItemList.Electric_Pump_EV.get(8),
@@ -367,9 +367,10 @@ public class RecipeLoader2 {
             .duration(20 * SECONDS)
             .addTo(AssemblyLine);
 
+        // Fluid Storage Core T5
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T4.get(1))
-            .metadata(RESEARCH_TIME, 1 * HOURS + 8 * MINUTES)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.MysteriousCrystal, 4),
                 ItemList.Electric_Pump_IV.get(8),
@@ -387,9 +388,10 @@ public class RecipeLoader2 {
             .duration(20 * SECONDS)
             .addTo(AssemblyLine);
 
+        // Fluid Storage Core T6
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T5.get(1))
-            .metadata(RESEARCH_TIME, 2 * HOURS + 15 * MINUTES)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 4),
                 ItemList.Electric_Pump_LuV.get(8),
@@ -407,9 +409,10 @@ public class RecipeLoader2 {
             .duration(20 * SECONDS)
             .addTo(AssemblyLine);
 
+        // Fluid Storage Core T7
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T6.get(1))
-            .metadata(RESEARCH_TIME, 4 * HOURS + 30 * MINUTES)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UV))
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_ZPM.get(8),
@@ -427,9 +430,10 @@ public class RecipeLoader2 {
             .duration(20 * SECONDS)
             .addTo(AssemblyLine);
 
+        // Fluid Storage Core T8
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T7.get(1))
-            .metadata(RESEARCH_TIME, 9 * HOURS)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UHV))
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UV.get(8),
@@ -447,9 +451,10 @@ public class RecipeLoader2 {
             .duration(20 * SECONDS)
             .addTo(AssemblyLine);
 
+        // Fluid Storage Core T9
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T8.get(1))
-            .metadata(RESEARCH_TIME, 18 * HOURS)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UEV))
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UHV.get(8),
@@ -468,9 +473,10 @@ public class RecipeLoader2 {
             .duration(20 * SECONDS)
             .addTo(AssemblyLine);
 
+        // Fluid Storage Core T10
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T9.get(1))
-            .metadata(RESEARCH_TIME, 36 * HOURS)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UIV))
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UEV.get(8),
@@ -517,9 +523,10 @@ public class RecipeLoader2 {
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
+        // Fluid Cell Block T3
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T2.get(1))
-            .metadata(RESEARCH_TIME, 17 * MINUTES)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_EV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Naquadah, 1),
                 ItemRefer.Fluid_Storage_Core_T3.get(10),
@@ -536,9 +543,10 @@ public class RecipeLoader2 {
             .duration(50 * SECONDS)
             .addTo(AssemblyLine);
 
+        // Fluid Cell Block T4
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T3.get(1))
-            .metadata(RESEARCH_TIME, 34 * MINUTES)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1),
                 ItemRefer.Fluid_Storage_Core_T4.get(10),
@@ -555,9 +563,10 @@ public class RecipeLoader2 {
             .duration(50 * SECONDS)
             .addTo(AssemblyLine);
 
+        // Fluid Cell Block T5
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T4.get(1))
-            .metadata(RESEARCH_TIME, 1 * HOURS + 8 * MINUTES)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 1),
                 ItemRefer.Fluid_Storage_Core_T5.get(10),
@@ -574,9 +583,10 @@ public class RecipeLoader2 {
             .duration(50 * SECONDS)
             .addTo(AssemblyLine);
 
+        // Fluid Cell Block T6
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T5.get(1))
-            .metadata(RESEARCH_TIME, 2 * HOURS + 15 * MINUTES)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
                 ItemRefer.Fluid_Storage_Core_T6.get(2),
@@ -593,9 +603,10 @@ public class RecipeLoader2 {
             .duration(50 * SECONDS)
             .addTo(AssemblyLine);
 
+        // Fluid Cell Block T7
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T6.get(1))
-            .metadata(RESEARCH_TIME, 4 * HOURS + 30 * MINUTES)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
                 ItemRefer.Fluid_Storage_Core_T7.get(2),
@@ -613,9 +624,10 @@ public class RecipeLoader2 {
             .duration(50 * SECONDS)
             .addTo(AssemblyLine);
 
+        // Fluid Cell Block T8
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T7.get(1))
-            .metadata(RESEARCH_TIME, 9 * HOURS)
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UHV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
                 ItemRefer.Fluid_Storage_Core_T8.get(2),
@@ -635,9 +647,10 @@ public class RecipeLoader2 {
             .addTo(AssemblyLine);
 
         if (NewHorizonsCoreMod.isModLoaded()) {
+            // Fluid Cell Block T9
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T8.get(1))
-                .metadata(RESEARCH_TIME, 18 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UEV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 2),
                     ItemRefer.Fluid_Storage_Core_T9.get(2),
@@ -656,9 +669,10 @@ public class RecipeLoader2 {
                 .duration(50 * SECONDS)
                 .addTo(AssemblyLine);
 
+            // Fluid Cell Block T10
             GTValues.RA.stdBuilder()
                 .metadata(RESEARCH_ITEM, ItemRefer.YOTTank_Cell_T9.get(1))
-                .metadata(RESEARCH_TIME, 36 * HOURS)
+                .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UIV))
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 2),
                     ItemRefer.Fluid_Storage_Core_T10.get(2),
@@ -1180,7 +1194,7 @@ public class RecipeLoader2 {
                     GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Titanium, 4),
                     GGMaterial.hikarium.get(OrePrefixes.gearGt, 4),
                     GGMaterial.marM200.get(OrePrefixes.plateDouble, 2),
-                    ItemRefer.IC2_Ir_Plate.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 2),
                     GGMaterial.lumiium.get(OrePrefixes.bolt, 48))
                 .fluidInputs(Materials.Palladium.getMolten(1152))
                 .itemOutputs(ItemRefer.Precise_Assembler.get(1))
@@ -1388,7 +1402,7 @@ public class RecipeLoader2 {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    getItemContainer("Casing_UEV").get(3),
+                    ItemList.Casing_UEV.get(3),
                     ItemList.Field_Generator_UV.get(2),
                     GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.NetherStar, 8),
                     ItemRefer.HiC_T4.get(1),
@@ -1458,9 +1472,10 @@ public class RecipeLoader2 {
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
 
+        // Compact Fusion Computer MK-II
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Compact_Fusion_MK1.get(1))
-            .metadata(RESEARCH_TIME, 20 * MINUTES)
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 ItemList.FusionComputer_ZPMV.get(48),
                 new Object[] { "circuitUltimate", 1 },
@@ -1482,9 +1497,10 @@ public class RecipeLoader2 {
             .duration(5 * MINUTES)
             .addTo(AssemblyLine);
 
+        // Compact Fusion Computer MK-III
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Compact_Fusion_MK2.get(1))
-            .metadata(RESEARCH_TIME, 20 * MINUTES)
+            .metadata(SCANNING, new Scanning(2 * MINUTES + 30 * SECONDS, TierEU.RECIPE_ZPM))
             .itemInputs(
                 ItemList.FusionComputer_UV.get(48),
                 new Object[] { "circuitSuperconductor", 1 },
@@ -1539,8 +1555,8 @@ public class RecipeLoader2 {
                 MaterialsAlloy.TITANSTEEL.getPlateDense(8), ItemRefer.HiC_T4.get(8),
                 ItemList.Field_Generator_UHV.get(8),
                 GGMaterial.enrichedNaquadahAlloy.get(OrePrefixes.gearGtSmall, 64) },
-            new FluidStack[] { GenericChem.TEFLON.getFluidStack(2304), GGMaterial.dalisenite.getMolten(1152),
-                MaterialsAlloy.BOTMIUM.getFluidStack(288) },
+            new FluidStack[] { MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(144),
+                GGMaterial.dalisenite.getMolten(1152), MaterialsAlloy.BOTMIUM.getFluidStack(288) },
             ItemRefer.Compact_Fusion_MK4.get(1),
             6000,
             (int) TierEU.RECIPE_UV);

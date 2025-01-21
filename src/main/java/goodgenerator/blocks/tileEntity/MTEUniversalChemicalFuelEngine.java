@@ -32,8 +32,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
-import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -43,6 +41,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 
@@ -69,32 +69,6 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     public MTEUniversalChemicalFuelEngine(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
         super.useLongPower = true;
-    }
-
-    public final boolean addMaintenance(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchMaintenance) {
-                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
-            }
-        }
-        return false;
-    }
-
-    public final boolean addMuffler(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchMuffler) {
-                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mMufflerHatches.add((MTEHatchMuffler) aMetaTileEntity);
-            }
-        }
-        return false;
     }
 
     public final boolean addInputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -168,11 +142,6 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return (int) Math.sqrt(this.getPowerFlow());
     }
@@ -200,6 +169,12 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
             .addInfo("The efficiency is up to 150%.")
             .addTecTechHatchInfo()
             .beginStructureBlock(5, 4, 9, false)
+            .addController("Mid of the second layer")
+            .addCasingInfoExactly("Stable Titanium Machine Casing", 93, false)
+            .addCasingInfoExactly("Titanium Gear Box Casing", 14, false)
+            .addCasingInfoExactly("Engine Intake Casing", 14, false)
+            .addCasingInfoExactly("Titanium Plated Cylinder", 14, false)
+            .addCasingInfoExactly("Titanium Pipe Casing", 93, false)
             .addMaintenanceHatch("Hint block with dot 1")
             .addMufflerHatch("Hint block with dot 2 (fill all slots with mufflers)")
             .addInputHatch("Hint block with dot 3 (fill all slots with input hatches)")
@@ -248,10 +223,10 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
-    public void stopMachine() {
+    public void stopMachine(@NotNull ShutDownReason reason) {
         // Reset the counter for heating, so that it works again when the machine restarts
         heatingTicks = 0;
-        super.stopMachine();
+        super.stopMachine(reason);
     }
 
     @Override
@@ -301,7 +276,7 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
                         tHatch.getBaseMetaTileEntity()
                             .getStoredEU() + exEU));
             } else if (!isStoppingSafe) {
-                stopMachine();
+                stopMachine(ShutDownReasonRegistry.NONE);
             }
         }
         if (!eDynamoMulti.isEmpty()) {
@@ -313,7 +288,7 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
                         tHatch.getBaseMetaTileEntity()
                             .getStoredEU() + exEU));
             } else if (!isStoppingSafe) {
-                stopMachine();
+                stopMachine(ShutDownReasonRegistry.NONE);
             }
         }
     }

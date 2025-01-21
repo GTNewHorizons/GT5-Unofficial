@@ -225,7 +225,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff NitratedRareEarthMonaziteConcentrate = new Werkstoff(
         new short[] { 250, 223, 173 },
         "Nitrogenated Monazite Rare Earth Concentrate",
-        subscriptNumbers("??LaNd??"),
+        subscriptNumbers("????"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -236,7 +236,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff NitricMonaziteLeachedConcentrate = new Werkstoff(
         new short[] { 244, 202, 22 },
         "Nitric Monazite Leached Concentrate",
-        subscriptNumbers("??LaNd??"),
+        subscriptNumbers("????"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -416,7 +416,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff SamaricResidue = new Werkstoff(
         new short[] { 248, 243, 231 },
         "Samaric Residue",
-        subscriptNumbers("??SmGd??"),
+        subscriptNumbers("Sm2Gd"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1894,7 +1894,7 @@ public class WerkstoffMaterialPool implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
             .addMetalItems()
-            .addMultipleIngotMetalWorkingItems()
+            .addDoubleAndDensePlates()
             .addCraftingMetalWorkingItems()
             .enforceUnification(),
         offsetID3b + 1,

@@ -587,9 +587,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials HeavyFuel;
     public static Materials LPG;
 
-    public static Materials FluidNaquadahFuel;
-    public static Materials EnrichedNaquadria;
-
     public static Materials ReinforceGlass;
     public static Materials BioMediumRaw;
     public static Materials BioMediumSterilized;
@@ -2297,6 +2294,77 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             MaterialsUEVplus.ProtoHalkonite,
             MaterialsUEVplus.HotExoHalkonite,
             MaterialsUEVplus.ExoHalkonite);
+
+        SubTag.MULTI_PLATE.addTo(
+            Adamantium,
+            Aluminium,
+            Americium,
+            Beryllium,
+            BlackPlutonium,
+            BlackSteel,
+            Bronze,
+            Chrome,
+            Clay,
+            Cobalt,
+            Copper,
+            CosmicNeutronium,
+            CrystallinePinkSlime,
+            DarkSteel,
+            Duralumin,
+            DraconiumAwakened,
+            Europium,
+            Gold,
+            HSSG,
+            HSSS,
+            Infinity,
+            InfinityCatalyst,
+            Iridium,
+            Iron,
+            Lead,
+            Magnesium,
+            MaterialsKevlar.Kevlar,
+            MaterialsUEVplus.Creon,
+            MaterialsUEVplus.Eternity,
+            MaterialsUEVplus.HotProtoHalkonite,
+            MaterialsUEVplus.Mellion,
+            MaterialsUEVplus.ProtoHalkonite,
+            MaterialsUEVplus.SpaceTime,
+            MaterialsUEVplus.TranscendentMetal,
+            MelodicAlloy,
+            Mithril,
+            Naquadah,
+            NaquadahAlloy,
+            Naquadria,
+            Neutronium,
+            Nichrome,
+            Nickel,
+            NiobiumTitanium,
+            Oriharukon,
+            Osmiridium,
+            Osmium,
+            Palladium,
+            Paper,
+            Platinum,
+            Plutonium,
+            Polybenzimidazole,
+            Polycaprolactam,
+            Polytetrafluoroethylene,
+            RadoxPolymer,
+            RedAlloy,
+            Shadow,
+            SiliconSG,
+            Silver,
+            StainlessSteel,
+            Steel,
+            Sunnarium,
+            Thaumium,
+            Tin,
+            Titanium,
+            Trinium,
+            Tungsten,
+            TungstenCarbide,
+            TungstenSteel,
+            Void);
 
         SubTag.FOOD.addTo(
             MeatRaw,
