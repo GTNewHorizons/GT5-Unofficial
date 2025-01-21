@@ -97,7 +97,9 @@ public class MTEIndustrialElectromagneticSeparator
             if (m.supportsExotic) tooltip = tooltip + "/n "
                 + EnumChatFormatting.BOLD
                 + EnumChatFormatting.GREEN
-                + "Can Use Multiamp Hatches";
+                + "Can Use Multiamp Hatches/n "
+                + EnumChatFormatting.RED
+                + "Limit to one energy hatch if using Multiamp";
 
             return tooltip;
         }
