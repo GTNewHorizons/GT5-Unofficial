@@ -33,6 +33,7 @@ public class BlockGlass1 extends BlockCasingsAbstract {
             .addStringLocalization(getUnlocalizedName() + ".3.name", "Non-Photonic Matter Exclusion Glass");
         GTLanguageManager
             .addStringLocalization(getUnlocalizedName() + ".4.name", "Hawking Radiation Realignment Focus");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Fractality Constraining Glass");
 
         ItemList.GlassPHResistant.set(new ItemStack(this, 1, 0));
         ItemList.GlassUVResistant.set(new ItemStack(this, 1, 1));
@@ -40,6 +41,7 @@ public class BlockGlass1 extends BlockCasingsAbstract {
         ItemList.GlassQuarkContainment.set(new ItemStack(this, 1, 3));
         ItemList.GlassQuarkContainment.set(new ItemStack(this, 1, 3));
         ItemList.Hawking_Glass.set(new ItemStack(this, 1, 4));
+        ItemList.GLASS_ANOMALY_CONTAINMENT.set(new ItemStack(this, 1, 5));
     }
 
     @Override
@@ -78,6 +80,7 @@ public class BlockGlass1 extends BlockCasingsAbstract {
             case 2 -> Textures.BlockIcons.OMNI_PURPOSE_INFINITY_FUSED_GLASS.getIcon();
             case 3 -> Textures.BlockIcons.GLASS_QUARK_CONTAINMENT.getIcon();
             case 4 -> Textures.BlockIcons.HAWKING_GLASS.getIcon();
+            case 5 -> Textures.BlockIcons.GLASS_ANOMALY_CONTAINMENT.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

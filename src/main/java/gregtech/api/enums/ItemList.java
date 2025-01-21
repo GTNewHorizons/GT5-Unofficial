@@ -2591,14 +2591,6 @@ public enum ItemList implements IItemContainer {
     Thermal_Superconductor,
     Relativistic_Heat_Capacitor,
     Phononic_Seed_Crystal,
-    Combined_Catalyst,
-    VyroxeresCanvas,
-    FractalCell,
-    WeakInfinityCatalyst,
-    CrystalCube,
-    FractalAnomaly,
-    FilledFractalCell,
-    TransfiniteMatterCell,
     ResearchCompleter,
     SpaceElevatorController, // Populated in GTNH-Intergalactic
     Spray_Color_Infinite,
@@ -2615,6 +2607,18 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_AirFilterT1,
     Machine_Multi_AirFilterT2,
     Machine_Multi_AirFilterT3,
+
+    Combined_Catalyst,
+    VyroxeresCanvas,
+    FractalCell,
+    WeakInfinityCatalyst,
+    CrystalCube,
+    FractalAnomaly,
+    FilledFractalCell,
+    TransfiniteMatterCell,
+
+    CASING_ANOMALY_CONTAINMENT,
+    GLASS_ANOMALY_CONTAINMENT,
 
     // semicolon after the comment to reduce merge conflicts
     ;

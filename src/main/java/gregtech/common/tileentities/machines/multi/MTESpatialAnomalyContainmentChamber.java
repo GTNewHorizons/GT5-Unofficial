@@ -58,7 +58,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
-import gregtech.common.blocks.BlockCasings9;
+import gregtech.common.blocks.BlockCasings12;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import tectech.thing.gui.TecTechUITextures;
 
@@ -91,21 +91,23 @@ public class MTESpatialAnomalyContainmentChamber
         .addElement(
             'C',
             buildHatchAdder(MTESpatialAnomalyContainmentChamber.class).atLeast(InputBus, OutputBus, InputHatch)
-                .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(7))
+                .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(3))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(
                         MTESpatialAnomalyContainmentChamber::onCasingAdded,
-                        ofBlock(GregTechAPI.sBlockCasings9, 7))))
-        .addElement('A', ofBlock(GregTechAPI.sBlockGlass1, 1))
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 10))
+                        ofBlock(GregTechAPI.sBlockCasings12, 3))))
+        // GLASS_ANOMALY_CONTAINMENT
+        .addElement('A', ofBlock(GregTechAPI.sBlockGlass1, 5))
+        // CASING_ANOMALY_CONTAINMENT
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings12, 3))
         .addElement(
             'D',
             buildHatchAdder(MTESpatialAnomalyContainmentChamber.class).atLeast(InputHatch)
                 .adder(MTESpatialAnomalyContainmentChamber::addStabilizerHatch)
-                .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(7))
+                .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(3))
                 .dot(2)
-                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 7)))
+                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings12, 3)))
         .build();
 
     private byte mAnomalyTier = 0;
@@ -181,7 +183,7 @@ public class MTESpatialAnomalyContainmentChamber
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 10)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 3)),
                     TextureFactory.builder()
                         .addIcon(ScreenON)
                         .extFacing()
@@ -194,7 +196,7 @@ public class MTESpatialAnomalyContainmentChamber
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 10)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 3)),
                     TextureFactory.builder()
                         .addIcon(ScreenOFF)
                         .extFacing()
@@ -202,7 +204,7 @@ public class MTESpatialAnomalyContainmentChamber
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 10)) };
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 3)) };
         }
         return rTexture;
     }
