@@ -39,7 +39,6 @@ import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
-import ic2.core.Ic2Items;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.Reference2LongArrayMap;
@@ -53,7 +52,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
     private static ItemStack ic2FluidCell;
 
     public static void setItemStacks() {
-        ic2FluidCell = Ic2Items.FluidCell.copy();
+        ic2FluidCell = ItemList.Cell_Universal_Fluid.get(1);
         dataStick = ItemList.Tool_DataStick.get(1L);
         dataOrb = ItemList.Tool_DataOrb.get(1L);
     }
