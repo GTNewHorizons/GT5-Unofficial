@@ -10,7 +10,6 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
-import static gtPlusPlus.core.recipe.common.CI.getNumberedAdvancedCircuit;
 import static gtPlusPlus.core.recipe.common.CI.getNumberedBioCircuit;
 import static gtPlusPlus.core.util.minecraft.ItemUtils.hideItemFromNEI;
 

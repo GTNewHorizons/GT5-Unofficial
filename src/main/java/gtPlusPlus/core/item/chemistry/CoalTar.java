@@ -62,8 +62,7 @@ public class CoalTar extends ItemPackage {
 
         if (bioEth2 != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1))
+                .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 1))
                 .fluidInputs(bioEth2)
                 .fluidOutputs(FluidUtils.getWater(1000))

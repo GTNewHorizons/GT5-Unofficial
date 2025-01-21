@@ -267,8 +267,7 @@ public class BioRecipes {
 
         // Lithium Chloride
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 20))
+            .itemInputs(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 20))
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mLithiumChloride, 5))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -277,8 +276,7 @@ public class BioRecipes {
 
         // Sodium Carbonate
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 40))
+            .itemInputs(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 40))
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 20))
             .fluidInputs(FluidUtils.getDistilledWater(2000))
             .duration(30 * SECONDS)
@@ -297,8 +295,7 @@ public class BioRecipes {
 
         // Turn into Cellulose
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, 10))
+            .itemInputs(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, 10))
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownCelluloseFiber, 5))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
@@ -316,8 +313,7 @@ public class BioRecipes {
 
         // Turn into Cellulose
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 10))
+            .itemInputs(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 10))
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mRedCelluloseFiber, 5))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV / 2)
@@ -337,8 +333,7 @@ public class BioRecipes {
 
         // Craft into Wood Pellets
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 12))
+            .itemInputs(ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 12))
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 24))
             .duration(2 * SECONDS + 8 * TICKS)
             .eut(8)

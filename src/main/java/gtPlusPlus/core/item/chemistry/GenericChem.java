@@ -13,8 +13,6 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 import static gtPlusPlus.core.recipe.common.CI.getNumberedAdvancedCircuit;
 import static gtPlusPlus.core.util.minecraft.ItemUtils.hideItemFromNEI;
 
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

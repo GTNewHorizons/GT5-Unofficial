@@ -346,8 +346,7 @@ public class RecipeLoaderNuclear {
         if (ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1))) {
             // CaO + H2O = Ca(OH)2
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 2))
+                .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 2))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5))
                 .fluidInputs(FluidUtils.getFluidStack("water", 1000))
                 .eut(TierEU.RECIPE_MV)
