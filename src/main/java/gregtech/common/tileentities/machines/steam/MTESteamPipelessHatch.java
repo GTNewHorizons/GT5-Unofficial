@@ -5,34 +5,51 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
+import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.covers.CoverSteamValve;
 import gregtech.common.misc.teams.GTTeam;
 import gregtech.common.misc.teams.GTTeamManager;
 import gregtech.common.misc.teams.PipelessSteamManager;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
 
-public class MTESteamPipelessHatch extends MTEHatchInput implements IWirelessEnergyHatchInformation {
+public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase implements IWirelessEnergyHatchInformation {
 
     private GTTeam ownerTeam;
 
     public MTESteamPipelessHatch(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 0);
+        super(
+            FluidUtils.getSteam(1)
+                .getFluid(),
+            128_000 * (int) ticks_between_energy_addition,
+            aID,
+            aName,
+            aNameRegional,
+            0);
     }
 
-    public MTESteamPipelessHatch(String aName, ITexture[][][] aTextures) {
-        super(aName, 0, new String[] { "" }, aTextures);
+    public MTESteamPipelessHatch(String aName, ITexture[][][] aTexture) {
+        super(
+            FluidUtils.getSteam(1)
+                .getFluid(),
+            128_000 * (int) ticks_between_energy_addition,
+            aName,
+            0,
+            new String[] { "" },
+            aTexture);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTESteamPipelessHatch(mName, mTextures);
+        return new MTESteamPipelessHatch(this.mName, this.mTextures);
     }
 
     @Override
@@ -55,16 +72,6 @@ public class MTESteamPipelessHatch extends MTEHatchInput implements IWirelessEne
     @Override
     protected ITexture getBaseTexture(int colorIndex) {
         return TextureFactory.of(Textures.BlockIcons.MACHINE_BRONZE_SIDE);
-    }
-
-    @Override
-    public int getCapacityPerTank(int aTier, int aSlot) {
-        return getCapacity();
-    }
-
-    @Override
-    public int getCapacity() {
-        return 128_000 * (int) ticks_between_energy_addition;
     }
 
     @Override
@@ -120,5 +127,10 @@ public class MTESteamPipelessHatch extends MTEHatchInput implements IWirelessEne
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection side) {
         return new FluidTankInfo[] {};
+    }
+
+    @Override
+    protected FluidSlotWidget createFluidSlot() {
+        return super.createFluidSlot().setFilter(f -> isFluidInputAllowed(new FluidStack(f, 1)));
     }
 }
