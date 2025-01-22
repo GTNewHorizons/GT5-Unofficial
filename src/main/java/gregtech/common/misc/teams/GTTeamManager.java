@@ -2,6 +2,7 @@ package gregtech.common.misc.teams;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class GTTeamManager {
 
@@ -16,5 +17,20 @@ public class GTTeamManager {
             }
         }
         return true;
+    }
+
+    public static GTTeam getTeam(String playerName, UUID playerUuid) {
+        for (GTTeam team : TEAMS) {
+            if (team.isTeamMember(playerUuid)) {
+                return team;
+            }
+        }
+        GTTeam team = new GTTeam(playerName + "'s Team");
+        team.initializeData(TeamDataTypes.values());
+        return team;
+    }
+
+    public static PipelessSteamManager getSteamData(GTTeam team) {
+        return (PipelessSteamManager) team.getData(TeamDataTypes.PIPELESS);
     }
 }
