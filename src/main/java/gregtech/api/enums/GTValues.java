@@ -630,6 +630,10 @@ public class GTValues {
         + EnumChatFormatting.ITALIC
         + "Number";
 
+    public static final String AuthorNockWork = "Author: " + EnumChatFormatting.GREEN
+        + EnumChatFormatting.BOLD
+        + "Nlockwork";
+
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
     public static final String AuthorPureBluez = "Author: " + EnumChatFormatting.WHITE

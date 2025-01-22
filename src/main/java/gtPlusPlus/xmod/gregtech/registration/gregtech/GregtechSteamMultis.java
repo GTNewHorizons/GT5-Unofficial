@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamAlloySmelterMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamCentrifugeMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamCompressorMulti;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamExtruder;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamForgeHammer;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamGateAssembler;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMaceratorMulti;
@@ -20,6 +21,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteam
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamAlloySmelter;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCentrifuge;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCompressor;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamExtruder;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamForgeHammer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamGateAssembler;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMacerator;
@@ -77,6 +79,9 @@ public class GregtechSteamMultis {
                 "Perfect Steam Progenitor").getStackForm(1));
         GregtechItemList.Controller_Steamgate.set(
             new MTESteamgate(Controller_Steamgate.ID, "gtpp.multimachine.steamgate", "Steamgate Base Block")
+                .getStackForm(1));
+        GregtechItemList.Controller_SteamExtruder.set(
+            new MTESteamExtruder(Controller_SteamExtruder.ID, "gtpp.multimachine.steam.extruder", "Steam Conformer")
                 .getStackForm(1));
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(
