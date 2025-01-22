@@ -4,8 +4,11 @@ import static bartworks.util.BWTooltipReference.TT;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.AQUA;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_AQUA;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.ITALIC;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.LIGHT_PURPLE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.OBFUSCATED;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RESET;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.WHITE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.animatedText;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
@@ -31,6 +34,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * Made for static imports, this Class is just a Helper.
@@ -585,6 +589,19 @@ public class GTValues {
 
     public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
 
+    public static final Supplier<String> AuthorSerenibyss = chain(
+        text("Author: "),
+        getAuthorSerenibyssLetter("S", 30, 3, LIGHT_PURPLE, 11, WHITE, 25, AQUA),
+        getAuthorSerenibyssLetter("e", 30, 12, AQUA, 18, LIGHT_PURPLE, 29, WHITE),
+        getAuthorSerenibyssLetter("r", 30, 0, WHITE, 10, LIGHT_PURPLE, 20, AQUA),
+        getAuthorSerenibyssLetter("e", 30, 9, LIGHT_PURPLE, 17, AQUA, 22, WHITE),
+        getAuthorSerenibyssLetter("n", 30, 6, WHITE, 14, AQUA, 27, LIGHT_PURPLE),
+        getAuthorSerenibyssLetter("i", 30, 1, AQUA, 15, WHITE, 21, LIGHT_PURPLE),
+        getAuthorSerenibyssLetter("b", 30, 13, WHITE, 19, LIGHT_PURPLE, 23, WHITE),
+        getAuthorSerenibyssLetter("y", 30, 2, AQUA, 8, LIGHT_PURPLE, 24, WHITE),
+        getAuthorSerenibyssLetter("s", 30, 5, AQUA, 16, WHITE, 26, LIGHT_PURPLE),
+        getAuthorSerenibyssLetter("s", 30, 4, LIGHT_PURPLE, 7, WHITE, 28, AQUA));
+
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
     public static final String AuthorPureBluez = "Author: " + EnumChatFormatting.WHITE
@@ -597,6 +614,39 @@ public class GTValues {
         + "u"
         + EnumChatFormatting.DARK_BLUE
         + "ez";
+
+    private static Supplier<String> getAuthorSerenibyssLetter(String letter, int length, Object... switchParams) {
+        int[] switchIntervals = new int[switchParams.length / 2];
+        String[] colors = new String[switchParams.length / 2];
+        for (int i = 0; i < switchParams.length; i += 2) {
+            switchIntervals[i / 2] = (int) switchParams[i];
+            colors[i / 2] = (String) switchParams[i + 1];
+        }
+
+        String[] colorAlternator = new String[length];
+        int index = switchIntervals[0];
+        int switchIndex = 0;
+        boolean obfuscated = false;
+        do {
+            String color;
+            if (ArrayUtils.contains(switchIntervals, index)) {
+                obfuscated = true;
+                color = colors[switchIndex] + ITALIC + OBFUSCATED;
+            } else if (obfuscated) {
+                obfuscated = false;
+                switchIndex++;
+                if (switchIndex == colors.length) switchIndex = 0;
+                color = colors[switchIndex] + ITALIC;
+            } else {
+                color = colors[switchIndex] + ITALIC;
+            }
+            colorAlternator[index] = color;
+            index++;
+            if (index == length) index = 0;
+        } while (index != switchIntervals[0]);
+
+        return animatedText(letter, 1, 250, colorAlternator);
+    }
 
     // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
     public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {
