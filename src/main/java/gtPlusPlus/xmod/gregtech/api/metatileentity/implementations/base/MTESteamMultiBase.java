@@ -456,7 +456,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     protected static <T extends MTESteamMultiBase<T>> HatchElementBuilder<T> buildSteamInput(Class<T> typeToken) {
         return buildHatchAdder(typeToken).adder(MTESteamMultiBase::addToMachineList)
-            .hatchIds(31040)
+            .hatchIds(31040, 15511)
             .shouldReject(t -> !t.mSteamInputFluids.isEmpty());
     }
 
