@@ -1100,6 +1100,7 @@ import gregtech.common.tileentities.machines.steam.MTESteamFurnaceSteel;
 import gregtech.common.tileentities.machines.steam.MTESteamMaceratorBronze;
 import gregtech.common.tileentities.machines.steam.MTESteamMaceratorSteel;
 import gregtech.common.tileentities.machines.steam.MTESteamPipelessHatch;
+import gregtech.common.tileentities.machines.steam.MTESteamPipelessHatchOutput;
 import gregtech.common.tileentities.storage.MTELocker;
 import gregtech.common.tileentities.storage.MTEQuantumChest;
 import gregtech.common.tileentities.storage.MTEQuantumTank;
@@ -11963,6 +11964,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTESteamPipelessHatch(PipelessSteamHatch.ID, "hatch.pipeless.receiver.steam", "Pipeless Steam Hatch")
                 .getStackForm(1));
         addItemTooltip(ItemList.Pipeless_Hatch_Steam.get(1), GTValues.AuthorSteamibyss);
+        ItemList.Pipeless_Vent_Steam.set(
+            new MTESteamPipelessHatchOutput(
+                PipelessSteamVent.ID,
+                "hatch.pipeless.transmitter.steam",
+                "Pipeless Steam Vent").getStackForm(1));
+        addItemTooltip(ItemList.Pipeless_Vent_Steam.get(1), GTValues.AuthorSteamibyss);
     }
 
     private static void registerWirelessEnergyHatch() {
