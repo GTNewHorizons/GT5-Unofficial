@@ -1868,6 +1868,14 @@ public enum ItemList implements IItemContainer {
     Hatch_AutoMaintenance,
     Machine_Multi_Cleanroom,
 
+    Steamgate_Chevron,
+    Steamgate_Chevron_Upgrade,
+    Steamgate_Iris_Blade,
+    Steamgate_Iris_Upgrade,
+    Steamgate_Plate,
+    Steamgate_Frame,
+    Steamgate_Core_Crystal,
+
     Circuit_Board_Coated,
     Circuit_Board_Coated_Basic,
     Circuit_Board_Phenolic,
