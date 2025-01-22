@@ -387,6 +387,16 @@ public enum ItemList implements IItemContainer {
     Rotor_EV,
     Rotor_IV,
 
+    Hydraulic_Motor_Steam,
+    Hydraulic_Piston_Steam,
+    Hydraulic_Pump_Steam,
+    Hydraulic_Arm_Steam,
+    Hydraulic_Conveyor_Steam,
+    Hydraulic_Regulator_Steam,
+    Hydraulic_Vapor_Generator,
+    Hydraulic_Emitter_Steam,
+    Hydraulic_Sensor_Steam,
+
     Electric_Motor_LV,
     Electric_Motor_MV,
     Electric_Motor_HV,
