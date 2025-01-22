@@ -163,6 +163,15 @@ import static gregtech.common.items.IDMetaItem03.EV_Coil;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystal;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystalSmallPart;
 import static gregtech.common.items.IDMetaItem03.HV_Coil;
+import static gregtech.common.items.IDMetaItem03.Hydraulic_Arm_Steam;
+import static gregtech.common.items.IDMetaItem03.Hydraulic_Conveyor_Steam;
+import static gregtech.common.items.IDMetaItem03.Hydraulic_Emitter_Steam;
+import static gregtech.common.items.IDMetaItem03.Hydraulic_Motor_Steam;
+import static gregtech.common.items.IDMetaItem03.Hydraulic_Piston_Steam;
+import static gregtech.common.items.IDMetaItem03.Hydraulic_Pump_Steam;
+import static gregtech.common.items.IDMetaItem03.Hydraulic_Regulator_Steam;
+import static gregtech.common.items.IDMetaItem03.Hydraulic_Sensor_Steam;
+import static gregtech.common.items.IDMetaItem03.Hydraulic_Vapor_Generator;
 import static gregtech.common.items.IDMetaItem03.Harmonic_Compound;
 import static gregtech.common.items.IDMetaItem03.Heavy_Hellish_Mud;
 import static gregtech.common.items.IDMetaItem03.Hot_Netherite_Scrap;
@@ -314,6 +323,17 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
                 "Steamgate Core Crystal",
                 "A crystal made of pure condensed steam...",
                 o));
+
+        // Steam Components
+        ItemList.Hydraulic_Motor_Steam.set(addItem(Hydraulic_Motor_Steam.ID, "Hydraulic Motor", ""));
+        ItemList.Hydraulic_Pump_Steam.set(addItem(Hydraulic_Pump_Steam.ID, "Hydraulic Pump", ""));
+        ItemList.Hydraulic_Piston_Steam.set(addItem(Hydraulic_Piston_Steam.ID, "Hydraulic Piston", ""));
+        ItemList.Hydraulic_Arm_Steam.set(addItem(Hydraulic_Arm_Steam.ID, "Hydraulic Arm", ""));
+        ItemList.Hydraulic_Conveyor_Steam.set(addItem(Hydraulic_Conveyor_Steam.ID, "Hydraulic Conveyor", ""));
+        ItemList.Hydraulic_Regulator_Steam.set(addItem(Hydraulic_Regulator_Steam.ID, "Hydraulic Regulator", ""));
+        ItemList.Hydraulic_Vapor_Generator.set(addItem(Hydraulic_Vapor_Generator.ID, "Hydraulic Vapor Generator", ""));
+        ItemList.Hydraulic_Emitter_Steam.set(addItem(Hydraulic_Emitter_Steam.ID, "Hydraulic Steam Jet Spewer", ""));
+        ItemList.Hydraulic_Sensor_Steam.set(addItem(Hydraulic_Sensor_Steam.ID, "Hydraulic Steam Receiver", ""));
 
         /*
          * circuit boards tier 1-7: coated circuit board / wood plate + resin Plastic Circuit Board / Plastic + Copper
