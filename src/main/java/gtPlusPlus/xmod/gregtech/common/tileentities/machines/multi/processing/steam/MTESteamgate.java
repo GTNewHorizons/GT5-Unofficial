@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.s
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.AuthorSteamIsTheNumber;
-import static gregtech.api.enums.GTValues.AuthorSteamibyss;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_STEAMGATE_CONTROLLER;
 
 import net.minecraft.item.ItemStack;
