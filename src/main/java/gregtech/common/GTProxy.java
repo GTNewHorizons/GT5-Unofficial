@@ -989,7 +989,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("cfPack", 1L, 32767));
         // GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("jetpack", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("treetap", 1L, 32767));
-        GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("weedEx", 1L, 32767));
+        GTModHandler.sNonReplaceableItems.add(ItemList.IC2_Spray_WeedEx.getWithDamage(1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("staticBoots", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("compositeArmor", 1L, 32767));
         GTModHandler.sNonReplaceableItems.add(GTModHandler.getIC2Item("hazmatHelmet", 1L, 32767));
@@ -1293,11 +1293,11 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.dustSmall, aMaterial, 4L),
                     tBits,
-                    new Object[] { " X ", 'X', OrePrefixes.dust.get(aMaterial) });
+                    new Object[] { " X ", "   ", "   ", 'X', OrePrefixes.dust.get(aMaterial) });
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 9L),
                     tBits,
-                    new Object[] { "X  ", 'X', OrePrefixes.dust.get(aMaterial) });
+                    new Object[] { "X  ", "   ", "   ", 'X', OrePrefixes.dust.get(aMaterial) });
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
                     tBits,

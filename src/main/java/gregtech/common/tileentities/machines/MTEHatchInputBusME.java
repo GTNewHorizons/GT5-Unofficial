@@ -62,6 +62,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.IDataCopyable;
+import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -79,8 +80,9 @@ import gregtech.common.gui.modularui.widget.AESlotWidget;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurationCircuitSupport,
-    IRecipeProcessingAwareHatch, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ISmartInputHatch, IDataCopyable {
+public class MTEHatchInputBusME extends MTEHatchInputBus
+    implements IConfigurationCircuitSupport, IRecipeProcessingAwareHatch, IAddGregtechLogo, IAddUIWidgets,
+    IPowerChannelState, ISmartInputHatch, IDataCopyable, IMEConnectable {
 
     protected static final int SLOT_COUNT = 16;
     public static final String COPIED_DATA_IDENTIFIER = "stockingBus";
@@ -177,6 +179,17 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
         aPlayer.addChatComponentMessage(
             new ChatComponentTranslation("GT5U.hatch.additionalConnection." + additionalConnection));
         return true;
+    }
+
+    @Override
+    public boolean connectsToAllSides() {
+        return additionalConnection;
+    }
+
+    @Override
+    public void setConnectsToAllSides(boolean connects) {
+        additionalConnection = connects;
+        updateValidGridProxySides();
     }
 
     @Override

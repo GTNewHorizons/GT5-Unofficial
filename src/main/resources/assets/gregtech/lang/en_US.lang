@@ -377,6 +377,9 @@ GT5U.machines.stalled_vent.tooltip.1=§7Right-click with a wrench to
 GT5U.machines.stalled_vent.tooltip.2=§7point this machine's steam
 GT5U.machines.stalled_vent.tooltip.3=§7vent towards an empty space.
 GT5U.machines.perfectoc.tooltip=Performs perfect overclocks
+GT5U.machines.solarindicator1=Is Daytime
+GT5U.machines.solarindicator2=Not Raining
+GT5U.machines.solarindicator3=Can See Sky
 GT5U.GTPP_MULTI_ARC_FURNACE.mode.0=Electric
 GT5U.GTPP_MULTI_ARC_FURNACE.mode.1=Plasma
 GT5U.GTPP_MULTI_CUTTING_MACHINE.mode.0=Cutting
@@ -678,6 +681,14 @@ GT5U.item.cable.loss=Loss/Meter/Ampere
 GT5U.item.cable.eu_volt=EU-Volt
 GT5U.item.tank.locked_to=Content locked to %s
 
+GT5U.item.pipe.capacity=Capacity
+GT5U.item.pipe.heat_resistance=Heat Resistance
+GT5U.item.pipe.gas_proof=Gas Proof
+GT5U.item.pipe.gas_proof.yes=Yes
+GT5U.item.pipe.gas_proof.no=No
+GT5U.item.pipe.amount=Pipe Amount
+GT5U.item.pipe.empty=Empty
+
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak middle-click to unlock.
 gt.behaviour.paintspray.infinite.gui.solvent=Solvent
@@ -841,6 +852,8 @@ GT5U.waila.drone_downlink.connectionCount=Connection Count:
 GT5U.waila.drone_downlink.droneLevel=Drone Level:
 GT5U.waila.producing=Producing:
 GT5U.waila.producing.andmore=  And %d More...
+GT5U.waila.generating.on=Generating Energy
+GT5U.waila.generating.off=Not Generating
 
 
 achievement.flintpick=First Tools

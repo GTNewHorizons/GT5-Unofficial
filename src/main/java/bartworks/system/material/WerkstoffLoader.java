@@ -1347,7 +1347,7 @@ public class WerkstoffLoader {
             .addMixerRecipes((short) 1)
             .addSimpleMetalWorkingItems()
             .addCraftingMetalWorkingItems()
-            .addMultipleIngotMetalWorkingItems()
+            .addDoubleAndDensePlates()
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         88,
@@ -1385,7 +1385,7 @@ public class WerkstoffLoader {
             .addMixerRecipes((short) 1)
             .addSimpleMetalWorkingItems()
             .addCraftingMetalWorkingItems()
-            .addMultipleIngotMetalWorkingItems()
+            .addDoubleAndDensePlates()
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         90,
@@ -1417,7 +1417,7 @@ public class WerkstoffLoader {
             .addMixerRecipes()
             .addSimpleMetalWorkingItems()
             .addCraftingMetalWorkingItems()
-            .addMultipleIngotMetalWorkingItems()
+            .addDoubleAndDensePlates()
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         92,
@@ -1480,7 +1480,7 @@ public class WerkstoffLoader {
             .addCraftingMetalWorkingItems()
             .addMolten()
             .addSimpleMetalWorkingItems()
-            .addMultipleIngotMetalWorkingItems()
+            .addDoubleAndDensePlates()
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         96,
@@ -1968,11 +1968,13 @@ public class WerkstoffLoader {
             WerkstoffLoader.items.put(wireFine, new BWMetaGeneratedItems(wireFine));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b1000000000) != 0) {
+            WerkstoffLoader.items.put(plateDense, new BWMetaGeneratedItems(plateDense));;
+        }
+        if ((WerkstoffLoader.toGenerateGlobal & 0b10000000000) != 0) {
             WerkstoffLoader.items.put(plateDouble, new BWMetaGeneratedItems(plateDouble));
             WerkstoffLoader.items.put(plateTriple, new BWMetaGeneratedItems(plateTriple));
             WerkstoffLoader.items.put(plateQuadruple, new BWMetaGeneratedItems(plateQuadruple));
             WerkstoffLoader.items.put(plateQuintuple, new BWMetaGeneratedItems(plateQuintuple));
-            WerkstoffLoader.items.put(plateDense, new BWMetaGeneratedItems(plateDense));;
         }
         ENABLED_ORE_PREFIXES.addAll(WerkstoffLoader.items.keySet());
         ENABLED_ORE_PREFIXES.add(ore);
