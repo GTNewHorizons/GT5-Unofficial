@@ -1002,6 +1002,7 @@ public enum ItemList implements IItemContainer {
     Hatch_Energy_UHV,
 
     Pipeless_Hatch_Steam,
+    Pipeless_Vent_Steam,
 
     Wireless_Hatch_Energy_ULV,
     Wireless_Hatch_Energy_LV,

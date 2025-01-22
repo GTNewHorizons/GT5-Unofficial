@@ -112,9 +112,14 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
         return true;
     }
 
+    protected boolean supportsFluidPushing() {
+        return true;
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (!supportsFluidPushing()) return;
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && mFluid != null) {
             IFluidHandler tTileEntity = aBaseMetaTileEntity
                 .getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
@@ -330,7 +335,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
-        if (tryToLockHatch(aPlayer, side)) return true;
+        if (hasFluidLocking() && tryToLockHatch(aPlayer, side)) return true;
         return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
     }
 
@@ -373,11 +378,15 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
 
     @Override
     public boolean isFluidLocked() {
-        return mMode == 8 || mMode == 9;
+        return hasFluidLocking() && mMode == 8 || mMode == 9;
     }
 
     @Override
     public boolean acceptsFluidLock(String name) {
+        return hasFluidLocking();
+    }
+
+    public boolean hasFluidLocking() {
         return true;
     }
 
@@ -407,6 +416,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
 
     @Override
     protected void onEmptyingContainerWhenEmpty() {
+        if (!hasFluidLocking()) return;
         if (this.lockedFluidName == null && this.mFluid != null && isFluidLocked()) {
             this.setLockedFluidName(
                 this.mFluid.getFluid()
@@ -447,6 +457,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
+        if (!hasFluidLocking()) return;
         builder.widget(
             new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
                 .setPos(98, 16)
