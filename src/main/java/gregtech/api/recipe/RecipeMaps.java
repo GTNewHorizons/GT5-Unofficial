@@ -70,6 +70,7 @@ import gregtech.api.recipe.maps.QuantumComputerFrontend;
 import gregtech.api.recipe.maps.RecyclerBackend;
 import gregtech.api.recipe.maps.ReplicatorBackend;
 import gregtech.api.recipe.maps.SpaceProjectFrontend;
+import gregtech.api.recipe.maps.SteamGateAssemblerFrontend;
 import gregtech.api.recipe.maps.TranscendentPlasmaMixerFrontend;
 import gregtech.api.recipe.maps.UnpackagerBackend;
 import gregtech.api.recipe.metadata.CompressionTierKey;
@@ -147,16 +148,14 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> steamGateAssemblerRecipes = RecipeMapBuilder
         .of("gt.recipe.steamgateassembler")
-        .maxIO(12, 1, 0, 0)
-        .slotOverlays(
-            (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_MOLECULAR_1
-                : null)
+        .maxIO(81, 1, 0, 0)
         .progressBar(GTUITextures.PROGRESSBAR_COMPRESS)
         .slotOverlaysSteam(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_COMPRESSOR_STEAM
                 : null)
         .progressBarSteam(GTUITextures.PROGRESSBAR_COMPRESS_STEAM)
         .neiHandlerInfo(builder -> builder.setDisplayStack(GregtechItemList.Controller_SteamGateAssembler.get(1)))
+        .frontend(SteamGateAssemblerFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> neutroniumCompressorRecipes = RecipeMapBuilder
         .of("gt.recipe.neutroniumcompressor")
