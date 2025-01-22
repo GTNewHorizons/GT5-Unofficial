@@ -368,6 +368,8 @@ public enum GregtechItemList implements IGregtechItemContainer {
 
     // Big Steam Macerator
     Controller_SteamMaceratorMulti,
+    // Bigger Steam Macerator
+    Controller_SteamMegaMaceratorMulti,
     // Bit Steam Washer
     Controller_SteamWasherMulti,
     // Big Steam Centrifuge
