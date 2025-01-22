@@ -796,6 +796,10 @@ GT5U.waila.drone_downlink.connectionCount=Connection Count:
 GT5U.waila.drone_downlink.droneLevel=Drone Level:
 GT5U.waila.producing=Producing:
 GT5U.waila.producing.andmore=  And %d More...
+GT5U.waila.generating.on=Generating Energy
+GT5U.waila.generating.off=Not Generating
+GT5U.waila.status.insufficient_energy=Status: Insufficient energy
+GT5U.waila.status.obstructed_steam_vent=Status: Obstructed steam vent
 
 
 achievement.flintpick=First Tools
