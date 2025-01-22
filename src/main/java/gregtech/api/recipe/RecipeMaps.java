@@ -157,6 +157,13 @@ public final class RecipeMaps {
         .neiHandlerInfo(builder -> builder.setDisplayStack(GregtechItemList.Controller_SteamGateAssembler.get(1)))
         .frontend(SteamGateAssemblerFrontend::new)
         .build();
+    public static final RecipeMap<RecipeMapBackend> steamConformerRecipes = RecipeMapBuilder
+        .of("gt.recipe.steamextruder")
+        .maxIO(2, 1, 0, 0)
+        .progressBarSteam(GTUITextures.PROGRESSBAR_HAMMER_STEAM)
+        .neiHandlerInfo((builder -> builder.setDisplayStack((GregtechItemList.Controller_SteamExtruder.get(1)))))
+        .disableOptimize()
+        .build();
     public static final RecipeMap<RecipeMapBackend> neutroniumCompressorRecipes = RecipeMapBuilder
         .of("gt.recipe.neutroniumcompressor")
         .maxIO(1, 1, 1, 0)

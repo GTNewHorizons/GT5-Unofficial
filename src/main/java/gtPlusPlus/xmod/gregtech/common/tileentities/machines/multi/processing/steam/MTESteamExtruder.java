@@ -291,7 +291,7 @@ public class MTESteamExtruder extends MTESteamMultiBase<MTESteamExtruder> implem
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.alloySmelterRecipes;
+        return RecipeMaps.steamConformerRecipes;
     }
 
     @Override
@@ -312,8 +312,7 @@ public class MTESteamExtruder extends MTESteamMultiBase<MTESteamExtruder> implem
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.25 * tierMachine)
-                    .setSpeedBoost(1.6 / tierMachine);
+                    .setSpeedBoost((1f / tierMachine));
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
