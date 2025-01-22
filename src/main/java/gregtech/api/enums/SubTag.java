@@ -246,7 +246,7 @@ public final class SubTag implements ICondition<ISubTagContainer> {
     public static final SubTag BLACK_HOLE = getNewSubTag("BLACK_HOLE");
 
     /**
-     * If this material should generate Multi-plates (double, triple, quadruple, quintuple)
+     * If this material should generate Multi-plates (triple, quadruple, quintuple)
      */
     public static final SubTag MULTI_PLATE = getNewSubTag("MULTI_PLATE");
 

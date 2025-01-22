@@ -199,7 +199,7 @@ public class CannerRecipes implements Runnable {
             // todo: remove tiny dust in this recipe
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTModHandler.getIC2Item("fuelRod", 1),
+                    ItemList.IC2_Fuel_Rod_Empty.get(1),
                     GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lithium, 1L))
                 .itemOutputs(GTModHandler.getIC2Item("reactorLithiumCell", 1, 1))
                 .duration(16 * TICKS)
@@ -208,7 +208,7 @@ public class CannerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTModHandler.getIC2Item("fuelRod", 1),
+                    ItemList.IC2_Fuel_Rod_Empty.get(1),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 3))
                 .itemOutputs(ItemList.ThoriumCell_1.get(1L))
                 .duration(1 * SECONDS + 10 * TICKS)
@@ -216,14 +216,14 @@ public class CannerRecipes implements Runnable {
                 .addTo(cannerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getIC2Item("fuelRod", 1), GTModHandler.getIC2Item("UranFuel", 1))
+                .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), GTModHandler.getIC2Item("UranFuel", 1))
                 .itemOutputs(ItemList.Uraniumcell_1.get(1))
                 .duration(1 * SECONDS + 10 * TICKS)
                 .eut(16)
                 .addTo(cannerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getIC2Item("fuelRod", 1), GTModHandler.getIC2Item("MOXFuel", 1))
+                .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), GTModHandler.getIC2Item("MOXFuel", 1))
                 .itemOutputs(ItemList.Moxcell_1.get(1))
                 .duration(1 * SECONDS + 10 * TICKS)
                 .eut(16)

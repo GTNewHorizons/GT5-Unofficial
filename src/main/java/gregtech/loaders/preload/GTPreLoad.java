@@ -32,6 +32,7 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTConfig;
@@ -335,7 +336,7 @@ public class GTPreLoad {
             }
         }
         GTLog.out.println("GTMod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
-        GTModHandler.addScrapboxDrop(200.0F, GTModHandler.getIC2Item("scrap", 1L));
+        GTModHandler.addScrapboxDrop(200.0F, ItemList.IC2_Scrap.get(1L));
     }
 
     public static void loadConfig() {
