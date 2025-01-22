@@ -41,7 +41,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
          * .addTo(steamGateAssemblerRecipes);
          */
 
-        //spotless:off
+        // spotless:off
 
         // Superdense Bronze Plate
         GTValues.RA.stdBuilder()

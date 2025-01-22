@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.s
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GTValues.AuthorSteamIsTheNumber;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -47,6 +48,7 @@ public class MTESteamGateAssembler extends MTESteamMultiBase<MTESteamGateAssembl
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "What would drive someone to create such a device? What purpose could this possibly serve?")
+            .addInfo("Author: " + AuthorSteamIsTheNumber)
             .beginStructureBlock(3, 3, 3, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
