@@ -1,7 +1,9 @@
 package gregtech.common.tileentities.machines.steam;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -9,6 +11,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.covers.CoverSteamValve;
 import gregtech.common.misc.teams.GTTeam;
@@ -38,7 +41,7 @@ public class MTESteamPipelessHatch extends MTEHatchInput implements IWirelessEne
             EnumChatFormatting.GRAY + "Does not connect to pipes. This block withdraws Steam from the network." };
     }
 
-    // todo
+    // todo overlays
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0] };
@@ -47,6 +50,11 @@ public class MTESteamPipelessHatch extends MTEHatchInput implements IWirelessEne
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0] };
+    }
+
+    @Override
+    protected ITexture getBaseTexture(int colorIndex) {
+        return TextureFactory.of(Textures.BlockIcons.MACHINE_BRONZE_SIDE);
     }
 
     @Override
@@ -106,5 +114,11 @@ public class MTESteamPipelessHatch extends MTEHatchInput implements IWirelessEne
         PipelessSteamManager manager = getSteamManager();
         long drained = manager.drainSteam(steamToTransfer, false);
         fill(GTModHandler.getSteam(drained), true);
+    }
+
+    // don't let pipes connect (hopefully this doesn't have consequences)
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection side) {
+        return new FluidTankInfo[] {};
     }
 }

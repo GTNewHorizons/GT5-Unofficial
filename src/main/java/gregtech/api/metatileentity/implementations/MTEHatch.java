@@ -71,7 +71,7 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
                 if (textureIndex > 0) {
                     return new ITexture[] { Textures.BlockIcons.casingTexturePages[mTexturePage][texturePointer] };
                 } else {
-                    return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1] };
+                    return new ITexture[] { getBaseTexture(colorIndex) };
                 }
             } else {
                 if (textureIndex > 0) {
@@ -83,15 +83,19 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
                     }
                 } else {
                     if (aActive) {
-                        return getTexturesActive(Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1]);
+                        return getTexturesActive(getBaseTexture(colorIndex));
                     } else {
-                        return getTexturesInactive(Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1]);
+                        return getTexturesInactive(getBaseTexture(colorIndex));
                     }
                 }
             }
         } catch (NullPointerException npe) {
             return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[0][0] };
         }
+    }
+
+    protected ITexture getBaseTexture(int colorIndex) {
+        return Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1];
     }
 
     @Override
