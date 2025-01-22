@@ -9,6 +9,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMaceratorMult
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMegaMaceratorMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMixerMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamWasherMulti;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_Steamgate;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Bus_Steam;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Bus_Steam;
 
@@ -25,6 +26,7 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.st
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMegaMacerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMixer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamWasher;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamgate;
 
 public class GregtechSteamMultis {
 
@@ -73,6 +75,9 @@ public class GregtechSteamMultis {
                 Controller_SteamGateAssembler.ID,
                 "gtpp.multimachine.steam.gateassembler",
                 "Perfect Steam Progenitor").getStackForm(1));
+        GregtechItemList.Controller_Steamgate.set(
+            new MTESteamgate(Controller_Steamgate.ID, "gtpp.multimachine.steamgate", "Steamgate Base Block")
+                .getStackForm(1));
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(
             new MTEHatchSteamBusInput(Hatch_Input_Bus_Steam.ID, "hatch.input_bus.tier.steam", "Input Bus (Steam)", 0)

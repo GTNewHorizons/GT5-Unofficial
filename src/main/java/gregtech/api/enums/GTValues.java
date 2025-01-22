@@ -603,6 +603,19 @@ public class GTValues {
         getAuthorSerenibyssLetter("s", 30, 5, AQUA, 16, WHITE, 26, LIGHT_PURPLE),
         getAuthorSerenibyssLetter("s", 30, 4, LIGHT_PURPLE, 7, WHITE, 28, AQUA));
 
+    public static final String AuthorSteamIsTheNumber = "" + EnumChatFormatting.LIGHT_PURPLE
+        + EnumChatFormatting.ITALIC
+        + "Steam"
+        + EnumChatFormatting.WHITE
+        + EnumChatFormatting.ITALIC
+        + "Is"
+        + EnumChatFormatting.LIGHT_PURPLE
+        + EnumChatFormatting.ITALIC
+        + "The"
+        + EnumChatFormatting.WHITE
+        + EnumChatFormatting.ITALIC
+        + "Number";
+
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
     public static final String AuthorPureBluez = "Author: " + EnumChatFormatting.WHITE
