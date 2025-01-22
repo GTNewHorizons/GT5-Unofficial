@@ -4,8 +4,7 @@ import java.util.function.Supplier;
 
 public enum TeamDataTypes {
 
-    // EU, unused
-    WIRELESS(() -> null),
+    WIRELESS(() -> ITeamData.UNIMPLEMENTED),
 
     // Steam
     PIPELESS(PipelessSteamManager::new),
