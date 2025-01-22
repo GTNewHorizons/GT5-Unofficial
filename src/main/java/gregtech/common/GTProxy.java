@@ -1078,7 +1078,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
 
         MinecraftForge.EVENT_BUS.register(new SpaceProjectWorldSavedData());
         MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
-        MinecraftForge.EVENT_BUS.register(TeamWorldSavedData.class);
+        MinecraftForge.EVENT_BUS.register(new TeamWorldSavedData());
         MinecraftForge.EVENT_BUS.register(new GTWorldgenerator.OregenPatternSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GlobalMetricsCoverDatabase());
         FMLCommonHandler.instance()

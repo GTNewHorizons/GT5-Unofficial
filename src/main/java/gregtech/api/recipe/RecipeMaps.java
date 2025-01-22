@@ -28,7 +28,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -86,6 +85,9 @@ import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
+import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
@@ -143,7 +145,8 @@ public final class RecipeMaps {
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Compressor.get(1)))
         .build();
-    public static final RecipeMap<RecipeMapBackend> steamGateAssemblerRecipes = RecipeMapBuilder.of("gt.recipe.steamgateassembler")
+    public static final RecipeMap<RecipeMapBackend> steamGateAssemblerRecipes = RecipeMapBuilder
+        .of("gt.recipe.steamgateassembler")
         .maxIO(12, 1, 0, 0)
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_MOLECULAR_1

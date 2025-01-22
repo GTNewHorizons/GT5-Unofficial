@@ -26,6 +26,21 @@ public class PipelessSteamManager implements ITeamData {
         storedSupercriticalSteam = new BigInteger(NBT.getByteArray("PipelessSupercriticalSteam"));
     }
 
+    public void setSteam(BigInteger steam) {
+        this.storedSteam = steam;
+        TeamWorldSavedData.INSTANCE.markDirty();
+    }
+
+    public void setSuperheatedSteam(BigInteger superheatedSteam) {
+        this.storedSuperheatedSteam = superheatedSteam;
+        TeamWorldSavedData.INSTANCE.markDirty();
+    }
+
+    public void setSupercriticalSteam(BigInteger supercriticalSteam) {
+        this.storedSupercriticalSteam = supercriticalSteam;
+        TeamWorldSavedData.INSTANCE.markDirty();
+    }
+
     public void fillSteam(long steam) {
         fillSteam(BigInteger.valueOf(steam));
     }

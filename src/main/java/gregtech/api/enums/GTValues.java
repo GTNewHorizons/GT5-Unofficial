@@ -29,12 +29,13 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.fluid.GTFluidTank;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
-import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * Made for static imports, this Class is just a Helper.

@@ -1,11 +1,11 @@
 package gregtech.common.misc.teams.commands;
 
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.ICommandSender;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
 
 public class TeamCommand extends CommandBase {
 
@@ -37,7 +37,9 @@ public class TeamCommand extends CommandBase {
             case 1 -> completions.addAll(Arrays.asList(Subcommands.getSubcommands()));
             case 2 -> {
                 filter = args[1].trim();
-                if (args[0].equals(Subcommands.INVITE.name().toLowerCase())) {
+                if (args[0].equals(
+                    Subcommands.INVITE.name()
+                        .toLowerCase())) {
 
                 }
             }
@@ -47,6 +49,7 @@ public class TeamCommand extends CommandBase {
     }
 
     enum Subcommands {
+
         CREATE,
         RENAME,
 
@@ -67,7 +70,10 @@ public class TeamCommand extends CommandBase {
         private static final Subcommands[] VALUES = values();
 
         public static String[] getSubcommands() {
-            return Arrays.stream(VALUES).map(Enum::name).map(String::toLowerCase).toArray(String[]::new);
+            return Arrays.stream(VALUES)
+                .map(Enum::name)
+                .map(String::toLowerCase)
+                .toArray(String[]::new);
         }
     }
 }

@@ -27,6 +27,7 @@ public class GTTeamManager {
         }
         GTTeam team = new GTTeam(playerName + "'s Team");
         team.initializeData(TeamDataTypes.values());
+        team.addOwner(playerUuid);
         return team;
     }
 
