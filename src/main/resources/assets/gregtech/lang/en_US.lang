@@ -681,6 +681,14 @@ GT5U.item.cable.loss=Loss/Meter/Ampere
 GT5U.item.cable.eu_volt=EU-Volt
 GT5U.item.tank.locked_to=Content locked to %s
 
+GT5U.item.pipe.capacity=Capacity
+GT5U.item.pipe.heat_resistance=Heat Resistance
+GT5U.item.pipe.gas_proof=Gas Proof
+GT5U.item.pipe.gas_proof.yes=Yes
+GT5U.item.pipe.gas_proof.no=No
+GT5U.item.pipe.amount=Pipe Amount
+GT5U.item.pipe.empty=Empty
+
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak middle-click to unlock.
 gt.behaviour.paintspray.infinite.gui.solvent=Solvent
@@ -850,6 +858,8 @@ GT5U.waila.producing=Producing:
 GT5U.waila.producing.andmore=  And %d More...
 GT5U.waila.generating.on=Generating Energy
 GT5U.waila.generating.off=Not Generating
+GT5U.waila.status.insufficient_energy=Status: Insufficient energy
+GT5U.waila.status.obstructed_steam_vent=Status: Obstructed steam vent
 
 
 achievement.flintpick=First Tools

@@ -19,13 +19,13 @@ import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
-import ic2.core.Ic2Items;
 
 /*
  * Originally authored by botn365 under the MIT License. See BotdustriesLICENSE
@@ -176,7 +176,7 @@ public class BotRecipes {
             .duration(1 * SECONDS)
             .addTo(distilleryRecipes);
 
-        ItemStack cells = Ic2Items.cell.copy();
+        ItemStack cells = ItemList.Cell_Empty.get(1);
         cells.stackSize = 1;
         // NH4Cl = HCl + NH3
         GTValues.RA.stdBuilder()

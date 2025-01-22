@@ -97,7 +97,9 @@ public class MTEIndustrialElectromagneticSeparator
             if (m.supportsExotic) tooltip = tooltip + "/n "
                 + EnumChatFormatting.BOLD
                 + EnumChatFormatting.GREEN
-                + "Can Use Multiamp Hatches";
+                + "Can Use Multi-Amp Hatches/n "
+                + EnumChatFormatting.RED
+                + "Limit to one energy hatch if using Multi-Amp";
 
             return tooltip;
         }
@@ -214,7 +216,7 @@ public class MTEIndustrialElectromagneticSeparator
             .addInfo("Use screwdriver to switch mode")
             .addInfo("Insert an electromagnet into the electromagnet housing to use")
             .addInfo("Better electromagnets give further bonuses")
-            .addInfo("With Tengam electromagnet, multiamp (NOT laser) hatches are allowed")
+            .addInfo("With Tengam electromagnet, multi-amp (NOT laser) hatches are allowed")
             .beginStructureBlock(7, 6, 7, false)
             .addController("Front Center")
             .addCasingInfoMin("MagTech Casings", MIN_CASING, false)

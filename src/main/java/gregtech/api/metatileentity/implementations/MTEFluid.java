@@ -29,6 +29,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -67,6 +68,8 @@ import gregtech.common.config.Other;
 import gregtech.common.covers.CoverDrain;
 import gregtech.common.covers.CoverFluidRegulator;
 import gregtech.common.covers.CoverInfo;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEFluid extends MetaPipeEntity {
 
@@ -929,6 +932,43 @@ public class MTEFluid extends MetaPipeEntity {
             return drainFromIndex(aFluid.amount, doDrain, i);
         }
         return null;
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+
+        // Basic pipe stats
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.item.pipe.capacity") + ": "
+                + EnumChatFormatting.BLUE
+                + GTUtility.formatNumbers(mCapacity * 20L)
+                + " L/s");
+
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.item.pipe.heat_resistance") + ": "
+                + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(mHeatResistance)
+                + "K");
+
+        // Gas handling info
+        if (mGasProof) {
+            currenttip.add(
+                StatCollector.translateToLocal("GT5U.item.pipe.gas_proof") + ": "
+                    + EnumChatFormatting.GREEN
+                    + StatCollector.translateToLocal("GT5U.item.pipe.gas_proof.yes"));
+        } else {
+            currenttip.add(
+                StatCollector.translateToLocal("GT5U.item.pipe.gas_proof") + ": "
+                    + EnumChatFormatting.RED
+                    + StatCollector.translateToLocal("GT5U.item.pipe.gas_proof.no"));
+        }
+
+        // Multi-pipe info
+        if (mPipeAmount > 1) {
+            currenttip.add(
+                StatCollector.translateToLocal("GT5U.item.pipe.amount") + ": " + EnumChatFormatting.AQUA + mPipeAmount);
+        }
     }
 
     private static EnumMap<Border, ForgeDirection> borderMap(ForgeDirection topSide, ForgeDirection bottomSide,

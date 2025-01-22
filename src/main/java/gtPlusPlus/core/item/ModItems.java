@@ -19,6 +19,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
@@ -633,8 +634,8 @@ public final class ModItems {
             .generateSpecialUseDusts("UN32Fertiliser", "UN-32 Fertiliser", Utils.rgbtoHexValue(55, 190, 55))[0];
 
         if (Forestry.isModLoaded()) {
-            ItemStack temp1 = ItemUtils.getCorrectStacktype("IC2:itemFertilizer", 1);
-            ItemStack temp2 = ItemUtils.getCorrectStacktype("Forestry:fertilizerCompound", 1);
+            ItemStack temp1 = ItemList.IC2_Fertilizer.get(1);
+            ItemStack temp2 = ItemList.FR_Fertilizer.get(1);
             if (temp1 != null && temp2 != null) {
                 fluidFertBasic = FluidUtils.generateFluidNonMolten(
                     "Fertiliser",
