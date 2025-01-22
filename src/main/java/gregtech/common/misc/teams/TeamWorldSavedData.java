@@ -30,7 +30,7 @@ public class TeamWorldSavedData extends WorldSavedData {
     }
 
     @SubscribeEvent
-    public static void onWorldLoad(WorldEvent.Load event) {
+    public void onWorldLoad(WorldEvent.Load event) {
         if (!event.world.isRemote && event.world.provider.dimensionId == 0) {
             loadInstance(event.world);
         }

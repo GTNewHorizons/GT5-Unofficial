@@ -26,6 +26,8 @@ import gregtech.api.objects.GTChunkManager;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTUtility;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+import gregtech.common.misc.teams.GTTeam;
+import gregtech.common.misc.teams.GTTeamManager;
 import gregtech.common.pollution.Pollution;
 
 public final class GTCommand extends CommandBase {
@@ -77,6 +79,16 @@ public final class GTCommand extends CommandBase {
                     + "[EU]"));
         sender.addChatMessage(
             new ChatComponentText("Allows you to add EU to a users wireless network. Also accepts negative numbers."));
+        // todo remove this later
+        sender.addChatMessage(
+            new ChatComponentText(
+                "Usage:" + EnumChatFormatting.RED
+                    + " global_steam_set "
+                    + EnumChatFormatting.BLUE
+                    + "[Name] "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "[Steam]"));
+        sender.addChatMessage(new ChatComponentText("Allows you to add Steam to a users pipeless network."));
         sender.addChatMessage(
             new ChatComponentText(
                 "Usage:" + EnumChatFormatting.RED
@@ -116,6 +128,7 @@ public final class GTCommand extends CommandBase {
                 "global_energy_set",
                 "global_energy_join",
                 "global_energy_display",
+                "global_steam_set",
                 "dump_music_durations")
             .anyMatch(s -> s.startsWith(test)))) {
             Stream
@@ -127,6 +140,7 @@ public final class GTCommand extends CommandBase {
                     "global_energy_set",
                     "global_energy_join",
                     "global_energy_display",
+                    "global_steam_set",
                     "dump_music_durations")
                 .filter(s -> test.isEmpty() || s.startsWith(test))
                 .forEach(l::add);
@@ -334,6 +348,36 @@ public final class GTCommand extends CommandBase {
                             + SpaceProjectManager.getPlayerNameFromUUID(teamUUID)
                             + EnumChatFormatting.RESET
                             + "."));
+
+            }
+            case "global_steam_set" -> {
+
+                // Usage is /gt global_steam_set username Steam
+
+                String username = strings[1];
+                String formatted_username = EnumChatFormatting.BLUE + username + EnumChatFormatting.RESET;
+                UUID uuid = SpaceProjectManager.getPlayerUUIDFromName(username);
+
+                String Steam_String_0 = strings[2];
+
+                if ((new BigInteger(Steam_String_0).compareTo(BigInteger.ZERO)) < 0) {
+                    sender
+                        .addChatMessage(new ChatComponentText("Cannot set a users steam network to a negative value."));
+                    break;
+                }
+
+                GTTeam team = GTTeamManager.getTeam(username, uuid);
+                GTTeamManager.getSteamData(team)
+                    .setSteam(new BigInteger(Steam_String_0));
+
+                sender.addChatMessage(
+                    new ChatComponentText(
+                        "Successfully set " + formatted_username
+                            + "'s global steam network to "
+                            + EnumChatFormatting.RED
+                            + GTUtility.formatNumbers(new BigInteger(Steam_String_0))
+                            + EnumChatFormatting.RESET
+                            + "L."));
 
             }
             case "dump_music_durations" -> {

@@ -1,6 +1,8 @@
 package gregtech.common.tileentities.machines.steam;
 
-import gregtech.api.enums.GTValues;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -12,8 +14,6 @@ import gregtech.common.covers.CoverSteamValve;
 import gregtech.common.misc.teams.GTTeam;
 import gregtech.common.misc.teams.GTTeamManager;
 import gregtech.common.misc.teams.PipelessSteamManager;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidStack;
 
 public class MTESteamPipelessHatch extends MTEHatchInput implements IWirelessEnergyHatchInformation {
 
@@ -34,24 +34,19 @@ public class MTESteamPipelessHatch extends MTEHatchInput implements IWirelessEne
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            EnumChatFormatting.GRAY + "Stores steam globally in a network, up to 2^(2^31) L.",
+        return new String[] { EnumChatFormatting.GRAY + "Stores steam globally in a network, up to 2^(2^31) L.",
             EnumChatFormatting.GRAY + "Does not connect to pipes. This block withdraws Steam from the network." };
     }
 
     // todo
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {
-            aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0]
-        };
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0] };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] {
-            aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0]
-        };
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0] };
     }
 
     @Override
@@ -66,11 +61,6 @@ public class MTESteamPipelessHatch extends MTEHatchInput implements IWirelessEne
 
     @Override
     public boolean doesEmptyContainers() {
-        return false;
-    }
-
-    @Override
-    public boolean canTankBeFilled() {
         return false;
     }
 

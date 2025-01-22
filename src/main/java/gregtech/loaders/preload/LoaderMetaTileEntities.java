@@ -927,7 +927,6 @@ import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
-import gregtech.common.tileentities.machines.steam.MTESteamPipelessHatch;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.ItemList;
@@ -1101,6 +1100,7 @@ import gregtech.common.tileentities.machines.steam.MTESteamFurnaceBronze;
 import gregtech.common.tileentities.machines.steam.MTESteamFurnaceSteel;
 import gregtech.common.tileentities.machines.steam.MTESteamMaceratorBronze;
 import gregtech.common.tileentities.machines.steam.MTESteamMaceratorSteel;
+import gregtech.common.tileentities.machines.steam.MTESteamPipelessHatch;
 import gregtech.common.tileentities.storage.MTELocker;
 import gregtech.common.tileentities.storage.MTEQuantumChest;
 import gregtech.common.tileentities.storage.MTEQuantumTank;
@@ -11961,10 +11961,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerPipelessSteamHatch() {
         ItemList.Pipeless_Hatch_Steam.set(
-            new MTESteamPipelessHatch(
-                PipelessSteamHatch.ID,
-                "hatch.pipeless.receiver.steam",
-                "Pipeless Steam Hatch").getStackForm(1));
+            new MTESteamPipelessHatch(PipelessSteamHatch.ID, "hatch.pipeless.receiver.steam", "Pipeless Steam Hatch")
+                .getStackForm(1));
         addItemTooltip(ItemList.Pipeless_Hatch_Steam.get(1), GTValues.AuthorSerenibyss);
     }
 
