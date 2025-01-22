@@ -1,10 +1,12 @@
 package gregtech.common.tileentities.machines.steam;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static net.minecraft.util.EnumChatFormatting.AQUA;
+import static net.minecraft.util.EnumChatFormatting.GRAY;
+import static net.minecraft.util.EnumChatFormatting.ITALIC;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -77,11 +79,19 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase implements IW
         return new MTESteamPipelessHatch(this.mName, this.mTextures);
     }
 
+    // spotless:off
     @Override
     public String[] getDescription() {
-        return new String[] { EnumChatFormatting.GRAY + "Stores steam globally in a network, up to 2^(2^31) L.",
-            EnumChatFormatting.GRAY + "Does not connect to pipes. This block withdraws Steam from the network." };
+        return new String[] {
+            GRAY               + "Stores steam globally in a network, up to 2^(2^31) L.",
+            GRAY               + "Does not connect to pipes. This block withdraws Steam from the network.",
+            GRAY               + "Supports Steam, Superheated Steam and Supercritical Steam (and their dense variants).",
+            AQUA + "" + ITALIC + "Where does it come from? Capable of extracting Steam from seemingly nowhere, and even",
+            AQUA + "" + ITALIC + "without any type of Pipes, you begin to question what you thought you knew about this",
+            AQUA + "" + ITALIC + "simple action of boiling water. One thing's for sure though, it still may not be enough..."
+        };
     }
+    // spotless:on
 
     // todo overlays
     @Override
