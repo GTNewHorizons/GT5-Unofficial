@@ -5,6 +5,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamCentrifugeMul
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamCompressorMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamForgeHammer;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMaceratorMulti;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMegaMaceratorMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMixerMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamWasherMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Bus_Steam;
@@ -19,6 +20,7 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.st
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCompressor;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamForgeHammer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMacerator;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMegaMacerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMixer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamWasher;
 
@@ -33,6 +35,11 @@ public class GregtechSteamMultis {
                 Controller_SteamMaceratorMulti.ID,
                 "gtpp.multimachine.steam.macerator",
                 "Steam Grinder").getStackForm(1L));
+        GregtechItemList.Controller_SteamMegaMaceratorMulti.set(
+            new MTESteamMegaMacerator(
+                Controller_SteamMegaMaceratorMulti.ID,
+                "gtpp.multimachine.steam.megamacerator",
+                "Mega Steam Grinder").getStackForm(1L));
         GregtechItemList.Controller_SteamCompressorMulti.set(
             new MTESteamCompressor(
                 Controller_SteamCompressorMulti.ID,
