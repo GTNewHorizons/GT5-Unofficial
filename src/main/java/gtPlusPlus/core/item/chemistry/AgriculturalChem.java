@@ -22,10 +22,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.common.Optional;
-import forestry.core.items.ItemForestryBonemeal;
-import forestry.core.items.ItemRegistryCore;
-import forestry.plugins.PluginCore;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
@@ -534,9 +532,6 @@ public class AgriculturalChem extends ItemPackage {
         }
     }
 
-    public static ItemStack aFertForestry;
-    public static ItemStack aFertIC2;
-
     private static void addMiscRecipes() {
 
         ItemStack aDustOrganicFert = ItemUtils.getSimpleStack(dustOrganicFertilizer, 1);
@@ -550,10 +545,9 @@ public class AgriculturalChem extends ItemPackage {
         /*
          * IC2 Support
          */
-        aFertIC2 = ItemUtils.getItemStackFromFQRN("IC2:itemFertilizer", 1);
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(12), ItemUtils.getSimpleStack(aDustOrganicFert, 4))
-            .itemOutputs(ItemUtils.getItemStackFromFQRN("IC2:itemFertilizer", 3), aManureByprod, aManureByprod)
+            .itemOutputs(ItemList.IC2_Fertilizer.get(3), aManureByprod, aManureByprod)
             .outputChances(100_00, 20_00, 20_00)
             .eut(240)
             .duration(20 * SECONDS)
@@ -631,14 +625,10 @@ public class AgriculturalChem extends ItemPackage {
         ItemStack aDustOrganicFert = ItemUtils.getSimpleStack(dustOrganicFertilizer, 1);
         ItemStack aManureByprod = ItemUtils.getSimpleStack(dustManureByproducts, 1);
 
-        ItemRegistryCore aItemRegInstance = PluginCore.items;
-        if (aItemRegInstance != null) {
-            ItemForestryBonemeal fertilizerCompound = aItemRegInstance.fertilizerCompound;
-            aFertForestry = ItemUtils.getSimpleStack(fertilizerCompound);
-
+        if (ItemList.FR_Fertilizer.hasBeenSet()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.getIntegratedCircuit(11), ItemUtils.getSimpleStack(aDustOrganicFert, 4))
-                .itemOutputs(ItemUtils.getSimpleStack(fertilizerCompound, 3), aManureByprod, aManureByprod)
+                .itemOutputs(ItemList.FR_Fertilizer.get(3), aManureByprod, aManureByprod)
                 .outputChances(100_00, 20_00, 20_00)
                 .eut(240)
                 .duration(20 * SECONDS)

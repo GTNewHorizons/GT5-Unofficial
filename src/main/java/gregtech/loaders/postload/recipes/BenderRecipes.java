@@ -13,7 +13,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -311,7 +310,7 @@ public class BenderRecipes implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Iron, 2L),
                 GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(GTModHandler.getIC2Item("fuelRod", 1L))
+            .itemOutputs(ItemList.IC2_Fuel_Rod_Empty.get(1))
             .duration(5 * SECONDS)
             .eut(8)
             .addTo(benderRecipes);
