@@ -39,7 +39,6 @@ import gregtech.api.util.GTWaila;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.tileentities.machines.steam.MTESteamPipelessHatch;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
@@ -175,7 +174,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         // Use this to determine the correct value, then update the hatch texture after.
         boolean aDidAdd = false;
 
-        if (aMetaTileEntity instanceof MTEHatchCustomFluidBase || aMetaTileEntity instanceof MTESteamPipelessHatch) {
+        if (aMetaTileEntity instanceof MTEHatchCustomFluidBase) {
             log("Adding Steam Input Hatch");
             aDidAdd = addToMachineListInternal(mSteamInputFluids, aMetaTileEntity, aBaseCasingIndex);
         } else if (aMetaTileEntity instanceof MTEHatchSteamBusInput) {
