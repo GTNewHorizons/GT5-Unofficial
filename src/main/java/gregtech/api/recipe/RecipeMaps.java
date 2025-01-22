@@ -28,6 +28,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -141,6 +142,18 @@ public final class RecipeMaps {
                 .thenComparing(GTRecipe::compareTo))
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Compressor.get(1)))
+        .build();
+    public static final RecipeMap<RecipeMapBackend> steamGateAssemblerRecipes = RecipeMapBuilder.of("gt.recipe.steamgateassembler")
+        .maxIO(12, 1, 0, 0)
+        .slotOverlays(
+            (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_MOLECULAR_1
+                : null)
+        .progressBar(GTUITextures.PROGRESSBAR_COMPRESS)
+        .slotOverlaysSteam(
+            (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_COMPRESSOR_STEAM
+                : null)
+        .progressBarSteam(GTUITextures.PROGRESSBAR_COMPRESS_STEAM)
+        .neiHandlerInfo(builder -> builder.setDisplayStack(GregtechItemList.Controller_SteamGateAssembler.get(1)))
         .build();
     public static final RecipeMap<RecipeMapBackend> neutroniumCompressorRecipes = RecipeMapBuilder
         .of("gt.recipe.neutroniumcompressor")
