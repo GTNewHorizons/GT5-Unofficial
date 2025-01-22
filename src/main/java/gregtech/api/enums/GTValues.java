@@ -604,13 +604,13 @@ public class GTValues {
             DARK_GREEN + BOLD,
             DARK_GREEN + OBFUSCATED + BOLD));
 
-    public static final Supplier<String> AuthorSerenibyss = chain(
+    public static final Supplier<String> AuthorSteamibyss = chain(
         text("Author: "),
         getAuthorSerenibyssLetter("S", 30, 3, LIGHT_PURPLE, 11, WHITE, 25, AQUA),
-        getAuthorSerenibyssLetter("e", 30, 12, AQUA, 18, LIGHT_PURPLE, 29, WHITE),
-        getAuthorSerenibyssLetter("r", 30, 0, WHITE, 10, LIGHT_PURPLE, 20, AQUA),
-        getAuthorSerenibyssLetter("e", 30, 9, LIGHT_PURPLE, 17, AQUA, 22, WHITE),
-        getAuthorSerenibyssLetter("n", 30, 6, WHITE, 14, AQUA, 27, LIGHT_PURPLE),
+        getAuthorSerenibyssLetter("t", 30, 12, AQUA, 18, LIGHT_PURPLE, 29, WHITE),
+        getAuthorSerenibyssLetter("e", 30, 0, WHITE, 10, LIGHT_PURPLE, 20, AQUA),
+        getAuthorSerenibyssLetter("a", 30, 9, LIGHT_PURPLE, 17, AQUA, 22, WHITE),
+        getAuthorSerenibyssLetter("m", 30, 6, WHITE, 14, AQUA, 27, LIGHT_PURPLE),
         getAuthorSerenibyssLetter("i", 30, 1, AQUA, 15, WHITE, 21, LIGHT_PURPLE),
         getAuthorSerenibyssLetter("b", 30, 13, WHITE, 19, LIGHT_PURPLE, 23, WHITE),
         getAuthorSerenibyssLetter("y", 30, 2, AQUA, 8, LIGHT_PURPLE, 24, WHITE),
