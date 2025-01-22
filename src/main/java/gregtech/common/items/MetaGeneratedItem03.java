@@ -222,6 +222,13 @@ import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Unalign
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Up;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
+import static gregtech.common.items.IDMetaItem03.Steamgate_Chevron;
+import static gregtech.common.items.IDMetaItem03.Steamgate_Chevron_Upgrade;
+import static gregtech.common.items.IDMetaItem03.Steamgate_Core_Crystal;
+import static gregtech.common.items.IDMetaItem03.Steamgate_Frame;
+import static gregtech.common.items.IDMetaItem03.Steamgate_Iris_Blade;
+import static gregtech.common.items.IDMetaItem03.Steamgate_Iris_Upgrade;
+import static gregtech.common.items.IDMetaItem03.Steamgate_Plate;
 import static gregtech.common.items.IDMetaItem03.Thermal_Superconductor;
 import static gregtech.common.items.IDMetaItem03.Timepiece;
 import static gregtech.common.items.IDMetaItem03.Transdimensional_Alignment_Matrix;
@@ -290,6 +297,22 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
             OrePrefixes.plateSuperdense);
         INSTANCE = this;
         Object[] o = new Object[0];
+
+        // Steamgate components
+        ItemList.Steamgate_Chevron.set(
+            addItem(Steamgate_Chevron.ID, "Steamgate Chevron", "", o));
+        ItemList.Steamgate_Chevron_Upgrade.set(
+            addItem(Steamgate_Chevron_Upgrade.ID, "Steamgate Chevron Upgrade", "", o));
+        ItemList.Steamgate_Iris_Blade.set(
+            addItem(Steamgate_Iris_Blade.ID, "Steamgate Iris Blade", "", o));
+        ItemList.Steamgate_Iris_Upgrade.set(
+            addItem(Steamgate_Iris_Upgrade.ID, "Steamgate Iris Upgrade", "", o));
+        ItemList.Steamgate_Plate.set(
+            addItem(Steamgate_Plate.ID, "Steamgate Heat Containment Plate", "", o));
+        ItemList.Steamgate_Frame.set(
+            addItem(Steamgate_Frame.ID, "Steamgate Frame", "", o));
+        ItemList.Steamgate_Core_Crystal.set(
+            addItem(Steamgate_Core_Crystal.ID, "Steamgate Core Crystal", "", o));
 
         /*
          * circuit boards tier 1-7: coated circuit board / wood plate + resin Plastic Circuit Board / Plastic + Copper
