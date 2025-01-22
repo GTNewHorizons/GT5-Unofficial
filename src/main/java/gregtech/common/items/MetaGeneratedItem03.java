@@ -293,20 +293,21 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         Object[] o = new Object[0];
 
         // Steamgate components
-        ItemList.Steamgate_Chevron.set(
-            addItem(Steamgate_Chevron.ID, "Steamgate Chevron", "", o));
-        ItemList.Steamgate_Chevron_Upgrade.set(
-            addItem(Steamgate_Chevron_Upgrade.ID, "Steamgate Chevron Upgrade", "", o));
-        ItemList.Steamgate_Iris_Blade.set(
-            addItem(Steamgate_Iris_Blade.ID, "Steamgate Iris Blade", "", o));
-        ItemList.Steamgate_Iris_Upgrade.set(
-            addItem(Steamgate_Iris_Upgrade.ID, "Steamgate Iris Upgrade", "", o));
+        ItemList.Steamgate_Chevron.set(addItem(Steamgate_Chevron.ID, "Steamgate Chevron", "", o));
+        ItemList.Steamgate_Chevron_Upgrade
+            .set(addItem(Steamgate_Chevron_Upgrade.ID, "Steamgate Chevron Upgrade", "", o));
+        ItemList.Steamgate_Iris_Blade.set(addItem(Steamgate_Iris_Blade.ID, "Steamgate Iris Blade", "", o));
+        ItemList.Steamgate_Iris_Upgrade.set(addItem(Steamgate_Iris_Upgrade.ID, "Steamgate Iris Upgrade", "", o));
         ItemList.Steamgate_Plate.set(
-            addItem(Steamgate_Plate.ID, "Steamgate Heat Containment Plate", "", o));
-        ItemList.Steamgate_Frame.set(
-            addItem(Steamgate_Frame.ID, "Steamgate Frame", "", o));
+            addItem(Steamgate_Plate.ID, "Steamgate Heat Containment Plate", "Perfect temperature stability...", o));
+        ItemList.Steamgate_Frame
+            .set(addItem(Steamgate_Frame.ID, "Steamgate Frame", "Innumerable interlocking gears...", o));
         ItemList.Steamgate_Core_Crystal.set(
-            addItem(Steamgate_Core_Crystal.ID, "Steamgate Core Crystal", "", o));
+            addItem(
+                Steamgate_Core_Crystal.ID,
+                "Steamgate Core Crystal",
+                "A crystal made of pure condensed steam...",
+                o));
 
         /*
          * circuit boards tier 1-7: coated circuit board / wood plate + resin Plastic Circuit Board / Plastic + Copper
