@@ -6,7 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class PipelessSteamManager implements ITeamData {
 
-    private static final BigInteger ONE_HUNDRED = BigInteger.valueOf(100);
+    private static final BigInteger ONE_THOUSAND = BigInteger.valueOf(1000);
 
     private BigInteger storedSteam = BigInteger.ZERO;
     private BigInteger storedSuperheatedSteam = BigInteger.ZERO;
@@ -48,7 +48,7 @@ public class PipelessSteamManager implements ITeamData {
     public void fillDenseSteam(long denseSteam) {
         fillSteam(
             BigInteger.valueOf(denseSteam)
-                .multiply(ONE_HUNDRED));
+                .multiply(ONE_THOUSAND));
     }
 
     private void fillSteam(BigInteger steam) {
@@ -63,7 +63,7 @@ public class PipelessSteamManager implements ITeamData {
     public void fillDenseSuperheatedSteam(long denseSuperheatedSteam) {
         fillSuperheatedSteam(
             BigInteger.valueOf(denseSuperheatedSteam)
-                .multiply(ONE_HUNDRED));
+                .multiply(ONE_THOUSAND));
     }
 
     private void fillSuperheatedSteam(BigInteger superheatedSteam) {
@@ -78,7 +78,7 @@ public class PipelessSteamManager implements ITeamData {
     public void fillDenseSupercriticalSteam(long denseSupercriticalSteam) {
         fillSupercriticalSteam(
             BigInteger.valueOf(denseSupercriticalSteam)
-                .multiply(ONE_HUNDRED));
+                .multiply(ONE_THOUSAND));
     }
 
     private void fillSupercriticalSteam(BigInteger supercriticalSteam) {
@@ -93,8 +93,8 @@ public class PipelessSteamManager implements ITeamData {
     public long drainDenseSteam(long denseSteam, boolean simulate) {
         return drainSteam(
             BigInteger.valueOf(denseSteam)
-                .multiply(ONE_HUNDRED),
-            simulate).divide(ONE_HUNDRED)
+                .multiply(ONE_THOUSAND),
+            simulate).divide(ONE_THOUSAND)
                 .longValue();
     }
 
@@ -133,8 +133,8 @@ public class PipelessSteamManager implements ITeamData {
     public long drainDenseSuperheatedSteam(long denseSuperheatedSteam, boolean simulate) {
         return drainSuperheatedSteam(
             BigInteger.valueOf(denseSuperheatedSteam)
-                .multiply(ONE_HUNDRED),
-            simulate).divide(ONE_HUNDRED)
+                .multiply(ONE_THOUSAND),
+            simulate).divide(ONE_THOUSAND)
                 .longValue();
     }
 
@@ -173,8 +173,8 @@ public class PipelessSteamManager implements ITeamData {
     public long drainDenseSupercriticalSteam(long denseSupercriticalSteam, boolean simulate) {
         return drainSupercriticalSteam(
             BigInteger.valueOf(denseSupercriticalSteam)
-                .multiply(ONE_HUNDRED),
-            simulate).divide(ONE_HUNDRED)
+                .multiply(ONE_THOUSAND),
+            simulate).divide(ONE_THOUSAND)
                 .longValue();
     }
 
