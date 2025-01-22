@@ -37,6 +37,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import org.apache.commons.lang3.tuple.MutableTriple;
+import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.GTMod;
@@ -64,6 +65,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GTClient;
+import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Other;
 import gregtech.common.covers.CoverDrain;
 import gregtech.common.covers.CoverFluidRegulator;
@@ -471,6 +473,147 @@ public class MTEFluid extends MetaPipeEntity {
             mDisableInput |= mask;
             GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("213", "Input disabled"));
         }
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
+        float aX, float aY, float aZ) {
+        if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+            final ItemStack handItem = aPlayer.inventory.getCurrentItem();
+            IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
+            if (!(meta instanceof MTEFluid handFluid)) return false;
+
+            // Store old state before any changes
+            byte oldConnections = this.mConnections;
+            short oldMetaID = (short) aBaseMetaTileEntity.getMetaTileID();
+
+            // Create new pipe using newMetaEntity to ensure proper initialization
+            MTEFluid newPipe = (MTEFluid) handFluid.newMetaEntity(aBaseMetaTileEntity);
+            if (newPipe == null) return false;
+
+            // Preserve connections
+            newPipe.mConnections = oldConnections;
+
+            // Store values for comparison
+            long oldCapacity = this.mCapacity;
+            boolean oldGasProof = this.mGasProof;
+            int oldHeatResistance = this.mHeatResistance;
+
+            // Update the pipe
+            aBaseMetaTileEntity.setMetaTileID((short) handItem.getItemDamage());
+            aBaseMetaTileEntity.setMetaTileEntity(newPipe);
+
+            // Build status change message
+            StringBuilder message = new StringBuilder();
+
+            // Capacity change
+            if (oldCapacity != newPipe.mCapacity) {
+                message.append(oldCapacity * 20)
+                    .append("L/s → ");
+                if (newPipe.mCapacity > oldCapacity) {
+                    message.append(EnumChatFormatting.GREEN);
+                } else {
+                    message.append(EnumChatFormatting.RED);
+                }
+                message.append(newPipe.mCapacity * 20)
+                    .append("L/s");
+                message.append(EnumChatFormatting.RESET);
+            }
+
+            // Heat resistance change
+            if (oldHeatResistance != newPipe.mHeatResistance) {
+                if (message.length() > 0) message.append(" | ");
+                message.append(oldHeatResistance)
+                    .append("K → ");
+                if (newPipe.mHeatResistance > oldHeatResistance) {
+                    message.append(EnumChatFormatting.GREEN);
+                } else {
+                    message.append(EnumChatFormatting.RED);
+                }
+                message.append(newPipe.mHeatResistance)
+                    .append("K");
+                message.append(EnumChatFormatting.RESET);
+            }
+
+            // Gas handling change
+            if (oldGasProof != newPipe.mGasProof) {
+                if (message.length() > 0) message.append(" | ");
+                if (newPipe.mGasProof) {
+                    message.append(EnumChatFormatting.GREEN)
+                        .append("Now Gas-Proof");
+                } else {
+                    message.append(EnumChatFormatting.RED)
+                        .append("No Longer Gas-Proof");
+                }
+                message.append(EnumChatFormatting.RESET);
+            }
+
+            // Pipe amount change
+            if (this.mPipeAmount != newPipe.mPipeAmount) {
+                if (message.length() > 0) message.append(" | ");
+                message.append(this.mPipeAmount)
+                    .append(" → ");
+                if (newPipe.mPipeAmount > this.mPipeAmount) {
+                    message.append(EnumChatFormatting.GREEN);
+                } else {
+                    message.append(EnumChatFormatting.RED);
+                }
+                message.append(newPipe.mPipeAmount);
+                message.append(EnumChatFormatting.RESET);
+            }
+
+            // Send message if there were any changes
+            if (message.length() > 0) {
+                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("215.2", "Pipe changed: ") + message.toString());
+            }
+
+            // Force updates
+            aBaseMetaTileEntity.markDirty();
+            aBaseMetaTileEntity.issueTextureUpdate();
+            aBaseMetaTileEntity.issueBlockUpdate();
+            aBaseMetaTileEntity.issueClientUpdate();
+
+            // Handle inventory swapping
+            if (!aPlayer.capabilities.isCreativeMode) {
+                // Create ItemStack for the removed pipe
+                ItemStack oldPipe = new ItemStack(handItem.getItem(), 1, oldMetaID);
+
+                // Try to give the old pipe to the player
+                boolean addedToInventory = false;
+                if (oldPipe != null) {
+                    // First try to stack with existing pipes
+                    for (int i = 0; i < aPlayer.inventory.mainInventory.length; i++) {
+                        ItemStack slot = aPlayer.inventory.mainInventory[i];
+                        if (slot != null && slot.getItem() == oldPipe.getItem()
+                            && slot.getItemDamage() == oldPipe.getItemDamage()
+                            && slot.stackSize < slot.getMaxStackSize()) {
+                            slot.stackSize++;
+                            addedToInventory = true;
+                            break;
+                        }
+                    }
+
+                    // If couldn't stack, try to find empty slot
+                    if (!addedToInventory) {
+                        addedToInventory = aPlayer.inventory.addItemStackToInventory(oldPipe);
+                    }
+
+                    // If still couldn't add, drop in world
+                    if (!addedToInventory) {
+                        aPlayer.dropPlayerItemWithRandomChoice(oldPipe, false);
+                    }
+                }
+
+                // Use one pipe from player's hand
+                handItem.stackSize--;
+                if (handItem.stackSize <= 0) {
+                    aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
+                }
+            }
+
+            return true;
+        }
+        return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
     }
 
     @Override
