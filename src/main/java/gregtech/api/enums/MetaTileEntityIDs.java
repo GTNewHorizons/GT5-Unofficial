@@ -1791,6 +1791,8 @@ public enum MetaTileEntityIDs {
     UncertaintyResolution(15510),
     PipelessSteamHatch(15511),
     PipelessSteamVent(15512),
+    PipelessJetstreamHatch(15513),
+    PipelessJetstreamVent(15514),
     BasicTeslaTransceiver1by1(16000),
     AdvancedTeslaTransceiver1by1(16001),
     EpycTeslaTransceiver1by1(16002),

@@ -11962,15 +11962,33 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerPipelessSteamHatch() {
         ItemList.Pipeless_Hatch_Steam.set(
-            new MTESteamPipelessHatch(PipelessSteamHatch.ID, "hatch.pipeless.receiver.steam", "Pipeless Steam Hatch")
+            new MTESteamPipelessHatch(PipelessSteamHatch.ID, "hatch.pipeless.receiver.steam", "Pipeless Steam Hatch", 0)
                 .getStackForm(1));
         addItemTooltip(ItemList.Pipeless_Hatch_Steam.get(1), GTValues.AuthorSteamibyss);
+
+        ItemList.Pipeless_Hatch_Jetstream.set(
+            new MTESteamPipelessHatch(
+                PipelessJetstreamHatch.ID,
+                "hatch.pipeless.receiver.jetstream",
+                "Pipeless Jetstream Hatch",
+                1).getStackForm(1));
+        addItemTooltip(ItemList.Pipeless_Hatch_Jetstream.get(1), GTValues.AuthorSteamibyss);
+
         ItemList.Pipeless_Vent_Steam.set(
             new MTESteamPipelessHatchOutput(
                 PipelessSteamVent.ID,
                 "hatch.pipeless.transmitter.steam",
-                "Pipeless Steam Vent").getStackForm(1));
+                "Pipeless Steam Vent",
+                0).getStackForm(1));
         addItemTooltip(ItemList.Pipeless_Vent_Steam.get(1), GTValues.AuthorSteamibyss);
+
+        ItemList.Pipeless_Vent_Jetstream.set(
+            new MTESteamPipelessHatchOutput(
+                PipelessJetstreamVent.ID,
+                "hatch.pipeless.transmitter.jetstream",
+                "Pipeless Jetstream Vent",
+                1).getStackForm(1));
+        addItemTooltip(ItemList.Pipeless_Vent_Jetstream.get(1), GTValues.AuthorSteamibyss);
     }
 
     private static void registerWirelessEnergyHatch() {

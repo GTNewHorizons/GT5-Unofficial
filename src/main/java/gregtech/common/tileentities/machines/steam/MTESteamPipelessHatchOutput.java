@@ -33,24 +33,38 @@ public class MTESteamPipelessHatchOutput extends MTEHatchOutput
 
     private GTTeam ownerTeam;
 
-    public MTESteamPipelessHatchOutput(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 0);
+    public MTESteamPipelessHatchOutput(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier);
     }
 
-    public MTESteamPipelessHatchOutput(String aName, ITexture[][][] aTextures) {
-        super(aName, 0, 4, new String[] { "" }, aTextures);
+    public MTESteamPipelessHatchOutput(String aName, int aTier, ITexture[][][] aTextures) {
+        super(aName, aTier, 4, new String[] { "" }, aTextures);
     }
 
     // spotless:off
     @Override
     public String[] getDescription() {
+        if (mTier == 0) {
+            // Pipeless Steam Vent
+            return new String[] {
+                GRAY               + "Stores Steam globally in a network, up to 2^(2^31) L.",
+                GRAY               + "Does not connect to Pipes. This block accepts Steam into the network.",
+                GRAY               + "Supports Steam, Superheated Steam, and Supercritical Steam (and their dense variants).",
+                GRAY               + "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
+                AQUA + "" + ITALIC + "In a dream, you remember something named a 'Wireless Energy Dynamo,' or something like",
+                AQUA + "" + ITALIC + "that. You don't remember what it did, but the similarities here are clear. However, you",
+                AQUA + "" + ITALIC + "remember laughing at their uselessness. Hard to imagine that reality, when these are so useful..."
+            };
+        }
+        // Pipeless Jetstream Vent
         return new String[] {
             GRAY               + "Stores Steam globally in a network, up to 2^(2^31) L.",
             GRAY               + "Does not connect to Pipes. This block accepts Steam into the network.",
             GRAY               + "Supports Steam, Superheated Steam, and Supercritical Steam (and their dense variants).",
-            AQUA + "" + ITALIC + "In a dream, you remember something named a 'Wireless Energy Dynamo,' or something like",
-            AQUA + "" + ITALIC + "that. You don't remember what it did, but the similarities here are clear. However, you",
-            AQUA + "" + ITALIC + "remember laughing at their uselessness. Hard to imagine that reality, when these are so useful..."
+            GRAY               + "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
+            AQUA + "" + ITALIC + "You've heard whispers of a mechanism called the 'Steamgate.' In your research, you're still unsure of",
+            AQUA + "" + ITALIC + "what this means or what all it will entail to produce something so elusive and monumental. However one",
+            AQUA + "" + ITALIC + "thing's for sure, you'll need a lot of steam to get there, and this vent is a key part of the puzzle..."
         };
     }
     // spotless:on
@@ -106,7 +120,10 @@ public class MTESteamPipelessHatchOutput extends MTEHatchOutput
 
     @Override
     public int getCapacity() {
-        return 128_000 * (int) ticks_between_energy_addition;
+        if (mTier == 0) {
+            return 64_000 * (int) ticks_between_energy_addition;
+        }
+        return Integer.MAX_VALUE;
     }
 
     @Override
@@ -129,7 +146,7 @@ public class MTESteamPipelessHatchOutput extends MTEHatchOutput
         return CoverSteamValve.isFluidCompatible(fluidStack);
     }
 
-    // todo
+    // todo overlays
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0] };
@@ -142,7 +159,10 @@ public class MTESteamPipelessHatchOutput extends MTEHatchOutput
 
     @Override
     protected ITexture getBaseTexture(int colorIndex) {
-        return TextureFactory.of(Textures.BlockIcons.MACHINE_BRONZE_SIDE);
+        if (mTier == 0) {
+            return TextureFactory.of(Textures.BlockIcons.MACHINE_BRONZE_SIDE);
+        }
+        return TextureFactory.of(Textures.BlockIcons.MACHINE_STEEL_SIDE);
     }
 
     @Override
@@ -152,7 +172,7 @@ public class MTESteamPipelessHatchOutput extends MTEHatchOutput
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTESteamPipelessHatchOutput(mName, mTextures);
+        return new MTESteamPipelessHatchOutput(mName, mTier, mTextures);
     }
 
     @Override
@@ -162,7 +182,8 @@ public class MTESteamPipelessHatchOutput extends MTEHatchOutput
 
     @Override
     public String[] getInfoData() {
-        return new String[] { EnumChatFormatting.BLUE + "Output Hatch" + EnumChatFormatting.RESET, "Stored Fluid:",
+        String name = mTier == 0 ? "Pipeless Steam Vent" : "Pipeless Jetstream Vent";
+        return new String[] { EnumChatFormatting.BLUE + name + EnumChatFormatting.RESET, "Stored Fluid:",
             EnumChatFormatting.GOLD + (mFluid == null ? "No Fluid" : mFluid.getLocalizedName())
                 + EnumChatFormatting.RESET,
             EnumChatFormatting.GREEN + GTUtility.formatNumbers(mFluid == null ? 0 : mFluid.amount)
