@@ -166,15 +166,15 @@ public class LoaderGTOreDictionary implements Runnable {
         GTOreDictUnificator.registerOre("cropLemon", ItemList.FR_Lemon.get(1L));
         GTOreDictUnificator.registerOre("cropCoffee", ItemList.IC2_CoffeeBeans.get(1L));
         GTOreDictUnificator.registerOre("cropPotato", ItemList.Food_Raw_Potato.get(1L));
-        GTOreDictUnificator.registerOre(OrePrefixes.battery, Materials.LV, GTModHandler.getIC2Item("reBattery", 1L));
+        GTOreDictUnificator.registerOre(OrePrefixes.battery, Materials.LV, ItemList.IC2_ReBattery.get(1L));
         GTOreDictUnificator
             .registerOre(OrePrefixes.battery, Materials.LV, GTModHandler.getIC2Item("chargedReBattery", 1L, 32767));
         GTOreDictUnificator
-            .registerOre(OrePrefixes.battery, Materials.MV, GTModHandler.getIC2Item("advBattery", 1L, 32767));
+            .registerOre(OrePrefixes.battery, Materials.MV, ItemList.IC2_AdvBattery.getWithDamage(1, 32767));
         GTOreDictUnificator
-            .registerOre(OrePrefixes.battery, Materials.HV, GTModHandler.getIC2Item("energyCrystal", 1L, 32767));
+            .registerOre(OrePrefixes.battery, Materials.HV, ItemList.IC2_EnergyCrystal.getWithDamage(1L, 32767));
         GTOreDictUnificator
-            .registerOre(OrePrefixes.battery, Materials.EV, GTModHandler.getIC2Item("lapotronCrystal", 1L, 32767));
+            .registerOre(OrePrefixes.battery, Materials.EV, ItemList.IC2_LapotronCrystal.getWithDamage(1L, 32767));
 
         GTOreDictUnificator
             .registerOre(OreDictNames.craftingWireCopper, GTModHandler.getIC2Item("insulatedCopperCableItem", 1L));
