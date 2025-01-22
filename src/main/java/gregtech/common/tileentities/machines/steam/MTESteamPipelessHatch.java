@@ -8,6 +8,7 @@ import static net.minecraft.util.EnumChatFormatting.ITALIC;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -33,7 +34,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverSteamValve;
@@ -132,16 +132,11 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase implements IW
         if (!aBaseMetaTileEntity.isServerSide()) return;
         if (aTick % 20 == 0) {
             // Validate the proper type
-            if (getFluidAmount() != 0 && !selectedSteam.getFluidStack(1)
-                .isFluidEqual(getFluid())) {
-                for (SteamType type : SteamType.VALUES) {
-                    if (type.getFluidStack(1)
-                        .isFluidEqual(getFluid())) {
-                        type.fillNetwork(getSteamManager(), getFluidAmount());
-                        drain(Integer.MAX_VALUE, true);
-                        tryFetchingSteam();
-                        return;
-                    }
+            if (getFluid() != null && getFluidAmount() > 0) {
+                if (selectedSteam.getFluid() == getFluid().getFluid()) {
+                    // Refresh the steam type
+                    flushSteam();
+                    tryFetchingSteam();
                 }
             }
         }
@@ -166,6 +161,28 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase implements IW
         PipelessSteamManager manager = getSteamManager();
         long drained = selectedSteam.drainNetwork(manager, steamToTransfer);
         fill(selectedSteam.getFluidStack(drained), true);
+    }
+
+    private void flushSteam() {
+        if (getFluid() == null || getFluidAmount() == 0) {
+            return;
+        }
+
+        for (SteamType type : SteamType.VALUES) {
+            if (type.getFluid() == getFluid().getFluid()) {
+                type.fillNetwork(getSteamManager(), getFluidAmount());
+                drain(Integer.MAX_VALUE, true);
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        if (getBaseMetaTileEntity().isServerSide()) {
+            flushSteam();
+        }
+        super.onBlockDestroyed();
     }
 
     @Override
@@ -268,9 +285,14 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase implements IW
 
         STEAM {
 
+            private Fluid fluid;
+
             @Override
-            FluidStack getFluidStack(long amount) {
-                return GTModHandler.getSteam(amount);
+            Fluid getFluid() {
+                if (this.fluid == null) {
+                    this.fluid = FluidRegistry.getFluid("steam");
+                }
+                return fluid;
             }
 
             @Override
@@ -290,9 +312,14 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase implements IW
         },
         DENSE_STEAM {
 
+            private Fluid fluid;
+
             @Override
-            FluidStack getFluidStack(long amount) {
-                return Materials.DenseSteam.getGas(amount);
+            Fluid getFluid() {
+                if (this.fluid == null) {
+                    this.fluid = Materials.DenseSteam.mGas;
+                }
+                return fluid;
             }
 
             @Override
@@ -312,9 +339,14 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase implements IW
         },
         SH_STEAM {
 
+            private Fluid fluid;
+
             @Override
-            FluidStack getFluidStack(long amount) {
-                return FluidRegistry.getFluidStack("ic2superheatedsteam", (int) amount);
+            Fluid getFluid() {
+                if (this.fluid == null) {
+                    this.fluid = FluidRegistry.getFluid("ic2superheatedsteam");
+                }
+                return fluid;
             }
 
             @Override
@@ -334,9 +366,14 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase implements IW
         },
         DENSE_SH_STEAM {
 
+            private Fluid fluid;
+
             @Override
-            FluidStack getFluidStack(long amount) {
-                return Materials.DenseSuperheatedSteam.getGas(amount);
+            Fluid getFluid() {
+                if (this.fluid == null) {
+                    this.fluid = Materials.DenseSuperheatedSteam.mGas;
+                }
+                return fluid;
             }
 
             @Override
@@ -356,9 +393,14 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase implements IW
         },
         SC_STEAM {
 
+            private Fluid fluid;
+
             @Override
-            FluidStack getFluidStack(long amount) {
-                return FluidRegistry.getFluidStack("supercriticalsteam", (int) amount);
+            Fluid getFluid() {
+                if (this.fluid == null) {
+                    this.fluid = FluidRegistry.getFluid("supercriticalsteam");
+                }
+                return fluid;
             }
 
             @Override
@@ -378,9 +420,14 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase implements IW
         },
         DENSE_SC_STEAM {
 
+            private Fluid fluid;
+
             @Override
-            FluidStack getFluidStack(long amount) {
-                return Materials.DenseSupercriticalSteam.getGas(amount);
+            Fluid getFluid() {
+                if (this.fluid == null) {
+                    this.fluid = Materials.DenseSupercriticalSteam.mGas;
+                }
+                return this.fluid;
             }
 
             @Override
@@ -401,7 +448,11 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase implements IW
 
         static final SteamType[] VALUES = values();
 
-        abstract FluidStack getFluidStack(long amount);
+        FluidStack getFluidStack(long amount) {
+            return new FluidStack(getFluid(), (int) amount);
+        }
+
+        abstract Fluid getFluid();
 
         abstract String getName();
 

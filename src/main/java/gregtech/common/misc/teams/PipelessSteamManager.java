@@ -41,6 +41,18 @@ public class PipelessSteamManager implements ITeamData {
         TeamWorldSavedData.INSTANCE.markDirty();
     }
 
+    public BigInteger getSteam() {
+        return storedSteam;
+    }
+
+    public BigInteger getSuperheatedSteam() {
+        return storedSuperheatedSteam;
+    }
+
+    public BigInteger getSupercriticalSteam() {
+        return storedSupercriticalSteam;
+    }
+
     public void fillSteam(long steam) {
         fillSteam(BigInteger.valueOf(steam));
     }

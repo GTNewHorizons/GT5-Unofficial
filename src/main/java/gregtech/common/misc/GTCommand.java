@@ -78,9 +78,9 @@ public final class GTCommand extends CommandBase {
                     + "[Name] "
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "[EU]"));
-        sender.addChatMessage(
-            new ChatComponentText("Allows you to add EU to a users wireless network. Also accepts negative numbers."));
-        // todo remove this later
+
+        // todo remove these later
+        sender.addChatMessage(new ChatComponentText("Allows you to add Steam to a users pipeless network."));
         sender.addChatMessage(
             new ChatComponentText(
                 "Usage:" + EnumChatFormatting.RED
@@ -89,7 +89,13 @@ public final class GTCommand extends CommandBase {
                     + "[Name] "
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "[Steam]"));
-        sender.addChatMessage(new ChatComponentText("Allows you to add Steam to a users pipeless network."));
+        sender.addChatMessage(new ChatComponentText("Shows the amount of Steam in a users pipeless network."));
+        sender.addChatMessage(
+            new ChatComponentText(
+                "Usage:" + EnumChatFormatting.RED + " global_steam_display " + EnumChatFormatting.BLUE + "[Name]"));
+
+        sender.addChatMessage(
+            new ChatComponentText("Allows you to add EU to a users wireless network. Also accepts negative numbers."));
         sender.addChatMessage(
             new ChatComponentText(
                 "Usage:" + EnumChatFormatting.RED
@@ -130,6 +136,7 @@ public final class GTCommand extends CommandBase {
                 "global_energy_join",
                 "global_energy_display",
                 "global_steam_set",
+                "global_steam_display",
                 "dump_music_durations")
             .anyMatch(s -> s.startsWith(test)))) {
             Stream
@@ -142,6 +149,7 @@ public final class GTCommand extends CommandBase {
                     "global_energy_join",
                     "global_energy_display",
                     "global_steam_set",
+                    "global_steam_display",
                     "dump_music_durations")
                 .filter(s -> test.isEmpty() || s.startsWith(test))
                 .forEach(l::add);
@@ -397,6 +405,42 @@ public final class GTCommand extends CommandBase {
                             + "."));
 
             }
+            case "global_steam_display" -> {
+
+                // Usage is /gt global_steam_display username.
+
+                String username = strings[1];
+                String formatted_username = EnumChatFormatting.BLUE + username + EnumChatFormatting.RESET;
+                UUID userUUID = SpaceProjectManager.getPlayerUUIDFromName(username);
+
+                if (!GTTeamManager.isInTeam(userUUID)) {
+                    sender.addChatMessage(
+                        new ChatComponentText("User " + formatted_username + " has no global steam network."));
+                    break;
+                }
+
+                GTTeam team = GTTeamManager.getTeam("", userUUID);
+                PipelessSteamManager manager = GTTeamManager.getSteamData(team);
+
+                sender.addChatMessage(new ChatComponentText("User " + formatted_username + " has:"));
+                sender.addChatMessage(
+                    new ChatComponentText(
+                        EnumChatFormatting.RED + GTUtility.formatNumbers(manager.getSteam())
+                            + EnumChatFormatting.RESET
+                            + "L Steam"));
+                sender.addChatMessage(
+                    new ChatComponentText(
+                        EnumChatFormatting.RED + GTUtility.formatNumbers(manager.getSuperheatedSteam())
+                            + EnumChatFormatting.RESET
+                            + "L Superheated Steam"));
+                sender.addChatMessage(
+                    new ChatComponentText(
+                        EnumChatFormatting.RED + GTUtility.formatNumbers(manager.getSupercriticalSteam())
+                            + EnumChatFormatting.RESET
+                            + "L Supercritical Steam"));
+                sender.addChatMessage(new ChatComponentText("in their network."));
+            }
+
             case "dump_music_durations" -> {
                 if (!FMLLaunchHandler.side()
                     .isClient()) {

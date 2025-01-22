@@ -19,6 +19,15 @@ public class GTTeamManager {
         return true;
     }
 
+    public static boolean isInTeam(UUID playerUuid) {
+        for (GTTeam team : TEAMS) {
+            if (team.isTeamMember(playerUuid)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static GTTeam getTeam(String playerName, UUID playerUuid) {
         for (GTTeam team : TEAMS) {
             if (team.isTeamMember(playerUuid)) {
