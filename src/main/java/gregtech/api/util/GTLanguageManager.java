@@ -423,12 +423,14 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_213", "Input disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_214", "Connected");
         addStringLocalization("Interaction_DESCRIPTION_Index_215", "Disconnected");
+        addStringLocalization("Interaction_DESCRIPTION_Index_215.1", "Cable Changed: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_216", "Deprecated Recipe");
         addStringLocalization("Interaction_DESCRIPTION_Index_219", "Extended Facing: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_220", "Single recipe locking disabled.");
         addStringLocalization("Interaction_DESCRIPTION_Index_221", "Item threshold");
         addStringLocalization("Interaction_DESCRIPTION_Index_222", "Fluid threshold");
         addStringLocalization("Interaction_DESCRIPTION_Index_222.1", "Energy threshold");
+
         addStringLocalization(
             "Interaction_DESCRIPTION_Index_223",
             "Single recipe locking enabled. Will lock to next recipe.");
