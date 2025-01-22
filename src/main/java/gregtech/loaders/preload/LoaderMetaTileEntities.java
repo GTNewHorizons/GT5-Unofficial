@@ -11962,7 +11962,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Pipeless_Hatch_Steam.set(
             new MTESteamPipelessHatch(PipelessSteamHatch.ID, "hatch.pipeless.receiver.steam", "Pipeless Steam Hatch")
                 .getStackForm(1));
-        addItemTooltip(ItemList.Pipeless_Hatch_Steam.get(1), GTValues.AuthorSerenibyss);
+        addItemTooltip(ItemList.Pipeless_Hatch_Steam.get(1), GTValues.AuthorSteamibyss);
     }
 
     private static void registerWirelessEnergyHatch() {
