@@ -1,5 +1,6 @@
 package gregtech.loaders.preload;
 
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_DATA_ACCESS_HATCH;
 import static gregtech.api.enums.MetaTileEntityIDs.ADVANCED_DEBUG_STRUCTURE_WRITTER;
@@ -926,6 +927,7 @@ import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
+import gregtech.common.tileentities.machines.steam.MTESteamPipelessHatch;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.ItemList;
@@ -11957,6 +11959,15 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     }
 
+    private static void registerPipelessSteamHatch() {
+        ItemList.Pipeless_Hatch_Steam.set(
+            new MTESteamPipelessHatch(
+                PipelessSteamHatch.ID,
+                "hatch.pipeless.receiver.steam",
+                "Pipeless Steam Hatch").getStackForm(1));
+        addItemTooltip(ItemList.Pipeless_Hatch_Steam.get(1), GTValues.AuthorSerenibyss);
+    }
+
     private static void registerWirelessEnergyHatch() {
         ItemList.Wireless_Hatch_Energy_ULV.set(
             new MTEWirelessEnergy(
@@ -12400,6 +12411,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerBatteryBuffer3x3();
         registerBatteryBuffer4x4();
         registerCharger4x4();
+        registerPipelessSteamHatch();
         registerWirelessEnergyHatch();
         registerWirelessDynamoHatch();
         registerSteamMachines();

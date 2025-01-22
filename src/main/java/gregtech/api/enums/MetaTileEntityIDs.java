@@ -1789,6 +1789,7 @@ public enum MetaTileEntityIDs {
     UXV262144AWirelessEnergyHatch(15505),
     UXV1048576AWirelessEnergyHatch(15506),
     UncertaintyResolution(15510),
+    PipelessSteamHatch(15511),
     BasicTeslaTransceiver1by1(16000),
     AdvancedTeslaTransceiver1by1(16001),
     EpycTeslaTransceiver1by1(16002),

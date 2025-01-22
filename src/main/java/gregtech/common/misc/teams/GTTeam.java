@@ -36,12 +36,8 @@ public class GTTeam {
         return false;
     }
 
-    public boolean isTeamMember(EntityPlayer player) {
-        return members.contains(player.getUniqueID());
-    }
-
-    public void addMember(EntityPlayer player) {
-        addMember(player.getUniqueID());
+    public boolean isTeamMember(UUID player) {
+        return members.contains(player);
     }
 
     public void addMember(UUID uuid) {
@@ -52,12 +48,8 @@ public class GTTeam {
         return ObjectLists.unmodifiable(members);
     }
 
-    public boolean isTeamOwner(EntityPlayer player) {
-        return owners.contains(player.getUniqueID());
-    }
-
-    public void addOwner(EntityPlayer player) {
-        addOwner(player.getUniqueID());
+    public boolean isTeamOwner(UUID player) {
+        return owners.contains(player);
     }
 
     public void addOwner(UUID uuid) {
