@@ -28,6 +28,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.teams.GTTeam;
 import gregtech.common.misc.teams.GTTeamManager;
+import gregtech.common.misc.teams.PipelessSteamManager;
 import gregtech.common.pollution.Pollution;
 
 public final class GTCommand extends CommandBase {
@@ -352,7 +353,7 @@ public final class GTCommand extends CommandBase {
             }
             case "global_steam_set" -> {
 
-                // Usage is /gt global_steam_set username Steam
+                // Usage is /gt global_steam_set username Steam <type>
 
                 String username = strings[1];
                 String formatted_username = EnumChatFormatting.BLUE + username + EnumChatFormatting.RESET;
@@ -366,9 +367,23 @@ public final class GTCommand extends CommandBase {
                     break;
                 }
 
+                String type = "Steam";
                 GTTeam team = GTTeamManager.getTeam(username, uuid);
-                GTTeamManager.getSteamData(team)
-                    .setSteam(new BigInteger(Steam_String_0));
+                PipelessSteamManager manager = GTTeamManager.getSteamData(team);
+                if (strings.length > 3) {
+                    String raw = strings[3];
+                    if (raw.equals("sc")) {
+                        type = "Supercritical Steam";
+                        manager.setSupercriticalSteam(new BigInteger(Steam_String_0));
+                    } else if (raw.equals("sh")) {
+                        type = "Superheated Steam";
+                        manager.setSuperheatedSteam(new BigInteger(Steam_String_0));
+                    } else {
+                        manager.setSteam(new BigInteger(Steam_String_0));
+                    }
+                } else {
+                    manager.setSteam(new BigInteger(Steam_String_0));
+                }
 
                 sender.addChatMessage(
                     new ChatComponentText(
@@ -377,7 +392,9 @@ public final class GTCommand extends CommandBase {
                             + EnumChatFormatting.RED
                             + GTUtility.formatNumbers(new BigInteger(Steam_String_0))
                             + EnumChatFormatting.RESET
-                            + "L."));
+                            + "L "
+                            + type
+                            + "."));
 
             }
             case "dump_music_durations" -> {
