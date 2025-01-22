@@ -206,6 +206,11 @@ public enum IDMetaItem02 {
     FractalAnomaly(590),
     FilledFractalCell(591),
     TransfiniteMatterCell(592),
+    HolographicInfinity(593),
+    HyperbolicInfinity(594),
+    HarmonicInfinity(595),
+    FractalSeed(596),
+    EntangledSingularity(597),
     Display_ITS_FREE(765);
 
     public final int ID;

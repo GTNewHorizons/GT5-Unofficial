@@ -1759,6 +1759,8 @@ GT5U.gui.text.no_tools=§7Missing applicable tools
 GT5U.gui.text.no_anomaly.0=§7Missing Spatial Anomaly
 GT5U.gui.text.no_anomaly.1=§7Missing Fractal Rift
 GT5U.gui.text.no_anomaly.2=§7Missing Abnormality Field
+GT5U.gui.text.anomaly_conflict.0=§7Conflicting Hydrances
+GT5U.gui.text.anomaly_conflict.1=§7Conflicting Concepts
 
 # Cover Overflow Valve
 GTPP.chat.text.cover_overflow_valve_overflow_point=Overflow Point: %d L

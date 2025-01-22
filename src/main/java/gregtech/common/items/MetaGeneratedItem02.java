@@ -117,6 +117,7 @@ import static gregtech.common.items.IDMetaItem02.Dye_Color_13;
 import static gregtech.common.items.IDMetaItem02.Dye_Color_14;
 import static gregtech.common.items.IDMetaItem02.Dye_Color_15;
 import static gregtech.common.items.IDMetaItem02.Dye_Indigo;
+import static gregtech.common.items.IDMetaItem02.EntangledSingularity;
 import static gregtech.common.items.IDMetaItem02.FilledFractalCell;
 import static gregtech.common.items.IDMetaItem02.Food_Baked_Baguette;
 import static gregtech.common.items.IDMetaItem02.Food_Baked_Bun;
@@ -174,7 +175,11 @@ import static gregtech.common.items.IDMetaItem02.Food_Sliced_Onion;
 import static gregtech.common.items.IDMetaItem02.Food_Sliced_Tomato;
 import static gregtech.common.items.IDMetaItem02.FractalAnomaly;
 import static gregtech.common.items.IDMetaItem02.FractalCell;
+import static gregtech.common.items.IDMetaItem02.FractalSeed;
 import static gregtech.common.items.IDMetaItem02.GelledToluene;
+import static gregtech.common.items.IDMetaItem02.HarmonicInfinity;
+import static gregtech.common.items.IDMetaItem02.HolographicInfinity;
+import static gregtech.common.items.IDMetaItem02.HyperbolicInfinity;
 import static gregtech.common.items.IDMetaItem02.MSFMixture;
 import static gregtech.common.items.IDMetaItem02.Plank_Acacia;
 import static gregtech.common.items.IDMetaItem02.Plank_Acacia_Green;
@@ -2405,6 +2410,13 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             .set(addItem(FilledFractalCell.ID, "Fractal Helium Bose-Einstein Condensate Containment Cell", ""));
         ItemList.TransfiniteMatterCell
             .set(addItem(TransfiniteMatterCell.ID, "Transfinite Matter Cell", "Infinite Constraining"));
+        ItemList.HarmonicInfinity.set(addItem(HarmonicInfinity.ID, "Harmonic Infinity", "The music never ends"));
+        ItemList.HyperbolicInfinity.set(addItem(HyperbolicInfinity.ID, "Hyperbolic Infinity", "Non Euclidean"));
+        ItemList.HolographicInfinity.set(addItem(HolographicInfinity.ID, "Holographic Infinity", "Is this real?"));
+        ItemList.FractalSeed
+            .set(addItem(FractalSeed.ID, "Fractality Focus", "Self Filling, Self Containing, Self Replicating"));
+        ItemList.EntangledSingularity
+            .set(addItem(EntangledSingularity.ID, "Entangled Semi-Singularity", "At the end of the rainbow"));
 
         ItemList.Display_ITS_FREE.set(
             addItem(

@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -38,6 +39,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -72,6 +74,17 @@ public class MTESpatialAnomalyContainmentChamber
     private ItemStack catalyst;
     private MTEHatchInput stabilizerHatch;
     private final FluidStack stabilizer = (Materials.Vyroxeres.getMolten(1));
+
+    // Inputs to check for conflicts
+    private final int Hydrance1metaid = ItemList.HolographicInfinity.get(1)
+        .getItemDamage();
+    private final int Hydrance2metaid = ItemList.HyperbolicInfinity.get(1)
+        .getItemDamage();
+    private final int Hydrance3metaid = ItemList.HarmonicInfinity.get(1)
+        .getItemDamage();
+    private final Fluid Concept1 = MaterialsUEVplus.Cardinality.mFluid;
+    private final Fluid Concept2 = MaterialsUEVplus.Causality.mFluid;
+    private final Fluid Concept3 = MaterialsUEVplus.Chirality.mFluid;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTESpatialAnomalyContainmentChamber> STRUCTURE_DEFINITION = StructureDefinition
@@ -312,6 +325,7 @@ public class MTESpatialAnomalyContainmentChamber
 
                 int requiredRecipeTier = recipe.getMetadataOrDefault(SpatialAnomalyTierKey.INSTANCE, 0);
                 if (requiredRecipeTier > mAnomalyTier) {
+                    // Check if the anomaly current opened is enough for the recipe
                     switch (requiredRecipeTier) {
                         case 1:
                             return SimpleCheckRecipeResult.ofFailure("no_anomaly.0");
@@ -323,6 +337,44 @@ public class MTESpatialAnomalyContainmentChamber
                             return CheckRecipeResultRegistry.NO_RECIPE;
                     }
                 } else {
+                    if (mAnomalyTier == 2) {
+
+                        List<FluidStack> fluidInputs = getStoredFluids();
+                        ItemStack[] itemInputs = inputItems;
+                        boolean foundHydrance = false;
+                        Fluid foundConcept = null;
+                        int aHydrance = 0;
+
+                        for (ItemStack aItem : itemInputs) {
+                            if (aItem.getItemDamage() == aHydrance) continue;
+                            if (aItem.getItemDamage() == Hydrance1metaid || aItem.getItemDamage() == Hydrance2metaid
+                                || aItem.getItemDamage() == Hydrance3metaid) {
+                                if (foundHydrance) {
+                                    return SimpleCheckRecipeResult.ofFailure("anomaly_conflict.0");
+                                } else {
+                                    foundHydrance = true;
+                                    aHydrance = aItem.getItemDamage();
+                                }
+                            }
+                        }
+                        for (FluidStack aFluid : fluidInputs) {
+                            if (aFluid.getFluid() == foundConcept) continue;
+                            if ((aFluid.getFluid()
+                                .equals(Concept1)
+                                || aFluid.getFluid()
+                                    .equals(Concept2)
+                                || aFluid.getFluid()
+                                    .equals(Concept3))
+                                && foundConcept != aFluid.getFluid()) {
+                                if (foundConcept != null) {
+                                    return SimpleCheckRecipeResult.ofFailure("anomaly_conflict.1");
+                                } else {
+                                    foundConcept = aFluid.getFluid();
+                                }
+                            }
+                        }
+                    }
+
                     return CheckRecipeResultRegistry.SUCCESSFUL;
                 }
             }
@@ -337,7 +389,7 @@ public class MTESpatialAnomalyContainmentChamber
                 if (controllerStack != null && !active) {
                     if (controllerStack.isItemEqual(GregtechItemList.Laser_Lens_Special.get(1))) {
                         mAnomalyTier = 1;
-                    } else if (controllerStack.isItemEqual(GregtechItemList.Compressed_Fusion_Reactor.get(1))) {
+                    } else if (controllerStack.isItemEqual(ItemList.FractalSeed.get(1))) {
                         mAnomalyTier = 2;
                     } else if (controllerStack.isItemEqual(ItemList.EnergisedTesseract.get(1))) {
                         mAnomalyTier = 3;

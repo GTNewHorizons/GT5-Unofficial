@@ -2616,6 +2616,11 @@ public enum ItemList implements IItemContainer {
     FractalAnomaly,
     FilledFractalCell,
     TransfiniteMatterCell,
+    HolographicInfinity,
+    HyperbolicInfinity,
+    HarmonicInfinity,
+    FractalSeed,
+    EntangledSingularity,
 
     CASING_ANOMALY_CONTAINMENT,
     GLASS_ANOMALY_CONTAINMENT,

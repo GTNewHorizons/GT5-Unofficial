@@ -1167,6 +1167,36 @@ public class MaterialsUEVplus {
         .constructMaterial()
         .setHasCorrespondingFluid(true);
 
+    public static Materials Cardinality = new MaterialBuilder(175, TextureSet.SET_FLUID, "Cardinality").addCell()
+        .addFluid()
+        .setLiquidTemperature(0)
+        .setRGBA(255, 0, 0, 0)
+        .setTransparent(true)
+        .setName("Cardinality")
+        .setColor(Dyes._NULL)
+        .constructMaterial()
+        .setHasCorrespondingFluid(true);
+
+    public static Materials Causality = new MaterialBuilder(176, TextureSet.SET_FLUID, "Causality").addCell()
+        .addFluid()
+        .setLiquidTemperature(0)
+        .setRGBA(0, 255, 0, 0)
+        .setTransparent(true)
+        .setName("Causality")
+        .setColor(Dyes._NULL)
+        .constructMaterial()
+        .setHasCorrespondingFluid(true);
+
+    public static Materials Chirality = new MaterialBuilder(177, TextureSet.SET_FLUID, "Chirality").addCell()
+        .addFluid()
+        .setLiquidTemperature(0)
+        .setRGBA(0, 0, 255, 0)
+        .setTransparent(true)
+        .setName("Chirality")
+        .setColor(Dyes._NULL)
+        .constructMaterial()
+        .setHasCorrespondingFluid(true);
+
     /**
      * called by Materials. Can be safely called multiple times. exists to allow Materials ensure this class is
      * initialized
