@@ -39,8 +39,8 @@ public class SteamGateAssemblerFrontend extends RecipeMapFrontend {
     @Override
     public List<Pos2d> getItemInputPositions(int itemInputCount) {
         ArrayList<Pos2d> positions = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
+        for (int j = 0; j < 9; j++) {
+            for (int i = 0; i < 9; i++) {
                 positions.add(new Pos2d((6 + 18 * i), (7 + 18 * j)));
             }
         }
