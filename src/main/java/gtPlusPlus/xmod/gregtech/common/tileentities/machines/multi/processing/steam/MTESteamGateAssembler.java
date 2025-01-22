@@ -2,6 +2,9 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.s
 
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import gregtech.api.GregTechAPI;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -142,6 +145,11 @@ public class MTESteamGateAssembler extends MTESteamMultiBase<MTESteamGateAssembl
         .addElement('H', ofBlock(GregTechAPI.sBlockCasings3, 14))
         .build();
     //spotless:on
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.steamGateAssemblerRecipes;
+    }
 
     @Override
     public IStructureDefinition<MTESteamGateAssembler> getStructureDefinition() {
