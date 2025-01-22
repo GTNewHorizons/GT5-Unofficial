@@ -7,6 +7,7 @@ import static net.minecraft.util.EnumChatFormatting.ITALIC;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -52,43 +53,57 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase implements IW
     private GTTeam ownerTeam;
     private SteamType selectedSteam = SteamType.STEAM;
 
-    public MTESteamPipelessHatch(int aID, String aName, String aNameRegional) {
+    public MTESteamPipelessHatch(int aID, String aName, String aNameRegional, int aTier) {
         super(
             FluidUtils.getSteam(1)
                 .getFluid(),
-            128_000 * (int) ticks_between_energy_addition,
+            aTier == 0 ? 64_000 * (int) ticks_between_energy_addition : Integer.MAX_VALUE,
             aID,
             aName,
             aNameRegional,
-            0);
+            aTier);
     }
 
-    public MTESteamPipelessHatch(String aName, ITexture[][][] aTexture) {
+    public MTESteamPipelessHatch(String aName, int aTier, ITexture[][][] aTexture) {
         super(
             FluidUtils.getSteam(1)
                 .getFluid(),
-            128_000 * (int) ticks_between_energy_addition,
+            aTier == 0 ? 64_000 * (int) ticks_between_energy_addition : Integer.MAX_VALUE,
             aName,
-            0,
+            aTier,
             new String[] { "" },
             aTexture);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTESteamPipelessHatch(this.mName, this.mTextures);
+        return new MTESteamPipelessHatch(mName, mTier, mTextures);
     }
 
     // spotless:off
     @Override
     public String[] getDescription() {
+        if (mTier == 0) {
+            // Pipeless Steam Hatch
+            return new String[] {
+                GRAY               + "Stores steam globally in a network, up to 2^(2^31) L.",
+                GRAY               + "Does not connect to pipes. This block withdraws Steam from the network.",
+                GRAY               + "Supports Steam, Superheated Steam and Supercritical Steam (and their dense variants).",
+                GRAY               + "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
+                AQUA + "" + ITALIC + "Where does it come from? Capable of extracting Steam from seemingly nowhere, and even",
+                AQUA + "" + ITALIC + "without any type of Pipes, you begin to question what you thought you knew about this",
+                AQUA + "" + ITALIC + "simple action of boiling water. One thing's for sure though, it still may not be enough..."
+            };
+        }
+        // Pipeless Jetstream Hatch
         return new String[] {
             GRAY               + "Stores steam globally in a network, up to 2^(2^31) L.",
             GRAY               + "Does not connect to pipes. This block withdraws Steam from the network.",
             GRAY               + "Supports Steam, Superheated Steam and Supercritical Steam (and their dense variants).",
-            AQUA + "" + ITALIC + "Where does it come from? Capable of extracting Steam from seemingly nowhere, and even",
-            AQUA + "" + ITALIC + "without any type of Pipes, you begin to question what you thought you knew about this",
-            AQUA + "" + ITALIC + "simple action of boiling water. One thing's for sure though, it still may not be enough..."
+            GRAY               + "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
+            AQUA + "" + ITALIC + "Your dream recalled a 'Wireless Energy Hatch,' but you don't remember anything like the",
+            AQUA + "" + ITALIC + "power of this hatch. By utilizing the immense strength of dehumidification, you've found",
+            AQUA + "" + ITALIC + "a way to harness the incredible energy of water to heights you never thought possible..."
         };
     }
     // spotless:on
@@ -106,7 +121,10 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase implements IW
 
     @Override
     protected ITexture getBaseTexture(int colorIndex) {
-        return TextureFactory.of(Textures.BlockIcons.MACHINE_BRONZE_SIDE);
+        if (mTier == 0) {
+            return TextureFactory.of(Textures.BlockIcons.MACHINE_BRONZE_SIDE);
+        }
+        return TextureFactory.of(Textures.BlockIcons.MACHINE_STEEL_SIDE);
     }
 
     @Override
@@ -279,6 +297,22 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase implements IW
                     .setSize(152, 20));
         }
         return builder.build();
+    }
+
+    @Override
+    public String[] getInfoData() {
+        String name = mTier == 0 ? "Pipeless Steam Hatch" : "Pipeless Jetstream Hatch";
+        return new String[] { EnumChatFormatting.BLUE + name + EnumChatFormatting.RESET, "Stored Fluid:",
+            EnumChatFormatting.GOLD + (mFluid == null ? "No Fluid" : mFluid.getLocalizedName())
+                + EnumChatFormatting.RESET,
+            EnumChatFormatting.GREEN + GTUtility.formatNumbers(mFluid == null ? 0 : mFluid.amount)
+                + " L"
+                + EnumChatFormatting.RESET
+                + " "
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(getCapacity())
+                + " L"
+                + EnumChatFormatting.RESET };
     }
 
     private enum SteamType {
