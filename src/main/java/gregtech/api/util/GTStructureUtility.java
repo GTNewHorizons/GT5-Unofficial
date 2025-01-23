@@ -120,6 +120,45 @@ public class GTStructureUtility {
         };
     }
 
+    public static <T> IStructureElement<T> ofAnyLava(boolean allowFlowing) {
+        return new IStructureElement<>() {
+
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                Block block = world.getBlock(x, y, z);
+                if (block == Blocks.lava) return true;
+                if (allowFlowing && block == Blocks.flowing_lava) return true;
+                if (Mods.COFHCore.isModLoaded()) {
+                    return block instanceof BlockWater || block instanceof BlockTickingWater;
+                }
+                return false;
+            }
+
+            @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                return check(t, world, x, y, z);
+            }
+
+            @Override
+            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                world.setBlock(x, y, z, Blocks.lava, 0, 2);
+                return true;
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                StructureLibAPI.hintParticle(world, x, y, z, Blocks.lava, 0);
+                return true;
+            }
+
+            @Override
+            public IStructureElement.BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z,
+                ItemStack trigger, AutoPlaceEnvironment env) {
+                return IStructureElement.BlocksToPlace.create(Blocks.lava, 0);
+            }
+        };
+    }
+
     public static <T> IStructureElement<T> ofFrame(Materials aFrameMaterial) {
         if (aFrameMaterial == null) throw new IllegalArgumentException();
         return new IStructureElement<>() {

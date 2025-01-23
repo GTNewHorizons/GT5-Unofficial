@@ -1977,6 +1977,7 @@ public enum MetaTileEntityIDs {
     NeutronAcceleratorUMV(32764),
     Hatch_Air_Intake_Atmospheric(32765),
     Controller_SteamExtruder(31765),
+    Controller_SteamRockBreaker(31766),
 
     ;
 
