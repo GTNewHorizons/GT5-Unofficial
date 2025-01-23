@@ -68,6 +68,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     int mTier;
     int casingAmount;
     int casingTier;
+    boolean hasEnoughCasings;
 
     ItemStack foundWaferStack;
     int waferAmountInRecipe;
@@ -146,7 +147,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         .addElement(
             'A',
             buildHatchAdder(MTESolarFactory.class)
-                .atLeast(InputHatch, InputBus, OutputBus, OutputHatch, Maintenance, Energy, ExoticEnergy)
+                .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy, ExoticEnergy)
                 .casingIndex(CASING_T1_INDEX)
                 .dot(1)
                 .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(sBlockCasings4, 1))))
@@ -162,7 +163,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         .addElement(
             'C',
             buildHatchAdder(MTESolarFactory.class)
-                .atLeast(InputHatch, InputBus, OutputBus, OutputHatch, Maintenance, Energy, ExoticEnergy)
+                .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy, ExoticEnergy)
                 .casingIndex(CASING_T3_INDEX)
                 .dot(1)
                 .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 7))))
@@ -224,17 +225,21 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingAmount = 0;
+        hasEnoughCasings = false;
         casingTier = -3;
         mTier = 0;
         if (checkPiece(STRUCTURE_TIER_1, 2, 4, 0)) {
             mTier = 1;
+            hasEnoughCasings = casingAmount >= 15;
         } else if (checkPiece(STRUCTURE_TIER_2, 4, 5, 0)) {
             mTier = 2;
+            hasEnoughCasings = casingAmount >= 35;
         } else if (checkPiece(STRUCTURE_TIER_3, 4, 8, 0)) {
             mTier = 3;
+            hasEnoughCasings = casingAmount >= 50;
         }
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-        return mTier > 0 && casingAmount >= 8 && (mTier == 1 || casingTier >= -1);
+        return mTier > 0 && hasEnoughCasings && (mTier == 1 || casingTier >= -1);
     }
 
     @Override
@@ -399,18 +404,29 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addInfo("  Solar Panels can be made without the previous panel, but at a higher cost")
             .addInfo("  Bonus per increased wafer tier is raised to 50%")
             .addTecTechHatchInfo()
-            .beginStructureBlock(7, 10, 9, true)
-            .addStructureInfo(WHITE + "Imprecise Unit Casings cannot be used")
-            .addCasingInfoRange("Tungstensteel Machine Casing", 120, 142, false)
+            .beginStructureBlock(7, 10, 9, false)
+            .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "1:")
+            .addCasingInfoRange("Clean Stainless Steel Machine Casing", 15, 41, false)
+            .addCasingInfoExactly("Any Glass", 24, false)
+            .addCasingInfoExactly("Damascus Steel Frame Box", 20, false)
+            .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "2:")
+            .addCasingInfoRange("Tungstensteel Machine Casing", 35, 101, false)
+            .addCasingInfoExactly("Any Glass", 74, false)
+            .addCasingInfoExactly("Tungsten Frame Box", 75, false)
+            .addCasingInfoExactly("Precise Electronic Unit Casing", 20, true)
+            .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "3:")
+            .addCasingInfoRange("Advanced Iridium Machine Casing", 50, 140, false)
             .addCasingInfoExactly("Any Glass", 67, false)
-            .addCasingInfoExactly("Precise Electronic Unit Casing", 26, true)
             .addCasingInfoExactly("Tungsten Frame Box", 24, false)
-            .addCasingInfoExactly("Assembling Line Casing", 4, false)
-            .addInputHatch("Any Tungstensteel Machine Casing")
-            .addInputBus("Any Tungstensteel Machine Casing")
-            .addOutputBus("Any Tungstensteel Machine Casing")
-            .addEnergyHatch("Any Tungstensteel Machine Casing")
-            .addMaintenanceHatch("Any Tungstensteel Machine Casing")
+            .addCasingInfoExactly("Precise Electronic Unit Casing", 26, true)
+            .addCasingInfoExactly("Black Plutonium Item Pipe", 6, false)
+            .addStructureInfo(WHITE + "" + BOLD + "All Tiers: ")
+            .addStructureInfo(WHITE + "Imprecise Unit Casings cannot be used")
+            .addInputHatch("Any Machine Casing")
+            .addInputBus("Any Machine Casing")
+            .addOutputBus("Any Machine Casing")
+            .addEnergyHatch("Any Machine Casing")
+            .addMaintenanceHatch("Any Machine Casing")
             .toolTipFinisher(GTValues.AuthorPureBluez);
         return tt;
     }
