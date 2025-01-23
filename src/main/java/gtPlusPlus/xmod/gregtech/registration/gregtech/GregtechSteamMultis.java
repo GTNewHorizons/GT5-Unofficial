@@ -9,6 +9,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamGateAssembler
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMaceratorMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMegaMaceratorMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMixerMulti;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamRockBreaker;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamWasherMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_Steamgate;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Bus_Steam;
@@ -27,6 +28,7 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.st
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMacerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMegaMacerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMixer;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamRockBreaker;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamWasher;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamgate;
 
@@ -83,6 +85,11 @@ public class GregtechSteamMultis {
         GregtechItemList.Controller_SteamExtruder.set(
             new MTESteamExtruder(Controller_SteamExtruder.ID, "gtpp.multimachine.steam.extruder", "Steam Conformer")
                 .getStackForm(1));
+        GregtechItemList.Controller_SteamRockBreaker.set(
+            new MTESteamRockBreaker(
+                Controller_SteamRockBreaker.ID,
+                "gtpp.multimachine.steam.rockbreaker",
+                "Steam Cobbler").getStackForm(1));
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(
             new MTEHatchSteamBusInput(Hatch_Input_Bus_Steam.ID, "hatch.input_bus.tier.steam", "Input Bus (Steam)", 0)
