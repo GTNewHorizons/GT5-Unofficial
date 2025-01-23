@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.gtnewhorizons.modularui.api.KeyboardUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,7 +37,8 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import org.apache.commons.lang3.tuple.MutableTriple;
-import org.lwjgl.input.Keyboard;
+
+import com.gtnewhorizons.modularui.api.KeyboardUtil;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.GTMod;
@@ -565,7 +565,9 @@ public class MTEFluid extends MetaPipeEntity {
 
             // Send message if there were any changes
             if (message.length() > 0) {
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("215.2", "Pipe changed: ") + message.toString());
+                GTUtility.sendChatToPlayer(
+                    aPlayer,
+                    StatCollector.translateToLocal("GT5U.item.pipe.swap") + message.toString());
             }
 
             // Force updates
