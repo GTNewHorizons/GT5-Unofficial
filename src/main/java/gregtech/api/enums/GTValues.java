@@ -4,6 +4,8 @@ import static bartworks.util.BWTooltipReference.TT;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.AQUA;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_AQUA;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_GREEN;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.ITALIC;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.LIGHT_PURPLE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.OBFUSCATED;
@@ -630,9 +632,26 @@ public class GTValues {
         + EnumChatFormatting.ITALIC
         + "Number";
 
-    public static final String AuthorNockWork = "Author: " + EnumChatFormatting.GREEN
-        + EnumChatFormatting.BOLD
-        + "Nlockwork";
+    public static final Supplier<String> AuthorNoc = chain(
+        text("Author: "),
+        animatedText(
+            "Brass",
+            0,
+            500,
+            GOLD + BOLD,
+            DARK_GREEN + BOLD,
+            GOLD + BOLD,
+            DARK_GREEN + BOLD,
+            DARK_GREEN + OBFUSCATED + BOLD),
+        animatedText(
+            "Noccles",
+            0,
+            500,
+            DARK_GREEN + BOLD,
+            GOLD + BOLD,
+            DARK_GREEN + BOLD,
+            GOLD + BOLD,
+            DARK_GREEN + OBFUSCATED + BOLD));
 
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
