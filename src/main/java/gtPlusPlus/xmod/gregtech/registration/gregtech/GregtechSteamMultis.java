@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamAlloySmelterMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamCentrifugeMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamCompressorMulti;
@@ -15,6 +16,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Controller_Steamgate;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Bus_Steam;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Bus_Steam;
 
+import gregtech.api.enums.GTValues;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
@@ -85,11 +87,13 @@ public class GregtechSteamMultis {
         GregtechItemList.Controller_SteamExtruder.set(
             new MTESteamExtruder(Controller_SteamExtruder.ID, "gtpp.multimachine.steam.extruder", "Steam Conformer")
                 .getStackForm(1));
+        addItemTooltip(GregtechItemList.Controller_SteamExtruder.get(1), GTValues.AuthorNoc);
         GregtechItemList.Controller_SteamRockBreaker.set(
             new MTESteamRockBreaker(
                 Controller_SteamRockBreaker.ID,
                 "gtpp.multimachine.steam.rockbreaker",
                 "Steam Cobbler").getStackForm(1));
+        addItemTooltip(GregtechItemList.Controller_SteamRockBreaker.get(1), GTValues.AuthorNoc);
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(
             new MTEHatchSteamBusInput(Hatch_Input_Bus_Steam.ID, "hatch.input_bus.tier.steam", "Input Bus (Steam)", 0)

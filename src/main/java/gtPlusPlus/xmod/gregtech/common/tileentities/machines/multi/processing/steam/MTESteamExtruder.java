@@ -39,7 +39,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -337,7 +336,6 @@ public class MTESteamExtruder extends MTESteamMultiBase<MTESteamExtruder> implem
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "And maybe brute force is the way! Who needs precision when a big hammer can do the work?")
-            .addInfo(GTValues.AuthorNockWork)
             .beginStructureBlock(3, 3, 3, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
