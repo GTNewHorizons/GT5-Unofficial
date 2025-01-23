@@ -45,7 +45,7 @@ public class IGRecipeMaps {
             .neiRecipeComparator(
                     Comparator.<GTRecipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(MODULE_TIER, 1))
                             .thenComparing(GTRecipe::compareTo))
-            .logo(IG_UITextures.PICTURE_ELEVATOR_LOGO).logoPos(151, 58).logoSize(18, 18)
+            .disableOptimize().logo(IG_UITextures.PICTURE_ELEVATOR_LOGO).logoPos(151, 58).logoSize(18, 18)
             .neiRecipeBackgroundSize(170, 78).neiTransferRect(46, 6, 23, 63).dontUseProgressBar()
             .addSpecialTexture(46, 6, 23, 63, IG_UITextures.PROGRESSBAR_SPACE_MINING_MODULE_ARROW)
             .useCustomFilterForNEI().frontend(SpaceMiningFrontend::new).build();
