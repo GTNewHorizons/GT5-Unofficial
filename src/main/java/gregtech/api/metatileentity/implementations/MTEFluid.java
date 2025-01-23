@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.gtnewhorizons.modularui.api.KeyboardUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -478,7 +479,7 @@ public class MTEFluid extends MetaPipeEntity {
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
-        if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+        if (KeyboardUtil.isCtrlKeyDown()) {
             final ItemStack handItem = aPlayer.inventory.getCurrentItem();
             IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
             if (!(meta instanceof MTEFluid handFluid)) return false;
