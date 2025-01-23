@@ -6856,14 +6856,18 @@ public class AssemblerRecipes implements Runnable {
         // Steam Boilers
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Item_Casing_Iron.get(6), GTUtility.getIntegratedCircuit(6))
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Iron, 6),
+                GTUtility.getIntegratedCircuit(6))
             .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 1L, 3))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Item_Casing_Steel.get(6), GTUtility.getIntegratedCircuit(6))
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Steel, 6),
+                GTUtility.getIntegratedCircuit(6))
             .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 1L, 4))
             .duration(20 * SECONDS)
             .eut(64)
