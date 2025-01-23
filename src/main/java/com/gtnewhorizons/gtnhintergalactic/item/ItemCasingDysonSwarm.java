@@ -29,4 +29,9 @@ public class ItemCasingDysonSwarm extends ItemBlock {
             tooltip.add("Blast Resistance: 1500");
         }
     }
+
+    @Override
+    public int getMetadata(int meta) {
+        return meta;
+    }
 }
