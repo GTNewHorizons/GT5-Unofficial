@@ -63,10 +63,9 @@ import gregtech.api.util.recipe.SolarFactoryRecipeData;
 public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory>
     implements IConstructable, ISurvivalConstructable {
 
-    protected IStructureDefinition<MTESolarFactory> multiDefinition = null;
-    private static final int CASING_T1_INDEX = 17;
+    private static final int CASING_T1_INDEX = 49;
     private static final int CASING_T2_INDEX = 48;
-    private static final int CASING_T3_INDEX = 16;
+    private static final int CASING_T3_INDEX = 183;
     int mTier;
     int casingAmount;
     int casingTier;
@@ -104,47 +103,73 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         .<MTESolarFactory>builder()
         .addShape(
             STRUCTURE_TIER_1,
-            new String[][] { { "YYY", "Y~Y", "YYY" }, { "YYY", "Y Y", "YYY" }, { "YYY", "YYY", "YYY" } })
+            transpose(
+                new String[][] { { "EAAAE", "AAAAA", "AAAAA", "AAAAA", "EAAAE" },
+                    { "E   E", " GGG ", " G G ", " GGG ", "E   E" }, { "E   E", " GGG ", " G G ", " GGG ", "E   E" },
+                    { "E   E", " GGG ", " G G ", " GGG ", "E   E" }, { "EA~AE", "AAAAA", "AAAAA", "AAAAA", "EAAAE" } }))
         .addShape(
             STRUCTURE_TIER_2,
             transpose(
                 new String[][] {
-                    { "   CCC   ", "  CCFCC  ", " CCFFFCC ", "CCFFFFFCC", " CCFFFCC ", "  CCFCC  ", "   CCC   " },
-                    { "   BBB   ", "  C   C  ", " B     B ", "C       C", " B     B ", "  C   C  ", "   BBB   " },
-                    { "   CCC   ", "  CCCCC  ", " CCCCCCC ", "CCCCCCCCC", " CCCCCCC ", "  CCCCC  ", "   CCC   " },
-                    { "         ", "  EBBBE  ", "  B   B  ", "E B D B E", "  B   B  ", "  EBBBE  ", "         " },
-                    { "         ", "  EBBBE  ", "  B   B  ", "E B D B E", "  B   B  ", "  EBBBE  ", "         " },
-                    { "         ", "  EBBBE  ", "  B   B  ", "E B D B E", "  B   B  ", "  EBBBE  ", "         " },
-                    { "         ", "  EBBBE  ", "  B   B  ", "E B D B E", "  B   B  ", "  EBBBE  ", "         " },
-                    { "   CCC   ", "  CCCCC  ", " CCCCCCC ", "CCCCCCCCC", " CCCCCCC ", "  CCCCC  ", "   CCC   " },
-                    { "   B~B   ", "  C   C  ", " B     B ", "C       C", " B     B ", "  C   C  ", "   BBB   " },
-                    { "   CCC   ", "  CCFCC  ", " CCFFFCC ", "CCFFFFFCC", " CCFFFCC ", "  CCFCC  ", "   CCC   " } }))
+                    { " F     F ", "FFF   FFF", " FFF FFF ", "  FBBBF  ", "  FBBBF  ", " FFFFFFF ", "FFF   FFF",
+                        " F     F " },
+                    { "BBB   BBB", "BBB   BBB", "BB     BB", "   BBB   ", "   BBB   ", "BB     BB", "BBB   BBB",
+                        "BBB   BBB" },
+                    { "BF     FB", "FBGGGGGBF", " GGGGGGG ", " GGGGGGG ", " GGGGGGG ", " GGGGGGG ", "FBGGGGGBF",
+                        "BF     FB" },
+                    { "BF     FB", "FBGGGGGBF", " G     G ", " G     G ", " G     G ", " G     G ", "FBGGGGGBF",
+                        "BF     FB" },
+                    { "BF     FB", "FBGGGGGBF", " G     G ", " G     G ", " G     G ", " G     G ", "FBGGGGGBF",
+                        "BF     FB" },
+                    { "BBBB~BBBB", "BBFFFFFBB", "BFPPPPPFB", "BFPPPPPFB", "BFPPPPPFB", "BFPPPPPFB", "BBFFFFFBB",
+                        "BBBBBBBBB" } }))
         .addShape(
             STRUCTURE_TIER_3,
-            new String[][] { { "ZZZ", "Z~Z", "ZZZ" }, { "ZZZ", "Z Z", "ZZZ" }, { "ZZZ", "ZFZ", "ZZZ" } })
+            transpose(
+                new String[][] {
+                    { "   CCC   ", "  CCPCC  ", " CCPPPCC ", "CCPPPPPCC", " CCPPPCC ", "  CCPCC  ", "   CCC   " },
+                    { "   GGG   ", "  C   C  ", " G     G ", "C       C", " G     G ", "  C   C  ", "   GGG   " },
+                    { "   CCC   ", "  CCCCC  ", " CCCCCCC ", "CCCCHCCCC", " CCCCCCC ", "  CCCCC  ", "   CCC   " },
+                    { "         ", "  FGGGF  ", "  G   G  ", "F G H G F", "  G   G  ", "  FGGGF  ", "         " },
+                    { "         ", "  FGGGF  ", "  G   G  ", "F G H G F", "  G   G  ", "  FGGGF  ", "         " },
+                    { "         ", "  FGGGF  ", "  G   G  ", "F G H G F", "  G   G  ", "  FGGGF  ", "         " },
+                    { "         ", "  FGGGF  ", "  G   G  ", "F G H G F", "  G   G  ", "  FGGGF  ", "         " },
+                    { "   CCC   ", "  CCCCC  ", " CCCCCCC ", "CCCCHCCCC", " CCCCCCC ", "  CCCCC  ", "   CCC   " },
+                    { "   G~G   ", "  C   C  ", " G     G ", "C       C", " G     G ", "  C   C  ", "   GGG   " },
+                    { "   CCC   ", "  CCPCC  ", " CCPPPCC ", "CCPPPPPCC", " CCPPPCC ", "  CCPCC  ", "   CCC   " } }))
+        // Clean stainless steel
         .addElement(
-            'Y',
+            'A',
             buildHatchAdder(MTESolarFactory.class)
                 .atLeast(InputHatch, InputBus, OutputBus, OutputHatch, Maintenance, Energy, ExoticEnergy)
                 .casingIndex(CASING_T1_INDEX)
                 .dot(1)
-                .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 1))))
+                .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(sBlockCasings4, 1))))
+        // Tungstensteel
         .addElement(
-            'C',
+            'B',
             buildHatchAdder(MTESolarFactory.class)
-                .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy, ExoticEnergy)
                 .casingIndex(CASING_T2_INDEX)
                 .dot(1)
                 .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(sBlockCasings4, 0))))
+        // Advanced iridium
         .addElement(
-            'Z',
+            'C',
             buildHatchAdder(MTESolarFactory.class)
                 .atLeast(InputHatch, InputBus, OutputBus, OutputHatch, Maintenance, Energy, ExoticEnergy)
                 .casingIndex(CASING_T3_INDEX)
                 .dot(1)
-                .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0))))
+                .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 7))))
+        .addElement('E', ofFrame(Materials.DamascusSteel))
+        .addElement('F', ofFrame(Materials.Tungsten))
+        // G for Glass ^-^
+        .addElement('G', chainAllGlasses())
+        // Black plutonium item pipe
+        .addElement('H', ofBlock(GregTechAPI.sBlockCasings11, 7))
+        // P for Precise Electronic Unit Casing ^-^
         .addElement(
-            'F',
+            'P',
             withChannel(
                 "unit casing",
                 ofBlocksTiered(
@@ -158,9 +183,6 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                     -3,
                     MTESolarFactory::setCasingTier,
                     MTESolarFactory::getCasingTier)))
-        .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 5))
-        .addElement('B', chainAllGlasses())
-        .addElement('E', ofFrame(Materials.Tungsten))
         .build();
 
     public int getCasingTier() {
@@ -199,27 +221,27 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         casingAmount = 0;
         casingTier = -3;
         mTier = 0;
-        if (checkPiece(STRUCTURE_TIER_1, 1, 1, 0)) {
+        if (checkPiece(STRUCTURE_TIER_1, 2, 4, 0)) {
             mTier = 1;
-        } else if (checkPiece(STRUCTURE_TIER_2, 4, 8, 0)) {
+        } else if (checkPiece(STRUCTURE_TIER_2, 4, 5, 0)) {
             mTier = 2;
-        } else if (checkPiece(STRUCTURE_TIER_3, 1, 1, 0)) {
+        } else if (checkPiece(STRUCTURE_TIER_3, 4, 8, 0)) {
             mTier = 3;
         }
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-        return mTier > 0 && casingAmount >= 8 && (mTier < 2 || casingTier >= -1);
+        return mTier > 0 && casingAmount >= 8 && (mTier == 1 || casingTier >= -1);
     }
 
     @Override
     public void construct(ItemStack holoStack, boolean hintsOnly) {
         if (holoStack.stackSize == 1) {
-            buildPiece(STRUCTURE_TIER_1, holoStack, hintsOnly, 1, 1, 0);
+            buildPiece(STRUCTURE_TIER_1, holoStack, hintsOnly, 2, 4, 0);
         }
         if (holoStack.stackSize == 2) {
-            buildPiece(STRUCTURE_TIER_2, holoStack, hintsOnly, 4, 8, 0);
+            buildPiece(STRUCTURE_TIER_2, holoStack, hintsOnly, 4, 5, 0);
         }
         if (holoStack.stackSize >= 3) {
-            buildPiece(STRUCTURE_TIER_3, holoStack, hintsOnly, 1, 1, 0);
+            buildPiece(STRUCTURE_TIER_3, holoStack, hintsOnly, 4, 8, 0);
         }
     }
 
@@ -227,13 +249,13 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     public int survivalConstruct(ItemStack holoStack, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         if (holoStack.stackSize == 1) {
-            return survivialBuildPiece(STRUCTURE_TIER_1, holoStack, 1, 0, 1, elementBudget, env, false, true);
+            return survivialBuildPiece(STRUCTURE_TIER_1, holoStack, 2, 4, 0, elementBudget, env, false, true);
         }
         if (holoStack.stackSize == 2) {
-            return survivialBuildPiece(STRUCTURE_TIER_2, holoStack, 4, 8, 0, elementBudget, env, false, true);
+            return survivialBuildPiece(STRUCTURE_TIER_2, holoStack, 4, 5, 0, elementBudget, env, false, true);
         }
         if (holoStack.stackSize >= 3) {
-            return survivialBuildPiece(STRUCTURE_TIER_3, holoStack, 1, 0, 1, elementBudget, env, false, true);
+            return survivialBuildPiece(STRUCTURE_TIER_3, holoStack, 4, 8, 0, elementBudget, env, false, true);
         }
         return 0;
     }
