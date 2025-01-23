@@ -24,7 +24,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.lwjgl.input.Keyboard;
+import com.gtnewhorizons.modularui.api.KeyboardUtil;
 
 import cofh.api.energy.IEnergyReceiver;
 import gregtech.GTMod;
@@ -269,7 +269,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
-        if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+        if (KeyboardUtil.isCtrlKeyDown()) {
             final ItemStack handItem = aPlayer.inventory.getCurrentItem();
             IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
             if (!(meta instanceof MTECable handCable)) return false;
@@ -377,7 +377,9 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                 }
 
                 // Send the message using GT's utility method
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("215.1", " :") + message.toString());
+                GTUtility.sendChatToPlayer(
+                    aPlayer,
+                    StatCollector.translateToLocal("GT5U.item.cable.swapped") + message.toString());
             }
 
             return true;
