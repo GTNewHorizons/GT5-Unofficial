@@ -408,7 +408,7 @@ public class MTEIndustrialElectromagneticSeparator
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         // This fix works for normal energy hatches, preventing over-paralleling with 1 energy hatch
-        // However, it does not work with multiamp. MuTEs can't come soon enough.
+        // However, it does not work with multiamp.
 
         if (mExoticEnergyHatches.isEmpty()) {
             logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
@@ -456,7 +456,7 @@ public class MTEIndustrialElectromagneticSeparator
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         batchMode = !batchMode;
         if (batchMode) {
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));

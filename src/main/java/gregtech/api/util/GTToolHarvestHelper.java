@@ -12,7 +12,7 @@ import ic2.core.crop.BlockCrop;
 
 public class GTToolHarvestHelper {
 
-    public static boolean isAppropriateTool(Block aBlock, byte aMetaData, String... tTools) {
+    public static boolean isAppropriateTool(Block aBlock, int aMetaData, String... tTools) {
 
         if (aBlock == null || tTools == null) {
             return false;

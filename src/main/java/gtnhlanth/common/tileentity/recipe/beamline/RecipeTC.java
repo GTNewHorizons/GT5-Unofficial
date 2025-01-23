@@ -1,14 +1,8 @@
 package gtnhlanth.common.tileentity.recipe.beamline;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
-import gtnhlanth.common.register.LanthItemList;
 
 public class RecipeTC extends GTRecipe {
 
@@ -50,22 +44,4 @@ public class RecipeTC extends GTRecipe {
 
         this.focusItem = aFocusItem;
     }
-
-    @Override
-    public ItemStack getRepresentativeInput(int aIndex) {
-
-        ArrayList<ItemStack> mInputsWithParticle = new ArrayList<>();
-
-        ItemStack particleStack = new ItemStack(LanthItemList.PARTICLE_ITEM);
-        Items.ender_pearl.setDamage(particleStack, this.particleId);
-
-        mInputsWithParticle.add(particleStack);
-        mInputsWithParticle.addAll(Arrays.asList(mInputs));
-
-        ItemStack[] mInputsWithParticleArray = mInputsWithParticle.toArray(new ItemStack[0]);
-
-        if (aIndex < 0 || aIndex >= mInputsWithParticleArray.length) return null;
-        return GTUtility.copyOrNull(mInputsWithParticleArray[aIndex]);
-    }
-
 }

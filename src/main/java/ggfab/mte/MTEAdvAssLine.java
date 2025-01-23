@@ -96,6 +96,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -432,12 +433,12 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     }
 
     /**
-     * roughly the same as {@link #criticalStopMachine()}, but does not attempt to send a halting sound if world is not
+     * Does a critical shutdown of the machine, but does not attempt to send a halting sound if world is not
      * loaded. also supports setting a stop reason
      */
     private void criticalStopMachine(String reason) {
         int oMaxProgresstime = mMaxProgresstime;
-        stopMachine();
+        stopMachine(ShutDownReasonRegistry.NONE);
         // don't do these at all if the machine wasn't working before anyway
         if (oMaxProgresstime > 0) {
             if (getBaseMetaTileEntity().getWorld() != null) sendSound(INTERRUPT_SOUND_INDEX);
@@ -930,6 +931,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         NBTTagCompound tag = accessor.getNBTData();
         String machineProgressString = GTWaila.getMachineProgressString(
             tag.getBoolean("isActive"),
+            tag.getBoolean("isAllowedToWork"),
             tag.getInteger("maxProgress"),
             tag.getInteger("progress"));
         currentTip.remove(machineProgressString);
@@ -993,7 +995,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         batchMode = !batchMode;
         if (batchMode) {
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));

@@ -27,6 +27,98 @@ public class PlasmaForgeRecipes implements Runnable {
 
     @Override
     public void run() {
+        // Dimensionally transcendent plasma forge recipes.
+        // Ordered so that recipes using higher tier catalysts are prioritized.
+
+        {
+            // Dimensionally Shifted Superfluid
+
+            Fluid celestialTungstenPlasma = MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma();
+
+            // Tier 5
+            // Best recipe, unlocks with Stellar Catalyst.
+            // Quadruples the cost of everything except for Metastable and Celestial, which are only doubled,
+            // but gives 4x the output.
+            GTValues.RA.stdBuilder()
+                .itemInputs()
+                .fluidInputs(
+                    Materials.StableBaryonicMatter.getFluid(8000),
+                    GGMaterial.metastableOganesson.getMolten(144 * 4),
+                    Materials.Grade8PurifiedWater.getFluid(12800),
+                    new FluidStack(celestialTungstenPlasma, 96 * 144),
+                    Materials.RadoxHeavy.getFluid(32000),
+                    MaterialsUEVplus.ExcitedDTSC.getFluid(2000))
+                .fluidOutputs(
+                    MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(360000),
+                    MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(4000))
+                .duration(7 * SECONDS + 10 * TICKS)
+                .eut((int) TierEU.RECIPE_UXV)
+                .metadata(COIL_HEAT, 13500)
+                .addTo(plasmaForgeRecipes);
+
+            // Tier 4
+            // Better recipe, unlocks with Eternal coil.
+            // Doubles the cost across the board, but outputs 3x more.
+            // Switches to Heavy Radox, which can be mass-produced with the QFT.
+            GTValues.RA.stdBuilder()
+                .itemInputs()
+                .fluidInputs(
+                    Materials.StableBaryonicMatter.getFluid(2000),
+                    GGMaterial.metastableOganesson.getMolten(144 * 2),
+                    Materials.Grade8PurifiedWater.getFluid(3200),
+                    new FluidStack(celestialTungstenPlasma, 48 * 144),
+                    Materials.RadoxHeavy.getFluid(4000),
+                    MaterialsUEVplus.ExcitedDTEC.getFluid(2000))
+                .fluidOutputs(
+                    MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(90000),
+                    MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(2000))
+                .duration(30 * SECONDS)
+                .eut((int) TierEU.RECIPE_UMV)
+                .metadata(COIL_HEAT, 13500)
+                .addTo(plasmaForgeRecipes);
+
+            // Tier 3
+            // Better recipe, unlocks with Hypogen coil.
+            // This recipe takes UMV power but processes 4x input and output as the original recipe, making it a free
+            // POC
+            // over the original recipe. Only increases the cost of baryonic and water, making the ratio much cheaper.
+            GTValues.RA.stdBuilder()
+                .itemInputs()
+                .fluidInputs(
+                    Materials.StableBaryonicMatter.getFluid(1000),
+                    GGMaterial.metastableOganesson.getMolten(144),
+                    Materials.Grade8PurifiedWater.getFluid(1600),
+                    new FluidStack(celestialTungstenPlasma, 24 * 144),
+                    Materials.RadoxSuperHeavy.getFluid(2000),
+                    MaterialsUEVplus.ExcitedDTRC.getFluid(2000))
+                .fluidOutputs(
+                    MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(30000),
+                    MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1000))
+                .duration(30 * SECONDS)
+                .eut((int) TierEU.RECIPE_UMV)
+                .metadata(COIL_HEAT, 12600)
+                .addTo(plasmaForgeRecipes);
+
+            // Tier 2
+            // First recipe using AwDr coil and super heavy radox
+            GTValues.RA.stdBuilder()
+                .itemInputs()
+                .fluidInputs(
+                    Materials.StableBaryonicMatter.getFluid(250),
+                    GGMaterial.metastableOganesson.getMolten(144),
+                    Materials.Grade8PurifiedWater.getFluid(400),
+                    new FluidStack(celestialTungstenPlasma, 24 * 144),
+                    Materials.RadoxSuperHeavy.getFluid(2000),
+                    MaterialsUEVplus.ExcitedDTPC.getFluid(1000))
+                .fluidOutputs(
+                    MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(7500),
+                    MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(250))
+                .duration(30 * SECONDS)
+                .eut((int) TierEU.RECIPE_UIV)
+                .metadata(COIL_HEAT, 10800)
+                .addTo(plasmaForgeRecipes);
+        }
+
         // Giga chad trophy.
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -73,87 +165,5 @@ public class PlasmaForgeRecipes implements Runnable {
                 .metadata(COIL_HEAT, 12600)
                 .addTo(plasmaForgeRecipes);
         }
-
-        Fluid celestialTungstenPlasma = MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma();
-
-        // Dimensionally shifted superfluid
-
-        // First recipe using AwDr coil and super heavy radox
-        GTValues.RA.stdBuilder()
-            .itemInputs()
-            .fluidInputs(
-                Materials.StableBaryonicMatter.getFluid(250),
-                GGMaterial.metastableOganesson.getMolten(144),
-                Materials.Grade8PurifiedWater.getFluid(400),
-                new FluidStack(celestialTungstenPlasma, 24 * 144),
-                Materials.RadoxSuperHeavy.getFluid(2000),
-                MaterialsUEVplus.ExcitedDTPC.getFluid(1000))
-            .fluidOutputs(
-                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(7500),
-                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(250))
-            .duration(30 * SECONDS)
-            .eut((int) TierEU.RECIPE_UIV)
-            .metadata(COIL_HEAT, 10800)
-            .addTo(plasmaForgeRecipes);
-
-        // Better recipe, unlocks with Hypogen coil.
-        // This recipe takes UMV power but processes 4x input and output as the original recipe, making it a free POC
-        // over the original recipe. Only increases the cost of baryonic and water, making the ratio much cheaper.
-        GTValues.RA.stdBuilder()
-            .itemInputs()
-            .fluidInputs(
-                Materials.StableBaryonicMatter.getFluid(1000),
-                GGMaterial.metastableOganesson.getMolten(144),
-                Materials.Grade8PurifiedWater.getFluid(1600),
-                new FluidStack(celestialTungstenPlasma, 24 * 144),
-                Materials.RadoxSuperHeavy.getFluid(2000),
-                MaterialsUEVplus.ExcitedDTRC.getFluid(2000))
-            .fluidOutputs(
-                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(30000),
-                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1000))
-            .duration(30 * SECONDS)
-            .eut((int) TierEU.RECIPE_UMV)
-            .metadata(COIL_HEAT, 12600)
-            .addTo(plasmaForgeRecipes);
-
-        // Better recipe, unlocks with Eternal coil.
-        // Doubles the cost across the board, but outputs 3x more.
-        // Switches to Heavy Radox, which can be mass-produced with the QFT.
-        GTValues.RA.stdBuilder()
-            .itemInputs()
-            .fluidInputs(
-                Materials.StableBaryonicMatter.getFluid(2000),
-                GGMaterial.metastableOganesson.getMolten(144 * 2),
-                Materials.Grade8PurifiedWater.getFluid(3200),
-                new FluidStack(celestialTungstenPlasma, 48 * 144),
-                Materials.RadoxHeavy.getFluid(4000),
-                MaterialsUEVplus.ExcitedDTEC.getFluid(2000))
-            .fluidOutputs(
-                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(90000),
-                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(2000))
-            .duration(30 * SECONDS)
-            .eut((int) TierEU.RECIPE_UMV)
-            .metadata(COIL_HEAT, 13500)
-            .addTo(plasmaForgeRecipes);
-
-        // Best recipe, unlocks with Stellar Catalyst.
-        // Quadruples the cost of everything except for Metastable and Celestial, which are only doubled,
-        // but gives 4x the output.
-        GTValues.RA.stdBuilder()
-            .itemInputs()
-            .fluidInputs(
-                Materials.StableBaryonicMatter.getFluid(8000),
-                GGMaterial.metastableOganesson.getMolten(144 * 4),
-                Materials.Grade8PurifiedWater.getFluid(12800),
-                new FluidStack(celestialTungstenPlasma, 96 * 144),
-                Materials.RadoxHeavy.getFluid(32000),
-                MaterialsUEVplus.ExcitedDTSC.getFluid(2000))
-            .fluidOutputs(
-                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(360000),
-                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(4000))
-            .duration(7 * SECONDS + 10 * TICKS)
-            .eut((int) TierEU.RECIPE_UXV)
-            .metadata(COIL_HEAT, 13500)
-            .addTo(plasmaForgeRecipes);
     }
 }

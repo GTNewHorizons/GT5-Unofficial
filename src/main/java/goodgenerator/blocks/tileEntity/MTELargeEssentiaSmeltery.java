@@ -6,6 +6,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -37,7 +38,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -46,7 +46,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
+import gregtech.api.util.shutdown.ShutDownReason;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -161,7 +161,8 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
                 .addElement('D', ofBlock(ConfigBlocks.blockCosmeticOpaque, 2))
                 .addElement(
                     'F',
-                    ThaumicBases.isModLoaded() ? ofBlock(Block.getBlockFromName("thaumicbases:advAlchFurnace"), 0)
+                    ThaumicBases.isModLoaded()
+                        ? ofBlock(Objects.requireNonNull(Block.getBlockFromName("thaumicbases:advAlchFurnace")), 0)
                         : ofBlock(ConfigBlocks.blockStoneDevice, 0))
                 .addElement(
                     'E',
@@ -272,28 +273,8 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
         this.pTier = tier;
     }
 
-    private boolean addEnergyHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity == null) {
-                return false;
-            } else if (aMetaTileEntity instanceof MTEHatchEnergy) {
-                if (((MTEHatchEnergy) aMetaTileEntity).mTier < 3) return false;
-                ((MTEHatchEnergy) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
-            } else if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
-                ((MTEHatchEnergyMulti) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return this.eEnergyMulti.add(((MTEHatchEnergyMulti) aMetaTileEntity));
-            } else {
-                return false;
-            }
-        }
-    }
-
     private boolean addEssentiaOutputHatchToMachineList(MTEEssentiaOutputHatch aTileEntity) {
-        if (aTileEntity instanceof MTEEssentiaOutputHatch) {
+        if (aTileEntity != null) {
             return this.mEssentiaOutputHatches.add(aTileEntity);
         }
         return false;
@@ -416,7 +397,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
         }
         AspectList aspects = ThaumcraftCraftingManager.getObjectTags(itemStack);
         aspects = ThaumcraftCraftingManager.getBonusTags(itemStack, aspects);
-        if (aspects != null && aspects.size() != 0 && aspects.getAspects()[0] != null) {
+        if (aspects.size() != 0 && aspects.getAspects()[0] != null) {
             for (int i = 0; i < amount; i++) aspectList.add(aspects);
         } else aspectList.add(Aspect.ENTROPY, amount);
         return aspectList;
@@ -498,8 +479,8 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
-    public void stopMachine() {
-        super.stopMachine();
+    public void stopMachine(@NotNull ShutDownReason reason) {
+        super.stopMachine(reason);
         this.mOutputAspects.aspects.clear();
     }
 
@@ -578,28 +559,8 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
-    }
-
-    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return 22 * (100 - this.nodePurificationEfficiency);
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack itemStack) {
-        return false;
     }
 
     @Override

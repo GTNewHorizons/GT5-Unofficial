@@ -14,7 +14,6 @@ public final class TTCasingsContainer {
 
     public static Block sBlockCasingsBA0;
 
-    public static Block sBlockCasingsNH;
     public static Block TimeAccelerationFieldGenerator;
     public static Block SpacetimeCompressionFieldGenerators;
     public static Block StabilisationFieldGenerators;

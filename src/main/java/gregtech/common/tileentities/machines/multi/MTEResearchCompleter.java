@@ -11,6 +11,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
@@ -23,6 +25,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.net.GTPacketNodeInfo;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -151,7 +155,7 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        float progressAmount = ((float) this.mProgresstime) / this.mMaxProgresstime;
+        float progressAmount = ((float) this.mProgresstime + 1) / this.mMaxProgresstime;
         int requiredVis = (int) Math.ceil(progressAmount * recipeAspectCost - aspectsAbsorbed);
         syncTimer--;
 
@@ -169,8 +173,7 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
             TileEntity tileEntity = aBaseMetaTileEntity.getWorld()
                 .getTileEntity(nodeX, nodeY, nodeZ);
 
-            if (tileEntity instanceof TileNode) {
-                TileNode aNode = (TileNode) tileEntity;
+            if (tileEntity instanceof TileNode aNode) {
                 AspectList aspectsBase = aNode.getAspectsBase();
 
                 for (Aspect aspect : aspectsBase.getAspects()) {
@@ -227,7 +230,7 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
     }
 
     @Override
-    public boolean checkRecipe(ItemStack itemStack) {
+    public @NotNull CheckRecipeResult checkProcessing() {
         ArrayList<ItemStack> tInputList = this.getStoredInputs();
 
         for (ItemStack stack : tInputList) {
@@ -248,7 +251,7 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
                         this.getMaxInputVoltage(),
                         false);
                     if (this.mMaxProgresstime == 2147483646 && this.mEUt == 2147483646) {
-                        return false;
+                        return CheckRecipeResultRegistry.NO_RECIPE;
                     }
                     if (this.mEUt > 0) {
                         this.mEUt = -this.mEUt;
@@ -267,12 +270,12 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
 
                     this.sendLoopStart((byte) 20);
                     this.updateSlots();
-                    return true;
+                    return CheckRecipeResultRegistry.SUCCESSFUL;
                 }
             }
         }
 
-        return false;
+        return CheckRecipeResultRegistry.NO_RECIPE;
     }
 
     @Override

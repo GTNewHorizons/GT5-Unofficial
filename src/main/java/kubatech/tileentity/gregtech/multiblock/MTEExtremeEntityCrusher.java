@@ -43,6 +43,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -60,11 +61,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderHell;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -126,6 +129,8 @@ import kubatech.api.utils.ModUtils;
 import kubatech.client.effect.EntityRenderer;
 import kubatech.loaders.MobHandlerLoader;
 import kubatech.network.CustomTileEntityPacket;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtremeEntityCrusher>
     implements CustomTileEntityPacketHandler, ISurvivalConstructable {
@@ -410,12 +415,12 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
             mAnimationEnabled = !mAnimationEnabled;
             GTUtility.sendChatToPlayer(aPlayer, "Animations are " + (mAnimationEnabled ? "enabled" : "disabled"));
             return true;
-        } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
+        } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
     @SuppressWarnings("unused")
@@ -657,6 +662,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        String mobName = getCurrentMob();
+        info.add("Current Mob: " + EnumChatFormatting.YELLOW + (mobName != null ? mobName : "None"));
         info.add("Animations: " + EnumChatFormatting.YELLOW + (mAnimationEnabled ? "Enabled" : "Disabled"));
         info.add(
             "Is allowed to produce infernal drops: " + EnumChatFormatting.YELLOW
@@ -771,6 +778,50 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_EXTREME_ENTITY_CRUSHER_LOOP;
+    }
+
+    private String getCurrentMob() {
+        ItemStack spawner = mInventory[1];
+        if (spawner != null && spawner.getTagCompound() != null) {
+            return spawner.getTagCompound()
+                .getString("mobType");
+        }
+        return null;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        String mob = getCurrentMob();
+        if (mob != null) {
+            tag.setString("eecMobType", mob);
+        }
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+
+        if (tag.hasKey("eecMobType", Constants.NBT.TAG_STRING)) {
+            String mob = tag.getString("eecMobType");
+            String mobKey = "entity." + mob + ".name";
+            if (StatCollector.canTranslate(mobKey)) {
+                currentTip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "kubatech.waila.eec.mob_type",
+                        StatCollector.translateToLocal(mobKey)));
+            } else {
+                currentTip.add(StatCollector.translateToLocalFormatted("kubatech.waila.eec.mob_type", mob));
+            }
+        } else {
+            currentTip.add(
+                StatCollector.translateToLocalFormatted(
+                    "kubatech.waila.eec.mob_type",
+                    StatCollector.translateToLocal("kubatech.waila.eec.no_mob")));
+        }
     }
 
     private static class EECFakePlayer extends FakePlayer {
