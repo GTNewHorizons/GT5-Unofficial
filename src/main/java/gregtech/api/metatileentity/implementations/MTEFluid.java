@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.enums.*;
+import gregtech.api.net.GTPacketKeyEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,19 +44,12 @@ import com.gtnewhorizons.modularui.api.KeyboardUtil;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.GTMod;
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.ParticleFX;
-import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures;
-import gregtech.api.enums.ToolModes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IKeyHandlerTile;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
@@ -74,7 +69,7 @@ import gregtech.common.covers.CoverInfo;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEFluid extends MetaPipeEntity {
+public class MTEFluid extends MetaPipeEntity implements IKeyHandlerTile {
 
     protected static final EnumMap<ForgeDirection, EnumMap<Border, ForgeDirection>> FACE_BORDER_MAP = new EnumMap<>(
         ForgeDirection.class);
@@ -114,6 +109,7 @@ public class MTEFluid extends MetaPipeEntity {
     public final boolean mGasProof;
     public final FluidStack[] mFluids;
     public byte mLastReceivedFrom = 0, oLastReceivedFrom = 0;
+    public static final byte KEY_CTRL = 1;
     /**
      * Bitmask for whether disable fluid input form each side.
      */
@@ -476,20 +472,51 @@ public class MTEFluid extends MetaPipeEntity {
         }
     }
 
+
+
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
-        if (KeyboardUtil.isCtrlKeyDown()) {
+                                float aX, float aY, float aZ) {
+        if (aBaseMetaTileEntity.isClientSide()) {
+            if (KeyboardUtil.isCtrlKeyDown()) {
+                GTUtility.sendChatToPlayer(aPlayer, "Ctrl+Rightclick");
+                // Send key event packet with player name
+                GTValues.NW.sendToServer(new GTPacketKeyEvent(
+                    aBaseMetaTileEntity.getXCoord(),
+                    (short) aBaseMetaTileEntity.getYCoord(),
+                    aBaseMetaTileEntity.getZCoord(),
+                    KEY_CTRL,
+                    (byte) 1,
+                    aPlayer.getCommandSenderName()));
+                return true;
+            }
+            return false;
+        }
+        return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
+    }
+
+
+    // Implement the IKeyHandlerTile interface
+    @Override
+    public boolean onKeyInteraction(byte aKey, boolean aPressed, EntityPlayer aPlayer) {
+        if (aKey == KEY_CTRL && aPressed) {
+            IGregTechTileEntity te = getBaseMetaTileEntity();
+            if (te == null || aPlayer == null) return false;
+
+            // Now we use the exact player who triggered the event
             final ItemStack handItem = aPlayer.inventory.getCurrentItem();
             IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
             if (!(meta instanceof MTEFluid handFluid)) return false;
 
+            if (aPlayer == null) return false;
+
+
             // Store old state before any changes
             byte oldConnections = this.mConnections;
-            short oldMetaID = (short) aBaseMetaTileEntity.getMetaTileID();
+            short oldMetaID = (short) te.getMetaTileID();
 
             // Create new pipe using newMetaEntity to ensure proper initialization
-            MTEFluid newPipe = (MTEFluid) handFluid.newMetaEntity(aBaseMetaTileEntity);
+            MTEFluid newPipe = (MTEFluid) handFluid.newMetaEntity(te);
             if (newPipe == null) return false;
 
             // Preserve connections
@@ -501,8 +528,8 @@ public class MTEFluid extends MetaPipeEntity {
             int oldHeatResistance = this.mHeatResistance;
 
             // Update the pipe
-            aBaseMetaTileEntity.setMetaTileID((short) handItem.getItemDamage());
-            aBaseMetaTileEntity.setMetaTileEntity(newPipe);
+            te.setMetaTileID((short) handItem.getItemDamage());
+            te.setMetaTileEntity(newPipe);
 
             // Build status change message
             StringBuilder message = new StringBuilder();
@@ -549,20 +576,6 @@ public class MTEFluid extends MetaPipeEntity {
                 message.append(EnumChatFormatting.RESET);
             }
 
-            // Pipe amount change
-            if (this.mPipeAmount != newPipe.mPipeAmount) {
-                if (message.length() > 0) message.append(" | ");
-                message.append(this.mPipeAmount)
-                    .append(" → ");
-                if (newPipe.mPipeAmount > this.mPipeAmount) {
-                    message.append(EnumChatFormatting.GREEN);
-                } else {
-                    message.append(EnumChatFormatting.RED);
-                }
-                message.append(newPipe.mPipeAmount);
-                message.append(EnumChatFormatting.RESET);
-            }
-
             // Send message if there were any changes
             if (message.length() > 0) {
                 GTUtility.sendChatToPlayer(
@@ -571,10 +584,10 @@ public class MTEFluid extends MetaPipeEntity {
             }
 
             // Force updates
-            aBaseMetaTileEntity.markDirty();
-            aBaseMetaTileEntity.issueTextureUpdate();
-            aBaseMetaTileEntity.issueBlockUpdate();
-            aBaseMetaTileEntity.issueClientUpdate();
+            te.markDirty();
+            te.issueTextureUpdate();
+            te.issueBlockUpdate();
+            te.issueClientUpdate();
 
             // Handle inventory swapping
             if (!aPlayer.capabilities.isCreativeMode) {
@@ -616,10 +629,10 @@ public class MTEFluid extends MetaPipeEntity {
 
             return true;
         }
-        return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
+        return false;
     }
 
-    @Override
+   @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
 
