@@ -2046,8 +2046,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             int outputItemLength = tag.getInteger("outputItemLength");
             int outputFluidLength = tag.getInteger("outputFluidLength");
             int totalOutputs = outputItemLength + outputFluidLength;
-            if (totalOutputs > 0) {
+            if (totalOutputs > 0 || accessor.getNBTData().getBoolean("isLockedToRecipe")) {
                 currentTip.add(StatCollector.translateToLocal("GT5U.waila.producing"));
+                if (accessor.getNBTData().getBoolean("isLockedToRecipe")) {
+                    currentTip.add(StatCollector.translateToLocal("GT5U.waila.locked_recipe") + ": " + accessor.getNBTData().getString("lockedRecipeName"));
+                }
                 for (int i = 0; i < min(3, outputItemLength); i++) {
                     currentTip.add(
                         "  " + tag.getString("outputItem" + i)
