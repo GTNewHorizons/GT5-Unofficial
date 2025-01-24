@@ -98,6 +98,11 @@ public class MTESteamgate extends MTEEnhancedMultiBlockBase<MTESteamgate> implem
     }
 
     @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
     }
