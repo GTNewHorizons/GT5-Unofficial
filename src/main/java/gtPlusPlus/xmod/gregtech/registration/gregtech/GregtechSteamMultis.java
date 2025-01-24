@@ -50,6 +50,7 @@ public class GregtechSteamMultis {
                 Controller_SteamMegaMaceratorMulti.ID,
                 "gtpp.multimachine.steam.megamacerator",
                 "Mega Steam Grinder").getStackForm(1L));
+        addItemTooltip(GregtechItemList.Controller_SteamMegaMaceratorMulti.get(1), GTValues.PipeBluez);
         GregtechItemList.Controller_SteamCompressorMulti.set(
             new MTESteamCompressor(
                 Controller_SteamCompressorMulti.ID,

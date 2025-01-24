@@ -9,6 +9,8 @@ import static gregtech.api.GregTechAPI.sBlockCasings2;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static net.minecraft.util.EnumChatFormatting.AQUA;
+import static net.minecraft.util.EnumChatFormatting.ITALIC;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -303,8 +305,11 @@ public class MTESteamMegaMacerator extends MTESteamMultiBase<MTESteamMegaMacerat
         tt.addMachineType(getMachineType())
             .addInfo("25% faster than using single block steam machines of the same pressure")
             .addInfo("Only consumes steam at 62.5% of the L/s normally required")
-            .addInfo("Processes up to 8 items at once")
+            .addInfo("Processes up to 256 items at once")
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
+            .addInfo(AQUA + "" + ITALIC + "Before your emperor, you are worthy. Before the Goddess of Justice,")
+            .addInfo(AQUA + "" + ITALIC + "you are worthy. Receive our blessings. Embrace our gifts. ")
+            .addInfo(AQUA + "" + ITALIC + "And rise, ascendant, for this is the ending that we all deserve.")
             .beginStructureBlock(15, 15, 15, true)
             .addController("Front center")
             .addEnergyHatch("Any casing", 1)
@@ -319,10 +324,8 @@ public class MTESteamMegaMacerator extends MTESteamMultiBase<MTESteamMegaMacerat
                     + "1"
                     + EnumChatFormatting.GRAY
                     + " Any casing")
-            .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(EnumChatFormatting.GOLD + "70-800x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
-            .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "700-800x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
