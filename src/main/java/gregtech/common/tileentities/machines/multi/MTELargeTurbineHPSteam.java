@@ -28,7 +28,6 @@ import gregtech.api.util.TurbineStatCalculator;
 public class MTELargeTurbineHPSteam extends MTELargeTurbine {
 
     public boolean achievement = false;
-    private boolean looseFit = false;
 
     public MTELargeTurbineHPSteam(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
