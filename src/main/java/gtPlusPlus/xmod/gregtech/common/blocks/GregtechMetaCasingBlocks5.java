@@ -8,10 +8,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.objects.GTPPCopiedBlockTexture;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGrinderMultiblock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -26,23 +26,23 @@ public class GregtechMetaCasingBlocks5 extends GregtechMetaCasingBlocksAbstract 
         super(GregtechMetaCasingItems.class, "gtplusplus.blockcasings.5", MaterialCasings.INSTANCE);
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "IsaMill Exterior Casing"); // IsaMill
                                                                                                                    // Casing
-        TAE.registerTexture(0, 2, new GTPPCopiedBlockTexture(this, 6, 0));
+        TAE.registerTexture(0, 2, TextureFactory.of(this, 0));
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "IsaMill Piping"); // IsaMill
                                                                                                           // Pipe
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "IsaMill Gearbox"); // IsaMill
                                                                                                            // Gearbox
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Elemental Confinement Shell"); // Duplicator
                                                                                                                        // Casing
-        TAE.registerTexture(0, 3, new GTPPCopiedBlockTexture(this, 6, 3));
+        TAE.registerTexture(0, 3, TextureFactory.of(this, 3));
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Sparge Tower Exterior Casing"); // Sparge
                                                                                                                         // Tower
                                                                                                                         // Casing
-        TAE.registerTexture(0, 4, new GTPPCopiedBlockTexture(this, 6, 4));
+        TAE.registerTexture(0, 4, TextureFactory.of(this, 4));
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Sturdy Printer Casing"); // Unused
-        TAE.registerTexture(1, 10, new GTPPCopiedBlockTexture(this, 6, 5));
+        TAE.registerTexture(1, 10, TextureFactory.of(this, 5));
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Forge Casing"); // Forge Hammer
                                                                                                         // Casing
-        TAE.registerTexture(1, 11, new GTPPCopiedBlockTexture(this, 6, 6));
+        TAE.registerTexture(1, 11, TextureFactory.of(this, 6));
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Neutron Pulse Manipulator");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Cosmic Fabric Manipulator");
         GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Infinity Infused Manipulator");
