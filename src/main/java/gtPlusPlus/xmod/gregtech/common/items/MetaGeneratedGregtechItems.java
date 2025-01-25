@@ -48,8 +48,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
-import gregtech.api.objects.GTMultiTexture;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -370,33 +369,33 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
     private void registerCovers() {
         GregTechAPI.registerCover(
             GregtechItemList.Cover_Overflow_Valve_LV.get(1L),
-            new GTMultiTexture(
+            TextureFactory.of(
                 Textures.BlockIcons.MACHINE_CASINGS[4][0],
-                new GTRenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)),
+                TextureFactory.of(TexturesGtBlock.Overlay_Overflow_Valve)),
             new CoverOverflowValve(64_000));
         GregTechAPI.registerCover(
             GregtechItemList.Cover_Overflow_Valve_MV.get(1L),
-            new GTMultiTexture(
+            TextureFactory.of(
                 Textures.BlockIcons.MACHINE_CASINGS[5][0],
-                new GTRenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)),
+                TextureFactory.of(TexturesGtBlock.Overlay_Overflow_Valve)),
             new CoverOverflowValve(512_000));
         GregTechAPI.registerCover(
             GregtechItemList.Cover_Overflow_Valve_HV.get(1L),
-            new GTMultiTexture(
+            TextureFactory.of(
                 Textures.BlockIcons.MACHINE_CASINGS[5][0],
-                new GTRenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)),
+                TextureFactory.of(TexturesGtBlock.Overlay_Overflow_Valve)),
             new CoverOverflowValve(4_096_000));
         GregTechAPI.registerCover(
             GregtechItemList.Cover_Overflow_Valve_EV.get(1L),
-            new GTMultiTexture(
+            TextureFactory.of(
                 Textures.BlockIcons.MACHINE_CASINGS[8][0],
-                new GTRenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)),
+                TextureFactory.of(TexturesGtBlock.Overlay_Overflow_Valve)),
             new CoverOverflowValve(32_768_000));
         GregTechAPI.registerCover(
             GregtechItemList.Cover_Overflow_Valve_IV.get(1L),
-            new GTMultiTexture(
+            TextureFactory.of(
                 Textures.BlockIcons.MACHINE_CASINGS[8][0],
-                new GTRenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)),
+                TextureFactory.of(TexturesGtBlock.Overlay_Overflow_Valve)),
             new CoverOverflowValve(262_144_000));
     }
 

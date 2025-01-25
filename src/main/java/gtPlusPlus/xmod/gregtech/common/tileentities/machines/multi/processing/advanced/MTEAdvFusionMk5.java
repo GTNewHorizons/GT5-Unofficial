@@ -14,7 +14,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
-import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AdvancedFusionOverclockDescriber;
@@ -115,27 +114,24 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
         final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] {
-                new GTRenderedTexture(
-                    Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
-                    Dyes.getModulation(-1, Dyes._NULL.mRGBa)),
+                TextureFactory
+                    .of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)),
                 TextureFactory.builder()
                     .addIcon(this.getIconOverlay())
                     .extFacing()
                     .build() };
         } else if (!aActive) {
-            return new ITexture[] { new GTRenderedTexture(
-                Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
-                Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
+            return new ITexture[] { TextureFactory
+                .of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
         } else {
-            return new ITexture[] { new GTRenderedTexture(
-                TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_HYPER,
-                Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
+            return new ITexture[] { TextureFactory
+                .of(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_HYPER, Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
         }
     }
 
     @Override
     public ITexture getTextureOverlay() {
-        return new GTRenderedTexture(
+        return TextureFactory.of(
             this.getBaseMetaTileEntity()
                 .isActive() ? TexturesGtBlock.Casing_Machine_Screen_Rainbow : TexturesGtBlock.Casing_Machine_Screen_1);
     }
