@@ -325,11 +325,11 @@ public class Loaders {
         Loaders.YFH = new MTEYOTTAHatch(MetaTileEntityIDs.YottaHatch.ID, "YottaFluidTankHatch", "YOTHatch", 5)
             .getStackForm(1L);
         Loaders.AMHatch = new AntimatterOutputHatch(
-            IDs_GoodGenerator.AntimatterHatch.ID,
+            MetaTileEntityIDs.AntimatterHatch.ID,
             "AntimatterHatch",
             "Antimatter Hatch").getStackForm(1L);
         Loaders.SCTurbine = new MTESupercriticalFluidTurbine(
-            IDs_GoodGenerator.SupercriticalFluidTurbine.ID,
+            MetaTileEntityIDs.SupercriticalFluidTurbine.ID,
             "SupercriticalSteamTurbine",
             "Large Supercritical Steam Turbine").getStackForm(1L);
         Loaders.XHE = new MTEExtremeHeatExchanger(
@@ -380,11 +380,11 @@ public class Loaders {
         CrackRecipeAdder.registerWire(MetaTileEntityIDs.WireSignalium.ID, GGMaterial.signalium, 12, 131072, 32, true);
         CrackRecipeAdder.registerWire(MetaTileEntityIDs.WireLumiium.ID, GGMaterial.lumiium, 8, 524288, 64, true);
         Loaders.AMForge = new AntimatterForge(
-            IDs_GoodGenerator.AntimatterForge.ID,
+            MetaTileEntityIDs.AntimatterForge.ID,
             "AntimatterForge",
             "Semi-Stable Antimatter Stabilization Sequencer").getStackForm(1L);
         Loaders.AMGenerator = new AntimatterGenerator(
-            IDs_GoodGenerator.AntimatterGenerator.ID,
+            MetaTileEntityIDs.AntimatterGenerator.ID,
             "AntimatterGenerator",
             "Shielded Lagrangian Annihilation Matrix").getStackForm(1L);
     }
