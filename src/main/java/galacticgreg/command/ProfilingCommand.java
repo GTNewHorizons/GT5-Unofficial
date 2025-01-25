@@ -50,7 +50,6 @@ public class ProfilingCommand implements ICommand {
         pCommandSender.addChatMessage(new ChatComponentText("Average OreGen times:"));
 
         for (ModContainer mc : GalacticGregRegistry.getModContainers()) {
-            String tModName = mc.getModName();
             for (ModDimensionDef mdd : mc.getDimensionList()) {
                 long tTime = GalacticGreg.Profiler.GetAverageTime(mdd);
                 String tInfo;
@@ -85,9 +84,8 @@ public class ProfilingCommand implements ICommand {
         return 0;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public List addTabCompletionOptions(ICommandSender p_71516_1_, String[] p_71516_2_) {
+    public List<String> addTabCompletionOptions(ICommandSender p_71516_1_, String[] p_71516_2_) {
         return null;
     }
 

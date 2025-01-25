@@ -75,7 +75,7 @@ import gregtech.common.blocks.BlockGranites;
 import gregtech.common.blocks.BlockLaser;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.BlockMetal;
-import gregtech.common.blocks.BlockOres;
+import gregtech.common.blocks.BlockOresLegacy;
 import gregtech.common.blocks.BlockReinforced;
 import gregtech.common.blocks.BlockStones;
 import gregtech.common.blocks.BlockTintedIndustrialGlass;
@@ -96,6 +96,7 @@ import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gregtech.common.tileentities.render.TileEntityDrone;
 import gregtech.common.tileentities.render.TileEntityLaser;
@@ -552,7 +553,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockLongDistancePipes = new BlockLongDistancePipe();
         GregTechAPI.sBlockConcretes = new BlockConcretes();
         GregTechAPI.sBlockStones = new BlockStones();
-        GregTechAPI.sBlockOres1 = new BlockOres();
+        GregTechAPI.sBlockOres1 = new BlockOresLegacy();
         GregTechAPI.sBlockFrames = new BlockFrameBox();
         GregTechAPI.sDroneRender = new BlockDrone();
         GregTechAPI.sBlockGlass1 = new BlockGlass1();
@@ -560,6 +561,8 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sLaserRender = new BlockLaser();
         GregTechAPI.sWormholeRender = new BlockWormholeRender();
         GregTechAPI.sBlackholeRender = new BlockBlackholeRenderer();
+
+        GTOreAdapter.INSTANCE.init();
 
         // meta ID order, DO NOT CHANGE ORDER
 
