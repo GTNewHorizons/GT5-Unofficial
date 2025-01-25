@@ -52,4 +52,17 @@ public class Util {
             || (!inStack.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1)) && inStack.getFluid()
                 .getTemperature() > 200));
     }
+
+    public static int coolantFluidTemperature(FluidStack inStack) {
+        int fluidTemperature = 300;
+
+        if (inStack.isFluidEqual(new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1))) {
+            fluidTemperature = 60; // Default temp of 300 is unreasonable
+        } else {
+            fluidTemperature = inStack.getFluid()
+                .getTemperature();
+        }
+
+        return fluidTemperature;
+    }
 }

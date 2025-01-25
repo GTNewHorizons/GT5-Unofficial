@@ -33,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -255,7 +256,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         tItemsWithFocusItem.add(tFocusItemZeroDamage);
         tItemsWithFocusItem.addAll(tItems);
 
-        long tVoltage = this.getMaxInputVoltage();
+        long tVoltageActual = GTValues.VP[(int) this.getInputVoltageTier()];
 
         ItemStack[] tItemsArray = tItems.toArray(new ItemStack[0]);
 
@@ -263,7 +264,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
         RecipeTC tRecipe = (RecipeTC) BeamlineRecipeAdder2.instance.TargetChamberRecipes.findRecipeQuery()
             .items(tItemsWithFocusItemArray)
-            .voltage(tVoltage)
+            .voltage(tVoltageActual)
             .filter((GTRecipe recipe) -> {
 
                 RecipeTC recipeTc = (RecipeTC) recipe;
@@ -357,7 +358,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
-        mEUt = (int) -tVoltage;
+        mEUt = (int) -tVoltageActual;
         if (this.mEUt > 0) this.mEUt = (-this.mEUt);
 
         this.mOutputItems = itemOutputArray;

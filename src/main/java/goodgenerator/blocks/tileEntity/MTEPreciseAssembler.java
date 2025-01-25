@@ -159,7 +159,8 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                     withChannel(
                         "machine casing",
                         StructureUtility.ofBlocksTiered(
-                            (block, meta) -> block == GregTechAPI.sBlockCasings1 ? meta : -2,
+                            (block, meta) -> (block == GregTechAPI.sBlockCasings1 && meta >= 0 && meta <= 9) ? meta
+                                : -2,
                             IntStream.range(0, 10)
                                 .mapToObj(
                                     meta -> org.apache.commons.lang3.tuple.Pair.of(GregTechAPI.sBlockCasings1, meta))

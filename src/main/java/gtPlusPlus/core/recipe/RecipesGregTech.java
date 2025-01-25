@@ -1580,7 +1580,7 @@ public class RecipesGregTech {
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(21),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Apatite, 32L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Sulfur, 8L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 2L))
             .fluidInputs(FluidUtils.getFluidStack("sulfuricacid", 4000))
             .fluidOutputs(FluidUtils.getFluidStack("sulfuricapatite", 8000))
             .duration(20 * SECONDS)
