@@ -17,6 +17,10 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.api.GregTechAPI;
 
+/**
+ * @deprecated Use standard translation with {@link StatCollector}.
+ */
+@Deprecated
 public class GTLanguageManager {
 
     /**
