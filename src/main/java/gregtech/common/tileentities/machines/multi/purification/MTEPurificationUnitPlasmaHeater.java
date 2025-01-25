@@ -432,7 +432,8 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
     public void addRecipeOutputs() {
         super.addRecipeOutputs();
         // If the cycle was ruined, output steam
-        if (this.ruinedCycle) {
+        // currentRecipe is null when multi is unloaded and reloaded
+        if (this.ruinedCycle && currentRecipe != null) {
             FluidStack insertedWater = currentRecipe.mFluidInputs[0];
             // Multiply by 60 since that's the water:steam ratio in GTNH
             long steamAmount = insertedWater.amount * 60L;

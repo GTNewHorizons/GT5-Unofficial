@@ -22,6 +22,7 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -30,7 +31,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -492,15 +493,11 @@ public class MTECropHarvestor extends MTEBasicTank {
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         if (aStack != null) {
-            if (aStack.getItem()
-                .getUnlocalizedName()
-                .equals("ic2.itemFertilizer")) {
+            if (ItemList.IC2_Fertilizer.isStackEqual(aStack)) {
                 return aIndex >= SLOT_FERT_1 && aIndex <= SLOT_FERT_4;
-            } else if (aStack.getItem()
-                .getUnlocalizedName()
-                .equals("ic2.itemWeedEx")) {
-                    return aIndex >= SLOT_WEEDEX_1 && aIndex <= SLOT_WEEDEX_2;
-                }
+            } else if (ItemList.IC2_Spray_WeedEx.isStackEqual(aStack, true, true)) {
+                return aIndex >= SLOT_WEEDEX_1 && aIndex <= SLOT_WEEDEX_2;
+            }
         }
         return false;
     }
@@ -572,27 +569,27 @@ public class MTECropHarvestor extends MTEBasicTank {
 
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter) };
+            TextureFactory.of(TexturesGtBlock.Casing_CropHarvester_Cutter) };
     }
 
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter) };
+            TextureFactory.of(TexturesGtBlock.Casing_CropHarvester_Cutter) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Casing_CropHarvester_Boxes) };
+            TextureFactory.of(TexturesGtBlock.Casing_CropHarvester_Boxes) };
     }
 
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Casing_CropHarvester_Boxes) };
+            TextureFactory.of(TexturesGtBlock.Casing_CropHarvester_Boxes) };
     }
 
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter) };
+            TextureFactory.of(TexturesGtBlock.Casing_CropHarvester_Cutter) };
     }
 
     @Override
@@ -664,10 +661,7 @@ public class MTECropHarvestor extends MTEBasicTank {
                 .startFromSlot(SLOT_WEEDEX_1)
                 .endAtSlot(SLOT_WEEDEX_2)
                 .applyForWidget(
-                    widget -> widget.setFilter(
-                        stack -> stack != null && stack.getItem()
-                            .getUnlocalizedName()
-                            .equals("ic2.itemWeedEx"))
+                    widget -> widget.setFilter(x -> ItemList.IC2_Spray_WeedEx.isStackEqual(x, true, true))
                         .setBackground(getGUITextureSet().getItemSlot(), GTPPUITextures.OVERLAY_SLOT_WEED_EX))
                 .build()
                 .setPos(7, 13))
@@ -676,10 +670,7 @@ public class MTECropHarvestor extends MTEBasicTank {
                     .startFromSlot(SLOT_FERT_1)
                     .endAtSlot(SLOT_FERT_4)
                     .applyForWidget(
-                        widget -> widget.setFilter(
-                            stack -> stack != null && stack.getItem()
-                                .getUnlocalizedName()
-                                .equals("ic2.itemFertilizer"))
+                        widget -> widget.setFilter(ItemList.IC2_Fertilizer::isStackEqual)
                             .setBackground(getGUITextureSet().getItemSlot(), GTPPUITextures.OVERLAY_SLOT_FERTILIZER))
                     .build()
                     .setPos(7, 31))

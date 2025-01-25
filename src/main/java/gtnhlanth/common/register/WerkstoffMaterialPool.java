@@ -1894,7 +1894,7 @@ public class WerkstoffMaterialPool implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
             .addMetalItems()
-            .addMultipleIngotMetalWorkingItems()
+            .addDoubleAndDensePlates()
             .addCraftingMetalWorkingItems()
             .enforceUnification(),
         offsetID3b + 1,

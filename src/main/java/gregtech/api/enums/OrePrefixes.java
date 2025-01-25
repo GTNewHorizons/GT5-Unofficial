@@ -587,7 +587,9 @@ public enum OrePrefixes {
         64, -1),
     // Beamline Masks
     mask("A Photolithographic Mask", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1,
-        1, -1);
+        1, -1),
+    wrapCircuit("A Circuit Wrap", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1,
+        64, -1);
 
     public static final ImmutableList<OrePrefixes> CELL_TYPES = ImmutableList.of(
         cell,
@@ -671,19 +673,12 @@ public enum OrePrefixes {
         frame.mNotGeneratedItems.add(MaterialsUEVplus.Universium);
         frameGt.mNotGeneratedItems.add(MaterialsUEVplus.Universium);
 
-        plateDouble.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         cell.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         dust.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         dustTiny.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
 
-        plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
-        plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
         cell.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);;
         turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
         dust.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
@@ -694,9 +689,6 @@ public enum OrePrefixes {
         nugget.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
         itemCasing.mNotGeneratedItems.add(MaterialsUEVplus.HotProtoHalkonite);
 
-        plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
-        plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
         cell.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
         turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
         dust.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
@@ -707,10 +699,6 @@ public enum OrePrefixes {
         nugget.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
         itemCasing.mNotGeneratedItems.add(MaterialsUEVplus.ProtoHalkonite);
 
-        plateDouble.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
-        plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
         cell.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
         turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
         dust.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
@@ -721,10 +709,6 @@ public enum OrePrefixes {
         nugget.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
         itemCasing.mNotGeneratedItems.add(MaterialsUEVplus.HotExoHalkonite);
 
-        plateDouble.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
-        plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
         cell.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
         turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
         dust.mNotGeneratedItems.add(MaterialsUEVplus.ExoHalkonite);
@@ -929,18 +913,9 @@ public enum OrePrefixes {
             SubTag.PAPER,
             new ICondition.Not<>(SubTag.NO_SMASHING),
             SubTag.STRETCHY);
-        plateTriple.mCondition = new ICondition.Or<>(
-            SubTag.PAPER,
-            new ICondition.Not<>(SubTag.NO_SMASHING),
-            SubTag.STRETCHY);
-        plateQuadruple.mCondition = new ICondition.Or<>(
-            SubTag.PAPER,
-            new ICondition.Not<>(SubTag.NO_SMASHING),
-            SubTag.STRETCHY);
-        plateQuintuple.mCondition = new ICondition.Or<>(
-            SubTag.PAPER,
-            new ICondition.Not<>(SubTag.NO_SMASHING),
-            SubTag.STRETCHY);
+        plateTriple.mCondition = new ICondition.And<>(SubTag.MULTI_PLATE);
+        plateQuadruple.mCondition = new ICondition.And<>(SubTag.MULTI_PLATE);
+        plateQuintuple.mCondition = new ICondition.And<>(SubTag.MULTI_PLATE);
 
         plateDense.mCondition = new ICondition.Or<>(new ICondition.Not<>(SubTag.NO_SMASHING), SubTag.STRETCHY);
         plateSuperdense.mCondition = new ICondition.Or<>(new ICondition.Not<>(SubTag.NO_SMASHING), SubTag.STRETCHY);

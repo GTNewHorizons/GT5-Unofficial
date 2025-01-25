@@ -1,21 +1,9 @@
 package gregtech.common.tileentities.machines.basic;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_ROCK_BREAKER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_ROCK_BREAKER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_ROCK_BREAKER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_ROCK_BREAKER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_ROCK_BREAKER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_ROCK_BREAKER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_ROCK_BREAKER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_ROCK_BREAKER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_ROCK_BREAKER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_ROCK_BREAKER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SEISMIC_PROSPECTOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.VOID;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 
 import java.util.ArrayList;
@@ -66,54 +54,19 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
             "",
             1, // input slot count
             1, // output slot count
+            TextureFactory.of(VOID),
+            TextureFactory.of(VOID),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE),
+                TextureFactory.of(OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE_GLOW)
+                    .addIcon(OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE_GLOW)
                     .glow()
                     .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_SIDE_ROCK_BREAKER_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER_ACTIVE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_TOP_ROCK_BREAKER_ACTIVE_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_TOP_ROCK_BREAKER_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ROCK_BREAKER_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_GLOW)
-                    .glow()
-                    .build()));
+            TextureFactory.of(OVERLAY_FRONT_SEISMIC_PROSPECTOR),
+            TextureFactory.of(VOID),
+            TextureFactory.of(VOID),
+            TextureFactory.of(VOID),
+            TextureFactory.of(VOID));
         radius = aRadius;
         step = aStep;
     }

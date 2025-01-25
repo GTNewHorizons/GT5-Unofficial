@@ -409,9 +409,8 @@ public class CraftingRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1L), 'W',
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Kanthal, 1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G',
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L), 'C',
-                ItemList.MACHINE_HULLS[3].get(1L) });
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.HV,
+                'C', ItemList.MACHINE_HULLS[3].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_EV.ID, "bw.biolabEV", StatCollector.translateToLocal("tile.biolab.name"), 4)
@@ -421,9 +420,8 @@ public class CraftingRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1L), 'W',
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Nichrome, 1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G',
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L), 'C',
-                ItemList.MACHINE_HULLS[4].get(1L) });
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.EV,
+                'C', ItemList.MACHINE_HULLS[4].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_IV.ID, "bw.biolabIV", StatCollector.translateToLocal("tile.biolab.name"), 5)
@@ -433,9 +431,8 @@ public class CraftingRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1L), 'W',
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.TPV, 1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G',
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L), 'C',
-                ItemList.MACHINE_HULLS[5].get(1L) });
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.IV,
+                'C', ItemList.MACHINE_HULLS[5].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_LuV.ID, "bw.biolabLuV", StatCollector.translateToLocal("tile.biolab.name"), 6)
@@ -444,9 +441,8 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "PFP", "WCW", "OGO", 'F', GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Chrome, 1L),
                 'W', GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.HSSG, 1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G',
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 1L), 'C',
-                ItemList.MACHINE_HULLS[6].get(1L) });
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.LuV,
+                'C', ItemList.MACHINE_HULLS[6].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_ZPM.ID, "bw.biolabZPM", StatCollector.translateToLocal("tile.biolab.name"), 7)
@@ -456,9 +452,8 @@ public class CraftingRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1L), 'W',
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Naquadah, 1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G',
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 1L), 'C',
-                ItemList.MACHINE_HULLS[7].get(1L) });
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.ZPM,
+                'C', ItemList.MACHINE_HULLS[7].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_UV.ID, "bw.biolabUV", StatCollector.translateToLocal("tile.biolab.name"), 8)
@@ -467,9 +462,8 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "PFP", "WCW", "OGO", 'F', GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmium, 1L),
                 'W', GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.NaquadahAlloy, 1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G',
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 1L), 'C',
-                ItemList.MACHINE_HULLS[8].get(1L) });
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.UV,
+                'C', ItemList.MACHINE_HULLS[8].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_UHV.ID, "bw.biolabUHV", StatCollector.translateToLocal("tile.biolab.name"), 9)
@@ -479,9 +473,8 @@ public class CraftingRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1L), 'W',
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.ElectrumFlux, 1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G',
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 1L), 'C',
-                ItemList.MACHINE_HULLS[9].get(1L) });
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.UHV,
+                'C', ItemList.MACHINE_HULLS[9].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_UEV.ID, "bw.biolabUEV", StatCollector.translateToLocal("tile.biolab.name"), 10)
@@ -491,9 +484,8 @@ public class CraftingRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bedrockium, 1L), 'W',
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.DraconiumAwakened, 1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G',
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 1L), 'C',
-                ItemList.MACHINE_HULLS[10].get(1L) });
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.UEV,
+                'C', ItemList.MACHINE_HULLS[10].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_UIV.ID, "bw.biolabUIV", StatCollector.translateToLocal("tile.biolab.name"), 11)
@@ -503,9 +495,8 @@ public class CraftingRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.TranscendentMetal, 1L), 'W',
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Infinity, 1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G',
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UIV, 1L), 'C',
-                ItemList.MACHINE_HULLS[11].get(1L) });
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.UIV,
+                'C', ItemList.MACHINE_HULLS[11].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_UMV.ID, "bw.biolabUMV", StatCollector.translateToLocal("tile.biolab.name"), 12)
@@ -515,9 +506,8 @@ public class CraftingRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 1L), 'W',
                 GTOreDictUnificator.get("wireGt01Hypogen", 1L), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G',
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UMV, 1L), 'C',
-                ItemList.MACHINE_HULLS[12].get(1L) });
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.UMV,
+                'C', ItemList.MACHINE_HULLS[12].get(1L) });
 
         // Radio Hatches
         GTModHandler.addCraftingRecipe(
