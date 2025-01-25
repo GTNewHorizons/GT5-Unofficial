@@ -30,7 +30,7 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.common.pollution.Pollution;
 import tectech.TecTech;
 import tectech.util.CommonValues;
@@ -41,7 +41,7 @@ import tectech.util.TTUtility;
  */
 public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWidgets, IAddGregtechLogo {
 
-    private static GTRenderedTexture POLLUTOR;
+    private static ITexture POLLUTOR;
     public int pollution = 0;
     private static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
@@ -72,7 +72,7 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        POLLUTOR = new GTRenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/POLLUTOR"));
+        POLLUTOR = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/POLLUTOR"));
     }
 
     @Override
