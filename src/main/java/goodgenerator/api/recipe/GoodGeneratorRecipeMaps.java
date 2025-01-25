@@ -74,5 +74,6 @@ public class GoodGeneratorRecipeMaps {
         .dontUseProgressBar()
         .addSpecialTexture(70, 11, 72, 40, GGUITextures.PICTURE_COMPONENT_ASSLINE)
         .frontend(ComponentAssemblyLineFrontend::new)
+        .disableOptimize()
         .build();
 }
