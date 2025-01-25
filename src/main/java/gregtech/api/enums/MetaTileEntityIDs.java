@@ -1953,6 +1953,8 @@ public enum MetaTileEntityIDs {
     CoolantTower(32025),
     ComponentAssemblyLine(32026),
     AntimatterForge(32027),
+    AntimatterGenerator(32028),
+    AntimatterHatch(32029),
     WireLumiium(32737),
     WireSignalium(32749),
     NeutronAcceleratorUHV(32761),
