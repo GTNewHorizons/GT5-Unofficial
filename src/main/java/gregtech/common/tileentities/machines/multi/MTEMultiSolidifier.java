@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -53,6 +55,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.objects.GTDualInputs;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -62,6 +65,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.tileentities.machines.IDualInputInventory;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -305,6 +309,28 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
                 currentRecipeMap = GGFabRecipeMaps.toolCastRecipes;
                 return super.process();
+            }
+
+            @Override
+            public boolean craftingPatternHandler(IDualInputInventory slot) {
+                if (craftingPatternRecipeCache.containsKey(slot)) {
+                    craftingPattern = slot;
+                    return true;
+                }
+
+                GTDualInputs inputs = slot.getPatternInputs();
+                setInputItems(inputs.inputItems);
+                setInputFluids(inputs.inputFluid);
+                Set<GTRecipe> recipes = findRecipeMatches(RecipeMaps.fluidSolidifierRecipes)
+                    .collect(Collectors.toSet());
+                if (recipes.isEmpty())
+                    recipes = findRecipeMatches(GGFabRecipeMaps.toolCastRecipes).collect(Collectors.toSet());
+                if (!recipes.isEmpty()) {
+                    craftingPatternRecipeCache.put(slot, recipes);
+                    craftingPattern = slot;
+                    return true;
+                }
+                return false;
             }
 
             @NotNull
