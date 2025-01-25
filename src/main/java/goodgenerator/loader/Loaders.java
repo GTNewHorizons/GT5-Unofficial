@@ -57,11 +57,14 @@ import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.MaterialFix;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTOreDictUnificator;
 import kekztech.common.blocks.BlockTFFTStorageField;
 
 public class Loaders {
@@ -494,6 +497,22 @@ public class Loaders {
 
     public static void addOreDic() {
         OreDictionary.registerOre("dustAluminumNitride", aluminumNitride);
+
+        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.ULV, new ItemStack(circuitWrap, 1, 0));
+        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.LV, new ItemStack(circuitWrap, 1, 1));
+        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.MV, new ItemStack(circuitWrap, 1, 2));
+        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.HV, new ItemStack(circuitWrap, 1, 3));
+        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.EV, new ItemStack(circuitWrap, 1, 4));
+        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.IV, new ItemStack(circuitWrap, 1, 5));
+        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.LuV, new ItemStack(circuitWrap, 1, 6));
+        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.ZPM, new ItemStack(circuitWrap, 1, 7));
+        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.UV, new ItemStack(circuitWrap, 1, 8));
+        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.UHV, new ItemStack(circuitWrap, 1, 9));
+        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.UEV, new ItemStack(circuitWrap, 1, 10));
+        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.UIV, new ItemStack(circuitWrap, 1, 11));
+        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.UMV, new ItemStack(circuitWrap, 1, 12));
+        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.UXV, new ItemStack(circuitWrap, 1, 13));
+        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.MAX, new ItemStack(circuitWrap, 1, 14));
     }
 
     public static void addTexturePage() {
@@ -551,7 +570,7 @@ public class Loaders {
     public static void completeLoad() {
         RecipeLoader2.FinishLoadRecipe();
         MaterialFix.addRecipeForMultiItems();
-        ComponentAssemblyLineRecipeLoader.run();
+        ComponentAssemblyLineLoader.run();
     }
 
     public static void initLoadRecipes() {

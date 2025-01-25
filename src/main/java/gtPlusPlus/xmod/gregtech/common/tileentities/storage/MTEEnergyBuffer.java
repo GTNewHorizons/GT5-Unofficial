@@ -13,7 +13,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -88,22 +88,22 @@ public class MTEEnergyBuffer extends GTPPMetaTileEntity {
 
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Screen_Logo) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Screen_Logo) };
     }
 
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
@@ -113,22 +113,22 @@ public class MTEEnergyBuffer extends GTPPMetaTileEntity {
 
     public ITexture[] getBackActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Screen_Logo) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Screen_Logo) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     @Override
