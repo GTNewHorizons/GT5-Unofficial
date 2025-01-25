@@ -22,6 +22,7 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -492,15 +493,11 @@ public class MTECropHarvestor extends MTEBasicTank {
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         if (aStack != null) {
-            if (aStack.getItem()
-                .getUnlocalizedName()
-                .equals("ic2.itemFertilizer")) {
+            if (ItemList.IC2_Fertilizer.isStackEqual(aStack)) {
                 return aIndex >= SLOT_FERT_1 && aIndex <= SLOT_FERT_4;
-            } else if (aStack.getItem()
-                .getUnlocalizedName()
-                .equals("ic2.itemWeedEx")) {
-                    return aIndex >= SLOT_WEEDEX_1 && aIndex <= SLOT_WEEDEX_2;
-                }
+            } else if (ItemList.IC2_Spray_WeedEx.isStackEqual(aStack, true, true)) {
+                return aIndex >= SLOT_WEEDEX_1 && aIndex <= SLOT_WEEDEX_2;
+            }
         }
         return false;
     }
@@ -664,10 +661,7 @@ public class MTECropHarvestor extends MTEBasicTank {
                 .startFromSlot(SLOT_WEEDEX_1)
                 .endAtSlot(SLOT_WEEDEX_2)
                 .applyForWidget(
-                    widget -> widget.setFilter(
-                        stack -> stack != null && stack.getItem()
-                            .getUnlocalizedName()
-                            .equals("ic2.itemWeedEx"))
+                    widget -> widget.setFilter(x -> ItemList.IC2_Spray_WeedEx.isStackEqual(x, true, true))
                         .setBackground(getGUITextureSet().getItemSlot(), GTPPUITextures.OVERLAY_SLOT_WEED_EX))
                 .build()
                 .setPos(7, 13))
@@ -676,10 +670,7 @@ public class MTECropHarvestor extends MTEBasicTank {
                     .startFromSlot(SLOT_FERT_1)
                     .endAtSlot(SLOT_FERT_4)
                     .applyForWidget(
-                        widget -> widget.setFilter(
-                            stack -> stack != null && stack.getItem()
-                                .getUnlocalizedName()
-                                .equals("ic2.itemFertilizer"))
+                        widget -> widget.setFilter(ItemList.IC2_Fertilizer::isStackEqual)
                             .setBackground(getGUITextureSet().getItemSlot(), GTPPUITextures.OVERLAY_SLOT_FERTILIZER))
                     .build()
                     .setPos(7, 31))

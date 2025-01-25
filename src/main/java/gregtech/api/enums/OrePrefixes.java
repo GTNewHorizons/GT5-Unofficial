@@ -907,7 +907,10 @@ public enum OrePrefixes {
             SubTag.MAGICAL,
             new ICondition.And<>(SubTag.TRANSPARENT, SubTag.HAS_COLOR));
 
-        plateDouble.mCondition = new ICondition.And<>(SubTag.MULTI_PLATE);
+        plateDouble.mCondition = new ICondition.Or<>(
+            SubTag.PAPER,
+            new ICondition.Not<>(SubTag.NO_SMASHING),
+            SubTag.STRETCHY);
         plateTriple.mCondition = new ICondition.And<>(SubTag.MULTI_PLATE);
         plateQuadruple.mCondition = new ICondition.And<>(SubTag.MULTI_PLATE);
         plateQuintuple.mCondition = new ICondition.And<>(SubTag.MULTI_PLATE);

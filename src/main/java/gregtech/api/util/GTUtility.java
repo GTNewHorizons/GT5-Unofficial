@@ -92,6 +92,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -448,6 +449,12 @@ public class GTUtility {
             .ordinal();
     }
 
+    /**
+     * Gets the voltage tier corresponding to an amount of EU, capped to 15 (MAX+)
+     *
+     * @param l The amount of EU
+     * @return Corresponding voltage tier in the range 0-15
+     */
     public static byte getTier(long l) {
         if (l > V[14]) return 15;
         if (l <= V[0]) return 0;
@@ -458,6 +465,18 @@ public class GTUtility {
         int log2L = 64 - Long.numberOfLeadingZeros(l - 1);
 
         return (byte) ((log2L - 2) / 2);
+    }
+
+    /**
+     * Gets the voltage tier corresponding to an amount of EU
+     *
+     * @param l The amount of EU
+     * @return Corresponding voltage tier
+     */
+    public static int getTierExtended(long l) {
+        if (l <= V[0]) return 0;
+        int log2L = 64 - Long.numberOfLeadingZeros(l - 1);
+        return ((log2L - 2) / 2);
     }
 
     public static long getAmperageForTier(long voltage, byte tier) {
@@ -3743,10 +3762,18 @@ public class GTUtility {
         return rEUAmount;
     }
 
+    /**
+     * @deprecated Use standard translation with {@link StatCollector}.
+     */
+    @Deprecated
     public static String trans(String aKey, String aEnglish) {
         return GTLanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish);
     }
 
+    /**
+     * @deprecated Use standard translation with {@link StatCollector}.
+     */
+    @Deprecated
     public static String getTrans(String aKey) {
         return GTLanguageManager.getTranslation("Interaction_DESCRIPTION_Index_" + aKey);
     }
