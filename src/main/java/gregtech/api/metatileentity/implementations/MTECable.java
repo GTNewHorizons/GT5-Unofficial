@@ -379,7 +379,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                 // Send the message using GT's utility method
                 GTUtility.sendChatToPlayer(
                     aPlayer,
-                    StatCollector.translateToLocal("GT5U.item.cable.swapped") + message.toString());
+                    StatCollector.translateToLocal("GT5U.item.cable.swapped") + "" + message.toString());
             }
 
             return true;
