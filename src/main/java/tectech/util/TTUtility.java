@@ -22,6 +22,8 @@ public final class TTUtility {
 
     private static final StringBuilder STRING_BUILDER = new StringBuilder();
     private static final Map<Locale, Formatter> FORMATTER_MAP = new HashMap<>();
+    private static final BigInteger ONE_THOUSAND = BigInteger.valueOf(1000);
+    private static final BigInteger NEG_ONE_THOUSAND = BigInteger.valueOf(-1000);
 
     private static Formatter getFormatter() {
         STRING_BUILDER.setLength(0);
@@ -36,6 +38,9 @@ public final class TTUtility {
     }
 
     public static String toExponentForm(BigInteger number) {
+        if (number.compareTo(ONE_THOUSAND) < 0 && number.compareTo(NEG_ONE_THOUSAND) > 0) {
+            return number.toString();
+        }
         BigInteger abs = number.abs();
         String strNum = abs.toString();
         int exponent = strNum.length() - 1;
@@ -43,6 +48,9 @@ public final class TTUtility {
     }
 
     public static String toExponentForm(long number) {
+        if (number < 1000 && number > -1000) {
+            return Long.toString(number);
+        }
         long abs = Math.abs(number);
         String strNum = Long.toString(abs);
         int exponent = strNum.length() - 1;

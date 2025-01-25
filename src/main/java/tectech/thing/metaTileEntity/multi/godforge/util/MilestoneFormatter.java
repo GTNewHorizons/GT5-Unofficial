@@ -29,18 +29,8 @@ public enum MilestoneFormatter {
                 else yield formatNumbers(number.longValue());
             }
             case EXPONENT -> {
-                if (number instanceof BigInteger bi) {
-                    if (bi.compareTo(BigInteger.valueOf(1_000L)) > 0) {
-                        yield toExponentForm(bi);
-                    }
-                    yield bi.toString();
-                } else {
-                    long value = number.longValue();
-                    if (value > 1_000L) {
-                        yield toExponentForm(value);
-                    }
-                    yield Long.toString(value);
-                }
+                if (number instanceof BigInteger bi) yield toExponentForm(bi);
+                else yield toExponentForm(number.longValue());
             }
         };
     }
