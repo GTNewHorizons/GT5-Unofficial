@@ -17,7 +17,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
@@ -29,7 +29,7 @@ import tectech.util.TTUtility;
  */
 public class MTEOwnerDetector extends MTETieredMachineBlock {
 
-    private static GTRenderedTexture OWNER_ONLINE, OWNER_OFFLINE;
+    private static ITexture OWNER_ONLINE, OWNER_OFFLINE;
     private String uuid;
     private boolean interdimensional = true;
 
@@ -61,8 +61,8 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        OWNER_ONLINE = new GTRenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/OWNER_ONLINE"));
-        OWNER_OFFLINE = new GTRenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/OWNER_OFFLINE"));
+        OWNER_ONLINE = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/OWNER_ONLINE"));
+        OWNER_OFFLINE = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/OWNER_OFFLINE"));
     }
 
     @Override

@@ -31,7 +31,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -569,27 +569,27 @@ public class MTECropHarvestor extends MTEBasicTank {
 
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter) };
+            TextureFactory.of(TexturesGtBlock.Casing_CropHarvester_Cutter) };
     }
 
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter) };
+            TextureFactory.of(TexturesGtBlock.Casing_CropHarvester_Cutter) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Casing_CropHarvester_Boxes) };
+            TextureFactory.of(TexturesGtBlock.Casing_CropHarvester_Boxes) };
     }
 
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Casing_CropHarvester_Boxes) };
+            TextureFactory.of(TexturesGtBlock.Casing_CropHarvester_Boxes) };
     }
 
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Casing_CropHarvester_Cutter) };
+            TextureFactory.of(TexturesGtBlock.Casing_CropHarvester_Cutter) };
     }
 
     @Override
