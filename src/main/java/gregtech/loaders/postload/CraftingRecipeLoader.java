@@ -1375,7 +1375,7 @@ public class CraftingRecipeLoader implements Runnable {
             new Object[] { OrePrefixes.dust.get(Materials.Brass), OrePrefixes.dust.get(Materials.Brass),
                 OrePrefixes.dust.get(Materials.Brass), OrePrefixes.dust.get(Materials.Brass),
                 OrePrefixes.dust.get(Materials.Brass), OrePrefixes.dust.get(Materials.Brass),
-                OrePrefixes.dust.get(Materials.Brass), OrePrefixes.dust.get(Materials.Aluminium),
+                OrePrefixes.dust.get(Materials.Brass), OrePrefixes.dust.get(Materials.Tin),
                 OrePrefixes.dust.get(Materials.Cobalt) });
 
         GTModHandler.addShapelessCraftingRecipe(
