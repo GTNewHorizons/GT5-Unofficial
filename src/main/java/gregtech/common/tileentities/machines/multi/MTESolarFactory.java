@@ -54,6 +54,7 @@ import gregtech.api.recipe.metadata.SolarFactoryRecipeDataKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.SolarFactoryRecipeData;
 
@@ -69,12 +70,6 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     int casingAmount;
     int casingTier;
     boolean hasEnoughCasings;
-
-    ItemStack foundWaferStack;
-    int waferAmountInRecipe;
-    int foundWaferTier;
-    int minimumTierForRecipe;
-    boolean shouldMultiplyOutputs = true;
 
     int outputMultiplierCap = 2;
     double outputMultiplierSlope;
@@ -277,45 +272,17 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         return new ItemStack[] { copyAmountUnsafe(outputSize, currentOutput) };
     }
 
-    private void clearVars() {
-        foundWaferStack = null;
-        waferAmountInRecipe = 0;
-        foundWaferTier = 0;
-        minimumTierForRecipe = 0;
-        shouldMultiplyOutputs = true;
-    }
 
-    @Override
-    public @NotNull CheckRecipeResult checkProcessing() {
-        setupProcessingLogic(processingLogic);
-
-        CheckRecipeResult result = doCheckRecipe();
-        result = postCheckRecipe(result, processingLogic);
-        // inputs are consumed at this point
-        updateSlots();
-        if (!result.wasSuccessful()) return result;
-
-        mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        mEfficiencyIncrease = 10000;
-        mMaxProgresstime = processingLogic.getDuration();
-        setEnergyUsage(processingLogic);
-
-        if (shouldMultiplyOutputs) {
-            mOutputItems = calculateNewOutput(
-                processingLogic.getOutputItems()[0],
-                (foundWaferTier - minimumTierForRecipe));
-        } else {
-            mOutputItems = processingLogic.getOutputItems();
-        }
-        mOutputFluids = processingLogic.getOutputFluids();
-
-        clearVars();
-        return result;
-    }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
+
+            ItemStack foundWaferStack;
+            int waferAmountInRecipe;
+            int foundWaferTier;
+            int minimumTierForRecipe;
+            boolean shouldMultiplyOutputs = true;
 
             private void findWaferStack() {
                 for (ItemStack items : inputItems) {
@@ -327,6 +294,27 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                         }
                     }
                 }
+            }
+
+            private void clearVars() {
+                foundWaferStack = null;
+                waferAmountInRecipe = 0;
+                foundWaferTier = 0;
+                minimumTierForRecipe = 0;
+                shouldMultiplyOutputs = true;
+            }
+
+            @Override
+            protected @NotNull CheckRecipeResult applyRecipe(@NotNull GTRecipe recipe, @NotNull ParallelHelper helper,
+                @NotNull OverclockCalculator calculator, @NotNull CheckRecipeResult result) {
+                result = super.applyRecipe(recipe, helper, calculator, result);
+                if (shouldMultiplyOutputs) {
+                    // We multiply outputs here since its after parallels are calculated, however this is after void
+                    // protection checks so void protection is not supported.
+                    outputItems = calculateNewOutput(outputItems[0], (foundWaferTier - minimumTierForRecipe));
+                }
+                clearVars();
+                return result;
             }
 
             @NotNull
