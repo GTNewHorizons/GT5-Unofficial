@@ -473,26 +473,26 @@ public class MTEFluid extends MetaPipeEntity implements IKeyHandlerTile {
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            if (KeyboardUtil.isCtrlKeyDown()) {
-                GTUtility.sendChatToPlayer(aPlayer, "Ctrl+Rightclick");
-                // Send key event packet with player name
-                GTValues.NW.sendToServer(
-                    new GTPacketKeyEvent(
-                        aBaseMetaTileEntity.getXCoord(),
-                        (short) aBaseMetaTileEntity.getYCoord(),
-                        aBaseMetaTileEntity.getZCoord(),
-                        KEY_CTRL,
-                        (byte) 1,
-                        aPlayer.getCommandSenderName()));
-                return true;
-            }
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer,
+                                ForgeDirection side, float aX, float aY, float aZ) {
+        if (aBaseMetaTileEntity.isServerSide()) {
             return false;
         }
-        return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
+        if (KeyboardUtil.isCtrlKeyDown()) {
+            GTUtility.sendChatToPlayer(aPlayer, "Ctrl+Rightclick");
+            GTValues.NW.sendToServer(new GTPacketKeyEvent(
+                aBaseMetaTileEntity.getXCoord(),
+                (short) aBaseMetaTileEntity.getYCoord(),
+                aBaseMetaTileEntity.getZCoord(),
+                KEY_CTRL,
+                (byte) 1,
+                aPlayer.getCommandSenderName()
+            ));
+            return true;
+        }
+        return false;
     }
+
 
     // Implement the IKeyHandlerTile interface
     @Override
