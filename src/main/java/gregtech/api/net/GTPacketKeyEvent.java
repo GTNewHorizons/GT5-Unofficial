@@ -1,18 +1,20 @@
 package gregtech.api.net;
 
-import com.google.common.io.ByteArrayDataInput;
-import gregtech.GTMod;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IKeyHandlerTile;
-import gregtech.api.util.GTUtility;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.google.common.io.ByteArrayDataInput;
+
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IKeyHandlerTile;
+import gregtech.api.util.GTUtility;
+import io.netty.buffer.ByteBuf;
+
 public class GTPacketKeyEvent extends GTPacket {
+
     private int mX, mZ;
     private short mY;
     private byte mKey;
@@ -82,7 +84,8 @@ public class GTPacketKeyEvent extends GTPacket {
         // Find the player
         EntityPlayer player = null;
         for (Object obj : world.playerEntities) {
-            if (obj instanceof EntityPlayer && ((EntityPlayer) obj).getCommandSenderName().equals(mPlayerName)) {
+            if (obj instanceof EntityPlayer && ((EntityPlayer) obj).getCommandSenderName()
+                .equals(mPlayerName)) {
                 player = (EntityPlayer) obj;
                 break;
             }
