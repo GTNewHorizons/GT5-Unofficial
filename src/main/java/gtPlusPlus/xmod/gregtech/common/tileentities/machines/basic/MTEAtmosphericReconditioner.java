@@ -31,7 +31,7 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.IDMetaTool01;
@@ -66,14 +66,44 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             "Making sure you don't live in Gwalior - Uses 2A",
             3,
             0,
-            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
-            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB),
-            new GTRenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active),
-            new GTRenderedTexture(TexturesGtBlock.Overlay_MatterFab),
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Vent_Fast),
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Vent),
-            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
-            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB));
+            TextureFactory.of(
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(TexturesGtBlock.Overlay_MatterFab_Active),
+                TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.Overlay_MatterFab_Active_Glow)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(TexturesGtBlock.Overlay_MatterFab),
+                TextureFactory.builder()
+                    .addIcon(TexturesGtBlock.Overlay_MatterFab_Glow)
+                    .glow()
+                    .build()),
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Vent_Fast),
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Vent),
+            TextureFactory.of(
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_GLOW)
+                    .glow()
+                    .build()));
     }
 
     public MTEAtmosphericReconditioner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
