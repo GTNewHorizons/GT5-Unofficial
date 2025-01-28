@@ -929,21 +929,6 @@ public class RecipesGregTech {
             .duration(2 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
 
-        // molten precious metals alloy
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(6),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustRuthenium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustRhodium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustPalladium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustPlatinum", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustOsmium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustIridium", 1))
-            .fluidOutputs(FluidUtils.getFluidStack("molten.precious metals alloy", 864))
-            .eut(TierEU.RECIPE_UEV)
-            .duration(9 * MINUTES)
-            .addTo(alloyBlastSmelterRecipes);
-
         // lossless phonon transfer medium
         GTValues.RA.stdBuilder()
             .itemInputs(
