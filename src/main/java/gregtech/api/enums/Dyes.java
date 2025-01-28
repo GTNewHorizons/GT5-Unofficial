@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Contract;
 
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.objects.GTArrayList;
+import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 
 public enum Dyes implements IColorModulationContainer {
@@ -120,6 +121,10 @@ public enum Dyes implements IColorModulationContainer {
     @Override
     public short[] getRGBA() {
         return mRGBa;
+    }
+
+    public int toInt() {
+        return GTUtil.getRGBInt(getRGBA());
     }
 
     public static Dyes getDyeFromIndex(short index) {
