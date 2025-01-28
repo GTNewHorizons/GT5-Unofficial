@@ -272,8 +272,6 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         return new ItemStack[] { copyAmountUnsafe(outputSize, currentOutput) };
     }
 
-
-
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
