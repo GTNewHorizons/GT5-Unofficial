@@ -27,6 +27,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
@@ -306,6 +308,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             .cast(aData) != null) coverInfo.setCoverData(aData);
     }
 
+    @NotNull
     @Override
     @Deprecated
     public CoverBehavior getCoverBehaviorAtSide(ForgeDirection side) {
@@ -350,11 +353,13 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return 0;
     }
 
+    @NotNull
     @Override
     public ISerializableObject getComplexCoverDataAtSide(ForgeDirection side) {
         return getCoverInfoAtSide(side).getCoverData();
     }
 
+    @NotNull
     @Override
     public CoverBehaviorBase<?> getCoverBehaviorAtSideNew(ForgeDirection side) {
         return getCoverInfoAtSide(side).getCoverBehavior();

@@ -4,6 +4,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
@@ -44,6 +46,7 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
         return null;
     }
 
+    @NotNull
     default ISerializableObject getComplexCoverDataAtSide(ForgeDirection side) {
         return new ISerializableObject.LegacyCoverData(getCoverDataAtSide(side));
     }
@@ -52,9 +55,11 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
 
     ItemStack getCoverItemAtSide(ForgeDirection side);
 
+    @NotNull
     @Deprecated
     CoverBehavior getCoverBehaviorAtSide(ForgeDirection side);
 
+    @NotNull
     default CoverBehaviorBase<?> getCoverBehaviorAtSideNew(ForgeDirection side) {
         return getCoverBehaviorAtSide(side);
     }
