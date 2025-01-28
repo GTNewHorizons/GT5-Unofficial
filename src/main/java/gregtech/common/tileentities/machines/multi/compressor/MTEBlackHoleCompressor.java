@@ -495,6 +495,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         // Loop through all items and look for the Activation and Deactivation Catalysts
         // Deactivation resets stability to 100 and catalyzing cost to 1
 
+        if (this.maxProgresstime() != 0) return;
+
         for (MTEHatchInputBus bus : filterValidMTEs(mInputBusses)) {
             for (int i = 0; i < bus.getSizeInventory(); i++) {
                 ItemStack inputItem = bus.getStackInSlot(i);
