@@ -27,6 +27,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTByteBuffer;
 import gregtech.api.util.GTRenderingWorld;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui2.cover.CoverFacadeBaseGui;
+import gregtech.common.gui.modularui2.cover.CoverGui;
 import gregtech.common.gui.mui1.cover.FacadeBaseUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -102,6 +104,62 @@ public abstract class CoverFacadeBase extends Cover {
     public CoverFacadeBase setFlags(int flags) {
         this.mFlags = flags;
         return this;
+    }
+
+    public boolean getRedstonePass() {
+        return (getFlags() & 0x1) > 0;
+    }
+
+    public void setRedstonePass(boolean redstonePass) {
+        int flags = getFlags();
+        if (redstonePass) {
+            flags |= 0x1;
+        } else {
+            flags &= ~0x1;
+        }
+        setFlags(flags);
+    }
+
+    public boolean getEnergyPass() {
+        return (getFlags() & 0x2) > 0;
+    }
+
+    public void setEnergyPass(boolean energyPass) {
+        int flags = getFlags();
+        if (energyPass) {
+            flags |= 0x2;
+        } else {
+            flags &= ~0x2;
+        }
+        setFlags(flags);
+    }
+
+    public boolean getFluidPass() {
+        return (getFlags() & 0x4) > 0;
+    }
+
+    public void setFluidPass(boolean fluidPass) {
+        int flags = getFlags();
+        if (fluidPass) {
+            flags |= 0x4;
+        } else {
+            flags &= ~0x4;
+        }
+        setFlags(flags);
+    }
+
+    public boolean getItemPass() {
+        return (getFlags() & 0x8) > 0;
+    }
+
+    public void setItemPass(boolean itemPass) {
+        int flags = getFlags();
+        if (itemPass) {
+            flags |= 0x8;
+        } else {
+            flags &= ~0x8;
+        }
+        setFlags(flags);
     }
 
     @Override
@@ -267,6 +325,11 @@ public abstract class CoverFacadeBase extends Cover {
     }
 
     // GUI stuff
+
+    @Override
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverFacadeBaseGui();
+    }
 
     @Override
     public boolean hasCoverGUI() {
