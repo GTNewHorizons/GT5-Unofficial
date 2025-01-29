@@ -2,15 +2,15 @@ package gregtech.api.util;
 
 import static gregtech.api.enums.GTValues.E;
 
-import java.lang.ref.WeakReference;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
-import gregtech.api.gui.modularui.GTUIInfos;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.SyncHandlers;
+
+import gregtech.api.gui.modularui2.CoverGuiData;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 
@@ -74,12 +74,6 @@ public abstract class CoverBehavior extends CoverBehaviorBase<ISerializableObjec
         aCoverVariable
             .set(onCoverScrewdriverclick(side, aCoverID, convert(aCoverVariable), aTileEntity, aPlayer, aX, aY, aZ));
         return aCoverVariable;
-    }
-
-    @Override
-    protected boolean onCoverShiftRightClickImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer) {
-        return onCoverShiftRightclick(side, aCoverID, convert(aCoverVariable), aTileEntity, aPlayer);
     }
 
     @Override
@@ -238,20 +232,6 @@ public abstract class CoverBehavior extends CoverBehaviorBase<ISerializableObjec
     }
 
     /**
-     * Called when someone shift-rightclicks this Cover with no tool. Doesn't call @onCoverRightclick in this Case.
-     */
-    public boolean onCoverShiftRightclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        EntityPlayer aPlayer) {
-        if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
-            lastPlayer = new WeakReference<>(aPlayer);
-            mPlayerNotified = false;
-            GTUIInfos.openCoverUI(aTileEntity, aPlayer, side);
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Removes the Cover if this returns true, or if aForced is true. Doesn't get called when the Machine Block is
      * getting broken, only if you break the Cover away from the Machine.
      */
@@ -398,5 +378,11 @@ public abstract class CoverBehavior extends CoverBehaviorBase<ISerializableObjec
      */
     public ItemStack getDrop(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return GTOreDictUnificator.get(true, aTileEntity.getCoverItemAtSide(side));
+    }
+
+    protected IntSyncValue legacyCoverDataSyncHandler(CoverGuiData guiData) {
+        return SyncHandlers.intNumber(
+            () -> convert(getCoverData(guiData)),
+            coverData -> guiData.setCoverData(new ISerializableObject.LegacyCoverData(coverData)));
     }
 }

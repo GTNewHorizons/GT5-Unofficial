@@ -269,6 +269,16 @@ public final class CoverInfo {
     }
 
     /**
+     * @return If {@link #tickRateAddition} cannot go any higher
+     */
+    public boolean isTickRateAdditionMax() {
+        // Mimic adjustTickRateMultiplier logic
+        int simulatedTickRateAddition = clamp(tickRateAddition + 20);
+        return tickRateAddition
+            == clamp(simulatedTickRateAddition - ((getMinimumTickRate() + simulatedTickRateAddition) % 20));
+    }
+
+    /**
      * Returns information about the cover's tick rate.
      *
      * @return An instance of tick rate components

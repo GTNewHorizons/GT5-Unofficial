@@ -61,6 +61,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.gui.modularui2.GTGuiFactories;
 import gregtech.api.gui.modularui2.GTGuiTextures;
 import gregtech.api.gui.modularui2.GTGuiTheme;
 import gregtech.api.gui.modularui2.GTWidgetThemes;
@@ -275,6 +276,7 @@ public class GTMod implements IGTMod {
         GTPreLoad.loadConfig();
 
         // ModularUI
+        GuiManager.registerFactory(GTGuiFactories.cover());
         GTGuiTextures.init();
         GTGuiTheme.registerThemes();
         GTWidgetThemes.register();
