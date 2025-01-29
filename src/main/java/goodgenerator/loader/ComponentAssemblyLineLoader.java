@@ -1023,7 +1023,7 @@ public class ComponentAssemblyLineLoader {
             .fluidInputs(
                 INDALLOY_140.getFluidStack(432 * L),
                 Lubricant.getFluid(96000),
-                Neutronium.getMolten(2304 * L),
+                Neutronium.getMolten(325 * L + 48),
                 Americium.getMolten(2304 * L),
                 Naquadria.getMolten(432 * L),
                 Samarium.getMolten(96 * L))
