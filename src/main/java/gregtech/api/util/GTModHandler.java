@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -83,7 +82,6 @@ import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
 import ic2.api.recipe.Recipes;
-import ic2.core.IC2;
 import ic2.core.item.ItemToolbox;
 
 /**
@@ -104,7 +102,7 @@ public class GTModHandler {
     private static final List<InventoryCrafting> delayedRemovalByRecipe = new ArrayList<>();
 
     public static Collection<String> sNativeRecipeClasses = new HashSet<>(), sSpecialRecipeClasses = new HashSet<>();
-    public static GTHashSet<GTItemStack> sNonReplaceableItems = new GTHashSet<>();
+    public static GTHashSet sNonReplaceableItems = new GTHashSet();
     public static Object sBoxableWrapper = new GTIBoxableWrapper();
     public static Collection<GTItemStack> sBoxableItems = new ArrayList<>();
     private static final Map<IRecipeInput, RecipeOutput> emptyRecipeMap = new HashMap<>();
@@ -336,12 +334,10 @@ public class GTModHandler {
     public static ItemStack getIC2Item(String aItem, long aAmount, ItemStack aReplacement) {
         if (GTUtility.isStringInvalid(aItem) || !GregTechAPI.sPreloadStarted) return null;
         // if (D1) GTLog.out.println("Requested the Item '" + aItem + "' from the IC2-API");
-        if (!sIC2ItemMap.containsKey(aItem)) try {
+        if (!sIC2ItemMap.containsKey(aItem)) {
             ItemStack tStack = IC2Items.getItem(aItem);
             sIC2ItemMap.put(aItem, tStack);
             if (tStack == null && D1) GTLog.err.println(aItem + " is not found in the IC2 Items!");
-        } catch (Throwable e) {
-            /* Do nothing */
         }
         return GTUtility.copyAmount(aAmount, sIC2ItemMap.get(aItem), aReplacement);
     }
@@ -453,21 +449,6 @@ public class GTModHandler {
     @Deprecated
     public static boolean getJumpKeyDown(EntityPlayer aPlayer) {
         return false;
-    }
-
-    /**
-     * Adds a Valuable Ore to the Miner
-     */
-    public static boolean addValuableOre(Block aBlock, int aMeta, int aValue) {
-        if (aValue <= 0) return false;
-        try {
-            IC2.addValuableOre(new RecipeInputItemStack(new ItemStack(aBlock, 1, aMeta)), aValue);
-        } catch (Exception e) {
-            // TODO remove try catch
-            // TODO fix : why is bartworks registering items stacks with .getItem() == null
-            GTLog.err.println("Caught exception when calling IC2.addValuableOre");
-        }
-        return true;
     }
 
     /**
@@ -1067,167 +1048,162 @@ public class GTModHandler {
                 || aRecipe[i] instanceof Character)) aRecipe[i] = aRecipe[i].toString();
         }
 
-        try {
-            StringBuilder shape = new StringBuilder(E);
-            int idx = 0;
-            if (aRecipe[idx] instanceof Boolean) {
+        StringBuilder shape = new StringBuilder(E);
+        int idx = 0;
+        if (aRecipe[idx] instanceof Boolean) {
+            throw new IllegalArgumentException();
+        }
+
+        ArrayList<Object> tRecipeList = new ArrayList<>(Arrays.asList(aRecipe));
+
+        while (aRecipe[idx] instanceof String) {
+            StringBuilder s = new StringBuilder((String) aRecipe[idx++]);
+            shape.append(s);
+            while (s.length() < 3) s.append(" ");
+            if (s.length() > 3) throw new IllegalArgumentException();
+
+            for (char c : s.toString()
+                .toCharArray()) {
+                switch (c) {
+                    case 'b' -> {
+                        tRecipeList.add(c);
+                        tRecipeList.add(ToolDictNames.craftingToolBlade.name());
+                    }
+                    case 'c' -> {
+                        tRecipeList.add(c);
+                        tRecipeList.add(ToolDictNames.craftingToolCrowbar.name());
+                    }
+                    case 'd' -> {
+                        tRecipeList.add(c);
+                        tRecipeList.add(ToolDictNames.craftingToolScrewdriver.name());
+                    }
+                    case 'f' -> {
+                        tRecipeList.add(c);
+                        tRecipeList.add(ToolDictNames.craftingToolFile.name());
+                    }
+                    case 'h' -> {
+                        tRecipeList.add(c);
+                        tRecipeList.add(ToolDictNames.craftingToolHardHammer.name());
+                    }
+                    case 'i' -> {
+                        tRecipeList.add(c);
+                        tRecipeList.add(ToolDictNames.craftingToolSolderingIron.name());
+                    }
+                    case 'j' -> {
+                        tRecipeList.add(c);
+                        tRecipeList.add(ToolDictNames.craftingToolSolderingMetal.name());
+                    }
+                    case 'k' -> {
+                        tRecipeList.add(c);
+                        tRecipeList.add(ToolDictNames.craftingToolKnife.name());
+                    }
+                    case 'm' -> {
+                        tRecipeList.add(c);
+                        tRecipeList.add(ToolDictNames.craftingToolMortar.name());
+                    }
+                    case 'p' -> {
+                        tRecipeList.add(c);
+                        tRecipeList.add(ToolDictNames.craftingToolDrawplate.name());
+                    }
+                    case 'r' -> {
+                        tRecipeList.add(c);
+                        tRecipeList.add(ToolDictNames.craftingToolSoftHammer.name());
+                    }
+                    case 's' -> {
+                        tRecipeList.add(c);
+                        tRecipeList.add(ToolDictNames.craftingToolSaw.name());
+                    }
+                    case 'w' -> {
+                        tRecipeList.add(c);
+                        tRecipeList.add(ToolDictNames.craftingToolWrench.name());
+                    }
+                    case 'x' -> {
+                        tRecipeList.add(c);
+                        tRecipeList.add(ToolDictNames.craftingToolWireCutter.name());
+                    }
+                }
+            }
+        }
+
+        aRecipe = tRecipeList.toArray();
+
+        if (aRecipe[idx] instanceof Boolean) {
+            idx++;
+        }
+        Map<Character, ItemStack> tItemStackMap = new HashMap<>();
+        Map<Character, ItemData> tItemDataMap = new HashMap<>();
+        tItemStackMap.put(' ', null);
+
+        boolean tRemoveRecipe = true;
+
+        for (; idx < aRecipe.length; idx += 2) {
+            if (aRecipe[idx] == null || aRecipe[idx + 1] == null) {
+                if (D1) {
+                    GTLog.err.println(
+                        "WARNING: Missing Item for shaped Recipe: "
+                            + (aResult == null ? "null" : aResult.getDisplayName()));
+                    for (Object tContent : aRecipe) GTLog.err.println(tContent);
+                }
+                return false;
+            }
+            Character chr = (Character) aRecipe[idx];
+            Object in = aRecipe[idx + 1];
+            if (in instanceof ItemStack is) {
+                tItemStackMap.put(chr, GTUtility.copyOrNull(is));
+                tItemDataMap.put(chr, GTOreDictUnificator.getItemData(is));
+            } else if (in instanceof ItemData) {
+                String tString = in.toString();
+                switch (tString) {
+                    case "plankWood" -> tItemDataMap.put(chr, new ItemData(Materials.Wood, M));
+                    case "stoneNetherrack" -> tItemDataMap.put(chr, new ItemData(Materials.Netherrack, M));
+                    case "stoneObsidian" -> tItemDataMap.put(chr, new ItemData(Materials.Obsidian, M));
+                    case "stoneEndstone" -> tItemDataMap.put(chr, new ItemData(Materials.Endstone, M));
+                    default -> tItemDataMap.put(chr, (ItemData) in);
+                }
+                ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
+                if (tStack == null) tRemoveRecipe = false;
+                else tItemStackMap.put(chr, tStack);
+                in = aRecipe[idx + 1] = in.toString();
+            } else if (in instanceof String) {
+                if (in.equals(OreDictNames.craftingChest.toString()))
+                    tItemDataMap.put(chr, new ItemData(Materials.Wood, M * 8));
+                else if (in.equals(OreDictNames.craftingBook.toString()))
+                    tItemDataMap.put(chr, new ItemData(Materials.Paper, M * 3));
+                else if (in.equals(OreDictNames.craftingPiston.toString()))
+                    tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 4, Materials.Wood, M * 3));
+                else if (in.equals(OreDictNames.craftingFurnace.toString()))
+                    tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 8));
+                else if (in.equals(OreDictNames.craftingIndustrialDiamond.toString()))
+                    tItemDataMap.put(chr, new ItemData(Materials.Diamond, M));
+                else if (in.equals(OreDictNames.craftingAnvil.toString()))
+                    tItemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
+                ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
+                if (tStack == null) tRemoveRecipe = false;
+                else tItemStackMap.put(chr, tStack);
+            } else {
                 throw new IllegalArgumentException();
             }
+        }
 
-            ArrayList<Object> tRecipeList = new ArrayList<>(Arrays.asList(aRecipe));
+        if (aReversible && aResult != null) {
+            ItemData[] tData = new ItemData[9];
+            int x = -1;
+            for (char chr : shape.toString()
+                .toCharArray()) tData[++x] = tItemDataMap.get(chr);
+            if (GTUtility.arrayContainsNonNull(tData)) GTOreDictUnificator.addItemData(aResult, new ItemData(tData));
+        }
 
-            while (aRecipe[idx] instanceof String) {
-                StringBuilder s = new StringBuilder((String) aRecipe[idx++]);
-                shape.append(s);
-                while (s.length() < 3) s.append(" ");
-                if (s.length() > 3) throw new IllegalArgumentException();
-
-                for (char c : s.toString()
-                    .toCharArray()) {
-                    switch (c) {
-                        case 'b' -> {
-                            tRecipeList.add(c);
-                            tRecipeList.add(ToolDictNames.craftingToolBlade.name());
-                        }
-                        case 'c' -> {
-                            tRecipeList.add(c);
-                            tRecipeList.add(ToolDictNames.craftingToolCrowbar.name());
-                        }
-                        case 'd' -> {
-                            tRecipeList.add(c);
-                            tRecipeList.add(ToolDictNames.craftingToolScrewdriver.name());
-                        }
-                        case 'f' -> {
-                            tRecipeList.add(c);
-                            tRecipeList.add(ToolDictNames.craftingToolFile.name());
-                        }
-                        case 'h' -> {
-                            tRecipeList.add(c);
-                            tRecipeList.add(ToolDictNames.craftingToolHardHammer.name());
-                        }
-                        case 'i' -> {
-                            tRecipeList.add(c);
-                            tRecipeList.add(ToolDictNames.craftingToolSolderingIron.name());
-                        }
-                        case 'j' -> {
-                            tRecipeList.add(c);
-                            tRecipeList.add(ToolDictNames.craftingToolSolderingMetal.name());
-                        }
-                        case 'k' -> {
-                            tRecipeList.add(c);
-                            tRecipeList.add(ToolDictNames.craftingToolKnife.name());
-                        }
-                        case 'm' -> {
-                            tRecipeList.add(c);
-                            tRecipeList.add(ToolDictNames.craftingToolMortar.name());
-                        }
-                        case 'p' -> {
-                            tRecipeList.add(c);
-                            tRecipeList.add(ToolDictNames.craftingToolDrawplate.name());
-                        }
-                        case 'r' -> {
-                            tRecipeList.add(c);
-                            tRecipeList.add(ToolDictNames.craftingToolSoftHammer.name());
-                        }
-                        case 's' -> {
-                            tRecipeList.add(c);
-                            tRecipeList.add(ToolDictNames.craftingToolSaw.name());
-                        }
-                        case 'w' -> {
-                            tRecipeList.add(c);
-                            tRecipeList.add(ToolDictNames.craftingToolWrench.name());
-                        }
-                        case 'x' -> {
-                            tRecipeList.add(c);
-                            tRecipeList.add(ToolDictNames.craftingToolWireCutter.name());
-                        }
-                    }
-                }
+        if (aCheckForCollisions && tRemoveRecipe) {
+            ItemStack[] tRecipe = new ItemStack[9];
+            int x = -1;
+            for (char chr : shape.toString()
+                .toCharArray()) {
+                tRecipe[++x] = tItemStackMap.get(chr);
+                if (tRecipe[x] != null && Items.feather.getDamage(tRecipe[x]) == W)
+                    Items.feather.setDamage(tRecipe[x], 0);
             }
-
-            aRecipe = tRecipeList.toArray();
-
-            if (aRecipe[idx] instanceof Boolean) {
-                idx++;
-            }
-            Map<Character, ItemStack> tItemStackMap = new HashMap<>();
-            Map<Character, ItemData> tItemDataMap = new HashMap<>();
-            tItemStackMap.put(' ', null);
-
-            boolean tRemoveRecipe = true;
-
-            for (; idx < aRecipe.length; idx += 2) {
-                if (aRecipe[idx] == null || aRecipe[idx + 1] == null) {
-                    if (D1) {
-                        GTLog.err.println(
-                            "WARNING: Missing Item for shaped Recipe: "
-                                + (aResult == null ? "null" : aResult.getDisplayName()));
-                        for (Object tContent : aRecipe) GTLog.err.println(tContent);
-                    }
-                    return false;
-                }
-                Character chr = (Character) aRecipe[idx];
-                Object in = aRecipe[idx + 1];
-                if (in instanceof ItemStack is) {
-                    tItemStackMap.put(chr, GTUtility.copyOrNull(is));
-                    tItemDataMap.put(chr, GTOreDictUnificator.getItemData(is));
-                } else if (in instanceof ItemData) {
-                    String tString = in.toString();
-                    switch (tString) {
-                        case "plankWood" -> tItemDataMap.put(chr, new ItemData(Materials.Wood, M));
-                        case "stoneNetherrack" -> tItemDataMap.put(chr, new ItemData(Materials.Netherrack, M));
-                        case "stoneObsidian" -> tItemDataMap.put(chr, new ItemData(Materials.Obsidian, M));
-                        case "stoneEndstone" -> tItemDataMap.put(chr, new ItemData(Materials.Endstone, M));
-                        default -> tItemDataMap.put(chr, (ItemData) in);
-                    }
-                    ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
-                    if (tStack == null) tRemoveRecipe = false;
-                    else tItemStackMap.put(chr, tStack);
-                    in = aRecipe[idx + 1] = in.toString();
-                } else if (in instanceof String) {
-                    if (in.equals(OreDictNames.craftingChest.toString()))
-                        tItemDataMap.put(chr, new ItemData(Materials.Wood, M * 8));
-                    else if (in.equals(OreDictNames.craftingBook.toString()))
-                        tItemDataMap.put(chr, new ItemData(Materials.Paper, M * 3));
-                    else if (in.equals(OreDictNames.craftingPiston.toString()))
-                        tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 4, Materials.Wood, M * 3));
-                    else if (in.equals(OreDictNames.craftingFurnace.toString()))
-                        tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 8));
-                    else if (in.equals(OreDictNames.craftingIndustrialDiamond.toString()))
-                        tItemDataMap.put(chr, new ItemData(Materials.Diamond, M));
-                    else if (in.equals(OreDictNames.craftingAnvil.toString()))
-                        tItemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
-                    ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
-                    if (tStack == null) tRemoveRecipe = false;
-                    else tItemStackMap.put(chr, tStack);
-                } else {
-                    throw new IllegalArgumentException();
-                }
-            }
-
-            if (aReversible && aResult != null) {
-                ItemData[] tData = new ItemData[9];
-                int x = -1;
-                for (char chr : shape.toString()
-                    .toCharArray()) tData[++x] = tItemDataMap.get(chr);
-                if (GTUtility.arrayContainsNonNull(tData))
-                    GTOreDictUnificator.addItemData(aResult, new ItemData(tData));
-            }
-
-            if (aCheckForCollisions && tRemoveRecipe) {
-                ItemStack[] tRecipe = new ItemStack[9];
-                int x = -1;
-                for (char chr : shape.toString()
-                    .toCharArray()) {
-                    tRecipe[++x] = tItemStackMap.get(chr);
-                    if (tRecipe[x] != null && Items.feather.getDamage(tRecipe[x]) == W)
-                        Items.feather.setDamage(tRecipe[x], 0);
-                }
-                if (tDoWeCareIfThereWasARecipe || !aBuffered) tThereWasARecipe = removeRecipe(tRecipe) != null;
-                else removeRecipeDelayed(tRecipe);
-            }
-        } catch (Throwable e) {
-            e.printStackTrace(GTLog.err);
+            if (tDoWeCareIfThereWasARecipe || !aBuffered) tThereWasARecipe = removeRecipe(tRecipe) != null;
+            else removeRecipeDelayed(tRecipe);
         }
 
         if (aResult == null || aResult.stackSize <= 0) return false;
@@ -1347,30 +1323,27 @@ public class GTModHandler {
                 || aRecipe[i] instanceof String
                 || aRecipe[i] instanceof Character)) aRecipe[i] = aRecipe[i].toString();
         }
-        try {
-            ItemStack[] tRecipe = new ItemStack[9];
-            int i = 0;
-            for (Object tObject : aRecipe) {
-                if (tObject == null) {
-                    if (D1) GTLog.err.println(
-                        "WARNING: Missing Item for shapeless Recipe: "
-                            + (aResult == null ? "null" : aResult.getDisplayName()));
-                    for (Object tContent : aRecipe) GTLog.err.println(tContent);
-                    return false;
-                }
-                if (tObject instanceof ItemStack) {
-                    tRecipe[i] = (ItemStack) tObject;
-                } else if (tObject instanceof String) {
-                    tRecipe[i] = GTOreDictUnificator.getFirstOre(tObject, 1);
-                    if (tRecipe[i] == null) break;
-                }
-                i++;
+
+        ItemStack[] tRecipe = new ItemStack[9];
+        int i = 0;
+        for (Object tObject : aRecipe) {
+            if (tObject == null) {
+                if (D1) GTLog.err.println(
+                    "WARNING: Missing Item for shapeless Recipe: "
+                        + (aResult == null ? "null" : aResult.getDisplayName()));
+                for (Object tContent : aRecipe) GTLog.err.println(tContent);
+                return false;
             }
-            if (sBufferCraftingRecipes && aBuffered) removeRecipeDelayed(tRecipe);
-            else removeRecipe(tRecipe);
-        } catch (Throwable e) {
-            e.printStackTrace(GTLog.err);
+            if (tObject instanceof ItemStack) {
+                tRecipe[i] = (ItemStack) tObject;
+            } else if (tObject instanceof String) {
+                tRecipe[i] = GTOreDictUnificator.getFirstOre(tObject, 1);
+                if (tRecipe[i] == null) break;
+            }
+            i++;
         }
+        if (sBufferCraftingRecipes && aBuffered) removeRecipeDelayed(tRecipe);
+        else removeRecipe(tRecipe);
 
         if (aResult == null || aResult.stackSize <= 0) return false;
 
@@ -1456,21 +1429,17 @@ public class GTModHandler {
         ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
         int tList_sS = tList.size();
-        try {
-            for (int i = 0; i < tList_sS; i++) {
-                for (; i < tList_sS; i++) {
-                    if ((!(tList.get(i) instanceof IGTCraftingRecipe)
-                        || ((IGTCraftingRecipe) tList.get(i)).isRemovable()) && tList.get(i)
-                            .matches(aCrafting, DW)) {
-                        rReturn = tList.get(i)
-                            .getCraftingResult(aCrafting);
-                        if (rReturn != null) tList.remove(i--);
-                        tList_sS = tList.size();
-                    }
+        for (int i = 0; i < tList_sS; i++) {
+            for (; i < tList_sS; i++) {
+                if ((!(tList.get(i) instanceof IGTCraftingRecipe) || ((IGTCraftingRecipe) tList.get(i)).isRemovable())
+                    && tList.get(i)
+                        .matches(aCrafting, DW)) {
+                    rReturn = tList.get(i)
+                        .getCraftingResult(aCrafting);
+                    if (rReturn != null) tList.remove(i--);
+                    tList_sS = tList.size();
                 }
             }
-        } catch (Throwable e) {
-            e.printStackTrace(GTLog.err);
         }
         return rReturn;
     }
@@ -1705,12 +1674,7 @@ public class GTModHandler {
             found = false;
             if (!allowOreDict && iRecipe instanceof ShapedOreRecipe) continue;
 
-            try {
-                found = iRecipe.matches(aCrafting, DW);
-            } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
-            }
-            if (found) {
+            if (iRecipe.matches(aCrafting, DW)) {
                 ItemStack tOutput = aUncopiedStack ? iRecipe.getRecipeOutput() : iRecipe.getCraftingResult(aCrafting);
                 if (tOutput == null || tOutput.stackSize <= 0) {
                     // Seriously, who would ever do that shit?
@@ -1848,12 +1812,7 @@ public class GTModHandler {
                 .filter(tRecipe -> {
                     if (tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe
                         || tRecipe instanceof IGTCraftingRecipe) return false;
-                    try {
-                        return tRecipe.matches(aCrafting, DW);
-                    } catch (Throwable e) {
-                        e.printStackTrace(GTLog.err);
-                        return false;
-                    }
+                    return tRecipe.matches(aCrafting, DW);
                 })
                 .forEach(tRecipe -> stacks.add(tRecipe.getCraftingResult(aCrafting)));
             rList = stacks.stream()
@@ -1862,14 +1821,8 @@ public class GTModHandler {
                 .collect(Collectors.toList());
         } else for (Iterator<IRecipe> iterator = aList.iterator(); iterator.hasNext();) {
             IRecipe tRecipe = iterator.next();
-            boolean matched = false;
 
-            try {
-                matched = tRecipe.matches(aCrafting, DW);
-            } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
-            }
-            if (matched) {
+            if (tRecipe.matches(aCrafting, DW)) {
                 ItemStack tOutput = tRecipe.getCraftingResult(aCrafting);
 
                 if (tOutput == null || tOutput.stackSize <= 0) {
@@ -1917,37 +1870,33 @@ public class GTModHandler {
         boolean aRemoveInput, NBTTagCompound rRecipeMetaData, ItemStack... aOutputSlots) {
         if (aOutputSlots == null || aOutputSlots.length == 0) return new ItemStack[0];
         if (aInput == null) return new ItemStack[aOutputSlots.length];
-        try {
-            for (Entry<IRecipeInput, RecipeOutput> tEntry : aRecipeList.entrySet()) {
+        for (Entry<IRecipeInput, RecipeOutput> tEntry : aRecipeList.entrySet()) {
+            if (tEntry.getKey()
+                .matches(aInput)) {
                 if (tEntry.getKey()
-                    .matches(aInput)) {
-                    if (tEntry.getKey()
-                        .getAmount() <= aInput.stackSize) {
-                        ItemStack[] tList = tEntry.getValue().items.toArray(new ItemStack[0]);
-                        if (tList.length == 0) break;
-                        ItemStack[] rList = new ItemStack[aOutputSlots.length];
-                        rRecipeMetaData.setTag("return", tEntry.getValue().metadata);
-                        for (byte i = 0; i < aOutputSlots.length && i < tList.length; i++) {
-                            if (tList[i] != null) {
-                                if (aOutputSlots[i] == null || (GTUtility.areStacksEqual(tList[i], aOutputSlots[i])
-                                    && tList[i].stackSize + aOutputSlots[i].stackSize
-                                        <= aOutputSlots[i].getMaxStackSize())) {
-                                    rList[i] = GTUtility.copyOrNull(tList[i]);
-                                } else {
-                                    return new ItemStack[aOutputSlots.length];
-                                }
+                    .getAmount() <= aInput.stackSize) {
+                    ItemStack[] tList = tEntry.getValue().items.toArray(new ItemStack[0]);
+                    if (tList.length == 0) break;
+                    ItemStack[] rList = new ItemStack[aOutputSlots.length];
+                    rRecipeMetaData.setTag("return", tEntry.getValue().metadata);
+                    for (byte i = 0; i < aOutputSlots.length && i < tList.length; i++) {
+                        if (tList[i] != null) {
+                            if (aOutputSlots[i] == null || (GTUtility.areStacksEqual(tList[i], aOutputSlots[i])
+                                && tList[i].stackSize + aOutputSlots[i].stackSize
+                                    <= aOutputSlots[i].getMaxStackSize())) {
+                                rList[i] = GTUtility.copyOrNull(tList[i]);
+                            } else {
+                                return new ItemStack[aOutputSlots.length];
                             }
                         }
-
-                        if (aRemoveInput) aInput.stackSize -= tEntry.getKey()
-                            .getAmount();
-                        return rList;
                     }
-                    break;
+
+                    if (aRemoveInput) aInput.stackSize -= tEntry.getKey()
+                        .getAmount();
+                    return rList;
                 }
+                break;
             }
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
         }
         return new ItemStack[aOutputSlots.length];
     }
@@ -2019,22 +1968,17 @@ public class GTModHandler {
      */
     public static int chargeElectricItem(ItemStack aStack, int aCharge, int aTier, boolean aIgnoreLimit,
         boolean aSimulate) {
-        try {
-            if (isElectricItem(aStack)) {
-                int tTier = ((ic2.api.item.IElectricItem) aStack.getItem()).getTier(aStack);
-                if (tTier < 0 || tTier == aTier || aTier == Integer.MAX_VALUE) {
-                    if (!aIgnoreLimit && tTier >= 0)
-                        aCharge = (int) Math.min(aCharge, V[Math.max(0, Math.min(V.length - 1, tTier))]);
-                    if (aCharge > 0) {
-                        int rCharge = (int) Math.max(
-                            0.0,
-                            ic2.api.item.ElectricItem.manager.charge(aStack, aCharge, tTier, true, aSimulate));
-                        return rCharge + (rCharge * 4 > aTier ? aTier : 0);
-                    }
+        if (isElectricItem(aStack)) {
+            int tTier = ((ic2.api.item.IElectricItem) aStack.getItem()).getTier(aStack);
+            if (tTier < 0 || tTier == aTier || aTier == Integer.MAX_VALUE) {
+                if (!aIgnoreLimit && tTier >= 0)
+                    aCharge = (int) Math.min(aCharge, V[Math.max(0, Math.min(V.length - 1, tTier))]);
+                if (aCharge > 0) {
+                    int rCharge = (int) Math
+                        .max(0.0, ic2.api.item.ElectricItem.manager.charge(aStack, aCharge, tTier, true, aSimulate));
+                    return rCharge + (rCharge * 4 > aTier ? aTier : 0);
                 }
             }
-        } catch (Throwable e) {
-            /* Do nothing */
         }
         return 0;
     }
@@ -2048,31 +1992,25 @@ public class GTModHandler {
      */
     public static int dischargeElectricItem(ItemStack aStack, int aCharge, int aTier, boolean aIgnoreLimit,
         boolean aSimulate, boolean aIgnoreDischargability) {
-        try {
-            // if (isElectricItem(aStack) && (aIgnoreDischargability ||
-            // ((ic2.api.item.IElectricItem)aStack.getItem()).canProvideEnergy(aStack))) {
-            if (isElectricItem(aStack)) {
-                int tTier = ((ic2.api.item.IElectricItem) aStack.getItem()).getTier(aStack);
-                if (tTier < 0 || tTier == aTier || aTier == Integer.MAX_VALUE) {
-                    if (!aIgnoreLimit && tTier >= 0) aCharge = (int) Math.min(
-                        aCharge,
-                        V[Math.max(0, Math.min(V.length - 1, tTier))] + B[Math.max(0, Math.min(V.length - 1, tTier))]);
-                    if (aCharge > 0) {
-                        int rCharge = (int) Math.max(
-                            0,
-                            ic2.api.item.ElectricItem.manager.discharge(
-                                aStack,
-                                aCharge + (aCharge * 4 > aTier ? aTier : 0),
-                                tTier,
-                                true,
-                                !aIgnoreDischargability,
-                                aSimulate));
-                        return rCharge - (rCharge * 4 > aTier ? aTier : 0);
-                    }
+        if (isElectricItem(aStack)) {
+            int tTier = ((ic2.api.item.IElectricItem) aStack.getItem()).getTier(aStack);
+            if (tTier < 0 || tTier == aTier || aTier == Integer.MAX_VALUE) {
+                if (!aIgnoreLimit && tTier >= 0) aCharge = (int) Math.min(
+                    aCharge,
+                    V[Math.max(0, Math.min(V.length - 1, tTier))] + B[Math.max(0, Math.min(V.length - 1, tTier))]);
+                if (aCharge > 0) {
+                    int rCharge = (int) Math.max(
+                        0,
+                        ic2.api.item.ElectricItem.manager.discharge(
+                            aStack,
+                            aCharge + (aCharge * 4 > aTier ? aTier : 0),
+                            tTier,
+                            true,
+                            !aIgnoreDischargability,
+                            aSimulate));
+                    return rCharge - (rCharge * 4 > aTier ? aTier : 0);
                 }
             }
-        } catch (Throwable e) {
-            /* Do nothing */
         }
         return 0;
     }
@@ -2083,12 +2021,8 @@ public class GTModHandler {
      * @return if the action was successful
      */
     public static boolean canUseElectricItem(ItemStack aStack, int aCharge) {
-        try {
-            if (isElectricItem(aStack)) {
-                return ic2.api.item.ElectricItem.manager.canUse(aStack, aCharge);
-            }
-        } catch (Throwable e) {
-            /* Do nothing */
+        if (isElectricItem(aStack)) {
+            return ic2.api.item.ElectricItem.manager.canUse(aStack, aCharge);
         }
         return false;
     }
@@ -2099,15 +2033,11 @@ public class GTModHandler {
      * @return if the action was successful
      */
     public static boolean useElectricItem(ItemStack aStack, int aCharge, EntityPlayer aPlayer) {
-        try {
-            if (isElectricItem(aStack)) {
-                ic2.api.item.ElectricItem.manager.use(aStack, 0, aPlayer);
-                if (ic2.api.item.ElectricItem.manager.canUse(aStack, aCharge)) {
-                    return ic2.api.item.ElectricItem.manager.use(aStack, aCharge, aPlayer);
-                }
+        if (isElectricItem(aStack)) {
+            ic2.api.item.ElectricItem.manager.use(aStack, 0, aPlayer);
+            if (ic2.api.item.ElectricItem.manager.canUse(aStack, aCharge)) {
+                return ic2.api.item.ElectricItem.manager.use(aStack, aCharge, aPlayer);
             }
-        } catch (Throwable e) {
-            /* Do nothing */
         }
         return false;
     }
@@ -2239,12 +2169,8 @@ public class GTModHandler {
      * Is this an electric Item, which can charge other Items?
      */
     public static boolean isChargerItem(ItemStack aStack) {
-        try {
-            if (isElectricItem(aStack)) {
-                return ((ic2.api.item.IElectricItem) aStack.getItem()).canProvideEnergy(aStack);
-            }
-        } catch (Throwable e) {
-            /* Do nothing */
+        if (isElectricItem(aStack)) {
+            return ((ic2.api.item.IElectricItem) aStack.getItem()).canProvideEnergy(aStack);
         }
         return false;
     }
@@ -2253,23 +2179,13 @@ public class GTModHandler {
      * Is this an electric Item?
      */
     public static boolean isElectricItem(ItemStack aStack) {
-        try {
-            return aStack != null && aStack.getItem() instanceof ic2.api.item.IElectricItem
-                && ((IElectricItem) aStack.getItem()).getTier(aStack) < Integer.MAX_VALUE;
-        } catch (Throwable e) {
-            /* Do nothing */
-        }
-        return false;
+        return aStack != null && aStack.getItem() instanceof ic2.api.item.IElectricItem
+            && ((IElectricItem) aStack.getItem()).getTier(aStack) < Integer.MAX_VALUE;
     }
 
     public static boolean isElectricItem(ItemStack aStack, byte aTier) {
-        try {
-            return aStack != null && aStack.getItem() instanceof ic2.api.item.IElectricItem
-                && ((IElectricItem) aStack.getItem()).getTier(aStack) == aTier;
-        } catch (Throwable e) {
-            /* Do nothing */
-        }
-        return false;
+        return aStack != null && aStack.getItem() instanceof ic2.api.item.IElectricItem
+            && ((IElectricItem) aStack.getItem()).getTier(aStack) == aTier;
     }
 
     /**
@@ -2306,11 +2222,7 @@ public class GTModHandler {
      */
     public static void registerBoxableItemToToolBox(ItemStack aStack) {
         if (aStack != null) {
-            try {
-                ic2.api.item.ItemWrapper.registerBoxable(aStack.getItem(), (IBoxable) sBoxableWrapper);
-            } catch (Throwable ignored) {
-                /* Do nothing */
-            }
+            ic2.api.item.ItemWrapper.registerBoxable(aStack.getItem(), (IBoxable) sBoxableWrapper);
             sBoxableItems.add(new GTItemStack(aStack));
         }
     }

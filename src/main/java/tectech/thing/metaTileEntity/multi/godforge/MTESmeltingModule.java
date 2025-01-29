@@ -118,7 +118,7 @@ public class MTESmeltingModule extends MTEBaseModule {
                 }
                 currentParallel = calculatedParallels;
                 EUt = calculatedEut;
-                setCalculatedEut(0);
+                overwriteCalculatedEut(0);
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 

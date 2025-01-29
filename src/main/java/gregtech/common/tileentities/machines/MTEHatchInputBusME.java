@@ -62,6 +62,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.IDataCopyable;
+import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -79,24 +80,25 @@ import gregtech.common.gui.modularui.widget.AESlotWidget;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurationCircuitSupport,
-    IRecipeProcessingAwareHatch, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ISmartInputHatch, IDataCopyable {
+public class MTEHatchInputBusME extends MTEHatchInputBus
+    implements IConfigurationCircuitSupport, IRecipeProcessingAwareHatch, IAddGregtechLogo, IAddUIWidgets,
+    IPowerChannelState, ISmartInputHatch, IDataCopyable, IMEConnectable {
 
-    private static final int SLOT_COUNT = 16;
+    protected static final int SLOT_COUNT = 16;
     public static final String COPIED_DATA_IDENTIFIER = "stockingBus";
-    private BaseActionSource requestSource = null;
-    private @Nullable AENetworkProxy gridProxy = null;
-    private final ItemStack[] shadowInventory = new ItemStack[SLOT_COUNT];
-    private final int[] savedStackSizes = new int[SLOT_COUNT];
-    private boolean processingRecipe = false;
-    private final boolean autoPullAvailable;
-    private boolean autoPullItemList = false;
-    private int minAutoPullStackSize = 1;
-    private int autoPullRefreshTime = 100;
-    private static final int CONFIG_WINDOW_ID = 10;
-    private boolean additionalConnection = false;
-    private boolean justHadNewItems = false;
-    private boolean expediteRecipeCheck = false;
+    protected BaseActionSource requestSource = null;
+    protected @Nullable AENetworkProxy gridProxy = null;
+    protected final ItemStack[] shadowInventory = new ItemStack[SLOT_COUNT];
+    protected final int[] savedStackSizes = new int[SLOT_COUNT];
+    protected boolean processingRecipe = false;
+    protected final boolean autoPullAvailable;
+    protected boolean autoPullItemList = false;
+    protected int minAutoPullStackSize = 1;
+    protected int autoPullRefreshTime = 100;
+    protected static final int CONFIG_WINDOW_ID = 10;
+    protected boolean additionalConnection = false;
+    protected boolean justHadNewItems = false;
+    protected boolean expediteRecipeCheck = false;
 
     public MTEHatchInputBusME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
         super(
@@ -156,7 +158,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
         return isOutputFacing(forgeDirection) ? AECableType.SMART : AECableType.NONE;
     }
 
-    private void updateValidGridProxySides() {
+    protected void updateValidGridProxySides() {
         if (additionalConnection) {
             getProxy().setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
         } else {
@@ -177,6 +179,17 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
         aPlayer.addChatComponentMessage(
             new ChatComponentTranslation("GT5U.hatch.additionalConnection." + additionalConnection));
         return true;
+    }
+
+    @Override
+    public boolean connectsToAllSides() {
+        return additionalConnection;
+    }
+
+    @Override
+    public void setConnectsToAllSides(boolean connects) {
+        additionalConnection = connects;
+        updateValidGridProxySides();
     }
 
     @Override
@@ -223,7 +236,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
         getProxy().writeToNBT(aNBT);
     }
 
-    private void setAutoPullItemList(boolean pullItemList) {
+    protected void setAutoPullItemList(boolean pullItemList) {
         if (!autoPullAvailable) {
             return;
         }
@@ -392,7 +405,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
         return tag;
     }
 
-    private int getManualSlot() {
+    protected int getManualSlot() {
         return SLOT_COUNT * 2 + 1;
     }
 
@@ -476,7 +489,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
         return mInventory[aIndex];
     }
 
-    private BaseActionSource getRequestSource() {
+    protected BaseActionSource getRequestSource() {
         if (requestSource == null) requestSource = new MachineSource((IActionHost) getBaseMetaTileEntity());
         return requestSource;
     }
@@ -494,7 +507,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
         updateAllInformationSlots();
     }
 
-    private void refreshItemList() {
+    protected void refreshItemList() {
         AENetworkProxy proxy = getProxy();
         try {
             IMEMonitor<IAEItemStack> sg = proxy.getStorage()
@@ -523,7 +536,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
         } catch (final GridAccessException ignored) {}
     }
 
-    private void updateAllInformationSlots() {
+    protected void updateAllInformationSlots() {
         for (int index = 0; index < SLOT_COUNT; index++) {
             updateInformationSlot(index, mInventory[index]);
         }
@@ -863,7 +876,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
-    private static String[] getDescriptionArray(boolean autoPullAvailable) {
+    protected static String[] getDescriptionArray(boolean autoPullAvailable) {
         List<String> strings = new ArrayList<>(8);
         strings.add("Advanced item input for Multiblocks");
         strings.add("Hatch Tier: " + TIER_COLORS[autoPullAvailable ? 6 : 3] + VN[autoPullAvailable ? 6 : 3]);

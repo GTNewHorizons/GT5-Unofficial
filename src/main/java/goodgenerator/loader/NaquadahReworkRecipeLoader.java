@@ -49,6 +49,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.NKE_RANGE;
+import static gregtech.api.util.GTRecipeConstants.QFT_CATALYST;
 import static gregtech.api.util.GTRecipeConstants.QFT_FOCUS_TIER;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gregtech.common.items.MetaGeneratedItem01.registerCauldronCleaningFor;
@@ -94,8 +95,7 @@ public class NaquadahReworkRecipeLoader {
             .itemInputs(
                 naquadahEarth.get(OrePrefixes.dust, 32),
                 Materials.Sodium.getDust(64),
-                Materials.Carbon.getDust(1),
-                GTUtility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst))
+                Materials.Carbon.getDust(1))
             .itemOutputs(
                 inertNaquadah.get(OrePrefixes.dust, 1),
                 Materials.Titanium.getDust(64),
@@ -107,6 +107,7 @@ public class NaquadahReworkRecipeLoader {
                 Materials.Oxygen.getGas(100L))
             .duration(10 * SECONDS)
             .eut(GTValues.VP[10])
+            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst))
             .metadata(QFT_FOCUS_TIER, 2)
             .addTo(quantumForceTransformerRecipes);
         // Enriched Naquadah (UIV)
@@ -114,21 +115,18 @@ public class NaquadahReworkRecipeLoader {
             .itemInputs(
                 enrichedNaquadahEarth.get(OrePrefixes.dust, 32),
                 Materials.Zinc.getDust(64),
-                Materials.Carbon.getDust(1),
-                GTUtility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst))
+                Materials.Carbon.getDust(1))
             .itemOutputs(inertEnrichedNaquadah.get(OrePrefixes.dust, 1), Materials.Trinium.getDust(64))
             .fluidInputs(Materials.SulfuricAcid.getFluid(16000), Materials.Oxygen.getGas(100L))
             .fluidOutputs(wasteLiquid.getFluidOrGas(32000))
             .duration(10 * SECONDS)
             .eut(GTValues.VP[11])
+            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst))
             .metadata(QFT_FOCUS_TIER, 2)
             .addTo(quantumForceTransformerRecipes);
         // Naquadria (UMV)
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                naquadriaEarth.get(OrePrefixes.dust, 32),
-                Materials.Magnesium.getDust(64),
-                GTUtility.copyAmount(0, GenericChem.mAdvancedNaquadahCatalyst))
+            .itemInputs(naquadriaEarth.get(OrePrefixes.dust, 32), Materials.Magnesium.getDust(64))
             .itemOutputs(
                 inertNaquadria.get(OrePrefixes.dust, 1),
                 Materials.Barium.getDust(64),
@@ -140,6 +138,7 @@ public class NaquadahReworkRecipeLoader {
                 Materials.Oxygen.getGas(100L))
             .duration(5 * SECONDS)
             .eut(GTValues.VP[12])
+            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mAdvancedNaquadahCatalyst))
             .metadata(QFT_FOCUS_TIER, 3)
             .addTo(quantumForceTransformerRecipes);
 

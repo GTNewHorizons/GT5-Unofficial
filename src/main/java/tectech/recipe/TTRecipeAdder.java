@@ -56,6 +56,7 @@ public class TTRecipeAdder extends RecipeAdder {
         GTRecipe.RecipeAssemblyLine recipeGT = new GTRecipe.RecipeAssemblyLine(
             CustomItemList.UnusedStuff.get(1),
             totalComputationRequired / computationRequiredPerSec,
+            0,
             aInputs,
             aFluidInputs,
             aOutput,
@@ -64,6 +65,7 @@ public class TTRecipeAdder extends RecipeAdder {
         RecipeAssemblyLine recipeTT = new GTRecipe.RecipeAssemblyLine(
             aResearchItem,
             totalComputationRequired / computationRequiredPerSec,
+            0,
             aInputs,
             aFluidInputs,
             aOutput,
@@ -75,7 +77,7 @@ public class TTRecipeAdder extends RecipeAdder {
         GTValues.RA.stdBuilder()
             .itemInputs(aResearchItem)
             .itemOutputs(aOutput)
-            .special(recipeTT.newDataStickForNEI("Writes Research result"))
+            .special(recipeGT.newDataStickForNEI("Writes Research result"))
             .duration(totalComputationRequired)
             .eut(researchEUt)
             .metadata(RESEARCH_STATION_DATA, researchAmperage | computationRequiredPerSec << 16)
@@ -88,7 +90,7 @@ public class TTRecipeAdder extends RecipeAdder {
             .itemInputs(aInputs)
             .itemOutputs(aOutput)
             .fluidInputs(aFluidInputs)
-            .special(recipeTT.newDataStickForNEI("Reads Research result"))
+            .special(recipeGT.newDataStickForNEI("Reads Research result"))
             .duration(assDuration)
             .eut(assEUt)
             .ignoreCollision()
@@ -192,6 +194,7 @@ public class TTRecipeAdder extends RecipeAdder {
         GTRecipe.RecipeAssemblyLine recipeGT = new GTRecipe.RecipeAssemblyLine(
             CustomItemList.UnusedStuff.get(1),
             totalComputationRequired / computationRequiredPerSec,
+            0,
             tInputs,
             aFluidInputs,
             aOutput,
@@ -203,6 +206,7 @@ public class TTRecipeAdder extends RecipeAdder {
         GTRecipe.RecipeAssemblyLine recipeTT = new GTRecipe.RecipeAssemblyLine(
             aResearchItem,
             totalComputationRequired / computationRequiredPerSec,
+            0,
             tInputs,
             aFluidInputs,
             aOutput,
@@ -215,7 +219,7 @@ public class TTRecipeAdder extends RecipeAdder {
         GTValues.RA.stdBuilder()
             .itemInputs(aResearchItem)
             .itemOutputs(aOutput)
-            .special(recipeTT.newDataStickForNEI("Writes Research result"))
+            .special(recipeGT.newDataStickForNEI("Writes Research result"))
             .duration(totalComputationRequired)
             .eut(researchEUt)
             .metadata(RESEARCH_STATION_DATA, researchAmperage | computationRequiredPerSec << 16)
@@ -228,7 +232,7 @@ public class TTRecipeAdder extends RecipeAdder {
             false,
             tInputs,
             new ItemStack[] { aOutput },
-            new ItemStack[] { recipeTT.newDataStickForNEI("Reads Research result") },
+            new ItemStack[] { recipeGT.newDataStickForNEI("Reads Research result") },
             aFluidInputs,
             null,
             assDuration,

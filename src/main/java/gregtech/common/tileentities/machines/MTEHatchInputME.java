@@ -66,6 +66,7 @@ import appeng.util.item.AEFluidStack;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IDataCopyable;
+import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -83,7 +84,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets,
-    IRecipeProcessingAwareHatch, ISmartInputHatch, IDataCopyable {
+    IRecipeProcessingAwareHatch, ISmartInputHatch, IDataCopyable, IMEConnectable {
 
     private static final int SLOT_COUNT = 16;
     public static final String COPIED_DATA_IDENTIFIER = "stockingHatch";
@@ -117,7 +118,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     protected static final FluidStack[] EMPTY_FLUID_STACK = new FluidStack[0];
 
     public MTEHatchInputME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, autoPullAvailable ? 10 : 8, 1, getDescriptionArray(autoPullAvailable));
+        super(aID, aName, aNameRegional, autoPullAvailable ? 9 : 8, 1, getDescriptionArray(autoPullAvailable));
         this.autoPullAvailable = autoPullAvailable;
     }
 
@@ -331,6 +332,17 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         aPlayer.addChatComponentMessage(
             new ChatComponentTranslation("GT5U.hatch.additionalConnection." + additionalConnection));
         return true;
+    }
+
+    @Override
+    public boolean connectsToAllSides() {
+        return additionalConnection;
+    }
+
+    @Override
+    public void setConnectsToAllSides(boolean connects) {
+        additionalConnection = connects;
+        updateValidGridProxySides();
     }
 
     @Override
@@ -929,7 +941,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     private static String[] getDescriptionArray(boolean autoPullAvailable) {
         List<String> strings = new ArrayList<>(8);
         strings.add("Advanced fluid input for Multiblocks");
-        strings.add("Hatch Tier: " + TIER_COLORS[autoPullAvailable ? 10 : 8] + VN[autoPullAvailable ? 10 : 8]);
+        strings.add("Hatch Tier: " + TIER_COLORS[autoPullAvailable ? 9 : 8] + VN[autoPullAvailable ? 9 : 8]);
         strings.add("Retrieves directly from ME");
         strings.add("Keeps 16 fluid types in stock");
 

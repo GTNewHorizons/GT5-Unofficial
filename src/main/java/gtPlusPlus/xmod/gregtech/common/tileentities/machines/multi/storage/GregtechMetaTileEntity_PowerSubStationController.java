@@ -69,9 +69,9 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
-import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.objects.Logger;
@@ -149,7 +149,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
         final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(24)),
-                new GTRenderedTexture(
+                TextureFactory.of(
                     aActive ? Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE
                         : Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER) };
         }
@@ -172,7 +172,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
     private void checkMachineProblem(String msg, int xOff, int yOff, int zOff) {
         final IGregTechTileEntity te = this.getBaseMetaTileEntity();
         final Block tBlock = te.getBlockOffset(xOff, yOff, zOff);
-        final byte tMeta = te.getMetaIDOffset(xOff, yOff, zOff);
+        final int tMeta = te.getMetaIDOffset(xOff, yOff, zOff);
         String name = tBlock.getLocalizedName();
         String problem = msg + ": (" + xOff + ", " + yOff + ", " + zOff + ") " + name + ":" + tMeta;
         checkMachineProblem(problem);

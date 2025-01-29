@@ -587,9 +587,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials HeavyFuel;
     public static Materials LPG;
 
-    public static Materials FluidNaquadahFuel;
-    public static Materials EnrichedNaquadria;
-
     public static Materials ReinforceGlass;
     public static Materials BioMediumRaw;
     public static Materials BioMediumSterilized;
@@ -2297,6 +2294,64 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             MaterialsUEVplus.ProtoHalkonite,
             MaterialsUEVplus.HotExoHalkonite,
             MaterialsUEVplus.ExoHalkonite);
+
+        SubTag.MULTI_PLATE.addTo(
+            Adamantium,
+            Aluminium,
+            Americium,
+            BlackPlutonium,
+            BlackSteel,
+            Bronze,
+            CallistoIce,
+            Cobalt,
+            Copper,
+            CosmicNeutronium,
+            CrystallinePinkSlime,
+            Desh,
+            Duralumin,
+            Europium,
+            Gold,
+            HSSG,
+            HSSS,
+            Infinity,
+            InfinityCatalyst,
+            Iridium,
+            Iron,
+            Lead,
+            Ledox,
+            Magnesium,
+            MaterialsKevlar.Kevlar,
+            MelodicAlloy,
+            MeteoricIron,
+            Mithril,
+            MysteriousCrystal,
+            Mytryl,
+            Naquadah,
+            Naquadria,
+            Neutronium,
+            Nickel,
+            Oriharukon,
+            Osmiridium,
+            Osmium,
+            Paper,
+            Platinum,
+            Plutonium,
+            Polybenzimidazole,
+            Polycaprolactam,
+            Polytetrafluoroethylene,
+            Quantium,
+            Shadow,
+            SiliconSG,
+            Silver,
+            StainlessSteel,
+            Steel,
+            Sunnarium,
+            Thaumium,
+            Tin,
+            Titanium,
+            Trinium,
+            Tungsten,
+            TungstenSteel);
 
         SubTag.FOOD.addTo(
             MeatRaw,

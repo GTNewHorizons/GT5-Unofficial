@@ -3,7 +3,6 @@ package gregtech.common.covers;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.util.GTModHandler;
 
 public class CoverSteamRegulator extends CoverFluidRegulator {
 
@@ -13,6 +12,6 @@ public class CoverSteamRegulator extends CoverFluidRegulator {
 
     @Override
     protected boolean canTransferFluid(FluidStack fluid) {
-        return GTModHandler.isAnySteam(fluid) || GTModHandler.isSuperHeatedSteam(fluid);
+        return CoverSteamValve.isFluidCompatible(fluid);
     }
 }

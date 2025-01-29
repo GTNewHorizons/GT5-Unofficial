@@ -754,7 +754,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         for (ItemStack stack : tDataStickList) {
             GTRecipe.RecipeAssemblyLine recipe = findRecipe(stack);
             if (recipe == null) {
-                result = CheckRecipeResultRegistry.NO_RECIPE;
+                if (result == CheckRecipeResultRegistry.NO_DATA_STICKS) result = CheckRecipeResultRegistry.NO_RECIPE;
                 continue;
             }
             if (recipe.mEUt > inputVoltage) {
@@ -931,6 +931,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         NBTTagCompound tag = accessor.getNBTData();
         String machineProgressString = GTWaila.getMachineProgressString(
             tag.getBoolean("isActive"),
+            tag.getBoolean("isAllowedToWork"),
             tag.getInteger("maxProgress"),
             tag.getInteger("progress"));
         currentTip.remove(machineProgressString);

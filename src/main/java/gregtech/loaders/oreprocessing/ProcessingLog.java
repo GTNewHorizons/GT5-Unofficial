@@ -1,13 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
-import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
-import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
-import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
-import static gregtech.api.recipe.RecipeMaps.latheRecipes;
-import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.*;
 import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -39,7 +33,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                 .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(2))
                 .itemOutputs(
                     ItemList.IC2_Resin.get(1L),
-                    GTModHandler.getIC2Item("plantBall", 1L),
+                    ItemList.IC2_Plantball.get(1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
                 .outputChances(5000, 3750, 2500, 2500)
@@ -198,6 +192,16 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             if (tStack != null) {
                 ItemStack tPlanks = GTUtility.copyOrNull(tStack);
                 if (tPlanks != null) {
+                    tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(GTUtility.copyAmount(1, aStack))
+                        .itemOutputs(
+                            GTUtility.copyOrNull(tPlanks),
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+                        .fluidInputs(Materials.Lubricant.getFluid(1L))
+                        .duration(10 * SECONDS)
+                        .eut(8)
+                        .addTo(cutterRecipes);
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))
                         .itemOutputs(
@@ -220,17 +224,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .duration(20 * SECONDS)
                         .eut(8)
                         .addTo(cutterRecipes);
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack))
-                        .itemOutputs(
-                            GTUtility.copyAmount(
-                                GTMod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
-                                tStack),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
-                        .fluidInputs(Materials.Lubricant.getFluid(1))
-                        .duration(10 * SECONDS)
-                        .eut(8)
-                        .addTo(cutterRecipes);
                     GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, aStack));
                     GTModHandler.addCraftingRecipe(
                         GTUtility.copyAmount(
@@ -251,6 +244,11 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         }
     }
 
+    /**
+     * Add Pyrolyse Oven Recipes for Logs.
+     * Used in NHCoreMod.
+     */
+    @SuppressWarnings("unused")
     public static void addPyrolyeOvenRecipes(ItemStack logStack) {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(16, logStack), GTUtility.getIntegratedCircuit(1))

@@ -221,7 +221,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 .findAssemblyLineRecipeFromDataStick(tDataStick, false);
 
             if (tLookupResult.getType() == AssemblyLineUtils.LookupResultType.INVALID_STICK) {
-                result = CheckRecipeResultRegistry.NO_RECIPE;
+                if (result == CheckRecipeResultRegistry.NO_DATA_STICKS) result = CheckRecipeResultRegistry.NO_RECIPE;
                 continue;
             }
 
@@ -231,7 +231,8 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             if (tLookupResult.getType() != AssemblyLineUtils.LookupResultType.VALID_STACK_AND_VALID_HASH) {
                 tRecipe = AssemblyLineUtils.processDataStick(tDataStick);
                 if (tRecipe == null) {
-                    result = CheckRecipeResultRegistry.NO_RECIPE;
+                    if (result == CheckRecipeResultRegistry.NO_DATA_STICKS)
+                        result = CheckRecipeResultRegistry.NO_RECIPE;
                     continue;
                 }
             }
@@ -261,7 +262,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                         mInputHatches.size(),
                         tRecipe.mFluidInputs.length);
                 }
-                result = CheckRecipeResultRegistry.NO_RECIPE;
+                if (result == CheckRecipeResultRegistry.NO_DATA_STICKS) result = CheckRecipeResultRegistry.NO_RECIPE;
                 continue;
             }
 
@@ -301,13 +302,13 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             // Check Inputs allign
             int[] itemConsumptions = GTRecipe.RecipeAssemblyLine.getItemConsumptionAmountArray(mInputBusses, tRecipe);
             if (itemConsumptions == null || itemConsumptions.length == 0) {
-                result = CheckRecipeResultRegistry.NO_RECIPE;
+                if (result == CheckRecipeResultRegistry.NO_DATA_STICKS) result = CheckRecipeResultRegistry.NO_RECIPE;
                 continue;
             }
             currentParallel = (int) GTRecipe.RecipeAssemblyLine
                 .maxParallelCalculatedByInputItems(mInputBusses, currentParallel, itemConsumptions, inputsFromME);
             if (currentParallel <= 0) {
-                result = CheckRecipeResultRegistry.NO_RECIPE;
+                if (result == CheckRecipeResultRegistry.NO_DATA_STICKS) result = CheckRecipeResultRegistry.NO_RECIPE;
                 continue;
             }
             tStacks = itemConsumptions;
@@ -324,7 +325,8 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                     tRecipe.mFluidInputs,
                     fluidsFromME);
                 if (currentParallel <= 0) {
-                    result = CheckRecipeResultRegistry.NO_RECIPE;
+                    if (result == CheckRecipeResultRegistry.NO_DATA_STICKS)
+                        result = CheckRecipeResultRegistry.NO_RECIPE;
                     continue;
                 }
                 tFluids = tRecipe.mFluidInputs;

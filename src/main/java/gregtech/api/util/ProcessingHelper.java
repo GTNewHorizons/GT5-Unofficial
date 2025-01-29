@@ -13,8 +13,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.api.logic.FluidInventoryLogic;
-import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -63,14 +61,6 @@ public class ProcessingHelper {
      */
     private ItemStack[] itemInputs;
     /**
-     * The inputs of the machine for current recipe check
-     */
-    private ItemInventoryLogic itemInputInventory;
-    /**
-     * The output item inventory of the machine
-     */
-    private ItemInventoryLogic itemOutputInventory;
-    /**
      * The outputs of the recipe with the applied parallel
      */
     private ItemStack[] itemOutputs;
@@ -78,14 +68,6 @@ public class ProcessingHelper {
      * The inputs of the multiblock for the current recipe check
      */
     private FluidStack[] fluidInputs;
-    /**
-     * The inputs of the machine for the current recipe check
-     */
-    private FluidInventoryLogic fluidInputInventory;
-    /**
-     * The output fluid inventory of the machine;
-     */
-    private FluidInventoryLogic fluidOutputInventory;
     /**
      * The outputs of the recipe with the applied parallel
      */
@@ -325,18 +307,6 @@ public class ProcessingHelper {
         return this;
     }
 
-    @Nonnull
-    public ProcessingHelper setItemInputInventory(ItemInventoryLogic itemInputInventory) {
-        this.itemInputInventory = itemInputInventory;
-        return this;
-    }
-
-    @Nonnull
-    public ProcessingHelper setFluidInputInventory(FluidInventoryLogic fluidInputInventory) {
-        this.fluidInputInventory = fluidInputInventory;
-        return this;
-    }
-
     /**
      * Sets method for calculating max parallel from given inputs.
      */
@@ -350,18 +320,6 @@ public class ProcessingHelper {
      */
     public ProcessingHelper setInputConsumer(InputConsumer inputConsumer) {
         this.inputConsumer = inputConsumer;
-        return this;
-    }
-
-    @Nonnull
-    public ProcessingHelper setItemOutputInventory(ItemInventoryLogic itemOutputInventory) {
-        this.itemOutputInventory = itemOutputInventory;
-        return this;
-    }
-
-    @Nonnull
-    public ProcessingHelper setFluidOutputInventory(FluidInventoryLogic fluidOutputInventory) {
-        this.fluidOutputInventory = fluidOutputInventory;
         return this;
     }
 

@@ -29,7 +29,6 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
-import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
@@ -71,9 +70,9 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()) };
     }
 
-    protected abstract GTRenderedTexture getFrontOverlay();
+    protected abstract ITexture getFrontOverlay();
 
-    protected abstract GTRenderedTexture getFrontOverlayActive();
+    protected abstract ITexture getFrontOverlayActive();
 
     public abstract int getTierRecipes();
 
@@ -393,8 +392,12 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
                         .translateToLocalFormatted("GTPP.waila.steam.use", formatNumbers(actualEnergyUsage * 20)));
             }
         }
-        currentTip
-            .add(GTWaila.getMachineProgressString(isActive, tag.getInteger("maxProgress"), tag.getInteger("progress")));
+        currentTip.add(
+            GTWaila.getMachineProgressString(
+                isActive,
+                tag.getBoolean("isAllowedToWork"),
+                tag.getInteger("maxProgress"),
+                tag.getInteger("progress")));
         // Show ns on the tooltip
         if (GTMod.gregtechproxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");

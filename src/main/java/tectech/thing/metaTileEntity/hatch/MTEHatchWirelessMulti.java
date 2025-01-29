@@ -16,10 +16,19 @@ import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.math.LongMath;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
+import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
@@ -57,6 +66,7 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirel
             0,
             new String[] { GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
                 GRAY + "Does not connect to wires. This block withdraws EU from the network.",
+                translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
                 AuthorColen + GRAY + BOLD + " & " + BLUE + BOLD + "Cloud",
                 translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
                     + YELLOW
@@ -235,5 +245,51 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirel
         if (euToTransfer <= 0) return; // nothing to transfer
         if (!addEUToGlobalEnergyMap(owner_uuid, -euToTransfer)) return;
         setEUVar(currentEU + euToTransfer);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        if (Amperes != maxAmperes) {
+            aNBT.setInteger("amperes", Amperes);
+        }
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        int savedAmperes = aNBT.getInteger("amperes");
+        if (savedAmperes != 0) {
+            Amperes = savedAmperes;
+        }
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        GTUIInfos.openGTTileEntityUI(this.getBaseMetaTileEntity(), aPlayer);
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        final int x = getGUIWidth() / 2 - 37;
+        final int y = getGUIHeight() / 5 - 7;
+        builder.widget(
+            TextWidget.localised("GT5U.machines.laser_hatch.amperage")
+                .setPos(x, y)
+                .setSize(74, 14))
+            .widget(
+                new NumericWidget().setSetter(val -> Amperes = (int) val)
+                    .setGetter(() -> Amperes)
+                    .setBounds(1, maxAmperes)
+                    .setScrollValues(1, 4, 64)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(70, 18)
+                    .setPos(x, y + 16)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
     }
 }

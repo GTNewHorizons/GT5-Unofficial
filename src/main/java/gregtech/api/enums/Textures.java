@@ -890,6 +890,21 @@ public class Textures {
         OVERLAY_SIDE_INDUSTRIAL_APIARY_ACTIVE,
         OVERLAY_SIDE_INDUSTRIAL_APIARY_ACTIVE_GLOW,
 
+        OVERLAY_TOP_RTG_ACTIVE,
+        OVERLAY_TOP_RTG_ACTIVE_GLOW,
+        OVERLAY_TOP_RTG,
+        OVERLAY_SIDE_RTG_ACTIVE,
+        OVERLAY_SIDE_RTG_ACTIVE_GLOW,
+        OVERLAY_SIDE_RTG,
+
+        OVERLAY_CHARCOAL_PIT,
+        OVERLAY_CHARCOAL_PIT_ACTIVE,
+        OVERLAY_CHARCOAL_PIT_ACTIVE_GLOW,
+
+        OVERLAY_FRONT_SEISMIC_PROSPECTOR,
+        OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE,
+        OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE_GLOW,
+
         OVERLAY_ADV_PUMP,
         OVERLAY_TELEPORTER,
         OVERLAY_TELEPORTER_GLOW,
@@ -1460,7 +1475,12 @@ public class Textures {
         NEUTRONIUM_STABLE_CASING,
         EXTREME_DENSITY_CASING,
         RADIATION_ABSORBENT_CASING,
-        HAWKING_GLASS;
+        HAWKING_GLASS,
+        OVERLAY_NANITE_HATCH,
+        OVERLAY_NANITE_HATCH_GLOW
+
+        // semicolon after the comment to reduce merge conflicts
+        ;
 
         /**
          * Icon for Fresh CFoam
@@ -1774,7 +1794,7 @@ public class Textures {
          * page 2: 0-15 solenoid coils
          * page 8: 0-111 TecTech, 112-127 GT casing 6
          * page 12: 0-127 GlodBlock
-         * page 16: 0-15 GT glass 1, 16-31 GT casing 9, 32-47 GT glass 2, 48-63 GT casing 10, 64-79 GT casing 11
+         * page 16: 0-15 GT glass 1, 16-31 GT casing 9, 32-47 GT glass 2, 48-63 GT casing 10, 64-79 GT casing 11, 80-95 GT casing 12
          * page 42: 0-126 glee8e, 127 KekzTech LSC base
          */
         // spotless:on

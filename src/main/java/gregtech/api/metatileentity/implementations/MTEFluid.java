@@ -1,7 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GTValues.ALL_VALID_SIDES;
-import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.enums.Mods.Translocator;
 import static gregtech.api.metatileentity.implementations.MTEFluid.Border.BOTTOM;
@@ -30,6 +29,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -68,6 +68,8 @@ import gregtech.common.config.Other;
 import gregtech.common.covers.CoverDrain;
 import gregtech.common.covers.CoverFluidRegulator;
 import gregtech.common.covers.CoverInfo;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEFluid extends MetaPipeEntity {
 
@@ -358,38 +360,30 @@ public class MTEFluid extends MetaPipeEntity {
                 tFluid.amount -= 5;
                 sendSound((byte) 9);
                 if (tTemperature > 320) {
-                    try {
-                        for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorld()
-                            .getEntitiesWithinAABB(
-                                EntityLivingBase.class,
-                                AxisAlignedBB.getBoundingBox(
-                                    getBaseMetaTileEntity().getXCoord() - 2,
-                                    getBaseMetaTileEntity().getYCoord() - 2,
-                                    getBaseMetaTileEntity().getZCoord() - 2,
-                                    getBaseMetaTileEntity().getXCoord() + 3,
-                                    getBaseMetaTileEntity().getYCoord() + 3,
-                                    getBaseMetaTileEntity().getZCoord() + 3))) {
-                            GTUtility.applyHeatDamage(tLiving, (tTemperature - 300) / 25.0F);
-                        }
-                    } catch (Throwable e) {
-                        if (D1) e.printStackTrace(GTLog.err);
+                    for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorld()
+                        .getEntitiesWithinAABB(
+                            EntityLivingBase.class,
+                            AxisAlignedBB.getBoundingBox(
+                                getBaseMetaTileEntity().getXCoord() - 2,
+                                getBaseMetaTileEntity().getYCoord() - 2,
+                                getBaseMetaTileEntity().getZCoord() - 2,
+                                getBaseMetaTileEntity().getXCoord() + 3,
+                                getBaseMetaTileEntity().getYCoord() + 3,
+                                getBaseMetaTileEntity().getZCoord() + 3))) {
+                        GTUtility.applyHeatDamage(tLiving, (tTemperature - 300) / 25.0F);
                     }
                 } else if (tTemperature < 260) {
-                    try {
-                        for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorld()
-                            .getEntitiesWithinAABB(
-                                EntityLivingBase.class,
-                                AxisAlignedBB.getBoundingBox(
-                                    getBaseMetaTileEntity().getXCoord() - 2,
-                                    getBaseMetaTileEntity().getYCoord() - 2,
-                                    getBaseMetaTileEntity().getZCoord() - 2,
-                                    getBaseMetaTileEntity().getXCoord() + 3,
-                                    getBaseMetaTileEntity().getYCoord() + 3,
-                                    getBaseMetaTileEntity().getZCoord() + 3))) {
-                            GTUtility.applyFrostDamage(tLiving, (270 - tTemperature) / 12.5F);
-                        }
-                    } catch (Throwable e) {
-                        if (D1) e.printStackTrace(GTLog.err);
+                    for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorld()
+                        .getEntitiesWithinAABB(
+                            EntityLivingBase.class,
+                            AxisAlignedBB.getBoundingBox(
+                                getBaseMetaTileEntity().getXCoord() - 2,
+                                getBaseMetaTileEntity().getYCoord() - 2,
+                                getBaseMetaTileEntity().getZCoord() - 2,
+                                getBaseMetaTileEntity().getXCoord() + 3,
+                                getBaseMetaTileEntity().getYCoord() + 3,
+                                getBaseMetaTileEntity().getZCoord() + 3))) {
+                        GTUtility.applyFrostDamage(tLiving, (270 - tTemperature) / 12.5F);
                     }
                 }
             }
@@ -938,6 +932,43 @@ public class MTEFluid extends MetaPipeEntity {
             return drainFromIndex(aFluid.amount, doDrain, i);
         }
         return null;
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+
+        // Basic pipe stats
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.item.pipe.capacity") + ": "
+                + EnumChatFormatting.BLUE
+                + GTUtility.formatNumbers(mCapacity * 20L)
+                + " L/s");
+
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.item.pipe.heat_resistance") + ": "
+                + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(mHeatResistance)
+                + "K");
+
+        // Gas handling info
+        if (mGasProof) {
+            currenttip.add(
+                StatCollector.translateToLocal("GT5U.item.pipe.gas_proof") + ": "
+                    + EnumChatFormatting.GREEN
+                    + StatCollector.translateToLocal("GT5U.item.pipe.gas_proof.yes"));
+        } else {
+            currenttip.add(
+                StatCollector.translateToLocal("GT5U.item.pipe.gas_proof") + ": "
+                    + EnumChatFormatting.RED
+                    + StatCollector.translateToLocal("GT5U.item.pipe.gas_proof.no"));
+        }
+
+        // Multi-pipe info
+        if (mPipeAmount > 1) {
+            currenttip.add(
+                StatCollector.translateToLocal("GT5U.item.pipe.amount") + ": " + EnumChatFormatting.AQUA + mPipeAmount);
+        }
     }
 
     private static EnumMap<Border, ForgeDirection> borderMap(ForgeDirection topSide, ForgeDirection bottomSide,

@@ -41,6 +41,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -1185,7 +1186,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         final NBTTagCompound tag = accessor.getNBTData();
 
         if (tag.getBoolean("stutteringSingleBlock")) {
-            currenttip.add("Status: insufficient energy");
+            currenttip.add(StatCollector.translateToLocal(getWailaStutteringLine(tag)));
         } else {
             boolean isActive = tag.getBoolean("isActiveSingleBlock");
             if (isActive) {
@@ -1225,6 +1226,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             currenttip.add(
                 GTWaila.getMachineProgressString(
                     isActive,
+                    tag.getBoolean("isAllowedToWorkSingleBlock"),
                     tag.getInteger("maxProgressSingleBlock"),
                     tag.getInteger("progressSingleBlock")));
         }
@@ -1242,6 +1244,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                     .name()));
     }
 
+    private static @NotNull String getWailaStutteringLine(NBTTagCompound tag) {
+        return tag.getBoolean("blockedSteamVentSingleBlock") ? "GT5U.waila.status.obstructed_steam_vent"
+            : "GT5U.waila.status.insufficient_energy";
+    }
+
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
@@ -1251,10 +1258,12 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         tag.setInteger("maxProgressSingleBlock", mMaxProgresstime);
         tag.setInteger("mainFacingSingleBlock", mMainFacing.ordinal());
         tag.setBoolean("stutteringSingleBlock", mStuttering);
+        tag.setBoolean("blockedSteamVentSingleBlock", cannotVentSteam());
 
         final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
         if (tileEntity != null) {
             tag.setBoolean("isActiveSingleBlock", tileEntity.isActive());
+            tag.setBoolean("isAllowedToWorkSingleBlock", tileEntity.isAllowedToWork());
             tag.setInteger(
                 "outputFacingSingleBlock",
                 tileEntity.getFrontFacing()
@@ -1563,7 +1572,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
     protected GTTooltipDataCache.TooltipData getErrorTooltip() {
         if (isSteampowered()) {
-            if ((getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0) {
+            if (cannotVentSteam()) {
                 return mTooltipCache.getData(STALLED_VENT_TOOLTIP);
             }
         }
@@ -1573,6 +1582,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 StatCollector.translateToLocal(POWER_SOURCE_KEY + (isSteampowered() ? "steam" : "power")));
         }
         return null;
+    }
+
+    private boolean cannotVentSteam() {
+        return (getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0;
     }
 
     protected static int getCapacityForTier(int tier) {
