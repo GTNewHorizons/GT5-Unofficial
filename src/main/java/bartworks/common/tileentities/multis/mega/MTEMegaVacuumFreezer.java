@@ -29,8 +29,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -60,10 +58,8 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasingsAbstract;
 
@@ -409,24 +405,12 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        currentCoolingFluid = findSubspaceCoolingFluid();
 
-            @Nonnull
-            @Override
-            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                // Check if the freezer is T2
-                if (mTier == 1) return super.createOverclockCalculator(recipe);
-
-                // First try to detect the current fluid used for subspace cooling.
-                currentCoolingFluid = findSubspaceCoolingFluid();
-
-                return super.createOverclockCalculator(recipe)
-                    .setMachineHeat(currentCoolingFluid == null ? 0 : currentCoolingFluid.perfectOverclocks * 1800)
-                    .setRecipeHeat(0)
-                    .setHeatOC(true)
-                    .setHeatDiscount(false);
-            }
-        }.setMaxParallel(Configuration.Multiblocks.megaMachinesMax);
+        return new ProcessingLogic().setHeatOC(true)
+            .setHeatDiscount(false)
+            .setMachineHeat(currentCoolingFluid == null ? 0 : currentCoolingFluid.perfectOverclocks * 1800)
+            .setMaxParallel(Configuration.Multiblocks.megaMachinesMax);
     }
 
     @Override

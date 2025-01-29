@@ -67,7 +67,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.common.pollution.PollutionConfig;
 
 public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace> implements ISurvivalConstructable {
@@ -299,22 +298,17 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
-            @Nonnull
-            @Override
-            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
-                    .setMachineHeat(MTEMegaBlastFurnace.this.mHeatingCapacity)
-                    .setHeatOC(true)
-                    .setHeatDiscount(true);
-            }
-
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
                 return recipe.mSpecialValue <= MTEMegaBlastFurnace.this.mHeatingCapacity
                     ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
-        }.setMaxParallel(Configuration.Multiblocks.megaMachinesMax);
+        }.setHeatOC(true)
+            .setHeatDiscount(true)
+            .setHeatDiscountMultiplier(0.95)
+            .setMachineHeat(MTEMegaBlastFurnace.this.mHeatingCapacity)
+            .setMaxParallel(Configuration.Multiblocks.megaMachinesMax);
     }
 
     @Override

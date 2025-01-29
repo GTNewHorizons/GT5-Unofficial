@@ -41,7 +41,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.ProcessingHelper;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -194,8 +194,8 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         return new ProcessingLogic() {
 
             @Override
-            protected @NotNull ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
-                return super.createParallelHelper(modifyRecipe(recipe));
+            protected @NotNull ProcessingHelper createProcessingHelper(@NotNull GTRecipe recipe) {
+                return super.createProcessingHelper(modifyRecipe(recipe));
             }
 
             private GTRecipe modifyRecipe(GTRecipe recipe) {

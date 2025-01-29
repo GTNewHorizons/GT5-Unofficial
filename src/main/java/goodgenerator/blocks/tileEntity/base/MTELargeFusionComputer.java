@@ -62,7 +62,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.ProcessingHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
@@ -424,9 +424,9 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
 
             @NotNull
             @Override
-            protected ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
+            protected ProcessingHelper createProcessingHelper(@NotNull GTRecipe recipe) {
                 // When the fusion first loads and is still processing, it does the recipe check without consuming.
-                return super.createParallelHelper(recipe).setConsumption(!mRunningOnLoad);
+                return super.createProcessingHelper(recipe).setConsumption(!mRunningOnLoad);
             }
 
             @NotNull

@@ -13,7 +13,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.ProcessingHelper;
+import gregtech.api.util.ProcessingResult;
 
 /**
  * Logic class to calculate result of recipe check from inputs.
@@ -43,6 +44,12 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
     protected double speedBoost = 1.0;
     protected boolean amperageOC = true;
     protected boolean isCleanroom;
+
+    // Heat related parameters
+    protected boolean heatOC;
+    protected boolean heatDiscount;
+    protected double heatDiscountMultiplier;
+    protected int machineHeat;
 
     // #region Setters
 
@@ -180,6 +187,26 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
         return getThis();
     }
 
+    public P setHeatOC(boolean heatOC) {
+        this.heatOC = heatOC;
+        return getThis();
+    }
+
+    public P setHeatDiscount(boolean heatDiscount) {
+        this.heatDiscount = heatDiscount;
+        return getThis();
+    }
+
+    public P setHeatDiscountMultiplier(double heatDiscountMultiplier) {
+        this.heatDiscountMultiplier = heatDiscountMultiplier;
+        return getThis();
+    }
+
+    public P setMachineHeat(int machineHeat) {
+        this.machineHeat = machineHeat;
+        return getThis();
+    }
+
     /**
      * Clears calculated results (and provided machine inputs) to prepare for the next machine operation.
      */
@@ -229,8 +256,7 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
      * At this point, inputs have been already consumed.
      */
     @Nonnull
-    protected CheckRecipeResult applyRecipe(@Nonnull GTRecipe recipe, @Nonnull ParallelHelper helper,
-        @Nonnull OverclockCalculator calculator, @Nonnull CheckRecipeResult result) {
+    protected CheckRecipeResult applyRecipe(@Nonnull GTRecipe recipe, @Nonnull ProcessingResult result) {
         if (recipe.mCanBeBuffered) {
             lastRecipe = recipe;
         } else {
@@ -267,7 +293,7 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
     /**
      * Override to tweak final duration that will be set as a result of this logic class.
      */
-    protected double calculateDuration(@Nonnull GTRecipe recipe, @Nonnull ParallelHelper helper,
+    protected double calculateDuration(@Nonnull GTRecipe recipe, @Nonnull ProcessingHelper helper,
         @Nonnull OverclockCalculator calculator) {
         return calculator.getDuration() * helper.getDurationMultiplierDouble();
     }

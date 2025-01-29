@@ -49,8 +49,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
@@ -246,35 +244,9 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
                 return recipe.mSpecialValue <= getCoilLevel().getHeat() ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
-
-            @NotNull
-            @Override
-            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setHeatOC(true)
-                    .setHeatDiscount(true)
-                    .setRecipeHeat(recipe.mSpecialValue)
-                    .setMachineHeat((int) getCoilLevel().getHeat());
-            }
-
-            @NotNull
-            @Override
-            protected ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
-                return new ParallelHelper().setRecipe(recipe)
-                    .setItemInputs(inputItems)
-                    .setFluidInputs(inputFluids)
-                    .setAvailableEUt(availableVoltage * availableAmperage)
-                    .setMachine(machine, protectItems, protectFluids)
-                    .setRecipeLocked(recipeLockableMachine, isRecipeLocked)
-                    .setMaxParallel(maxParallel)
-                    .setEUtModifier(
-                        euModifier
-                            * Math.pow(0.95F, Math.floor((getCoilLevel().getHeat() - recipe.mSpecialValue) / 900F)))
-                    .enableBatchMode(batchSize)
-                    .setConsumption(true)
-                    .setOutputCalculation(true);
-            }
-
-        }.setSpeedBonus(1F / 2.2F)
+        }.setHeatOC(true)
+            .setHeatDiscount(true)
+            .setSpeedBonus(1F / 2.2F)
             .setEuModifier(0.9F)
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }

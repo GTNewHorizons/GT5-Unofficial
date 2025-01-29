@@ -204,14 +204,14 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setSpeedBoost(100.0 / (100 + 5 * mLevel))
-                    .setHeatOC(true)
-                    .setRecipeHeat(0)
-                    // Need to multiply by 2 because heat OC is done only once every 1800 and this one does it once
-                    // every
-                    // 900
-                    .setMachineHeat((int) (getCoilLevel().getHeat() * 2));
+                    .setRecipeHeat(0);
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setHeatOC(true)
+            .setHeatDiscount(false)
+            // Requires doubling because heat OC is normally done every 1800 degrees, but this machine does it every
+            // 900.
+            .setMachineHeat((int) (getCoilLevel().getHeat() * 2))
+            .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     public HeatingCoilLevel getCoilLevel() {

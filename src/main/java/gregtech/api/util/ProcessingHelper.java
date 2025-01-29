@@ -22,7 +22,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SingleRecipeCheck;
 
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
-public class ParallelHelper {
+public class ProcessingHelper {
 
     private static final double MAX_BATCH_MODE_TICK_TIME = 128;
     /**
@@ -52,7 +52,7 @@ public class ParallelHelper {
     /**
      * The maximum possible parallel possible for the multiblock
      */
-    private int maxParallel = 1;
+    private int maxParallels = 1;
     /**
      * The Batch Modifier applied when batch mode is enabled. 1 does nothing. 2 doubles max possible
      * parallel, but also duration
@@ -131,6 +131,22 @@ public class ParallelHelper {
      */
     private int outputMultiplier = 1;
     /**
+     * Are perfect heat overclocks enabled?
+     */
+    private boolean heatOC;
+    /**
+     * Are heat discounts enabled?
+     */
+    private boolean heatDiscount;
+    /**
+     * Energy discount if heatDiscount is used. Applied for every 900 degrees above the recipe requirement.
+     */
+    private double heatDiscountMultiplier;
+    /**
+     * Heat of the machine used for processing.
+     */
+    private int machineHeat;
+    /**
      * Method for calculating max parallel from given inputs.
      */
     private MaxParallelCalculator maxParallelCalculator = GTRecipe::maxParallelCalculatedByInputs;
@@ -139,10 +155,6 @@ public class ParallelHelper {
      */
     private InputConsumer inputConsumer = GTRecipe::consumeInput;
 
-    /**
-     * Calculator to use for overclocking
-     */
-    private OverclockCalculator calculator;
     @Nonnull
     private CheckRecipeResult result = CheckRecipeResultRegistry.NONE;
 
@@ -150,19 +162,13 @@ public class ParallelHelper {
 
     private Function<Integer, FluidStack[]> customFluidOutputCalculation;
 
-    /**
-     * MuTE Mode this is a mode for changing how the GT_ParallelHelper works as Mutes don't use ItemStack and FluidStack
-     * arrays for inputs
-     */
-    private boolean muteMode = false;
-
-    public ParallelHelper() {}
+    public ProcessingHelper() {}
 
     /**
      * Sets machine, with current configuration for void protection mode.
      */
     @Nonnull
-    public ParallelHelper setMachine(IVoidable machine) {
+    public ProcessingHelper setMachine(IVoidable machine) {
         return setMachine(machine, machine.protectsExcessItem(), machine.protectsExcessFluid());
     }
 
@@ -170,7 +176,7 @@ public class ParallelHelper {
      * Sets machine, with void protection mode forcibly.
      */
     @Nonnull
-    public ParallelHelper setMachine(IVoidable machine, boolean protectExcessItem, boolean protectExcessFluid) {
+    public ProcessingHelper setMachine(IVoidable machine, boolean protectExcessItem, boolean protectExcessFluid) {
         this.protectExcessItem = protectExcessItem;
         this.protectExcessFluid = protectExcessFluid;
         this.machine = machine;
@@ -181,13 +187,13 @@ public class ParallelHelper {
      * Sets the recipe, which will be used for the parallel calculation
      */
     @Nonnull
-    public ParallelHelper setRecipe(@Nonnull GTRecipe aRecipe) {
+    public ProcessingHelper setRecipe(@Nonnull GTRecipe aRecipe) {
         recipe = Objects.requireNonNull(aRecipe);
         return this;
     }
 
     @Nonnull
-    public ParallelHelper setRecipeLocked(IRecipeLockable singleRecipeMachine, boolean isRecipeLocked) {
+    public ProcessingHelper setRecipeLocked(IRecipeLockable singleRecipeMachine, boolean isRecipeLocked) {
         this.singleRecipeMachine = singleRecipeMachine;
         this.isRecipeLocked = isRecipeLocked;
         return this;
@@ -197,7 +203,7 @@ public class ParallelHelper {
      * Sets the items available for the recipe check
      */
     @Nonnull
-    public ParallelHelper setItemInputs(ItemStack... aItemInputs) {
+    public ProcessingHelper setItemInputs(ItemStack... aItemInputs) {
         this.itemInputs = aItemInputs;
         return this;
     }
@@ -206,7 +212,7 @@ public class ParallelHelper {
      * Sets the fluid inputs available for the recipe check
      */
     @Nonnull
-    public ParallelHelper setFluidInputs(FluidStack... aFluidInputs) {
+    public ProcessingHelper setFluidInputs(FluidStack... aFluidInputs) {
         this.fluidInputs = aFluidInputs;
         return this;
     }
@@ -215,7 +221,7 @@ public class ParallelHelper {
      * Sets the available eut when trying for more parallels
      */
     @Nonnull
-    public ParallelHelper setAvailableEUt(long aAvailableEUt) {
+    public ProcessingHelper setAvailableEUt(long aAvailableEUt) {
         this.availableEUt = aAvailableEUt;
         return this;
     }
@@ -224,7 +230,7 @@ public class ParallelHelper {
      * Sets the modifier for recipe eut. 1 does nothing 0.9 is 10% less. 1.1 is 10% more
      */
     @Nonnull
-    public ParallelHelper setEUtModifier(double aEUtModifier) {
+    public ProcessingHelper setEUtModifier(double aEUtModifier) {
         this.eutModifier = aEUtModifier;
         return this;
     }
@@ -234,7 +240,7 @@ public class ParallelHelper {
      * Only useful for item outputs for sure.
      */
     @Nonnull
-    public ParallelHelper setChanceMultiplier(double chanceMultiplier) {
+    public ProcessingHelper setChanceMultiplier(double chanceMultiplier) {
         this.chanceMultiplier = chanceMultiplier;
         return this;
     }
@@ -243,14 +249,8 @@ public class ParallelHelper {
      * Sets the item/fluid output multiplier. 1 does nothing. 2 doubles the item and fluid outputs.
      */
     @Nonnull
-    public ParallelHelper setOutputMultiplier(int outputMultiplier) {
+    public ProcessingHelper setOutputMultiplier(int outputMultiplier) {
         this.outputMultiplier = outputMultiplier;
-        return this;
-    }
-
-    @Nonnull
-    public ParallelHelper setCalculator(OverclockCalculator calculator) {
-        this.calculator = calculator;
         return this;
     }
 
@@ -260,7 +260,7 @@ public class ParallelHelper {
      * @param consume Should we consume inputs
      */
     @Nonnull
-    public ParallelHelper setConsumption(boolean consume) {
+    public ProcessingHelper setConsumption(boolean consume) {
         this.consume = consume;
         return this;
     }
@@ -269,18 +269,27 @@ public class ParallelHelper {
      * Sets the MaxParallel a multi can handle
      */
     @Nonnull
-    public ParallelHelper setMaxParallel(int maxParallel) {
-        this.maxParallel = maxParallel;
+    public ProcessingHelper setMaxParallels(int maxParallels) {
+        this.maxParallels = maxParallels;
         return this;
     }
 
     /**
-     * Enables Batch mode. Can do up to an additional processed recipes of mCurrentParallel * mBatchModifier A batch
-     * modifier of 1 does nothing
+     * Enables Batch mode, allowing additional recipes to be processed in parallel
+     * with proportionally increased processing time. Processes up to mCurrentParallel * BatchModifier recipes.
      */
     @Nonnull
-    public ParallelHelper enableBatchMode(int batchModifier) {
-        this.batchMode = batchModifier > 1;
+    public ProcessingHelper setBatchMode(boolean batchMode) {
+        this.batchMode = batchMode;
+        return this;
+    }
+
+    /**
+     * Sets the batch modifier, which determines how many additional recipes
+     * can be processed in parallel when Batch Mode is enabled.
+     **/
+    @Nonnull
+    public ProcessingHelper setBatchModifier(int batchModifier) {
         this.batchModifier = batchModifier;
         return this;
     }
@@ -291,7 +300,7 @@ public class ParallelHelper {
      * @param calculateOutputs Should we calculate outputs with the helper or not
      */
     @Nonnull
-    public ParallelHelper setOutputCalculation(boolean calculateOutputs) {
+    public ProcessingHelper setOutputCalculation(boolean calculateOutputs) {
         this.calculateOutputs = calculateOutputs;
         return this;
     }
@@ -301,7 +310,7 @@ public class ParallelHelper {
      * array
      */
     @Nonnull
-    public ParallelHelper setCustomItemOutputCalculation(Function<Integer, ItemStack[]> custom) {
+    public ProcessingHelper setCustomItemOutputCalculation(Function<Integer, ItemStack[]> custom) {
         customItemOutputCalculation = custom;
         return this;
     }
@@ -311,25 +320,19 @@ public class ParallelHelper {
      * array
      */
     @Nonnull
-    public ParallelHelper setCustomFluidOutputCalculation(Function<Integer, FluidStack[]> custom) {
+    public ProcessingHelper setCustomFluidOutputCalculation(Function<Integer, FluidStack[]> custom) {
         customFluidOutputCalculation = custom;
         return this;
     }
 
     @Nonnull
-    public ParallelHelper setMuTEMode(boolean muteMode) {
-        this.muteMode = muteMode;
-        return this;
-    }
-
-    @Nonnull
-    public ParallelHelper setItemInputInventory(ItemInventoryLogic itemInputInventory) {
+    public ProcessingHelper setItemInputInventory(ItemInventoryLogic itemInputInventory) {
         this.itemInputInventory = itemInputInventory;
         return this;
     }
 
     @Nonnull
-    public ParallelHelper setFluidInputInventory(FluidInventoryLogic fluidInputInventory) {
+    public ProcessingHelper setFluidInputInventory(FluidInventoryLogic fluidInputInventory) {
         this.fluidInputInventory = fluidInputInventory;
         return this;
     }
@@ -337,7 +340,7 @@ public class ParallelHelper {
     /**
      * Sets method for calculating max parallel from given inputs.
      */
-    public ParallelHelper setMaxParallelCalculator(MaxParallelCalculator maxParallelCalculator) {
+    public ProcessingHelper setMaxParallelCalculator(MaxParallelCalculator maxParallelCalculator) {
         this.maxParallelCalculator = maxParallelCalculator;
         return this;
     }
@@ -345,36 +348,44 @@ public class ParallelHelper {
     /**
      * Sets method for consuming inputs after determining how many parallels it can execute.
      */
-    public ParallelHelper setInputConsumer(InputConsumer inputConsumer) {
+    public ProcessingHelper setInputConsumer(InputConsumer inputConsumer) {
         this.inputConsumer = inputConsumer;
         return this;
     }
 
     @Nonnull
-    public ParallelHelper setItemOutputInventory(ItemInventoryLogic itemOutputInventory) {
+    public ProcessingHelper setItemOutputInventory(ItemInventoryLogic itemOutputInventory) {
         this.itemOutputInventory = itemOutputInventory;
         return this;
     }
 
     @Nonnull
-    public ParallelHelper setFluidOutputInventory(FluidInventoryLogic fluidOutputInventory) {
+    public ProcessingHelper setFluidOutputInventory(FluidInventoryLogic fluidOutputInventory) {
         this.fluidOutputInventory = fluidOutputInventory;
         return this;
     }
 
-    /**
-     * Finishes the GT_ParallelHelper. Anything changed after this will not effect anything
-     */
     @Nonnull
-    public ParallelHelper build() {
-        if (built) {
-            throw new IllegalStateException("Tried to build twice");
-        }
-        if (recipe == null) {
-            throw new IllegalStateException("Recipe is not set");
-        }
-        built = true;
-        determineParallel();
+    public ProcessingHelper setHeatOC(boolean heatOC) {
+        this.heatOC = heatOC;
+        return this;
+    }
+
+    @Nonnull
+    public ProcessingHelper setHeatDiscount(boolean heatDiscount) {
+        this.heatDiscount = heatDiscount;
+        return this;
+    }
+
+    @Nonnull
+    public ProcessingHelper setHeatDiscountMultiplier(double heatDiscountMultiplier) {
+        this.heatDiscountMultiplier = heatDiscountMultiplier;
+        return this;
+    }
+
+    @Nonnull
+    public ProcessingHelper setMachineHeat(int machineHeat) {
+        this.machineHeat = machineHeat;
         return this;
     }
 
@@ -439,72 +450,75 @@ public class ParallelHelper {
     /**
      * Called by build(). Determines the parallels and everything else that needs to be done at build time
      */
-    protected void determineParallel() {
-        if (maxParallel <= 0) {
-            return;
-        }
-        if (itemInputs == null) {
-            itemInputs = new ItemStack[0];
-        }
-        if (fluidInputs == null) {
-            fluidInputs = new FluidStack[0];
+    public ProcessingResult process() {
+        // Sanitize inputs
+        this.itemInputs = this.itemInputs == null ? new ItemStack[0] : this.itemInputs;
+        this.fluidInputs = this.fluidInputs == null ? new FluidStack[0] : this.fluidInputs;
+
+        // If not consuming, perform deep copy
+        if (!this.consume) {
+            this.itemInputs = Arrays.stream(this.itemInputs)
+                .map(ItemStack::copy)
+                .toArray(ItemStack[]::new);
+            this.fluidInputs = Arrays.stream(this.fluidInputs)
+                .map(FluidStack::copy)
+                .toArray(FluidStack[]::new);
         }
 
-        if (!consume) {
-            copyInputs();
+        // Truncate and sanitize the outputs
+        final ItemStack[] truncatedItemOutputs = this.recipe.mOutputs == null ? new ItemStack[0]
+            : Arrays.copyOfRange(
+                this.recipe.mOutputs,
+                0,
+                Math.min(this.machine.getItemOutputLimit(), this.recipe.mOutputs.length));
+        final FluidStack[] truncatedFluidOutputs = this.recipe.mFluidOutputs == null ? new FluidStack[0]
+            : Arrays.copyOfRange(
+                this.recipe.mFluidOutputs,
+                0,
+                Math.min(this.machine.getFluidOutputLimit(), this.recipe.mFluidOutputs.length));
+
+        // Calculate heat discount
+        final double heatDiscount = this.heatDiscount
+            ? Math.pow(this.heatDiscountMultiplier, Math.max(0, (this.recipe.mSpecialValue - this.machineHeat) / 900))
+            : 1;
+
+        // Check whether there is sufficient energy
+        final int EUt = (int) Math.ceil(this.recipe.mEUt * this.eutModifier * heatDiscount);
+        if (this.availableEUt < EUt) {
+            return ProcessingResult.failure(CheckRecipeResultRegistry.insufficientPower(EUt));
         }
 
-        if (calculator == null) {
-            calculator = new OverclockCalculator().setEUt(availableEUt)
-                .setRecipeEUt(recipe.mEUt)
-                .setDuration(recipe.mDuration)
-                .setEUtDiscount(eutModifier);
-        }
+        // TODO
+        // double overclockedDuration;
+        // int subTickParallels;
+        // if (overclockedDuration < 1) {
+        // subTickParallels = GTUtility.safeInt((long) (maxParallels / overclockedDuration), 0);
+        // }
 
-        final int tRecipeEUt = (int) Math.ceil(recipe.mEUt * eutModifier);
-        if (availableEUt < tRecipeEUt) {
-            result = CheckRecipeResultRegistry.insufficientPower(tRecipeEUt);
-            return;
-        }
+        // int batchParallels;
+        // if (batchMode) {
+        // batchParallels = GTUtility.safeInt((long) maxParallels * batchModifier, 0);
+        // }
 
-        // Save the original max parallel before calculating our overclocking under 1 tick
-        int originalMaxParallel = maxParallel;
-        calculator.setParallel(originalMaxParallel);
-        double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
-        if (tickTimeAfterOC < 1) {
-            maxParallel = GTUtility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
-        }
-
-        int maxParallelBeforeBatchMode = maxParallel;
-        if (batchMode) {
-            maxParallel = GTUtility.safeInt((long) maxParallel * batchModifier, 0);
-        }
-
-        final ItemStack[] truncatedItemOutputs = recipe.mOutputs != null
-            ? Arrays.copyOfRange(recipe.mOutputs, 0, Math.min(machine.getItemOutputLimit(), recipe.mOutputs.length))
-            : new ItemStack[0];
-        final FluidStack[] truncatedFluidOutputs = recipe.mFluidOutputs != null ? Arrays
-            .copyOfRange(recipe.mFluidOutputs, 0, Math.min(machine.getFluidOutputLimit(), recipe.mFluidOutputs.length))
-            : new FluidStack[0];
-
-        SingleRecipeCheck recipeCheck = null;
-        SingleRecipeCheck.Builder tSingleRecipeCheckBuilder = null;
-        if (isRecipeLocked && singleRecipeMachine != null) {
-            recipeCheck = singleRecipeMachine.getSingleRecipeCheck();
-            if (recipeCheck == null) {
-                // Machine is configured to lock to a single recipe, but haven't built the recipe checker yet.
-                // Build the checker on next successful recipe.
-                RecipeMap<?> recipeMap = singleRecipeMachine.getRecipeMap();
-                if (recipeMap != null) {
-                    tSingleRecipeCheckBuilder = SingleRecipeCheck.builder(recipeMap)
-                        .setBefore(itemInputs, fluidInputs);
-                }
-            }
-        }
+        // todo
+//        SingleRecipeCheck recipeCheck = null;
+//        SingleRecipeCheck.Builder tSingleRecipeCheckBuilder = null;
+//        if (isRecipeLocked && singleRecipeMachine != null) {
+//            recipeCheck = singleRecipeMachine.getSingleRecipeCheck();
+//            if (recipeCheck == null) {
+//                // Machine is configured to lock to a single recipe, but haven't built the recipe checker yet.
+//                // Build the checker on next successful recipe.
+//                RecipeMap<?> recipeMap = singleRecipeMachine.getRecipeMap();
+//                if (recipeMap != null) {
+//                    tSingleRecipeCheckBuilder = SingleRecipeCheck.builder(recipeMap)
+//                        .setBefore(itemInputs, fluidInputs);
+//                }
+//            }
+//        }
 
         // Let's look at how many parallels we can get with void protection
-        if (protectExcessItem || protectExcessFluid) {
-            if (machine == null && !muteMode) {
+        if (this.protectExcessItem || this.protectExcessFluid) {
+            if (this.machine == null && !this.muteMode) {
                 throw new IllegalStateException("Tried to calculate void protection, but machine is not set");
             }
             VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
@@ -514,26 +528,23 @@ public class ParallelHelper {
                 .setChangeGetter(recipe::getOutputChance)
                 .setOutputMultiplier(outputMultiplier)
                 .setChanceMultiplier(chanceMultiplier)
-                .setMaxParallel(maxParallel)
+                .setMaxParallel(maxParallels)
                 .setItemOutputInventory(itemOutputInventory)
                 .setFluidOutputInventory(fluidOutputInventory)
-                .setMuTEMode(muteMode)
                 .build();
-            maxParallel = Math.min(voidProtectionHelper.getMaxParallel(), maxParallel);
+            maxParallels = Math.min(voidProtectionHelper.getMaxParallel(), maxParallels);
             if (voidProtectionHelper.isItemFull()) {
-                result = CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
-                return;
+                return ProcessingResult.failure(CheckRecipeResultRegistry.ITEM_OUTPUT_FULL);
             }
             if (voidProtectionHelper.isFluidFull()) {
-                result = CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
-                return;
+                return ProcessingResult.failure(CheckRecipeResultRegistry.FLUID_OUTPUT_FULL);
             }
         }
 
-        maxParallelBeforeBatchMode = Math.min(maxParallel, maxParallelBeforeBatchMode);
+        maxParallelBeforeBatchMode = Math.min(maxParallels, maxParallelBeforeBatchMode);
 
         // determine normal parallel
-        int actualMaxParallel = tRecipeEUt > 0 ? (int) Math.min(maxParallelBeforeBatchMode, availableEUt / tRecipeEUt)
+        int actualMaxParallel = EUt > 0 ? (int) Math.min(maxParallelBeforeBatchMode, availableEUt / EUt)
             : maxParallelBeforeBatchMode;
         if (recipeCheck != null) {
             currentParallel = recipeCheck.checkRecipeInputs(true, actualMaxParallel, itemInputs, fluidInputs);
@@ -568,7 +579,7 @@ public class ParallelHelper {
             final int maxExtraParallels = (int) Math.floor(
                 Math.min(
                     currentParallel * Math.min(batchMultiplierMax - 1, batchModifier - 1),
-                    maxParallel - currentParallel));
+                    maxParallels - currentParallel));
             if (recipeCheck != null) {
                 tExtraParallels = recipeCheck.checkRecipeInputs(true, maxExtraParallels, itemInputs, fluidInputs);
             } else {
@@ -586,21 +597,6 @@ public class ParallelHelper {
             calculateFluidOutputs(truncatedFluidOutputs);
         }
         result = CheckRecipeResultRegistry.SUCCESSFUL;
-    }
-
-    protected void copyInputs() {
-        ItemStack[] itemInputsToUse;
-        FluidStack[] fluidInputsToUse;
-        itemInputsToUse = new ItemStack[itemInputs.length];
-        for (int i = 0; i < itemInputs.length; i++) {
-            itemInputsToUse[i] = itemInputs[i].copy();
-        }
-        fluidInputsToUse = new FluidStack[fluidInputs.length];
-        for (int i = 0; i < fluidInputs.length; i++) {
-            fluidInputsToUse[i] = fluidInputs[i].copy();
-        }
-        itemInputs = itemInputsToUse;
-        fluidInputs = fluidInputsToUse;
     }
 
     private void calculateItemOutputs(ItemStack[] truncatedItemOutputs) {

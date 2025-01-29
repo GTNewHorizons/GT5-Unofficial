@@ -27,7 +27,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.ProcessingHelper;
 
 /**
  * Processing logic class, dedicated for MultiTileEntities.
@@ -86,7 +86,7 @@ public class MuTEProcessingLogic<P extends MuTEProcessingLogic<P>> extends Abstr
         CheckRecipeResult result = CheckRecipeResultRegistry.INTERNAL_ERROR;
         for (GTRecipe recipe : recipes) {
             Objects.requireNonNull(recipe);
-            ParallelHelper helper = createParallelHelper(recipe, itemInput, fluidInput);
+            ProcessingHelper helper = createParallelHelper(recipe, itemInput, fluidInput);
             OverclockCalculator calculator = createOverclockCalculator(recipe);
             helper.setCalculator(calculator);
             helper.build();
@@ -112,15 +112,16 @@ public class MuTEProcessingLogic<P extends MuTEProcessingLogic<P>> extends Abstr
     }
 
     @Nonnull
-    protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe, @Nonnull ItemInventoryLogic itemInput,
+    protected ProcessingHelper createParallelHelper(@Nonnull GTRecipe recipe, @Nonnull ItemInventoryLogic itemInput,
         @Nonnull FluidInventoryLogic fluidInput) {
-        return new ParallelHelper().setRecipe(recipe)
+        return new ProcessingHelper().setRecipe(recipe)
             .setItemInputInventory(itemInput)
             .setFluidInputInventory(fluidInput)
             .setAvailableEUt(availableVoltage * availableAmperage)
-            .setMaxParallel(maxParallel)
+            .setMaxParallels(maxParallel)
             .setEUtModifier(euModifier)
-            .enableBatchMode(batchSize)
+            .setBatchMode(batchSize > 1)
+            .setBatchModifier(batchSize)
             .setConsumption(true)
             .setOutputCalculation(true)
             .setMuTEMode(true);

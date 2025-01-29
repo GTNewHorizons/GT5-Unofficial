@@ -42,7 +42,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.ProcessingHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -134,7 +134,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
 
             @NotNull
             @Override
-            protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
+            protected ProcessingHelper createProcessingHelper(@Nonnull GTRecipe recipe) {
                 GTRecipe adjustedRecipe = recipe.copy();
 
                 // Hack the recipe logic to not consume water, so that we can explode.
@@ -154,7 +154,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
                         }
                     }
                 }
-                return super.createParallelHelper(adjustedRecipe);
+                return super.createProcessingHelper(adjustedRecipe);
             }
         };
     }

@@ -93,7 +93,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
 import gregtech.api.util.OutputHatchWrapper;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.ProcessingHelper;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -1007,7 +1007,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     /**
      * Gets the pollution this Device outputs to a Muffler per tick (10000 = one Pullution Block)
-     * 
+     *
      * @param aStack what is in controller
      */
     public int getPollutionPerTick(ItemStack aStack) {
@@ -1019,7 +1019,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * the code of the multiblock.
      *
      * This returns the unmodified raw pollution value, not the one after muffler discounts.
-     * 
+     *
      * @param aStack what is in controller
      */
     public int getPollutionPerSecond(ItemStack aStack) {
@@ -2173,7 +2173,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * If void protection is enabled, it also checks for {@link #protectsExcessItem()} and
      * {@link #protectsExcessFluid()}, so you don't need to call them along with this method.
      * <p>
-     * If you're using {@link ParallelHelper}, it will handle void protection and return 0 parallel
+     * If you're using {@link ProcessingHelper}, it will handle void protection and return 0 parallel
      * if all the output cannot be dumped into buses / hatches. In that case you won't use this method.
      */
     protected boolean canOutputAll(@Nonnull GTRecipe recipe) {

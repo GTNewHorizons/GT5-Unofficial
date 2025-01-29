@@ -15,8 +15,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.ProcessingHelper;
+import gregtech.api.util.ProcessingResult;
 
 /**
  * Logic class to calculate result of recipe check from inputs, based on recipemap.
@@ -144,22 +144,18 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
      */
     @Nonnull
     private CalculationResult validateAndCalculateRecipe(@Nonnull GTRecipe recipe) {
-        CheckRecipeResult result = validateRecipe(recipe);
-        if (!result.wasSuccessful()) {
-            return CalculationResult.ofFailure(result);
+        CheckRecipeResult validationResult = validateRecipe(recipe);
+        if (!validationResult.wasSuccessful()) {
+            return CalculationResult.ofFailure(validationResult);
         }
 
-        ParallelHelper helper = createParallelHelper(recipe);
-        OverclockCalculator calculator = createOverclockCalculator(recipe);
-        helper.setCalculator(calculator);
-        helper.build();
+        ProcessingResult processingResult = createProcessingHelper(recipe).process();
 
-        if (!helper.getResult()
-            .wasSuccessful()) {
-            return CalculationResult.ofFailure(helper.getResult());
+        if (!processingResult.wasSuccessful()) {
+            return CalculationResult.ofFailure(processingResult.getResult());
         }
 
-        return CalculationResult.ofSuccess(applyRecipe(recipe, helper, calculator, result));
+        return CalculationResult.ofSuccess(applyRecipe(recipe, processingResult));
     }
 
     /**
@@ -186,16 +182,21 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
      * Override to tweak parallel logic if needed.
      */
     @Nonnull
-    protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
-        return new ParallelHelper().setRecipe(recipe)
-            .setItemInputs(inputItems)
-            .setFluidInputs(inputFluids)
-            .setAvailableEUt(availableVoltage * availableAmperage)
-            .setMachine(machine, protectItems, protectFluids)
-            .setRecipeLocked(recipeLockableMachine, isRecipeLocked)
-            .setMaxParallel(maxParallel)
-            .setEUtModifier(euModifier)
-            .enableBatchMode(batchSize)
+    protected ProcessingHelper createProcessingHelper(@Nonnull GTRecipe recipe) {
+        return new ProcessingHelper().setRecipe(recipe)
+            .setItemInputs(this.inputItems)
+            .setFluidInputs(this.inputFluids)
+            .setAvailableEUt(this.availableVoltage * this.availableAmperage)
+            .setMachine(this.machine, this.protectItems, this.protectFluids)
+            .setRecipeLocked(this.recipeLockableMachine, this.isRecipeLocked)
+            .setMaxParallels(this.maxParallel)
+            .setEUtModifier(this.euModifier)
+            .setBatchMode(this.batchSize > 1)
+            .setBatchModifier(this.batchSize)
+            .setHeatOC(this.heatOC)
+            .setHeatDiscount(this.heatDiscount)
+            .setHeatDiscountMultiplier(this.heatDiscountMultiplier)
+            .setMachineHeat(this.machineHeat)
             .setConsumption(true)
             .setOutputCalculation(true);
     }

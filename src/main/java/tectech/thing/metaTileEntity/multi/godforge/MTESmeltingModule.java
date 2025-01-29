@@ -127,13 +127,13 @@ public class MTESmeltingModule extends MTEBaseModule {
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
                     .setRecipeHeat(recipe.mSpecialValue)
-                    .setHeatOC(true)
-                    .setHeatDiscount(true)
-                    .setMachineHeat(Math.max(recipe.mSpecialValue, getHeatForOC()))
+                    .setMachineHeat(Math.max(recipe.mSpecialValue, getHeatForOC())) // TODO
                     .setHeatDiscountMultiplier(getHeatEnergyDiscount())
                     .setDurationDecreasePerOC(getOverclockTimeFactor());
             }
-        };
+        }.setHeatOC(true)
+            .setHeatDiscount(true)
+            .setHeatDiscountMultiplier(0.95);
     }
 
     @Override
