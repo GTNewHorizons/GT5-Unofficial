@@ -8,6 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
@@ -17,6 +19,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.conditions.RedstoneCondition;
+import gregtech.common.gui.modularui2.cover.CoverControlsWorkGui;
+import gregtech.common.gui.modularui2.cover.CoverGui;
 import gregtech.common.gui.mui1.cover.ControlsWorkUIFactory;
 
 public class CoverControlsWork extends CoverLegacyData {
@@ -44,6 +49,36 @@ public class CoverControlsWork extends CoverLegacyData {
 
     public CoverControlsWork(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
+    }
+
+    public RedstoneCondition getRedstoneCondition() {
+        if (coverData % 3 == 0) {
+            return RedstoneCondition.ENABLE_WITH_REDSTONE;
+        } else if (coverData % 3 == 1) {
+            return RedstoneCondition.DISABLE_WITH_REDSTONE;
+        }
+        return RedstoneCondition.DISABLE;
+    }
+
+    public void setRedstoneCondition(RedstoneCondition mode) {
+        boolean safeMode = isSafeMode();
+        coverData = switch (mode) {
+            case ENABLE_WITH_REDSTONE -> safeMode ? 3 : 0;
+            case DISABLE_WITH_REDSTONE -> safeMode ? 4 : 1;
+            case DISABLE -> safeMode ? 5 : 2;
+        };
+    }
+
+    public boolean isSafeMode() {
+        return coverData > 2;
+    }
+
+    public void setSafeMode(boolean safeMode) {
+        if (safeMode && coverData < 3) {
+            coverData = coverData + 3;
+        } else if (!safeMode && coverData > 2) {
+            coverData = coverData - 3;
+        }
     }
 
     @Override
@@ -186,6 +221,11 @@ public class CoverControlsWork extends CoverLegacyData {
     }
 
     // GUI stuff
+
+    @Override
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverControlsWorkGui();
+    }
 
     @Override
     public boolean hasCoverGUI() {
