@@ -130,7 +130,8 @@ public class MTEHatchEnergyMulti extends MTEHatch {
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setLong("amperage", Amperes);
     }
@@ -142,7 +143,9 @@ public class MTEHatchEnergyMulti extends MTEHatch {
         currenttip.add(
             translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(accessor.getNBTData().getLong("amperage") * V[mTier])
+                + GTUtility.formatNumbers(
+                    accessor.getNBTData()
+                        .getLong("amperage") * V[mTier])
                 + EnumChatFormatting.RESET
                 + " EU/t");
     }
