@@ -93,7 +93,9 @@ public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnec
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("amperes", Amperes);
+        if (Amperes != maxAmperes) {
+            aNBT.setInteger("amperes", Amperes);
+        }
     }
 
     @Override
