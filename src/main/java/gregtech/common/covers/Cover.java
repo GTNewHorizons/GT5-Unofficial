@@ -300,7 +300,16 @@ public class Cover implements IGuiHolder<CoverGuiData> {
      */
     @Override
     public ModularPanel buildUI(CoverGuiData guiData, PanelSyncManager syncManager) {
-        return new CoverGui<>().createBasePanel(guiData, syncManager);
+        return getCoverGui().createBasePanel(guiData, syncManager);
+    }
+
+    /**
+     * Override this method to provide a different GUI implementation for your cover in MUI2.
+     *
+     * @return The variant of CoverGui that can build a GUI for this cover
+     */
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverGui<>();
     }
 
     // endregion
