@@ -7,8 +7,12 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
@@ -126,13 +130,19 @@ public class MTEHatchEnergyMulti extends MTEHatch {
     }
 
     @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setLong("amperage", Amperes);
+    }
+
+    @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(
             translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(Amperes * V[mTier])
+                + GTUtility.formatNumbers(accessor.getNBTData().getLong("amperage") * V[mTier])
                 + EnumChatFormatting.RESET
                 + " EU/t");
     }
