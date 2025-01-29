@@ -14,7 +14,6 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.objects.XSTR;
-import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SingleRecipeCheck;
@@ -459,24 +458,24 @@ public class ProcessingHelper {
         // }
 
         // todo
-//        SingleRecipeCheck recipeCheck = null;
-//        SingleRecipeCheck.Builder tSingleRecipeCheckBuilder = null;
-//        if (isRecipeLocked && singleRecipeMachine != null) {
-//            recipeCheck = singleRecipeMachine.getSingleRecipeCheck();
-//            if (recipeCheck == null) {
-//                // Machine is configured to lock to a single recipe, but haven't built the recipe checker yet.
-//                // Build the checker on next successful recipe.
-//                RecipeMap<?> recipeMap = singleRecipeMachine.getRecipeMap();
-//                if (recipeMap != null) {
-//                    tSingleRecipeCheckBuilder = SingleRecipeCheck.builder(recipeMap)
-//                        .setBefore(itemInputs, fluidInputs);
-//                }
-//            }
-//        }
+        // SingleRecipeCheck recipeCheck = null;
+        // SingleRecipeCheck.Builder tSingleRecipeCheckBuilder = null;
+        // if (isRecipeLocked && singleRecipeMachine != null) {
+        // recipeCheck = singleRecipeMachine.getSingleRecipeCheck();
+        // if (recipeCheck == null) {
+        // // Machine is configured to lock to a single recipe, but haven't built the recipe checker yet.
+        // // Build the checker on next successful recipe.
+        // RecipeMap<?> recipeMap = singleRecipeMachine.getRecipeMap();
+        // if (recipeMap != null) {
+        // tSingleRecipeCheckBuilder = SingleRecipeCheck.builder(recipeMap)
+        // .setBefore(itemInputs, fluidInputs);
+        // }
+        // }
+        // }
 
         // Let's look at how many parallels we can get with void protection
         if (this.protectExcessItem || this.protectExcessFluid) {
-            if (this.machine == null && !this.muteMode) {
+            if (this.machine == null) {
                 throw new IllegalStateException("Tried to calculate void protection, but machine is not set");
             }
             VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
@@ -487,8 +486,6 @@ public class ProcessingHelper {
                 .setOutputMultiplier(outputMultiplier)
                 .setChanceMultiplier(chanceMultiplier)
                 .setMaxParallel(maxParallels)
-                .setItemOutputInventory(itemOutputInventory)
-                .setFluidOutputInventory(fluidOutputInventory)
                 .build();
             maxParallels = Math.min(voidProtectionHelper.getMaxParallel(), maxParallels);
             if (voidProtectionHelper.isItemFull()) {

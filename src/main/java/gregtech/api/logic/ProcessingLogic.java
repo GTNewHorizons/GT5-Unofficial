@@ -54,6 +54,12 @@ public class ProcessingLogic {
     protected double overClockPowerIncrease = 4.0;
     protected boolean amperageOC = true;
 
+    // Heat related parameters
+    protected boolean heatOC;
+    protected boolean heatDiscount;
+    protected double heatDiscountMultiplier;
+    protected int machineHeat;
+
     // Calculated results
     protected ItemStack[] outputItems;
     protected FluidStack[] outputFluids;
@@ -211,6 +217,26 @@ public class ProcessingLogic {
     public ProcessingLogic setOverclock(double timeReduction, double powerIncrease) {
         this.overClockTimeReduction = timeReduction;
         this.overClockPowerIncrease = powerIncrease;
+        return this;
+    }
+
+    public ProcessingLogic setHeatOC(boolean heatOC) {
+        this.heatOC = heatOC;
+        return this;
+    }
+
+    public ProcessingLogic setHeatDiscount(boolean heatDiscount) {
+        this.heatDiscount = heatDiscount;
+        return this;
+    }
+
+    public ProcessingLogic setHeatDiscountMultiplier(double heatDiscountMultiplier) {
+        this.heatDiscountMultiplier = heatDiscountMultiplier;
+        return this;
+    }
+
+    public ProcessingLogic setMachineHeat(int machineHeat) {
+        this.machineHeat = machineHeat;
         return this;
     }
 
@@ -394,8 +420,7 @@ public class ProcessingLogic {
      * At this point, inputs have been already consumed.
      */
     @Nonnull
-    private CheckRecipeResult applyRecipe(@Nonnull GTRecipe recipe, @Nonnull ParallelHelper helper,
-        @Nonnull OverclockCalculator calculator, @Nonnull CheckRecipeResult result) {
+    private CheckRecipeResult applyRecipe(@Nonnull GTRecipe recipe, @Nonnull ProcessingResult result) {
         if (recipe.mCanBeBuffered) {
             lastRecipe = recipe;
         } else {
@@ -486,22 +511,6 @@ public class ProcessingLogic {
             .setMachineHeat(this.machineHeat)
             .setConsumption(true)
             .setOutputCalculation(true);
-    }
-
-    /**
-     * Override to tweak overclock logic if needed.
-     */
-    @Nonnull
-    protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-        return new OverclockCalculator().setRecipeEUt(recipe.mEUt)
-            .setAmperage(availableAmperage)
-            .setEUt(availableVoltage)
-            .setDuration(recipe.mDuration)
-            .setSpeedBoost(speedBoost)
-            .setEUtDiscount(euModifier)
-            .setAmperageOC(amperageOC)
-            .setDurationDecreasePerOC(overClockTimeReduction)
-            .setEUtIncreasePerOC(overClockPowerIncrease);
     }
 
     /**
