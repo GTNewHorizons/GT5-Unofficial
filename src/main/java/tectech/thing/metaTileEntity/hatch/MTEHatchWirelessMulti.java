@@ -129,43 +129,13 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirel
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isEnetInput() {
-        return false;
-    }
-
-    @Override
-    public boolean isInputFacing(ForgeDirection side) {
-        return side == getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
         return false;
     }
 
     @Override
     public long getMinimumStoredEU() {
         return Amperes * V[mTier];
-    }
-
-    @Override
-    public long maxEUInput() {
-        return V[mTier];
     }
 
     @Override
@@ -179,25 +149,8 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirel
     }
 
     @Override
-    public long maxWorkingAmperesIn() {
-        return Amperes;
-    }
-
-    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchWirelessMulti(mName, mTier, Amperes, mDescriptionArray, mTextures);
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
     }
 
     @Override

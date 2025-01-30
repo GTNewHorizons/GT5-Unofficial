@@ -42,7 +42,15 @@ import com.gtnewhorizons.modularui.api.KeyboardUtil;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.GTMod;
-import gregtech.api.enums.*;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.ParticleFX;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
+import gregtech.api.enums.ToolModes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -577,7 +585,7 @@ public class MTEFluid extends MetaPipeEntity implements IKeyHandlerTile {
             if (message.length() > 0) {
                 GTUtility.sendChatToPlayer(
                     aPlayer,
-                    StatCollector.translateToLocal("GT5U.item.pipe.swap") + message.toString());
+                    StatCollector.translateToLocal("GT5U.item.pipe.swap") + " " + message.toString());
             }
 
             // Force updates
