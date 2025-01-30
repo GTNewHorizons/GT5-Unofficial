@@ -267,126 +267,125 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
-        if (KeyboardUtil.isCtrlKeyDown()) {
-            final ItemStack handItem = aPlayer.inventory.getCurrentItem();
-            IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
-            if (!(meta instanceof MTECable handCable)) return false;
-
-            short newMetaID = (short) handItem.getItemDamage(); // This might not be the correct way to get meta ID
-            // Store old values for comparison
-            long oldVoltage = this.mVoltage;
-            long oldAmperage = this.mAmperage;
-
-            // Prevent replacing with same cable type
-            if (this.getClass() == handCable.getClass() && this.mMaterial == handCable.mMaterial
-                && this.mVoltage == handCable.mVoltage
-                && this.mAmperage == handCable.mAmperage) {
-                return false;
-            }
-            short oldMetaID = (short) aBaseMetaTileEntity.getMetaTileID();
-            byte oldConnections = this.mConnections;
-
-            // Create and configure new cable
-            MTECable newCable = new MTECable(
-                handCable.mName,
-                handCable.mThickNess,
-                handCable.mMaterial,
-                handCable.mCableLossPerMeter,
-                handCable.mAmperage,
-                handCable.mVoltage,
-                handCable.mInsulated,
-                handCable.mCanShock);
-            newCable.mConnections = oldConnections;
-
-            // Update ID and entity
-            aBaseMetaTileEntity.setMetaTileID(newMetaID);
-            aBaseMetaTileEntity.setMetaTileEntity(newCable);
-
-            // Force updates
-            aBaseMetaTileEntity.markDirty();
-            aBaseMetaTileEntity.issueTextureUpdate();
-            aBaseMetaTileEntity.issueBlockUpdate();
-            aBaseMetaTileEntity.issueClientUpdate();
-
-            // Handle inventory swapping
-            if (!aPlayer.capabilities.isCreativeMode) {
-                // Create ItemStack for the removed cable
-                ItemStack oldCable = new ItemStack(handItem.getItem(), 1, oldMetaID);
-
-                // Try to give the old cable to the player
-                boolean addedToInventory = false;
-                if (oldCable != null) {
-                    // First try to stack with existing cables
-                    for (int i = 0; i < aPlayer.inventory.mainInventory.length; i++) {
-                        ItemStack slot = aPlayer.inventory.mainInventory[i];
-                        if (slot != null && slot.getItem() == oldCable.getItem()
-                            && slot.getItemDamage() == oldCable.getItemDamage()
-                            && slot.stackSize < slot.getMaxStackSize()) {
-                            slot.stackSize++;
-                            addedToInventory = true;
-                            break;
-                        }
-                    }
-
-                    // If couldn't stack, try to find empty slot
-                    if (!addedToInventory) {
-                        addedToInventory = aPlayer.inventory.addItemStackToInventory(oldCable);
-                    }
-
-                    // If still couldn't add, drop in world
-                    if (!addedToInventory) {
-                        aPlayer.dropPlayerItemWithRandomChoice(oldCable, false);
-                    }
-                }
-
-                // Use one cable from player's hand
-                handItem.stackSize--;
-                if (handItem.stackSize <= 0) {
-                    aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
-                }
-            }
-            // After setting new cable but before inventory handling
-            if (oldAmperage != handCable.mAmperage || oldVoltage != handCable.mVoltage) {
-                StringBuilder message = new StringBuilder();
-
-                // Amperage change
-                if (oldAmperage != handCable.mAmperage) {
-                    message.append(oldAmperage)
-                        .append("A → ")
-                        .append(handCable.mAmperage > oldAmperage ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                        .append(handCable.mAmperage)
-                        .append("A")
-                        .append(EnumChatFormatting.RESET);
-                }
-
-                // Separator if both changed
-                if (oldAmperage != handCable.mAmperage && oldVoltage != handCable.mVoltage) {
-                    message.append(" | ");
-                }
-
-                // Voltage change
-                if (oldVoltage != handCable.mVoltage) {
-                    message.append(oldVoltage)
-                        .append("V → ")
-                        .append(handCable.mVoltage > oldVoltage ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                        .append(handCable.mVoltage)
-                        .append("V")
-                        .append(EnumChatFormatting.RESET);
-                }
-
-                // Send the message using GT's utility method
-                GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    StatCollector.translateToLocal("GT5U.item.cable.swapped") + "" + message.toString());
-            }
-
-            return true;
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        // Only perform the logic if the player is sneaking.
+        if (!aPlayer.isSneaking()) {
+            return;
         }
-        return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
-    }
 
+        // Example of moving your onRightclick logic into onLeftclick:
+
+        // 1. Get the held item and check it.
+        ItemStack handItem = aPlayer.inventory.getCurrentItem();
+        if (handItem == null) {
+            return;
+        }
+
+        // 2. Get the MetaTileEntity from the held item.
+        IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
+        if (!(meta instanceof MTECable handCable)) {
+            return;
+        }
+
+        // 3. Capture and compare old cable properties.
+        short newMetaID = (short) handItem.getItemDamage();
+        long oldVoltage = this.mVoltage;
+        long oldAmperage = this.mAmperage;
+
+        // If the existing cable matches the new cable's class and specs, skip.
+        if (this.getClass() == handCable.getClass()
+            && this.mMaterial == handCable.mMaterial
+            && this.mVoltage == handCable.mVoltage
+            && this.mAmperage == handCable.mAmperage) {
+            return;
+        }
+
+        short oldMetaID = (short) aBaseMetaTileEntity.getMetaTileID();
+        byte oldConnections = this.mConnections;
+
+        // 4. Create a new cable instance and transfer connection info.
+        MTECable newCable = new MTECable(
+            handCable.mName,
+            handCable.mThickNess,
+            handCable.mMaterial,
+            handCable.mCableLossPerMeter,
+            handCable.mAmperage,
+            handCable.mVoltage,
+            handCable.mInsulated,
+            handCable.mCanShock
+        );
+        newCable.mConnections = oldConnections;
+
+        // 5. Update the MetaTileEntity to the new cable.
+        aBaseMetaTileEntity.setMetaTileID(newMetaID);
+        aBaseMetaTileEntity.setMetaTileEntity(newCable);
+
+        // Force updates to sync the changes.
+        aBaseMetaTileEntity.markDirty();
+        aBaseMetaTileEntity.issueTextureUpdate();
+        aBaseMetaTileEntity.issueBlockUpdate();
+        aBaseMetaTileEntity.issueClientUpdate();
+
+        // 6. Swap out the cable in the player's inventory if not in creative mode.
+        if (!aPlayer.capabilities.isCreativeMode) {
+            ItemStack oldCable = new ItemStack(handItem.getItem(), 1, oldMetaID);
+            boolean addedToInventory = false;
+            if (oldCable != null) {
+                // Try stacking with existing inventory.
+                for (int i = 0; i < aPlayer.inventory.mainInventory.length; i++) {
+                    ItemStack slot = aPlayer.inventory.mainInventory[i];
+                    if (slot != null && slot.getItem() == oldCable.getItem()
+                        && slot.getItemDamage() == oldCable.getItemDamage()
+                        && slot.stackSize < slot.getMaxStackSize()) {
+                        slot.stackSize++;
+                        addedToInventory = true;
+                        break;
+                    }
+                }
+                // If you couldn’t stack, add a new item.
+                if (!addedToInventory) {
+                    addedToInventory = aPlayer.inventory.addItemStackToInventory(oldCable);
+                }
+                // If still unsuccessful, drop the old cable.
+                if (!addedToInventory) {
+                    aPlayer.dropPlayerItemWithRandomChoice(oldCable, false);
+                }
+            }
+            // Decrease the held cable quantity.
+            handItem.stackSize--;
+            if (handItem.stackSize <= 0) {
+                aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
+            }
+        }
+
+        // 7. Notify the player if voltage or amperage changed.
+        if (oldAmperage != handCable.mAmperage || oldVoltage != handCable.mVoltage) {
+            StringBuilder message = new StringBuilder();
+            if (oldAmperage != handCable.mAmperage) {
+                message.append(oldAmperage)
+                    .append("A → ")
+                    .append(handCable.mAmperage > oldAmperage
+                        ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                    .append(handCable.mAmperage).append("A")
+                    .append(EnumChatFormatting.RESET);
+            }
+            if (oldAmperage != handCable.mAmperage && oldVoltage != handCable.mVoltage) {
+                message.append(" | ");
+            }
+            if (oldVoltage != handCable.mVoltage) {
+                message.append(oldVoltage)
+                    .append("V → ")
+                    .append(handCable.mVoltage > oldVoltage
+                        ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                    .append(handCable.mVoltage).append("V")
+                    .append(EnumChatFormatting.RESET);
+            }
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                StatCollector.translateToLocal("GT5U.item.cable.swapped") + message
+            );
+        }
+    }
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ) {
