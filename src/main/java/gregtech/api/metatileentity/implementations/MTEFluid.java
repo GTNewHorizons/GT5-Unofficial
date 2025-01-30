@@ -585,7 +585,7 @@ public class MTEFluid extends MetaPipeEntity implements IKeyHandlerTile {
             if (message.length() > 0) {
                 GTUtility.sendChatToPlayer(
                     aPlayer,
-                    StatCollector.translateToLocal("GT5U.item.pipe.swap") + message.toString());
+                    StatCollector.translateToLocal("GT5U.item.pipe.swap") + " " + message.toString());
             }
 
             // Force updates
