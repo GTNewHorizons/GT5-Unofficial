@@ -264,6 +264,8 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         }
     }
 
+
+
     @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         // Only perform the logic if the player is sneaking.
@@ -271,36 +273,45 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             return;
         }
 
-        // Example of moving your onRightclick logic into onLeftclick:
-
-        // 1. Get the held item and check it.
         ItemStack handItem = aPlayer.inventory.getCurrentItem();
         if (handItem == null) {
             return;
         }
 
-        // 2. Get the MetaTileEntity from the held item.
         IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
         if (!(meta instanceof MTECable handCable)) {
             return;
         }
 
-        // 3. Capture and compare old cable properties.
+
+        // 1) Record & disconnect old cable from all sides where it was connected
+        MTECable oldCable = this;
+        byte oldConnections = oldCable.mConnections;
+
+        // We'll remember which sides were connected, so we can reconnect the new cable
+        List<ForgeDirection> oldConnectedSides = new ArrayList<>();
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            if (oldCable.isConnectedAtSide(side)) {
+                oldConnectedSides.add(side);
+            }
+        }
+
+
         short newMetaID = (short) handItem.getItemDamage();
         long oldVoltage = this.mVoltage;
         long oldAmperage = this.mAmperage;
 
-        // If the existing cable matches the new cable's class and specs, skip.
-        if (this.getClass() == handCable.getClass() && this.mMaterial == handCable.mMaterial
+        // If the existing cable has the same specs as what we're holding, skip.
+        if (this.getClass() == handCable.getClass()
+            && this.mMaterial == handCable.mMaterial
             && this.mVoltage == handCable.mVoltage
             && this.mAmperage == handCable.mAmperage) {
             return;
         }
 
         short oldMetaID = (short) aBaseMetaTileEntity.getMetaTileID();
-        byte oldConnections = this.mConnections;
 
-        // 4. Create a new cable instance and transfer connection info.
+        // Construct the new cable
         MTECable newCable = new MTECable(
             handCable.mName,
             handCable.mThickNess,
@@ -309,77 +320,104 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             handCable.mAmperage,
             handCable.mVoltage,
             handCable.mInsulated,
-            handCable.mCanShock);
-        newCable.mConnections = oldConnections;
+            handCable.mCanShock
+        );
 
-        // 5. Update the MetaTileEntity to the new cable.
+
+
+        // Swap in the new cable
         aBaseMetaTileEntity.setMetaTileID(newMetaID);
         aBaseMetaTileEntity.setMetaTileEntity(newCable);
 
-        // Force updates to sync the changes.
         aBaseMetaTileEntity.markDirty();
         aBaseMetaTileEntity.issueTextureUpdate();
         aBaseMetaTileEntity.issueBlockUpdate();
-        aBaseMetaTileEntity.issueClientUpdate();
+        aBaseMetaTileEntity.outputsEnergyTo(ForgeDirection.UNKNOWN, false);
 
-        // 6. Swap out the cable in the player's inventory if not in creative mode.
+
+
+        // 7) Reconnect the *new* cable to the old sides
+        if (newCable.getBaseMetaTileEntity() != null) {
+            // For each side that was previously connected
+            for (ForgeDirection side : oldConnectedSides) {
+                int result = newCable.connect(side);
+                if (result > 0) {
+                    // Also force the neighbor to connect back if it is a cable
+                    IGregTechTileEntity neighborTile =
+                        newCable.getBaseMetaTileEntity().getIGregTechTileEntityAtSide(side);
+                    if (neighborTile != null && neighborTile.getMetaTileEntity() instanceof IConnectable neighborCable) {
+                        neighborCable.connect(side.getOpposite());
+                    }
+                } else {
+                    newCable.disconnect(side);
+                }
+            }
+        } else {
+            GTUtility.sendChatToPlayer(aPlayer, "Warning: new cable's tile is null! No reconnect done.");
+        }
+
+
+
+        // Handle inventory changes (old <-> new cable) if not creative
         if (!aPlayer.capabilities.isCreativeMode) {
-            ItemStack oldCable = new ItemStack(handItem.getItem(), 1, oldMetaID);
+            ItemStack oldCableStack = new ItemStack(handItem.getItem(), 1, oldMetaID);
             boolean addedToInventory = false;
-            if (oldCable != null) {
-                // Try stacking with existing inventory.
+
+            if (oldCableStack != null) {
+                // Try stacking with existing inventory
                 for (int i = 0; i < aPlayer.inventory.mainInventory.length; i++) {
                     ItemStack slot = aPlayer.inventory.mainInventory[i];
-                    if (slot != null && slot.getItem() == oldCable.getItem()
-                        && slot.getItemDamage() == oldCable.getItemDamage()
+                    if (slot != null
+                        && slot.getItem() == oldCableStack.getItem()
+                        && slot.getItemDamage() == oldCableStack.getItemDamage()
                         && slot.stackSize < slot.getMaxStackSize()) {
                         slot.stackSize++;
                         addedToInventory = true;
                         break;
                     }
                 }
-                // If you couldn’t stack, add a new item.
+
+                // If not stacked, add new item
                 if (!addedToInventory) {
-                    addedToInventory = aPlayer.inventory.addItemStackToInventory(oldCable);
+                    addedToInventory = aPlayer.inventory.addItemStackToInventory(oldCableStack);
                 }
-                // If still unsuccessful, drop the old cable.
+                // If still unsuccessful, drop it
                 if (!addedToInventory) {
-                    aPlayer.dropPlayerItemWithRandomChoice(oldCable, false);
+                    aPlayer.dropPlayerItemWithRandomChoice(oldCableStack, false);
                 }
             }
-            // Decrease the held cable quantity.
+
+            // Decrease the held cable quantity
             handItem.stackSize--;
             if (handItem.stackSize <= 0) {
                 aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
             }
         }
 
-        // 7. Notify the player if voltage or amperage changed.
+        // Optionally, notify the player if voltage or amperage changed
         if (oldAmperage != handCable.mAmperage || oldVoltage != handCable.mVoltage) {
             StringBuilder message = new StringBuilder();
             if (oldAmperage != handCable.mAmperage) {
-                message.append(oldAmperage)
-                    .append("A → ")
+                message.append(oldAmperage).append("A → ")
                     .append(handCable.mAmperage > oldAmperage ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                    .append(handCable.mAmperage)
-                    .append("A")
-                    .append(EnumChatFormatting.RESET);
+                    .append(handCable.mAmperage).append("A").append(EnumChatFormatting.RESET);
             }
             if (oldAmperage != handCable.mAmperage && oldVoltage != handCable.mVoltage) {
                 message.append(" | ");
             }
             if (oldVoltage != handCable.mVoltage) {
-                message.append(oldVoltage)
-                    .append("V → ")
+                message.append(oldVoltage).append("V → ")
                     .append(handCable.mVoltage > oldVoltage ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                    .append(handCable.mVoltage)
-                    .append("V")
-                    .append(EnumChatFormatting.RESET);
+                    .append(handCable.mVoltage).append("V").append(EnumChatFormatting.RESET);
             }
-            GTUtility
-                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.item.cable.swapped") + " " + message);
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                StatCollector.translateToLocal("GT5U.item.cable.swapped") + " " + message
+            );
         }
     }
+
+
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
