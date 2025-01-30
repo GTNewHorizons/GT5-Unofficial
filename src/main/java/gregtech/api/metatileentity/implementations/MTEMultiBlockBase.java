@@ -1336,13 +1336,20 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     public boolean drainEnergyInput(long aEU) {
-        if (aEU <= 0) return true;
-        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
-            if (tHatch.getBaseMetaTileEntity()
-                .decreaseStoredEnergyUnits(aEU, false)) return true;
-        }
-        return false;
+    if (aEU <= 0) return true; 
+
+    for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
+        long tDrain = Math.min(tHatch.getBaseMetaTileEntity().getStoredEU(), aEU);
+        tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(tDrain, false);//basicly copied from ExoticEnergyInputHelper, makes machine use all hatches for power
+        aEU -= tDrain;
+        
+        if (aEU <= 0) return true; 
     }
+
+    return false;
+}
+
+
 
     protected static boolean dumpFluid(List<MTEHatchOutput> aOutputHatches, FluidStack copiedFluidStack,
         boolean restrictiveHatchesOnly) {
