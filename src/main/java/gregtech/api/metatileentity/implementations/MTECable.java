@@ -24,8 +24,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.KeyboardUtil;
-
 import cofh.api.energy.IEnergyReceiver;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -293,8 +291,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         long oldAmperage = this.mAmperage;
 
         // If the existing cable matches the new cable's class and specs, skip.
-        if (this.getClass() == handCable.getClass()
-            && this.mMaterial == handCable.mMaterial
+        if (this.getClass() == handCable.getClass() && this.mMaterial == handCable.mMaterial
             && this.mVoltage == handCable.mVoltage
             && this.mAmperage == handCable.mAmperage) {
             return;
@@ -312,8 +309,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             handCable.mAmperage,
             handCable.mVoltage,
             handCable.mInsulated,
-            handCable.mCanShock
-        );
+            handCable.mCanShock);
         newCable.mConnections = oldConnections;
 
         // 5. Update the MetaTileEntity to the new cable.
@@ -364,9 +360,9 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             if (oldAmperage != handCable.mAmperage) {
                 message.append(oldAmperage)
                     .append("A → ")
-                    .append(handCable.mAmperage > oldAmperage
-                        ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                    .append(handCable.mAmperage).append("A")
+                    .append(handCable.mAmperage > oldAmperage ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                    .append(handCable.mAmperage)
+                    .append("A")
                     .append(EnumChatFormatting.RESET);
             }
             if (oldAmperage != handCable.mAmperage && oldVoltage != handCable.mVoltage) {
@@ -375,17 +371,16 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             if (oldVoltage != handCable.mVoltage) {
                 message.append(oldVoltage)
                     .append("V → ")
-                    .append(handCable.mVoltage > oldVoltage
-                        ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                    .append(handCable.mVoltage).append("V")
+                    .append(handCable.mVoltage > oldVoltage ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                    .append(handCable.mVoltage)
+                    .append("V")
                     .append(EnumChatFormatting.RESET);
             }
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal("GT5U.item.cable.swapped") + message
-            );
+            GTUtility
+                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.item.cable.swapped") + " " + message);
         }
     }
+
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ) {
