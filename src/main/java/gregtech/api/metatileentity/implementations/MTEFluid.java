@@ -558,8 +558,6 @@ public class MTEFluid extends MetaPipeEntity {
             message.append(EnumChatFormatting.RESET);
         }
 
-
-
         // Send a chat message if anything changed
         if (message.length() > 0) {
             GTUtility.sendChatToPlayer(
