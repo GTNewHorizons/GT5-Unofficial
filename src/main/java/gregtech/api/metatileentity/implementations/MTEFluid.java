@@ -499,6 +499,7 @@ public class MTEFluid extends MetaPipeEntity {
 
         // Preserve old connections
         newPipe.mConnections = oldConnections;
+        newPipe.mDisableInput = this.mDisableInput;
 
         // Record old pipe parameters
         long oldCapacity = this.mCapacity;
@@ -515,10 +516,10 @@ public class MTEFluid extends MetaPipeEntity {
         // Compare capacity changes
         if (oldCapacity != newPipe.mCapacity) {
             message.append(oldCapacity * 20)
-                .append("L/s → ");
+                .append("L/seconds → ");
             message.append(newPipe.mCapacity > oldCapacity ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
                 .append(newPipe.mCapacity * 20)
-                .append("L/s")
+                .append("L/secs")
                 .append(EnumChatFormatting.RESET);
         }
 
