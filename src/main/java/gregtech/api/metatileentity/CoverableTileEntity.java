@@ -66,6 +66,9 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         .mapToInt(Enum::ordinal)
         .mapToObj(i -> "mCoverData" + i)
         .toArray(String[]::new);
+    private static final String[] COVER_DIRECTION_NAMES = new String[] { "GT5U.interface.coverTabs.down",
+        "GT5U.interface.coverTabs.up", "GT5U.interface.coverTabs.north", "GT5U.interface.coverTabs.south",
+        "GT5U.interface.coverTabs.west", "GT5U.interface.coverTabs.east" };
 
     // New Cover Information
     protected final CoverInfo[] coverInfos = new CoverInfo[] { null, null, null, null, null, null };
@@ -748,9 +751,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @SideOnly(Side.CLIENT)
     protected List<String> getCoverTabTooltip(ForgeDirection side) {
-        final String[] SIDE_TOOLTIPS = new String[] { "GT5U.interface.coverTabs.down", "GT5U.interface.coverTabs.up",
-            "GT5U.interface.coverTabs.north", "GT5U.interface.coverTabs.south", "GT5U.interface.coverTabs.west",
-            "GT5U.interface.coverTabs.east" };
         final CoverInfo coverInfo = getCoverInfoAtSide(side);
         final ItemStack coverItem = coverInfo.getDisplayStack();
         if (coverItem == null) return Collections.emptyList();
@@ -761,7 +761,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final ImmutableList.Builder<String> builder = ImmutableList.builder();
         builder.add(
             (coverHasGUI ? EnumChatFormatting.UNDERLINE : EnumChatFormatting.DARK_GRAY)
-                + StatCollector.translateToLocal(SIDE_TOOLTIPS[side.ordinal()])
+                + StatCollector.translateToLocal(COVER_DIRECTION_NAMES[side.ordinal()])
                 + (coverHasGUI ? EnumChatFormatting.RESET + ": " : ": " + EnumChatFormatting.RESET)
                 + tooltip.get(0));
         builder.addAll(coverInfo.getAdditionalTooltip(coverInfo.getCoverData()));
