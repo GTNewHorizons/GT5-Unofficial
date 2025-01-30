@@ -27,7 +27,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.net.GTPacketSendCoverData;
-import gregtech.api.objects.GTCoverNone;
 import gregtech.api.util.CoverBehaviorBase;
 
 public class GTUIInfos {
@@ -85,7 +84,6 @@ public class GTUIInfos {
                         final TileEntity te = world.getTileEntity(x, y, z);
                         if (!(te instanceof ICoverable gtTileEntity)) return null;
                         final CoverBehaviorBase<?> cover = gtTileEntity.getCoverBehaviorAtSideNew(side);
-                        if (cover instanceof GTCoverNone) return null;
                         return createCoverGuiContainer(
                             player,
                             cover::createWindow,
