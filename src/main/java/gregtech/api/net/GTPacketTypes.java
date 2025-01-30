@@ -37,7 +37,6 @@ public enum GTPacketTypes {
     EIC(27, new PacketEIC()),
     CREATE_TILE_ENTITY(28, new GTPacketCreateTE()),
     NODE_INFO(29, new GTPacketNodeInfo()),
-    KEY_EVENT(30, new GTPacketKeyEvent()),
     // merge conflict prevention comment, keep a trailing comma above
     ;
 
