@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -31,7 +32,6 @@ import gregtech.common.tileentities.machines.IDualInputInventory;
  */
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class ProcessingLogic {
-
     // Traits
     protected IVoidable machine;
     protected IRecipeLockable recipeLockableMachine;
@@ -44,15 +44,21 @@ public class ProcessingLogic {
     protected Supplier<Integer> maxParallelSupplier;
     protected int batchSize = 1;
     protected Supplier<RecipeMap<?>> recipeMapSupplier;
-    protected double euModifier = 1.0;
-    protected double speedBoost = 1.0;
+    protected double eutModifier = 1.0;
     protected long availableVoltage;
     protected long availableAmperage;
     protected boolean protectItems;
     protected boolean protectFluids;
-    protected double overClockTimeReduction = 2.0;
-    protected double overClockPowerIncrease = 4.0;
     protected boolean amperageOC = true;
+
+    // Speed related parameters
+    protected double speedBoost = 1.0;
+    protected Function<GTRecipe, Double> durationSupplier;
+
+    // Overclock related parameters
+    protected boolean overclock;
+    protected Function<Integer, Double> ocEUtModifierSupplier;
+    protected Function<Integer, Double> ocDurationModifierSupplier;
 
     // Heat related parameters
     protected boolean heatOC;
@@ -63,7 +69,7 @@ public class ProcessingLogic {
     // Calculated results
     protected ItemStack[] outputItems;
     protected FluidStack[] outputFluids;
-    protected long calculatedEut;
+    protected long calculatedEUt;
     protected int duration;
     protected int calculatedParallels = 0;
 
@@ -179,14 +185,41 @@ public class ProcessingLogic {
         return this;
     }
 
-    public ProcessingLogic setEuModifier(double modifier) {
-        this.euModifier = modifier;
+    public ProcessingLogic setEUtModifier(double eutModifier) {
+        this.eutModifier = eutModifier;
         return this;
     }
 
     public ProcessingLogic setSpeedBonus(double speedModifier) {
         this.speedBoost = speedModifier;
         return this;
+    }
+
+    public ProcessingLogic setDurationSupplier(Function<GTRecipe, Double> durationSupplier) {
+        this.durationSupplier = durationSupplier;
+        return this;
+    }
+
+    public ProcessingLogic setOverclock(boolean overclock) {
+        this.overclock = overclock;
+        return this;
+    }
+
+    public ProcessingLogic setOCEUtModifierSupplier(Function<Integer, Double> ocEUtModifierSupplier) {
+        this.ocEUtModifierSupplier = ocEUtModifierSupplier;
+        return this;
+    }
+
+    public ProcessingLogic setOCDurationModifierSupplier(Function<Integer, Double> ocDurationModifierSupplier) {
+        this.ocDurationModifierSupplier = ocDurationModifierSupplier;
+        return this;
+    }
+
+    /**
+     * Sets overclock ratio to 4/4.
+     */
+    public ProcessingLogic setPerfectOverclock() {
+        return this.setOCDurationModifierSupplier((overclocks) -> 4.0);
     }
 
     /**
@@ -214,11 +247,11 @@ public class ProcessingLogic {
         return this;
     }
 
-    public ProcessingLogic setOverclock(double timeReduction, double powerIncrease) {
-        this.overClockTimeReduction = timeReduction;
-        this.overClockPowerIncrease = powerIncrease;
-        return this;
-    }
+    // public ProcessingLogic setOverclock(double timeReduction, double powerIncrease) {
+    // this.overClockTimeReduction = timeReduction;
+    // this.overClockPowerIncrease = powerIncrease;
+    // return this;
+    // }
 
     public ProcessingLogic setHeatOC(boolean heatOC) {
         this.heatOC = heatOC;
@@ -238,13 +271,6 @@ public class ProcessingLogic {
     public ProcessingLogic setMachineHeat(int machineHeat) {
         this.machineHeat = machineHeat;
         return this;
-    }
-
-    /**
-     * Sets overclock ratio to 4/4.
-     */
-    public ProcessingLogic enablePerfectOverclock() {
-        return this.setOverclock(4.0, 4.0);
     }
 
     /**
@@ -279,7 +305,7 @@ public class ProcessingLogic {
      * Overwrites calculated EU/t.
      */
     public ProcessingLogic overwriteCalculatedEut(long calculatedEut) {
-        this.calculatedEut = calculatedEut;
+        this.calculatedEUt = calculatedEut;
         return this;
     }
 
@@ -302,7 +328,7 @@ public class ProcessingLogic {
         this.specialSlotItem = null;
         this.outputItems = null;
         this.outputFluids = null;
-        this.calculatedEut = 0;
+        this.calculatedEUt = 0;
         this.duration = 0;
         this.calculatedParallels = 0;
         this.craftingPattern = null;
@@ -435,7 +461,7 @@ public class ProcessingLogic {
             return CheckRecipeResultRegistry.DURATION_OVERFLOW;
         }
 
-        calculatedEut = calculator.getConsumption();
+        calculatedEUt = calculator.getConsumption();
 
         double finalDuration = calculateDuration(recipe, helper, calculator);
         if (finalDuration >= Integer.MAX_VALUE) {
@@ -502,7 +528,11 @@ public class ProcessingLogic {
             .setMachine(this.machine, this.protectItems, this.protectFluids)
             .setRecipeLocked(this.recipeLockableMachine, this.isRecipeLocked)
             .setMaxParallels(this.maxParallel)
-            .setEUtModifier(this.euModifier)
+            .setEUtModifier(this.eutModifier)
+            .setDurationSupplier(this.durationSupplier)
+            .setOverclock(this.overclock)
+            .setOCEUtModifierSupplier(this.ocEUtModifierSupplier)
+            .setOCDurationModifierSupplier(this.ocDurationModifierSupplier)
             .setBatchMode(this.batchSize > 1)
             .setBatchModifier(this.batchSize)
             .setHeatOC(this.heatOC)
@@ -542,8 +572,8 @@ public class ProcessingLogic {
         return duration;
     }
 
-    public long getCalculatedEut() {
-        return calculatedEut;
+    public long getCalculatedEUt() {
+        return calculatedEUt;
     }
 
     public int getCurrentParallels() {

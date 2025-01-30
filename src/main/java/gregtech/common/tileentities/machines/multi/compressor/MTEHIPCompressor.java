@@ -369,14 +369,14 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 setSpeedBonus(1F / 3.5F);
-                setEuModifier(0.75F);
+                setEUtModifier(0.75F);
 
                 int recipeReq = recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0);
 
                 // Nerf when heated
                 if (overheated) {
                     setSpeedBonus(2.5F);
-                    setEuModifier(1.1F);
+                    setEUtModifier(1.1F);
                 }
 
                 // If HIP required, check for overheat and potentially crash

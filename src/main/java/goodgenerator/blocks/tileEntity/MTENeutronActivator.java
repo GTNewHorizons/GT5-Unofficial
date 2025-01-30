@@ -53,11 +53,9 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
@@ -113,14 +111,6 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
 
             @NotNull
             @Override
-            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return OverclockCalculator.ofNoOverclock(recipe)
-                    .setDuration((int) Math.ceil(recipe.mDuration * Math.pow(0.9f, height - 4)))
-                    .setDurationUnderOneTickSupplier(() -> recipe.mDuration * Math.pow(0.9f, height - 4));
-            }
-
-            @NotNull
-            @Override
             public CheckRecipeResult process() {
                 CheckRecipeResult result = super.process();
                 if (!result.wasSuccessful()) {
@@ -132,10 +122,10 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                     overwriteOutputItems(ItemRefer.Radioactive_Waste.get(4));
                 }
                 // NA does not consume power, its hatches do. Set it to 0 to be sure
-                calculatedEut = 0;
+                calculatedEUt = 0;
                 return result;
             }
-        };
+        }.setDurationSupplier((recipe) -> recipe.mDuration * Math.pow(0.9f, this.height - 4));
     }
 
     @Override

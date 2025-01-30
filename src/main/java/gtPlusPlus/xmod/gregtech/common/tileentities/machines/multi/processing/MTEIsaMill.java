@@ -519,6 +519,6 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
                 }
                 return result;
             }
-        }.enablePerfectOverclock();
+        }.setPerfectOverclock();
     }
 }

@@ -312,7 +312,6 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
-
             @Override
             @Nonnull
             protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
@@ -323,7 +322,8 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        }.enablePerfectOverclock();
+        }.setOverclock(true)
+        .setPerfectOverclock();
     }
 
     @NotNull

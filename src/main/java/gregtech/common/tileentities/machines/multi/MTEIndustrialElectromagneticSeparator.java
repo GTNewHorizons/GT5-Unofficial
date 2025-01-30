@@ -282,7 +282,7 @@ public class MTEIndustrialElectromagneticSeparator
                 if (magnetTier != null) {
                     if (!mExoticEnergyHatches.isEmpty() && !magnetTier.supportsExotic)
                         return SimpleCheckRecipeResult.ofFailure("electromagnet_insufficient");
-                    euModifier = magnetTier.euModifier;
+                    eutModifier = magnetTier.euModifier;
                     speedBoost = magnetTier.speedBoost;
                     return CheckRecipeResultRegistry.SUCCESSFUL;
                 }

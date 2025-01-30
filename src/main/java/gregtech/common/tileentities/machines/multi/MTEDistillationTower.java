@@ -188,7 +188,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic();
+        return new ProcessingLogic().setOverclock(true);
     }
 
     protected void onCasingFound() {

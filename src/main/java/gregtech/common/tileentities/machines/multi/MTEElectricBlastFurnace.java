@@ -165,13 +165,13 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
-
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
                 return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
-        }.setHeatOC(true)
+        }.setOverclock(true)
+            .setHeatOC(true)
             .setHeatDiscount(true)
             .setHeatDiscountMultiplier(0.95)
             .setMachineHeat(this.mHeatingCapacity);

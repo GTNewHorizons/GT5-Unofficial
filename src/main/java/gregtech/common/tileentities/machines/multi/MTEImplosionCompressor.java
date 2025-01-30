@@ -117,7 +117,7 @@ public class MTEImplosionCompressor extends MTECubicMultiBlockBase<MTEImplosionC
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic();
+        return new ProcessingLogic().setOverclock(true);
     }
 
     @Override

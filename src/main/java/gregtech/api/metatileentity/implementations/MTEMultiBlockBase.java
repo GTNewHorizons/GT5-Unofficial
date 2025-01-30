@@ -992,7 +992,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Nonnull
     protected CheckRecipeResult postCheckRecipe(@Nonnull CheckRecipeResult result,
         @Nonnull ProcessingLogic processingLogic) {
-        if (result.wasSuccessful() && processingLogic.getCalculatedEut() > Integer.MAX_VALUE) {
+        if (result.wasSuccessful() && processingLogic.getCalculatedEUt() > Integer.MAX_VALUE) {
             return CheckRecipeResultRegistry.POWER_OVERFLOW;
         }
         return result;
@@ -1004,7 +1004,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      */
     protected void setEnergyUsage(ProcessingLogic processingLogic) {
         // getCalculatedEut() is guaranteed to not exceed int by postCheckRecipe()
-        mEUt = (int) processingLogic.getCalculatedEut();
+        mEUt = (int) processingLogic.getCalculatedEUt();
         if (mEUt > 0) {
             mEUt = (-mEUt);
         }

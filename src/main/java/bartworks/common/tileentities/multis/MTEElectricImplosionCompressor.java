@@ -331,7 +331,8 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                     .setEUt(MTEElectricImplosionCompressor.this.getMaxInputEu())
                     .setAmperage(1);
             }
-        }.setMaxParallelSupplier(() -> (int) Math.pow(4, Math.max(this.mBlockTier - 1, 0)));
+        }.setOverclock(true)
+        .setMaxParallelSupplier(() -> (int) Math.pow(4, Math.max(this.mBlockTier - 1, 0)));
     }
 
     private void updateChunkCoordinates() {

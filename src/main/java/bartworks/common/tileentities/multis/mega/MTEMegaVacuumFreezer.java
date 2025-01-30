@@ -407,7 +407,9 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     protected ProcessingLogic createProcessingLogic() {
         currentCoolingFluid = findSubspaceCoolingFluid();
 
-        return new ProcessingLogic().setHeatOC(true)
+        return new ProcessingLogic()
+            .setOverclock(true)
+            .setHeatOC(true)
             .setHeatDiscount(false)
             .setMachineHeat(currentCoolingFluid == null ? 0 : currentCoolingFluid.perfectOverclocks * 1800)
             .setMaxParallel(Configuration.Multiblocks.megaMachinesMax);

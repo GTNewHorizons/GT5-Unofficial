@@ -281,7 +281,8 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
                     ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
-        }.setHeatOC(true)
+        }.setOverclock(true)
+            .setHeatOC(true)
             .setHeatDiscount(true)
             .setHeatDiscountMultiplier(0.95)
             .setMachineHeat(MTEMegaBlastFurnace.this.mHeatingCapacity)

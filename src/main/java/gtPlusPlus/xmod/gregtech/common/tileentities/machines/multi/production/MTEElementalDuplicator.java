@@ -297,7 +297,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 2F)
-            .enablePerfectOverclock()
+            .setPerfectOverclock()
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 

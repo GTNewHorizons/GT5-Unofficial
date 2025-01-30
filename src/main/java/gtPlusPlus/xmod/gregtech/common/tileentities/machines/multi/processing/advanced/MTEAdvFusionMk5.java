@@ -106,7 +106,7 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return super.createProcessingLogic().enablePerfectOverclock();
+        return super.createProcessingLogic().setPerfectOverclock();
     }
 
     @Override

@@ -20,8 +20,10 @@ import gregtech.api.recipe.check.SingleRecipeCheck;
 
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class ProcessingHelper {
-
     private static final double MAX_BATCH_MODE_TICK_TIME = 128;
+    private static final int HEAT_DISCOUNT_THRESHOLD = 900;
+    private static final double OC_EUT_MODIFIER = 4;
+    protected static final double OC_DURATION_MODIFIER = 0.5;
     /**
      * Machine used for calculation
      */
@@ -103,6 +105,20 @@ public class ProcessingHelper {
      * Modifier which is applied on the recipe eut. Useful for GT++ machines
      */
     private double eutModifier = 1;
+    /**
+     * Modifier which is applied the recipe duration. Useful for GT++ machines
+     */
+    private double durationModifier = 1;
+    /**
+     * A supplier used for machines which have a custom way of calculating base duration, like Neutron Activator
+     */
+    private Function<GTRecipe, Double> durationSupplier;
+    /**
+     * Does this machine perform overclocks?
+     */
+    private boolean overclock;
+    protected Function<Integer, Double> ocEUtModifierSupplier;
+    protected Function<Integer, Double> ocDurationModifierSupplier;
     /**
      * Multiplier that is applied on the output chances
      */
@@ -213,6 +229,45 @@ public class ProcessingHelper {
     @Nonnull
     public ProcessingHelper setEUtModifier(double aEUtModifier) {
         this.eutModifier = aEUtModifier;
+        return this;
+    }
+
+    /**
+     * Sets the modifier for recipe duration. 1 does nothing, 2 is twice as slow, 0.5 is twice as fast
+     */
+    @Nonnull
+    public ProcessingHelper setDurationModifier(double durationModifier) {
+        this.durationModifier = durationModifier;
+        return this;
+    }
+
+    /**
+     * Set the supplier used for machines which have a custom way of calculating base duration, like Neutron Activator
+     */
+    @Nonnull
+    public ProcessingHelper setDurationSupplier(Function<GTRecipe, Double> durationSupplier) {
+        this.durationSupplier = durationSupplier;
+        return this;
+    }
+
+    /**
+     * Sets whether the machine performs overclocks.
+     */
+    @Nonnull
+    public ProcessingHelper setOverclock(boolean overclock) {
+        this.overclock = overclock;
+        return this;
+    }
+
+    @Nonnull
+    public ProcessingHelper setOCEUtModifierSupplier(Function<Integer, Double> ocEUtModifierSupplier) {
+        this.ocEUtModifierSupplier = ocEUtModifierSupplier;
+        return this;
+    }
+
+    @Nonnull
+    public ProcessingHelper setOCDurationModifierSupplier(Function<Integer, Double> ocDurationModifierSupplier) {
+        this.ocDurationModifierSupplier = ocDurationModifierSupplier;
         return this;
     }
 
@@ -435,15 +490,56 @@ public class ProcessingHelper {
                 Math.min(this.machine.getFluidOutputLimit(), this.recipe.mFluidOutputs.length));
 
         // Calculate heat discount
-        final double heatDiscount = this.heatDiscount
-            ? Math.pow(this.heatDiscountMultiplier, Math.max(0, (this.recipe.mSpecialValue - this.machineHeat) / 900))
-            : 1;
+        final double heatDiscount = this.heatDiscount ? Math.pow(
+            this.heatDiscountMultiplier,
+            Math.max(0, (this.recipe.mSpecialValue - this.machineHeat) / HEAT_DISCOUNT_THRESHOLD)) : 1;
 
         // Check whether there is sufficient energy
         final int EUt = (int) Math.ceil(this.recipe.mEUt * this.eutModifier * heatDiscount);
         if (this.availableEUt < EUt) {
             return ProcessingResult.failure(CheckRecipeResultRegistry.insufficientPower(EUt));
         }
+
+        // Determine parallels before sub-tick and batch
+        int parallels = EUt > 0 ? (int) Math.min(this.maxParallels, this.availableEUt / EUt) : this.maxParallels;
+
+        // Determine duration using speed modifier or using custom supplier
+        double duration = this.durationSupplier == null ? this.recipe.mDuration * this.durationModifier
+            : this.durationSupplier.apply(this.recipe);
+
+        if (this.overclock) {
+            double ocEUtModifier = ocEUtModifierSupplier == null ? OC_EUT_MODIFIER : ocEUtModifierSupplier.apply(0);
+            double ocDurationModifier = ocDurationModifierSupplier == null ? OC_DURATION_MODIFIER : ocDurationModifierSupplier.apply(0);
+        }
+
+        // public double calculateDurationUnderOneTick() {
+        // if (noOverclock) return durationInDouble;
+        // double heatDiscountMultiplier = calculateHeatDiscountMultiplier();
+        // if (hasAtLeastOneSupplierBeenSet) {
+        // int overclockCount = 0;
+        // double currentEutIncrease = eutIncreasePerOCSupplier.apply(overclockCount + 1);
+        // double currentDurationDecrease = durationDecreasePerOCSupplier.apply(overclockCount + 1);
+        // double machinePower = calculateMachinePower();
+        // double recipePower = calculateRecipePower(heatDiscountMultiplier);
+        // while (machinePower > recipePower * currentEutIncrease
+        // && (!limitOverclocks || overclockCount < maxOverclocks)) {
+        // recipePower *= currentEutIncrease;
+        // durationInDouble /= currentDurationDecrease;
+        // overclockCount++;
+        // currentEutIncrease = eutIncreasePerOCSupplier.apply(overclockCount + 1);
+        // currentDurationDecrease = durationDecreasePerOCSupplier.apply(overclockCount + 1);
+        // }
+        // } else {
+        // int maxOverclockCount = calculateAmountOfOverclocks(
+        // calculateMachinePowerTier(),
+        // calculateRecipePowerTier(heatDiscountMultiplier));
+        // if (limitOverclocks) maxOverclockCount = Math.min(maxOverclocks, maxOverclockCount);
+        // int heatOverclocks = Math.min(calculateMaxAmountOfHeatOverclocks(), maxOverclockCount);
+        // durationInDouble /= Math.pow(durationDecreasePerOC, maxOverclockCount - heatOverclocks)
+        // * Math.pow(durationDecreasePerHeatOC, heatOverclocks);
+        // }
+        // return durationInDouble;
+        // }
 
         // TODO
         // double overclockedDuration;
@@ -474,84 +570,81 @@ public class ProcessingHelper {
         // }
 
         // Let's look at how many parallels we can get with void protection
-        if (this.protectExcessItem || this.protectExcessFluid) {
-            if (this.machine == null) {
-                throw new IllegalStateException("Tried to calculate void protection, but machine is not set");
-            }
-            VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
-            voidProtectionHelper.setMachine(machine)
-                .setItemOutputs(truncatedItemOutputs)
-                .setFluidOutputs(truncatedFluidOutputs)
-                .setChangeGetter(recipe::getOutputChance)
-                .setOutputMultiplier(outputMultiplier)
-                .setChanceMultiplier(chanceMultiplier)
-                .setMaxParallel(maxParallels)
-                .build();
-            maxParallels = Math.min(voidProtectionHelper.getMaxParallel(), maxParallels);
-            if (voidProtectionHelper.isItemFull()) {
-                return ProcessingResult.failure(CheckRecipeResultRegistry.ITEM_OUTPUT_FULL);
-            }
-            if (voidProtectionHelper.isFluidFull()) {
-                return ProcessingResult.failure(CheckRecipeResultRegistry.FLUID_OUTPUT_FULL);
-            }
-        }
-
-        maxParallelBeforeBatchMode = Math.min(maxParallels, maxParallelBeforeBatchMode);
-
-        // determine normal parallel
-        int actualMaxParallel = EUt > 0 ? (int) Math.min(maxParallelBeforeBatchMode, availableEUt / EUt)
-            : maxParallelBeforeBatchMode;
-        if (recipeCheck != null) {
-            currentParallel = recipeCheck.checkRecipeInputs(true, actualMaxParallel, itemInputs, fluidInputs);
-        } else {
-            currentParallel = (int) maxParallelCalculator.calculate(recipe, actualMaxParallel, fluidInputs, itemInputs);
-            if (currentParallel > 0) {
-                if (tSingleRecipeCheckBuilder != null) {
-                    // If recipe checker is not built yet, build and set it
-                    inputConsumer.consume(recipe, 1, fluidInputs, itemInputs);
-                    SingleRecipeCheck builtCheck = tSingleRecipeCheckBuilder.setAfter(itemInputs, fluidInputs)
-                        .setRecipe(recipe)
-                        .build();
-                    singleRecipeMachine.setSingleRecipeCheck(builtCheck);
-                    inputConsumer.consume(recipe, currentParallel - 1, fluidInputs, itemInputs);
-                } else {
-                    inputConsumer.consume(recipe, currentParallel, fluidInputs, itemInputs);
-                }
-            }
-        }
-
-        if (currentParallel <= 0) {
-            result = CheckRecipeResultRegistry.INTERNAL_ERROR;
-            return;
-        }
-
-        calculator.setCurrentParallel(currentParallel)
-            .calculate();
-        // If Batch Mode is enabled determine how many extra parallels we can get
-        if (batchMode && currentParallel > 0 && calculator.getDuration() < MAX_BATCH_MODE_TICK_TIME) {
-            int tExtraParallels;
-            double batchMultiplierMax = MAX_BATCH_MODE_TICK_TIME / calculator.getDuration();
-            final int maxExtraParallels = (int) Math.floor(
-                Math.min(
-                    currentParallel * Math.min(batchMultiplierMax - 1, batchModifier - 1),
-                    maxParallels - currentParallel));
-            if (recipeCheck != null) {
-                tExtraParallels = recipeCheck.checkRecipeInputs(true, maxExtraParallels, itemInputs, fluidInputs);
-            } else {
-                tExtraParallels = (int) maxParallelCalculator
-                    .calculate(recipe, maxExtraParallels, fluidInputs, itemInputs);
-                inputConsumer.consume(recipe, tExtraParallels, fluidInputs, itemInputs);
-            }
-            durationMultiplier = 1.0f + (float) tExtraParallels / currentParallel;
-            currentParallel += tExtraParallels;
-        }
-
-        // If we want to calculate outputs we do it here
-        if (calculateOutputs && currentParallel > 0) {
-            calculateItemOutputs(truncatedItemOutputs);
-            calculateFluidOutputs(truncatedFluidOutputs);
-        }
-        result = CheckRecipeResultRegistry.SUCCESSFUL;
+        // if (this.protectExcessItem || this.protectExcessFluid) {
+        // if (this.machine == null) {
+        // throw new IllegalStateException("Tried to calculate void protection, but machine is not set");
+        // }
+        // VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
+        // voidProtectionHelper.setMachine(machine)
+        // .setItemOutputs(truncatedItemOutputs)
+        // .setFluidOutputs(truncatedFluidOutputs)
+        // .setChangeGetter(recipe::getOutputChance)
+        // .setOutputMultiplier(outputMultiplier)
+        // .setChanceMultiplier(chanceMultiplier)
+        // .setMaxParallel(maxParallels)
+        // .build();
+        // maxParallels = Math.min(voidProtectionHelper.getMaxParallel(), maxParallels);
+        // if (voidProtectionHelper.isItemFull()) {
+        // return ProcessingResult.failure(CheckRecipeResultRegistry.ITEM_OUTPUT_FULL);
+        // }
+        // if (voidProtectionHelper.isFluidFull()) {
+        // return ProcessingResult.failure(CheckRecipeResultRegistry.FLUID_OUTPUT_FULL);
+        // }
+        // }
+        //
+        // maxParallelBeforeBatchMode = Math.min(maxParallels, maxParallelBeforeBatchMode);
+//
+//        if (recipeCheck != null) {
+//            currentParallel = recipeCheck.checkRecipeInputs(true, actualMaxParallel, itemInputs, fluidInputs);
+//        } else {
+//            currentParallel = (int) maxParallelCalculator.calculate(recipe, actualMaxParallel, fluidInputs, itemInputs);
+//            if (currentParallel > 0) {
+//                if (tSingleRecipeCheckBuilder != null) {
+//                    // If recipe checker is not built yet, build and set it
+//                    inputConsumer.consume(recipe, 1, fluidInputs, itemInputs);
+//                    SingleRecipeCheck builtCheck = tSingleRecipeCheckBuilder.setAfter(itemInputs, fluidInputs)
+//                        .setRecipe(recipe)
+//                        .build();
+//                    singleRecipeMachine.setSingleRecipeCheck(builtCheck);
+//                    inputConsumer.consume(recipe, currentParallel - 1, fluidInputs, itemInputs);
+//                } else {
+//                    inputConsumer.consume(recipe, currentParallel, fluidInputs, itemInputs);
+//                }
+//            }
+//        }
+//
+//        if (currentParallel <= 0) {
+//            result = CheckRecipeResultRegistry.INTERNAL_ERROR;
+//            return;
+//        }
+//
+//        calculator.setCurrentParallel(currentParallel)
+//            .calculate();
+//        // If Batch Mode is enabled determine how many extra parallels we can get
+//        if (batchMode && currentParallel > 0 && calculator.getDuration() < MAX_BATCH_MODE_TICK_TIME) {
+//            int tExtraParallels;
+//            double batchMultiplierMax = MAX_BATCH_MODE_TICK_TIME / calculator.getDuration();
+//            final int maxExtraParallels = (int) Math.floor(
+//                Math.min(
+//                    currentParallel * Math.min(batchMultiplierMax - 1, batchModifier - 1),
+//                    maxParallels - currentParallel));
+//            if (recipeCheck != null) {
+//                tExtraParallels = recipeCheck.checkRecipeInputs(true, maxExtraParallels, itemInputs, fluidInputs);
+//            } else {
+//                tExtraParallels = (int) maxParallelCalculator
+//                    .calculate(recipe, maxExtraParallels, fluidInputs, itemInputs);
+//                inputConsumer.consume(recipe, tExtraParallels, fluidInputs, itemInputs);
+//            }
+//            durationMultiplier = 1.0f + (float) tExtraParallels / currentParallel;
+//            currentParallel += tExtraParallels;
+//        }
+//
+//        // If we want to calculate outputs we do it here
+//        if (calculateOutputs && currentParallel > 0) {
+//            calculateItemOutputs(truncatedItemOutputs);
+//            calculateFluidOutputs(truncatedFluidOutputs);
+//        }
+        return ProcessingResult.success(CheckRecipeResultRegistry.SUCCESSFUL);
     }
 
     private void calculateItemOutputs(ItemStack[] truncatedItemOutputs) {

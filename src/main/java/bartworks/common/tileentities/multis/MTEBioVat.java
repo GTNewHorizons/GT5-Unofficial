@@ -267,7 +267,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
             protected ProcessingHelper createProcessingHelper(@NotNull GTRecipe recipe) {
                 return super.createProcessingHelper(recipeWithMultiplier(recipe, inputFluids));
             }
-        };
+        }.setOverclock(true);
     }
 
     protected GTRecipe recipeWithMultiplier(GTRecipe recipe, FluidStack[] fluidInputs) {

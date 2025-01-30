@@ -129,7 +129,7 @@ public abstract class MTEExtendedPowerMultiBlockBase<T extends MTEEnhancedMultiB
 
     @Override
     protected void setEnergyUsage(ProcessingLogic processingLogic) {
-        lEUt = processingLogic.getCalculatedEut();
+        lEUt = processingLogic.getCalculatedEUt();
         if (lEUt > 0) {
             lEUt = (-lEUt);
         }
