@@ -506,6 +506,16 @@ public class MTEFluid extends MetaPipeEntity {
         boolean oldGasProof = this.mGasProof;
         int oldHeatResistance = this.mHeatResistance;
 
+        // Add fluid to the new pipe
+        if (this.mPipeAmount <= newPipe.mPipeAmount) {
+            for (int i = 0; i < mPipeAmount; i++) {
+                if (this.mFluids[i] != null) {
+                    newPipe.mFluids[i] = this.mFluids[i].copy();
+                    newPipe.mFluids[i].amount = Math.min(this.mFluids[i].amount, newPipe.mCapacity);
+                }
+            }
+        }
+
         // Update to the new pipe
         aBaseMetaTileEntity.setMetaTileID((short) handItem.getItemDamage());
         aBaseMetaTileEntity.setMetaTileEntity(newPipe);
@@ -548,14 +558,7 @@ public class MTEFluid extends MetaPipeEntity {
             message.append(EnumChatFormatting.RESET);
         }
 
-        // Add fluid to the new pipe
-        if (this.mPipeAmount <= newPipe.mPipeAmount) {
-            for (int i = 0; i < mPipeAmount; i++) {
-                if (this.mFluids[i] != null) {
-                    newPipe.mFluids[i].amount = Math.min(this.mFluids[i].amount, newPipe.mCapacity);
-                }
-            }
-        }
+
 
         // Send a chat message if anything changed
         if (message.length() > 0) {
