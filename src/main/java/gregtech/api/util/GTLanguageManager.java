@@ -433,6 +433,7 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_221", "Item threshold");
         addStringLocalization("Interaction_DESCRIPTION_Index_222", "Fluid threshold");
         addStringLocalization("Interaction_DESCRIPTION_Index_222.1", "Energy threshold");
+
         addStringLocalization(
             "Interaction_DESCRIPTION_Index_223",
             "Single recipe locking enabled. Will lock to next recipe.");
