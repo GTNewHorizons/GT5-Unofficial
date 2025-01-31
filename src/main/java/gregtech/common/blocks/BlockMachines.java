@@ -388,7 +388,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
             if ((!aWorld.isRemote) && !gtTE.isUseableByPlayer(aPlayer)) {
                 return true;
             }
-            return ((IGregTechTileEntity) tTileEntity).onRightclick(aPlayer, side, aOffsetX, aOffsetY, aOffsetZ);
+            return gtTE.onRightclick(aPlayer, side, aOffsetX, aOffsetY, aOffsetZ);
         }
         return false;
     }
