@@ -79,7 +79,6 @@ import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
@@ -943,12 +942,9 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
         if (side != mMainFacing) return true;
-        CoverBehaviorBase<?> tBehavior = GregTechAPI.getCoverBehaviorNew(aCoverID.toStack());
-        return tBehavior.isGUIClickable(
-            side,
-            GTUtility.stackToInt(aCoverID.toStack()),
-            tBehavior.createDataObject(),
-            getBaseMetaTileEntity());
+        return this.getBaseMetaTileEntity()
+            .getCoverInfoAtSide(side)
+            .isGUIClickable();
     }
 
     @Override
