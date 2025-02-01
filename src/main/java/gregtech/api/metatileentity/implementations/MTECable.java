@@ -317,6 +317,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             handCable.mInsulated,
             handCable.mCanShock);
 
+
         // Swap in the new cable
         aBaseMetaTileEntity.setMetaTileID(newMetaID);
         aBaseMetaTileEntity.setMetaTileEntity(newCable);
@@ -324,28 +325,32 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         aBaseMetaTileEntity.markDirty();
         aBaseMetaTileEntity.issueTextureUpdate();
         aBaseMetaTileEntity.issueBlockUpdate();
-        aBaseMetaTileEntity.outputsEnergyTo(ForgeDirection.UNKNOWN, false);
 
-        // 7) Reconnect the *new* cable to the old sides
+
+        // 7) Reconnect the *new* cable to the old sides (modified for both cables and machines)
         if (newCable.getBaseMetaTileEntity() != null) {
             // For each side that was previously connected
             for (ForgeDirection side : oldConnectedSides) {
+                IGregTechTileEntity neighborTile = newCable.getBaseMetaTileEntity().getIGregTechTileEntityAtSide(side);
                 int result = newCable.connect(side);
-                if (result > 0) {
-                    // Also force the neighbor to connect back if it is a cable
-                    IGregTechTileEntity neighborTile = newCable.getBaseMetaTileEntity()
-                        .getIGregTechTileEntityAtSide(side);
-                    if (neighborTile != null
-                        && neighborTile.getMetaTileEntity() instanceof IConnectable neighborCable) {
-                        neighborCable.connect(side.getOpposite());
+                // If there is a neighbor tile, then:
+                if (neighborTile != null) {
+                    // If the neighbor is a cable (implements IConnectable), then require a successful connection
+                    if (neighborTile.getMetaTileEntity() instanceof IConnectable) {
+                        if (result > 0) {
+                            ((IConnectable) neighborTile.getMetaTileEntity()).connect(side.getOpposite());
+                        } else {
+                            newCable.disconnect(side);
+                        }
                     }
+                    // Otherwise, if the neighbor is a machine (or any non-cable tile), don't connect.
                 } else {
+                    // No neighbor exists at this side, so disconnect
                     newCable.disconnect(side);
                 }
             }
-        } else {
-            GTUtility.sendChatToPlayer(aPlayer, "Warning: new cable's tile is null! No reconnect done.");
         }
+
 
         // Handle inventory changes (old <-> new cable) if not creative
         if (!aPlayer.capabilities.isCreativeMode) {
@@ -599,6 +604,8 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     public String[] getInfoData() {
         final BaseMetaPipeEntity base = (BaseMetaPipeEntity) getBaseMetaTileEntity();
         final PowerNodePath path = (PowerNodePath) base.getNodePath();
+
+        path.reloadLocks();
 
         if (path == null)
             return new String[] { EnumChatFormatting.RED + "Failed to get Power Node info" + EnumChatFormatting.RESET };
