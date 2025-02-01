@@ -3,6 +3,8 @@ package gregtech.common.covers;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
+import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
+import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -348,5 +350,14 @@ public final class CoverInfo {
                 tickRate,
                 StatCollector.translateToLocal(unitI18NKey));
         }
+    }
+
+    public ModularUIContainer createCoverContainer(EntityPlayer player) {
+        ICoverable tile = this.coveredTile.get();
+        if (tile == null) return null;
+        final CoverUIBuildContext buildContext = new CoverUIBuildContext(player, this.coverID, this.coverSide, tile, false);
+        final ModularWindow window = this.coverBehavior.createWindow(buildContext);
+        if (window == null) return null;
+        return new ModularUIContainer(new ModularUIContext(buildContext, tile::markDirty), window);
     }
 }

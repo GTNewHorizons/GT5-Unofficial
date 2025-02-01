@@ -70,26 +70,14 @@ public class GTUIInfos {
                     .container((player, world, x, y, z) -> {
                         final TileEntity te = world.getTileEntity(x, y, z);
                         if (!(te instanceof ICoverable gtTileEntity)) return null;
-                        final CoverBehaviorBase<?> cover = gtTileEntity.getCoverBehaviorAtSideNew(side);
-                        return createCoverContainer(
-                            player,
-                            cover::createWindow,
-                            te::markDirty,
-                            gtTileEntity.getCoverIDAtSide(side),
-                            side,
-                            gtTileEntity);
+                        return gtTileEntity.getCoverInfoAtSide(side)
+                            .createCoverContainer(player);
                     })
                     .gui((player, world, x, y, z) -> {
                         if (!world.isRemote) return null;
                         final TileEntity te = world.getTileEntity(x, y, z);
                         if (!(te instanceof ICoverable gtTileEntity)) return null;
-                        final CoverBehaviorBase<?> cover = gtTileEntity.getCoverBehaviorAtSideNew(side);
-                        return createCoverGuiContainer(
-                            player,
-                            cover::createWindow,
-                            gtTileEntity.getCoverIDAtSide(side),
-                            side,
-                            gtTileEntity);
+                        return createCoverGuiContainer(player, side, gtTileEntity);
                     })
                     .build());
         }
@@ -161,19 +149,10 @@ public class GTUIInfos {
         return new ModularGui(container);
     }
 
-    private static ModularUIContainer createCoverContainer(EntityPlayer player,
-        Function<CoverUIBuildContext, ModularWindow> windowCreator, Runnable onWidgetUpdate, int coverID,
-        ForgeDirection side, ICoverable tile) {
-        final CoverUIBuildContext buildContext = new CoverUIBuildContext(player, coverID, side, tile, false);
-        final ModularWindow window = windowCreator.apply(buildContext);
-        if (window == null) return null;
-        return new ModularUIContainer(new ModularUIContext(buildContext, onWidgetUpdate), window);
-    }
-
     @SideOnly(Side.CLIENT)
-    private static ModularGui createCoverGuiContainer(EntityPlayer player,
-        Function<CoverUIBuildContext, ModularWindow> windowCreator, int coverID, ForgeDirection side, ICoverable tile) {
-        final ModularUIContainer container = createCoverContainer(player, windowCreator, null, coverID, side, tile);
+    private static ModularGui createCoverGuiContainer(EntityPlayer player, ForgeDirection side, ICoverable tile) {
+        final ModularUIContainer container = tile.getCoverInfoAtSide(side)
+            .createCoverContainer(player);
         if (container == null) {
             return null;
         }
