@@ -112,7 +112,6 @@ public class MTEFluid extends MetaPipeEntity {
     public final boolean mGasProof;
     public final FluidStack[] mFluids;
     public byte mLastReceivedFrom = 0, oLastReceivedFrom = 0;
-    public static final byte KEY_CTRL = 1;
     /**
      * Bitmask for whether disable fluid input form each side.
      */
