@@ -27,7 +27,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.net.GTPacketSendCoverData;
-import gregtech.api.util.CoverBehaviorBase;
+import gregtech.common.covers.CoverInfo;
 
 public class GTUIInfos {
 
@@ -77,7 +77,9 @@ public class GTUIInfos {
                         if (!world.isRemote) return null;
                         final TileEntity te = world.getTileEntity(x, y, z);
                         if (!(te instanceof ICoverable gtTileEntity)) return null;
-                        return createCoverGuiContainer(player, side, gtTileEntity);
+                        return createCoverGuiContainer(
+                            gtTileEntity.getCoverInfoAtSide(side)
+                                .createCoverContainer(player));
                     })
                     .build());
         }
@@ -97,7 +99,7 @@ public class GTUIInfos {
     }
 
     /**
-     * Opens cover UI, created by {@link CoverBehaviorBase#createWindow}.
+     * Opens cover UI, created by {@link CoverInfo#createWindow}.
      */
     public static void openCoverUI(ICoverable tileEntity, EntityPlayer player, ForgeDirection side) {
         if (tileEntity.isClientSide()) return;
@@ -145,14 +147,11 @@ public class GTUIInfos {
             windowCreator,
             null,
             containerConstructor);
-        if (container == null) return null;
-        return new ModularGui(container);
+        return createCoverGuiContainer(container);
     }
 
     @SideOnly(Side.CLIENT)
-    private static ModularGui createCoverGuiContainer(EntityPlayer player, ForgeDirection side, ICoverable tile) {
-        final ModularUIContainer container = tile.getCoverInfoAtSide(side)
-            .createCoverContainer(player);
+    private static ModularGui createCoverGuiContainer(ModularUIContainer container) {
         if (container == null) {
             return null;
         }
