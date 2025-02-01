@@ -453,8 +453,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
 
             final CoverInfo coverInfo = uiBuildContext.getTile()
                 .getCoverInfoAtSide(uiBuildContext.getCoverSide());
-            final CoverBehaviorBase<?> behavior = coverInfo.getCoverBehavior();
-            if (coverInfo.getMinimumTickRate() > 0 && behavior.allowsTickRateAddition()) {
+            if (coverInfo.getMinimumTickRate() > 0 && coverInfo.allowsTickRateAddition()) {
                 builder.widget(
                     new CoverTickRateButton(coverInfo, builder).setPos(getGUIWidth() - 24, getGUIHeight() - 24));
             }

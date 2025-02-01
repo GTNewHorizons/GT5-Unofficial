@@ -96,6 +96,10 @@ public final class CoverInfo {
         return coverBehavior;
     }
 
+    public boolean allowsTickRateAddition() {
+        return getCoverBehavior().allowsTickRateAddition();
+    }
+
     public ISerializableObject getCoverData() {
         if (coverData != null) return coverData;
         return GregTechAPI.sNoBehavior.createDataObject();

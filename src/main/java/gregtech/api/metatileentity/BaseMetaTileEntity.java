@@ -1717,8 +1717,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                             if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                                 final CoverInfo info = getCoverInfoAtSide(coverSide);
                                 if (info != CoverInfo.EMPTY_INFO) {
-                                    final CoverBehaviorBase<?> behavior = info.getCoverBehavior();
-                                    if (behavior.allowsTickRateAddition()) {
+                                    if (info.allowsTickRateAddition()) {
                                         info.onCoverJackhammer(aPlayer);
                                         GTUtility.sendSoundToPlayers(
                                             worldObj,
