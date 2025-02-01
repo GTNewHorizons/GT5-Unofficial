@@ -145,7 +145,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
             final CoverInfo coverInfo = new CoverInfo(side, coverIDs[ordinalSide], this, null);
             final CoverBehaviorBase<?> coverBehavior = coverInfo.getCoverBehavior();
-            if (coverBehavior == GregTechAPI.sNoBehavior) continue;
+            if (coverInfo.hasNoBehavior()) continue;
 
             ISerializableObject coverData = null;
             if (hasOldCoverData) {
@@ -575,7 +575,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         for (byte i = 0; i < tList.tagCount(); i++) {
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
             final CoverInfo coverInfo = new CoverInfo(this, tNBT);
-            if (!coverInfo.isValid() || coverInfo.getCoverBehavior() == GregTechAPI.sNoBehavior) continue;
+            if (!coverInfo.isValid() || coverInfo.hasNoBehavior()) continue;
 
             final ItemStack coverStack = coverInfo.getDisplayStack();
             if (coverStack != null) {
@@ -622,7 +622,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         for (byte i = 0; i < tList.tagCount(); i++) {
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
             final CoverInfo coverInfo = new CoverInfo(null, tNBT);
-            if (!coverInfo.isValid() || coverInfo.getCoverBehavior() == GregTechAPI.sNoBehavior) continue;
+            if (!coverInfo.isValid() || coverInfo.hasNoBehavior()) continue;
 
             final ItemStack coverStack = coverInfo.getDisplayStack();
             if (coverStack != null) {
