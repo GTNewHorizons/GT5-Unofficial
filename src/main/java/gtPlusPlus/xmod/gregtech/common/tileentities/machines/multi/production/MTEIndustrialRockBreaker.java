@@ -81,7 +81,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
         tt.addMachineType(getMachineType())
             .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 8")
             .addInfo("Use Integrated Circuit to determine recipe")
-            .addInfo("1 = cobble, 2 = stone, 3 = obsidian")
+            .addInfo("1 = cobble, 2 = stone, 3 = obsidian, 4 = basalt")
             .addInfo("Needs Water and Lava in input hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
