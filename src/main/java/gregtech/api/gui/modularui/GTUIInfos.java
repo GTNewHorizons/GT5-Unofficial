@@ -26,7 +26,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
-import gregtech.api.net.GTPacketSendCoverData;
 import gregtech.common.covers.CoverInfo;
 
 public class GTUIInfos {
@@ -105,11 +104,8 @@ public class GTUIInfos {
         if (tileEntity.isClientSide()) return;
 
         GTValues.NW.sendToPlayer(
-            new GTPacketSendCoverData(
-                side,
-                tileEntity.getCoverIDAtSide(side),
-                tileEntity.getComplexCoverDataAtSide(side),
-                tileEntity),
+            tileEntity.getCoverInfoAtSide(side)
+                .toPacket(),
             (EntityPlayerMP) player);
 
         coverUI.get(side)

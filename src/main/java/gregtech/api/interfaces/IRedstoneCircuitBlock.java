@@ -5,6 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverInfo;
 
 /**
@@ -40,7 +41,7 @@ public interface IRedstoneCircuitBlock {
 
     int getCoverID(ForgeDirection side);
 
-    int getCoverVariable(ForgeDirection side);
+    ISerializableObject getCoverData(ForgeDirection side);
 
     /**
      * returns whatever Block-ID is adjacent to the Redstone Circuit Block

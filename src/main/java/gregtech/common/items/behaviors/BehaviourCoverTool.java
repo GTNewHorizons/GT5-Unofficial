@@ -22,6 +22,7 @@ import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.CoverInfo;
 
 public class BehaviourCoverTool extends BehaviourNone {
 
@@ -120,12 +121,11 @@ public class BehaviourCoverTool extends BehaviourNone {
                     ? GTUtility.determineWrenchingSide(side, hitX, hitY, hitZ)
                     : ForgeDirection.UNKNOWN;
             if (tSide != ForgeDirection.UNKNOWN) {
-                if (tCoverable.getCoverInfoAtSide(tSide)
-                    .allowsCopyPasteTool()) {
-                    mStoredData = tCoverable.getComplexCoverDataAtSide(tSide);
-                    mCoverType = tCoverable.getCoverIDAtSide(tSide);
-                    mTickRateAddition = tCoverable.getCoverInfoAtSide(tSide)
-                        .getTickRateAddition();
+                CoverInfo coverInfo = tCoverable.getCoverInfoAtSide(tSide);
+                if (coverInfo.allowsCopyPasteTool()) {
+                    mStoredData = coverInfo.getCoverData();
+                    mCoverType = coverInfo.getCoverID();
+                    mTickRateAddition = coverInfo.getTickRateAddition();
 
                     aList.add("Block Side: " + EnumChatFormatting.AQUA + tSide.name() + EnumChatFormatting.RESET);
                     aList.add(

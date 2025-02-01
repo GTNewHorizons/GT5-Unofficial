@@ -35,10 +35,6 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
         return null;
     }
 
-    default ISerializableObject getComplexCoverDataAtSide(ForgeDirection side) {
-        return new ISerializableObject.LegacyCoverData(getCoverDataAtSide(side));
-    }
-
     int getCoverIDAtSide(ForgeDirection side);
 
     ItemStack getCoverItemAtSide(ForgeDirection side);

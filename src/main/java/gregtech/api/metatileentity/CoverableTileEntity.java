@@ -333,11 +333,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return 0;
     }
 
-    @Override
-    public ISerializableObject getComplexCoverDataAtSide(ForgeDirection side) {
-        return getCoverInfoAtSide(side).getCoverData();
-    }
-
     public final void setCoverInfoAtSide(ForgeDirection side, CoverInfo coverInfo) {
         if (side != ForgeDirection.UNKNOWN) {
             coverInfos[side.ordinal()] = coverInfo;

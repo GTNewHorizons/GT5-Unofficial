@@ -484,7 +484,8 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
             if (isCoverValid()) {
                 return forceCast(
                     getUIBuildContext().getTile()
-                        .getComplexCoverDataAtSide(getUIBuildContext().getCoverSide()));
+                        .getCoverInfoAtSide(getUIBuildContext().getCoverSide())
+                        .getCoverData());
             } else {
                 return null;
             }
