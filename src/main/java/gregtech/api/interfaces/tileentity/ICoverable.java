@@ -52,9 +52,16 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
 
     ItemStack getCoverItemAtSide(ForgeDirection side);
 
+    /**
+     * @deprecated Use the appropriate method on CoverInfo. Add it there if it doesn't exist.
+     */
     @Deprecated
     CoverBehavior getCoverBehaviorAtSide(ForgeDirection side);
 
+    /**
+     * @deprecated Use the appropriate method on CoverInfo. Add it there if it doesn't exist.
+     */
+    @Deprecated
     default CoverBehaviorBase<?> getCoverBehaviorAtSideNew(ForgeDirection side) {
         return getCoverBehaviorAtSide(side);
     }
