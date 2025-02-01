@@ -2046,11 +2046,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             int outputItemLength = tag.getInteger("outputItemLength");
             int outputFluidLength = tag.getInteger("outputFluidLength");
             int totalOutputs = outputItemLength + outputFluidLength;
-            if (totalOutputs > 0 || accessor.getNBTData().getBoolean("isLockedToRecipe")) {
+            if (totalOutputs > 0) {
                 currentTip.add(StatCollector.translateToLocal("GT5U.waila.producing"));
-                if (accessor.getNBTData().getBoolean("isLockedToRecipe")) {
-                    currentTip.add(StatCollector.translateToLocal("GT5U.waila.locked_recipe") + ": " + accessor.getNBTData().getString("lockedRecipeName"));
-                }
                 for (int i = 0; i < min(3, outputItemLength); i++) {
                     currentTip.add(
                         "  " + tag.getString("outputItem" + i)
@@ -2083,6 +2080,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             int tAverageTime = tag.getInteger("averageNS");
             currentTip.add("Average CPU load of ~" + formatNumbers(tAverageTime) + " ns");
         }
+        // Always show locked recipe information if the machine is locked to a recipe
+        if (tag.getBoolean("isLockedToRecipe")) {
+            String lockedRecipe = tag.getString("lockedRecipeName");
+            if (!lockedRecipe.isEmpty()) {
+                // Split the string on "\n" and add each line separately.
+                String[] lines = lockedRecipe.split("\n");
+                currentTip.add("Locked Recipe:");
+                for (String line : lines) {
+                    currentTip.add(line);
+                }
+            }
+        }
+
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 
@@ -2101,6 +2111,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         tag.setInteger("progress", mProgresstime);
         tag.setInteger("maxProgress", mMaxProgresstime);
         tag.setBoolean("incompleteStructure", (getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0);
+        tag.setBoolean("isLockedToRecipe", isRecipeLockingEnabled());
+        SingleRecipeCheck lockedRecipe = getSingleRecipeCheck();
+        tag.setString(
+            "lockedRecipeName",
+            lockedRecipe != null ? lockedRecipe.getDisplayString(false, true, false, true) : "");
 
         if (mOutputItems != null) {
             int index = 0;
