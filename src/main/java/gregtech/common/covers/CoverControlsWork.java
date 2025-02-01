@@ -29,7 +29,6 @@ public class CoverControlsWork extends CoverBehavior implements IControlsWorkCov
     @Override
     public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
-        if (!makeSureOnlyOne(side, aTileEntity)) return 0;
         if (aTileEntity instanceof IMachineProgress machine) {
             if (aCoverVariable < 2) {
                 if ((aInputRedstone > 0) == (aCoverVariable == 0)) {
@@ -71,16 +70,6 @@ public class CoverControlsWork extends CoverBehavior implements IControlsWorkCov
     protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID,
         ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return aCoverVariable.get() != 2; // always off, so no redstone needed either
-    }
-
-    /**
-     * Make sure there is only one GT_Cover_ControlsWork on the aTileEntity TODO this is a migration thing. Remove this
-     * after 2.3.0 is released.
-     *
-     * @return true if the cover is the first (side) one
-     **/
-    private boolean makeSureOnlyOne(ForgeDirection side, ICoverable aTileEntity) {
-        return IControlsWorkCover.makeSureOnlyOne(side, aTileEntity);
     }
 
     @Override

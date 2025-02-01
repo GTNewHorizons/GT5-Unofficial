@@ -18,8 +18,6 @@ public class CoverRedstoneTransmitterExternal extends CoverRedstoneWirelessBase 
     @Override
     public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
-        // TODO remove next line after 2.3.0
-        if (!IControlsWorkCover.makeSureOnlyOne(side, aTileEntity)) return aCoverVariable;
         GregTechAPI.sWirelessRedstone.put(aCoverVariable, aInputRedstone);
         return aCoverVariable;
     }
