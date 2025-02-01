@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverInfo;
 
@@ -27,9 +26,6 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
     boolean setCoverIDAtSideNoUpdate(ForgeDirection side, int aID);
 
     void setCoverItemAtSide(ForgeDirection side, ItemStack aCover);
-
-    @Deprecated
-    int getCoverDataAtSide(ForgeDirection side);
 
     default CoverInfo getCoverInfoAtSide(ForgeDirection side) {
         return null;

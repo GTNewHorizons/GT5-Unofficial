@@ -51,7 +51,6 @@ import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.net.GTPacketRequestCoverData;
 import gregtech.api.net.GTPacketSendCoverData;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.GTClient;
@@ -313,16 +312,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     @Override
     public ItemStack getCoverItemAtSide(ForgeDirection side) {
         return getCoverInfoAtSide(side).getDisplayStack();
-    }
-
-    @Override
-    @Deprecated
-    public int getCoverDataAtSide(ForgeDirection side) {
-        final ISerializableObject coverData = getCoverInfoAtSide(side).getCoverData();
-        if (coverData instanceof ISerializableObject.LegacyCoverData) {
-            return ((ISerializableObject.LegacyCoverData) coverData).get();
-        }
-        return 0;
     }
 
     public final void setCoverInfoAtSide(ForgeDirection side, CoverInfo coverInfo) {

@@ -973,16 +973,6 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     @Override
-    public int getCoverDataAtSide(ForgeDirection side) {
-        if (side != ForgeDirection.UNKNOWN) return mCoverData[side.ordinal()];
-        return 0;
-    }
-
-    public byte getLightValue() {
-        return mLightValue;
-    }
-
-    @Override
     public void setLightValue(byte aLightValue) {
         mLightValue = (byte) (aLightValue & 15);
     }
