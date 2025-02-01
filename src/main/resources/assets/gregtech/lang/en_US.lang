@@ -688,6 +688,7 @@ GT5U.item.pipe.gas_proof.yes=Yes
 GT5U.item.pipe.gas_proof.no=No
 GT5U.item.pipe.amount=Pipe Amount
 GT5U.item.pipe.empty=Empty
+GT5U.item.pipe.swap=Pipe Swapped:
 
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak middle-click to unlock.
