@@ -808,16 +808,6 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     /**
-     * Called when someone rightclicks this Cover Client Side
-     * <p/>
-     * return true, if something actually happens.
-     */
-    public boolean onCoverRightclickClient(ForgeDirection side, ICoverable aTileEntity, EntityPlayer aPlayer, float aX,
-        float aY, float aZ) {
-        return false;
-    }
-
-    /**
      * If this is a simple Cover, which can also be used on Bronze Machines and similar.
      */
     public boolean isSimpleCover() {

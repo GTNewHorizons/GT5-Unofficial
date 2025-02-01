@@ -1480,7 +1480,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                     ? GTUtility.determineWrenchingSide(side, aX, aY, aZ)
                     : side;
                 return (getCoverBehaviorAtSideNew(tSide).hasCoverGUI());
-            } else if (getCoverBehaviorAtSideNew(side).onCoverRightclickClient(side, this, aPlayer, aX, aY, aZ)) {
+            } else if (getCoverInfoAtSide(side).onCoverRightclickClient(aPlayer, aX, aY, aZ)) {
                 return true;
             }
 

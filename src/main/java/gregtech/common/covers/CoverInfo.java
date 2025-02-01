@@ -238,6 +238,15 @@ public final class CoverInfo {
             .onCoverRightClick(coverSide, coverID, coverData, coveredTile.get(), aPlayer, aX, aY, aZ);
     }
 
+    /**
+     * Called when someone rightclicks this Cover Client Side
+     * <p>
+     * return true, if something actually happens.
+     */
+    public boolean onCoverRightclickClient(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        return false;
+    }
+
     public boolean onCoverShiftRightClick(EntityPlayer aPlayer) {
         return getCoverBehavior().onCoverShiftRightClick(coverSide, coverID, coverData, coveredTile.get(), aPlayer);
     }
