@@ -317,21 +317,19 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             handCable.mInsulated,
             handCable.mCanShock);
 
-
         // Swap in the new cable
         aBaseMetaTileEntity.setMetaTileID(newMetaID);
         aBaseMetaTileEntity.setMetaTileEntity(newCable);
 
         aBaseMetaTileEntity.markDirty();
-        aBaseMetaTileEntity.issueTextureUpdate();
         aBaseMetaTileEntity.issueBlockUpdate();
-
 
         // 7) Reconnect the *new* cable to the old sides (modified for both cables and machines)
         if (newCable.getBaseMetaTileEntity() != null) {
             // For each side that was previously connected
             for (ForgeDirection side : oldConnectedSides) {
-                IGregTechTileEntity neighborTile = newCable.getBaseMetaTileEntity().getIGregTechTileEntityAtSide(side);
+                IGregTechTileEntity neighborTile = newCable.getBaseMetaTileEntity()
+                    .getIGregTechTileEntityAtSide(side);
                 int result = newCable.connect(side);
                 // If there is a neighbor tile, then:
                 if (neighborTile != null) {
@@ -350,7 +348,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                 }
             }
         }
-
+        aBaseMetaTileEntity.issueTextureUpdate();
 
         // Handle inventory changes (old <-> new cable) if not creative
         if (!aPlayer.capabilities.isCreativeMode) {
