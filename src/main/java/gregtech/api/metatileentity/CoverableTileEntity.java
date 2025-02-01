@@ -324,16 +324,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     @Override
-    public boolean canPlaceCoverIDAtSide(ForgeDirection side, int aID) {
-        return getCoverIDAtSide(side) == 0;
-    }
-
-    @Override
-    public boolean canPlaceCoverItemAtSide(ForgeDirection side, ItemStack aCover) {
-        return getCoverIDAtSide(side) == 0;
-    }
-
-    @Override
     @Deprecated
     public int getCoverDataAtSide(ForgeDirection side) {
         final ISerializableObject coverData = getCoverInfoAtSide(side).getCoverData();
@@ -397,21 +387,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         updateOutputRedstoneSignal(side);
 
         return true;
-    }
-
-    @Override
-    public ItemStack removeCoverAtSide(ForgeDirection side, boolean aForced) {
-        final CoverInfo coverInfo = getCoverInfoAtSide(side);
-        if (!coverInfo.isValid()) return null;
-        if (!coverInfo.onCoverRemoval(aForced) && !aForced) return null;
-        final ItemStack tStack = coverInfo.getDrop();
-        if (tStack != null) {
-            coverInfo.onDropped();
-        }
-        clearCoverInfoAtSide(side);
-        updateOutputRedstoneSignal(side);
-
-        return tStack;
     }
 
     protected void onBaseTEDestroyed() {

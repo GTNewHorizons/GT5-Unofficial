@@ -973,16 +973,6 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     @Override
-    public boolean canPlaceCoverIDAtSide(ForgeDirection side, int aID) {
-        return getCoverIDAtSide(side) == 0;
-    }
-
-    @Override
-    public boolean canPlaceCoverItemAtSide(ForgeDirection side, ItemStack aCover) {
-        return getCoverIDAtSide(side) == 0;
-    }
-
-    @Override
     public void setCoverDataAtSide(ForgeDirection side, int aData) {
         if (side != ForgeDirection.UNKNOWN) mCoverData[side.ordinal()] = aData;
     }
@@ -1051,25 +1041,6 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
             return true;
         }
         return false;
-    }
-
-    @Override
-    public ItemStack removeCoverAtSide(ForgeDirection side, boolean aForced) {
-        CoverInfo coverInfo = getCoverInfoAtSide(side);
-        if (coverInfo.onCoverRemoval(aForced) || aForced) {
-            ItemStack tStack = coverInfo.getDrop();
-            if (tStack != null) {
-                tStack.setTagCompound(null);
-            }
-            setCoverIDAtSide(side, 0);
-            if (mMetaTileEntity.hasSidedRedstoneOutputBehavior()) {
-                setOutputRedstoneSignal(side, (byte) 0);
-            } else {
-                setOutputRedstoneSignal(side, (byte) 15);
-            }
-            return tStack;
-        }
-        return null;
     }
 
     public String getOwnerName() {

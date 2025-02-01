@@ -10,15 +10,7 @@ import gregtech.common.covers.CoverInfo;
 
 public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer {
 
-    boolean canPlaceCoverIDAtSide(ForgeDirection side, int aID);
-
-    boolean canPlaceCoverItemAtSide(ForgeDirection side, ItemStack aCover);
-
     boolean dropCover(ForgeDirection side, ForgeDirection droppedSide, boolean aForced);
-
-    default ItemStack removeCoverAtSide(ForgeDirection side, boolean aForced) {
-        return null;
-    }
 
     @Deprecated
     void setCoverDataAtSide(ForgeDirection side, int aData);
