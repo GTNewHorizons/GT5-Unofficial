@@ -230,13 +230,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         }
     }
 
-    protected void updateCoverBehavior() {
-        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            final CoverInfo coverInfo = getCoverInfoAtSide(side);
-            if (coverInfo.isValid()) coverInfo.updateCoverBehavior();
-        }
-    }
-
     @Override
     public void issueCoverUpdate(ForgeDirection side) {
         final CoverInfo coverInfo = getCoverInfoAtSide(side);

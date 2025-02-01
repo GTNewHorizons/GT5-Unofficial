@@ -32,18 +32,19 @@ public final class CoverInfo {
 
     public static final CoverInfo EMPTY_INFO = new CoverInfo(ForgeDirection.UNKNOWN, null);
     private final ForgeDirection coverSide;
-    private int coverID = 0;
-    private CoverBehaviorBase<?> coverBehavior;
-    private ISerializableObject coverData;
+    private final int coverID;
+    private final CoverBehaviorBase<?> coverBehavior;
     private final WeakReference<ICoverable> coveredTile;
-    private boolean needsUpdate = false;
 
+    private ISerializableObject coverData;
+    private boolean needsUpdate = false;
     private int tickRateAddition = 0;
 
     public CoverInfo(ForgeDirection side, ICoverable aTile) {
         coverSide = side;
         coveredTile = new WeakReference<>(aTile);
         coverBehavior = GregTechAPI.sNoBehavior;
+        coverID = 0;
     }
 
     public CoverInfo(ForgeDirection side, int aID, ICoverable aTile, ISerializableObject aCoverData) {
@@ -159,10 +160,6 @@ public final class CoverInfo {
 
     public void onBaseTEDestroyed() {
         getCoverBehavior().onBaseTEDestroyed(coverSide, coverID, coverData, coveredTile.get());
-    }
-
-    public void updateCoverBehavior() {
-        coverBehavior = GregTechAPI.getCoverBehaviorNew(coverID);
     }
 
     public void preDataChanged(int aCoverID, ISerializableObject aCoverData) {

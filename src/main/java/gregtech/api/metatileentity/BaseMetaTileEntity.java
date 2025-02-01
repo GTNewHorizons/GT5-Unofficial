@@ -223,8 +223,6 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
             if (hasValidMetaTileEntity() && mMetaTileEntity.hasSidedRedstoneOutputBehavior())
                 mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
             else mSidedRedstone = new byte[] { 15, 15, 15, 15, 15, 15 };
-
-        updateCoverBehavior();
     }
 
     /**
@@ -379,7 +377,6 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                 }
                 if (aSideServer) {
                     if (mRedstone != oRedstone || mTickTimer == 10) {
-                        updateCoverBehavior();
                         oRedstone = mRedstone;
                         issueBlockUpdate();
                     }
