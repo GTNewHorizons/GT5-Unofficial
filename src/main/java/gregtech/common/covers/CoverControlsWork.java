@@ -11,7 +11,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.covers.IControlsWorkCover;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.CoverBehavior;
@@ -20,7 +19,7 @@ import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
-public class CoverControlsWork extends CoverBehavior implements IControlsWorkCover {
+public class CoverControlsWork extends CoverBehavior {
 
     public CoverControlsWork(ITexture coverTexture) {
         super(coverTexture);
@@ -151,7 +150,7 @@ public class CoverControlsWork extends CoverBehavior implements IControlsWorkCov
     public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable aTileEntity) {
         if (!super.isCoverPlaceable(side, aStack, aTileEntity)) return false;
         for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
-            if (aTileEntity.getCoverBehaviorAtSideNew(tSide) instanceof IControlsWorkCover) {
+            if (aTileEntity.getCoverBehaviorAtSideNew(tSide) instanceof CoverControlsWork) {
                 return false;
             }
         }
