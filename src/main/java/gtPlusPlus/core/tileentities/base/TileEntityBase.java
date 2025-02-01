@@ -875,12 +875,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     @Override
     public byte getInternalInputRedstoneSignal(ForgeDirection side) {
-        return (byte) (getCoverBehaviorAtSide(side).getRedstoneInput(
-            side,
-            getInputRedstoneSignal(side),
-            getCoverIDAtSide(side),
-            getCoverDataAtSide(side),
-            this) & 15);
+        return (byte) (getCoverInfoAtSide(side).getRedstoneInput(getInputRedstoneSignal(side)) & 15);
     }
 
     @Override
@@ -892,10 +887,8 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     @Override
     public byte getOutputRedstoneSignal(ForgeDirection side) {
-        return getCoverBehaviorAtSide(side)
-            .manipulatesSidedRedstoneOutput(side, getCoverIDAtSide(side), getCoverDataAtSide(side), this)
-                ? mSidedRedstone[side.ordinal()]
-                : getGeneralRS(side);
+        return getCoverInfoAtSide(side).manipulatesSidedRedstoneOutput() ? mSidedRedstone[side.ordinal()]
+            : getGeneralRS(side);
     }
 
     public boolean allowGeneralRedstoneOutput() {
@@ -909,9 +902,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     @Override
     public void setInternalOutputRedstoneSignal(ForgeDirection side, byte aStrength) {
-        if (!getCoverBehaviorAtSide(side)
-            .manipulatesSidedRedstoneOutput(side, getCoverIDAtSide(side), getCoverDataAtSide(side), this))
-            setOutputRedstoneSignal(side, aStrength);
+        if (!getCoverInfoAtSide(side).manipulatesSidedRedstoneOutput()) setOutputRedstoneSignal(side, aStrength);
     }
 
     @Override
@@ -1035,10 +1026,9 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     @Override
     public boolean dropCover(ForgeDirection side, ForgeDirection droppedSide, boolean aForced) {
-        if (getCoverBehaviorAtSide(side)
-            .onCoverRemoval(side, getCoverIDAtSide(side), mCoverData[side.ordinal()], this, aForced) || aForced) {
-            ItemStack tStack = getCoverBehaviorAtSide(side)
-                .getDrop(side, getCoverIDAtSide(side), getCoverDataAtSide(side), this);
+        CoverInfo coverInfo = getCoverInfoAtSide(side);
+        if (coverInfo.onCoverRemoval(aForced) || aForced) {
+            ItemStack tStack = coverInfo.getDrop();
             if (tStack != null) {
                 tStack.setTagCompound(null);
                 EntityItem tEntity = new EntityItem(
@@ -1065,10 +1055,9 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     @Override
     public ItemStack removeCoverAtSide(ForgeDirection side, boolean aForced) {
-        if (getCoverBehaviorAtSide(side)
-            .onCoverRemoval(side, getCoverIDAtSide(side), mCoverData[side.ordinal()], this, aForced) || aForced) {
-            ItemStack tStack = getCoverBehaviorAtSide(side)
-                .getDrop(side, getCoverIDAtSide(side), getCoverDataAtSide(side), this);
+        CoverInfo coverInfo = getCoverInfoAtSide(side);
+        if (coverInfo.onCoverRemoval(aForced) || aForced) {
+            ItemStack tStack = coverInfo.getDrop();
             if (tStack != null) {
                 tStack.setTagCompound(null);
             }

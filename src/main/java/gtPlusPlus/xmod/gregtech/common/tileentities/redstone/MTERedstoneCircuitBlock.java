@@ -37,10 +37,10 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.CircuitryBehavior;
-import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.CoverInfo;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -395,8 +395,8 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     }
 
     @Override
-    public CoverBehavior getCover(ForgeDirection side) {
-        return (CoverBehavior) getBaseMetaTileEntity().getCoverBehaviorAtSideNew(side);
+    public CoverInfo getCover(ForgeDirection side) {
+        return getBaseMetaTileEntity().getCoverInfoAtSide(side);
     }
 
     @Override

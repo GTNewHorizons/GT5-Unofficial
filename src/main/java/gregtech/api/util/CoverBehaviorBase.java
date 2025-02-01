@@ -507,10 +507,9 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
         }
 
         public boolean isCoverValid() {
-            return !getUIBuildContext().getTile()
-                .isDead()
-                && getUIBuildContext().getTile()
-                    .getCoverBehaviorAtSideNew(getUIBuildContext().getCoverSide()) != GregTechAPI.sNoBehavior;
+            ICoverable tile = getUIBuildContext().getTile();
+            return !(tile.isDead() || tile.getCoverInfoAtSide(getUIBuildContext().getCoverSide())
+                .hasNoBehavior());
         }
 
         protected void addTitleToUI(ModularWindow.Builder builder) {

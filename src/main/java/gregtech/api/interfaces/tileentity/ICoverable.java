@@ -5,7 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.util.CoverBehavior;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverInfo;
 
@@ -57,14 +56,6 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
      */
     @Deprecated
     CoverBehavior getCoverBehaviorAtSide(ForgeDirection side);
-
-    /**
-     * @deprecated Use the appropriate method on CoverInfo. Add it there if it doesn't exist.
-     */
-    @Deprecated
-    default CoverBehaviorBase<?> getCoverBehaviorAtSideNew(ForgeDirection side) {
-        return getCoverBehaviorAtSide(side);
-    }
 
     /**
      * For use by the regular MetaTileEntities. Returns the Cover Manipulated input Redstone. Don't use this if you are

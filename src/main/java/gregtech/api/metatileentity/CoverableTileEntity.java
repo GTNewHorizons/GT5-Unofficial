@@ -348,11 +348,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return getCoverInfoAtSide(side).getCoverData();
     }
 
-    @Override
-    public CoverBehaviorBase<?> getCoverBehaviorAtSideNew(ForgeDirection side) {
-        return getCoverInfoAtSide(side).getCoverBehavior();
-    }
-
     public final void setCoverInfoAtSide(ForgeDirection side, CoverInfo coverInfo) {
         if (side != ForgeDirection.UNKNOWN) {
             coverInfos[side.ordinal()] = coverInfo;
@@ -461,9 +456,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public void setInternalOutputRedstoneSignal(ForgeDirection side, byte aStrength) {
-        if (!getCoverBehaviorAtSideNew(side)
-            .manipulatesSidedRedstoneOutput(side, getCoverIDAtSide(side), getComplexCoverDataAtSide(side), this))
-            setOutputRedstoneSignal(side, aStrength);
+        if (!getCoverInfoAtSide(side).manipulatesSidedRedstoneOutput()) setOutputRedstoneSignal(side, aStrength);
     }
 
     @Override
@@ -500,12 +493,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public byte getInternalInputRedstoneSignal(ForgeDirection side) {
-        return (byte) (getCoverBehaviorAtSideNew(side).getRedstoneInput(
-            side,
-            getInputRedstoneSignal(side),
-            getCoverIDAtSide(side),
-            getComplexCoverDataAtSide(side),
-            this) & 15);
+        return (byte) (getCoverInfoAtSide(side).getRedstoneInput(getInputRedstoneSignal(side)) & 15);
     }
 
     @Override
@@ -517,10 +505,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public byte getOutputRedstoneSignal(ForgeDirection side) {
-        return getCoverBehaviorAtSideNew(side)
-            .manipulatesSidedRedstoneOutput(side, getCoverIDAtSide(side), getComplexCoverDataAtSide(side), this)
-                ? mSidedRedstone[side.ordinal()]
-                : getGeneralRS(side);
+        return getCoverInfoAtSide(side).manipulatesSidedRedstoneOutput() ? mSidedRedstone[side.ordinal()]
+            : getGeneralRS(side);
     }
 
     protected void updateOutputRedstoneSignal(ForgeDirection side) {
@@ -713,7 +699,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                     final List<IDrawable> backgrounds = new ArrayList<>();
                     final GUITextureSet tabIconSet = getGUITextureSet();
 
-                    if (getCoverBehaviorAtSideNew(direction).hasCoverGUI()) {
+                    if (getCoverInfoAtSide(direction).hasCoverGUI()) {
                         if (isHovering()) {
                             backgrounds.add(
                                 flipHorizontally ? tabIconSet.getCoverTabHighlightFlipped()

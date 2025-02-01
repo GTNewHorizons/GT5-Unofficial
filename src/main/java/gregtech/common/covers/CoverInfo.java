@@ -3,8 +3,6 @@ package gregtech.common.covers;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -15,7 +13,9 @@ import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
@@ -154,6 +154,18 @@ public final class CoverInfo {
 
     public boolean isRedstoneSensitive(long aTickTimer) {
         return getCoverBehavior().isRedstoneSensitive(coverSide, coverID, coverData, coveredTile.get(), aTickTimer);
+    }
+
+    public boolean manipulatesSidedRedstoneOutput() {
+        return getCoverBehavior().manipulatesSidedRedstoneOutput(coverSide, coverID, coverData, coveredTile.get());
+    }
+
+    public byte getRedstoneInput(byte inputRedstone) {
+        return getCoverBehavior().getRedstoneInput(coverSide, inputRedstone, coverID, coverData, coveredTile.get());
+    }
+
+    public boolean letsRedstoneGoIn() {
+        return getCoverBehavior().letsRedstoneGoIn(coverSide, coverID, coverData, coveredTile.get());
     }
 
     public ISerializableObject doCoverThings(long aTickTimer, byte aRedstone) {
@@ -322,6 +334,10 @@ public final class CoverInfo {
         return getCoverBehavior() instanceof GTCoverNone;
     }
 
+    public boolean allowsCopyPasteTool() {
+        return getCoverBehavior().allowsCopyPasteTool();
+    }
+
     public static final class ClientTickRateFormatter {
 
         /** A translation key for the type of time units being used (e.g.: "tick", "seconds".) */
@@ -355,7 +371,12 @@ public final class CoverInfo {
     public ModularUIContainer createCoverContainer(EntityPlayer player) {
         ICoverable tile = this.coveredTile.get();
         if (tile == null) return null;
-        final CoverUIBuildContext buildContext = new CoverUIBuildContext(player, this.coverID, this.coverSide, tile, false);
+        final CoverUIBuildContext buildContext = new CoverUIBuildContext(
+            player,
+            this.coverID,
+            this.coverSide,
+            tile,
+            false);
         final ModularWindow window = this.coverBehavior.createWindow(buildContext);
         if (window == null) return null;
         return new ModularUIContainer(new ModularUIContext(buildContext, tile::markDirty), window);

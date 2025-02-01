@@ -120,7 +120,7 @@ public class BehaviourCoverTool extends BehaviourNone {
                     ? GTUtility.determineWrenchingSide(side, hitX, hitY, hitZ)
                     : ForgeDirection.UNKNOWN;
             if (tSide != ForgeDirection.UNKNOWN) {
-                if (tCoverable.getCoverBehaviorAtSideNew(tSide)
+                if (tCoverable.getCoverInfoAtSide(tSide)
                     .allowsCopyPasteTool()) {
                     mStoredData = tCoverable.getComplexCoverDataAtSide(tSide);
                     mCoverType = tCoverable.getCoverIDAtSide(tSide);
