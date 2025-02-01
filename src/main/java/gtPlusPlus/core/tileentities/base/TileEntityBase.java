@@ -925,11 +925,6 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     @Override
-    public CoverBehavior getCoverBehaviorAtSide(ForgeDirection side) {
-        return side != ForgeDirection.UNKNOWN ? mCoverBehaviors[side.ordinal()] : GregTechAPI.sNoBehavior;
-    }
-
-    @Override
     public void setCoverIDAtSide(ForgeDirection side, int aID) {
         if (setCoverIDAtSideNoUpdate(side, aID)) {
             issueCoverUpdate(side);

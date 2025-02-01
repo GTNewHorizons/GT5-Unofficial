@@ -300,14 +300,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     @Override
-    @Deprecated
-    public CoverBehavior getCoverBehaviorAtSide(ForgeDirection side) {
-        final CoverBehaviorBase<?> behavior = getCoverInfoAtSide(side).getCoverBehavior();
-        if (behavior instanceof CoverBehavior) return (CoverBehavior) behavior;
-        return GregTechAPI.sNoBehavior;
-    }
-
-    @Override
     public void setCoverItemAtSide(ForgeDirection side, ItemStack aCover) {
         GregTechAPI.getCoverBehaviorNew(aCover)
             .placeCover(side, aCover, this);

@@ -40,12 +40,6 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
     ItemStack getCoverItemAtSide(ForgeDirection side);
 
     /**
-     * @deprecated Use the appropriate method on CoverInfo. Add it there if it doesn't exist.
-     */
-    @Deprecated
-    CoverBehavior getCoverBehaviorAtSide(ForgeDirection side);
-
-    /**
      * For use by the regular MetaTileEntities. Returns the Cover Manipulated input Redstone. Don't use this if you are
      * a Cover Behavior. Only for MetaTileEntities.
      */
