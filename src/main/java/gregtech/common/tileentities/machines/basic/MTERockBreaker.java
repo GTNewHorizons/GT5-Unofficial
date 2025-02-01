@@ -125,10 +125,11 @@ public class MTERockBreaker extends MTEBasicMachine {
     @Override
     public int checkRecipe() {
         IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
-        if ((aBaseMetaTileEntity.getBlockOffset(0, 0, 1) == Blocks.water)
-            || (aBaseMetaTileEntity.getBlockOffset(0, 0, -1) == Blocks.water)
-            || (aBaseMetaTileEntity.getBlockOffset(-1, 0, 0) == Blocks.water)
-            || (aBaseMetaTileEntity.getBlockOffset(1, 0, 0) == Blocks.water)) {
+        if ((aBaseMetaTileEntity.getBlockOffset(0, -1, 0) != Blocks.soul_sand)
+            && ((aBaseMetaTileEntity.getBlockOffset(0, 0, 1) == Blocks.water)
+                || (aBaseMetaTileEntity.getBlockOffset(0, 0, -1) == Blocks.water)
+                || (aBaseMetaTileEntity.getBlockOffset(-1, 0, 0) == Blocks.water)
+                || (aBaseMetaTileEntity.getBlockOffset(1, 0, 0) == Blocks.water))) {
             ItemStack tOutput = null;
             if (aBaseMetaTileEntity.getBlockOffset(0, 1, 0) == Blocks.lava) {
                 tOutput = new ItemStack(Blocks.stone, 1);
@@ -153,17 +154,6 @@ public class MTERockBreaker extends MTEBasicMachine {
                             this.mOutputItems[0] = tOutput;
                             return 2;
                         }
-                    } else if (GTUtility.areStacksEqual(getInputAt(0), new ItemStack(Blocks.packed_ice, 0))) {
-                        tOutput = GTOreDictUnificator.get(OrePrefixes.block, Materials.Basalt, 1L);
-                        if (canOutput(tOutput)) {
-                            getInputAt(0).stackSize -= 0;
-                            calculateOverclockedNess(30, 16);
-                            // In case recipe is too OP for that machine
-                            if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
-                                return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-                            this.mOutputItems[0] = tOutput;
-                            return 2;
-                        }
                     }
                 } else if (canOutput(tOutput)) {
                     calculateOverclockedNess(30, 16);
@@ -174,7 +164,26 @@ public class MTERockBreaker extends MTEBasicMachine {
                     return 2;
                 }
             }
-        }
+        } else if ((aBaseMetaTileEntity.getBlockOffset(0, 0, 1) == Blocks.lava)
+            || (aBaseMetaTileEntity.getBlockOffset(0, 0, -1) == Blocks.lava)
+            || (aBaseMetaTileEntity.getBlockOffset(-1, 0, 0) == Blocks.lava)
+            || (aBaseMetaTileEntity.getBlockOffset(1, 0, 0) == Blocks.lava)) {
+                if (GTUtility.areStacksEqual(getStackInSlot(getCircuitSlot()), GTUtility.getIntegratedCircuit(1))) {
+                    if (GTUtility.areStacksEqual(getInputAt(0), new ItemStack(Blocks.packed_ice, 0))) {
+                        if ((aBaseMetaTileEntity.getBlockOffset(0, -1, 0) == Blocks.soul_sand)) {
+                            ItemStack tOutput = GTOreDictUnificator.get(OrePrefixes.block, Materials.Basalt, 1L);
+                            if (canOutput(tOutput)) {
+                                calculateOverclockedNess(30, 16);
+                                // In case recipe is too OP for that machine
+                                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                                    return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                                this.mOutputItems[0] = tOutput;
+                                return 2;
+                            }
+                        }
+                    }
+                }
+            }
         return 0;
     }
 }

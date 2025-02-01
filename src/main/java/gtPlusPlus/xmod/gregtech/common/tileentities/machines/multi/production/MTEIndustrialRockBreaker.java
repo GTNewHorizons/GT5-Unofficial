@@ -83,6 +83,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
             .addInfo("Use Integrated Circuit to determine recipe")
             .addInfo("1 = cobble, 2 = stone, 3 = obsidian, 4 = basalt")
             .addInfo("Needs Water and Lava in input hatch")
+            .addInfo("Needs Soul Sand and Packed Ice in input bus for basalt")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
             .addController("Bottom Center")
