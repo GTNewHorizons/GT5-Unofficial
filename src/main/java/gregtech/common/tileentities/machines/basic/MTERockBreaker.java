@@ -156,8 +156,8 @@ public class MTERockBreaker extends MTEBasicMachine {
                     } else if (GTUtility.areStacksEqual(getInputAt(0), new ItemStack(Blocks.packed_ice, 0))) {
                         tOutput = GTOreDictUnificator.get(OrePrefixes.block, Materials.Basalt, 1L);
                         if (canOutput(tOutput)) {
-                            getInputAt(0).stackSize -= 1;
-                            calculateOverclockedNess(30, 128);
+                            getInputAt(0).stackSize -= 0;
+                            calculateOverclockedNess(30, 16);
                             // In case recipe is too OP for that machine
                             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
