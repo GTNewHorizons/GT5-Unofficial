@@ -587,7 +587,9 @@ public enum OrePrefixes {
         64, -1),
     // Beamline Masks
     mask("A Photolithographic Mask", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1,
-        1, -1);
+        1, -1),
+    wrapCircuit("A Circuit Wrap", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1,
+        64, -1);
 
     public static final ImmutableList<OrePrefixes> CELL_TYPES = ImmutableList.of(
         cell,
@@ -907,7 +909,10 @@ public enum OrePrefixes {
             SubTag.MAGICAL,
             new ICondition.And<>(SubTag.TRANSPARENT, SubTag.HAS_COLOR));
 
-        plateDouble.mCondition = new ICondition.And<>(SubTag.MULTI_PLATE);
+        plateDouble.mCondition = new ICondition.Or<>(
+            SubTag.PAPER,
+            new ICondition.Not<>(SubTag.NO_SMASHING),
+            SubTag.STRETCHY);
         plateTriple.mCondition = new ICondition.And<>(SubTag.MULTI_PLATE);
         plateQuadruple.mCondition = new ICondition.And<>(SubTag.MULTI_PLATE);
         plateQuintuple.mCondition = new ICondition.And<>(SubTag.MULTI_PLATE);

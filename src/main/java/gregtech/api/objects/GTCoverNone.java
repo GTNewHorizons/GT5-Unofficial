@@ -7,6 +7,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+
+import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.ISerializableObject;
@@ -232,6 +235,12 @@ public class GTCoverNone extends CoverBehavior {
     @Override
     protected ItemStack getDropImpl(ForgeDirection side, int aCoverID,
         ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+        return null;
+    }
+
+    @Override
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
+        // Cancel opening the UI.
         return null;
     }
 }

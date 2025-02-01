@@ -1194,7 +1194,7 @@ public class RecipeLoader2 {
                     GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Titanium, 4),
                     GGMaterial.hikarium.get(OrePrefixes.gearGt, 4),
                     GGMaterial.marM200.get(OrePrefixes.plateDouble, 2),
-                    ItemRefer.IC2_Ir_Plate.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 2),
                     GGMaterial.lumiium.get(OrePrefixes.bolt, 48))
                 .fluidInputs(Materials.Palladium.getMolten(1152))
                 .itemOutputs(ItemRefer.Precise_Assembler.get(1))
@@ -1555,8 +1555,8 @@ public class RecipeLoader2 {
                 MaterialsAlloy.TITANSTEEL.getPlateDense(8), ItemRefer.HiC_T4.get(8),
                 ItemList.Field_Generator_UHV.get(8),
                 GGMaterial.enrichedNaquadahAlloy.get(OrePrefixes.gearGtSmall, 64) },
-            new FluidStack[] { MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(144),
-                GGMaterial.dalisenite.getMolten(1152), MaterialsAlloy.BOTMIUM.getFluidStack(288) },
+            new FluidStack[] { Materials.RadoxPolymer.getMolten(1296), GGMaterial.dalisenite.getMolten(1152),
+                MaterialsAlloy.BOTMIUM.getFluidStack(288) },
             ItemRefer.Compact_Fusion_MK4.get(1),
             6000,
             (int) TierEU.RECIPE_UV);

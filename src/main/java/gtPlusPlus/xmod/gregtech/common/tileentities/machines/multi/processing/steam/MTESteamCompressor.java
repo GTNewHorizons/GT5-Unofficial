@@ -42,12 +42,12 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.CompressionTierKey;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -132,13 +132,13 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
     }
 
     @Override
-    protected GTRenderedTexture getFrontOverlay() {
-        return new GTRenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_STEAM_COMPRESSOR);
+    protected ITexture getFrontOverlay() {
+        return TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_STEAM_COMPRESSOR);
     }
 
     @Override
-    protected GTRenderedTexture getFrontOverlayActive() {
-        return new GTRenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_STEAM_COMPRESSOR_ACTIVE);
+    protected ITexture getFrontOverlayActive() {
+        return TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_STEAM_COMPRESSOR_ACTIVE);
     }
 
     @Override
