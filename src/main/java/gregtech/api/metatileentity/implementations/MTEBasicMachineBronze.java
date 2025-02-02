@@ -200,7 +200,7 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         // Super already zeroed out setErrorDisplayID, add additional error codes here.
-        aBaseMetaTileEntity.setErrorDisplayID(aBaseMetaTileEntity.getErrorDisplayID() | (mNeedsSteamVenting ? 64 : 0));
+        setErrorDisplayID(getErrorDisplayID() | (mNeedsSteamVenting ? 64 : 0));
     }
 
     @Override

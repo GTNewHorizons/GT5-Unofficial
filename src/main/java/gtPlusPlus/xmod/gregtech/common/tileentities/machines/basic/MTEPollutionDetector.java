@@ -6,28 +6,29 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.GTMod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEPollutionDetector extends GTPPMetaTileEntity {
+public class MTEPollutionDetector extends MTETieredMachineBlock {
 
     int mCurrentPollution;
     int mAveragePollution;
     int[] mAveragePollutionArray = new int[10];
     private int mArrayPos = 0;
     private int mTickTimer = 0;
-    private final int mSecondTimer = 0;
     private long mRedstoneLevel = 0;
 
     public MTEPollutionDetector(final int aID, final String aName, final String aNameRegional, final int aTier,
@@ -35,16 +36,19 @@ public class MTEPollutionDetector extends GTPPMetaTileEntity {
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
     }
 
-    public MTEPollutionDetector(final String aName, final int aTier, final String aDescription,
+    public MTEPollutionDetector(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures, final int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "Right click to check pollution levels.",
-            "Configure with screwdriver to set redstone output amount.", "Does not use power.",
-            GTPPCore.GT_Tooltip.get() };
+        return ArrayUtils.addAll(
+            this.mDescriptionArray,
+            "Right click to check pollution levels.",
+            "Configure with screwdriver to set redstone output amount.",
+            "Does not use power.",
+            GTPPCore.GT_Tooltip.get());
     }
 
     @Override
@@ -137,7 +141,7 @@ public class MTEPollutionDetector extends GTPPMetaTileEntity {
         return new MTEPollutionDetector(
             this.mName,
             this.mTier,
-            this.mDescription,
+            this.mDescriptionArray,
             this.mTextures,
             this.mInventory.length);
     }

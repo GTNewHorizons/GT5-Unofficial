@@ -24,7 +24,6 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.Textures;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by danie_000 on 16.12.2016.
@@ -45,7 +44,6 @@ public class MTEHatchEnergyMulti extends MTEHatch {
                 translateToLocalFormatted("gt.blockmachines.hatch.energymulti.desc.2", aAmp + (aAmp >> 2)),
                 translateToLocalFormatted("gt.blockmachines.hatch.energymulti.desc.3", aAmp) });
         Amperes = maxAmperes = aAmp;
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchEnergyMulti(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {

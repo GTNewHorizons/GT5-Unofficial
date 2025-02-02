@@ -14,7 +14,6 @@ import tectech.mechanics.dataTransport.QuantumDataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by danie_000 on 27.10.2016.
@@ -30,7 +29,6 @@ public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket>
             new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.dataout.desc.0"),
                 translateToLocal("gt.blockmachines.hatch.dataout.desc.1"),
                 EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataout.desc.2") });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchDataOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
