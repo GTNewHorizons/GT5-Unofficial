@@ -66,7 +66,6 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
             4,
             new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.rack.desc.0"),
                 EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.rack.desc.1") });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchRack(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

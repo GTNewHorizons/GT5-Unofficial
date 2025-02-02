@@ -36,7 +36,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
 import tectech.thing.metaTileEntity.Textures;
-import tectech.util.TTUtility;
 
 public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
 
@@ -75,7 +74,6 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
                     + GRAY
                     + " EU/t" },
             aAmp);
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchWirelessMulti(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {

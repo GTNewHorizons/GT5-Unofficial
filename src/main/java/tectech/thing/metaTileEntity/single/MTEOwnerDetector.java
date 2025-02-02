@@ -22,7 +22,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by Tec on 23.03.2017.
@@ -44,12 +43,10 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
                 translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.0"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.1"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.2") });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEOwnerDetector(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-        TTUtility.setTier(aTier, this);
     }
 
     @Override
