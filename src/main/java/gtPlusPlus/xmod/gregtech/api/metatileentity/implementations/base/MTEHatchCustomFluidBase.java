@@ -139,11 +139,6 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
     }
 
     @Override
-    public int getTankPressure() {
-        return -100;
-    }
-
-    @Override
     public int getCapacity() {
         return this.mFluidCapacity;
     }

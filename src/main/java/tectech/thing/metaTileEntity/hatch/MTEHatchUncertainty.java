@@ -44,7 +44,6 @@ import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by danie_000 on 15.12.2016.
@@ -61,7 +60,6 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
 
     public MTEHatchUncertainty(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");
-        TTUtility.setTier(aTier, this);
         regenerate();
     }
 

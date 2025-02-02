@@ -26,7 +26,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.common.WirelessDataStore;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
@@ -36,7 +35,6 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
     public MTEHatchWirelessDataItemsInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchWirelessDataItemsInput(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {

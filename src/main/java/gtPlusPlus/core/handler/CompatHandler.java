@@ -101,7 +101,6 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSteamMultis;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechThaumcraftDevices;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechThreadedBuffers;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechTieredFluidTanks;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechTreeFarmerTE;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechWaterPump;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechWirelessChargers;
 
@@ -160,7 +159,6 @@ public class CompatHandler {
         GregtechGeothermalThermalGenerator.run();
         Gregtech4Content.run();
         GregtechIndustrialFuelRefinery.run();
-        GregtechTreeFarmerTE.run();
         GregtechIndustrialTreeFarm.run();
         GregtechIndustrialSifter.run();
         GregtechSimpleWasher.run();

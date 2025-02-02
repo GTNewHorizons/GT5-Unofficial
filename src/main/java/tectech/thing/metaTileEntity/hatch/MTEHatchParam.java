@@ -68,7 +68,6 @@ public class MTEHatchParam extends MTEHatch implements IAddGregtechLogo, IAddUIW
                     + "Deprecated; Now you can set parameter by clicking LED on multiblock GUI.",
                 EnumChatFormatting.DARK_RED
                     + "If it doesn't work, try removing Parametrizer from multiblock structure." });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchParam(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

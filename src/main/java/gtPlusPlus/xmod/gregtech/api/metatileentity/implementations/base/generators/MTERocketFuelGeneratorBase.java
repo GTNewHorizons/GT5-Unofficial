@@ -331,8 +331,4 @@ public abstract class MTERocketFuelGeneratorBase extends MTEBasicTank implements
         return 32000;
     }
 
-    @Override
-    public int getTankPressure() {
-        return -100;
-    }
 }

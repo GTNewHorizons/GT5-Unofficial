@@ -21,8 +21,6 @@ public class CoverAdvancedRedstoneReceiverInternal extends CoverAdvancedRedstone
             } else {
                 machine.disableWorking();
             }
-
-            machine.setWorkDataValue(aInputRedstone);
         }
 
         return aCoverVariable;
