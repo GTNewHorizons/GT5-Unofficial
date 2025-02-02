@@ -947,11 +947,6 @@ public class MTEFluid extends MetaPipeEntity {
     }
 
     @Override
-    public int getTankPressure() {
-        return getFluidAmount() - (getCapacity() / 2);
-    }
-
-    @Override
     public String[] getDescription() {
         List<String> descriptions = new ArrayList<>();
         descriptions.add(
