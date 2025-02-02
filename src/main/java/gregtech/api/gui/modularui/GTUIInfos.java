@@ -76,9 +76,9 @@ public class GTUIInfos {
                         if (!world.isRemote) return null;
                         final TileEntity te = world.getTileEntity(x, y, z);
                         if (!(te instanceof ICoverable gtTileEntity)) return null;
-                        return createCoverGuiContainer(
-                            gtTileEntity.getCoverInfoAtSide(side)
-                                .createCoverContainer(player));
+                        ModularUIContainer container = gtTileEntity.getCoverInfoAtSide(side)
+                            .createCoverContainer(player);
+                        return (container == null) ? null : new ModularGui(container);
                     })
                     .build());
         }
@@ -143,15 +143,7 @@ public class GTUIInfos {
             windowCreator,
             null,
             containerConstructor);
-        return createCoverGuiContainer(container);
-    }
-
-    @SideOnly(Side.CLIENT)
-    private static ModularGui createCoverGuiContainer(ModularUIContainer container) {
-        if (container == null) {
-            return null;
-        }
-        return new ModularGui(container);
+        return (container == null) ? null : new ModularGui(container);
     }
 
     @FunctionalInterface
