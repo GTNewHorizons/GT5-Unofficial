@@ -831,10 +831,11 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     public boolean onRightclick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
         final ForgeDirection wrenchingSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
         final ForgeDirection effectiveSide = (getCoverIDAtSide(side) == 0) ? wrenchingSide : side;
+        CoverInfo effectiveSideCover = getCoverInfoAtSide(effectiveSide);
         if (isClientSide()) {
             // Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
-                return (getCoverInfoAtSide(effectiveSide).hasCoverGUI());
+                return (effectiveSideCover.hasCoverGUI());
             }
         }
         if (isServerSide()) {
@@ -980,9 +981,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                     return true;
                 }
 
-                final CoverInfo coverInfo = getCoverInfoAtSide(effectiveSide);
-
-                if (coverInfo.getCoverID() == 0) {
+                if (effectiveSideCover.getCoverID() == 0) {
                     if (CoverRegistry.isCover(tCurrentItem)) {
                         final CoverBehaviorBase<?> coverBehavior = CoverRegistry.getCoverBehaviorNew(tCurrentItem);
                         if (coverBehavior.isCoverPlaceable(effectiveSide, tCurrentItem, this)
@@ -1022,8 +1021,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                     }
                 }
             } else if (aPlayer.isSneaking()) { // Sneak click, no tool -> open cover config or turn back.
-                final CoverInfo coverInfo = getCoverInfoAtSide(effectiveSide);
-                return coverInfo.isValid() && coverInfo.onCoverShiftRightClick(aPlayer);
+                return effectiveSideCover.isValid() && effectiveSideCover.onCoverShiftRightClick(aPlayer);
             }
 
             if (getCoverInfoAtSide(side).onCoverRightClick(aPlayer, aX, aY, aZ)) return true;

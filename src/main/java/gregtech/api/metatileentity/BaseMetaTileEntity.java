@@ -1453,10 +1453,11 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     public boolean onRightclick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
         final ForgeDirection wrenchingSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
         final ForgeDirection effectiveSide = (getCoverIDAtSide(side) == 0) ? wrenchingSide : side;
+        CoverInfo effectiveSideCover = getCoverInfoAtSide(effectiveSide);
         if (isClientSide()) {
             // Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
-                return (getCoverInfoAtSide(effectiveSide).hasCoverGUI());
+                return (effectiveSideCover.hasCoverGUI());
             }
 
             if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
@@ -1671,10 +1672,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                         } else if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sJackhammerList)) {
                             // Configuration of delicate electronics calls for a tool with precision and subtlety.
                             if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                                final CoverInfo info = getCoverInfoAtSide(effectiveSide);
-                                if (info.isValid()) {
-                                    if (info.allowsTickRateAddition()) {
-                                        info.onCoverJackhammer(aPlayer);
+                                if (effectiveSideCover.isValid()) {
+                                    if (effectiveSideCover.allowsTickRateAddition()) {
+                                        effectiveSideCover.onCoverJackhammer(aPlayer);
                                         GTUtility.sendSoundToPlayers(
                                             worldObj,
                                             SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT,
@@ -1698,8 +1698,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     }
                     // End item != null
                 } else if (aPlayer.isSneaking()) { // Sneak click, no tool -> open cover config if possible.
-                    final CoverInfo coverInfo = getCoverInfoAtSide(effectiveSide);
-                    return coverInfo.isValid() && coverInfo.onCoverShiftRightClick(aPlayer);
+                    return effectiveSideCover.isValid() && effectiveSideCover.onCoverShiftRightClick(aPlayer);
                 }
 
                 if (getCoverInfoAtSide(side).onCoverRightClick(aPlayer, aX, aY, aZ)) return true;
