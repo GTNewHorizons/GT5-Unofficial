@@ -360,6 +360,16 @@ public class GTPostLoad {
             .noOptimize()
             .fake()
             .addTo(rockBreakerFakeRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.packed_ice, 0), GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Basalt, 1L))
+            .duration(16 * TICKS)
+            .eut(TierEU.RECIPE_LV)
+            .ignoreCollision()
+            .noOptimize()
+            .fake()
+            .addTo(rockBreakerFakeRecipes);
     }
 
     public static void changeWoodenVanillaTools() {
