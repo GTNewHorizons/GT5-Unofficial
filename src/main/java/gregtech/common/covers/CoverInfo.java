@@ -21,7 +21,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.net.GTPacketSendCoverData;
 import gregtech.api.objects.GTCoverNone;
 import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTUtility;
@@ -383,7 +382,4 @@ public final class CoverInfo {
         return new ModularUIContainer(new ModularUIContext(buildContext, tile::markDirty), window);
     }
 
-    public GTPacketSendCoverData toPacket() {
-        return new GTPacketSendCoverData(this.coverSide, this.coverID, this.coverData, this.coveredTile.get());
-    }
 }
