@@ -31,7 +31,7 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 
-public abstract class CommonMetaTileEntity extends CoverableTileEntity
+public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     implements IGregTechTileEntity, ICraftingIconProvider, ISoundP2PHandler {
 
     protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mSendClientData = false, mInventoryChanged = false;

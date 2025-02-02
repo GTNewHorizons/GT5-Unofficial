@@ -95,7 +95,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * <p/>
  * This is the main TileEntity for EVERYTHING.
  */
-public class BaseMetaTileEntity extends CommonMetaTileEntity
+public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     implements IGregTechTileEntity, IActionHost, IGridProxyable, IAlignmentProvider, IConstructableProvider,
     IDebugableTileEntity, IGregtechWailaProvider, ICleanroomReceiver, ICustomNameObject {
 
