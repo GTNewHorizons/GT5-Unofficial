@@ -808,11 +808,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public boolean shouldDropItemAt(int index) {
-        return this.mMetaTileEntity == null || this.mMetaTileEntity.shouldDropItemAt(index);
-    }
-
-    @Override
     public boolean onRightclick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
         if (isClientSide()) {
             // Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron

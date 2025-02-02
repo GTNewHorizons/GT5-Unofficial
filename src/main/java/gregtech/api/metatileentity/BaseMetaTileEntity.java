@@ -1448,11 +1448,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         return new ArrayList<>(Collections.singletonList(rStack));
     }
 
-    @Override
-    public boolean shouldDropItemAt(int index) {
-        return this.mMetaTileEntity == null || this.mMetaTileEntity.shouldDropItemAt(index);
-    }
-
     public int getUpgradeCount() {
         return (mMuffler ? 1 : 0) + (mLockUpgrade ? 1 : 0) + (mSteamConverter ? 1 : 0) + mOtherUpgrades;
     }

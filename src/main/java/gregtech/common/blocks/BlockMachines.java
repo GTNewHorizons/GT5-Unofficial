@@ -437,7 +437,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
             if (!(mte instanceof MTEQuantumChest)) {
                 for (int i = 0; i < gtTE.getSizeInventory(); i++) {
                     final ItemStack tItem = gtTE.getStackInSlot(i);
-                    if ((tItem != null) && (tItem.stackSize > 0) && (gtTE.isValidSlot(i)) && gtTE.shouldDropItemAt(i)) {
+                    if ((tItem != null) && (tItem.stackSize > 0) && (gtTE.isValidSlot(i)) && mte.shouldDropItemAt(i)) {
                         final EntityItem tItemEntity = new EntityItem(
                             aWorld,
                             aX + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F,
