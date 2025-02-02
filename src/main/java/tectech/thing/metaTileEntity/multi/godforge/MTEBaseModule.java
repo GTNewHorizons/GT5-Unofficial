@@ -20,7 +20,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
@@ -59,7 +62,7 @@ import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsUI;
 
-public class MTEBaseModule extends TTMultiblockBase {
+public class MTEBaseModule extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 
     protected final int tier = getTier();
     protected boolean isConnected = false;
@@ -266,6 +269,11 @@ public class MTEBaseModule extends TTMultiblockBase {
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         structureBuild_EM(STRUCTURE_PIECE_MAIN, 3, 3, 0, stackSize, hintsOnly);
+    }
+
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        int realBudget = elementBudget >= 200 ? elementBudget : Math.min(1000, elementBudget * 5);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, realBudget, env, false, true);
     }
 
     @Override
