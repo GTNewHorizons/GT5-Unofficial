@@ -1221,18 +1221,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         return false;
     }
 
-    @Override
-    public boolean acceptsRotationalEnergy(ForgeDirection side) {
-        if (!canAccessData() || getCoverIDAtSide(side) != 0) return false;
-        return mMetaTileEntity.acceptsRotationalEnergy(side);
-    }
-
-    @Override
-    public boolean injectRotationalEnergy(ForgeDirection side, long aSpeed, long aEnergy) {
-        if (!canAccessData() || getCoverIDAtSide(side) != 0) return false;
-        return mMetaTileEntity.injectRotationalEnergy(side, aSpeed, aEnergy);
-    }
-
     private boolean canMoveFluidOnSide(ForgeDirection side, Fluid fluid, boolean isFill) {
         if (side == ForgeDirection.UNKNOWN) return true;
 

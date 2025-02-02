@@ -302,16 +302,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     }
 
     @Override
-    public boolean acceptsRotationalEnergy(ForgeDirection side) {
-        return false;
-    }
-
-    @Override
-    public boolean injectRotationalEnergy(ForgeDirection side, long speed, long energy) {
-        return false;
-    }
-
-    @Override
     public String getSpecialVoltageToolTip() {
         return null;
     }
