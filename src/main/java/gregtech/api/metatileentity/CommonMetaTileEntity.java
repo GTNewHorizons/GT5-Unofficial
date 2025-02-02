@@ -254,13 +254,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     }
 
     /**
-     * Tank pressure
-     */
-    public int getTankPressure() {
-        return 0;
-    }
-
-    /**
      * Returns capacity of the fluid.
      */
     @Override

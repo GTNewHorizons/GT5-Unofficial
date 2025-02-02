@@ -353,8 +353,4 @@ public abstract class MTEBoilerBase extends MTEBasicTank {
         return 32000;
     }
 
-    @Override
-    public int getTankPressure() {
-        return 100;
-    }
 }
