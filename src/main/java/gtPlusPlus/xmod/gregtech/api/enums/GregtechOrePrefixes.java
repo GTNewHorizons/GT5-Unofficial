@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.enums;
 
 import static gregtech.api.enums.GTValues.B;
-import static gregtech.api.enums.GTValues.D2;
 import static gregtech.api.enums.GTValues.M;
 import static gtPlusPlus.core.util.Utils.getTcAspectStack;
 
@@ -30,10 +29,8 @@ import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTConfig;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IOreRecipeRegistrator;
 
 public enum GregtechOrePrefixes {
 
@@ -129,8 +126,6 @@ public enum GregtechOrePrefixes {
 
     private final Collection<Materials> mNotGeneratedItems = new HashSet<>(), mIgnoredMaterials = new HashSet<>(),
         mGeneratedItems = new HashSet<>();
-    private final ArrayList<IOreRecipeRegistrator> mOreProcessing = new ArrayList<>();
-    private final ArrayList<IOreRecipeRegistrator> mOreProcessingFake = new ArrayList<>();
     public final ItemStack mContainerItem = null;
     public final ICondition<ISubTagContainer> mCondition = null;
     public byte mDefaultStackSize = 64;
@@ -337,55 +332,6 @@ public enum GregtechOrePrefixes {
             return false;
         }
         return this.mFamiliarPrefixes.add(aPrefix);
-    }
-
-    public boolean add(final IOreRecipeRegistrator aRegistrator) {
-        if (aRegistrator == null) {
-            return false;
-        }
-        return this.mOreProcessing.add(aRegistrator);
-    }
-
-    public void processOre(final GT_Materials aMaterial, final String aOreDictName, final String aModName,
-        final ItemStack aStack) {
-        if ((aMaterial != null)
-            && ((aMaterial != GT_Materials._NULL) || this.mIsSelfReferencing || !this.mIsMaterialBased)
-            && GTUtility.isStackValid(aStack)) {
-            for (final IOreRecipeRegistrator tRegistrator : this.mOreProcessing) {
-                if (D2) {
-                    GTLog.ore.println(
-                        "Processing '" + aOreDictName
-                            + "' with the Prefix '"
-                            + this.name()
-                            + "' and the Material '"
-                            + aMaterial.name()
-                            + "' at "
-                            + GTUtility.getClassName(tRegistrator));
-                }
-                tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GTUtility.copyAmount(1, aStack));
-            }
-        }
-    }
-
-    // TODO
-    public void processOre(final Materials aMaterial, final String aOreDictName, final String aModName,
-        final ItemStack aStack) {
-        if ((aMaterial != null) && ((aMaterial != Materials._NULL) || this.mIsSelfReferencing || !this.mIsMaterialBased)
-            && GTUtility.isStackValid(aStack)) {
-            for (final IOreRecipeRegistrator tRegistrator : this.mOreProcessingFake) {
-                if (D2) {
-                    GTLog.ore.println(
-                        "Processing '" + aOreDictName
-                            + "' with the Prefix '"
-                            + this.name()
-                            + "' and the Material '"
-                            + aMaterial.mName
-                            + "' at "
-                            + GTUtility.getClassName(tRegistrator));
-                }
-                tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GTUtility.copyAmount(1, aStack));
-            }
-        }
     }
 
     public String getDefaultLocalNameForItem(final Materials aMaterial) {
