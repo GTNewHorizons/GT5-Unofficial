@@ -1304,7 +1304,7 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GTFluidFactory.builder("antimatter")
             .withLocalizedName(MaterialsUEVplus.Antimatter.mLocalizedName)
-            .withStateAndTemperature(LIQUID, -1)
+            .withStateAndTemperature(LIQUID, 1000000)
             .buildAndRegister()
             .configureMaterials(MaterialsUEVplus.Antimatter)
             .registerBContainers(

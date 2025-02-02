@@ -25,7 +25,6 @@ import gregtech.api.util.GTUtility;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.thing.metaTileEntity.Textures;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by danie_000 on 16.12.2016.
@@ -48,7 +47,6 @@ public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnec
                     + EnumChatFormatting.RESET
                     + " EU/t", },
             aAmp); // Energy injecting terminal for Multiblocks
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchEnergyTunnel(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {

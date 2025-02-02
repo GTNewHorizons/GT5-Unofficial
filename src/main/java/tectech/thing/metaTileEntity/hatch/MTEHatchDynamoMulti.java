@@ -13,7 +13,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import tectech.thing.metaTileEntity.Textures;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by danie_000 on 16.12.2016.
@@ -34,7 +33,6 @@ public class MTEHatchDynamoMulti extends MTEHatch {
                 translateToLocal("gt.blockmachines.hatch.dynamomulti.desc.0") }); // Multiple Ampere Energy
                                                                                   // Extractor for Multiblocks
         Amperes = maxAmperes = aAmp;
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchDynamoMulti(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {

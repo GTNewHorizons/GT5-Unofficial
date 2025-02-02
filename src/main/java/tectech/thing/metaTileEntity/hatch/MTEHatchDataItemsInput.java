@@ -31,7 +31,6 @@ import tectech.mechanics.dataTransport.InventoryDataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.recipe.TTRecipeAdder;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConnectsToDataPipe {
 
@@ -42,7 +41,6 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
 
     public MTEHatchDataItemsInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchDataItemsInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
