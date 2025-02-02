@@ -6,41 +6,42 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.GTMod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEPollutionCreator extends GTPPMetaTileEntity {
+public class MTEPollutionCreator extends MTETieredMachineBlock {
 
     int mCurrentPollution;
     int mAveragePollution;
     int[] mAveragePollutionArray = new int[10];
     private int mArrayPos = 0;
     private int mTickTimer = 0;
-    private final int mSecondTimer = 0;
 
     public MTEPollutionCreator(final int aID, final String aName, final String aNameRegional, final int aTier,
         final String aDescription, final int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
     }
 
-    public MTEPollutionCreator(final String aName, final int aTier, final String aDescription,
+    public MTEPollutionCreator(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures, final int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "A useful debug machine to create pollution.",
-            GTPPCore.GT_Tooltip.get() };
+        return ArrayUtils
+            .addAll(this.mDescriptionArray, "A useful debug machine to create pollution.", GTPPCore.GT_Tooltip.get());
     }
 
     @Override
@@ -135,7 +136,7 @@ public class MTEPollutionCreator extends GTPPMetaTileEntity {
         return new MTEPollutionCreator(
             this.mName,
             this.mTier,
-            this.mDescription,
+            this.mDescriptionArray,
             this.mTextures,
             this.mInventory.length);
     }
