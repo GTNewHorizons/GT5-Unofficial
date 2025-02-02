@@ -1,15 +1,9 @@
 package gtnhlanth.common.tileentity.recipe.beamline;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
-import gtnhlanth.common.register.LanthItemList;
 
 public class RecipeSC extends GTRecipe {
 
@@ -30,21 +24,5 @@ public class RecipeSC extends GTRecipe {
         this.maxEnergy = maxEnergy;
         this.focus = focus;
         this.energyRatio = energyRatio;
-    }
-
-    @Override
-    public ItemStack getRepresentativeOutput(int aIndex) {
-
-        ItemStack particleStack = new ItemStack(LanthItemList.PARTICLE_ITEM);
-
-        Items.ender_pearl.setDamage(particleStack, this.particleId);
-
-        ArrayList<ItemStack> mOutputsWithParticle = new ArrayList<>(Arrays.asList(mOutputs));
-        mOutputsWithParticle.add(particleStack);
-
-        ItemStack[] mOutputsWithParticleArray = mOutputsWithParticle.toArray(new ItemStack[0]);
-
-        if (aIndex < 0 || aIndex >= mOutputsWithParticleArray.length) return null;
-        return GTUtility.copyOrNull(mOutputsWithParticleArray[aIndex]);
     }
 }

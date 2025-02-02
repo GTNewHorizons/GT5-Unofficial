@@ -199,12 +199,9 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         aNBT.setInteger("mTemperature", this.mTemperature);
         aNBT.setInteger("mProcessingEnergy", this.mProcessingEnergy);
         aNBT.setInteger("mExcessWater", this.mExcessWater);
-        if (this.mSteam == null) {
-            return;
-        }
-        try {
+        if (mSteam != null) {
             aNBT.setTag("mSteam", this.mSteam.writeToNBT(new NBTTagCompound()));
-        } catch (Throwable ignored) {}
+        }
     }
 
     @Override
@@ -378,11 +375,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                     x -> x.setPosition(aX - 0.5D + XSTR_INSTANCE.nextFloat(), aY, aZ - 0.5D + XSTR_INSTANCE.nextFloat())
                         .run());
         }
-    }
-
-    @Override
-    public int getTankPressure() {
-        return 100;
     }
 
     protected abstract int getPollution();

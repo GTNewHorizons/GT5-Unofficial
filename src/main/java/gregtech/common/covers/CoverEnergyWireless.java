@@ -1,6 +1,7 @@
 package gregtech.common.covers;
 
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
+import static gregtech.common.misc.WirelessNetworkManager.ticks_between_energy_addition;
 import static java.lang.Long.min;
 
 import java.util.UUID;
@@ -9,12 +10,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.ISerializableObject;
 
-public class CoverEnergyWireless extends CoverBehavior implements IWirelessEnergyHatchInformation {
+public class CoverEnergyWireless extends CoverBehavior {
 
     private final long transferred_energy_per_operation;
 

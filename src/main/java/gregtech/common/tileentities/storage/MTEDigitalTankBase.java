@@ -471,11 +471,6 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
         return true;
     }
 
-    @Override
-    public int getTankPressure() {
-        return 100;
-    }
-
     public boolean allowOverflow() {
         return mVoidFluidPart || mVoidFluidFull;
     }
