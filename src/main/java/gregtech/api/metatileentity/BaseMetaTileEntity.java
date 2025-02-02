@@ -1451,12 +1451,11 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     @Override
     public boolean onRightclick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
+        ForgeDirection wrenchingSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
         if (isClientSide()) {
             // Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
-                final ForgeDirection tSide = (getCoverIDAtSide(side) == 0)
-                    ? GTUtility.determineWrenchingSide(side, aX, aY, aZ)
-                    : side;
+                final ForgeDirection tSide = (getCoverIDAtSide(side) == 0) ? wrenchingSide : side;
                 return (getCoverInfoAtSide(tSide).hasCoverGUI());
             }
 
@@ -1476,8 +1475,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     }
                     if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)) {
                         if (aPlayer.isSneaking() && mMetaTileEntity instanceof MTEBasicMachine
-                            && ((MTEBasicMachine) mMetaTileEntity)
-                                .setMainFacing(GTUtility.determineWrenchingSide(side, aX, aY, aZ))) {
+                            && ((MTEBasicMachine) mMetaTileEntity).setMainFacing(wrenchingSide)) {
                             GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
                             GTUtility.sendSoundToPlayers(
                                 worldObj,
@@ -1488,14 +1486,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                 yCoord,
                                 zCoord);
                             cableUpdateDelay = 10;
-                        } else if (mMetaTileEntity.onWrenchRightClick(
-                            side,
-                            GTUtility.determineWrenchingSide(side, aX, aY, aZ),
-                            aPlayer,
-                            aX,
-                            aY,
-                            aZ,
-                            tCurrentItem)) {
+                        } else if (mMetaTileEntity
+                            .onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                                 GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
                                 GTUtility.sendSoundToPlayers(
                                     worldObj,
@@ -1584,8 +1576,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     }
 
                     if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)) {
-                        final ForgeDirection tSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
-                        if (mMetaTileEntity.onSolderingToolRightClick(side, tSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
+                        if (mMetaTileEntity
+                            .onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                             // logic handled internally
                             GTUtility.sendSoundToPlayers(
                                 worldObj,
@@ -1596,12 +1588,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                 yCoord,
                                 zCoord);
                         } else if (GTModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
-                            mStrongRedstone ^= tSide.flag;
+                            mStrongRedstone ^= wrenchingSide.flag;
                             GTUtility.sendChatToPlayer(
                                 aPlayer,
-                                GTUtility.trans("091", "Redstone Output at Side ") + tSide
+                                GTUtility.trans("091", "Redstone Output at Side ") + wrenchingSide
                                     + GTUtility.trans("092", " set to: ")
-                                    + ((mStrongRedstone & tSide.flag) != 0 ? GTUtility.trans("093", "Strong")
+                                    + ((mStrongRedstone & wrenchingSide.flag) != 0 ? GTUtility.trans("093", "Strong")
                                         : GTUtility.trans("094", "Weak")));
                             GTUtility.sendSoundToPlayers(
                                 worldObj,
@@ -1620,8 +1612,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     }
 
                     if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)) {
-                        final ForgeDirection tSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
-                        if (mMetaTileEntity.onWireCutterRightClick(side, tSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
+                        if (mMetaTileEntity
+                            .onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                             // logic handled internally
                             GTUtility.sendSoundToPlayers(
                                 worldObj,
@@ -1640,7 +1632,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     }
 
                     ForgeDirection coverSide = side;
-                    if (getCoverIDAtSide(side) == 0) coverSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
+                    if (getCoverIDAtSide(side) == 0) coverSide = wrenchingSide;
 
                     if (getCoverIDAtSide(coverSide) == 0) {
                         if (CoverRegistry.isCover(tCurrentItem)) {
@@ -1709,7 +1701,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     }
                     // End item != null
                 } else if (aPlayer.isSneaking()) { // Sneak click, no tool -> open cover config if possible.
-                    side = (getCoverIDAtSide(side) == 0) ? GTUtility.determineWrenchingSide(side, aX, aY, aZ) : side;
+                    side = (getCoverIDAtSide(side) == 0) ? wrenchingSide : side;
                     return getCoverIDAtSide(side) > 0 && getCoverInfoAtSide(side).onCoverShiftRightClick(aPlayer);
                 }
 
