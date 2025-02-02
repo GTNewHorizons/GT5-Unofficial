@@ -50,7 +50,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     public final String mName;
 
     /**
-     * During this is set to false, lag caused by this block won't be reported to console. Use it while the block is
+     * While this is set to false, lag caused by this block won't be reported to console. Use it while the block is
      * intentionally doing something that lags, such as scanning multiple chunks or file IO.
      * Don't forget to set it back to true on the next tick.
      */
