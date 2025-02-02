@@ -242,11 +242,6 @@ public abstract class GTMetaItem extends GTMetaItemBase {
     /* ---------- INTERNAL OVERRIDES ---------- */
 
     @Override
-    public ItemStack onItemRightClick(final ItemStack aStack, final World aWorld, final EntityPlayer aPlayer) {
-        return super.onItemRightClick(aStack, aWorld, aPlayer);
-    }
-
-    @Override
     public int getMaxItemUseDuration(final ItemStack aStack) {
         return this.mFoodStats.get((short) this.getDamage(aStack)) == null ? 0 : 32;
     }
