@@ -1317,11 +1317,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public float getBlastResistance(ForgeDirection side) {
-        return canAccessData() ? Math.max(0, getMetaTileEntity().getExplosionResistance(side)) : 5.0F;
-    }
-
-    @Override
     public void onBlockDestroyed() {
         if (canAccessData()) getMetaTileEntity().onBlockDestroyed();
     }

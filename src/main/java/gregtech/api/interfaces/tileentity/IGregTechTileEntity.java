@@ -60,6 +60,11 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
     void setMetaTileEntity(IMetaTileEntity aMetaTileEntity);
 
     /**
+     * @return If this TileEntity is valid as a MetaTileEntity holder.
+     */
+    boolean canAccessData();
+
+    /**
      * Causes a general Texture update.
      * <p/>
      * Only used Client Side to mark Blocks dirty.
@@ -123,8 +128,6 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
      * Called when rightclicking the TileEntity
      */
     boolean onRightclick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ);
-
-    float getBlastResistance(ForgeDirection side);
 
     default void onBlockDestroyed() {}
 

@@ -157,7 +157,8 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         return false;
     }
 
-    protected boolean canAccessData() {
+    @Override
+    public boolean canAccessData() {
         return !isDead && hasValidMetaTileEntity();
     }
 

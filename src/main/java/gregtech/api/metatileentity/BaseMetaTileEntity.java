@@ -1284,11 +1284,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         return mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
     }
 
-    @Override
-    protected boolean canAccessData() {
-        return !isDead && hasValidMetaTileEntity();
-    }
-
     public boolean setStoredEU(long aEnergy) {
         if (!canAccessData()) return false;
         if (aEnergy < 0) aEnergy = 0;
@@ -2256,11 +2251,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         mColor = (byte) (aColor + 1);
         if (canAccessData()) mMetaTileEntity.onColorChangeServer(aColor);
         return mColor;
-    }
-
-    @Override
-    public float getBlastResistance(ForgeDirection side) {
-        return canAccessData() ? Math.max(0, getMetaTileEntity().getExplosionResistance(side)) : 10.0F;
     }
 
     @Override
