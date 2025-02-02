@@ -17,19 +17,18 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by Tec on 23.03.2017.
  */
 public class MTEOwnerDetector extends MTETieredMachineBlock {
 
-    private static GTRenderedTexture OWNER_ONLINE, OWNER_OFFLINE;
+    private static ITexture OWNER_ONLINE, OWNER_OFFLINE;
     private String uuid;
     private boolean interdimensional = true;
 
@@ -44,12 +43,10 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
                 translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.0"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.1"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.2") });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEOwnerDetector(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-        TTUtility.setTier(aTier, this);
     }
 
     @Override
@@ -61,8 +58,8 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        OWNER_ONLINE = new GTRenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/OWNER_ONLINE"));
-        OWNER_OFFLINE = new GTRenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/OWNER_OFFLINE"));
+        OWNER_ONLINE = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/OWNER_ONLINE"));
+        OWNER_OFFLINE = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/OWNER_OFFLINE"));
     }
 
     @Override

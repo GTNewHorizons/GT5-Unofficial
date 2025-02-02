@@ -2229,7 +2229,7 @@ public class MachineLoader implements Runnable {
         Machine_Multi_DataBank
             .set(new MTEDataBank(DataBank.ID, "multimachine.em.databank", "Data Bank").getStackForm(1L));
         Machine_Multi_Research.set(
-            new MTEResearchStation(Researchstation.ID, "multimachine.em.research", "Research station")
+            new MTEResearchStation(Researchstation.ID, "multimachine.em.research", "Research Station")
                 .getStackForm(1L));
         Machine_Multi_Infuser
             .set(new MTEEnergyInfuser(EnergyInfuser.ID, "multimachine.em.infuser", "Energy Infuser").getStackForm(1));

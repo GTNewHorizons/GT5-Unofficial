@@ -305,7 +305,7 @@ public class RecipeLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(BlackTea.get(1))
                 .itemOutputs(LemonTea.get(1))
-                .fluidInputs(FluidRegistry.getFluidStack("potion.lemonjuice", 1000))
+                .fluidInputs(FluidRegistry.getFluidStack("potion.lemonjuice", 10))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
@@ -313,7 +313,7 @@ public class RecipeLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(BlackTea.get(1))
                 .itemOutputs(MilkTea.get(1))
-                .fluidInputs(FluidRegistry.getFluidStack("milk", 1000))
+                .fluidInputs(FluidRegistry.getFluidStack("milk", 100))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
