@@ -1332,24 +1332,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mMaxProgresstime = calculator.getDuration();
     }
 
-    @Deprecated
-    protected void calculateOverclockedNessMulti(int aEUt, int aDuration, int mAmperage, long maxInputVoltage) {
-        calculateOverclockedNessMultiInternal(aEUt, aDuration, mAmperage, maxInputVoltage, false);
-    }
-
-    protected void calculateOverclockedNessMulti(long aEUt, int aDuration, int mAmperage, long maxInputVoltage) {
-        calculateOverclockedNessMultiInternal(aEUt, aDuration, mAmperage, maxInputVoltage, false);
-    }
-
-    @Deprecated
-    protected void calculatePerfectOverclockedNessMulti(int aEUt, int aDuration, int mAmperage, long maxInputVoltage) {
-        calculateOverclockedNessMultiInternal(aEUt, aDuration, mAmperage, maxInputVoltage, true);
-    }
-
-    protected void calculatePerfectOverclockedNessMulti(long aEUt, int aDuration, int mAmperage, long maxInputVoltage) {
-        calculateOverclockedNessMultiInternal(aEUt, aDuration, mAmperage, maxInputVoltage, true);
-    }
-
     public boolean drainEnergyInput(long aEU) {
         if (aEU <= 0) return true;
         for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
