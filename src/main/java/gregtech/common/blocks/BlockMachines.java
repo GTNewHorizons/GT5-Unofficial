@@ -243,9 +243,8 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
         List<AxisAlignedBB> outputAABB, Entity collider) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IGregTechTileEntity
-            && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() != null) {
-            ((IGregTechTileEntity) tTileEntity)
+        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
+            gtTE.getMetaTileEntity()
                 .addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
             return;
         }
@@ -255,9 +254,9 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IGregTechTileEntity
-            && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() != null) {
-            return ((IGregTechTileEntity) tTileEntity).getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
+            return gtTE.getMetaTileEntity()
+                .getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
         }
         return super.getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
     }
@@ -266,9 +265,9 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IGregTechTileEntity
-            && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() != null) {
-            return ((IGregTechTileEntity) tTileEntity).getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
+            return gtTE.getMetaTileEntity()
+                .getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
         }
         return super.getSelectedBoundingBoxFromPool(aWorld, aX, aY, aZ);
     }
@@ -276,10 +275,9 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     @Override // THIS
     public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int aX, int aY, int aZ) {
         final TileEntity tTileEntity = blockAccess.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IGregTechTileEntity
-            && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() != null)) {
-            final AxisAlignedBB bbb = ((IGregTechTileEntity) tTileEntity)
-                .getCollisionBoundingBoxFromPool(((IGregTechTileEntity) tTileEntity).getWorld(), 0, 0, 0);
+        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
+            final AxisAlignedBB bbb = gtTE.getMetaTileEntity()
+                .getCollisionBoundingBoxFromPool(gtTE.getWorld(), 0, 0, 0);
             minX = bbb.minX; // This essentially sets block bounds
             minY = bbb.minY;
             minZ = bbb.minZ;
@@ -299,9 +297,9 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     @Override
     public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IGregTechTileEntity
-            && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() != null) {
-            ((IGregTechTileEntity) tTileEntity).onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
+        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
+            gtTE.getMetaTileEntity()
+                .onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
             return;
         }
         super.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);

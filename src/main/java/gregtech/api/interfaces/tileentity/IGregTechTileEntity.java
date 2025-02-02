@@ -1,17 +1,13 @@
 package gregtech.api.interfaces.tileentity;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
@@ -135,13 +131,6 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
      * 255 = 100%
      */
     int getLightOpacity();
-
-    void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
-        List<AxisAlignedBB> outputAABB, Entity collider);
-
-    AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ);
-
-    void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider);
 
     /**
      * Checks validity of meta tile and delegates to it
