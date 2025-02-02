@@ -1317,11 +1317,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public void onBlockDestroyed() {
-        if (canAccessData()) getMetaTileEntity().onBlockDestroyed();
-    }
-
-    @Override
     public boolean isMufflerUpgradable() {
         return false;
     }

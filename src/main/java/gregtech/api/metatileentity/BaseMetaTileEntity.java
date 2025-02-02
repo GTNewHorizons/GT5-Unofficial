@@ -2254,13 +2254,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public void onBlockDestroyed() {
-        if (canAccessData()) {
-            getMetaTileEntity().onBlockDestroyed();
-        }
-    }
-
-    @Override
     public boolean isUniversalEnergyStored(long aEnergyAmount) {
         if (getUniversalEnergyStored() >= aEnergyAmount) return true;
         mHasEnoughEnergy = false;

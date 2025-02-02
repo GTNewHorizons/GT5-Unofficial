@@ -29,6 +29,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -216,8 +217,9 @@ public class BlockFrameBox extends BlockContainer {
         if (aWorld.isRemote) return;
 
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IGregTechTileEntity gtTE) {
-            gtTE.onBlockDestroyed();
+        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
+            IMetaTileEntity mte = gtTE.getMetaTileEntity();
+            mte.onBlockDestroyed();
             mTemporaryTileEntity.set(gtTE);
         }
         // Cause structure update

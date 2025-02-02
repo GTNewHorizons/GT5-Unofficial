@@ -129,8 +129,6 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
      */
     boolean onRightclick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ);
 
-    default void onBlockDestroyed() {}
-
     ArrayList<ItemStack> getDrops();
 
     /**

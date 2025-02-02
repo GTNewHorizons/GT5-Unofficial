@@ -430,10 +430,11 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetadata) {
         GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IGregTechTileEntity gtTE) {
-            gtTE.onBlockDestroyed();
+        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
+            IMetaTileEntity mte = gtTE.getMetaTileEntity();
+            mte.onBlockDestroyed();
             mTemporaryTileEntity.set(gtTE);
-            if (!(gtTE.getMetaTileEntity() instanceof MTEQuantumChest)) {
+            if (!(mte instanceof MTEQuantumChest)) {
                 for (int i = 0; i < gtTE.getSizeInventory(); i++) {
                     final ItemStack tItem = gtTE.getStackInSlot(i);
                     if ((tItem != null) && (tItem.stackSize > 0) && (gtTE.isValidSlot(i)) && gtTE.shouldDropItemAt(i)) {
