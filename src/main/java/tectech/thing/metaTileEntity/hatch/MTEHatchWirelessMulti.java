@@ -8,6 +8,8 @@ import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
+import static gregtech.common.misc.WirelessNetworkManager.ticks_between_energy_addition;
+import static gregtech.common.misc.WirelessNetworkManager.totalStorage;
 import static java.lang.Long.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -31,13 +33,12 @@ import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
 import tectech.thing.metaTileEntity.Textures;
 import tectech.util.TTUtility;
 
-public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirelessEnergyHatchInformation {
+public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
 
     private final long precisionMultiplier = LongMath.pow(10, 15);
     private final BigInteger eu_transferred_per_operation = BigInteger.valueOf(Amperes * V[mTier])
