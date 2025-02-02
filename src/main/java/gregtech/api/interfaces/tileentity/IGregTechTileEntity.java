@@ -11,14 +11,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddInventorySlots;
 import gregtech.api.interfaces.modularui.IGetGUITextureSet;
 import gregtech.api.util.shutdown.ShutDownReason;
-import gregtech.common.blocks.BlockMachines;
 
 /**
  * A simple compound Interface for all my TileEntities.
@@ -155,17 +152,6 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
     default void setShutdownStatus(boolean newStatus) {}
 
     default void setShutDownReason(@Nonnull ShutDownReason reason) {}
-
-    /**
-     * A randomly called display update to be able to add particles or other items for display The event is proxied by
-     * the {@link BlockMachines#randomDisplayTick}
-     */
-    @SideOnly(Side.CLIENT)
-    default void onRandomDisplayTick() {
-        if (getMetaTileEntity() != null && getMetaTileEntity().getBaseMetaTileEntity() == this) {
-            getMetaTileEntity().onRandomDisplayTick(this);
-        }
-    }
 
     /**
      * gets the time statistics used for CPU timing

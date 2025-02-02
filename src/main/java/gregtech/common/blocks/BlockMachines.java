@@ -589,8 +589,9 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World aWorld, int aX, int aY, int aZ, Random aRandom) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IGregTechTileEntity) {
-            ((IGregTechTileEntity) tTileEntity).onRandomDisplayTick();
+        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
+            gtTE.getMetaTileEntity()
+                .onRandomDisplayTick(gtTE);
         }
     }
 
