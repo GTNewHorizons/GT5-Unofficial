@@ -34,8 +34,6 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IOreRecipeRegistrator;
-import gtPlusPlus.xmod.gregtech.api.objects.GregtechItemData;
-import gtPlusPlus.xmod.gregtech.api.objects.GregtechMaterialStack;
 
 public enum GregtechOrePrefixes {
 
@@ -136,7 +134,6 @@ public enum GregtechOrePrefixes {
     public final ItemStack mContainerItem = null;
     public final ICondition<ISubTagContainer> mCondition = null;
     public byte mDefaultStackSize = 64;
-    public final GregtechMaterialStack mSecondaryMaterial = null;
     public final GregtechOrePrefixes mPrefixInto = this;
     public float mHeatDamage = 0.0F; // Negative for Frost Damage
     /**
@@ -389,13 +386,6 @@ public enum GregtechOrePrefixes {
                 tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GTUtility.copyAmount(1, aStack));
             }
         }
-    }
-
-    public Object get(final Object aMaterial) {
-        if (aMaterial instanceof GT_Materials) {
-            return new GregtechItemData(this, (GT_Materials) aMaterial);
-        }
-        return this.name() + aMaterial;
     }
 
     public String getDefaultLocalNameForItem(final Materials aMaterial) {
