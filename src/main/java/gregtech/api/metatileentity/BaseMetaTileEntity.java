@@ -120,7 +120,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     private boolean oRedstone = false;
     private byte mColor = 0, oColor = 0, oStrongRedstone = 0, oRedstoneData = 63, oTextureData = 0, oUpdateData = 0,
         oTexturePage = 0;
-    private byte oLightValueClient = 0, oLightValue = -1, mLightValue = 0, mOtherUpgrades = 0, mWorkData = 0;
+    private byte oLightValueClient = 0, oLightValue = -1, mLightValue = 0, mOtherUpgrades = 0;
     private ForgeDirection mFacing = ForgeDirection.DOWN, oFacing = ForgeDirection.DOWN;
     private int oX = 0, oY = 0, oZ = 0, mTimeStatisticsIndex = 0, mLagWarningCount = 0;
     private long oOutput = 0, mAcceptedAmperes = Long.MAX_VALUE;
@@ -147,7 +147,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             nbt.setByte("mColor", mColor);
             nbt.setByte("mLightValue", mLightValue);
             nbt.setByte("mOtherUpgrades", mOtherUpgrades);
-            nbt.setByte("mWorkData", mWorkData);
             nbt.setShort("mFacing", (short) mFacing.ordinal());
             nbt.setString("mOwnerName", mOwnerName);
             nbt.setString("mOwnerUuid", mOwnerUuid == null ? "" : mOwnerUuid.toString());
@@ -188,7 +187,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             mStoredEnergy = aNBT.getLong("mStoredEnergy");
             mColor = aNBT.getByte("mColor");
             mLightValue = aNBT.getByte("mLightValue");
-            mWorkData = aNBT.getByte("mWorkData");
             mFacing = oFacing = ForgeDirection.getOrientation(aNBT.getShort("mFacing"));
             mOwnerName = aNBT.getString("mOwnerName");
             setShutdownStatus(aNBT.getBoolean("mWasShutdown"));
@@ -1068,16 +1066,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     @Override
     public boolean hasWorkJustBeenEnabled() {
         return mWorkUpdate;
-    }
-
-    @Override
-    public byte getWorkDataValue() {
-        return mWorkData;
-    }
-
-    @Override
-    public void setWorkDataValue(byte aValue) {
-        mWorkData = aValue;
     }
 
     @Override

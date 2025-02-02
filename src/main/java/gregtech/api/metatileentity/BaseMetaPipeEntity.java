@@ -643,16 +643,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public byte getWorkDataValue() {
-        return 0;
-    }
-
-    @Override
-    public void setWorkDataValue(byte aValue) {
-        /* Do nothing */
-    }
-
-    @Override
     public int getMetaTileID() {
         return mID;
     }
