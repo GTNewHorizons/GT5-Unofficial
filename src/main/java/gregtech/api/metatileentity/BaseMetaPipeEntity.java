@@ -829,12 +829,12 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public boolean onRightclick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
-        ForgeDirection wrenchingSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
+        final ForgeDirection wrenchingSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
+        final ForgeDirection effectiveSide = (getCoverIDAtSide(side) == 0) ? wrenchingSide : side;
         if (isClientSide()) {
             // Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
-                final ForgeDirection tSide = (getCoverIDAtSide(side) == 0) ? wrenchingSide : side;
-                return (getCoverInfoAtSide(tSide).hasCoverGUI());
+                return (getCoverInfoAtSide(effectiveSide).hasCoverGUI());
             }
         }
         if (isServerSide()) {
@@ -980,18 +980,15 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                     return true;
                 }
 
-                ForgeDirection coverSide = side;
-                if (getCoverIDAtSide(side) == 0) coverSide = wrenchingSide;
-
-                final CoverInfo coverInfo = getCoverInfoAtSide(coverSide);
+                final CoverInfo coverInfo = getCoverInfoAtSide(effectiveSide);
 
                 if (coverInfo.getCoverID() == 0) {
                     if (CoverRegistry.isCover(tCurrentItem)) {
                         final CoverBehaviorBase<?> coverBehavior = CoverRegistry.getCoverBehaviorNew(tCurrentItem);
-                        if (coverBehavior.isCoverPlaceable(coverSide, tCurrentItem, this)
-                            && mMetaTileEntity.allowCoverOnSide(coverSide, new GTItemStack(tCurrentItem))) {
+                        if (coverBehavior.isCoverPlaceable(effectiveSide, tCurrentItem, this)
+                            && mMetaTileEntity.allowCoverOnSide(effectiveSide, new GTItemStack(tCurrentItem))) {
 
-                            attachCover(aPlayer, tCurrentItem, coverSide);
+                            attachCover(aPlayer, tCurrentItem, effectiveSide);
 
                             mMetaTileEntity.markDirty();
                             if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
@@ -1018,15 +1015,14 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                                 xCoord,
                                 yCoord,
                                 zCoord);
-                            dropCover(coverSide, side, false);
+                            dropCover(effectiveSide, side, false);
                             mMetaTileEntity.markDirty();
                         }
                         return true;
                     }
                 }
             } else if (aPlayer.isSneaking()) { // Sneak click, no tool -> open cover config or turn back.
-                side = (getCoverIDAtSide(side) == 0) ? wrenchingSide : side;
-                final CoverInfo coverInfo = getCoverInfoAtSide(side);
+                final CoverInfo coverInfo = getCoverInfoAtSide(effectiveSide);
                 return coverInfo.isValid() && coverInfo.onCoverShiftRightClick(aPlayer);
             }
 

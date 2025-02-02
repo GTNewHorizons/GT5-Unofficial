@@ -1451,12 +1451,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     @Override
     public boolean onRightclick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
-        ForgeDirection wrenchingSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
+        final ForgeDirection wrenchingSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
+        final ForgeDirection effectiveSide = (getCoverIDAtSide(side) == 0) ? wrenchingSide : side;
         if (isClientSide()) {
             // Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
-                final ForgeDirection tSide = (getCoverIDAtSide(side) == 0) ? wrenchingSide : side;
-                return (getCoverInfoAtSide(tSide).hasCoverGUI());
+                return (getCoverInfoAtSide(effectiveSide).hasCoverGUI());
             }
 
             if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
@@ -1631,16 +1631,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                         return true;
                     }
 
-                    ForgeDirection coverSide = side;
-                    if (getCoverIDAtSide(side) == 0) coverSide = wrenchingSide;
-
-                    if (getCoverIDAtSide(coverSide) == 0) {
+                    if (getCoverIDAtSide(effectiveSide) == 0) {
                         if (CoverRegistry.isCover(tCurrentItem)) {
                             final CoverBehaviorBase<?> coverBehavior = CoverRegistry.getCoverBehaviorNew(tCurrentItem);
-                            if (coverBehavior.isCoverPlaceable(coverSide, tCurrentItem, this)
-                                && mMetaTileEntity.allowCoverOnSide(coverSide, new GTItemStack(tCurrentItem))) {
+                            if (coverBehavior.isCoverPlaceable(effectiveSide, tCurrentItem, this)
+                                && mMetaTileEntity.allowCoverOnSide(effectiveSide, new GTItemStack(tCurrentItem))) {
 
-                                attachCover(aPlayer, tCurrentItem, coverSide);
+                                attachCover(aPlayer, tCurrentItem, effectiveSide);
 
                                 if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
                                 GTUtility.sendSoundToPlayers(
@@ -1666,7 +1663,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                     xCoord,
                                     yCoord,
                                     zCoord);
-                                dropCover(coverSide, side, false);
+                                dropCover(effectiveSide, side, false);
                                 if (tCurrentItem.stackSize == 0)
                                     ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                             }
@@ -1674,7 +1671,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                         } else if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sJackhammerList)) {
                             // Configuration of delicate electronics calls for a tool with precision and subtlety.
                             if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                                final CoverInfo info = getCoverInfoAtSide(coverSide);
+                                final CoverInfo info = getCoverInfoAtSide(effectiveSide);
                                 if (info.isValid()) {
                                     if (info.allowsTickRateAddition()) {
                                         info.onCoverJackhammer(aPlayer);
@@ -1701,8 +1698,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     }
                     // End item != null
                 } else if (aPlayer.isSneaking()) { // Sneak click, no tool -> open cover config if possible.
-                    side = (getCoverIDAtSide(side) == 0) ? wrenchingSide : side;
-                    return getCoverIDAtSide(side) > 0 && getCoverInfoAtSide(side).onCoverShiftRightClick(aPlayer);
+                    final CoverInfo coverInfo = getCoverInfoAtSide(effectiveSide);
+                    return coverInfo.isValid() && coverInfo.onCoverShiftRightClick(aPlayer);
                 }
 
                 if (getCoverInfoAtSide(side).onCoverRightClick(aPlayer, aX, aY, aZ)) return true;
