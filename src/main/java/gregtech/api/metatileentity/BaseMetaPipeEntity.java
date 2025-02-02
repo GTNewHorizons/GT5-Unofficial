@@ -1144,16 +1144,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public int getErrorDisplayID() {
-        return 0;
-    }
-
-    @Override
-    public void setErrorDisplayID(int aErrorID) {
-        //
-    }
-
-    @Override
     public IMetaTileEntity getMetaTileEntity() {
         return hasValidMetaTileEntity() ? mMetaTileEntity : null;
     }

@@ -36,16 +36,6 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
     IGregtechWailaProvider, IGetGUITextureSet, IAddInventorySlots {
 
     /**
-     * gets the Error displayed on the GUI
-     */
-    int getErrorDisplayID();
-
-    /**
-     * sets the Error displayed on the GUI
-     */
-    void setErrorDisplayID(int aErrorID);
-
-    /**
      * @return the MetaID of the Block or the MetaTileEntity ID.
      */
     int getMetaTileID();

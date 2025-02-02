@@ -122,7 +122,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         oTexturePage = 0;
     private byte oLightValueClient = 0, oLightValue = -1, mLightValue = 0, mOtherUpgrades = 0, mWorkData = 0;
     private ForgeDirection mFacing = ForgeDirection.DOWN, oFacing = ForgeDirection.DOWN;
-    private int mDisplayErrorCode = 0, oX = 0, oY = 0, oZ = 0, mTimeStatisticsIndex = 0, mLagWarningCount = 0;
+    private int oX = 0, oY = 0, oZ = 0, mTimeStatisticsIndex = 0, mLagWarningCount = 0;
     private long oOutput = 0, mAcceptedAmperes = Long.MAX_VALUE;
     private long mLastCheckTick = 0;
     private String mOwnerName = "";
@@ -1943,16 +1943,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     @Override
     public void markInventoryBeenModified() {
         mInventoryChanged = true;
-    }
-
-    @Override
-    public int getErrorDisplayID() {
-        return mDisplayErrorCode;
-    }
-
-    @Override
-    public void setErrorDisplayID(int aErrorID) {
-        mDisplayErrorCode = aErrorID;
     }
 
     @Override
