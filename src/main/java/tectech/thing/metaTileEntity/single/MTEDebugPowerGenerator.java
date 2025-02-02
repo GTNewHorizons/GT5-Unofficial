@@ -42,7 +42,6 @@ import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 import tectech.thing.metaTileEntity.pipe.MTEPipeEnergy;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by Tec on 23.03.2017.
@@ -67,12 +66,10 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
                 EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.genny.desc.3"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.1"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.2") });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEDebugPowerGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-        TTUtility.setTier(aTier, this);
     }
 
     @Override

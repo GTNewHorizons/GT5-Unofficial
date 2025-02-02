@@ -125,11 +125,6 @@ public class MTECropHarvestor extends MTEBasicTank {
     }
 
     @Override
-    public int getTankPressure() {
-        return -100;
-    }
-
-    @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
         GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;

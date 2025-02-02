@@ -377,11 +377,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         }
     }
 
-    @Override
-    public int getTankPressure() {
-        return 100;
-    }
-
     protected abstract int getPollution();
 
     @Override

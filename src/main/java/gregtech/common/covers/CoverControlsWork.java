@@ -33,7 +33,6 @@ public class CoverControlsWork extends CoverBehavior {
                 if ((aInputRedstone > 0) == (aCoverVariable == 0)) {
                     if (!machine.isAllowedToWork()) machine.enableWorking();
                 } else if (machine.isAllowedToWork()) machine.disableWorking();
-                machine.setWorkDataValue(aInputRedstone);
             } else if (aCoverVariable == 2) {
                 machine.disableWorking();
             } else {
@@ -110,7 +109,6 @@ public class CoverControlsWork extends CoverBehavior {
         boolean aForced) {
         if ((aTileEntity instanceof IMachineProgress)) {
             ((IMachineProgress) aTileEntity).enableWorking();
-            ((IMachineProgress) aTileEntity).setWorkDataValue((byte) 0);
         }
         return true;
     }
