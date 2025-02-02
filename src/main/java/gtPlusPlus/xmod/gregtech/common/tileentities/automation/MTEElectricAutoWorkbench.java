@@ -720,11 +720,6 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
     }
 
     @Override
-    public int getTankPressure() {
-        return -100;
-    }
-
-    @Override
     public String[] getDescription() {
         return new String[] { "Automatic Crafting Table Mk III",
             // this.mDescription,

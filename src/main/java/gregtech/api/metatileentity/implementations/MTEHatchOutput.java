@@ -426,11 +426,6 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     }
 
     @Override
-    public int getTankPressure() {
-        return +100;
-    }
-
-    @Override
     protected void onEmptyingContainerWhenEmpty() {
         if (this.lockedFluidName == null && this.mFluid != null && isFluidLocked()) {
             this.setLockedFluidName(
