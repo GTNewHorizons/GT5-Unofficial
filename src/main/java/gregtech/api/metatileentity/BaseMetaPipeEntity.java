@@ -830,8 +830,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                     ? GTUtility.determineWrenchingSide(side, aX, aY, aZ)
                     : side;
                 return (getCoverInfoAtSide(tSide).hasCoverGUI());
-            } else if (getCoverInfoAtSide(side).onCoverRightclickClient(aPlayer, aX, aY, aZ)) {
-                return true;
             }
         }
         if (isServerSide()) {
