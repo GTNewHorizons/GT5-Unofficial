@@ -519,7 +519,6 @@ public enum MetaTileEntityIDs {
     QUADRUPLE_INPUT_HATCHES_MAX(719),
     Nuclear_Salt_Processing_Plant(749),
     ThoriumReactor(751),
-    TreeFarmer_Structural(752),
     Boiler_Advanced_LV(753),
     Boiler_Advanced_MV(754),
     Boiler_Advanced_HV(755),

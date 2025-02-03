@@ -136,11 +136,6 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
     public abstract void generateParticles(final World aWorld, final String name);
 
     @Override
-    public int getTankPressure() {
-        return 100;
-    }
-
-    @Override
     public abstract int getCapacity();
 
     @Override

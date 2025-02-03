@@ -1148,8 +1148,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 }
             }
 
-            aBaseMetaTileEntity.setErrorDisplayID(
-                aBaseMetaTileEntity.getErrorDisplayID() & -512 | (mWrench ? 0 : 1)
+            setErrorDisplayID(
+                getErrorDisplayID() & -512 | (mWrench ? 0 : 1)
                     | (mScrewdriver ? 0 : 2)
                     | (mSoftHammer ? 0 : 4)
                     | (mHardHammer ? 0 : 8)

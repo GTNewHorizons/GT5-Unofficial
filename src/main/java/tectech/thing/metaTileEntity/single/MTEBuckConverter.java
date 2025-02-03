@@ -35,7 +35,6 @@ import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWidgets, IAddGregtechLogo {
 
@@ -52,12 +51,10 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
             0,
             new String[] { CommonValues.TEC_MARK_GENERAL, translateToLocal("gt.blockmachines.machine.tt.buck.desc.0"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.buck.desc.1"), });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEBuckConverter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-        TTUtility.setTier(aTier, this);
     }
 
     @Override
