@@ -450,7 +450,8 @@ public class SingleRecipeCheck {
     /**
      * Returns a human-friendly string representing the recipe.
      * The caller can choose whether to include inputs and/or outputs.
-     *
+     * 
+     * @param recipe           GT recipe
      * @param includeInputs    if true, include item and fluid inputs.
      * @param includeOutputs   if true, include item and fluid outputs.
      * @param showStackAmounts if true, display the stack amounts for items/fluids; otherwise only their names are
@@ -459,8 +460,8 @@ public class SingleRecipeCheck {
      *                         line.
      * @return the formatted recipe string.
      */
-    public String getDisplayString(boolean includeInputs, boolean includeOutputs, boolean showStackAmounts,
-        boolean multiLine) {
+    public static String getDisplayString(GTRecipe recipe, boolean includeInputs, boolean includeOutputs,
+        boolean showStackAmounts, boolean multiLine) {
         StringBuilder sb = new StringBuilder();
 
         if (multiLine) {
