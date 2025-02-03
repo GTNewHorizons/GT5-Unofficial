@@ -133,7 +133,7 @@ public class MTEExoticModule extends MTEBaseModule {
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (!recipeInProgress || recipeRegenerated) {
-                    powerForRecipe = BigInteger.valueOf(getProcessingVoltage())
+                    powerForRecipe = BigInteger.valueOf(getSafeProcessingVoltage())
                         .multiply(BigInteger.valueOf(recipe.mDuration * actualParallel));
                     if (getUserEU(userUUID).compareTo(powerForRecipe) < 0) {
                         plasmaRecipe = null;
@@ -190,7 +190,7 @@ public class MTEExoticModule extends MTEBaseModule {
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
+                return super.createOverclockCalculator(recipe).setEUt(getSafeProcessingVoltage())
                     .setDurationDecreasePerOC(getOverclockTimeFactor());
             }
 

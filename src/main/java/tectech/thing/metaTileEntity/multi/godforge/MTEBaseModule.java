@@ -25,6 +25,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -258,6 +259,11 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
         return GTValues.V[tier];
     }
 
+    // This prevents processingLogic from overflowing on energy, can be changed if/when it can handle > max long
+    protected long getSafeProcessingVoltage() {
+        return Math.min(getProcessingVoltage(), Long.MAX_VALUE / getMaxParallel());
+    }
+
     @Override
     public IStructureDefinition<? extends TTMultiblockBase> getStructure_EM() {
         if (this instanceof MTESmeltingModule) {
@@ -410,6 +416,13 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
             TextWidget.localised("gt.blockmachines.multimachine.FOG.voltageinfo")
                 .setPos(3, 4)
                 .setSize(150, 20))
+            .widget(
+                new DrawableWidget().setDrawable(ModularUITextures.ICON_INFO)
+                    .setPos(142, 12)
+                    .setSize(12, 12)
+                    .addTooltip(translateToLocal("fog.text.tooltip.voltageadjustment"))
+                    .addTooltip(translateToLocal("fog.text.tooltip.voltageadjustment.1"))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(
                 new NumericWidget().setSetter(val -> processingVoltage = (long) val)
                     .setGetter(() -> processingVoltage)

@@ -1077,6 +1077,8 @@ fog.text.tooltip.ocdivisor=Divisor for recipe time reduction per overclock (does
 fog.text.tooltip.processingvoltage=Base processing voltage for recipes
 fog.text.tooltip.factorpreview=Enter fuel factor to simulate calculations with
 fog.text.tooltip.applysimulationchanges=Simulate new values
+fog.text.tooltip.voltageadjustment=Because of overflow concerns, actual processing voltage follows this formula:
+fog.text.tooltip.voltageadjustment.1=Voltage = Min(Selected Voltage, 2^63 / Max Parallel)
 
 achievement.gt.blockmachines.multimachine.em.forge_of_gods=Forge of the Gods
 achievement.gt.blockmachines.multimachine.em.smelting_module=Helioflare Power Forge
