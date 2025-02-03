@@ -335,8 +335,4 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
         return 16000;
     }
 
-    @Override
-    public int getTankPressure() {
-        return -100;
-    }
 }

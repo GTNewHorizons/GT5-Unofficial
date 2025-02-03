@@ -338,8 +338,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                     stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
                 }
             }
-            aBaseMetaTileEntity
-                .setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
+            setErrorDisplayID((getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
         } else {
             doActivitySound(getActivitySoundLoop());
@@ -584,7 +583,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                             + " EU")
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
+                    .setEnabled(widget -> getErrorDisplayID() == 0))
             .widget(new FakeSyncWidget.LongSyncer(this::maxEUStore, val -> energyStorageCache = val))
             .widget(
                 new TextWidget()
@@ -594,7 +593,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                             + " EU")
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
+                    .setEnabled(widget -> getErrorDisplayID() == 0))
             .widget(new FakeSyncWidget.LongSyncer(this::getEUVar, this::setEUVar));
     }
 

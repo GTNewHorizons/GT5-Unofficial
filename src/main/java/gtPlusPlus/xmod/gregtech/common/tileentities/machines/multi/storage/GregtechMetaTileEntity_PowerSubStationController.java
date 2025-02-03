@@ -712,8 +712,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
                 + EnumChatFormatting.RESET;
         }
 
-        int errorCode = this.getBaseMetaTileEntity()
-            .getErrorDisplayID();
+        int errorCode = getErrorDisplayID();
         boolean mMaint = (errorCode != 0);
 
         return new String[] { "Ergon Energy - District Sub-Station", "Stored EU: " + storedEnergyText,
@@ -884,7 +883,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> getBaseMetaTileEntity().getErrorDisplayID() == 0
+                        () -> getErrorDisplayID() == 0
                             ? getBaseMetaTileEntity().isActive() ? "Running perfectly" : "Turn on with Mallet"
                             : "")
                     .setSynced(false)
@@ -895,10 +894,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
                 new FakeSyncWidget.BooleanSyncer(
                     () -> getBaseMetaTileEntity().isActive(),
                     val -> getBaseMetaTileEntity().setActive(val)))
-            .widget(
-                new FakeSyncWidget.IntegerSyncer(
-                    () -> getBaseMetaTileEntity().getErrorDisplayID(),
-                    val -> getBaseMetaTileEntity().setErrorDisplayID(val)))
+            .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
             .widget(
                 new TextWidget("In").setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(178, 10))

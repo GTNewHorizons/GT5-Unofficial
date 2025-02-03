@@ -64,6 +64,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GTClient;
+import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Other;
 import gregtech.common.covers.CoverDrain;
 import gregtech.common.covers.CoverFluidRegulator;
@@ -474,6 +475,138 @@ public class MTEFluid extends MetaPipeEntity {
     }
 
     @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        // Only trigger if the player is sneaking
+        if (!aPlayer.isSneaking()) {
+            return;
+        }
+
+        // Retrieve the item's MetaTileEntity
+        final ItemStack handItem = aPlayer.inventory.getCurrentItem();
+        if (handItem == null) return;
+
+        IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
+        if (!(meta instanceof MTEFluid handFluid)) return;
+
+        // Preserve old connections and meta ID
+        byte oldConnections = this.mConnections;
+        short oldMetaID = (short) aBaseMetaTileEntity.getMetaTileID();
+
+        // Create the new fluid pipe
+        MTEFluid newPipe = (MTEFluid) handFluid.newMetaEntity(aBaseMetaTileEntity);
+        if (newPipe == null) return;
+
+        // Preserve old connections
+        newPipe.mConnections = oldConnections;
+        newPipe.mDisableInput = this.mDisableInput;
+
+        // Record old pipe parameters
+        long oldCapacity = this.mCapacity;
+        boolean oldGasProof = this.mGasProof;
+        int oldHeatResistance = this.mHeatResistance;
+
+        // Add fluid to the new pipe
+        if (this.mPipeAmount <= newPipe.mPipeAmount) {
+            for (int i = 0; i < mPipeAmount; i++) {
+                if (this.mFluids[i] != null) {
+                    newPipe.mFluids[i] = this.mFluids[i].copy();
+                    newPipe.mFluids[i].amount = Math.min(this.mFluids[i].amount, newPipe.mCapacity);
+                }
+            }
+        }
+
+        // Update to the new pipe
+        aBaseMetaTileEntity.setMetaTileID((short) handItem.getItemDamage());
+        aBaseMetaTileEntity.setMetaTileEntity(newPipe);
+
+        // Construct a change message if needed
+        StringBuilder message = new StringBuilder();
+
+        // Compare capacity changes
+        if (oldCapacity != newPipe.mCapacity) {
+            message.append(oldCapacity * 20)
+                .append("L/seconds → ");
+            message.append(newPipe.mCapacity > oldCapacity ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                .append(newPipe.mCapacity * 20)
+                .append("L/secs")
+                .append(EnumChatFormatting.RESET);
+        }
+
+        // Compare heat resistance
+        if (oldHeatResistance != newPipe.mHeatResistance) {
+            if (message.length() > 0) message.append(" | ");
+            message.append(oldHeatResistance)
+                .append("K → ");
+            message
+                .append(newPipe.mHeatResistance > oldHeatResistance ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                .append(newPipe.mHeatResistance)
+                .append("K")
+                .append(EnumChatFormatting.RESET);
+        }
+
+        // Compare gas handling
+        if (oldGasProof != newPipe.mGasProof) {
+            if (message.length() > 0) message.append(" | ");
+            if (newPipe.mGasProof) {
+                message.append(EnumChatFormatting.GREEN)
+                    .append("Now Gas-Proof");
+            } else {
+                message.append(EnumChatFormatting.RED)
+                    .append("No Longer Gas-Proof");
+            }
+            message.append(EnumChatFormatting.RESET);
+        }
+
+        // Send a chat message if anything changed
+        if (message.length() > 0) {
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                StatCollector.translateToLocal("GT5U.item.pipe.swap") + " " + message.toString());
+        }
+
+        // Force updates to sync changes
+        aBaseMetaTileEntity.markDirty();
+        aBaseMetaTileEntity.issueTextureUpdate();
+        aBaseMetaTileEntity.issueBlockUpdate();
+        aBaseMetaTileEntity.issueClientUpdate();
+
+        // Handle inventory operations unless in creative mode
+        if (!aPlayer.capabilities.isCreativeMode) {
+            ItemStack oldPipe = new ItemStack(handItem.getItem(), 1, oldMetaID);
+            boolean addedToInventory = false;
+
+            // Attempt to stack with existing items
+            if (oldPipe != null) {
+                for (int i = 0; i < aPlayer.inventory.mainInventory.length; i++) {
+                    ItemStack slot = aPlayer.inventory.mainInventory[i];
+                    if (slot != null && slot.getItem() == oldPipe.getItem()
+                        && slot.getItemDamage() == oldPipe.getItemDamage()
+                        && slot.stackSize < slot.getMaxStackSize()) {
+                        slot.stackSize++;
+                        addedToInventory = true;
+                        break;
+                    }
+                }
+                // Add new stack if stacking failed
+                if (!addedToInventory) {
+                    addedToInventory = aPlayer.inventory.addItemStackToInventory(oldPipe);
+                }
+                // If still unsuccessful, drop the item
+                if (!addedToInventory) {
+                    aPlayer.dropPlayerItemWithRandomChoice(oldPipe, false);
+                }
+            }
+
+            // Decrement the placed pipe from the player's hand
+            handItem.stackSize--;
+            if (handItem.stackSize <= 0) {
+                aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
+            }
+        }
+        return;
+    }
+
+    @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
 
@@ -607,7 +740,8 @@ public class MTEFluid extends MetaPipeEntity {
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
         if (baseMetaTile == null) return false;
 
-        final CoverBehaviorBase<?> coverBehavior = baseMetaTile.getCoverBehaviorAtSideNew(side);
+        final CoverBehaviorBase<?> coverBehavior = baseMetaTile.getCoverInfoAtSide(side)
+            .getCoverBehavior();
         final IGregTechTileEntity gTileEntity = (tileEntity instanceof IGregTechTileEntity)
             ? (IGregTechTileEntity) tileEntity
             : null;
@@ -621,8 +755,8 @@ public class MTEFluid extends MetaPipeEntity {
             final FluidTankInfo[] tInfo = fTileEntity.getTankInfo(tSide);
             if (tInfo != null) {
                 return tInfo.length > 0 || (Translocator.isModLoaded() && isTranslocator(tileEntity))
-                    || gTileEntity != null
-                        && gTileEntity.getCoverBehaviorAtSideNew(tSide) instanceof CoverFluidRegulator;
+                    || gTileEntity != null && gTileEntity.getCoverInfoAtSide(side)
+                        .getCoverBehavior() instanceof CoverFluidRegulator;
             }
         }
         return false;
@@ -811,11 +945,6 @@ public class MTEFluid extends MetaPipeEntity {
         }
 
         return drained;
-    }
-
-    @Override
-    public int getTankPressure() {
-        return getFluidAmount() - (getCapacity() / 2);
     }
 
     @Override

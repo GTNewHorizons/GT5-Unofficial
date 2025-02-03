@@ -23,7 +23,6 @@ import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.mechanics.dataTransport.DataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by danie_000 on 11.12.2016.
@@ -42,7 +41,6 @@ public abstract class MTEHatchDataConnector<T extends DataPacket> extends MTEHat
 
     protected MTEHatchDataConnector(int aID, String aName, String aNameRegional, int aTier, String[] descr) {
         super(aID, aName, aNameRegional, aTier, 0, descr);
-        TTUtility.setTier(aTier, this);
     }
 
     protected MTEHatchDataConnector(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

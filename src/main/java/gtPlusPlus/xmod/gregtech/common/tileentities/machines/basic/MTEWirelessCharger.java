@@ -11,22 +11,24 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
 
-public class MTEWirelessCharger extends GTPPMetaTileEntity {
+public class MTEWirelessCharger extends MTETieredMachineBlock {
 
     private int mCurrentDimension = 0;
     public int mMode = 0;
@@ -37,20 +39,25 @@ public class MTEWirelessCharger extends GTPPMetaTileEntity {
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
     }
 
-    public MTEWirelessCharger(final String aName, final int aTier, final String aDescription,
+    public MTEWirelessCharger(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures, final int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "Can be locked to the owner by sneaking with a screwdriver",
-            "Can also be locked with a lock upgrade", "", "3 Modes, Long-Range, Local and Mixed.",
+        return ArrayUtils.addAll(
+            this.mDescriptionArray,
+            "Can be locked to the owner by sneaking with a screwdriver",
+            "Can also be locked with a lock upgrade",
+            "",
+            "3 Modes, Long-Range, Local and Mixed.",
             "Long-Range: Can supply 2A of power to a single player up to " + (GTValues.V[this.mTier] * 4) + "m away.",
             "Local: Can supply several Amps to each player within " + this.mTier * 20 + "m.",
             "Mixed: Provides both 2A of long range and 1A per player locally.",
             "Mixed mode is more conservative of power and as a result only",
-            "Gets half the distances each singular mode gets.", GTPPCore.GT_Tooltip.get() };
+            "Gets half the distances each singular mode gets.",
+            GTPPCore.GT_Tooltip.get());
     }
 
     public int getTier() {
@@ -191,7 +198,7 @@ public class MTEWirelessCharger extends GTPPMetaTileEntity {
         return new MTEWirelessCharger(
             this.mName,
             this.mTier,
-            this.mDescription,
+            this.mDescriptionArray,
             this.mTextures,
             this.mInventory.length);
     }
