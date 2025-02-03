@@ -33,7 +33,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                 .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(2))
                 .itemOutputs(
                     ItemList.IC2_Resin.get(1L),
-                    GTModHandler.getIC2Item("plantBall", 1L),
+                    ItemList.IC2_Plantball.get(1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
                 .outputChances(5000, 3750, 2500, 2500)

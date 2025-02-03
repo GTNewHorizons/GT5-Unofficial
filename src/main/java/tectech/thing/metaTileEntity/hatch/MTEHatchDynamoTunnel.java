@@ -21,8 +21,6 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.PowerLogic;
-import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
@@ -30,7 +28,6 @@ import tectech.thing.metaTileEntity.Textures;
 import tectech.thing.metaTileEntity.pipe.MTEPipeEnergy;
 import tectech.thing.metaTileEntity.pipe.MTEPipeEnergyMirror;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by danie_000 on 16.12.2016.
@@ -53,8 +50,6 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
                     + EnumChatFormatting.RESET
                     + " EU/t" },
             amps);
-
-        TTUtility.setTier(tier, this);
     }
 
     public MTEHatchDynamoTunnel(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {
@@ -235,15 +230,6 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
                         return;
                     }
                 } else {
-                    if (tGTTileEntity instanceof PowerLogicHost) {
-                        PowerLogic logic = ((PowerLogicHost) tGTTileEntity).getPowerLogic(opposite);
-                        if (logic == null || !logic.canUseLaser() || opposite != tGTTileEntity.getFrontFacing()) {
-                            return;
-                        }
-
-                        long ampsUsed = logic.injectEnergy(maxEUOutput(), Amperes);
-                        setEUVar(aBaseMetaTileEntity.getStoredEU() - ampsUsed * maxEUOutput());
-                    }
                     return;
                 }
             } else {

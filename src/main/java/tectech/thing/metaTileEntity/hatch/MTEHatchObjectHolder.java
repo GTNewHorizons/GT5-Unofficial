@@ -24,10 +24,9 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by Tec on 03.04.2017.
@@ -46,7 +45,6 @@ public class MTEHatchObjectHolder extends MTEHatch implements IAddGregtechLogo {
             1,
             new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.holder.desc.0"),
                 EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.holder.desc.1") });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchObjectHolder(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -63,12 +61,12 @@ public class MTEHatchObjectHolder extends MTEHatch implements IAddGregtechLogo {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GTRenderedTexture(EM_H_ACTIVE) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(EM_H_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GTRenderedTexture(EM_H) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(EM_H) };
     }
 
     @Override

@@ -41,6 +41,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -78,7 +79,6 @@ import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
@@ -111,6 +111,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     public final int mInputSlotCount, mAmperage;
     public boolean mAllowInputFromOutputSide = false, mFluidTransfer = false, mItemTransfer = false,
         mHasBeenUpdated = false, mStuttering = false, mCharge = false, mDecharge = false;
+    private int errorDisplayID;
     public boolean mDisableFilter = true;
     public boolean mDisableMultiStack = true;
     public int mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
@@ -562,6 +563,20 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         for (int i = 0; i < mOutputItems.length; i++) mOutputItems[i] = GTUtility.loadItem(aNBT, "mOutputItem" + i);
     }
 
+    /**
+     * Returns the error ID displayed on the GUI.
+     */
+    public int getErrorDisplayID() {
+        return errorDisplayID;
+    }
+
+    /**
+     * Sets the error ID displayed on the GUI.
+     */
+    public void setErrorDisplayID(int errorID) {
+        this.errorDisplayID = errorID;
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -694,8 +709,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         // Value | Class | Field
         // 1 | GT_MetaTileEntity_BasicMachine | mStuttering
         // 64 | GT_MetaTileEntity_BasicMachine_Bronze | mNeedsSteamVenting
-        aBaseMetaTileEntity.setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127)); // | (mStuttering ? 1 :
-                                                                                                 // 0));
+        setErrorDisplayID((getErrorDisplayID() & ~127)); // | (mStuttering ? 1 :
+                                                         // 0));
     }
 
     protected void doDisplayThings() {
@@ -942,12 +957,9 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
         if (side != mMainFacing) return true;
-        CoverBehaviorBase<?> tBehavior = GregTechAPI.getCoverBehaviorNew(aCoverID.toStack());
-        return tBehavior.isGUIClickable(
-            side,
-            GTUtility.stackToInt(aCoverID.toStack()),
-            tBehavior.createDataObject(),
-            getBaseMetaTileEntity());
+        return this.getBaseMetaTileEntity()
+            .getCoverInfoAtSide(side)
+            .isGUIClickable();
     }
 
     @Override
@@ -1185,7 +1197,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         final NBTTagCompound tag = accessor.getNBTData();
 
         if (tag.getBoolean("stutteringSingleBlock")) {
-            currenttip.add("Status: insufficient energy");
+            currenttip.add(StatCollector.translateToLocal(getWailaStutteringLine(tag)));
         } else {
             boolean isActive = tag.getBoolean("isActiveSingleBlock");
             if (isActive) {
@@ -1243,6 +1255,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                     .name()));
     }
 
+    private static @NotNull String getWailaStutteringLine(NBTTagCompound tag) {
+        return tag.getBoolean("blockedSteamVentSingleBlock") ? "GT5U.waila.status.obstructed_steam_vent"
+            : "GT5U.waila.status.insufficient_energy";
+    }
+
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
@@ -1252,6 +1269,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         tag.setInteger("maxProgressSingleBlock", mMaxProgresstime);
         tag.setInteger("mainFacingSingleBlock", mMainFacing.ordinal());
         tag.setBoolean("stutteringSingleBlock", mStuttering);
+        tag.setBoolean("blockedSteamVentSingleBlock", cannotVentSteam());
 
         final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
         if (tileEntity != null) {
@@ -1546,9 +1564,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 builder,
                 (widget, val) -> widget.notifyTooltipChange())
             .attachSyncer(
-                new FakeSyncWidget.IntegerSyncer(
-                    () -> getBaseMetaTileEntity().getErrorDisplayID(),
-                    val -> getBaseMetaTileEntity().setErrorDisplayID(val)),
+                new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID),
                 builder,
                 (widget, val) -> widget.notifyTooltipChange());
     }
@@ -1565,7 +1581,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
     protected GTTooltipDataCache.TooltipData getErrorTooltip() {
         if (isSteampowered()) {
-            if ((getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0) {
+            if (cannotVentSteam()) {
                 return mTooltipCache.getData(STALLED_VENT_TOOLTIP);
             }
         }
@@ -1575,6 +1591,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 StatCollector.translateToLocal(POWER_SOURCE_KEY + (isSteampowered() ? "steam" : "power")));
         }
         return null;
+    }
+
+    private boolean cannotVentSteam() {
+        return (getErrorDisplayID() & 64) != 0;
     }
 
     protected static int getCapacityForTier(int tier) {

@@ -44,10 +44,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.api.objects.GTCoverNone;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.CoverBehaviorBase;
@@ -335,18 +333,17 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     @Override
     public boolean canConnect(ForgeDirection side, TileEntity tileEntity) {
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
-        final CoverBehaviorBase<?> coverBehavior = baseMetaTile.getCoverBehaviorAtSideNew(side);
         final ForgeDirection oppositeSide = side.getOpposite();
 
         // GT Machine handling
-        if ((tileEntity instanceof PowerLogicHost powerLogic && powerLogic.getPowerLogic(oppositeSide) != null)
-            || ((tileEntity instanceof IEnergyConnected energyConnected)
-                && (energyConnected.inputEnergyFrom(oppositeSide, false)
-                    || energyConnected.outputsEnergyTo(oppositeSide, false))))
+        if (((tileEntity instanceof IEnergyConnected energyConnected)
+            && (energyConnected.inputEnergyFrom(oppositeSide, false)
+                || energyConnected.outputsEnergyTo(oppositeSide, false))))
             return true;
 
         // Solar Panel Compat
-        if (coverBehavior instanceof CoverSolarPanel) return true;
+        if (baseMetaTile.getCoverInfoAtSide(side)
+            .getCoverBehavior() instanceof CoverSolarPanel) return true;
 
         // ((tIsGregTechTileEntity && tIsTileEntityCable) && (tAlwaysLookConnected || tLetEnergyIn || tLetEnergyOut) )
         // --> Not needed
@@ -594,7 +591,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 if (isConnectedAtSide(side)) {
                     final CoverInfo coverInfo = pipe.getCoverInfoAtSide(side);
-                    if (coverInfo.getCoverBehavior() instanceof GTCoverNone) continue;
+                    if (coverInfo.hasNoBehavior()) continue;
                     if (!letsIn(coverInfo) || !letsOut(coverInfo)) {
                         pipe.addToLock(pipe, side);
                     } else {
@@ -607,7 +604,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 if (isConnectedAtSide(side)) {
                     final CoverInfo coverInfo = pipe.getCoverInfoAtSide(side);
-                    if (coverInfo.getCoverBehavior() instanceof GTCoverNone) continue;
+                    if (coverInfo.hasNoBehavior()) continue;
 
                     if (!letsIn(coverInfo) || !letsOut(coverInfo)) {
                         dontAllow = true;

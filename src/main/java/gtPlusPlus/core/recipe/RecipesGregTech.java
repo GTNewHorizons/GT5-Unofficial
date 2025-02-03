@@ -929,21 +929,6 @@ public class RecipesGregTech {
             .duration(2 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
 
-        // molten precious metals alloy
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(6),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustRuthenium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustRhodium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustPalladium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustPlatinum", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustOsmium", 1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustIridium", 1))
-            .fluidOutputs(FluidUtils.getFluidStack("molten.precious metals alloy", 864))
-            .eut(TierEU.RECIPE_UEV)
-            .duration(9 * MINUTES)
-            .addTo(alloyBlastSmelterRecipes);
-
         // lossless phonon transfer medium
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -1580,7 +1565,7 @@ public class RecipesGregTech {
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(21),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Apatite, 32L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Sulfur, 8L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 2L))
             .fluidInputs(FluidUtils.getFluidStack("sulfuricacid", 4000))
             .fluidOutputs(FluidUtils.getFluidStack("sulfuricapatite", 8000))
             .duration(20 * SECONDS)

@@ -20,6 +20,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -51,7 +55,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.objects.GTDualInputs;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -61,9 +65,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
-import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
-import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -293,12 +295,8 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
             // Override is needed so that switching recipe maps does not stop recipe locking.
             @Override
-            protected RecipeMap<?> preProcess() {
+            protected RecipeMap<?> getCurrentRecipeMap() {
                 lastRecipeMap = currentRecipeMap;
-
-                if (maxParallelSupplier != null) {
-                    maxParallel = maxParallelSupplier.get();
-                }
                 return currentRecipeMap;
             }
 
@@ -311,6 +309,28 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
                 currentRecipeMap = GGFabRecipeMaps.toolCastRecipes;
                 return super.process();
+            }
+
+            @Override
+            public boolean craftingPatternHandler(IDualInputInventory slot) {
+                if (craftingPatternRecipeCache.containsKey(slot)) {
+                    craftingPattern = slot;
+                    return true;
+                }
+
+                GTDualInputs inputs = slot.getPatternInputs();
+                setInputItems(inputs.inputItems);
+                setInputFluids(inputs.inputFluid);
+                Set<GTRecipe> recipes = findRecipeMatches(RecipeMaps.fluidSolidifierRecipes)
+                    .collect(Collectors.toSet());
+                if (recipes.isEmpty())
+                    recipes = findRecipeMatches(GGFabRecipeMaps.toolCastRecipes).collect(Collectors.toSet());
+                if (!recipes.isEmpty()) {
+                    craftingPatternRecipeCache.put(slot, recipes);
+                    craftingPattern = slot;
+                    return true;
+                }
+                return false;
             }
 
             @NotNull
@@ -429,31 +449,9 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         return true;
     }
 
-    @NotNull
+    @Nonnull
     @Override
-    protected CheckRecipeResult doCheckRecipe() {
-        CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
-
-        // check crafting input hatches first
-        if (supportsCraftingMEBuffer()) {
-            for (IDualInputHatch dualInputHatch : mDualInputHatches) {
-                for (var it = dualInputHatch.inventories(); it.hasNext();) {
-                    IDualInputInventory slot = it.next();
-                    processingLogic.setInputItems(slot.getItemInputs());
-                    processingLogic.setInputFluids(slot.getFluidInputs());
-                    CheckRecipeResult foundResult = processingLogic.process();
-                    if (foundResult.wasSuccessful()) {
-                        return foundResult;
-                    }
-                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
-                        // Recipe failed in interesting way, so remember that and continue searching
-                        result = foundResult;
-                    }
-                }
-            }
-        }
-
-        // Logic for GT_MetaTileEntity_Hatch_Solidifier
+    protected CheckRecipeResult checkRecipeForCustomHatches(CheckRecipeResult lastResult) {
         for (MTEHatchInput solidifierHatch : mInputHatches) {
             if (solidifierHatch instanceof MTEHatchSolidifier hatch) {
                 ItemStack mold = hatch.getMold();
@@ -463,7 +461,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                     List<ItemStack> inputItems = new ArrayList<>();
                     inputItems.add(mold);
 
-                    processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
+                    processingLogic.setInputItems(inputItems);
                     processingLogic.setInputFluids(fluid);
 
                     CheckRecipeResult foundResult = processingLogic.process();
@@ -472,39 +470,13 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                     }
                     if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
                         // Recipe failed in interesting way, so remember that and continue searching
-                        result = foundResult;
+                        lastResult = foundResult;
                     }
                 }
             }
         }
         processingLogic.clear();
-        processingLogic.setInputFluids(getStoredFluids());
-        // Default logic
-        for (MTEHatchInputBus bus : mInputBusses) {
-            if (bus instanceof MTEHatchCraftingInputME) {
-                continue;
-            }
-            List<ItemStack> inputItems = new ArrayList<>();
-            for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
-                ItemStack stored = bus.getStackInSlot(i);
-                if (stored != null) {
-                    inputItems.add(stored);
-                }
-            }
-            if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
-                inputItems.add(getControllerSlot());
-            }
-            processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
-            CheckRecipeResult foundResult = processingLogic.process();
-            if (foundResult.wasSuccessful()) {
-                return foundResult;
-            }
-            if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
-                // Recipe failed in interesting way, so remember that and continue searching
-                result = foundResult;
-            }
-        }
-        return result;
+        return lastResult;
     }
 
     @Override

@@ -484,7 +484,7 @@ public final class MaterialsElements {
             MaterialState.SOLID,
             TextureSets.REFINED.get(),
             new short[] { 50, 50, 50, 2 },
-            INSTANCE.TUNGSTEN.getMeltingPointC() + 6500,
+            INSTANCE.TUNGSTEN.getMeltingPointC() + 5200,
             INSTANCE.TUNGSTEN.getBoilingPointC() + 7500,
             160,
             101,

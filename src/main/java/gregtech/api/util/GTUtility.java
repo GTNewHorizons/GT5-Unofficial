@@ -92,6 +92,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -130,6 +131,7 @@ import cofh.api.energy.IEnergyReceiver;
 import cofh.api.transport.IItemDuct;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.GTDamageSources;
 import gregtech.api.damagesources.GTDamageSources.DamageSourceHotItem;
@@ -150,6 +152,7 @@ import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.IHasIndexedTexture;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IBasicEnergyContainer;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -163,7 +166,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.net.GTPacketSound;
 import gregtech.api.objects.CollectorUtils;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.objects.GTItemStack2;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
@@ -242,7 +244,7 @@ public class GTUtility {
             rField = aObject.getClass()
                 .getDeclaredField(aField);
         } catch (Throwable e) {
-            /* Do nothing */
+            if (D1) e.printStackTrace(GTLog.err);
         }
         return rField;
     }
@@ -254,7 +256,7 @@ public class GTUtility {
                 .getDeclaredField(aField);
             rField.setAccessible(true);
         } catch (Throwable e) {
-            /* Do nothing */
+            if (D1) e.printStackTrace(GTLog.err);
         }
         return rField;
     }
@@ -265,7 +267,7 @@ public class GTUtility {
             rField = aObject.getDeclaredField(aField);
             rField.setAccessible(true);
         } catch (Throwable e) {
-            /* Do nothing */
+            if (D1) e.printStackTrace(GTLog.err);
         }
         return rField;
     }
@@ -276,7 +278,7 @@ public class GTUtility {
             rMethod = aObject.getMethod(aMethod, aParameterTypes);
             rMethod.setAccessible(true);
         } catch (Throwable e) {
-            /* Do nothing */
+            if (D1) e.printStackTrace(GTLog.err);
         }
         return rMethod;
     }
@@ -288,7 +290,7 @@ public class GTUtility {
                 .getMethod(aMethod, aParameterTypes);
             rMethod.setAccessible(true);
         } catch (Throwable e) {
-            /* Do nothing */
+            if (D1) e.printStackTrace(GTLog.err);
         }
         return rMethod;
     }
@@ -371,7 +373,9 @@ public class GTUtility {
                 for (Constructor<?> tConstructor : aClass.getConstructors()) {
                     try {
                         return tConstructor.newInstance(aParameters);
-                    } catch (Throwable ignored) {}
+                    } catch (Throwable e) {
+                        if (D1) e.printStackTrace(GTLog.err);
+                    }
                 }
             } catch (Throwable e) {
                 if (aLogErrors) e.printStackTrace(GTLog.err);
@@ -445,6 +449,12 @@ public class GTUtility {
             .ordinal();
     }
 
+    /**
+     * Gets the voltage tier corresponding to an amount of EU, capped to 15 (MAX+)
+     *
+     * @param l The amount of EU
+     * @return Corresponding voltage tier in the range 0-15
+     */
     public static byte getTier(long l) {
         if (l > V[14]) return 15;
         if (l <= V[0]) return 0;
@@ -455,6 +465,18 @@ public class GTUtility {
         int log2L = 64 - Long.numberOfLeadingZeros(l - 1);
 
         return (byte) ((log2L - 2) / 2);
+    }
+
+    /**
+     * Gets the voltage tier corresponding to an amount of EU
+     *
+     * @param l The amount of EU
+     * @return Corresponding voltage tier
+     */
+    public static int getTierExtended(long l) {
+        if (l <= V[0]) return 0;
+        int log2L = 64 - Long.numberOfLeadingZeros(l - 1);
+        return ((log2L - 2) / 2);
     }
 
     public static long getAmperageForTier(long voltage, byte tier) {
@@ -508,21 +530,21 @@ public class GTUtility {
                 tClass.getCanonicalName();
                 TE_CHECK = true;
             } catch (Throwable e) {
-                /**/
+                if (D1) e.printStackTrace(GTLog.err);
             }
             try {
                 Class<IPipeTile> tClass = buildcraft.api.transport.IPipeTile.class;
                 tClass.getCanonicalName();
                 BC_CHECK = true;
             } catch (Throwable e) {
-                /**/
+                if (D1) e.printStackTrace(GTLog.err);
             }
             try {
                 Class<IEnergyReceiver> tClass = cofh.api.energy.IEnergyReceiver.class;
                 tClass.getCanonicalName();
                 RF_CHECK = true;
             } catch (Throwable e) {
-                /**/
+                if (D1) e.printStackTrace(GTLog.err);
             }
             CHECK_ALL = false;
         }
@@ -1940,7 +1962,7 @@ public class GTUtility {
         if (isStackInvalid(aStack)) return null;
         if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem
             && ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) > 0)
-            return ((IFluidContainerItem) aStack.getItem()).drain(copyAmount(1, aStack), Integer.MAX_VALUE, true);
+            return ((IFluidContainerItem) aStack.getItem()).drain(copyAmount(1, aStack), Integer.MAX_VALUE, false);
         FluidContainerData tData = sFilledContainerToData.get(new GTItemStack(aStack));
         return tData == null ? null : tData.fluid.copy();
     }
@@ -2746,7 +2768,11 @@ public class GTUtility {
 
     private static boolean applyHeatDamage(EntityLivingBase aEntity, float aDamage, DamageSource source) {
         if (aDamage > 0 && aEntity != null && !isWearingFullHeatHazmat(aEntity)) {
-            return aEntity.attackEntityFrom(source, aDamage);
+            try {
+                return aEntity.attackEntityFrom(source, aDamage);
+            } catch (Throwable t) {
+                GTMod.GT_FML_LOGGER.error("Error damaging entity", t);
+            }
         }
         return false;
     }
@@ -3038,21 +3064,9 @@ public class GTUtility {
         return isStackInList(new GTItemStack(aStack), aList);
     }
 
-    public static boolean isStackInList(ItemStack aStack, Set<GTItemStack2> aList) {
-        if (aStack == null) {
-            return false;
-        }
-        return isStackInList(new GTItemStack2(aStack), aList);
-    }
-
     public static boolean isStackInList(GTItemStack aStack, Collection<GTItemStack> aList) {
         return aStack != null
             && (aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, aStack.mStackSize, W)));
-    }
-
-    public static boolean isStackInList(GTItemStack2 aStack, Set<GTItemStack2> aList) {
-        return aStack != null
-            && (aList.contains(aStack) || aList.contains(new GTItemStack2(aStack.mItem, aStack.mStackSize, W)));
     }
 
     /**
@@ -3272,14 +3286,10 @@ public class GTUtility {
         if (tTileEntity != null) {
             rEUAmount += addFluidHandlerInfo(side, tList, tTileEntity);
 
-            try {
-                if (tTileEntity instanceof ic2.api.reactor.IReactorChamber chamber) {
-                    rEUAmount += 500;
-                    // Redirect the rest of the scans to the reactor itself
-                    tTileEntity = (TileEntity) chamber.getReactor();
-                }
-            } catch (Throwable e) {
-                if (D1) e.printStackTrace(GTLog.err);
+            if (tTileEntity instanceof ic2.api.reactor.IReactorChamber chamber) {
+                rEUAmount += 500;
+                // Redirect the rest of the scans to the reactor itself
+                tTileEntity = (TileEntity) chamber.getReactor();
             }
             rEUAmount += addReactorInfo(tList, tTileEntity);
             rEUAmount += addAlignmentInfo(tList, tTileEntity);
@@ -3772,10 +3782,18 @@ public class GTUtility {
         return rEUAmount;
     }
 
+    /**
+     * @deprecated Use standard translation with {@link StatCollector}.
+     */
+    @Deprecated
     public static String trans(String aKey, String aEnglish) {
         return GTLanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish);
     }
 
+    /**
+     * @deprecated Use standard translation with {@link StatCollector}.
+     */
+    @Deprecated
     public static String getTrans(String aKey) {
         return GTLanguageManager.getTranslation("Interaction_DESCRIPTION_Index_" + aKey);
     }
@@ -4020,6 +4038,14 @@ public class GTUtility {
     public static <T extends Collection<E>, E extends MetaTileEntity> ValidMTEList<T, E> validMTEList(
         T metaTileEntities) {
         return new ValidMTEList<>(metaTileEntities);
+    }
+
+    @Nullable
+    public static IMetaTileEntity getMetaTileEntity(TileEntity tileEntity) {
+        if (tileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
+            return gtTE.getMetaTileEntity();
+        }
+        return null;
     }
 
     public static ForgeDirection getSideFromPlayerFacing(Entity player) {
@@ -4696,11 +4722,6 @@ public class GTUtility {
         }
 
         return signal;
-    }
-
-    public static ItemStack getNaniteAsCatalyst(Materials material) {
-        ItemStack aItem = material.getNanite(1);
-        return new ItemStack(aItem.getItem(), 0, aItem.getItemDamage());
     }
 
     public static Stream<NBTTagCompound> streamCompounds(NBTTagList list) {

@@ -32,22 +32,22 @@ public class TextureSet {
         TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, };
     private static final String[] SUFFIXES = new String[] { "/dustTiny", "/dustSmall", "/dust", "/dustImpure",
         "/dustPure", "/crushed", "/crushedPurified", "/crushedCentrifuged", "/gem", "/nugget", "/casingSmall", "/ingot",
-        "/ingotHot", "/ingotDouble", "/ingotTriple", "/ingotQuadruple", "/ingotQuintuple", "/plate", "/plateDouble",
-        "/plateTriple", "/plateQuadruple", "/plateQuintuple", "/plateDense", "/stick", "/lens", "/round", "/bolt",
-        "/screw", "/ring", "/foil", "/cell", "/cellPlasma", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, "/toolHeadHammer", "/toolHeadFile", "/toolHeadSaw", "/toolHeadDrill", "/toolHeadChainsaw",
-        "/toolHeadWrench", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/toolHeadScrewdriver",
-        "/toolHeadBuzzSaw", "/toolHeadSoldering", "/nanites", "/wireFine", "/gearGtSmall", "/rotor", "/stickLong",
-        "/springSmall", "/spring", "/arrowGtWood", "/arrowGtPlastic", "/gemChipped", "/gemFlawed", "/gemFlawless",
-        "/gemExquisite", "/gearGt", "/oreRaw", aTextVoidDir, aTextVoidDir, "/oreSmall", "/ore", "/wire", "/foil",
-        "/block1", "/block2", "/block3", "/block4", "/block5", "/block6", "/pipeSide", "/pipeTiny", "/pipeSmall",
-        "/pipeMedium", "/pipeLarge", "/pipeHuge", "/frameGt", "/pipeQuadruple", "/pipeNonuple", aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, "/crateGtDust", "/crateGtIngot", "/crateGtGem", "/crateGtPlate", "/turbineBlade", aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
+        "/ingotHot", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/plate", "/plateDouble", "/plateTriple",
+        "/plateQuadruple", "/plateQuintuple", "/plateDense", "/stick", "/lens", "/round", "/bolt", "/screw", "/ring",
+        "/foil", "/cell", "/cellPlasma", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
+        "/toolHeadHammer", "/toolHeadFile", "/toolHeadSaw", "/toolHeadDrill", "/toolHeadChainsaw", "/toolHeadWrench",
+        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/toolHeadScrewdriver", "/toolHeadBuzzSaw",
+        "/toolHeadSoldering", "/nanites", "/wireFine", "/gearGtSmall", "/rotor", "/stickLong", "/springSmall",
+        "/spring", "/arrowGtWood", "/arrowGtPlastic", "/gemChipped", "/gemFlawed", "/gemFlawless", "/gemExquisite",
+        "/gearGt", "/oreRaw", aTextVoidDir, aTextVoidDir, "/oreSmall", "/ore", "/wire", "/foil", "/block1", "/block2",
+        "/block3", "/block4", "/block5", "/block6", "/pipeSide", "/pipeTiny", "/pipeSmall", "/pipeMedium", "/pipeLarge",
+        "/pipeHuge", "/frameGt", "/pipeQuadruple", "/pipeNonuple", aTextVoidDir, aTextVoidDir, aTextVoidDir,
         aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        "/plateSuperdense", "/handleMallet", "/toolHeadMallet", };
+        "/crateGtDust", "/crateGtIngot", "/crateGtGem", "/crateGtPlate", "/turbineBlade", aTextVoidDir, aTextVoidDir,
+        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
+        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
+        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/plateSuperdense",
+        "/handleMallet", "/toolHeadMallet", };
 
     public boolean is_custom = false;
 

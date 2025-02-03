@@ -1,6 +1,5 @@
 package gregtech.api.recipe;
 
-import static bartworks.util.BWRecipes.computeSieverts;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.NEICustomDiagrams;
@@ -9,7 +8,8 @@ import static gregtech.api.enums.TickTime.TICK;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
-import static gregtech.api.util.GTRecipeConstants.SIEVERTS;
+import static gregtech.api.util.GTRecipeConstants.GLASS;
+import static gregtech.api.util.GTRecipeConstants.PCB_NANITE_MATERIAL;
 import static gregtech.api.util.GTRecipeMapUtil.GTRecipeTemplate;
 import static gregtech.api.util.GTRecipeMapUtil.asTemplate;
 import static gregtech.api.util.GTRecipeMapUtil.buildOrEmpty;
@@ -21,9 +21,11 @@ import static gregtech.api.util.GTUtility.isArrayOfLength;
 import static gregtech.api.util.GTUtility.multiplyStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.init.Blocks;
@@ -1102,6 +1104,18 @@ public final class RecipeMaps {
         .minInputs(3, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLE)
         .disableOptimize()
+        .neiItemInputsGetter(recipe -> {
+            Materials naniteMaterial = recipe.getMetadata(PCB_NANITE_MATERIAL);
+            if (naniteMaterial == null) {
+                return recipe.mInputs;
+            }
+            List<ItemStack> inputs = new ArrayList<>();
+            inputs.add(recipe.mInputs[0]);
+            ItemStack naniteStack = naniteMaterial.getNanite(1);
+            inputs.add(new ItemStack(naniteStack.getItem(), 0, naniteStack.getItemDamage()));
+            inputs.addAll(Arrays.asList(Arrays.copyOfRange(recipe.mInputs, 1, recipe.mInputs.length)));
+            return inputs.toArray(new ItemStack[0]);
+        })
         .neiRecipeComparator(
             Comparator
                 .<GTRecipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(PCBFactoryTierKey.INSTANCE, 1))
@@ -1221,7 +1235,7 @@ public final class RecipeMaps {
                 b -> BartWorksRecipeMaps.bacterialVatRecipes.doAdd(
                     b.copy()
                         .special(BioItemList.getPetriDish(BioCultureLoader.generalPurposeFermentingBacteria))
-                        .metadata(SIEVERTS, computeSieverts(0, 3, false, false, false))
+                        .metadata(GLASS, 3)
                         .eut(b.getEUt()))));
         RecipeMaps.implosionRecipes.addDownstream(
             IRecipeMap.newRecipeMap(

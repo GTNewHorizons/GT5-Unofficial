@@ -129,7 +129,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                 mFloor = (lastRecipe.mSpecialValue % 10000) * 1000000;
                 mCeil = (lastRecipe.mSpecialValue / 10000) * 1000000;
                 if (eV > mCeil || eV < mFloor) {
-                    setOutputItems(ItemRefer.Radioactive_Waste.get(4));
+                    overwriteOutputItems(ItemRefer.Radioactive_Waste.get(4));
                 }
                 // NA does not consume power, its hatches do. Set it to 0 to be sure
                 calculatedEut = 0;
@@ -478,12 +478,12 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                 new TextWidget(StatCollector.translateToLocal("gui.NeutronActivator.0"))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
+                    .setEnabled(widget -> getErrorDisplayID() == 0))
             .widget(
                 new TextWidget().setStringSupplier(() -> numberFormat.format(eV / 1_000_000d) + " MeV")
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
+                    .setEnabled(widget -> getErrorDisplayID() == 0))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> eV, val -> eV = val));
     }
 

@@ -13,8 +13,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.api.logic.FluidInventoryLogic;
-import gregtech.api.logic.ItemInventoryLogic;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -63,14 +61,6 @@ public class ParallelHelper {
      */
     private ItemStack[] itemInputs;
     /**
-     * The inputs of the machine for current recipe check
-     */
-    private ItemInventoryLogic itemInputInventory;
-    /**
-     * The output item inventory of the machine
-     */
-    private ItemInventoryLogic itemOutputInventory;
-    /**
      * The outputs of the recipe with the applied parallel
      */
     private ItemStack[] itemOutputs;
@@ -78,14 +68,6 @@ public class ParallelHelper {
      * The inputs of the multiblock for the current recipe check
      */
     private FluidStack[] fluidInputs;
-    /**
-     * The inputs of the machine for the current recipe check
-     */
-    private FluidInventoryLogic fluidInputInventory;
-    /**
-     * The output fluid inventory of the machine;
-     */
-    private FluidInventoryLogic fluidOutputInventory;
     /**
      * The outputs of the recipe with the applied parallel
      */
@@ -149,12 +131,6 @@ public class ParallelHelper {
     private Function<Integer, ItemStack[]> customItemOutputCalculation;
 
     private Function<Integer, FluidStack[]> customFluidOutputCalculation;
-
-    /**
-     * MuTE Mode this is a mode for changing how the GT_ParallelHelper works as Mutes don't use ItemStack and FluidStack
-     * arrays for inputs
-     */
-    private boolean muteMode = false;
 
     public ParallelHelper() {}
 
@@ -316,24 +292,6 @@ public class ParallelHelper {
         return this;
     }
 
-    @Nonnull
-    public ParallelHelper setMuTEMode(boolean muteMode) {
-        this.muteMode = muteMode;
-        return this;
-    }
-
-    @Nonnull
-    public ParallelHelper setItemInputInventory(ItemInventoryLogic itemInputInventory) {
-        this.itemInputInventory = itemInputInventory;
-        return this;
-    }
-
-    @Nonnull
-    public ParallelHelper setFluidInputInventory(FluidInventoryLogic fluidInputInventory) {
-        this.fluidInputInventory = fluidInputInventory;
-        return this;
-    }
-
     /**
      * Sets method for calculating max parallel from given inputs.
      */
@@ -347,18 +305,6 @@ public class ParallelHelper {
      */
     public ParallelHelper setInputConsumer(InputConsumer inputConsumer) {
         this.inputConsumer = inputConsumer;
-        return this;
-    }
-
-    @Nonnull
-    public ParallelHelper setItemOutputInventory(ItemInventoryLogic itemOutputInventory) {
-        this.itemOutputInventory = itemOutputInventory;
-        return this;
-    }
-
-    @Nonnull
-    public ParallelHelper setFluidOutputInventory(FluidInventoryLogic fluidOutputInventory) {
-        this.fluidOutputInventory = fluidOutputInventory;
         return this;
     }
 
@@ -504,7 +450,7 @@ public class ParallelHelper {
 
         // Let's look at how many parallels we can get with void protection
         if (protectExcessItem || protectExcessFluid) {
-            if (machine == null && !muteMode) {
+            if (machine == null) {
                 throw new IllegalStateException("Tried to calculate void protection, but machine is not set");
             }
             VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
@@ -515,9 +461,6 @@ public class ParallelHelper {
                 .setOutputMultiplier(outputMultiplier)
                 .setChanceMultiplier(chanceMultiplier)
                 .setMaxParallel(maxParallel)
-                .setItemOutputInventory(itemOutputInventory)
-                .setFluidOutputInventory(fluidOutputInventory)
-                .setMuTEMode(muteMode)
                 .build();
             maxParallel = Math.min(voidProtectionHelper.getMaxParallel(), maxParallel);
             if (voidProtectionHelper.isItemFull()) {

@@ -10,13 +10,12 @@ import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -56,7 +55,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * <p/>
  * This is the main TileEntity for EVERYTHING.
  */
-public class BaseMetaPipeEntity extends CommonMetaTileEntity
+public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     implements IGregTechTileEntity, IPipeRenderedTileEntity, IDebugableTileEntity {
 
     public byte mConnections = IConnectable.NO_CONNECTION;
@@ -222,7 +221,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                 if (!hasValidMetaTileEntity()) return;
                 if (isServerSide()) {
                     if (mTickTimer == 10) {
-                        updateCoverBehavior();
                         issueBlockUpdate();
                         joinEnet();
                     }
@@ -642,16 +640,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     }
 
     @Override
-    public byte getWorkDataValue() {
-        return 0;
-    }
-
-    @Override
-    public void setWorkDataValue(byte aValue) {
-        /* Do nothing */
-    }
-
-    @Override
     public int getMetaTileID() {
         return mID;
     }
@@ -817,11 +805,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     }
 
     @Override
-    public boolean shouldDropItemAt(int index) {
-        return this.mMetaTileEntity == null || this.mMetaTileEntity.shouldDropItemAt(index);
-    }
-
-    @Override
     public boolean onRightclick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
         if (isClientSide()) {
             // Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
@@ -830,8 +813,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                     ? GTUtility.determineWrenchingSide(side, aX, aY, aZ)
                     : side;
                 return (getCoverInfoAtSide(tSide).hasCoverGUI());
-            } else if (getCoverBehaviorAtSideNew(side).onCoverRightclickClient(side, this, aPlayer, aX, aY, aZ)) {
-                return true;
             }
         }
         if (isServerSide()) {
@@ -1107,9 +1088,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     @Override
     public boolean canExtractItem(int aIndex, ItemStack aStack, int ordinalSide) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
-        return canAccessData()
-            && getCoverBehaviorAtSideNew(side)
-                .letsItemsOut(side, getCoverIDAtSide(side), getComplexCoverDataAtSide(side), aIndex, this)
+        return canAccessData() && getCoverInfoAtSide(side).letsItemsOut(aIndex)
             && mMetaTileEntity.canExtractItem(aIndex, aStack, ordinalSide);
     }
 
@@ -1140,16 +1119,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     @Override
     public void setGenericRedstoneOutput(boolean aOnOff) {
         // Do nothing
-    }
-
-    @Override
-    public int getErrorDisplayID() {
-        return 0;
-    }
-
-    @Override
-    public void setErrorDisplayID(int aErrorID) {
-        //
     }
 
     @Override
@@ -1218,18 +1187,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     @Override
     public boolean drainEnergyUnits(ForgeDirection side, long aVoltage, long aAmperage) {
         return false;
-    }
-
-    @Override
-    public boolean acceptsRotationalEnergy(ForgeDirection side) {
-        if (!canAccessData() || getCoverIDAtSide(side) != 0) return false;
-        return mMetaTileEntity.acceptsRotationalEnergy(side);
-    }
-
-    @Override
-    public boolean injectRotationalEnergy(ForgeDirection side, long aSpeed, long aEnergy) {
-        if (!canAccessData() || getCoverIDAtSide(side) != 0) return false;
-        return mMetaTileEntity.injectRotationalEnergy(side, aSpeed, aEnergy);
     }
 
     private boolean canMoveFluidOnSide(ForgeDirection side, Fluid fluid, boolean isFill) {
@@ -1348,16 +1305,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     }
 
     @Override
-    public float getBlastResistance(ForgeDirection side) {
-        return canAccessData() ? Math.max(0, getMetaTileEntity().getExplosionResistance(side)) : 5.0F;
-    }
-
-    @Override
-    public void onBlockDestroyed() {
-        if (canAccessData()) getMetaTileEntity().onBlockDestroyed();
-    }
-
-    @Override
     public boolean isMufflerUpgradable() {
         return false;
     }
@@ -1407,22 +1354,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     }
 
     @Override
-    public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
-        List<AxisAlignedBB> outputAABB, Entity collider) {
-        mMetaTileEntity.addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        return mMetaTileEntity.getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
-    }
-
-    @Override
-    public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider) {
-        mMetaTileEntity.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
-    }
-
-    @Override
     public int[] getTimeStatistics() {
         return mTimeStatistics;
     }
@@ -1435,7 +1366,18 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
+        if (hasValidMetaTileEntity()) {
+            getMetaTileEntity().getWailaBody(itemStack, currentTip, accessor, config);
+        }
         super.getWailaBody(itemStack, currentTip, accessor, config);
-        mMetaTileEntity.getWailaBody(itemStack, currentTip, accessor, config);
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        if (hasValidMetaTileEntity()) {
+            getMetaTileEntity().getWailaNBTData(player, tile, tag, world, x, y, z);
+        }
     }
 }
