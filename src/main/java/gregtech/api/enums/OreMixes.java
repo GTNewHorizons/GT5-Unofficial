@@ -817,7 +817,7 @@ public enum OreMixes {
         .localize(Materials.RareEarth)),
 
     RichNuclear(new OreMixBuilder().name("ore.mix.richnuclear")
-        .heightRange(55, 120)
+        .heightRange(40, 80)
         .weight(5)
         .density(2)
         .size(8)
