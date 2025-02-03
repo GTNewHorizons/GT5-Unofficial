@@ -337,13 +337,8 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity().getCoverBehaviorAtSideNew(side)
-            .isGUIClickable(
-                side,
-                getBaseMetaTileEntity().getCoverIDAtSide(side),
-                getBaseMetaTileEntity().getComplexCoverDataAtSide(side),
-                getBaseMetaTileEntity()))
-            return;
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
+            .isGUIClickable()) return;
         if (aPlayer.isSneaking()) {
             if (this.mRealInventory == null) {
                 aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.no_channel"));

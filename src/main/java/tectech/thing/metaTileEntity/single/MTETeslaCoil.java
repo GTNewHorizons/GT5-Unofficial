@@ -34,7 +34,6 @@ import tectech.mechanics.tesla.ITeslaConnectable;
 import tectech.mechanics.tesla.ITeslaConnectableSimple;
 import tectech.thing.metaTileEntity.Textures;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnectable {
 
@@ -67,7 +66,6 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
 
     public MTETeslaCoil(int aID, String aName, String aNameRegional, int aTier, int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, "", aSlotCount);
-        TTUtility.setTier(aTier, this);
     }
 
     public MTETeslaCoil(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, int aSlotCount) {
