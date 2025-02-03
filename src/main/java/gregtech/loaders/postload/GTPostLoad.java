@@ -34,6 +34,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
@@ -362,8 +363,22 @@ public class GTPostLoad {
             .addTo(rockBreakerFakeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.packed_ice, 0), GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Basalt, 1L))
+            .itemInputs(
+                GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "blue_ice", 0, 0),
+                GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cobblestone, Materials.Basalt, 1L))
+            .duration(16 * TICKS)
+            .eut(TierEU.RECIPE_LV)
+            .ignoreCollision()
+            .noOptimize()
+            .fake()
+            .addTo(rockBreakerFakeRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "blue_ice", 0, 0),
+                GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "cobbled_deepslate", 1, 0))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .ignoreCollision()

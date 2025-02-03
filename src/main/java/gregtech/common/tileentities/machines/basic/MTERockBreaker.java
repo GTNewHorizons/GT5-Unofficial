@@ -23,6 +23,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -31,6 +32,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -169,9 +171,12 @@ public class MTERockBreaker extends MTEBasicMachine {
             || (aBaseMetaTileEntity.getBlockOffset(-1, 0, 0) == Blocks.lava)
             || (aBaseMetaTileEntity.getBlockOffset(1, 0, 0) == Blocks.lava)) {
                 if (GTUtility.areStacksEqual(getStackInSlot(getCircuitSlot()), GTUtility.getIntegratedCircuit(1))) {
-                    if (GTUtility.areStacksEqual(getInputAt(0), new ItemStack(Blocks.packed_ice, 0))) {
+                    if (GTUtility.areStacksEqual(
+                        getInputAt(0),
+                        GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "blue_ice", 0, 0))) {
                         if ((aBaseMetaTileEntity.getBlockOffset(0, -1, 0) == Blocks.soul_sand)) {
-                            ItemStack tOutput = GTOreDictUnificator.get(OrePrefixes.block, Materials.Basalt, 1L);
+                            ItemStack tOutput = (GTOreDictUnificator
+                                .get(OrePrefixes.cobblestone, Materials.Basalt, 1L));
                             if (canOutput(tOutput)) {
                                 calculateOverclockedNess(30, 16);
                                 // In case recipe is too OP for that machine
@@ -181,7 +186,31 @@ public class MTERockBreaker extends MTEBasicMachine {
                                 return 2;
                             }
                         }
-                    }
+                    } else if ((aBaseMetaTileEntity.getBlockOffset(0, 0, 1) == Blocks.lava)
+                        || (aBaseMetaTileEntity.getBlockOffset(0, 0, -1) == Blocks.lava)
+                        || (aBaseMetaTileEntity.getBlockOffset(-1, 0, 0) == Blocks.lava)
+                        || (aBaseMetaTileEntity.getBlockOffset(1, 0, 0) == Blocks.lava)) {
+                            if (GTUtility
+                                .areStacksEqual(getStackInSlot(getCircuitSlot()), GTUtility.getIntegratedCircuit(1))) {
+                                if (GTUtility.areStacksEqual(
+                                    getInputAt(0),
+                                    GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "magma", 0, 0))) {
+                                    if ((aBaseMetaTileEntity.getBlockOffset(0, -1, 0) == Blocks.soul_sand)) {
+                                        ItemStack tOutput = GTModHandler
+                                            .getModItem(Mods.EtFuturumRequiem.ID, "cobbled_deepslate", 1, 0);
+                                        if (canOutput(tOutput)) {
+                                            calculateOverclockedNess(30, 16);
+                                            // In case recipe is too OP for that machine
+                                            if (mMaxProgresstime == Integer.MAX_VALUE - 1
+                                                && mEUt == Integer.MAX_VALUE - 1)
+                                                return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+                                            this.mOutputItems[0] = tOutput;
+                                            return 2;
+                                        }
+                                    }
+                                }
+                            }
+                        }
                 }
             }
         return 0;
