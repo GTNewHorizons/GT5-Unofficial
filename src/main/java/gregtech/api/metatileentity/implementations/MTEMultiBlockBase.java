@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.recipe.check.SingleRecipeCheck.getDisplayString;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.formatNumbers;
 import static gregtech.api.util.GTUtility.min;
@@ -2077,6 +2078,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             int tAverageTime = tag.getInteger("averageNS");
             currentTip.add("Average CPU load of ~" + formatNumbers(tAverageTime) + " ns");
         }
+        // Always show locked recipe information if the machine is locked to a recipe
+        if (tag.getBoolean("isLockedToRecipe")) {
+            String lockedRecipe = tag.getString("lockedRecipeName");
+            if (!lockedRecipe.isEmpty()) {
+                // Split the string on "\n" and add each line separately.
+                String[] lines = lockedRecipe.split("\n");
+                currentTip.add("Locked Recipe:");
+                for (String line : lines) {
+                    currentTip.add(line);
+                }
+            }
+        }
+
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 
@@ -2095,6 +2109,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         tag.setInteger("progress", mProgresstime);
         tag.setInteger("maxProgress", mMaxProgresstime);
         tag.setBoolean("incompleteStructure", (getErrorDisplayID() & 64) != 0);
+        tag.setBoolean("isLockedToRecipe", isRecipeLockingEnabled());
+        SingleRecipeCheck lockedRecipe = getSingleRecipeCheck();
+        tag.setString(
+            "lockedRecipeName",
+            lockedRecipe != null ? getDisplayString(lockedRecipe.getRecipe(), false, true, false, true) : "");
 
         if (mOutputItems != null) {
             int index = 0;
