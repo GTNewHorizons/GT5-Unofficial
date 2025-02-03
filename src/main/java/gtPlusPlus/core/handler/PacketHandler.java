@@ -12,7 +12,6 @@ import cpw.mods.fml.relauncher.Side;
 import gtPlusPlus.core.network.handler.AbstractClientMessageHandler;
 import gtPlusPlus.core.network.packet.PacketTurbineHatchUpdate;
 import gtPlusPlus.core.network.packet.PacketVolumetricFlaskGui;
-import gtPlusPlus.core.network.packet.PacketVolumetricFlaskGui2;
 
 public class PacketHandler {
 
@@ -22,7 +21,6 @@ public class PacketHandler {
 
     public static void init() {
         registerMessage(PacketVolumetricFlaskGui.class, PacketVolumetricFlaskGui.class);
-        registerMessage(PacketVolumetricFlaskGui2.class, PacketVolumetricFlaskGui2.class);
         registerMessage(PacketTurbineHatchUpdate.class, PacketTurbineHatchUpdate.class);
     }
 

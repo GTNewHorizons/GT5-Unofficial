@@ -51,7 +51,6 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
             16,
             new String[] { CommonValues.THETA_MOVEMENT, translateToLocal("gt.blockmachines.hatch.capacitor.desc.0"),
                 EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.capacitor.desc.1") });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchCapacitor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

@@ -1,6 +1,6 @@
 package gregtech.api.recipe.metadata;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,7 +18,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 @FieldsAreNonnullByDefault
 public final class RecipeMetadataStorage implements IRecipeMetadataStorage {
 
-    private final Map<RecipeMetadataKey<?>, Object> metadata = new HashMap<>();
+    private final Map<RecipeMetadataKey<?>, Object> metadata = new LinkedHashMap<>();
 
     public RecipeMetadataStorage() {}
 
