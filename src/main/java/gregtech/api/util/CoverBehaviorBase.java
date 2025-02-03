@@ -453,8 +453,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
 
             final CoverInfo coverInfo = uiBuildContext.getTile()
                 .getCoverInfoAtSide(uiBuildContext.getCoverSide());
-            final CoverBehaviorBase<?> behavior = coverInfo.getCoverBehavior();
-            if (coverInfo.getMinimumTickRate() > 0 && behavior.allowsTickRateAddition()) {
+            if (coverInfo.getMinimumTickRate() > 0 && coverInfo.allowsTickRateAddition()) {
                 builder.widget(
                     new CoverTickRateButton(coverInfo, builder).setPos(getGUIWidth() - 24, getGUIHeight() - 24));
             }
@@ -485,7 +484,8 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
             if (isCoverValid()) {
                 return forceCast(
                     getUIBuildContext().getTile()
-                        .getComplexCoverDataAtSide(getUIBuildContext().getCoverSide()));
+                        .getCoverInfoAtSide(getUIBuildContext().getCoverSide())
+                        .getCoverData());
             } else {
                 return null;
             }
@@ -508,10 +508,9 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
         }
 
         public boolean isCoverValid() {
-            return !getUIBuildContext().getTile()
-                .isDead()
-                && getUIBuildContext().getTile()
-                    .getCoverBehaviorAtSideNew(getUIBuildContext().getCoverSide()) != GregTechAPI.sNoBehavior;
+            ICoverable tile = getUIBuildContext().getTile();
+            return !(tile.isDead() || tile.getCoverInfoAtSide(getUIBuildContext().getCoverSide())
+                .hasNoBehavior());
         }
 
         protected void addTitleToUI(ModularWindow.Builder builder) {
@@ -805,16 +804,6 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     public boolean hasCoverGUI() {
-        return false;
-    }
-
-    /**
-     * Called when someone rightclicks this Cover Client Side
-     * <p/>
-     * return true, if something actually happens.
-     */
-    public boolean onCoverRightclickClient(ForgeDirection side, ICoverable aTileEntity, EntityPlayer aPlayer, float aX,
-        float aY, float aZ) {
         return false;
     }
 
