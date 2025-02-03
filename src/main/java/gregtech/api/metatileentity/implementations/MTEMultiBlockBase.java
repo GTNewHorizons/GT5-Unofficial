@@ -13,7 +13,9 @@ import static mcp.mobius.waila.api.SpecialChars.RESET;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -65,6 +67,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -169,6 +172,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected long mLastWorkingTick = 0, mTotalRunTime = 0;
     private static final int CHECK_INTERVAL = 100; // How often should we check for a new recipe on an idle machine?
     private final int randomTickOffset = (int) (Math.random() * CHECK_INTERVAL + 1);
+
+    /** A list of unparameterized structure errors. */
+    protected EnumSet<StructureError> mStructureStatus = EnumSet.noneOf(StructureError.class);
 
     protected static final byte INTERRUPT_SOUND_INDEX = 8;
     protected static final byte PROCESS_START_SOUND_INDEX = 1;
@@ -437,6 +443,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mMaintenanceHatches.clear();
         mDualInputHatches.clear();
         mSmartInputHatches.clear();
+        mStructureStatus = EnumSet.noneOf(StructureError.class);
     }
 
     public boolean checkStructure(boolean aForceReset) {
@@ -449,9 +456,38 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if ((mStructureChanged || aForceReset)) {
             clearHatches();
             mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
+            // intentionally not predicated on checkMachine
+            validateStructure();
+            if (!mStructureStatus.isEmpty()) mMachine = false;
         }
         mStructureChanged = false;
         return mMachine;
+    }
+
+    /**
+     * Validates this multi's structure (hatch/casing counts mainly) for any errors.
+     * Runs regardless of whether the structure is complete. Check or update {@link #mMachine} as needed.
+     * Should update {@link #mStructureStatus} as needed.
+     */
+    protected void validateStructure() {
+
+    }
+
+    /**
+     * Scans {@link #mStructureStatus} or other fields as needed and emits localized structure error messages.
+     * mStructureStatus is synced already, but any newly introduced fields need to be synced manually.
+     */
+    @SideOnly(Side.CLIENT)
+    protected void getStructureErrors(ArrayList<String> lines) {
+
+    }
+
+    /**
+     * Controls whether the error message widget is shown. If you have any new structure status fields, make sure to
+     * check them here.
+     */
+    protected boolean hasStructureErrors() {
+        return !mStructureStatus.isEmpty();
     }
 
     @Override
@@ -2653,6 +2689,50 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         screenElements.setSynced(false)
             .setSpace(0);
+
+        screenElements.widget(
+            new FakeSyncWidget<EnumSet<StructureError>>(
+                () -> mStructureStatus,
+                status -> mStructureStatus = status,
+                (packetBuffer, structureErrors) -> {
+                    BitSet bits = new BitSet();
+
+                    for (StructureError error : structureErrors) {
+                        bits.set(error.ordinal());
+                    }
+
+                    byte[] data = bits.toByteArray();
+
+                    packetBuffer.writeVarIntToBuffer(data.length);
+                    packetBuffer.writeBytes(data);
+                },
+                packetBuffer -> {
+                    byte[] data = new byte[packetBuffer.readVarIntFromBuffer()];
+                    packetBuffer.readBytes(data);
+
+                    BitSet bits = BitSet.valueOf(data);
+
+                    EnumSet<StructureError> out = EnumSet.noneOf(StructureError.class);
+
+                    for (StructureError error : StructureError.values()) {
+                        if (bits.get(error.ordinal())) {
+                            out.add(error);
+                        }
+                    }
+
+                    return out;
+                }));
+
+        screenElements.widgets(TextWidget.dynamicString(() -> {
+            ArrayList<String> lines = new ArrayList<>();
+            getStructureErrors(lines);
+            return String.join("\n", lines);
+        })
+            .setSynced(false)
+            .setTextAlignment(Alignment.CenterLeft)
+            .setDefaultColor(EnumChatFormatting.DARK_RED)
+            .setEnabled(w -> hasStructureErrors()));
+
         if (supportsMachineModeSwitch()) {
             screenElements.widget(
                 TextWidget
