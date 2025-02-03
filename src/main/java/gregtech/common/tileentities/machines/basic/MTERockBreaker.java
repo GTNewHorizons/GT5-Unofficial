@@ -175,7 +175,8 @@ public class MTERockBreaker extends MTEBasicMachine {
                         getInputAt(0),
                         GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "blue_ice", 0, 0))) {
                         if ((aBaseMetaTileEntity.getBlockOffset(0, -1, 0) == Blocks.soul_sand)) {
-                            ItemStack tOutput = GTModHandler.getModItem(Mods.GregTech.ID, "gt.blockstones", 1, 9);
+                            ItemStack tOutput = (GTOreDictUnificator
+                                .get(OrePrefixes.cobblestone, Materials.Basalt, 1L));
                             if (canOutput(tOutput)) {
                                 calculateOverclockedNess(30, 16);
                                 // In case recipe is too OP for that machine

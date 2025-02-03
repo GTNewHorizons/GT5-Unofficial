@@ -47,7 +47,7 @@ public class RecipeLoaderIndustrialRockBreaker {
                 GTUtility.getIntegratedCircuit(4),
                 GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "blue_ice", 0, 0),
                 new ItemStack(Blocks.soul_sand, 0))
-            .itemOutputs(GTModHandler.getModItem(Mods.GregTech.ID, "gt.blockstones", 1, 9))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cobblestone, Materials.Basalt, 1L))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockRockBreakerRecipes);

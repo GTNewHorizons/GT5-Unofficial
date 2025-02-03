@@ -366,7 +366,9 @@ public class GTPostLoad {
             .itemInputs(
                 GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "blue_ice", 0, 0),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTModHandler.getModItem(Mods.GregTech.ID, "gt.blockstones", 1, 9))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cobblestone, Materials.Basalt, 1L))
+            // GTModHandler.getModItem(Mods.GregTech.ID, "gt.blockstones", 1, 9))
+
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .ignoreCollision()
