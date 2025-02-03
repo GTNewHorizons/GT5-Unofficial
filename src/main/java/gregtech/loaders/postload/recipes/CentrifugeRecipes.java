@@ -680,6 +680,16 @@ public class CentrifugeRecipes implements Runnable {
             .eut(5)
             .addTo(centrifugeRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.getDust(Materials.Gunpowder, 6L))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 2),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Charcoal, 3))
+            .duration(6 * SECONDS)
+            .eut(8)
+            .addTo(centrifugeRecipes);
+
         if (Thaumcraft.isModLoaded() && Forestry.isModLoaded()) {
             // air
 
