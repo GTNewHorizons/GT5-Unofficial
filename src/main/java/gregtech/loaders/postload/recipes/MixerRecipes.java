@@ -259,7 +259,7 @@ public class MixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Brass, 7),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 1),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GTOreDictUnificator.getDust(Materials.CobaltBrass, 9L * OrePrefixes.dust.mMaterialAmount))
@@ -1223,7 +1223,7 @@ public class MixerRecipes implements Runnable {
         // radiation manufacturing
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("fuelRod", 1), new ItemStack(Items.glowstone_dust, 9))
+            .itemInputs(ItemList.IC2_Fuel_Rod_Empty.get(1), new ItemStack(Items.glowstone_dust, 9))
             .itemOutputs(ItemList.GlowstoneCell.get(1))
             .fluidInputs(Materials.Helium.getGas(250))
             .duration(1 * SECONDS + 10 * TICKS)

@@ -8,6 +8,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTUtility.getTier;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
@@ -221,15 +222,13 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                                 }
                                 this.tRecipe = assRecipe;
                                 // Set property
-                                computationRequired = computationRemaining = (long) assRecipe.mResearchTime
-                                    * assRecipe.mResearchVoltage
-                                    / 30;
-
+                                computationRequired = computationRemaining = (long) (assRecipe.mResearchTime
+                                    * Math.pow(2, getTier(assRecipe.mResearchVoltage) - 1));
                                 mMaxProgresstime = 20;
                                 mEfficiencyIncrease = 10000;
                                 eRequiredData = 1;
                                 eAmpereFlow = 1;
-                                mEUt = (int) -TierEU.RECIPE_UV;
+                                mEUt = -Math.max(assRecipe.mResearchVoltage, (int) TierEU.RECIPE_UV);
                                 eHolders.get(0)
                                     .getBaseMetaTileEntity()
                                     .setActive(true);
@@ -594,7 +593,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         int z) {
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
         tag.setFloat("efficiency", mEfficiency / 100.0F);
-        tag.setBoolean("incompleteStructure", (getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0);
+        tag.setBoolean("incompleteStructure", (getErrorDisplayID() & 64) != 0);
         tag.setString("machineType", machineType);
         tag.setLong("computation", getComputationConsumed());
         tag.setLong("computationRequired", getComputationRequired());

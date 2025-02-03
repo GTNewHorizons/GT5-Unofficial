@@ -1,8 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.ExtraTrees;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.util.GTModHandler.getModItem;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -25,15 +23,15 @@ public class RecipeRemover implements Runnable {
 
     @Override
     public void run() {
-        GTModHandler.removeRecipeByOutput(ItemList.IC2_Fertilizer.get(1L));
+        GTModHandler.removeRecipeByOutput(GTModHandler.getIC2Item("fertilizer", 1L));
         removeCrafting();
         removeSmelting();
         removeIC2Recipes();
     }
 
     public void removeCrafting() {
-        GTModHandler.removeRecipe(new ItemStack(Items.lava_bucket), ItemList.Cell_Empty.get(1L));
-        GTModHandler.removeRecipe(new ItemStack(Items.water_bucket), ItemList.Cell_Empty.get(1L));
+        GTModHandler.removeRecipe(new ItemStack(Items.lava_bucket), GTModHandler.getIC2Item("cell", 1L));
+        GTModHandler.removeRecipe(new ItemStack(Items.water_bucket), GTModHandler.getIC2Item("cell", 1L));
     }
 
     public void removeIC2Recipes() {
@@ -42,9 +40,9 @@ public class RecipeRemover implements Runnable {
             GTUtility.removeSimpleIC2MachineRecipe(
                 GTValues.NI,
                 Recipes.metalformerExtruding.getRecipes(),
-                ItemList.Cell_Empty.get(3L));
+                GTModHandler.getIC2Item("cell", 1L));
             GTUtility.removeSimpleIC2MachineRecipe(
-                ItemList.IC2_Energium_Dust.get(1L),
+                GTModHandler.getIC2Item("energiumDust", 1L),
                 Recipes.compressor.getRecipes(),
                 GTValues.NI);
             GTUtility.removeSimpleIC2MachineRecipe(
@@ -78,28 +76,28 @@ public class RecipeRemover implements Runnable {
         GTUtility.removeSimpleIC2MachineRecipe(
             GTOreDictUnificator.get(OrePrefixes.gem, Materials.Lapis, 1L),
             GTModHandler.getMaceratorRecipeList(),
-            ItemList.IC2_Plantball.get(1L));
+            GTModHandler.getIC2Item("plantBall", 1L));
         GTUtility.removeSimpleIC2MachineRecipe(
             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
             GTModHandler.getMaceratorRecipeList(),
-            ItemList.IC2_Plantball.get(1L));
+            GTModHandler.getIC2Item("plantBall", 1L));
         GTUtility.removeSimpleIC2MachineRecipe(
             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L),
             GTModHandler.getMaceratorRecipeList(),
-            ItemList.IC2_Plantball.get(1L));
+            GTModHandler.getIC2Item("plantBall", 1L));
         GTUtility.removeSimpleIC2MachineRecipe(
             GTValues.NI,
             GTModHandler.getMaceratorRecipeList(),
-            getModItem(IndustrialCraft2.ID, "itemBiochaff", 1L));
+            GTModHandler.getIC2Item("biochaff", 1L));
 
         GTUtility.removeSimpleIC2MachineRecipe(
             new ItemStack(Blocks.cactus, 8, 0),
             GTModHandler.getCompressorRecipeList(),
-            getModItem(IndustrialCraft2.ID, "itemFuelPlantBall", 1L));
+            GTModHandler.getIC2Item("plantBall", 1L));
         GTUtility.removeSimpleIC2MachineRecipe(
-            getModItem(ExtraTrees.ID, "food", 8L, 24),
+            GTModHandler.getModItem(ExtraTrees.ID, "food", 8L, 24),
             GTModHandler.getCompressorRecipeList(),
-            getModItem(IndustrialCraft2.ID, "itemFuelPlantBall", 1L));
+            GTModHandler.getIC2Item("plantBall", 1L));
 
         GTUtility.removeSimpleIC2MachineRecipe(
             ItemList.Crop_Drop_BobsYerUncleRanks.get(1L),

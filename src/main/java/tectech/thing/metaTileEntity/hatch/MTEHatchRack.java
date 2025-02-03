@@ -36,7 +36,7 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
@@ -66,7 +66,6 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
             4,
             new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.rack.desc.0"),
                 EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.rack.desc.1") });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchRack(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -99,12 +98,12 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GTRenderedTexture(EM_R_ACTIVE) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(EM_R_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GTRenderedTexture(EM_R) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(EM_R) };
     }
 
     @Override

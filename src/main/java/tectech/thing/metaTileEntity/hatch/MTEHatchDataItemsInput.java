@@ -25,13 +25,12 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.mechanics.dataTransport.InventoryDataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.recipe.TTRecipeAdder;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConnectsToDataPipe {
 
@@ -42,7 +41,6 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
 
     public MTEHatchDataItemsInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchDataItemsInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -51,20 +49,17 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture,
-            new GTRenderedTexture(
-                EM_D_ACTIVE,
-                Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            new GTRenderedTexture(EM_D_CONN) };
+        return new ITexture[] { aBaseTexture, TextureFactory
+            .of(EM_D_ACTIVE, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+            TextureFactory.of(EM_D_CONN) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GTRenderedTexture(
-                EM_D_SIDES,
-                Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            new GTRenderedTexture(EM_D_CONN) };
+            TextureFactory
+                .of(EM_D_SIDES, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+            TextureFactory.of(EM_D_CONN) };
     }
 
     @Override
