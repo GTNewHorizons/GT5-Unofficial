@@ -456,8 +456,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                     stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
                 }
             }
-            aBaseMetaTileEntity
-                .setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
+            setErrorDisplayID((getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
         } else {
             doActivitySound(getActivitySoundLoop());
@@ -592,15 +591,10 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                 new TextWidget("Hit with Soft Mallet to (re-)start the Machine if it doesn't start.")
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setTextAlignment(Alignment.Center)
-                    .setEnabled(
-                        widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0
-                            && !getBaseMetaTileEntity().isActive())
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive())
                     .setPos(-getGUIWidth() / 2, 170)
                     .setSize(getGUIWidth() * 2, 9))
-            .widget(
-                new FakeSyncWidget.IntegerSyncer(
-                    () -> getBaseMetaTileEntity().getErrorDisplayID(),
-                    val -> getBaseMetaTileEntity().setErrorDisplayID(val)))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> getErrorDisplayID(), val -> setErrorDisplayID(val)))
             .widget(
                 new FakeSyncWidget.BooleanSyncer(
                     () -> getBaseMetaTileEntity().isActive(),
@@ -608,15 +602,10 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
             .widget(
                 new TextWidget("Running perfectly.").setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setTextAlignment(Alignment.Center)
-                    .setEnabled(
-                        widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0
-                            && getBaseMetaTileEntity().isActive())
+                    .setEnabled(widget -> getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive())
                     .setPos(0, 170)
                     .setSize(getGUIWidth(), 9))
-            .widget(
-                new FakeSyncWidget.IntegerSyncer(
-                    () -> getBaseMetaTileEntity().getErrorDisplayID(),
-                    val -> getBaseMetaTileEntity().setErrorDisplayID(val)))
+            .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
             .widget(
                 new ProgressBar()
                     .setProgress(

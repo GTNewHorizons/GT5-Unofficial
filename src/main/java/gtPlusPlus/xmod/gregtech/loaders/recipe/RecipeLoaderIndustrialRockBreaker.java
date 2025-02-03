@@ -39,5 +39,15 @@ public class RecipeLoaderIndustrialRockBreaker {
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockRockBreakerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(4),
+                new ItemStack(Blocks.packed_ice, 0),
+                new ItemStack(Blocks.soul_sand, 0))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Basalt, 1L))
+            .duration(16 * TICKS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(multiblockRockBreakerRecipes);
     }
 }
