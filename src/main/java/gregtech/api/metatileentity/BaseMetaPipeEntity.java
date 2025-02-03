@@ -221,7 +221,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 if (!hasValidMetaTileEntity()) return;
                 if (isServerSide()) {
                     if (mTickTimer == 10) {
-                        updateCoverBehavior();
                         issueBlockUpdate();
                         joinEnet();
                     }
@@ -814,8 +813,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                     ? GTUtility.determineWrenchingSide(side, aX, aY, aZ)
                     : side;
                 return (getCoverInfoAtSide(tSide).hasCoverGUI());
-            } else if (getCoverBehaviorAtSideNew(side).onCoverRightclickClient(side, this, aPlayer, aX, aY, aZ)) {
-                return true;
             }
         }
         if (isServerSide()) {
@@ -1091,9 +1088,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     @Override
     public boolean canExtractItem(int aIndex, ItemStack aStack, int ordinalSide) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
-        return canAccessData()
-            && getCoverBehaviorAtSideNew(side)
-                .letsItemsOut(side, getCoverIDAtSide(side), getComplexCoverDataAtSide(side), aIndex, this)
+        return canAccessData() && getCoverInfoAtSide(side).letsItemsOut(aIndex)
             && mMetaTileEntity.canExtractItem(aIndex, aStack, ordinalSide);
     }
 
