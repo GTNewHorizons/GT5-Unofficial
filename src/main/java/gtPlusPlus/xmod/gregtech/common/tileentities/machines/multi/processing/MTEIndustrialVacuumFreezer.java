@@ -172,15 +172,15 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
         super.validateStructure();
 
         if (mCasing < 10) {
-            mStructureStatus.add(StructureError.TOO_FEW_CASINGS);
+            mStructureErrors.add(StructureError.TOO_FEW_CASINGS);
         }
 
         if (mCryotheumHatches.isEmpty()) {
-            mStructureStatus.add(StructureError.MISSING_CRYO_HATCH);
+            mStructureErrors.add(StructureError.MISSING_CRYO_HATCH);
         }
 
         if (mCryotheumHatches.size() > 1) {
-            mStructureStatus.add(StructureError.TOO_MANY_CRYO_HATCHES);
+            mStructureErrors.add(StructureError.TOO_MANY_CRYO_HATCHES);
         }
     }
 
@@ -196,15 +196,15 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
     protected void getStructureErrors(ArrayList<String> lines) {
         super.getStructureErrors(lines);
 
-        if (mStructureStatus.contains(StructureError.TOO_FEW_CASINGS)) {
+        if (mStructureErrors.contains(StructureError.TOO_FEW_CASINGS)) {
             lines.add(I18n.format("GT5U.gui.missing_casings", 10, mCasing));
         }
 
-        if (mStructureStatus.contains(StructureError.MISSING_CRYO_HATCH)) {
+        if (mStructureErrors.contains(StructureError.MISSING_CRYO_HATCH)) {
             lines.add(I18n.format("GT5U.gui.missing_hatch", HATCH_NAME));
         }
 
-        if (mStructureStatus.contains(StructureError.TOO_MANY_CRYO_HATCHES)) {
+        if (mStructureErrors.contains(StructureError.TOO_MANY_CRYO_HATCHES)) {
             lines.add(I18n.format("GT5U.gui.too_many_hatches", HATCH_NAME, 1));
         }
     }

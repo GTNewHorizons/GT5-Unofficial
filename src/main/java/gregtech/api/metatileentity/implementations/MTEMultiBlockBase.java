@@ -176,7 +176,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     private final int randomTickOffset = (int) (Math.random() * CHECK_INTERVAL + 1);
 
     /** A list of unparameterized structure errors. */
-    protected EnumSet<StructureError> mStructureStatus = EnumSet.noneOf(StructureError.class);
+    protected EnumSet<StructureError> mStructureErrors = EnumSet.noneOf(StructureError.class);
 
     protected static final byte INTERRUPT_SOUND_INDEX = 8;
     protected static final byte PROCESS_START_SOUND_INDEX = 1;
@@ -445,7 +445,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mMaintenanceHatches.clear();
         mDualInputHatches.clear();
         mSmartInputHatches.clear();
-        mStructureStatus = EnumSet.noneOf(StructureError.class);
+        mStructureErrors = EnumSet.noneOf(StructureError.class);
     }
 
     public boolean checkStructure(boolean aForceReset) {
@@ -460,7 +460,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
             // intentionally not predicated on checkMachine
             validateStructure();
-            if (!mStructureStatus.isEmpty()) mMachine = false;
+            if (hasStructureErrors()) mMachine = false;
         }
         mStructureChanged = false;
         return mMachine;
@@ -469,15 +469,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     /**
      * Validates this multi's structure (hatch/casing counts mainly) for any errors.
      * Runs regardless of whether the structure is complete. Check or update {@link #mMachine} as needed.
-     * Should update {@link #mStructureStatus} as needed.
+     * Should update {@link #mStructureErrors} as needed.
      */
     protected void validateStructure() {
 
     }
 
     /**
-     * Scans {@link #mStructureStatus} or other fields as needed and emits localized structure error messages.
-     * mStructureStatus is synced already, but any newly introduced fields need to be synced manually.
+     * Scans {@link #mStructureErrors} or other fields as needed and emits localized structure error messages.
+     * mStructureErrors is synced already, but any newly introduced fields need to be synced manually.
      */
     @SideOnly(Side.CLIENT)
     protected void getStructureErrors(ArrayList<String> lines) {
@@ -489,7 +489,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * check them here.
      */
     protected boolean hasStructureErrors() {
-        return !mStructureStatus.isEmpty();
+        return !mStructureErrors.isEmpty();
     }
 
     /**
@@ -2708,8 +2708,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         screenElements.widget(
             new FakeSyncWidget<EnumSet<StructureError>>(
-                () -> mStructureStatus,
-                status -> mStructureStatus = status,
+                () -> mStructureErrors,
+                status -> mStructureErrors = status,
                 (packetBuffer, structureErrors) -> {
                     BitSet bits = new BitSet();
 

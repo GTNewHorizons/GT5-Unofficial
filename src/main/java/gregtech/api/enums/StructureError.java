@@ -1,7 +1,7 @@
 package gregtech.api.enums;
 
 /**
- * Used as a bit set for {@link gregtech.api.metatileentity.implementations.MTEMultiBlockBase#mStructureStatus}.
+ * Used as a bit set for {@link gregtech.api.metatileentity.implementations.MTEMultiBlockBase#mStructureErrors}.
  * You can reorder these as needed.
  */
 public enum StructureError {
