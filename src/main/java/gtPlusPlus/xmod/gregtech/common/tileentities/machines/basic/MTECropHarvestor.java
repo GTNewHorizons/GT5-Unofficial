@@ -100,11 +100,6 @@ public class MTECropHarvestor extends MTEBasicTank {
     }
 
     @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
     public long maxAmperesIn() {
         return 8;
     }
@@ -189,13 +184,6 @@ public class MTECropHarvestor extends MTEBasicTank {
         if (this.getBaseMetaTileEntity()
             .getUniversalEnergyStored() < getMinimumStoredEU()) return;
 
-        int aTileX = this.getBaseMetaTileEntity()
-            .getXCoord();
-        int aTileY = this.getBaseMetaTileEntity()
-            .getXCoord();
-        int aTileZ = this.getBaseMetaTileEntity()
-            .getXCoord();
-
         int aRadius = 10 + getRange(this.mTier);
         int aSide = (aRadius - 1) / 2;
         Map<ItemStack, Integer> aAllDrops = new ItemStackMap<>(true);
@@ -204,17 +192,7 @@ public class MTECropHarvestor extends MTEBasicTank {
             if (!this.mCropCache.isEmpty()) {
                 this.mCropCache.clear();
             }
-            // Logger.INFO("Looking for crops.");
-            for (int y = -2; y <= 2; y++) {
-                for (int x = (-aSide); x <= aSide; x++) {
-                    for (int z = (-aSide); z <= aSide; z++) {
-                        TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityOffset(x, y, z);
-                        if (tTileEntity instanceof ICropTile tCrop) {
-                            this.mCropCache.add(tCrop);
-                        }
-                    }
-                }
-            }
+            lookForCrops(aSide);
         }
 
         // Process Cache
@@ -278,6 +256,19 @@ public class MTECropHarvestor extends MTEBasicTank {
                         // fill the slot
                         getBaseMetaTileEntity().addStackToSlot(i, invStack, space);
                         dropAmount -= space;
+                    }
+                }
+            }
+        }
+    }
+
+    private void lookForCrops(int aSide) {
+        for (int y = -2; y <= 2; y++) {
+            for (int x = (-aSide); x <= aSide; x++) {
+                for (int z = (-aSide); z <= aSide; z++) {
+                    TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityOffset(x, y, z);
+                    if (tTileEntity instanceof ICropTile tCrop) {
+                        this.mCropCache.add(tCrop);
                     }
                 }
             }
@@ -518,18 +509,6 @@ public class MTECropHarvestor extends MTEBasicTank {
         return true;
     }
 
-    /*
-     * @Override public int getTextureIndex(byte aSide, byte aFacing, boolean aActive, boolean aRedstone) { if (aSide ==
-     * aFacing) return 118+(aRedstone?8:0); if (GT_Utility.getOppositeSide(aSide) == aFacing) return
-     * 113+(aRedstone?8:0); int tIndex = 128+(aRedstone?8:0); switch (aFacing) { case 0: return tIndex+64; case 1:
-     * return tIndex+32; case 2: switch (aSide) { case 0: return tIndex+32; case 1: return tIndex+32; case 4: return
-     * tIndex+16; case 5: return tIndex+48; } case 3: switch (aSide) { case 0: return tIndex+64; case 1: return
-     * tIndex+64; case 4: return tIndex+48; case 5: return tIndex+16; } case 4: switch (aSide) { case 0: return
-     * tIndex+16; case 1: return tIndex+16; case 2: return tIndex+48; case 3: return tIndex+16; } case 5: switch (aSide)
-     * { case 0: return tIndex+48; case 1: return tIndex+48; case 2: return tIndex+16; case 3: return tIndex+48; } }
-     * return tIndex; }
-     */
-
     @Override
     public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
         final ITexture[][][] rTextures = new ITexture[10][17][];
@@ -556,10 +535,6 @@ public class MTECropHarvestor extends MTEBasicTank {
         } else {
             return this.mTextures[4][aColorIndex + 1];
         }
-        /*
-         * return this.mTextures[(aActive ? 5 : 0) + (side == facing ? 0 : aSide == GT_Utility.getOppositeSide(aFacing)
-         * ? 1 : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][aColorIndex + 1];
-         */
     }
 
     public ITexture[] getFront(final byte aColor) {

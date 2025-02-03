@@ -740,7 +740,8 @@ public class MTEFluid extends MetaPipeEntity {
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
         if (baseMetaTile == null) return false;
 
-        final CoverBehaviorBase<?> coverBehavior = baseMetaTile.getCoverBehaviorAtSideNew(side);
+        final CoverBehaviorBase<?> coverBehavior = baseMetaTile.getCoverInfoAtSide(side)
+            .getCoverBehavior();
         final IGregTechTileEntity gTileEntity = (tileEntity instanceof IGregTechTileEntity)
             ? (IGregTechTileEntity) tileEntity
             : null;
@@ -754,8 +755,8 @@ public class MTEFluid extends MetaPipeEntity {
             final FluidTankInfo[] tInfo = fTileEntity.getTankInfo(tSide);
             if (tInfo != null) {
                 return tInfo.length > 0 || (Translocator.isModLoaded() && isTranslocator(tileEntity))
-                    || gTileEntity != null
-                        && gTileEntity.getCoverBehaviorAtSideNew(tSide) instanceof CoverFluidRegulator;
+                    || gTileEntity != null && gTileEntity.getCoverInfoAtSide(side)
+                        .getCoverBehavior() instanceof CoverFluidRegulator;
             }
         }
         return false;

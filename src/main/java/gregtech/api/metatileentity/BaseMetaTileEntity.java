@@ -219,8 +219,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             if (hasValidMetaTileEntity() && mMetaTileEntity.hasSidedRedstoneOutputBehavior())
                 mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
             else mSidedRedstone = new byte[] { 15, 15, 15, 15, 15, 15 };
-
-        updateCoverBehavior();
     }
 
     /**
@@ -375,7 +373,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 }
                 if (aSideServer) {
                     if (mRedstone != oRedstone || mTickTimer == 10) {
-                        updateCoverBehavior();
                         oRedstone = mRedstone;
                         issueBlockUpdate();
                     }
@@ -1458,9 +1455,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 final ForgeDirection tSide = (getCoverIDAtSide(side) == 0)
                     ? GTUtility.determineWrenchingSide(side, aX, aY, aZ)
                     : side;
-                return (getCoverBehaviorAtSideNew(tSide).hasCoverGUI());
-            } else if (getCoverBehaviorAtSideNew(side).onCoverRightclickClient(side, this, aPlayer, aX, aY, aZ)) {
-                return true;
+                return (getCoverInfoAtSide(tSide).hasCoverGUI());
             }
 
             if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
@@ -1519,15 +1514,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
                             setCoverDataAtSide(
                                 side,
-                                getCoverBehaviorAtSideNew(side).onCoverScrewdriverClick(
-                                    side,
-                                    getCoverIDAtSide(side),
-                                    getComplexCoverDataAtSide(side),
-                                    this,
-                                    aPlayer,
-                                    aX,
-                                    aY,
-                                    aZ));
+                                getCoverInfoAtSide(side).onCoverScrewdriverClick(aPlayer, aX, aY, aZ));
                             mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tCurrentItem);
                             GTUtility.sendSoundToPlayers(
                                 worldObj,
@@ -1696,8 +1683,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                             if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                                 final CoverInfo info = getCoverInfoAtSide(coverSide);
                                 if (info != CoverInfo.EMPTY_INFO) {
-                                    final CoverBehaviorBase<?> behavior = info.getCoverBehavior();
-                                    if (behavior.allowsTickRateAddition()) {
+                                    if (info.allowsTickRateAddition()) {
                                         info.onCoverJackhammer(aPlayer);
                                         GTUtility.sendSoundToPlayers(
                                             worldObj,
@@ -1723,23 +1709,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     // End item != null
                 } else if (aPlayer.isSneaking()) { // Sneak click, no tool -> open cover config if possible.
                     side = (getCoverIDAtSide(side) == 0) ? GTUtility.determineWrenchingSide(side, aX, aY, aZ) : side;
-                    return getCoverIDAtSide(side) > 0 && getCoverBehaviorAtSideNew(side).onCoverShiftRightClick(
-                        side,
-                        getCoverIDAtSide(side),
-                        getComplexCoverDataAtSide(side),
-                        this,
-                        aPlayer);
+                    return getCoverIDAtSide(side) > 0 && getCoverInfoAtSide(side).onCoverShiftRightClick(aPlayer);
                 }
 
-                if (getCoverBehaviorAtSideNew(side).onCoverRightClick(
-                    side,
-                    getCoverIDAtSide(side),
-                    getComplexCoverDataAtSide(side),
-                    this,
-                    aPlayer,
-                    aX,
-                    aY,
-                    aZ)) return true;
+                if (getCoverInfoAtSide(side).onCoverRightClick(aPlayer, aX, aY, aZ)) return true;
 
                 if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
 
@@ -1863,8 +1836,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     public boolean canExtractItem(int slotIndex, ItemStack stack, int ordinalSide) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
         return canAccessData() && (mRunningThroughTick || !mOutputDisabled)
-            && getCoverBehaviorAtSideNew(side)
-                .letsItemsOut(side, getCoverIDAtSide(side), getComplexCoverDataAtSide(side), slotIndex, this)
+            && getCoverInfoAtSide(side).letsItemsOut(slotIndex)
             && mMetaTileEntity.canExtractItem(slotIndex, stack, ordinalSide);
     }
 

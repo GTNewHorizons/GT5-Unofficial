@@ -46,7 +46,6 @@ import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.api.objects.GTCoverNone;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.CoverBehaviorBase;
@@ -334,7 +333,6 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     @Override
     public boolean canConnect(ForgeDirection side, TileEntity tileEntity) {
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
-        final CoverBehaviorBase<?> coverBehavior = baseMetaTile.getCoverBehaviorAtSideNew(side);
         final ForgeDirection oppositeSide = side.getOpposite();
 
         // GT Machine handling
@@ -344,7 +342,8 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             return true;
 
         // Solar Panel Compat
-        if (coverBehavior instanceof CoverSolarPanel) return true;
+        if (baseMetaTile.getCoverInfoAtSide(side)
+            .getCoverBehavior() instanceof CoverSolarPanel) return true;
 
         // ((tIsGregTechTileEntity && tIsTileEntityCable) && (tAlwaysLookConnected || tLetEnergyIn || tLetEnergyOut) )
         // --> Not needed
@@ -592,7 +591,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 if (isConnectedAtSide(side)) {
                     final CoverInfo coverInfo = pipe.getCoverInfoAtSide(side);
-                    if (coverInfo.getCoverBehavior() instanceof GTCoverNone) continue;
+                    if (coverInfo.hasNoBehavior()) continue;
                     if (!letsIn(coverInfo) || !letsOut(coverInfo)) {
                         pipe.addToLock(pipe, side);
                     } else {
@@ -605,7 +604,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 if (isConnectedAtSide(side)) {
                     final CoverInfo coverInfo = pipe.getCoverInfoAtSide(side);
-                    if (coverInfo.getCoverBehavior() instanceof GTCoverNone) continue;
+                    if (coverInfo.hasNoBehavior()) continue;
 
                     if (!letsIn(coverInfo) || !letsOut(coverInfo)) {
                         dontAllow = true;
