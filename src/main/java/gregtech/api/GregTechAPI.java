@@ -26,6 +26,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
@@ -481,11 +483,7 @@ public class GregTechAPI {
         if (aCover.isValidTexture()) aStackList.forEach(tStack -> GregTechAPI.registerCover(tStack, aCover, aBehavior));
     }
 
-    /**
-     * returns a Cover behavior, guaranteed to not return null after preload
-     *
-     * @return The Cover behavior
-     */
+    @NotNull
     public static CoverBehaviorBase<?> getCoverBehaviorNew(ItemStack aStack) {
         if (aStack == null || aStack.getItem() == null) return sNoBehavior;
         CoverBehaviorBase<?> rCover = sCoverBehaviors.get(new GTItemStack(aStack));
@@ -495,9 +493,7 @@ public class GregTechAPI {
         return sDefaultBehavior;
     }
 
-    /**
-     * returns a Cover behavior, guaranteed to not return null
-     */
+    @NotNull
     public static CoverBehaviorBase<?> getCoverBehaviorNew(int aStack) {
         if (aStack == 0) return sNoBehavior;
         return getCoverBehaviorNew(GTUtility.intToStack(aStack));
