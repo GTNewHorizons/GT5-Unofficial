@@ -2,6 +2,7 @@ package gregtech.loaders.postload.chains;
 
 import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
@@ -47,6 +48,15 @@ public class NetheriteRecipes {
             .eut(TierEU.RECIPE_LuV)
             .noOptimize()
             .addTo(crackingRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Heavy_Hellish_Mud.get(32))
+            .fluidInputs(Materials.PoorNetherWaste.getFluid(16000))
+            .fluidOutputs(Materials.RichNetherWaste.getFluid(16000))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .noOptimize()
+            .addTo(mixerRecipes);
 
     }
 }

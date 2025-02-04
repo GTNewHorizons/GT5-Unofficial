@@ -1047,6 +1047,24 @@ public class MaterialsInit1 {
             .constructMaterial()
             .setHasCorrespondingFluid(true);
 
+        Materials.PoorNetherWaste = new MaterialBuilder( 123, TextureSet.SET_FLUID, "Poor Nether Waste")
+            .addFluid()
+            .addCell()
+            .setRGB(160, 130, 126)
+            .setName("poornetherwaste")
+            .setColor(Dyes._NULL)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+
+        Materials.RichNetherWaste = new MaterialBuilder( 124, TextureSet.SET_FLUID, "Rich Nether Waste")
+            .addFluid()
+            .addCell()
+            .setRGB(2490, 130, 126)
+            .setName("richnetherwaste")
+            .setColor(Dyes._NULL)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+
         // spotless:on
     }
 }
