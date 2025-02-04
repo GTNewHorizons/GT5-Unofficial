@@ -964,7 +964,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 final CoverInfo coverInfo = getCoverInfoAtSide(coverSide);
 
                 if (coverInfo.getCoverID() == 0) {
-                    if (GTUtility.isStackInList(tCurrentItem, Covers.sCovers.keySet())) {
+                    if (Covers.isCover(tCurrentItem)) {
                         final CoverBehaviorBase<?> coverBehavior = Covers.getCoverBehaviorNew(tCurrentItem);
                         if (coverBehavior.isCoverPlaceable(coverSide, tCurrentItem, this)
                             && mMetaTileEntity.allowCoverOnSide(coverSide, new GTItemStack(tCurrentItem))) {

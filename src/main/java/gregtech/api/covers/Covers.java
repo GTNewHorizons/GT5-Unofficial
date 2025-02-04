@@ -21,7 +21,7 @@ public class Covers {
     /**
      * The Icon List for Covers
      */
-    public static final Map<GTItemStack, ITexture> sCovers = new ConcurrentHashMap<>();
+    private static final Map<GTItemStack, ITexture> sCovers = new ConcurrentHashMap<>();
     /**
      * The List of Cover Behaviors for the Covers
      */
@@ -84,5 +84,13 @@ public class Covers {
     public static CoverBehaviorBase<?> getCoverBehaviorNew(int aStack) {
         if (aStack == 0) return GregTechAPI.sNoBehavior;
         return getCoverBehaviorNew(GTUtility.intToStack(aStack));
+    }
+
+    public static boolean isCover(@NotNull ItemStack itemStack) {
+        return sCovers.containsKey(new GTItemStack(itemStack));
+    }
+
+    public static ITexture getCoverTexture(int coverId) {
+        return sCovers.get(new GTItemStack(coverId));
     }
 }
