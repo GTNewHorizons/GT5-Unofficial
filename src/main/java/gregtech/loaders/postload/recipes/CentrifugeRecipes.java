@@ -687,7 +687,7 @@ public class CentrifugeRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Charcoal, 3))
             .duration(6 * SECONDS)
-            .eut(8)
+            .eut(64)
             .addTo(centrifugeRecipes);
 
         if (Thaumcraft.isModLoaded() && Forestry.isModLoaded()) {
