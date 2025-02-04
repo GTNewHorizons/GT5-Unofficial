@@ -206,6 +206,7 @@ public class MTEItem extends MetaPipeEntity implements IMetaTileEntityItemPipe {
 
             if (!GTMod.gregtechproxy.gt6Pipe || mCheckConnections) checkConnections();
 
+            doTickProfilingInThisTick = true;
             if (oLastReceivedFrom == mLastReceivedFrom) {
                 doTickProfilingInThisTick = false;
 

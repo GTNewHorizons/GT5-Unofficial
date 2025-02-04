@@ -33,7 +33,7 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
@@ -68,7 +68,6 @@ public class MTEHatchParam extends MTEHatch implements IAddGregtechLogo, IAddUIW
                     + "Deprecated; Now you can set parameter by clicking LED on multiblock GUI.",
                 EnumChatFormatting.DARK_RED
                     + "If it doesn't work, try removing Parametrizer from multiblock structure." });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchParam(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -85,12 +84,12 @@ public class MTEHatchParam extends MTEHatch implements IAddGregtechLogo, IAddUIW
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GTRenderedTexture(ScreenON) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(ScreenON) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GTRenderedTexture(ScreenOFF) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(ScreenOFF) };
     }
 
     @Override

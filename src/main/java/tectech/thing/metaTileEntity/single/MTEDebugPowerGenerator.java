@@ -36,13 +36,12 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 import tectech.thing.metaTileEntity.pipe.MTEPipeEnergy;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by Tec on 23.03.2017.
@@ -50,7 +49,7 @@ import tectech.util.TTUtility;
 public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     implements IConnectsToEnergyTunnel, IAddUIWidgets, IAddGregtechLogo {
 
-    public static GTRenderedTexture GENNY;
+    public static ITexture GENNY;
     private boolean LASER = false;
     public int EUT = 0, AMP = 0;
     public boolean producing = true;
@@ -67,12 +66,10 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
                 EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.genny.desc.3"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.1"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.2") });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEDebugPowerGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-        TTUtility.setTier(aTier, this);
     }
 
     @Override
@@ -92,7 +89,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        GENNY = new GTRenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/GENNY"));
+        GENNY = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/GENNY"));
     }
 
     @Override

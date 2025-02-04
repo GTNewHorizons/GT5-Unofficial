@@ -21,7 +21,6 @@ public class CoverRedstoneReceiverInternal extends CoverRedstoneWirelessBase {
             if (getRedstoneInput(side, aInputRedstone, aCoverID, aCoverVariable, aTileEntity) > 0)
                 ((IMachineProgress) aTileEntity).enableWorking();
             else((IMachineProgress) aTileEntity).disableWorking();
-            ((IMachineProgress) aTileEntity).setWorkDataValue(aInputRedstone);
         }
         return aCoverVariable;
     }
