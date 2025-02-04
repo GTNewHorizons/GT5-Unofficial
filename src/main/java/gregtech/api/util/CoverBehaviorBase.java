@@ -509,8 +509,8 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
 
         public boolean isCoverValid() {
             ICoverable tile = getUIBuildContext().getTile();
-            return !(tile.isDead() || tile.getCoverInfoAtSide(getUIBuildContext().getCoverSide())
-                .hasNoBehavior());
+            return !tile.isDead() && tile.getCoverInfoAtSide(getUIBuildContext().getCoverSide())
+                .isValid();
         }
 
         protected void addTitleToUI(ModularWindow.Builder builder) {
