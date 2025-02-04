@@ -219,7 +219,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> rockBreakerFakeRecipes = RecipeMapBuilder
         .of("gt.recipe.rockbreaker")
-        .maxIO(2, 1, 0, 0)
+        .maxIO(3, 1, 0, 0)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (isOutput) {
                 return GTUITextures.OVERLAY_SLOT_CRUSHED_ORE;

@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -362,7 +363,10 @@ public class GTPostLoad {
             .addTo(rockBreakerFakeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.packed_ice, 0), GTUtility.getIntegratedCircuit(1))
+            .itemInputs(
+                new ItemStack(Blocks.packed_ice, 0),
+                new ItemStack(Blocks.soul_sand,0),
+                GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Basalt, 1L))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LV)
