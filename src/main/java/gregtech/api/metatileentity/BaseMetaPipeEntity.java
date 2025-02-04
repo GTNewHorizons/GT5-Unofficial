@@ -25,6 +25,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.Covers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -963,8 +964,8 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 final CoverInfo coverInfo = getCoverInfoAtSide(coverSide);
 
                 if (coverInfo.getCoverID() == 0) {
-                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCovers.keySet())) {
-                        final CoverBehaviorBase<?> coverBehavior = GregTechAPI.getCoverBehaviorNew(tCurrentItem);
+                    if (GTUtility.isStackInList(tCurrentItem, Covers.sCovers.keySet())) {
+                        final CoverBehaviorBase<?> coverBehavior = Covers.getCoverBehaviorNew(tCurrentItem);
                         if (coverBehavior.isCoverPlaceable(coverSide, tCurrentItem, this)
                             && mMetaTileEntity.allowCoverOnSide(coverSide, new GTItemStack(tCurrentItem))) {
 

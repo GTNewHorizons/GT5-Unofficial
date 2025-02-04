@@ -55,6 +55,7 @@ import appeng.tile.events.TileEventType;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.Covers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
@@ -1641,8 +1642,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     if (getCoverIDAtSide(side) == 0) coverSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
 
                     if (getCoverIDAtSide(coverSide) == 0) {
-                        if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCovers.keySet())) {
-                            final CoverBehaviorBase<?> coverBehavior = GregTechAPI.getCoverBehaviorNew(tCurrentItem);
+                        if (GTUtility.isStackInList(tCurrentItem, Covers.sCovers.keySet())) {
+                            final CoverBehaviorBase<?> coverBehavior = Covers.getCoverBehaviorNew(tCurrentItem);
                             if (coverBehavior.isCoverPlaceable(coverSide, tCurrentItem, this)
                                 && mMetaTileEntity.allowCoverOnSide(coverSide, new GTItemStack(tCurrentItem))) {
 

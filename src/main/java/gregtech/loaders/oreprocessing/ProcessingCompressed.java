@@ -2,7 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.Covers;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
@@ -19,7 +19,6 @@ public class ProcessingCompressed implements IOreRecipeRegistrator {
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
         GTModHandler.removeRecipeByOutputDelayed(aStack);
-        GregTechAPI
-            .registerCover(aStack, TextureFactory.of(aMaterial.mIconSet.mTextures[72], aMaterial.mRGBa, false), null);
+        Covers.registerCover(aStack, TextureFactory.of(aMaterial.mIconSet.mTextures[72], aMaterial.mRGBa, false), null);
     }
 }

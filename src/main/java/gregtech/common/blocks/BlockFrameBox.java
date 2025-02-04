@@ -25,6 +25,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.Covers;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -95,7 +96,7 @@ public class BlockFrameBox extends BlockContainer {
     }
 
     private boolean isCover(ItemStack item) {
-        return GTUtility.isStackInList(item, GregTechAPI.sCovers.keySet());
+        return GTUtility.isStackInList(item, Covers.sCovers.keySet());
     }
 
     private void createFrame(World worldIn, int x, int y, int z, BaseMetaPipeEntity baseMte) {

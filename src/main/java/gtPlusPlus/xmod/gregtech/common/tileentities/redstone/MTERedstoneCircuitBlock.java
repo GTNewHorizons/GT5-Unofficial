@@ -25,6 +25,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.Covers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -325,7 +326,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     public static final Map<Integer, ItemStack> sCoversItems = new HashMap<>();
 
     private static void initCovers() {
-        for (GTItemStack aKey : GregTechAPI.sCovers.keySet()) {
+        for (GTItemStack aKey : Covers.sCovers.keySet()) {
             ItemStack aStack = aKey.toStack()
                 .copy();
             if (aStack != null) {
