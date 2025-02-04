@@ -3,8 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.redstone;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -25,7 +23,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.covers.Covers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -35,7 +32,6 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.CircuitryBehavior;
 import gregtech.api.util.GTLog;
@@ -312,26 +308,6 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     @Override
     public boolean allowGeneralRedstoneOutput() {
         return true;
-    }
-
-    /** The Item List for Covers */
-    public static final Map<Integer, ItemStack> sCoversItems = new HashMap<>();
-
-    private static void initCovers() {
-        for (GTItemStack aKey : Covers.sCovers.keySet()) {
-            ItemStack aStack = aKey.toStack()
-                .copy();
-            if (aStack != null) {
-                sCoversItems.put(GTUtility.stackToInt(aStack), aStack);
-            }
-        }
-    }
-
-    public static ItemStack getCoverByID(int aStack) {
-        if (sCoversItems.isEmpty()) {
-            initCovers();
-        }
-        return sCoversItems.get(aStack);
     }
 
     @Override
