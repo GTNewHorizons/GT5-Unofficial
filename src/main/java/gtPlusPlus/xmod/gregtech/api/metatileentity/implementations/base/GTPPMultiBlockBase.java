@@ -515,7 +515,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     protected void validateStructure() {
         super.validateStructure();
 
-        if (mMaintenanceHatches.isEmpty()) {
+        if (shouldCheckMaintenance() && mMaintenanceHatches.isEmpty()) {
             mStructureErrors.add(StructureError.MISSING_MAINTENANCE);
         }
 
