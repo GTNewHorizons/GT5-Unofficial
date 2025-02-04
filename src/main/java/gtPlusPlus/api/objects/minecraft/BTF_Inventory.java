@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.CoverInfo;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import gtPlusPlus.core.util.data.ArrayUtils;
 
@@ -92,12 +91,9 @@ public class BTF_Inventory implements ISidedInventory {
     public int[] getAccessibleSlotsFromSide(int ordinalSide) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
         ArrayList<Integer> tList = new ArrayList<>();
-        CoverInfo coverInfo = this.mTile.getCoverInfoAtSide(side);
-        boolean tSkip = coverInfo.letsItemsIn(-2) || coverInfo.letsItemsIn(-2);
 
         for (int rArray = 0; rArray < this.getSizeInventory(); ++rArray) {
-            if (this.isValidSlot(rArray)
-                && (tSkip || coverInfo.letsItemsOut(rArray) || coverInfo.letsItemsIn(rArray))) {
+            if (this.isValidSlot(rArray)) {
                 tList.add(rArray);
             }
         }
