@@ -978,6 +978,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials RadoxPolymer;
 
     public static Materials NetherAir;
+    public static Materials NetherSemiFluid;
+    public static Materials NefariousGas;
+    public static Materials NefariousOil;
 
     // spotless:on
 
