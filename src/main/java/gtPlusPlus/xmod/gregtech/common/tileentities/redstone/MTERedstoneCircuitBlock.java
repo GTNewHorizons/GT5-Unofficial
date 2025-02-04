@@ -271,14 +271,6 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                     if (tBehaviour != null) {
                         try {
                             tBehaviour.onTick(mGateData, this);
-                            if (tBehaviour.displayItemStack(mGateData, this, 0))
-                                mInventory[1] = getCoverByID(mGateData[0]);
-                            if (tBehaviour.displayItemStack(mGateData, this, 1))
-                                mInventory[2] = getCoverByID(mGateData[1]);
-                            if (tBehaviour.displayItemStack(mGateData, this, 2))
-                                mInventory[3] = getCoverByID(mGateData[2]);
-                            if (tBehaviour.displayItemStack(mGateData, this, 3))
-                                mInventory[4] = getCoverByID(mGateData[3]);
                         } catch (Throwable e) {
                             GTLog.err.print(e);
                         }
