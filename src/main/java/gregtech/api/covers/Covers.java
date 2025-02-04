@@ -1,6 +1,5 @@
 package gregtech.api.covers;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -12,7 +11,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTUtility;
 
@@ -32,42 +30,11 @@ public class Covers {
         GregTechAPI.sItemStackMappings.add(sCoverBehaviors);
     }
 
-    public static void registerCover(ItemStack aStack, ITexture aCover, CoverBehavior aBehavior) {
-        registerCover(aStack, aCover, (CoverBehaviorBase<?>) aBehavior);
-    }
-
     public static void registerCover(ItemStack aStack, ITexture aCover, CoverBehaviorBase<?> aBehavior) {
         if (!sCovers.containsKey(new GTItemStack(aStack))) sCovers.put(
             new GTItemStack(aStack),
             aCover == null || !aCover.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0] : aCover);
         if (aBehavior != null) sCoverBehaviors.put(new GTItemStack(aStack), aBehavior);
-    }
-
-    public static void registerCoverBehavior(ItemStack aStack, CoverBehavior aBehavior) {
-        registerCoverBehavior(aStack, (CoverBehaviorBase<?>) aBehavior);
-    }
-
-    public static void registerCoverBehavior(ItemStack aStack, CoverBehaviorBase<?> aBehavior) {
-        sCoverBehaviors.put(new GTItemStack(aStack), aBehavior == null ? GregTechAPI.sDefaultBehavior : aBehavior);
-    }
-
-    /**
-     * Registers multiple Cover Items. I use that for the OreDict Functionality.
-     *
-     * @param aBehavior can be null
-     */
-    public static void registerCover(Collection<ItemStack> aStackList, ITexture aCover, CoverBehavior aBehavior) {
-        registerCover(aStackList, aCover, (CoverBehaviorBase<?>) aBehavior);
-    }
-
-    /**
-     * Registers multiple Cover Items. I use that for the OreDict Functionality.
-     *
-     * @param aBehavior can be null
-     */
-    public static void registerCover(Collection<ItemStack> aStackList, ITexture aCover,
-        CoverBehaviorBase<?> aBehavior) {
-        if (aCover.isValidTexture()) aStackList.forEach(tStack -> registerCover(tStack, aCover, aBehavior));
     }
 
     @NotNull
