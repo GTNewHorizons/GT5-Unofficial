@@ -105,6 +105,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -208,6 +209,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private static final int STAR_CUSTOM_COLOR_IMPORT_WINDOW_ID = 20;
     private static final int STATISTICS_WINDOW_ID = 21;
     private static final int TEXTURE_INDEX = 960;
+    private static final long SOUND_LOOP_LENGTH = 440;
     private static final long POWER_MILESTONE_CONSTANT = LongMath.pow(10, 15);
     private static final long RECIPE_MILESTONE_CONSTANT = LongMath.pow(10, 7);
     private static final long FUEL_MILESTONE_CONSTANT = 10_000;
@@ -467,7 +469,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         return true;
     }
 
-    int ticker = 0;
+    long ticker = 0;
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -476,7 +478,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             ticker++;
             // Check and drain fuel
             if (ticker % (5 * SECONDS) == 0) {
-                ticker = 0;
                 startRecipeProcessing();
 
                 int maxModuleCount = 8;
@@ -567,6 +568,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 }
                 if (mEfficiency < 0) mEfficiency = 0;
                 endRecipeProcessing();
+            }
+
+            if (ticker % SOUND_LOOP_LENGTH == 0 && isRenderActive) {
+                sendLoopStart((byte) 1);
             }
         }
     }
@@ -695,6 +700,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         updateRenderer();
 
         isRenderActive = true;
+        enableWorking();
     }
 
     private void destroyRenderer() {
@@ -717,6 +723,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         }
 
         isRenderActive = false;
+        disableWorking();
     }
 
     private ChunkCoordinates getRenderPos() {
@@ -3303,6 +3310,23 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     @Override
+    public void initDefaultModes(NBTTagCompound aNBT) {
+        getBaseMetaTileEntity().disableWorking();
+    }
+
+    @Override
+    public void enableWorking() {
+        super.enableWorking();
+        sendLoopStart((byte) 1);
+    }
+
+    @Override
+    public void disableWorking() {
+        super.disableWorking();
+        sendLoopEnd((byte) 1);
+    }
+
+    @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
@@ -3312,4 +3336,13 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_GOD_FORGE_LOOP;
     }
+
+    @Override
+    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
+        super.startSoundLoop(aIndex, aX, aY, aZ);
+        if (aIndex == 1) {
+            GTUtility.doSoundAtClient(SoundResource.GT_MACHINES_GOD_FORGE_LOOP, 22, 1.0F, aX, aY, aZ);
+        }
+    }
+
 }
