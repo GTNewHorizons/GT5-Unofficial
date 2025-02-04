@@ -162,6 +162,7 @@ import static gregtech.common.items.IDMetaItem03.EV_Coil;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystal;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystalSmallPart;
 import static gregtech.common.items.IDMetaItem03.HV_Coil;
+import static gregtech.common.items.IDMetaItem03.Heavy_Hellish_Mud;
 import static gregtech.common.items.IDMetaItem03.IV_Coil;
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_AUTOMATION;
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_Acceleration_1;
@@ -1194,6 +1195,8 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
             .set(addItem(Relativistic_Heat_Capacitor.ID, "Relativistic Heat Capacitor", "Thermal Resonance?", o));
         ItemList.Phononic_Seed_Crystal
             .set(addItem(Phononic_Seed_Crystal.ID, "Phononic Seed Crystal", "Perfect Thermal Conductance", o));
+
+        ItemList.Heavy_Hellish_Mud.set(addItem(Heavy_Hellish_Mud.ID, "Heavy Hellish Mud", "God wouldn't touch this"));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(

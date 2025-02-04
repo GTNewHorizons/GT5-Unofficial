@@ -1020,6 +1020,33 @@ public class MaterialsInit1 {
             .constructMaterial()
             .setHasCorrespondingFluid(true);
 
+        Materials.NetherSemiFluid = new MaterialBuilder( 119, TextureSet.SET_FLUID, "Nether Semi-Fluid")
+            .addFluid()
+            .addCell()
+            .setRGB(218, 193, 114)
+            .setName("nethersemifluid")
+            .setColor(Dyes._NULL)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+
+        Materials.NefariousGas = new MaterialBuilder( 120, TextureSet.SET_FLUID, "Nefarious Gas")
+            .addFluid()
+            .addCell()
+            .setRGB(48, 10, 5)
+            .setName("nefariousgas")
+            .setColor(Dyes._NULL)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+
+        Materials.NefariousOil = new MaterialBuilder( 122, TextureSet.SET_FLUID, "Nefarious Oil")
+            .addFluid()
+            .addCell()
+            .setRGB(57, 22, 22)
+            .setName("nefariousoil")
+            .setColor(Dyes._NULL)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+
         // spotless:on
     }
 }
