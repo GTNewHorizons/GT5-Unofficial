@@ -1,11 +1,14 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.transcendentPlasmaMixerRecipes;
+import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraftforge.fluids.FluidStack;
 
+import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsBotania;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTRecipeBuilder;
@@ -187,6 +190,36 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             // 1 Trillion EU/t
             .metadata(GTRecipeConstants.EU_MULTIPLIER, 1000)
             .eut(1_000_000_000L)
+            .noOptimize()
+            .addTo(transcendentPlasmaMixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(24))
+            .fluidInputs(
+                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(1000),
+                getFluidStack("fluiddeath", 1000),
+                Materials.UUMatter.getFluid(1000),
+                MaterialsUEVplus.SpaceTime.getMolten(1000),
+                GGMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1000),
+                getFluidStack("potion.diablosauce.strong", 1000),
+                Materials.EnhancedGalgadorian.getMolten(1000),
+                Materials.LifeEssence.getFluid(1000),
+                MaterialsUEVplus.PhononMedium.getFluid(1000),
+                MaterialsUEVplus.BlackDwarfMatter.getMolten(1000),
+                MaterialsUEVplus.Eternity.getMolten(1000),
+                MaterialsUEVplus.PrimordialMatter.getFluid(1000),
+                MaterialsUEVplus.ProtoHalkonite.getMolten(1000),
+                MaterialsBotania.Terrasteel.getMolten(1000),
+                MaterialsUEVplus.SixPhasedCopper.getPlasma(1000),
+                Materials.Cheese.getMolten(1000),
+                MaterialsUEVplus.WhiteDwarfMatter.getMolten(1000),
+                MaterialsBotania.GaiaSpirit.getMolten(1000),
+                getFluidStack("fluidpure", 1000),
+                MaterialsUEVplus.Antimatter.getFluid(1000))
+            .fluidOutputs(MaterialsUEVplus.PrimordialChaoticSauce.getFluid(1000L))
+            .duration(10 * GTRecipeBuilder.TICKS)
+            .metadata(GTRecipeConstants.EU_MULTIPLIER, 100)
+            .eut(1_000_000L)
             .noOptimize()
             .addTo(transcendentPlasmaMixerRecipes);
     }
