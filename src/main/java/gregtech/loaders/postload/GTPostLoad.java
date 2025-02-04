@@ -13,7 +13,6 @@ import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.multiblockRockBreakerRecipes;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -374,7 +373,7 @@ public class GTPostLoad {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(5), new ItemStack(Blocks.stone, 1))
-            .itemOutputs(new ItemStack(Blocks.netherrack,1))
+            .itemOutputs(new ItemStack(Blocks.netherrack, 1))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .ignoreCollision()
