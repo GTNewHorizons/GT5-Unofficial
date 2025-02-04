@@ -187,20 +187,17 @@ public class BTF_Inventory implements ISidedInventory {
     public boolean addItemStack(ItemStack aInput) {
         if (aInput != null & (isEmpty() || !isFull())) {
             for (int s = 0; s < this.getSizeInventory(); s++) {
-                if (mInventory != null && mInventory[s] != null) {
-                    ItemStack slot = mInventory[s];
-                    if (slot == null || (slot != null && GTUtility.areStacksEqual(aInput, slot)
-                        && slot.stackSize != slot.getItem()
-                            .getItemStackLimit(slot))) {
-                        if (slot == null) {
-                            slot = aInput.copy();
-                        } else {
-                            slot.stackSize++;
+                ItemStack slot = mInventory[s];
+                if (slot == null) {
+                    this.setInventorySlotContents(s, aInput);
+                    return true;
+                } else if (slot.getItem() != null && GTUtility.areStacksEqual(aInput, slot)
+                    && slot.stackSize != slot.getItem()
+                        .getItemStackLimit(slot)) {
+                            slot.stackSize += aInput.stackSize;
+                            this.setInventorySlotContents(s, slot);
+                            return true;
                         }
-                        this.setInventorySlotContents(s, slot);
-                        return true;
-                    }
-                }
             }
         }
         return false;
