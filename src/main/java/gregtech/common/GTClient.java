@@ -79,7 +79,6 @@ import gregtech.api.net.GTPacketClientPreference;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.ColorsMetadataSectionSerializer;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -664,8 +663,7 @@ public class GTClient extends GTProxy implements Runnable {
                 public void onResourceManagerReload(IResourceManager l) {
                     GUIColorOverride.onResourceManagerReload();
                     FallbackableSteamTexture.reload();
-                    Covers.sCoverBehaviors.values()
-                        .forEach(CoverBehaviorBase::reloadColorOverride);
+                    Covers.reloadCoverColorOverrides();
                 }
             });
         Pollution.onPostInitClient();

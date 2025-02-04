@@ -25,7 +25,7 @@ public class Covers {
     /**
      * The List of Cover Behaviors for the Covers
      */
-    public static final Map<GTItemStack, CoverBehaviorBase<?>> sCoverBehaviors = new ConcurrentHashMap<>();
+    private static final Map<GTItemStack, CoverBehaviorBase<?>> sCoverBehaviors = new ConcurrentHashMap<>();
 
     static {
         GregTechAPI.sItemStackMappings.add(sCovers);
@@ -92,5 +92,10 @@ public class Covers {
 
     public static ITexture getCoverTexture(int coverId) {
         return sCovers.get(new GTItemStack(coverId));
+    }
+
+    public static void reloadCoverColorOverrides() {
+        sCoverBehaviors.values()
+            .forEach(CoverBehaviorBase::reloadColorOverride);
     }
 }
