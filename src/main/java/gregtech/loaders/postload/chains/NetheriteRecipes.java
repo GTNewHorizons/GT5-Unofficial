@@ -1,5 +1,7 @@
 package gregtech.loaders.postload.chains;
 
+import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
@@ -9,7 +11,9 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 
@@ -58,5 +62,23 @@ public class NetheriteRecipes {
             .noOptimize()
             .addTo(mixerRecipes);
 
+        GTValues.RA.stdBuilder()
+            //.itemInputs(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "netherite_scrap", 0)
+            .fluidInputs(Materials.RichNetherWaste.getFluid(2000))
+            .itemOutputs(ItemList.Netherite_Crystal_Seed.get(1))
+            .outputChances(1000)
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .noOptimize()
+            .addTo(autoclaveRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Netherite_Crystal_Seed.get(1))
+            .fluidInputs(Materials.PoorNetherWaste.getFluid(16000))
+            .itemOutputs(ItemList.Brittle_Netherite_Crystal.get(1), ItemList.Netherite_Crystal_Seed.get(1))
+            .outputChances(5000, 5000)
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(chemicalBathRecipes);
     }
 }
