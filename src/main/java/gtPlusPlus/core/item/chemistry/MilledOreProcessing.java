@@ -11,6 +11,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.*;
 
 import java.util.ArrayList;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -55,6 +56,8 @@ public class MilledOreProcessing extends ItemPackage {
     public static Fluid PyropeFlotationFroth;
     public static Fluid MonaziteFlotationFroth;
 
+    public static Fluid NetherrackFlotationFroth;
+
     public static Fluid PineOil;
 
     /**
@@ -94,6 +97,9 @@ public class MilledOreProcessing extends ItemPackage {
     // Erbium, Lanthanum, Praseodymium, Europium
     public static Item milledMonazite;
 
+    // Sulfur, Antimony, Quartz, Ardite, Cobalt, Netherite
+    public static Item milledNetherite;
+
     @Override
     public void items() {
 
@@ -109,6 +115,9 @@ public class MilledOreProcessing extends ItemPackage {
         milledAlmandine = BaseItemMilledOre.generate(Materials.Almandine, (int) TierEU.RECIPE_LuV);
         milledPyrope = BaseItemMilledOre.generate(Materials.Pyrope, (int) TierEU.RECIPE_EV);
         milledMonazite = BaseItemMilledOre.generate(Materials.Monazite, (int) TierEU.RECIPE_ZPM);
+
+        milledNetherite = BaseItemMilledOre
+            .generate(Materials.Netherrack, (int) TierEU.RECIPE_IV, new ItemStack(Blocks.netherrack, 1024));
     }
 
     @Override
@@ -196,6 +205,14 @@ public class MilledOreProcessing extends ItemPackage {
             "Monazite Froth",
             32 + 175,
             new short[] { aMonaziteFrothRGB[0], aMonaziteFrothRGB[1], aMonaziteFrothRGB[2], 100 },
+            true);
+
+        short[] aNetherrackFrothRGB = Materials.Netherrack.mRGBa;
+        NetherrackFlotationFroth = FluidUtils.generateFluidNoPrefix(
+            "froth.Netherrackflotation",
+            "Netherrack Froth",
+            32 + 175,
+            new short[] { aNetherrackFrothRGB[0], aNetherrackFrothRGB[1], aNetherrackFrothRGB[2], 100 },
             true);
 
         PineOil = FluidUtils
@@ -396,6 +413,25 @@ public class MilledOreProcessing extends ItemPackage {
             .duration(1 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
 
+        // Netherrack
+        GTValues.RA.stdBuilder()
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Antimony, 55),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 40),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 40),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ardite, 32),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 32))
+            .fluidInputs(FluidUtils.getFluidStack(NetherrackFlotationFroth, 3000))
+            .fluidOutputs(Materials.PoorNetherWaste.getFluid(16000))
+            .eut((int) TierEU.RECIPE_LuV)
+            .metadata(COIL_HEAT, 7200)
+            .duration(1 * MINUTES)
+            .addTo(vacuumFurnaceRecipes);
+
     }
 
     private void addFlotationRecipes() {
@@ -574,6 +610,17 @@ public class MilledOreProcessing extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack(MonaziteFlotationFroth, 1000))
             .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
+            .addTo(flotationCellRecipes);
+
+        // Netherrack
+        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Netherrack);
+        FlotationRecipeHandler.registerOreType(aMat);
+        GTValues.RA.stdBuilder()
+            .itemInputs(aMat.getMilled(64), aMat.getMilled(64), aMat.getMilled(64), aMat.getMilled(64))
+            .fluidInputs(Materials.NefariousOil.getFluid(8000))
+            .fluidOutputs(FluidUtils.getFluidStack(NetherrackFlotationFroth, 1000))
+            .duration(8 * MINUTES)
+            .eut(TierEU.RECIPE_IV)
             .addTo(flotationCellRecipes);
     }
 

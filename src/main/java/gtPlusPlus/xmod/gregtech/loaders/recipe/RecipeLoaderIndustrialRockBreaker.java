@@ -49,5 +49,12 @@ public class RecipeLoaderIndustrialRockBreaker {
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockRockBreakerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(5), new ItemStack(Blocks.stone, 1))
+            .itemOutputs(new ItemStack(Blocks.netherrack,1))
+            .duration(16 * TICKS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(multiblockRockBreakerRecipes);
     }
 }

@@ -13,6 +13,7 @@ import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.multiblockRockBreakerRecipes;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -364,6 +365,16 @@ public class GTPostLoad {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.packed_ice, 0), GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Basalt, 1L))
+            .duration(16 * TICKS)
+            .eut(TierEU.RECIPE_LV)
+            .ignoreCollision()
+            .noOptimize()
+            .fake()
+            .addTo(rockBreakerFakeRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(5), new ItemStack(Blocks.stone, 1))
+            .itemOutputs(new ItemStack(Blocks.netherrack,1))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .ignoreCollision()
