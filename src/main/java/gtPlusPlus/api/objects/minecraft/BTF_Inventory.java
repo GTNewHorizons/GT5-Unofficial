@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.CoverInfo;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import gtPlusPlus.core.util.data.ArrayUtils;
 
@@ -92,12 +91,9 @@ public class BTF_Inventory implements ISidedInventory {
     public int[] getAccessibleSlotsFromSide(int ordinalSide) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
         ArrayList<Integer> tList = new ArrayList<>();
-        CoverInfo coverInfo = this.mTile.getCoverInfoAtSide(side);
-        boolean tSkip = coverInfo.letsItemsIn(-2) || coverInfo.letsItemsIn(-2);
 
         for (int rArray = 0; rArray < this.getSizeInventory(); ++rArray) {
-            if (this.isValidSlot(rArray)
-                && (tSkip || coverInfo.letsItemsOut(rArray) || coverInfo.letsItemsIn(rArray))) {
+            if (this.isValidSlot(rArray)) {
                 tList.add(rArray);
             }
         }
@@ -191,20 +187,17 @@ public class BTF_Inventory implements ISidedInventory {
     public boolean addItemStack(ItemStack aInput) {
         if (aInput != null & (isEmpty() || !isFull())) {
             for (int s = 0; s < this.getSizeInventory(); s++) {
-                if (mInventory != null && mInventory[s] != null) {
-                    ItemStack slot = mInventory[s];
-                    if (slot == null || (slot != null && GTUtility.areStacksEqual(aInput, slot)
-                        && slot.stackSize != slot.getItem()
-                            .getItemStackLimit(slot))) {
-                        if (slot == null) {
-                            slot = aInput.copy();
-                        } else {
-                            slot.stackSize++;
+                ItemStack slot = mInventory[s];
+                if (slot == null) {
+                    this.setInventorySlotContents(s, aInput);
+                    return true;
+                } else if (slot.getItem() != null && GTUtility.areStacksEqual(aInput, slot)
+                    && slot.stackSize != slot.getItem()
+                        .getItemStackLimit(slot)) {
+                            slot.stackSize += aInput.stackSize;
+                            this.setInventorySlotContents(s, slot);
+                            return true;
                         }
-                        this.setInventorySlotContents(s, slot);
-                        return true;
-                    }
-                }
             }
         }
         return false;
