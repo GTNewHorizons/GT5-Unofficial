@@ -193,6 +193,8 @@ public enum IDMetaItem03 {
     Quark_Creation_Catalyst_Top(240),
     Quark_Creation_Catalyst_Unaligned(241),
     Heavy_Hellish_Mud(242),
+    Netherite_Crystal_Seed(243),
+    Brittle_Netherite_Crystal(244),
     Circuit_Silicon_Ingot6(721),
     Circuit_Silicon_Wafer6(722),
     Circuit_Silicon_Wafer7(723),
