@@ -1008,38 +1008,17 @@ public class MaterialsInit1 {
         Materials.RadoxGas = new MaterialBuilder(-1, TextureSet.SET_DULL, "Radox Gas").setRGB(255, 130, 255)
             .addGas().constructMaterial();
 
-        Materials.RadoxPolymer = new Materials(
-            979, // Material ID was choosen randomly
-            TextureSet.SET_DULL,
-            8.0F,
-            346,
-            3,
-            1 | 2 | 16,
-            133,
-            0,
-            128,
-            0,
-            "RadoxPoly",
-            "Radox Polymer",
-            0,
-            0,
-            6203,
-            0,
-            false,
-            false,
-            1,
-            1,
-            1,
-            Dyes.dyePurple,
-            0,
-            Arrays.asList(
-                new MaterialStack(Materials.Carbon, 14),
-                new MaterialStack(Materials.Osmium, 11),
-                new MaterialStack(Materials.Oxygen, 7),
-                new MaterialStack(Materials.Silver, 3),
-                new MaterialStack(Materials.CallistoIce, 1)),
-            Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.HUMANUS, 2))).setHasCorrespondingGas(true)
-            .setGasTemperature(12406);
+        // Material ID was choosen randomly//
+        Materials.RadoxPolymer = new Materials(979, TextureSet.SET_DULL, 8.0F, 346, 3, 1 | 2 | 16, 133, 0, 128, 0, "RadoxPoly", "Radox Polymer", 0, 0, 6203, 0, false, false, 1, 1, 1, Dyes.dyePurple, 0,Arrays.asList(new MaterialStack(Materials.Carbon, 14), new MaterialStack(Materials.Osmium, 11), new MaterialStack(Materials.Oxygen, 7), new MaterialStack(Materials.Silver, 3), new MaterialStack(Materials.CallistoIce, 1)), Arrays.asList(new TCAspects.TC_AspectStack(TCAspects.HUMANUS, 2))).setHasCorrespondingGas(true).setGasTemperature(12406);
+
+        Materials.NetherAir = new MaterialBuilder( 118, TextureSet.SET_FLUID, "Nether Air")
+            .addFluid()
+            .addCell()
+            .setRGB(238, 163, 154)
+            .setName("netherair")
+            .setColor(Dyes._NULL)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
 
         // spotless:on
     }
