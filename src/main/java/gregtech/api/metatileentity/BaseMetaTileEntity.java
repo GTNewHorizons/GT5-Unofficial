@@ -1646,8 +1646,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                             if (coverBehavior.isCoverPlaceable(coverSide, tCurrentItem, this)
                                 && mMetaTileEntity.allowCoverOnSide(coverSide, new GTItemStack(tCurrentItem))) {
 
-                                setCoverItemAtSide(coverSide, tCurrentItem);
-                                coverBehavior.onPlayerAttach(aPlayer, tCurrentItem, this, coverSide);
+                                attachCover(aPlayer, tCurrentItem, coverSide);
 
                                 if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
                                 GTUtility.sendSoundToPlayers(

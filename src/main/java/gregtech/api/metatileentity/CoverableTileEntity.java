@@ -299,9 +299,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     @Override
-    public void setCoverItemAtSide(ForgeDirection side, ItemStack aCover) {
-        GregTechAPI.getCoverBehaviorNew(aCover)
-            .placeCover(side, aCover, this);
+    public void attachCover(EntityPlayer aPlayer, ItemStack aCover, ForgeDirection side) {
+        CoverBehaviorBase<?> coverBehavior = GregTechAPI.getCoverBehaviorNew(aCover);
+        coverBehavior.placeCover(side, aCover, this);
+        coverBehavior.onPlayerAttach(aPlayer, aCover, this, side);
     }
 
     @Override
