@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,7 +20,10 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -36,6 +40,7 @@ import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -349,6 +354,29 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         mSteamInputFluids.clear();
         mSteamInputs.clear();
         mSteamOutputs.clear();
+    }
+
+    @Override
+    protected void validateStructure() {
+        // don't call super method
+
+        if (mSteamInputFluids.isEmpty()) {
+            mStructureErrors.add(StructureError.MISSING_STEAM_HATCH);
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected void getStructureErrors(ArrayList<String> lines) {
+        super.getStructureErrors(lines);
+
+        if (mStructureErrors.contains(StructureError.MISSING_STEAM_HATCH)) {
+            lines.add(
+                I18n.format(
+                    "GT5U.gui.missing_hatch",
+                    GregtechItemList.Hatch_Input_Steam.get(1)
+                        .getDisplayName()));
+        }
     }
 
     @Override
