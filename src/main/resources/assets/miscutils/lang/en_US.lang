@@ -3920,6 +3920,7 @@ item.itemGearPraseodymium.name=Praseodymium Gear
 item.itemCellPraseodymium.name=Praseodymium Cell
 item.milledMonazite.name=Milled Monazite
 item.FrothMonaziteflotation.name=Monazite Flotation Froth Cell
+item.milledNetherrack.name=Milled Netherrack
 
 # Added 18/12/21
 item.BasicGenericChemItem.13.name=Formaldehyde Catalyst
