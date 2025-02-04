@@ -192,6 +192,7 @@ public enum IDMetaItem03 {
     Quark_Creation_Catalyst_Bottom(239),
     Quark_Creation_Catalyst_Top(240),
     Quark_Creation_Catalyst_Unaligned(241),
+    Heavy_Hellish_Mud(242),
     Circuit_Silicon_Ingot6(721),
     Circuit_Silicon_Wafer6(722),
     Circuit_Silicon_Wafer7(723),
@@ -232,7 +233,9 @@ public enum IDMetaItem03 {
     Transdimensional_Alignment_Matrix(758),
     Thermal_Superconductor(759),
     Relativistic_Heat_Capacitor(760),
-    Phononic_Seed_Crystal(761);
+    Phononic_Seed_Crystal(761),
+
+    ;
 
     public final int ID;
 

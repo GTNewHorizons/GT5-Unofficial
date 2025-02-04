@@ -68,6 +68,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
+import gregtech.loaders.postload.chains.NetheriteRecipes;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
@@ -128,6 +129,7 @@ public class RecipesGregTech {
          */
         RecipesSeleniumProcessing.init();
         RecipesRareEarthProcessing.init();
+        NetheriteRecipes.run();
 
         addFuels();
     }
