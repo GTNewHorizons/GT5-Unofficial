@@ -376,7 +376,7 @@ public class GTPostLoad {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "blue_ice", 0, 0),
+                GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "magma", 0, 0),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "cobbled_deepslate", 1, 0))
             .duration(16 * TICKS)
