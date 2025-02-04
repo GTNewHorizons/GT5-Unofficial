@@ -1976,8 +1976,7 @@ public enum MetaTileEntityIDs {
     NeutronAcceleratorUMV(32764),
     Controller_SteamExtruder(31765),
     Controller_SteamRockBreaker(31766),
-
-    ;
+    Controller_SteamExtractinator(31767);
 
     public final int ID;
 

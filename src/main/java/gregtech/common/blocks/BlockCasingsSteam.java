@@ -13,6 +13,8 @@ public class BlockCasingsSteam extends BlockCasingsAbstract {
         super(ItemCasings12.class, "gt.blockcasingssteam", MaterialCasings.INSTANCE, 16);
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Steamgate Ring Block");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Steamgate Chevron Block");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Vibration-Safe Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Extractinator Solid Base");
     }
 
     @Override
@@ -26,6 +28,10 @@ public class BlockCasingsSteam extends BlockCasingsAbstract {
         return switch (aMeta) {
             case 1 -> ordinalSide > 1 ? Textures.BlockIcons.STEAMGATE_CHEVRON_BLOCK.getIcon()
                 : Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();
+            case 2 -> Textures.BlockIcons.EXTRACTINATOR_CASING.getIcon();
+            case 3 -> ordinalSide > 1 ? Textures.BlockIcons.EXTRACTINATOR_BASE.getIcon()
+                : ordinalSide == 1 ? Textures.BlockIcons.EXTRACTINATOR_BASE_TOP.getIcon()
+                    : Textures.BlockIcons.EXTRACTINATOR_BASE_BASE.getIcon();
             default -> Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();
         };
     }

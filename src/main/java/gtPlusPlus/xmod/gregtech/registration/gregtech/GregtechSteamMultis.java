@@ -5,6 +5,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamAlloySmelterM
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamBlastFurnace;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamCentrifugeMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamCompressorMulti;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamExtractinator;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamExtruder;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamForgeHammer;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamGateAssembler;
@@ -26,6 +27,7 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.st
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamBlastFurnace;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCentrifuge;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCompressor;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamExtractinator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamExtruder;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamForgeHammer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamGateAssembler;
@@ -102,6 +104,12 @@ public class GregtechSteamMultis {
                 "gtpp.multimachine.steam.rockbreaker",
                 "Steam Cobbler").getStackForm(1));
         addItemTooltip(GregtechItemList.Controller_SteamRockBreaker.get(1), GTValues.AuthorNoc);
+        GregtechItemList.Controller_SteamExtractinator.set(
+            new MTESteamExtractinator(
+                Controller_SteamExtractinator.ID,
+                "gtpp.multimachine.steam.extractinator",
+                "Steam Extractinator").getStackForm(1));
+        addItemTooltip(GregtechItemList.Controller_SteamExtractinator.get(1), GTValues.AuthorNoc);
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(
             new MTEHatchSteamBusInput(Hatch_Input_Bus_Steam.ID, "hatch.input_bus.tier.steam", "Input Bus (Steam)", 0)
