@@ -178,10 +178,10 @@ public class MTENameRemover extends MTEBasicMachine {
             removeTag(nbt, "radiusConfig"); // MTEMiner & MTEPump
             removeTag(nbt, "mDisallowRetract"); // MTEPump
             removeTag(nbt, "mStrongRedstone"); // BaseMetaTileEntity
+            removeTag(nbt, "mCoverSides"); // CoverableTileEntity, no longer read or written
             if (removeCovers) { // BaseMetaTileEntity
                 removeTag(nbt, "mMuffler");
                 removeTag(nbt, "mLockUpgrade");
-                removeTag(nbt, "mCoverSides");
                 removeTag(nbt, "gt.covers");
                 for (String key : CoverableTileEntity.COVER_DATA_NBT_KEYS) {
                     removeTag(nbt, key);
