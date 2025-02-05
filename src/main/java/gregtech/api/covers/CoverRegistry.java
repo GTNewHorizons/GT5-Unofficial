@@ -10,7 +10,10 @@ import org.jetbrains.annotations.NotNull;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.objects.GTCoverDefault;
+import gregtech.api.objects.GTCoverNone;
 import gregtech.api.objects.GTItemStack;
+import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTUtility;
 
@@ -19,50 +22,58 @@ public class CoverRegistry {
     /**
      * The Icon List for Covers
      */
-    private static final Map<GTItemStack, ITexture> sCovers = new ConcurrentHashMap<>();
+    private static final Map<GTItemStack, ITexture> coverTextures = new ConcurrentHashMap<>();
     /**
      * The List of Cover Behaviors for the Covers
      */
-    private static final Map<GTItemStack, CoverBehaviorBase<?>> sCoverBehaviors = new ConcurrentHashMap<>();
+    private static final Map<GTItemStack, CoverBehaviorBase<?>> coverBehaviors = new ConcurrentHashMap<>();
+    /**
+     * This is the generic Cover behavior. Used for the default Covers, which have no Behavior.
+     */
+    private static final CoverBehavior defaultBehavior = new GTCoverDefault(), noBehavior = new GTCoverNone();
 
     static {
-        GregTechAPI.sItemStackMappings.add(sCovers);
-        GregTechAPI.sItemStackMappings.add(sCoverBehaviors);
+        GregTechAPI.sItemStackMappings.add(coverTextures);
+        GregTechAPI.sItemStackMappings.add(coverBehaviors);
     }
 
-    public static void registerCover(ItemStack aStack, ITexture aCover, CoverBehaviorBase<?> aBehavior) {
-        if (!sCovers.containsKey(new GTItemStack(aStack))) sCovers.put(
-            new GTItemStack(aStack),
-            aCover == null || !aCover.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0] : aCover);
-        if (aBehavior != null) sCoverBehaviors.put(new GTItemStack(aStack), aBehavior);
+    public static @NotNull CoverBehavior getEmptyCover() {
+        return noBehavior;
     }
 
-    @NotNull
-    public static CoverBehaviorBase<?> getCoverBehaviorNew(ItemStack aStack) {
-        if (aStack == null || aStack.getItem() == null) return GregTechAPI.sNoBehavior;
-        CoverBehaviorBase<?> rCover = sCoverBehaviors.get(new GTItemStack(aStack));
-        if (rCover != null) return rCover;
-        rCover = sCoverBehaviors.get(new GTItemStack(aStack, true));
-        if (rCover != null) return rCover;
-        return GregTechAPI.sDefaultBehavior;
+    public static void registerCover(ItemStack stack, ITexture cover, CoverBehaviorBase<?> behavior) {
+        if (!coverTextures.containsKey(new GTItemStack(stack))) coverTextures.put(
+            new GTItemStack(stack),
+            cover == null || !cover.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0] : cover);
+        if (behavior != null) coverBehaviors.put(new GTItemStack(stack), behavior);
     }
 
     @NotNull
-    public static CoverBehaviorBase<?> getCoverBehaviorNew(int aStack) {
-        if (aStack == 0) return GregTechAPI.sNoBehavior;
-        return getCoverBehaviorNew(GTUtility.intToStack(aStack));
+    public static CoverBehaviorBase<?> getCoverBehaviorNew(ItemStack stack) {
+        if (stack == null || stack.getItem() == null) return noBehavior;
+        CoverBehaviorBase<?> behavior = coverBehaviors.get(new GTItemStack(stack));
+        if (behavior != null) return behavior;
+        behavior = coverBehaviors.get(new GTItemStack(stack, true));
+        if (behavior != null) return behavior;
+        return defaultBehavior;
     }
 
-    public static boolean isCover(@NotNull ItemStack itemStack) {
-        return sCovers.containsKey(new GTItemStack(itemStack));
+    @NotNull
+    public static CoverBehaviorBase<?> getCoverBehaviorNew(int coverId) {
+        if (coverId == 0) return noBehavior;
+        return getCoverBehaviorNew(GTUtility.intToStack(coverId));
+    }
+
+    public static boolean isCover(@NotNull ItemStack stack) {
+        return coverTextures.containsKey(new GTItemStack(stack));
     }
 
     public static ITexture getCoverTexture(int coverId) {
-        return sCovers.get(new GTItemStack(coverId));
+        return coverTextures.get(new GTItemStack(coverId));
     }
 
     public static void reloadCoverColorOverrides() {
-        sCoverBehaviors.values()
+        coverBehaviors.values()
             .forEach(CoverBehaviorBase::reloadColorOverride);
     }
 }

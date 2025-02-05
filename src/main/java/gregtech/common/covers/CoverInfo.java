@@ -17,7 +17,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
@@ -47,7 +46,7 @@ public final class CoverInfo {
     public CoverInfo(ForgeDirection side, ICoverable aTile) {
         coverSide = side;
         coveredTile = new WeakReference<>(aTile);
-        coverBehavior = GregTechAPI.sNoBehavior;
+        coverBehavior = CoverRegistry.getEmptyCover();
         coverID = 0;
     }
 
@@ -106,7 +105,8 @@ public final class CoverInfo {
 
     public ISerializableObject getCoverData() {
         if (coverData != null) return coverData;
-        return GregTechAPI.sNoBehavior.createDataObject();
+        return CoverRegistry.getEmptyCover()
+            .createDataObject();
     }
 
     public boolean onCoverRemoval(boolean aForced) {

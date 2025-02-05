@@ -41,14 +41,11 @@ import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.objects.GTCoverDefault;
-import gregtech.api.objects.GTCoverNone;
 import gregtech.api.objects.GTHashSet;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.threads.RunnableCableUpdate;
 import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.CircuitryBehavior;
-import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GTCreativeTab;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -164,10 +161,6 @@ public class GregTechAPI {
      * A List containing all the Materials, which are somehow in use by GT and therefor receive a specific Set of Items.
      */
     public static final Materials[] sGeneratedMaterials = new Materials[1000];
-    /**
-     * This is the generic Cover behavior. Used for the default Covers, which have no Behavior.
-     */
-    public static final CoverBehavior sDefaultBehavior = new GTCoverDefault(), sNoBehavior = new GTCoverNone();
     /**
      * For the API Version check
      */
