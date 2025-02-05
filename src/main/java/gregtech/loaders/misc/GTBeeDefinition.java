@@ -1377,7 +1377,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         }, dis -> {
             IMutationCustom tMutation = dis.registerMutation(LUTETIUM, CHROME, 5, 4)
                 .setIsSecret();
-        tMutation.requireResource(GregTechAPI.sBlockMetal1, 2);
+            tMutation.requireResource(GregTechAPI.sBlockMetal1, 2);
         }),
     NEUTRONIUM(GTBranchDefinition.RADIOACTIVE, "Neutronium", false, new Color(0xFFF0F0), new Color(0xFAFAFA),
         beeSpecies -> {

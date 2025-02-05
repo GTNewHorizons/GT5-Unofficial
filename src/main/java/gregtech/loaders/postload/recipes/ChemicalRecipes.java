@@ -15,9 +15,6 @@ import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.core.material.MaterialMisc.SODIUM_NITRATE;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
-import gregtech.common.items.CombType;
-import gregtech.loaders.misc.GTBees;
-import gtPlusPlus.core.material.MaterialsElements;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -36,7 +33,10 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.items.CombType;
+import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.material.MaterialsElements;
 
 public class ChemicalRecipes implements Runnable {
 
@@ -3814,8 +3814,7 @@ public class ChemicalRecipes implements Runnable {
             // Americium comb processing
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTBees.combs.getStackForType(CombType.AMERICIUM, 4))
+                .itemInputs(GTBees.combs.getStackForType(CombType.AMERICIUM, 4))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Americium, 1))
                 .fluidInputs(Materials.Helium.getPlasma(8175))
                 .duration(30 * SECONDS)
@@ -3823,8 +3822,7 @@ public class ChemicalRecipes implements Runnable {
                 .addTo(UniversalChemical);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTBees.combs.getStackForType(CombType.AMERICIUM, 4))
+                .itemInputs(GTBees.combs.getStackForType(CombType.AMERICIUM, 4))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Americium, 2))
                 .fluidInputs(Materials.Nitrogen.getPlasma(1211))
                 .duration(15 * SECONDS)
@@ -3832,8 +3830,7 @@ public class ChemicalRecipes implements Runnable {
                 .addTo(UniversalChemical);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTBees.combs.getStackForType(CombType.AMERICIUM, 4))
+                .itemInputs(GTBees.combs.getStackForType(CombType.AMERICIUM, 4))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Americium, 4))
                 .fluidInputs(Materials.Silver.getPlasma(310))
                 .duration(7 * SECONDS + 10 * TICKS)
@@ -3841,8 +3838,7 @@ public class ChemicalRecipes implements Runnable {
                 .addTo(UniversalChemical);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTBees.combs.getStackForType(CombType.AMERICIUM, 4))
+                .itemInputs(GTBees.combs.getStackForType(CombType.AMERICIUM, 4))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Americium, 8))
                 .fluidInputs(new FluidStack(MaterialsElements.getInstance().TECHNETIUM.getPlasma(), 29))
                 .duration(3 * SECONDS + 15 * TICKS)
@@ -3850,8 +3846,7 @@ public class ChemicalRecipes implements Runnable {
                 .addTo(UniversalChemical);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTBees.combs.getStackForType(CombType.AMERICIUM, 4))
+                .itemInputs(GTBees.combs.getStackForType(CombType.AMERICIUM, 4))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Americium, 16))
                 .fluidInputs(Materials.Thorium.getPlasma(68))
                 .duration(1 * SECONDS + 17 * TICKS)
@@ -3861,8 +3856,7 @@ public class ChemicalRecipes implements Runnable {
             // Europium comb processing
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTBees.combs.getStackForType(CombType.EUROPIUM, 4))
+                .itemInputs(GTBees.combs.getStackForType(CombType.EUROPIUM, 4))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Europium, 1))
                 .fluidInputs(Materials.Helium.getPlasma(606))
                 .duration(15 * SECONDS)
@@ -3870,8 +3864,7 @@ public class ChemicalRecipes implements Runnable {
                 .addTo(UniversalChemical);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTBees.combs.getStackForType(CombType.EUROPIUM, 4))
+                .itemInputs(GTBees.combs.getStackForType(CombType.EUROPIUM, 4))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Europium, 2))
                 .fluidInputs(Materials.Nitrogen.getPlasma(180))
                 .duration(7 * SECONDS + 10 * TICKS)
@@ -3879,8 +3872,7 @@ public class ChemicalRecipes implements Runnable {
                 .addTo(UniversalChemical);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTBees.combs.getStackForType(CombType.EUROPIUM, 4))
+                .itemInputs(GTBees.combs.getStackForType(CombType.EUROPIUM, 4))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Europium, 4))
                 .fluidInputs(Materials.Silver.getPlasma(54))
                 .duration(3 * SECONDS + 15 * TICKS)
@@ -3888,8 +3880,7 @@ public class ChemicalRecipes implements Runnable {
                 .addTo(UniversalChemical);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTBees.combs.getStackForType(CombType.EUROPIUM, 4))
+                .itemInputs(GTBees.combs.getStackForType(CombType.EUROPIUM, 4))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Europium, 8))
                 .fluidInputs(new FluidStack(MaterialsElements.getInstance().TECHNETIUM.getPlasma(), 6))
                 .duration(1 * SECONDS + 17 * TICKS)
@@ -3897,8 +3888,7 @@ public class ChemicalRecipes implements Runnable {
                 .addTo(UniversalChemical);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTBees.combs.getStackForType(CombType.EUROPIUM, 4))
+                .itemInputs(GTBees.combs.getStackForType(CombType.EUROPIUM, 4))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Europium, 16))
                 .fluidInputs(Materials.Thorium.getPlasma(18))
                 .duration(18 * TICKS)
