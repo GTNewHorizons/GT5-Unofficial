@@ -25,6 +25,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -39,7 +40,6 @@ import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.implementations.MTEFrame;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTUtility;
 import gregtech.common.render.GTRendererBlock;
 
 public class BlockFrameBox extends BlockContainer {
@@ -94,10 +94,6 @@ public class BlockFrameBox extends BlockContainer {
         return aMaterial.getDefaultLocalizedNameForItem(getLocalizedNameFormat(aMaterial));
     }
 
-    private boolean isCover(ItemStack item) {
-        return GTUtility.isStackInList(item, GregTechAPI.sCovers.keySet());
-    }
-
     private void createFrame(World worldIn, int x, int y, int z, BaseMetaPipeEntity baseMte) {
         // Obtain metadata to grab proper material identifier
         int meta = worldIn.getBlockMetadata(x, y, z);
@@ -143,7 +139,7 @@ public class BlockFrameBox extends BlockContainer {
         // If there was no TileEntity yet, we need to check if the player was holding a cover item and if so
         // spawn a new frame box to apply the cover to
         ItemStack item = player.getHeldItem();
-        if (isCover(item)) {
+        if (CoverRegistry.isCover(item)) {
             BaseMetaPipeEntity newTileEntity = spawnFrameEntity(worldIn, x, y, z);
             return newTileEntity.onRightclick(player, direction, subX, subY, subZ);
         }

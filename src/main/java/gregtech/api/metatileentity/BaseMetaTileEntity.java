@@ -55,6 +55,7 @@ import appeng.tile.events.TileEventType;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
@@ -1641,13 +1642,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     if (getCoverIDAtSide(side) == 0) coverSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
 
                     if (getCoverIDAtSide(coverSide) == 0) {
-                        if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCovers.keySet())) {
-                            final CoverBehaviorBase<?> coverBehavior = GregTechAPI.getCoverBehaviorNew(tCurrentItem);
+                        if (CoverRegistry.isCover(tCurrentItem)) {
+                            final CoverBehaviorBase<?> coverBehavior = CoverRegistry.getCoverBehaviorNew(tCurrentItem);
                             if (coverBehavior.isCoverPlaceable(coverSide, tCurrentItem, this)
                                 && mMetaTileEntity.allowCoverOnSide(coverSide, new GTItemStack(tCurrentItem))) {
 
-                                setCoverItemAtSide(coverSide, tCurrentItem);
-                                coverBehavior.onPlayerAttach(aPlayer, tCurrentItem, this, coverSide);
+                                attachCover(aPlayer, tCurrentItem, coverSide);
 
                                 if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
                                 GTUtility.sendSoundToPlayers(
@@ -1682,7 +1682,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                             // Configuration of delicate electronics calls for a tool with precision and subtlety.
                             if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                                 final CoverInfo info = getCoverInfoAtSide(coverSide);
-                                if (info != CoverInfo.EMPTY_INFO) {
+                                if (info.isValid()) {
                                     if (info.allowsTickRateAddition()) {
                                         info.onCoverJackhammer(aPlayer);
                                         GTUtility.sendSoundToPlayers(

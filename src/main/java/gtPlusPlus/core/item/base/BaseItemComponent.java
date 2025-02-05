@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.render.TextureFactory;
@@ -145,13 +145,13 @@ public class BaseItemComponent extends Item {
                     + "]");
             Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
             if (componentType == ComponentTypes.PLATE) {
-                GregTechAPI.registerCover(
+                CoverRegistry.registerCover(
                     componentMaterial.getPlate(1),
                     TextureFactory
                         .of(componentMaterial.getTextureSet().mTextures[71], componentMaterial.getRGBA(), false),
                     null);
             } else if (componentType == ComponentTypes.PLATEDOUBLE) {
-                GregTechAPI.registerCover(
+                CoverRegistry.registerCover(
                     componentMaterial.getPlateDouble(1),
                     TextureFactory
                         .of(componentMaterial.getTextureSet().mTextures[72], componentMaterial.getRGBA(), false),
