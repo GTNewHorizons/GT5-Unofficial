@@ -366,7 +366,7 @@ public class GTPostLoad {
             .itemInputs(
                 GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "blue_ice", 0, 0),
                 GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cobblestone, Materials.Basalt, 1L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.Basalt, 1L))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .ignoreCollision()
