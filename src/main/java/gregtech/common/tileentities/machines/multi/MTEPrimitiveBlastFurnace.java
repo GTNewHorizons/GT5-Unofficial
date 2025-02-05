@@ -31,7 +31,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GTUIInfos;
@@ -122,7 +122,7 @@ public abstract class MTEPrimitiveBlastFurnace extends MetaTileEntity
 
     @Override
     public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
-        return (GregTechAPI.getCoverBehaviorNew(aCoverID.toStack())
+        return (CoverRegistry.getCoverBehaviorNew(aCoverID.toStack())
             .isSimpleCover()) && (super.allowCoverOnSide(side, aCoverID));
     }
 

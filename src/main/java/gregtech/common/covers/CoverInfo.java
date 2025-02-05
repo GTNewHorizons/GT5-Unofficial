@@ -13,12 +13,15 @@ import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.objects.GTCoverNone;
 import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
@@ -32,24 +35,25 @@ public final class CoverInfo {
 
     public static final CoverInfo EMPTY_INFO = new CoverInfo(ForgeDirection.UNKNOWN, null);
     private final ForgeDirection coverSide;
-    private int coverID = 0;
-    private CoverBehaviorBase<?> coverBehavior;
-    private ISerializableObject coverData;
+    private final int coverID;
+    private final CoverBehaviorBase<?> coverBehavior;
     private final WeakReference<ICoverable> coveredTile;
-    private boolean needsUpdate = false;
 
+    private ISerializableObject coverData;
+    private boolean needsUpdate = false;
     private int tickRateAddition = 0;
 
     public CoverInfo(ForgeDirection side, ICoverable aTile) {
         coverSide = side;
         coveredTile = new WeakReference<>(aTile);
-        coverBehavior = GregTechAPI.sNoBehavior;
+        coverBehavior = CoverRegistry.getEmptyCover();
+        coverID = 0;
     }
 
     public CoverInfo(ForgeDirection side, int aID, ICoverable aTile, ISerializableObject aCoverData) {
         coverSide = side;
         coverID = aID;
-        coverBehavior = GregTechAPI.getCoverBehaviorNew(aID);
+        coverBehavior = CoverRegistry.getCoverBehaviorNew(aID);
         coverData = aCoverData == null ? coverBehavior.createDataObject() : aCoverData;
         coveredTile = new WeakReference<>(aTile);
         tickRateAddition = coverBehavior.getDefaultTickRate(coverSide, coverID, coverData, coveredTile.get())
@@ -59,7 +63,7 @@ public final class CoverInfo {
     public CoverInfo(ICoverable aTile, NBTTagCompound aNBT) {
         coverSide = ForgeDirection.getOrientation(aNBT.getByte(NBT_SIDE));
         coverID = aNBT.getInteger(NBT_ID);
-        coverBehavior = GregTechAPI.getCoverBehaviorNew(coverID);
+        coverBehavior = CoverRegistry.getCoverBehaviorNew(coverID);
         coverData = aNBT.hasKey(NBT_DATA) ? coverBehavior.createDataObject(aNBT.getTag(NBT_DATA))
             : coverBehavior.createDataObject();
         coveredTile = new WeakReference<>(aTile);
@@ -95,9 +99,14 @@ public final class CoverInfo {
         return coverBehavior;
     }
 
+    public boolean allowsTickRateAddition() {
+        return getCoverBehavior().allowsTickRateAddition();
+    }
+
     public ISerializableObject getCoverData() {
         if (coverData != null) return coverData;
-        return GregTechAPI.sNoBehavior.createDataObject();
+        return CoverRegistry.getEmptyCover()
+            .createDataObject();
     }
 
     public boolean onCoverRemoval(boolean aForced) {
@@ -148,6 +157,18 @@ public final class CoverInfo {
         return getCoverBehavior().isRedstoneSensitive(coverSide, coverID, coverData, coveredTile.get(), aTickTimer);
     }
 
+    public boolean manipulatesSidedRedstoneOutput() {
+        return getCoverBehavior().manipulatesSidedRedstoneOutput(coverSide, coverID, coverData, coveredTile.get());
+    }
+
+    public byte getRedstoneInput(byte inputRedstone) {
+        return getCoverBehavior().getRedstoneInput(coverSide, inputRedstone, coverID, coverData, coveredTile.get());
+    }
+
+    public boolean letsRedstoneGoIn() {
+        return getCoverBehavior().letsRedstoneGoIn(coverSide, coverID, coverData, coveredTile.get());
+    }
+
     public ISerializableObject doCoverThings(long aTickTimer, byte aRedstone) {
         return getCoverBehavior()
             .doCoverThings(coverSide, aRedstone, coverID, coverData, coveredTile.get(), aTickTimer);
@@ -159,10 +180,6 @@ public final class CoverInfo {
 
     public void onBaseTEDestroyed() {
         getCoverBehavior().onBaseTEDestroyed(coverSide, coverID, coverData, coveredTile.get());
-    }
-
-    public void updateCoverBehavior() {
-        coverBehavior = GregTechAPI.getCoverBehaviorNew(coverID);
     }
 
     public void preDataChanged(int aCoverID, ISerializableObject aCoverData) {
@@ -305,6 +322,14 @@ public final class CoverInfo {
         return Math.min(MAX_TICK_RATE_ADDITION, Math.max(0, input));
     }
 
+    public boolean hasNoBehavior() {
+        return getCoverBehavior() instanceof GTCoverNone;
+    }
+
+    public boolean allowsCopyPasteTool() {
+        return getCoverBehavior().allowsCopyPasteTool();
+    }
+
     public static final class ClientTickRateFormatter {
 
         /** A translation key for the type of time units being used (e.g.: "tick", "seconds".) */
@@ -334,4 +359,19 @@ public final class CoverInfo {
                 StatCollector.translateToLocal(unitI18NKey));
         }
     }
+
+    public ModularUIContainer createCoverContainer(EntityPlayer player) {
+        ICoverable tile = this.coveredTile.get();
+        if (tile == null) return null;
+        final CoverUIBuildContext buildContext = new CoverUIBuildContext(
+            player,
+            this.coverID,
+            this.coverSide,
+            tile,
+            false);
+        final ModularWindow window = this.coverBehavior.createWindow(buildContext);
+        if (window == null) return null;
+        return new ModularUIContainer(new ModularUIContext(buildContext, tile::markDirty), window);
+    }
+
 }

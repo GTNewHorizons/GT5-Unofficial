@@ -34,7 +34,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.common.pollution.Pollution;
 import tectech.TecTech;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by Tec on 23.03.2017.
@@ -55,12 +54,10 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
             new String[] { CommonValues.TEC_MARK_GENERAL, translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.0"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.1"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.2") });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEDebugPollutor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-        TTUtility.setTier(aTier, this);
     }
 
     @Override
