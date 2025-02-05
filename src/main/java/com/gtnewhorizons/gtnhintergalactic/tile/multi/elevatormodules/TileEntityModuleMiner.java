@@ -2,6 +2,7 @@ package com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules;
 
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -311,13 +312,29 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     /** Determine which drones and items are in the correct buses */
     protected ItemStack[] validInputs() {
         ArrayList<ItemStack> validatedInputs = new ArrayList<>();
-        for (MTEHatchInputBus inputBus : mInputBusses) {
-            ArrayList<ItemStack> busItems = new ArrayList<>(Arrays.asList(inputBus.getRealInventory()));
-            // No drone sharing
-            if (inputBus instanceof MTEHatchInputBusME || inputBus instanceof MTELinkedInputBus) {
-                busItems.removeIf(item -> item != null && item.getItem() instanceof ItemMiningDrones);
+        Map<GTUtility.ItemId, ItemStack> inputsFromME = new HashMap<>();
+        for (MTEHatchInputBus inputBus : validMTEList(mInputBusses)) {
+            IGregTechTileEntity tileEntity = inputBus.getBaseMetaTileEntity();
+            boolean isMEBus = inputBus instanceof MTEHatchInputBusME;
+            boolean isLinkedBus = inputBus instanceof MTELinkedInputBus;
+            boolean isSharableBus = isMEBus || isLinkedBus;
+            for (int i = tileEntity.getSizeInventory() - 1; i >= 0; i--) {
+                ItemStack itemStack = tileEntity.getStackInSlot(i);
+                if (itemStack != null) {
+                    if (isSharableBus && itemStack.getItem() instanceof ItemMiningDrones) {
+                        continue;
+                    }
+                    if (isMEBus) {
+                        // Prevent the same item from different ME buses from being recognized
+                        inputsFromME.put(GTUtility.ItemId.createNoCopy(itemStack), itemStack);
+                    } else {
+                        validatedInputs.add(itemStack);
+                    }
+                }
             }
-            validatedInputs.addAll(busItems);
+        }
+        if (!inputsFromME.isEmpty()) {
+            validatedInputs.addAll(inputsFromME.values());
         }
         return validatedInputs.toArray(new ItemStack[0]);
     }
