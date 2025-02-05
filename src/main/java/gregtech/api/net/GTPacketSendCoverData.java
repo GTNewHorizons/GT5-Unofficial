@@ -6,7 +6,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.util.ISerializableObject;
@@ -90,7 +90,7 @@ public class GTPacketSendCoverData extends GTPacket {
             aData.readInt(),
             ForgeDirection.getOrientation(aData.readByte()),
             coverId = aData.readInt(),
-            GregTechAPI.getCoverBehaviorNew(coverId)
+            CoverRegistry.getCoverBehaviorNew(coverId)
                 .createDataObject()
                 .readFromPacket(aData, null));
     }

@@ -21,7 +21,7 @@ import net.minecraft.item.ItemStack;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
@@ -47,7 +47,7 @@ public class MultipleMetalLoader implements IWerkstoffRunnable {
                         1L),
                     60,
                     0));
-            GregTechAPI.registerCover(
+            CoverRegistry.registerCover(
                 werkstoff.get(plateDouble),
                 TextureFactory.of(werkstoff.getTexSet().mTextures[72], werkstoff.getRGBA(), false),
                 null);
