@@ -17,6 +17,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -24,10 +25,16 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.StructureError;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -40,6 +47,7 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -48,30 +56,35 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
     implements ISurvivalConstructable {
 
     public static int CASING_TEXTURE_ID;
-    public static String mCryoFuelName = "Gelid Cryotheum";
-    public static String mCasingName = "Advanced Cryogenic Casing";
-    public static String mHatchName = "Cryotheum Hatch";
-    public static FluidStack mFuelStack;
-    private int mCasing;
+    public static String CASING_NAME;
+    public static String HATCH_NAME;
+    public static FluidStack CRYO_STACK;
     private static IStructureDefinition<MTEIndustrialVacuumFreezer> STRUCTURE_DEFINITION = null;
+
+    private int mCasing;
 
     private final ArrayList<MTEHatchCustomFluidBase> mCryotheumHatches = new ArrayList<>();
 
     public MTEIndustrialVacuumFreezer(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
-        mFuelStack = FluidUtils.getFluidStack("cryotheum", 1);
         CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 10);
+
+        GregTechAPI.sAfterGTLoad.add(() -> {
+            CRYO_STACK = FluidUtils.getFluidStack("cryotheum", 1);
+            CASING_NAME = GregtechItemList.Casing_AdvancedVacuum.get(1)
+                .getDisplayName();
+            HATCH_NAME = GregtechItemList.Hatch_Input_Cryotheum.get(1)
+                .getDisplayName();
+        });
     }
 
-    public MTEIndustrialVacuumFreezer(final String aName) {
-        super(aName);
-        mFuelStack = FluidUtils.getFluidStack("cryotheum", 1);
-        CASING_TEXTURE_ID = TAE.getIndexFromPage(2, 10);
+    protected MTEIndustrialVacuumFreezer(MTEIndustrialVacuumFreezer prototype) {
+        super(prototype.mName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEIndustrialVacuumFreezer(this.mName);
+        return new MTEIndustrialVacuumFreezer(this);
     }
 
     @Override
@@ -85,12 +98,12 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
         tt.addMachineType(getMachineType())
             .addInfo("Factory Grade Advanced Vacuum Freezer")
             .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 4")
-            .addInfo("Consumes 10L of " + mCryoFuelName + "/s during operation")
+            .addInfo("Consumes 10L of " + CRYO_STACK.getLocalizedName() + "/s during operation")
             .addInfo("Constructed exactly the same as a normal Vacuum Freezer")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front Center")
-            .addCasingInfoMin(mCasingName, 10, false)
+            .addCasingInfoMin(CASING_NAME, 10, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
@@ -98,7 +111,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
             .addEnergyHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .addOtherStructurePart(mHatchName, "Any Casing", 1)
+            .addOtherStructurePart(HATCH_NAME, "Any Casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -116,8 +129,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
                     ofChain(
                         buildHatchAdder(MTEIndustrialVacuumFreezer.class)
                             .adder(MTEIndustrialVacuumFreezer::addCryotheumHatch)
-                            .hatchId(967)
-                            .shouldReject(t -> !t.mCryotheumHatches.isEmpty())
+                            .hatchId(MetaTileEntityIDs.Hatch_Input_Cryotheum.ID)
                             .casingIndex(CASING_TEXTURE_ID)
                             .dot(1)
                             .build(),
@@ -144,15 +156,57 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void clearHatches() {
+        super.clearHatches();
         mCasing = 0;
         mCryotheumHatches.clear();
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 10 && checkHatch();
     }
 
     @Override
-    public boolean checkHatch() {
-        return super.checkHatch() && !mCryotheumHatches.isEmpty();
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        return checkPiece(mName, 1, 1, 0);
+    }
+
+    @Override
+    public void validateStructure() {
+        super.validateStructure();
+
+        if (mCasing < 10) {
+            mStructureErrors.add(StructureError.TOO_FEW_CASINGS);
+        }
+
+        if (mCryotheumHatches.isEmpty()) {
+            mStructureErrors.add(StructureError.MISSING_CRYO_HATCH);
+        }
+
+        if (mCryotheumHatches.size() > 1) {
+            mStructureErrors.add(StructureError.TOO_MANY_CRYO_HATCHES);
+        }
+    }
+
+    @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+
+        screenElements.widgets(new FakeSyncWidget.IntegerSyncer(() -> mCasing, casings -> mCasing = casings));
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected void getStructureErrors(ArrayList<String> lines) {
+        super.getStructureErrors(lines);
+
+        if (mStructureErrors.contains(StructureError.TOO_FEW_CASINGS)) {
+            lines.add(I18n.format("GT5U.gui.missing_casings", 10, mCasing));
+        }
+
+        if (mStructureErrors.contains(StructureError.MISSING_CRYO_HATCH)) {
+            lines.add(I18n.format("GT5U.gui.missing_hatch", HATCH_NAME));
+        }
+
+        if (mStructureErrors.contains(StructureError.TOO_MANY_CRYO_HATCHES)) {
+            lines.add(I18n.format("GT5U.gui.too_many_hatches", HATCH_NAME, 1));
+        }
     }
 
     private boolean addCryotheumHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -161,7 +215,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity instanceof MTEHatchCustomFluidBase && aMetaTileEntity.getBaseMetaTileEntity()
-                .getMetaTileID() == 967) {
+                .getMetaTileID() == MetaTileEntityIDs.Hatch_Input_Cryotheum.ID) {
                 return addToMachineListInternal(mCryotheumHatches, aTileEntity, aBaseCasingIndex);
             }
         }

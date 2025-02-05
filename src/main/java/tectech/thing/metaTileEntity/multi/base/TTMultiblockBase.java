@@ -1040,6 +1040,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     ((BaseTileEntity) aBaseMetaTileEntity).ignoreUnloadedChunks = mMachine;
                 }
                 mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
+                validateStructure();
+                if (hasStructureErrors()) mMachine = false;
 
                 if (!mMachine) {
                     if (ePowerPass && getEUVar() > V[3]
