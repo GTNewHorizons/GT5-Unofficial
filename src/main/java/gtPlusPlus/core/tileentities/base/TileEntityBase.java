@@ -1,6 +1,8 @@
 package gtPlusPlus.core.tileentities.base;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
 
 import net.minecraft.block.Block;
@@ -1193,7 +1195,12 @@ public class TileEntityBase extends TileEntity
 
     @Override
     public String[] getInfoData() {
-        return null;
+        return new String[] {};
+    }
+
+    @Override
+    public Map<String, String> getInfoMap() {
+        return Collections.emptyMap();
     }
 
     public long getEUVar() {
