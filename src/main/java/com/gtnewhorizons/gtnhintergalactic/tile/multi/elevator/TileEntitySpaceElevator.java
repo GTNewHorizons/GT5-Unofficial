@@ -784,8 +784,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                                 () -> StatCollector.translateToLocal(
                                         "gt.blockmachines.multimachine.ig.elevator.gui.numOfModules") + ": "
                                         + getNumberOfModules())
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setEnabled(widget -> getErrorDisplayID() == 0));
+                        .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> getErrorDisplayID() == 0));
     }
 
     /**
