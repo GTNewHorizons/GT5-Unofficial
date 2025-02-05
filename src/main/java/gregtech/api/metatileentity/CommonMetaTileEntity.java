@@ -2,10 +2,8 @@ package gregtech.api.metatileentity;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -306,21 +304,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @Override
     public String getSpecialVoltageToolTip() {
         return null;
-    }
-
-    @Override
-    public boolean isGivingInformation() {
-        return false;
-    }
-
-    @Override
-    public String[] getInfoData() {
-        return new String[] {};
-    }
-
-    @Override
-    public Map<String, String> getInfoMap() {
-        return Collections.emptyMap();
     }
 
     public boolean isDigitalChest() {
