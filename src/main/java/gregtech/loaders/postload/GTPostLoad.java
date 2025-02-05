@@ -365,6 +365,7 @@ public class GTPostLoad {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "blue_ice", 0, 0),
+                new ItemStack(Blocks.soul_sand, 0),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.Basalt, 1L))
             .duration(16 * TICKS)

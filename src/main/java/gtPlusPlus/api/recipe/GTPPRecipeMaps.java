@@ -255,7 +255,7 @@ public class GTPPRecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> multiblockRockBreakerRecipes = RecipeMapBuilder
         .of("gt.recipe.multiblockrockbreaker")
-        .maxIO(2, 1, 0, 0)
+        .maxIO(3, 1, 0, 0)
         .disableRegisterNEI()
         .build();
 }
