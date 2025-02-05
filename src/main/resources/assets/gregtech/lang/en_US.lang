@@ -263,6 +263,7 @@ gt.recipe.largechemicalreactor=Large Chemical Reactor
 gt.recipe.distillationtower=Distillation Tower
 gt.recipe.craker=Oil Cracker
 gt.recipe.pyro=Pyrolyse Oven
+gt.recipe.solarfactory=Solar Factory
 gt.recipe.dieselgeneratorfuel=Combustion Generator Fuels
 gt.recipe.extremedieselgeneratorfuel=Extreme Diesel Engine Fuel
 gt.recipe.gasturbinefuel=Gas Turbine Fuel
@@ -635,6 +636,9 @@ GT5U.gui.text.missing_item=§7Missing required item: §b%s§f
 GT5U.gui.text.ph_sensor=pH threshold
 GT5U.gui.text.critical_ph_value=pH exceeded critical value.
 GT5U.gui.text.heat_sensor=Heat threshold
+GT5U.gui.text.no_wafer=No wafer was found
+GT5U.gui.text.low_wafer_tier=Found wafer is too low tier for the recipe
+GT5U.gui.text.not_enough_wafer=Found wafer but recipe requires more than given
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
 GT5U.gui.config.client=Client
