@@ -25,7 +25,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasInventory;
 import gregtech.api.interfaces.tileentity.IRedstoneTileEntity;
 import gregtech.api.net.GTPacketBlockEvent;
-import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.Pollution;
@@ -289,9 +288,6 @@ public class TileEntityBase extends TileEntity
         return this.canAccessData() && this.mInventory.isValidSlot(aIndex);
     }
 
-    private final CoverBehavior[] mCoverBehaviors = new CoverBehavior[] { GregTechAPI.sNoBehavior,
-        GregTechAPI.sNoBehavior, GregTechAPI.sNoBehavior, GregTechAPI.sNoBehavior, GregTechAPI.sNoBehavior,
-        GregTechAPI.sNoBehavior };
     protected TileEntityBase mMetaTileEntity;
     protected long mStoredEnergy = 0;
     protected int mAverageEUInputIndex = 0, mAverageEUOutputIndex = 0;
@@ -300,8 +296,6 @@ public class TileEntityBase extends TileEntity
     private final boolean[] mActiveEUInputs = new boolean[] { false, false, false, false, false, false };
     private final boolean[] mActiveEUOutputs = new boolean[] { false, false, false, false, false, false };
     private final byte[] mSidedRedstone = new byte[] { 15, 15, 15, 15, 15, 15 };
-    private final int[] mCoverSides = new int[] { 0, 0, 0, 0, 0, 0 };
-    private final int[] mCoverData = new int[] { 0, 0, 0, 0, 0, 0 };
     private final int[] mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
     private boolean mHasEnoughEnergy = true;
     protected boolean mRunningThroughTick = false;
