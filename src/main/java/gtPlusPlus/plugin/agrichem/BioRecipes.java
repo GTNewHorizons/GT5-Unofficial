@@ -36,6 +36,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -991,7 +992,7 @@ public class BioRecipes {
     private static void recipeCompost() {
         ItemStack aFert;
         if (Forestry.isModLoaded()) {
-            aFert = ItemUtils.getSimpleStack(AgriculturalChem.aFertForestry, 32);
+            aFert = ItemList.FR_Fertilizer.get(32);
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.getIntegratedCircuit(11),
@@ -1006,7 +1007,7 @@ public class BioRecipes {
 
         }
 
-        aFert = ItemUtils.getSimpleStack(AgriculturalChem.aFertIC2, 32);
+        aFert = ItemList.IC2_Fertilizer.get(32);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(12),

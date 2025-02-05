@@ -39,12 +39,11 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by danie_000 on 15.12.2016.
@@ -61,7 +60,6 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
 
     public MTEHatchUncertainty(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");
-        TTUtility.setTier(aTier, this);
         regenerate();
     }
 
@@ -80,12 +78,12 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GTRenderedTexture(ScreenON) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(ScreenON) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GTRenderedTexture(ScreenOFF) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(ScreenOFF) };
     }
 
     @Override

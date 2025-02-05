@@ -376,6 +376,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addInfo(
                 EnumChatFormatting.RED
                     + "Recipe tier is limited to hatch tier + 1. Will not perform overclocks above the hatch tier.")
+            .addInfo(EnumChatFormatting.RED + "Limit to one energy hatch if using a Multi-Amp or Laser hatch.")
             .beginStructureBlock(35, 33, 35, false)
             .addCasingInfoMin("Background Radiation Absorbent Casing", 950, false)
             .addCasingInfoExactly("Extreme Density Space-Bending Casing", 3667, false)
@@ -416,6 +417,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         spacetimeHatches.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 17, 27, 10)) return false;
+        // Allow only 1 energy hatch if laser/multiamp
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (!mEnergyHatches.isEmpty()) return false;
+            if (mExoticEnergyHatches.size() > 1) return false;
+        }
         return mCasingAmount >= 950;
     }
 
@@ -482,12 +488,14 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 }
             }
         }
-        return 0;
+        return -1;
     }
 
     private void searchAndDecrementCatalysts() {
         // Loop through all items and look for the Activation and Deactivation Catalysts
         // Deactivation resets stability to 100 and catalyzing cost to 1
+
+        if (this.maxProgresstime() != 0) return;
 
         for (MTEHatchInputBus bus : filterValidMTEs(mInputBusses)) {
             for (int i = 0; i < bus.getSizeInventory(); i++) {
@@ -543,10 +551,22 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
+            private int lastMode = -1;
+
             @NotNull
             @Override
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-                switch (getModeFromCircuit(inputItems)) {
+                int mode = getModeFromCircuit(inputItems);
+
+                if (mode == -1) {
+                    lastMode = -1;
+                    return Stream.empty();
+                }
+                if (!(mode == lastMode)) {
+                    lastRecipe = null;
+                    lastMode = mode;
+                }
+                switch (mode) {
                     case MACHINEMODE_COMPRESSOR -> {
                         return super.findRecipeMatches(RecipeMaps.compressorRecipes);
                     }
@@ -589,6 +609,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
             logic.setAvailableAmperage(1L);
         } else super.setProcessingLogicPower(logic);
+    }
+
+    @Override
+    public boolean isInputSeparationEnabled() {
+        return true;
     }
 
     @Override
@@ -685,7 +710,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     public int getMaxParallelRecipes() {
-        int parallels = (8 * GTUtility.getTier(this.getMaxInputVoltage()));
+        int parallels = (8 * GTUtility.getTierExtended(this.getMaxInputEu()));
         if (blackHoleStatus == 4) parallels *= 4;
         else if (blackHoleStability < 60) {
             parallels *= 2;
@@ -725,11 +750,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     @Override
     public boolean supportsBatchMode() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsInputSeparation() {
         return true;
     }
 

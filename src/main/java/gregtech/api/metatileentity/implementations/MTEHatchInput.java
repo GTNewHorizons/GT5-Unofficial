@@ -185,8 +185,4 @@ public class MTEHatchInput extends MTEHatch {
         return 8000 * (1 << mTier);
     }
 
-    @Override
-    public int getTankPressure() {
-        return -100;
-    }
 }

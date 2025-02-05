@@ -13,7 +13,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -22,6 +22,7 @@ import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.CoverInfo;
 
 public class BehaviourCoverTool extends BehaviourNone {
 
@@ -29,7 +30,8 @@ public class BehaviourCoverTool extends BehaviourNone {
     private final String mTooltip = GTLanguageManager
         .addStringLocalization("gt.behaviour.cover_copy_paste", "Can copy/paste cover data.");
 
-    private ISerializableObject mStoredData = GregTechAPI.sNoBehavior.createDataObject();
+    private ISerializableObject mStoredData = getEmptyCoverData();
+
     private int mCoverType;
     private int mTickRateAddition = 0;
 
@@ -62,17 +64,17 @@ public class BehaviourCoverTool extends BehaviourNone {
     private void initDataFromNBT(NBTTagCompound aNBT) {
         if (aNBT != null) {
             mCoverType = aNBT.getInteger("mCoverType");
-            CoverBehaviorBase<?> tBehavior = GregTechAPI.getCoverBehaviorNew(mCoverType);
+            CoverBehaviorBase<?> tBehavior = CoverRegistry.getCoverBehaviorNew(mCoverType);
             NBTBase tData = aNBT.getTag("mCoverData");
             if (tData != null) mStoredData = tBehavior.createDataObject(tData);
-            else mStoredData = GregTechAPI.sNoBehavior.createDataObject();
+            else mStoredData = getEmptyCoverData();
             mTickRateAddition = aNBT.hasKey("mTickRateAddition") ? aNBT.getInteger("mTickRateAddition") : 0;
         }
     }
 
     private void saveDataToNBT(NBTTagCompound aNBT) {
         aNBT.setInteger("mCoverType", mCoverType);
-        if (mStoredData == null) mStoredData = GregTechAPI.sNoBehavior.createDataObject();
+        if (mStoredData == null) mStoredData = getEmptyCoverData();
         aNBT.setTag("mCoverData", mStoredData.saveDataToNBT());
         aNBT.setInteger("mTickRateAddition", mTickRateAddition);
     }
@@ -120,12 +122,11 @@ public class BehaviourCoverTool extends BehaviourNone {
                     ? GTUtility.determineWrenchingSide(side, hitX, hitY, hitZ)
                     : ForgeDirection.UNKNOWN;
             if (tSide != ForgeDirection.UNKNOWN) {
-                if (tCoverable.getCoverBehaviorAtSideNew(tSide)
-                    .allowsCopyPasteTool()) {
-                    mStoredData = tCoverable.getComplexCoverDataAtSide(tSide);
-                    mCoverType = tCoverable.getCoverIDAtSide(tSide);
-                    mTickRateAddition = tCoverable.getCoverInfoAtSide(tSide)
-                        .getTickRateAddition();
+                CoverInfo coverInfo = tCoverable.getCoverInfoAtSide(tSide);
+                if (coverInfo.allowsCopyPasteTool()) {
+                    mStoredData = coverInfo.getCoverData();
+                    mCoverType = coverInfo.getCoverID();
+                    mTickRateAddition = coverInfo.getTickRateAddition();
 
                     aList.add("Block Side: " + EnumChatFormatting.AQUA + tSide.name() + EnumChatFormatting.RESET);
                     aList.add(
@@ -134,19 +135,19 @@ public class BehaviourCoverTool extends BehaviourNone {
                                 .getDisplayName()
                             + EnumChatFormatting.RESET);
                 } else {
-                    mStoredData = GregTechAPI.sNoBehavior.createDataObject();
+                    mStoredData = getEmptyCoverData();
                     mCoverType = 0;
                     mTickRateAddition = 0;
                     aList.add("Copy unavailable for this cover type");
                 }
             } else {
-                mStoredData = GregTechAPI.sNoBehavior.createDataObject();
+                mStoredData = getEmptyCoverData();
                 mCoverType = 0;
                 mTickRateAddition = 0;
                 aList.add("No Cover Found");
             }
         } else {
-            mStoredData = GregTechAPI.sNoBehavior.createDataObject();
+            mStoredData = getEmptyCoverData();
             mCoverType = 0;
             mTickRateAddition = 0;
             aList.add("No Cover Found");
@@ -194,5 +195,10 @@ public class BehaviourCoverTool extends BehaviourNone {
             aList.add(this.mTooltip);
         }
         return aList;
+    }
+
+    private static ISerializableObject getEmptyCoverData() {
+        return CoverRegistry.getEmptyCover()
+            .createDataObject();
     }
 }
