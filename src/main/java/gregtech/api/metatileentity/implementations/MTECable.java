@@ -591,7 +591,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 if (isConnectedAtSide(side)) {
                     final CoverInfo coverInfo = pipe.getCoverInfoAtSide(side);
-                    if (coverInfo.hasNoBehavior()) continue;
+                    if (!coverInfo.isValid()) continue;
                     if (!letsIn(coverInfo) || !letsOut(coverInfo)) {
                         pipe.addToLock(pipe, side);
                     } else {
@@ -604,7 +604,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 if (isConnectedAtSide(side)) {
                     final CoverInfo coverInfo = pipe.getCoverInfoAtSide(side);
-                    if (coverInfo.hasNoBehavior()) continue;
+                    if (!coverInfo.isValid()) continue;
 
                     if (!letsIn(coverInfo) || !letsOut(coverInfo)) {
                         dontAllow = true;

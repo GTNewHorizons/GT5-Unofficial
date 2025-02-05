@@ -17,7 +17,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -46,14 +46,14 @@ public final class CoverInfo {
     public CoverInfo(ForgeDirection side, ICoverable aTile) {
         coverSide = side;
         coveredTile = new WeakReference<>(aTile);
-        coverBehavior = GregTechAPI.sNoBehavior;
+        coverBehavior = CoverRegistry.getEmptyCover();
         coverID = 0;
     }
 
     public CoverInfo(ForgeDirection side, int aID, ICoverable aTile, ISerializableObject aCoverData) {
         coverSide = side;
         coverID = aID;
-        coverBehavior = GregTechAPI.getCoverBehaviorNew(aID);
+        coverBehavior = CoverRegistry.getCoverBehaviorNew(aID);
         coverData = aCoverData == null ? coverBehavior.createDataObject() : aCoverData;
         coveredTile = new WeakReference<>(aTile);
         tickRateAddition = coverBehavior.getDefaultTickRate(coverSide, coverID, coverData, coveredTile.get())
@@ -63,7 +63,7 @@ public final class CoverInfo {
     public CoverInfo(ICoverable aTile, NBTTagCompound aNBT) {
         coverSide = ForgeDirection.getOrientation(aNBT.getByte(NBT_SIDE));
         coverID = aNBT.getInteger(NBT_ID);
-        coverBehavior = GregTechAPI.getCoverBehaviorNew(coverID);
+        coverBehavior = CoverRegistry.getCoverBehaviorNew(coverID);
         coverData = aNBT.hasKey(NBT_DATA) ? coverBehavior.createDataObject(aNBT.getTag(NBT_DATA))
             : coverBehavior.createDataObject();
         coveredTile = new WeakReference<>(aTile);
@@ -105,7 +105,8 @@ public final class CoverInfo {
 
     public ISerializableObject getCoverData() {
         if (coverData != null) return coverData;
-        return GregTechAPI.sNoBehavior.createDataObject();
+        return CoverRegistry.getEmptyCover()
+            .createDataObject();
     }
 
     public boolean onCoverRemoval(boolean aForced) {
