@@ -1732,6 +1732,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     protected void startRecipeProcessing() {
+        mDualInputHatches.removeIf(mte -> mte == null || !((MetaTileEntity) mte).isValid());
+
         for (MTEHatchInputBus hatch : validMTEList(mInputBusses)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
                 aware.startRecipeProcessing();
