@@ -13,7 +13,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GTCoverDefault;
 import gregtech.api.objects.GTCoverNone;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTUtility;
 
@@ -30,14 +29,14 @@ public class CoverRegistry {
     /**
      * This is the generic Cover behavior. Used for the default Covers, which have no Behavior.
      */
-    private static final CoverBehavior defaultBehavior = new GTCoverDefault(), noBehavior = new GTCoverNone();
+    private static final CoverBehaviorBase<?> defaultBehavior = new GTCoverDefault(), noBehavior = new GTCoverNone();
 
     static {
         GregTechAPI.sItemStackMappings.add(coverTextures);
         GregTechAPI.sItemStackMappings.add(coverBehaviors);
     }
 
-    public static @NotNull CoverBehavior getEmptyCover() {
+    public static @NotNull CoverBehaviorBase<?> getEmptyCover() {
         return noBehavior;
     }
 
