@@ -10,7 +10,6 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
-import static gtPlusPlus.core.recipe.common.CI.getNumberedAdvancedCircuit;
 import static gtPlusPlus.core.util.minecraft.ItemUtils.hideItemFromNEI;
 
 import net.minecraft.init.Items;
@@ -69,8 +68,6 @@ public class GenericChem extends ItemPackage {
     // Phenol Byproducts
 
     public static ItemGenericChemBase mGenericChemItem1;
-    public static Item mAdvancedCircuit;
-
     private ItemStack mCatalystCarrier;
 
     public static ItemStack mRedCatalyst;
@@ -114,10 +111,10 @@ public class GenericChem extends ItemPackage {
     public void items() {
 
         mGenericChemItem1 = new ItemGenericChemBase();
-        mAdvancedCircuit = new GTPPIntegratedCircuitItem("T3RecipeSelector", "science/general/AdvancedCircuit");
-        GregtechItemList.Circuit_T3RecipeSelector.set(mAdvancedCircuit);
 
-        hideItemFromNEI(getNumberedAdvancedCircuit(0));
+        // TODO Remove after 2.8
+        Item t3Selector = new GTPPIntegratedCircuitItem("T3RecipeSelector", "science/general/AdvancedCircuit");
+        hideItemFromNEI(new ItemStack(t3Selector));
 
         registerItemStacks();
         registerOreDict();

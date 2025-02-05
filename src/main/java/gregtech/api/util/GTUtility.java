@@ -172,6 +172,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.blocks.BlockOresAbstract;
+import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.pollution.Pollution;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
@@ -3919,6 +3920,13 @@ public class GTUtility {
 
     public static ItemStack getIntegratedCircuit(int config) {
         return ItemList.Circuit_Integrated.getWithDamage(0, config);
+    }
+
+    /**
+     * @return A list of every integrated circuit, excluding zero. Do not modify the ItemStacks!
+     */
+    public static List<ItemStack> getAllIntegratedCircuits() {
+        return ItemIntegratedCircuit.NON_ZERO_VARIANTS;
     }
 
     public static float getBlockHardnessAt(World aWorld, int aX, int aY, int aZ) {
