@@ -1081,7 +1081,7 @@ public class ComponentAssemblyLineLoader {
                     get(cableGt16, NaquadahAlloy, 24),
                     getIntegratedCircuit(PUMP_CIRCUIT))
                 .fluidInputs(
-                    INDALLOY_140.getFluidStack(768 * L),
+                    INDALLOY_140.getFluidStack(432 * L),
                     Lubricant.getFluid(96000),
                     Naquadah.getMolten(576 * L),
                     Neutronium.getMolten(450 * L + 96),
@@ -1161,7 +1161,7 @@ public class ComponentAssemblyLineLoader {
                 get(wrapCircuit, UHV, 12))
             .fluidInputs(
                 INDALLOY_140.getFluidStack(768 * L),
-                Neutronium.getMolten(2304 * L),
+                Americium.getMolten(2304 * L),
                 NaquadahAlloy.getMolten(768 * L),
                 Naquadria.getMolten(432 * L))
             .duration(24 * MINUTES)
