@@ -686,7 +686,7 @@ public class CentrifugeRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 2),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Charcoal, 3))
-            .duration(6 * SECONDS)
+            .duration(15 * SECONDS)
             .eut(64)
             .addTo(centrifugeRecipes);
 
