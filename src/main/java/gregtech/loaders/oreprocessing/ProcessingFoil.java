@@ -5,7 +5,7 @@ import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.covers.Covers;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -42,6 +42,7 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
     }
 
     private void registerCover(ItemStack stack, Materials material) {
-        Covers.registerCover(stack, TextureFactory.of(material.mIconSet.mTextures[70], material.mRGBa, false), null);
+        CoverRegistry
+            .registerCover(stack, TextureFactory.of(material.mIconSet.mTextures[70], material.mRGBa, false), null);
     }
 }

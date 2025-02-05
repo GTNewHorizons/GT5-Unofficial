@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.covers.Covers;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -64,7 +64,7 @@ public class BehaviourCoverTool extends BehaviourNone {
     private void initDataFromNBT(NBTTagCompound aNBT) {
         if (aNBT != null) {
             mCoverType = aNBT.getInteger("mCoverType");
-            CoverBehaviorBase<?> tBehavior = Covers.getCoverBehaviorNew(mCoverType);
+            CoverBehaviorBase<?> tBehavior = CoverRegistry.getCoverBehaviorNew(mCoverType);
             NBTBase tData = aNBT.getTag("mCoverData");
             if (tData != null) mStoredData = tBehavior.createDataObject(tData);
             else mStoredData = GregTechAPI.sNoBehavior.createDataObject();

@@ -14,7 +14,7 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTUtility;
 
-public class Covers {
+public class CoverRegistry {
 
     /**
      * The Icon List for Covers

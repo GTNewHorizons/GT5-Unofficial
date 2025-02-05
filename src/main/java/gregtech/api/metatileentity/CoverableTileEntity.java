@@ -40,7 +40,7 @@ import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
-import gregtech.api.covers.Covers;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GUITextureSet;
@@ -199,7 +199,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final ITexture coverTexture = (!(this instanceof BaseMetaPipeEntity)) ? coverInfo.getSpecialCoverFGTexture()
             : coverInfo.getSpecialCoverTexture();
 
-        return coverTexture != null ? coverTexture : Covers.getCoverTexture(getCoverIDAtSide(side));
+        return coverTexture != null ? coverTexture : CoverRegistry.getCoverTexture(getCoverIDAtSide(side));
     }
 
     protected void requestCoverDataIfNeeded() {
@@ -255,7 +255,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public void attachCover(EntityPlayer aPlayer, ItemStack aCover, ForgeDirection side) {
-        CoverBehaviorBase<?> coverBehavior = Covers.getCoverBehaviorNew(aCover);
+        CoverBehaviorBase<?> coverBehavior = CoverRegistry.getCoverBehaviorNew(aCover);
         coverBehavior.placeCover(side, aCover, this);
         coverBehavior.onPlayerAttach(aPlayer, aCover, this, side);
     }

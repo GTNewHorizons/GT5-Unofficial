@@ -60,7 +60,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import gregtech.api.GregTechAPI;
-import gregtech.api.covers.Covers;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -663,7 +663,7 @@ public class GTClient extends GTProxy implements Runnable {
                 public void onResourceManagerReload(IResourceManager l) {
                     GUIColorOverride.onResourceManagerReload();
                     FallbackableSteamTexture.reload();
-                    Covers.reloadCoverColorOverrides();
+                    CoverRegistry.reloadCoverColorOverrides();
                 }
             });
         Pollution.onPostInitClient();
@@ -805,7 +805,7 @@ public class GTClient extends GTProxy implements Runnable {
 
         // If there is no tile entity and the block is a frame box block, still draw the grid if a cover is held
         if (aTileEntity == null && aBlock instanceof BlockFrameBox) {
-            if (Covers.isCover(aEvent.currentItem)) {
+            if (CoverRegistry.isCover(aEvent.currentItem)) {
                 drawGrid(aEvent, true, false, aEvent.player.isSneaking());
             }
             return;
@@ -842,7 +842,7 @@ public class GTClient extends GTProxy implements Runnable {
             return;
         }
 
-        if (Covers.isCover(aEvent.currentItem)) {
+        if (CoverRegistry.isCover(aEvent.currentItem)) {
             if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
                 drawGrid(aEvent, true, false, aEvent.player.isSneaking());
         }
@@ -1058,7 +1058,7 @@ public class GTClient extends GTProxy implements Runnable {
                 || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)
                 || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
                 || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)
-                || Covers.isCover(tCurrentItem)
+                || CoverRegistry.isCover(tCurrentItem)
                 || (tCurrentItem.getItem() instanceof ItemMachines
                     && GregTechAPI.METATILEENTITIES[tCurrentItem.getItemDamage()] instanceof MetaPipeEntity
                     && player.isSneaking())) {

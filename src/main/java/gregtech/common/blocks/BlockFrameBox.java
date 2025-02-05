@@ -25,7 +25,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
-import gregtech.api.covers.Covers;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -139,7 +139,7 @@ public class BlockFrameBox extends BlockContainer {
         // If there was no TileEntity yet, we need to check if the player was holding a cover item and if so
         // spawn a new frame box to apply the cover to
         ItemStack item = player.getHeldItem();
-        if (Covers.isCover(item)) {
+        if (CoverRegistry.isCover(item)) {
             BaseMetaPipeEntity newTileEntity = spawnFrameEntity(worldIn, x, y, z);
             return newTileEntity.onRightclick(player, direction, subX, subY, subZ);
         }

@@ -253,7 +253,7 @@ import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Wire
 import static gregtech.common.items.IDMetaItem03.WovenKevlar;
 import static gregtech.common.items.IDMetaItem03.ZPM_Coil;
 
-import gregtech.api.covers.Covers;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -1463,19 +1463,19 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
     }
 
     private void registerCovers() {
-        Covers.registerCover(
+        CoverRegistry.registerCover(
             ItemList.Cover_Metrics_Transmitter.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_METRICS_TRANSMITTER)),
             new CoverMetricsTransmitter(TextureFactory.of(OVERLAY_METRICS_TRANSMITTER)));
-        Covers.registerCover(
+        CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_UHV.get(1L),
             TextureFactory.of(SOLARPANEL_UHV),
             new CoverSolarPanel(2097152));
-        Covers.registerCover(
+        CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_UEV.get(1L),
             TextureFactory.of(SOLARPANEL_UEV),
             new CoverSolarPanel(8388608));
-        Covers.registerCover(
+        CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_UIV.get(1L),
             TextureFactory.of(SOLARPANEL_UIV),
             new CoverSolarPanel(33554432));

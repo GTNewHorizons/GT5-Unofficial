@@ -24,7 +24,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
-import gregtech.api.covers.Covers;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
@@ -238,7 +238,7 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
 
     @Override
     public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
-        return Covers.getCoverBehaviorNew(aCoverID.toStack())
+        return CoverRegistry.getCoverBehaviorNew(aCoverID.toStack())
             .isSimpleCover() && super.allowCoverOnSide(side, aCoverID);
     }
 

@@ -26,7 +26,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.covers.Covers;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUIInfos;
@@ -122,7 +122,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
 
     /**
      * Get the special foreground cover texture associated with this cover. Return null if one should use the texture
-     * passed to {@link Covers#registerCover(ItemStack, ITexture, CoverBehaviorBase)} or its
+     * passed to {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverBehaviorBase)} or its
      * overloads.
      */
     public final ITexture getSpecialCoverFGTexture(ForgeDirection side, int aCoverID,
@@ -132,7 +132,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
 
     /**
      * Get the special cover texture associated with this cover. Return null if one should use the texture passed to
-     * {@link Covers#registerCover(ItemStack, ITexture, CoverBehaviorBase)} or its overloads.
+     * {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverBehaviorBase)} or its overloads.
      */
     public final ITexture getSpecialCoverTexture(ForgeDirection side, int aCoverID, ISerializableObject aCoverVariable,
         ICoverable aTileEntity) {
