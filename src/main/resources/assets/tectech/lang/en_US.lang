@@ -71,6 +71,10 @@ item.em.parametrizerMemoryCard.desc.0=Stores Parameters
 item.em.parametrizerMemoryCard.desc.1=Use on Multiblock Controller to configure it
 item.em.parametrizerMemoryCard.desc.2=Use on Multiblock Controller to store parameters
 item.em.parametrizerMemoryCard.desc.3=Sneak right click to lock/unlock
+item.em.parametrizerMemoryCard.copyMessage=Configuration copied to the card
+item.em.parametrizerMemoryCard.pasteMessage=Configuration pasted from the card
+item.em.parametrizerMemoryCard.controllerMismatch=Can't paste configuration from %s to %s!
+item.em.parametrizerMemoryCard.noConfig=Can't paste from empty card!
 
 item.tm.teslaCoilCapacitor.name=Tesla Capacitor
 item.tm.teslaCoilCapacitor.0.name=LV Tesla Capacitor
