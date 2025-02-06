@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamAlloySmelterMulti;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamBlastFurnace;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamCentrifugeMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamCompressorMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamExtruder;
@@ -22,6 +23,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamAlloySmelter;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamBlastFurnace;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCentrifuge;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCompressor;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamExtruder;
@@ -85,6 +87,11 @@ public class GregtechSteamMultis {
         GregtechItemList.Controller_Steamgate.set(
             new MTESteamgate(Controller_Steamgate.ID, "gtpp.multimachine.steamgate", "Steamgate Base Block")
                 .getStackForm(1));
+        GregtechItemList.Controller_SteamBlastFurnace.set(
+            new MTESteamBlastFurnace(
+                Controller_SteamBlastFurnace.ID,
+                "gtpp.multimachine.steamblastfurnace",
+                "Open Hearth Blast Furnace").getStackForm(1));
         GregtechItemList.Controller_SteamExtruder.set(
             new MTESteamExtruder(Controller_SteamExtruder.ID, "gtpp.multimachine.steam.extruder", "Steam Conformer")
                 .getStackForm(1));
