@@ -3,9 +3,7 @@ package tectech.thing.item;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -18,7 +16,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
@@ -56,7 +53,7 @@ public final class ItemParametrizerMemoryCard extends Item {
 
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-                                  int ordinalSide, float hitX, float hitY, float hitZ) {
+        int ordinalSide, float hitX, float hitY, float hitZ) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (!(aPlayer instanceof EntityPlayerMP)) return false;
         if (!(tTileEntity instanceof IGregTechTileEntity)) return false;
@@ -128,7 +125,8 @@ public final class ItemParametrizerMemoryCard extends Item {
                     for (int hatch = 0; hatch < 10; hatch++) {
                         NBTTagCompound tag = tagList.getCompoundTagAt(hatch);
 
-                        controller.parametrization.trySetParameters(hatch, tag.getDouble("value0D"), tag.getDouble("value1D"));
+                        controller.parametrization
+                            .trySetParameters(hatch, tag.getDouble("value0D"), tag.getDouble("value1D"));
                     }
                     GTUtility
                         .sendChatToPlayer(aPlayer, translateToLocal("item.em.parametrizerMemoryCard.pasteMessage"));
@@ -146,11 +144,13 @@ public final class ItemParametrizerMemoryCard extends Item {
                 for (int hatch = 0; hatch < 10; hatch++) {
                     NBTTagCompound tagChild = new NBTTagCompound();
                     Parameters.Group.ParameterIn[] parameters = controller.parametrization.getGroup(hatch).parameterIn;
-                    if (parameters[0] != null && !parameters[0].getBrief().equals(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.9"))) {
+                    if (parameters[0] != null && !parameters[0].getBrief()
+                        .equals(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.9"))) {
                         tagChild.setDouble("value0D", parameters[0].get());
                         tagChild.setString("name0", parameters[0].getBrief());
                     }
-                    if (parameters[1] != null && !parameters[1].getBrief().equals(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.9"))) {
+                    if (parameters[1] != null && !parameters[1].getBrief()
+                        .equals(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.9"))) {
                         tagChild.setDouble("value1D", parameters[1].get());
                         tagChild.setString("name1", parameters[1].getBrief());
                     }
@@ -167,7 +167,7 @@ public final class ItemParametrizerMemoryCard extends Item {
         return false;
     }
 
-    private ArrayList<String> getControllerParameters(TTMultiblockBase controller){
+    private ArrayList<String> getControllerParameters(TTMultiblockBase controller) {
         ArrayList<String> parameterList = new ArrayList<>();
         for (int hatch = 0; hatch < 10; hatch++) {
             Parameters.Group.ParameterIn[] parameters = controller.parametrization.getGroup(hatch).parameterIn;
@@ -180,6 +180,7 @@ public final class ItemParametrizerMemoryCard extends Item {
         }
         return parameterList;
     }
+
     private boolean hasIdenticalParameterList(ArrayList<String> controllerParameters, NBTTagCompound tNBT) {
         if (tNBT.hasKey("paramList", Constants.NBT.TAG_LIST)) {
             NBTTagList tagList = tNBT.getTagList("paramList", Constants.NBT.TAG_COMPOUND);
@@ -188,10 +189,10 @@ public final class ItemParametrizerMemoryCard extends Item {
                 if (tag.hasNoTags()) {
                     continue;
                 }
-                if (tag.hasKey("name0") && !controllerParameters.contains(tag.getString("name0"))){
+                if (tag.hasKey("name0") && !controllerParameters.contains(tag.getString("name0"))) {
                     return false;
                 }
-                if (tag.hasKey("name1") && !controllerParameters.contains(tag.getString("name1"))){
+                if (tag.hasKey("name1") && !controllerParameters.contains(tag.getString("name1"))) {
                     return false;
                 }
             }
@@ -269,23 +270,21 @@ public final class ItemParametrizerMemoryCard extends Item {
                 NBTTagCompound tag = tagList.getCompoundTagAt(hatch);
                 if (tag.hasKey("name0")) {
                     aList.add(
-                        EnumChatFormatting.AQUA + (String) tag.getString("name0")
+                        EnumChatFormatting.AQUA + tag.getString("name0")
                             + ": "
                             + EnumChatFormatting.GRAY
                             + tag.getDouble("value0D"));
                 }
                 if (tag.hasKey("name1")) {
                     aList.add(
-                    EnumChatFormatting.AQUA + (String) tag.getString("name1")
-                        + ": "
-                        + EnumChatFormatting.GRAY
-                        + tag.getDouble("value1D"));
+                        EnumChatFormatting.AQUA + tag.getString("name1")
+                            + ": "
+                            + EnumChatFormatting.GRAY
+                            + tag.getDouble("value1D"));
                 }
             }
         }
     }
-
-
 
     public static void run() {
         INSTANCE = new ItemParametrizerMemoryCard();
