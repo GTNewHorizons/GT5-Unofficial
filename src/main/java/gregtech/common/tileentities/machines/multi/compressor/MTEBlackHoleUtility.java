@@ -92,8 +92,8 @@ public class MTEBlackHoleUtility extends MTEHatch {
     @Override
     public String[] getDescription() {
         return new String[] { "Optional hatch for Pseudostable Black Hole Containment Field.",
-            "Mode 1: Emit a constant redstone signal when a black hole is open",
-            "Mode 2: Emit a pulse every second while a black hole is open",
+            "Static Mode: Emit a constant redstone signal when a black hole is open",
+            "Pulse Mode: Emit a pulse every second while a black hole is open",
             "Pulse is perfectly synced to the internal timing of the machine",
             "Right click to open the GUI and change settings." };
     }
