@@ -239,7 +239,7 @@ public class GTCoverNone extends CoverBehavior {
     }
 
     @Override
-    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
+    protected ModularWindow createWindow(CoverUIBuildContext buildContext) {
         // Cancel opening the UI.
         return null;
     }
