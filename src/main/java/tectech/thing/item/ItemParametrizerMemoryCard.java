@@ -108,18 +108,18 @@ public final class ItemParametrizerMemoryCard extends Item {
                 aStack.setTagCompound(new NBTTagCompound());
             }
             NBTTagCompound tNBT = aStack.getTagCompound();
-            // Prevent pasting configuration from a different multiblock
-            if (!tNBT.getString("controller")
-                .equals(metaTE.getLocalName())) {
-                GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    String.format(
-                        translateToLocal("item.em.parametrizerMemoryCard.controllerMismatch"),
-                        tNBT.getString("controller"),
-                        metaTE.getLocalName()));
-                return true;
-            }
             if (aStack.getItemDamage() == 1) {
+                // Prevent pasting configuration from a different multiblock
+                if (!tNBT.getString("controller")
+                    .equals(controller.getLocalName())) {
+                    GTUtility.sendChatToPlayer(
+                        aPlayer,
+                        String.format(
+                            translateToLocal("item.em.parametrizerMemoryCard.controllerMismatch"),
+                            tNBT.getString("controller"),
+                            controller.getLocalName()));
+                    return true;
+                }
                 // write to controller
                 if (tNBT.hasKey("paramList", Constants.NBT.TAG_LIST)) {
                     // from controller
@@ -154,15 +154,15 @@ public final class ItemParametrizerMemoryCard extends Item {
                 for (int hatch = 0; hatch < 10; hatch++) {
                     NBTTagCompound tagChild = new NBTTagCompound();
                     Parameters.Group.ParameterIn[] parameters = controller.parametrization.getGroup(hatch).parameterIn;
-                    if (parameters[0] != null && !Objects.equals(parameters[0].getBrief(), "Unused")) {
+                    if (parameters[0] != null) {
                         tagChild.setDouble(parameters[0].getBrief(), parameters[0].get());
                     }
-                    if (parameters[1] != null && !Objects.equals(parameters[1].getBrief(), "Unused")) {
+                    if (parameters[1] != null) {
                         tagChild.setDouble(parameters[1].getBrief(), parameters[1].get());
                     }
                     tagList.appendTag(tagChild);
                 }
-                newTag.setString("controller", metaTE.getLocalName());
+                newTag.setString("controller", controller.getLocalName());
                 newTag.setString("coords", aX + ", " + aY + ", " + aZ);
                 newTag.setTag("paramList", tagList);
                 aStack.setTagCompound(newTag);
