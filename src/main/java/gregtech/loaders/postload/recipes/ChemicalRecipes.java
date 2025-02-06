@@ -3840,7 +3840,7 @@ public class ChemicalRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTBees.combs.getStackForType(CombType.AMERICIUM, 4))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Americium, 8))
-                .fluidInputs(new FluidStack(MaterialsElements.getInstance().TECHNETIUM.getPlasma(), 29))
+                .fluidInputs(new FluidStack(MaterialsElements.getInstance().BROMINE.getPlasma(), 29))
                 .duration(3 * SECONDS + 15 * TICKS)
                 .eut(TierEU.RECIPE_UEV)
                 .addTo(UniversalChemical);
@@ -3882,7 +3882,7 @@ public class ChemicalRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTBees.combs.getStackForType(CombType.EUROPIUM, 4))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Europium, 8))
-                .fluidInputs(new FluidStack(MaterialsElements.getInstance().TECHNETIUM.getPlasma(), 6))
+                .fluidInputs(new FluidStack(MaterialsElements.getInstance().BROMINE.getPlasma(), 6))
                 .duration(1 * SECONDS + 17 * TICKS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(UniversalChemical);
