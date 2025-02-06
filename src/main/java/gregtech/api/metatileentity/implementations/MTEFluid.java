@@ -51,7 +51,6 @@ import gregtech.api.enums.ToolModes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -59,12 +58,10 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GTClient;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Other;
-import gregtech.common.covers.CoverBehavior;
 import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.covers.CoverDrain;
 import gregtech.common.covers.CoverFluidRegulator;
@@ -696,30 +693,6 @@ public class MTEFluid extends MetaPipeEntity {
             }
         }
         return false;
-    }
-
-    @Override
-    public boolean letsIn(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return coverBehavior.letsFluidIn(side, aCoverID, aCoverVariable, null, aTileEntity);
-    }
-
-    @Override
-    public boolean letsOut(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return coverBehavior.letsFluidOut(side, aCoverID, aCoverVariable, null, aTileEntity);
-    }
-
-    @Override
-    public boolean letsIn(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return coverBehavior.letsFluidIn(side, aCoverID, aCoverVariable, null, aTileEntity);
-    }
-
-    @Override
-    public boolean letsOut(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return coverBehavior.letsFluidOut(side, aCoverID, aCoverVariable, null, aTileEntity);
     }
 
     @Override

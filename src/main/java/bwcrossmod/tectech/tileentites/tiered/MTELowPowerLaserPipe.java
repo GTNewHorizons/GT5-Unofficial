@@ -25,12 +25,10 @@ import bartworks.util.BWTooltipReference;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.GTClient;
-import gregtech.common.covers.CoverBehavior;
 import ic2.core.Ic2Items;
 
 @Deprecated
@@ -148,17 +146,5 @@ public class MTELowPowerLaserPipe extends MTECable implements LowPowerLaser {
     public long transferElectricity(ForgeDirection side, long aVoltage, long aAmperage,
         HashSet<TileEntity> aAlreadyPassedSet) {
         return 0L;
-    }
-
-    @Override
-    public boolean letsIn(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean letsOut(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return true;
     }
 }

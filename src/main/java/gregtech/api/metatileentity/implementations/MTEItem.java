@@ -28,16 +28,12 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityItemPipe;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.GTClient;
-import gregtech.common.covers.CoverBehavior;
-import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.covers.CoverInfo;
 
 public class MTEItem extends MetaPipeEntity implements IMetaTileEntityItemPipe {
@@ -247,30 +243,6 @@ public class MTEItem extends MetaPipeEntity implements IMetaTileEntityItemPipe {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public boolean letsIn(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return coverBehavior.letsItemsIn(side, aCoverID, aCoverVariable, -1, aTileEntity);
-    }
-
-    @Override
-    public boolean letsOut(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return coverBehavior.letsItemsOut(side, aCoverID, aCoverVariable, -1, aTileEntity);
-    }
-
-    @Override
-    public boolean letsIn(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return coverBehavior.letsItemsIn(side, aCoverID, aCoverVariable, -1, aTileEntity);
-    }
-
-    @Override
-    public boolean letsOut(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return coverBehavior.letsItemsOut(side, aCoverID, aCoverVariable, -1, aTileEntity);
     }
 
     @Override
