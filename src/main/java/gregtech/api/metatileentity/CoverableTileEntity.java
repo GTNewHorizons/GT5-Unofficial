@@ -25,7 +25,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -41,7 +40,7 @@ import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GUITextureSet;
@@ -54,7 +53,6 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.GTClient;
-import gregtech.common.covers.CoverFluidfilter;
 import gregtech.common.covers.CoverInfo;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -96,9 +94,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         }
         if (tList.tagCount() > 0) {
             aNBT.setTag(GTValues.NBT.COVERS, tList);
-            // Backwards compat, in case of a revert... for now
-            final int[] coverSides = new int[] { 0, 0, 0, 0, 0, 0 };
-            aNBT.setIntArray("mCoverSides", coverSides);
         }
 
         if (mStrongRedstone > 0) aNBT.setByte("mStrongRedstone", mStrongRedstone);
@@ -117,8 +112,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
         if (aNBT.hasKey(GTValues.NBT.COVERS)) {
             readCoverInfoNBT(aNBT);
-        } else if (aNBT.hasKey("mCoverSides")) {
-            readLegacyCoverInfoNBT(aNBT);
         }
     }
 
@@ -129,44 +122,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             final CoverInfo coverInfo = new CoverInfo(this, tNBT);
             this.setCoverInfoAtSide(coverInfo.getSide(), coverInfo);
             if (coverInfo.isDataNeededOnClient()) issueCoverUpdate(ForgeDirection.getOrientation(i));
-        }
-    }
-
-    public void readLegacyCoverInfoNBT(NBTTagCompound aNBT) {
-        final int[] coverIDs = aNBT.hasKey("mCoverSides") ? aNBT.getIntArray("mCoverSides")
-            : new int[] { 0, 0, 0, 0, 0, 0 };
-        final boolean hasOldCoverData = (aNBT.hasKey("mCoverData", 11) && aNBT.getIntArray("mCoverData").length == 6);
-        final int[] tOldData = hasOldCoverData ? aNBT.getIntArray("mCoverData") : new int[] {};
-
-        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            final int ordinalSide = side.ordinal();
-            if (coverIDs[ordinalSide] == 0) continue;
-
-            final CoverInfo coverInfo = new CoverInfo(side, coverIDs[ordinalSide], this, null);
-            final CoverBehaviorBase<?> coverBehavior = coverInfo.getCoverBehavior();
-            if (coverInfo.hasNoBehavior()) continue;
-
-            ISerializableObject coverData = null;
-            if (hasOldCoverData) {
-                if (coverBehavior instanceof CoverFluidfilter) {
-                    final String filterKey = String.format("fluidFilter%d", ordinalSide);
-                    if (aNBT.hasKey(filterKey)) {
-                        coverData = coverInfo.getCoverBehavior()
-                            .createDataObject(
-                                (tOldData[ordinalSide] & 7)
-                                    | (FluidRegistry.getFluidID(aNBT.getString(filterKey)) << 3));
-                    }
-                } else {
-                    coverData = coverBehavior.createDataObject(tOldData[ordinalSide]);
-                }
-            } else {
-                if (aNBT.hasKey(COVER_DATA_NBT_KEYS[ordinalSide]))
-                    coverData = coverBehavior.createDataObject(aNBT.getTag(COVER_DATA_NBT_KEYS[ordinalSide]));
-            }
-
-            if (coverData != null) coverInfo.setCoverData(coverData);
-            setCoverInfoAtSide(side, coverInfo);
-            if (coverInfo.isDataNeededOnClient()) issueCoverUpdate(side);
         }
     }
 
@@ -244,7 +199,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final ITexture coverTexture = (!(this instanceof BaseMetaPipeEntity)) ? coverInfo.getSpecialCoverFGTexture()
             : coverInfo.getSpecialCoverTexture();
 
-        return coverTexture != null ? coverTexture : GregTechAPI.sCovers.get(new GTItemStack(getCoverIDAtSide(side)));
+        return coverTexture != null ? coverTexture : CoverRegistry.getCoverTexture(getCoverIDAtSide(side));
     }
 
     protected void requestCoverDataIfNeeded() {
@@ -299,9 +254,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     @Override
-    public void setCoverItemAtSide(ForgeDirection side, ItemStack aCover) {
-        GregTechAPI.getCoverBehaviorNew(aCover)
-            .placeCover(side, aCover, this);
+    public void attachCover(EntityPlayer aPlayer, ItemStack aCover, ForgeDirection side) {
+        CoverBehaviorBase<?> coverBehavior = CoverRegistry.getCoverBehaviorNew(aCover);
+        coverBehavior.placeCover(side, aCover, this);
+        coverBehavior.onPlayerAttach(aPlayer, aCover, this, side);
     }
 
     @Override
@@ -512,7 +468,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         for (byte i = 0; i < tList.tagCount(); i++) {
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
             final CoverInfo coverInfo = new CoverInfo(this, tNBT);
-            if (!coverInfo.isValid() || coverInfo.hasNoBehavior()) continue;
+            if (!coverInfo.isValid()) continue;
 
             final ItemStack coverStack = coverInfo.getDisplayStack();
             if (coverStack != null) {
@@ -559,7 +515,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         for (byte i = 0; i < tList.tagCount(); i++) {
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
             final CoverInfo coverInfo = new CoverInfo(null, tNBT);
-            if (!coverInfo.isValid() || coverInfo.hasNoBehavior()) continue;
+            if (!coverInfo.isValid()) continue;
 
             final ItemStack coverStack = coverInfo.getDisplayStack();
             if (coverStack != null) {
@@ -570,28 +526,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                             FACES[coverInfo.getSide()
                                 .ordinal()]),
                         coverStack.getDisplayName()));
-            }
-        }
-
-        if (aNBT.hasKey("mCoverSides")) {
-            final int[] mCoverSides = aNBT.getIntArray("mCoverSides");
-            if (mCoverSides != null && mCoverSides.length == 6) {
-                for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
-                    final int i = tSide.ordinal();
-                    final int coverId = mCoverSides[i];
-                    if (coverId == 0) continue;
-                    final CoverBehaviorBase<?> behavior = GregTechAPI.getCoverBehaviorNew(coverId);
-                    if (behavior == null || behavior == GregTechAPI.sNoBehavior) continue;
-                    if (!aNBT.hasKey(CoverableTileEntity.COVER_DATA_NBT_KEYS[i])) continue;
-                    final ISerializableObject dataObject = behavior
-                        .createDataObject(aNBT.getTag(CoverableTileEntity.COVER_DATA_NBT_KEYS[i]));
-                    final ItemStack coverStack = behavior.getDisplayStack(coverId, dataObject);
-                    if (coverStack != null) {
-                        aList.add(
-                            String
-                                .format("Cover on %s side: %s", getTranslation(FACES[i]), coverStack.getDisplayName()));
-                    }
-                }
             }
         }
 
