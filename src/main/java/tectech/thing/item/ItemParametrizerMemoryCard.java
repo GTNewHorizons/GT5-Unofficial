@@ -144,6 +144,7 @@ public final class ItemParametrizerMemoryCard extends Item {
                 for (int hatch = 0; hatch < 10; hatch++) {
                     NBTTagCompound tagChild = new NBTTagCompound();
                     Parameters.Group.ParameterIn[] parameters = controller.parametrization.getGroup(hatch).parameterIn;
+                    //Tesla tower for some reason has a bunch of parameters called "unused"
                     if (parameters[0] != null && !parameters[0].getBrief()
                         .equals(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.9"))) {
                         tagChild.setDouble("value0D", parameters[0].get());
