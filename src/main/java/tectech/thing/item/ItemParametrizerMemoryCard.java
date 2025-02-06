@@ -188,10 +188,10 @@ public final class ItemParametrizerMemoryCard extends Item {
                 if (tag.hasNoTags()) {
                     continue;
                 }
-                if (tNBT.hasKey("name0") && !controllerParameters.contains(tNBT.getString("name0"))){
+                if (tag.hasKey("name0") && !controllerParameters.contains(tag.getString("name0"))){
                     return false;
                 }
-                if (tNBT.hasKey("name1") && !controllerParameters.contains(tNBT.getString("name1"))){
+                if (tag.hasKey("name1") && !controllerParameters.contains(tag.getString("name1"))){
                     return false;
                 }
             }
