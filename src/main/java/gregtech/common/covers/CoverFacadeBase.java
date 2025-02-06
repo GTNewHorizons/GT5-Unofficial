@@ -22,7 +22,6 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTRenderingWorld;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;

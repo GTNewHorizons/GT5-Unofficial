@@ -12,8 +12,8 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.api.gui.modularui.IDataFollowerWidget;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.CoverBehaviorBase;
 
 public class CoverDataControllerWidget<T extends ISerializableObject> extends DataControllerWidget<T> {
 

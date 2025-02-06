@@ -8,7 +8,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.ISerializableObject;
 
 public class CoverCrafting extends CoverBehavior {

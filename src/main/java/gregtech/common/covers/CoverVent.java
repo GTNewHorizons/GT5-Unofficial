@@ -13,7 +13,6 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GTUtility;
 
 public class CoverVent extends CoverBehavior {

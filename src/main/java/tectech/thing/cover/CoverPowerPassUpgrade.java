@@ -5,7 +5,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.CoverBehavior;
+import gregtech.common.covers.CoverBehavior;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
 public class CoverPowerPassUpgrade extends CoverBehavior {

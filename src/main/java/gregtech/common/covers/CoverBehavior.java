@@ -1,4 +1,4 @@
-package gregtech.api.util;
+package gregtech.common.covers;
 
 import static gregtech.api.enums.GTValues.E;
 
@@ -13,6 +13,8 @@ import net.minecraftforge.fluids.Fluid;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.ISerializableObject;
 
 /**
  * For Covers with a special behavior. Has fixed storage format of 4 byte. Not very convenient...

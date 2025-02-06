@@ -29,8 +29,8 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.CoverBehavior;
 import gregtech.common.GTClient;
+import gregtech.common.covers.CoverBehavior;
 import ic2.core.Ic2Items;
 
 @Deprecated

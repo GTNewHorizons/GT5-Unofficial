@@ -11,8 +11,8 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.CoverBehavior;
 
 public class GTCoverNone extends CoverBehavior {
 
