@@ -41,7 +41,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -50,10 +49,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTGCCompat;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.GTClient;
-import gregtech.common.covers.CoverBehavior;
-import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.covers.CoverInfo;
 import gregtech.common.covers.CoverSolarPanel;
 import ic2.api.energy.EnergyNet;
@@ -294,30 +290,6 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public boolean letsIn(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return coverBehavior.letsEnergyIn(side, aCoverID, aCoverVariable, aTileEntity);
-    }
-
-    @Override
-    public boolean letsOut(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return coverBehavior.letsEnergyOut(side, aCoverID, aCoverVariable, aTileEntity);
-    }
-
-    @Override
-    public boolean letsIn(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return coverBehavior.letsEnergyIn(side, aCoverID, aCoverVariable, aTileEntity);
-    }
-
-    @Override
-    public boolean letsOut(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return coverBehavior.letsEnergyOut(side, aCoverID, aCoverVariable, aTileEntity);
     }
 
     @Override

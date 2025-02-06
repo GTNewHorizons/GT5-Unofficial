@@ -22,13 +22,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtil;
-import gregtech.api.util.ISerializableObject;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.covers.CoverBehavior;
-import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.covers.CoverInfo;
 
 /**
@@ -393,31 +389,11 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         return (mConnections & sideDirection.flag) != 0;
     }
 
-    public boolean letsIn(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return false;
-    }
-
     public boolean letsIn(CoverInfo coverInfo) {
         return false;
     }
 
-    public boolean letsOut(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return false;
-    }
-
     public boolean letsOut(CoverInfo coverInfo) {
-        return false;
-    }
-
-    public boolean letsIn(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return false;
-    }
-
-    public boolean letsOut(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
         return false;
     }
 
