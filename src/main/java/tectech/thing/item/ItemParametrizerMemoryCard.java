@@ -110,12 +110,17 @@ public final class ItemParametrizerMemoryCard extends Item {
             if (aStack.getItemDamage() == 1) {
                 // Prevent pasting configuration from a different multiblock
                 if (!hasIdenticalParameterList(getControllerParameters(controller), tNBT)) {
-                    GTUtility.sendChatToPlayer(
-                        aPlayer,
-                        String.format(
+                    String reason;
+                    if (!tNBT.hasKey("controller")) {
+                        reason = translateToLocal("item.em.parametrizerMemoryCard.noConfig");
+                    } else {
+                        reason = String.format(
                             translateToLocal("item.em.parametrizerMemoryCard.controllerMismatch"),
                             tNBT.getString("controller"),
-                            controller.getLocalName()));
+                            controller.getLocalName());
+                    }
+                    GTUtility.sendChatToPlayer(aPlayer, reason);
+
                     return true;
                 }
                 // write to controller
@@ -144,7 +149,7 @@ public final class ItemParametrizerMemoryCard extends Item {
                 for (int hatch = 0; hatch < 10; hatch++) {
                     NBTTagCompound tagChild = new NBTTagCompound();
                     Parameters.Group.ParameterIn[] parameters = controller.parametrization.getGroup(hatch).parameterIn;
-                    //Tesla tower for some reason has a bunch of parameters called "unused"
+                    // Tesla tower for some reason has a bunch of parameters called "unused"
                     if (parameters[0] != null && !parameters[0].getBrief()
                         .equals(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.9"))) {
                         tagChild.setDouble("value0D", parameters[0].get());
