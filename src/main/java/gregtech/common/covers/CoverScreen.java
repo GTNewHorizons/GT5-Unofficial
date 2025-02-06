@@ -6,7 +6,6 @@ import net.minecraftforge.fluids.Fluid;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.CoverBehavior;
 
 public class CoverScreen extends CoverBehavior {
 

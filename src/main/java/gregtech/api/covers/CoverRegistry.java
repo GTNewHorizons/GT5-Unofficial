@@ -13,8 +13,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GTCoverDefault;
 import gregtech.api.objects.GTCoverNone;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.CoverBehaviorBase;
 
 public class CoverRegistry {
 

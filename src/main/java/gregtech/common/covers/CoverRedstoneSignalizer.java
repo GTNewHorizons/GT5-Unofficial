@@ -7,7 +7,6 @@ import net.minecraftforge.fluids.Fluid;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GTUtility;
 
 @SuppressWarnings("unused") // TODO: Consider re-registering this

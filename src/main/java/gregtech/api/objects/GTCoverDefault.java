@@ -5,8 +5,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.CoverBehavior;
 
 public class GTCoverDefault extends CoverBehavior {
 

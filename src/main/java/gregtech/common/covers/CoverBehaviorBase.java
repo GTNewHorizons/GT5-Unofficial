@@ -1,4 +1,4 @@
-package gregtech.api.util;
+package gregtech.common.covers;
 
 import static gregtech.api.enums.GTValues.E;
 
@@ -34,7 +34,10 @@ import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.gui.widgets.CoverTickRateButton;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.common.covers.CoverInfo;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTTooltipDataCache;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.ISerializableObject;
 
 /**
  * For Covers with a special behavior.
