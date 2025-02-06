@@ -12998,7 +12998,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 HATCH_BLACK_HOLE_UTILITY.ID,
                 "hatch.blackholeutility",
                 "Black Hole Utility Hatch",
-                8).getStackForm(1));
+                11).getStackForm(1));
         ItemList.Hatch_pHSensor
             .set(new MTEHatchPHSensor(HATCH_PH_SENSOR.ID, "hatch.phsensor", "pH Sensor Hatch", 7).getStackForm(1));
         ItemList.Hatch_LensHousing

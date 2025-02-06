@@ -1,7 +1,5 @@
 package gregtech.common.tileentities.machines.multi.compressor;
 
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,13 +10,13 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
@@ -32,8 +30,6 @@ import gregtech.api.render.TextureFactory;
 
 public class MTEBlackHoleUtility extends MTEHatch {
 
-    protected float threshold = 0;
-    protected boolean inverted = false;
     private boolean isOn = false;
 
     private static final IIconContainer textureFont = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR;
@@ -59,11 +55,6 @@ public class MTEBlackHoleUtility extends MTEHatch {
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
 
@@ -110,12 +101,14 @@ public class MTEBlackHoleUtility extends MTEHatch {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         mode = aNBT.getInteger("mode");
+        pulseTimer = aNBT.getInteger("pulseTimer");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mode", mode);
+        aNBT.setInteger("pulseTimer", pulseTimer);
         super.saveNBTData(aNBT);
     }
 
@@ -174,18 +167,17 @@ public class MTEBlackHoleUtility extends MTEHatch {
                 .setBackground(() -> {
                     List<UITexture> ret = new ArrayList<>();
                     ret.add(GTUITextures.BUTTON_STANDARD);
-                    ret.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
+                    ret.add((mode == 1) ? GTUITextures.OVERLAY_BUTTON_REDSTONE_ON : GTUITextures.OVERLAY_BUTTON_ANALOG);
                     return ret.toArray(new IDrawable[0]);
                 })
                 .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> mode, (val) -> mode = val), builder)
-                .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.mode_switch"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(10, 8)
                 .setSize(16, 16))
             .widget(
-                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.heat_sensor"))
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(90, 30));
+                new DynamicTextWidget(
+                    () -> new Text(
+                        StatCollector
+                            .translateToLocal((mode == 1) ? "GT5U.gui.text.static_mode" : "GT5U.gui.text.pulse_mode")))
+                                .setPos(31, 13));
     }
 }
