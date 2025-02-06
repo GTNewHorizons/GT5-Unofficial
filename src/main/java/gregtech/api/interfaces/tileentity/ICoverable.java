@@ -1,5 +1,6 @@
 package gregtech.api.interfaces.tileentity;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -25,7 +26,14 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
 
     boolean setCoverIDAtSideNoUpdate(ForgeDirection side, int aID);
 
-    void setCoverItemAtSide(ForgeDirection side, ItemStack aCover);
+    /**
+     * Called when the cover is initially attached to a machine.
+     *
+     * @param player The attaching player
+     * @param aCover An {@link ItemStack} containing the cover
+     * @param side   Which side the cover is attached to
+     */
+    void attachCover(EntityPlayer player, ItemStack aCover, ForgeDirection side);
 
     default CoverInfo getCoverInfoAtSide(ForgeDirection side) {
         return null;
