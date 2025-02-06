@@ -23,6 +23,7 @@ import appeng.api.networking.pathing.IPathingGrid;
 import appeng.api.util.AECableType;
 import appeng.core.localization.WailaText;
 import appeng.me.helpers.AENetworkProxy;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
@@ -41,6 +42,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
+import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
@@ -78,6 +80,8 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
      */
     private IGregTechTileEntity mBaseMetaTileEntity;
 
+    private String playerLang;
+
     /**
      * This registers your Machine at the List. Use only ID's larger than 2048 - the ones lower are reserved by GT.
      * See also the list in the API package - it has a description that contains all the reservations.
@@ -101,7 +105,13 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
         setBaseMetaTileEntity(GregTechAPI.constructBaseMetaTileEntity());
         getBaseMetaTileEntity().setMetaTileID((short) aID);
 
-        inventoryHandler = new ItemStackHandler(mInventory);
+        inventoryHandler = new ItemStackHandler(mInventory) {
+
+            @Override
+            protected void onContentsChanged(int slot) {
+                MetaTileEntity.this.onContentsChanged(slot);
+            }
+        };
     }
 
     /**
@@ -109,7 +119,13 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
      */
     public MetaTileEntity(String aName, int aInvSlotCount) {
         super(aName, aInvSlotCount);
-        inventoryHandler = new ItemStackHandler(mInventory);
+        inventoryHandler = new ItemStackHandler(mInventory) {
+
+            @Override
+            protected void onContentsChanged(int slot) {
+                MetaTileEntity.this.onContentsChanged(slot);
+            }
+        };
         colorOverride = GUIColorOverride.get(getGUITextureSet().getMainBackground().location);
     }
 
@@ -257,7 +273,39 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if (aPlayer instanceof EntityPlayerMPAccessor) {
+                playerLang = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
+            }
+        }
+
         return onRightclick(aBaseMetaTileEntity, aPlayer);
+    }
+
+    protected String translate(String key) {
+        String base;
+
+        if (playerLang != null) {
+            // note: playerLang is set in onRightclick, so this may not be 100% correct in some situations
+            // on server
+            base = LanguageRegistry.instance()
+                .getStringLocalization(key, playerLang);
+        } else {
+            // on client
+            base = LanguageRegistry.instance()
+                .getStringLocalization(key);
+        }
+
+        if (base.isEmpty()) {
+            base = LanguageRegistry.instance()
+                .getStringLocalization(key, "en_US");
+        }
+
+        return base;
+    }
+
+    protected String translate(String key, Object... params) {
+        return String.format(translate(key), params);
     }
 
     @Nullable
@@ -542,6 +590,16 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
             }
         }
         super.setInventorySlotContents(aIndex, aStack);
+        onContentsChanged(aIndex);
+    }
+
+    /**
+     * Called when a slot is changed.
+     * Note: {@link #setInventorySlotContents} is not called when the player interacts with a
+     * {@link gregtech.api.interfaces.modularui.IAddInventorySlots} slot.
+     */
+    protected void onContentsChanged(int slot) {
+
     }
 
     public int fill_default(ForgeDirection side, FluidStack aFluid, boolean doFill) {
