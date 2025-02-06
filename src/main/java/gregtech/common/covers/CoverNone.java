@@ -1,4 +1,4 @@
-package gregtech.api.objects;
+package gregtech.common.covers;
 
 import static gregtech.api.enums.GTValues.E;
 
@@ -12,14 +12,13 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.covers.CoverBehavior;
 
-public class GTCoverNone extends CoverBehavior {
+public class CoverNone extends CoverBehavior {
 
     /**
      * This is the Dummy, if there is no Cover
      */
-    public GTCoverNone() {}
+    public CoverNone() {}
 
     @Override
     public float getBlastProofLevel(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
