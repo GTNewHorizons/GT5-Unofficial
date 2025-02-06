@@ -126,11 +126,6 @@ public class CircuitBasicLogic extends CircuitryBehavior {
     }
 
     @Override
-    public boolean displayItemStack(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock, int aIndex) {
-        return false;
-    }
-
-    @Override
     public String getDataDisplay(int[] aCircuitData, int aCircuitDataIndex) {
         return "";
     }
