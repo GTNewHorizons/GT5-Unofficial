@@ -10,11 +10,11 @@ import org.jetbrains.annotations.NotNull;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.objects.GTCoverDefault;
-import gregtech.api.objects.GTCoverNone;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverBehaviorBase;
+import gregtech.common.covers.CoverDefault;
+import gregtech.common.covers.CoverNone;
 
 public class CoverRegistry {
 
@@ -29,7 +29,7 @@ public class CoverRegistry {
     /**
      * This is the generic Cover behavior. Used for the default Covers, which have no Behavior.
      */
-    private static final CoverBehaviorBase<?> defaultBehavior = new GTCoverDefault(), noBehavior = new GTCoverNone();
+    private static final CoverBehaviorBase<?> defaultBehavior = new CoverDefault(), noBehavior = new CoverNone();
 
     static {
         GregTechAPI.sItemStackMappings.add(coverTextures);

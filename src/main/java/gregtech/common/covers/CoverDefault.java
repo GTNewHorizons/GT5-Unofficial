@@ -1,4 +1,4 @@
-package gregtech.api.objects;
+package gregtech.common.covers;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -6,14 +6,13 @@ import net.minecraftforge.fluids.Fluid;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.CoverBehavior;
 
-public class GTCoverDefault extends CoverBehavior {
+public class CoverDefault extends CoverBehavior {
 
     /**
      * This is the Dummy, if there is a generic Cover without behavior
      */
-    public GTCoverDefault() {
+    public CoverDefault() {
         super();
     }
 
