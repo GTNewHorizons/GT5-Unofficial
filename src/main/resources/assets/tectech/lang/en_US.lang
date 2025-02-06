@@ -1343,6 +1343,7 @@ GT5U.gui.text.invalid_hysteresis=§7Invalid hysteresis settings
 GT5U.gui.text.invalid_transfer_radius=§7Invalid transfer radius settings
 GT5U.gui.text.invalid_voltage_setting=§7Invalid voltage setting
 GT5U.gui.text.invalid_current_setting=§7Invalid current setting
+GT5U.gui.text.invalid_primary_winding=§7Primary winding tier is too low!
 GT5U.gui.text.invalid_time_setting=§7Invalid time setting
 GT5U.gui.text.invalid_overdrive_setting=§7Invalid overdrive setting
 GT5U.gui.text.insufficient_power_no_val=§7Insufficient power
