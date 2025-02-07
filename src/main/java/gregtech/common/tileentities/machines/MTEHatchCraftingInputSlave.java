@@ -235,6 +235,10 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
 
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
+        if (master == null) {
+            aPlayer.addChatMessage(new ChatComponentText("Can't copy an unlinked proxy!"));
+            return;
+        }
 
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("type", "CraftingInputBuffer");
