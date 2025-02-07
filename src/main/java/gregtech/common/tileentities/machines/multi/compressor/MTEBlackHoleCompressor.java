@@ -710,7 +710,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     public int getMaxParallelRecipes() {
         int parallels = (8 * GTUtility.getTierExtended(this.getMaxInputEu()));
         if (blackHoleStatus == 4) parallels *= 4;
-        else if (blackHoleStability < 60) {
+        else if (blackHoleStability < 50) {
             parallels *= 2;
             if (blackHoleStability < 20) parallels *= 2;
         }
