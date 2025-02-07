@@ -7,13 +7,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 
-public class InventoryDataPacket extends DataPacket<RecipeAssemblyLine[]> {
+public class ALRecipeDataPacket extends DataPacket<RecipeAssemblyLine[]> {
 
-    public InventoryDataPacket(RecipeAssemblyLine[] content) {
+    public ALRecipeDataPacket(RecipeAssemblyLine[] content) {
         super(content);
     }
 
-    public InventoryDataPacket(NBTTagCompound compound) {
+    public ALRecipeDataPacket(NBTTagCompound compound) {
         super(compound);
     }
 

@@ -24,7 +24,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
-import tectech.mechanics.dataTransport.InventoryDataPacket;
+import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.util.CommonValues;
 
@@ -123,7 +123,7 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
         return null;
     }
 
-    public void setContents(InventoryDataPacket iIn) {
+    public void setContents(ALRecipeDataPacket iIn) {
         if (iIn == null) {
             recipes = null;
         } else {

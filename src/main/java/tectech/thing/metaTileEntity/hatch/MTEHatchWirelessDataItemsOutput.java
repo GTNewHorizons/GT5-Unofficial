@@ -27,12 +27,12 @@ import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.common.WirelessDataStore;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import tectech.mechanics.dataTransport.InventoryDataPacket;
+import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.util.CommonValues;
 
 public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
 
-    public InventoryDataPacket dataPacket = null;
+    public ALRecipeDataPacket dataPacket = null;
 
     public MTEHatchWirelessDataItemsOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -104,7 +104,7 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         if (aNBT.hasKey("eDATA")) {
-            dataPacket = new InventoryDataPacket(aNBT.getCompoundTag("eDATA"));
+            dataPacket = new ALRecipeDataPacket(aNBT.getCompoundTag("eDATA"));
         }
     }
 

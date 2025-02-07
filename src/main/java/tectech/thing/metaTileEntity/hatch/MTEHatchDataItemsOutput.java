@@ -20,14 +20,14 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import tectech.mechanics.dataTransport.InventoryDataPacket;
+import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
 import tectech.util.CommonValues;
 
-public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<InventoryDataPacket> {
+public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataPacket> {
 
-    private InventoryDataPacket previousPacket;
+    private ALRecipeDataPacket previousPacket;
 
     public MTEHatchDataItemsOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -87,8 +87,8 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<InventoryData
     }
 
     @Override
-    protected InventoryDataPacket loadPacketFromNBT(NBTTagCompound nbt) {
-        return new InventoryDataPacket(nbt);
+    protected ALRecipeDataPacket loadPacketFromNBT(NBTTagCompound nbt) {
+        return new ALRecipeDataPacket(nbt);
     }
 
     @Override

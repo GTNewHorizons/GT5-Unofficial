@@ -45,7 +45,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.WirelessComputationPacket;
-import tectech.mechanics.dataTransport.InventoryDataPacket;
+import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataItemsInput;
@@ -189,12 +189,12 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             RecipeAssemblyLine[] recipeArray = availableRecipes.toArray(new RecipeAssemblyLine[0]);
 
             for (MTEHatchDataItemsOutput hatch : validMTEList(eStacksDataOutputs)) {
-                hatch.q = new InventoryDataPacket(recipeArray);
+                hatch.q = new ALRecipeDataPacket(recipeArray);
             }
 
             if (wirelessModeEnabled) {
                 for (MTEHatchWirelessDataItemsOutput hatch : validMTEList(eWirelessStacksDataOutputs)) {
-                    hatch.dataPacket = new InventoryDataPacket(recipeArray);
+                    hatch.dataPacket = new ALRecipeDataPacket(recipeArray);
                 }
             }
         } else {
