@@ -833,6 +833,16 @@ public final class RecipeMaps {
         .minInputs(1, 0)
         .disableOptimize()
         .build();
+    public static final RecipeMap<RecipeMapBackend> solarFactoryRecipes = RecipeMapBuilder.of("gt.recipe.solarfactory")
+        .maxIO(9, 1, 3, 0)
+        .minInputs(1, 0)
+        // .neiRecipeComparator(
+        // Comparator
+        // .<GTRecipe, SolarFactoryRecipeData>comparing(
+        // recipe -> recipe
+        // .getMetadataOrDefault(SolarFactoryRecipeDataKey.INSTANCE, new SolarFactoryRecipeData(0, 0, 0)))
+        // .thenComparing(GTRecipe::compareTo))
+        .build();
     public static final RecipeMap<RecipeMapBackend> wiremillRecipes = RecipeMapBuilder.of("gt.recipe.wiremill")
         .maxIO(2, 1, 0, 0)
         .minInputs(1, 0)

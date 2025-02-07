@@ -1789,6 +1789,7 @@ public enum ItemList implements IItemContainer {
     OreDrill4,
     PyrolyseOven,
     OilCracker,
+    SolarFactory,
     NanoForge,
     Crop_Drop_UUMBerry,
     Crop_Drop_UUABerry,
