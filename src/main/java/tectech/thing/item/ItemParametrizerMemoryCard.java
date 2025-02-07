@@ -79,24 +79,15 @@ public final class ItemParametrizerMemoryCard extends Item {
                     return true;
                 }
                 // write to controller
-                if (tNBT.hasKey("paramList", Constants.NBT.TAG_LIST)) {
-                    // from controller
-                    NBTTagList tagList = tNBT.getTagList("paramList", Constants.NBT.TAG_COMPOUND);
-                    for (int hatch = 0; hatch < 10; hatch++) {
-                        NBTTagCompound tag = tagList.getCompoundTagAt(hatch);
+                NBTTagList tagList = tNBT.getTagList("paramList", Constants.NBT.TAG_COMPOUND);
+                for (int hatch = 0; hatch < 10; hatch++) {
+                    NBTTagCompound tag = tagList.getCompoundTagAt(hatch);
 
-                        controller.parametrization
-                            .trySetParameters(hatch, tag.getDouble("value0D"), tag.getDouble("value1D"));
-                    }
-                    GTUtility
-                        .sendChatToPlayer(aPlayer, translateToLocal("item.em.parametrizerMemoryCard.pasteMessage"));
-                } else {
-                    // from parametrizer
-                    controller.parametrization.trySetParameters(
-                        tNBT.getInteger("param"),
-                        tNBT.getDouble("value0D"),
-                        tNBT.getDouble("value1D"));
+                    controller.parametrization
+                        .trySetParameters(hatch, tag.getDouble("value0D"), tag.getDouble("value1D"));
                 }
+                GTUtility
+                    .sendChatToPlayer(aPlayer, translateToLocal("item.em.parametrizerMemoryCard.pasteMessage"));
             } else {
                 // read from controller
                 NBTTagCompound newTag = new NBTTagCompound();
