@@ -506,7 +506,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
             outputVoltageMax = 0;
             return SimpleCheckRecipeResult.ofSuccess("routing");
         } else if (vTier > mTier && getEUVar() > 0) {
-            explodeMultiblock();
+            return SimpleCheckRecipeResult.ofFailure("invalid_primary_winding");
         }
 
         outputVoltageMax = V[vTier + 1];
