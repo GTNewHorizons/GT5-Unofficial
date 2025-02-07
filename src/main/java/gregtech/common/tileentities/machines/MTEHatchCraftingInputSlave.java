@@ -240,17 +240,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
             return;
         }
 
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setString("type", "CraftingInputBuffer");
-        tag.setInteger("x", masterX);
-        tag.setInteger("y", masterY);
-        tag.setInteger("z", masterZ);
-
-        dataStick.stackTagCompound = tag;
-
-        dataStick.setStackDisplayName(
-            "Crafting Input Buffer Link Data Stick (" + masterX + ", " + masterY + ", " + masterZ + ")");
-        aPlayer.addChatMessage(new ChatComponentText("Saved Link Data to Data Stick"));
+        master.saveToDataStick(master.getBaseMetaTileEntity(), aPlayer, dataStick);
     }
 
     @Override
