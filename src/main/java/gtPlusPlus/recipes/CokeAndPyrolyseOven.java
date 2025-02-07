@@ -8,7 +8,6 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cokeOvenRecipes;
 
 import java.util.ArrayList;
 
-import gtPlusPlus.core.item.ModItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -24,6 +23,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
@@ -62,13 +62,14 @@ public class CokeAndPyrolyseOven {
             .eut(TierEU.RECIPE_MV)
             .addTo(pyrolyseRecipes);
 
-        // Cactus and Sugar charcoal/coke, copied over from the ICO and adjusted for pyrolyse (*20 input and output, duration*1.25 per item.)
-        ItemStack[] aInputs1 = new ItemStack[] { ItemUtils.getSimpleStack(Blocks.cactus,20),
-            ItemUtils.getSimpleStack(Items.reeds,20) };
-        ItemStack[] aInputs2 = new ItemStack[] { ItemUtils.getSimpleStack(ModItems.itemCactusCharcoal,20),
-            ItemUtils.getSimpleStack(ModItems.itemSugarCharcoal,20) };
-        ItemStack[] aOutputs = new ItemStack[] { ItemUtils.getSimpleStack(ModItems.itemCactusCoke,20),
-            ItemUtils.getSimpleStack(ModItems.itemSugarCoke,20) };
+        // Cactus and Sugar charcoal/coke, copied over from the ICO and adjusted for pyrolyse (*20 input and output,
+        // duration*1.25 per item.)
+        ItemStack[] aInputs1 = new ItemStack[] { ItemUtils.getSimpleStack(Blocks.cactus, 20),
+            ItemUtils.getSimpleStack(Items.reeds, 20) };
+        ItemStack[] aInputs2 = new ItemStack[] { ItemUtils.getSimpleStack(ModItems.itemCactusCharcoal, 20),
+            ItemUtils.getSimpleStack(ModItems.itemSugarCharcoal, 20) };
+        ItemStack[] aOutputs = new ItemStack[] { ItemUtils.getSimpleStack(ModItems.itemCactusCoke, 20),
+            ItemUtils.getSimpleStack(ModItems.itemSugarCoke, 20) };
         for (int i = 0; i < aOutputs.length; i++) {
             // Plant to Charcoal
             GTValues.RA.stdBuilder()
