@@ -64,7 +64,7 @@ public class CoverRegistry {
     }
 
     public static boolean isCover(@NotNull ItemStack stack) {
-        return coverTextures.containsKey(new GTItemStack(stack));
+        return GTUtility.isStackInList(new GTItemStack(stack), coverTextures.keySet());
     }
 
     public static ITexture getCoverTexture(int coverId) {
