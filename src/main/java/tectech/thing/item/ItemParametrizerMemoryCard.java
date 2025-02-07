@@ -86,8 +86,7 @@ public final class ItemParametrizerMemoryCard extends Item {
                     controller.parametrization
                         .trySetParameters(hatch, tag.getDouble("value0D"), tag.getDouble("value1D"));
                 }
-                GTUtility
-                    .sendChatToPlayer(aPlayer, translateToLocal("item.em.parametrizerMemoryCard.pasteMessage"));
+                GTUtility.sendChatToPlayer(aPlayer, translateToLocal("item.em.parametrizerMemoryCard.pasteMessage"));
             } else {
                 // read from controller
                 NBTTagCompound newTag = new NBTTagCompound();
