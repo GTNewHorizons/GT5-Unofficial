@@ -3046,9 +3046,8 @@ public class GTUtility {
         return isStackInList(new GTItemStack(aStack), aList);
     }
 
-    public static boolean isStackInList(GTItemStack aStack, Collection<GTItemStack> aList) {
-        return aStack != null
-            && (aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, aStack.mStackSize, W)));
+    public static boolean isStackInList(@Nonnull GTItemStack aStack, @Nonnull Collection<GTItemStack> aList) {
+        return aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, aStack.mStackSize, W));
     }
 
     /**
