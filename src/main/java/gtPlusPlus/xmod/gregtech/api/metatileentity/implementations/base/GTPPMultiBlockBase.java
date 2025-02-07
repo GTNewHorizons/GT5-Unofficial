@@ -19,6 +19,7 @@ import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -43,8 +44,11 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -490,8 +494,42 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         super.updateSlots();
     }
 
+    @SideOnly(Side.CLIENT)
+    protected void getStructureErrors(Collection<StructureError> errors, NBTTagCompound data, List<String> lines) {
+        super.getStructureErrors(errors, data, lines);
+
+        if (errors.contains(StructureError.MISSING_MAINTENANCE)) {
+            lines.add(I18n.format("GT5U.gui.text.no_maintenance"));
+        }
+
+        if (errors.contains(StructureError.MISSING_MUFFLER)) {
+            lines.add(I18n.format("GT5U.gui.text.no_muffler"));
+        }
+
+        if (errors.contains(StructureError.UNNEEDED_MUFFLER)) {
+            lines.add(I18n.format("GT5U.gui.text.unneeded_muffler"));
+        }
+    }
+
+    @Override
+    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound data) {
+        super.validateStructure(errors, data);
+
+        if (shouldCheckMaintenance() && mMaintenanceHatches.isEmpty()) {
+            errors.add(StructureError.MISSING_MAINTENANCE);
+        }
+
+        if (this.getPollutionPerSecond(null) > 0 && mMufflerHatches.isEmpty()) {
+            errors.add(StructureError.MISSING_MUFFLER);
+        }
+
+        if (this.getPollutionPerSecond(null) == 0 && !mMufflerHatches.isEmpty()) {
+            errors.add(StructureError.UNNEEDED_MUFFLER);
+        }
+    }
+
     public boolean checkHatch() {
-        return mMaintenanceHatches.size() <= 1 && (this.getPollutionPerSecond(null) <= 0 || !mMufflerHatches.isEmpty());
+        return true;
     }
 
     @Override
