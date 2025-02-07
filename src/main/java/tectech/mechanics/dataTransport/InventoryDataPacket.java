@@ -2,14 +2,14 @@ package tectech.mechanics.dataTransport;
 
 import java.util.ArrayList;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import tectech.recipe.TTRecipeAdder;
+import gregtech.api.util.AssemblyLineUtils;
+import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 
-public class InventoryDataPacket extends DataPacket<ItemStack[]> {
+public class InventoryDataPacket extends DataPacket<RecipeAssemblyLine[]> {
 
-    public InventoryDataPacket(ItemStack[] content) {
+    public InventoryDataPacket(RecipeAssemblyLine[] content) {
         super(content);
     }
 
@@ -18,30 +18,34 @@ public class InventoryDataPacket extends DataPacket<ItemStack[]> {
     }
 
     @Override
-    protected ItemStack[] contentFromNBT(NBTTagCompound nbt) {
+    protected RecipeAssemblyLine[] contentFromNBT(NBTTagCompound nbt) {
         int count = nbt.getInteger("count");
+
         if (count > 0) {
-            ArrayList<ItemStack> stacks = new ArrayList<>();
+            ArrayList<RecipeAssemblyLine> recipes = new ArrayList<>();
+
             for (int i = 0; i < count; i++) {
-                ItemStack stack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag(Integer.toString(i)));
-                if (stack != null) {
-                    stacks.add(stack);
-                }
+                recipes.addAll(AssemblyLineUtils.loadRecipe(nbt.getCompoundTag(Integer.toString(i))));
             }
-            return !stacks.isEmpty() ? stacks.toArray(TTRecipeAdder.nullItem) : null;
+
+            return !recipes.isEmpty() ? recipes.toArray(new RecipeAssemblyLine[recipes.size()]) : null;
         }
+
         return null;
     }
 
     @Override
     protected NBTTagCompound contentToNBT() {
         NBTTagCompound compound = new NBTTagCompound();
+
         if (content != null && content.length > 0) {
             compound.setInteger("count", content.length);
+
             for (int i = 0; i < content.length; i++) {
-                compound.setTag(Integer.toString(i), content[i].writeToNBT(new NBTTagCompound()));
+                compound.setTag(Integer.toString(i), AssemblyLineUtils.saveRecipe(content[i]));
             }
         }
+
         return compound;
     }
 
@@ -51,7 +55,7 @@ public class InventoryDataPacket extends DataPacket<ItemStack[]> {
     }
 
     @Override
-    protected ItemStack[] unifyContentWith(ItemStack[] content) {
+    protected RecipeAssemblyLine[] unifyContentWith(RecipeAssemblyLine[] content) {
         throw new NoSuchMethodError("Unavailable to unify item stack data packet");
     }
 
