@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import net.minecraft.block.Block;
@@ -482,8 +483,17 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public boolean isGivingInformation() {
-        if (canAccessData()) return mMetaTileEntity.isGivingInformation();
-        return false;
+        return canAccessData() && mMetaTileEntity.isGivingInformation();
+    }
+
+    @Override
+    public String[] getInfoData() {
+        return canAccessData() ? getMetaTileEntity().getInfoData() : new String[] {};
+    }
+
+    @Override
+    public Map<String, String> getInfoMap() {
+        return canAccessData() ? getMetaTileEntity().getInfoMap() : Collections.emptyMap();
     }
 
     @Override
@@ -1322,12 +1332,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     @Override
     public boolean isUniversalEnergyStored(long aEnergyAmount) {
         return getUniversalEnergyStored() >= aEnergyAmount;
-    }
-
-    @Override
-    public String[] getInfoData() {
-        if (canAccessData()) return getMetaTileEntity().getInfoData();
-        return new String[] {};
     }
 
     @Override
