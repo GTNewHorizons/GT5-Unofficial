@@ -674,7 +674,7 @@ public class RecipeLoaderTreeFarm {
             GTModHandler.getModItem(Mods.BiomesOPlenty.ID, "plants", 1, 15));
 
         MTETreeFarm.registerTreeProducts( // Twisting Vines
-            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "twisting_vines>", 1, 0),
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "twisting_vines", 1, 0),
             null,
             GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "nether_sprouts", 1, 0),
             GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "nether_roots", 1, 1));
