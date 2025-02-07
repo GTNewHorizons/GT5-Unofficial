@@ -240,7 +240,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
             return;
         }
 
-        master.saveToDataStick(master.getBaseMetaTileEntity(), aPlayer, dataStick);
+        master.saveToDataStick(aPlayer, dataStick);
     }
 
     @Override

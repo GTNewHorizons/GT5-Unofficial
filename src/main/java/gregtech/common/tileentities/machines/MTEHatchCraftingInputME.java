@@ -1018,11 +1018,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
 
-        this.saveToDataStick(aBaseMetaTileEntity, aPlayer, dataStick);
+        this.saveToDataStick(aPlayer, dataStick);
     }
 
-    public void saveToDataStick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ItemStack dataStick) {
-
+    public void saveToDataStick(EntityPlayer aPlayer, ItemStack dataStick) {
+        IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("type", "CraftingInputBuffer");
         tag.setInteger("x", aBaseMetaTileEntity.getXCoord());
