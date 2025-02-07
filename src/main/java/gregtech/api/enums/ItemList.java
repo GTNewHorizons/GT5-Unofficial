@@ -1113,6 +1113,7 @@ public enum ItemList implements IItemContainer {
     Hatch_DataAccess_UV,
 
     Hatch_HeatSensor,
+    Hatch_BlackHoleUtility,
 
     Battery_Buffer_1by1_ULV,
     Battery_Buffer_1by1_LV,
