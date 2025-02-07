@@ -3,10 +3,13 @@ package gtPlusPlus.recipes;
 import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cokeOvenRecipes;
 
 import java.util.ArrayList;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -20,6 +23,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
@@ -58,6 +62,68 @@ public class CokeAndPyrolyseOven {
             .eut(TierEU.RECIPE_MV)
             .addTo(pyrolyseRecipes);
 
+        // Cactus and Sugar charcoal/coke, copied over from the ICO and adjusted for pyrolyse (*20 input and output,
+        // duration*1.25 per item.)
+        ItemStack[] aInputs1 = new ItemStack[] { ItemUtils.getSimpleStack(Blocks.cactus, 20),
+            ItemUtils.getSimpleStack(Items.reeds, 20) };
+        ItemStack[] aInputs2 = new ItemStack[] { ItemUtils.getSimpleStack(ModItems.itemCactusCharcoal, 20),
+            ItemUtils.getSimpleStack(ModItems.itemSugarCharcoal, 20) };
+        ItemStack[] aOutputs = new ItemStack[] { ItemUtils.getSimpleStack(ModItems.itemCactusCoke, 20),
+            ItemUtils.getSimpleStack(ModItems.itemSugarCoke, 20) };
+        for (int i = 0; i < aOutputs.length; i++) {
+            // Plant to Charcoal
+            GTValues.RA.stdBuilder()
+                .itemInputs(aInputs1[i], GTUtility.getIntegratedCircuit(3))
+                .itemOutputs(aInputs2[i])
+                .fluidOutputs(FluidUtils.getFluidStack("creosote", 2000))
+                .eut(16)
+                .duration(25 * SECONDS)
+                .addTo(pyrolyseRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(aInputs1[i], GTUtility.getIntegratedCircuit(4))
+                .itemOutputs(aInputs2[i])
+                .fluidInputs(FluidUtils.getFluidStack("nitrogen", 2000))
+                .fluidOutputs(FluidUtils.getFluidStack("charcoal_byproducts", 4000))
+                .eut(16)
+                .duration(250 * TICKS)
+                .addTo(pyrolyseRecipes);
+            // Charcoal to Coke
+            GTValues.RA.stdBuilder()
+                .itemInputs(aInputs2[i], GTUtility.getIntegratedCircuit(3))
+                .itemOutputs(aOutputs[i])
+                .fluidOutputs(FluidUtils.getFluidStack("creosote", 4000))
+                .eut(16)
+                .duration(50 * SECONDS)
+                .addTo(pyrolyseRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(aInputs2[i], GTUtility.getIntegratedCircuit(4))
+                .itemOutputs(aOutputs[i])
+                .fluidInputs(FluidUtils.getFluidStack("nitrogen", 1000))
+                .fluidOutputs(FluidUtils.getFluidStack("charcoal_byproducts", 2000))
+                .eut(16)
+                .duration(25 * SECONDS)
+                .addTo(pyrolyseRecipes);
+            // Coke to Wood tar/Wood gas
+            GTValues.RA.stdBuilder()
+                .itemInputs(aOutputs[i], GTUtility.getIntegratedCircuit(5))
+                .itemOutputs(Materials.Ash.getDust(5))
+                .fluidInputs(FluidUtils.getFluidStack("steam", 2000))
+                .fluidOutputs(Materials.WoodTar.getFluid(4000))
+                .eut(240)
+                .duration(75 * SECONDS)
+                .addTo(pyrolyseRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(aOutputs[i], GTUtility.getIntegratedCircuit(6))
+                .itemOutputs(Materials.Ash.getDust(5))
+                .fluidInputs(FluidUtils.getFluidStack("steam", 2000))
+                .fluidOutputs(Materials.WoodGas.getGas(6000))
+                .eut(240)
+                .duration(75 * SECONDS)
+                .addTo(pyrolyseRecipes);
+        }
         // Coke & Coal
         GTValues.RA.stdBuilder()
             .itemInputs(

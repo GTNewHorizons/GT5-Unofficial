@@ -116,9 +116,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.OpticalFiberCableCasing;
 import static gregtech.api.enums.MetaTileEntityIDs.OpticalMasterConnector;
 import static gregtech.api.enums.MetaTileEntityIDs.OpticalSlaveConnector;
 import static gregtech.api.enums.MetaTileEntityIDs.Ownerdetector;
-import static gregtech.api.enums.MetaTileEntityIDs.Parametrizer;
-import static gregtech.api.enums.MetaTileEntityIDs.ParametrizerX;
-import static gregtech.api.enums.MetaTileEntityIDs.ParametrizertXt;
 import static gregtech.api.enums.MetaTileEntityIDs.QuantumComputer;
 import static gregtech.api.enums.MetaTileEntityIDs.Researchstation;
 import static gregtech.api.enums.MetaTileEntityIDs.TeslaTower;
@@ -355,9 +352,6 @@ import static tectech.thing.CustomItemList.Machine_TeslaCoil_4by4_HV;
 import static tectech.thing.CustomItemList.Machine_TeslaCoil_4by4_IV;
 import static tectech.thing.CustomItemList.Machine_TeslaCoil_4by4_LV;
 import static tectech.thing.CustomItemList.Machine_TeslaCoil_4by4_MV;
-import static tectech.thing.CustomItemList.ParametrizerTXT_Hatch;
-import static tectech.thing.CustomItemList.ParametrizerX_Hatch;
-import static tectech.thing.CustomItemList.Parametrizer_Hatch;
 import static tectech.thing.CustomItemList.TestHatch;
 import static tectech.thing.CustomItemList.TestPipe;
 import static tectech.thing.CustomItemList.UncertaintyX_Hatch;
@@ -635,8 +629,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchObjectHolder;
-import tectech.thing.metaTileEntity.hatch.MTEHatchParam;
-import tectech.thing.metaTileEntity.hatch.MTEHatchParamText;
 import tectech.thing.metaTileEntity.hatch.MTEHatchRack;
 import tectech.thing.metaTileEntity.hatch.MTEHatchUncertainty;
 import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessComputationInput;
@@ -2262,29 +2254,6 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
         // Hatches
         // ===================================================================================================
-
-        Parametrizer_Hatch
-            .set(new MTEHatchParam(Parametrizer.ID, "hatch.param.tier.05", "Parametrizer", 5).getStackForm(1L)); // TODO
-                                                                                                                 // refactor
-                                                                                                                 // aName
-                                                                                                                 // to
-                                                                                                                 // hatch.param.tier.04
-                                                                                                                 // and
-                                                                                                                 // aTier
-                                                                                                                 // to
-                                                                                                                 // 4,
-                                                                                                                 // check
-                                                                                                                 // recipe
-                                                                                                                 // for
-                                                                                                                 // NH
-        ParametrizerX_Hatch
-            .set(new MTEHatchParam(ParametrizerX.ID, "hatch.param.tier.07", "Parametrizer X", 7).getStackForm(1L));
-        ParametrizerTXT_Hatch.set(
-            new MTEHatchParamText(ParametrizertXt.ID, "hatch.param.tier.10", "Parametrizer tXt", 10).getStackForm(1L)); // TODO
-                                                                                                                        // check
-                                                                                                                        // recipe
-                                                                                                                        // for
-                                                                                                                        // NH
         Uncertainty_Hatch.set(
             new MTEHatchUncertainty(UncertaintyResolver.ID, "hatch.certain.tier.05", "Uncertainty Resolver", 5)
                 .getStackForm(1L));

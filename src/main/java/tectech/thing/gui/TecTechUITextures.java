@@ -13,8 +13,6 @@ public class TecTechUITextures {
 
     public static final AdaptableUITexture BACKGROUND_SCREEN_BLUE = AdaptableUITexture
         .of(MODID, "gui/background/screen_blue", 90, 72, 2);
-    public static final UITexture BACKGROUND_SCREEN_BLUE_PARAMETRIZER_TXT = UITexture
-        .fullImage(MODID, "gui/background/screen_blue_parametrizer_txt");
     public static final UITexture BACKGROUND_SCREEN_BLUE_NO_INVENTORY = UITexture
         .fullImage(MODID, "gui/background/screen_blue_no_inventory");
     public static final UITexture BACKGROUND_STAR = UITexture.fullImage(MODID, "gui/background/star");
@@ -63,22 +61,6 @@ public class TecTechUITextures {
         .fullImage(MODID, "gui/overlay_button/power_pass_off");
     public static final UITexture OVERLAY_BUTTON_POWER_PASS_ON = UITexture
         .fullImage(MODID, "gui/overlay_button/power_pass_on");
-    public static final UITexture OVERLAY_BUTTON_PARAMETRIZER_ID = UITexture
-        .fullImage(MODID, "gui/overlay_button/parametrizer_id");
-    public static final UITexture OVERLAY_BUTTON_PARAMETRIZER_0 = UITexture
-        .fullImage(MODID, "gui/overlay_button/parametrizer_0");
-    public static final UITexture OVERLAY_BUTTON_PARAMETRIZER_1 = UITexture
-        .fullImage(MODID, "gui/overlay_button/parametrizer_1");
-    public static final UITexture OVERLAY_BUTTON_PARAMETRIZER_X = UITexture
-        .fullImage(MODID, "gui/overlay_button/parametrizer_x");
-    public static final UITexture OVERLAY_BUTTON_PARAMETRIZER_S = UITexture
-        .fullImage(MODID, "gui/overlay_button/parametrizer_s");
-    public static final UITexture OVERLAY_BUTTON_PARAMETRIZER_T = UITexture
-        .fullImage(MODID, "gui/overlay_button/parametrizer_t");
-    public static final UITexture OVERLAY_BUTTON_PARAMETRIZER_C = UITexture
-        .fullImage(MODID, "gui/overlay_button/parametrizer_c");
-    public static final UITexture OVERLAY_BUTTON_PARAMETRIZER_IF = UITexture
-        .fullImage(MODID, "gui/overlay_button/parametrizer_if");
     public static final UITexture OVERLAY_BUTTON_ARROW_BLUE_UP = UITexture
         .fullImage(MODID, "gui/overlay_button/arrow_blue_up");
     public static final UITexture OVERLAY_BUTTON_BATTERY_ON = UITexture
