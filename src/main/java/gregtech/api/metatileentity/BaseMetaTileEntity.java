@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -874,8 +875,17 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     @Override
     public boolean isGivingInformation() {
-        if (canAccessData()) return mMetaTileEntity.isGivingInformation();
-        return false;
+        return canAccessData() && mMetaTileEntity.isGivingInformation();
+    }
+
+    @Override
+    public String[] getInfoData() {
+        return canAccessData() ? getMetaTileEntity().getInfoData() : new String[] {};
+    }
+
+    @Override
+    public Map<String, String> getInfoMap() {
+        return canAccessData() ? getMetaTileEntity().getInfoMap() : Collections.emptyMap();
     }
 
     @Override
@@ -2223,14 +2233,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         if (getUniversalEnergyStored() >= aEnergyAmount) return true;
         mHasEnoughEnergy = false;
         return false;
-    }
-
-    @Override
-    public String[] getInfoData() {
-        {
-            if (canAccessData()) return getMetaTileEntity().getInfoData();
-            return new String[] {};
-        }
     }
 
     @Override
