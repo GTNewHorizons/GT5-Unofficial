@@ -681,7 +681,7 @@ public class CentrifugeRecipes implements Runnable {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.getDust(Materials.Gunpowder, 6L))
+            .itemInputs(new ItemStack(Items.gunpowder, 6))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 2),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),
