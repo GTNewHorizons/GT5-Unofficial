@@ -15,19 +15,19 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -168,43 +168,37 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
     }
 
     @Override
-    public void validateStructure() {
-        super.validateStructure();
+    public void validateStructure(Collection<StructureError> errors, NBTTagCompound data) {
+        super.validateStructure(errors, data);
 
         if (mCasing < 10) {
-            mStructureErrors.add(StructureError.TOO_FEW_CASINGS);
+            errors.add(StructureError.TOO_FEW_CASINGS);
+            data.setInteger("casings", mCasing);
         }
 
         if (mCryotheumHatches.isEmpty()) {
-            mStructureErrors.add(StructureError.MISSING_CRYO_HATCH);
+            errors.add(StructureError.MISSING_CRYO_HATCH);
         }
 
         if (mCryotheumHatches.size() > 1) {
-            mStructureErrors.add(StructureError.TOO_MANY_CRYO_HATCHES);
+            errors.add(StructureError.TOO_MANY_CRYO_HATCHES);
         }
-    }
-
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements.widgets(new FakeSyncWidget.IntegerSyncer(() -> mCasing, casings -> mCasing = casings));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    protected void getStructureErrors(ArrayList<String> lines) {
-        super.getStructureErrors(lines);
+    protected void getStructureErrors(Collection<StructureError> errors, NBTTagCompound data, List<String> lines) {
+        super.getStructureErrors(errors, data, lines);
 
-        if (mStructureErrors.contains(StructureError.TOO_FEW_CASINGS)) {
-            lines.add(I18n.format("GT5U.gui.missing_casings", 10, mCasing));
+        if (errors.contains(StructureError.TOO_FEW_CASINGS)) {
+            lines.add(I18n.format("GT5U.gui.missing_casings", 10, data.getInteger("casings")));
         }
 
-        if (mStructureErrors.contains(StructureError.MISSING_CRYO_HATCH)) {
+        if (errors.contains(StructureError.MISSING_CRYO_HATCH)) {
             lines.add(I18n.format("GT5U.gui.missing_hatch", HATCH_NAME));
         }
 
-        if (mStructureErrors.contains(StructureError.TOO_MANY_CRYO_HATCHES)) {
+        if (errors.contains(StructureError.TOO_MANY_CRYO_HATCHES)) {
             lines.add(I18n.format("GT5U.gui.too_many_hatches", HATCH_NAME, 1));
         }
     }

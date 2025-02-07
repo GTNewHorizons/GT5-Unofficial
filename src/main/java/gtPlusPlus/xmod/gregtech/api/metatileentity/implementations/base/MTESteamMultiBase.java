@@ -9,6 +9,7 @@ import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -357,20 +358,20 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     }
 
     @Override
-    protected void validateStructure() {
-        // don't call super method
+    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound data) {
+        super.validateStructure(errors, data);
 
         if (mSteamInputFluids.isEmpty()) {
-            mStructureErrors.add(StructureError.MISSING_STEAM_HATCH);
+            errors.add(StructureError.MISSING_STEAM_HATCH);
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    protected void getStructureErrors(ArrayList<String> lines) {
-        super.getStructureErrors(lines);
+    protected void getStructureErrors(Collection<StructureError> errors, NBTTagCompound data, List<String> lines) {
+        super.getStructureErrors(errors, data, lines);
 
-        if (mStructureErrors.contains(StructureError.MISSING_STEAM_HATCH)) {
+        if (errors.contains(StructureError.MISSING_STEAM_HATCH)) {
             lines.add(
                 I18n.format(
                     "GT5U.gui.missing_hatch",

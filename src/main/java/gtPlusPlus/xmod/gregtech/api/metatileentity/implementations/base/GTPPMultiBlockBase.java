@@ -495,36 +495,36 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     }
 
     @SideOnly(Side.CLIENT)
-    protected void getStructureErrors(ArrayList<String> lines) {
-        super.getStructureErrors(lines);
+    protected void getStructureErrors(Collection<StructureError> errors, NBTTagCompound data, List<String> lines) {
+        super.getStructureErrors(errors, data, lines);
 
-        if (mStructureErrors.contains(StructureError.MISSING_MAINTENANCE)) {
+        if (errors.contains(StructureError.MISSING_MAINTENANCE)) {
             lines.add(I18n.format("GT5U.gui.text.no_maintenance"));
         }
 
-        if (mStructureErrors.contains(StructureError.MISSING_MUFFLER)) {
+        if (errors.contains(StructureError.MISSING_MUFFLER)) {
             lines.add(I18n.format("GT5U.gui.text.no_muffler"));
         }
 
-        if (mStructureErrors.contains(StructureError.UNNEEDED_MUFFLER)) {
+        if (errors.contains(StructureError.UNNEEDED_MUFFLER)) {
             lines.add(I18n.format("GT5U.gui.text.unneeded_muffler"));
         }
     }
 
     @Override
-    protected void validateStructure() {
-        super.validateStructure();
+    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound data) {
+        super.validateStructure(errors, data);
 
         if (shouldCheckMaintenance() && mMaintenanceHatches.isEmpty()) {
-            mStructureErrors.add(StructureError.MISSING_MAINTENANCE);
+            errors.add(StructureError.MISSING_MAINTENANCE);
         }
 
         if (this.getPollutionPerSecond(null) > 0 && mMufflerHatches.isEmpty()) {
-            mStructureErrors.add(StructureError.MISSING_MUFFLER);
+            errors.add(StructureError.MISSING_MUFFLER);
         }
 
         if (this.getPollutionPerSecond(null) == 0 && !mMufflerHatches.isEmpty()) {
-            mStructureErrors.add(StructureError.UNNEEDED_MUFFLER);
+            errors.add(StructureError.UNNEEDED_MUFFLER);
         }
     }
 
