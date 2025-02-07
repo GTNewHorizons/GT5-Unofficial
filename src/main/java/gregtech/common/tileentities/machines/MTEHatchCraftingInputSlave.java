@@ -230,6 +230,26 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!(aPlayer instanceof EntityPlayerMP)) return;
+
+        ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
+
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", "CraftingInputBuffer");
+        tag.setInteger("x", masterX);
+        tag.setInteger("y", masterY);
+        tag.setInteger("z", masterZ);
+
+        dataStick.stackTagCompound = tag;
+
+        dataStick.setStackDisplayName(
+            "Crafting Input Buffer Link Data Stick (" + masterX + ", " + masterY + ", " + masterZ + ")");
+        aPlayer.addChatMessage(new ChatComponentText("Saved Link Data to Data Stick"));
+    }
+
+    @Override
     public String getCopiedDataIdentifier(EntityPlayer player) {
         return COPIED_DATA_IDENTIFIER;
     }
