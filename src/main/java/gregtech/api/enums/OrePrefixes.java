@@ -587,7 +587,9 @@ public enum OrePrefixes {
         64, -1),
     // Beamline Masks
     mask("A Photolithographic Mask", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1,
-        1, -1);
+        1, -1),
+    wrapCircuit("A Circuit Wrap", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1,
+        64, -1);
 
     public static final ImmutableList<OrePrefixes> CELL_TYPES = ImmutableList.of(
         cell,

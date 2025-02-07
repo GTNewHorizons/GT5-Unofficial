@@ -28,7 +28,6 @@ import tectech.thing.metaTileEntity.Textures;
 import tectech.thing.metaTileEntity.pipe.MTEPipeEnergy;
 import tectech.thing.metaTileEntity.pipe.MTEPipeEnergyMirror;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by danie_000 on 16.12.2016.
@@ -51,8 +50,6 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
                     + EnumChatFormatting.RESET
                     + " EU/t" },
             amps);
-
-        TTUtility.setTier(tier, this);
     }
 
     public MTEHatchDynamoTunnel(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {

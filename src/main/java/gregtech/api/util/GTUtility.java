@@ -92,6 +92,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -152,6 +153,7 @@ import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.IHasIndexedTexture;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IBasicEnergyContainer;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -3043,9 +3045,8 @@ public class GTUtility {
         return isStackInList(new GTItemStack(aStack), aList);
     }
 
-    public static boolean isStackInList(GTItemStack aStack, Collection<GTItemStack> aList) {
-        return aStack != null
-            && (aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, aStack.mStackSize, W)));
+    public static boolean isStackInList(@Nonnull GTItemStack aStack, @Nonnull Collection<GTItemStack> aList) {
+        return aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, aStack.mStackSize, W));
     }
 
     /**
@@ -3761,10 +3762,18 @@ public class GTUtility {
         return rEUAmount;
     }
 
+    /**
+     * @deprecated Use standard translation with {@link StatCollector}.
+     */
+    @Deprecated
     public static String trans(String aKey, String aEnglish) {
         return GTLanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish);
     }
 
+    /**
+     * @deprecated Use standard translation with {@link StatCollector}.
+     */
+    @Deprecated
     public static String getTrans(String aKey) {
         return GTLanguageManager.getTranslation("Interaction_DESCRIPTION_Index_" + aKey);
     }
@@ -4001,6 +4010,14 @@ public class GTUtility {
     public static <T extends Collection<E>, E extends MetaTileEntity> ValidMTEList<T, E> validMTEList(
         T metaTileEntities) {
         return new ValidMTEList<>(metaTileEntities);
+    }
+
+    @Nullable
+    public static IMetaTileEntity getMetaTileEntity(TileEntity tileEntity) {
+        if (tileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
+            return gtTE.getMetaTileEntity();
+        }
+        return null;
     }
 
     public static ForgeDirection getSideFromPlayerFacing(Entity player) {

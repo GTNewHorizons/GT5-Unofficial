@@ -1,25 +1,16 @@
 package gregtech.api.interfaces.tileentity;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.util.CoverBehavior;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverInfo;
 
 public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer {
 
-    boolean canPlaceCoverIDAtSide(ForgeDirection side, int aID);
-
-    boolean canPlaceCoverItemAtSide(ForgeDirection side, ItemStack aCover);
-
     boolean dropCover(ForgeDirection side, ForgeDirection droppedSide, boolean aForced);
-
-    default ItemStack removeCoverAtSide(ForgeDirection side, boolean aForced) {
-        return null;
-    }
 
     @Deprecated
     void setCoverDataAtSide(ForgeDirection side, int aData);
@@ -35,29 +26,22 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
 
     boolean setCoverIDAtSideNoUpdate(ForgeDirection side, int aID);
 
-    void setCoverItemAtSide(ForgeDirection side, ItemStack aCover);
-
-    @Deprecated
-    int getCoverDataAtSide(ForgeDirection side);
+    /**
+     * Called when the cover is initially attached to a machine.
+     *
+     * @param player The attaching player
+     * @param aCover An {@link ItemStack} containing the cover
+     * @param side   Which side the cover is attached to
+     */
+    void attachCover(EntityPlayer player, ItemStack aCover, ForgeDirection side);
 
     default CoverInfo getCoverInfoAtSide(ForgeDirection side) {
         return null;
     }
 
-    default ISerializableObject getComplexCoverDataAtSide(ForgeDirection side) {
-        return new ISerializableObject.LegacyCoverData(getCoverDataAtSide(side));
-    }
-
     int getCoverIDAtSide(ForgeDirection side);
 
     ItemStack getCoverItemAtSide(ForgeDirection side);
-
-    @Deprecated
-    CoverBehavior getCoverBehaviorAtSide(ForgeDirection side);
-
-    default CoverBehaviorBase<?> getCoverBehaviorAtSideNew(ForgeDirection side) {
-        return getCoverBehaviorAtSide(side);
-    }
 
     /**
      * For use by the regular MetaTileEntities. Returns the Cover Manipulated input Redstone. Don't use this if you are
