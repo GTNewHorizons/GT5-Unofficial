@@ -511,11 +511,6 @@ gt.blockmachines.emout.tier.13.name=UXV Elemental Output Hatch
 gt.blockmachines.emout.desc=Elemental Output for Multiblocks
 
 #TODO change tier.05 to tier.04
-gt.blockmachines.hatch.param.tier.05.name=Parametrizer
-gt.blockmachines.hatch.param.tier.07.name=Parametrizer X
-gt.blockmachines.hatch.param.tier.10.name=Parametrizer tXt
-gt.blockmachines.hatch.param.desc.0=For parametrization of Multiblocks
-gt.blockmachines.hatch.param.desc.1=E=mine*craft
 
 gt.blockmachines.hatch.certain.tier.05.name=Uncertainty Resolver
 gt.blockmachines.hatch.certain.tier.07.name=Uncertainty Resolver X
@@ -666,7 +661,6 @@ gt.blockmachines.multimachine.em.transformer.machinetype=Active Transformer, AT
 gt.blockmachines.multimachine.em.transformer.hint=1 - Energy IO Hatches or High Power Casing
 gt.blockmachines.multimachine.em.transformer.desc.1=Can transform to and from any voltage
 gt.blockmachines.multimachine.em.transformer.desc.2=Only 0.004% power loss, HAYO!
-gt.blockmachines.multimachine.em.transformer.desc.3=Will explode if broken while running
 
 gt.blockmachines.multimachine.tm.microwave.name=Microwave Grinder
 gt.blockmachines.multimachine.tm.microwave.hint.0=1 - Classic Hatches or Clean Stainless Steel Casing
@@ -790,7 +784,7 @@ gt.blockmachines.multimachine.em.research.desc.2=Needs to be fed with computatio
 gt.blockmachines.multimachine.em.research.desc.3=Does not consume the item until the Data Stick is written
 gt.blockmachines.multimachine.em.research.desc.4=Use screwdriver to change mode
 gt.blockmachines.multimachine.em.research.desc.5=Computation required in scanner mode follows the formula:
-gt.blockmachines.multimachine.em.research.desc.6=Recipe duration in seconds * (2 ^ Recipe voltage tier)
+gt.blockmachines.multimachine.em.research.desc.6=Recipe duration in seconds * (2 ^ (Recipe voltage tier - 1))
 gt.blockmachines.multimachine.em.research.mode.Assembly_line=Mode: Research Station
 gt.blockmachines.multimachine.em.research.mode.Scanner=Mode: Scanner
 
