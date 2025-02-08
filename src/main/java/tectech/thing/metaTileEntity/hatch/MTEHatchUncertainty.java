@@ -55,7 +55,7 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
     public short[] matrix = new short[] { 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
         500 };
     public byte selection = -1, mode = 0, status = -128; // all 8 bits set
-
+    private boolean stopShifting = false;
     private String clientLocale = "en_US";
 
     public MTEHatchUncertainty(int aID, String aName, String aNameRegional, int aTier) {
@@ -88,7 +88,7 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide() && (aTick & 15) == 0) {
+        if (aBaseMetaTileEntity.isServerSide() && aTick % 2 == 0) {
             if (mode == 0) {
                 aBaseMetaTileEntity.setActive(false);
                 status = -128;
@@ -310,13 +310,13 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
     }
 
     private void shift() {
-        int i = TecTech.RANDOM.nextInt(16), j = TecTech.RANDOM.nextInt(128);
-        matrix[i] += ((matrix[i] & 1) == 0 ? 2 : -2) * j >> 5;
-        matrix[i] += j == 0 ? 1 : 0;
-        if (matrix[i] < 0) {
-            matrix[i] = 0;
-        } else if (matrix[i] > 1000) {
-            matrix[i] = 999;
+        if (stopShifting) return; //no point in shifting if all values are 0
+        stopShifting = true;
+        for(int i = 0; i < 16; i++){
+            matrix[i] = (short) Math.max(0, matrix[i]-1);
+            if (matrix[i] != 0 && stopShifting){
+                stopShifting = false;
+            }
         }
     }
 
