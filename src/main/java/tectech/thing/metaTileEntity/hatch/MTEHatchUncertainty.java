@@ -57,6 +57,7 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
     public byte selection = -1, mode = 0, status = (byte) 0b11111111; // all 8 bits set
     private boolean stopChecking = false;
     private String clientLocale = "en_US";
+
     public MTEHatchUncertainty(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");
         regenerate();
@@ -94,7 +95,7 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
                 status = (byte) 0b11111111;
             } else {
                 aBaseMetaTileEntity.setActive(true);
-                if(!stopChecking){ //No point in making calculations if the entire matrix has faded to 0
+                if (!stopChecking) { // No point in making calculations if the entire matrix has faded to 0
                     shift();
                     compute();
                 }
