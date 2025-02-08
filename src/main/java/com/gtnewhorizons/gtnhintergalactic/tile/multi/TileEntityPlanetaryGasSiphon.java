@@ -1,5 +1,9 @@
 package com.gtnewhorizons.gtnhintergalactic.tile.multi;
 
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static net.minecraft.util.EnumChatFormatting.BLUE;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.ITALIC;
@@ -8,29 +12,24 @@ import static net.minecraft.util.EnumChatFormatting.RED;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
@@ -38,13 +37,9 @@ import com.gtnewhorizons.gtnhintergalactic.client.IGTextures;
 import com.gtnewhorizons.gtnhintergalactic.client.TooltipUtil;
 import com.gtnewhorizons.gtnhintergalactic.recipe.GasSiphonRecipes;
 
-import bartworks.client.textures.PrefixTextureLinker;
-import bartworks.system.material.BWTileEntityMetaGeneratedBlocksCasingAdvanced;
 import bartworks.system.material.WerkstoffLoader;
-import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IChunkLoader;
 import gregtech.api.interfaces.ITexture;
@@ -61,7 +56,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings1;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
@@ -71,7 +65,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
  * @author glowredman
  */
 public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<TileEntityPlanetaryGasSiphon>
-        implements IChunkLoader {
+        implements IChunkLoader, ISurvivalConstructable {
 
     /** Main structure of the machine */
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -86,27 +80,16 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
                             new String[][] { { "   ", " f ", "   " }, { "   ", " f ", "   " }, { "   ", " f ", "   " },
                                     { " f ", "fcf", " f " }, { " f ", "fcf", " f " }, { " f ", "fcf", " f " },
                                     { "b~b", "bcb", "bbb" } }))
-            .addElement('f', GTStructureUtility.ofFrame(Materials.TungstenSteel)).addElement('c', ofReboltedCasing())
+            .addElement('f', GTStructureUtility.ofFrame(Materials.TungstenSteel))
+            .addElement(
+                    'c',
+                    StructureUtility
+                            .ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, WerkstoffLoader.LuVTierMaterial.getmID()))
             .addElement(
                     'b',
-                    StructureUtility.ofChain(
-                            GTStructureUtility.ofHatchAdder(
-                                    TileEntityPlanetaryGasSiphon::addMaintenanceToMachineList,
-                                    IGTextures.CASING_INDEX_SIPHON,
-                                    1),
-                            GTStructureUtility.ofHatchAdder(
-                                    TileEntityPlanetaryGasSiphon::addEnergyInputToMachineList,
-                                    IGTextures.CASING_INDEX_SIPHON,
-                                    1),
-                            GTStructureUtility.ofHatchAdder(
-                                    TileEntityPlanetaryGasSiphon::addInputToMachineList,
-                                    IGTextures.CASING_INDEX_SIPHON,
-                                    1),
-                            GTStructureUtility.ofHatchAdder(
-                                    TileEntityPlanetaryGasSiphon::addOutputToMachineList,
-                                    IGTextures.CASING_INDEX_SIPHON,
-                                    1),
-                            StructureUtility.ofBlock(IGBlocks.GasSiphonCasing, 0)))
+                    GTStructureUtility.buildHatchAdder(TileEntityPlanetaryGasSiphon.class)
+                            .atLeast(Maintenance, InputBus, OutputHatch, Energy).dot(1)
+                            .casingIndex(IGTextures.CASING_INDEX_SIPHON).buildAndChain(IGBlocks.GasSiphonCasing, 0))
             .build();
 
     /**
@@ -154,6 +137,12 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 6, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stack, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stack, 1, 6, 0, elementBudget, env, false, true);
     }
 
     /**
@@ -525,72 +514,5 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     @Override
     public boolean supportsVoidProtection() {
         return true;
-    }
-
-    private static <T> IStructureElement<T> ofReboltedCasing() {
-        return new IStructureElement<T>() {
-
-            private final boolean isBartworksLoaded = Loader.isModLoaded("bartworks");
-            private final Block fallBackBlock = BlockCasings1.getBlockById(0);
-            private final int fallbackBlockMeta = 0;
-            private IIcon[] icons;
-
-            @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                if (isBartworksLoaded) {
-                    if (icons == null) {
-                        icons = new IIcon[6];
-                        Arrays.fill(
-                                icons,
-                                PrefixTextureLinker.texMapBlocks.get(OrePrefixes.blockCasingAdvanced)
-                                        .get(WerkstoffLoader.LuVTierMaterial.getTexSet()).getIcon());
-                    }
-                    StructureLibAPI
-                            .hintParticleTinted(world, x, y, z, icons, WerkstoffLoader.LuVTierMaterial.getRGBA());
-                } else {
-                    StructureLibAPI.hintParticle(world, x, y, z, fallBackBlock, fallbackBlockMeta);
-                }
-                return true;
-            }
-
-            @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                if (isBartworksLoaded) {
-                    ItemStack stack = WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.blockCasingAdvanced);
-                    if (stack.getItem() instanceof ItemBlock item) {
-                        return item.placeBlockAt(
-                                stack,
-                                null,
-                                world,
-                                x,
-                                y,
-                                z,
-                                6,
-                                0,
-                                0,
-                                0,
-                                WerkstoffLoader.LuVTierMaterial.getmID());
-                    }
-                } else {
-                    world.setBlock(x, y, z, fallBackBlock, fallbackBlockMeta, 2);
-                }
-                return false;
-            }
-
-            @Override
-            public boolean check(T t, World world, int x, int y, int z) {
-                if (isBartworksLoaded) {
-                    TileEntity tile = world.getTileEntity(x, y, z);
-                    if (tile instanceof BWTileEntityMetaGeneratedBlocksCasingAdvanced tileCasingAdvanced) {
-                        if (tileCasingAdvanced.isInvalid()) return false;
-                        return tileCasingAdvanced.mMetaData == WerkstoffLoader.LuVTierMaterial.getmID();
-                    }
-                } else {
-                    Block worldBlock = world.getBlock(x, y, z);
-                    return worldBlock == fallBackBlock;
-                }
-                return false;
-            }
-        };
     }
 }
