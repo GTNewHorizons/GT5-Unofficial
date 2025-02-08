@@ -88,7 +88,7 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        // Changed from calling every 15 ticks; based on local testing new shift() formula fades ~20.97x faster
+        // Changed from calling every 15 ticks; based on local testing new shift() implementation fades ~20.97x faster
         if (aBaseMetaTileEntity.isServerSide() && aTick % 320 == 0) {
             if (mode == 0) {
                 aBaseMetaTileEntity.setActive(false);
