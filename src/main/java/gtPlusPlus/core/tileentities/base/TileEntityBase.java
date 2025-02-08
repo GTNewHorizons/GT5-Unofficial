@@ -1191,11 +1191,6 @@ public class TileEntityBase extends TileEntity
         return true;
     }
 
-    @Override
-    public String[] getInfoData() {
-        return null;
-    }
-
     public long getEUVar() {
         return this.mStoredEnergy;
     }

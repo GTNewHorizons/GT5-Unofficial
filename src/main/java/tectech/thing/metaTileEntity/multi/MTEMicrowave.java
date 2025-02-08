@@ -242,11 +242,6 @@ public class MTEMicrowave extends TTMultiblockBase implements IConstructable {
                 translateToLocal("tt.keyword.Structure.DataConnector"),
                 translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"),
                 2) // Output Bus: Any outer casing on the bottom layer
-            .addOtherStructurePart(
-                translateToLocal("gt.blockmachines.hatch.param.tier.05.name"),
-                translateToLocal("tt.keyword.Structure.Optional") + " "
-                    + translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"),
-                2) // Parametrizer: (optional) Any outer casing on the bottom layer
             .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"), 1) // Energy Hatch: Any
                                                                                                 // outer casing on
                                                                                                 // the bottom layer
