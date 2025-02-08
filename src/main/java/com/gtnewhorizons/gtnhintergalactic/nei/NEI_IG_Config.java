@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import net.minecraft.item.ItemStack;
 
+import com.gtnewhorizons.gtnhintergalactic.GTNHIntergalactic;
 import com.gtnewhorizons.gtnhintergalactic.Tags;
 import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
 
@@ -42,15 +43,15 @@ public class NEI_IG_Config implements IConfigureNEI {
         event.registerHandlerInfo(
                 new HandlerInfo.Builder(
                         "com.gtnewhorizons.gtnhintergalactic.nei.SpacePumpModuleRecipeHandler",
-                        Tags.MODNAME,
-                        Tags.MODID).setDisplayStack(IGItems.SpaceElevatorModulePumpT1).setShiftY(6).setWidth(160)
-                                .setHeight(90).setMaxRecipesPerPage(3).build());
+                        GTNHIntergalactic.MODNAME,
+                        GTNHIntergalactic.MODID).setDisplayStack(IGItems.SpaceElevatorModulePumpT1).setShiftY(6)
+                                .setWidth(160).setHeight(90).setMaxRecipesPerPage(3).build());
         event.registerHandlerInfo(
                 new HandlerInfo.Builder(
                         "com.gtnewhorizons.gtnhintergalactic.nei.GasSiphonRecipeHandler",
-                        Tags.MODNAME,
-                        Tags.MODID).setDisplayStack(IGItems.PlanetaryGasSiphon).setShiftY(6).setWidth(160).setHeight(90)
-                                .setMaxRecipesPerPage(3).build());
+                        GTNHIntergalactic.MODNAME,
+                        GTNHIntergalactic.MODID).setDisplayStack(IGItems.PlanetaryGasSiphon).setShiftY(6).setWidth(160)
+                                .setHeight(90).setMaxRecipesPerPage(3).build());
     }
 
     @Override

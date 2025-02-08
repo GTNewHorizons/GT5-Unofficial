@@ -5,7 +5,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
 
 import com.gtnewhorizons.gtnhintergalactic.GTNHIntergalactic;
-import com.gtnewhorizons.gtnhintergalactic.Tags;
 
 import gregtech.api.GregTechAPI;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
@@ -19,7 +18,7 @@ public class BlockCasingGasSiphon extends Block implements ITerraformableBlock {
         this.setStepSound(soundTypeStone);
         this.setHarvestLevel("pickaxe", 3);
         this.setCreativeTab(GTNHIntergalactic.tab);
-        this.setBlockTextureName(Tags.MODID + ":gasSiphon/SiphonCasing");
+        this.setBlockTextureName(GTNHIntergalactic.MODID + ":gasSiphon/SiphonCasing");
         GregTechAPI.registerMachineBlock(this, -1);
     }
 

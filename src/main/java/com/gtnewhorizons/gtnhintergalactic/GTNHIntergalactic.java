@@ -21,9 +21,9 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(
-        modid = Tags.MODID,
+        modid = GTNHIntergalactic.MODID,
         version = Tags.VERSION,
-        name = Tags.MODNAME,
+        name = GTNHIntergalactic.MODNAME,
         acceptedMinecraftVersions = "[1.7.10]",
         dependencies = "required-after:GalacticraftCore@[3.0.36,);" + "required-after:GalacticraftMars;"
                 + "required-after:gregtech;"
@@ -47,8 +47,10 @@ public class GTNHIntergalactic {
         }
     }
 
+    public static final String MODID = "gtnhintergalactic";
+    public static final String MODNAME = "GTNH-Intergalactic";
     /** Logger used by this mod */
-    public static final Logger LOG = LogManager.getLogger(Tags.MODID);
+    public static final Logger LOG = LogManager.getLogger(MODID);
     /** Prefix for assets */
     public static final String ASSET_PREFIX = "gtnhintergalactic";
     /** Creative tab for mod items */
@@ -61,7 +63,7 @@ public class GTNHIntergalactic {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        tab = new CreativeTabs(CreativeTabs.getNextID(), Tags.MODNAME) {
+        tab = new CreativeTabs(CreativeTabs.getNextID(), GTNHIntergalactic.MODNAME) {
 
             @Override
             public Item getTabIconItem() {

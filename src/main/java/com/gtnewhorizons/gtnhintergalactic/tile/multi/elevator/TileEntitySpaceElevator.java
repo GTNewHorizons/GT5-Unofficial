@@ -50,12 +50,11 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import blockrenderer6343.client.world.ClientFakePlayer;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -79,7 +78,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  *
  * @author minecraft7771
  */
-public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurvivalConstructable {
+public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurvivalConstructable, INEIPreviewModifier {
     // region Structure and textures variables
 
     /** List of project modules in this elevator */
@@ -392,35 +391,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (Mods.BlockRenderer6343.isModLoaded() && env.getActor() instanceof ClientFakePlayer) {
-            int built = survivialBuildPiece(
-                    STRUCTURE_PIECE_MAIN,
-                    stackSize,
-                    STRUCTURE_PIECE_MAIN_HOR_OFFSET,
-                    STRUCTURE_PIECE_MAIN_VERT_OFFSET,
-                    STRUCTURE_PIECE_MAIN_DEPTH_OFFSET,
-                    elementBudget,
-                    env,
-                    false,
-                    true);
-            if (built >= 0) return built;
-            if (stackSize.stackSize > 1) {
-                built = survivialBuildPiece(
-                        STRUCTURE_PIECE_EXTENDED,
-                        stackSize,
-                        STRUCTURE_PIECE_EXTENDED_HOR_OFFSET,
-                        STRUCTURE_PIECE_EXTENDED_VERT_OFFSET,
-                        STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET,
-                        elementBudget,
-                        env,
-                        false,
-                        true);
-            }
-            return built;
-        }
-
         if (mMachine) return -1;
-
         int consumedBudget = survivialBuildPiece(
                 STRUCTURE_PIECE_MAIN,
                 stackSize,
@@ -513,7 +484,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     }
 
     /**
-     * Add the cable block the the elevator
+     * Add the cable block the elevator
      *
      * @param block            Cable block
      * @param aBaseCasingIndex Index of the casing texture it should take
@@ -568,7 +539,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
         if (elevatorCable != null) {
             elevatorCable.setShouldRender(false);
         }
-        if (mProjectModuleHatches != null && mProjectModuleHatches.size() > 0) {
+        if (mProjectModuleHatches != null && !mProjectModuleHatches.isEmpty()) {
             for (TileEntityModuleBase projectModule : mProjectModuleHatches) {
                 projectModule.disconnect();
             }
@@ -599,7 +570,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
 
                 // Charge project modules
                 if (aTick % MODULE_CHARGE_INTERVAL == 0) {
-                    if (mProjectModuleHatches.size() > 0) {
+                    if (!mProjectModuleHatches.isEmpty()) {
                         long tEnergy = getEUVar() / mProjectModuleHatches.size() * MODULE_CHARGE_INTERVAL;
                         for (TileEntityModuleBase projectModule : mProjectModuleHatches) {
                             if (projectModule.getNeededMotorTier() <= motorTier) {
@@ -617,7 +588,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                     }
                 }
             } else {
-                if (mProjectModuleHatches.size() > 0) {
+                if (!mProjectModuleHatches.isEmpty()) {
                     for (TileEntityModuleBase projectModule : mProjectModuleHatches) {
                         projectModule.disconnect();
                     }
@@ -813,8 +784,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             if (!widget.getContext().isClient()) {
                 if (getBaseMetaTileEntity().isAllowedToWork() && motorTier > 0) {
                     EntityPlayer player = widget.getContext().getPlayer();
-                    if (player instanceof EntityPlayerMP) {
-                        EntityPlayerMP playerBase = (EntityPlayerMP) player;
+                    if (player instanceof EntityPlayerMP playerBase) {
                         final GCPlayerStats stats = GCPlayerStats.get(playerBase);
                         stats.coordsTeleportedFromX = playerBase.posX;
                         stats.coordsTeleportedFromZ = playerBase.posZ;
@@ -900,5 +870,19 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
+    }
+
+    @Override
+    public void onPreviewConstruct(@NotNull ItemStack trigger) {
+        if (trigger.stackSize >= 3) {
+            isExtensionEnabled = true;
+        }
+    }
+
+    @Override
+    public void onPreviewStructureComplete(@NotNull ItemStack trigger) {
+        if (elevatorCable != null) {
+            elevatorCable.setShouldRender(false);
+        }
     }
 }

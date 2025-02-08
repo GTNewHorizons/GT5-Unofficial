@@ -17,6 +17,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.ICustomBlockSetting;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -50,8 +51,8 @@ public class ElevatorUtil {
      * @return True if the needed project is available, else false
      */
     public static boolean isProjectAvailable(UUID machineOwner, String neededProject, String neededLocation) {
-        if (neededProject != null && !neededProject.equals("")) {
-            if (neededLocation != null && !neededLocation.equals("")) {
+        if (neededProject != null && !neededProject.isEmpty()) {
+            if (neededLocation != null && !neededLocation.isEmpty()) {
                 ISpaceProject project = SpaceProjectManager
                         .getTeamProject(machineOwner, SpaceProjectManager.getLocation(neededLocation), neededProject);
                 return project != null && project.isFinished();
@@ -152,9 +153,30 @@ public class ElevatorUtil {
                 @Override
                 public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
                         IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                    return survivalPlaceBlock(
+                            t,
+                            world,
+                            x,
+                            y,
+                            z,
+                            trigger,
+                            AutoPlaceEnvironment.fromLegacy(s, actor, chatter));
+                }
+
+                @Override
+                public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+                        AutoPlaceEnvironment env) {
                     if (check(t, world, x, y, z)) return PlaceResult.SKIP;
-                    return StructureUtility
-                            .survivalPlaceBlock(defaultBlock, defaultMeta, world, x, y, z, s, actor, chatter);
+                    return StructureUtility.survivalPlaceBlock(
+                            defaultBlock,
+                            defaultMeta,
+                            world,
+                            x,
+                            y,
+                            z,
+                            env.getSource(),
+                            env.getActor(),
+                            env.getChatter());
                 }
             };
         } else {
@@ -181,9 +203,30 @@ public class ElevatorUtil {
                 @Override
                 public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
                         IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                    return survivalPlaceBlock(
+                            t,
+                            world,
+                            x,
+                            y,
+                            z,
+                            trigger,
+                            AutoPlaceEnvironment.fromLegacy(s, actor, chatter));
+                }
+
+                @Override
+                public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+                        AutoPlaceEnvironment env) {
                     if (check(t, world, x, y, z)) return PlaceResult.SKIP;
-                    return StructureUtility
-                            .survivalPlaceBlock(defaultBlock, defaultMeta, world, x, y, z, s, actor, chatter);
+                    return StructureUtility.survivalPlaceBlock(
+                            defaultBlock,
+                            defaultMeta,
+                            world,
+                            x,
+                            y,
+                            z,
+                            env.getSource(),
+                            env.getActor(),
+                            env.getChatter());
                 }
             };
         }
