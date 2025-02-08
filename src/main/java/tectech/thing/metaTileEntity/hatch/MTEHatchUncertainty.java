@@ -54,10 +54,9 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     public short[] matrix = new short[] { 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
         500 };
-    public byte selection = -1, mode = 0, status = -128; // all 8 bits set
-    private boolean stopShifting = false;
+    public byte selection = -1, mode = 0, status = (byte) 0b11111111; // all 8 bits set
+    private boolean stopChecking = false;
     private String clientLocale = "en_US";
-
     public MTEHatchUncertainty(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");
         regenerate();
@@ -92,11 +91,13 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
         if (aBaseMetaTileEntity.isServerSide() && aTick % 320 == 0) {
             if (mode == 0) {
                 aBaseMetaTileEntity.setActive(false);
-                status = -128;
+                status = (byte) 0b11111111;
             } else {
                 aBaseMetaTileEntity.setActive(true);
-                shift();
-                compute();
+                if(!stopChecking){ //No point in making calculations if the entire matrix has faded to 0
+                    shift();
+                    compute();
+                }
             }
         }
     }
@@ -311,12 +312,11 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
     }
 
     private void shift() {
-        if (stopShifting) return; // no point in shifting if all values are 0
-        stopShifting = true;
+        stopChecking = true;
         for (int i = 0; i < 16; i++) {
             matrix[i] = (short) Math.max(0, matrix[i] - 1);
-            if (matrix[i] != 0 && stopShifting) {
-                stopShifting = false;
+            if (matrix[i] != 0 && stopChecking) {
+                stopChecking = false;
             }
         }
     }
@@ -329,6 +329,7 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
             newMode = 0;
         }
         mode = (byte) newMode;
+        stopChecking = false;
         regenerate();
         compute();
         return status;
