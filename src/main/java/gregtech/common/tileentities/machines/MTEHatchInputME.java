@@ -354,7 +354,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                     "proxy",
                     autoPullAvailable ? ItemList.Hatch_Input_ME_Advanced.get(1) : ItemList.Hatch_Input_ME.get(1),
                     true);
-                gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
+                gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL, GridFlags.DENSE_CAPACITY);
                 updateValidGridProxySides();
                 if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
                     getBaseMetaTileEntity().getWorld()

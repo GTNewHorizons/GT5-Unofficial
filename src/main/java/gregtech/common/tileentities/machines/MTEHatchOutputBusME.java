@@ -224,7 +224,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                     "proxy",
                     ItemList.Hatch_Output_Bus_ME.get(1),
                     true);
-                gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
+                gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL, GridFlags.DENSE_CAPACITY);
                 updateValidGridProxySides();
                 if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
                     getBaseMetaTileEntity().getWorld()

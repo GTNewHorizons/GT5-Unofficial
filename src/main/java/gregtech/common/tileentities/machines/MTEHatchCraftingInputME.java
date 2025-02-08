@@ -493,7 +493,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
             gridProxy = new AENetworkProxy(this, "proxy", ItemList.Hatch_CraftingInput_Bus_ME.get(1), true);
-            gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
+            gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL, GridFlags.DENSE_CAPACITY);
             updateValidGridProxySides();
             if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
                 getBaseMetaTileEntity().getWorld()
