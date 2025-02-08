@@ -168,8 +168,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         public boolean hasChanged(ItemStack newPattern, World world) {
             return newPattern == null
                 || (!ItemStack.areItemStacksEqual(pattern, newPattern) && !this.patternDetails.equals(
-                    ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem()))
-                        .getPatternForItem(newPattern, world)));
+                ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem()))
+                    .getPatternForItem(newPattern, world)));
         }
 
         public void updateSlotItems() {
@@ -400,7 +400,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     }
 
     public MTEHatchCraftingInputME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-        boolean supportFluids) {
+                                   boolean supportFluids) {
         super(aName, aTier, MAX_INV_COUNT, aDescription, aTextures);
         this.supportFluids = supportFluids;
         disableSort = true;
@@ -470,7 +470,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+                                          float aX, float aY, float aZ) {
         additionalConnection = !additionalConnection;
         updateValidGridProxySides();
         aPlayer.addChatComponentMessage(
@@ -713,13 +713,13 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+                                  ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+                                 ItemStack aStack) {
         return false;
     }
 
@@ -752,42 +752,42 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(MANUAL_SLOT_WINDOW, this::createSlotManualWindow);
         builder.widget(
-            SlotGroup.ofItemHandler(inventoryHandler, 9)
-                .startFromSlot(0)
-                .endAtSlot(MAX_PATTERN_COUNT - 1)
-                .phantom(false)
-                .background(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_PATTERN_ME)
-                .widgetCreator(slot -> new SlotWidget(slot) {
+                SlotGroup.ofItemHandler(inventoryHandler, 9)
+                    .startFromSlot(0)
+                    .endAtSlot(MAX_PATTERN_COUNT - 1)
+                    .phantom(false)
+                    .background(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_PATTERN_ME)
+                    .widgetCreator(slot -> new SlotWidget(slot) {
 
-                    @Override
-                    protected ItemStack getItemStackForRendering(Slot slotIn) {
-                        ItemStack stack = slot.getStack();
-                        if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem)) {
-                            return stack;
+                        @Override
+                        protected ItemStack getItemStackForRendering(Slot slotIn) {
+                            ItemStack stack = slot.getStack();
+                            if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem)) {
+                                return stack;
+                            }
+                            ItemStack output = patternItem.getOutput(stack);
+                            return output != null ? output : stack;
                         }
-                        ItemStack output = patternItem.getOutput(stack);
-                        return output != null ? output : stack;
-                    }
-                }.setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
-                    .setChangeListener(() -> onPatternChange(slot.getSlotIndex(), slot.getStack())))
-                .build()
-                .setPos(7, 9))
+                    }.setFilter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
+                        .setChangeListener(() -> onPatternChange(slot.getSlotIndex(), slot.getStack())))
+                    .build()
+                    .setPos(7, 9))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (clickData.mouseButton == 0) {
-                    widget.getContext()
-                        .openSyncedWindow(MANUAL_SLOT_WINDOW);
-                }
-            })
+                    if (clickData.mouseButton == 0) {
+                        widget.getContext()
+                            .openSyncedWindow(MANUAL_SLOT_WINDOW);
+                    }
+                })
                 .setPlayClickSound(true)
                 .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE)
                 .addTooltips(ImmutableList.of("Place manual items"))
                 .setSize(16, 16)
                 .setPos(170, 46))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (clickData.mouseButton == 0) {
-                    refundAll();
-                }
-            })
+                    if (clickData.mouseButton == 0) {
+                        refundAll();
+                    }
+                })
                 .setPlayClickSound(true)
                 .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_EXPORT)
                 .addTooltips(ImmutableList.of("Return all internally stored items back to AE"))
@@ -803,10 +803,10 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                     .setPos(170, 10)
                     .setSize(16, 16))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                int val = clickData.shift ? 1 : 0;
-                if (clickData.mouseButton == 1) val |= 0b10;
-                doublePatterns(val);
-            })
+                    int val = clickData.shift ? 1 : 0;
+                    if (clickData.mouseButton == 1) val |= 0b10;
+                    doublePatterns(val);
+                })
                 .setPlayClickSound(true)
                 .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_X2)
                 .addTooltip(StatCollector.translateToLocal("gui.tooltips.appliedenergistics2.DoublePatterns"))
@@ -884,7 +884,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+                             IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("name"))
             currenttip.add(EnumChatFormatting.AQUA + tag.getString("name") + EnumChatFormatting.RESET);
@@ -906,7 +906,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+                                int z) {
 
         NBTTagList inventory = new NBTTagList();
         HashMap<String, Long> nameToAmount = new HashMap<>();
@@ -1018,11 +1018,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
 
-        this.saveToDataStick(aPlayer, dataStick);
-    }
-
-    public void saveToDataStick(EntityPlayer aPlayer, ItemStack dataStick) {
-        IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("type", "CraftingInputBuffer");
         tag.setInteger("x", aBaseMetaTileEntity.getXCoord());
@@ -1038,7 +1033,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
+                                float aX, float aY, float aZ) {
         final ItemStack is = aPlayer.inventory.getCurrentItem();
         if (is != null && is.getItem() instanceof ToolQuartzCuttingKnife) {
             if (ForgeEventFactory.onItemUseStart(aPlayer, is, 1) <= 0) return false;
