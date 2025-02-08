@@ -46,10 +46,10 @@ public class MTEHatchCreativeUncertainty extends MTEHatchUncertainty {
         if (aBaseMetaTileEntity.isServerSide() && (aTick % 100) == 0) {
             if (mode == 0) {
                 aBaseMetaTileEntity.setActive(false);
-                status = -128;
+                status = (byte) 0b11111111;
             } else {
                 aBaseMetaTileEntity.setActive(true);
-                compute();
+                status = 0; // No need to compute anything; all values in this hatch are 500
             }
         }
     }
