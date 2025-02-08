@@ -53,6 +53,7 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
 
     private static final IIconContainer textureFont = new Textures.BlockIcons.CustomIcon("icons/YOTTAHatch");
     private static final BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
+    private static final BigInteger LONG_MIN = BigInteger.valueOf(Long.MIN_VALUE);
 
     private MTEYottaFluidTank host;
     private AENetworkProxy gridProxy = null;
@@ -252,71 +253,43 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
         getProxy();
     }
 
-    private void postStorageUpdateToAE2() {
+    private void postUpdate(AENetworkProxy proxy, FluidStack fluid, BigInteger amt) {
         try {
-            AENetworkProxy proxy = getProxy();
-            if (proxy != null && proxy.isActive()) {
-                if (this.lastFluid != null && this.host.mFluid != null) {
-                    if (this.lastFluid != this.host.mFluid) {
-                        // post removal of last fluid
-                        proxy.getStorage()
-                            .postAlterationOfStoredItems(
-                                StorageChannel.FLUIDS,
-                                Collections.singletonList(
-                                    AEFluidStack.create(this.lastFluid)
-                                        .setStackSize(
-                                            -this.lastAmt.min(LONG_MAX)
-                                                .longValue())),
-                                this.mySrc);
-                        // post new fluid
-                        proxy.getStorage()
-                            .postAlterationOfStoredItems(
-                                StorageChannel.FLUIDS,
-                                Collections.singletonList(
-                                    AEFluidStack.create(this.host.mFluid)
-                                        .setStackSize(
-                                            this.host.mStorageCurrent.min(LONG_MAX)
-                                                .longValue())),
-                                this.mySrc);
-                    } else {
-                        // post difference
-                        proxy.getStorage()
-                            .postAlterationOfStoredItems(
-                                StorageChannel.FLUIDS,
-                                Collections.singletonList(
-                                    AEFluidStack.create(this.host.mFluid)
-                                        .setStackSize(
-                                            this.host.mStorageCurrent.subtract(this.lastAmt)
-                                                .min(LONG_MAX)
-                                                .longValue())),
-                                this.mySrc);
-                    }
-                } else if (this.lastFluid != null) {
-                    // post removal of last fluid
-                    proxy.getStorage()
-                        .postAlterationOfStoredItems(
-                            StorageChannel.FLUIDS,
-                            Collections.singletonList(
-                                AEFluidStack.create(this.lastFluid)
-                                    .setStackSize(
-                                        -this.lastAmt.min(LONG_MAX)
-                                            .longValue())),
-                            this.mySrc);
-                } else if (this.host.mFluid != null) {
-                    // post new fluid
-                    proxy.getStorage()
-                        .postAlterationOfStoredItems(
-                            StorageChannel.FLUIDS,
-                            Collections.singletonList(
-                                AEFluidStack.create(this.host.mFluid)
-                                    .setStackSize(
-                                        this.host.mStorageCurrent.min(LONG_MAX)
-                                            .longValue())),
-                            this.mySrc);
-                }
-            }
+            proxy.getStorage()
+                .postAlterationOfStoredItems(
+                    StorageChannel.FLUIDS,
+                    Collections.singletonList(
+                        AEFluidStack.create(fluid)
+                            .setStackSize(
+                                amt.min(LONG_MAX)
+                                    .max(LONG_MIN)
+                                    .longValue())),
+                    this.mySrc);
         } catch (GridAccessException e) {
             // :P
+        }
+    }
+
+    private void postStorageUpdateToAE2() {
+        AENetworkProxy proxy = getProxy();
+        if (proxy != null && proxy.isActive()) {
+            if (this.lastFluid != null && this.host.mFluid != null) {
+                if (this.lastFluid != this.host.mFluid) {
+                    // post removal of last fluid
+                    postUpdate(proxy, this.lastFluid, this.lastAmt.negate());
+                    // post new fluid
+                    postUpdate(proxy, this.host.mFluid, this.host.mStorageCurrent);
+                } else {
+                    // post difference
+                    postUpdate(proxy, this.host.mFluid, this.host.mStorageCurrent.subtract(this.lastAmt));
+                }
+            } else if (this.lastFluid != null) {
+                // post removal of last fluid
+                postUpdate(proxy, this.lastFluid, this.lastAmt.negate());
+            } else if (this.host.mFluid != null) {
+                // post new fluid
+                postUpdate(proxy, this.host.mFluid, this.host.mStorageCurrent);
+            }
         }
         update();
     }
