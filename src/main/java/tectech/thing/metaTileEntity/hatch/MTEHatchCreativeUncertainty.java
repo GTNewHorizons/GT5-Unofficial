@@ -49,7 +49,7 @@ public class MTEHatchCreativeUncertainty extends MTEHatchUncertainty {
                 status = (byte) 0b11111111;
             } else {
                 aBaseMetaTileEntity.setActive(true);
-                status = 0; //No need to compute anything; all values in this hatch are 500
+                status = 0; // No need to compute anything; all values in this hatch are 500
             }
         }
     }
