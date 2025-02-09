@@ -111,8 +111,9 @@ public class MTEHatchWirelessComputationInput extends MTEHatchDataInput
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
-        if (!(aPlayer instanceof EntityPlayerMP))
+        if (!aBaseMetaTileEntity.isServerSide()) {
             return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
+        }
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true))
             return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
@@ -125,8 +126,9 @@ public class MTEHatchWirelessComputationInput extends MTEHatchDataInput
 
     @Override
     public void onLeftclick(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player) {
-        if (!(player instanceof EntityPlayerMP)) return;
-
+        if (!baseMetaTileEntity.isServerSide()) {
+            return;
+        }
         ItemStack dataStick = player.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
         dataStick.stackTagCompound = getCopiedData(player);
