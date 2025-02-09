@@ -146,6 +146,10 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     ArtificialOrganism currentSpecies = new ArtificialOrganism();
 
+    private long powerUsage = 0;
+    private int nutrientUsage = 0;
+    
+
     private int intelligence;
     private int strength;
     private int count;
@@ -302,7 +306,12 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         if (!aBaseMetaTileEntity.isServerSide() || aTick % 20 != 0 || currentSpecies == null || !finalizedSpecies)
             return;
 
+        aBaseMetaTileEntity.getSkyAtSideAndDistance(ForgeDirection.UP, 5);
+
         /*
+         * if (!drainEnergyInput(RECIPE_ZPM * 20)) {
+         * currentSpecies.purgeAOs();
+         * }
          * for (MTEHatchInput hatch : mInputHatches) {
          * if (drain(hatch, nutrientcost, true)) {
          * break;

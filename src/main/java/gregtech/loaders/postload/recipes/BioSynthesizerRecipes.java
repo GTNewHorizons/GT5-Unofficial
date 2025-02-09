@@ -1,7 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.TierEU.RECIPE_LV;
-import static gregtech.api.enums.TierEU.RECIPE_LuV;
+import static gregtech.api.enums.TierEU.RECIPE_UV;
 import static gregtech.api.recipe.RecipeMaps.bioProgrammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.bioSynthesizerRecipes;
 import static gregtech.api.recipe.RecipeMaps.brewingRecipes;
@@ -10,18 +10,18 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AO_DATA;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-
-import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.util.recipe.AORecipeData;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class BioSynthesizerRecipes implements Runnable {
 
@@ -38,15 +38,26 @@ public class BioSynthesizerRecipes implements Runnable {
 
     @Override
     public void run() {
+
+        // MIXER
+
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                Materials.MeatRaw.getDust(1),
-                new ItemStack(Items.sugar, 1),
-                ItemList.IC2_Plantball.get(1))
+            .itemInputs(Materials.MeatRaw.getDust(1), new ItemStack(Items.sugar, 1), ItemList.IC2_Plantball.get(1))
             .itemOutputs(ItemList.Nutrient_Paste.get(3))
             .duration(8 * SECONDS)
             .eut(RECIPE_LV)
             .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Neuron_Cell_Cluster.get(32))
+            .fluidInputs(Materials.NutrientBroth.getFluid(8000))
+            .fluidOutputs(Materials.NeuralFluid.getFluid(8000))
+            .duration(15 * SECONDS)
+            .eut(RECIPE_UV)
+            .noOptimize()
+            .addTo(mixerRecipes);
+
+        // BREWERY
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Nutrient_Paste.get(64))
@@ -57,6 +68,8 @@ public class BioSynthesizerRecipes implements Runnable {
             .noOptimize()
             .addTo(brewingRecipes);
 
+        // SYNTHESIZER
+
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.beef, 1))
             .itemOutputs(ItemList.Circuit_Chip_Stemcell.get(1))
@@ -64,6 +77,8 @@ public class BioSynthesizerRecipes implements Runnable {
             .eut(2)
             .metadata(AO_DATA, new AORecipeData(5, 500, 20))
             .addTo(bioSynthesizerRecipes);
+
+        // PROGRAMMER
 
         GTValues.RA.stdBuilder()
             .itemInputs(

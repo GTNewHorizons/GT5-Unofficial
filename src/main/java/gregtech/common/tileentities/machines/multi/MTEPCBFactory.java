@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.AuthorBlueWeabo;
 import static gregtech.api.enums.GTValues.VN;
@@ -26,13 +25,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.factory.artificialorganisms.MTEHatchAOInput;
-import gregtech.api.gui.modularui.GUITextureSet;
-import gregtech.api.objects.ArtificialOrganism;
-import gregtech.api.util.GTRecipeConstants;
-import gregtech.api.util.recipe.AORecipeData;
-import gregtech.common.blocks.BlockCasings2;
-import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEAOUnitBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -71,7 +63,9 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.factory.artificialorganisms.MTEHatchAOInput;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
@@ -79,10 +73,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
-import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchNanite;
+import gregtech.api.objects.ArtificialOrganism;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -100,12 +94,14 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.recipe.AORecipeData;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.blocks.BlockCasings8;
+import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEAOUnitBase;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class MTEPCBFactory extends MTEAOUnitBase<MTEPCBFactory>
-    implements ISurvivalConstructable, INEIPreviewModifier {
+public class MTEPCBFactory extends MTEAOUnitBase<MTEPCBFactory> implements ISurvivalConstructable, INEIPreviewModifier {
 
     private static final String tier1 = "tier1";
     private static final String tier2 = "tier2";
@@ -275,7 +271,8 @@ public class MTEPCBFactory extends MTEAOUnitBase<MTEPCBFactory>
                 .dot(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(13))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 13))
-        .addElement('L',
+        .addElement(
+            'L',
             buildHatchAdder(MTEPCBFactory.class).adder(MTEPCBFactory::addBioHatch)
                 .hatchClass(MTEHatchAOInput.class)
                 .shouldReject(t -> !(t.bioHatch == null))
@@ -601,8 +598,7 @@ public class MTEPCBFactory extends MTEAOUnitBase<MTEPCBFactory>
 
                     ArtificialOrganism currentOrganism = getAO();
 
-                    if (currentOrganism == null)
-                        return SimpleCheckRecipeResult.ofFailure("missing_ao");
+                    if (currentOrganism == null) return SimpleCheckRecipeResult.ofFailure("missing_ao");
                     if (currentOrganism.getCount() <= data.requiredCount)
                         return SimpleCheckRecipeResult.ofFailure("insufficient_ao");
                     if (currentOrganism.getIntelligence() <= data.requiredIntelligence)
@@ -610,7 +606,8 @@ public class MTEPCBFactory extends MTEAOUnitBase<MTEPCBFactory>
 
                     setSpeedBonus(currentOrganism.calculateSpeedBonus());
 
-                    AOsInUse = Math.round((float) currentOrganism.consumeAOs(data.requiredCount) * (100 - data.dangerLevel) / 100F);
+                    AOsInUse = Math.round(
+                        (float) currentOrganism.consumeAOs(data.requiredCount) * (100 - data.dangerLevel) / 100F);
                 }
 
                 int requiredPCBTier = recipe.getMetadataOrDefault(PCBFactoryTierKey.INSTANCE, 1);

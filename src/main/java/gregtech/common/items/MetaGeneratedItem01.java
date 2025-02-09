@@ -3272,11 +3272,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
 
         // AOs
         ItemList.Nutrient_Paste.set(
-            addItem(
-                Nutrient_Paste.ID,
-                "Nutrient Paste",
-                "Tasty!",
-                new TCAspects.TC_AspectStack(TCAspects.CORPUS, 4)));
+            addItem(Nutrient_Paste.ID, "Nutrient Paste", "Tasty!", new TCAspects.TC_AspectStack(TCAspects.CORPUS, 4)));
         ItemList.Circuit_Tissue.set(
             addItem(
                 Circuit_Tissue.ID,

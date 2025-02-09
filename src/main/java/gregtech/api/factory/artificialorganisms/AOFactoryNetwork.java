@@ -1,11 +1,11 @@
 package gregtech.api.factory.artificialorganisms;
 
-import gregtech.api.factory.standard.StandardFactoryNetwork;
-import gregtech.api.objects.ArtificialOrganism;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.HashSet;
 
-import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+import gregtech.api.factory.standard.StandardFactoryNetwork;
+import gregtech.api.objects.ArtificialOrganism;
 
 public class AOFactoryNetwork extends StandardFactoryNetwork<AOFactoryNetwork, AOFactoryElement, AOFactoryGrid> {
 

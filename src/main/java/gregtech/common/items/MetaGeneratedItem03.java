@@ -494,7 +494,8 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_Chip_CrystalSoC
             .set(addItem(Circuit_Chip_CrystalSoC.ID, "Crystal SoC", "Crystal System on a Chip", o));
         ItemList.Circuit_Chip_NeuroCPU.set(addItem(Circuit_Chip_NeuroCPU.ID, "Neuro Processing Unit", "Neuro CPU", o));
-        ItemList.Circuit_Chip_Stemcell.set(addItem(Circuit_Chip_Stemcell.ID, "Stemcells", "Simple Regenerative Cells", o));
+        ItemList.Circuit_Chip_Stemcell
+            .set(addItem(Circuit_Chip_Stemcell.ID, "Stemcells", "Simple Regenerative Cells", o));
         ItemList.Circuit_Parts_RawCrystalParts
             .set(addItem(Circuit_Parts_RawCrystalParts.ID, "Raw Crystal Chip Parts", "Raw Crystal Processor Parts", o));
         ItemList.Circuit_Chip_Biocell.set(addItem(Circuit_Chip_Biocell.ID, "Biocells", "Mutated raw intelligence", o));

@@ -981,6 +981,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials PrimordialSoup;
     public static Materials NutrientBroth;
     public static Materials SterilizationFluid;
+    public static Materials NeuralFluid;
 
     // spotless:on
 

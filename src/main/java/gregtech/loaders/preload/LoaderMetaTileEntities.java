@@ -932,7 +932,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
-import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEBioProgrammer;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.GregTechAPI;
@@ -1091,6 +1090,7 @@ import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTEVacuumFreezer;
 import gregtech.common.tileentities.machines.multi.MTEWormholeGenerator;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEAdvancedBioLab;
+import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEBioProgrammer;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEBioSynthesizer;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEEvolutionChamber;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleCompressor;

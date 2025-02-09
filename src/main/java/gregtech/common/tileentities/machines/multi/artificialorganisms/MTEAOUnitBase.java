@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.artificialorganisms;
 
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.factory.artificialorganisms.MTEHatchAOInput;
@@ -47,8 +46,7 @@ public abstract class MTEAOUnitBase<T extends MTEExtendedPowerMultiBlockBase<T>>
                 }
 
                 ArtificialOrganism currentOrganism = getAO();
-                if (currentOrganism == null)
-                    return SimpleCheckRecipeResult.ofFailure("missing_ao");
+                if (currentOrganism == null) return SimpleCheckRecipeResult.ofFailure("missing_ao");
                 if (currentOrganism.getCount() <= data.requiredCount)
                     return SimpleCheckRecipeResult.ofFailure("insufficient_ao");
                 if (currentOrganism.getIntelligence() <= data.requiredIntelligence)
