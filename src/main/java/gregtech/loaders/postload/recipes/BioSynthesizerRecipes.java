@@ -85,13 +85,12 @@ public class BioSynthesizerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Circuit_Board_Bio_Ultra.get(1L),
-                ItemList.Circuit_Chip_Biocell.get(16L),
-                ItemList.Circuit_Parts_Reinforced_Glass_Tube.get(16L),
+                ItemList.Circuit_Board_Bio_Ultra.get(1),
+                ItemList.Circuit_Chip_Biocell.get(64),
+                ItemList.Circuit_Tissue.get(1),
+                ItemList.Circuit_Parts_Reinforced_Glass_Tube.get(16),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Polybenzimidazole, 16),
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.ElectrumFlux, 16L),
-                new Object[] { OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L },
-                GTOreDictUnificator.get(OrePrefixes.bolt, Materials.HSSS, 32L))
+                GTOreDictUnificator.get(OrePrefixes.bolt, Materials.HSSS, 32))
             .fluidInputs(
                 Materials.BioMediumSterilized.getFluid(500L),
                 Materials.UUMatter.getFluid(500L),

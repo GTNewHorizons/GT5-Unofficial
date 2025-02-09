@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -68,6 +69,11 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
         currenttip.add(
             "Network: " + accessor.getNBTData()
                 .getString("network"));
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack aTool) {
+        getNetwork().initiateHavoc();
     }
 
     @Override
@@ -176,6 +182,11 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
     }
 
     @Override
+    public void havocEvent() {
+        queuedHavoc = true;
+    }
+
+    @Override
     public boolean canConnect(ForgeDirection side, TileEntity tileEntity) {
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
         TileEntity tTileEntity = baseMetaTile.getTileEntityAtSide(side);
@@ -185,6 +196,14 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
             return meta instanceof AOFactoryElement;
         }
         return false;
+    }
+
+    boolean queuedHavoc = false;
+
+    @Override
+    public void onPostTick(IGregTechTileEntity base, long aTick) {
+        super.onPostTick(base, aTick);
+        if (queuedHavoc) getBaseMetaTileEntity().setToFire();
     }
 
     private AOFactoryNetwork network;
