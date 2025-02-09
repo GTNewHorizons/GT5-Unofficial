@@ -932,6 +932,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
+import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEBioProgrammer;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.GregTechAPI;
@@ -1663,6 +1664,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTEHatchAOInput(BIO_HATCH_INPUT.ID, "hatch.bioinput", "AO Receiver Hatch", 8).getStackForm(1));
         ItemList.Machine_Multi_AOAssembler
             .set(new MTEBioSynthesizer(AO_ASSEMBLER.ID, "multimachine.aoassembler", "Bio Synthesizer").getStackForm(1));
+        ItemList.Machine_Multi_AOProgrammer
+            .set(new MTEBioProgrammer(AO_PROGRAMMER.ID, "multimachine.aoprogrammer", "Bio Programmer").getStackForm(1));
         ItemList.Machine_Multi_AOBioLab
             .set(new MTEAdvancedBioLab(AO_BIOLAB.ID, "multimachine.aobiolab", "Advanced Bio Lab").getStackForm(1));
 
