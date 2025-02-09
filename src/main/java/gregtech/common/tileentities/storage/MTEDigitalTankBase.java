@@ -418,6 +418,11 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
         if (doFill) {
             fillableStack.amount += amount;
             if (getFillableStack() == null) setFillableStack(fillableStack);
+            if (this.mLockFluid && this.lockedFluidName == null) {
+                setLockedFluidName(
+                    aFluid.getFluid()
+                        .getName());
+            }
             getBaseMetaTileEntity().markDirty();
         }
         return (mVoidFluidPart || mVoidFluidFull) ? aFluid.amount : amount;
@@ -469,11 +474,6 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     @Override
     public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
-    }
-
-    @Override
-    public int getTankPressure() {
-        return 100;
     }
 
     public boolean allowOverflow() {

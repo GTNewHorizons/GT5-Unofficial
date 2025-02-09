@@ -69,9 +69,9 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
-import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.objects.Logger;
@@ -149,7 +149,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
         final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(24)),
-                new GTRenderedTexture(
+                TextureFactory.of(
                     aActive ? Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE
                         : Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER) };
         }
@@ -712,8 +712,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
                 + EnumChatFormatting.RESET;
         }
 
-        int errorCode = this.getBaseMetaTileEntity()
-            .getErrorDisplayID();
+        int errorCode = getErrorDisplayID();
         boolean mMaint = (errorCode != 0);
 
         return new String[] { "Ergon Energy - District Sub-Station", "Stored EU: " + storedEnergyText,
@@ -884,7 +883,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
             .widget(
                 TextWidget
                     .dynamicString(
-                        () -> getBaseMetaTileEntity().getErrorDisplayID() == 0
+                        () -> getErrorDisplayID() == 0
                             ? getBaseMetaTileEntity().isActive() ? "Running perfectly" : "Turn on with Mallet"
                             : "")
                     .setSynced(false)
@@ -895,10 +894,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
                 new FakeSyncWidget.BooleanSyncer(
                     () -> getBaseMetaTileEntity().isActive(),
                     val -> getBaseMetaTileEntity().setActive(val)))
-            .widget(
-                new FakeSyncWidget.IntegerSyncer(
-                    () -> getBaseMetaTileEntity().getErrorDisplayID(),
-                    val -> getBaseMetaTileEntity().setErrorDisplayID(val)))
+            .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID))
             .widget(
                 new TextWidget("In").setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(178, 10))

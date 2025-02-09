@@ -2,10 +2,10 @@ package tectech.loader.thing;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import tectech.TecTech;
 import tectech.thing.cover.CoverEnderFluidLink;
 import tectech.thing.cover.CoverPowerPassUpgrade;
@@ -26,21 +26,21 @@ public class CoverLoader implements Runnable {
         final IIconContainer POWERPASSUPGRADE_OVERLAY = new Textures.BlockIcons.CustomIcon(
             "iconsets/POWERPASSUPGRADE_OVERLAY");
 
-        GregTechAPI.registerCover(
+        CoverRegistry.registerCover(
             new ItemStack(ItemTeslaCoilCover.INSTANCE, 1, 0),
-            new GTRenderedTexture(TESLA_OVERLAY),
+            TextureFactory.of(TESLA_OVERLAY),
             new CoverTeslaCoil());
-        GregTechAPI.registerCover(
+        CoverRegistry.registerCover(
             new ItemStack(ItemTeslaCoilCover.INSTANCE, 1, 1),
-            new GTRenderedTexture(TESLA_OVERLAY_ULTIMATE),
+            TextureFactory.of(TESLA_OVERLAY_ULTIMATE),
             new CoverTeslaCoilUltimate());
-        GregTechAPI.registerCover(
+        CoverRegistry.registerCover(
             new ItemStack(ItemEnderFluidLinkCover.INSTANCE, 1, 0),
-            new GTRenderedTexture(ENDERFLUIDLINK_OVERLAY),
+            TextureFactory.of(ENDERFLUIDLINK_OVERLAY),
             new CoverEnderFluidLink());
-        GregTechAPI.registerCover(
+        CoverRegistry.registerCover(
             new ItemStack(ItemPowerPassUpgradeCover.INSTANCE, 1, 0),
-            new GTRenderedTexture(POWERPASSUPGRADE_OVERLAY),
+            TextureFactory.of(POWERPASSUPGRADE_OVERLAY),
             new CoverPowerPassUpgrade());
         TecTech.LOGGER.info("Cover functionality registered");
     }

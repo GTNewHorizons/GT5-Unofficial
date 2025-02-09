@@ -26,6 +26,7 @@ import org.apache.commons.lang3.EnumUtils;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.util.GTLanguageManager;
@@ -37,7 +38,6 @@ import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
-import ic2.core.Ic2Items;
 import ic2.core.init.InternalName;
 import ic2.core.item.resources.ItemCell;
 
@@ -238,7 +238,7 @@ public class Utils {
         Logger.WARNING("1");
         final InternalName yourName = EnumHelper.addEnum(InternalName.class, s, new Class[0], new Object[0]);
         Logger.WARNING("2 " + yourName.name());
-        final ItemCell item = (ItemCell) Ic2Items.cell.getItem();
+        final ItemCell item = (ItemCell) ItemList.Cell_Empty.getItem();
         Logger.WARNING("3 " + item.getUnlocalizedName());
         try {
             Logger.WARNING("4");
@@ -253,7 +253,7 @@ public class Utils {
             FluidContainerRegistry.registerFluidContainer(
                 FluidUtils.getFluidStack(s.toLowerCase(), 1000),
                 temp.copy(),
-                Ic2Items.cell.copy());
+                ItemList.Cell_Empty.get(1));
             ItemUtils.addItemToOreDictionary(temp.copy(), "cell" + s);
             return temp;
         } catch (final Exception e) {

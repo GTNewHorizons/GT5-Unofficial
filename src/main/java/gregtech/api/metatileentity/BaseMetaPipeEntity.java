@@ -7,17 +7,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -27,6 +26,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -57,7 +57,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * <p/>
  * This is the main TileEntity for EVERYTHING.
  */
-public class BaseMetaPipeEntity extends CommonMetaTileEntity
+public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     implements IGregTechTileEntity, IPipeRenderedTileEntity, IDebugableTileEntity {
 
     public byte mConnections = IConnectable.NO_CONNECTION;
@@ -223,7 +223,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                 if (!hasValidMetaTileEntity()) return;
                 if (isServerSide()) {
                     if (mTickTimer == 10) {
-                        updateCoverBehavior();
                         issueBlockUpdate();
                         joinEnet();
                     }
@@ -484,8 +483,17 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
     @Override
     public boolean isGivingInformation() {
-        if (canAccessData()) return mMetaTileEntity.isGivingInformation();
-        return false;
+        return canAccessData() && mMetaTileEntity.isGivingInformation();
+    }
+
+    @Override
+    public String[] getInfoData() {
+        return canAccessData() ? getMetaTileEntity().getInfoData() : new String[] {};
+    }
+
+    @Override
+    public Map<String, String> getInfoMap() {
+        return canAccessData() ? getMetaTileEntity().getInfoMap() : Collections.emptyMap();
     }
 
     @Override
@@ -640,16 +648,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     @Override
     public boolean hasWorkJustBeenEnabled() {
         return mWorkUpdate;
-    }
-
-    @Override
-    public byte getWorkDataValue() {
-        return 0;
-    }
-
-    @Override
-    public void setWorkDataValue(byte aValue) {
-        /* Do nothing */
     }
 
     @Override
@@ -818,11 +816,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     }
 
     @Override
-    public boolean shouldDropItemAt(int index) {
-        return this.mMetaTileEntity == null || this.mMetaTileEntity.shouldDropItemAt(index);
-    }
-
-    @Override
     public boolean onRightclick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
         if (isClientSide()) {
             // Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
@@ -831,8 +824,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                     ? GTUtility.determineWrenchingSide(side, aX, aY, aZ)
                     : side;
                 return (getCoverInfoAtSide(tSide).hasCoverGUI());
-            } else if (getCoverBehaviorAtSideNew(side).onCoverRightclickClient(side, this, aPlayer, aX, aY, aZ)) {
-                return true;
             }
         }
         if (isServerSide()) {
@@ -983,13 +974,12 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                 final CoverInfo coverInfo = getCoverInfoAtSide(coverSide);
 
                 if (coverInfo.getCoverID() == 0) {
-                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCovers.keySet())) {
-                        final CoverBehaviorBase<?> coverBehavior = GregTechAPI.getCoverBehaviorNew(tCurrentItem);
+                    if (CoverRegistry.isCover(tCurrentItem)) {
+                        final CoverBehaviorBase<?> coverBehavior = CoverRegistry.getCoverBehaviorNew(tCurrentItem);
                         if (coverBehavior.isCoverPlaceable(coverSide, tCurrentItem, this)
                             && mMetaTileEntity.allowCoverOnSide(coverSide, new GTItemStack(tCurrentItem))) {
 
-                            setCoverItemAtSide(coverSide, tCurrentItem);
-                            coverBehavior.onPlayerAttach(aPlayer, tCurrentItem, this, coverSide);
+                            attachCover(aPlayer, tCurrentItem, coverSide);
 
                             mMetaTileEntity.markDirty();
                             if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
@@ -1108,9 +1098,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     @Override
     public boolean canExtractItem(int aIndex, ItemStack aStack, int ordinalSide) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
-        return canAccessData()
-            && getCoverBehaviorAtSideNew(side)
-                .letsItemsOut(side, getCoverIDAtSide(side), getComplexCoverDataAtSide(side), aIndex, this)
+        return canAccessData() && getCoverInfoAtSide(side).letsItemsOut(aIndex)
             && mMetaTileEntity.canExtractItem(aIndex, aStack, ordinalSide);
     }
 
@@ -1141,16 +1129,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     @Override
     public void setGenericRedstoneOutput(boolean aOnOff) {
         // Do nothing
-    }
-
-    @Override
-    public int getErrorDisplayID() {
-        return 0;
-    }
-
-    @Override
-    public void setErrorDisplayID(int aErrorID) {
-        //
     }
 
     @Override
@@ -1219,18 +1197,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     @Override
     public boolean drainEnergyUnits(ForgeDirection side, long aVoltage, long aAmperage) {
         return false;
-    }
-
-    @Override
-    public boolean acceptsRotationalEnergy(ForgeDirection side) {
-        if (!canAccessData() || getCoverIDAtSide(side) != 0) return false;
-        return mMetaTileEntity.acceptsRotationalEnergy(side);
-    }
-
-    @Override
-    public boolean injectRotationalEnergy(ForgeDirection side, long aSpeed, long aEnergy) {
-        if (!canAccessData() || getCoverIDAtSide(side) != 0) return false;
-        return mMetaTileEntity.injectRotationalEnergy(side, aSpeed, aEnergy);
     }
 
     private boolean canMoveFluidOnSide(ForgeDirection side, Fluid fluid, boolean isFill) {
@@ -1349,16 +1315,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     }
 
     @Override
-    public float getBlastResistance(ForgeDirection side) {
-        return canAccessData() ? Math.max(0, getMetaTileEntity().getExplosionResistance(side)) : 5.0F;
-    }
-
-    @Override
-    public void onBlockDestroyed() {
-        if (canAccessData()) getMetaTileEntity().onBlockDestroyed();
-    }
-
-    @Override
     public boolean isMufflerUpgradable() {
         return false;
     }
@@ -1376,12 +1332,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     @Override
     public boolean isUniversalEnergyStored(long aEnergyAmount) {
         return getUniversalEnergyStored() >= aEnergyAmount;
-    }
-
-    @Override
-    public String[] getInfoData() {
-        if (canAccessData()) return getMetaTileEntity().getInfoData();
-        return new String[] {};
     }
 
     @Override
@@ -1405,22 +1355,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     @Override
     public int getLightOpacity() {
         return mMetaTileEntity == null ? 0 : mMetaTileEntity.getLightOpacity();
-    }
-
-    @Override
-    public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
-        List<AxisAlignedBB> outputAABB, Entity collider) {
-        mMetaTileEntity.addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        return mMetaTileEntity.getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
-    }
-
-    @Override
-    public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider) {
-        mMetaTileEntity.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
     }
 
     @Override

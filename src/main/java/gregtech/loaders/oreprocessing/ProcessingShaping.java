@@ -426,7 +426,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     case "Iron", "WroughtIron" -> {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Shape_Extruder_Cell.get(0L))
-                            .itemOutputs(GTModHandler.getIC2Item("fuelRod", tAmount))
+                            .itemOutputs(ItemList.IC2_Fuel_Rod_Empty.get(tAmount))
                             .duration((tAmount * 128) * TICKS)
                             .eut(TierEU.RECIPE_LV)
                             .addTo(extruderRecipes);

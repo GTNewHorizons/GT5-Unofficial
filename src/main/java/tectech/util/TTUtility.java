@@ -9,6 +9,8 @@ import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 
+import org.apache.commons.lang3.StringUtils;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
@@ -39,7 +41,8 @@ public final class TTUtility {
         BigInteger abs = number.abs();
         String strNum = abs.toString();
         int exponent = strNum.length() - 1;
-        return (number.signum() == -1 ? "-" : "") + strNum.charAt(0) + "." + strNum.substring(1, 3) + "e" + exponent;
+        return (number.signum() == -1 ? "-" : "") + strNum
+            .charAt(0) + "." + getExponentFormDecimalPart(strNum) + "e" + exponent;
     }
 
     public static String toExponentForm(long number) {
@@ -47,7 +50,12 @@ public final class TTUtility {
         String strNum = Long.toString(abs);
         int exponent = strNum.length() - 1;
         return (Long.signum(number) == -1 ? "-" : "") + strNum
-            .charAt(0) + "." + strNum.substring(1, 3) + "e" + exponent;
+            .charAt(0) + "." + getExponentFormDecimalPart(strNum) + "e" + exponent;
+    }
+
+    private static String getExponentFormDecimalPart(String strNum) {
+        var s = StringUtils.substring(strNum, 1, 3);
+        return StringUtils.rightPad(s, 2, "0");
     }
 
     public static int bitStringToInt(String bits) {

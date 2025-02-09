@@ -59,6 +59,17 @@ public class WirelessNetworkManager {
         return addEUToGlobalEnergyMap(user_uuid, BigInteger.valueOf(EU));
     }
 
+    // Ticks between energy additions to the hatch. For a dynamo this is how many ticks between energy being consumed
+    // and added to the global energy map.
+    public static long ticks_between_energy_addition = 100L * 20L;
+
+    // Total number of energy additions this multi can store before it is full.
+    public static long number_of_energy_additions = 4L;
+
+    public static long totalStorage(long tier_eu_per_tick) {
+        return tier_eu_per_tick * ticks_between_energy_addition * number_of_energy_additions;
+    }
+
     // ------------------------------------------------------------------------------------
 
     public static BigInteger getUserEU(UUID user_uuid) {

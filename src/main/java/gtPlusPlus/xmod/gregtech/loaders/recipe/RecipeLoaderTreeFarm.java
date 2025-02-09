@@ -34,6 +34,7 @@ public class RecipeLoaderTreeFarm {
         if (Mods.BiomesOPlenty.isModLoaded()) generateBOPTrees();
         if (Mods.PamsHarvestCraft.isModLoaded()) generatePamsTrees();
         if (Mods.PamsHarvestTheNether.isModLoaded()) generatePamsNetherTrees();
+        if (Mods.EtFuturumRequiem.isModLoaded()) generateEtFuturumRequiemTrees();
 
         if (Mods.Forestry.isModLoaded()) {
             ForestryTreeHandler.generateForestryTrees();
@@ -629,4 +630,60 @@ public class RecipeLoaderTreeFarm {
             null);
     }
 
+    private static void generateEtFuturumRequiemTrees() {
+        MTETreeFarm.registerTreeProducts( // Mangrove
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "sapling", 1, 0),
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "mangrove_log", 1, 0),
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "leaves", 1, 0),
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "mangrove_roots", 1, 0));
+
+        MTETreeFarm.registerTreeProducts( // Cherry
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "sapling", 1, 1),
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "cherry_log", 1, 0),
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "leaves", 1, 1),
+            GTModHandler.getModItem(Mods.PamsHarvestCraft.ID, "cherryItem", 1, 0));
+
+        MTETreeFarm.registerTreeProducts( // Crimson
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "nether_fungus", 1, 0),
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "crimson_stem", 1, 0),
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "nether_wart", 1, 0),
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "shroomlight", 1, 0));
+
+        MTETreeFarm.registerTreeProducts( // Warped
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "nether_fungus", 1, 1),
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "warped_stem", 1, 0),
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "nether_wart", 1, 1),
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "shroomlight", 1, 0));
+
+        MTETreeFarm.registerTreeProducts( // Chorus
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "chorus_flower", 1, 0),
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "chorus_plant", 1, 0),
+            null,
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "chorus_fruit", 1, 0));
+
+        MTETreeFarm.registerTreeProducts( // Azalea
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "azalea", 1, 0),
+            GTModHandler.getModItem(Mods.Minecraft.ID, "log", 1, 0),
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "azalea_leaves", 1, 0),
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "moss_carpet", 1, 0));
+
+        MTETreeFarm.registerTreeProducts( // Flowering Azalea
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "azalea", 1, 1),
+            GTModHandler.getModItem(Mods.Minecraft.ID, "log", 1, 0),
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "azalea_leaves", 1, 1),
+            GTModHandler.getModItem(Mods.BiomesOPlenty.ID, "plants", 1, 15));
+
+        MTETreeFarm.registerTreeProducts( // Twisting Vines
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "twisting_vines", 1, 0),
+            null,
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "nether_sprouts", 1, 0),
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "nether_roots", 1, 1));
+
+        MTETreeFarm.registerTreeProducts( // Weeping Vines
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "weeping_vines", 1, 0),
+            null,
+            null,
+            GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "nether_roots", 1, 0));
+
+    }
 }

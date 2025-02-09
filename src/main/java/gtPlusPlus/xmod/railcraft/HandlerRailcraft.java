@@ -151,8 +151,8 @@ public class HandlerRailcraft {
                 .itemOutputs(Materials.Ash.getDustSmall(1))
                 .fluidInputs(FluidUtils.getFluidStack("steam", 100))
                 .fluidOutputs(Materials.WoodGas.getGas(300))
-                .eut(3 * SECONDS)
-                .duration(240)
+                .eut(240)
+                .duration(3 * SECONDS)
                 .addTo(cokeOvenRecipes);
 
             // Fluid Extracting the Charcoals for Wood Tar

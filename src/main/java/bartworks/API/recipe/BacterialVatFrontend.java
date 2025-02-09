@@ -1,6 +1,8 @@
 package bartworks.API.recipe;
 
 import static gregtech.api.util.GTRecipeConstants.GLASS;
+import static gregtech.api.util.GTUtility.getTierNameWithParentheses;
+import static gregtech.api.util.GTUtility.trans;
 
 import java.util.List;
 
@@ -16,6 +18,7 @@ import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.api.util.recipe.Sievert;
 import gregtech.nei.GTNEIDefaultHandler;
@@ -76,10 +79,15 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
 
     @Override
     protected void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
+        long eut = recipeInfo.recipe.mEUt;
+        long duration = recipeInfo.recipe.mDuration;
         int glassTier = recipeInfo.recipe.getMetadataOrDefault(GLASS, 3);
         Sievert data = recipeInfo.recipe.getMetadataOrDefault(GTRecipeConstants.SIEVERT, new Sievert(0, false));
         int sievert = data.sievert;
         boolean isExact = data.isExact;
+        recipeInfo.drawText(trans("152", "Total: ") + GTUtility.formatNumbers(eut * duration) + " EU");
+        recipeInfo.drawText(
+            trans("153", "Usage: ") + GTUtility.formatNumbers(eut) + " EU/t" + getTierNameWithParentheses(eut));
         recipeInfo.drawText(StatCollector.translateToLocalFormatted("nei.biovat.0.name", GTValues.VN[glassTier]));
         if (sievert != 0) {
             if (!isExact) {
