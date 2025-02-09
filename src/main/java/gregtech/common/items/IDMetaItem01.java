@@ -103,6 +103,7 @@ public enum IDMetaItem01 {
     Steam_Regulator_HV(334),
     Steam_Regulator_EV(335),
     Steam_Regulator_IV(336),
+    Nutrient_Paste(340),
     Muscle_Cell_Cluster(341),
     Skin_Cell_Cluster(342),
     Neuron_Cell_Cluster(343),

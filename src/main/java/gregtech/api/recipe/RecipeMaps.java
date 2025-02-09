@@ -1221,6 +1221,17 @@ public final class RecipeMaps {
         .frontend(BioSynthesizerFrontEnd::new)
         .build();
 
+    public static final RecipeMap<RecipeMapBackend> bioProgrammerRecipes = RecipeMapBuilder
+        .of("gt.recipe.bioprogrammer")
+        .maxIO(6, 6, 3, 3)
+        .minInputs(1, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .logo(GTUITextures.PICTURE_AO_LOGO)
+        .logoPos(152, 100)
+        .disableOptimize()
+        .frontend(BioSynthesizerFrontEnd::new)
+        .build();
+
     static {
         RecipeMaps.dieselFuels.addDownstream(
             IRecipeMap.newRecipeMap(

@@ -287,6 +287,7 @@ import static gregtech.common.items.IDMetaItem01.Muscle_Cell_Cluster;
 import static gregtech.common.items.IDMetaItem01.NC_SensorKit;
 import static gregtech.common.items.IDMetaItem01.NaquadriaSupersolid;
 import static gregtech.common.items.IDMetaItem01.Neuron_Cell_Cluster;
+import static gregtech.common.items.IDMetaItem01.Nutrient_Paste;
 import static gregtech.common.items.IDMetaItem01.Paper_Magic_Empty;
 import static gregtech.common.items.IDMetaItem01.Paper_Magic_Page;
 import static gregtech.common.items.IDMetaItem01.Paper_Magic_Pages;
@@ -3270,6 +3271,12 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 128)));
 
         // AOs
+        ItemList.Nutrient_Paste.set(
+            addItem(
+                Nutrient_Paste.ID,
+                "Nutrient Paste",
+                "Tasty!",
+                new TCAspects.TC_AspectStack(TCAspects.CORPUS, 4)));
         ItemList.Circuit_Tissue.set(
             addItem(
                 Circuit_Tissue.ID,

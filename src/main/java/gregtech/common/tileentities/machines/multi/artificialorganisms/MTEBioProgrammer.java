@@ -182,7 +182,7 @@ public class MTEBioProgrammer extends MTEAOUnitBase<MTEBioProgrammer> implements
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.bioSynthesizerRecipes;
+        return RecipeMaps.bioProgrammerRecipes;
     }
 
     @Override
