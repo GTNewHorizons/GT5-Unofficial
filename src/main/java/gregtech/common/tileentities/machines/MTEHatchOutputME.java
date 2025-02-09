@@ -89,6 +89,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     EntityPlayer lastClickedPlayer = null;
     List<String> lockedFluids = new ArrayList<>();
 
+    boolean hadCell = false;
+
     public MTEHatchOutputME(int aID, String aName, String aNameRegional) {
         super(
             aID,
@@ -166,6 +168,10 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     private void checkFluidLock() {
         ItemStack upgradeItemStack = mInventory[0];
+
+        if ((hadCell && upgradeItemStack != null) || (!hadCell && upgradeItemStack == null)) {
+            return;
+        }
 
         if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof IStorageFluidCell) {
             if (this.mMode == 0) {
@@ -557,6 +563,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         aNBT.setTag("cachedFluids", fluids);
         aNBT.setBoolean("additionalConnection", additionalConnection);
         aNBT.setLong("baseCapacity", baseCapacity);
+        aNBT.setBoolean("hadCell", hadCell);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -593,6 +600,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         }
         additionalConnection = aNBT.getBoolean("additionalConnection");
         baseCapacity = aNBT.getLong("baseCapacity");
+        hadCell = aNBT.getBoolean("hadCell");
         // Set the base capacity of existing hatches to be infinite
         if (baseCapacity == 0) {
             baseCapacity = Long.MAX_VALUE;
