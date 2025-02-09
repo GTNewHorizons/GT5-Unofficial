@@ -71,6 +71,10 @@ item.em.parametrizerMemoryCard.desc.0=Stores Parameters
 item.em.parametrizerMemoryCard.desc.1=Use on Multiblock Controller to configure it
 item.em.parametrizerMemoryCard.desc.2=Use on Multiblock Controller to store parameters
 item.em.parametrizerMemoryCard.desc.3=Sneak right click to lock/unlock
+item.em.parametrizerMemoryCard.copyMessage=Configuration copied to the card
+item.em.parametrizerMemoryCard.pasteMessage=Configuration pasted from the card
+item.em.parametrizerMemoryCard.controllerMismatch=Can't paste configuration from %s to %s!
+item.em.parametrizerMemoryCard.noConfig=Can't paste from empty card!
 
 item.tm.teslaCoilCapacitor.name=Tesla Capacitor
 item.tm.teslaCoilCapacitor.0.name=LV Tesla Capacitor
@@ -507,11 +511,6 @@ gt.blockmachines.emout.tier.13.name=UXV Elemental Output Hatch
 gt.blockmachines.emout.desc=Elemental Output for Multiblocks
 
 #TODO change tier.05 to tier.04
-gt.blockmachines.hatch.param.tier.05.name=Parametrizer
-gt.blockmachines.hatch.param.tier.07.name=Parametrizer X
-gt.blockmachines.hatch.param.tier.10.name=Parametrizer tXt
-gt.blockmachines.hatch.param.desc.0=For parametrization of Multiblocks
-gt.blockmachines.hatch.param.desc.1=E=mine*craft
 
 gt.blockmachines.hatch.certain.tier.05.name=Uncertainty Resolver
 gt.blockmachines.hatch.certain.tier.07.name=Uncertainty Resolver X
@@ -662,7 +661,6 @@ gt.blockmachines.multimachine.em.transformer.machinetype=Active Transformer, AT
 gt.blockmachines.multimachine.em.transformer.hint=1 - Energy IO Hatches or High Power Casing
 gt.blockmachines.multimachine.em.transformer.desc.1=Can transform to and from any voltage
 gt.blockmachines.multimachine.em.transformer.desc.2=Only 0.004% power loss, HAYO!
-gt.blockmachines.multimachine.em.transformer.desc.3=Will explode if broken while running
 
 gt.blockmachines.multimachine.tm.microwave.name=Microwave Grinder
 gt.blockmachines.multimachine.tm.microwave.hint.0=1 - Classic Hatches or Clean Stainless Steel Casing
@@ -786,7 +784,7 @@ gt.blockmachines.multimachine.em.research.desc.2=Needs to be fed with computatio
 gt.blockmachines.multimachine.em.research.desc.3=Does not consume the item until the Data Stick is written
 gt.blockmachines.multimachine.em.research.desc.4=Use screwdriver to change mode
 gt.blockmachines.multimachine.em.research.desc.5=Computation required in scanner mode follows the formula:
-gt.blockmachines.multimachine.em.research.desc.6=(Recipe duration in seconds * Recipe voltage) / 30
+gt.blockmachines.multimachine.em.research.desc.6=Recipe duration in seconds * (2 ^ (Recipe voltage tier - 1))
 gt.blockmachines.multimachine.em.research.mode.Assembly_line=Mode: Research Station
 gt.blockmachines.multimachine.em.research.mode.Scanner=Mode: Scanner
 
@@ -1343,6 +1341,7 @@ GT5U.gui.text.invalid_hysteresis=§7Invalid hysteresis settings
 GT5U.gui.text.invalid_transfer_radius=§7Invalid transfer radius settings
 GT5U.gui.text.invalid_voltage_setting=§7Invalid voltage setting
 GT5U.gui.text.invalid_current_setting=§7Invalid current setting
+GT5U.gui.text.invalid_primary_winding=§7Primary winding tier is too low!
 GT5U.gui.text.invalid_time_setting=§7Invalid time setting
 GT5U.gui.text.invalid_overdrive_setting=§7Invalid overdrive setting
 GT5U.gui.text.insufficient_power_no_val=§7Insufficient power

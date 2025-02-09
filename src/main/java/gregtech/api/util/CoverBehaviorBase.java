@@ -26,7 +26,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUIInfos;
@@ -122,7 +122,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
 
     /**
      * Get the special foreground cover texture associated with this cover. Return null if one should use the texture
-     * passed to {@link GregTechAPI#registerCover(ItemStack, ITexture, CoverBehaviorBase)} or its
+     * passed to {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverBehaviorBase)} or its
      * overloads.
      */
     public final ITexture getSpecialCoverFGTexture(ForgeDirection side, int aCoverID,
@@ -132,7 +132,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
 
     /**
      * Get the special cover texture associated with this cover. Return null if one should use the texture passed to
-     * {@link GregTechAPI#registerCover(ItemStack, ITexture, CoverBehaviorBase)} or its overloads.
+     * {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverBehaviorBase)} or its overloads.
      */
     public final ITexture getSpecialCoverTexture(ForgeDirection side, int aCoverID, ISerializableObject aCoverVariable,
         ICoverable aTileEntity) {
@@ -453,8 +453,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
 
             final CoverInfo coverInfo = uiBuildContext.getTile()
                 .getCoverInfoAtSide(uiBuildContext.getCoverSide());
-            final CoverBehaviorBase<?> behavior = coverInfo.getCoverBehavior();
-            if (coverInfo.getMinimumTickRate() > 0 && behavior.allowsTickRateAddition()) {
+            if (coverInfo.getMinimumTickRate() > 0 && coverInfo.allowsTickRateAddition()) {
                 builder.widget(
                     new CoverTickRateButton(coverInfo, builder).setPos(getGUIWidth() - 24, getGUIHeight() - 24));
             }
@@ -485,7 +484,8 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
             if (isCoverValid()) {
                 return forceCast(
                     getUIBuildContext().getTile()
-                        .getComplexCoverDataAtSide(getUIBuildContext().getCoverSide()));
+                        .getCoverInfoAtSide(getUIBuildContext().getCoverSide())
+                        .getCoverData());
             } else {
                 return null;
             }
@@ -508,10 +508,9 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
         }
 
         public boolean isCoverValid() {
-            return !getUIBuildContext().getTile()
-                .isDead()
-                && getUIBuildContext().getTile()
-                    .getCoverBehaviorAtSideNew(getUIBuildContext().getCoverSide()) != GregTechAPI.sNoBehavior;
+            ICoverable tile = getUIBuildContext().getTile();
+            return !tile.isDead() && tile.getCoverInfoAtSide(getUIBuildContext().getCoverSide())
+                .isValid();
         }
 
         protected void addTitleToUI(ModularWindow.Builder builder) {
@@ -805,16 +804,6 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
     }
 
     public boolean hasCoverGUI() {
-        return false;
-    }
-
-    /**
-     * Called when someone rightclicks this Cover Client Side
-     * <p/>
-     * return true, if something actually happens.
-     */
-    public boolean onCoverRightclickClient(ForgeDirection side, ICoverable aTileEntity, EntityPlayer aPlayer, float aX,
-        float aY, float aZ) {
         return false;
     }
 

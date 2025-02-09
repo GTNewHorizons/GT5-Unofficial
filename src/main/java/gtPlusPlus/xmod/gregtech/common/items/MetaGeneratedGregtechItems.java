@@ -42,7 +42,7 @@ import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Transmi
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_UV;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_ZPM;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
@@ -367,31 +367,31 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
     }
 
     private void registerCovers() {
-        GregTechAPI.registerCover(
+        CoverRegistry.registerCover(
             GregtechItemList.Cover_Overflow_Valve_LV.get(1L),
             TextureFactory.of(
                 Textures.BlockIcons.MACHINE_CASINGS[4][0],
                 TextureFactory.of(TexturesGtBlock.Overlay_Overflow_Valve)),
             new CoverOverflowValve(64_000));
-        GregTechAPI.registerCover(
+        CoverRegistry.registerCover(
             GregtechItemList.Cover_Overflow_Valve_MV.get(1L),
             TextureFactory.of(
                 Textures.BlockIcons.MACHINE_CASINGS[5][0],
                 TextureFactory.of(TexturesGtBlock.Overlay_Overflow_Valve)),
             new CoverOverflowValve(512_000));
-        GregTechAPI.registerCover(
+        CoverRegistry.registerCover(
             GregtechItemList.Cover_Overflow_Valve_HV.get(1L),
             TextureFactory.of(
                 Textures.BlockIcons.MACHINE_CASINGS[5][0],
                 TextureFactory.of(TexturesGtBlock.Overlay_Overflow_Valve)),
             new CoverOverflowValve(4_096_000));
-        GregTechAPI.registerCover(
+        CoverRegistry.registerCover(
             GregtechItemList.Cover_Overflow_Valve_EV.get(1L),
             TextureFactory.of(
                 Textures.BlockIcons.MACHINE_CASINGS[8][0],
                 TextureFactory.of(TexturesGtBlock.Overlay_Overflow_Valve)),
             new CoverOverflowValve(32_768_000));
-        GregTechAPI.registerCover(
+        CoverRegistry.registerCover(
             GregtechItemList.Cover_Overflow_Valve_IV.get(1L),
             TextureFactory.of(
                 Textures.BlockIcons.MACHINE_CASINGS[8][0],

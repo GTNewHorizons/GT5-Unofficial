@@ -44,7 +44,6 @@ import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by danie_000 on 15.12.2016.
@@ -55,13 +54,12 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     public short[] matrix = new short[] { 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
         500 };
-    public byte selection = -1, mode = 0, status = -128; // all 8 bits set
-
+    public byte selection = -1, mode = 0, status = (byte) 0b11111111; // all 8 bits set
+    private boolean stopChecking = false;
     private String clientLocale = "en_US";
 
     public MTEHatchUncertainty(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");
-        TTUtility.setTier(aTier, this);
         regenerate();
     }
 
@@ -90,14 +88,17 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide() && (aTick & 15) == 0) {
+        // Changed from calling every 15 ticks; based on local testing new shift() implementation fades ~20.97x faster
+        if (aBaseMetaTileEntity.isServerSide() && aTick % 320 == 0) {
             if (mode == 0) {
                 aBaseMetaTileEntity.setActive(false);
-                status = -128;
+                status = (byte) 0b11111111;
             } else {
                 aBaseMetaTileEntity.setActive(true);
-                shift();
-                compute();
+                if (!stopChecking) { // No point in making calculations if the entire matrix has faded to 0
+                    shift();
+                    compute();
+                }
             }
         }
     }
@@ -312,13 +313,12 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
     }
 
     private void shift() {
-        int i = TecTech.RANDOM.nextInt(16), j = TecTech.RANDOM.nextInt(128);
-        matrix[i] += ((matrix[i] & 1) == 0 ? 2 : -2) * j >> 5;
-        matrix[i] += j == 0 ? 1 : 0;
-        if (matrix[i] < 0) {
-            matrix[i] = 0;
-        } else if (matrix[i] > 1000) {
-            matrix[i] = 999;
+        stopChecking = true;
+        for (int i = 0; i < 16; i++) {
+            matrix[i] = (short) Math.max(0, matrix[i] - 1);
+            if (matrix[i] != 0 && stopChecking) {
+                stopChecking = false;
+            }
         }
     }
 
@@ -330,6 +330,7 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
             newMode = 0;
         }
         mode = (byte) newMode;
+        stopChecking = false;
         regenerate();
         compute();
         return status;

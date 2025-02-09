@@ -3,8 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.redstone;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -34,13 +32,12 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.CircuitryBehavior;
-import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.CoverInfo;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -49,6 +46,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     public int mGate = 0;
     public int[] mGateData = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
     public boolean bOutput = true;
+    private int errorDisplayID;
 
     public MTERedstoneCircuitBlock(int aID) {
         super(aID, "redstone.circuit", "Redstone Circuit Block", 1, 5, "Computes Redstone");
@@ -236,6 +234,20 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
         }
     }
 
+    /**
+     * Returns the error ID displayed on the GUI.
+     */
+    public int getErrorDisplayID() {
+        return errorDisplayID;
+    }
+
+    /**
+     * Sets the error ID displayed on the GUI.
+     */
+    public void setErrorDisplayID(int errorID) {
+        this.errorDisplayID = errorID;
+    }
+
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
@@ -255,22 +267,14 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                     if (tBehaviour != null) {
                         try {
                             tBehaviour.onTick(mGateData, this);
-                            if (tBehaviour.displayItemStack(mGateData, this, 0))
-                                mInventory[1] = getCoverByID(mGateData[0]);
-                            if (tBehaviour.displayItemStack(mGateData, this, 1))
-                                mInventory[2] = getCoverByID(mGateData[1]);
-                            if (tBehaviour.displayItemStack(mGateData, this, 2))
-                                mInventory[3] = getCoverByID(mGateData[2]);
-                            if (tBehaviour.displayItemStack(mGateData, this, 3))
-                                mInventory[4] = getCoverByID(mGateData[3]);
                         } catch (Throwable e) {
                             GTLog.err.print(e);
                         }
                     }
                 }
-                getBaseMetaTileEntity().setErrorDisplayID(0);
+                setErrorDisplayID(0);
             } else {
-                getBaseMetaTileEntity().setErrorDisplayID(1);
+                setErrorDisplayID(1);
             }
         }
     }
@@ -306,26 +310,6 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
         return true;
     }
 
-    /** The Item List for Covers */
-    public static final Map<Integer, ItemStack> sCoversItems = new HashMap<>();
-
-    private static void initCovers() {
-        for (GTItemStack aKey : GregTechAPI.sCovers.keySet()) {
-            ItemStack aStack = aKey.toStack()
-                .copy();
-            if (aStack != null) {
-                sCoversItems.put(GTUtility.stackToInt(aStack), aStack);
-            }
-        }
-    }
-
-    public static ItemStack getCoverByID(int aStack) {
-        if (sCoversItems.isEmpty()) {
-            initCovers();
-        }
-        return sCoversItems.get(aStack);
-    }
-
     @Override
     public ForgeDirection getOutputFacing() {
         return getBaseMetaTileEntity().getBackFacing();
@@ -336,10 +320,10 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
         if (getOutputRedstone(side) != aStrength) {
             if (getBaseMetaTileEntity().decreaseStoredEnergyUnits(1, false)) {
                 getBaseMetaTileEntity().setInternalOutputRedstoneSignal(side, aStrength);
-                getBaseMetaTileEntity().setErrorDisplayID(0);
+                setErrorDisplayID(0);
                 return true;
             } else {
-                getBaseMetaTileEntity().setErrorDisplayID(1);
+                setErrorDisplayID(1);
                 return false;
             }
         }
@@ -395,8 +379,8 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     }
 
     @Override
-    public CoverBehavior getCover(ForgeDirection side) {
-        return (CoverBehavior) getBaseMetaTileEntity().getCoverBehaviorAtSideNew(side);
+    public CoverInfo getCover(ForgeDirection side) {
+        return getBaseMetaTileEntity().getCoverInfoAtSide(side);
     }
 
     @Override
@@ -405,8 +389,9 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     }
 
     @Override
-    public int getCoverVariable(ForgeDirection side) {
-        return ((ISerializableObject.LegacyCoverData) getBaseMetaTileEntity().getComplexCoverDataAtSide(side)).get();
+    public ISerializableObject getCoverData(ForgeDirection side) {
+        return getBaseMetaTileEntity().getCoverInfoAtSide(side)
+            .getCoverData();
     }
 
     @Override
@@ -538,7 +523,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
         }
 
         builder.widget(new DrawableWidget().setDrawable(() -> {
-            if (getBaseMetaTileEntity().getErrorDisplayID() > 0) {
+            if (getErrorDisplayID() > 0) {
                 if ((getBaseMetaTileEntity().getTimer() / 5) % 2 == 0) {
                     return GTPPUITextures.PICTURE_ELECTRICITY_ERROR;
                 } else {
@@ -550,10 +535,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
         })
             .setPos(140, 9)
             .setSize(7, 7))
-            .widget(
-                new FakeSyncWidget.IntegerSyncer(
-                    () -> getBaseMetaTileEntity().getErrorDisplayID(),
-                    val -> getBaseMetaTileEntity().setErrorDisplayID(val)));
+            .widget(new FakeSyncWidget.IntegerSyncer(this::getErrorDisplayID, this::setErrorDisplayID));
 
         builder.widget(TextWidget.dynamicString(() -> {
             CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);

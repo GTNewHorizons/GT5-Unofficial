@@ -24,7 +24,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
@@ -200,7 +200,7 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         // Super already zeroed out setErrorDisplayID, add additional error codes here.
-        aBaseMetaTileEntity.setErrorDisplayID(aBaseMetaTileEntity.getErrorDisplayID() | (mNeedsSteamVenting ? 64 : 0));
+        setErrorDisplayID(getErrorDisplayID() | (mNeedsSteamVenting ? 64 : 0));
     }
 
     @Override
@@ -238,7 +238,7 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
 
     @Override
     public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
-        return GregTechAPI.getCoverBehaviorNew(aCoverID.toStack())
+        return CoverRegistry.getCoverBehaviorNew(aCoverID.toStack())
             .isSimpleCover() && super.allowCoverOnSide(side, aCoverID);
     }
 

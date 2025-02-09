@@ -15,7 +15,6 @@ import tectech.mechanics.dataTransport.InventoryDataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<InventoryDataPacket> {
 
@@ -28,7 +27,6 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<InventoryData
             new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.dataoutass.desc.0"),
                 translateToLocal("gt.blockmachines.hatch.dataoutass.desc.1"),
                 EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataoutass.desc.2") });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchDataItemsOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

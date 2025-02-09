@@ -21,7 +21,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.common.WirelessDataStore;
 import tectech.mechanics.dataTransport.InventoryDataPacket;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
 
@@ -37,7 +36,6 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
             new String[] { CommonValues.TEC_MARK_EM,
                 translateToLocal("gt.blockmachines.hatch.wirelessdataoutass.desc.0"),
                 translateToLocal("gt.blockmachines.hatch.wirelessdataoutass.desc.1"), });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchWirelessDataItemsOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

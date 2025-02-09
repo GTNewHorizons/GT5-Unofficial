@@ -25,10 +25,12 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -38,7 +40,6 @@ import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.implementations.MTEFrame;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTUtility;
 import gregtech.common.render.GTRendererBlock;
 
 public class BlockFrameBox extends BlockContainer {
@@ -93,10 +94,6 @@ public class BlockFrameBox extends BlockContainer {
         return aMaterial.getDefaultLocalizedNameForItem(getLocalizedNameFormat(aMaterial));
     }
 
-    private boolean isCover(ItemStack item) {
-        return GTUtility.isStackInList(item, GregTechAPI.sCovers.keySet());
-    }
-
     private void createFrame(World worldIn, int x, int y, int z, BaseMetaPipeEntity baseMte) {
         // Obtain metadata to grab proper material identifier
         int meta = worldIn.getBlockMetadata(x, y, z);
@@ -142,7 +139,7 @@ public class BlockFrameBox extends BlockContainer {
         // If there was no TileEntity yet, we need to check if the player was holding a cover item and if so
         // spawn a new frame box to apply the cover to
         ItemStack item = player.getHeldItem();
-        if (isCover(item)) {
+        if (CoverRegistry.isCover(item)) {
             BaseMetaPipeEntity newTileEntity = spawnFrameEntity(worldIn, x, y, z);
             return newTileEntity.onRightclick(player, direction, subX, subY, subZ);
         }
@@ -216,8 +213,9 @@ public class BlockFrameBox extends BlockContainer {
         if (aWorld.isRemote) return;
 
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IGregTechTileEntity gtTE) {
-            gtTE.onBlockDestroyed();
+        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
+            IMetaTileEntity mte = gtTE.getMetaTileEntity();
+            mte.onBlockDestroyed();
             mTemporaryTileEntity.set(gtTE);
         }
         // Cause structure update
@@ -235,8 +233,9 @@ public class BlockFrameBox extends BlockContainer {
     @Override
     public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.getMetaTileEntity() != null) {
-            gtTE.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
+        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
+            gtTE.getMetaTileEntity()
+                .onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
             return;
         }
         super.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
@@ -275,8 +274,9 @@ public class BlockFrameBox extends BlockContainer {
     public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
         List<AxisAlignedBB> outputAABB, Entity collider) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.getMetaTileEntity() != null) {
-            gtTE.addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
+        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
+            gtTE.getMetaTileEntity()
+                .addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
             return;
         }
         super.addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
@@ -285,8 +285,9 @@ public class BlockFrameBox extends BlockContainer {
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.getMetaTileEntity() != null) {
-            return gtTE.getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
+            return gtTE.getMetaTileEntity()
+                .getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
         }
         return super.getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
     }
@@ -295,8 +296,9 @@ public class BlockFrameBox extends BlockContainer {
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.getMetaTileEntity() != null) {
-            return gtTE.getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
+            return gtTE.getMetaTileEntity()
+                .getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
         }
         return super.getSelectedBoundingBoxFromPool(aWorld, aX, aY, aZ);
     }
@@ -319,8 +321,9 @@ public class BlockFrameBox extends BlockContainer {
     @Override // THIS
     public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int aX, int aY, int aZ) {
         final TileEntity tTileEntity = blockAccess.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.getMetaTileEntity() != null) {
-            final AxisAlignedBB bbb = gtTE.getCollisionBoundingBoxFromPool(gtTE.getWorld(), 0, 0, 0);
+        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
+            final AxisAlignedBB bbb = gtTE.getMetaTileEntity()
+                .getCollisionBoundingBoxFromPool(gtTE.getWorld(), 0, 0, 0);
             minX = bbb.minX; // This essentially sets block bounds
             minY = bbb.minY;
             minZ = bbb.minZ;

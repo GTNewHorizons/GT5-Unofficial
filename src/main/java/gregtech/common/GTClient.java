@@ -60,6 +60,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -75,11 +76,9 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.net.GTPacketClientPreference;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.ColorsMetadataSectionSerializer;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -664,8 +663,7 @@ public class GTClient extends GTProxy implements Runnable {
                 public void onResourceManagerReload(IResourceManager l) {
                     GUIColorOverride.onResourceManagerReload();
                     FallbackableSteamTexture.reload();
-                    GregTechAPI.sCoverBehaviors.values()
-                        .forEach(CoverBehaviorBase::reloadColorOverride);
+                    CoverRegistry.reloadCoverColorOverrides();
                 }
             });
         Pollution.onPostInitClient();
@@ -807,7 +805,7 @@ public class GTClient extends GTProxy implements Runnable {
 
         // If there is no tile entity and the block is a frame box block, still draw the grid if a cover is held
         if (aTileEntity == null && aBlock instanceof BlockFrameBox) {
-            if (GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sCovers.keySet())) {
+            if (CoverRegistry.isCover(aEvent.currentItem)) {
                 drawGrid(aEvent, true, false, aEvent.player.isSneaking());
             }
             return;
@@ -844,7 +842,7 @@ public class GTClient extends GTProxy implements Runnable {
             return;
         }
 
-        if (GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sCovers.keySet())) {
+        if (CoverRegistry.isCover(aEvent.currentItem)) {
             if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
                 drawGrid(aEvent, true, false, aEvent.player.isSneaking());
         }
@@ -1060,7 +1058,7 @@ public class GTClient extends GTProxy implements Runnable {
                 || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)
                 || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
                 || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)
-                || GregTechAPI.sCovers.containsKey(new GTItemStack(tCurrentItem))
+                || CoverRegistry.isCover(tCurrentItem)
                 || (tCurrentItem.getItem() instanceof ItemMachines
                     && GregTechAPI.METATILEENTITIES[tCurrentItem.getItemDamage()] instanceof MetaPipeEntity
                     && player.isSneaking())) {
