@@ -230,6 +230,20 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!(aPlayer instanceof EntityPlayerMP)) return;
+
+        ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
+        if (master == null) {
+            aPlayer.addChatMessage(new ChatComponentText("Can't copy an unlinked proxy!"));
+            return;
+        }
+
+        master.saveToDataStick(aPlayer, dataStick);
+    }
+
+    @Override
     public String getCopiedDataIdentifier(EntityPlayer player) {
         return COPIED_DATA_IDENTIFIER;
     }
