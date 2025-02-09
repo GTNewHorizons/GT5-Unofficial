@@ -79,6 +79,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     EntityPlayer lastClickedPlayer = null;
     List<ItemStack> lockedItems = new ArrayList<>();
 
+    boolean hadCell = false;
+
     public MTEHatchOutputBusME(int aID, String aName, String aNameRegional) {
         super(
             aID,
@@ -315,7 +317,13 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     private void checkItemLock() {
         ItemStack upgradeItemStack = mInventory[0];
 
+        if ((hadCell && upgradeItemStack != null) || (!hadCell && upgradeItemStack == null)) {
+            return;
+        }
+
         if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof ItemBasicStorageCell) {
+            hadCell = true;
+
             if (this.lockedItems.isEmpty()) {
                 CellConfig cfg = (CellConfig) ((ItemBasicStorageCell) upgradeItemStack.getItem())
                     .getConfigInventory(upgradeItemStack);
@@ -357,6 +365,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                 }
             }
         } else {
+            hadCell = false;
+
             if (!this.lockedItems.isEmpty()) {
                 this.lockedItems.clear();
 
@@ -410,6 +420,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         aNBT.setBoolean("additionalConnection", additionalConnection);
         aNBT.setTag("cachedItems", items);
         aNBT.setLong("baseCapacity", baseCapacity);
+        aNBT.setBoolean("hadCell", hadCell);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -458,6 +469,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         }
         additionalConnection = aNBT.getBoolean("additionalConnection");
         baseCapacity = aNBT.getLong("baseCapacity");
+        hadCell = aNBT.getBoolean("hadCell");
         // Set the base capacity of existing hatches to be infinite
         if (baseCapacity == 0) {
             baseCapacity = Long.MAX_VALUE;
