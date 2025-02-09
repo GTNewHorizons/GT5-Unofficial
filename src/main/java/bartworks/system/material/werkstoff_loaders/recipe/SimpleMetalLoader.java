@@ -33,7 +33,7 @@ import bartworks.client.textures.PrefixTextureLinker;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TextureSet;
@@ -87,7 +87,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                     texSet.mTextures[PrefixTextureLinker.blockTexMap.getOrDefault(texSet, block.mTextureIndex)],
                     werkstoff.getRGBA(),
                     false) : TextureFactory.of(texSet.mTextures[block.mTextureIndex], werkstoff.getRGBA(), false);
-                GregTechAPI.registerCover(werkstoff.get(plate), texture, null);
+                CoverRegistry.registerCover(werkstoff.get(plate), texture, null);
 
                 return;
             }
@@ -136,7 +136,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 .eut(16)
                 .addTo(hammerRecipes);
 
-            GregTechAPI.registerCover(
+            CoverRegistry.registerCover(
                 werkstoff.get(plate),
                 TextureFactory.of(werkstoff.getTexSet().mTextures[71], werkstoff.getRGBA(), false),
                 null);

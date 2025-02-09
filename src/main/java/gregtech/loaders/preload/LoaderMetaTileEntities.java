@@ -1093,6 +1093,7 @@ import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEAdvanc
 import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEBioSynthesizer;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEEvolutionChamber;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleCompressor;
+import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleUtility;
 import gregtech.common.tileentities.machines.multi.compressor.MTEHIPCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.MTEHeatSensor;
 import gregtech.common.tileentities.machines.multi.compressor.MTEIndustrialCompressor;
@@ -13017,6 +13018,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 8).getStackForm(1L));
         ItemList.Hatch_HeatSensor
             .set(new MTEHeatSensor(HEAT_DETECTOR_HATCH.ID, "hatch.heatsensor", "Heat Sensor Hatch", 7).getStackForm(1));
+        ItemList.Hatch_BlackHoleUtility.set(
+            new MTEBlackHoleUtility(
+                HATCH_BLACK_HOLE_UTILITY.ID,
+                "hatch.blackholeutility",
+                "Black Hole Utility Hatch",
+                11).getStackForm(1));
         ItemList.Hatch_pHSensor
             .set(new MTEHatchPHSensor(HATCH_PH_SENSOR.ID, "hatch.phsensor", "pH Sensor Hatch", 7).getStackForm(1));
         ItemList.Hatch_LensHousing

@@ -154,12 +154,6 @@ public abstract class CircuitryBehavior {
     public abstract void onTick(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock);
 
     /**
-     * If the ItemStack should be displayed. Parameters are between 0 and 3.
-     */
-    public abstract boolean displayItemStack(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock,
-        int aIndex);
-
-    /**
      * The Name of the Gate for the GUI
      */
     @SideOnly(Side.CLIENT)
