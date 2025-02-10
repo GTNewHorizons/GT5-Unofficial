@@ -827,7 +827,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
         double sub1TickMultiplier = Math.max(Math.floor(1 / recipeDuration), 1d);
         int neededAmount = (int) Math.min(
-            maximum_discount * (isBatchModeEnabled() ? Math.max(getMaxBatchSize() / recipeDuration, 1) : 1)
+            maximum_discount * (isBatchModeEnabled() ? Math.min(Math.max(getMaxBatchSize() / recipeDuration, 1), 128) : 1)
                 * sub1TickMultiplier
                 * extraCatalystNeeded,
             Integer.MAX_VALUE);
