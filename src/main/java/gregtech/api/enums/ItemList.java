@@ -1544,6 +1544,8 @@ public enum ItemList implements IItemContainer {
     Bio_Pipe,
     Bio_Hatch_Input,
     Bio_Hatch_Output,
+    Neurogel_Substrate,
+    Neural_Interface,
     Nutrient_Paste,
     Circuit_Tissue,
     Neuron_Cell_Cluster,

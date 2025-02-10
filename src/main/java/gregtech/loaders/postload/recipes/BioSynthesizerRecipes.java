@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.TierEU.RECIPE_LV;
 import static gregtech.api.enums.TierEU.RECIPE_UV;
+import static gregtech.api.enums.TierEU.RECIPE_ZPM;
 import static gregtech.api.recipe.RecipeMaps.bioProgrammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.bioSynthesizerRecipes;
 import static gregtech.api.recipe.RecipeMaps.brewingRecipes;
@@ -11,6 +12,7 @@ import static gregtech.api.util.GTRecipeConstants.AO_DATA;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -41,6 +43,7 @@ public class BioSynthesizerRecipes implements Runnable {
 
         // MIXER
 
+        // Nutrient Paste
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.MeatRaw.getDust(1), new ItemStack(Items.sugar, 1), ItemList.IC2_Plantball.get(1))
             .itemOutputs(ItemList.Nutrient_Paste.get(3))
@@ -48,6 +51,7 @@ public class BioSynthesizerRecipes implements Runnable {
             .eut(RECIPE_LV)
             .addTo(mixerRecipes);
 
+        // Neural Fluid
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Neuron_Cell_Cluster.get(32))
             .fluidInputs(Materials.NutrientBroth.getFluid(8000))
@@ -59,6 +63,7 @@ public class BioSynthesizerRecipes implements Runnable {
 
         // BREWERY
 
+        // Nutrient Broth
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Nutrient_Paste.get(64))
             .fluidInputs(getFluidStack("potion.mineralwater", 32000))
@@ -70,16 +75,44 @@ public class BioSynthesizerRecipes implements Runnable {
 
         // SYNTHESIZER
 
+        // Neurogel Substrate
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.beef, 1))
-            .itemOutputs(ItemList.Circuit_Chip_Stemcell.get(1))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .metadata(AO_DATA, new AORecipeData(5, 500, 20))
+            .itemInputs(new ItemStack(Items.slime_ball, 1))
+            .fluidInputs(Materials.NeuralFluid.getFluid(1000))
+            .itemOutputs(ItemList.Neurogel_Substrate.get(1))
+            .duration(20 * SECONDS)
+            .eut(RECIPE_ZPM)
+            .metadata(AO_DATA, new AORecipeData(4, 200, 10))
+            .addTo(bioSynthesizerRecipes);
+
+        // Circuit Tissue
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polybenzimidazole, 2),
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.CosmicNeutronium, 64),
+                ItemList.Skin_Cell_Cluster.get(64))
+            .itemOutputs(ItemList.Circuit_Tissue.get(1))
+            .duration(10 * SECONDS)
+            .eut(RECIPE_UV)
+            .metadata(AO_DATA, new AORecipeData(2, 1000, 30))
             .addTo(bioSynthesizerRecipes);
 
         // PROGRAMMER
 
+        // Neural Interface
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Muscle_Cell_Cluster.get(64),
+                ItemList.Neuron_Cell_Cluster.get(16),
+                ItemList.Neurogel_Substrate.get(4),
+                ItemList.Circuit_Tissue.get(1))
+            .itemOutputs(ItemList.Neural_Interface.get(1))
+            .duration(10 * SECONDS)
+            .eut(RECIPE_UV)
+            .metadata(AO_DATA, new AORecipeData(9, 2000, 10))
+            .addTo(bioProgrammerRecipes);
+
+        // Neuro CPU
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Wetware_Extreme.get(4),
@@ -93,11 +126,12 @@ public class BioSynthesizerRecipes implements Runnable {
                 Materials.NutrientBroth.getFluid(8000),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000))
             .itemOutputs(ItemList.Circuit_Chip_NeuroCPU.get(4))
-            .eut(TierEU.RECIPE_ZPM)
+            .eut(RECIPE_ZPM)
             .duration(30 * SECONDS)
             .metadata(AO_DATA, new AORecipeData(8, 100, 5))
             .addTo(bioProgrammerRecipes);
 
+        // Bio CPU
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Bio_Ultra.get(1),

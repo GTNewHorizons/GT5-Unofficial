@@ -286,6 +286,8 @@ import static gregtech.common.items.IDMetaItem01.McGuffium_239;
 import static gregtech.common.items.IDMetaItem01.Muscle_Cell_Cluster;
 import static gregtech.common.items.IDMetaItem01.NC_SensorKit;
 import static gregtech.common.items.IDMetaItem01.NaquadriaSupersolid;
+import static gregtech.common.items.IDMetaItem01.Neural_Interface;
+import static gregtech.common.items.IDMetaItem01.Neurogel_Substrate;
 import static gregtech.common.items.IDMetaItem01.Neuron_Cell_Cluster;
 import static gregtech.common.items.IDMetaItem01.Nutrient_Paste;
 import static gregtech.common.items.IDMetaItem01.Paper_Magic_Empty;
@@ -3271,8 +3273,23 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 128)));
 
         // AOs
+        ItemList.Neurogel_Substrate.set(
+            addItem(Neurogel_Substrate.ID,
+                "Neurogel Substrate",
+                "Conductive gel to transmit neural impulses",
+                new TCAspects.TC_AspectStack(TCAspects.LIMUS, 4),
+                new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 2)));
+        ItemList.Neural_Interface.set(
+            addItem(Neural_Interface.ID,
+                "Neural Interface",
+                "Living chip that interprets neural impulses",
+                new TCAspects.TC_AspectStack(TCAspects.CORPUS, 4),
+                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2)));
         ItemList.Nutrient_Paste.set(
-            addItem(Nutrient_Paste.ID, "Nutrient Paste", "Tasty!", new TCAspects.TC_AspectStack(TCAspects.CORPUS, 4)));
+            addItem(Nutrient_Paste.ID,
+                "Nutrient Paste",
+                "Tasty!",
+                new TCAspects.TC_AspectStack(TCAspects.CORPUS, 4)));
         ItemList.Circuit_Tissue.set(
             addItem(
                 Circuit_Tissue.ID,
