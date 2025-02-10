@@ -24,11 +24,14 @@ public class QuantumComputerFrontend extends RecipeMapFrontend {
 
             QuantumComputerRecipeData data = recipeInfo.recipe.getMetadata(GTRecipeConstants.QUANTUM_COMPUTER_DATA);
             if (data != null) {
-                result.add("Heating Constant: " + data.heatConstant);
-                result.add("Cooling Constant: " + data.coolConstant);
-                result.add("Computation: " + data.computation);
+                // If this is false, it's a cooling component.
+                if (data.subZero) {
+                    result.add("Cooling Constant: " + data.coolConstant);
+                } else {
+                    result.add("Heating Constant: " + data.heatConstant);
+                    result.add("Computation: " + data.computation);
+                }
                 result.add("Maximum Heat: " + data.maxHeat);
-                result.add("Sub-Zero: " + data.subZero);
             }
             return result;
         }
