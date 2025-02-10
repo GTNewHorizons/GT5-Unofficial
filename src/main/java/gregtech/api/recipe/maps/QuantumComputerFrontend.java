@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
@@ -35,12 +37,12 @@ public class QuantumComputerFrontend extends RecipeMapFrontend {
             if (data != null) {
                 // If this is false, it's a cooling component.
                 if (data.subZero) {
-                    result.add("Heating Constant: " + data.heatConstant);
-                    result.add("Computation: " + data.computation);
+                    result.add(StatCollector.translateToLocalFormatted("GT5U.nei.qc.heating", data.heatConstant));
+                    result.add(StatCollector.translateToLocalFormatted("GT5U.nei.qc.computation", data.computation));
                 } else {
-                    result.add("Cooling Constant: " + data.coolConstant);
+                    result.add(StatCollector.translateToLocalFormatted("GT5U.nei.qc.cooling", data.coolConstant));
                 }
-                result.add("Maximum Heat: " + data.maxHeat);
+                result.add(StatCollector.translateToLocalFormatted("GT5U.nei.qc.maxheat", data.maxHeat));
             }
             return result;
         }

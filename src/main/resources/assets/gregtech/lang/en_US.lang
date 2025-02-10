@@ -755,6 +755,10 @@ GT5U.nei.tier=Tier: %s
 GT5U.nei.start_eu=Start: %s EU (MK %s)
 GT5U.nei.stages=Stages: %s
 GT5U.nei.fuel=Fuel Value: %s EU
+GT5U.nei.qc.heating=Heating Constant: %s
+GT5U.nei.qc.cooling=Cooling Constant: %s
+GT5U.nei.qc.computation= Computation: %s
+GT5U.nei.qc.maxheat= Maximum Heat: %s
 
 GT5U.config.colormodulation=Color Modulator
 GT5U.config.colormodulation.cable_insulation=Cable Insulation
