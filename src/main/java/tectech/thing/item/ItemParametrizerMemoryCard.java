@@ -19,6 +19,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
+import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -31,7 +33,6 @@ import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -86,6 +87,9 @@ public final class ItemParametrizerMemoryCard extends Item {
                     controller.parametrization
                         .trySetParameters(hatch, tag.getDouble("value0D"), tag.getDouble("value1D"));
                 }
+                if (controller instanceof TileEntityModuleMiner miner) {
+                    miner.loadFromParametrizer(tNBT);
+                }
                 GTUtility.sendChatToPlayer(aPlayer, translateToLocal("item.em.parametrizerMemoryCard.pasteMessage"));
             } else {
                 // read from controller
@@ -110,6 +114,9 @@ public final class ItemParametrizerMemoryCard extends Item {
                 newTag.setString("controller", controller.getLocalName());
                 newTag.setString("coords", aX + ", " + aY + ", " + aZ);
                 newTag.setTag("paramList", tagList);
+                if (controller instanceof TileEntityModuleMiner miner) {
+                    miner.saveToParametrizer(newTag);
+                }
                 aStack.setTagCompound(newTag);
                 GTUtility.sendChatToPlayer(aPlayer, translateToLocal("item.em.parametrizerMemoryCard.copyMessage"));
             }
@@ -192,7 +199,8 @@ public final class ItemParametrizerMemoryCard extends Item {
         aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.parametrizerMemoryCard.desc.3"));
 
         double temp;
-        if (tNBT != null && tNBT.hasKey("controller")) {
+        if (tNBT == null) return;
+        if (tNBT.hasKey("controller")) {
             aList.add(
                 "Copied from: " + EnumChatFormatting.RED
                     + tNBT.getString("controller")
@@ -201,7 +209,7 @@ public final class ItemParametrizerMemoryCard extends Item {
                     + EnumChatFormatting.GREEN
                     + tNBT.getString("coords"));
         }
-        if (tNBT != null && tNBT.hasKey("paramList", Constants.NBT.TAG_LIST)) {
+        if (tNBT.hasKey("paramList", Constants.NBT.TAG_LIST)) {
             NBTTagList tagList = tNBT.getTagList("paramList", Constants.NBT.TAG_COMPOUND);
             for (int hatch = 0; hatch < 10; hatch++) {
                 NBTTagCompound tag = tagList.getCompoundTagAt(hatch);
@@ -220,6 +228,10 @@ public final class ItemParametrizerMemoryCard extends Item {
                             + tag.getDouble("value1D"));
                 }
             }
+        }
+        if (tNBT.hasKey("minerConfig")) {
+            aList.add(EnumChatFormatting.GREEN + "Contains space miner ore configuration");
+            aList.add(EnumChatFormatting.GREEN + "Whitelisted: " + tNBT.getBoolean("isWhitelisted"));
         }
     }
 
