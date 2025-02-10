@@ -983,6 +983,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials NefariousOil;
     public static Materials PoorNetherWaste;
     public static Materials RichNetherWaste;
+    public static Materials HellishMetal;
 
     // spotless:on
 
