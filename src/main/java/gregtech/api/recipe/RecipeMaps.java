@@ -91,6 +91,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
+import tectech.thing.CustomItemList;
 
 @SuppressWarnings("SimplifyOptionalCallChains")
 public final class RecipeMaps {
@@ -236,6 +237,9 @@ public final class RecipeMaps {
         .minInputs(1, 0)
         .dontUseProgressBar()
         .frontend(QuantumComputerFrontend::new)
+        .neiHandlerInfo(
+            builder -> builder.setMaxRecipesPerPage(4)
+                .setDisplayStack(CustomItemList.Machine_Multi_Computer.get(1)))
         .build();
     public static final RecipeMap<ReplicatorBackend> replicatorRecipes = RecipeMapBuilder
         .of("gt.recipe.replicator", ReplicatorBackend::new)

@@ -1,19 +1,28 @@
 package gregtech.api.recipe.maps;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.api.util.recipe.QuantumComputerRecipeData;
 import gregtech.nei.RecipeDisplayInfo;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class QuantumComputerFrontend extends RecipeMapFrontend {
-    public QuantumComputerFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder, NEIRecipePropertiesBuilder neiPropertiesBuilder) {
-        super(uiPropertiesBuilder, neiPropertiesBuilder.neiSpecialInfoFormatter(new QuantumComputerMetaDataFormatter()));
+
+    public QuantumComputerFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        super(
+            uiPropertiesBuilder,
+            neiPropertiesBuilder.neiSpecialInfoFormatter(new QuantumComputerMetaDataFormatter()));
     }
 
     private static class QuantumComputerMetaDataFormatter implements INEISpecialInfoFormatter {

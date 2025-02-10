@@ -12,9 +12,6 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import java.util.HashMap;
 import java.util.Map;
 
-import gregtech.api.enums.GTValues;
-import gregtech.api.util.GTModHandler;
-import gregtech.api.util.recipe.QuantumComputerRecipeData;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -32,6 +29,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
@@ -42,6 +40,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.recipe.QuantumComputerRecipeData;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
@@ -338,8 +338,10 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
 
         new RackComponent(GTModHandler.getIC2Item("reactorVent", 1), 0, -1, 40f, 2000, false); // Heat Vent
         new RackComponent(GTModHandler.getIC2Item("reactorVentCore", 1), 0, -1, 80f, 4000, false); // Reactor Heat Vent
-        new RackComponent(GTModHandler.getIC2Item("reactorVentGold", 1), 0, -1, 120f, 6000, false); // Overclocked Heat Vent
-        new RackComponent(GTModHandler.getIC2Item("reactorVentDiamond", 1), 0, -1, 160f, 8000, false); // Advanced Heat Vent
+        new RackComponent(GTModHandler.getIC2Item("reactorVentGold", 1), 0, -1, 120f, 6000, false); // Overclocked Heat
+                                                                                                    // Vent
+        new RackComponent(GTModHandler.getIC2Item("reactorVentDiamond", 1), 0, -1, 160f, 8000, false); // Advanced Heat
+                                                                                                       // Vent
 
         if (NewHorizonsCoreMod.isModLoaded()) {
             // GTNH-GT5u circuits (these components causes crashes when used with the original GT5u)
@@ -381,7 +383,9 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
 
             GTValues.RA.stdBuilder()
                 .itemInputs(is)
-                .metadata(QUANTUM_COMPUTER_DATA, new QuantumComputerRecipeData(heatConstant, coolConstant, computation, maxHeat, subZero))
+                .metadata(
+                    QUANTUM_COMPUTER_DATA,
+                    new QuantumComputerRecipeData(heatConstant, coolConstant, computation, maxHeat, subZero))
                 .duration(0)
                 .eut(0)
                 .fake()

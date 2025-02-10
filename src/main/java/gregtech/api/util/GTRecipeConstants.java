@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 
-import gregtech.api.util.recipe.QuantumComputerRecipeData;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -27,6 +26,7 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
+import gregtech.api.util.recipe.QuantumComputerRecipeData;
 import gregtech.api.util.recipe.Scanning;
 import gregtech.api.util.recipe.Sievert;
 import gregtech.common.items.IDMetaItem03;
@@ -115,7 +115,8 @@ public class GTRecipeConstants {
     /**
      * Values of items used in quantum computer, used to show NEI recipes
      */
-    public static final RecipeMetadataKey<QuantumComputerRecipeData> QUANTUM_COMPUTER_DATA = SimpleRecipeMetadataKey.create(QuantumComputerRecipeData.class, "quantum_computer_data");
+    public static final RecipeMetadataKey<QuantumComputerRecipeData> QUANTUM_COMPUTER_DATA = SimpleRecipeMetadataKey
+        .create(QuantumComputerRecipeData.class, "quantum_computer_data");
 
     /**
      * Nano Forge Tier.
