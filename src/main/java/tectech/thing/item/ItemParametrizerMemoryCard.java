@@ -83,7 +83,7 @@ public final class ItemParametrizerMemoryCard extends Item {
                 NBTTagList tagList = tNBT.getTagList("paramList", Constants.NBT.TAG_COMPOUND);
                 for (int hatch = 0; hatch < 10; hatch++) {
                     NBTTagCompound tag = tagList.getCompoundTagAt(hatch);
-
+                    if (tag.hasNoTags()) continue;
                     controller.parametrization
                         .trySetParameters(hatch, tag.getDouble("value0D"), tag.getDouble("value1D"));
                 }
