@@ -337,9 +337,9 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
         new RackComponent(ItemList.Circuit_Wetwaremainframe.get(1), 220, 40, -1f, 4000, true); // UHV
 
         new RackComponent(GTModHandler.getIC2Item("reactorVent", 1), 0, -1, 40f, 2000, false); // Heat Vent
-        new RackComponent("IC2:ic2.reactorVentCore", 0, -1, 80f, 4000, false); // Reactor Heat Vent
-        new RackComponent("IC2:ic2.reactorVentGold", 0, -1, 120f, 6000, false); // Overclocked Heat Vent
-        new RackComponent("IC2:ic2.reactorVentDiamond", 0, -1, 160f, 8000, false); // Advanced Heat Vent
+        new RackComponent(GTModHandler.getIC2Item("reactorVentCore", 1), 0, -1, 80f, 4000, false); // Reactor Heat Vent
+        new RackComponent(GTModHandler.getIC2Item("reactorVentGold", 1), 0, -1, 120f, 6000, false); // Overclocked Heat Vent
+        new RackComponent(GTModHandler.getIC2Item("reactorVentDiamond", 1), 0, -1, 160f, 8000, false); // Advanced Heat Vent
 
         if (NewHorizonsCoreMod.isModLoaded()) {
             // GTNH-GT5u circuits (these components causes crashes when used with the original GT5u)

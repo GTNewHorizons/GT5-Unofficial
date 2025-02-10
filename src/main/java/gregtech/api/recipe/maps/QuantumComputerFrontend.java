@@ -26,10 +26,10 @@ public class QuantumComputerFrontend extends RecipeMapFrontend {
             if (data != null) {
                 // If this is false, it's a cooling component.
                 if (data.subZero) {
-                    result.add("Cooling Constant: " + data.coolConstant);
-                } else {
                     result.add("Heating Constant: " + data.heatConstant);
                     result.add("Computation: " + data.computation);
+                } else {
+                    result.add("Cooling Constant: " + data.coolConstant);
                 }
                 result.add("Maximum Heat: " + data.maxHeat);
             }
