@@ -54,6 +54,11 @@ public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnec
     }
 
     @Override
+    public int getHatchType() {
+        return 2;
+    }
+
+    @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, Textures.OVERLAYS_ENERGY_IN_LASER_TT[mTier] };
     }
