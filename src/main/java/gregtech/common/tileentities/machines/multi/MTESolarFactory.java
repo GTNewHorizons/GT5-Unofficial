@@ -14,6 +14,7 @@ import static gregtech.api.util.GTUtility.copyAmount;
 import static gregtech.api.util.GTUtility.copyAmountUnsafe;
 import static net.minecraft.util.EnumChatFormatting.AQUA;
 import static net.minecraft.util.EnumChatFormatting.BOLD;
+import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.WHITE;
 
 import javax.annotation.Nonnull;
@@ -141,8 +142,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         // Clean stainless steel
         .addElement(
             'A',
-            buildHatchAdder(MTESolarFactory.class)
-                .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy, ExoticEnergy)
+            buildHatchAdder(MTESolarFactory.class).atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy)
                 .casingIndex(CASING_T1_INDEX)
                 .dot(1)
                 .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(sBlockCasings4, 1))))
@@ -150,7 +150,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         .addElement(
             'B',
             buildHatchAdder(MTESolarFactory.class)
-                .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy, ExoticEnergy)
+                .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy, MultiAmpEnergy)
                 .casingIndex(CASING_T2_INDEX)
                 .dot(1)
                 .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(sBlockCasings4, 0))))
@@ -158,7 +158,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         .addElement(
             'C',
             buildHatchAdder(MTESolarFactory.class)
-                .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy, ExoticEnergy)
+                .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy, MultiAmpEnergy, ExoticEnergy)
                 .casingIndex(CASING_T3_INDEX)
                 .dot(1)
                 .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 7))))
@@ -381,6 +381,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addInfo("Produces solar panels in bulk")
             .addInfo("The structure has 3 tiers, each allowing greater production than the last")
             .addInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "2" + WHITE + BOLD + " and above:")
+            .addInfo(GREEN + "  Supports Multi-Amp energy hatches")
             .addInfo("  25% more outputs for every Wafer tier used above the minimum required")
             .addInfo("  The bonus to output occurs after parallels, and cannot be greater than 100%")
             .addInfo("  The recipes shown in NEI display the minimum wafer tier required")
@@ -388,9 +389,9 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addInfo("  Parallels are based on Precise Casing Tier")
             .addInfo("  MK-I = 8x, MK-II = 16x, MK-III = 32x, MK-IV = 64x")
             .addInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "3")
+            .addInfo(GREEN + "  Supports Laser energy hatches")
             .addInfo("  ZPM-UV Solar Panels can be made without the previous panel, but at a higher cost")
             .addInfo("  Bonus per increased wafer tier is raised to 50%")
-            .addTecTechHatchInfo()
             .beginStructureBlock(7, 10, 9, false)
             .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "1:")
             .addCasingInfoRange("Clean Stainless Steel Machine Casing", 15, 41, false)
