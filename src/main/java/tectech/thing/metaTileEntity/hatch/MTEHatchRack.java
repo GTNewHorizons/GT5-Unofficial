@@ -3,13 +3,18 @@ package tectech.thing.metaTileEntity.hatch;
 import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.OpenComputers;
+import static gregtech.api.recipe.RecipeMaps.quantumComputerFakeRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeConstants.QUANTUM_COMPUTER_DATA;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import gregtech.api.enums.GTValues;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.recipe.QuantumComputerRecipeData;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -331,7 +336,7 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
         new RackComponent(ItemList.Circuit_Wetwaresupercomputer.get(1), 200, 42, -1f, 4000, true); // UV
         new RackComponent(ItemList.Circuit_Wetwaremainframe.get(1), 220, 40, -1f, 4000, true); // UHV
 
-        new RackComponent("IC2:ic2.reactorVent", 0, -1, 40f, 2000, false); // Heat Vent
+        new RackComponent(GTModHandler.getIC2Item("reactorVent", 1), 0, -1, 40f, 2000, false); // Heat Vent
         new RackComponent("IC2:ic2.reactorVentCore", 0, -1, 80f, 4000, false); // Reactor Heat Vent
         new RackComponent("IC2:ic2.reactorVentGold", 0, -1, 120f, 6000, false); // Overclocked Heat Vent
         new RackComponent("IC2:ic2.reactorVentDiamond", 0, -1, 160f, 8000, false); // Advanced Heat Vent
@@ -373,6 +378,14 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
         RackComponent(ItemStack is, float computation, float heatConstant, float coolConstant, float maxHeat,
             boolean subZero) {
             this(TTUtility.getUniqueIdentifier(is), computation, heatConstant, coolConstant, maxHeat, subZero);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(is)
+                .metadata(QUANTUM_COMPUTER_DATA, new QuantumComputerRecipeData(heatConstant, coolConstant, computation, maxHeat, subZero))
+                .duration(0)
+                .eut(0)
+                .fake()
+                .addTo(quantumComputerFakeRecipes);
         }
 
         RackComponent(String is, float computation, float heatConstant, float coolConstant, float maxHeat,

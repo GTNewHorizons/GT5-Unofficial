@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 
+import gregtech.api.util.recipe.QuantumComputerRecipeData;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -110,6 +111,11 @@ public class GTRecipeConstants {
      * For Microwave.
      */
     public static final RecipeMetadataKey<Boolean> ON_FIRE = SimpleRecipeMetadataKey.create(Boolean.class, "on_fire");
+
+    /**
+     * Values of items used in quantum computer, used to show NEI recipes
+     */
+    public static final RecipeMetadataKey<QuantumComputerRecipeData> QUANTUM_COMPUTER_DATA = SimpleRecipeMetadataKey.create(QuantumComputerRecipeData.class, "quantum_computer_data");
 
     /**
      * Nano Forge Tier.

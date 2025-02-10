@@ -5,6 +5,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.recipe.RecipeMaps.quantumComputerFakeRecipes;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.recipe.RecipeMap;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -157,6 +159,11 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         super(aName);
         eCertainMode = 5;
         eCertainStatus = -128; // no-brain value
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return quantumComputerFakeRecipes;
     }
 
     @Override
