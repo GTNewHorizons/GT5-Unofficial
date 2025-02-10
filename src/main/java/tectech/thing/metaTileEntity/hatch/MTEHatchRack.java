@@ -355,15 +355,15 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
             new RackComponent(ItemList.Circuit_OpticalComputer.get(1), 240, 22, -1f, 8000, true); // UEV
             new RackComponent(ItemList.Circuit_OpticalMainframe.get(1), 260, 20, -1f, 8000, true); // UIV
 
-            new RackComponent("dreamcraft:item.PikoCircuit", 260, 12, -1f, 9500, true); // UMV
-            new RackComponent("dreamcraft:item.QuantumCircuit", 320, 10, -1f, 10000, true); // UXV
+            new RackComponent(getModItem(NewHorizonsCoreMod.ID, "item.PikoCircuit", 1), 260, 12, -1f, 9500, true); // UMV
+            new RackComponent(getModItem(NewHorizonsCoreMod.ID, "item.QuantumCircuit", 1), 320, 10, -1f, 10000, true); // UXV
         }
 
         if (OpenComputers.isModLoaded()) {
-            new RackComponent("OpenComputers:item.oc.CPU2", 80, 46, -1f, 2000, true); // CPU T3
-            new RackComponent("OpenComputers:item.oc.GraphicsCard2", 100, 44, -1f, 2000, true); // GPU T3
-            new RackComponent("OpenComputers:item.oc.APU1", 120, 42, -1f, 2000, true); // APU T3
-            new RackComponent("OpenComputers:item.oc.APU2", 240, 40, -1f, 2000, true); // APU Creative
+            new RackComponent(getModItem(OpenComputers.ID, "item", 1, 43), 80, 46, -1f, 2000, true); // CPU T3
+            new RackComponent(getModItem(OpenComputers.ID, "item", 1, 10), 100, 44, -1f, 2000, true); // GPU T3
+            new RackComponent(getModItem(OpenComputers.ID, "item", 1, 102), 120, 42, -1f, 2000, true); // APU T3
+            new RackComponent(getModItem(OpenComputers.ID, "item", 1, 103), 240, 40, -1f, 2000, true); // APU Creative
         }
 
         if (GraviSuite.isModLoaded()) {
