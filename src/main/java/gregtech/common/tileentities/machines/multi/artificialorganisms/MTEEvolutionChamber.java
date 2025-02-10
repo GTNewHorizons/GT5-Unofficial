@@ -18,6 +18,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -28,6 +31,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -147,8 +151,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     ArtificialOrganism currentSpecies = new ArtificialOrganism();
 
     private long powerUsage = 0;
-    private int nutrientUsage = 0;
-    
+    private FluidStack nutrientUsage;
 
     private int intelligence;
     private int strength;
@@ -297,7 +300,27 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         return mCasingAmount >= 0;
     }
 
-    private final static FluidStack nutrientcost = Materials.NutrientBroth.getFluid(5);
+    private boolean useNutrients() {
+        if (nutrientUsage == null) {
+            // Something went wrong!
+            return false;
+        }
+
+         for (MTEHatchInput hatch : mInputHatches) {
+            if (drain(hatch, nutrientUsage, true)) {
+                return true;
+            }
+         }
+         return false;
+    }
+
+    private void triggerNutrientLoss() {
+        currentSpecies.consumeAOs(currentSpecies.getCount() / 4);
+    }
+
+    private void triggerElectricityLoss() {
+        sentience += 1;
+    }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -306,20 +329,21 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         if (!aBaseMetaTileEntity.isServerSide() || aTick % 20 != 0 || currentSpecies == null || !finalizedSpecies)
             return;
 
-        aBaseMetaTileEntity.getSkyAtSideAndDistance(ForgeDirection.UP, 5);
+        if (currentSpecies.photosynthetic) {
+            if (!aBaseMetaTileEntity.getSkyAtSideAndDistance(ForgeDirection.UP, 5)) {
+                triggerElectricityLoss();
+                triggerNutrientLoss();
+            }
+        }
 
-        /*
-         * if (!drainEnergyInput(RECIPE_ZPM * 20)) {
-         * currentSpecies.purgeAOs();
-         * }
-         * for (MTEHatchInput hatch : mInputHatches) {
-         * if (drain(hatch, nutrientcost, true)) {
-         * break;
-         * }
-         * }
-         */
+        if (currentSpecies.cooperative) sentience += 1;
 
-        if (currentSpecies.getCount() < maxAOs) currentSpecies.doReproduction();
+        if (!drainEnergyInput(powerUsage)) triggerElectricityLoss();
+
+        if (!useNutrients()) {
+            triggerNutrientLoss();
+        } else if (currentSpecies.getCount() < maxAOs) currentSpecies.doReproduction();
+
         updateSpecies();
     }
 
@@ -370,6 +394,24 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     Boolean finalizedSpecies = false;
 
     private void createNewAOs() {
+
+        // Generate the nutrient cost for this species
+
+        int amount = 16;
+        Fluid type = Materials.NutrientBroth.mFluid;
+
+        if (currentSpecies.immortal) amount = 0;
+        else {
+            if (currentSpecies.hiveMind) {
+                type = Materials.NeuralFluid.mFluid;
+                amount /= 4;
+            }
+            if (currentSpecies.photosynthetic) amount /= 4;
+            if (currentSpecies.cancerous) amount *= 64;
+        }
+
+        nutrientUsage = new FluidStack(type, amount);
+
         finalizedSpecies = true;
         currentSpecies.finalize(maxAOs);
         for (MTEHatchAOOutput hatch : bioHatches) hatch.setSpecies(currentSpecies);
@@ -460,7 +502,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     }
 
     private ModularWindow createTraitWindow(final EntityPlayer player) {
-        ModularWindow.Builder builder = ModularWindow.builder(170, 85)
+        ModularWindow.Builder builder = ModularWindow.builder(getBaseMetaTileEntity().getMetaTileEntity().getGUIWidth(), getBaseMetaTileEntity().getMetaTileEntity().getGUIHeight())
             .setDraggable(false);
 
         builder.widget(
@@ -474,15 +516,18 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         screenElements.setSynced(false)
             .setSpace(0)
-            .setPos(34, 7);
+            .setSize(170, 85)
+            .setPos(0, 0);
+
         screenElements.widget(
             new TextWidget(
                 EnumChatFormatting.UNDERLINE
                     + StatCollector.translateToLocal("GT5U.artificialorganisms.traitname" + activeTraitWindow.id))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get()));
+                        .setDefaultColor(COLOR_TEXT_WHITE.get()).setTextAlignment(Alignment.Center).setSize(170, 20));
         screenElements.widget(
             new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.traitdesc" + activeTraitWindow.id))
-                .setDefaultColor(COLOR_TEXT_WHITE.get()));
+                .setDefaultColor(COLOR_TEXT_WHITE.get()).setTextAlignment(Alignment.Center).setSize(170, 20));
+
         builder.widget(screenElements);
 
         return builder.build();
@@ -491,8 +536,10 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     private ButtonWidget createTraitWindowButton(IWidgetBuilder<?> builder, Trait trait, Pos2d pos) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             activeTraitWindow = trait;
-            if (!widget.isClient()) widget.getContext()
-                .openSyncedWindow(TRAIT_WINDOW_ID);
+            if (!widget.isClient()) {
+                widget.getContext().closeWindow(TRAIT_WINDOW_ID);
+                widget.getContext().openSyncedWindow(TRAIT_WINDOW_ID);
+            }
         })
             .setPlayClickSound(supportsVoidProtection())
             .setBackground(

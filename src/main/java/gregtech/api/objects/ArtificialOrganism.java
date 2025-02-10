@@ -24,6 +24,7 @@ public class ArtificialOrganism {
     public boolean cooperative;
     public boolean decaying;
     public boolean genius;
+    public boolean cancerous;
     public boolean immortal;
 
     public ArtificialOrganism(int intelligence, int strength, int reproduction) {
@@ -121,7 +122,13 @@ public class ArtificialOrganism {
         reproduction += trait.baseRep;
 
         switch (trait) {
+            case Photosynthetic -> photosynthetic = true;
+            case HiveMind -> hiveMind = true;
+            case Laborer -> laborer = true;
+            case Cooperative -> cooperative = true;
             case Decaying -> decaying = true;
+            case Genius -> genius = true;
+            case Cancerous -> cancerous = true;
             case Immortal -> immortal = true;
         }
     }
@@ -166,8 +173,11 @@ public class ArtificialOrganism {
         Photosynthetic(ItemList.IC2_Plantball.getItem(), 6, 3, 1, 1),
         HiveMind(Item.getItemFromBlock(Blocks.red_mushroom), 5, 5, 5, 2),
         Laborer(Items.beef, 3, 8, 5, 3),
-        Decaying(Items.rotten_flesh, 10, 10, 10, 4),
-        Immortal(Items.nether_star, 10, 10, 10, 5);
+        Cooperative(Items.poisonous_potato, 5, 5, 5, 4),
+        Decaying(Items.rotten_flesh, 10, 10, 10, 5),
+        Genius(Items.poisonous_potato, 5, 5, 5, 6),
+        Cancerous(Items.poisonous_potato, 5, 5, 5, 7),
+        Immortal(Items.nether_star, 10, 10, 10, 10);
 
         public final Item cultureItem;
         public final int baseInt, baseStr, baseRep;
