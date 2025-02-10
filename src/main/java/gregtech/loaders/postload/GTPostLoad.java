@@ -356,8 +356,18 @@ public class GTPostLoad {
                 .bottomBlock(Blocks.soul_sand)
                 .inputItem(new ItemStack(Blocks.packed_ice, 0), false)
                 .circuit(1)
-                .outputItem(GTOreDictUnificator.get(OrePrefixes.block, Materials.Basalt, 1L))
+                .outputItem(GTOreDictUnificator.get(OrePrefixes.stone, Materials.Basalt, 1L))
                 .duration(16 * TICKS));
+
+        if (Mods.EtFuturumRequiem.isModLoaded()) {
+            MTERockBreaker.addRockBreakerRecipe(
+                b -> b.sideBlocks(Blocks.lava)
+                    .bottomBlock(Blocks.soul_sand)
+                    .inputItem(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "magma", 0, 0), false)
+                    .circuit(1)
+                    .outputItem(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "cobbled_deepslate", 1, 0))
+                    .duration(16 * TICKS));
+        }
     }
 
     public static void changeWoodenVanillaTools() {
