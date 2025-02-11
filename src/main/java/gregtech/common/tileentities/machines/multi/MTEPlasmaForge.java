@@ -754,7 +754,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                overclockCalculator = super.createOverclockCalculator(recipeAfterAdjustments(recipe))
+                overclockCalculator = super.createOverclockCalculator(recipeAfterAdjustments(recipe, inputFluids))
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat(mHeatingCapacity);
                 if (convergence && discount == maximum_discount && enoughCatalyst) {
@@ -766,7 +766,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             @NotNull
             @Override
             protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
-                return super.createParallelHelper(recipeAfterAdjustments(recipe));
+                return super.createParallelHelper(recipeAfterAdjustments(recipe, inputFluids));
             }
 
             @Override
@@ -778,14 +778,14 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     }
 
     @Nonnull
-    protected GTRecipe recipeAfterAdjustments(@Nonnull GTRecipe recipe) {
+    protected GTRecipe recipeAfterAdjustments(@Nonnull GTRecipe recipe, FluidStack[] inputFluids) {
         GTRecipe tRecipe = recipe.copy();
         for (int i = 0; i < recipe.mFluidInputs.length; i++) {
             for (FluidStack fuel : valid_fuels) {
                 if (tRecipe.mFluidInputs[i].isFluidEqual(fuel)) {
                     recalculateDiscount();
                     if (convergence && discount == maximum_discount) {
-                        calculateCatalystIncrease(tRecipe, i);
+                        calculateCatalystIncrease(tRecipe, inputFluids, i);
                         getBaseMetaTileEntity()
                             .sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
                     }
@@ -816,7 +816,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             tRecipe.mFluidOutputs = fluidOutputsWithResidue;
             recalculateDiscount();
 
-            calculateCatalystIncrease(tRecipe, tRecipe.mFluidInputs.length - 1);
+            calculateCatalystIncrease(tRecipe, inputFluids, tRecipe.mFluidInputs.length - 1);
             // We know that we have max discount here, so divide by 2.
             tRecipe.mFluidInputs[tRecipe.mFluidInputs.length - 1].amount /= 2;
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
@@ -991,7 +991,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     private int catalystTypeForRecipesWithoutCatalyst = 1;
 
-    private void calculateCatalystIncrease(GTRecipe recipe, int fuelIndex) {
+    private void calculateCatalystIncrease(GTRecipe recipe, FluidStack[] inputFluids, int fuelIndex) {
         FluidStack validFuelStack = recipe.mFluidInputs[fuelIndex];
         Fluid validFuel = validFuelStack.getFluid();
 
@@ -1008,7 +1008,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         // if we do then enable perfect overclocks and update the recipe.
         enoughCatalyst = true;
         int needed = (validFuelStack.amount + extraCatalystNeeded) / 2;
-        for (FluidStack stack : getStoredFluids()) {
+        for (FluidStack stack : inputFluids) {
             if (stack.isFluidEqual(validFuelStack)) {
                 needed -= stack.amount;
             }
