@@ -31,7 +31,6 @@ import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -190,9 +189,8 @@ public final class ItemParametrizerMemoryCard extends Item {
         }
         // Sneak right click to lock/unlock
         aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.parametrizerMemoryCard.desc.3"));
-
-        double temp;
-        if (tNBT != null && tNBT.hasKey("controller")) {
+        if (tNBT == null) return;
+        if (tNBT.hasKey("controller")) {
             aList.add(
                 "Copied from: " + EnumChatFormatting.RED
                     + tNBT.getString("controller")
@@ -201,21 +199,7 @@ public final class ItemParametrizerMemoryCard extends Item {
                     + EnumChatFormatting.GREEN
                     + tNBT.getString("coords"));
         }
-        if (tNBT != null && tNBT.hasKey("param")) {
-            aList.add("Hatch ID: " + EnumChatFormatting.AQUA + tNBT.getInteger("param"));
-            temp = tNBT.getInteger("value0D");
-            aList.add("Value 0D: " + EnumChatFormatting.AQUA + temp);
-            aList.add(
-                "Value 0B: " + EnumChatFormatting.AQUA
-                    + TTUtility.longBitsToShortString(Double.doubleToLongBits(temp)));
-            aList.add("Value 0s: " + EnumChatFormatting.AQUA + tNBT.getString("value0s"));
-            temp = tNBT.getInteger("value1D");
-            aList.add("Value 1D: " + EnumChatFormatting.AQUA + temp);
-            aList.add(
-                "Value 1B: " + EnumChatFormatting.AQUA
-                    + TTUtility.longBitsToShortString(Double.doubleToLongBits(temp)));
-            aList.add("Value 1s: " + EnumChatFormatting.AQUA + tNBT.getString("value1s"));
-        } else if (tNBT != null && tNBT.hasKey("paramList", Constants.NBT.TAG_LIST)) {
+        if (tNBT.hasKey("paramList", Constants.NBT.TAG_LIST)) {
             NBTTagList tagList = tNBT.getTagList("paramList", Constants.NBT.TAG_COMPOUND);
             for (int hatch = 0; hatch < 10; hatch++) {
                 NBTTagCompound tag = tagList.getCompoundTagAt(hatch);
