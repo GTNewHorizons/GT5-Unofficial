@@ -72,9 +72,8 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
         return ret;
     }
 
-    public final T cast(ISerializableObject aData) {
-        if (typeToken.isInstance(aData)) return forceCast(aData);
-        return null;
+    final boolean acceptsDataObject(ISerializableObject aData) {
+        return typeToken.isInstance(aData);
     }
 
     private T forceCast(ISerializableObject aData) {

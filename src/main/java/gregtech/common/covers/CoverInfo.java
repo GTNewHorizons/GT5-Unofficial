@@ -127,6 +127,10 @@ public final class CoverInfo {
         getCoverBehavior().onDropped(coverSide, coverID, coverData, coveredTile.get());
     }
 
+    public boolean acceptsDataObject(ISerializableObject data) {
+        return getCoverBehavior().acceptsDataObject(data);
+    }
+
     public void setCoverData(ISerializableObject aData) {
         coverData = aData;
     }
