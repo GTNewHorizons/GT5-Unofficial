@@ -205,6 +205,7 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
             .setEuModifier(0.9F);
     }
 
+    @Override
     public int getMaxParallelRecipes() {
         return (2 * GTUtility.getTier(this.getMaxInputVoltage()));
     }

@@ -214,6 +214,7 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
             .setEuModifier(0.85F);
     }
 
+    @Override
     public int getMaxParallelRecipes() {
         // Max call to prevent seeing -16 parallels in waila for unformed multi
         return Math.max(8 * itemPipeTier, 0);

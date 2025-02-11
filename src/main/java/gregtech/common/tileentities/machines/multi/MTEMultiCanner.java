@@ -192,6 +192,7 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
+    @Override
     public int getMaxParallelRecipes() {
         return (8 * GTUtility.getTier(this.getMaxInputVoltage()));
     }

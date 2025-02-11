@@ -309,6 +309,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         return (float) 1 / (1 + 0.25f * coilTier);
     }
 
+    @Override
     public int getMaxParallelRecipes() {
         return itemPipeTier * 12;
     }
