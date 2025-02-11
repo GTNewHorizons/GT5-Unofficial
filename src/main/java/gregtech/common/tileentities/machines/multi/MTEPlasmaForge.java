@@ -1020,12 +1020,10 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
         recipe.mFluidInputs[fuelIndex].amount += extraCatalystNeeded;
 
-        int outputFluids = recipe.mFluidOutputs.length;
-
         // Increase present catalyst and residue by calculated amount
-        for (int j = 0; j < outputFluids; j++) {
-            if (recipe.mFluidOutputs[j].isFluidEqual(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1))) {
-                recipe.mFluidOutputs[j].amount += (int) (extraCatalystNeeded * FUEL_ENERGY_VALUES.get(validFuel)
+        for (FluidStack outputFluid : recipe.mFluidOutputs) {
+            if (outputFluid.isFluidEqual(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1))) {
+                outputFluid.amount += (int) (extraCatalystNeeded * FUEL_ENERGY_VALUES.get(validFuel)
                     .getRight());
             }
         }
