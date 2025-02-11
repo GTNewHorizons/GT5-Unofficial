@@ -38,11 +38,6 @@ public class CoverWirelessDoesWorkDetector
         return new ActivityTransmitterData();
     }
 
-    @Override
-    public ActivityTransmitterData createDataObject(int aLegacyData) {
-        return createDataObject();
-    }
-
     private static byte computeSignalBasedOnActivity(ActivityTransmitterData coverVariable, ICoverable tileEntity) {
 
         if (tileEntity instanceof IMachineProgress mProgress) {

@@ -57,7 +57,12 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
         this.coverFGTexture = coverTexture;
     }
 
-    protected abstract T createDataObject(int aLegacyData);
+    /**
+     * Should only be overridden by covers which actively persist their data as NBTTagInt.
+     */
+    protected T createDataObject(int aLegacyData) {
+        return createDataObject();
+    }
 
     public abstract T createDataObject();
 

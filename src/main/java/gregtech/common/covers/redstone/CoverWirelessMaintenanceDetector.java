@@ -42,11 +42,6 @@ public class CoverWirelessMaintenanceDetector
         return new MaintenanceTransmitterData();
     }
 
-    @Override
-    public MaintenanceTransmitterData createDataObject(int aLegacyData) {
-        return createDataObject();
-    }
-
     private static byte computeSignalBasedOnMaintenance(MaintenanceTransmitterData coverVariable,
         ICoverable tileEntity) {
         boolean signal = false;

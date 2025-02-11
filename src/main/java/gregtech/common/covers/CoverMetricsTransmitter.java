@@ -59,12 +59,6 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
     }
 
     @Override
-    public MetricsTransmitterData createDataObject(int aLegacyData) {
-        // As a new cover, this shouldn't fire.
-        return new MetricsTransmitterData();
-    }
-
-    @Override
     public MetricsTransmitterData createDataObject() {
         return new MetricsTransmitterData();
     }

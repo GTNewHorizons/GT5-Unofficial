@@ -18,11 +18,6 @@ public class CoverAdvancedRedstoneTransmitterExternal
     }
 
     @Override
-    public TransmitterData createDataObject(int aLegacyData) {
-        return createDataObject();
-    }
-
-    @Override
     public TransmitterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
         TransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         byte outputRedstone = aInputRedstone;
