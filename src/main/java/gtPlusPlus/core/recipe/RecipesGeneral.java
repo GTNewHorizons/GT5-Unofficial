@@ -215,12 +215,6 @@ public class RecipesGeneral {
     }
 
     private static void addCompressedObsidian() {
-        // Inverted Obsidian
-        GTModHandler.addCraftingRecipe(
-            new ItemStack(ModBlocks.blockCompressedObsidian, 1, 5),
-            new Object[] { "RGR", "GOG", "RGR", 'R', new ItemStack(Items.redstone), 'G',
-                new ItemStack(Items.glowstone_dust), 'O', new ItemStack(ModBlocks.blockCompressedObsidian, 1, 1) });
-
         // Compressed Obsidian 1-5
         final ItemStack[] mItems = new ItemStack[6];
         mItems[0] = new ItemStack(Blocks.obsidian);
@@ -299,7 +293,7 @@ public class RecipesGeneral {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Input_Pyrotheum.get(1L),
             new Object[] { "MGM", "CBC", "MHM", 'M', MaterialsAlloy.MARAGING250.getPlate(1), 'G',
-                MaterialsAlloy.MARAGING250.getGear(1), 'C', "circuitElite", 'B',
+                MaterialsAlloy.MARAGING300.getGear(1), 'C', "circuitElite", 'B',
                 GregtechItemList.Casing_Adv_BlastFurnace.get(1), 'H', ItemList.Hatch_Input_IV.get(1) });
 
         if (GTMod.gregtechproxy.mPollution) {
