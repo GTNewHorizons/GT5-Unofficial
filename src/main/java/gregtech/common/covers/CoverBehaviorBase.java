@@ -27,7 +27,6 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.covers.CoverRegistry;
-import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GUITextureSet;
@@ -56,11 +55,6 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
     protected CoverBehaviorBase(Class<T> typeToken, ITexture coverTexture) {
         this.typeToken = typeToken;
         this.coverFGTexture = coverTexture;
-        reloadColorOverride();
-    }
-
-    public void reloadColorOverride() {
-        this.colorOverride = GUIColorOverride.get(guiTexturePath);
     }
 
     protected abstract T createDataObject(int aLegacyData);
@@ -419,9 +413,6 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
 
     // region UI stuff
 
-    protected GUIColorOverride colorOverride;
-    private static final String guiTexturePath = "gregtech:textures/gui/GuiCover.png";
-
     protected ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new UIFactory(buildContext).createWindow();
     }
@@ -538,13 +529,11 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
             return false;
         }
 
-        protected int getTextColorOrDefault(String textType, int defaultColor) {
-            return colorOverride.getTextColorOrDefault(textType, defaultColor);
-        }
-
-        protected final Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x222222);
-        protected final Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x555555);
-        protected final Supplier<Integer> COLOR_TEXT_WARN = () -> getTextColorOrDefault("text_warn", 0xff0000);
+        protected final Supplier<Integer> COLOR_TITLE = () -> CoverRegistry.getTextColorOrDefault("title", 0x222222);
+        protected final Supplier<Integer> COLOR_TEXT_GRAY = () -> CoverRegistry
+            .getTextColorOrDefault("text_gray", 0x555555);
+        protected final Supplier<Integer> COLOR_TEXT_WARN = () -> CoverRegistry
+            .getTextColorOrDefault("text_warn", 0xff0000);
     }
 
     // endregion

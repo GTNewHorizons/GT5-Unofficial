@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTUtility;
@@ -30,6 +31,8 @@ public class CoverRegistry {
      * This is the generic Cover behavior. Used for the default Covers, which have no Behavior.
      */
     private static final CoverBehaviorBase<?> defaultBehavior = new CoverDefault(), noBehavior = new CoverNone();
+    private static GUIColorOverride colorOverride;
+    private static final String guiTexturePath = "gregtech:textures/gui/GuiCover.png";
 
     static {
         GregTechAPI.sItemStackMappings.add(coverTextures);
@@ -72,7 +75,10 @@ public class CoverRegistry {
     }
 
     public static void reloadCoverColorOverrides() {
-        coverBehaviors.values()
-            .forEach(CoverBehaviorBase::reloadColorOverride);
+        colorOverride = GUIColorOverride.get(guiTexturePath);
+    }
+
+    public static int getTextColorOrDefault(String textType, int defaultColor) {
+        return colorOverride.getTextColorOrDefault(textType, defaultColor);
     }
 }
