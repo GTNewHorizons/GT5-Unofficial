@@ -98,8 +98,8 @@ public class CokeAndPyrolyseOven {
         GTValues.RA.stdBuilder()
             .itemInputs(plant, GTUtility.getIntegratedCircuit(4))
             .itemOutputs(charcoal)
-            .fluidInputs(Materials.Nitrogen.getFluid(2000))
-            .fluidOutputs(Materials.CharcoalByproducts.getFluid(4000))
+            .fluidInputs(Materials.Nitrogen.getGas(2000))
+            .fluidOutputs(Materials.CharcoalByproducts.getGas(4000))
             .eut(16)
             .duration(250 * TICKS)
             .addTo(pyrolyseRecipes);
