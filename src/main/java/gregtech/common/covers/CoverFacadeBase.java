@@ -1,5 +1,7 @@
 package gregtech.common.covers;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
@@ -46,6 +48,12 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
     @Override
     public FacadeData createDataObject() {
         return new FacadeData();
+    }
+
+    @Override
+    public FacadeData initializeDataFromCover(ItemStack cover) {
+        if (Objects.isNull(cover)) return createDataObject();
+        return new FacadeData(GTUtility.copyAmount(1, cover), 0);
     }
 
     @Override
@@ -110,19 +118,14 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
     }
 
     @Override
-    public void placeCover(ForgeDirection side, ItemStack aCover, ICoverable aTileEntity) {
-        aTileEntity.setCoverIdAndDataAtSide(
-            side,
-            GTUtility.stackToInt(aCover),
-            new FacadeData(GTUtility.copyAmount(1, aCover), 0));
-
-        if (aTileEntity.isClientSide()) GTRenderingWorld.getInstance()
+    public void onPlayerAttach(EntityPlayer player, ItemStack cover, ICoverable tileEntity, ForgeDirection side) {
+        if (tileEntity.isClientSide()) GTRenderingWorld.getInstance()
             .register(
-                aTileEntity.getXCoord(),
-                aTileEntity.getYCoord(),
-                aTileEntity.getZCoord(),
-                getTargetBlock(aCover),
-                getTargetMeta(aCover));
+                tileEntity.getXCoord(),
+                tileEntity.getYCoord(),
+                tileEntity.getZCoord(),
+                getTargetBlock(cover),
+                getTargetMeta(cover));
     }
 
     @Override
