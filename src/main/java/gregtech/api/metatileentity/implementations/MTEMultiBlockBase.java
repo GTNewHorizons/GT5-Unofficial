@@ -151,6 +151,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected VoidingMode voidingMode = getDefaultVoidingMode();
     protected boolean batchMode = getDefaultBatchMode();
     protected @Nonnull CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
+    protected int powerPanelMaxParallel = 1;
 
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
@@ -2454,6 +2455,29 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return false;
     }
 
+    /**
+     * @return Whether this multiblock has features which allow parallels. This is used for the power control panel.
+     */
+    public boolean supportsParallel() {
+        return false;
+    }
+
+    /**
+     * Do not use this method as a supplier to ProcessingLogic, use getTrueParallel()
+     * @return The absolute maximum number of parallels possible right now.
+     */
+    public int getMaxParallelRecipes() {
+        return 1;
+    }
+
+    /**
+     * This method should be used as a supplier to ProcessingLogic, not getMaxParallelRecipes()
+     * @return Get real parallel count based on the maximum and the limit imposed in the power panel.
+     */
+    public int getTrueParallel() {
+        return Math.min(getMaxParallelRecipes(), powerPanelMaxParallel);
+    }
+
     @Override
     public Pos2d getVoidingModeButtonPos() {
         return new Pos2d(8, 91);
@@ -2630,7 +2654,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public Pos2d getPowerPanelButtonPos() {
-        return new Pos2d(174, 112);
+        return new Pos2d(174, 91);
     }
 
     @Override
@@ -2656,6 +2680,25 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             TextWidget.localised("GT5U.gui.text.power_panel")
                 .setPos(3, 2)
                 .setSize(120, 34));
+
+        builder.widget(
+                TextWidget.localised("GTPP.CC.parallel")
+                    .setPos(3, 4)
+                    .setSize(150, 20))
+            .widget(
+                new NumericWidget().setSetter(val -> powerPanelMaxParallel = (int) val)
+                    .setGetter(() -> powerPanelMaxParallel)
+                    .setBounds(1, getMaxParallelRecipes())
+                    .setDefaultValue(getMaxParallelRecipes())
+                    .setScrollValues(1, 4, 64)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(70, 18)
+                    .setPos(4, 25)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+                    .attachSyncer(
+                        new FakeSyncWidget.IntegerSyncer(() -> powerPanelMaxParallel, (val) -> powerPanelMaxParallel = val),
+                        builder));
 
         return builder.build();
     }

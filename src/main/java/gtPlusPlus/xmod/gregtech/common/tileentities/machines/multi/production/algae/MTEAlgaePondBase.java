@@ -359,7 +359,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         }.setEuModifier(0F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     private int getCasingTier() {
