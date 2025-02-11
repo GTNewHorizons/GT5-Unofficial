@@ -135,7 +135,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     private static final int max_output_bus = 1;
 
     // Current discount rate. 1 = 0%, 0 = 100%.
-    private double discount = maximum_discount;
+    private double discount = 1;
     private int mHeatingCapacity = 0;
     private long running_time = 0;
     private boolean convergence = false;
@@ -754,7 +754,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                overclockCalculator = super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
+                overclockCalculator = super.createOverclockCalculator(recipeAfterAdjustments(recipe))
+                    .setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat(mHeatingCapacity);
                 if (convergence && discount == maximum_discount && enoughCatalyst) {
                     overclockCalculator = overclockCalculator.enablePerfectOC();
