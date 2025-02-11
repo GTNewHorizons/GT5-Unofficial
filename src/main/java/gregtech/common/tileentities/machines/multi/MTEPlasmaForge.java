@@ -141,6 +141,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     private boolean convergence = false;
     private HeatingCoilLevel mCoilLevel;
     private OverclockCalculator overclockCalculator;
+    private boolean enoughCatalyst = false;
 
     @SuppressWarnings("SpellCheckingInspection")
     private static final String[][] structure_string = new String[][] { { "                                 ",
@@ -760,7 +761,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 overclockCalculator = super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat(mHeatingCapacity);
-                if (convergence && discount == maximum_discount) {
+                if (convergence && discount == maximum_discount && enoughCatalyst) {
                     overclockCalculator = overclockCalculator.enablePerfectOC();
                 }
                 return overclockCalculator;
@@ -822,6 +823,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 .getFluid(0);
             tRecipe.mFluidOutputs = fluidOutputsWithResidue;
             recalculateDiscount();
+
             calculateCatalystIncrease(tRecipe, tRecipe.mFluidInputs.length - 1);
             // We know that we have max discount here, so divide by 2.
             tRecipe.mFluidInputs[tRecipe.mFluidInputs.length
@@ -992,22 +994,43 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         double time_percentage = running_time / max_efficiency_time_in_ticks;
         time_percentage = Math.min(time_percentage, 1.0d);
         // Multiplied by 0.5 because that is the maximum achievable discount
-        discount = maximum_discount;
+        discount = 1 - time_percentage * 0.5;
+        discount = Math.max(maximum_discount, discount);
     }
 
     private int catalystTypeForRecipesWithoutCatalyst = 1;
 
-    private void calculateCatalystIncrease(GTRecipe recipe, int index) {
+    private void calculateCatalystIncrease(GTRecipe recipe, int fuelIndex) {
+        FluidStack validFuelStack = recipe.mFluidInputs[fuelIndex];
+        Fluid validFuel = validFuelStack.getFluid();
+
         long machineConsumption = overclockCalculator.getConsumption();
         int numberOfOverclocks = (int) Math.ceil(calculateTier(machineConsumption) - GTUtility.getTier(recipe.mEUt));
         double recipeDuration = recipe.mDuration / Math.pow(4, numberOfOverclocks);
         // Power difference between regular and perfect OCs for this recipe duration
         long extraPowerNeeded = (long) ((Math.pow(2, numberOfOverclocks) - 1) * machineConsumption * recipeDuration);
-        int outputFluids = recipe.mFluidOutputs.length;
-        Fluid validFuel = recipe.mFluidInputs[index].getFluid();
         int extraCatalystNeeded = (int) (extraPowerNeeded / FUEL_ENERGY_VALUES.get(validFuel)
             .getLeft());
-        recipe.mFluidInputs[index].amount += extraCatalystNeeded;
+
+        // Check if we have enough catalyst,
+        // if we don't leave the recipe unchanged.
+        // if we do then enable perfect overclocks and update the recipe.
+        enoughCatalyst = true;
+        int needed = extraCatalystNeeded;
+        for (FluidStack stack : getStoredFluids()) {
+            if (stack.isFluidEqual(validFuelStack)) {
+                needed -= stack.amount;
+            }
+        }
+        if (needed > 0) {
+            enoughCatalyst = false;
+            return;
+        }
+
+        recipe.mFluidInputs[fuelIndex].amount += extraCatalystNeeded;
+
+        int outputFluids = recipe.mFluidOutputs.length;
+
         // Increase present catalyst and residue by calculated amount
         for (int j = 0; j < outputFluids; j++) {
             if (recipe.mFluidOutputs[j].isFluidEqual(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1))) {
