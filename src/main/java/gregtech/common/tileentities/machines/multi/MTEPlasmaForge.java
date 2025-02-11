@@ -807,7 +807,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             // Append 0 of the chosen catalyst to input fluids for calculations.
             FluidStack[] fluidInputsWithCatalyst = new FluidStack[tRecipe.mFluidInputs.length + 1];
             for (int i = 0; i < tRecipe.mFluidInputs.length; i++) {
-                fluidInputsWithCatalyst[i] = recipe.mFluidInputs[i].copy();
+                fluidInputsWithCatalyst[i] = tRecipe.mFluidInputs[i].copy();
             }
             fluidInputsWithCatalyst[tRecipe.mFluidInputs.length] = new FluidStack(
                 valid_fuels[catalystTypeForRecipesWithoutCatalyst - 1],
@@ -817,7 +817,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             // Append 0 residue to output fluids for calculations.
             FluidStack[] fluidOutputsWithResidue = new FluidStack[tRecipe.mFluidOutputs.length + 1];
             for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
-                fluidOutputsWithResidue[i] = recipe.mFluidOutputs[i].copy();
+                fluidOutputsWithResidue[i] = tRecipe.mFluidOutputs[i].copy();
             }
             fluidOutputsWithResidue[tRecipe.mFluidOutputs.length] = MaterialsUEVplus.DimensionallyTranscendentResidue
                 .getFluid(0);
@@ -826,8 +826,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
             calculateCatalystIncrease(tRecipe, tRecipe.mFluidInputs.length - 1);
             // We know that we have max discount here, so divide by 2.
-            tRecipe.mFluidInputs[tRecipe.mFluidInputs.length
-                - 1].amount = tRecipe.mFluidInputs[tRecipe.mFluidInputs.length - 1].amount / 2;
+            tRecipe.mFluidInputs[tRecipe.mFluidInputs.length - 1].amount /= 2;
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         }
         return tRecipe;
@@ -1016,7 +1015,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         // if we don't leave the recipe unchanged.
         // if we do then enable perfect overclocks and update the recipe.
         enoughCatalyst = true;
-        int needed = extraCatalystNeeded;
+        int needed = (validFuelStack.amount + extraCatalystNeeded) / 2;
         for (FluidStack stack : getStoredFluids()) {
             if (stack.isFluidEqual(validFuelStack)) {
                 needed -= stack.amount;
