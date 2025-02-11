@@ -66,6 +66,10 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
 
     public abstract T createDataObject();
 
+    public T initializeDataFromCover(ItemStack cover) {
+        return createDataObject();
+    }
+
     public final T createDataObject(NBTBase aNBT) {
         // Handle legacy data (migrating from GT_CoverBehavior to GT_CoverBehaviorBase)
         if (aNBT instanceof NBTTagInt) {
@@ -409,7 +413,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
      * @param aTileEntity The machine receiving the cover
      * @param side        Which side the cover is attached to
      */
-    public void onPlayerAttach(EntityPlayer player, ItemStack aCover, ICoverable aTileEntity, ForgeDirection side) {
+    protected void onPlayerAttach(EntityPlayer player, ItemStack aCover, ICoverable aTileEntity, ForgeDirection side) {
         // Do nothing by default.
     }
 
@@ -810,8 +814,9 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
     /**
      * sets the Cover upon placement.
      */
-    public void placeCover(ForgeDirection side, ItemStack aCover, ICoverable aTileEntity) {
-        aTileEntity.setCoverIDAtSide(side, GTUtility.stackToInt(aCover));
+    public final void placeCover(EntityPlayer player, ItemStack cover, ICoverable tileEntity, ForgeDirection side) {
+        tileEntity.setCoverIdAndDataAtSide(side, GTUtility.stackToInt(cover), initializeDataFromCover(cover));
+        onPlayerAttach(player, cover, tileEntity, side);
     }
 
     boolean allowsCopyPasteTool() {

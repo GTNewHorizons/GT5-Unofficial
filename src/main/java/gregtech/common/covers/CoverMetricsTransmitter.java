@@ -108,7 +108,7 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
     }
 
     @Override
-    public void onPlayerAttach(EntityPlayer player, ItemStack aCover, ICoverable aTileEntity, ForgeDirection side) {
+    public void onPlayerAttach(EntityPlayer player, ItemStack cover, ICoverable tileEntity, ForgeDirection side) {
         final UUID newFrequency = UUID.randomUUID();
         final ItemStack cardStack = ItemList.NC_AdvancedSensorCard.get(1);
 
@@ -121,7 +121,7 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
         tagCompound.setLong(FREQUENCY_LSB_KEY, newFrequency.getLeastSignificantBits());
         tagCompound.setInteger(CARD_STATE_KEY, State.OPERATIONAL.getType());
 
-        if (aTileEntity instanceof final BaseMetaTileEntity baseMTE) {
+        if (tileEntity instanceof final BaseMetaTileEntity baseMTE) {
             final ItemStack baseMTEStack = baseMTE.getStackForm(1);
             if (baseMTEStack != null) {
                 tagCompound.setTag(MACHINE_KEY, baseMTEStack.writeToNBT(new NBTTagCompound()));
@@ -129,7 +129,7 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
         }
 
         cardStack.setTagCompound(tagCompound);
-        aTileEntity.getCoverInfoAtSide(side)
+        tileEntity.getCoverInfoAtSide(side)
             .setCoverData(new MetricsTransmitterData(newFrequency));
 
         final EntityItem cardEntity = new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, cardStack);

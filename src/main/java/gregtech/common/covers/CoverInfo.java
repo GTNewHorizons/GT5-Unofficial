@@ -104,7 +104,7 @@ public final class CoverInfo {
     public ISerializableObject getCoverData() {
         if (coverData != null) return coverData;
         return CoverRegistry.getEmptyCover()
-            .createDataObject();
+            .createDataObject(null);
     }
 
     public boolean onCoverRemoval(boolean aForced) {

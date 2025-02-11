@@ -127,16 +127,13 @@ public class CoverToggleVisual extends CoverBehavior {
     }
 
     @Override
-    public void placeCover(ForgeDirection side, ItemStack aCover, ICoverable aTileEntity) {
-        String aKey = generateUniqueKey(side, aTileEntity);
-        boolean state = getCoverConnections(aCover);
-        sPrefixMap.put(aKey, aCover.getUnlocalizedName());
+    public void onPlayerAttach(EntityPlayer player, ItemStack cover, ICoverable tileEntity, ForgeDirection side) {
+        String aKey = generateUniqueKey(side, tileEntity);
+        boolean state = getCoverConnections(cover);
+        sPrefixMap.put(aKey, cover.getUnlocalizedName());
         Logger.INFO("Mapping key " + aKey + " to " + state);
         sConnectionStateForEntityMap.put(aKey, state ? VALUE_ON : VALUE_OFF);
         Logger.INFO("Key Value: " + (state ? VALUE_ON : VALUE_OFF));
-        // Try set cover state directly
-        // trySetState(aSide, state ? VALUE_ON : VALUE_OFF, aTileEntity);
-        super.placeCover(side, aCover, aTileEntity);
     }
 
     @Override

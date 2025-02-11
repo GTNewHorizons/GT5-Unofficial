@@ -1,5 +1,6 @@
 package tectech.thing.cover;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -23,14 +24,13 @@ public class CoverPowerPassUpgrade extends CoverBehavior {
     }
 
     @Override
-    public void placeCover(ForgeDirection side, ItemStack aCover, ICoverable aTileEntity) {
-        IMetaTileEntity iGregTechTileEntityOffset = aTileEntity.getIGregTechTileEntityOffset(0, 0, 0)
+    public void onPlayerAttach(EntityPlayer player, ItemStack cover, ICoverable tileEntity, ForgeDirection side) {
+        IMetaTileEntity iGregTechTileEntityOffset = tileEntity.getIGregTechTileEntityOffset(0, 0, 0)
             .getMetaTileEntity();
         if (iGregTechTileEntityOffset instanceof TTMultiblockBase multi) {
             multi.ePowerPassCover = true;
             multi.ePowerPass = true;
         }
-        super.placeCover(side, aCover, aTileEntity);
     }
 
     @Override
