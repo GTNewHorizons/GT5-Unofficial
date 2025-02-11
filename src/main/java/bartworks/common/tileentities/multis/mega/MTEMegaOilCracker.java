@@ -31,8 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -62,7 +60,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
@@ -223,15 +220,10 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @Override
-            @Nonnull
-            public CheckRecipeResult process() {
-                this.setEuModifier(1.0F - Math.min(0.1F * (MTEMegaOilCracker.this.heatLevel.getTier() + 1), 0.5F));
-                return super.process();
-            }
-        }.setMaxParallel(Configuration.Multiblocks.megaMachinesMax);
+        return new ProcessingLogic()
+            .setOverclock(true)
+            .setEUtModifier(1 - Math.min(0.1 * (this.heatLevel.getTier() + 1), 0.5))
+            .setMaxParallel(Configuration.Multiblocks.megaMachinesMax);
     }
 
     public HeatingCoilLevel getCoilLevel() {

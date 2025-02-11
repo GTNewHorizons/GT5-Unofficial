@@ -91,15 +91,15 @@ public class MTEPlasmaModule extends MTEBaseModule {
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
                 wirelessEUt = (long) recipe.mEUt * maxParallel;
-                if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
+                if (!addEUToGlobalEnergyMap(userUUID, -calculatedEUt * duration)) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
                 }
                 addToPowerTally(
-                    BigInteger.valueOf(calculatedEut)
+                    BigInteger.valueOf(calculatedEUt)
                         .multiply(BigInteger.valueOf(duration)));
                 addToRecipeTally(calculatedParallels);
                 currentParallel = calculatedParallels;
-                EUt = calculatedEut;
+                EUt = calculatedEUt;
                 overwriteCalculatedEut(0);
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
@@ -120,7 +120,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
         logic.setAmperageOC(false);
         logic.setMaxParallel(getMaxParallel());
         logic.setSpeedBonus(getSpeedBonus());
-        logic.setEuModifier(getEnergyDiscount());
+        logic.setEUtModifier(getEnergyDiscount());
     }
 
     @Override

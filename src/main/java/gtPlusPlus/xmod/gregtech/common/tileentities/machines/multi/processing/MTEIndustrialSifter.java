@@ -188,7 +188,7 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 5F)
-            .setEuModifier(0.75F)
+            .setEUtModifier(0.75F)
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 

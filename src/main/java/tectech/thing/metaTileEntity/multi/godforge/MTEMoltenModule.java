@@ -73,8 +73,6 @@ public class MTEMoltenModule extends MTEBaseModule {
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
                     .setRecipeHeat(recipe.mSpecialValue)
-                    .setHeatOC(true)
-                    .setHeatDiscount(true)
                     .setMachineHeat(Math.max(recipe.mSpecialValue, getHeatForOC()))
                     .setHeatDiscountMultiplier(getHeatEnergyDiscount())
                     .setDurationDecreasePerOC(getOverclockTimeFactor());
@@ -84,19 +82,21 @@ public class MTEMoltenModule extends MTEBaseModule {
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
-                if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
-                    return CheckRecipeResultRegistry.insufficientPower(calculatedEut * duration);
+                if (!addEUToGlobalEnergyMap(userUUID, -calculatedEUt * duration)) {
+                    return CheckRecipeResultRegistry.insufficientPower(calculatedEUt * duration);
                 }
                 addToPowerTally(
-                    BigInteger.valueOf(calculatedEut)
+                    BigInteger.valueOf(calculatedEUt)
                         .multiply(BigInteger.valueOf(duration)));
                 addToRecipeTally(calculatedParallels);
                 currentParallel = calculatedParallels;
-                EUt = calculatedEut;
+                EUt = calculatedEUt;
                 overwriteCalculatedEut(0);
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        };
+        }.setHeatOC(true)
+            .setHeatDiscount(true)
+            .setHeatDiscountMultiplier(0.95);
     }
 
     @Override
@@ -106,7 +106,7 @@ public class MTEMoltenModule extends MTEBaseModule {
         logic.setAmperageOC(false);
         logic.setMaxParallel(getMaxParallel());
         logic.setSpeedBonus(getSpeedBonus());
-        logic.setEuModifier(getEnergyDiscount());
+        logic.setEUtModifier(getEnergyDiscount());
     }
 
     @Override

@@ -171,7 +171,7 @@ public class MTEExoticModule extends MTEBaseModule {
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
-                EUt = calculatedEut;
+                EUt = calculatedEUt;
                 powerForRecipe = BigInteger.valueOf(EUt)
                     .multiply(BigInteger.valueOf(duration * actualParallel));
 
@@ -203,7 +203,7 @@ public class MTEExoticModule extends MTEBaseModule {
         logic.setAvailableAmperage(Integer.MAX_VALUE);
         logic.setAmperageOC(false);
         logic.setSpeedBonus(getSpeedBonus());
-        logic.setEuModifier(getEnergyDiscount());
+        logic.setEUtModifier(getEnergyDiscount());
     }
 
     @Override

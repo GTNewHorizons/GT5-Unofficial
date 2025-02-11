@@ -159,7 +159,7 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 6F)
-            .setEuModifier(0.75F)
+            .setEUtModifier(0.75F)
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 

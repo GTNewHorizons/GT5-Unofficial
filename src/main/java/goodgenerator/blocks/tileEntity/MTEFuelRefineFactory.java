@@ -217,7 +217,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
                 int overclockAmount = Tier - recipe.mSpecialValue;
                 return super.createOverclockCalculator(recipe).limitOverclockCount(overclockAmount);
             }
-        }.enablePerfectOverclock();
+        }.setPerfectOverclock();
     }
 
     @Override

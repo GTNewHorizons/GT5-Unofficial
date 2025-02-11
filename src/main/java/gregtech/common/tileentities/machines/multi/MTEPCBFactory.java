@@ -91,7 +91,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.ProcessingHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings8;
 
@@ -589,7 +589,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setNoOverclock(isNoOC())
+                return super.createOverclockCalculator(recipe)
                     .setEUtDiscount(Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
                     .setSpeedBoost(getDurationMultiplierFromRoughness())
                     .setDurationDecreasePerOC(mOCTier2 ? 4.0 : 2.0);
@@ -597,16 +597,12 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
 
             @Nonnull
             @Override
-            protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
-                return super.createParallelHelper(recipe)
+            protected ProcessingHelper createProcessingHelper(@Nonnull GTRecipe recipe) {
+                return super.createProcessingHelper(recipe)
                     .setEUtModifier((float) Math.sqrt(mUpgradesInstalled == 0 ? 1 : mUpgradesInstalled))
                     .setChanceMultiplier(mRoughnessMultiplier);
             }
-        };
-    }
-
-    private boolean isNoOC() {
-        return !mOCTier1 && !mOCTier2;
+        }.setOverclock(this.mOCTier1 || this.mOCTier2);
     }
 
     private double getDurationMultiplierFromRoughness() {
@@ -622,7 +618,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         }
 
         if (ticker % 20 == 0) {
-            if (!isNoOC()) {
+            if (this.mOCTier1 || this.mOCTier2) {
                 FluidStack tFluid = mOCTier1 ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
                     : Materials.SuperCoolant.getFluid(COOLANT_CONSUMED_PER_SEC);
                 if (!drain(mCoolantInputHatch, tFluid, true)) {

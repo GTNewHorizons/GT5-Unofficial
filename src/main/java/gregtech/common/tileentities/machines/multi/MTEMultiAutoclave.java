@@ -320,7 +320,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             @Override
             @Nonnull
             public CheckRecipeResult process() {
-                euModifier = euModifier(fluidPipeTier);
+                eutModifier = euModifier(fluidPipeTier);
                 speedBoost = speedBoost(getCoilTier());
                 return super.process();
             }

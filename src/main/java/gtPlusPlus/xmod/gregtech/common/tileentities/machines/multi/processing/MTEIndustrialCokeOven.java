@@ -191,7 +191,7 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
     @Override
     protected void setupProcessingLogic(ProcessingLogic logic) {
         super.setupProcessingLogic(logic);
-        logic.setEuModifier((100F - (GTUtility.getTier(getMaxInputVoltage()) * 4)) / 100F);
+        logic.setEUtModifier((100F - (GTUtility.getTier(getMaxInputVoltage()) * 4)) / 100F);
     }
 
     @Override

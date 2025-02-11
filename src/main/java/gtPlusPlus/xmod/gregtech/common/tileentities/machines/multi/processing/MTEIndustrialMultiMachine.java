@@ -346,7 +346,7 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
                 return super.validateRecipe(recipe);
             }
         }.setSpeedBonus(1F / 3.5F)
-            .setEuModifier(0.8F)
+            .setEUtModifier(0.8F)
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 

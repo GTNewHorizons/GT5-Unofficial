@@ -45,7 +45,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.ProcessingHelper;
 import gregtech.api.util.ReflectionUtil;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -251,16 +251,16 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(g.mEUt)
             .setEUt(tEnergy)
             .setDuration(g.mDuration);
-        ParallelHelper helper = new ParallelHelper().setRecipe(g)
+        ProcessingHelper helper = new ProcessingHelper().setRecipe(g)
             .setItemInputs(tItemInputs)
             .setFluidInputs(tFluidInputs)
             .setAvailableEUt(tEnergy)
-            .setMaxParallel(getMaxParallelRecipes())
+            .setMaxParallels(getMaxParallelRecipes())
             .setConsumption(true)
             .setOutputCalculation(true)
             .setMachine(this)
-            .enableBatchMode(batchMode ? 128 : 1)
-            .setCalculator(calculator);
+            .setBatchMode(batchMode)
+            .setBatchModifier(128);
 
         helper.build();
 

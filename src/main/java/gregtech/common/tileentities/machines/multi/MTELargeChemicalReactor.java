@@ -165,7 +165,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().enablePerfectOverclock();
+        return new ProcessingLogic().setPerfectOverclock();
     }
 
     @Override

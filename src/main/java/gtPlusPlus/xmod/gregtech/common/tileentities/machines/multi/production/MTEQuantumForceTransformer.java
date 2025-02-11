@@ -15,9 +15,9 @@ import static gregtech.api.util.GTOreDictUnificator.getAssociation;
 import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.ParallelHelper.addFluidsLong;
-import static gregtech.api.util.ParallelHelper.addItemsLong;
-import static gregtech.api.util.ParallelHelper.calculateChancedOutputMultiplier;
+import static gregtech.api.util.ProcessingHelper.addFluidsLong;
+import static gregtech.api.util.ProcessingHelper.addItemsLong;
+import static gregtech.api.util.ProcessingHelper.calculateChancedOutputMultiplier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,7 +75,7 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.ProcessingHelper;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -438,8 +438,8 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
 
             @NotNull
             @Override
-            public ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
-                return super.createParallelHelper(recipe).setCustomItemOutputCalculation(parallel -> {
+            public ProcessingHelper createProcessingHelper(@Nonnull GTRecipe recipe) {
+                return super.createProcessingHelper(recipe).setCustomItemOutputCalculation(parallel -> {
                     ArrayList<ItemStack> items = new ArrayList<>();
 
                     for (int i = 0; i < recipe.mOutputs.length; i++) {

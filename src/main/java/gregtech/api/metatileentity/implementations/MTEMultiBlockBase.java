@@ -94,7 +94,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
 import gregtech.api.util.OutputHatchWrapper;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.ProcessingHelper;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -1009,7 +1009,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Nonnull
     protected CheckRecipeResult postCheckRecipe(@Nonnull CheckRecipeResult result,
         @Nonnull ProcessingLogic processingLogic) {
-        if (result.wasSuccessful() && processingLogic.getCalculatedEut() > Integer.MAX_VALUE) {
+        if (result.wasSuccessful() && processingLogic.getCalculatedEUt() > Integer.MAX_VALUE) {
             return CheckRecipeResultRegistry.POWER_OVERFLOW;
         }
         return result;
@@ -1021,7 +1021,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      */
     protected void setEnergyUsage(ProcessingLogic processingLogic) {
         // getCalculatedEut() is guaranteed to not exceed int by postCheckRecipe()
-        mEUt = (int) processingLogic.getCalculatedEut();
+        mEUt = (int) processingLogic.getCalculatedEUt();
         if (mEUt > 0) {
             mEUt = (-mEUt);
         }
@@ -2258,7 +2258,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * If void protection is enabled, it also checks for {@link #protectsExcessItem()} and
      * {@link #protectsExcessFluid()}, so you don't need to call them along with this method.
      * <p>
-     * If you're using {@link ParallelHelper}, it will handle void protection and return 0 parallel
+     * If you're using {@link ProcessingHelper}, it will handle void protection and return 0 parallel
      * if all the output cannot be dumped into buses / hatches. In that case you won't use this method.
      */
     protected boolean canOutputAll(@Nonnull GTRecipe recipe) {

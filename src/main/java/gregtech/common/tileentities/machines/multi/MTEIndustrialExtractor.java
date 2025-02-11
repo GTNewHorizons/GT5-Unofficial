@@ -211,7 +211,7 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 3F)
             .setMaxParallelSupplier(this::getMaxParallelRecipes)
-            .setEuModifier(0.85F);
+            .setEUtModifier(0.85F);
     }
 
     public int getMaxParallelRecipes() {

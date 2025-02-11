@@ -340,7 +340,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                 return super.validateRecipe(recipe);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes)
-            .setEuModifier(0.8F);
+            .setEUtModifier(0.8F);
     }
 
     @Override

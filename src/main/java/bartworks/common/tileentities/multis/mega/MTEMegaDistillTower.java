@@ -385,7 +385,9 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setMaxParallel(Configuration.Multiblocks.megaMachinesMax);
+        return new ProcessingLogic()
+            .setOverclock(true)
+            .setMaxParallel(Configuration.Multiblocks.megaMachinesMax);
     }
 
     @Override

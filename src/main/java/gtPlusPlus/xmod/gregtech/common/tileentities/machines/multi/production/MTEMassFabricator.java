@@ -305,14 +305,14 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
                 }
                 return super.findRecipeMatches(map);
             }
-        }.setEuModifier(0.8F)
+        }.setEUtModifier(0.8F)
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
     protected void setupProcessingLogic(ProcessingLogic logic) {
         super.setupProcessingLogic(logic);
-        logic.enablePerfectOverclock();
+        logic.setPerfectOverclock();
     }
 
     @Override

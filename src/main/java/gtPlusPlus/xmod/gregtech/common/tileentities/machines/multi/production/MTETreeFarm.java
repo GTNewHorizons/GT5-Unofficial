@@ -375,7 +375,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                 }
 
                 duration = TICKS_PER_OPERATION;
-                calculatedEut = GTValues.VP[tier];
+                calculatedEUt = GTValues.VP[tier];
 
                 for (Mode mode : MODE_VALUES) {
                     if (outputPerMode.get(mode) != null) {

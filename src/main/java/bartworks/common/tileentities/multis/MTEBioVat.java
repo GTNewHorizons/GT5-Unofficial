@@ -85,7 +85,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.ProcessingHelper;
 import gregtech.api.util.recipe.Sievert;
 
 public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements ISurvivalConstructable {
@@ -264,10 +264,10 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
 
             @NotNull
             @Override
-            protected ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
-                return super.createParallelHelper(recipeWithMultiplier(recipe, inputFluids));
+            protected ProcessingHelper createProcessingHelper(@NotNull GTRecipe recipe) {
+                return super.createProcessingHelper(recipeWithMultiplier(recipe, inputFluids));
             }
-        };
+        }.setOverclock(true);
     }
 
     protected GTRecipe recipeWithMultiplier(GTRecipe recipe, FluidStack[] fluidInputs) {

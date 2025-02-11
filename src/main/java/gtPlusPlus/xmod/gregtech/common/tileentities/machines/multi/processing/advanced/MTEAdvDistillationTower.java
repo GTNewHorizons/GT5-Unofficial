@@ -391,7 +391,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     protected void setupProcessingLogic(ProcessingLogic logic) {
         super.setupProcessingLogic(logic);
-        logic.setEuModifier(mMode == Mode.Distillery ? 0.15F : 1F);
+        logic.setEUtModifier(mMode == Mode.Distillery ? 0.15F : 1F);
         logic.setSpeedBonus(mMode == Mode.Distillery ? 1F / 2F : 1F / 3.5F);
     }
 

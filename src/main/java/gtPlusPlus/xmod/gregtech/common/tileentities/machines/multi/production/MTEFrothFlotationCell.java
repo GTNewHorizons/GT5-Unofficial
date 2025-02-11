@@ -233,7 +233,7 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        }.enablePerfectOverclock();
+        }.setPerfectOverclock();
     }
 
     /*

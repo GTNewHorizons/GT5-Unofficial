@@ -13,7 +13,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.ProcessingHelper;
 import gregtech.test.mock.MockIVoidableMachine;
 
 public class GTParallelHelperTest {
@@ -46,10 +46,10 @@ public class GTParallelHelperTest {
 
     @Test
     void OutputsIntegerOverflow() {
-        ParallelHelper helper = new ParallelHelper().setRecipe(rubberRecipe)
+        ProcessingHelper helper = new ProcessingHelper().setRecipe(rubberRecipe)
             .setMachine(machine, false, false)
             .setItemInputs(inputItems)
-            .setMaxParallel(4_000_000)
+            .setMaxParallels(4_000_000)
             .setAvailableEUt(4_000_000)
             .setOutputCalculation(true)
             .setConsumption(false);
@@ -64,22 +64,23 @@ public class GTParallelHelperTest {
     @Test
     void parallelIntegerOverflow() {
         // Without batch mode
-        ParallelHelper helperWithoutBatchMode = new ParallelHelper().setRecipe(rubberRecipe)
+        ProcessingHelper helperWithoutBatchMode = new ProcessingHelper().setRecipe(rubberRecipe)
             .setMachine(machine, false, false)
             .setItemInputs(inputItems)
-            .setMaxParallel(Integer.MAX_VALUE)
+            .setMaxParallels(Integer.MAX_VALUE)
             .setAvailableEUt(TierEU.MAX * 16)
             .setConsumption(false)
             .build();
         assertEquals(Integer.MAX_VALUE, helperWithoutBatchMode.getCurrentParallel());
 
         // With batch mode
-        ParallelHelper helperWithBatchMode = new ParallelHelper().setRecipe(rubberRecipe)
+        ProcessingHelper helperWithBatchMode = new ProcessingHelper().setRecipe(rubberRecipe)
             .setMachine(machine, false, false)
             .setItemInputs(inputItems)
-            .setMaxParallel(Integer.MAX_VALUE / 50)
+            .setMaxParallels(Integer.MAX_VALUE / 50)
             .setAvailableEUt(TierEU.MAX * 16)
-            .enableBatchMode(128)
+            .setBatchMode(true)
+            .setBatchModifier(128)
             .setConsumption(false)
             .build();
         assertEquals(Integer.MAX_VALUE, helperWithBatchMode.getCurrentParallel());
@@ -87,10 +88,10 @@ public class GTParallelHelperTest {
 
     @Test
     void chanceMultiplier() {
-        ParallelHelper helper = new ParallelHelper().setRecipe(rubberRecipe)
+        ProcessingHelper helper = new ProcessingHelper().setRecipe(rubberRecipe)
             .setMachine(machine, false, false)
             .setItemInputs(inputItems)
-            .setMaxParallel(10)
+            .setMaxParallels(10)
             .setAvailableEUt(10)
             .setConsumption(false)
             .setOutputCalculation(true)
@@ -106,10 +107,10 @@ public class GTParallelHelperTest {
 
     @Test
     void outputMultiplier() {
-        ParallelHelper helper = new ParallelHelper().setRecipe(rubberRecipe)
+        ProcessingHelper helper = new ProcessingHelper().setRecipe(rubberRecipe)
             .setMachine(machine, false, false)
             .setItemInputs(inputItems)
-            .setMaxParallel(1)
+            .setMaxParallels(1)
             .setAvailableEUt(1)
             .setConsumption(false)
             .setOutputCalculation(true)
