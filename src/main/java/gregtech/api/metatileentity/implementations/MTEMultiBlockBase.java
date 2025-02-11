@@ -10,6 +10,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
+import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateMaxFuelFactor;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -26,6 +27,9 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.math.Size;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -2613,7 +2617,47 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             .widget(createModeSwitchButton(builder))
             .widget(createBatchModeButton(builder))
             .widget(createLockToSingleRecipeButton(builder))
-            .widget(createStructureUpdateButton(builder));
+            .widget(createStructureUpdateButton(builder))
+            .widget(createPowerPanelButton(builder));
+
+        buildContext.addSyncedWindow(POWER_PANEL_WINDOW_ID, this::createPowerPanel);
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return true;
+    }
+
+    @Override
+    public Pos2d getPowerPanelButtonPos() {
+        return new Pos2d(174, 112);
+    }
+
+    @Override
+    public ModularWindow createPowerPanel(EntityPlayer player) {
+        final int w = 120;
+        final int h = 130;
+        final int parentW = getGUIWidth();
+        final int parentH = getGUIHeight();
+
+        ModularWindow.Builder builder = ModularWindow.builder(w, h);
+
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        builder.setDraggable(false);
+        builder.setPos(
+            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(parentW, parentH))
+                .add(
+                    Alignment.TopRight.getAlignedPos(new Size(parentW, parentH), new Size(w, h))
+                        .add(w - 3, 0)));
+
+        // Window header
+        builder.widget(
+            TextWidget.localised("GT5U.gui.text.power_panel")
+                .setPos(3, 2)
+                .setSize(120, 34));
+
+        return builder.build();
     }
 
     @Override

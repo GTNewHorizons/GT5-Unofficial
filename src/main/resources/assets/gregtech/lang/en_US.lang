@@ -559,6 +559,7 @@ GT5U.gui.button.drone_distance=Sort by §3distance
 GT5U.gui.button.drone_error=Sort by §3shutdown status
 GT5U.gui.button.drone_showLocalName=Show localized name
 GT5U.gui.button.toggle_output_slot_lock=Toggle output slot
+GT5U.gui.button.power_panel=Open Power Panel
 GT5U.gui.text.success=§aProcessing recipe
 GT5U.gui.text.generating=§aGenerating power
 GT5U.gui.text.no_recipe=§7No valid recipe found
@@ -642,6 +643,7 @@ GT5U.gui.text.critical_ph_value=pH exceeded critical value.
 GT5U.gui.text.heat_sensor=Heat threshold
 GT5U.gui.text.static_mode=Static Mode
 GT5U.gui.text.pulse_mode=Pulse Mode
+GT5U.gui.text.power_panel=Power Control Panel
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
 GT5U.gui.config.client=Client

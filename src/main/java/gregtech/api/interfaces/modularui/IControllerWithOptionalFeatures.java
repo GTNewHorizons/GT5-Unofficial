@@ -1,5 +1,6 @@
 package gregtech.api.interfaces.modularui;
 
+import static gregtech.api.gui.modularui.GTUITextures.OVERLAY_BUTTON_POWER_PANEL;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
@@ -8,6 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -256,6 +259,38 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
         if (!supportsInputSeparation()) {
             button.addTooltip(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP));
         }
+        return (ButtonWidget) button;
+    }
+
+    int POWER_PANEL_WINDOW_ID = 8;
+
+    /**
+     * @return if the multi supports precise power management.
+     */
+    boolean supportsPowerPanel();
+
+    Pos2d getPowerPanelButtonPos();
+
+    ModularWindow createPowerPanel(final EntityPlayer player);
+
+    default ButtonWidget createPowerPanelButton(IWidgetBuilder<?> builder) {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+                if (supportsPowerPanel()) {
+                    if (!widget.isClient()) widget.getContext()
+                        .openSyncedWindow(POWER_PANEL_WINDOW_ID);
+                }
+            })
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(GTUITextures.BUTTON_STANDARD);
+                ret.add(OVERLAY_BUTTON_POWER_PANEL);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.power_panel"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(getPowerPanelButtonPos())
+            .setSize(16, 16);
         return (ButtonWidget) button;
     }
 
