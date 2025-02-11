@@ -46,11 +46,6 @@ public class CoverWirelessItemDetector
     }
 
     @Override
-    public ItemTransmitterData createDataObject(int aLegacyData) {
-        return createDataObject();
-    }
-
-    @Override
     public ItemTransmitterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
         ItemTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         byte signal = CoverItemMeter.computeSignalBasedOnItems(

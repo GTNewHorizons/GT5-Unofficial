@@ -42,11 +42,6 @@ public class CoverWirelessFluidDetector
     }
 
     @Override
-    public FluidTransmitterData createDataObject(int aLegacyData) {
-        return createDataObject();
-    }
-
-    @Override
     public FluidTransmitterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
         FluidTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         final byte signal = CoverLiquidMeter

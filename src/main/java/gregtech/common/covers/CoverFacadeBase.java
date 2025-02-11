@@ -44,11 +44,6 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
     }
 
     @Override
-    public FacadeData createDataObject(int aLegacyData) {
-        return new FacadeData();
-    }
-
-    @Override
     public FacadeData createDataObject() {
         return new FacadeData();
     }

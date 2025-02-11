@@ -104,11 +104,6 @@ public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.Fluid
      */
 
     @Override
-    public FluidLimiterData createDataObject(int aLegacyData) {
-        return createDataObject();
-    }
-
-    @Override
     public FluidLimiterData createDataObject() {
         return new FluidLimiterData(1F);
     }

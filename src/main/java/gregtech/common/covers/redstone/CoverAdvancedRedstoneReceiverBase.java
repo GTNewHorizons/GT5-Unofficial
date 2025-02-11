@@ -34,11 +34,6 @@ public abstract class CoverAdvancedRedstoneReceiverBase
         return new ReceiverData();
     }
 
-    @Override
-    public ReceiverData createDataObject(int aLegacyData) {
-        return createDataObject();
-    }
-
     // GUI stuff
 
     @Override

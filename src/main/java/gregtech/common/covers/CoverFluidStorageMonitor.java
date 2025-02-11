@@ -68,11 +68,6 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
     }
 
     @Override
-    public FluidStorageData createDataObject(int aLegacyData) {
-        return new FluidStorageData();
-    }
-
-    @Override
     public FluidStorageData createDataObject() {
         return new FluidStorageData();
     }

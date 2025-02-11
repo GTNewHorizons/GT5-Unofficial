@@ -39,11 +39,6 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
     }
 
     @Override
-    public ChestInventory createDataObject(int aLegacyData) {
-        return new ChestInventory(slots, stackSizeLimit);
-    }
-
-    @Override
     public ChestInventory createDataObject() {
         return new ChestInventory(slots, stackSizeLimit);
     }
