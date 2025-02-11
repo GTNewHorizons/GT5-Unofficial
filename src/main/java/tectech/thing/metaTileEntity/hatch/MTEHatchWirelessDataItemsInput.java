@@ -2,20 +2,15 @@ package tectech.thing.metaTileEntity.hatch;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_ACTIVE;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_CONN;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDES;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
@@ -23,15 +18,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.common.WirelessDataStore;
-import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.util.CommonValues;
 
 public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
-    private String clientLocale = "en_US";
-
-    private List<ItemStack> dataItems = null;
+    private List<RecipeAssemblyLine> recipes = null;
 
     public MTEHatchWirelessDataItemsInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -78,19 +71,18 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        }
-        if (aPlayer instanceof EntityPlayerMPAccessor) {
-            clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
-        }
-        return true;
+    public int getSizeInventory() {
+        return 0;
     }
 
     @Override
-    public int getInventoryStackLimit() {
-        return 1;
+    public ItemStack getStackInSlot(int aIndex) {
+        return null;
+    }
+
+    @Override
+    public boolean shouldDropItemAt(int index) {
+        return false;
     }
 
     @Override
@@ -111,34 +103,27 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
     }
 
     @Override
-    public List<ItemStack> getInventoryItems(Predicate<ItemStack> filter) {
-        if (this.dataItems == null) return ImmutableList.of();
-        return this.dataItems.stream()
-            .filter(stack -> stack != null && filter.test(stack))
-            .collect(Collectors.toList());
-    }
-
-    @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             // Upload data packet and mark it as uploaded, so it will not be uploaded again
             // until the data bank resets the wireless network
-            if (aTick % WirelessDataStore.DOWNLOAD_TICK == 0) {
+            if (aTick % WirelessDataStore.IO_TICK_RATE == WirelessDataStore.DOWNLOAD_TICK_OFFSET) {
                 WirelessDataStore wirelessDataStore = WirelessDataStore
                     .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());
-                this.dataItems = wirelessDataStore.downloadData(aTick);
+                this.recipes = wirelessDataStore.downloadData(aTick);
             }
         }
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
+    public List<RecipeAssemblyLine> getAssemblyLineRecipes() {
+        if (recipes == null) return Collections.emptyList();
+
+        return recipes;
     }
 
     @Override
-    public String[] getInfoData() {
-        return new String[] { translateToLocalFormatted("tt.keyphrase.Content_Stack_Count", clientLocale) + ": "
-            + getInventoryItems(_stack -> true).size() };
+    protected String getWailaDataI18nKey() {
+        return "tt.keyphrase.AL_Recipe_Receiving";
     }
 }
