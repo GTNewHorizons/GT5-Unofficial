@@ -158,7 +158,6 @@ public enum IDMetaItem01 {
     Fuel_Can_Plastic_Empty(400),
     Fuel_Can_Plastic_Filled(401),
     Spray_Empty(402),
-    Crate_Empty(403),
     Thermos_Can_Empty(404),
     Large_Fluid_Cell_Steel(405),
     Large_Fluid_Cell_TungstenSteel(406),
