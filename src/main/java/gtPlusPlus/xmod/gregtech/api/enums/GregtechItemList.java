@@ -899,6 +899,16 @@ public enum GregtechItemList implements IGregtechItemContainer {
     BasicBronzeTurbine,
     BasicSteelTurbine,
 
+    // Bee Frames
+    HiveFrameAccelerated,
+    HiveFrameVoid,
+    HiveFrameMutagenic,
+    HiveFrameBusy,
+    HiveFrameDecay,
+    HiveFrameSlow,
+    HiveFrameStabilize,
+    HiveFrameArborist,
+
     // Misc
     CustomCoalCoke,
     BlueprintBase,
