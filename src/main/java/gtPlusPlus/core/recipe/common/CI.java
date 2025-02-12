@@ -932,14 +932,6 @@ public class CI {
         return ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings5, i, 1);
     }
 
-    public static ItemStack getNumberedBioCircuit(int i) {
-        return ItemUtils.simpleMetaStack(AgriculturalChem.mBioCircuit, i, 0);
-    }
-
-    public static ItemStack getNumberedAdvancedCircuit(int i) {
-        return ItemUtils.simpleMetaStack(GenericChem.mAdvancedCircuit, i, 0);
-    }
-
     public static ItemStack getTieredGTPPMachineCasing(int aTier, int aAmount) {
         GregtechItemList[] aHulls = new GregtechItemList[] { GregtechItemList.GTPP_Casing_ULV,
             GregtechItemList.GTPP_Casing_LV, GregtechItemList.GTPP_Casing_MV, GregtechItemList.GTPP_Casing_HV,
