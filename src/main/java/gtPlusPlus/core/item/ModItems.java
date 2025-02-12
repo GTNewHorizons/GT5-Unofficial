@@ -13,10 +13,12 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -91,7 +93,6 @@ public final class ModItems {
     public static Item ZZZ_Empty;
     public static Item AAA_Broken;
 
-    public static Item itemAlkalusDisk;
     public static ItemCustomSpawnEgg itemCustomSpawnEgg;
 
     public static Item itemIngotBatteryAlloy;
@@ -103,8 +104,6 @@ public final class ModItems {
     public static Item itemPersonalHealingDevice;
     public static Item itemSupremePizzaGloves;
 
-    public static ItemBlueprint itemBlueprintBase;
-
     public static Item dustLithiumCarbonate;
     public static Item dustLithiumHydroxide;
     public static Item dustLithiumPeroxide;
@@ -114,8 +113,6 @@ public final class ModItems {
     public static Item dustCalciumCarbonate;
     public static Item dustLi2CO3CaOH2;
     public static Item dustLi2BeF4;
-
-    public static Item dustTumbagaMix;
 
     public static Item dustAer;
     public static Item dustIgnis;
@@ -143,7 +140,6 @@ public final class ModItems {
     // Possibly missing base items that GT may be missing.
 
     public static Item itemSmallWroughtIronGear;
-    public static Item itemPlateRawMeat;
     public static Item itemPlateClay;
     public static Item itemPlateLithium;
     public static Item itemPlateEuropium;
@@ -162,7 +158,6 @@ public final class ModItems {
     public static Item itemAirFilter;
 
     public static Item itemCircuitLFTR;
-    public static Item itemBasicTurbine;
 
     public static Item itemHalfCompleteCasings;
 
@@ -206,8 +201,6 @@ public final class ModItems {
 
     public static BaseItemMetaFood itemMetaFood;
 
-    public static ItemMagicFeather itemMagicFeather;
-
     static {
         Logger.INFO("Items!");
         // Default item used when recipes fail, handy for debugging. Let's make sure they exist when this class is
@@ -218,18 +211,24 @@ public final class ModItems {
 
     public static void init() {
 
-        itemMagicFeather = new ItemMagicFeather();
+        Item magicFeather = new ItemMagicFeather();
+        GregtechItemList.MagicFeather.set(magicFeather);
+        MinecraftForge.EVENT_BUS.register(magicFeather);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(magicFeather);
 
-        itemAlkalusDisk = new BaseItemDamageable(
-            "itemAlkalusDisk",
-            AddToCreativeTab.tabMisc,
-            1,
-            0,
-            "Unknown Use",
-            EnumRarity.rare,
-            EnumChatFormatting.AQUA,
-            false,
-            null);
+        GregtechItemList.AlkalusDisk.set(
+            new BaseItemDamageable(
+                "itemAlkalusDisk",
+                AddToCreativeTab.tabMisc,
+                1,
+                0,
+                "Unknown Use",
+                EnumRarity.rare,
+                EnumChatFormatting.AQUA,
+                false,
+                null));
 
         itemGenericToken = new ItemGenericToken();
         itemDummyResearch = new ItemDummyResearch();
@@ -244,7 +243,7 @@ public final class ModItems {
         // Load Wearable Items
         WearableLoader.run();
 
-        itemBlueprintBase = new ItemBlueprint("itemBlueprint");
+        GregtechItemList.BlueprintBase.set(new ItemBlueprint("itemBlueprint"));
 
         itemHalfCompleteCasings = new ItemHalfCompleteCasings(
             "itemHalfCompleteCasings",
@@ -586,7 +585,10 @@ public final class ModItems {
             false,
             null);
 
-        itemBasicTurbine = new ItemBasicScrubberTurbine();
+        Item basicTurbine = new ItemBasicScrubberTurbine();
+        GregtechItemList.BasicIronTurbine.set(new ItemStack(basicTurbine));
+        GregtechItemList.BasicBronzeTurbine.set(new ItemStack(basicTurbine, 1, 1));
+        GregtechItemList.BasicSteelTurbine.set(new ItemStack(basicTurbine, 1, 2));
 
         // Zirconium
         // Cinter Pellet.
@@ -931,15 +933,9 @@ public final class ModItems {
             new BaseItemPlate(MaterialsElements.getInstance().SODIUM);
         }
 
-        Material meatRaw = MaterialsOther.MEAT;
-        // A plate of Meat.
-        if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateMeatRaw", 1) == null) {
-            itemPlateRawMeat = new BaseItemPlate(meatRaw);
-            ItemUtils.registerFuel(ItemUtils.getSimpleStack(itemPlateRawMeat), 100);
-        }
         // A Block of Meat.
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("blockMeatRaw", 1) == null) {
-            blockRawMeat = new BlockBaseModular(meatRaw, BlockTypes.STANDARD);
+            blockRawMeat = new BlockBaseModular(MaterialsOther.MEAT, BlockTypes.STANDARD);
             ItemUtils.registerFuel(ItemUtils.getSimpleStack(blockRawMeat), 900);
         }
 
@@ -962,7 +958,10 @@ public final class ModItems {
         }
 
         // Tumbaga Mix (For Simple Crafting)
-        dustTumbagaMix = ItemUtils
-            .generateSpecialUseDusts("MixTumbaga", "Tumbaga Mix", "Au2Cu", Utils.rgbtoHexValue(255, 150, 80))[0];
+        Item[] tumbagaMix = ItemUtils
+            .generateSpecialUseDusts("MixTumbaga", "Tumbaga Mix", "Au2Cu", Utils.rgbtoHexValue(255, 150, 80));
+        GregtechItemList.TumbagaMixDust.set(tumbagaMix[0]);
+        GregtechItemList.SmallTumbagaMixDust.set(tumbagaMix[1]);
+        GregtechItemList.TinyTumbagaMixDust.set(tumbagaMix[2]);
     }
 }

@@ -19,18 +19,14 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.ToolDictNames;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import ic2.core.Ic2Items;
 
 public class RecipesGeneral {
@@ -39,7 +35,7 @@ public class RecipesGeneral {
 
         // Workbench Blueprint
         GTModHandler.addCraftingRecipe(
-            new ItemStack(ModItems.itemBlueprintBase, 2),
+            GregtechItemList.BlueprintBase.get(2),
             new Object[] { "PL ", "PL ", "LL ", 'P', new ItemStack(Items.paper), 'L',
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lazurite, 1) });
 
@@ -55,28 +51,28 @@ public class RecipesGeneral {
 
         // Tumbaga
         GTModHandler.addShapelessCraftingRecipe(
-            new ItemStack(ModItems.dustTumbagaMix),
+            GregtechItemList.TumbagaMixDust.get(1),
             new Object[] { "dustGold", "dustGold", "dustCopper" });
         GTModHandler.addShapelessCraftingRecipe(
             MaterialsAlloy.TUMBAGA.getDust(10),
-            new Object[] { new ItemStack(ModItems.dustTumbagaMix), new ItemStack(ModItems.dustTumbagaMix),
-                new ItemStack(ModItems.dustTumbagaMix), "dustGold" });
+            new Object[] { GregtechItemList.TumbagaMixDust.get(1), GregtechItemList.TumbagaMixDust.get(1),
+                GregtechItemList.TumbagaMixDust.get(1), "dustGold" });
 
         // Basic Turbines
         GTModHandler.addCraftingRecipe(
-            new ItemStack(ModItems.itemBasicTurbine),
+            GregtechItemList.BasicIronTurbine.get(1),
             new Object[] { "fPS", "PRP", "SPh", 'P', "plateIron", 'R', "ringIron", 'S', "stickIron" });
         GTModHandler.addCraftingRecipe(
-            new ItemStack(ModItems.itemBasicTurbine, 1, 1),
+            GregtechItemList.BasicBronzeTurbine.get(1),
             new Object[] { "fPS", "PRP", "SPh", 'P', "plateBronze", 'R', "ringBronze", 'S', "stickBronze" });
         GTModHandler.addCraftingRecipe(
-            new ItemStack(ModItems.itemBasicTurbine, 1, 2),
+            GregtechItemList.BasicSteelTurbine.get(1),
             new Object[] { "fPS", "PRP", "SPh", 'P', "plateSteel", 'R', "ringSteel", 'S', "stickSteel" });
 
         // Large Volumetric Flask
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Large_Fluid_Cell_Aluminium.get(1))
-            .itemOutputs(VolumetricFlaskHelper.getLargeVolumetricFlask(2))
+            .itemOutputs(GregtechItemList.VOLUMETRIC_FLASK_8k.get(2))
             .fluidInputs(Materials.BorosilicateGlass.getMolten(4000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -85,7 +81,7 @@ public class RecipesGeneral {
         // Gigantic Volumetric Flask
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Large_Fluid_Cell_TungstenSteel.get(1))
-            .itemOutputs(VolumetricFlaskHelper.getGiganticVolumetricFlask(2))
+            .itemOutputs(GregtechItemList.VOLUMETRIC_FLASK_32k.get(2))
             .fluidInputs(Materials.BorosilicateGlass.getMolten(16000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -94,7 +90,7 @@ public class RecipesGeneral {
         // Klein Bottle
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
-            .itemOutputs(VolumetricFlaskHelper.getKleinBottle(1))
+            .itemOutputs(GregtechItemList.KLEIN_BOTTLE.get(1))
             .fluidInputs(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(2304))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -102,13 +98,13 @@ public class RecipesGeneral {
 
         // Mining Explosives
         GTModHandler.addCraftingRecipe(
-            new ItemStack(ModBlocks.blockMiningExplosive, 3),
+            GregtechItemList.MiningExplosives.get(3),
             new Object[] { "ITI", "TFT", "STS", 'I', Ic2Items.industrialTnt.copy(), 'T', new ItemStack(Blocks.tnt), 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Iron, 1), 'S', "dustSulfur" });
 
         // Alkalus Disk
         GTModHandler.addCraftingRecipe(
-            new ItemStack(ModItems.itemAlkalusDisk),
+            GregtechItemList.AlkalusDisk.get(1),
             new Object[] { "ABC", "DEF", "GHI", 'A', "gemExquisiteRuby", 'B', "gemFlawlessDiamond", 'C',
                 "gemExquisiteDiamond", 'D', "gemFlawlessRuby", 'E', ItemList.Credit_Greg_Osmium.get(1), 'F',
                 "gemFlawlessSapphire", 'G', "gemExquisiteEmerald", 'H', "gemFlawlessEmerald", 'I',
@@ -116,7 +112,7 @@ public class RecipesGeneral {
 
         // Wither Cage
         GTModHandler.addCraftingRecipe(
-            new ItemStack(ModBlocks.blockWitherGuard, 32),
+            GregtechItemList.WitherGuard.get(32),
             new Object[] { "SPS", "PWP", "SPS", 'S', "stickBlackSteel", 'P', "plateTungstenSteel", 'W',
                 new ItemStack(Items.nether_star) });
 
@@ -129,7 +125,7 @@ public class RecipesGeneral {
                 Materials.Ruby.getBlocks(32),
                 Materials.Sapphire.getBlocks(32),
                 new ItemStack(Blocks.gold_block, 32))
-            .itemOutputs(new ItemStack(ModItems.itemMagicFeather, 1))
+            .itemOutputs(GregtechItemList.MagicFeather.get(1))
             .fluidInputs(Materials.Silver.getMolten(32 * 144))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)
@@ -143,7 +139,7 @@ public class RecipesGeneral {
                 MaterialsAlloy.EGLIN_STEEL.getPlate(4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ULV, 2),
                 GTUtility.getIntegratedCircuit(16))
-            .itemOutputs(new ItemStack(ModBlocks.blockPestKiller))
+            .itemOutputs(GregtechItemList.PestKiller.get(1))
             .fluidInputs(FluidUtils.getFluidStack("ic2hotwater", 500))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LV / 2)
@@ -156,58 +152,68 @@ public class RecipesGeneral {
     }
 
     private static void addFuelBlocks() {
-        GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.CactusCharcoal.get(9))
-            .itemOutputs(new ItemStack(ModBlocks.blockCactusCharcoal))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.CactusCoke.get(9))
-            .itemOutputs(new ItemStack(ModBlocks.blockCactusCoke))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.SugarCharcoal.get(9))
-            .itemOutputs(new ItemStack(ModBlocks.blockSugarCharcoal))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.SugarCoke.get(9))
-            .itemOutputs(new ItemStack(ModBlocks.blockSugarCoke))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-        for (int i = 1; i < 6; i++) {
+        addCompressionRecipes(
+            false,
+            GregtechItemList.CactusCharcoal.get(1),
+            GregtechItemList.BlockCactusCharcoal.get(1),
+            GregtechItemList.CompressedCactusCharcoal.get(1),
+            GregtechItemList.DoubleCompressedCactusCharcoal.get(1),
+            GregtechItemList.TripleCompressedCactusCharcoal.get(1),
+            GregtechItemList.QuadrupleCompressedCactusCharcoal.get(1),
+            GregtechItemList.QuintupleCompressedCactusCharcoal.get(1));
+
+        addCompressionRecipes(
+            false,
+            GregtechItemList.CactusCoke.get(1),
+            GregtechItemList.BlockCactusCoke.get(1),
+            GregtechItemList.CompressedCactusCoke.get(1),
+            GregtechItemList.DoubleCompressedCactusCoke.get(1),
+            GregtechItemList.TripleCompressedCactusCoke.get(1),
+            GregtechItemList.QuadrupleCompressedCactusCoke.get(1),
+            GregtechItemList.QuintupleCompressedCactusCoke.get(1));
+
+        addCompressionRecipes(
+            false,
+            GregtechItemList.SugarCharcoal.get(1),
+            GregtechItemList.BlockSugarCharcoal.get(1),
+            GregtechItemList.CompressedSugarCharcoal.get(1),
+            GregtechItemList.DoubleCompressedSugarCharcoal.get(1),
+            GregtechItemList.TripleCompressedSugarCharcoal.get(1),
+            GregtechItemList.QuadrupleCompressedSugarCharcoal.get(1),
+            GregtechItemList.QuintupleCompressedSugarCharcoal.get(1));
+
+        addCompressionRecipes(
+            false,
+            GregtechItemList.SugarCoke.get(1),
+            GregtechItemList.BlockSugarCoke.get(1),
+            GregtechItemList.CompressedSugarCoke.get(1),
+            GregtechItemList.DoubleCompressedSugarCoke.get(1),
+            GregtechItemList.TripleCompressedSugarCoke.get(1),
+            GregtechItemList.QuadrupleCompressedSugarCoke.get(1),
+            GregtechItemList.QuintupleCompressedSugarCoke.get(1));
+    }
+
+    private static void addCompressionRecipes(boolean withCrafting, ItemStack item, ItemStack block, ItemStack one,
+        ItemStack two, ItemStack three, ItemStack four, ItemStack five) {
+
+        addCompressionRecipe(withCrafting, item, block);
+        addCompressionRecipe(withCrafting, block, one);
+        addCompressionRecipe(withCrafting, one, two);
+        addCompressionRecipe(withCrafting, two, three);
+        addCompressionRecipe(withCrafting, three, four);
+        addCompressionRecipe(withCrafting, four, five);
+    }
+
+    private static void addCompressionRecipe(boolean crafting, ItemStack raw, ItemStack compressed) {
+        if (raw == null || compressed == null) return;
+
+        if (crafting) {
+            GTModHandler.addCraftingRecipe(compressed, new Object[] { "III", "III", "III", 'I', raw });
+            GTModHandler.addShapelessCraftingRecipe(GTUtility.copyAmount(9, raw), new Object[] { compressed });
+        } else {
             GTValues.RA.stdBuilder()
-                .itemInputs(new ItemStack(ModBlocks.blockCactusCharcoal, 9, i - 1))
-                .itemOutputs(new ItemStack(ModBlocks.blockCactusCharcoal, 1, i))
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-        }
-        for (int i = 1; i < 6; i++) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(new ItemStack(ModBlocks.blockCactusCoke, 9, i - 1))
-                .itemOutputs(new ItemStack(ModBlocks.blockCactusCoke, 1, i))
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-        }
-        for (int i = 1; i < 6; i++) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(new ItemStack(ModBlocks.blockSugarCharcoal, 9, i - 1))
-                .itemOutputs(new ItemStack(ModBlocks.blockSugarCharcoal, 1, i))
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-        }
-        for (int i = 1; i < 6; i++) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(new ItemStack(ModBlocks.blockSugarCoke, 9, i - 1))
-                .itemOutputs(new ItemStack(ModBlocks.blockSugarCoke, 1, i))
+                .itemInputs(GTUtility.copyAmount(9, raw))
+                .itemOutputs(compressed)
                 .duration(15 * SECONDS)
                 .eut(2)
                 .addTo(compressorRecipes);
@@ -215,43 +221,41 @@ public class RecipesGeneral {
     }
 
     private static void addCompressedObsidian() {
-        // Compressed Obsidian 1-5
-        final ItemStack[] mItems = new ItemStack[6];
-        mItems[0] = new ItemStack(Blocks.obsidian);
-        for (int r = 0; r < 5; r++) {
-            mItems[r + 1] = new ItemStack(ModBlocks.blockCompressedObsidian, 1, r);
-        }
+        // Compressed Obsidian
+        addCompressionRecipes(
+            true,
+            null,
+            new ItemStack(Blocks.obsidian),
+            GregtechItemList.CompressedObsidian.get(1),
+            GregtechItemList.DoubleCompressedObsidian.get(1),
+            GregtechItemList.TripleCompressedObsidian.get(1),
+            GregtechItemList.QuadrupleCompressedObsidian.get(1),
+            GregtechItemList.QuintupleCompressedObsidian.get(1));
 
-        for (int r = 0; r < 5; r++) {
-            final ItemStack input = mItems[r];
-            final ItemStack output = mItems[r + 1];
+        // Compressed Glowstone
+        addCompressionRecipe(true, new ItemStack(Blocks.glowstone), GregtechItemList.CompressedGlowstone.get(1));
+        addCompressionRecipe(
+            true,
+            GregtechItemList.CompressedGlowstone.get(1),
+            GregtechItemList.DoubleCompressedGlowstone.get(1));
 
-            GTModHandler.addCraftingRecipe(output, new Object[] { "III", "III", "III", 'I', input });
-            GTModHandler.addShapelessCraftingRecipe(GTUtility.copyAmount(9, input), new Object[] { output });
-        }
+        // Double -> Triple done differently
+        GTModHandler.addCraftingRecipe(
+            GregtechItemList.TripleCompressedGlowstone.get(1),
+            new Object[] { "III", "IQI", "III", 'I', GregtechItemList.DoubleCompressedGlowstone.get(1), 'Q',
+                GregtechItemList.InvertedObsidian.get(1) });
+        GTModHandler.addShapelessCraftingRecipe(
+            GregtechItemList.TripleCompressedGlowstone.get(9),
+            new Object[] { GregtechItemList.DoubleCompressedGlowstone.get(1) });
 
-        // Compressed Glowstone 1-5
-        final ItemStack[] mItems2 = new ItemStack[6];
-        mItems2[0] = new ItemStack(Blocks.glowstone);
-        for (int r = 0; r < 5; r++) {
-            mItems2[r + 1] = new ItemStack(ModBlocks.blockCompressedObsidian, 1, 6 + r);
-        }
-
-        for (int r = 0; r < 5; r++) {
-            final ItemStack input = mItems2[r];
-            final ItemStack output = mItems2[r + 1];
-
-            if (r == 2) {
-                GTModHandler.addCraftingRecipe(
-                    output,
-                    new Object[] { "III", "IQI", "III", 'I', input, 'Q',
-                        new ItemStack(ModBlocks.blockCompressedObsidian, 1, 5) });
-            } else {
-                GTModHandler.addCraftingRecipe(output, new Object[] { "III", "III", "III", 'I', input });
-            }
-
-            GTModHandler.addShapelessCraftingRecipe(GTUtility.copyAmount(9, input), new Object[] { output });
-        }
+        addCompressionRecipe(
+            true,
+            GregtechItemList.TripleCompressedGlowstone.get(1),
+            GregtechItemList.QuadrupleCompressedGlowstone.get(1));
+        addCompressionRecipe(
+            true,
+            GregtechItemList.QuadrupleCompressedGlowstone.get(1),
+            GregtechItemList.QuintupleCompressedGlowstone.get(1));
     }
 
     private static void addPipesAndWires() {
@@ -276,11 +280,6 @@ public class RecipesGeneral {
     }
 
     private static void migratedRecipes() {
-        // Raw Meat Plate
-        GTModHandler.addShapelessCraftingRecipe(
-            GTOreDictUnificator.get(OrePrefixes.dust, Materials.MeatRaw, 1),
-            new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(ModItems.itemPlateRawMeat) });
-
         // Cryotheum Cooling Hatch
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Input_Cryotheum.get(1L),

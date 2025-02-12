@@ -1167,7 +1167,7 @@ public class RecipesGregTech {
                 ItemUtils.getSimpleStack(CI.explosiveTNT, 4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 2L),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Iron, 1L))
-            .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockMiningExplosive, 3))
+            .itemOutputs(GregtechItemList.MiningExplosives.get(3))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(assemblerRecipes);
@@ -1177,7 +1177,7 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 1L),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 8L),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.BlackSteel, 8L))
-            .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockWitherGuard, 64))
+            .itemOutputs(GregtechItemList.WitherGuard.get(64))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);

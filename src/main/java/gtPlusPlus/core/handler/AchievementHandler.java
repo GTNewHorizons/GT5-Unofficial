@@ -94,13 +94,7 @@ public class AchievementHandler {
             ItemUtils.getSimpleStack(ModBlocks.blockFishTrap),
             "dust.potin",
             false);
-        this.registerAchievement(
-            "block.withercage",
-            -2,
-            4,
-            ItemUtils.getSimpleStack(ModBlocks.blockWitherGuard),
-            "dust.eglin",
-            false);
+        this.registerAchievement("block.withercage", -2, 4, GregtechItemList.WitherGuard.get(1), "dust.eglin", false);
 
         // Machines (-10/-8/-6)
         this.registerAchievement("rtg", -16, -10, GregtechItemList.RTG.get(1), aBaseAchievementName, false);

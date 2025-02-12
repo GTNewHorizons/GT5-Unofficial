@@ -835,26 +835,87 @@ public enum GregtechItemList implements IGregtechItemContainer {
     // ----------------------------------------------------------------------------
     // Items previously stored elsewhere, moved here for common reference
 
-    // Custom Charcoals/Cokes
-    CustomCoalCoke,
+    // Compressed Stuff
     CactusCharcoal,
+    BlockCactusCharcoal,
+    CompressedCactusCharcoal,
+    DoubleCompressedCactusCharcoal,
+    TripleCompressedCactusCharcoal,
+    QuadrupleCompressedCactusCharcoal,
+    QuintupleCompressedCactusCharcoal,
+
     CactusCoke,
+    BlockCactusCoke,
+    CompressedCactusCoke,
+    DoubleCompressedCactusCoke,
+    TripleCompressedCactusCoke,
+    QuadrupleCompressedCactusCoke,
+    QuintupleCompressedCactusCoke,
+
     SugarCharcoal,
+    BlockSugarCharcoal,
+    CompressedSugarCharcoal,
+    DoubleCompressedSugarCharcoal,
+    TripleCompressedSugarCharcoal,
+    QuadrupleCompressedSugarCharcoal,
+    QuintupleCompressedSugarCharcoal,
+
     SugarCoke,
+    BlockSugarCoke,
+    CompressedSugarCoke,
+    DoubleCompressedSugarCoke,
+    TripleCompressedSugarCoke,
+    QuadrupleCompressedSugarCoke,
+    QuintupleCompressedSugarCoke,
+
+    CompressedObsidian,
+    DoubleCompressedObsidian,
+    TripleCompressedObsidian,
+    QuadrupleCompressedObsidian,
+    QuintupleCompressedObsidian,
+    InvertedObsidian,
+
+    CompressedGlowstone,
+    DoubleCompressedGlowstone,
+    TripleCompressedGlowstone,
+    QuadrupleCompressedGlowstone,
+    QuintupleCompressedGlowstone,
 
     // IC2 Rotors
     EnergeticAlloyRotor,
     EnergeticAlloyRotorBlade,
     EnergeticAlloyShaft,
+
     TungstenSteelRotor,
     TungstenSteelRotorBlade,
     TungstenSteelShaft,
+
     VibrantAlloyRotor,
     VibrantAlloyRotorBlade,
     VibrantAlloyShaft,
+
     IridiumRotor,
     IridiumRotorBlade,
     IridiumShaft,
+
+    // Basic Turbines
+    BasicIronTurbine,
+    BasicBronzeTurbine,
+    BasicSteelTurbine,
+
+    // Misc
+    CustomCoalCoke,
+    BlueprintBase,
+    MiningExplosives,
+    AlkalusDisk,
+    WitherGuard,
+    MagicFeather,
+    PestKiller,
+
+    // Tumbaga Mix (todo convert to material?)
+    TumbagaMixDust,
+    SmallTumbagaMixDust,
+    TinyTumbagaMixDust,
 
     ;
 
