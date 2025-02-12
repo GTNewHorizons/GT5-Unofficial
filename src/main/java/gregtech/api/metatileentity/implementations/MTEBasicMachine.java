@@ -58,7 +58,6 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GTMod;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GTUIInfos;
@@ -1015,11 +1014,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public int getCircuitGUISlot() {
         return 3;
-    }
-
-    @Override
-    public List<ItemStack> getConfigurationCircuits() {
-        return GregTechAPI.getConfigurationCircuitList(mTier);
     }
 
     @Override

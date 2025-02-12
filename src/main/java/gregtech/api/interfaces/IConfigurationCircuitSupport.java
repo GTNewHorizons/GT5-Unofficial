@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.util.GTUtility;
 
 /**
  * Implement this interface if your tileentity (or metatileentity) supports configuration circuits to resolve recipe
@@ -24,7 +24,7 @@ public interface IConfigurationCircuitSupport {
      * This list is unmodifiable. Its elements are not supposed to be modified in any way!
      */
     default List<ItemStack> getConfigurationCircuits() {
-        return GregTechAPI.getConfigurationCircuitList(100);
+        return GTUtility.getAllIntegratedCircuits();
     }
 
     /**
