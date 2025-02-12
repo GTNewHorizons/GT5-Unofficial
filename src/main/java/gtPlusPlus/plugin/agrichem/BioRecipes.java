@@ -45,6 +45,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
@@ -837,9 +838,7 @@ public class BioRecipes {
                         AgriculturalChem.mCleanAluminiumMix,
                         (int) (Math.ceil(aOreData3.get(aOreName) * 1.4))))
                 .fluidInputs(FluidUtils.getSteam(2000 * aOreData2.get(aOreName)))
-                .fluidOutputs(
-                    FluidUtils
-                        .getFluidStack(AgriculturalChem.RedMud, 100 * (int) (Math.ceil(aOreData3.get(aOreName) * 1.4))))
+                .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 100 * (int) (Math.ceil(aOreData3.get(aOreName) * 1.4))))
                 .duration(60 * SECONDS)
                 .eut(aOreData1.get(aOreName))
                 .metadata(CHEMPLANT_CASING_TIER, aOreName.equals("Bauxite") ? 2 : 1)

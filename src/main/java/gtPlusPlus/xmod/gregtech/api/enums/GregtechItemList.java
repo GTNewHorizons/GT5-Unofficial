@@ -831,6 +831,19 @@ public enum GregtechItemList implements IGregtechItemContainer {
     // ----------------------------------------------------------------------------
     // Items previously stored elsewhere, moved here for common reference
 
+    // Milled Items
+    MilledSphalerite,
+    MilledChalcopyrite,
+    MilledNickel,
+    MilledPlatinum,
+    MilledPentlandite,
+    MilledRedstone,
+    MilledSpessartine,
+    MilledGrossular,
+    MilledAlmandine,
+    MilledPyrope,
+    MilledMonazite,
+
     // Compressed Stuff
     CactusCharcoal,
     BlockCactusCharcoal,
@@ -928,10 +941,21 @@ public enum GregtechItemList implements IGregtechItemContainer {
     PestKiller,
     FishTrap,
 
-    // Tumbaga Mix (todo convert to material?)
+    // ----------------------------------------------------------------------------
+    // Dust Items TODO convert to materials some day
+
+    // Tumbaga Mix
     TumbagaMixDust,
     SmallTumbagaMixDust,
     TinyTumbagaMixDust,
+
+    PhthalicAnhydrideDust,
+    SmallPhthalicAnhydrideDust,
+    TinyPhthalicAnhydrideDust,
+
+    LithiumHydroperoxide,
+    SmallLithiumHydroperoxide,
+    TinyLithiumHydroperoxide,
 
     ;
 

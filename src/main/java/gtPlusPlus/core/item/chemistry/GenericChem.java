@@ -17,6 +17,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -27,6 +28,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.item.circuit.GTPPIntegratedCircuitItem;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -415,7 +417,7 @@ public class GenericChem extends ItemPackage {
                 GTUtility.getIntegratedCircuit(20),
                 ItemUtils.getSimpleStack(mBrownCatalyst, 0),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 4))
-            .fluidInputs(FluidUtils.getFluidStack(CoalTar.Coal_Gas, 1000))
+            .fluidInputs(new FluidStack(GTPPFluids.CoalGas, 1000))
             .fluidOutputs(FluidUtils.getFluidStack(Carbon_Disulfide, 2000))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_LV)
@@ -721,7 +723,7 @@ public class GenericChem extends ItemPackage {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(4),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustPhthalicAnhydride", 15))
-            .fluidInputs(FluidUtils.getFluidStack(CoalTar.Ethylbenzene, 1000))
+            .fluidInputs(new FluidStack(GTPPFluids.Ethylbenzene, 1000))
             .fluidOutputs(FluidUtils.getFluidStack(Ethylanthraquinone2, 1000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)

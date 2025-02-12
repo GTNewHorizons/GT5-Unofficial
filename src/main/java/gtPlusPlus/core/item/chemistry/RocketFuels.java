@@ -414,7 +414,6 @@ public class RocketFuels extends ItemPackage {
         // Create Kerosene
         Kerosene = FluidUtils
             .generateFluidNonMolten("Kerosene", "Kerosene", 233, new short[] { 150, 40, 150, 100 }, null, null);
-        CoalTar.Coal_Oil = Kerosene;
 
         // RP! Focket Fuel
         RP1 = FluidUtils.generateFluidNonMolten("RP1Fuel", "RP-1", 500, new short[] { 210, 50, 50, 100 }, null, null);

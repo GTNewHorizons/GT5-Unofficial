@@ -42,7 +42,6 @@ import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.bauble.BatteryPackBaseBauble;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
-import gtPlusPlus.core.item.chemistry.CoalTar;
 import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.chemistry.MilledOreProcessing;
@@ -545,6 +544,25 @@ public final class ModItems {
             MaterialsNuclides.Li2BeF4,
             OrePrefixes.dust,
             ItemUtils.getSimpleStack(dustLi2BeF4));
+
+        Item[] phthalicAnhydride = ItemUtils.generateSpecialUseDusts(
+                "PhthalicAnhydride",
+                "Phthalic Anhydride",
+                "C6H4(CO)2O",
+                Utils.rgbtoHexValue(175, 175, 175));
+        GregtechItemList.PhthalicAnhydrideDust.set(phthalicAnhydride[0]);
+        GregtechItemList.SmallPhthalicAnhydrideDust.set(phthalicAnhydride[1]);
+        GregtechItemList.TinyPhthalicAnhydrideDust.set(phthalicAnhydride[2]);
+
+        Item[] lithiumHydroperoxide = ItemUtils.generateSpecialUseDusts(
+                "LithiumHydroperoxide",
+                "Lithium Hydroperoxide",
+                "HLiO2",
+                Utils.rgbtoHexValue(125, 125, 125));
+        GregtechItemList.LithiumHydroperoxide.set(lithiumHydroperoxide[0]);
+        GregtechItemList.SmallLithiumHydroperoxide.set(lithiumHydroperoxide[1]);
+        GregtechItemList.TinyLithiumHydroperoxide.set(lithiumHydroperoxide[2]);
+
         // fluidFLiBeSalt = ("Li2BeF4", "Li2BeF4", 7430, new short[]{255, 255, 255, 100}, 0);
         // fluidFLiBeSalt = FluidUtils.addGTFluidNoPrefix("Li2BeF4", "Lithium Tetrafluoroberyllate", new short[]{255,
         // 255, 255, 100}, 0, 743, null, CI.emptyCells(1), 1000, true);
@@ -755,7 +773,6 @@ public final class ModItems {
         itemLavaFilter = new ItemLavaFilter();
 
         // Chemistry
-        new CoalTar();
         new RocketFuels();
 
         // Nuclear Processing
