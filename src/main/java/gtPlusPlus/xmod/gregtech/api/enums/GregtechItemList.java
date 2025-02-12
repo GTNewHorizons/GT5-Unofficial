@@ -909,6 +909,15 @@ public enum GregtechItemList implements IGregtechItemContainer {
     HiveFrameStabilize,
     HiveFrameArborist,
 
+    // Thermal Inspired Items
+    BlizzRod,
+    BlizzPowder,
+    CryotheumDust,
+    PyrotheumDust,
+    PyrotheumBucket,
+    CryotheumBucket,
+    EnderBucket,
+
     // Misc
     CustomCoalCoke,
     BlueprintBase,
