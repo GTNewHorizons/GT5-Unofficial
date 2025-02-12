@@ -165,26 +165,18 @@ public class CommonProxy implements IFuelHandler {
 
         // GalaxySpace Support
         if (Mods.GalaxySpace.isModLoaded()) {
-            ItemStack aSmallBlizz = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallBlizz", 1);
-            ItemStack aTinyBlizz = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyBlizz", 1);
-            ItemStack aSmallCryo = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallCryotheum", 1);
-            ItemStack aTinyCryo = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyCryotheum", 1);
+            ItemStack aBlizz = ItemUtils.getItemStackOfAmountFromOreDict("dustBlizz", 1);
+            ItemStack aCryo = ItemUtils.getItemStackOfAmountFromOreDict("dustCryotheum", 1);
             EntityUtils.registerDropsForMob(
                 EntityEvolvedColdBlaze.class,
                 ItemUtils.getItemStackOfAmountFromOreDict("stickBlizz", 1),
-                2,
-                500);
-            if (aSmallBlizz != null) {
-                EntityUtils.registerDropsForMob(EntityEvolvedColdBlaze.class, aSmallBlizz, 2, 750);
+                1,
+                2500);
+            if (aBlizz != null) {
+                EntityUtils.registerDropsForMob(EntityEvolvedColdBlaze.class, aBlizz, 1, 5000);
             }
-            if (aTinyBlizz != null) {
-                EntityUtils.registerDropsForMob(EntityEvolvedColdBlaze.class, aTinyBlizz, 4, 1500);
-            }
-            if (aSmallCryo != null) {
-                EntityUtils.registerDropsForMob(EntityEvolvedColdBlaze.class, aSmallCryo, 1, 50);
-            }
-            if (aTinyCryo != null) {
-                EntityUtils.registerDropsForMob(EntityEvolvedColdBlaze.class, aTinyCryo, 2, 100);
+            if (aCryo != null) {
+                EntityUtils.registerDropsForMob(EntityEvolvedColdBlaze.class, aCryo, 1, 200);
             }
         }
     }
