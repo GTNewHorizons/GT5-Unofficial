@@ -9,13 +9,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
@@ -275,11 +275,11 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
 
     default ButtonWidget createPowerPanelButton(IWidgetBuilder<?> builder) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (supportsPowerPanel()) {
-                    if (!widget.isClient()) widget.getContext()
-                        .openSyncedWindow(POWER_PANEL_WINDOW_ID);
-                }
-            })
+            if (supportsPowerPanel()) {
+                if (!widget.isClient()) widget.getContext()
+                    .openSyncedWindow(POWER_PANEL_WINDOW_ID);
+            }
+        })
             .setPlayClickSound(true)
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();

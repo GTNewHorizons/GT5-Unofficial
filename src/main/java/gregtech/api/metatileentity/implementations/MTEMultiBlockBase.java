@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.recipe.check.SingleRecipeCheck.getDisplayString;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.formatNumbers;
@@ -10,7 +11,6 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
-import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateMaxFuelFactor;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -27,9 +27,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.math.Size;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -53,18 +50,25 @@ import org.jetbrains.annotations.TestOnly;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -268,6 +272,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         aNBT.setInteger("mEfficiency", mEfficiency);
         aNBT.setInteger("mPollution", mPollution);
         aNBT.setInteger("mRuntime", mRuntime);
+        aNBT.setInteger("powerPanelMaxParallel", powerPanelMaxParallel);
         aNBT.setLong("mTotalRunTime", mTotalRunTime);
         aNBT.setLong("mLastWorkingTick", mLastWorkingTick);
         aNBT.setString("checkRecipeResultID", checkRecipeResult.getID());
@@ -305,6 +310,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         aNBT.setBoolean("mCrowbar", mCrowbar);
         aNBT.setBoolean(BATCH_MODE_NBT_KEY, batchMode);
         aNBT.setBoolean(INPUT_SEPARATION_NBT_KEY, inputSeparation);
+        aNBT.setBoolean("alwaysMaxParallel", alwaysMaxParallel);
         aNBT.setString(VOIDING_MODE_NBT_KEY, voidingMode.name);
     }
 
@@ -320,6 +326,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mRuntime = aNBT.getInteger("mRuntime");
         mTotalRunTime = aNBT.getLong("mTotalRunTime");
         mLastWorkingTick = aNBT.getLong("mLastWorkingTick");
+        alwaysMaxParallel = aNBT.getBoolean("alwaysMaxParallel");
+        powerPanelMaxParallel = aNBT.getInteger("powerPanelMaxParallel");
 
         String checkRecipeResultID = aNBT.getString("checkRecipeResultID");
         if (CheckRecipeResultRegistry.isRegistered(checkRecipeResultID)) {
@@ -2464,6 +2472,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     /**
      * Do not use this method as a supplier to ProcessingLogic, use getTrueParallel()
+     * 
      * @return The absolute maximum number of parallels possible right now.
      */
     public int getMaxParallelRecipes() {
@@ -2472,10 +2481,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     /**
      * This method should be used as a supplier to ProcessingLogic, not getMaxParallelRecipes()
+     * 
      * @return Get real parallel count based on the maximum and the limit imposed in the power panel.
      */
     public int getTrueParallel() {
-        return Math.min(getMaxParallelRecipes(), powerPanelMaxParallel);
+        return alwaysMaxParallel ? getMaxParallelRecipes() : Math.min(getMaxParallelRecipes(), powerPanelMaxParallel);
     }
 
     @Override
@@ -2657,6 +2667,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return new Pos2d(174, 91);
     }
 
+    protected boolean alwaysMaxParallel = true;
+    protected int maxParallel = 1;
+
     @Override
     public ModularWindow createPowerPanel(EntityPlayer player) {
         final int w = 120;
@@ -2668,7 +2681,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
-        builder.setDraggable(false);
+        builder.setDraggable(true);
         builder.setPos(
             (size, window) -> Alignment.Center.getAlignedPos(size, new Size(parentW, parentH))
                 .add(
@@ -2677,30 +2690,62 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         // Window header
         builder.widget(
-            TextWidget.localised("GT5U.gui.text.power_panel")
-                .setPos(3, 2)
-                .setSize(120, 34));
+            new TextWidget(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("GT5U.gui.text.power_panel"))
+                .setPos(0, 2)
+                .setSize(120, 18));
+
+        builder.widget(new FakeSyncWidget.IntegerSyncer(this::getMaxParallelRecipes, (val) -> maxParallel = val));
 
         builder.widget(
-                TextWidget.localised("GTPP.CC.parallel")
-                    .setPos(3, 4)
-                    .setSize(150, 20))
-            .widget(
-                new NumericWidget().setSetter(val -> powerPanelMaxParallel = (int) val)
-                    .setGetter(() -> powerPanelMaxParallel)
-                    .setBounds(1, getMaxParallelRecipes())
-                    .setDefaultValue(getMaxParallelRecipes())
-                    .setScrollValues(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(70, 18)
-                    .setPos(4, 25)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    .attachSyncer(
-                        new FakeSyncWidget.IntegerSyncer(() -> powerPanelMaxParallel, (val) -> powerPanelMaxParallel = val),
-                        builder));
+            TextWidget.localised("GTPP.CC.parallel")
+                .setPos(0, 24)
+                .setSize(120, 18));
+        NumericWidget textField = (NumericWidget) new NumericWidget()
+            .setSetter(val -> powerPanelMaxParallel = (int) val)
+            .setGetter(() -> powerPanelMaxParallel)
+            .setBounds(alwaysMaxParallel ? Math.max(maxParallel, 1) : 1, maxParallel)
+            .setDefaultValue(powerPanelMaxParallel)
+            .setScrollValues(1, 4, 64)
+            .setTextAlignment(Alignment.Center)
+            .setTextColor(Color.WHITE.normal)
+            .setSize(70, 18)
+            .setPos(12, 40)
+            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+            .attachSyncer(
+                new FakeSyncWidget.IntegerSyncer(() -> powerPanelMaxParallel, (val) -> powerPanelMaxParallel = val),
+                builder);
+
+        builder.widget(textField);
+        builder.widget(createMaxParallelCheckBox(builder, textField));
 
         return builder.build();
+    }
+
+    private ButtonWidget createMaxParallelCheckBox(IWidgetBuilder<?> builder, NumericWidget textField) {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            alwaysMaxParallel = !alwaysMaxParallel;
+            textField.setBounds(alwaysMaxParallel ? Math.min(maxParallel, 1) : 1, maxParallel);
+        })
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                if (alwaysMaxParallel) {
+                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_CHECKMARK);
+                } else {
+                    ret.add(GTUITextures.BUTTON_STANDARD);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_CROSS);
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .attachSyncer(
+                new FakeSyncWidget.BooleanSyncer(() -> alwaysMaxParallel, (val) -> alwaysMaxParallel = val),
+                builder)
+            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.max_parallel"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(88, 41)
+            .setSize(16, 16);
+        return (ButtonWidget) button;
     }
 
     @Override

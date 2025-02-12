@@ -560,6 +560,7 @@ GT5U.gui.button.drone_error=Sort by §3shutdown status
 GT5U.gui.button.drone_showLocalName=Show localized name
 GT5U.gui.button.toggle_output_slot_lock=Toggle output slot
 GT5U.gui.button.power_panel=Open Power Panel
+GT5U.gui.button.max_parallel=Always use maximum
 GT5U.gui.text.success=§aProcessing recipe
 GT5U.gui.text.generating=§aGenerating power
 GT5U.gui.text.no_recipe=§7No valid recipe found
