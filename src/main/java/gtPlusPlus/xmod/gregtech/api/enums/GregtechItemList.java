@@ -911,6 +911,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     WitherGuard,
     MagicFeather,
     PestKiller,
+    FishTrap,
 
     // Tumbaga Mix (todo convert to material?)
     TumbagaMixDust,

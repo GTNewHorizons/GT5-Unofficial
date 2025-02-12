@@ -20,7 +20,6 @@ import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLog;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsAlloy;
@@ -87,13 +86,7 @@ public class AchievementHandler {
             true);
 
         // Blocks
-        this.registerAchievement(
-            "block.fishtrap",
-            -2,
-            2,
-            ItemUtils.getSimpleStack(ModBlocks.blockFishTrap),
-            "dust.potin",
-            false);
+        this.registerAchievement("block.fishtrap", -2, 2, GregtechItemList.FishTrap.get(1), "dust.potin", false);
         this.registerAchievement("block.withercage", -2, 4, GregtechItemList.WitherGuard.get(1), "dust.eglin", false);
 
         // Machines (-10/-8/-6)

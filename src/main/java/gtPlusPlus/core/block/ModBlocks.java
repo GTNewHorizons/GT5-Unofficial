@@ -31,7 +31,6 @@ public final class ModBlocks {
     public static Block blockCircuitProgrammer;
     public static Block blockVolumetricFlaskSetter;
 
-    public static Block blockFishTrap;
     public static Block blockDecayablesChest;
 
     public static Block blockCasingsMisc;
@@ -73,7 +72,7 @@ public final class ModBlocks {
         // Fluids
         FluidRegistryHandler.registerFluids();
 
-        blockFishTrap = new BlockFishTrap();
+        GregtechItemList.FishTrap.set(new ItemStack(new BlockFishTrap()));
         blockInfiniteFLuidTank = new BlockFluidTankInfinite();
         GregtechItemList.MiningExplosives.set(new ItemStack(new BlockMiningExplosives()));
         blockHellfire = new BlockHellFire();
