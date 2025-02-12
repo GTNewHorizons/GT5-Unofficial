@@ -64,10 +64,6 @@ public enum GregtechItemList implements IGregtechItemContainer {
     TransmissionComponent_UV,
     TransmissionComponent_UHV,
 
-    // Recipe Circuit
-    Circuit_BioRecipeSelector,
-    Circuit_T3RecipeSelector,
-
     // Circuits
     Old_Circuit_Primitive,
     Old_Circuit_Basic,
