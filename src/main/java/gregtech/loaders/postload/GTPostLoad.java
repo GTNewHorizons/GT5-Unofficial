@@ -351,15 +351,15 @@ public class GTPostLoad {
                 .outputItem(new ItemStack(Blocks.obsidian, 1))
                 .duration(6 * SECONDS + 8 * TICKS));
 
-        MTERockBreaker.addRockBreakerRecipe(
-            b -> b.sideBlocks(Blocks.lava)
-                .bottomBlock(Blocks.soul_sand)
-                .inputItem(new ItemStack(Blocks.packed_ice, 0), false)
-                .circuit(1)
-                .outputItem(GTOreDictUnificator.get(OrePrefixes.stone, Materials.Basalt, 1L))
-                .duration(16 * TICKS));
-
         if (Mods.EtFuturumRequiem.isModLoaded()) {
+            MTERockBreaker.addRockBreakerRecipe(
+                b -> b.sideBlocks(Blocks.lava)
+                    .bottomBlock(Blocks.soul_sand)
+                    .inputItem(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "blue_ice", 0, 0), false)
+                    .circuit(1)
+                    .outputItem(GTOreDictUnificator.get(OrePrefixes.stone, Materials.Basalt, 1L))
+                    .duration(16 * TICKS));
+
             MTERockBreaker.addRockBreakerRecipe(
                 b -> b.sideBlocks(Blocks.lava)
                     .bottomBlock(Blocks.soul_sand)
