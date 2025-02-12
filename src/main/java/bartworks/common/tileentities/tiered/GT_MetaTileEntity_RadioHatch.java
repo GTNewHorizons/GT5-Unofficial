@@ -203,7 +203,7 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
                                 break;
                             }
                         }
-                        if (radioHatchMaterial != null) {
+                        if (radioHatchMaterial != null && getBaseMetaTileEntity().isAllowedToWork()) {
                             this.sievert = this.radioHatchMaterial.recipeSievert;
                             this.mass = this.radioHatchMaterial.recipeMass;
                             this.decayTime = calcDecayTicks(radioHatchMaterial.recipeSievert);

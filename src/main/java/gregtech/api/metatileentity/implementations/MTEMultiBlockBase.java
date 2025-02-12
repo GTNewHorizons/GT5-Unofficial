@@ -119,6 +119,7 @@ import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public abstract class MTEMultiBlockBase extends MetaTileEntity
     implements IControllerWithOptionalFeatures, IAddGregtechLogo, IAddUIWidgets, IBindPlayerInventoryUI {
@@ -1791,6 +1792,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return false;
     }
 
+    public boolean addMultiAmpEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatchEnergyMulti hatch && hatch.getHatchType() == 1) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mExoticEnergyHatches.add(hatch);
+        }
+        return false;
+    }
+
     public boolean addExoticEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
@@ -1914,6 +1927,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     @Override
+    public boolean isGivingInformation() {
+        return true;
+    }
+
+    @Override
     public String[] getInfoData() {
         long storedEnergy = 0;
         long maxEnergy = 0;
@@ -1976,8 +1994,32 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
+    public Map<String, String> getInfoMap() {
+        long energy = 0, maxEnergy = 0, maxEnergyUsage = 0, minEnergyTier = Long.MAX_VALUE;
+
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
+            IGregTechTileEntity energyHatch = tHatch.getBaseMetaTileEntity();
+            energy += energyHatch.getStoredEU();
+            maxEnergy += energyHatch.getEUCapacity();
+            maxEnergyUsage += energyHatch.getInputAmperage() * energyHatch.getInputVoltage();
+            minEnergyTier = Math.min(minEnergyTier, energyHatch.getInputVoltage());
+        }
+
+        minEnergyTier = minEnergyTier == Long.MAX_VALUE ? 0 : minEnergyTier;
+
+        Map<String, String> infoMap = new HashMap<>();
+        infoMap.put("progressTime", Integer.toString(mProgresstime));
+        infoMap.put("maxProgressTime", Integer.toString(mMaxProgresstime));
+        infoMap.put("energy", Long.toString(energy));
+        infoMap.put("maxEnergy", Long.toString(maxEnergy));
+        infoMap.put("energyUsage", Long.toString(getActualEnergyUsage()));
+        infoMap.put("maxEnergyUsage", Long.toString(maxEnergyUsage));
+        infoMap.put("minEnergyTier", Long.toString(minEnergyTier));
+        infoMap.put("maintenanceIssues", Integer.toString(getIdealStatus() - getRepairStatus()));
+        infoMap.put("energyEfficiency", Double.toString(mEfficiency / 10_000F));
+        infoMap.put("pollution", Double.toString(getAveragePollutionPercentage() / 100F));
+
+        return infoMap;
     }
 
     @Override

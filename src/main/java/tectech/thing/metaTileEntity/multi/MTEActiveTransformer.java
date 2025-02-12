@@ -132,9 +132,6 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
                                                                                               // voltage
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.2")) // Only 0.004% power
                                                                                               // loss, HAYO!
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.3")) // Will explode if
-                                                                                              // broken while
-                                                                                              // running
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 3, 3, false)
             .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller: Front center
