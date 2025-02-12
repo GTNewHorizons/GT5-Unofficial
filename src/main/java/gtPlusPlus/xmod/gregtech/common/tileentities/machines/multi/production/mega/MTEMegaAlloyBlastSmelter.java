@@ -17,6 +17,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
 
+import bartworks.common.configs.Configuration;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -179,7 +180,12 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                 return super.createOverclockCalculator(recipe).setSpeedBoost(speedBonus)
                     .setEUtDiscount(energyDiscount);
             }
-        }.setMaxParallel(MAX_PARALLELS);
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return MAX_PARALLELS;
     }
 
     @Override
