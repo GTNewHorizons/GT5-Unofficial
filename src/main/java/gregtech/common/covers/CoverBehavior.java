@@ -7,6 +7,7 @@ import java.lang.ref.WeakReference;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
@@ -43,8 +44,10 @@ public abstract class CoverBehavior extends CoverBehaviorBase<ISerializableObjec
     }
 
     @Override
-    public ISerializableObject.LegacyCoverData createDataObject(int aLegacyData) {
-        return new ISerializableObject.LegacyCoverData(aLegacyData);
+    public ISerializableObject.LegacyCoverData createDataObject(NBTBase nbt) {
+        ISerializableObject.LegacyCoverData legacyCoverData = new ISerializableObject.LegacyCoverData();
+        legacyCoverData.loadDataFromNBT(nbt);
+        return legacyCoverData;
     }
 
     @Override

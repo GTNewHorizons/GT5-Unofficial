@@ -41,11 +41,6 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
     }
 
     @Override
-    public LiquidMeterData createDataObject(int aLegacyData) {
-        return new LiquidMeterData(aLegacyData == 0, 0);
-    }
-
-    @Override
     public LiquidMeterData createDataObject() {
         return new LiquidMeterData();
     }

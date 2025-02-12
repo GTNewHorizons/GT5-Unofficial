@@ -45,19 +45,6 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
     }
 
     @Override
-    public ItemMeterData createDataObject(int aLegacyData) {
-        // Convert from ver. 5.09.33.50
-        if ((CONVERTED_BIT & aLegacyData) == 0) if (aLegacyData == 0) aLegacyData = CONVERTED_BIT;
-        else if (aLegacyData == 1) aLegacyData = CONVERTED_BIT | INVERT_BIT;
-        else if (aLegacyData > 1) aLegacyData = CONVERTED_BIT | Math.min((aLegacyData - 2), SLOT_MASK);
-
-        boolean invert = (aLegacyData & INVERT_BIT) == INVERT_BIT;
-        int slot = (aLegacyData & SLOT_MASK) - 1;
-
-        return new ItemMeterData(invert, slot, 0);
-    }
-
-    @Override
     public ItemMeterData createDataObject() {
         return new ItemMeterData();
     }

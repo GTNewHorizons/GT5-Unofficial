@@ -39,11 +39,6 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
     }
 
     @Override
-    public EUMeterData createDataObject(int aLegacyData) {
-        return new EUMeterData(aLegacyData, 0);
-    }
-
-    @Override
     public EUMeterData createDataObject() {
         return new EUMeterData();
     }
@@ -271,12 +266,6 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
         public EUMeterData(EnergyType type, boolean inverted, long threshold) {
             this.type = type;
             this.inverted = inverted;
-            this.threshold = threshold;
-        }
-
-        public EUMeterData(int num, long threshold) {
-            this();
-            this.setNum(num);
             this.threshold = threshold;
         }
 

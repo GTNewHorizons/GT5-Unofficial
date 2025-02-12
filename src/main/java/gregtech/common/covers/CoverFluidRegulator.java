@@ -65,11 +65,6 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
     }
 
     @Override
-    public FluidRegulatorData createDataObject(int aLegacyData) {
-        return new FluidRegulatorData(aLegacyData);
-    }
-
-    @Override
     public FluidRegulatorData createDataObject() {
         return new FluidRegulatorData();
     }
