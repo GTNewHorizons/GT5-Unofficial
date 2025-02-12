@@ -834,11 +834,27 @@ public enum GregtechItemList implements IGregtechItemContainer {
 
     // ----------------------------------------------------------------------------
     // Items previously stored elsewhere, moved here for common reference
+
+    // Custom Charcoals/Cokes
     CustomCoalCoke,
     CactusCharcoal,
     CactusCoke,
     SugarCharcoal,
     SugarCoke,
+
+    // IC2 Rotors
+    EnergeticAlloyRotor,
+    EnergeticAlloyRotorBlade,
+    EnergeticAlloyShaft,
+    TungstenSteelRotor,
+    TungstenSteelRotorBlade,
+    TungstenSteelShaft,
+    VibrantAlloyRotor,
+    VibrantAlloyRotorBlade,
+    VibrantAlloyShaft,
+    IridiumRotor,
+    IridiumRotorBlade,
+    IridiumShaft,
 
     ;
 
