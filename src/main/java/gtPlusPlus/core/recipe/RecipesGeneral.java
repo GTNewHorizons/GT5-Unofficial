@@ -157,25 +157,25 @@ public class RecipesGeneral {
 
     private static void addFuelBlocks() {
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(ModItems.itemCactusCharcoal, 9))
+            .itemInputs(GregtechItemList.CactusCharcoal.get(9))
             .itemOutputs(new ItemStack(ModBlocks.blockCactusCharcoal))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(ModItems.itemCactusCoke, 9))
+            .itemInputs(GregtechItemList.CactusCoke.get(9))
             .itemOutputs(new ItemStack(ModBlocks.blockCactusCoke))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(ModItems.itemSugarCharcoal, 9))
+            .itemInputs(GregtechItemList.SugarCharcoal.get(9))
             .itemOutputs(new ItemStack(ModBlocks.blockSugarCharcoal))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(ModItems.itemSugarCoke, 9))
+            .itemInputs(GregtechItemList.SugarCoke.get(9))
             .itemOutputs(new ItemStack(ModBlocks.blockSugarCoke))
             .duration(15 * SECONDS)
             .eut(2)

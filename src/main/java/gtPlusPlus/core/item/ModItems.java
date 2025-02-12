@@ -161,12 +161,6 @@ public final class ModItems {
     public static Item itemLavaFilter;
     public static Item itemAirFilter;
 
-    public static Item itemCoalCoke;
-    public static Item itemCactusCharcoal;
-    public static Item itemSugarCharcoal;
-    public static Item itemCactusCoke;
-    public static Item itemSugarCoke;
-
     public static Item itemCircuitLFTR;
     public static Item itemBasicTurbine;
 
