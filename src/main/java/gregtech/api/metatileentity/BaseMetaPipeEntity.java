@@ -50,7 +50,6 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.covers.CoverInfo;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -361,12 +360,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             createNewMetatileEntity(mID);
         }
 
-        setCoverIDAtSide(ForgeDirection.DOWN, aCover0);
-        setCoverIDAtSide(ForgeDirection.UP, aCover1);
-        setCoverIDAtSide(ForgeDirection.NORTH, aCover2);
-        setCoverIDAtSide(ForgeDirection.SOUTH, aCover3);
-        setCoverIDAtSide(ForgeDirection.WEST, aCover4);
-        setCoverIDAtSide(ForgeDirection.EAST, aCover5);
+        CoverRegistry.cover(this, aCover0, aCover1, aCover2, aCover3, aCover4, aCover5);
 
         receiveClientEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, aTextureData);
         receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aUpdateData);
@@ -984,11 +978,12 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
                 if (effectiveSideCover.getCoverID() == 0) {
                     if (CoverRegistry.isCover(tCurrentItem)) {
-                        final CoverBehaviorBase<?> coverBehavior = CoverRegistry.getCoverBehaviorNew(tCurrentItem);
-                        if (coverBehavior.isCoverPlaceable(effectiveSide, tCurrentItem, this)
+                        if (CoverRegistry.getCoverPlacer(tCurrentItem)
+                            .isCoverPlaceable(effectiveSide, tCurrentItem, this)
                             && mMetaTileEntity.allowCoverOnSide(effectiveSide, new GTItemStack(tCurrentItem))) {
 
-                            attachCover(aPlayer, tCurrentItem, effectiveSide);
+                            CoverRegistry.getCoverPlacer(tCurrentItem)
+                                .placeCover(aPlayer, tCurrentItem, this, effectiveSide);
 
                             mMetaTileEntity.markDirty();
                             if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;

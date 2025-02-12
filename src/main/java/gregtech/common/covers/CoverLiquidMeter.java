@@ -17,6 +17,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -31,23 +32,17 @@ import io.netty.buffer.ByteBuf;
 
 /**
  * TODO: Implement overlay rendering only with
- * {@link CoverBehaviorBase#getSpecialCoverFGTextureImpl(ForgeDirection, int, ISerializableObject, ICoverable)}
+ * {@link CoverBehaviorBase#getSpecialCoverFGTexture()}
  */
 public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidMeterData> {
 
-    public CoverLiquidMeter(ITexture coverTexture) {
-        super(LiquidMeterData.class, coverTexture);
+    public CoverLiquidMeter(CoverContext context, ITexture coverTexture) {
+        super(context, LiquidMeterData.class, coverTexture);
     }
 
     @Override
-    public LiquidMeterData createDataObject() {
-        return new LiquidMeterData();
-    }
-
-    @Override
-    protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID, LiquidMeterData aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
-        return false;
+    protected LiquidMeterData createDataObject() {
+        return null;
     }
 
     public static byte computeSignalBasedOnFluid(ICoverable tileEntity, boolean inverted, int threshold) {
@@ -78,78 +73,70 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
     }
 
     @Override
-    protected LiquidMeterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
-        LiquidMeterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        byte signal = computeSignalBasedOnFluid(aTileEntity, aCoverVariable.inverted, aCoverVariable.threshold);
-        aTileEntity.setOutputRedstoneSignal(side, signal);
+    public CoverLiquidMeter.LiquidMeterData doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable != null) {
+            byte signal = computeSignalBasedOnFluid(coverable, coverData.inverted, coverData.threshold);
+            coverable.setOutputRedstoneSignal(coverSide, signal);
+        }
 
-        return aCoverVariable;
+        return coverData;
     }
 
     @Override
-    protected LiquidMeterData onCoverScrewdriverClickImpl(ForgeDirection side, int aCoverID,
-        LiquidMeterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aCoverVariable.inverted) {
-            aCoverVariable.inverted = false;
+    public LiquidMeterData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (coverData.inverted) {
+            coverData.inverted = false;
             GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("055", "Normal"));
         } else {
-            aCoverVariable.inverted = true;
+            coverData.inverted = true;
             GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("054", "Inverted"));
         }
-        return aCoverVariable;
+        return coverData;
     }
 
     @Override
-    protected boolean letsEnergyInImpl(ForgeDirection side, int aCoverID, LiquidMeterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean letsEnergyIn() {
         return true;
     }
 
     @Override
-    protected boolean letsEnergyOutImpl(ForgeDirection side, int aCoverID, LiquidMeterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean letsEnergyOut() {
         return true;
     }
 
     @Override
-    protected boolean letsFluidInImpl(ForgeDirection side, int aCoverID, LiquidMeterData aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidIn(Fluid aFluid) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidOutImpl(ForgeDirection side, int aCoverID, LiquidMeterData aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidOut(Fluid aFluid) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsInImpl(ForgeDirection side, int aCoverID, LiquidMeterData aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsIn(int aSlot) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsOutImpl(ForgeDirection side, int aCoverID, LiquidMeterData aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsOut(int aSlot) {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection side, int aCoverID,
-        LiquidMeterData aCoverVariable, ICoverable aTileEntity) {
+    public boolean manipulatesSidedRedstoneOutput() {
         return true;
     }
 
     @Override
-    protected int getTickRateImpl(ForgeDirection side, int aCoverID, LiquidMeterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public int getTickRate() {
         return 1;
     }
 
     @Override
-    protected int getDefaultTickRateImpl(ForgeDirection side, int aCoverID, LiquidMeterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public int getDefaultTickRate() {
         return 5;
     }
 
@@ -186,30 +173,33 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
             setMaxCapacity();
 
             builder.widget(
-                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverLiquidMeter.this)
-                    .addFollower(
-                        CoverDataFollowerToggleButtonWidget.ofRedstone(),
-                        coverData -> coverData.inverted,
-                        (coverData, state) -> {
-                            coverData.inverted = state;
-                            return coverData;
-                        },
-                        widget -> widget.addTooltip(0, NORMAL)
-                            .addTooltip(1, INVERTED)
-                            .setPos(spaceX * 0, spaceY * 0))
-                    .addFollower(
-                        new CoverDataFollowerNumericWidget<>(),
-                        coverData -> (double) coverData.threshold,
-                        (coverData, state) -> {
-                            coverData.threshold = state.intValue();
-                            return coverData;
-                        },
-                        widget -> widget.setBounds(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
-                            .setScrollValues(1000, 144, 100000)
-                            .setFocusOnGuiOpen(true)
-                            .setPos(spaceX * 0, spaceY * 1 + 2)
-                            .setSize(spaceX * 4 + 5, 12))
-                    .setPos(startX, startY))
+                new CoverDataControllerWidget<>(
+                    this::getCoverData,
+                    this::setCoverData,
+                    CoverLiquidMeter.this::createDataObject)
+                        .addFollower(
+                            CoverDataFollowerToggleButtonWidget.ofRedstone(),
+                            coverData -> coverData.inverted,
+                            (coverData, state) -> {
+                                coverData.inverted = state;
+                                return coverData;
+                            },
+                            widget -> widget.addTooltip(0, NORMAL)
+                                .addTooltip(1, INVERTED)
+                                .setPos(spaceX * 0, spaceY * 0))
+                        .addFollower(
+                            new CoverDataFollowerNumericWidget<>(),
+                            coverData -> (double) coverData.threshold,
+                            (coverData, state) -> {
+                                coverData.threshold = state.intValue();
+                                return coverData;
+                            },
+                            widget -> widget.setBounds(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
+                                .setScrollValues(1000, 144, 100000)
+                                .setFocusOnGuiOpen(true)
+                                .setPos(spaceX * 0, spaceY * 1 + 2)
+                                .setSize(spaceX * 4 + 5, 12))
+                        .setPos(startX, startY))
                 .widget(
                     new TextWidget()
                         .setStringSupplier(

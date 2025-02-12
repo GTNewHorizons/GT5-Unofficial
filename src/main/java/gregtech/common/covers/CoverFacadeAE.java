@@ -5,8 +5,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import appeng.facade.IFacadeItem;
+import gregtech.api.covers.CoverContext;
 
 public class CoverFacadeAE extends CoverFacadeBase {
+
+    public CoverFacadeAE(CoverContext context) {
+        super(context);
+    }
 
     @Override
     protected Block getTargetBlock(ItemStack aFacadeStack) {
@@ -25,7 +30,7 @@ public class CoverFacadeAE extends CoverFacadeBase {
     }
 
     @Override
-    protected ItemStack getDisplayStackImpl(int aCoverID, FacadeData aCoverVariable) {
-        return aCoverVariable.mStack;
+    public ItemStack getDisplayStack() {
+        return coverData.mStack;
     }
 }

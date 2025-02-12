@@ -50,8 +50,6 @@ import gregtech.api.util.GTGCCompat;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.GTClient;
-import gregtech.common.covers.CoverBehavior;
-import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.covers.CoverInfo;
 import gregtech.common.covers.CoverSolarPanel;
@@ -465,8 +463,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             return true;
 
         // Solar Panel Compat
-        if (baseMetaTile.getCoverInfoAtSide(side)
-            .getCoverBehavior() instanceof CoverSolarPanel) return true;
+        if (baseMetaTile.getCoverInfoAtSide(side) instanceof CoverSolarPanel) return true;
 
         // ((tIsGregTechTileEntity && tIsTileEntityCable) && (tAlwaysLookConnected || tLetEnergyIn || tLetEnergyOut) )
         // --> Not needed

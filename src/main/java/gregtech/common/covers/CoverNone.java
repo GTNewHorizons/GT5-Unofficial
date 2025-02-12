@@ -1,244 +1,85 @@
 package gregtech.common.covers;
 
-import static gregtech.api.enums.GTValues.E;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.ISerializableObject;
 
 public class CoverNone extends CoverBehavior {
 
     /**
      * This is the Dummy, if there is no Cover
      */
-    public CoverNone() {}
-
-    @Override
-    public float getBlastProofLevel(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return 10.0F;
+    public CoverNone(CoverContext context) {
+        super(context);
     }
 
     @Override
-    public boolean letsRedstoneGoIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsRedstoneGoIn() {
         return true;
     }
 
     @Override
-    public boolean letsRedstoneGoOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsRedstoneGoOut() {
         return true;
     }
 
     @Override
-    public boolean letsEnergyIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyIn() {
         return true;
     }
 
     @Override
-    public boolean letsEnergyOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyOut() {
         return true;
     }
 
     @Override
-    public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidIn(Fluid aFluid) {
         return true;
     }
 
     @Override
-    public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidOut(Fluid aFluid) {
         return true;
     }
 
     @Override
-    public boolean letsItemsIn(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsIn(int aSlot) {
         return true;
     }
 
     @Override
-    public boolean letsItemsOut(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsOut(int aSlot) {
         return true;
     }
 
     @Override
-    public boolean isGUIClickable(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean manipulatesSidedRedstoneOutput(ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }
 
     @Override
-    public boolean onCoverRightclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onCoverShiftRightClick(EntityPlayer aPlayer) {
         return false;
     }
 
     @Override
-    public boolean onCoverRemoval(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        boolean aForced) {
-        return true;
-    }
-
-    @Override
-    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
-        return 0;
-    }
-
-    @Override
-    public boolean isSimpleCover() {
-        return true;
-    }
-
-    @Override
-    protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        return false;
-    }
-
-    @Override
-    protected ISerializableObject.LegacyCoverData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone,
-        int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        return aCoverVariable;
-    }
-
-    @Override
-    protected boolean onCoverRightClickImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX,
-        float aY, float aZ) {
-        return false;
-    }
-
-    @Override
-    protected ISerializableObject.LegacyCoverData onCoverScrewdriverClickImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX,
-        float aY, float aZ) {
-        return aCoverVariable;
-    }
-
-    @Override
-    protected boolean onCoverShiftRightClickImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer) {
-        return false;
-    }
-
-    @Override
-    protected boolean onCoverRemovalImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, boolean aForced) {
-        return true;
-    }
-
-    @Override
-    protected String getDescriptionImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
-        return E;
-    }
-
-    @Override
-    protected float getBlastProofLevelImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
-        return 10.0F;
-    }
-
-    @Override
-    protected boolean letsRedstoneGoInImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    protected boolean letsRedstoneGoOutImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    protected boolean letsEnergyInImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    protected boolean letsEnergyOutImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    protected boolean letsFluidInImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    protected boolean letsFluidOutImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    protected boolean letsItemsInImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, int aSlot, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    protected boolean letsItemsOutImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, int aSlot, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
-        return false;
-    }
-
-    @Override
-    protected boolean alwaysLookConnectedImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
-        return false;
-    }
-
-    @Override
-    protected byte getRedstoneInputImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+    public byte getRedstoneInput(byte aInputRedstone) {
         return aInputRedstone;
     }
 
     @Override
-    protected int getTickRateImpl(ForgeDirection side, int aCoverID, ISerializableObject.LegacyCoverData aCoverVariable,
-        ICoverable aTileEntity) {
-        return 0;
-    }
-
-    @Override
-    protected byte getLensColorImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
-        return -1;
-    }
-
-    @Override
-    protected ItemStack getDropImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
+    public ItemStack getDrop() {
         return null;
     }
 
     @Override
-    protected ModularWindow createWindow(CoverUIBuildContext buildContext) {
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         // Cancel opening the UI.
         return null;
     }

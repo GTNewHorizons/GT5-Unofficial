@@ -18,6 +18,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
+import gregtech.api.covers.CoverContext;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
@@ -35,137 +36,119 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
     /**
      * This is the Dummy, if there is a generic Cover without behavior
      */
-    public CoverFacadeBase() {
-        super(FacadeData.class);
+    public CoverFacadeBase(CoverContext context) {
+        super(context, FacadeData.class, null);
     }
 
     @Override
-    public boolean isSimpleCover() {
-        return true;
+    protected FacadeData createDataObject() {
+        return new CoverFacadeBase.FacadeData();
     }
 
     @Override
-    public FacadeData createDataObject() {
-        return new FacadeData();
-    }
-
-    @Override
-    public FacadeData initializeDataFromCover(ItemStack cover) {
+    public FacadeData createDataObject(ItemStack cover) {
         if (Objects.isNull(cover)) return createDataObject();
-        return new FacadeData(GTUtility.copyAmount(1, cover), 0);
+        return new CoverFacadeBase.FacadeData(GTUtility.copyAmount(1, cover), 0);
     }
 
     @Override
-    protected FacadeData onCoverScrewdriverClickImpl(ForgeDirection side, int aCoverID, FacadeData aCoverVariable,
-        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        aCoverVariable.mFlags = ((aCoverVariable.mFlags + 1) & 15);
+    public FacadeData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        coverData.mFlags = ((coverData.mFlags + 1) & 15);
         GTUtility.sendChatToPlayer(
             aPlayer,
-            ((aCoverVariable.mFlags & 1) != 0 ? GTUtility.trans("128.1", "Redstone ") : "")
-                + ((aCoverVariable.mFlags & 2) != 0 ? GTUtility.trans("129.1", "Energy ") : "")
-                + ((aCoverVariable.mFlags & 4) != 0 ? GTUtility.trans("130.1", "Fluids ") : "")
-                + ((aCoverVariable.mFlags & 8) != 0 ? GTUtility.trans("131.1", "Items ") : ""));
-        return aCoverVariable;
+            ((coverData.mFlags & 1) != 0 ? GTUtility.trans("128.1", "Redstone ") : "")
+                + ((coverData.mFlags & 2) != 0 ? GTUtility.trans("129.1", "Energy ") : "")
+                + ((coverData.mFlags & 4) != 0 ? GTUtility.trans("130.1", "Fluids ") : "")
+                + ((coverData.mFlags & 8) != 0 ? GTUtility.trans("131.1", "Items ") : ""));
+        return coverData;
     }
 
     @Override
-    protected boolean letsRedstoneGoInImpl(ForgeDirection side, int aCoverID, FacadeData aCoverVariable,
-        ICoverable aTileEntity) {
-        return (aCoverVariable.mFlags & 1) != 0;
+    public boolean letsRedstoneGoIn() {
+        return (coverData.mFlags & 1) != 0;
     }
 
     @Override
-    protected boolean letsRedstoneGoOutImpl(ForgeDirection side, int aCoverID, FacadeData aCoverVariable,
-        ICoverable aTileEntity) {
-        return (aCoverVariable.mFlags & 1) != 0;
+    public boolean letsRedstoneGoOut() {
+        return (coverData.mFlags & 1) != 0;
     }
 
     @Override
-    protected boolean letsEnergyInImpl(ForgeDirection side, int aCoverID, FacadeData aCoverVariable,
-        ICoverable aTileEntity) {
-        return (aCoverVariable.mFlags & 2) != 0;
+    public boolean letsEnergyIn() {
+        return (coverData.mFlags & 2) != 0;
     }
 
     @Override
-    protected boolean letsEnergyOutImpl(ForgeDirection side, int aCoverID, FacadeData aCoverVariable,
-        ICoverable aTileEntity) {
-        return (aCoverVariable.mFlags & 2) != 0;
+    public boolean letsEnergyOut() {
+        return (coverData.mFlags & 2) != 0;
     }
 
     @Override
-    protected boolean letsFluidInImpl(ForgeDirection side, int aCoverID, FacadeData aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
-        return (aCoverVariable.mFlags & 4) != 0;
+    public boolean letsFluidIn(Fluid fluid) {
+        return (coverData.mFlags & 4) != 0;
     }
 
     @Override
-    protected boolean letsFluidOutImpl(ForgeDirection side, int aCoverID, FacadeData aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
-        return (aCoverVariable.mFlags & 4) != 0;
+    public boolean letsFluidOut(Fluid fluid) {
+        return (coverData.mFlags & 4) != 0;
     }
 
     @Override
-    protected boolean letsItemsInImpl(ForgeDirection side, int aCoverID, FacadeData aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
-        return (aCoverVariable.mFlags & 8) != 0;
+    public boolean letsItemsIn(int slot) {
+        return (coverData.mFlags & 8) != 0;
     }
 
     @Override
-    protected boolean letsItemsOutImpl(ForgeDirection side, int aCoverID, FacadeData aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
-        return (aCoverVariable.mFlags & 8) != 0;
+    public boolean letsItemsOut(int slot) {
+        return (coverData.mFlags & 8) != 0;
     }
 
     @Override
-    public void onPlayerAttach(EntityPlayer player, ItemStack cover, ICoverable tileEntity, ForgeDirection side) {
-        if (tileEntity.isClientSide()) GTRenderingWorld.getInstance()
+    public void onPlayerAttach(EntityPlayer player, ItemStack cover) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable != null && coverable.isClientSide()) GTRenderingWorld.getInstance()
             .register(
-                tileEntity.getXCoord(),
-                tileEntity.getYCoord(),
-                tileEntity.getZCoord(),
+                coverable.getXCoord(),
+                coverable.getYCoord(),
+                coverable.getZCoord(),
                 getTargetBlock(cover),
                 getTargetMeta(cover));
     }
 
     @Override
-    protected ItemStack getDropImpl(ForgeDirection side, int aCoverID, FacadeData aCoverVariable,
-        ICoverable aTileEntity) {
-        return aCoverVariable.mStack;
+    public ItemStack getDrop() {
+        return coverData.mStack;
     }
 
     @Override
-    protected ITexture getSpecialCoverFGTextureImpl(ForgeDirection side, int aCoverID, FacadeData aCoverVariable,
-        ICoverable aTileEntity) {
-        return getSpecialCoverTextureImpl(side, aCoverID, aCoverVariable, aTileEntity);
+    public ITexture getSpecialCoverFGTexture() {
+        return getSpecialCoverTexture();
     }
 
     @Override
-    protected ITexture getSpecialCoverTextureImpl(ForgeDirection side, int aCoverID, FacadeData aCoverVariable,
-        ICoverable aTileEntity) {
-        if (GTUtility.isStackInvalid(aCoverVariable.mStack)) return Textures.BlockIcons.ERROR_RENDERING[0];
-        Block block = getTargetBlock(aCoverVariable.mStack);
+    public ITexture getSpecialCoverTexture() {
+        if (GTUtility.isStackInvalid(coverData.mStack)) return Textures.BlockIcons.ERROR_RENDERING[0];
+        Block block = getTargetBlock(coverData.mStack);
         if (block == null) return Textures.BlockIcons.ERROR_RENDERING[0];
         // TODO: change this when *someone* made the block render in both pass
         if (block.getRenderBlockPass() != 0) return Textures.BlockIcons.ERROR_RENDERING[0];
         return TextureFactory.builder()
-            .setFromBlock(block, getTargetMeta(aCoverVariable.mStack))
+            .setFromBlock(block, getTargetMeta(coverData.mStack))
             .useWorldCoord()
-            .setFromSide(side)
+            .setFromSide(coverSide)
             .build();
     }
 
     @Override
-    protected Block getFacadeBlockImpl(ForgeDirection side, int aCoverID, FacadeData aCoverVariable,
-        ICoverable aTileEntity) {
-        if (GTUtility.isStackInvalid(aCoverVariable.mStack)) return null;
-        return getTargetBlock(aCoverVariable.mStack);
+    public Block getFacadeBlock() {
+        if (GTUtility.isStackInvalid(coverData.mStack)) return null;
+        return getTargetBlock(coverData.mStack);
     }
 
     @Override
-    protected int getFacadeMetaImpl(ForgeDirection side, int aCoverID, FacadeData aCoverVariable,
-        ICoverable aTileEntity) {
-        if (GTUtility.isStackInvalid(aCoverVariable.mStack)) return 0;
-        return getTargetMeta(aCoverVariable.mStack);
+    public int getFacadeMeta() {
+        if (GTUtility.isStackInvalid(coverData.mStack)) return 0;
+        return getTargetMeta(coverData.mStack);
     }
 
     protected abstract Block getTargetBlock(ItemStack aFacadeStack);
@@ -173,74 +156,49 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
     protected abstract int getTargetMeta(ItemStack aFacadeStack);
 
     @Override
-    protected boolean isDataNeededOnClientImpl(ForgeDirection side, int aCoverID, FacadeData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean isDataNeededOnClient() {
         return true;
     }
 
     @Override
-    protected void onDataChangedImpl(ForgeDirection side, int aCoverID, FacadeData aCoverVariable,
-        ICoverable aTileEntity) {
-        if (aTileEntity.isClientSide()) GTRenderingWorld.getInstance()
+    public void onDataChanged() {
+        ICoverable coverable = coveredTile.get();
+        if (coverable != null && coverable.isClientSide()) GTRenderingWorld.getInstance()
             .register(
-                aTileEntity.getXCoord(),
-                aTileEntity.getYCoord(),
-                aTileEntity.getZCoord(),
-                getTargetBlock(aCoverVariable.mStack),
-                getTargetMeta(aCoverVariable.mStack));
+                coverable.getXCoord(),
+                coverable.getYCoord(),
+                coverable.getZCoord(),
+                getTargetBlock(coverData.mStack),
+                getTargetMeta(coverData.mStack));
     }
 
     @Override
-    protected void onDroppedImpl(ForgeDirection side, int aCoverID, FacadeData aCoverVariable, ICoverable aTileEntity) {
-        if (aTileEntity.isClientSide()) {
+    public void onDropped() {
+        ICoverable coverable = coveredTile.get();
+        if (coverable != null && coverable.isClientSide()) {
             for (final ForgeDirection iSide : ForgeDirection.VALID_DIRECTIONS) {
-                if (iSide == side) continue;
+                if (iSide == coverSide) continue;
                 // since we do not allow multiple type of facade per block, this check would be enough.
-                if (aTileEntity.getCoverInfoAtSide(iSide)
-                    .getCoverBehavior() instanceof CoverFacadeBase) return;
+                if (coverable.getCoverInfoAtSide(iSide) instanceof CoverFacadeBase) return;
             }
-            if (aCoverVariable.mStack != null)
+            if (coverData.mStack != null)
                 // mStack == null -> cover removed before data reach client
                 GTRenderingWorld.getInstance()
                     .unregister(
-                        aTileEntity.getXCoord(),
-                        aTileEntity.getYCoord(),
-                        aTileEntity.getZCoord(),
-                        getTargetBlock(aCoverVariable.mStack),
-                        getTargetMeta(aCoverVariable.mStack));
+                        coverable.getXCoord(),
+                        coverable.getYCoord(),
+                        coverable.getZCoord(),
+                        getTargetBlock(coverData.mStack),
+                        getTargetMeta(coverData.mStack));
         }
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(ForgeDirection side, int aCoverID, FacadeData aCoverVariable,
-        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         // in case cover data didn't hit client somehow. maybe he had a ridiculous view distance
-        aTileEntity.issueCoverUpdate(side);
-        return super.onCoverRightClickImpl(side, aCoverID, aCoverVariable, aTileEntity, aPlayer, aX, aY, aZ);
-    }
-
-    @Override
-    public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable aTileEntity) {
-        // blocks that are not rendered in pass 0 are now accepted but rendered awkwardly
-        // to render it correctly require changing GT_Block_Machine to render in both pass, which is not really a good
-        // idea...
-        if (!super.isCoverPlaceable(side, aStack, aTileEntity)) return false;
-        final Block targetBlock = getTargetBlock(aStack);
-        if (targetBlock == null) return false;
-        // we allow one single type of facade on the same block for now
-        // otherwise it's not clear which block this block should impersonate
-        // this restriction can be lifted later by specifying a certain facade as dominate one as an extension to this
-        // class
-        for (final ForgeDirection iSide : ForgeDirection.VALID_DIRECTIONS) {
-            if (iSide == side) continue;
-            final CoverInfo coverInfo = aTileEntity.getCoverInfoAtSide(iSide);
-            if (!coverInfo.isValid()) continue;
-            final Block facadeBlock = coverInfo.getFacadeBlock();
-            if (facadeBlock == null) continue;
-            if (facadeBlock != targetBlock) return false;
-            if (coverInfo.getFacadeMeta() != getTargetMeta(aStack)) return false;
-        }
-        return true;
+        ICoverable coverable = coveredTile.get();
+        if (coverable != null) coverable.issueCoverUpdate(coverSide);
+        return false;
     }
 
     public static class FacadeData implements ISerializableObject {
@@ -322,7 +280,7 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                     this::getCoverData,
                     this::setCoverData,
-                    CoverFacadeBase.this,
+                    CoverFacadeBase.this::createDataObject,
                     this::isEnabled,
                     (id, coverData) -> {
                         coverData.mFlags = getNewCoverVariable(id, coverData);

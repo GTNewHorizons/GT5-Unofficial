@@ -2,18 +2,18 @@ package gregtech.common.covers;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
+import gregtech.api.util.ISerializableObject.LegacyCoverData;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
@@ -22,50 +22,53 @@ public class CoverPlayerDetector extends CoverBehavior {
     private String placer = "";
     private int range = 8;
 
-    public CoverPlayerDetector(ITexture coverTexture) {
-        super(coverTexture);
+    public CoverPlayerDetector(CoverContext context, ITexture coverTexture) {
+        super(context, coverTexture);
     }
 
-    @Override
-    public boolean isRedstoneSensitive(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        long aTimer) {
+    public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
+    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return coverData;
+        }
+        int coverDataValue = coverData.get();
         boolean playerDetected = false;
 
-        if (aTileEntity instanceof IGregTechTileEntity) {
-            if (aTileEntity.isUniversalEnergyStored(20)) {
-                aTileEntity.decreaseStoredEnergyUnits(20, true);
+        if (coverable instanceof IGregTechTileEntity) {
+            if (coverable.isUniversalEnergyStored(20)) {
+                coverable.decreaseStoredEnergyUnits(20, true);
                 range = 32;
             } else {
                 range = 8;
             }
-            placer = ((IGregTechTileEntity) aTileEntity).getOwnerName();
+            placer = ((IGregTechTileEntity) coverable).getOwnerName();
         }
-        for (Object tObject : aTileEntity.getWorld().playerEntities) {
+        for (Object tObject : coverable.getWorld().playerEntities) {
             if ((tObject instanceof EntityPlayerMP tEntity)) {
                 int dist = Math.max(
                     1,
                     (int) tEntity.getDistance(
-                        aTileEntity.getXCoord() + 0.5D,
-                        aTileEntity.getYCoord() + 0.5D,
-                        aTileEntity.getZCoord() + 0.5D));
+                        coverable.getXCoord() + 0.5D,
+                        coverable.getYCoord() + 0.5D,
+                        coverable.getZCoord() + 0.5D));
                 if (dist < range) {
-                    if (aCoverVariable == 0) {
+                    if (coverDataValue == 0) {
                         playerDetected = true;
                         break;
                     }
                     if (tEntity.getDisplayName()
                         .equalsIgnoreCase(placer)) {
-                        if (aCoverVariable == 1) {
+                        if (coverDataValue == 1) {
                             playerDetected = true;
                             break;
                         }
-                    } else if (aCoverVariable == 2) {
+                    } else if (coverDataValue == 2) {
                         playerDetected = true;
                         break;
                     }
@@ -73,67 +76,67 @@ public class CoverPlayerDetector extends CoverBehavior {
             }
         }
 
-        aTileEntity.setOutputRedstoneSignal(side, (byte) (playerDetected ? 15 : 0));
-        return aCoverVariable;
+        coverable.setOutputRedstoneSignal(coverSide, (byte) (playerDetected ? 15 : 0));
+        return LegacyCoverData.of(coverDataValue);
     }
 
     @Override
-    public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        aCoverVariable = (aCoverVariable + (aPlayer.isSneaking() ? -1 : 1)) % 3;
-        if (aCoverVariable < 0) {
-            aCoverVariable = 2;
+    public LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return coverData;
         }
-        switch (aCoverVariable) {
+        int coverDataValue = coverData.get();
+        coverDataValue = (coverDataValue + (aPlayer.isSneaking() ? -1 : 1)) % 3;
+        if (coverDataValue < 0) {
+            coverDataValue = 2;
+        }
+        switch (coverDataValue) {
             case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("068.1", "Emit if any Player is close"));
             case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("069.1", "Emit if other Player is close"));
             case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("070", "Emit if you are close"));
         }
-        return aCoverVariable;
+        return LegacyCoverData.of(coverDataValue);
     }
 
     @Override
-    public boolean letsEnergyIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyIn() {
         return true;
     }
 
     @Override
-    public boolean letsEnergyOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyOut() {
         return true;
     }
 
     @Override
-    public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidIn(Fluid aFluid) {
         return true;
     }
 
     @Override
-    public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidOut(Fluid aFluid) {
         return true;
     }
 
     @Override
-    public boolean letsItemsIn(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsIn(int aSlot) {
         return true;
     }
 
     @Override
-    public boolean letsItemsOut(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsOut(int aSlot) {
         return true;
     }
 
     @Override
-    public boolean manipulatesSidedRedstoneOutput(ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean manipulatesSidedRedstoneOutput() {
         return true;
     }
 
     @Override
-    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRate() {
         return 20;
     }
 
@@ -168,9 +171,9 @@ public class CoverPlayerDetector extends CoverBehavior {
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverPlayerDetector.this,
+                        CoverPlayerDetector.this::createDataObject,
                         (index, coverData) -> index == convert(coverData),
-                        (index, coverData) -> new ISerializableObject.LegacyCoverData(index))
+                        (index, coverData) -> new LegacyCoverData(index))
                             .addToggleButton(
                                 0,
                                 CoverDataFollowerToggleButtonWidget.ofCheck(),

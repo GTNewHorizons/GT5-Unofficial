@@ -18,6 +18,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
+import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -30,24 +31,19 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
     private final int slots;
     private final int stackSizeLimit = 1;
 
-    public CoverChest(int slots, ITexture coverTexture) {
-        super(ChestInventory.class, coverTexture);
+    public CoverChest(CoverContext context, int slots, ITexture coverTexture) {
+        super(context, ChestInventory.class, coverTexture);
         if (slots <= 0) throw new IllegalArgumentException("slots must be greater than 0");
         this.slots = slots;
     }
 
     @Override
-    public ChestInventory createDataObject() {
-        return new ChestInventory(slots, stackSizeLimit);
+    public CoverChest.ChestInventory createDataObject() {
+        return new CoverChest.ChestInventory(slots, stackSizeLimit);
     }
 
     @Override
     public boolean hasCoverGUI() {
-        return true;
-    }
-
-    @Override
-    public boolean isSimpleCover() {
         return true;
     }
 
@@ -62,42 +58,44 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
     }
 
     @Override
-    protected void onDroppedImpl(ForgeDirection side, int aCoverID, ChestInventory aCoverVariable,
-        ICoverable aTileEntity) {
-        if (aTileEntity.getWorld().isRemote) return;
-        aCoverVariable.dropAll(aTileEntity, side);
+    public void onDropped() {
+        ICoverable iCoverable = coveredTile.get();
+        if (iCoverable == null || iCoverable.getWorld().isRemote) return;
+        coverData.dropAll(iCoverable, coverSide);
     }
 
     @Override
-    protected int getTickRateImpl(ForgeDirection side, int aCoverID, ChestInventory aCoverVariable,
-        ICoverable aTileEntity) {
-        return aCoverVariable.firstTick ? 1 : 0;
+    public int getTickRate() {
+        return coverData.firstTick ? 1 : 0;
     }
 
     @Override
-    protected ChestInventory doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
-        ChestInventory aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public ChestInventory doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return coverData;
+        }
         // migrate slots. mostly needed while in development. still can be useful if we ever resize the inventory in the
         // future
-        if (aCoverVariable.items.getSlots() != slots) {
-            if (aCoverVariable.items.getSlots() > slots) {
-                for (int i = slots; i < aCoverVariable.items.getSlots(); i++) {
-                    ItemStack item = aCoverVariable.items.getStackInSlot(i);
+        if (coverData.items.getSlots() != slots) {
+            if (coverData.items.getSlots() > slots) {
+                for (int i = slots; i < coverData.items.getSlots(); i++) {
+                    ItemStack item = coverData.items.getStackInSlot(i);
                     if (item != null) {
-                        dropItem(aTileEntity, side, item);
+                        dropItem(coverable, coverSide, item);
                     }
                 }
             }
 
             ChestInventory newData = createDataObject();
-            int toCopy = Math.min(newData.items.getSlots(), aCoverVariable.items.getSlots());
+            int toCopy = Math.min(newData.items.getSlots(), coverData.items.getSlots());
             for (int i = 0; i < toCopy; i++) {
-                newData.items.setStackInSlot(i, aCoverVariable.items.getStackInSlot(i));
+                newData.items.setStackInSlot(i, coverData.items.getStackInSlot(i));
             }
             return newData;
         }
-        aCoverVariable.firstTick = false;
-        return super.doCoverThingsImpl(side, aInputRedstone, aCoverID, aCoverVariable, aTileEntity, aTimer);
+        coverData.firstTick = false;
+        return coverData;
     }
 
     @Override
@@ -141,7 +139,7 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
             CoverDataControllerWidget<ChestInventory> w = new CoverDataControllerWidget<>(
                 this::getCoverData,
                 this::setCoverData,
-                CoverChest.this);
+                CoverChest.this::createDataObject);
             ChestInventory d = getCoverData();
             LimitingItemStackHandler h;
             if (d == null) {

@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -17,6 +16,7 @@ import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -39,19 +39,13 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
     private static final int CONVERTED_BIT = 0x80000000;
     private static final int INVERT_BIT = 0x40000000;
 
-    public CoverItemMeter(ITexture coverTexture) {
-        super(ItemMeterData.class, coverTexture);
+    public CoverItemMeter(CoverContext context, ITexture coverTexture) {
+        super(context, ItemMeterData.class, coverTexture);
     }
 
     @Override
-    public ItemMeterData createDataObject() {
-        return new ItemMeterData();
-    }
-
-    @Override
-    protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
-        return false;
+    protected ItemMeterData createDataObject() {
+        return new CoverItemMeter.ItemMeterData();
     }
 
     public static byte computeSignalBasedOnItems(ICoverable tileEntity, boolean inverted, int threshold, int slot,
@@ -83,93 +77,88 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
     }
 
     @Override
-    protected ItemMeterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
-        ItemMeterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        byte signal = computeSignalBasedOnItems(
-            aTileEntity,
-            aCoverVariable.inverted,
-            aCoverVariable.threshold,
-            aCoverVariable.slot,
-            side.ordinal());
-        aTileEntity.setOutputRedstoneSignal(side, signal);
-
-        return aCoverVariable;
+    public CoverItemMeter.ItemMeterData doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable != null) {
+            byte signal = computeSignalBasedOnItems(
+                coverable,
+                coverData.inverted,
+                coverData.threshold,
+                coverData.slot,
+                coverSide.ordinal());
+            coverable.setOutputRedstoneSignal(coverSide, signal);
+        }
+        return coverData;
     }
 
     @Override
-    protected ItemMeterData onCoverScrewdriverClickImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable,
-        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public ItemMeterData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return coverData;
+        }
         if (aPlayer.isSneaking()) {
-            if (aCoverVariable.inverted) {
-                aCoverVariable.inverted = false;
+            if (coverData.inverted) {
+                coverData.inverted = false;
                 GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("055", "Normal"));
             } else {
-                aCoverVariable.inverted = true;
+                coverData.inverted = true;
                 GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("054", "Inverted"));
             }
         } else {
-            aCoverVariable.slot++;
-            if (aCoverVariable.slot > aTileEntity.getSizeInventory()) aCoverVariable.slot = -1;
+            coverData.slot++;
+            if (coverData.slot > coverable.getSizeInventory()) coverData.slot = -1;
 
-            if (aCoverVariable.slot == -1)
+            if (coverData.slot == -1)
                 GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("053", "Slot: ") + GTUtility.trans("ALL", "All"));
-            else GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("053", "Slot: ") + aCoverVariable.slot);
+            else GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("053", "Slot: ") + coverData.slot);
         }
 
-        return aCoverVariable;
+        return coverData;
     }
 
     @Override
-    protected boolean letsEnergyInImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean letsEnergyIn() {
         return true;
     }
 
     @Override
-    protected boolean letsEnergyOutImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean letsEnergyOut() {
         return true;
     }
 
     @Override
-    protected boolean letsFluidInImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidIn(Fluid aFluid) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidOutImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidOut(Fluid aFluid) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsInImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsIn(int aSlot) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsOutImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsOut(int aSlot) {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection side, int aCoverID,
-        ItemMeterData aCoverVariable, ICoverable aTileEntity) {
+    public boolean manipulatesSidedRedstoneOutput() {
         return true;
     }
 
     @Override
-    protected int getTickRateImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public int getTickRate() {
         return 1;
     }
 
     @Override
-    protected int getDefaultTickRateImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public int getDefaultTickRate() {
         return 5;
     }
 
@@ -223,43 +212,46 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
             setMaxThreshold();
 
             builder.widget(
-                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverItemMeter.this)
-                    .addFollower(
-                        CoverDataFollowerToggleButtonWidget.ofRedstone(),
-                        coverData -> coverData.inverted,
-                        (coverData, state) -> {
-                            coverData.inverted = state;
-                            return coverData;
-                        },
-                        widget -> widget.addTooltip(0, NORMAL)
-                            .addTooltip(1, INVERTED)
-                            .setPos(0, 0))
-                    .addFollower(
-                        new CoverDataFollowerNumericWidget<>(),
-                        coverData -> (double) coverData.threshold,
-                        (coverData, state) -> {
-                            coverData.threshold = state.intValue();
-                            return coverData;
-                        },
-                        widget -> widget.setBounds(0, maxThreshold)
-                            .setScrollValues(1, 64, 1000)
-                            .setFocusOnGuiOpen(true)
-                            .setPos(0, 2 + spaceY)
-                            .setSize(spaceX * 4 + 5, 12))
-                    .addFollower(
-                        new CoverDataFollowerNumericWidget<>(),
-                        coverData -> (double) coverData.slot,
-                        (coverData, state) -> {
-                            coverData.slot = state.intValue();
-                            return coverData;
-                        },
-                        widget -> widget.setBounds(-1, maxSlot)
-                            .setDefaultValue(-1)
-                            .setScrollValues(1, 100, 10)
-                            .setNumberFormat(numberFormatAll)
-                            .setPos(0, 2 + spaceY * 2)
-                            .setSize(spaceX * 3 + 1, 12))
-                    .setPos(startX, startY))
+                new CoverDataControllerWidget<>(
+                    this::getCoverData,
+                    this::setCoverData,
+                    CoverItemMeter.this::createDataObject)
+                        .addFollower(
+                            CoverDataFollowerToggleButtonWidget.ofRedstone(),
+                            coverData -> coverData.inverted,
+                            (coverData, state) -> {
+                                coverData.inverted = state;
+                                return coverData;
+                            },
+                            widget -> widget.addTooltip(0, NORMAL)
+                                .addTooltip(1, INVERTED)
+                                .setPos(0, 0))
+                        .addFollower(
+                            new CoverDataFollowerNumericWidget<>(),
+                            coverData -> (double) coverData.threshold,
+                            (coverData, state) -> {
+                                coverData.threshold = state.intValue();
+                                return coverData;
+                            },
+                            widget -> widget.setBounds(0, maxThreshold)
+                                .setScrollValues(1, 64, 1000)
+                                .setFocusOnGuiOpen(true)
+                                .setPos(0, 2 + spaceY)
+                                .setSize(spaceX * 4 + 5, 12))
+                        .addFollower(
+                            new CoverDataFollowerNumericWidget<>(),
+                            coverData -> (double) coverData.slot,
+                            (coverData, state) -> {
+                                coverData.slot = state.intValue();
+                                return coverData;
+                            },
+                            widget -> widget.setBounds(-1, maxSlot)
+                                .setDefaultValue(-1)
+                                .setScrollValues(1, 100, 10)
+                                .setNumberFormat(numberFormatAll)
+                                .setPos(0, 2 + spaceY * 2)
+                                .setSize(spaceX * 3 + 1, 12))
+                        .setPos(startX, startY))
                 .widget(
                     new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
                         .setPos(startX + spaceX * 3 + 8, startY + spaceY * 2))

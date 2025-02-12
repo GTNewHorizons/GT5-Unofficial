@@ -3594,7 +3594,7 @@ public class GTUtility {
             if (tTileEntity instanceof ICoverable coverable) {
                 rEUAmount += 300;
                 final String tString = coverable.getCoverInfoAtSide(side)
-                    .getBehaviorDescription();
+                    .getDescription();
                 if (tString != null && !tString.equals(E)) tList.add(tString);
             }
         } catch (Throwable e) {

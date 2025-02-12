@@ -4,44 +4,52 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.ISerializableObject.LegacyCoverData;
 
 @SuppressWarnings("unused") // Legacy from GT4. TODO: Consider re-enable registration
 public class CoverRedstoneConductor extends CoverBehavior {
 
-    CoverRedstoneConductor(ITexture coverTexture) {
-        super(coverTexture);
+    CoverRedstoneConductor(CoverContext context, ITexture coverTexture) {
+        super(context, coverTexture);
     }
 
-    @Override
-    public boolean isRedstoneSensitive(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        long aTimer) {
+    public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
-        if (aCoverVariable == 0) {
-            aTileEntity.setOutputRedstoneSignal(side, aTileEntity.getStrongestRedstone());
-        } else if (aCoverVariable < 7) {
-            aTileEntity.setOutputRedstoneSignal(
-                side,
-                aTileEntity.getInternalInputRedstoneSignal(ForgeDirection.getOrientation((aCoverVariable - 1))));
+    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return coverData;
         }
-        return aCoverVariable;
+        int coverDataValue = coverData.get();
+        if (coverDataValue == 0) {
+            coverable.setOutputRedstoneSignal(coverSide, coverable.getStrongestRedstone());
+        } else if (coverDataValue < 7) {
+            coverable.setOutputRedstoneSignal(
+                coverSide,
+                coverable.getInternalInputRedstoneSignal(ForgeDirection.getOrientation((coverDataValue - 1))));
+        }
+        return LegacyCoverData.of(coverDataValue);
     }
 
     @Override
-    public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        aCoverVariable = (aCoverVariable + (aPlayer.isSneaking() ? -1 : 1)) % 7;
-        if (aCoverVariable < 0) {
-            aCoverVariable = 6;
+    public LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return coverData;
         }
-        switch (aCoverVariable) {
+        int coverDataValue = coverData.get();
+        coverDataValue = (coverDataValue + (aPlayer.isSneaking() ? -1 : 1)) % 7;
+        if (coverDataValue < 0) {
+            coverDataValue = 6;
+        }
+        switch (coverDataValue) {
             case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("071", "Conducts strongest Input"));
             case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("072", "Conducts from bottom Input"));
             case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("073", "Conducts from top Input"));
@@ -50,51 +58,46 @@ public class CoverRedstoneConductor extends CoverBehavior {
             case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("076", "Conducts from west Input"));
             case 6 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("077", "Conducts from east Input"));
         }
-        return aCoverVariable;
+        return LegacyCoverData.of(coverDataValue);
     }
 
     @Override
-    public boolean letsEnergyIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyIn() {
         return true;
     }
 
     @Override
-    public boolean letsEnergyOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyOut() {
         return true;
     }
 
     @Override
-    public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidIn(Fluid aFluid) {
         return true;
     }
 
     @Override
-    public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidOut(Fluid aFluid) {
         return true;
     }
 
     @Override
-    public boolean letsItemsIn(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsIn(int aSlot) {
         return true;
     }
 
     @Override
-    public boolean letsItemsOut(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsOut(int aSlot) {
         return true;
     }
 
     @Override
-    public boolean manipulatesSidedRedstoneOutput(ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean manipulatesSidedRedstoneOutput() {
         return true;
     }
 
     @Override
-    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRate() {
         return 1;
     }
 }

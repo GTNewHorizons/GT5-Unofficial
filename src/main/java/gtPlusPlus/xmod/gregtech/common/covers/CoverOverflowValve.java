@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -14,6 +13,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -34,145 +34,137 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
     private final int minOverflowPoint = 0;
     private final int maxOverflowPoint;
 
-    public CoverOverflowValve(int maxOverflowPoint) {
-        super(OverflowValveData.class);
+    public CoverOverflowValve(CoverContext context, int maxOverflowPoint) {
+        super(context, OverflowValveData.class, null);
         this.maxOverflowPoint = maxOverflowPoint;
     }
 
     @Override
-    public OverflowValveData createDataObject() {
-        return new OverflowValveData(maxOverflowPoint, maxOverflowPoint / 10, true, true);
+    protected OverflowValveData createDataObject() {
+        return new CoverOverflowValve.OverflowValveData(maxOverflowPoint, maxOverflowPoint / 10, true, true);
     }
 
-    private FluidStack doOverflowThing(FluidStack fluid, OverflowValveData data) {
-        if (fluid != null && fluid.amount > data.overflowPoint)
-            fluid.amount = Math.max(fluid.amount - data.voidingRate, data.overflowPoint);
+    private FluidStack doOverflowThing(FluidStack fluid, OverflowValveData coverData) {
+        if (fluid != null && fluid.amount > coverData.overflowPoint)
+            fluid.amount = Math.max(fluid.amount - coverData.voidingRate, coverData.overflowPoint);
         return fluid;
     }
 
-    private void doOverflowThings(FluidStack[] fluids, OverflowValveData data) {
-        for (FluidStack fluid : fluids) doOverflowThing(fluid, data);
+    private void doOverflowThings(FluidStack[] fluids, OverflowValveData coverData) {
+        for (FluidStack fluid : fluids) doOverflowThing(fluid, coverData);
     }
 
     @Override
-    protected OverflowValveData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
-        OverflowValveData data, ICoverable aTileEntity, long aTimer) {
-        if (data == null) return new OverflowValveData(maxOverflowPoint, maxOverflowPoint / 10, true, true);
+    public OverflowValveData doCoverThings(byte aInputRedstone, long aTimer) {
+        if (coverData.overflowPoint == 0 || coverData.voidingRate == 0) return coverData;
 
-        if (data.overflowPoint == 0 || data.voidingRate == 0) return data;
-
-        if (aTileEntity instanceof IGregTechTileEntity gregTE) {
+        if (coveredTile.get() instanceof IGregTechTileEntity gregTE) {
             IMetaTileEntity tile = gregTE.getMetaTileEntity();
             if (tile instanceof MTEBasicTank fluidTank) {
-                fluidTank.setDrainableStack(doOverflowThing(fluidTank.getDrainableStack(), data));
-                return data;
-            } else if (tile instanceof MTEFluid fluidPipe && fluidPipe.isConnectedAtSide(side)) {
-                doOverflowThings(fluidPipe.mFluids, data);
-                return data;
+                fluidTank.setDrainableStack(doOverflowThing(fluidTank.getDrainableStack(), coverData));
+                return coverData;
+            } else if (tile instanceof MTEFluid fluidPipe && fluidPipe.isConnectedAtSide(coverSide)) {
+                doOverflowThings(fluidPipe.mFluids, coverData);
+                return coverData;
             }
         }
 
-        return data;
+        return coverData;
     }
 
     // Overrides methods
 
     @Override
-    protected boolean alwaysLookConnectedImpl(ForgeDirection side, int aCoverID, OverflowValveData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean alwaysLookConnected() {
         return true;
     }
 
     @Override
-    protected int getTickRateImpl(ForgeDirection side, int aCoverID, OverflowValveData data, ICoverable aTileEntity) {
+    public int getTickRate() {
         return 5;
     }
 
     @Override
-    protected boolean letsItemsOutImpl(ForgeDirection side, int aCoverID, OverflowValveData data, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsOut(int aSlot) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsInImpl(ForgeDirection side, int aCoverID, OverflowValveData data, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsIn(int aSlot) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidOutImpl(ForgeDirection side, int aCoverID, OverflowValveData data, Fluid aFluid,
-        ICoverable aTileEntity) {
-        return data.canFluidOutput;
+    public boolean letsFluidOut(Fluid aFluid) {
+        return coverData.canFluidOutput;
     }
 
     @Override
-    protected boolean letsFluidInImpl(ForgeDirection side, int aCoverID, OverflowValveData data, Fluid aFluid,
-        ICoverable aTileEntity) {
-        return data.canFluidInput;
+    public boolean letsFluidIn(Fluid aFluid) {
+        return coverData.canFluidInput;
     }
 
     @Override
-    protected boolean letsEnergyOutImpl(ForgeDirection side, int aCoverID, OverflowValveData data,
-        ICoverable aTileEntity) {
+    public boolean letsEnergyOut() {
         return true;
     }
 
     @Override
-    protected boolean letsEnergyInImpl(ForgeDirection side, int aCoverID, OverflowValveData data,
-        ICoverable aTileEntity) {
+    public boolean letsEnergyIn() {
         return true;
     }
 
     @Override
-    protected boolean letsRedstoneGoOutImpl(ForgeDirection side, int aCoverID, OverflowValveData data,
-        ICoverable aTileEntity) {
+    public boolean letsRedstoneGoOut() {
         return true;
     }
 
     @Override
-    protected boolean letsRedstoneGoInImpl(ForgeDirection side, int aCoverID, OverflowValveData data,
-        ICoverable aTileEntity) {
+    public boolean letsRedstoneGoIn() {
         return true;
     }
 
     @Override
-    protected OverflowValveData onCoverScrewdriverClickImpl(ForgeDirection side, int aCoverID, OverflowValveData data,
-        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (GTUtility.getClickedFacingCoords(side, aX, aY, aZ)[0] >= 0.5F) {
-            data.overflowPoint += (int) (maxOverflowPoint * (aPlayer.isSneaking() ? 0.1f : 0.01f));
+    public OverflowValveData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ)[0] >= 0.5F) {
+            coverData.overflowPoint += (int) (maxOverflowPoint * (aPlayer.isSneaking() ? 0.1f : 0.01f));
         } else {
-            data.overflowPoint -= (int) (maxOverflowPoint * (aPlayer.isSneaking() ? 0.1f : 0.01f));
+            coverData.overflowPoint -= (int) (maxOverflowPoint * (aPlayer.isSneaking() ? 0.1f : 0.01f));
         }
 
-        if (data.overflowPoint > maxOverflowPoint) data.overflowPoint = minOverflowPoint;
-        if (data.overflowPoint <= minOverflowPoint) data.overflowPoint = maxOverflowPoint;
+        if (coverData.overflowPoint > maxOverflowPoint) coverData.overflowPoint = minOverflowPoint;
+        if (coverData.overflowPoint <= minOverflowPoint) coverData.overflowPoint = maxOverflowPoint;
 
         GTUtility.sendChatToPlayer(
             aPlayer,
-            StatCollector
-                .translateToLocalFormatted("GTPP.chat.text.cover_overflow_valve_overflow_point", data.overflowPoint));
-        return data;
+            StatCollector.translateToLocalFormatted(
+                "GTPP.chat.text.cover_overflow_valve_overflow_point",
+                coverData.overflowPoint));
+        return coverData;
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(ForgeDirection side, int aCoverID, OverflowValveData data,
-        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return false;
+        }
         int amount = aPlayer.isSneaking() ? 128 : 8;
-        if (GTUtility.getClickedFacingCoords(side, aX, aY, aZ)[0] >= 0.5F) {
-            data.overflowPoint += amount;
+        if (GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ)[0] >= 0.5F) {
+            coverData.overflowPoint += amount;
         } else {
-            data.overflowPoint -= amount;
+            coverData.overflowPoint -= amount;
         }
 
-        if (data.overflowPoint > maxOverflowPoint) data.overflowPoint = minOverflowPoint;
-        if (data.overflowPoint <= minOverflowPoint) data.overflowPoint = maxOverflowPoint;
+        if (coverData.overflowPoint > maxOverflowPoint) coverData.overflowPoint = minOverflowPoint;
+        if (coverData.overflowPoint <= minOverflowPoint) coverData.overflowPoint = maxOverflowPoint;
 
         GTUtility.sendChatToPlayer(
             aPlayer,
-            StatCollector
-                .translateToLocalFormatted("GTPP.chat.text.cover_overflow_valve_overflow_point", data.overflowPoint));
-        aTileEntity.setCoverDataAtSide(side, data);
+            StatCollector.translateToLocalFormatted(
+                "GTPP.chat.text.cover_overflow_valve_overflow_point",
+                coverData.overflowPoint));
+        coverable.setCoverDataAtSide(coverSide, coverData);
         return true;
     }
     // GUI
@@ -225,8 +217,10 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(xOP + width + 3, yOP + 11))
                 .widget(
-                    new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverOverflowValve.this)
-                        .addFollower(
+                    new CoverDataControllerWidget<>(
+                        this::getCoverData,
+                        this::setCoverData,
+                        CoverOverflowValve.this::createDataObject).addFollower(
                             new CoverDataFollowerNumericWidget<>(),
                             coverData -> (double) coverData.overflowPoint,
                             (coverData, state) -> {
@@ -247,8 +241,10 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(xVR + width + 3, yVR + 11))
                 .widget(
-                    new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverOverflowValve.this)
-                        .addFollower(
+                    new CoverDataControllerWidget<>(
+                        this::getCoverData,
+                        this::setCoverData,
+                        CoverOverflowValve.this::createDataObject).addFollower(
                             new CoverDataFollowerNumericWidget<>(),
                             coverData -> (double) coverData.voidingRate,
                             (coverData, state) -> {
@@ -264,7 +260,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverOverflowValve.this,
+                        CoverOverflowValve.this::createDataObject,
                         this::getClickable,
                         this::updateData)
                             .addToggleButton(
@@ -301,33 +297,33 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                                     .setPos(xFO + 18, yFO)));
         }
 
-        private boolean getClickable(int id, OverflowValveData data) {
+        private boolean getClickable(int id, OverflowValveData coverData) {
             return switch (id) {
-                case 0 -> data.canFluidInput;
-                case 1 -> !data.canFluidInput;
-                case 2 -> data.canFluidOutput;
-                case 3 -> !data.canFluidOutput;
+                case 0 -> coverData.canFluidInput;
+                case 1 -> !coverData.canFluidInput;
+                case 2 -> coverData.canFluidOutput;
+                case 3 -> !coverData.canFluidOutput;
                 default -> throw new IllegalStateException("Wrong button id: " + id);
             };
         }
 
-        private OverflowValveData updateData(int id, OverflowValveData data) {
+        private OverflowValveData updateData(int id, OverflowValveData coverData) {
             return switch (id) {
                 case 0 -> {
-                    data.canFluidInput = true;
-                    yield data;
+                    coverData.canFluidInput = true;
+                    yield coverData;
                 }
                 case 1 -> {
-                    data.canFluidInput = false;
-                    yield data;
+                    coverData.canFluidInput = false;
+                    yield coverData;
                 }
                 case 2 -> {
-                    data.canFluidOutput = true;
-                    yield data;
+                    coverData.canFluidOutput = true;
+                    yield coverData;
                 }
                 case 3 -> {
-                    data.canFluidOutput = false;
-                    yield data;
+                    coverData.canFluidOutput = false;
+                    yield coverData;
                 }
                 default -> throw new IllegalStateException("Wrong button id: " + id);
             };

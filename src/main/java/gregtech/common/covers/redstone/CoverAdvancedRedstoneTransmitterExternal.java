@@ -1,46 +1,46 @@
 package gregtech.common.covers.redstone;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
+import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 
 public class CoverAdvancedRedstoneTransmitterExternal
     extends CoverAdvancedRedstoneTransmitterBase<CoverAdvancedRedstoneTransmitterBase.TransmitterData> {
 
-    public CoverAdvancedRedstoneTransmitterExternal(ITexture coverTexture) {
-        super(TransmitterData.class, coverTexture);
+    public CoverAdvancedRedstoneTransmitterExternal(CoverContext context, ITexture coverTexture) {
+        super(context, TransmitterData.class, coverTexture);
     }
 
     @Override
-    public TransmitterData createDataObject() {
-        return new TransmitterData();
+    protected TransmitterData createDataObject() {
+        return new CoverAdvancedRedstoneTransmitterBase.TransmitterData();
     }
 
     @Override
-    public TransmitterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
-        TransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public TransmitterData doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return coverData;
+        }
         byte outputRedstone = aInputRedstone;
-        if (aCoverVariable.isInvert()) {
+        if (coverData.isInvert()) {
             if (outputRedstone > 0) outputRedstone = 0;
             else outputRedstone = 15;
         }
 
-        final long hash = hashCoverCoords(aTileEntity, side);
-        setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, outputRedstone);
+        final long hash = hashCoverCoords(coverable, coverSide);
+        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, outputRedstone);
 
-        return aCoverVariable;
+        return coverData;
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID, TransmitterData aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
+    public boolean isRedstoneSensitive(long aTimer) {
         return true;
     }
 
     @Override
-    public boolean letsRedstoneGoInImpl(ForgeDirection side, int aCoverID, TransmitterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean letsRedstoneGoIn() {
         return true;
     }
 }

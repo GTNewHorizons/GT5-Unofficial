@@ -1,10 +1,13 @@
 package gregtech.common.covers;
 
+import static gregtech.api.enums.GTValues.E;
+
 import java.lang.ref.WeakReference;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -13,59 +16,57 @@ import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 
+import gregtech.api.covers.CoverContext;
+import gregtech.api.covers.CoverFactory;
+import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
+import io.netty.buffer.ByteBuf;
 
-public final class CoverInfo {
+public abstract class CoverInfo {
 
-    private static final String NBT_SIDE = "s", NBT_ID = "id", NBT_DATA = "d", NBT_TICK_RATE_ADDITION = "tra";
+    private static final String NBT_SIDE = "s", NBT_ID = "id", NBT_TICK_RATE_ADDITION = "tra";
 
     // One minute
     public static final int MAX_TICK_RATE_ADDITION = 1200;
 
-    public static final CoverInfo EMPTY_INFO = new CoverInfo(ForgeDirection.UNKNOWN, null);
-    private final ForgeDirection coverSide;
-    private final int coverID;
-    private final CoverBehaviorBase<?> coverBehavior;
-    private final WeakReference<ICoverable> coveredTile;
+    protected final ForgeDirection coverSide;
+    protected final int coverID;
+    protected final WeakReference<ICoverable> coveredTile;
 
-    private ISerializableObject coverData;
-    private boolean needsUpdate = false;
-    private int tickRateAddition = 0;
+    protected boolean needsUpdate = false;
+    protected int tickRateAddition = 0;
 
-    public CoverInfo(ForgeDirection side, ICoverable aTile) {
-        coverSide = side;
-        coveredTile = new WeakReference<>(aTile);
-        coverBehavior = CoverRegistry.getEmptyCover();
-        coverID = 0;
+    public CoverInfo(CoverContext context) {
+        coverSide = context.getSide();
+        coverID = context.getCoverId();
+        coveredTile = new WeakReference<>(context.getCoverable());
+        tickRateAddition = initializeTickRateAddition(context.getCoverData());
     }
 
-    public CoverInfo(ForgeDirection side, int aID, ICoverable aTile, ISerializableObject aCoverData) {
-        coverSide = side;
-        coverID = aID;
-        coverBehavior = CoverRegistry.getCoverBehaviorNew(aID);
-        coverData = aCoverData == null ? coverBehavior.createDataObject() : aCoverData;
-        coveredTile = new WeakReference<>(aTile);
-        tickRateAddition = coverBehavior.getDefaultTickRate(coverSide, coverID, coverData, coveredTile.get())
-            - this.getMinimumTickRate();
+    private int initializeTickRateAddition(Object coverData) {
+        if (coverData instanceof NBTTagCompound nbt && nbt.hasKey(NBT_TICK_RATE_ADDITION)) {
+            return nbt.getInteger(NBT_TICK_RATE_ADDITION);
+        } else if (coverData instanceof ByteArrayDataInput byteData) {
+            return byteData.readInt();
+        }
+        return getDefaultTickRateAddition();
     }
 
-    public CoverInfo(ICoverable aTile, NBTTagCompound aNBT) {
-        coverSide = ForgeDirection.getOrientation(aNBT.getByte(NBT_SIDE));
-        coverID = aNBT.getInteger(NBT_ID);
-        coverBehavior = CoverRegistry.getCoverBehaviorNew(coverID);
-        coverData = aNBT.hasKey(NBT_DATA) ? coverBehavior.createDataObject(aNBT.getTag(NBT_DATA))
-            : coverBehavior.createDataObject();
-        coveredTile = new WeakReference<>(aTile);
-        tickRateAddition = aNBT.hasKey(NBT_TICK_RATE_ADDITION) ? aNBT.getInteger(NBT_TICK_RATE_ADDITION) : 0;
+    private int getDefaultTickRateAddition() {
+        return getDefaultTickRate() - this.getMinimumTickRate();
     }
 
     public boolean isValid() {
@@ -76,9 +77,12 @@ public final class CoverInfo {
         aNBT.setByte(NBT_SIDE, (byte) coverSide.ordinal());
         aNBT.setInteger(NBT_ID, coverID);
         aNBT.setInteger(NBT_TICK_RATE_ADDITION, tickRateAddition);
-        if (coverData != null) aNBT.setTag(NBT_DATA, coverData.saveDataToNBT());
-
         return aNBT;
+    }
+
+    public void writeToByteBuf(ByteBuf aOut) {
+        aOut.writeByte(coverSide.ordinal());
+        aOut.writeInt(tickRateAddition);
     }
 
     public int getCoverID() {
@@ -93,58 +97,89 @@ public final class CoverInfo {
         needsUpdate = aUpdate;
     }
 
-    public CoverBehaviorBase<?> getCoverBehavior() {
-        return coverBehavior;
-    }
-
     public boolean allowsTickRateAddition() {
-        return getCoverBehavior().allowsTickRateAddition();
+        return true;
     }
 
-    public ISerializableObject getCoverData() {
-        if (coverData != null) return coverData;
-        return CoverRegistry.getEmptyCover()
-            .createDataObject(null);
+    public abstract ISerializableObject getCoverData();
+
+    /**
+     * Called when the cover is initially attached to a machine.
+     *
+     * @param player The attaching player
+     * @param cover  An {@link ItemStack} containing the cover
+     */
+    public void onPlayerAttach(EntityPlayer player, ItemStack cover) {
+        // Do nothing by default.
     }
 
-    public boolean onCoverRemoval(boolean aForced) {
-        return getCoverBehavior().onCoverRemoval(coverSide, coverID, coverData, coveredTile.get(), aForced);
+    /**
+     * Removes the Cover if this returns true, or if aForced is true. Doesn't get called when the Machine Block is
+     * getting broken, only if you break the Cover away from the Machine.
+     */
+    public boolean onCoverRemoval(boolean forced) {
+        return true;
     }
 
+    /**
+     * Gets the initial tick rate for doCoverThings of the Cover
+     * <p/>
+     * Defaults to getTickRate(), override for different initial and minimum tick rates
+     */
+    public int getDefaultTickRate() {
+        return 0;
+    }
+
+    /**
+     * @return the ItemStack dropped by this Cover
+     */
     public ItemStack getDrop() {
-        return getCoverBehavior().getDrop(coverSide, coverID, coverData, coveredTile.get());
+        return GTOreDictUnificator.get(true, getDisplayStack());
     }
 
+    /**
+     * Get the display stack. Default to {@code int2Stack(aCoverID)}
+     */
     public ItemStack getDisplayStack() {
-        return getCoverBehavior().getDisplayStack(coverID, coverData);
+        return GTUtility.intToStack(coverID);
     }
 
+    /**
+     * Return whether cover data needs to be synced to client upon tile entity creation or cover placement.
+     * <p>
+     * Note if you want to sync the data afterwards you will have to manually do it by calling
+     * {@link ICoverable#issueCoverUpdate(ForgeDirection)} This option only affects the initial sync.
+     */
     public boolean isDataNeededOnClient() {
-        return getCoverBehavior().isDataNeededOnClient(coverSide, coverID, coverData, coveredTile.get());
+        return false;
     }
 
-    public void onDropped() {
-        getCoverBehavior().onDropped(coverSide, coverID, coverData, coveredTile.get());
-    }
+    /**
+     * Called upon cover being removed. Called on both server and client.
+     */
+    public void onDropped() {}
 
-    public boolean acceptsDataObject(ISerializableObject data) {
-        return getCoverBehavior().acceptsDataObject(data);
-    }
+    public abstract boolean acceptsDataObject(Object data);
 
-    public void setCoverData(ISerializableObject aData) {
-        coverData = aData;
-    }
+    public abstract void setCoverData(ISerializableObject aData);
 
-    public ITexture getSpecialCoverFGTexture() {
-        return getCoverBehavior().getSpecialCoverFGTexture(coverSide, coverID, coverData, coveredTile.get());
-    }
+    public abstract ITexture getSpecialCoverFGTexture();
 
+    /**
+     * Get the special cover texture associated with this cover. Return null if one should use the texture passed to
+     * {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverFactory, CoverPlacer)} or its overloads.
+     */
     public ITexture getSpecialCoverTexture() {
-        return getCoverBehavior().getSpecialCoverTexture(coverSide, coverID, coverData, coveredTile.get());
+        return null;
     }
 
+    /**
+     * Gets the Tick Rate for doCoverThings of the Cover
+     * <p/>
+     * 0 = No Ticks! Yes, 0 is Default, you have to override this
+     */
     public int getTickRate() {
-        return getMinimumTickRate() + tickRateAddition;
+        return 0;
     }
 
     public ForgeDirection getSide() {
@@ -155,106 +190,177 @@ public final class CoverInfo {
         return coveredTile.get();
     }
 
-    public boolean isRedstoneSensitive(long aTickTimer) {
-        return getCoverBehavior().isRedstoneSensitive(coverSide, coverID, coverData, coveredTile.get(), aTickTimer);
+    public boolean isRedstoneSensitive(long aTimer) {
+        return false;
     }
 
+    /**
+     * Needs to return true for Covers, which have a Redstone Output on their Facing.
+     */
     public boolean manipulatesSidedRedstoneOutput() {
-        return getCoverBehavior().manipulatesSidedRedstoneOutput(coverSide, coverID, coverData, coveredTile.get());
+        return false;
     }
 
-    public byte getRedstoneInput(byte inputRedstone) {
-        return getCoverBehavior().getRedstoneInput(coverSide, inputRedstone, coverID, coverData, coveredTile.get());
+    /**
+     * Called to determine the incoming Redstone Signal of a Machine. Returns the original Redstone per default. The
+     * Cover should @letsRedstoneGoIn or the aInputRedstone Parameter is always 0.
+     */
+    public byte getRedstoneInput(byte aInputRedstone) {
+        return letsRedstoneGoIn() ? aInputRedstone : 0;
     }
 
+    /**
+     * If it lets RS-Signals into the Block
+     * <p/>
+     * This is just Informative so that Machines know if their Redstone Input is blocked or not
+     */
     public boolean letsRedstoneGoIn() {
-        return getCoverBehavior().letsRedstoneGoIn(coverSide, coverID, coverData, coveredTile.get());
+        return false;
     }
 
-    public ISerializableObject doCoverThings(long aTickTimer, byte aRedstone) {
-        return getCoverBehavior()
-            .doCoverThings(coverSide, aRedstone, coverID, coverData, coveredTile.get(), aTickTimer);
+    /**
+     * If it lets RS-Signals out of the Block
+     */
+    public boolean letsRedstoneGoOut() {
+        return false;
     }
 
-    public void onCoverUnload() {
-        getCoverBehavior().onCoverUnload(coverSide, coverID, coverData, coveredTile.get());
+    /**
+     * Called by updateEntity inside the covered TileEntity.
+     */
+    public abstract ISerializableObject doCoverThings(byte aRedstone, long aTickTimer);
+
+    /**
+     * Called when Base TE being unloaded.
+     */
+    public void onCoverUnload() {}
+
+    /**
+     * Called upon Base TE being destroyed (once getDrops is called), thus getting called only when destroyed in
+     * survival.
+     */
+    public void onBaseTEDestroyed() {}
+
+    /**
+     * Called before receiving data from network. Use {@link ICoverable#isClientSide()} to determine the side.
+     */
+    public void preDataChanged(int newCoverId, ISerializableObject newCoverVariable) {}
+
+    /**
+     * Called upon receiving data from network. Use {@link ICoverable#isClientSide()} to determine the side.
+     */
+    public void onDataChanged() {}
+
+    /**
+     * Gives a small Text for the status of the Cover.
+     */
+    public String getDescription() {
+        return E;
     }
 
-    public void onBaseTEDestroyed() {
-        getCoverBehavior().onBaseTEDestroyed(coverSide, coverID, coverData, coveredTile.get());
-    }
-
-    public void preDataChanged(int aCoverID, ISerializableObject aCoverData) {
-        getCoverBehavior().preDataChanged(coverSide, coverID, aCoverID, coverData, aCoverData, coveredTile.get());
-    }
-
-    public void onDataChanged() {
-        getCoverBehavior().onDataChanged(coverSide, coverID, coverData, coveredTile.get());
-    }
-
-    public String getBehaviorDescription() {
-        return getCoverBehavior().getDescription(coverSide, coverID, coverData, null);
-    }
-
-    public ModularWindow createWindow(EntityPlayer player) {
+    public ModularWindow createCoverWindow(EntityPlayer player) {
         final CoverUIBuildContext buildContext = new CoverUIBuildContext(
             player,
             coverID,
             coverSide,
             coveredTile.get(),
             true);
-        return getCoverBehavior().createWindow(buildContext);
+        return createWindow(buildContext);
     }
 
+    protected abstract ModularWindow createWindow(CoverUIBuildContext buildContext);
+
+    /**
+     * If it lets you rightclick the Machine normally
+     */
     public boolean isGUIClickable() {
-        return getCoverBehavior().isGUIClickable(coverSide, coverID, coverData, coveredTile.get());
+        return true;
     }
 
     public boolean hasCoverGUI() {
-        return getCoverBehavior().hasCoverGUI();
+        return false;
     }
 
-    public boolean letsItemsIn(int aSlot) {
-        return getCoverBehavior().letsItemsIn(coverSide, coverID, coverData, aSlot, coveredTile.get());
-    }
-
-    public boolean letsItemsOut(int aSlot) {
-        return getCoverBehavior().letsItemsOut(coverSide, coverID, coverData, aSlot, coveredTile.get());
-    }
-
-    public boolean letsFluidIn(Fluid aFluid) {
-        return getCoverBehavior().letsFluidIn(coverSide, coverID, coverData, aFluid, coveredTile.get());
-    }
-
-    public boolean letsFluidOut(Fluid aFluid) {
-        return getCoverBehavior().letsFluidOut(coverSide, coverID, coverData, aFluid, coveredTile.get());
-    }
-
+    /**
+     * If it lets Energy into the Block
+     */
     public boolean letsEnergyIn() {
-        return getCoverBehavior().letsEnergyIn(coverSide, coverID, coverData, coveredTile.get());
+        return false;
     }
 
+    /**
+     * If it lets Energy out of the Block
+     */
     public boolean letsEnergyOut() {
-        return getCoverBehavior().letsEnergyOut(coverSide, coverID, coverData, coveredTile.get());
+        return false;
     }
 
+    /**
+     * If it lets Liquids into the Block, aFluid can be null meaning if this is generally allowing Fluids or not.
+     */
+    public boolean letsFluidIn(Fluid fluid) {
+        return false;
+    }
+
+    /**
+     * If it lets Liquids out of the Block, aFluid can be null meaning if this is generally allowing Fluids or not.
+     */
+    public boolean letsFluidOut(Fluid fluid) {
+        return false;
+    }
+
+    /**
+     * If it lets Items into the Block, aSlot = -1 means if it is generally accepting Items (return false for no
+     * reaction at all), aSlot = -2 means if it would accept for all Slots Impl(return true to skip the Checks for each
+     * Slot).
+     */
+    public boolean letsItemsIn(int slot) {
+        return false;
+    }
+
+    /**
+     * If it lets Items out of the Block, aSlot = -1 means if it is generally accepting Items (return false for no
+     * reaction at all), aSlot = -2 means if it would accept for all Slots Impl(return true to skip the Checks for each
+     * Slot).
+     */
+    public boolean letsItemsOut(int slot) {
+        return false;
+    }
+
+    /**
+     * if this Cover should let Pipe Connections look connected even if it is not the case.
+     */
     public boolean alwaysLookConnected() {
-        return getCoverBehavior().alwaysLookConnected(coverSide, coverID, coverData, coveredTile.get());
+        return false;
     }
 
+    /**
+     * Called when someone rightclicks this Cover.
+     * <p/>
+     * return true, if something actually happens.
+     */
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        return getCoverBehavior()
-            .onCoverRightClick(coverSide, coverID, coverData, coveredTile.get(), aPlayer, aX, aY, aZ);
+        return false;
     }
 
+    /**
+     * Called when someone shift-rightclicks this Cover with no tool. Doesn't call @onCoverRightclick in this Case.
+     */
     public boolean onCoverShiftRightClick(EntityPlayer aPlayer) {
-        return getCoverBehavior().onCoverShiftRightClick(coverSide, coverID, coverData, coveredTile.get(), aPlayer);
+        ICoverable coverable = coveredTile.get();
+        if (coverable != null && hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
+            GTUIInfos.openCoverUI(coverable, aPlayer, coverSide);
+            return true;
+        }
+        return false;
     }
 
-    public ISerializableObject onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        return getCoverBehavior()
-            .onCoverScrewdriverClick(coverSide, coverID, coverData, coveredTile.get(), aPlayer, aX, aY, aZ);
-    }
+    /**
+     * Called when someone rightclicks this Cover with a Screwdriver. Doesn't call @onCoverRightclick in this Case.
+     * <p/>
+     * return the new Value of the Cover Variable
+     */
+    public abstract ISerializableObject onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ);
 
     public void onCoverJackhammer(EntityPlayer aPlayer) {
         adjustTickRateMultiplier(aPlayer.isSneaking());
@@ -287,8 +393,8 @@ public final class CoverInfo {
         return new ClientTickRateFormatter(getTickRate());
     }
 
-    public int getMinimumTickRate() {
-        return getCoverBehavior().getTickRate(coverSide, coverID, coverData, coveredTile.get());
+    protected int getMinimumTickRate() {
+        return getTickRate();
     }
 
     public int getTickRateAddition() {
@@ -299,17 +405,34 @@ public final class CoverInfo {
         this.tickRateAddition = clamp(tickRateAddition);
     }
 
+    /**
+     * Get target facade block. Does not affect rendering of **this** block. It is only used as a hint for other block
+     * in case of CTM
+     *
+     * @return null if none, otherwise return facade target block
+     */
     public Block getFacadeBlock() {
-        return getCoverBehavior().getFacadeBlock(coverSide, coverID, coverData, coveredTile.get());
+        return null;
     }
 
+    /**
+     * Get target facade block. Does not affect rendering of **this** block. It is only used as a hint for other block
+     * in case of CTM
+     *
+     * @return 0 if none, otherwise return facade target meta
+     */
     public int getFacadeMeta() {
-        return getCoverBehavior().getFacadeMeta(coverSide, coverID, coverData, coveredTile.get());
+        return 0;
     }
 
+    /**
+     * Override to add to the tooltip generated when a user hovers over the cover on the left side of a machine's UI.
+     *
+     * @return A list of new tooltip entries. Entries are inserted at the top, just after the name and direction line.
+     */
     @NotNull
-    public List<String> getAdditionalTooltip(ISerializableObject data) {
-        return getCoverBehavior().getAdditionalTooltip(data);
+    public List<String> getAdditionalTooltip() {
+        return ImmutableList.of();
     }
 
     private static int clamp(int input) {
@@ -317,7 +440,7 @@ public final class CoverInfo {
     }
 
     public boolean allowsCopyPasteTool() {
-        return getCoverBehavior().allowsCopyPasteTool();
+        return true;
     }
 
     public static final class ClientTickRateFormatter {
@@ -359,7 +482,7 @@ public final class CoverInfo {
             this.coverSide,
             tile,
             false);
-        final ModularWindow window = this.coverBehavior.createWindow(buildContext);
+        final ModularWindow window = this.createWindow(buildContext);
         if (window == null) return null;
         return new ModularUIContainer(new ModularUIContext(buildContext, tile::markDirty), window);
     }

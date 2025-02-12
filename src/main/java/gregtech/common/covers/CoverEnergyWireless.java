@@ -6,24 +6,22 @@ import static java.lang.Long.min;
 
 import java.util.UUID;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.common.util.ForgeDirection;
-
+import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.util.ISerializableObject;
+import gregtech.api.util.ISerializableObject.LegacyCoverData;
 
 public class CoverEnergyWireless extends CoverBehavior {
 
     private final long transferred_energy_per_operation;
 
-    public CoverEnergyWireless(int voltage) {
+    public CoverEnergyWireless(CoverContext context, int voltage) {
+        super(context);
         this.transferred_energy_per_operation = 2 * voltage * ticks_between_energy_addition;
     }
 
     @Override
-    public boolean isRedstoneSensitive(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        long aTimer) {
+    public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }
 
@@ -38,17 +36,11 @@ public class CoverEnergyWireless extends CoverBehavior {
     }
 
     @Override
-    public boolean hasCoverGUI() {
-        return false;
-    }
-
-    @Override
-    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
-        if (aCoverVariable == 0 || aTimer % ticks_between_energy_addition == 0) {
-            tryFetchingEnergy(aTileEntity);
+    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+        if (coverData.get() == 0 || aTimer % ticks_between_energy_addition == 0) {
+            tryFetchingEnergy(coveredTile.get());
         }
-        return 1;
+        return LegacyCoverData.of(1);
     }
 
     private static UUID getOwner(Object te) {
@@ -70,25 +62,17 @@ public class CoverEnergyWireless extends CoverBehavior {
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX,
-        float aY, float aZ) {
+    public boolean isGUIClickable() {
         return false;
     }
 
     @Override
-    protected boolean isGUIClickableImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
-        return false;
-    }
-
-    @Override
-    public boolean alwaysLookConnected(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean alwaysLookConnected() {
         return true;
     }
 
     @Override
-    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRate() {
         return 20;
     }
 }

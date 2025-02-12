@@ -122,7 +122,7 @@ public abstract class MTEPrimitiveBlastFurnace extends MetaTileEntity
 
     @Override
     public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
-        return (CoverRegistry.getCoverBehaviorNew(aCoverID.toStack())
+        return (CoverRegistry.getCoverPlacer(aCoverID.toStack())
             .isSimpleCover()) && (super.allowCoverOnSide(side, aCoverID));
     }
 

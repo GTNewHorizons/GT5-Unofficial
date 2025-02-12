@@ -62,7 +62,6 @@ import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GTClient;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Other;
-import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.covers.CoverDrain;
 import gregtech.common.covers.CoverFluidRegulator;
 import gregtech.common.covers.CoverInfo;
@@ -713,13 +712,12 @@ public class MTEFluid extends MetaPipeEntity {
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
         if (baseMetaTile == null) return false;
 
-        final CoverBehaviorBase<?> coverBehavior = baseMetaTile.getCoverInfoAtSide(side)
-            .getCoverBehavior();
+        final CoverInfo cover = baseMetaTile.getCoverInfoAtSide(side);
         final IGregTechTileEntity gTileEntity = (tileEntity instanceof IGregTechTileEntity)
             ? (IGregTechTileEntity) tileEntity
             : null;
 
-        if (coverBehavior instanceof CoverDrain || (TinkerConstruct.isModLoaded() && isTConstructFaucet(tileEntity)))
+        if (cover instanceof CoverDrain || (TinkerConstruct.isModLoaded() && isTConstructFaucet(tileEntity)))
             return true;
 
         final IFluidHandler fTileEntity = (tileEntity instanceof IFluidHandler) ? (IFluidHandler) tileEntity : null;
@@ -728,8 +726,7 @@ public class MTEFluid extends MetaPipeEntity {
             final FluidTankInfo[] tInfo = fTileEntity.getTankInfo(tSide);
             if (tInfo != null) {
                 return tInfo.length > 0 || (Translocator.isModLoaded() && isTranslocator(tileEntity))
-                    || gTileEntity != null && gTileEntity.getCoverInfoAtSide(side)
-                        .getCoverBehavior() instanceof CoverFluidRegulator;
+                    || gTileEntity != null && gTileEntity.getCoverInfoAtSide(side) instanceof CoverFluidRegulator;
             }
         }
         return false;

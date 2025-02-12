@@ -87,6 +87,10 @@ public interface ISerializableObject {
 
     final class LegacyCoverData implements ISerializableObject {
 
+        public static LegacyCoverData of(int data) {
+            return new LegacyCoverData(data);
+        }
+
         private int mData;
 
         public LegacyCoverData() {}

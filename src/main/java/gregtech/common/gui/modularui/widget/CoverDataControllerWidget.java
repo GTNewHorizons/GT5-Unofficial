@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.network.PacketBuffer;
 
 import com.gtnewhorizons.modularui.api.widget.Widget;
@@ -13,21 +14,20 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.api.gui.modularui.IDataFollowerWidget;
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.covers.CoverBehaviorBase;
 
 public class CoverDataControllerWidget<T extends ISerializableObject> extends DataControllerWidget<T> {
 
-    protected final CoverBehaviorBase<T> coverBehavior;
+    protected final Function<NBTBase, T> nbtParser;
 
     /**
-     * @param dataGetter    () -> cover data this widget handles
-     * @param dataSetter    data to set -> if setting cover data is successful
-     * @param coverBehavior cover this widget handles data update
+     * @param dataGetter () -> cover data this widget handles
+     * @param dataSetter data to set -> if setting cover data is successful
+     * @param nbtParser  cover this widget handles data update
      */
     public CoverDataControllerWidget(Supplier<T> dataGetter, Function<T, Boolean> dataSetter,
-        CoverBehaviorBase<T> coverBehavior) {
+        Function<NBTBase, T> nbtParser) {
         super(dataGetter, dataSetter);
-        this.coverBehavior = coverBehavior;
+        this.nbtParser = nbtParser;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class CoverDataControllerWidget<T extends ISerializableObject> extends Da
 
     @Override
     protected T readFromPacket(PacketBuffer buffer) throws IOException {
-        return coverBehavior.createDataObject(NetworkUtils.readNBTBase(buffer));
+        return nbtParser.apply(NetworkUtils.readNBTBase(buffer));
     }
 
     /**
@@ -63,14 +63,14 @@ public class CoverDataControllerWidget<T extends ISerializableObject> extends Da
         /**
          * @param coverDataGetter   () -> cover data this widget handles
          * @param coverDataSetter   data to set -> if setting cover data is successful
-         * @param coverBehavior     cover this widget handles data update
+         * @param nbtParser         method that can read cover data from NBT
          * @param dataToStateGetter (index of button, given cover data) -> button state
          * @param dataUpdater       (index of button, current cover data) -> new cover data
          */
         public CoverDataIndexedControllerWidget_ToggleButtons(Supplier<T> coverDataGetter,
-            Function<T, Boolean> coverDataSetter, CoverBehaviorBase<T> coverBehavior,
+            Function<T, Boolean> coverDataSetter, Function<NBTBase, T> nbtParser,
             BiFunction<Integer, T, Boolean> dataToStateGetter, BiFunction<Integer, T, T> dataUpdater) {
-            super(coverDataGetter, coverDataSetter, coverBehavior);
+            super(coverDataGetter, coverDataSetter, nbtParser);
             this.dataToStateGetter = dataToStateGetter;
             this.dataUpdater = dataUpdater;
         }
@@ -103,14 +103,14 @@ public class CoverDataControllerWidget<T extends ISerializableObject> extends Da
         /**
          * @param coverDataGetter   () -> cover data this widget handles
          * @param coverDataSetter   data to set -> if setting cover data is successful
-         * @param coverBehavior     cover this widget handles data update
+         * @param nbtParser         cover this widget handles data update
          * @param dataToStateGetter (index of button, given cover data) -> button state
          * @param dataUpdater       (index of button, current cover data) -> new cover data
          */
         public CoverDataIndexedControllerWidget_CycleButtons(Supplier<T> coverDataGetter,
-            Function<T, Boolean> coverDataSetter, CoverBehaviorBase<T> coverBehavior,
+            Function<T, Boolean> coverDataSetter, Function<NBTBase, T> nbtParser,
             BiFunction<Integer, T, Integer> dataToStateGetter, BiFunction<Integer, T, T> dataUpdater) {
-            super(coverDataGetter, coverDataSetter, coverBehavior);
+            super(coverDataGetter, coverDataSetter, nbtParser);
             this.dataToStateGetter = dataToStateGetter;
             this.dataUpdater = dataUpdater;
         }

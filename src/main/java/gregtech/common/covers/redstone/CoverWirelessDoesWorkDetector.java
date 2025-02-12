@@ -7,13 +7,13 @@ import javax.annotation.Nonnull;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -28,13 +28,13 @@ import io.netty.buffer.ByteBuf;
 public class CoverWirelessDoesWorkDetector
     extends CoverAdvancedRedstoneTransmitterBase<CoverWirelessDoesWorkDetector.ActivityTransmitterData> {
 
-    public CoverWirelessDoesWorkDetector(ITexture coverTexture) {
-        super(ActivityTransmitterData.class, coverTexture);
+    public CoverWirelessDoesWorkDetector(CoverContext context, ITexture coverTexture) {
+        super(context, ActivityTransmitterData.class, coverTexture);
     }
 
     @Override
-    public ActivityTransmitterData createDataObject() {
-        return new ActivityTransmitterData();
+    protected ActivityTransmitterData createDataObject() {
+        return new CoverWirelessDoesWorkDetector.ActivityTransmitterData();
     }
 
     private static byte computeSignalBasedOnActivity(ActivityTransmitterData coverVariable, ICoverable tileEntity) {
@@ -66,43 +66,32 @@ public class CoverWirelessDoesWorkDetector
     }
 
     @Override
-    public ActivityTransmitterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
-        ActivityTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        final byte signal = computeSignalBasedOnActivity(aCoverVariable, aTileEntity);
-        final long hash = hashCoverCoords(aTileEntity, side);
-        setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
+    public ActivityTransmitterData doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return coverData;
+        }
+        final byte signal = computeSignalBasedOnActivity(coverData, coverable);
+        final long hash = hashCoverCoords(coverable, coverSide);
+        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, signal);
 
-        if (aCoverVariable.physical) {
-            aTileEntity.setOutputRedstoneSignal(side, signal);
+        if (coverData.physical) {
+            coverable.setOutputRedstoneSignal(coverSide, signal);
         } else {
-            aTileEntity.setOutputRedstoneSignal(side, (byte) 0);
+            coverable.setOutputRedstoneSignal(coverSide, (byte) 0);
         }
 
-        return aCoverVariable;
+        return coverData;
     }
 
     @Override
-    public boolean letsRedstoneGoOutImpl(ForgeDirection side, int aCoverID, ActivityTransmitterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean letsRedstoneGoOut() {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection side, int aCoverID,
-        ActivityTransmitterData aCoverVariable, ICoverable aTileEntity) {
+    public boolean manipulatesSidedRedstoneOutput() {
         return true;
-    }
-
-    @Override
-    public int getTickRateImpl(ForgeDirection side, int aCoverID, ActivityTransmitterData aCoverVariable,
-        ICoverable aTileEntity) {
-        return 1;
-    }
-
-    @Override
-    protected int getDefaultTickRateImpl(ForgeDirection side, int aCoverID, ActivityTransmitterData aCoverVariable,
-        ICoverable aTileEntity) {
-        return 5;
     }
 
     public enum ActivityMode {
@@ -190,16 +179,6 @@ public class CoverWirelessDoesWorkDetector
         @Override
         protected int getGUIHeight() {
             return 123;
-        }
-
-        @Override
-        protected int getFrequencyRow() {
-            return 0;
-        }
-
-        @Override
-        protected int getButtonRow() {
-            return 1;
         }
 
         @Override

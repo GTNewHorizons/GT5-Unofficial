@@ -37,9 +37,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.CoverInfo;
 import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.events.MetricsCoverDataEvent;
 import gregtech.common.events.MetricsCoverHostDeconstructedEvent;
@@ -307,7 +307,9 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
                 .getTagList(GTValues.NBT.COVERS, TAG_COMPOUND);
             return IntStream.range(0, tagList.tagCount())
                 .mapToObj(tagList::getCompoundTagAt)
-                .map(nbt -> new CoverInfo(null, nbt).getCoverData())
+                .map(
+                    nbt -> CoverRegistry.buildCover(null, nbt)
+                        .getCoverData())
                 .filter(
                     serializableObject -> serializableObject instanceof CoverMetricsTransmitter.MetricsTransmitterData)
                 .map(data -> ((CoverMetricsTransmitter.MetricsTransmitterData) data).getFrequency());

@@ -146,17 +146,15 @@ public class BaseItemComponent extends Item {
                     + "]");
             Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
             if (componentType == ComponentTypes.PLATE) {
-                CoverRegistry.registerCover(
+                CoverRegistry.registerSimpleCover(
                     componentMaterial.getPlate(1),
                     TextureFactory
-                        .of(componentMaterial.getTextureSet().mTextures[71], componentMaterial.getRGBA(), false),
-                    null);
+                        .of(componentMaterial.getTextureSet().mTextures[71], componentMaterial.getRGBA(), false));
             } else if (componentType == ComponentTypes.PLATEDOUBLE) {
-                CoverRegistry.registerCover(
+                CoverRegistry.registerSimpleCover(
                     componentMaterial.getPlateDouble(1),
                     TextureFactory
-                        .of(componentMaterial.getTextureSet().mTextures[72], componentMaterial.getRGBA(), false),
-                    null);
+                        .of(componentMaterial.getTextureSet().mTextures[72], componentMaterial.getRGBA(), false));
             }
             return true;
         } else {

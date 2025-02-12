@@ -238,7 +238,7 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
 
     @Override
     public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
-        return CoverRegistry.getCoverBehaviorNew(aCoverID.toStack())
+        return CoverRegistry.getCoverPlacer(aCoverID.toStack())
             .isSimpleCover() && super.allowCoverOnSide(side, aCoverID);
     }
 

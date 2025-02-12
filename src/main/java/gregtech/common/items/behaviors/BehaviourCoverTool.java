@@ -21,7 +21,6 @@ import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.covers.CoverInfo;
 
 public class BehaviourCoverTool extends BehaviourNone {
@@ -62,7 +61,6 @@ public class BehaviourCoverTool extends BehaviourNone {
         final NBTTagCompound tNBT = aStack.getTagCompound();
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         final boolean isCopyMode = aPlayer.isSneaking();
-        initDataFromNBT(tNBT);
         if (((aPlayer instanceof EntityPlayerMP)) && (aItem.canUse(aStack, 100.0D))) {
             if (isCopyMode) {
                 ArrayList<String> tList = new ArrayList<>();
@@ -71,7 +69,7 @@ public class BehaviourCoverTool extends BehaviourNone {
                 writeListToNBT(tList, tNBT, aPlayer);
                 saveDataToNBT(tNBT);
             } else {
-                doPaste(tTileEntity, side, hitX, hitY, hitZ, aPlayer);
+                doPaste(tTileEntity, side, hitX, hitY, hitZ, aPlayer, tNBT);
                 aItem.discharge(aStack, 25.0D, Integer.MAX_VALUE, true, false, false);
             }
         }
@@ -79,12 +77,13 @@ public class BehaviourCoverTool extends BehaviourNone {
         return aPlayer instanceof EntityPlayerMP;
     }
 
-    private void initDataFromNBT(NBTTagCompound aNBT) {
+    private void initDataFromNBT(ICoverable aCoverable, NBTTagCompound aNBT) {
         if (aNBT != null) {
             mCoverType = aNBT.getInteger("mCoverType");
-            CoverBehaviorBase<?> tBehavior = CoverRegistry.getCoverBehaviorNew(mCoverType);
             NBTBase tData = aNBT.getTag("mCoverData");
-            if (tData != null) mStoredData = tBehavior.createDataObject(tData);
+            if (tData != null) mStoredData = CoverRegistry.getRegistration(mCoverType)
+                .buildCover(aCoverable, aNBT)
+                .getCoverData();
             else mStoredData = getEmptyCoverData();
             mTickRateAddition = aNBT.hasKey("mTickRateAddition") ? aNBT.getInteger("mTickRateAddition") : 0;
         }
@@ -173,8 +172,9 @@ public class BehaviourCoverTool extends BehaviourNone {
     }
 
     private void doPaste(TileEntity aTileEntity, ForgeDirection side, float hitX, float hitY, float hitZ,
-        EntityPlayer aPlayer) {
+        EntityPlayer aPlayer, NBTTagCompound aNBT) {
         if (aTileEntity instanceof ICoverable tCoverable) {
+            initDataFromNBT(tCoverable, aNBT);
             if (mCoverType == 0 || mStoredData == null) {
                 GTUtility.sendChatToPlayer(aPlayer, "Please Copy a Valid Cover First.");
                 return;
@@ -216,7 +216,6 @@ public class BehaviourCoverTool extends BehaviourNone {
     }
 
     private static ISerializableObject getEmptyCoverData() {
-        return CoverRegistry.getEmptyCover()
-            .createDataObject();
+        return CoverRegistry.getEmptyCoverData();
     }
 }

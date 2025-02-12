@@ -14,9 +14,9 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -28,42 +28,40 @@ import io.netty.buffer.ByteBuf;
  */
 public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.FluidLimiterData> {
 
-    public CoverFluidLimiter(ITexture coverTexture) {
-        super(FluidLimiterData.class, coverTexture);
+    public CoverFluidLimiter(CoverContext context, ITexture coverTexture) {
+        super(context, FluidLimiterData.class, coverTexture);
     }
 
     @Override
-    protected FluidLimiterData onCoverScrewdriverClickImpl(ForgeDirection side, int aCoverID,
-        FluidLimiterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aTileEntity instanceof IFluidHandler) {
-            adjustThreshold(aCoverVariable, !aPlayer.isSneaking());
-            GTUtility.sendChatToPlayer(aPlayer, String.format("Threshold: %f", aCoverVariable.threshold));
+    protected FluidLimiterData createDataObject() {
+        return new CoverFluidLimiter.FluidLimiterData(1F);
+    }
+
+    @Override
+    public FluidLimiterData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (coveredTile.get() instanceof IFluidHandler) {
+            adjustThreshold(coverData, !aPlayer.isSneaking());
+            GTUtility.sendChatToPlayer(aPlayer, String.format("Threshold: %f", coverData.threshold));
         }
-        return aCoverVariable;
+        return coverData;
     }
 
     @Override
-    protected boolean letsFluidInImpl(ForgeDirection side, int aCoverID, FluidLimiterData aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
-        return allowsFluidIn(aCoverVariable, aTileEntity);
+    public boolean letsFluidIn(Fluid aFluid) {
+        if (coveredTile.get() instanceof IFluidHandler fluidHandler) {
+            return coverData.threshold > getFillLevelInputSlots(fluidHandler);
+        }
+        return false;
     }
 
     @Override
-    protected boolean alwaysLookConnectedImpl(ForgeDirection side, int aCoverID, FluidLimiterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean alwaysLookConnected() {
         return true;
     }
 
     /*
      * Helpers
      */
-
-    private boolean allowsFluidIn(FluidLimiterData aCoverVariable, ICoverable c) {
-        if (c instanceof IFluidHandler) {
-            return aCoverVariable.threshold > getFillLevelInputSlots((IFluidHandler) c);
-        }
-        return false;
-    }
 
     private void adjustThreshold(FluidLimiterData coverVariable, boolean way) {
         if (way) {
@@ -100,11 +98,6 @@ public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.Fluid
     /*
      * Data
      */
-
-    @Override
-    public FluidLimiterData createDataObject() {
-        return new FluidLimiterData(1F);
-    }
 
     public static class FluidLimiterData implements ISerializableObject {
 
@@ -174,8 +167,10 @@ public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.Fluid
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder.widget(
-                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverFluidLimiter.this)
-                    .addFollower(
+                new CoverDataControllerWidget<>(
+                    this::getCoverData,
+                    this::setCoverData,
+                    CoverFluidLimiter.this::createDataObject).addFollower(
                         new CoverDataFollowerNumericWidget<>(),
                         coverData -> (double) Math.round(coverData.threshold * 100),
                         (coverData, val) -> {
