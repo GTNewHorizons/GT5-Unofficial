@@ -168,12 +168,12 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
     }
 
     @Override
-    public void validateStructure(Collection<StructureError> errors, NBTTagCompound data) {
-        super.validateStructure(errors, data);
+    public void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
+        super.validateStructure(errors, context);
 
         if (mCasing < 10) {
             errors.add(StructureError.TOO_FEW_CASINGS);
-            data.setInteger("casings", mCasing);
+            context.setInteger("casings", mCasing);
         }
 
         if (mCryotheumHatches.isEmpty()) {
@@ -187,11 +187,12 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
 
     @Override
     @SideOnly(Side.CLIENT)
-    protected void getStructureErrors(Collection<StructureError> errors, NBTTagCompound data, List<String> lines) {
-        super.getStructureErrors(errors, data, lines);
+    protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
+        List<String> lines) {
+        super.localizeStructureErrors(errors, context, lines);
 
         if (errors.contains(StructureError.TOO_FEW_CASINGS)) {
-            lines.add(I18n.format("GT5U.gui.missing_casings", 10, data.getInteger("casings")));
+            lines.add(I18n.format("GT5U.gui.missing_casings", 10, context.getInteger("casings")));
         }
 
         if (errors.contains(StructureError.MISSING_CRYO_HATCH)) {

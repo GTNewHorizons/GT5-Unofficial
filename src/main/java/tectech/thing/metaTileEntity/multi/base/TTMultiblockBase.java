@@ -1015,7 +1015,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
                 mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
 
-                validateStructureImpl();
+                doStructureValidation();
 
                 if (!mMachine) {
                     if (ePowerPass && getEUVar() > V[3]

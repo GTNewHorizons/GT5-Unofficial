@@ -358,8 +358,8 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     }
 
     @Override
-    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound data) {
-        super.validateStructure(errors, data);
+    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
+        super.validateStructure(errors, context);
 
         if (mSteamInputFluids.isEmpty()) {
             errors.add(StructureError.MISSING_STEAM_HATCH);
@@ -368,8 +368,9 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     @Override
     @SideOnly(Side.CLIENT)
-    protected void getStructureErrors(Collection<StructureError> errors, NBTTagCompound data, List<String> lines) {
-        super.getStructureErrors(errors, data, lines);
+    protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
+        List<String> lines) {
+        super.localizeStructureErrors(errors, context, lines);
 
         if (errors.contains(StructureError.MISSING_STEAM_HATCH)) {
             lines.add(

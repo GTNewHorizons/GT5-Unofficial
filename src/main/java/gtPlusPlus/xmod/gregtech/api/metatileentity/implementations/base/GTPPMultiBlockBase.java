@@ -495,8 +495,9 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     }
 
     @SideOnly(Side.CLIENT)
-    protected void getStructureErrors(Collection<StructureError> errors, NBTTagCompound data, List<String> lines) {
-        super.getStructureErrors(errors, data, lines);
+    protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
+        List<String> lines) {
+        super.localizeStructureErrors(errors, context, lines);
 
         if (errors.contains(StructureError.MISSING_MAINTENANCE)) {
             lines.add(I18n.format("GT5U.gui.text.no_maintenance"));
@@ -512,8 +513,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     }
 
     @Override
-    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound data) {
-        super.validateStructure(errors, data);
+    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
+        super.validateStructure(errors, context);
 
         if (shouldCheckMaintenance() && mMaintenanceHatches.isEmpty()) {
             errors.add(StructureError.MISSING_MAINTENANCE);
