@@ -4797,7 +4797,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(8),
+                GTUtility.getIntegratedCircuit(7),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 9),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 9))
             .fluidInputs(Materials.Ethylene.getGas(9000), Materials.Oxygen.getGas(9000))

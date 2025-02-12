@@ -597,9 +597,6 @@ public enum GregtechItemList implements IGregtechItemContainer {
      * Single Block Tile Entities
      */
 
-    // Crate Box
-    CrateStorage,
-
     // Auto TC Research Creator
     Thaumcraft_Researcher,
 
