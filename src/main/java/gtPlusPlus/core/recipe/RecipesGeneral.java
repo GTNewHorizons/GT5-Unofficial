@@ -245,8 +245,8 @@ public class RecipesGeneral {
             new Object[] { "III", "IQI", "III", 'I', GregtechItemList.DoubleCompressedGlowstone.get(1), 'Q',
                 GregtechItemList.InvertedObsidian.get(1) });
         GTModHandler.addShapelessCraftingRecipe(
-            GregtechItemList.TripleCompressedGlowstone.get(9),
-            new Object[] { GregtechItemList.DoubleCompressedGlowstone.get(1) });
+            GregtechItemList.DoubleCompressedGlowstone.get(9),
+            new Object[] { GregtechItemList.TripleCompressedGlowstone.get(1) });
 
         addCompressionRecipe(
             true,
