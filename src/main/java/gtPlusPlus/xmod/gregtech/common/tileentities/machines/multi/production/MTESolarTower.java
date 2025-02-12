@@ -255,6 +255,11 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
     };
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         resetSolarHeaters();
         this.mMaintenanceHatches.clear();

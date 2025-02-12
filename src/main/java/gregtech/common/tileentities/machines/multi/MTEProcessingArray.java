@@ -120,6 +120,11 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
     }
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEProcessingArray(this.mName);
     }

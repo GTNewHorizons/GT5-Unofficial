@@ -2472,7 +2472,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     /**
      * Do not use this method as a supplier to ProcessingLogic, use getTrueParallel()
-     * 
+     *
      * @return The absolute maximum number of parallels possible right now.
      */
     public int getMaxParallelRecipes() {
@@ -2481,7 +2481,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     /**
      * This method should be used as a supplier to ProcessingLogic, not getMaxParallelRecipes()
-     * 
+     *
      * @return Get real parallel count based on the maximum and the limit imposed in the power panel.
      */
     public int getTrueParallel() {
@@ -2651,12 +2651,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             .widget(createModeSwitchButton(builder))
             .widget(createBatchModeButton(builder))
             .widget(createLockToSingleRecipeButton(builder))
-            .widget(createStructureUpdateButton(builder))
-            .widget(createPowerPanelButton(builder));
-
+            .widget(createStructureUpdateButton(builder));
+        if (supportsPowerPanel()) builder.widget(createPowerPanelButton(builder));
         buildContext.addSyncedWindow(POWER_PANEL_WINDOW_ID, this::createPowerPanel);
     }
 
+    // Until other features are implemented, this will be the same as supporting parallel.
     @Override
     public boolean supportsPowerPanel() {
         return true;
@@ -2718,13 +2718,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         builder.widget(textField);
         builder.widget(createMaxParallelCheckBox(builder, textField));
 
+        ModularWindow ret = builder.build();
         return builder.build();
     }
 
     private ButtonWidget createMaxParallelCheckBox(IWidgetBuilder<?> builder, NumericWidget textField) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             alwaysMaxParallel = !alwaysMaxParallel;
-            textField.setBounds(alwaysMaxParallel ? Math.min(maxParallel, 1) : 1, maxParallel);
+            textField.setBounds(alwaysMaxParallel ? Math.max(maxParallel, 1) : 1, maxParallel);
         })
             .setPlayClickSound(true)
             .setBackground(() -> {
