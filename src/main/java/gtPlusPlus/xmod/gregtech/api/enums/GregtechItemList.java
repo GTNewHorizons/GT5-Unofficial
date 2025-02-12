@@ -195,6 +195,18 @@ public enum GregtechItemList implements IGregtechItemContainer {
     GTPP_Casing_UV,
     GTPP_Casing_UHV,
 
+    // Tiered Energy Cores
+    Energy_Core_ULV,
+    Energy_Core_LV,
+    Energy_Core_MV,
+    Energy_Core_HV,
+    Energy_Core_EV,
+    Energy_Core_IV,
+    Energy_Core_LuV,
+    Energy_Core_ZPM,
+    Energy_Core_UV,
+    Energy_Core_UHV,
+
     // IronBlastFurnace Machine_Bronze_BlastFurnace
     Casing_IronPlatedBricks,
 

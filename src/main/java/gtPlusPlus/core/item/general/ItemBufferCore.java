@@ -8,9 +8,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
+import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.BaseItemWithDamageValue;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -23,7 +25,9 @@ public class ItemBufferCore extends BaseItemWithDamageValue {
         super(unlocalizedName + i);
         this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setMaxStackSize(32);
+        this.setCreativeTab(AddToCreativeTab.tabMachines);
         this.coreTier = i;
+        GameRegistry.registerItem(this, getUnlocalizedName());
     }
 
     @Override

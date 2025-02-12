@@ -17,7 +17,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -781,11 +780,16 @@ public final class ModItems {
         }
 
         // Buffer Cores!
-        Item itemBufferCore;
-        for (int i = 1; i <= 10; i++) {
-            itemBufferCore = new ItemBufferCore("itemBufferCore", i).setCreativeTab(AddToCreativeTab.tabMachines);
-            GameRegistry.registerItem(itemBufferCore, itemBufferCore.getUnlocalizedName());
-        }
+        GregtechItemList.Energy_Core_ULV.set(new ItemBufferCore("itemBufferCore", 1));
+        GregtechItemList.Energy_Core_LV.set(new ItemBufferCore("itemBufferCore", 2));
+        GregtechItemList.Energy_Core_MV.set(new ItemBufferCore("itemBufferCore", 3));
+        GregtechItemList.Energy_Core_HV.set(new ItemBufferCore("itemBufferCore", 4));
+        GregtechItemList.Energy_Core_EV.set(new ItemBufferCore("itemBufferCore", 5));
+        GregtechItemList.Energy_Core_IV.set(new ItemBufferCore("itemBufferCore", 6));
+        GregtechItemList.Energy_Core_LuV.set(new ItemBufferCore("itemBufferCore", 7));
+        GregtechItemList.Energy_Core_ZPM.set(new ItemBufferCore("itemBufferCore", 8));
+        GregtechItemList.Energy_Core_UV.set(new ItemBufferCore("itemBufferCore", 9));
+        GregtechItemList.Energy_Core_UHV.set(new ItemBufferCore("itemBufferCore", 10));
 
         itemCustomBook = new ItemBaseBook();
         registerCustomTokens();
