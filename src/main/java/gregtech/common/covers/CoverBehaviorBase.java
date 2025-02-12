@@ -13,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagInt;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
@@ -57,25 +56,13 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
         this.coverFGTexture = coverTexture;
     }
 
-    /**
-     * Should only be overridden by covers which actively persist their data as NBTTagInt.
-     */
-    protected T createDataObject(int aLegacyData) {
-        return createDataObject();
-    }
-
     public abstract T createDataObject();
 
     public T initializeDataFromCover(ItemStack cover) {
         return createDataObject();
     }
 
-    public final T createDataObject(NBTBase aNBT) {
-        // Handle legacy data (migrating from GT_CoverBehavior to GT_CoverBehaviorBase)
-        if (aNBT instanceof NBTTagInt) {
-            return createDataObject(((NBTTagInt) aNBT).func_150287_d());
-        }
-
+    public T createDataObject(NBTBase aNBT) {
         final T ret = createDataObject();
         ret.loadDataFromNBT(aNBT);
         return ret;

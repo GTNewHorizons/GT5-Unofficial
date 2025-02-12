@@ -1,6 +1,5 @@
 package gregtech.common.covers;
 
-import static gregtech.api.util.GTUtility.intToStack;
 import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 
 import java.util.Collections;
@@ -42,11 +41,6 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
     public CoverItemFilter(boolean isExport, ITexture coverTexture) {
         super(ItemFilterData.class, coverTexture);
         this.mExport = isExport;
-    }
-
-    @Override
-    public ItemFilterData createDataObject(int aLegacyData) {
-        return new ItemFilterData((aLegacyData & 0x1) == 0, intToStack(aLegacyData >>> 1));
     }
 
     @Override

@@ -54,11 +54,6 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
     }
 
     @Override
-    public FluidFilterData createDataObject(int aLegacyData) {
-        return new FluidFilterData(aLegacyData >>> 3, aLegacyData & 0x7);
-    }
-
-    @Override
     protected String getDescriptionImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable,
         ICoverable aTileEntity) {
         final Fluid fluid = FluidRegistry.getFluid(aCoverVariable.mFluidID);

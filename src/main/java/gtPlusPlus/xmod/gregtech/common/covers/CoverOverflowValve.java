@@ -46,11 +46,6 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
         return new OverflowValveData(maxOverflowPoint, maxOverflowPoint / 10, true, true);
     }
 
-    @Override
-    public OverflowValveData createDataObject(int aLegacyData) {
-        return new OverflowValveData(aLegacyData, maxOverflowPoint / 10, false, true);
-    }
-
     private FluidStack doOverflowThing(FluidStack fluid, OverflowValveData data) {
         if (fluid != null && fluid.amount > data.overflowPoint)
             fluid.amount = Math.max(fluid.amount - data.voidingRate, data.overflowPoint);
