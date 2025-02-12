@@ -677,8 +677,8 @@ public final class RecipeMaps {
                         .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount / 2))
                         .setDuration(aDuration * 20 / 3);
                 }
-                ItemStack cactusCokeBlock = GregtechItemList.CompressedCactusCoke.get(aCoalAmount * 2L);
-                ItemStack sugarCokeBlock = GregtechItemList.CompressedSugarCoke.get(aCoalAmount * 2L);
+                ItemStack cactusCokeBlock = GregtechItemList.BlockCactusCoke.get(aCoalAmount * 2L);
+                ItemStack sugarCokeBlock = GregtechItemList.BlockSugarCoke.get(aCoalAmount * 2L);
                 coll.derive()
                     .setInputs(aInput1, aInput2, cactusCokeBlock)
                     .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount * 2))
