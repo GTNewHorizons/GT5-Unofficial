@@ -17,7 +17,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.ic2.item.IC2Items;
 import ic2.core.Ic2Items;
@@ -153,7 +152,7 @@ public class RecipeIC2 {
         // Advanced Hazmat Helmet
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedAdvancedCircuit(2),
+                GTUtility.getIntegratedCircuit(2),
                 Ic2Items.hazmatHelmet.copy(),
                 new ItemStack(Blocks.wool, 16, 4), // Yellow Wool
                 GTUtility.copyAmount(8, Ic2Items.coil),
@@ -168,7 +167,7 @@ public class RecipeIC2 {
         // Advanced Hazmat Suit
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedAdvancedCircuit(2),
+                GTUtility.getIntegratedCircuit(2),
                 Ic2Items.hazmatChestplate.copy(),
                 new ItemStack(Blocks.wool, 64, 4), // Yellow Wool
                 GTUtility.copyAmount(32, Ic2Items.coil),
@@ -183,7 +182,7 @@ public class RecipeIC2 {
         // Advanced Hazmat Leggings
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedAdvancedCircuit(2),
+                GTUtility.getIntegratedCircuit(2),
                 Ic2Items.hazmatLeggings.copy(),
                 new ItemStack(Blocks.wool, 32, 4), // Yellow Wool
                 GTUtility.copyAmount(16, Ic2Items.coil),
@@ -198,7 +197,7 @@ public class RecipeIC2 {
         // Advanced Hazmat Boots
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedAdvancedCircuit(2),
+                GTUtility.getIntegratedCircuit(2),
                 Ic2Items.hazmatBoots.copy(),
                 new ItemStack(Blocks.wool, 16, 15), // Black Wool
                 GTUtility.copyAmount(6, Ic2Items.coil),

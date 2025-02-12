@@ -49,8 +49,11 @@ import ic2.core.item.ItemToolbox;
 
 public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpdatableItem {
 
+    public static final int MAX_CIRCUIT_NUMBER = 24;
+    public static final List<ItemStack> NON_ZERO_VARIANTS = new ArrayList<>(MAX_CIRCUIT_NUMBER);
+
     private static final String aTextEmptyRow = "   ";
-    private static final List<ItemStack> ALL_VARIANTS = new ArrayList<>();
+    private static final List<ItemStack> ALL_VARIANTS = new ArrayList<>(MAX_CIRCUIT_NUMBER + 1);
     protected final IIcon[] mIconDamage = new IIcon[25];
 
     public ItemIntegratedCircuit() {
@@ -61,9 +64,9 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
         ItemList.Circuit_Integrated.set(this);
 
         ALL_VARIANTS.add(new ItemStack(this, 0, 0));
-        for (int i = 1; i <= 24; i++) {
+        for (int i = 1; i <= MAX_CIRCUIT_NUMBER; i++) {
             ItemStack aStack = new ItemStack(this, 0, i);
-            GregTechAPI.registerConfigurationCircuit(aStack, 1);
+            NON_ZERO_VARIANTS.add(aStack);
             ALL_VARIANTS.add(aStack);
         }
 
