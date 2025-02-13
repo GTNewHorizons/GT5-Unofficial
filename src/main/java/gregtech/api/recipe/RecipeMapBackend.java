@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -74,6 +75,14 @@ public class RecipeMapBackend {
      * All the properties specific to this backend.
      */
     protected final RecipeMapBackendProperties properties;
+
+    /**
+     * Called when a recipe is added.
+     *
+     * @see #watchRecipeAdded(Consumer)
+     */
+    @Nullable
+    private Consumer<GTRecipe> recipeAddedCallback;
 
     public RecipeMapBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         this.properties = propertiesBuilder.build();
@@ -137,6 +146,9 @@ public class RecipeMapBackend {
         }
         recipesByCategory.computeIfAbsent(recipe.getRecipeCategory(), v -> new ArrayList<>())
             .add(recipe);
+        if(recipeAddedCallback != null) {
+            recipeAddedCallback.accept(recipe);
+        }
         for (FluidStack fluid : recipe.mFluidInputs) {
             if (fluid == null) continue;
             fluidIndex.put(
@@ -304,6 +316,18 @@ public class RecipeMapBackend {
      */
     public boolean containsInput(Fluid fluid) {
         return fluidIndex.containsKey(fluid.getName());
+    }
+
+    /**
+     * Calls the given callback when a recipe is added.
+     *
+     * @param callback the callback
+     */
+    public void watchRecipeAdded(Consumer<GTRecipe> callback) {
+        Consumer<GTRecipe> current = this.recipeAddedCallback;
+        this.recipeAddedCallback = current != null
+            ? current.andThen(callback)
+            : callback;
     }
 
     // region find recipe
