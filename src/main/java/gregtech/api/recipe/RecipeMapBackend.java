@@ -154,7 +154,7 @@ public class RecipeMapBackend {
         }
         recipesByCategory.computeIfAbsent(recipe.getRecipeCategory(), v -> new ArrayList<>())
             .add(recipe);
-        if(recipeAddedCallback != null) {
+        if (recipeAddedCallback != null) {
             recipeAddedCallback.accept(recipe);
         }
         for (FluidStack fluid : recipe.mFluidInputs) {
@@ -191,7 +191,7 @@ public class RecipeMapBackend {
      * Builds recipe from supplied recipe builder and adds it.
      */
     protected Collection<GTRecipe> doAdd(GTRecipeBuilder builder) {
-        if(recipeBuilderAddedCallback != null) {
+        if (recipeBuilderAddedCallback != null) {
             recipeBuilderAddedCallback.accept(builder);
         }
         Iterable<? extends GTRecipe> recipes = properties.recipeEmitter.apply(builder);
@@ -336,9 +336,7 @@ public class RecipeMapBackend {
      */
     public void watchRecipeAdded(Consumer<GTRecipe> callback) {
         Consumer<GTRecipe> current = this.recipeAddedCallback;
-        this.recipeAddedCallback = current != null
-            ? current.andThen(callback)
-            : callback;
+        this.recipeAddedCallback = current != null ? current.andThen(callback) : callback;
     }
 
     /**
@@ -348,9 +346,7 @@ public class RecipeMapBackend {
      */
     public void watchRecipeBuilderAdded(Consumer<GTRecipeBuilder> callback) {
         Consumer<GTRecipeBuilder> current = this.recipeBuilderAddedCallback;
-        this.recipeBuilderAddedCallback = current != null
-            ? current.andThen(callback)
-            : callback;
+        this.recipeBuilderAddedCallback = current != null ? current.andThen(callback) : callback;
     }
 
     // region find recipe
