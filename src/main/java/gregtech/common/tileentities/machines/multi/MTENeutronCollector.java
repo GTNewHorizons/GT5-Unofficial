@@ -458,6 +458,10 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
                 .attachSyncer(
                     new FakeSyncWidget.IntegerSyncer(() -> speedCost, val -> speedCost = val),
                     builder,
+                    (widget, val) -> widget.notifyTooltipChange())
+                .attachSyncer(
+                    new FakeSyncWidget.IntegerSyncer(() -> speedTier, val -> speedTier = val),
+                    builder,
                     (widget, val) -> widget.notifyTooltipChange()));
 
         // Capacity upgrade
@@ -482,6 +486,10 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
                 .setSize(16, 16)
                 .attachSyncer(
                     new FakeSyncWidget.IntegerSyncer(() -> capacityCost, val -> capacityCost = val),
+                    builder,
+                    (widget, val) -> widget.notifyTooltipChange())
+                .attachSyncer(
+                    new FakeSyncWidget.IntegerSyncer(() -> capacityTier, val -> capacityTier = val),
                     builder,
                     (widget, val) -> widget.notifyTooltipChange()));
 
@@ -508,7 +516,12 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
                 .attachSyncer(
                     new FakeSyncWidget.IntegerSyncer(() -> autoCost, val -> autoCost = val),
                     builder,
+                    (widget, val) -> widget.notifyTooltipChange())
+                .attachSyncer(
+                    new FakeSyncWidget.IntegerSyncer(() -> autoTier, val -> autoTier = val),
+                    builder,
                     (widget, val) -> widget.notifyTooltipChange()));
+
     }
 
     private List<String> refreshSpeed() {
