@@ -349,6 +349,10 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/block_output");
     public static final UITexture OVERLAY_BUTTON_ARROW_GREEN_UP = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/arrow_green_up");
+    public static final UITexture OVERLAY_BUTTON_ARROW_RED_UP = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/arrow_red_up");
+    public static final UITexture OVERLAY_BUTTON_ARROW_BLUE_UP = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/arrow_blue_up");
     public static final UITexture OVERLAY_BUTTON_ARROW_GREEN_DOWN = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/arrow_green_down");
     public static final UITexture OVERLAY_BUTTON_CYCLIC = UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic");
