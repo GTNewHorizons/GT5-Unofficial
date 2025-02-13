@@ -84,6 +84,14 @@ public class RecipeMapBackend {
     @Nullable
     private Consumer<GTRecipe> recipeAddedCallback;
 
+    /**
+     * Called when a {@link GTRecipeBuilder} is added.
+     *
+     * @see #watchRecipeBuilderAdded(Consumer)
+     */
+    @Nullable
+    private Consumer<GTRecipeBuilder> recipeBuilderAddedCallback;
+
     public RecipeMapBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         this.properties = propertiesBuilder.build();
         GregTechAPI.itemStackMultiMaps.add(itemIndex);
@@ -183,6 +191,9 @@ public class RecipeMapBackend {
      * Builds recipe from supplied recipe builder and adds it.
      */
     protected Collection<GTRecipe> doAdd(GTRecipeBuilder builder) {
+        if(recipeBuilderAddedCallback != null) {
+            recipeBuilderAddedCallback.accept(builder);
+        }
         Iterable<? extends GTRecipe> recipes = properties.recipeEmitter.apply(builder);
         Collection<GTRecipe> ret = new ArrayList<>();
         for (GTRecipe recipe : recipes) {
@@ -326,6 +337,18 @@ public class RecipeMapBackend {
     public void watchRecipeAdded(Consumer<GTRecipe> callback) {
         Consumer<GTRecipe> current = this.recipeAddedCallback;
         this.recipeAddedCallback = current != null
+            ? current.andThen(callback)
+            : callback;
+    }
+
+    /**
+     * Calls the given callback when a {@link GTRecipeBuilder} is added.
+     *
+     * @param callback the callback
+     */
+    public void watchRecipeBuilderAdded(Consumer<GTRecipeBuilder> callback) {
+        Consumer<GTRecipeBuilder> current = this.recipeBuilderAddedCallback;
+        this.recipeBuilderAddedCallback = current != null
             ? current.andThen(callback)
             : callback;
     }
