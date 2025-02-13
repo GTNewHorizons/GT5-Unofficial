@@ -11,13 +11,12 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.GT_Version;
 import gregtech.api.enums.Mods;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.lib.GTPPCore.Everglades;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialsOres;
 import gtPlusPlus.everglades.biome.BiomeEverglades;
@@ -29,10 +28,13 @@ import gtPlusPlus.everglades.gen.gt.WorldGen_Ores;
 
 @Mod(
     modid = Mods.Names.G_T_PLUS_PLUS_EVERGLADES,
-    name = Everglades.NAME,
-    version = Everglades.VERSION,
+    name = GTPPEverglades.NAME,
+    version = GTPPEverglades.VERSION,
     dependencies = "required-after:Forge; after:dreamcraft; after:IC2; required-after:gregtech; required-after:miscutils;")
 public class GTPPEverglades {
+
+    public static final String NAME = "GT++ Toxic Everglades";
+    public static final String VERSION = GT_Version.VERSION;
 
     // Mod Instance
     @Mod.Instance(Mods.Names.G_T_PLUS_PLUS_EVERGLADES)
@@ -45,7 +47,7 @@ public class GTPPEverglades {
     // Pre-Init
     @Mod.EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
-        Logger.INFO("Loading " + GTPlusPlusEverglades.ID + " V" + Everglades.VERSION);
+        Logger.INFO("Loading " + GTPlusPlusEverglades.ID + " V" + VERSION);
 
         // Setup
         setVars(event);
@@ -56,12 +58,11 @@ public class GTPPEverglades {
         // Load Dark World
         getEvergladesBiome().instance = instance;
         Everglades_Dimension.instance = instance;
-        getEvergladesBiome().preInit(event);
     }
 
     @EventHandler
     public void load(final FMLInitializationEvent e) {
-        Logger.INFO("Begin resource allocation for " + GTPlusPlusEverglades.ID + " V" + Everglades.VERSION);
+        Logger.INFO("Begin resource allocation for " + GTPlusPlusEverglades.ID + " V" + VERSION);
 
         // Load World and Biome
         GameRegistry.registerWorldGenerator(new WorldGen_GT_Base(), Short.MAX_VALUE);
@@ -149,11 +150,6 @@ public class GTPPEverglades {
     public void addVMDrop(Block block, int meta, float weight) {
         MTEVoidMinerBase
             .addBlockToDimensionList(gtPlusPlus.core.config.Configuration.worldgen.EVERGLADES_ID, block, meta, weight);
-    }
-
-    @EventHandler
-    public void serverLoad(FMLServerStartingEvent event) {
-        getEvergladesBiome().serverLoad(event);
     }
 
     @EventHandler

@@ -29,11 +29,10 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
     /** A list of biomes that the player can spawn in. */
     private final List<BiomeGenBase> biomesToSpawnIn;
 
-    @SuppressWarnings({ "rawtypes" })
     public WorldChunkManagerCustom() {
         this.biomeCache = new BiomeCache(this);
-        this.biomesToSpawnIn = new ArrayList();
-        this.biomesToSpawnIn.addAll(allowedBiomes); // TODO
+        this.biomesToSpawnIn = new ArrayList<>();
+        this.biomesToSpawnIn.addAll(allowedBiomes);
     }
 
     public WorldChunkManagerCustom(long seed, WorldType worldType) {

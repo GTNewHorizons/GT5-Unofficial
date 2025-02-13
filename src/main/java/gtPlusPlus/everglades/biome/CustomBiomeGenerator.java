@@ -50,8 +50,6 @@ import gtPlusPlus.everglades.gen.WorldGenMinableCustom;
 
 public class CustomBiomeGenerator extends BiomeDecorator {
 
-    public WorldGenerator fluoriteGen;
-
     public CustomBiomeGenerator() {
         // Basic Blocks
         this.sandGen = new WorldGenMinableCustom(Blocks.sand, 12);

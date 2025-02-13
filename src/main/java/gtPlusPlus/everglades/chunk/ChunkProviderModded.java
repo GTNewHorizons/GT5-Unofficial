@@ -60,9 +60,6 @@ public class ChunkProviderModded implements IChunkProvider {
     private double[] stoneNoise = new double[256];
     private MapGenBase caveGenerator = new MapGenCaves();
     /**
-     * Holds Stronghold Generator
-     */
-    /**
      * Holds Village Generator
      */
     private MapGenVillage villageGenerator = new MapGenVillage();
@@ -83,14 +80,9 @@ public class ChunkProviderModded implements IChunkProvider {
     double[] field_147428_e;
     double[] field_147425_f;
     double[] field_147426_g;
-    int[][] field_73219_j = new int[32][32];
     {
         caveGenerator = TerrainGen
             .getModdedMapGen(caveGenerator, net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.CAVE);
-        /*
-         * strongholdGenerator = (MapGenStronghold) TerrainGen.getModdedMapGen(strongholdGenerator,
-         * net.minecraftforge.event.terraingen.InitMapGenEvent.EventType. STRONGHOLD);
-         */
         villageGenerator = (MapGenVillage) TerrainGen
             .getModdedMapGen(villageGenerator, net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.VILLAGE);
         mineshaftGenerator = (MapGenMineshaft) TerrainGen.getModdedMapGen(
@@ -141,7 +133,7 @@ public class ChunkProviderModded implements IChunkProvider {
         byte b0 = 63;
         this.biomesForGeneration = this.worldObj.getWorldChunkManager()
             .getBiomesForGeneration(this.biomesForGeneration, p_147424_1_ * 4 - 2, p_147424_2_ * 4 - 2, 10, 10);
-        this.func_147423_a(p_147424_1_ * 4, 0, p_147424_2_ * 4);
+        this.func_147423_a(p_147424_1_ * 4, p_147424_2_ * 4);
 
         for (int k = 0; k < 4; ++k) {
             int l = k * 5;
@@ -273,13 +265,13 @@ public class ChunkProviderModded implements IChunkProvider {
         return chunk;
     }
 
-    private void func_147423_a(int p_147423_1_, int p_147423_2_, int p_147423_3_) {
+    private void func_147423_a(int p_147423_1_, int p_147423_3_) {
         this.field_147426_g = this.noiseGen6
             .generateNoiseOctaves(this.field_147426_g, p_147423_1_, p_147423_3_, 5, 5, 200.0D, 200.0D, 0.5D);
         this.field_147427_d = this.field_147429_l.generateNoiseOctaves(
             this.field_147427_d,
             p_147423_1_,
-            p_147423_2_,
+            0,
             p_147423_3_,
             5,
             33,
@@ -290,7 +282,7 @@ public class ChunkProviderModded implements IChunkProvider {
         this.field_147428_e = this.field_147431_j.generateNoiseOctaves(
             this.field_147428_e,
             p_147423_1_,
-            p_147423_2_,
+            0,
             p_147423_3_,
             5,
             33,
@@ -301,7 +293,7 @@ public class ChunkProviderModded implements IChunkProvider {
         this.field_147425_f = this.field_147432_k.generateNoiseOctaves(
             this.field_147425_f,
             p_147423_1_,
-            p_147423_2_,
+            0,
             p_147423_3_,
             5,
             33,
@@ -527,9 +519,9 @@ public class ChunkProviderModded implements IChunkProvider {
     /**
      * Returns a list of creatures of the specified type that can spawn at the given location.
      */
-    @SuppressWarnings("rawtypes")
     @Override
-    public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int par2, int par3, int par4) {
+    public List<BiomeGenBase.SpawnListEntry> getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int par2,
+        int par3, int par4) {
         BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(par2, par4);
         return par1EnumCreatureType == EnumCreatureType.monster
             && this.scatteredFeatureGenerator.func_143030_a(par2, par3, par4)

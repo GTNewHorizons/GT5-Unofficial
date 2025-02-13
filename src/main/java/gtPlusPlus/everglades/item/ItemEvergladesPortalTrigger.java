@@ -99,9 +99,7 @@ public class ItemEvergladesPortalTrigger extends Item {
                 "fire.ignite",
                 1.0F,
                 itemRand.nextFloat() * 0.4F + 0.8F);
-            if (DimensionEverglades.portalBlock.tryToCreatePortal(par3World, par4, par5, par6)) {
-                // Make a Portal
-            } else {
+            if (!DimensionEverglades.portalBlock.tryToCreatePortal(par3World, par4, par5, par6)) {
                 if (!par3World.isRemote) {
                     par3World.setBlock(par4, par5, par6, ModBlocks.blockHellfire, 0, 3);
                 }

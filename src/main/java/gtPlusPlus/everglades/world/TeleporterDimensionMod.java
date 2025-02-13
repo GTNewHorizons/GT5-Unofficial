@@ -1,8 +1,6 @@
 package gtPlusPlus.everglades.world;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.entity.Entity;
@@ -16,6 +14,8 @@ import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
 
 import gtPlusPlus.everglades.dimension.DimensionEverglades;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.longs.LongList;
 
 public class TeleporterDimensionMod extends Teleporter {
 
@@ -32,8 +32,7 @@ public class TeleporterDimensionMod extends Teleporter {
      * A list of valid keys for the destinationCoordainteCache. These are based on the X & Z of the players initial
      * location.
      */
-    @SuppressWarnings("rawtypes")
-    private final List destinationCoordinateKeys = new ArrayList();
+    private final LongList destinationCoordinateKeys = new LongArrayList();
 
     public TeleporterDimensionMod(WorldServer par1WorldServer) {
         super(par1WorldServer);
@@ -56,14 +55,13 @@ public class TeleporterDimensionMod extends Teleporter {
             int j = MathHelper.floor_double(par1Entity.posY) - 1;
             int k = MathHelper.floor_double(par1Entity.posZ);
             byte b0 = 1;
-            byte b1 = 0;
 
             for (int l = -2; l <= 2; ++l) {
                 for (int i1 = -2; i1 <= 2; ++i1) {
                     for (int j1 = -1; j1 < 3; ++j1) {
-                        int k1 = i + i1 * b0 + l * b1;
+                        int k1 = i + i1 * b0;
                         int l1 = j + j1;
-                        int i2 = k + i1 * b1 - l * b0;
+                        int i2 = k - l * b0;
                         boolean flag = j1 < 0;
                         this.worldServerInstance
                             .setBlock(k1, l1, i2, flag ? DimensionEverglades.blockPortalFrame : Blocks.air);
@@ -196,7 +194,7 @@ public class TeleporterDimensionMod extends Teleporter {
                     f1 = 1.0F;
                 } else if (flag1 && !flag2) {
                     f1 = 0.0F;
-                } else if (flag1 && flag2) {
+                } else if (flag1) {
                     f2 = 0.0F;
                 }
 

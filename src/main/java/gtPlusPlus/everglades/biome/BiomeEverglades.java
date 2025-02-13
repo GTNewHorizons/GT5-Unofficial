@@ -8,8 +8,6 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager;
 
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.config.Configuration;
@@ -29,10 +27,6 @@ public class BiomeEverglades {
         BiomeDictionary.registerBiomeType(biome, BiomeDictionary.Type.DEAD);
         BiomeManager.addSpawnBiome(biome);
     }
-
-    public void serverLoad(FMLServerStartingEvent event) {}
-
-    public void preInit(FMLPreInitializationEvent event) {}
 
     static class BiomeGenEverglades extends BiomeGenBase {
 
