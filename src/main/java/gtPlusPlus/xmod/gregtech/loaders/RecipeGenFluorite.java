@@ -201,14 +201,14 @@ public class RecipeGenFluorite extends RecipeGenBase {
                 + ".");
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsFluorides.FLUORITE.getCrushed(2))
+            .itemInputs(MaterialsFluorides.FLUORITE.getCrushed(1))
             .itemOutputs(
-                MaterialsFluorides.FLUORITE.getCrushedPurified(8),
-                MaterialsFluorides.FLUORITE.getDustImpure(4),
-                MaterialsFluorides.FLUORITE.getDustPurified(2))
+                MaterialsFluorides.FLUORITE.getCrushedPurified(4),
+                MaterialsFluorides.FLUORITE.getDustImpure(2),
+                MaterialsFluorides.FLUORITE.getDustPurified(1))
             .outputChances(100_00, 50_00, 10_00)
-            .fluidInputs(FluidUtils.getFluidStack("hydrogen", 2000))
-            .duration(30 * SECONDS)
+            .fluidInputs(FluidUtils.getFluidStack("hydrogen", 1000))
+            .duration(15 * SECONDS)
             .eut(240)
             .addTo(chemicalBathRecipes);
 

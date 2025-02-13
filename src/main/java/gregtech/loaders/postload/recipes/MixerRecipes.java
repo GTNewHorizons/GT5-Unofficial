@@ -1543,11 +1543,11 @@ public class MixerRecipes implements Runnable {
     public void registerSingleBlockAndMulti() {
         GTValues.RA.stdBuilder()
             .itemInputs(
-                Materials.NaquadahEnriched.getDust(8),
-                Materials.Holmium.getDust(2),
+                Materials.NaquadahEnriched.getDust(4),
+                Materials.Holmium.getDust(1),
                 GTUtility.getIntegratedCircuit(4))
-            .itemOutputs(Materials.EnrichedHolmium.getDust(10))
-            .duration(30 * SECONDS)
+            .itemOutputs(Materials.EnrichedHolmium.getDust(5))
+            .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(mixerRecipes);
 

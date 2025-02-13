@@ -282,17 +282,17 @@ public class BioRecipes {
 
         // Alginic acid
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 10))
-            .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mAlginicAcid, 2))
-            .duration(2 * SECONDS)
+            .itemInputs(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 5))
+            .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mAlginicAcid, 1))
+            .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(extractorRecipes);
 
         // Lithium Chloride
         GTValues.RA.stdBuilder()
-            .itemInputs(getBrownAlgaeRecipeChip(), ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 20))
-            .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mLithiumChloride, 5))
-            .duration(6 * SECONDS)
+            .itemInputs(getBrownAlgaeRecipeChip(), ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 4))
+            .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mLithiumChloride, 1))
+            .duration(1 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
@@ -366,9 +366,9 @@ public class BioRecipes {
 
         // Methanol Extraction
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 12))
-            .fluidOutputs(Materials.Methanol.getFluid(1000L))
-            .duration(7 * SECONDS + 10 * TICKS)
+            .itemInputs(ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 3))
+            .fluidOutputs(Materials.Methanol.getFluid(250L))
+            .duration(1 * SECONDS + 17 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidExtractionRecipes);
 
@@ -410,10 +410,10 @@ public class BioRecipes {
         // Extruder Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 12),
+                ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 4),
                 ItemUtils.getSimpleStack(AgriculturalChem.mPelletMold, 0))
-            .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 3))
-            .duration(10 * SECONDS)
+            .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 1))
+            .duration(3 * SECONDS + 6 * TICKS)
             .eut(16)
             .addTo(extruderRecipes);
 
@@ -693,18 +693,18 @@ public class BioRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(BioRecipes.getBioChip(2))
-            .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 1000))
-            .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mEthanol, 100))
-            .duration(20 * SECONDS)
+            .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 40))
+            .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mEthanol, 4))
+            .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(distilleryRecipes);
     }
 
     private static void recipeGoldenBrownCelluloseFiber() {
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownCelluloseFiber, 5))
-            .fluidOutputs(Materials.Ammonia.getGas(500))
-            .duration(15 * SECONDS)
+            .itemInputs(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownCelluloseFiber, 1))
+            .fluidOutputs(Materials.Ammonia.getGas(100))
+            .duration(3 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidExtractionRecipes);
     }

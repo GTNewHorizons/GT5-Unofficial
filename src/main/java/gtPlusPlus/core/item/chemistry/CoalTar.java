@@ -6,6 +6,7 @@ import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
@@ -186,10 +187,10 @@ public class CoalTar extends ItemPackage {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(6))
-            .fluidInputs(FluidUtils.getFluidStack("fluid.sulfuriccoaltaroil", 1000))
-            .fluidOutputs(FluidUtils.getFluidStack("fluid.naphthalene", 1000))
+            .fluidInputs(FluidUtils.getFluidStack("fluid.sulfuriccoaltaroil", 20))
+            .fluidOutputs(FluidUtils.getFluidStack("fluid.naphthalene", 20))
             .eut(TierEU.RECIPE_LV)
-            .duration(60 * SECONDS)
+            .duration(1 * SECONDS + 4 * TICKS)
             .addTo(distilleryRecipes);
     }
 

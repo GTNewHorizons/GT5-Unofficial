@@ -883,17 +883,17 @@ public class RecipeLoader2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(24))
-            .fluidInputs(FluidRegistry.getFluidStack("fluid.coaltaroil", 100))
-            .fluidOutputs(GGMaterial.cyclopentadiene.getFluidOrGas(30))
-            .duration(5 * SECONDS)
+            .fluidInputs(FluidRegistry.getFluidStack("fluid.coaltaroil", 20))
+            .fluidOutputs(GGMaterial.cyclopentadiene.getFluidOrGas(6))
+            .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(24))
-            .fluidInputs(Materials.WoodTar.getFluid(500))
-            .fluidOutputs(GGMaterial.cyclopentadiene.getFluidOrGas(20))
-            .duration(5 * SECONDS)
+            .fluidInputs(Materials.WoodTar.getFluid(100))
+            .fluidOutputs(GGMaterial.cyclopentadiene.getFluidOrGas(5))
+            .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(distilleryRecipes);
 

@@ -1504,18 +1504,18 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(4),
-                WerkstoffMaterialPool.SaturatedMonaziteRareEarthMixture.get(OrePrefixes.dust, 8))
-            .itemOutputs(WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dust, 6))
-            .fluidOutputs(Materials.Chloromethane.getGas(800))
+                WerkstoffMaterialPool.SaturatedMonaziteRareEarthMixture.get(OrePrefixes.dust, 4))
+            .itemOutputs(WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dust, 3))
+            .fluidOutputs(Materials.Chloromethane.getGas(400))
             .eut(TierEU.RECIPE_EV)
-            .duration(5 * MINUTES + 15 * SECONDS)
+            .duration(2 * MINUTES + 37 * SECONDS + 10 * TICKS)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dust, 9))
-            .itemOutputs(Materials.Samarium.getDust(6), Materials.Gadolinium.getDust(3))
+            .itemInputs(WerkstoffMaterialPool.SamaricResidue.get(OrePrefixes.dust, 3))
+            .itemOutputs(Materials.Samarium.getDust(2), Materials.Gadolinium.getDust(1))
             .outputChances(10000, 10000)
-            .duration(20 * SECONDS)
+            .duration(6 * SECONDS + 13 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(sifterRecipes);
 
@@ -3420,9 +3420,9 @@ public class RecipeLoader {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(WerkstoffMaterialPool.DilutedAcetone.getFluidOrGas(250))
-            .fluidOutputs(Materials.Acetone.getFluid(150))
-            .duration(6 * SECONDS)
+            .fluidInputs(WerkstoffMaterialPool.DilutedAcetone.getFluidOrGas(50))
+            .fluidOutputs(Materials.Acetone.getFluid(30))
+            .duration(1 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidHeaterRecipes);
 
