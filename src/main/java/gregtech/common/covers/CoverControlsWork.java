@@ -21,6 +21,16 @@ import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
 public class CoverControlsWork extends CoverBehavior {
 
+    private enum State {
+        ENABLE_WITH_SIGNAL,
+        DISABLE_WITH_SIGNAL,
+        DISABLED,
+        ENABLE_WITH_SIGNAL_SAFE,
+        DISABLE_WITH_SIGNAL_SAFE;
+    }
+
+    private boolean handledShutdown = false;
+
     public CoverControlsWork(ITexture coverTexture) {
         super(coverTexture);
     }
@@ -29,35 +39,52 @@ public class CoverControlsWork extends CoverBehavior {
     public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
         if (aTileEntity instanceof IMachineProgress machine) {
-            if (aCoverVariable < 2) {
-                if ((aInputRedstone > 0) == (aCoverVariable == 0)) {
-                    if (!machine.isAllowedToWork()) machine.enableWorking();
-                } else if (machine.isAllowedToWork()) machine.disableWorking();
-            } else if (aCoverVariable == 2) {
-                machine.disableWorking();
-            } else {
-                if (machine.wasShutdown() && machine.getLastShutDownReason()
-                    .wasCritical()) {
-                    machine.disableWorking();
-                    if (!mPlayerNotified) {
-                        EntityPlayer player = lastPlayer == null ? null : lastPlayer.get();
-                        if (player != null) {
-                            lastPlayer = null;
-                            mPlayerNotified = true;
-                            GTUtility.sendChatToPlayer(
-                                player,
-                                aTileEntity.getInventoryName() + "at "
-                                    + String.format(
-                                        "(%d,%d,%d)",
-                                        aTileEntity.getXCoord(),
-                                        aTileEntity.getYCoord(),
-                                        aTileEntity.getZCoord())
-                                    + " shut down.");
+            State state = aCoverVariable < State.values().length ? State.values()[aCoverVariable] : State.DISABLED;
+            switch (state) {
+                case ENABLE_WITH_SIGNAL, DISABLE_WITH_SIGNAL -> {
+                    if ((aInputRedstone > 0) == (state == State.ENABLE_WITH_SIGNAL)) {
+                        if (!machine.isAllowedToWork()) {
+                            machine.enableWorking();
+                            handledShutdown = false;
+                        }
+                    } else {
+                        if (machine.isAllowedToWork()) machine.disableWorking();
+                    }
+                }
+                case DISABLED -> {
+                    if (machine.isAllowedToWork()) machine.disableWorking();
+                }
+                case ENABLE_WITH_SIGNAL_SAFE, DISABLE_WITH_SIGNAL_SAFE -> {
+                    if (machine.wasShutdown() && machine.getLastShutDownReason()
+                        .wasCritical() && !handledShutdown) {
+                        if (!mPlayerNotified) {
+                            EntityPlayer player = lastPlayer == null ? null : lastPlayer.get();
+                            if (player != null) {
+                                lastPlayer = null;
+                                mPlayerNotified = true;
+                                GTUtility.sendChatToPlayer(
+                                    player,
+                                    aTileEntity.getInventoryName() + "at "
+                                        + String.format(
+                                            "(%d,%d,%d)",
+                                            aTileEntity.getXCoord(),
+                                            aTileEntity.getYCoord(),
+                                            aTileEntity.getZCoord())
+                                        + " shut down.");
+                            }
+                        }
+                        handledShutdown = true;
+                        return State.DISABLED.ordinal();
+                    } else {
+                        if ((aInputRedstone > 0) == (state == State.ENABLE_WITH_SIGNAL_SAFE)) {
+                            if (!machine.isAllowedToWork()) {
+                                machine.enableWorking();
+                                handledShutdown = false;
+                            }
+                        } else {
+                            if (machine.isAllowedToWork()) machine.disableWorking();
                         }
                     }
-                    return 2;
-                } else {
-                    return 3 + doCoverThings(side, aInputRedstone, aCoverID, aCoverVariable - 3, aTileEntity, aTimer);
                 }
             }
         }
