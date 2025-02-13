@@ -82,10 +82,10 @@ import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.everglades.GTPPEverglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
+import toxiceverglades.GTPPEverglades;
 
 public final class ModItems {
 
