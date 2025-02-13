@@ -214,7 +214,7 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
-        if (aBaseMetaTileEntity.isClientSide() || aTick % 20 != 0) return;
+        if (aBaseMetaTileEntity.isClientSide() || aTick % 20 != 0 || !mMachine) return;
 
         particles = Math.min(particles + speed, capacity);
 
@@ -241,7 +241,7 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
         return false;
     }
 
-    int speedTier, capacityTier, autoTier = 1;
+    int speedTier = 1, capacityTier = 1, autoTier = 1;
 
     private void doSpeedUpgrade() {
         speedTier++;
@@ -269,8 +269,11 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
 
     private void doDump() {
         int neutronium = particles / 100;
-        addOutput(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.CosmicNeutronium, neutronium));
-
+        while (neutronium > 0) {
+            int canDump = Math.min(64, neutronium);
+            addOutput(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.CosmicNeutronium, canDump));
+            neutronium -= canDump;
+        }
         particles -= neutronium * 100;
     }
 
