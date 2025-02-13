@@ -31,7 +31,6 @@ import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.plugin.agrichem.block.AgrichemFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class RecipeLoaderGenericChem {
@@ -200,7 +199,7 @@ public class RecipeLoaderGenericChem {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Soapstone, 32),
                 GTUtility.getIntegratedCircuit(10))
             .itemOutputs(GregtechItemList.Milling_Ball_Soapstone.get(8))
-            .fluidInputs(FluidUtils.getFluidStack(AgrichemFluids.mLiquidResin, 2500))
+            .fluidInputs(new FluidStack(GTPPFluids.LiquidResin, 2500))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);

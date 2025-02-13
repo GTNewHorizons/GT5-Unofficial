@@ -22,6 +22,11 @@ public class GTPPFluids {
     public static Fluid ManureSlurry;
     public static Fluid FertileManureSlurry;
     public static Fluid RedMud;
+    public static Fluid PropionicAcid;
+    public static Fluid FermentationBase;
+    public static Fluid Urea;
+    public static Fluid LiquidResin;
+    public static Fluid Butanol;
 
     // Milling
     public static Fluid SphaleriteFlotationFroth;
@@ -76,7 +81,6 @@ public class GTPPFluids {
             0,
             true);
 
-        // Sewage
         ManureSlurry = FluidUtils.generateFluidNonMolten(
             "manure.slurry",
             "Manure Slurry",
@@ -87,7 +91,6 @@ public class GTPPFluids {
             0,
             true);
 
-        // Sewage
         FertileManureSlurry = FluidUtils.generateFluidNonMolten(
             "fertile.manure.slurry",
             "Fertile Manure Slurry",
@@ -104,6 +107,23 @@ public class GTPPFluids {
             32 + 175,
             new short[] { 180, 35, 25, 100 },
             true);
+
+        PropionicAcid = FluidUtils
+            .generateFluidNoPrefix("propionicacid", "Propionic Acid", 200, new short[] { 198, 209, 148, 100 }, true);
+
+        FermentationBase = FluidUtils.generateFluidNoPrefix(
+            "fermentation.base",
+            "Fermentation Base",
+            200,
+            new short[] { 107, 100, 63, 100 },
+            true);
+
+        Urea = FluidUtils.generateFluidNoPrefix("ureamix", "Urea Mix", 200, new short[] { 71, 55, 12, 100 }, true);
+
+        LiquidResin = FluidUtils
+            .generateFluidNoPrefix("liquidresin", "Liquid Resin", 200, new short[] { 59, 58, 56, 100 }, true);
+
+        Butanol = FluidUtils.generateFluidNoPrefix("butanol", "Butanol", 200, new short[] { 159, 58, 56, 100 }, true);
 
         short[] aZincFrothRGB = Materials.Sphalerite.mRGBa;
         SphaleriteFlotationFroth = FluidUtils.generateFluidNoPrefix(
