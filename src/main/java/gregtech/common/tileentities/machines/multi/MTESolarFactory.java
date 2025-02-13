@@ -319,7 +319,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             @Override
             public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 SolarFactoryRecipeData data = recipe.getMetadata(SolarFactoryRecipeDataKey.INSTANCE);
-                if (data == null || mTier < 2) {
+                if (data == null || mTier < 2 || data.minimumWaferTier == 0) {
                     shouldMultiplyOutputs = false;
                     return CheckRecipeResultRegistry.SUCCESSFUL;
                 }
