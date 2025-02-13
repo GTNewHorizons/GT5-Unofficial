@@ -5,17 +5,13 @@ import static gregtech.api.enums.Mods.IndustrialCraft2;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.IntFunction;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -26,8 +22,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 
 import cpw.mods.fml.relauncher.Side;
@@ -53,7 +47,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.GTDummyWorld;
-import gregtech.common.items.ItemIntegratedCircuit;
 
 /**
  * Please do not include this File in your Mod-download as it ruins compatibility, like with the IC2-API You may just
@@ -142,10 +135,6 @@ public class GregTechAPI {
     public static final GTHashSet sGasHazmatList = new GTHashSet(), sBioHazmatList = new GTHashSet(),
         sFrostHazmatList = new GTHashSet(), sHeatHazmatList = new GTHashSet(), sRadioHazmatList = new GTHashSet(),
         sElectroHazmatList = new GTHashSet();
-
-    private static final Multimap<Integer, ItemStack> sRealConfigurationList = Multimaps
-        .newListMultimap(new TreeMap<>(), ArrayList::new);
-    private static final Map<Integer, List<ItemStack>> sConfigurationLists = new ConcurrentHashMap<>();
 
     /**
      * The List of Dimensions, which are Whitelisted for the Teleporter. This list should not contain other Planets.
@@ -368,60 +357,6 @@ public class GregTechAPI {
             e.printStackTrace(GTLog.err);
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Register a new ItemStack as configuration circuits. Duplicates or invalid stacks will be silently ignored.
-     */
-    public static void registerConfigurationCircuit(ItemStack aStack) {
-        registerConfigurationCircuit(aStack, 0);
-    }
-
-    /**
-     * Register a new ItemStack as configuration circuits. Duplicates or invalid stacks will be silently ignored.
-     *
-     * @param minTier the minimal tier this circuit can be offered for free, e.g. normal configuration circuit is
-     *                available in LV+ single blocks, GT++ breakthrough circuit is offered in HV+ single blocks
-     */
-    public static void registerConfigurationCircuit(ItemStack aStack, int minTier) {
-        if (GTUtility.isStackInvalid(aStack)) return;
-        for (ItemStack tRegistered : sRealConfigurationList.values())
-            if (GTUtility.areStacksEqual(tRegistered, aStack)) return;
-        ItemStack stack = GTUtility.copyAmount(0, aStack);
-        sRealConfigurationList.put(minTier, stack);
-        for (Map.Entry<Integer, List<ItemStack>> e : sConfigurationLists.entrySet()) {
-            if (e.getKey() >= minTier) {
-                e.getValue()
-                    .add(stack);
-                e.getValue()
-                    .sort(getConfigurationCircuitsComparator());
-            }
-        }
-    }
-
-    /**
-     * Get a list of Configuration circuits. These stacks will have a stack size of 0. Use
-     * {@link #registerConfigurationCircuit(ItemStack, int)} or its overload to add to this list.
-     *
-     * @param machineTier The voltage tier where this list will be used. use Integer.MAX_VALUE to get all circuits
-     * @return An unmodifiable view of actual list. DO NOT MODIFY THE ItemStacks!
-     */
-    public static List<ItemStack> getConfigurationCircuitList(int machineTier) {
-        return Collections.unmodifiableList(
-            sConfigurationLists.computeIfAbsent(
-                machineTier,
-                (t) -> sRealConfigurationList.entries()
-                    .stream()
-                    .filter(e -> e.getKey() <= machineTier)
-                    .map(Map.Entry::getValue)
-                    .sorted(getConfigurationCircuitsComparator())
-                    .collect(Collectors.toList())));
-    }
-
-    public static Comparator<ItemStack> getConfigurationCircuitsComparator() {
-        return Comparator.comparingInt((ItemStack is) -> is.getItem() instanceof ItemIntegratedCircuit ? 0 : 1)
-            .thenComparing(ItemStack::getUnlocalizedName)
-            .thenComparing(ItemStack::getItemDamage);
     }
 
     /**
