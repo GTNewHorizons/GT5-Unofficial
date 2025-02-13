@@ -1,5 +1,30 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -14,50 +39,21 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
-import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
-import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutronCollector>
     implements ISurvivalConstructable {
@@ -109,8 +105,9 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
     }
 
     private int capacity = 1000;
-    private int speed = 1;
+    private float speed = 1;
     private int particles = 0;
+    private float autoModifier = 0;
 
     @Override
     public IStructureDefinition<MTENeutronCollector> getStructureDefinition() {
@@ -129,7 +126,7 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-                                 int colorIndex, boolean aActive, boolean redstoneLevel) {
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
@@ -216,9 +213,11 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
 
         if (aBaseMetaTileEntity.isClientSide() || aTick % 20 != 0 || !mMachine) return;
 
-        particles = Math.min(particles + speed, capacity);
+        int nextParticles = particles + Math.round(speed * (autoDumpEnabled ? autoModifier : 1));
 
+        particles = Math.min(nextParticles, capacity);
 
+        if (autoDumpEnabled && particles >= capacity) doDump();
     }
 
     @Override
@@ -241,40 +240,92 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
         return false;
     }
 
-    int speedTier = 1, capacityTier = 1, autoTier = 1;
-
-    private void doSpeedUpgrade() {
-        speedTier++;
-        switch (speedTier) {
-            case 2 -> speed = 10;
-            case 3 -> speed = 100;
-            case 4 -> speed = 1000;
-            case 5 -> speed = 10000;
-        }
-    }
-
-    private void doCapacityUpgrade() {
-        capacityTier++;
-        switch (capacityTier) {
-            case 2 -> capacity = 10000;
-            case 3 -> capacity = 100000;
-            case 4 -> capacity = 1000000;
-            case 5 -> capacity = 10000000;
-        }
-    }
-
-    private void doAutoUpgrade() {
-
-    }
-
     private void doDump() {
         int neutronium = particles / 100;
+        particles -= neutronium * 100;
         while (neutronium > 0) {
             int canDump = Math.min(64, neutronium);
             addOutput(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.CosmicNeutronium, canDump));
             neutronium -= canDump;
         }
-        particles -= neutronium * 100;
+    }
+
+    // Upgrade statistics
+
+    private int speedTier = 1, capacityTier = 1, autoTier = 1;
+    private int speedCost = 100, capacityCost = 100, autoCost = 100;
+    private boolean autoDumpEnabled = false;
+
+    private void doSpeedUpgrade() {
+        if (particles < speedCost) return;
+        particles -= speedCost;
+        speedTier++;
+        switch (speedTier) {
+            case 2 -> {
+                speed = 10;
+                speedCost = 1000;
+            }
+            case 3 -> {
+                speed = 100;
+                speedCost = 2000;
+            }
+            case 4 -> {
+                speed = 1000;
+                speedCost = 3000;
+            }
+            case 5 -> {
+                speed = 10000;
+                speedCost = Integer.MAX_VALUE;
+            }
+        }
+    }
+
+    private void doCapacityUpgrade() {
+        if (particles < capacityCost) return;
+        particles -= capacityCost;
+        capacityTier++;
+        switch (capacityTier) {
+            case 2 -> {
+                capacity = 10000;
+                capacityCost = 1000;
+            }
+            case 3 -> {
+                capacity = 100000;
+                capacityCost = 2000;
+            }
+            case 4 -> {
+                capacity = 1000000;
+                capacityCost = 3000;
+            }
+            case 5 -> {
+                capacity = 10000000;
+                capacityCost = Integer.MAX_VALUE;
+            }
+        }
+    }
+
+    private void doAutoUpgrade() {
+        if (particles < autoCost) return;
+        particles -= autoCost;
+        autoTier++;
+        switch (autoTier) {
+            case 2 -> {
+                autoModifier = 0.25F;
+                autoCost = 1000;
+            }
+            case 3 -> {
+                autoModifier = 0.5F;
+                autoCost = 2000;
+            }
+            case 4 -> {
+                autoModifier = 0.75F;
+                autoCost = 3000;
+            }
+            case 5 -> {
+                autoModifier = 1;
+                autoCost = Integer.MAX_VALUE;
+            }
+        }
     }
 
     // UI
@@ -284,6 +335,7 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
         builder.widget(createParticleProgressBar(builder));
 
         createDumpButton(builder);
+        createAutoDumpToggle(builder);
         createUpgradeButtons(builder);
     }
 
@@ -302,83 +354,113 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
             .setPos(7, 24);
     }
 
+    protected void createAutoDumpToggle(IWidgetBuilder<?> builder) {
+        builder.widget(
+            new ButtonWidget().setOnClick((clickData, widget) -> { autoDumpEnabled = !autoDumpEnabled; })
+                .setPlayClickSound(true)
+                .setBackground(() -> {
+                    List<UITexture> ret = new ArrayList<>();
+                    if (autoDumpEnabled) {
+                        ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                        if (autoTier != 1) {
+                            ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
+                        } else {
+                            ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED);
+                        }
+                    } else {
+                        ret.add(GTUITextures.BUTTON_STANDARD);
+                        if (autoTier != 1) {
+                            ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_OFF);
+                        } else {
+                            ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED);
+                        }
+                    }
+                    return ret.toArray(new IDrawable[0]);
+                })
+                .addTooltip("Enable Auto-Dump")
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setPos(new Pos2d(174, 130))
+                .setSize(16, 16));
+    }
+
     protected void createDumpButton(IWidgetBuilder<?> builder) {
-        // Speed upgrade
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                doDump();
-            })
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(GTUITextures.BUTTON_STANDARD);
-                ret.add(GTUITextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM);
-                return ret.toArray(new IDrawable[0]);
-            })
-            .addTooltip("Dump Particles")
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(getPowerSwitchButtonPos())
-            .setSize(16, 16));
+        builder.widget(
+            new ButtonWidget().setOnClick((clickData, widget) -> { doDump(); })
+                .setPlayClickSound(true)
+                .setBackground(() -> {
+                    List<UITexture> ret = new ArrayList<>();
+                    ret.add(GTUITextures.BUTTON_STANDARD);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM);
+                    return ret.toArray(new IDrawable[0]);
+                })
+                .addTooltip("Dump Particles")
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setPos(new Pos2d(174, 148))
+                .setSize(16, 16));
     }
 
     protected void createUpgradeButtons(IWidgetBuilder<?> builder) {
         // Speed upgrade
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                doSpeedUpgrade();
-            })
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                    ret.add(GTUITextures.BUTTON_STANDARD);
+        builder.widget(
+            new ButtonWidget().setOnClick((clickData, widget) -> { doSpeedUpgrade(); })
+                .setPlayClickSound(true)
+                .setBackground(() -> {
+                    List<UITexture> ret = new ArrayList<>();
+                    if (particles < speedCost) {
+                        ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                    } else ret.add(GTUITextures.BUTTON_STANDARD);
                     if (speedTier < 5) {
                         ret.add(GTUITextures.OVERLAY_BUTTON_ARROW_GREEN_UP);
                     } else {
-                        ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED);
+                        ret.add(GTUITextures.OVERLAY_BUTTON_CHECKMARK);
                     }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .addTooltip("Speed Upgrade")
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(new Pos2d(174, 25))
-            .setSize(16, 16));
+                    return ret.toArray(new IDrawable[0]);
+                })
+                .addTooltip("Speed Upgrade")
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setPos(new Pos2d(174, 25))
+                .setSize(16, 16));
 
         // Capacity upgrade
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                doCapacityUpgrade();
-            })
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(GTUITextures.BUTTON_STANDARD);
-                if (capacityTier < 5) {
-                    ret.add(GTUITextures.OVERLAY_BUTTON_ARROW_BLUE_UP);
-                } else {
-                    ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED);
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .addTooltip("Capacity Upgrade")
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(new Pos2d(174, 43))
-            .setSize(16, 16));
+        builder.widget(
+            new ButtonWidget().setOnClick((clickData, widget) -> { doCapacityUpgrade(); })
+                .setPlayClickSound(true)
+                .setBackground(() -> {
+                    List<UITexture> ret = new ArrayList<>();
+                    if (particles < capacityCost) {
+                        ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                    } else ret.add(GTUITextures.BUTTON_STANDARD);
+                    if (capacityTier < 5) {
+                        ret.add(GTUITextures.OVERLAY_BUTTON_ARROW_BLUE_UP);
+                    } else {
+                        ret.add(GTUITextures.OVERLAY_BUTTON_CHECKMARK);
+                    }
+                    return ret.toArray(new IDrawable[0]);
+                })
+                .addTooltip("Capacity Upgrade")
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setPos(new Pos2d(174, 43))
+                .setSize(16, 16));
 
         // Auto upgrade
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                doAutoUpgrade();
-            })
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(GTUITextures.BUTTON_STANDARD);
-                if (autoTier < 5) {
-                    ret.add(GTUITextures.OVERLAY_BUTTON_ARROW_RED_UP);
-                } else {
-                    ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED);
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .addTooltip("Auto Upgrade")
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(new Pos2d(174, 61))
-            .setSize(16, 16));
+        builder.widget(
+            new ButtonWidget().setOnClick((clickData, widget) -> { doAutoUpgrade(); })
+                .setPlayClickSound(true)
+                .setBackground(() -> {
+                    List<UITexture> ret = new ArrayList<>();
+                    if (particles < autoCost) {
+                        ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                    } else ret.add(GTUITextures.BUTTON_STANDARD);
+                    if (autoTier < 5) {
+                        ret.add(GTUITextures.OVERLAY_BUTTON_ARROW_RED_UP);
+                    } else {
+                        ret.add(GTUITextures.OVERLAY_BUTTON_CHECKMARK);
+                    }
+                    return ret.toArray(new IDrawable[0]);
+                })
+                .addTooltip("Auto Upgrade")
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setPos(new Pos2d(174, 61))
+                .setSize(16, 16));
     }
 }
