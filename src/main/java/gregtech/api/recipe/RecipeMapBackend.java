@@ -82,7 +82,7 @@ public class RecipeMapBackend {
      * @see #watchRecipeAdded(Consumer)
      */
     @Nullable
-    private Consumer<GTRecipe> recipeAddedCallback;
+    protected Consumer<GTRecipe> recipeAddedCallback;
 
     /**
      * Called when a {@link GTRecipeBuilder} is added.
@@ -90,7 +90,7 @@ public class RecipeMapBackend {
      * @see #watchRecipeBuilderAdded(Consumer)
      */
     @Nullable
-    private Consumer<GTRecipeBuilder> recipeBuilderAddedCallback;
+    protected Consumer<GTRecipeBuilder> recipeBuilderAddedCallback;
 
     public RecipeMapBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         this.properties = propertiesBuilder.build();
