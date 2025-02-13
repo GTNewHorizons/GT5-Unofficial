@@ -18,7 +18,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.ic2.item.IC2Items;
 import ic2.core.Ic2Items;
 
 public class RecipeIC2 {
@@ -28,16 +27,16 @@ public class RecipeIC2 {
 
         // Rotor Blades
         GTModHandler.addCraftingRecipe(
-            IC2Items.rotor_Blade_Material_1.copy(),
+            GregtechItemList.EnergeticAlloyRotorBlade.get(1),
             new Object[] { "PPP", "PRP", "PPP", 'P', "plateEnergeticAlloy", 'R', "ringStainlessSteel" });
         GTModHandler.addCraftingRecipe(
-            IC2Items.rotor_Blade_Material_2.copy(),
+            GregtechItemList.TungstenSteelRotorBlade.get(1),
             new Object[] { "PPP", "PRP", "PPP", 'P', "plateTungstenSteel", 'R', "ringTungstenSteel" });
         GTModHandler.addCraftingRecipe(
-            IC2Items.rotor_Blade_Material_3.copy(),
+            GregtechItemList.VibrantAlloyRotorBlade.get(1),
             new Object[] { "PPP", "PRP", "PPP", 'P', "plateVibrantAlloy", 'R', "ringChrome" });
         GTModHandler.addCraftingRecipe(
-            IC2Items.rotor_Blade_Material_4.copy(),
+            GregtechItemList.IridiumRotorBlade.get(1),
             new Object[] { "PPP", "PRP", "PPP", 'P', "plateAlloyIridium", 'R', "ringOsmiridium" });
 
         // Shaft Extruder Shape
@@ -65,7 +64,7 @@ public class RecipeIC2 {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.EnergeticAlloy, 9),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
-            .itemOutputs(IC2Items.shaft_Material_1.copy())
+            .itemOutputs(GregtechItemList.EnergeticAlloyShaft.get(1))
             .duration(2 * MINUTES + 8 * SECONDS)
             .eut(250)
             .addTo(extruderRecipes);
@@ -73,7 +72,7 @@ public class RecipeIC2 {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.EnergeticAlloy, 1),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
-            .itemOutputs(IC2Items.shaft_Material_1.copy())
+            .itemOutputs(GregtechItemList.EnergeticAlloyShaft.get(1))
             .duration(2 * MINUTES + 8 * SECONDS)
             .eut(250)
             .addTo(extruderRecipes);
@@ -82,7 +81,7 @@ public class RecipeIC2 {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 9),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
-            .itemOutputs(IC2Items.shaft_Material_2.copy())
+            .itemOutputs(GregtechItemList.TungstenSteelShaft.get(1))
             .duration(4 * MINUTES + 16 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(extruderRecipes);
@@ -90,7 +89,7 @@ public class RecipeIC2 {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.TungstenSteel, 1),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
-            .itemOutputs(IC2Items.shaft_Material_2.copy())
+            .itemOutputs(GregtechItemList.TungstenSteelShaft.get(1))
             .duration(4 * MINUTES + 16 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(extruderRecipes);
@@ -99,7 +98,7 @@ public class RecipeIC2 {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.VibrantAlloy, 9),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
-            .itemOutputs(IC2Items.shaft_Material_3.copy())
+            .itemOutputs(GregtechItemList.VibrantAlloyShaft.get(1))
             .duration(8 * MINUTES + 32 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(extruderRecipes);
@@ -107,7 +106,7 @@ public class RecipeIC2 {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.VibrantAlloy, 1),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
-            .itemOutputs(IC2Items.shaft_Material_3.copy())
+            .itemOutputs(GregtechItemList.VibrantAlloyShaft.get(1))
             .duration(8 * MINUTES + 32 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(extruderRecipes);
@@ -116,7 +115,7 @@ public class RecipeIC2 {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iridium, 9),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
-            .itemOutputs(IC2Items.shaft_Material_4.copy())
+            .itemOutputs(GregtechItemList.IridiumShaft.get(1))
             .duration(17 * MINUTES + 4 * SECONDS)
             .eut(4000)
             .addTo(extruderRecipes);
@@ -124,28 +123,28 @@ public class RecipeIC2 {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Iridium, 1),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
-            .itemOutputs(IC2Items.shaft_Material_4.copy())
+            .itemOutputs(GregtechItemList.IridiumShaft.get(1))
             .duration(17 * MINUTES + 4 * SECONDS)
             .eut(4000)
             .addTo(extruderRecipes);
 
         // Gearbox Rotors
         GTModHandler.addCraftingRecipe(
-            IC2Items.rotor_Material_1.copy(),
-            new Object[] { "SBh", "BRB", "wBS", 'B', IC2Items.rotor_Blade_Material_1.copy(), 'R', "ringStainlessSteel",
-                'S', IC2Items.shaft_Material_1.copy() });
+            GregtechItemList.EnergeticAlloyRotor.get(1),
+            new Object[] { "SBh", "BRB", "wBS", 'B', GregtechItemList.EnergeticAlloyRotorBlade.get(1), 'R',
+                "ringStainlessSteel", 'S', GregtechItemList.EnergeticAlloyShaft.get(1) });
         GTModHandler.addCraftingRecipe(
-            IC2Items.rotor_Material_2.copy(),
-            new Object[] { "SBh", "BRB", "wBS", 'B', IC2Items.rotor_Blade_Material_2.copy(), 'R', "ringTungstenSteel",
-                'S', IC2Items.shaft_Material_2.copy() });
+            GregtechItemList.TungstenSteelRotor.get(1),
+            new Object[] { "SBh", "BRB", "wBS", 'B', GregtechItemList.TungstenSteelRotorBlade.get(1), 'R',
+                "ringTungstenSteel", 'S', GregtechItemList.TungstenSteelShaft.get(1) });
         GTModHandler.addCraftingRecipe(
-            IC2Items.rotor_Material_3.copy(),
-            new Object[] { "SBh", "BRB", "wBS", 'B', IC2Items.rotor_Blade_Material_3.copy(), 'R', "ringChrome", 'S',
-                IC2Items.shaft_Material_3.copy() });
+            GregtechItemList.VibrantAlloyRotor.get(1),
+            new Object[] { "SBh", "BRB", "wBS", 'B', GregtechItemList.VibrantAlloyRotorBlade.get(1), 'R', "ringChrome",
+                'S', GregtechItemList.VibrantAlloyShaft.get(1) });
         GTModHandler.addCraftingRecipe(
-            IC2Items.rotor_Material_4.copy(),
-            new Object[] { "SBh", "BRB", "wBS", 'B', IC2Items.rotor_Blade_Material_4.copy(), 'R', "ringOsmiridium", 'S',
-                IC2Items.shaft_Material_4.copy() });
+            GregtechItemList.IridiumRotor.get(1),
+            new Object[] { "SBh", "BRB", "wBS", 'B', GregtechItemList.IridiumRotorBlade.get(1), 'R', "ringOsmiridium",
+                'S', GregtechItemList.IridiumShaft.get(1) });
     }
 
     private static void addAdvancedHazmat() {
