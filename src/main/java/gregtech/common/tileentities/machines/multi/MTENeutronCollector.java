@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -111,6 +112,37 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
     private float speed = 1;
     private int particles = 0;
     private float autoModifier = 0;
+    private int[] tierSpeed = new int[] { 1, 10, 100, 1000, 10000 };
+    private int[] tierCapacity = new int[] { 1000, 10000, 100000, 1000000, 10000000 };
+    private float[] tierAuto = new float[] { 0, 0.25F, 0.5F, 0.75F, 1F };
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        aNBT.setInteger("mParticles", particles);
+        aNBT.setInteger("mSpeedTier", speedTier);
+        aNBT.setInteger("mCapacityTier", capacityTier);
+        aNBT.setInteger("mAutoTier", autoTier);
+        // Might remove cost later
+        aNBT.setInteger("mSpeedCost", speedCost);
+        aNBT.setInteger("mCapacityCost", capacityCost);
+        aNBT.setInteger("mAutoCost", autoCost);
+        super.saveNBTData(aNBT);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        particles = aNBT.getInteger("mParticles");
+        speedTier = aNBT.getInteger("mSpeedTier");
+        speed = tierSpeed[speedTier - 1];
+        capacityTier = aNBT.getInteger("mCapacityTier");
+        capacity = tierCapacity[capacityTier - 1];
+        autoTier = aNBT.getInteger("mAutoTier");
+        autoModifier = tierAuto[autoTier - 1];
+        speedCost = aNBT.getInteger("mSpeedCost");
+        capacityCost = aNBT.getInteger("mCapacityCost");
+        autoCost = aNBT.getInteger("mAutoCost");
+        super.saveNBTData(aNBT);
+    }
 
     @Override
     public IStructureDefinition<MTENeutronCollector> getStructureDefinition() {
