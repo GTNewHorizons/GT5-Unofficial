@@ -17,14 +17,17 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -416,10 +419,14 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
                     }
                     return ret.toArray(new IDrawable[0]);
                 })
-                .addTooltip("Speed Upgrade")
+                .dynamicTooltip(this::refreshSpeed)
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(new Pos2d(174, 25))
-                .setSize(16, 16));
+                .setSize(16, 16)
+                .attachSyncer(
+                    new FakeSyncWidget.IntegerSyncer(() -> speedCost, val -> speedCost = val),
+                    builder,
+                    (widget, val) -> widget.notifyTooltipChange()));
 
         // Capacity upgrade
         builder.widget(
@@ -437,10 +444,14 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
                     }
                     return ret.toArray(new IDrawable[0]);
                 })
-                .addTooltip("Capacity Upgrade")
+                .dynamicTooltip(this::refreshCapacity)
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(new Pos2d(174, 43))
-                .setSize(16, 16));
+                .setSize(16, 16)
+                .attachSyncer(
+                    new FakeSyncWidget.IntegerSyncer(() -> capacityCost, val -> capacityCost = val),
+                    builder,
+                    (widget, val) -> widget.notifyTooltipChange()));
 
         // Auto upgrade
         builder.widget(
@@ -458,9 +469,46 @@ public class MTENeutronCollector extends MTEExtendedPowerMultiBlockBase<MTENeutr
                     }
                     return ret.toArray(new IDrawable[0]);
                 })
-                .addTooltip("Auto Upgrade")
+                .dynamicTooltip(this::refreshAuto)
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(new Pos2d(174, 61))
-                .setSize(16, 16));
+                .setSize(16, 16)
+                .attachSyncer(
+                    new FakeSyncWidget.IntegerSyncer(() -> autoCost, val -> autoCost = val),
+                    builder,
+                    (widget, val) -> widget.notifyTooltipChange()));
+    }
+
+    private List<String> refreshSpeed() {
+        return ImmutableList.of(
+            translateToLocal("nc.button.upgrade.speed") + EnumChatFormatting.DARK_GRAY
+                + "\n"
+                + (speedCost == Integer.MAX_VALUE ? "Fully Upgraded"
+                    : translateToLocal("nc.button.upgrade.tooltip.cost") + " "
+                        + speedCost
+                        + " "
+                        + translateToLocal("nc.button.upgrade.tooltip.points")));
+    }
+
+    private List<String> refreshCapacity() {
+        return ImmutableList.of(
+            translateToLocal("nc.button.upgrade.capacity") + EnumChatFormatting.DARK_GRAY
+                + "\n"
+                + (capacityCost == Integer.MAX_VALUE ? "Fully Upgraded"
+                    : translateToLocal("nc.button.upgrade.tooltip.cost") + " "
+                        + capacityCost
+                        + " "
+                        + translateToLocal("nc.button.upgrade.tooltip.points")));
+    }
+
+    private List<String> refreshAuto() {
+        return ImmutableList.of(
+            translateToLocal("nc.button.upgrade.flush") + EnumChatFormatting.DARK_GRAY
+                + "\n"
+                + (autoCost == Integer.MAX_VALUE ? "Fully Upgraded"
+                    : translateToLocal("nc.button.upgrade.tooltip.cost") + " "
+                        + autoCost
+                        + " "
+                        + translateToLocal("nc.button.upgrade.tooltip.points")));
     }
 }

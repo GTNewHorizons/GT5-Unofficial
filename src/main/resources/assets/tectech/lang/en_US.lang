@@ -1243,6 +1243,14 @@ fog.cosmetics.importer.apply.tooltip=Apply imported Star Color to color editor
 fog.cosmetics.importer.reset=Reset
 fog.cosmetics.importer.reset.tooltip=Reset imported Star Color
 
+# Neutron Collector
+nc.button.upgrade.tooltip.cost=Cost:
+nc.button.upgrade.tooltip.points=NP
+nc.button.upgrade.speed=Speed Upgrade
+nc.button.upgrade.capacity=Capacity Upgrade
+nc.button.upgrade.flush=Auto Flush Upgrade
+
+
 # Optical Circuits
 achievement.gt.metaitem.03.32155=Optical Assembly
 achievement.gt.metaitem.03.32156=Optical Computer
