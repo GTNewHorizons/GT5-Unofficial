@@ -16,7 +16,6 @@ import java.util.List;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -41,12 +40,6 @@ import gtPlusPlus.plugin.agrichem.item.algae.ItemAlgaeBase;
 
 public class AgriculturalChem extends ItemPackage {
 
-    /**
-     * Fluids
-     */
-
-    // Red Mud
-    public static Fluid RedMud;
     /**
      * Items
      */

@@ -34,6 +34,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class RocketFuels extends ItemPackage {
 
@@ -111,7 +112,7 @@ public class RocketFuels extends ItemPackage {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 1),
-                ItemUtils.getSimpleStack(GenericChem.mOrangeCatalyst, 0))
+                GregtechItemList.OrangeMetalCatalyst.get(0))
             .itemOutputs(Materials.CupricOxide.getDust(2))
             .fluidInputs(FluidUtils.getFluidStack("nitricacid", 2000))
             .fluidOutputs(FluidUtils.getFluidStack(Nitrogen_Tetroxide, 1000))
@@ -190,9 +191,7 @@ public class RocketFuels extends ItemPackage {
 
         // O + CH4O = CH2O + H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(21),
-                ItemUtils.getSimpleStack(GenericChem.mFormaldehydeCatalyst, 0))
+            .itemInputs(GTUtility.getIntegratedCircuit(21), GregtechItemList.FormaldehydeCatalyst.get(0))
             .fluidInputs(FluidUtils.getFluidStack("oxygen", 32000), FluidUtils.getFluidStack("methanol", 32000))
             .fluidOutputs(FluidUtils.getFluidStack(Formaldehyde, 32000))
             .duration(1 * MINUTES + 30 * SECONDS)
@@ -217,9 +216,7 @@ public class RocketFuels extends ItemPackage {
     private static void createUnsymmetricalDimethylhydrazine() {
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(21),
-                ItemUtils.getSimpleStack(GenericChem.mFormaldehydeCatalyst, 0))
+            .itemInputs(GTUtility.getIntegratedCircuit(21), GregtechItemList.FormaldehydeCatalyst.get(0))
             .fluidInputs(
                 FluidUtils.getFluidStack("fluid.hydrazine", 2000),
                 FluidUtils.getFluidStack(Formaldehyde, 2000),

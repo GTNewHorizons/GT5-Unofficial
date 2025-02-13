@@ -265,7 +265,7 @@ public class MilledOreProcessing extends ItemPackage {
         FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 32),
+                GregtechItemList.SodiumEthylXanthate.get(32),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
@@ -281,7 +281,7 @@ public class MilledOreProcessing extends ItemPackage {
         FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 32),
+                GregtechItemList.SodiumEthylXanthate.get(32),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
@@ -297,7 +297,7 @@ public class MilledOreProcessing extends ItemPackage {
         FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 32),
+                GregtechItemList.PotassiumEthylXanthate.get(32),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
@@ -313,7 +313,7 @@ public class MilledOreProcessing extends ItemPackage {
         FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 32),
+                GregtechItemList.PotassiumEthylXanthate.get(32),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
@@ -329,7 +329,7 @@ public class MilledOreProcessing extends ItemPackage {
         FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 32),
+                GregtechItemList.SodiumEthylXanthate.get(32),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
@@ -345,7 +345,7 @@ public class MilledOreProcessing extends ItemPackage {
         FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 32),
+                GregtechItemList.SodiumEthylXanthate.get(32),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
@@ -361,7 +361,7 @@ public class MilledOreProcessing extends ItemPackage {
         FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 32),
+                GregtechItemList.PotassiumEthylXanthate.get(32),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
@@ -377,7 +377,7 @@ public class MilledOreProcessing extends ItemPackage {
         FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 32),
+                GregtechItemList.PotassiumEthylXanthate.get(32),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
@@ -393,7 +393,7 @@ public class MilledOreProcessing extends ItemPackage {
         FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 32),
+                GregtechItemList.SodiumEthylXanthate.get(32),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
@@ -409,7 +409,7 @@ public class MilledOreProcessing extends ItemPackage {
         FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(GenericChem.mSodiumEthylXanthate, 32),
+                GregtechItemList.SodiumEthylXanthate.get(32),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
@@ -425,7 +425,7 @@ public class MilledOreProcessing extends ItemPackage {
         FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(GenericChem.mPotassiumEthylXanthate, 32),
+                GregtechItemList.PotassiumEthylXanthate.get(32),
                 aMat.getMilled(64),
                 aMat.getMilled(64),
                 aMat.getMilled(64),

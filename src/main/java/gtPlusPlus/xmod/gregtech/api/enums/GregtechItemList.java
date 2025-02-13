@@ -831,6 +831,41 @@ public enum GregtechItemList implements IGregtechItemContainer {
     // ----------------------------------------------------------------------------
     // Items previously stored elsewhere, moved here for common reference
 
+    // Catalyst Carriers
+    RedMetalCatalyst,
+    YellowMetalCatalyst,
+    BlueMetalCatalyst,
+    OrangeMetalCatalyst,
+    PurpleMetalCatalyst,
+    BrownMetalCatalyst,
+    PinkMetalCatalyst,
+    FormaldehydeCatalyst,
+    SolidAcidCatalyst,
+    InfiniteMutationCatalyst,
+
+    PlatinumGroupCatalyst,
+    PlasticPolymerCatalyst,
+    RubberPolymerCatalyst,
+    AdhesionPromoterCatalyst,
+    TitaTungstenIndiumCatalyst,
+    RadioactivityCatalyst,
+    RareEarthGroupCatalyst,
+    SimpleNaquadahCatalyst,
+    AdvancedNaquadahCatalyst,
+    RawIntelligenceCatalyst,
+    UltimatePlasticCatalyst,
+    BiologicalIntelligenceCatalyst,
+    TemporalHarmonyCatalyst,
+    ParticleAccelerationCatalyst,
+    SynchrotronCapableCatalyst,
+    AlgagenicGrowthPromoterCatalyst,
+
+    // Generic Chem Items
+    SodiumEthoxide,
+    SodiumEthylXanthate,
+    PotassiumEthylXanthate,
+    PotassiumHydroxide,
+
     // Milled Items
     MilledSphalerite,
     MilledChalcopyrite,

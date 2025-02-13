@@ -29,12 +29,12 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
-import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.plugin.agrichem.BioRecipes;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class RecipeLoaderGlueLine {
 
@@ -56,7 +56,7 @@ public class RecipeLoaderGlueLine {
     private static void chemicalPlantRecipes() {
         // CO + C3H6O2 = C4H6O3
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(17), ItemUtils.getSimpleStack(GenericChem.mBlueCatalyst, 0))
+            .itemInputs(GTUtility.getIntegratedCircuit(17), GregtechItemList.BlueMetalCatalyst.get(0))
             .fluidInputs(
                 FluidUtils.getFluidStack("carbonmonoxide", 1000),
                 FluidUtils.getFluidStack("methylacetate", 1000))
@@ -97,7 +97,7 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(20),
-                ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 0),
+                GregtechItemList.SolidAcidCatalyst.get(0),
                 MaterialMisc.COPPER_SULFATE.getDust(6),
                 MaterialMisc.CYANOACETIC_ACID.getDust(45))
             .itemOutputs(MaterialMisc.COPPER_SULFATE_HYDRATED.getDust(11))
@@ -121,7 +121,7 @@ public class RecipeLoaderGlueLine {
             .getFluid();
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(22), ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 0))
+            .itemInputs(GTUtility.getIntegratedCircuit(22), GregtechItemList.SolidAcidCatalyst.get(0))
             .fluidInputs(
                 MaterialMisc.ETHYL_CYANOACETATE.getFluidStack(100),
                 FluidUtils.getFluidStack(BioRecipes.mFormaldehyde, 100))
@@ -132,7 +132,7 @@ public class RecipeLoaderGlueLine {
             .addTo(chemicalPlantRecipes);
         // CH4 + NH3 + 3O = HCN + 3H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(23), ItemUtils.getSimpleStack(GenericChem.mPinkCatalyst, 0))
+            .itemInputs(GTUtility.getIntegratedCircuit(23), GregtechItemList.PinkMetalCatalyst.get(0))
             .fluidInputs(
                 FluidUtils.getFluidStack("methane", 2000),
                 FluidUtils.getFluidStack("ammonia", 2000),

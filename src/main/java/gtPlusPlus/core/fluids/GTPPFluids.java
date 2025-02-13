@@ -47,6 +47,21 @@ public class GTPPFluids {
     public static Fluid SulfuricCoalTarOil;
     public static Fluid Naphthalene;
 
+    // General Chem
+    public static Fluid Nitrobenzene;
+    public static Fluid Aniline;
+    public static Fluid BoricAcid;
+    public static Fluid Polyurethane;
+    public static Fluid Cyclohexane;
+    public static Fluid Cyclohexanone;
+    public static Fluid Cadaverine;
+    public static Fluid Putrescine;
+    public static Fluid Ethylanthraquinone;
+    public static Fluid Ethylanthrahydroquinone;
+    public static Fluid HydrogenPeroxide;
+    public static Fluid LithiumPeroxide;
+    public static Fluid CarbonDisulfide;
+
     // Custom Blood Support
     private static final List<FluidStack> bloodFluids = new ArrayList<>();
 
@@ -211,6 +226,64 @@ public class GTPPFluids {
 
         Naphthalene = FluidUtils
             .generateFluidNonMolten("Naphthalene", "Naphthalene", 115, new short[] { 210, 185, 135, 100 }, null, null);
+
+        Nitrobenzene = FluidUtils
+            .generateFluidNoPrefix("nitrobenzene", "Nitrobenzene", 278, new short[] { 70, 50, 40, 100 }, true);
+
+        Aniline = FluidUtils.generateFluidNoPrefix("aniline", "Aniline", 266, new short[] { 100, 100, 30, 100 }, true);
+
+        BoricAcid = FluidUtils
+            .generateFluidNoPrefix("boricacid", "Boric Acid", 278, new short[] { 90, 30, 120, 100 }, true);
+
+        Polyurethane = FluidUtils
+            .generateFluidNoPrefix("polyurethane", "Polyurethane", 350, new short[] { 100, 70, 100, 100 }, true);
+
+        Cyclohexane = FluidUtils
+            .generateFluidNoPrefix("cyclohexane", "Cyclohexane", 32 + 175, new short[] { 100, 70, 30, 100 }, true);
+
+        Cyclohexanone = FluidUtils
+            .generateFluidNoPrefix("cyclohexanone", "Cyclohexanone", 32 + 175, new short[] { 100, 70, 30, 100 }, true);
+
+        Cadaverine = FluidUtils
+            .generateFluidNoPrefix("cadaverine", "Cadaverine", 32 + 175, new short[] { 100, 70, 30, 100 }, true);
+
+        Putrescine = FluidUtils
+            .generateFluidNoPrefix("putrescine", "Putrescine", 32 + 175, new short[] { 100, 70, 30, 100 }, true);
+
+        Ethylanthraquinone = FluidUtils.generateFluidNonMolten(
+            "2Ethylanthraquinone",
+            "2-Ethylanthraquinone",
+            415,
+            new short[] { 227, 255, 159, 100 },
+            null,
+            null);
+
+        Ethylanthrahydroquinone = FluidUtils.generateFluidNonMolten(
+            "2Ethylanthrahydroquinone",
+            "2-Ethylanthrahydroquinone",
+            415,
+            new short[] { 207, 225, 129, 100 },
+            null,
+            null);
+
+        HydrogenPeroxide = FluidUtils.generateFluidNonMolten(
+            "HydrogenPeroxide",
+            "Hydrogen Peroxide",
+            150,
+            new short[] { 210, 255, 255, 100 },
+            null,
+            null);
+
+        LithiumPeroxide = FluidUtils.generateFluidNonMolten(
+            "LithiumPeroxide",
+            "Lithium Peroxide",
+            446,
+            new short[] { 135, 135, 135, 100 },
+            null,
+            null);
+
+        CarbonDisulfide = FluidUtils
+            .generateFluidNoPrefix("CarbonDisulfide", "Carbon Disulfide", 350, new short[] { 175, 175, 175, 100 });
 
         handleBlood();
     }
