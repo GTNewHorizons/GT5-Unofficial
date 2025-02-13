@@ -6,13 +6,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.recipe.common.CI;
 
 public class SlotIntegratedCircuit extends Slot {
 
     public static Item mCircuitItem;
-    public static Item mCircuitItem2;
-    public static Item mCircuitItem3;
     private final short mCircuitLock;
 
     public SlotIntegratedCircuit(final IInventory inventory, final int slot, final int x, final int y) {
@@ -38,70 +35,16 @@ public class SlotIntegratedCircuit extends Slot {
     }
 
     public static synchronized boolean isItemValidForSlot(int aLockedCircuitNumber, final ItemStack itemstack) {
-        boolean isValid = false;
-        if (mCircuitItem == null) {
-            mCircuitItem = GTUtility.getIntegratedCircuit(0)
-                .getItem();
-        }
-        if (mCircuitItem2 == null) {
-            mCircuitItem2 = CI.getNumberedBioCircuit(0)
-                .getItem();
-        }
-        if (mCircuitItem3 == null) {
-            mCircuitItem3 = CI.getNumberedAdvancedCircuit(0)
-                .getItem();
-        }
-        if (mCircuitItem != null && mCircuitItem2 != null && mCircuitItem3 != null) {
-            if (itemstack != null) {
-                if (itemstack.getItem() == mCircuitItem || itemstack.getItem() == mCircuitItem2
-                    || itemstack.getItem() == mCircuitItem3) {
-                    if (aLockedCircuitNumber == -1) {
-                        isValid = true;
-                    } else {
-                        if (itemstack.getItemDamage() == aLockedCircuitNumber) {
-                            isValid = true;
-                        }
-                    }
-                }
-            }
-        }
-        return isValid;
+        if (!isRegularProgrammableCircuit(itemstack)) return false;
+        return aLockedCircuitNumber == -1 || aLockedCircuitNumber == itemstack.getItemDamage();
     }
 
-    /**
-     * Returns the circuit type. -1 is invalid, 0 is standard, 1 is GT++ bio.
-     *
-     * @param itemstack - the Circuit Stack.
-     * @return
-     */
-    public static synchronized int isRegularProgrammableCircuit(final ItemStack itemstack) {
+    public static synchronized boolean isRegularProgrammableCircuit(final ItemStack itemstack) {
         if (mCircuitItem == null) {
             mCircuitItem = GTUtility.getIntegratedCircuit(0)
                 .getItem();
         }
-        if (mCircuitItem2 == null) {
-            mCircuitItem2 = CI.getNumberedBioCircuit(0)
-                .getItem();
-        }
-        if (mCircuitItem3 == null) {
-            mCircuitItem3 = CI.getNumberedAdvancedCircuit(0)
-                .getItem();
-        }
-        if (mCircuitItem != null && mCircuitItem2 != null && mCircuitItem3 != null) {
-            if (itemstack != null) {
-                if (itemstack.getItem() == mCircuitItem || itemstack.getItem() == mCircuitItem2
-                    || itemstack.getItem() == mCircuitItem3) {
-                    if (itemstack.getItem() == mCircuitItem) {
-                        return 0;
-                    } else if (itemstack.getItem() == mCircuitItem2) {
-                        return 1;
-                    } else if (itemstack.getItem() == mCircuitItem3) {
-                        return 2;
-                    }
-                }
-            }
-        }
-        return -1;
+        return itemstack != null && itemstack.getItem() == mCircuitItem;
     }
 
     @Override
