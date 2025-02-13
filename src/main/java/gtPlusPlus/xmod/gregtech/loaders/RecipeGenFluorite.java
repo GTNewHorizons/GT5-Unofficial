@@ -254,7 +254,7 @@ public class RecipeGenFluorite extends RecipeGenBase {
             aGregtechHydro = FluidUtils.getFluidStack("hydrofluoricacid", 16000);
         }
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.getNumberedAdvancedCircuit(5), MaterialsFluorides.FLUORITE.getDust(37))
+            .itemInputs(MaterialsFluorides.FLUORITE.getDust(37))
             .itemOutputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumSulfate", 15),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 1),
