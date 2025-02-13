@@ -6,6 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import gtPlusPlus.api.objects.Logger;
 
 public class TypeCounter<V> implements Set<V> {
@@ -148,7 +150,7 @@ public class TypeCounter<V> implements Set<V> {
         for (String k : this.mInternalMap.keySet()) {
             if (k != null) {
                 InternalTypeCounterObject<V> aVal = this.mInternalMap.get(k);
-                aArray[aPos++] = new Pair<>(k, aVal);
+                aArray[aPos++] = Pair.of(k, aVal);
             }
         }
         return aArray;
