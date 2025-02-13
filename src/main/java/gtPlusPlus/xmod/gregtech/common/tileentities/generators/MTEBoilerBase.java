@@ -25,12 +25,12 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.boilers.MTEBoiler;
-import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 
 public class MTEBoilerBase extends MTEBoiler {
 
+    private static final int STEAM_PER_SECOND = 750;
     private final int steamPerSecond;
     private final int tier;
 
@@ -39,14 +39,14 @@ public class MTEBoilerBase extends MTEBoiler {
             aID,
             "electricboiler." + tier + ".tier.single",
             aNameRegional,
-            "Produces " + (Configuration.machines.boilerSteamPerSecond * tier) + "L of Steam per second");
-        this.steamPerSecond = (Configuration.machines.boilerSteamPerSecond * tier);
+            "Produces " + (STEAM_PER_SECOND * tier) + "L of Steam per second");
+        this.steamPerSecond = STEAM_PER_SECOND * tier;
         this.tier = tier;
     }
 
     public MTEBoilerBase(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        this.steamPerSecond = (Configuration.machines.boilerSteamPerSecond * aTier);
+        this.steamPerSecond = STEAM_PER_SECOND * aTier;
         this.tier = aTier;
     }
 
