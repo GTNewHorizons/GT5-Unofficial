@@ -2656,7 +2656,7 @@ public class RecipesMachines {
             CI.getTieredCircuit(5),
             plate,
             "wireFineElectrum",
-            ItemUtils.getSimpleStack(ModBlocks.blockFishTrap),
+            GregtechItemList.FishTrap.get(1),
             "wireFineElectrum",
             plate,
             CI.getTieredCircuit(5),

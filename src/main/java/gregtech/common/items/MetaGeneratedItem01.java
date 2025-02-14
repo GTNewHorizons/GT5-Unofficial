@@ -2755,7 +2755,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         ItemList.Circuit_Master.set(
             addItem(
                 Circuit_Master.ID,
-                "Nanoprocessor Mainframe",
+                "Nano Mainframe",
                 "A Master Circuit",
                 OrePrefixes.circuit.get(Materials.LuV),
                 SubTag.NO_UNIFICATION));

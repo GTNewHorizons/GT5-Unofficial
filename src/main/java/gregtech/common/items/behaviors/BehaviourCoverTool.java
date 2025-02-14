@@ -36,6 +36,24 @@ public class BehaviourCoverTool extends BehaviourNone {
     private int mTickRateAddition = 0;
 
     @Override
+    public boolean shouldInterruptBlockActivation(final EntityPlayer player, final TileEntity tileEntity,
+        final ForgeDirection side) {
+        return tileEntity instanceof ICoverable;
+    }
+
+    @Override
+    // Included for Ring of Loki support.
+    public boolean onItemUse(final MetaBaseItem aItem, final ItemStack aStack, final EntityPlayer aPlayer,
+        final World aWorld, final int aX, final int aY, final int aZ, final int ordinalSide, final float hitX,
+        final float hitY, final float hitZ) {
+        if (aWorld.getTileEntity(aX, aY, aZ) instanceof ICoverable) {
+            final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
+            return onItemUseFirst(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, side, hitX, hitY, hitZ);
+        }
+        return false;
+    }
+
+    @Override
     public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
         int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if (aWorld.isRemote) {
