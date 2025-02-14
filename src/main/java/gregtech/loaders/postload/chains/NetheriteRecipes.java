@@ -3,14 +3,18 @@ package gregtech.loaders.postload.chains;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.ForbiddenMagic;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
+import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
+import static gregtech.api.recipe.RecipeMaps.plasmaArcFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import net.minecraft.item.ItemStack;
 
@@ -23,6 +27,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import tectech.recipe.TecTechRecipeMaps;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -133,6 +138,43 @@ public class NetheriteRecipes {
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(electrolyzerRecipes);
         }
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Brittle_Netherite_Crystal.get(1))
+            .itemOutputs(ItemList.Netherite_Nanoparticles.get(1))
+            .duration(180 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Netherite_Nanoparticles.get(1))
+            .fluidInputs(Materials.HellishMetal.getMolten(288))
+            .itemOutputs(ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(1))
+            .fluidOutputs(Materials.Thaumium.getMolten(144))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .metadata(COIL_HEAT, 7500)
+            .addTo(blastFurnaceRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.InfusedGold, 1),
+                ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Netherite, 1))
+            .fluidInputs(Materials.Calcium.getPlasma(2))
+            .fluidOutputs(Materials.Calcium.getMolten(2))
+            .duration(12 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .noOptimize()
+            .addTo(plasmaArcFurnaceRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherite, 1))
+            .fluidOutputs(Materials.Netherite.getMolten(144))
+            .duration(400 * SECONDS)
+            .eut(TierEU.RECIPE_MAX)
+            .metadata(COIL_HEAT, 45700)
+            .addTo(TecTechRecipeMaps.godforgeMoltenRecipes);
 
     }
 }
