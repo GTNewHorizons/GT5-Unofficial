@@ -10,6 +10,7 @@ import net.minecraftforge.event.world.ChunkWatchEvent;
 import com.google.common.collect.MapMaker;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -34,8 +35,9 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
  * <p />
  * Additionally, it gives us more control over the activation syncing. Since coil activation meta is only stored on the
  * client, there needs to be a way to sync it from the server.
- * Coil meta is only updated on the client to prevent weird interactions with e.g. the structure checker. We don't want
- * to check structures every time the coils activate, for instance.
+ * Coil meta is only stored on the client to prevent weird interactions with e.g. the structure checker and so that we
+ * have more control over the process. We don't want to check structures every time the coils activate, for instance.
+ * The reduction in network bandwidth and CPU usage (since we aren't sending chunk updates) is a nice side effect.
  * <p />
  * Since the coil list is produced by structure checks, and structure checks only run on the server, syncing that info
  * is the easiest way to tell the client which coils are active.
@@ -43,7 +45,8 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 @EventBusSubscriber
 public class GTCoilTracker {
 
-    private static final Map<World, GTCoilTracker> TRACKERS = new MapMaker().weakKeys().makeMap();
+    private static final Map<World, GTCoilTracker> TRACKERS = new MapMaker().weakKeys()
+        .makeMap();
 
     @SuppressWarnings("unused")
     private final WeakReference<World> world;
@@ -84,10 +87,12 @@ public class GTCoilTracker {
     /**
      * An object that represents an activated set of coils. These are always owned by a multi, and must be deactivated
      * at some point.
+     * 
      * @see GTCoilTracker#activate(MTEMultiBlockBase, LongList)
      * @see GTCoilTracker#deactivate(MultiCoilLease)
      */
     public static class MultiCoilLease {
+
         // intentionally package private
         final WeakReference<GTCoilTracker> tracker;
         final WeakReference<MTEMultiBlockBase> multi;
@@ -142,12 +147,11 @@ public class GTCoilTracker {
 
             // maybe there's a more efficient way to do this, but I couldn't figure out how to shove a chunk coord into
             // a long
-            long chunk = CoordinatePacker.pack(
-                CoordinatePacker.unpackX(coil) >> 4,
-                0,
-                CoordinatePacker.unpackZ(coil) >> 4);
+            long chunk = CoordinatePacker
+                .pack(CoordinatePacker.unpackX(coil) >> 4, 0, CoordinatePacker.unpackZ(coil) >> 4);
 
-            activeBlocksByChunk.computeIfAbsent(chunk, CHUNK_LIST_CTOR).add(coil);
+            activeBlocksByChunk.computeIfAbsent(chunk, CHUNK_LIST_CTOR)
+                .add(coil);
         }
     }
 
@@ -158,10 +162,8 @@ public class GTCoilTracker {
         if (old == 1) {
             pendingDeactivations.add(coil);
 
-            long chunk = CoordinatePacker.pack(
-                CoordinatePacker.unpackX(coil) >> 4,
-                0,
-                CoordinatePacker.unpackZ(coil) >> 4);
+            long chunk = CoordinatePacker
+                .pack(CoordinatePacker.unpackX(coil) >> 4, 0, CoordinatePacker.unpackZ(coil) >> 4);
 
             LongSet list = activeBlocksByChunk.computeIfAbsent(chunk, CHUNK_LIST_CTOR);
 
@@ -181,10 +183,7 @@ public class GTCoilTracker {
 
         TRACKERS.forEach((world, tracker) -> {
             if (!tracker.pendingActivations.isEmpty()) {
-                GTCoilStatus packet = new GTCoilStatus(
-                    world.provider.dimensionId,
-                    true,
-                    tracker.pendingActivations);
+                GTCoilStatus packet = new GTCoilStatus(world.provider.dimensionId, true, tracker.pendingActivations);
 
                 // I have no idea if packet encoding is immediate
                 // Let's just allocate another list instead of finding out
@@ -194,10 +193,7 @@ public class GTCoilTracker {
             }
 
             if (!tracker.pendingDeactivations.isEmpty()) {
-                GTCoilStatus packet = new GTCoilStatus(
-                    world.provider.dimensionId,
-                    false,
-                    tracker.pendingDeactivations);
+                GTCoilStatus packet = new GTCoilStatus(world.provider.dimensionId, false, tracker.pendingDeactivations);
 
                 tracker.pendingDeactivations = new LongArrayList();
 
@@ -218,10 +214,7 @@ public class GTCoilTracker {
         LongSet active = tracker.activeBlocksByChunk.get(chunk);
 
         if (active != null && !active.isEmpty()) {
-            GTCoilStatus packet = new GTCoilStatus(
-                event.player.worldObj.provider.dimensionId,
-                true,
-                active);
+            GTCoilStatus packet = new GTCoilStatus(event.player.worldObj.provider.dimensionId, true, active);
 
             GTValues.NW.sendToPlayer(packet, event.player);
         }
@@ -232,6 +225,7 @@ public class GTCoilTracker {
     /**
      * Activates the given list of coils. A multi cannot have more than one lease at a time, and if two sets of coils
      * are activated, the oldest lease is deactivated automatically.
+     * 
      * @param multi The owning multi
      * @param coils The list of coils that should be activated
      * @return A lease owned by the given multi that should be deactivated when needed (see
@@ -242,12 +236,14 @@ public class GTCoilTracker {
 
         if (base == null || base.isDead()) return null;
 
-        return TRACKERS.computeIfAbsent(base.getWorld(), TRACKER_CTOR).activateImpl(multi, coils);
+        return TRACKERS.computeIfAbsent(base.getWorld(), TRACKER_CTOR)
+            .activateImpl(multi, coils);
     }
 
     /**
      * Deactivates a set of coils. If the multi is destroyed and this is never called, the coils will remain active
      * until the server restarts or the world is garbage collected.
+     * 
      * @param lease The lease.
      */
     public static void deactivate(MultiCoilLease lease) {

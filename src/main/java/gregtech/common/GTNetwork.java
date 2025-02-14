@@ -144,7 +144,7 @@ public class GTNetwork extends MessageToMessageCodec<FMLProxyPacket, GTPacket> i
     public void sendToWorld(World world, GTPacket packet) {
         if (!world.isRemote) {
             for (EntityPlayer player : world.playerEntities) {
-                if (player instanceof  EntityPlayerMP mp) {
+                if (player instanceof EntityPlayerMP mp) {
                     sendToPlayer(packet, mp);
                 }
             }

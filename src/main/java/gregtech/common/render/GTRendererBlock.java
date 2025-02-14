@@ -37,6 +37,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -571,11 +572,11 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             && (GregTechAPI.METATILEENTITIES[aMeta] != null)
             && (!GregTechAPI.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer))) {
                 renderNormalInventoryMetaTileEntity(aBlock, aMeta, aRenderer);
-        } else if (aBlock instanceof BlockFrameBox) {
-            ITexture[] texture = ((BlockFrameBox) aBlock).getTexture(aMeta);
-            aBlock.setBlockBoundsForItemRender();
-            aRenderer.setRenderBoundsFromBlock(aBlock);
-            // spotless:off
+            } else if (aBlock instanceof BlockFrameBox) {
+                ITexture[] texture = ((BlockFrameBox) aBlock).getTexture(aMeta);
+                aBlock.setBlockBoundsForItemRender();
+                aRenderer.setRenderBoundsFromBlock(aBlock);
+                // spotless:off
             renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
             renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
             renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
@@ -583,9 +584,10 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
             renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
             // spotless:on
-        } else if (aBlock instanceof IBlockWithTextures texturedBlock) {
-            ITexture[][] texture = texturedBlock.getTextures(aRenderer, aMeta);
-            if (texture != null) {
+            } else if (aBlock instanceof IBlockWithTextures texturedBlock) {
+                ITexture[][] texture = texturedBlock.getTextures(aRenderer, aMeta);
+                if (texture != null) {
+                    // spotless:off
                 aBlock.setBlockBoundsForItemRender();
                 aRenderer.setRenderBoundsFromBlock(aBlock);
                 renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.DOWN.ordinal()], true);
@@ -594,8 +596,9 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
                 renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.SOUTH.ordinal()], true);
                 renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.WEST.ordinal()], true);
                 renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.EAST.ordinal()], true);
+                // spotless:on
+                }
             }
-        }
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
 
         aRenderer.setRenderBoundsFromBlock(aBlock);

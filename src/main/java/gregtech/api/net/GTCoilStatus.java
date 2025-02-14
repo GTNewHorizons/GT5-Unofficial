@@ -5,6 +5,7 @@ import net.minecraft.world.World;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
+
 import gregtech.api.GregTechAPI;
 import gregtech.common.blocks.BlockCasings5;
 import io.netty.buffer.ByteBuf;
@@ -17,7 +18,7 @@ public class GTCoilStatus extends GTPacket {
     public boolean isActive;
     public LongCollection coils;
 
-    public GTCoilStatus() { }
+    public GTCoilStatus() {}
 
     public GTCoilStatus(int worldId, boolean isActive, LongCollection coils) {
         this.worldId = worldId;

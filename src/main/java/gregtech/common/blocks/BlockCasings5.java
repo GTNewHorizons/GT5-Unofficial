@@ -19,6 +19,8 @@ import static gregtech.api.enums.HeatingCoilLevel.ZPM;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.coderbot.iris.api.IIrisAware;
+import net.coderbot.iris.api.IIrisRenderBlocks;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -36,8 +38,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.common.config.Client;
 import gregtech.common.render.GTRendererBlock;
-import net.coderbot.iris.api.IIrisAware;
-import net.coderbot.iris.api.IIrisRenderBlocks;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
@@ -192,7 +192,11 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil,
                     default -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_FOREGROUND;
                 };
 
-                textures.add(TextureFactory.builder().addIcon(foreground).glow().build());
+                textures.add(
+                    TextureFactory.builder()
+                        .addIcon(foreground)
+                        .glow()
+                        .build());
             }
         }
 
