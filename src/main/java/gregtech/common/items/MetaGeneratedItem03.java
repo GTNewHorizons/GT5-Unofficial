@@ -197,12 +197,14 @@ import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_STABIL
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_TERRITORY;
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_UNLIGHT;
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_WINTER;
+import static gregtech.common.items.IDMetaItem03.Instensely_Bonded_Netherite_Nanoparticles;
 import static gregtech.common.items.IDMetaItem03.KevlarFiber;
 import static gregtech.common.items.IDMetaItem03.LV_Coil;
 import static gregtech.common.items.IDMetaItem03.LuV_Coil;
 import static gregtech.common.items.IDMetaItem03.MV_Coil;
 import static gregtech.common.items.IDMetaItem03.NandChip;
 import static gregtech.common.items.IDMetaItem03.Netherite_Crystal_Seed;
+import static gregtech.common.items.IDMetaItem03.Netherite_Nanoparticles;
 import static gregtech.common.items.IDMetaItem03.NuclearStar;
 import static gregtech.common.items.IDMetaItem03.Optical_Cpu_Containment_Housing;
 import static gregtech.common.items.IDMetaItem03.Optically_Compatible_Memory;
@@ -1199,8 +1201,11 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
             .set(addItem(Phononic_Seed_Crystal.ID, "Phononic Seed Crystal", "Perfect Thermal Conductance", o));
 
         ItemList.Heavy_Hellish_Mud.set(addItem(Heavy_Hellish_Mud.ID, "Heavy Hellish Mud", "God wouldn't touch this"));
-        ItemList.Netherite_Crystal_Seed.set(addItem(Netherite_Crystal_Seed.ID, "Netherite Crystal Seed", "a"));
-        ItemList.Brittle_Netherite_Crystal.set(addItem(Brittle_Netherite_Crystal.ID, "Brittle Netherite Crystal", "a"));
+        ItemList.Netherite_Crystal_Seed.set(addItem(Netherite_Crystal_Seed.ID, "Netherite Crystal Seed", ""));
+        ItemList.Brittle_Netherite_Crystal.set(addItem(Brittle_Netherite_Crystal.ID, "Brittle Netherite Crystal", ""));
+        ItemList.Netherite_Nanoparticles.set(addItem(Netherite_Nanoparticles.ID, "Netherite Nanoparticles", ""));
+        ItemList.Intensely_Bonded_Netherite_Nanoparticles.set(
+            addItem(Instensely_Bonded_Netherite_Nanoparticles.ID, "Instensely Bonded Netherite Nanoparticles", ""));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(

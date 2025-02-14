@@ -2604,7 +2604,9 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_AirFilterT3,
     Heavy_Hellish_Mud,
     Netherite_Crystal_Seed,
-    Brittle_Netherite_Crystal
+    Brittle_Netherite_Crystal,
+    Netherite_Nanoparticles,
+    Intensely_Bonded_Netherite_Nanoparticles
 
     // semicolon after the comment to reduce merge conflicts
     ;

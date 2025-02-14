@@ -271,7 +271,7 @@ public final class RecipeMaps {
      */
     public static final RecipeMap<RecipeMapBackend> plasmaArcFurnaceRecipes = RecipeMapBuilder
         .of("gt.recipe.plasmaarcfurnace")
-        .maxIO(1, 9, 1, 1)
+        .maxIO(2, 9, 1, 1)
         .minInputs(1, 1)
         .build();
     /**
