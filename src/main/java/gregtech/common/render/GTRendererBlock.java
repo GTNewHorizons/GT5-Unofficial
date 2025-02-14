@@ -37,13 +37,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
-
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IAllSidedTexturedTileEntity;
@@ -571,19 +571,31 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             && (GregTechAPI.METATILEENTITIES[aMeta] != null)
             && (!GregTechAPI.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer))) {
                 renderNormalInventoryMetaTileEntity(aBlock, aMeta, aRenderer);
-            } else if (aBlock instanceof BlockFrameBox) {
-                ITexture[] texture = ((BlockFrameBox) aBlock).getTexture(aMeta);
+        } else if (aBlock instanceof BlockFrameBox) {
+            ITexture[] texture = ((BlockFrameBox) aBlock).getTexture(aMeta);
+            aBlock.setBlockBoundsForItemRender();
+            aRenderer.setRenderBoundsFromBlock(aBlock);
+            // spotless:off
+            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            // spotless:on
+        } else if (aBlock instanceof IBlockWithTextures texturedBlock) {
+            ITexture[][] texture = texturedBlock.getTextures(aRenderer, aMeta);
+            if (texture != null) {
                 aBlock.setBlockBoundsForItemRender();
                 aRenderer.setRenderBoundsFromBlock(aBlock);
-                // spotless:off
-                renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-                renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-                renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-                renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-                renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-                renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-                // spotless:on
+                renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.DOWN.ordinal()], true);
+                renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.UP.ordinal()], true);
+                renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.NORTH.ordinal()], true);
+                renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.SOUTH.ordinal()], true);
+                renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.WEST.ordinal()], true);
+                renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.EAST.ordinal()], true);
             }
+        }
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
 
         aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -742,6 +754,14 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             textureArray[4] = texture;
             textureArray[5] = texture;
             renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
+            return true;
+        }
+
+        if (aBlock instanceof IBlockWithTextures texturedBlock) {
+            int meta = aWorld.getBlockMetadata(aX, aY, aZ);
+            ITexture[][] texture = texturedBlock.getTextures(aRenderer, meta);
+            if (texture == null) return false;
+            renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, texture);
             return true;
         }
 
