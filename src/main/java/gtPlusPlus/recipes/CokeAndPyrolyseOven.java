@@ -24,9 +24,9 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.CoalTar;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class CokeAndPyrolyseOven {
 
@@ -65,12 +65,12 @@ public class CokeAndPyrolyseOven {
         // duration*1.25 per item.)
         addCokingRecipes(
             new ItemStack(Blocks.cactus, 20),
-            new ItemStack(ModItems.itemCactusCharcoal, 20),
-            new ItemStack(ModItems.itemCactusCoke, 20));
+            GregtechItemList.CactusCharcoal.get(20),
+            GregtechItemList.CactusCoke.get(20));
         addCokingRecipes(
             new ItemStack(Items.reeds, 20),
-            new ItemStack(ModItems.itemSugarCharcoal, 20),
-            new ItemStack(ModItems.itemSugarCoke, 20));
+            GregtechItemList.SugarCharcoal.get(20),
+            GregtechItemList.SugarCoke.get(20));
 
         // Coke & Coal
         GTValues.RA.stdBuilder()
