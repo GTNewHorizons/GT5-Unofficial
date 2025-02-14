@@ -42,7 +42,7 @@ dependencies {
     api("com.github.GTNewHorizons:ModularUI:1.2.17:dev")
     api("com.github.GTNewHorizons:ModularUI2:2.2.4-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.8.2:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-542-GTNH:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-544-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.28-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.6.0:dev')
     api("com.github.GTNewHorizons:Postea:1.0.13:dev")
@@ -62,7 +62,7 @@ dependencies {
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.4:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.42:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.9.3:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.10.1:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.10.2:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.11.1-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.16.3:dev") { transitive = false }
 
@@ -85,7 +85,7 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.5.0-GTNH:dev') { transitive = false }
     compileOnly rfg.deobf("curse.maven:extra-utilities-225561:2264384")
     compileOnly rfg.deobf('curse.maven:minefactory-reloaded-66672:2366150')
-    compileOnly("com.github.GTNewHorizons:OpenComputers:1.11.7-GTNH:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:OpenComputers:1.11.8-GTNH:dev") {transitive = false}
     // https://www.curseforge.com/minecraft/mc-mods/advancedsolarpanels
     compileOnlyApi rfg.deobf('curse.maven:advsolar-362768:2885953')
     compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.7.6-GTNH:dev') {transitive =  false}
@@ -103,7 +103,7 @@ dependencies {
     annotationProcessor("com.google.auto.value:auto-value:1.10.1")
 
     // For testing forestry integration (iApiary, combs, tree growth simulator)
-    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.10.1:dev")
+    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.10.2:dev")
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:neiaddons:1.16.0:dev')
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:MagicBees:2.9.0-GTNH:dev')
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.5.4:dev')
