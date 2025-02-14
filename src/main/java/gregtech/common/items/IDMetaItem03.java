@@ -195,6 +195,8 @@ public enum IDMetaItem03 {
     Heavy_Hellish_Mud(242),
     Netherite_Crystal_Seed(243),
     Brittle_Netherite_Crystal(244),
+    Netherite_Nanoparticles(245),
+    Instensely_Bonded_Netherite_Nanoparticles(246),
     Circuit_Silicon_Ingot6(721),
     Circuit_Silicon_Wafer6(722),
     Circuit_Silicon_Wafer7(723),
