@@ -119,6 +119,16 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     /**
+     * Transformer which allows you to modify the recipe builder before it emits recipes.
+     * <br>
+     * Allows modification of the builder to modify this recipe, or adding recipes to other places based on the builder.
+     */
+    public RecipeMapBuilder<B> builderTransformer(Consumer<? super GTRecipeBuilder> builderTransformer) {
+        backendPropertiesBuilder.builderTransformer(builderTransformer);
+        return this;
+    }
+
+    /**
      * Changes how recipes are emitted by a particular recipe builder. Can emit multiple recipe per builder.
      */
     public RecipeMapBuilder<B> recipeEmitter(
@@ -164,52 +174,13 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     /**
-     * Runs a custom hook on all recipes added <b>via builder</b>. For more complicated behavior,
-     * use {@link #recipeEmitter}.
-     * <p>
-     * Recipes added via one of the overloads of addRecipe will NOT be affected by this function.
+     * Transformer which allows for modification of a recipe after it is "finalized" but before it is added to the map.
+     * <br>
+     * Allows modification of the recipe to change this map's recipe, or add this recipe copied and/or edited elsewhere.
      */
-    public RecipeMapBuilder<B> recipeTransformer(Function<? super GTRecipe, ? extends GTRecipe> recipeTransformer) {
+    public RecipeMapBuilder<B> recipeTransformer(Consumer<? super GTRecipe> recipeTransformer) {
         backendPropertiesBuilder.recipeTransformer(recipeTransformer);
         return this;
-    }
-
-    /**
-     * Runs a custom hook on all recipes added <b>via builder</b>. For more complicated behavior,
-     * use {@link #recipeEmitter}.
-     * <p>
-     * Recipes added via one of the overloads of addRecipe will NOT be affected by this function.
-     */
-    public RecipeMapBuilder<B> recipeTransformer(Consumer<GTRecipe> recipeTransformer) {
-        return recipeTransformer(withIdentityReturn(recipeTransformer));
-    }
-
-    /**
-     * Runs a custom hook on all recipes added <b>via builder</b>. For more complicated behavior,
-     * use {@link #recipeEmitter}.
-     * <p>
-     * Recipes added via one of the overloads of addRecipe will NOT be affected by this function.
-     * <p>
-     * Unlike {@link #recipeTransformer(Function)}, this one will not replace the existing special handler.
-     * The supplied function will be given the output of existing handler when a recipe is added.
-     */
-    public RecipeMapBuilder<B> chainRecipeTransformer(
-        Function<? super GTRecipe, ? extends GTRecipe> recipeTransformer) {
-        backendPropertiesBuilder.chainRecipeTransformer(recipeTransformer);
-        return this;
-    }
-
-    /**
-     * Runs a custom hook on all recipes added <b>via builder</b>. For more complicated behavior,
-     * use {@link #recipeEmitter}.
-     * <p>
-     * Recipes added via one of the overloads of addRecipe will NOT be affected by this function.
-     * <p>
-     * Unlike {@link #recipeTransformer(Function)}, this one will not replace the existing special handler.
-     * The supplied function will be given the output of existing handler when a recipe is added.
-     */
-    public RecipeMapBuilder<B> chainRecipeTransformer(Consumer<GTRecipe> recipeTransformer) {
-        return chainRecipeTransformer(withIdentityReturn(recipeTransformer));
     }
 
     // endregion

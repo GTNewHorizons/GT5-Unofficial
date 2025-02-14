@@ -44,7 +44,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.maps.AssemblerBackend;
 import gregtech.api.recipe.maps.AssemblyLineFrontend;
@@ -1214,38 +1213,36 @@ public final class RecipeMaps {
         .build();
 
     static {
-        RecipeMaps.dieselFuels.addDownstream(
-            IRecipeMap.newRecipeMap(
-                b -> b.build()
-                    .map(
-                        r -> RecipeMaps.largeBoilerFakeFuels.getBackend()
-                            .addDieselRecipe(r))
-                    .map(Collections::singletonList)
-                    .orElse(Collections.emptyList())));
-        RecipeMaps.dieselFuels.addDownstream(IRecipeMap.newRecipeMap(b -> {
-            if (b.getMetadataOrDefault(FUEL_VALUE, 0) < 1500) return Collections.emptyList();
-            return b.addTo(RecipeMaps.extremeDieselFuels);
-        }));
-        RecipeMaps.denseLiquidFuels.addDownstream(
-            IRecipeMap.newRecipeMap(
-                b -> b.build()
-                    .map(
-                        r -> RecipeMaps.largeBoilerFakeFuels.getBackend()
-                            .addDenseLiquidRecipe(r))
-                    .map(Collections::singletonList)
-                    .orElse(Collections.emptyList())));
-        RecipeMaps.fermentingRecipes.addDownstream(
-            IRecipeMap.newRecipeMap(
-                b -> BartWorksRecipeMaps.bacterialVatRecipes.doAdd(
-                    b.copy()
-                        .special(BioItemList.getPetriDish(BioCultureLoader.generalPurposeFermentingBacteria))
-                        .metadata(GLASS, 3)
-                        .eut(b.getEUt()))));
-        RecipeMaps.implosionRecipes.addDownstream(
-            IRecipeMap.newRecipeMap(
-                b -> BartWorksRecipeMaps.electricImplosionCompressorRecipes.doAdd(
-                    b.copy()
-                        .duration(1 * TICK)
-                        .eut(TierEU.RECIPE_UEV))));
+        RecipeMaps.dieselFuels.appendBuilderTransformer(b -> {
+            b.copy()
+                .build()
+                .ifPresent(
+                    r -> RecipeMaps.largeBoilerFakeFuels.getBackend()
+                        .addDieselRecipe(r));
+            if (b.getMetadataOrDefault(FUEL_VALUE, 0) >= 1500) {
+                b.copy()
+                    .addTo(RecipeMaps.extremeDieselFuels);
+            }
+        });
+
+        RecipeMaps.denseLiquidFuels.appendBuilderTransformer(
+            b -> b.copy()
+                .build()
+                .ifPresent(
+                    r -> RecipeMaps.largeBoilerFakeFuels.getBackend()
+                        .addDenseLiquidRecipe(r)));
+
+        RecipeMaps.fermentingRecipes.appendBuilderTransformer(
+            b -> b.copy()
+                .special(BioItemList.getPetriDish(BioCultureLoader.generalPurposeFermentingBacteria))
+                .metadata(GLASS, 3)
+                .eut(b.getEUt())
+                .addTo(BartWorksRecipeMaps.bacterialVatRecipes));
+
+        RecipeMaps.implosionRecipes.appendBuilderTransformer(
+            b -> b.copy()
+                .duration(1 * TICK)
+                .eut(TierEU.RECIPE_UEV)
+                .addTo(BartWorksRecipeMaps.electricImplosionCompressorRecipes));
     }
 }

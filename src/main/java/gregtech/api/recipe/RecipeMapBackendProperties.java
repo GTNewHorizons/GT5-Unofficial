@@ -1,5 +1,6 @@
 package gregtech.api.recipe;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import javax.annotation.Nullable;
@@ -46,16 +47,16 @@ public final class RecipeMapBackendProperties {
      */
     public final Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter;
 
-    /**
-     * Runs a custom hook on all recipes added <b>via builder</b>.
-     */
     @Nullable
-    public final Function<? super GTRecipe, ? extends GTRecipe> recipeTransformer;
+    private Consumer<? super GTRecipeBuilder> builderTransformer;
+    @Nullable
+    private Consumer<? super GTRecipe> recipeTransformer;
 
     RecipeMapBackendProperties(int minItemInputs, int minFluidInputs, boolean specialSlotSensitive,
         boolean disableOptimize,
         Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter,
-        @Nullable Function<? super GTRecipe, ? extends GTRecipe> recipeTransformer) {
+        @Nullable Consumer<? super GTRecipeBuilder> builderTransformer,
+        @Nullable Consumer<? super GTRecipe> recipeTransformer) {
         if (minItemInputs < 0 || minFluidInputs < 0) {
             throw new IllegalArgumentException("minItemInputs and minFluidInputs cannot be negative");
         }
@@ -64,6 +65,43 @@ public final class RecipeMapBackendProperties {
         this.specialSlotSensitive = specialSlotSensitive;
         this.disableOptimize = disableOptimize;
         this.recipeEmitter = recipeEmitter;
+        this.builderTransformer = builderTransformer;
         this.recipeTransformer = recipeTransformer;
+    }
+
+    public void appendBuilderTransformer(Consumer<? super GTRecipeBuilder> builderTransformer) {
+        if (this.builderTransformer == null) {
+            this.builderTransformer = builderTransformer;
+        } else {
+            Consumer<? super GTRecipeBuilder> t = this.builderTransformer;
+            this.builderTransformer = b -> {
+                t.accept(b);
+                builderTransformer.accept(b);
+            };
+        }
+    }
+
+    public void appendRecipeTransformer(Consumer<? super GTRecipe> recipeTransformer) {
+        if (this.recipeTransformer == null) {
+            this.recipeTransformer = recipeTransformer;
+        } else {
+            Consumer<? super GTRecipe> t = this.recipeTransformer;
+            this.recipeTransformer = r -> {
+                t.accept(r);
+                recipeTransformer.accept(r);
+            };
+        }
+    }
+
+    public void transformBuilder(GTRecipeBuilder builder) {
+        if (builderTransformer != null) {
+            builderTransformer.accept(builder);
+        }
+    }
+
+    public void transformRecipe(GTRecipe recipe) {
+        if (recipeTransformer != null) {
+            recipeTransformer.accept(recipe);
+        }
     }
 }
