@@ -3798,54 +3798,57 @@ public class GTUtility {
 
     /**
      * This Function determines the direction a Block gets when being Wrenched. returns -1 if invalid. Even though that
-     * could never happen.
+     * could never happen. Normalizes values into the range [0.0f, 1.0f].
      */
     public static ForgeDirection determineWrenchingSide(ForgeDirection side, float aX, float aY, float aZ) {
+        float modX = (aX % 1.0f + 1.0f) % 1.0f;
+        float modY = (aY % 1.0f + 1.0f) % 1.0f;
+        float modZ = (aZ % 1.0f + 1.0f) % 1.0f;
         ForgeDirection tBack = side.getOpposite();
         switch (side) {
             case DOWN, UP -> {
-                if (aX < 0.25) {
-                    if (aZ < 0.25) return tBack;
-                    if (aZ > 0.75) return tBack;
+                if (modX < 0.25) {
+                    if (modZ < 0.25) return tBack;
+                    if (modZ > 0.75) return tBack;
                     return WEST;
                 }
-                if (aX > 0.75) {
-                    if (aZ < 0.25) return tBack;
-                    if (aZ > 0.75) return tBack;
+                if (modX > 0.75) {
+                    if (modZ < 0.25) return tBack;
+                    if (modZ > 0.75) return tBack;
                     return EAST;
                 }
-                if (aZ < 0.25) return NORTH;
-                if (aZ > 0.75) return SOUTH;
+                if (modZ < 0.25) return NORTH;
+                if (modZ > 0.75) return SOUTH;
                 return side;
             }
             case NORTH, SOUTH -> {
-                if (aX < 0.25) {
-                    if (aY < 0.25) return tBack;
-                    if (aY > 0.75) return tBack;
+                if (modX < 0.25) {
+                    if (modY < 0.25) return tBack;
+                    if (modY > 0.75) return tBack;
                     return WEST;
                 }
-                if (aX > 0.75) {
-                    if (aY < 0.25) return tBack;
-                    if (aY > 0.75) return tBack;
+                if (modX > 0.75) {
+                    if (modY < 0.25) return tBack;
+                    if (modY > 0.75) return tBack;
                     return EAST;
                 }
-                if (aY < 0.25) return DOWN;
-                if (aY > 0.75) return UP;
+                if (modY < 0.25) return DOWN;
+                if (modY > 0.75) return UP;
                 return side;
             }
             case WEST, EAST -> {
-                if (aZ < 0.25) {
-                    if (aY < 0.25) return tBack;
-                    if (aY > 0.75) return tBack;
+                if (modZ < 0.25) {
+                    if (modY < 0.25) return tBack;
+                    if (modY > 0.75) return tBack;
                     return NORTH;
                 }
-                if (aZ > 0.75) {
-                    if (aY < 0.25) return tBack;
-                    if (aY > 0.75) return tBack;
+                if (modZ > 0.75) {
+                    if (modY < 0.25) return tBack;
+                    if (modY > 0.75) return tBack;
                     return SOUTH;
                 }
-                if (aY < 0.25) return DOWN;
-                if (aY > 0.75) return UP;
+                if (modY < 0.25) return DOWN;
+                if (modY > 0.75) return UP;
                 return side;
             }
         }
