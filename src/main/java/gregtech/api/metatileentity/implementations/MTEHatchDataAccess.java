@@ -4,11 +4,13 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DATA_ACCESS;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -22,10 +24,15 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AssemblyLineUtils;
+import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEHatchDataAccess extends MTEHatch implements IAddUIWidgets {
 
     private int timeout = 4;
+
+    private List<RecipeAssemblyLine> cachedRecipes = null;
 
     public MTEHatchDataAccess(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -120,40 +127,22 @@ public class MTEHatchDataAccess extends MTEHatch implements IAddUIWidgets {
     }
 
     @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        if (aNBT.getByte("mSticksUpdated") != 1) {
+    protected void onContentsChanged(int slot) {
+        super.onContentsChanged(slot);
+
+        cachedRecipes = null;
+    }
+
+    public List<RecipeAssemblyLine> getAssemblyLineRecipes() {
+        if (cachedRecipes == null) {
+            cachedRecipes = new ArrayList<>();
+
             for (int i = 0; i < getSizeInventory(); i++) {
-                AssemblyLineUtils.processDataStick(getStackInSlot(i));
+                cachedRecipes.addAll(AssemblyLineUtils.findALRecipeFromDataStick(getStackInSlot(i)));
             }
         }
-    }
 
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        // reminder: remove this marker after many years
-        aNBT.setByte("mSticksUpdated", (byte) 1);
-    }
-
-    @Override
-    public void setInventorySlotContents(int aIndex, ItemStack aStack) {
-        super.setInventorySlotContents(aIndex, aStack);
-        AssemblyLineUtils.processDataStick(aStack);
-    }
-
-    public List<ItemStack> getInventoryItems(Predicate<ItemStack> filter) {
-        ArrayList<ItemStack> items = new ArrayList<>();
-        IGregTechTileEntity te = getBaseMetaTileEntity();
-        for (int i = 0; i < te.getSizeInventory(); ++i) {
-            ItemStack slot = te.getStackInSlot(i);
-            if (slot != null) {
-                if (filter != null && filter.test(slot)) {
-                    items.add(slot);
-                }
-            }
-        }
-        return items;
+        return cachedRecipes;
     }
 
     @Override
@@ -165,5 +154,49 @@ public class MTEHatchDataAccess extends MTEHatch implements IAddUIWidgets {
             getBaseMetaTileEntity()
                 .add4by4Slots(builder, getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_CIRCUIT);
         }
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("recipeCount", getAssemblyLineRecipes().size());
+    }
+
+    protected String getWailaDataI18nKey() {
+        return "tt.keyphrase.AL_Recipe_Providing";
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+
+        NBTTagCompound tag = accessor.getNBTData();
+        currenttip.add(translate(getWailaDataI18nKey(), tag.getInteger("recipeCount")));
+    }
+
+    @Override
+    public boolean isGivingInformation() {
+        return true;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        ArrayList<String> lines = new ArrayList<>();
+
+        if (!getAssemblyLineRecipes().isEmpty()) {
+            for (RecipeAssemblyLine recipe : getAssemblyLineRecipes()) {
+                lines.add(translate("tt.keyphrase.AL_Recipe_Desc", recipe.mOutput.getDisplayName()));
+            }
+        } else {
+            lines.add(translate("tt.keyphrase.AL_Recipe_None"));
+        }
+
+        lines.sort(String::compareTo);
+
+        lines.add(0, translate("tt.keyphrase.AL_Recipe_Header"));
+
+        return lines.toArray(new String[lines.size()]);
     }
 }
