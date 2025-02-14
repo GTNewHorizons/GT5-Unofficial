@@ -291,8 +291,9 @@ public class MTEIndustrialElectromagneticSeparator
 
     @Override
     public int getMaxParallelRecipes() {
+        findMagnet();
         if (magnetTier != null) return magnetTier.maxParallel;
-        return 0;
+        return 1;
     }
 
     @Override
