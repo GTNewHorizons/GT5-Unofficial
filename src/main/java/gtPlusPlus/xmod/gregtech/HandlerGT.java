@@ -20,12 +20,12 @@ import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderMolecularTransformer;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderTreeFarm;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechAdvancedBoilers;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
-import toxiceverglades.gen.gt.WorldGen_GT;
+import toxiceverglades.gen.WorldGenEverglades;
 
 public class HandlerGT {
 
     public static GTConfig mMaterialProperties = null;
-    public static final List<WorldGen_GT> sWorldgenListEverglades = new ArrayList<>();
+    public static final List<WorldGenEverglades> sWorldgenListEverglades = new ArrayList<>();
     public static MetaGeneratedTool sMetaGeneratedToolInstance;
 
     public static void preInit() {

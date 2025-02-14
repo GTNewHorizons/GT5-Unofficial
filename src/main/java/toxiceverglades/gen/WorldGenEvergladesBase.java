@@ -1,4 +1,4 @@
-package toxiceverglades.gen.gt;
+package toxiceverglades.gen;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,7 +21,7 @@ import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.HandlerGT;
 import toxiceverglades.dimension.DimensionEverglades;
 
-public class WorldGen_GT_Base implements IWorldGenerator {
+public class WorldGenEvergladesBase implements IWorldGenerator {
 
     /**
      * Class Variables
@@ -53,7 +53,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
     public static HashSet<Long> ProcChunks = new HashSet<>();
     // This is probably not going to work. Trying to create a fake orevein to
     // put into hashtable when there will be no ores in a vein.
-    public static WorldGen_GT_Ore_Layer noOresInVein = new WorldGen_GT_Ore_Layer(
+    public static WorldGenEvergladesOreLayer noOresInVein = new WorldGenEvergladesOreLayer(
         "vein0",
         0,
         255,
@@ -65,13 +65,13 @@ public class WorldGen_GT_Base implements IWorldGenerator {
         MaterialsElements.getInstance().IRON,
         MaterialsElements.getInstance().IRON);
 
-    public static Hashtable<Long, WorldGen_GT_Ore_Layer> validOreveins = new Hashtable<>(1024);
+    public static Hashtable<Long, WorldGenEvergladesOreLayer> validOreveins = new Hashtable<>(1024);
 
     public boolean mIsGenerating = false;
     public static final Object listLock = new Object();
     // private static boolean gcAsteroids = true;
 
-    public WorldGen_GT_Base() {
+    public WorldGenEvergladesBase() {
         if (debugWorldGen) {
             GTLog.out.println("GTPP_Worldgenerator created");
         }
@@ -111,7 +111,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
         Logger.WORLD("Trying to Generate Dimension.");
         synchronized (listLock) {
             Logger.WORLD("Locked List addition.");
-            if (WorldGen_GT_Base.mList.add(
+            if (WorldGenEvergladesBase.mList.add(
                 new WorldGenContainer(
                     new XSTR(Math.abs(aRandom.nextInt()) + 1),
                     aX,
@@ -134,19 +134,19 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                     + " z:"
                     + aZ
                     + " SIZE: "
-                    + WorldGen_GT_Base.mList.size());
+                    + WorldGenEvergladesBase.mList.size());
         }
 
         if (!this.mIsGenerating) {
             Logger.WORLD("Is not generating.");
             this.mIsGenerating = true;
             Logger.WORLD("Setting Generation to true.");
-            int mList_sS = WorldGen_GT_Base.mList.size();
+            int mList_sS = WorldGenEvergladesBase.mList.size();
             mList_sS = Math.min(mList_sS, 3); // Run a maximum of 3 chunks at a
             // time through worldgen. Extra
             // chunks get done later.
             for (int i = 0; i < mList_sS; i++) {
-                WorldGenContainer toRun = (WorldGenContainer) WorldGen_GT_Base.mList.get(0);
+                WorldGenContainer toRun = (WorldGenContainer) WorldGenEvergladesBase.mList.get(0);
                 if (debugWorldGen) GTLog.out.println(
                     "RUN WorldSeed:" + aWorld.getSeed()
                         + " DimId"
@@ -156,12 +156,12 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                         + " z:"
                         + toRun.mZ
                         + " SIZE: "
-                        + WorldGen_GT_Base.mList.size()
+                        + WorldGenEvergladesBase.mList.size()
                         + " i: "
                         + i);
                 synchronized (listLock) {
                     Logger.WORLD("Locked List Removal.");
-                    WorldGen_GT_Base.mList.remove(0);
+                    WorldGenEvergladesBase.mList.remove(0);
                 }
                 toRun.run();
             }
@@ -291,12 +291,12 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                         + ((oreveinPercentageRoll < oreveinPercentage)));
                 Logger.INFO(
                     "[World Generation Debug] WorldGen_GT_Ore_Layer.sWeight > 0? "
-                        + (WorldGen_GT_Ore_Layer.sWeight > 0));
+                        + (WorldGenEvergladesOreLayer.sWeight > 0));
                 Logger.INFO(
                     "[World Generation Debug] WorldGen_GT_Ore_Layer.sList.size() > 0? "
-                        + (!WorldGen_GT_Ore_Layer.sList.isEmpty()));
-                if ((oreveinPercentageRoll < oreveinPercentage) && (WorldGen_GT_Ore_Layer.sWeight > 0)
-                    && (!WorldGen_GT_Ore_Layer.sList.isEmpty())) {
+                        + (!WorldGenEvergladesOreLayer.sList.isEmpty()));
+                if ((oreveinPercentageRoll < oreveinPercentage) && (WorldGenEvergladesOreLayer.sWeight > 0)
+                    && (!WorldGenEvergladesOreLayer.sList.isEmpty())) {
                     int placementAttempts = 0;
                     boolean oreveinFound = false;
                     int i;
@@ -309,11 +309,11 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                             "[World Generation Debug] (placementAttempts < oreveinMaxPlacementAttempts): "
                                 + (placementAttempts < oreveinMaxPlacementAttempts));
                         Logger.INFO("[World Generation Debug] oreveinFound: " + oreveinFound);
-                        int tRandomWeight = oreveinRNG.nextInt(WorldGen_GT_Ore_Layer.sWeight);
-                        for (WorldGen_GT_Ore_Layer tWorldGen : WorldGen_GT_Ore_Layer.sList) {
+                        int tRandomWeight = oreveinRNG.nextInt(WorldGenEvergladesOreLayer.sWeight);
+                        for (WorldGenEvergladesOreLayer tWorldGen : WorldGenEvergladesOreLayer.sList) {
                             Logger.INFO(
                                 "[World Generation Debug] Iterating sList - Size: "
-                                    + WorldGen_GT_Ore_Layer.sList.size());
+                                    + WorldGenEvergladesOreLayer.sList.size());
                             tRandomWeight -= (tWorldGen).mWeight;
                             if (tRandomWeight <= 0) {
                                 try {
@@ -338,7 +338,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                                         this.mChunkGenerator,
                                         this.mChunkProvider);
                                     switch (placementResult) {
-                                        case WorldGen_GT_Ore_Layer.ORE_PLACED -> {
+                                        case WorldGenEvergladesOreLayer.ORE_PLACED -> {
                                             if (debugWorldGen) GTLog.out.println(
                                                 " Added oreveinSeed=" + oreveinSeed
                                                     + " tries at oremix="
@@ -351,7 +351,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                                             oreveinFound = true;
                                             Logger.INFO("[World Generation Debug] ORE_PLACED");
                                         }
-                                        case WorldGen_GT_Ore_Layer.NO_ORE_IN_BOTTOM_LAYER -> {
+                                        case WorldGenEvergladesOreLayer.NO_ORE_IN_BOTTOM_LAYER -> {
                                             placementAttempts++;
                                             Logger.INFO(
                                                 "[World Generation Debug] NO_ORE_IN_BOTTOM_LAYER | Attempts: "
@@ -359,7 +359,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                                         }
                                         // SHould do retry in this case
                                         // until out of chances
-                                        case WorldGen_GT_Ore_Layer.NO_OVERLAP -> {
+                                        case WorldGenEvergladesOreLayer.NO_OVERLAP -> {
                                             // Orevein didn't reach this chunk,
                                             // can't add it yet to the hash
                                             Logger.INFO("[World Generation Debug] NO_OVERLAP");
@@ -376,7 +376,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                                             validOreveins.put(oreveinSeed, tWorldGen);
                                             oreveinFound = true;
                                         }
-                                        case WorldGen_GT_Ore_Layer.NO_OVERLAP_AIR_BLOCK -> {
+                                        case WorldGenEvergladesOreLayer.NO_OVERLAP_AIR_BLOCK -> {
                                             if (debugWorldGen) GTLog.out.println(
                                                 " No overlap and air block in test spot=" + oreveinSeed
                                                     + " "
@@ -455,7 +455,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                 // oreseed is located in the previously processed table
                 if (debugWorldGen) GTLog.out
                     .print(" Valid oreveinSeed=" + oreveinSeed + " validOreveins.size()=" + validOreveins.size() + " ");
-                WorldGen_GT_Ore_Layer tWorldGen = validOreveins.get(oreveinSeed);
+                WorldGenEvergladesOreLayer tWorldGen = validOreveins.get(oreveinSeed);
                 oreveinRNG.setSeed(oreveinSeed ^ (Block.getIdFromBlock(tWorldGen.mPrimaryMeta))); // Reset
                 // RNG
                 // to
@@ -481,10 +481,10 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                     this.mChunkGenerator,
                     this.mChunkProvider);
                 switch (placementResult) {
-                    case WorldGen_GT_Ore_Layer.NO_ORE_IN_BOTTOM_LAYER -> {
+                    case WorldGenEvergladesOreLayer.NO_ORE_IN_BOTTOM_LAYER -> {
                         if (debugWorldGen) GTLog.out.println(" No ore in bottom layer");
                     }
-                    case WorldGen_GT_Ore_Layer.NO_OVERLAP -> {
+                    case WorldGenEvergladesOreLayer.NO_OVERLAP -> {
                         if (debugWorldGen) GTLog.out.println(" No overlap");
                     }
                 }
@@ -538,7 +538,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
 
             // Do leftover worldgen for this chunk (GT_Stones and GT_small_ores)
             try {
-                for (WorldGen_GT tWorldGen : HandlerGT.sWorldgenListEverglades) {
+                for (WorldGenEverglades tWorldGen : HandlerGT.sWorldgenListEverglades) {
                     /*
                      * if (debugWorldGen) GTLog.out.println( "tWorldGen.mWorldGenName="+tWorldGen.mWorldGenName );
                      */

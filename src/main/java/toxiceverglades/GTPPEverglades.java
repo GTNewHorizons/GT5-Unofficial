@@ -22,9 +22,9 @@ import gtPlusPlus.core.material.MaterialsOres;
 import toxiceverglades.biome.BiomeEverglades;
 import toxiceverglades.block.DarkWorldContentLoader;
 import toxiceverglades.dimension.DimensionEverglades;
-import toxiceverglades.gen.gt.WorldGen_GT_Base;
-import toxiceverglades.gen.gt.WorldGen_GT_Ore_Layer;
-import toxiceverglades.gen.gt.WorldGen_Ores;
+import toxiceverglades.gen.WorldGenEvergladesBase;
+import toxiceverglades.gen.WorldGenEvergladesOreLayer;
+import toxiceverglades.gen.WorldGenEvergladesOres;
 
 @Mod(
     modid = Mods.Names.G_T_PLUS_PLUS_EVERGLADES,
@@ -65,7 +65,7 @@ public class GTPPEverglades {
         Logger.INFO("Begin resource allocation for " + GTPlusPlusEverglades.ID + " V" + VERSION);
 
         // Load World and Biome
-        GameRegistry.registerWorldGenerator(new WorldGen_GT_Base(), Short.MAX_VALUE);
+        GameRegistry.registerWorldGenerator(new WorldGenEvergladesBase(), Short.MAX_VALUE);
         getEvergladesBiome().load();
         Everglades_Dimension.load();
         addToVoidMinerDrops();
@@ -128,18 +128,18 @@ public class GTPPEverglades {
         /*
          * Set World Generation Values
          */
-        WorldGen_Ores.generateValidOreVeins();
-        WorldGen_GT_Base.oreveinPercentage = 64;
-        WorldGen_GT_Base.oreveinAttempts = 16;
-        WorldGen_GT_Base.oreveinMaxPlacementAttempts = 4;
+        WorldGenEvergladesOres.generateValidOreVeins();
+        WorldGenEvergladesBase.oreveinPercentage = 64;
+        WorldGenEvergladesBase.oreveinAttempts = 16;
+        WorldGenEvergladesBase.oreveinMaxPlacementAttempts = 4;
         if (ASMConfiguration.debug.debugMode || GTPPCore.DEVENV) {
-            WorldGen_GT_Base.debugWorldGen = true;
+            WorldGenEvergladesBase.debugWorldGen = true;
         }
         DarkWorldContentLoader.run();
     }
 
     public void addToVoidMinerDrops() {
-        for (WorldGen_GT_Ore_Layer t : WorldGen_Ores.validOreveins.values()) {
+        for (WorldGenEvergladesOreLayer t : WorldGenEvergladesOres.validOreveins.values()) {
             addVMDrop(t.mPrimaryMeta, 0, t.mWeight);
             addVMDrop(t.mSecondaryMeta, 0, t.mWeight);
             addVMDrop(t.mBetweenMeta, 0, t.mWeight / 8f);

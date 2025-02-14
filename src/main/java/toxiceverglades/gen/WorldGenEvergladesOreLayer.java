@@ -1,6 +1,6 @@
-package toxiceverglades.gen.gt;
+package toxiceverglades.gen;
 
-import static toxiceverglades.gen.gt.WorldGen_GT_Base.debugWorldGen;
+import static toxiceverglades.gen.WorldGenEvergladesBase.debugWorldGen;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,9 +23,9 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import toxiceverglades.dimension.DimensionEverglades;
 
-public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
+public class WorldGenEvergladesOreLayer extends WorldGenEverglades {
 
-    public static ArrayList<WorldGen_GT_Ore_Layer> sList = new ArrayList<>();
+    public static ArrayList<WorldGenEvergladesOreLayer> sList = new ArrayList<>();
     public static int sWeight = 0;
     public final short mMinY;
     public final short mMaxY;
@@ -55,7 +55,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
 
     public final String aTextWorldgen = "worldgen.";
 
-    public WorldGen_GT_Ore_Layer(String aName, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize,
+    public WorldGenEvergladesOreLayer(String aName, int aMinY, int aMaxY, int aWeight, int aDensity, int aSize,
         Material aPrimary, Material aSecondary, Material aBetween, Material aSporadic) {
         this(
             aName,
@@ -77,7 +77,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
             aSporadic);
     }
 
-    public WorldGen_GT_Ore_Layer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity,
+    public WorldGenEvergladesOreLayer(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity,
         int aSize, boolean aOverworld, boolean aNether, boolean aEnd, boolean GC_UNUSED1, boolean GC_UNUSED2,
         boolean GC_UNUSED3, Material aPrimary, Material aSecondary, Material aBetween, Material aSporadic) {
         super(aName, sList, aDefault);

@@ -1,4 +1,4 @@
-package toxiceverglades.gen.gt;
+package toxiceverglades.gen;
 
 import java.util.List;
 import java.util.Map;
@@ -8,13 +8,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
-public abstract class WorldGen_GT {
+public abstract class WorldGenEverglades {
 
     public final String mWorldGenName;
     public final boolean mEnabled;
     private final Map<String, Boolean> mDimensionMap = new ConcurrentHashMap<>();
 
-    public WorldGen_GT(String aName, List aList, boolean aDefault) {
+    public WorldGenEverglades(String aName, List aList, boolean aDefault) {
         this.mWorldGenName = aName;
         this.mEnabled = aDefault;
         if (this.mEnabled) {
