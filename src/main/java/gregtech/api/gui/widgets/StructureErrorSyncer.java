@@ -17,7 +17,7 @@ public class StructureErrorSyncer extends FakeSyncWidget<EnumSet<StructureError>
         super(getter, setter, StructureErrorSyncer::save, StructureErrorSyncer::load);
     }
 
-    public static void save(PacketBuffer buffer, EnumSet<StructureError> errors) {
+    private static void save(PacketBuffer buffer, EnumSet<StructureError> errors) {
         BitSet bits = new BitSet();
 
         for (StructureError error : errors) {
@@ -30,7 +30,7 @@ public class StructureErrorSyncer extends FakeSyncWidget<EnumSet<StructureError>
         buffer.writeBytes(data);
     }
 
-    public static EnumSet<StructureError> load(PacketBuffer buffer) {
+    private static EnumSet<StructureError> load(PacketBuffer buffer) {
         byte[] data = new byte[buffer.readVarIntFromBuffer()];
         buffer.readBytes(data);
 

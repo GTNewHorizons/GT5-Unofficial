@@ -494,6 +494,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         super.updateSlots();
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
         List<String> lines) {
