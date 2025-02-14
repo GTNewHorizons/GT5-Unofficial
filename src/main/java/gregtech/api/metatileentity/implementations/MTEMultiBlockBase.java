@@ -2714,8 +2714,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             .setPos(12, 40)
             .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
 
-        builder.widget(new FakeSyncWidget.IntegerSyncer(() -> powerPanelMaxParallel, (val) -> powerPanelMaxParallel = val).setOnClientUpdate($ -> textField.setBounds(alwaysMaxParallel ? Math.max(maxParallel, 1) : 1, maxParallel)));
-        builder.widget(new FakeSyncWidget.BooleanSyncer(() -> alwaysMaxParallel, (val) -> alwaysMaxParallel = val));
+        builder.widget(
+            new FakeSyncWidget.IntegerSyncer(() -> powerPanelMaxParallel, (val) -> powerPanelMaxParallel = val));
+        builder.widget(
+            new FakeSyncWidget.BooleanSyncer(() -> alwaysMaxParallel, (val) -> alwaysMaxParallel = val)
+                .setOnClientUpdate($ -> {
+                    textField.setBounds(alwaysMaxParallel ? Math.max(maxParallel, 1) : 1, maxParallel);
+                    textField.setValue(maxParallel);
+                }));
 
         builder.widget(textField);
         builder.widget(createMaxParallelCheckBox(builder, textField));
@@ -2728,8 +2734,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             if (getBaseMetaTileEntity().isClientSide()) return;
             alwaysMaxParallel = !alwaysMaxParallel;
-            //textField.setBounds(alwaysMaxParallel ? Math.max(maxParallel, 1) : 1, maxParallel);
-            //textField.setValue(maxParallel);
         })
             .setPlayClickSound(true)
             .setBackground(() -> {
