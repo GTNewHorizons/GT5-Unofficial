@@ -18,10 +18,10 @@ import net.minecraftforge.common.FishingHooks;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.InventoryFishTrap;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 
@@ -50,7 +50,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
         int waterCount = 0;
         int trapCount = 0;
         for (final Block checkBlock : surroundingBlocks) {
-            if (checkBlock == ModBlocks.blockFishTrap) {
+            if (checkBlock == GregtechItemList.FishTrap.getBlock()) {
                 trapCount++;
             } else if ((checkBlock == Blocks.water) || (checkBlock == Blocks.flowing_water)) {
                 waterCount++;
