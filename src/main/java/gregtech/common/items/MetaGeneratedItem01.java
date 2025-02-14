@@ -162,7 +162,6 @@ import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_MV;
 import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_UV;
 import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_ZPM;
 import static gregtech.common.items.IDMetaItem01.Cover_Wireless_Energy_LV;
-import static gregtech.common.items.IDMetaItem01.Crate_Empty;
 import static gregtech.common.items.IDMetaItem01.Duct_Tape;
 import static gregtech.common.items.IDMetaItem01.Electric_Motor_EV;
 import static gregtech.common.items.IDMetaItem01.Electric_Motor_HV;
@@ -870,15 +869,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                     OrePrefixes.dust.mMaterialAmount),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
-
-        ItemList.Crate_Empty.set(
-            addItem(
-                Crate_Empty.ID,
-                "Empty Crate",
-                "To Package lots of Material",
-                new ItemData(Materials.Wood, 3628800L, Materials.Iron, OrePrefixes.screw.mMaterialAmount),
-                new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.ITER, 2L)));
 
         ItemList.ThermosCan_Empty.set(
             addItem(
@@ -2765,7 +2755,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         ItemList.Circuit_Master.set(
             addItem(
                 Circuit_Master.ID,
-                "Nanoprocessor Mainframe",
+                "Nano Mainframe",
                 "A Master Circuit",
                 OrePrefixes.circuit.get(Materials.LuV),
                 SubTag.NO_UNIFICATION));
@@ -4033,17 +4023,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             ItemList.Fuel_Can_Plastic_Empty.get(7L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { " PP", "P P", "PPP", 'P', OrePrefixes.plate.get(Materials.Plastic) });
-
-        GTModHandler.addCraftingRecipe(
-            ItemList.Crate_Empty.get(4L),
-            GTModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { "SWS", "WdW", "SWS", 'W', OrePrefixes.plank.get(Materials.Wood), 'S',
-                OrePrefixes.screw.get(Materials.AnyIron) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Crate_Empty.get(4L),
-            GTModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { "SWS", "WdW", "SWS", 'W', OrePrefixes.plank.get(Materials.Wood), 'S',
-                OrePrefixes.screw.get(Materials.Steel) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_1by1.get(1L),

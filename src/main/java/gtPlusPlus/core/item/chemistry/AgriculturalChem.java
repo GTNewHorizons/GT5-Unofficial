@@ -10,6 +10,7 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
+import static gtPlusPlus.core.util.minecraft.ItemUtils.hideItemFromNEI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,14 +34,12 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.circuit.GTPPIntegratedCircuitItem;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.plugin.agrichem.BioRecipes;
 import gtPlusPlus.plugin.agrichem.item.algae.ItemAgrichemBase;
 import gtPlusPlus.plugin.agrichem.item.algae.ItemAlgaeBase;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class AgriculturalChem extends ItemPackage {
 
@@ -89,7 +88,6 @@ public class AgriculturalChem extends ItemPackage {
     // Fertilizer
 
     public static Item mAlgae;
-    public static Item mBioCircuit;
     public static Item mAgrichemItem1;
 
     /*
@@ -148,8 +146,10 @@ public class AgriculturalChem extends ItemPackage {
 
         mAlgae = new ItemAlgaeBase();
         mAgrichemItem1 = new ItemAgrichemBase();
-        mBioCircuit = new GTPPIntegratedCircuitItem("BioRecipeSelector", "bioscience/BioCircuit");
-        GregtechItemList.Circuit_BioRecipeSelector.set(mBioCircuit);
+
+        // TODO Remove after 2.8
+        Item bioSelector = new GTPPIntegratedCircuitItem("BioRecipeSelector", "bioscience/BioCircuit");
+        hideItemFromNEI(new ItemStack(bioSelector));
 
         mAlgaeBiosmass = ItemUtils.simpleMetaStack(mAgrichemItem1, 0, 1);
         mGreenAlgaeBiosmass = ItemUtils.simpleMetaStack(mAgrichemItem1, 1, 1);
@@ -421,7 +421,6 @@ public class AgriculturalChem extends ItemPackage {
 
         // Poop Juice to Basic Slurry
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(10))
             .itemOutputs(aDirtDust, aDirtDust, aManureByprod1, aManureByprod1, aManureByprod1, aManureByprod1)
             .outputChances(2000, 2000, 500, 500, 250, 250)
             .fluidInputs(FluidUtils.getFluidStack(PoopJuice, 1000))
@@ -604,7 +603,7 @@ public class AgriculturalChem extends ItemPackage {
 
         // Red Slurry / Tailings Processing
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.getNumberedBioCircuit(10))
+            .itemInputs(GTUtility.getIntegratedCircuit(10))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Iron, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Copper, 1L),

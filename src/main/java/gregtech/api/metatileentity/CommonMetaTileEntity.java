@@ -306,16 +306,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         return null;
     }
 
-    @Override
-    public boolean isGivingInformation() {
-        return false;
-    }
-
-    @Override
-    public String[] getInfoData() {
-        return new String[] {};
-    }
-
     public boolean isDigitalChest() {
         return false;
     }

@@ -8,7 +8,6 @@ import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.massFabFakeRecipes;
-import static gregtech.api.recipe.RecipeMaps.rockBreakerFakeRecipes;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -34,6 +33,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
@@ -49,6 +49,7 @@ import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
+import gregtech.common.tileentities.machines.basic.MTERockBreaker;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
@@ -329,47 +330,44 @@ public class GTPostLoad {
 
         massFabFakeRecipes.add(MTEMassfabricator.uuaRecipe);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Display_ITS_FREE.getWithName(1L, "IT'S FREE! Place Lava on Side"))
-            .itemOutputs(new ItemStack(Blocks.cobblestone, 1))
-            .duration(16 * TICKS)
-            .eut(TierEU.RECIPE_LV)
-            .ignoreCollision()
-            .noOptimize()
-            .fake()
-            .addTo(rockBreakerFakeRecipes);
+        MTERockBreaker.addRockBreakerRecipe(
+            b -> b.recipeDescription("IT'S FREE! Place Lava on Side")
+                .sideBlocks(Blocks.water)
+                .topBlock(Blocks.lava)
+                .outputItem(new ItemStack(Blocks.stone, 1))
+                .duration(16 * TICKS));
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Display_ITS_FREE.getWithName(1L, "IT'S FREE! Place Lava on Side"))
-            .itemOutputs(new ItemStack(Blocks.stone, 1))
-            .duration(16 * TICKS)
-            .eut(TierEU.RECIPE_LV)
-            .ignoreCollision()
-            .noOptimize()
-            .fake()
-            .addTo(rockBreakerFakeRecipes);
+        MTERockBreaker.addRockBreakerRecipe(
+            b -> b.recipeDescription("IT'S FREE! Place Lava on Side")
+                .sideBlocks(Blocks.water, Blocks.lava)
+                .outputItem(new ItemStack(Blocks.cobblestone, 1))
+                .duration(16 * TICKS));
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(new ItemStack(Blocks.obsidian, 1))
-            .duration(6 * SECONDS + 8 * TICKS)
-            .eut(TierEU.RECIPE_LV)
-            .ignoreCollision()
-            .noOptimize()
-            .fake()
-            .addTo(rockBreakerFakeRecipes);
+        MTERockBreaker.addRockBreakerRecipe(
+            b -> b.sideBlocks(Blocks.water)
+                .anywhereBlocks(Blocks.lava)
+                .inputItem(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), true)
+                .circuit(1)
+                .outputItem(new ItemStack(Blocks.obsidian, 1))
+                .duration(6 * SECONDS + 8 * TICKS));
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.packed_ice, 0), GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Basalt, 1L))
-            .duration(16 * TICKS)
-            .eut(TierEU.RECIPE_LV)
-            .ignoreCollision()
-            .noOptimize()
-            .fake()
-            .addTo(rockBreakerFakeRecipes);
+        if (Mods.EtFuturumRequiem.isModLoaded()) {
+            MTERockBreaker.addRockBreakerRecipe(
+                b -> b.sideBlocks(Blocks.lava)
+                    .bottomBlock(Blocks.soul_sand)
+                    .inputItem(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "blue_ice", 0, 0), false)
+                    .circuit(1)
+                    .outputItem(GTOreDictUnificator.get(OrePrefixes.stone, Materials.Basalt, 1L))
+                    .duration(16 * TICKS));
+
+            MTERockBreaker.addRockBreakerRecipe(
+                b -> b.sideBlocks(Blocks.lava)
+                    .bottomBlock(Blocks.soul_sand)
+                    .inputItem(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "magma", 0, 0), false)
+                    .circuit(1)
+                    .outputItem(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "cobbled_deepslate", 1, 0))
+                    .duration(16 * TICKS));
+        }
     }
 
     public static void changeWoodenVanillaTools() {

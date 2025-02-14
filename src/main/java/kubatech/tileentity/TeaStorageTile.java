@@ -79,5 +79,6 @@ public class TeaStorageTile extends TileEntity {
     @Override
     public void invalidate() {
         if (teaNetwork != null) teaNetwork.unregisterTeaStorageExtender(this);
+        super.invalidate();
     }
 }
