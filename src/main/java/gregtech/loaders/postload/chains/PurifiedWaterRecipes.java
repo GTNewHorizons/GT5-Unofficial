@@ -254,6 +254,7 @@ public class PurifiedWaterRecipes {
                 .itemInputs(ItemList.Quark_Catalyst_Housing.get(1), quarks[i])
                 .fluidInputs(MaterialsUEVplus.ExcitedDTRC.getFluid(10000L))
                 .itemOutputs(catalystInputs[i])
+                .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(5000L))
                 .metadata(COIL_HEAT, 10800)
                 .eut(TierEU.RECIPE_UMV)
                 .duration(5 * MINUTES)
