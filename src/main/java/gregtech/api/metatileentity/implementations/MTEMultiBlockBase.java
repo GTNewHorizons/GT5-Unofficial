@@ -2672,6 +2672,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public ModularWindow createPowerPanel(EntityPlayer player) {
+        if (getBaseMetaTileEntity().isServerSide()) maxParallel = getMaxParallelRecipes();
+
         final int w = 120;
         final int h = 130;
         final int parentW = getGUIWidth();
@@ -2710,10 +2712,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             .setTextColor(Color.WHITE.normal)
             .setSize(70, 18)
             .setPos(12, 40)
-            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-            .attachSyncer(
-                new FakeSyncWidget.IntegerSyncer(() -> powerPanelMaxParallel, (val) -> powerPanelMaxParallel = val),
-                builder);
+            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
+
+        builder.widget(new FakeSyncWidget.IntegerSyncer(() -> powerPanelMaxParallel, (val) -> powerPanelMaxParallel = val).setOnClientUpdate($ -> textField.setBounds(alwaysMaxParallel ? Math.max(maxParallel, 1) : 1, maxParallel)));
+        builder.widget(new FakeSyncWidget.BooleanSyncer(() -> alwaysMaxParallel, (val) -> alwaysMaxParallel = val));
 
         builder.widget(textField);
         builder.widget(createMaxParallelCheckBox(builder, textField));
@@ -2724,8 +2726,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     private ButtonWidget createMaxParallelCheckBox(IWidgetBuilder<?> builder, NumericWidget textField) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (getBaseMetaTileEntity().isClientSide()) return;
             alwaysMaxParallel = !alwaysMaxParallel;
-            textField.setBounds(alwaysMaxParallel ? Math.max(maxParallel, 1) : 1, maxParallel);
+            //textField.setBounds(alwaysMaxParallel ? Math.max(maxParallel, 1) : 1, maxParallel);
+            //textField.setValue(maxParallel);
         })
             .setPlayClickSound(true)
             .setBackground(() -> {
@@ -2739,9 +2743,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 }
                 return ret.toArray(new IDrawable[0]);
             })
-            .attachSyncer(
-                new FakeSyncWidget.BooleanSyncer(() -> alwaysMaxParallel, (val) -> alwaysMaxParallel = val),
-                builder)
             .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.max_parallel"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(88, 41)
