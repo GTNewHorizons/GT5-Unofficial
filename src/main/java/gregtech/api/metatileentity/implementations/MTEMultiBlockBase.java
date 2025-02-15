@@ -2915,11 +2915,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
         screenElements.widget(
-            new TextWidget("Too Uncertain.").setTextAlignment(Alignment.CenterLeft)
+            new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.too_uncertain"))
+                .setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> (getErrorDisplayID() & 128) != 0));
         screenElements.widget(
-            new TextWidget("Invalid Parameters.").setTextAlignment(Alignment.CenterLeft)
+            new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.invalid_parameters"))
+                .setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> (getErrorDisplayID() & 256) != 0));
 

@@ -99,7 +99,10 @@ public class ItemBlockOre extends ItemBlock {
             if (b != null) {
                 int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());
                 if (aMiningLevel1 != 0) {
-                    list.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.ore.mining_level", Math.min(Math.max(aMiningLevel1, 0), 5)));
+                    list.add(
+                        StatCollector.translateToLocalFormatted(
+                            "GTPP.tooltip.ore.mining_level",
+                            Math.min(Math.max(aMiningLevel1, 0), 5)));
                 }
             }
 

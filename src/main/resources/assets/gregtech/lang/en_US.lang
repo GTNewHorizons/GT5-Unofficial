@@ -52,10 +52,46 @@ item.gt.pollen.name=Pollen
 item.gt.propolis.name=Propolis
 tile.gt.dronerender.name=Drone Renderer
 
+# Air Filter
+item.GTPP.air_filter.name=Air Filter
+item.GTPP.air_filter.name.t1=Air Filter [Tier 1]
+item.GTPP.air_filter.name.t2=Air Filter [Tier 2]
+
+GTPP.tooltip.air_filter.0=An Air filter for Atmospheric Reconditioning.
+GTPP.tooltip.air_filter.1=%d/%d uses left.
+
+# Fish trap
+GTPP.tooltip.fish_trap.0=This trap catches fish faster if surrounded by more water blocks
+GTPP.tooltip.fish_trap.1=Can also be placed beside up to 4 other fish traps
+GTPP.tooltip.fish_trap.2=Requires at least two faces touching water
+GTPP.tooltip.fish_trap.3=1/1000 chance to produce triple loot.
+
+# Circuit Table
+GTPP.tooltip.circuit_table.0=Easy Circuit Configuration
+GTPP.tooltip.circuit_table.1=Change default setting with a Screwdriver
+GTPP.tooltip.circuit_table.2=Default is used to select slot for auto-insertion
+
+# Decayables Chest
+GTPP.tooltip.decayables_chest.0=Chest which holds radioactive materials
+GTPP.tooltip.decayables_chest.1=Items which decay will tick while inside
+GTPP.tooltip.decayables_chest.2=Place with right-click
+
+# Butterfly Killer
+GTPP.tooltip.butterfly_killer.0=Kills Forestry Butterflies, Bats and other pests
+GTPP.tooltip.butterfly_killer.1=Use either Formaldehyde or Hydrogen cyanide
+GTPP.tooltip.butterfly_killer.2=Be weary of your neighbours
+
+# Volumetric Flask Setter
+GTPP.tooltip.volumetric_flask_setter.0=Easy Flask Configuration
+GTPP.tooltip.volumetric_flask_setter.1=Configure default input slot with a screwdriver
+
+GTPP.tooltip.bad_tooltip_id=Bad Tooltip ID - %d
+
+# Infinite Spray Can
+
 item.GT5U.infinite_spray_can.name.solvent=Infinite Spray Can %cSolvent%c
 item.GT5U.infinite_spray_can.name.colored=Infinite Spray Can %c%s%c
 
-# Infinite Spray Can colors
 GT5U.infinite_spray_can.color.Black=Black
 GT5U.infinite_spray_can.color.Red=Red
 GT5U.infinite_spray_can.color.Green=Green
@@ -674,6 +710,8 @@ GT5U.gui.text.heat_sensor=Heat threshold
 GT5U.gui.text.static_mode=Static Mode
 GT5U.gui.text.pulse_mode=Pulse Mode
 GT5U.gui.text.power_panel=Power Control Panel
+GT5U.gui.text.too_uncertain=Too Uncertain.
+GT5U.gui.text.invalid_parameters=Invalid Parameters.
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
 GT5U.gui.config.client=Client
@@ -873,6 +911,16 @@ GT5U.interface.coverTabs.north=North
 GT5U.interface.coverTabs.south=South
 GT5U.interface.coverTabs.west=West
 GT5U.interface.coverTabs.east=East
+GT5U.interface.coverTabs.cover_on=Cover on %s side: %s
+GT5U.interface.coverTabs.emits_redstone=Emits a strong redstone signal on the %s side
+
+GT5U.interface.coverTabs.redstone.bottom=bottom
+GT5U.interface.coverTabs.redstone.top=top
+GT5U.interface.coverTabs.redstone.north=north
+GT5U.interface.coverTabs.redstone.south=south
+GT5U.interface.coverTabs.redstone.west=west
+GT5U.interface.coverTabs.redstone.east=east
+GT5U.interface.coverTabs.redstone.unknown=<unknown>
 
 GT5U.steam_variant.bronze=Bronze
 GT5U.steam_variant.steel=Steel

@@ -84,7 +84,10 @@ public class ItemBlockGtBlock extends ItemBlock {
                 if (b != null) {
                     int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());
                     if (this.mMaterial != null) {
-                        list.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.block.mining_level",Math.min(Math.max(aMiningLevel1, 0), 5)));
+                        list.add(
+                            StatCollector.translateToLocalFormatted(
+                                "GTPP.tooltip.block.mining_level",
+                                Math.min(Math.max(aMiningLevel1, 0), 5)));
                         list.add(StatCollector.translateToLocal("GTPP.tooltip.block.contains"));
                         if (mMaterial.getComposites()
                             .isEmpty()) {
