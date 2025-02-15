@@ -874,7 +874,19 @@ GT5U.waila.generating.on=Generating Energy
 GT5U.waila.generating.off=Not Generating
 GT5U.waila.status.insufficient_energy=Status: Insufficient energy
 GT5U.waila.status.obstructed_steam_vent=Status: Obstructed steam vent
-
+GT5U.waila.machine.working_disabled=Working Disabled
+GT5U.waila.machine.idle=Idle
+GT5U.waila.machine.in_progress=In progress: %,.1fs / %,.1fs (%,.1f%%)
+GT5U.waila.machine_facing=Machine Facing: %s
+GT5U.waila.output_facing=Output Facing: %s
+GT5U.waila.facing=Facing: %s
+GT5U.waila.facing.down=DOWN
+GT5U.waila.facing.up=UP
+GT5U.waila.facing.north=NORTH
+GT5U.waila.facing.south=SOUTH
+GT5U.waila.facing.west=WEST
+GT5U.waila.facing.east=EAST
+GT5U.waila.facing.unknown=UNKNOWN
 
 achievement.flintpick=First Tools
 achievement.flintpick.desc=Craft a flint pick
