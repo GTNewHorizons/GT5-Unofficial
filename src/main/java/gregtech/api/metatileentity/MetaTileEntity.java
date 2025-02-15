@@ -44,7 +44,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
-import gregtech.common.capability.CleanroomReceiverImpl;
+import gregtech.common.capability.CleanroomReference;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
@@ -75,7 +75,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity {
         return inventoryHandler;
     }
 
-    protected final ICleanroomReceiver cleanroomReceiver = new CleanroomReceiverImpl();
+    protected final ICleanroomReceiver cleanroomReference = new CleanroomReference();
 
     /**
      * accessibility to this Field is no longer given, see below
@@ -144,7 +144,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity {
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull ForgeDirection side) {
         if (capability == CAPABILITY_CLEANROOM_RECEIVER) {
-            return CAPABILITY_CLEANROOM_RECEIVER.cast(cleanroomReceiver);
+            return CAPABILITY_CLEANROOM_RECEIVER.cast(cleanroomReference);
         }
         return super.getCapability(capability, side);
     }

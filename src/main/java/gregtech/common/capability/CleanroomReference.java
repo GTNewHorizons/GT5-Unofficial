@@ -5,11 +5,11 @@ import javax.annotation.Nullable;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
 
-public class CleanroomReceiverImpl implements ICleanroomReceiver {
+public class CleanroomReference implements ICleanroomReceiver {
 
     private ICleanroom cleanroom;
 
-    public CleanroomReceiverImpl() {}
+    public CleanroomReference() {}
 
     @Nullable
     @Override
