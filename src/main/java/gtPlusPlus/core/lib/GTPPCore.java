@@ -57,12 +57,6 @@ public class GTPPCore {
 
     public static final GT_Materials[] sMU_GeneratedMaterials = new GT_Materials[1000];
 
-    public static class Everglades {
-
-        public static final String NAME = "GT++ Toxic Everglades";
-        public static final String VERSION = GT_Version.VERSION;
-    }
-
     public static void crash() {
         crash("Generic Crash");
     }
