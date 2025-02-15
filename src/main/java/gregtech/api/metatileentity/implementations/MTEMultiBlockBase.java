@@ -2720,18 +2720,25 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             .setScrollValues(1, 4, 64)
             .setTextAlignment(Alignment.Center)
             .setTextColor(Color.WHITE.normal)
+            .dynamicTooltip(
+                () -> Collections.singletonList(
+                    alwaysMaxParallel
+                        ? StatCollector.translateToLocalFormatted("GT5U.gui.text.lockedvalue", maxParallel)
+                        : StatCollector.translateToLocalFormatted("GT5U.gui.text.rangedvalue", 1, maxParallel)))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setSize(70, 18)
             .setPos(12, 40)
             .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
 
         builder.widget(textField);
-        builder.widget(createMaxParallelCheckBox());
+        builder.widget(createMaxParallelCheckBox(textField));
 
         return builder.build();
     }
 
-    private ButtonWidget createMaxParallelCheckBox() {
+    private ButtonWidget createMaxParallelCheckBox(NumericWidget textField) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            textField.notifyTooltipChange();
             if (getBaseMetaTileEntity().isClientSide()) return;
             alwaysMaxParallel = !alwaysMaxParallel;
         })

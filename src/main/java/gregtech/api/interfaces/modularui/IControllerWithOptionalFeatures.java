@@ -41,6 +41,8 @@ import gregtech.api.interfaces.tileentity.IVoidable;
  */
 public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLockable {
 
+    int POWER_PANEL_WINDOW_ID = 8;
+
     boolean isAllowedToWork();
 
     void disableWorking();
@@ -261,8 +263,6 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
         }
         return (ButtonWidget) button;
     }
-
-    int POWER_PANEL_WINDOW_ID = 8;
 
     /**
      * @return if the multi supports precise power management.
