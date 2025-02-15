@@ -155,6 +155,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected boolean batchMode = getDefaultBatchMode();
     protected @Nonnull CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
     protected int powerPanelMaxParallel = 1;
+    protected boolean alwaysMaxParallel = true;
+    protected int maxParallel = 1;
 
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
@@ -2463,13 +2465,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * @return Whether this multiblock has features which allow parallels. This is used for the power control panel.
-     */
-    public boolean supportsParallel() {
-        return false;
-    }
-
-    /**
      * Do not use this method as a supplier to ProcessingLogic, use getTrueParallel()
      *
      * @return The absolute maximum number of parallels possible right now.
@@ -2484,7 +2479,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * @return Get real parallel count based on the maximum and the limit imposed in the power panel.
      *         Always returns at least 1.
      */
-    public int getTrueParallel() {
+    public final int getTrueParallel() {
         return Math.max(
             1,
             alwaysMaxParallel ? getMaxParallelRecipes() : Math.min(getMaxParallelRecipes(), powerPanelMaxParallel));
@@ -2670,9 +2665,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public Pos2d getPowerPanelButtonPos() {
         return new Pos2d(174, 91);
     }
-
-    protected boolean alwaysMaxParallel = true;
-    protected int maxParallel = 1;
 
     @Override
     public ModularWindow createPowerPanel(EntityPlayer player) {
