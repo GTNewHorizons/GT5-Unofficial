@@ -2483,9 +2483,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * This method should be used as a supplier to ProcessingLogic, not getMaxParallelRecipes()
      *
      * @return Get real parallel count based on the maximum and the limit imposed in the power panel.
+     * Always returns at least 1.
      */
     public int getTrueParallel() {
-        return alwaysMaxParallel ? getMaxParallelRecipes() : Math.min(getMaxParallelRecipes(), powerPanelMaxParallel);
+        return Math.max(1, alwaysMaxParallel ? getMaxParallelRecipes() : Math.min(getMaxParallelRecipes(), powerPanelMaxParallel));
     }
 
     @Override
@@ -2652,8 +2653,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             .widget(createBatchModeButton(builder))
             .widget(createLockToSingleRecipeButton(builder))
             .widget(createStructureUpdateButton(builder));
-        if (supportsPowerPanel()) builder.widget(createPowerPanelButton(builder));
-        buildContext.addSyncedWindow(POWER_PANEL_WINDOW_ID, this::createPowerPanel);
+        if (supportsPowerPanel()) {
+            builder.widget(createPowerPanelButton(builder));
+            buildContext.addSyncedWindow(POWER_PANEL_WINDOW_ID, this::createPowerPanel);
+        }
     }
 
     // Until other features are implemented, this will be the same as supporting parallel.
@@ -2673,6 +2676,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public ModularWindow createPowerPanel(EntityPlayer player) {
         if (getBaseMetaTileEntity().isServerSide()) maxParallel = getMaxParallelRecipes();
+        if (alwaysMaxParallel) powerPanelMaxParallel = maxParallel;
 
         final int w = 120;
         final int h = 130;
@@ -2696,8 +2700,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 .setPos(0, 2)
                 .setSize(120, 18));
 
-        builder.widget(new FakeSyncWidget.IntegerSyncer(this::getMaxParallelRecipes, (val) -> maxParallel = val));
-
         builder.widget(
             TextWidget.localised("GTPP.CC.parallel")
                 .setPos(0, 24)
@@ -2705,7 +2707,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         NumericWidget textField = (NumericWidget) new NumericWidget()
             .setSetter(val -> powerPanelMaxParallel = (int) val)
             .setGetter(() -> powerPanelMaxParallel)
-            .setBounds(alwaysMaxParallel ? Math.max(maxParallel, 1) : 1, maxParallel)
+            .setBounds(alwaysMaxParallel ? maxParallel : 1, maxParallel)
             .setDefaultValue(powerPanelMaxParallel)
             .setScrollValues(1, 4, 64)
             .setTextAlignment(Alignment.Center)
@@ -2715,22 +2717,23 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
 
         builder.widget(
-            new FakeSyncWidget.IntegerSyncer(() -> powerPanelMaxParallel, (val) -> powerPanelMaxParallel = val));
-        builder.widget(
-            new FakeSyncWidget.BooleanSyncer(() -> alwaysMaxParallel, (val) -> alwaysMaxParallel = val)
+            new FakeSyncWidget.BooleanSyncer(() -> alwaysMaxParallel, val -> alwaysMaxParallel = val)
                 .setOnClientUpdate($ -> {
-                    textField.setBounds(alwaysMaxParallel ? Math.max(maxParallel, 1) : 1, maxParallel);
+                    textField.setBounds(alwaysMaxParallel ? maxParallel : 1, maxParallel);
                     textField.setValue(maxParallel);
                 }));
 
         builder.widget(textField);
-        builder.widget(createMaxParallelCheckBox(builder, textField));
+        builder.widget(createMaxParallelCheckBox());
 
-        ModularWindow ret = builder.build();
+        builder.widget(new FakeSyncWidget.IntegerSyncer(this::getMaxParallelRecipes, val -> maxParallel = val));
+        builder.widget(
+            new FakeSyncWidget.IntegerSyncer(() -> powerPanelMaxParallel, val -> powerPanelMaxParallel = val));
+
         return builder.build();
     }
 
-    private ButtonWidget createMaxParallelCheckBox(IWidgetBuilder<?> builder, NumericWidget textField) {
+    private ButtonWidget createMaxParallelCheckBox() {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             if (getBaseMetaTileEntity().isClientSide()) return;
             alwaysMaxParallel = !alwaysMaxParallel;
