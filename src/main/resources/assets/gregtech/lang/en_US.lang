@@ -1908,6 +1908,18 @@ GTPP.MBTT.SteamHatch=Steam Hatch
 GTPP.MBTT.SteamInputBus=Input Bus (Steam)
 GTPP.MBTT.SteamOutputBus=Output Bus (Steam)
 
+# Item Tooltips
+GTPP.tooltip.hold_ctrl=Hold Ctrl to show additional info.
+GTPP.tooltip.material.type=Material Type: %s.
+GTPP.tooltip.material.state=Material State: %s.
+GTPP.tooltip.material.radioactivity=Radioactivity Level: %s.
+GTPP.tooltip.ore.contains=Ore contains:
+GTPP.tooltip.ore.mining_level=Mining Level: %d
+GTPP.tooltip.ore.found=Found:
+GTPP.tooltip.ore.unknown=- Unknown
+GTPP.tooltip.block.mining_level=Mining Level: %d
+GTPP.tooltip.block.contains=Contains:
+
 
 
 
