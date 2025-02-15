@@ -367,7 +367,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             }
         }.setSpeedBonus(1F / 3.5F)
             .setEuModifier(0.8F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -375,7 +375,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         return true;
     }
 
-    private int getMaxParallelRecipes() {
+    @Override
+    public int getMaxParallelRecipes() {
         return laserAmps;
     }
 

@@ -259,7 +259,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
             .setItemInputs(tItemInputs)
             .setFluidInputs(tFluidInputs)
             .setAvailableEUt(tEnergy)
-            .setMaxParallel(getMaxParallelRecipes())
+            .setMaxParallel(getTrueParallel())
             .setConsumption(true)
             .setOutputCalculation(true)
             .setMachine(this)
