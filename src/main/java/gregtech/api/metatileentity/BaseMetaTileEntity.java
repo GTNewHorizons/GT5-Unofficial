@@ -65,8 +65,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.graphs.GenerateNodeMap;
 import gregtech.api.graphs.GenerateNodeMapPower;
 import gregtech.api.graphs.Node;
-import gregtech.api.interfaces.ICleanroom;
-import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
@@ -98,7 +96,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  */
 public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     implements IGregTechTileEntity, IActionHost, IGridProxyable, IAlignmentProvider, IConstructableProvider,
-    IDebugableTileEntity, IGregtechWailaProvider, ICleanroomReceiver, ICustomNameObject {
+    IDebugableTileEntity, IGregtechWailaProvider, ICustomNameObject {
 
     private static final Field ENTITY_ITEM_HEALTH_FIELD = ReflectionHelper
         .findField(EntityItem.class, "health", "field_70291_e");
@@ -1356,22 +1354,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     public boolean privateAccess() {
         if (!canAccessData()) return mLockUpgrade;
         return mLockUpgrade || mMetaTileEntity.ownerControl();
-    }
-
-    @Nullable
-    @Override
-    public ICleanroom getCleanroom() {
-        if (canAccessData()) {
-            return mMetaTileEntity.getCleanroom();
-        }
-        return null;
-    }
-
-    @Override
-    public void setCleanroom(ICleanroom cleanroom) {
-        if (canAccessData()) {
-            mMetaTileEntity.setCleanroom(cleanroom);
-        }
     }
 
     public void doEnergyExplosion() {

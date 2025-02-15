@@ -1,7 +1,12 @@
 package gregtech.api.metatileentity;
 
+import static gregtech.api.capability.GTCapabilities.CAPABILITY_CLEANROOM_RECEIVER;
+
 import java.util.List;
 import java.util.function.Supplier;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -13,8 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.jetbrains.annotations.Nullable;
-
+import com.gtnewhorizon.gtnhlib.capability.Capability;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
 import appeng.api.implementations.IPowerChannelState;
@@ -30,7 +34,6 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GUITextureSet;
-import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -41,6 +44,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
+import gregtech.common.capability.CleanroomReceiverImpl;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
@@ -56,7 +60,7 @@ import tectech.thing.metaTileEntity.pipe.MTEPipeEnergy;
  * GT_MetaTileEntity_E_Furnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
  */
 @SuppressWarnings("unused")
-public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICleanroomReceiver {
+public abstract class MetaTileEntity extends CommonMetaTileEntity {
 
     /**
      * Inventory wrapper for ModularUI
@@ -71,7 +75,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
         return inventoryHandler;
     }
 
-    private ICleanroom cleanroom;
+    protected final ICleanroomReceiver cleanroomReceiver = new CleanroomReceiverImpl();
 
     /**
      * accessibility to this Field is no longer given, see below
@@ -134,6 +138,15 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
     public boolean isValid() {
         return getBaseMetaTileEntity() != null && getBaseMetaTileEntity().getMetaTileEntity() == this
             && !getBaseMetaTileEntity().isDead();
+    }
+
+    @Nullable
+    @Override
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable ForgeDirection side) {
+        if (capability == CAPABILITY_CLEANROOM_RECEIVER) {
+            return CAPABILITY_CLEANROOM_RECEIVER.cast(cleanroomReceiver);
+        }
+        return super.getCapability(capability, side);
     }
 
     @Override
@@ -258,17 +271,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
         return onRightclick(aBaseMetaTileEntity, aPlayer);
-    }
-
-    @Nullable
-    @Override
-    public ICleanroom getCleanroom() {
-        return cleanroom;
-    }
-
-    @Override
-    public void setCleanroom(ICleanroom cleanroom) {
-        this.cleanroom = cleanroom;
     }
 
     /**

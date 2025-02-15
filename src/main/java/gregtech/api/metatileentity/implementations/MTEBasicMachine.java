@@ -1096,7 +1096,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             mOutputBlocked++;
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
-        ICleanroom cleanroom = getCleanroom();
+        ICleanroom cleanroom = cleanroomReceiver.getCleanroom();
         if (tRecipe.mSpecialValue == -200 || tRecipe.mSpecialValue == -300) {
             if (cleanroom == null || !cleanroom.isValidCleanroom() || cleanroom.getCleanness() == 0) {
                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
