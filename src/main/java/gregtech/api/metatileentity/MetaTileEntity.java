@@ -140,6 +140,13 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity {
             && !getBaseMetaTileEntity().isDead();
     }
 
+    /**
+     * Override to delegate {@link Capability} this machine implements to baseMTE. Don't forget to fall back to
+     * {@code super.getCapability}.
+     *
+     * @see com.gtnewhorizon.gtnhlib.capability.ICapabilityProvider
+     * @inheritDoc
+     */
     @Nullable
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull ForgeDirection side) {

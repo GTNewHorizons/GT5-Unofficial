@@ -85,6 +85,9 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         mName = name;
     }
 
+    /**
+     * @inheritDoc
+     */
     @Nullable
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull ForgeDirection side) {
