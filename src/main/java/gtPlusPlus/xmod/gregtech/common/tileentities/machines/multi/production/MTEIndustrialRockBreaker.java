@@ -216,7 +216,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
             }
         }.setSpeedBonus(1 / 3.0)
             .setEuModifier(0.75)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
 
     }
 
