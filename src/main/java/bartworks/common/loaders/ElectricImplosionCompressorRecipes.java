@@ -46,7 +46,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                     .itemOutputs(ItemList.Circuit_Chip_Optical.get(16L))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
-                            .addTo(electricImplosionCompressorRecipes);
+                    .addTo(electricImplosionCompressorRecipes);
             }
         }
 

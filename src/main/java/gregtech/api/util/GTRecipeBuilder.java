@@ -4,7 +4,6 @@ import static gregtech.api.util.GTRecipeMapUtil.SPECIAL_VALUE_ALIASES;
 import static gregtech.api.util.GTUtility.copyFluidArray;
 import static gregtech.api.util.GTUtility.copyItemArray;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -121,8 +120,8 @@ public class GTRecipeBuilder {
     private GTRecipeBuilder(ItemStack[] inputsBasic, Object[] inputsOreDict, ItemStack[] outputs, ItemStack[][] alts,
         FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] chances, Object special, int duration, int eut,
         int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe, boolean mCanBeBuffered,
-        boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc, RecipeCategory recipeCategory, @Nullable IRecipeMetadataStorage metadataStorage, boolean checkForCollision, boolean skip,
-        boolean valid) {
+        boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc, RecipeCategory recipeCategory,
+        @Nullable IRecipeMetadataStorage metadataStorage, boolean checkForCollision, boolean skip, boolean valid) {
         this.inputsBasic = inputsBasic;
         this.inputsOreDict = inputsOreDict;
         this.outputs = outputs;

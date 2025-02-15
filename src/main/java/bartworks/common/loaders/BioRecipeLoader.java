@@ -134,7 +134,7 @@ public class BioRecipeLoader {
                     .metadata(GLASS, 3)
                     .duration(17 * SECONDS + 10 * TICKS)
                     .eut(TierEU.RECIPE_EV)
-                            .addTo(bacterialVatRecipes);
+                    .addTo(bacterialVatRecipes);
             }
 
             GTValues.RA.stdBuilder()
@@ -145,7 +145,7 @@ public class BioRecipeLoader {
                 .metadata(GLASS, 3)
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
-                    .addTo(bacterialVatRecipes);
+                .addTo(bacterialVatRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -158,7 +158,7 @@ public class BioRecipeLoader {
                 .metadata(GLASS, 3)
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                    .addTo(bacterialVatRecipes);
+                .addTo(bacterialVatRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.IC2_Hops.get(32L), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 16L))
@@ -168,7 +168,7 @@ public class BioRecipeLoader {
                 .metadata(GLASS, 3)
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                    .addTo(bacterialVatRecipes);
+                .addTo(bacterialVatRecipes);
         }
     }
 

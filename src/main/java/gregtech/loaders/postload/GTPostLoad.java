@@ -217,7 +217,7 @@ public class GTPostLoad {
                     .special(ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"))
                     .duration(30 * MINUTES)
                     .eut(TierEU.RECIPE_MV)
-                        .ignoreCollision()
+                    .ignoreCollision()
                     .fake()
                     .addTo(scannerFakeRecipes);
             }
@@ -231,7 +231,7 @@ public class GTPostLoad {
                         .special(ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"))
                         .duration(30 * MINUTES)
                         .eut(TierEU.RECIPE_HV)
-                                .ignoreCollision()
+                        .ignoreCollision()
                         .fake()
                         .addTo(scannerFakeRecipes);
                 }

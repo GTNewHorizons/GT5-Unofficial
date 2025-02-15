@@ -47,7 +47,9 @@ public final class RecipeMapBackendProperties {
     @Nullable
     public final Function<? super GTRecipe, ? extends GTRecipe> recipeTransformer;
 
-    RecipeMapBackendProperties(int minItemInputs, int minFluidInputs, boolean specialSlotSensitive, Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter, @Nullable Function<? super GTRecipe, ? extends GTRecipe> recipeTransformer) {
+    RecipeMapBackendProperties(int minItemInputs, int minFluidInputs, boolean specialSlotSensitive,
+        Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter,
+        @Nullable Function<? super GTRecipe, ? extends GTRecipe> recipeTransformer) {
         if (minItemInputs < 0 || minFluidInputs < 0) {
             throw new IllegalArgumentException("minItemInputs and minFluidInputs cannot be negative");
         }

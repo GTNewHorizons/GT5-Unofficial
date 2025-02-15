@@ -288,7 +288,7 @@ public class Godforge implements Runnable {
                         .eut(TierEU.RECIPE_MAX)
                         .metadata(FOG_PLASMA_MULTISTEP, true)
                         .metadata(FOG_PLASMA_TIER, 1)
-                            .addTo(godforgePlasmaRecipes);
+                        .addTo(godforgePlasmaRecipes);
                 }
             }
         }
@@ -330,7 +330,7 @@ public class Godforge implements Runnable {
                         .eut(TierEU.RECIPE_MAX)
                         .metadata(FOG_PLASMA_MULTISTEP, false)
                         .metadata(FOG_PLASMA_TIER, 2)
-                            .addTo(godforgePlasmaRecipes);
+                        .addTo(godforgePlasmaRecipes);
                 }
             }
 
@@ -366,7 +366,7 @@ public class Godforge implements Runnable {
                         .eut(TierEU.RECIPE_MAX)
                         .metadata(FOG_PLASMA_MULTISTEP, true)
                         .metadata(FOG_PLASMA_TIER, 2)
-                            .addTo(godforgePlasmaRecipes);
+                        .addTo(godforgePlasmaRecipes);
                 }
 
             }
@@ -398,7 +398,7 @@ public class Godforge implements Runnable {
                         .eut(TierEU.RECIPE_MAX)
                         .special(multistep)
                         .metadata(FOG_PLASMA_TIER, 0)
-                            .addTo(godforgePlasmaRecipes);
+                        .addTo(godforgePlasmaRecipes);
                 }
 
                 // Multi-step
@@ -420,7 +420,7 @@ public class Godforge implements Runnable {
                         .eut(TierEU.RECIPE_MAX)
                         .special(multistep)
                         .metadata(FOG_PLASMA_TIER, 0)
-                            .addTo(godforgePlasmaRecipes);
+                        .addTo(godforgePlasmaRecipes);
                 }
             }
             // Fusion tier 4-5
