@@ -2,6 +2,7 @@ package gregtech.common.pollution;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -12,15 +13,15 @@ import gregtech.api.util.GTUtility;
 
 public class PollutionTooltip {
 
-    private static final String PRODUCES_POLLUTION_FORMAT = "Produces %d Pollution/Second";
-    private static final String MULTI_POLLUTION_FORMAT = "A complete Multiblock produces %d Pollution/Second";
+    private static final String PRODUCES_POLLUTION_FORMAT = "GT5U.tooltip.pollution.produces";
+    private static final String MULTI_POLLUTION_FORMAT = "GT5U.tooltip.pollution.produces.multiblock";
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void getTooltip(ItemTooltipEvent event) {
         if (event.itemStack == null) return;
 
         if (PollutionConfig.furnacesPollute) {
-            String furnacePollution = String.format(PRODUCES_POLLUTION_FORMAT, PollutionConfig.furnacePollutionAmount);
+            String furnacePollution = StatCollector.translateToLocalFormatted(PRODUCES_POLLUTION_FORMAT, PollutionConfig.furnacePollutionAmount);
 
             // Furnace and Iron Furnace
             if (GTUtility.areStacksEqual(event.itemStack, new ItemStack(Blocks.furnace))
@@ -52,31 +53,31 @@ public class PollutionTooltip {
                 || GTUtility
                     .areStacksEqual(event.itemStack, GTModHandler.getModItem("Railcraft", "machine.beta", 1, 6))) {
                 event.toolTip.add(
-                    String.format("Produces %d Pollution/Second per firebox", PollutionConfig.fireboxPollutionAmount));
+                    StatCollector.translateToLocalFormatted("GT5U.tooltip.pollution.produces.firebox", PollutionConfig.fireboxPollutionAmount));
             }
 
             // Tunnel Bore
             if (GTUtility.areStacksEqual(event.itemStack, GTModHandler.getModItem("Railcraft", "cart.bore", 1, 0))) {
-                event.toolTip.add(String.format(PRODUCES_POLLUTION_FORMAT, PollutionConfig.tunnelBorePollutionAmount));
+                event.toolTip.add(StatCollector.translateToLocalFormatted(PRODUCES_POLLUTION_FORMAT, PollutionConfig.tunnelBorePollutionAmount));
             }
 
             // Coke Oven Brick
             if (GTUtility
                 .areStacksEqual(event.itemStack, GTModHandler.getModItem("Railcraft", "machine.alpha", 1, 7))) {
-                event.toolTip.add(String.format(MULTI_POLLUTION_FORMAT, PollutionConfig.cokeOvenPollutionAmount));
+                event.toolTip.add(StatCollector.translateToLocalFormatted(MULTI_POLLUTION_FORMAT, PollutionConfig.cokeOvenPollutionAmount));
             }
 
             // Advanced Coke Oven Brick
             if (GTUtility
                 .areStacksEqual(event.itemStack, GTModHandler.getModItem("Railcraft", "machine.alpha", 1, 12))) {
                 event.toolTip
-                    .add(String.format(MULTI_POLLUTION_FORMAT, PollutionConfig.advancedCokeOvenPollutionAmount));
+                    .add(StatCollector.translateToLocalFormatted(MULTI_POLLUTION_FORMAT, PollutionConfig.advancedCokeOvenPollutionAmount));
             }
 
             // Hobbyist's Steam Engine
             if (GTUtility.areStacksEqual(event.itemStack, GTModHandler.getModItem("Railcraft", "machine.beta", 1, 7))) {
                 event.toolTip
-                    .add(String.format(PRODUCES_POLLUTION_FORMAT, PollutionConfig.hobbyistEnginePollutionAmount));
+                    .add(StatCollector.translateToLocalFormatted(PRODUCES_POLLUTION_FORMAT, PollutionConfig.hobbyistEnginePollutionAmount));
             }
         }
 
@@ -92,12 +93,12 @@ public class PollutionTooltip {
                     if (Character.isDigit(d)) {
                         int tier = Character.getNumericValue(d);
                         event.toolTip.add(
-                            String.format(
-                                "Produces %d Pollution/Second when ignited",
+                            StatCollector.translateToLocalFormatted(
+                                "GT5U.tooltip.pollution.produces.rocket.ignited",
                                 (PollutionConfig.rocketPollutionAmount * tier / 100)));
                         event.toolTip.add(
-                            String.format(
-                                "Produces %d Pollution/Second when flying",
+                            StatCollector.translateToLocalFormatted(
+                                "GT5U.tooltip.pollution.produces.rocket.flying",
                                 PollutionConfig.rocketPollutionAmount * tier));
                         break;
                     }
