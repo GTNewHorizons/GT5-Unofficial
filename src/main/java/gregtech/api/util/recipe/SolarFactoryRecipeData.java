@@ -1,8 +1,6 @@
 package gregtech.api.util.recipe;
 
-import org.jetbrains.annotations.NotNull;
-
-public class SolarFactoryRecipeData implements Comparable<SolarFactoryRecipeData> {
+public class SolarFactoryRecipeData {
 
     public final int minimumWaferTier;
     public final int minimumWaferCount;
@@ -18,10 +16,5 @@ public class SolarFactoryRecipeData implements Comparable<SolarFactoryRecipeData
         this.minimumWaferTier = minimumWaferTier;
         this.minimumWaferCount = minimumWaferCount;
         this.tierRequired = tierRequired;
-    }
-
-    @Override
-    public int compareTo(@NotNull SolarFactoryRecipeData o) {
-        return 0;
     }
 }
