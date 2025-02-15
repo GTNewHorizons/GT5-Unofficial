@@ -522,7 +522,6 @@ public class BioRecipes {
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 2))
             .duration(60 * SECONDS)
             .eut(16)
-            .noOptimize()
             .addTo(chemicalDehydratorRecipes);
     }
 
@@ -669,7 +668,6 @@ public class BioRecipes {
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .metadata(CHEMPLANT_CASING_TIER, 1)
-            .noOptimize()
             .addTo(chemicalPlantRecipes);
     }
 

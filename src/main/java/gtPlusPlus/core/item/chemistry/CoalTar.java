@@ -81,7 +81,6 @@ public class CoalTar extends ItemPackage {
             .fluidOutputs(Materials.Methane.getGas(1000))
             .duration(10 * SECONDS)
             .eut(90)
-            .noOptimize()
             .addTo(chemicalDehydratorRecipes);
     }
 
@@ -202,7 +201,6 @@ public class CoalTar extends ItemPackage {
             .fluidOutputs(Materials.PhthalicAcid.getFluid(2500))
             .eut(30)
             .duration(16 * SECONDS)
-            .noOptimize()
             .addTo(UniversalChemical);
     }
 

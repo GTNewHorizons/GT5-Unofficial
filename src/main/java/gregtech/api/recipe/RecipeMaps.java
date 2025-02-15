@@ -610,7 +610,6 @@ public final class RecipeMaps {
                 .validateOutputCount(1, 2)
                 .validateNoInputFluid()
                 .validateNoOutputFluid()
-                .noOptimize()
                 .build();
             if (!rr.isPresent()) return Collections.emptyList();
             ItemStack aInput1 = builder.getItemInputBasic(0);
@@ -716,8 +715,7 @@ public final class RecipeMaps {
                         .map(Collections::singletonList)
                         .orElse(Collections.emptyList());
             }
-            Optional<GTRecipe> t = b.noOptimize()
-                .duration(20)
+            Optional<GTRecipe> t = b.duration(20)
                 .eut(30)
                 .validateInputCount(1, 1)
                 .validateOutputCount(1, 2)
@@ -746,7 +744,6 @@ public final class RecipeMaps {
         .of("gt.recipe.vacuumfreezer")
         .maxIO(1, 1, 2, 1)
         .recipeEmitter(b -> {
-            b.noOptimize();
             FluidStack in, out;
             if (isArrayOfLength(b.getItemInputsBasic(), 1) && isArrayOfLength(b.getItemOutputs(), 1)
                 && isArrayEmptyOrNull(b.getFluidInputs())

@@ -537,7 +537,6 @@ public class PlatinumSludgeOverHaul {
             .fluidOutputs(HotRutheniumTetroxideSollution.getFluidOrGas(2000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .noOptimize()
             .addTo(fluidHeaterRecipes);
 
         GTValues.RA.stdBuilder()

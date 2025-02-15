@@ -37,11 +37,6 @@ public final class RecipeMapBackendProperties {
     public final boolean specialSlotSensitive;
 
     /**
-     * If recipe builder should stop optimizing inputs.
-     */
-    public final boolean disableOptimize;
-
-    /**
      * Changes how recipes are emitted by a particular recipe builder.
      */
     public final Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter;
@@ -52,17 +47,13 @@ public final class RecipeMapBackendProperties {
     @Nullable
     public final Function<? super GTRecipe, ? extends GTRecipe> recipeTransformer;
 
-    RecipeMapBackendProperties(int minItemInputs, int minFluidInputs, boolean specialSlotSensitive,
-        boolean disableOptimize,
-        Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter,
-        @Nullable Function<? super GTRecipe, ? extends GTRecipe> recipeTransformer) {
+    RecipeMapBackendProperties(int minItemInputs, int minFluidInputs, boolean specialSlotSensitive, Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter, @Nullable Function<? super GTRecipe, ? extends GTRecipe> recipeTransformer) {
         if (minItemInputs < 0 || minFluidInputs < 0) {
             throw new IllegalArgumentException("minItemInputs and minFluidInputs cannot be negative");
         }
         this.minItemInputs = minItemInputs;
         this.minFluidInputs = minFluidInputs;
         this.specialSlotSensitive = specialSlotSensitive;
-        this.disableOptimize = disableOptimize;
         this.recipeEmitter = recipeEmitter;
         this.recipeTransformer = recipeTransformer;
     }

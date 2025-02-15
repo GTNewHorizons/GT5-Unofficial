@@ -768,7 +768,6 @@ public class RecipesGregTech {
                 Materials.Redstone.getDust(50))
             .fluidOutputs(GGMaterial.signalium.getMolten(5 * 144))
             .eut(TierEU.RECIPE_LuV)
-            .noOptimize()
             .duration(5 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
 
@@ -784,7 +783,6 @@ public class RecipesGregTech {
                 Materials.Glowstone.getDust(10))
             .fluidOutputs(GGMaterial.lumiium.getMolten(5 * 144))
             .eut(TierEU.RECIPE_LuV)
-            .noOptimize()
             .duration(5 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
 
@@ -898,7 +896,6 @@ public class RecipesGregTech {
             .fluidOutputs(MaterialsElements.getInstance().THALLIUM.getFluidStack(288))
             .eut(TierEU.RECIPE_IV)
             .duration(1 * MINUTES + 15 * SECONDS)
-            .noOptimize()
             .addTo(alloyBlastSmelterRecipes);
 
         // Strontium processing
@@ -912,7 +909,6 @@ public class RecipesGregTech {
                 MaterialsElements.getInstance().ALUMINIUM.getFluidStack(144 * 8),
                 MaterialsElements.getInstance().STRONTIUM.getFluidStack(144 * 8))
             .eut(TierEU.RECIPE_EV)
-            .noOptimize()
             .duration(2 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
 

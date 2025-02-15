@@ -376,7 +376,6 @@ public class AdditionalRecipes {
             .duration(48 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 2953)
-            .noOptimize()
             .addTo(blastFurnaceRecipes);
 
         // Tellurium

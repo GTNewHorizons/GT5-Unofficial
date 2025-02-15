@@ -1563,7 +1563,6 @@ public class MixerRecipes implements Runnable {
                 .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentCrudeCatalyst.getFluid(1000L))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
-                .noOptimize()
                 .addTo(mixerNonCellRecipes);
 
             GTValues.RA.stdBuilder()
@@ -1577,7 +1576,6 @@ public class MixerRecipes implements Runnable {
                 .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentProsaicCatalyst.getFluid(1000L))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
-                .noOptimize()
                 .addTo(mixerNonCellRecipes);
 
             GTValues.RA.stdBuilder()
@@ -1591,7 +1589,6 @@ public class MixerRecipes implements Runnable {
                 .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentResplendentCatalyst.getFluid(1000L))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
-                .noOptimize()
                 .addTo(mixerNonCellRecipes);
 
             GTValues.RA.stdBuilder()
@@ -1605,7 +1602,6 @@ public class MixerRecipes implements Runnable {
                 .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentExoticCatalyst.getFluid(1000L))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UEV)
-                .noOptimize()
                 .addTo(mixerNonCellRecipes);
 
             GTValues.RA.stdBuilder()
@@ -1619,7 +1615,6 @@ public class MixerRecipes implements Runnable {
                 .fluidOutputs(MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.getFluid(1000L))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
-                .noOptimize()
                 .addTo(mixerNonCellRecipes);
         }
 

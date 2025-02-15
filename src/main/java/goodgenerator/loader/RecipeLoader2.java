@@ -1217,7 +1217,6 @@ public class RecipeLoader2 {
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
-                .noOptimize()
                 .addTo(preciseAssemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -1234,7 +1233,6 @@ public class RecipeLoader2 {
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
-                .noOptimize()
                 .addTo(preciseAssemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -1251,7 +1249,6 @@ public class RecipeLoader2 {
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .metadata(PRECISE_ASSEMBLER_CASING_TIER, 2)
-                .noOptimize()
                 .addTo(preciseAssemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -1268,7 +1265,6 @@ public class RecipeLoader2 {
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .metadata(PRECISE_ASSEMBLER_CASING_TIER, 2)
-                .noOptimize()
                 .addTo(preciseAssemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -1285,7 +1281,6 @@ public class RecipeLoader2 {
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .metadata(PRECISE_ASSEMBLER_CASING_TIER, 3)
-                .noOptimize()
                 .addTo(preciseAssemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -1302,7 +1297,6 @@ public class RecipeLoader2 {
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .metadata(PRECISE_ASSEMBLER_CASING_TIER, 3)
-                .noOptimize()
                 .addTo(preciseAssemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -1319,7 +1313,6 @@ public class RecipeLoader2 {
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .metadata(PRECISE_ASSEMBLER_CASING_TIER, 3)
-                .noOptimize()
                 .addTo(preciseAssemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -1336,7 +1329,6 @@ public class RecipeLoader2 {
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .metadata(PRECISE_ASSEMBLER_CASING_TIER, 3)
-                .noOptimize()
                 .addTo(preciseAssemblerRecipes);
 
             GTValues.RA.stdBuilder()
@@ -1427,7 +1419,6 @@ public class RecipeLoader2 {
             .duration(60 * SECONDS)
             .eut(9001)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
-            .noOptimize()
             .addTo(preciseAssemblerRecipes);
         // Compact MK2 Fusion Coil
         GTValues.RA.stdBuilder()
@@ -1440,7 +1431,6 @@ public class RecipeLoader2 {
             .duration(40 * SECONDS)
             .eut(14000)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 2)
-            .noOptimize()
             .addTo(preciseAssemblerRecipes);
         // Compact MK3 Fusion Coil
         GTValues.RA.stdBuilder()
@@ -1454,7 +1444,6 @@ public class RecipeLoader2 {
             .duration(40 * SECONDS)
             .eut(114514)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 3)
-            .noOptimize()
             .addTo(preciseAssemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1532,7 +1521,6 @@ public class RecipeLoader2 {
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 3)
-            .noOptimize()
             .addTo(preciseAssemblerRecipes);
 
         // Compact MK4 Fusion Disassembly Recipe
@@ -1575,7 +1563,6 @@ public class RecipeLoader2 {
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 3)
-            .noOptimize()
             .addTo(preciseAssemblerRecipes);
 
         // Compact MK5 Computer
@@ -1841,7 +1828,6 @@ public class RecipeLoader2 {
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(1100, 1000))
-            .noOptimize()
             .addTo(neutronActivatorRecipes);
 
         GTValues.RA.stdBuilder()

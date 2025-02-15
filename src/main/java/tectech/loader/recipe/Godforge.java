@@ -165,7 +165,6 @@ public class Godforge implements Runnable {
                         .eut(TierEU.RECIPE_MAX)
                         .metadata(FOG_PLASMA_MULTISTEP, false)
                         .metadata(FOG_PLASMA_TIER, 0)
-                        .noOptimize()
                         .addTo(godforgePlasmaRecipes);
 
                     if (molten_t0_1step[i] != null) {
@@ -176,7 +175,6 @@ public class Godforge implements Runnable {
                             .eut(TierEU.RECIPE_MAX)
                             .metadata(FOG_PLASMA_MULTISTEP, false)
                             .metadata(FOG_PLASMA_TIER, 0)
-                            .noOptimize()
                             .addTo(godforgePlasmaRecipes);
                     }
                 }
@@ -213,7 +211,6 @@ public class Godforge implements Runnable {
                     .eut(TierEU.RECIPE_MAX)
                     .metadata(FOG_PLASMA_MULTISTEP, true)
                     .metadata(FOG_PLASMA_TIER, 0)
-                    .noOptimize()
                     .addTo(godforgePlasmaRecipes);
 
                 if (molten_t0_xstep[i] != null) {
@@ -224,7 +221,6 @@ public class Godforge implements Runnable {
                         .eut(TierEU.RECIPE_MAX)
                         .metadata(FOG_PLASMA_MULTISTEP, true)
                         .metadata(FOG_PLASMA_TIER, 0)
-                        .noOptimize()
                         .addTo(godforgePlasmaRecipes);
                 }
             }
@@ -249,7 +245,6 @@ public class Godforge implements Runnable {
                     .eut(TierEU.RECIPE_MAX)
                     .metadata(FOG_PLASMA_MULTISTEP, false)
                     .metadata(FOG_PLASMA_TIER, 1)
-                    .noOptimize()
                     .addTo(godforgePlasmaRecipes);
 
                 if (molten_t1_1step[i] != null) {
@@ -261,7 +256,6 @@ public class Godforge implements Runnable {
                         .eut(TierEU.RECIPE_MAX)
                         .metadata(FOG_PLASMA_MULTISTEP, false)
                         .metadata(FOG_PLASMA_TIER, 1)
-                        .noOptimize()
                         .addTo(godforgePlasmaRecipes);
                 }
             }
@@ -284,7 +278,6 @@ public class Godforge implements Runnable {
                     .eut(TierEU.RECIPE_MAX)
                     .metadata(FOG_PLASMA_MULTISTEP, true)
                     .metadata(FOG_PLASMA_TIER, 1)
-                    .noOptimize()
                     .addTo(godforgePlasmaRecipes);
 
                 if (molten_t1_xstep[i] != null) {
@@ -295,8 +288,7 @@ public class Godforge implements Runnable {
                         .eut(TierEU.RECIPE_MAX)
                         .metadata(FOG_PLASMA_MULTISTEP, true)
                         .metadata(FOG_PLASMA_TIER, 1)
-                        .noOptimize()
-                        .addTo(godforgePlasmaRecipes);
+                            .addTo(godforgePlasmaRecipes);
                 }
             }
         }
@@ -327,7 +319,6 @@ public class Godforge implements Runnable {
                     .eut(TierEU.RECIPE_MAX)
                     .metadata(FOG_PLASMA_MULTISTEP, false)
                     .metadata(FOG_PLASMA_TIER, 2)
-                    .noOptimize()
                     .addTo(godforgePlasmaRecipes);
 
                 if (molten_t2_1step[i] != null) {
@@ -339,8 +330,7 @@ public class Godforge implements Runnable {
                         .eut(TierEU.RECIPE_MAX)
                         .metadata(FOG_PLASMA_MULTISTEP, false)
                         .metadata(FOG_PLASMA_TIER, 2)
-                        .noOptimize()
-                        .addTo(godforgePlasmaRecipes);
+                            .addTo(godforgePlasmaRecipes);
                 }
             }
 
@@ -365,7 +355,6 @@ public class Godforge implements Runnable {
                     .eut(TierEU.RECIPE_MAX)
                     .metadata(FOG_PLASMA_MULTISTEP, true)
                     .metadata(FOG_PLASMA_TIER, 2)
-                    .noOptimize()
                     .addTo(godforgePlasmaRecipes);
 
                 if (molten_t2_xstep[i] != null) {
@@ -377,8 +366,7 @@ public class Godforge implements Runnable {
                         .eut(TierEU.RECIPE_MAX)
                         .metadata(FOG_PLASMA_MULTISTEP, true)
                         .metadata(FOG_PLASMA_TIER, 2)
-                        .noOptimize()
-                        .addTo(godforgePlasmaRecipes);
+                            .addTo(godforgePlasmaRecipes);
                 }
 
             }
@@ -410,8 +398,7 @@ public class Godforge implements Runnable {
                         .eut(TierEU.RECIPE_MAX)
                         .special(multistep)
                         .metadata(FOG_PLASMA_TIER, 0)
-                        .noOptimize()
-                        .addTo(godforgePlasmaRecipes);
+                            .addTo(godforgePlasmaRecipes);
                 }
 
                 // Multi-step
@@ -433,8 +420,7 @@ public class Godforge implements Runnable {
                         .eut(TierEU.RECIPE_MAX)
                         .special(multistep)
                         .metadata(FOG_PLASMA_TIER, 0)
-                        .noOptimize()
-                        .addTo(godforgePlasmaRecipes);
+                            .addTo(godforgePlasmaRecipes);
                 }
             }
             // Fusion tier 4-5
@@ -871,7 +857,6 @@ public class Godforge implements Runnable {
             Integer heat = recipe.getMetadata(COIL_HEAT);
 
             GTRecipeBuilder builder = GTValues.RA.stdBuilder()
-                .noOptimize()
                 .itemOutputs(itemOutputs.toArray(new ItemStack[0]))
                 .fluidOutputs(fluidOutputs.toArray(new FluidStack[0]))
                 .duration(recipe.mDuration)
