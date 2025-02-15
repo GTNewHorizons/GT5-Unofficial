@@ -1085,7 +1085,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     @Nullable
     @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable ForgeDirection side) {
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull ForgeDirection side) {
         if (canAccessData()) {
             return mMetaTileEntity.getCapability(capability, side);
         }

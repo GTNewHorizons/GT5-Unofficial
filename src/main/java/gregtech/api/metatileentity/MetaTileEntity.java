@@ -142,7 +142,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity {
 
     @Nullable
     @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable ForgeDirection side) {
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull ForgeDirection side) {
         if (capability == CAPABILITY_CLEANROOM_RECEIVER) {
             return CAPABILITY_CLEANROOM_RECEIVER.cast(cleanroomReceiver);
         }

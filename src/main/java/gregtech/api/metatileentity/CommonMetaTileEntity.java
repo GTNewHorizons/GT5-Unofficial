@@ -87,7 +87,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Nullable
     @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable ForgeDirection side) {
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull ForgeDirection side) {
         return null;
     }
 
