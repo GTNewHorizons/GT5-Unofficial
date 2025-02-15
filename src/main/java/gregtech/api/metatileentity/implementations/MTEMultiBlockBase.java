@@ -58,7 +58,6 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
@@ -2483,10 +2482,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * This method should be used as a supplier to ProcessingLogic, not getMaxParallelRecipes()
      *
      * @return Get real parallel count based on the maximum and the limit imposed in the power panel.
-     * Always returns at least 1.
+     *         Always returns at least 1.
      */
     public int getTrueParallel() {
-        return Math.max(1, alwaysMaxParallel ? getMaxParallelRecipes() : Math.min(getMaxParallelRecipes(), powerPanelMaxParallel));
+        return Math.max(
+            1,
+            alwaysMaxParallel ? getMaxParallelRecipes() : Math.min(getMaxParallelRecipes(), powerPanelMaxParallel));
     }
 
     @Override
@@ -2700,18 +2701,29 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 .setPos(0, 2)
                 .setSize(120, 18));
 
+        // Syncing widgets
         builder.widget(new FakeSyncWidget.IntegerSyncer(this::getMaxParallelRecipes, val -> maxParallel = val));
-        builder.widget(
-            new FakeSyncWidget.IntegerSyncer(() -> powerPanelMaxParallel, val -> powerPanelMaxParallel = val));
+        builder
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> powerPanelMaxParallel, val -> powerPanelMaxParallel = val));
+        builder.widget(new FakeSyncWidget.BooleanSyncer(() -> alwaysMaxParallel, val -> alwaysMaxParallel = val));
 
+        // "Max parallel" header text
         builder.widget(
             TextWidget.localised("GTPP.CC.parallel")
                 .setPos(0, 24)
                 .setSize(120, 18));
+
+        // Max parallel setter text box
         NumericWidget textField = (NumericWidget) new NumericWidget()
             .setSetter(val -> powerPanelMaxParallel = (int) val)
             .setGetter(() -> powerPanelMaxParallel)
-            .setBounds(alwaysMaxParallel ? maxParallel : 1, maxParallel)
+            .setValidator(val -> {
+                // This validator sets the bounds for the text box - if "Always use maximum" is active, the bounds are
+                // set to (maxParallel, maxParallel). If not, they are set to (1, maxParallel)
+                powerPanelMaxParallel = (int) Math
+                    .min(maxParallel, Math.max(val, (alwaysMaxParallel ? maxParallel : 1)));
+                return powerPanelMaxParallel;
+            })
             .setDefaultValue(powerPanelMaxParallel)
             .setScrollValues(1, 4, 64)
             .setTextAlignment(Alignment.Center)
@@ -2719,13 +2731,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             .setSize(70, 18)
             .setPos(12, 40)
             .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
-
-        builder.widget(
-            new FakeSyncWidget.BooleanSyncer(() -> alwaysMaxParallel, val -> alwaysMaxParallel = val)
-                .setOnClientUpdate($ -> {
-                    textField.setBounds(alwaysMaxParallel ? maxParallel : 1, maxParallel);
-                    textField.setValue(maxParallel);
-                }));
 
         builder.widget(textField);
         builder.widget(createMaxParallelCheckBox());
