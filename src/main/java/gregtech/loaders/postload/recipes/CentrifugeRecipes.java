@@ -64,7 +64,7 @@ public class CentrifugeRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 1))
             .outputChances(10000, 10000, 10000, 9500, 9000, 8500)
-            .duration(2 * MINUTES + 15* SECONDS)
+            .duration(2 * MINUTES + 15 * SECONDS)
             .eut(30)
             .addTo(centrifugeRecipes);
 

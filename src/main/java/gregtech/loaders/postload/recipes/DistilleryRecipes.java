@@ -24,6 +24,8 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 
+import javax.annotation.Nullable;
+
 public class DistilleryRecipes implements Runnable {
 
     @Override
@@ -1191,18 +1193,6 @@ public class DistilleryRecipes implements Runnable {
 
     public void addUniversalDistillationRecipewithCircuit(FluidStack aInput, ItemStack[] aCircuit,
         FluidStack[] aOutputs, ItemStack aOutput2, int aDuration, int aEUt) {
-        for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
-            GTRecipeBuilder buildDistillation = GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.getIntegratedCircuit(i + 1));
-            if (aOutput2 != GTValues.NI) {
-                buildDistillation.itemOutputs(aOutput2);
-            }
-            buildDistillation.fluidInputs(aInput)
-                .fluidOutputs(aOutputs[i])
-                .duration(2 * aDuration)
-                .eut(aEUt / 4)
-                .addTo(distilleryRecipes);
-        }
         GTRecipeBuilder buildDT = GTValues.RA.stdBuilder()
             .itemInputs(aCircuit);
         if (aOutput2 != GTValues.NI) {
@@ -1213,22 +1203,32 @@ public class DistilleryRecipes implements Runnable {
             .duration(aDuration)
             .eut(aEUt)
             .addTo(distillationTowerRecipes);
+
+        for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
+            GTRecipeBuilder buildDistillation = GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.getIntegratedCircuit(i + 1));
+            int ratio = getRatioForDistillery(aInput, aOutputs[i], aOutput2);
+
+            FluidStack aInputDivided = new FluidStack(aInput, Math.max(1, aInput.amount / ratio));
+            FluidStack aOutputDivided = new FluidStack(aOutputs[i], Math.max(1, aOutputs[i].amount / ratio));
+            ItemStack aOutput2Divided;
+            aOutput2Divided = aOutput2;
+
+            if (aOutput2Divided != GTValues.NI) {
+                aOutput2Divided.stackSize /= ratio;
+                buildDistillation.itemOutputs(aOutput2Divided);
+            }
+
+            buildDistillation.fluidInputs(aInputDivided)
+                .fluidOutputs(aOutputDivided)
+                .duration(2 * aDuration / ratio)
+                .eut(aEUt / 4)
+                .addTo(distilleryRecipes);
+        }
     }
 
     public void addUniversalDistillationRecipe(FluidStack aInput, FluidStack[] aOutputs, ItemStack aOutput2,
         int aDuration, int aEUt) {
-        for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
-            GTRecipeBuilder buildDistillation = GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.getIntegratedCircuit(i + 1));
-            if (aOutput2 != GTValues.NI) {
-                buildDistillation.itemOutputs(aOutput2);
-            }
-            buildDistillation.fluidInputs(aInput)
-                .fluidOutputs(aOutputs[i])
-                .duration(2 * aDuration)
-                .eut(aEUt / 4)
-                .addTo(distilleryRecipes);
-        }
         GTRecipeBuilder buildDT = GTValues.RA.stdBuilder();
         if (aOutput2 != GTValues.NI) {
             buildDT.itemOutputs(aOutput2);
@@ -1238,5 +1238,51 @@ public class DistilleryRecipes implements Runnable {
             .duration(aDuration)
             .eut(aEUt)
             .addTo(distillationTowerRecipes);
+
+        for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
+            GTRecipeBuilder buildDistillation = GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.getIntegratedCircuit(i + 1));
+            int ratio = getRatioForDistillery(aInput, aOutputs[i], aOutput2);
+
+            FluidStack aInputDivided = new FluidStack(aInput, Math.max(1, aInput.amount / ratio));
+            FluidStack aOutputDivided = new FluidStack(aOutputs[i], Math.max(1, aOutputs[i].amount / ratio));
+            ItemStack aOutput2Divided;
+            aOutput2Divided = aOutput2;
+
+            if (aOutput2Divided != GTValues.NI) {
+                aOutput2Divided.stackSize /= ratio;
+                buildDistillation.itemOutputs(aOutput2Divided);
+            }
+
+            buildDistillation.fluidInputs(aInputDivided)
+                .fluidOutputs(aOutputDivided)
+                .duration(2 * aDuration / ratio)
+                .eut(aEUt / 4)
+                .addTo(distilleryRecipes);
+        }
+    }
+
+    private static int getRatioForDistillery(FluidStack aInput, FluidStack aOutput, ItemStack aOutput2) {
+        int[] divisors = new int[] { 2, 5, 10, 25, 50 };
+        int ratio = -1;
+
+        for (int divisor : divisors) {
+
+            if (!isFluidStackDivisibleForDistillery(aInput, divisor))
+                continue;
+
+            if (!isFluidStackDivisibleForDistillery(aOutput, divisor))
+                continue;
+
+            if (aOutput2 != null && aOutput2.stackSize % divisor != 0)
+                continue;
+
+            ratio = divisor;
+        }
+
+        return Math.max(1, ratio);
+    }
+    private static boolean isFluidStackDivisibleForDistillery(FluidStack fluidStack, int divisor) {
+        return fluidStack.amount % divisor == 0 && fluidStack.amount / divisor >= 25;
     }
 }
