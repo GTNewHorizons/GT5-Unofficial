@@ -252,9 +252,10 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 4F)
             .setEuModifier(0.8F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
+    @Override
     public int getMaxParallelRecipes() {
         return (getPipeTier() * 8);
     }

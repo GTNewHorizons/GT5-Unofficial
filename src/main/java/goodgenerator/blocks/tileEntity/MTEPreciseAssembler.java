@@ -270,7 +270,12 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setSpeedBoost(mode == 0 ? 1 : 0.5);
             }
-        }.setMaxParallelSupplier(() -> mode == 0 ? 1 : (int) Math.pow(2, 4 + (casingTier + 1)));
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return mode == 0 ? 1 : (int) Math.pow(2, 4 + (casingTier + 1));
     }
 
     @Override

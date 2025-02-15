@@ -256,7 +256,7 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
                     .setEUtDiscount(1.25 * tierMachine)
                     .setSpeedBoost(1.6 / tierMachine);
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
