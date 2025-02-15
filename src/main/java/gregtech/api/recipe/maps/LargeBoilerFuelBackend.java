@@ -15,6 +15,7 @@ import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerBronze;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerSteel;
@@ -80,14 +81,11 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
                 .eut(1)
                 .specialValue(1)
                 .setNEIDesc(
-                    StatCollector.translateToLocal("GT5U.nei.large_boiler.solid.0"),
-                    StatCollector.translateToLocal("GT5U.nei.large_boiler.solid.1"),
-                    StatCollector.translateToLocalFormatted(
-                        "GT5U.nei.large_boiler.solid.2",
-                        MTELargeBoilerBronze.EUT_GENERATED,
-                        MTELargeBoilerSteel.EUT_GENERATED),
-                    StatCollector.translateToLocal("GT5U.nei.large_boiler.solid.3"),
-                    StatCollector.translateToLocal("GT5U.nei.large_boiler.solid.4"))
+                    GTUtility.breakLines(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.nei.large_boiler.solid",
+                            MTELargeBoilerBronze.EUT_GENERATED,
+                            MTELargeBoilerSteel.EUT_GENERATED)))
                 .build()
                 .map(this::compileRecipe);
             addedGeneralDesc = true;

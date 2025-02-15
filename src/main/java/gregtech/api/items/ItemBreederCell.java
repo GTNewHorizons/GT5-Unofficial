@@ -49,14 +49,16 @@ public class ItemBreederCell extends GTGenericItem implements IReactorComponent 
                     .itemInputs(new ItemStack(this))
                     .itemOutputs(mProduct)
                     .setNEIDesc(
-                        StatCollector.translateToLocal(
-                            deflector ? "GT5U.nei.nuclear.breeder.neutron_reflecting"
-                                : "GT5U.nei.nuclear.breeder.heat_neutral"),
-                        StatCollector.translateToLocalFormatted("GT5U.nei.nuclear.breeder.line.1", mHeatBonusStep),
-                        StatCollector
-                            .translateToLocalFormatted("GT5U.nei.nuclear.breeder.line.2", mHeatBonusMultiplier),
-                        StatCollector
-                            .translateToLocalFormatted("GT5U.nei.nuclear.breeder.required_pulse", getMaxDamage()))
+                        GTUtility.breakLines(
+                            StatCollector.translateToLocal(
+                                deflector ? "GT5U.nei.nuclear.breeder.neutron_reflecting"
+                                    : "GT5U.nei.nuclear.breeder.heat_neutral"),
+                            StatCollector.translateToLocalFormatted(
+                                "GT5U.nei.nuclear.breeder.reactor_hull_heat",
+                                mHeatBonusStep,
+                                mHeatBonusMultiplier),
+                            StatCollector
+                                .translateToLocalFormatted("GT5U.nei.nuclear.breeder.required_pulse", getMaxDamage())))
                     .duration(0)
                     .eut(0)
                     .addTo(RecipeMaps.ic2NuclearFakeRecipes);
