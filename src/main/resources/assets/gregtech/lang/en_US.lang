@@ -559,6 +559,10 @@ GT5U.gui.button.drone_distance=Sort by §3distance
 GT5U.gui.button.drone_error=Sort by §3shutdown status
 GT5U.gui.button.drone_showLocalName=Show localized name
 GT5U.gui.button.toggle_output_slot_lock=Toggle output slot
+GT5U.gui.button.power_panel=Open Power Panel
+GT5U.gui.button.max_parallel=Always use maximum
+GT5U.gui.text.rangedvalue=Range: %s-%s
+GT5U.gui.text.lockedvalue=Locked: %s
 GT5U.gui.text.success=§aProcessing recipe
 GT5U.gui.text.generating=§aGenerating power
 GT5U.gui.text.no_recipe=§7No valid recipe found
@@ -648,9 +652,7 @@ GT5U.gui.text.unneeded_muffler=Does not accept Muffler Hatches
 GT5U.gui.missing_casings=Too few casings: needs %s but has %s
 GT5U.gui.missing_hatch=Missing %s
 GT5U.gui.too_many_hatches=Too many %ses (max %s)
-
-GT5U.item.programmed_circuit.select.header=Reprogram Circuit
-
+GT5U.gui.text.power_panel=Power Control Panel
 GT5U.gui.config.client=Client
 GT5U.gui.config.client.color_modulation=Color Modulation
 GT5U.gui.config.client.color_modulation.cable_insulation=Cable Insulation
@@ -688,6 +690,7 @@ GT5U.item.programmed_circuit.no_screwdriver.count=3
 GT5U.item.programmed_circuit.no_screwdriver.0=Trying to mangle a CIRCUIT with your bare hand again huh?
 GT5U.item.programmed_circuit.no_screwdriver.1=Your thumb is not a screwdriver. Try a real one.
 GT5U.item.programmed_circuit.no_screwdriver.2=Chuck Norris stares at the circuit until it reprograms itself. You do not.
+GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
 GT5U.item.cable.max_voltage=Max Voltage
 GT5U.item.cable.max_amperage=Max Amperage

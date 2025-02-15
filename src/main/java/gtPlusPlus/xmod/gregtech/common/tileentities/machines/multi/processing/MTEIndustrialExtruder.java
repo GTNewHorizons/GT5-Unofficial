@@ -159,7 +159,7 @@ public class MTEIndustrialExtruder extends GTPPMultiBlockBase<MTEIndustrialExtru
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 3.5F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

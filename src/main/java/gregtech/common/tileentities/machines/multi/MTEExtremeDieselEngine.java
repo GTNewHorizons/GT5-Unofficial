@@ -130,6 +130,11 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
     }
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEExtremeDieselEngine(this.mName);
     }

@@ -112,6 +112,11 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     }
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
 

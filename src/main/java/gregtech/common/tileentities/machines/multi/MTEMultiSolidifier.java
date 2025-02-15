@@ -339,7 +339,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                 setSpeedBonus(1F / speedup);
                 return super.validateRecipe(recipe);
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes)
+        }.setMaxParallelSupplier(this::getTrueParallel)
             .setEuModifier(0.8F);
     }
 
@@ -370,6 +370,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         }
     }
 
+    @Override
     public int getMaxParallelRecipes() {
         return (BASE_PARALLELS + (width * PARALLELS_PER_WIDTH)) * GTUtility.getTier(this.getMaxInputVoltage());
     }
