@@ -120,6 +120,11 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
     }
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEProcessingArray(this.mName);
     }
@@ -253,7 +258,7 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
                 if (recipe.mEUt > availableVoltage) return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        }.setMaxParallelSupplier(this::getMaxParallel);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

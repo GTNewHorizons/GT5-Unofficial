@@ -1270,5 +1270,10 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }
 
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
     // endregion ui
 }

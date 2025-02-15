@@ -10,7 +10,6 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IFuelHandler;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -88,11 +87,7 @@ public class CommonProxy implements IFuelHandler {
         }
         // Handles Sleep Benefits
         PlayerSleepEventHandler.init();
-        // Handles Magic Feather
-        MinecraftForge.EVENT_BUS.register(ModItems.itemMagicFeather);
-        FMLCommonHandler.instance()
-            .bus()
-            .register(ModItems.itemMagicFeather);
+
         MinecraftForge.EVENT_BUS.register(new EnderDragonDeathHandler());
         MinecraftForge.EVENT_BUS.register(new EntityDeathHandler());
 
