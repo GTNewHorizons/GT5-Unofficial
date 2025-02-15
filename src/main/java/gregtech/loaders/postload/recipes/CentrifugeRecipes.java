@@ -808,5 +808,41 @@ public class CentrifugeRecipes implements Runnable {
                 .eut(12)
                 .addTo(centrifugeRecipes);
         }
+
+        // Endereye recycling
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderEye, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1), GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 1))
+            .duration(32 * SECONDS + 4 * TICKS)
+            .eut(10)
+            .addTo(centrifugeRecipes);
+
+        //Realgar recycling
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Realgar, 2))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Arsenic, 1), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1))
+            .duration(42 * SECONDS + 16 * TICKS)
+            .eut(10)
+            .addTo(centrifugeRecipes);
+
+        //Cryotheum recycling
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 1), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Snow, 1), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blizz, 1))
+            .duration(41 * SECONDS + 16 * TICKS)
+            .eut(20)
+            .addTo(centrifugeRecipes);
+
+        //Pyrotheum recycling
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Pyrotheum, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1))
+            .duration(43 * SECONDS + 16 * TICKS)
+            .eut(20)
+            .addTo(centrifugeRecipes);
     }
 }

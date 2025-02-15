@@ -24,8 +24,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 
-import javax.annotation.Nullable;
-
 public class DistilleryRecipes implements Runnable {
 
     @Override
@@ -1268,20 +1266,18 @@ public class DistilleryRecipes implements Runnable {
 
         for (int divisor : divisors) {
 
-            if (!isFluidStackDivisibleForDistillery(aInput, divisor))
-                continue;
+            if (!isFluidStackDivisibleForDistillery(aInput, divisor)) continue;
 
-            if (!isFluidStackDivisibleForDistillery(aOutput, divisor))
-                continue;
+            if (!isFluidStackDivisibleForDistillery(aOutput, divisor)) continue;
 
-            if (aOutput2 != null && aOutput2.stackSize % divisor != 0)
-                continue;
+            if (aOutput2 != null && aOutput2.stackSize % divisor != 0) continue;
 
             ratio = divisor;
         }
 
         return Math.max(1, ratio);
     }
+
     private static boolean isFluidStackDivisibleForDistillery(FluidStack fluidStack, int divisor) {
         return fluidStack.amount % divisor == 0 && fluidStack.amount / divisor >= 25;
     }
