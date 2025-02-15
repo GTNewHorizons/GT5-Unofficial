@@ -309,6 +309,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         return STRUCTURE_DEFINITION.get(getClass());
     }
 
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
     public Block getCasingBlock(int type) {
         switch (type) {
             case 1:

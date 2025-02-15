@@ -144,6 +144,12 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         return GTMod.gregtechproxy.mPollutionMultiSmelterPerSecond;
     }
 
+    // Not GPL
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
