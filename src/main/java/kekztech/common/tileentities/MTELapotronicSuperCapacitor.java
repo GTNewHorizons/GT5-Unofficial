@@ -554,6 +554,11 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         return sTexture;
     }
 
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
     private UUID global_energy_user_uuid;
 
     @Override

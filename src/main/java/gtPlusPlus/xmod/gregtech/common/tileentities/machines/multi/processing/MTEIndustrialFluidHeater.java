@@ -167,7 +167,7 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 2.2F)
             .setEuModifier(0.9F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
