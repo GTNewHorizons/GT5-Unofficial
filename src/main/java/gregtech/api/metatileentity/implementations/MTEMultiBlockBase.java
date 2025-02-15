@@ -327,7 +327,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mRuntime = aNBT.getInteger("mRuntime");
         mTotalRunTime = aNBT.getLong("mTotalRunTime");
         mLastWorkingTick = aNBT.getLong("mLastWorkingTick");
-        alwaysMaxParallel = aNBT.getBoolean("alwaysMaxParallel");
+        // If the key doesn't exist it should default true
+        alwaysMaxParallel = !aNBT.hasKey("alwaysMaxParallel") || aNBT.getBoolean("alwaysMaxParallel");
         powerPanelMaxParallel = aNBT.getInteger("powerPanelMaxParallel");
 
         String checkRecipeResultID = aNBT.getString("checkRecipeResultID");
