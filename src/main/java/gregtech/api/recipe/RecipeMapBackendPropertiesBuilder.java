@@ -26,8 +26,6 @@ public final class RecipeMapBackendPropertiesBuilder {
 
     private boolean specialSlotSensitive;
 
-    private boolean disableOptimize;
-
     private Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter = this::defaultBuildRecipe;
 
     @Nullable

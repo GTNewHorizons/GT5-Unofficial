@@ -359,7 +359,6 @@ public class MTERockBreaker extends MTEBasicMachine {
                     .duration(this.duration)
                     .eut(TierEU.RECIPE_LV)
                     .ignoreCollision()
-                    .noOptimize()
                     .fake();
 
                 List<ItemStack> inputs = new ArrayList<>();

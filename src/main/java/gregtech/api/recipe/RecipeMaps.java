@@ -151,7 +151,6 @@ public final class RecipeMaps {
                 : null)
         .progressBar(GTUITextures.PROGRESSBAR_COMPRESS)
         .neiHandlerInfo(builder -> builder.setDisplayStack(getModItem(Avaritia.ID, "Singularity", 1L, 0)))
-        .disableOptimize()
         .neiRecipeComparator(
             Comparator
                 .<GTRecipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0))
@@ -263,7 +262,6 @@ public final class RecipeMaps {
         .minInputs(1, 0)
         .useSpecialSlot()
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> isSpecial ? GTUITextures.OVERLAY_SLOT_DATA_ORB : null)
-        .disableOptimize()
         .neiTransferRect(88, 8, 18, 72)
         .neiTransferRect(124, 8, 18, 72)
         .neiTransferRect(142, 26, 18, 18)
@@ -517,7 +515,6 @@ public final class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> fusionRecipes = RecipeMapBuilder.of("gt.recipe.fusionreactor")
         .maxIO(0, 0, 2, 1)
         .minInputs(0, 2)
-        .disableOptimize()
         .useCustomFilterForNEI()
         .neiSpecialInfoFormatter(FusionSpecialValueFormatter.INSTANCE)
         .neiRecipeComparator(
@@ -574,7 +571,6 @@ public final class RecipeMaps {
      */
     public static final RecipeMap<RecipeMapBackend> plasmaForgeRecipes = RecipeMapBuilder.of("gt.recipe.plasmaforge")
         .maxIO(9, 9, 9, 9)
-        .disableOptimize()
         .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
         .neiHandlerInfo(
             builder -> builder.setDisplayStack(ItemList.Machine_Multi_PlasmaForge.get(1))
@@ -591,7 +587,6 @@ public final class RecipeMaps {
             builder -> builder.setDisplayStack(ItemList.Machine_Multi_TranscendentPlasmaMixer.get(1))
                 .setMaxRecipesPerPage(1))
         .frontend(TranscendentPlasmaMixerFrontend::new)
-        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> spaceProjectFakeRecipes = RecipeMapBuilder
         .of("gt.recipe.fakespaceprojects")
@@ -605,7 +600,6 @@ public final class RecipeMaps {
         .neiTransferRect(106, 28, 18, 72)
         .frontend(SpaceProjectFrontend::new)
         .disableRenderRealStackSizes()
-        .disableOptimize()
         .build();
     /**
      * Uses {@link GTRecipeConstants#ADDITIVE_AMOUNT} for coal/charcoal amount.
@@ -707,7 +701,6 @@ public final class RecipeMaps {
             return null;
         })
         .progressBar(GTUITextures.PROGRESSBAR_COMPRESS)
-        .disableOptimize()
         .recipeEmitter(b -> {
             switch (b.getItemInputsBasic().length) {
                 case 0:
@@ -792,7 +785,6 @@ public final class RecipeMaps {
             }
         })
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
-        .disableOptimize()
         .build();
     /**
      * Using {@code .addTo(multiblockChemicalReactorRecipes)} will cause the recipe to be added to
@@ -802,7 +794,6 @@ public final class RecipeMaps {
         .of("gt.recipe.largechemicalreactor")
         .maxIO(6, 6, 6, 6)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
-        .disableOptimize()
         .frontend(LargeNEIFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> distillationTowerRecipes = RecipeMapBuilder
@@ -821,7 +812,6 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
         .logoPos(80, 62)
         .frontend(DistillationTowerFrontend::new)
-        .disableOptimize()
         .build();
     public static final RecipeMap<OilCrackerBackend> crackingRecipes = RecipeMapBuilder
         .of("gt.recipe.craker", OilCrackerBackend::new)
@@ -832,7 +822,6 @@ public final class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> pyrolyseRecipes = RecipeMapBuilder.of("gt.recipe.pyro")
         .maxIO(2, 1, 1, 1)
         .minInputs(1, 0)
-        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> wiremillRecipes = RecipeMapBuilder.of("gt.recipe.wiremill")
         .maxIO(2, 1, 0, 0)
@@ -878,7 +867,6 @@ public final class RecipeMaps {
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_CIRCUIT : null)
         .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLE)
-        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> circuitAssemblerRecipes = RecipeMapBuilder
         .of("gt.recipe.circuitassembler")
@@ -1087,7 +1075,6 @@ public final class RecipeMaps {
         .of("gt.recipe.largeboilerfakefuels", LargeBoilerFuelBackend::new)
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
-        .disableOptimize()
         .frontend(LargeBoilerFuelFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> nanoForgeRecipes = RecipeMapBuilder.of("gt.recipe.nanoforge")
@@ -1097,14 +1084,12 @@ public final class RecipeMaps {
             (index, isFluid, isOutput,
                 isSpecial) -> !isFluid && !isOutput && index == 0 ? GTUITextures.OVERLAY_SLOT_LENS : null)
         .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLE)
-        .disableOptimize()
         .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("GT5U.nei.tier"))
         .build();
     public static final RecipeMap<RecipeMapBackend> pcbFactoryRecipes = RecipeMapBuilder.of("gt.recipe.pcbfactory")
         .maxIO(6, 9, 3, 0)
         .minInputs(3, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLE)
-        .disableOptimize()
         .neiItemInputsGetter(recipe -> {
             Materials naniteMaterial = recipe.getMetadata(PCB_NANITE_MATERIAL);
             if (naniteMaterial == null) {
@@ -1127,7 +1112,6 @@ public final class RecipeMaps {
         .maxIO(1, 4, 1, 1)
         .minInputs(0, 1)
         .frontend(PurificationUnitClarifierFrontend::new)
-        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationOzonationRecipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantozonation")
@@ -1144,7 +1128,6 @@ public final class RecipeMaps {
             builder -> builder.setMaxRecipesPerPage(1)
                 // When setting a builder, apparently setting a display stack is also necessary
                 .setDisplayStack(ItemList.Machine_Multi_PurificationUnitOzonation.get(1)))
-        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationFlocculationRecipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantflocculation")
@@ -1157,7 +1140,6 @@ public final class RecipeMaps {
                     recipe -> recipe.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f))
                 .thenComparing(GTRecipe::compareTo))
         .frontend(PurificationUnitFlocculatorFrontend::new)
-        .disableOptimize()
         .build();
 
     public static final RecipeMap<RecipeMapBackend> purificationPhAdjustmentRecipes = RecipeMapBuilder
@@ -1166,7 +1148,6 @@ public final class RecipeMaps {
         .minInputs(0, 1)
         .progressBar(GTUITextures.PROGRESSBAR_MIXER)
         .frontend(PurificationUnitPhAdjustmentFrontend::new)
-        .disableOptimize()
         .build();
 
     public static final RecipeMap<RecipeMapBackend> purificationPlasmaHeatingRecipes = RecipeMapBuilder
@@ -1175,7 +1156,6 @@ public final class RecipeMaps {
         .minInputs(0, 1)
         .progressBar(GTUITextures.PROGRESSBAR_BOILER_HEAT)
         .frontend(PurificationUnitPlasmaHeaterFrontend::new)
-        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationUVTreatmentRecipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantuvtreatment")
@@ -1183,14 +1163,12 @@ public final class RecipeMaps {
         .minInputs(0, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .frontend(PurificationUnitLaserFrontend::new)
-        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationDegasifierRecipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantdegasifier")
         .maxIO(0, 3, 1, 2)
         .minInputs(0, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
-        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationParticleExtractionRecipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantquarkextractor")
@@ -1198,12 +1176,10 @@ public final class RecipeMaps {
         .minInputs(0, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .frontend(PurificationUnitParticleExtractorFrontend::new)
-        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> ic2NuclearFakeRecipes = RecipeMapBuilder.of("gt.recipe.ic2nuke")
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
-        .disableOptimize()
         .logo(GTUITextures.PICTURE_RADIATION_WARNING)
         .logoPos(152, 41)
         .neiRecipeBackgroundSize(170, 60)
