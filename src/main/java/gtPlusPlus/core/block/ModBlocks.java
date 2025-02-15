@@ -1,6 +1,7 @@
 package gtPlusPlus.core.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
 import gtPlusPlus.api.objects.Logger;
@@ -23,13 +24,13 @@ import gtPlusPlus.core.block.machine.BlockPooCollector;
 import gtPlusPlus.core.block.machine.BlockProjectTable;
 import gtPlusPlus.core.block.machine.BlockSuperJukebox;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public final class ModBlocks {
 
     public static Block blockCircuitProgrammer;
     public static Block blockVolumetricFlaskSetter;
 
-    public static Block blockFishTrap;
     public static Block blockDecayablesChest;
 
     public static Block blockCasingsMisc;
@@ -49,24 +50,13 @@ public final class ModBlocks {
     public static Fluid fluidSludge = new Fluid("fluid.sludge");
     public static Block blockFluidSludge;
 
-    public static Block blockMiningExplosive;
-
     public static Block blockHellfire;
     public static Block blockInfiniteFLuidTank;
     public static Block blockProjectTable;
-    public static Block blockWitherGuard;
-    public static Block blockCompressedObsidian;
-
-    public static Block blockCactusCharcoal;
-    public static Block blockCactusCoke;
-    public static Block blockSugarCharcoal;
-    public static Block blockSugarCoke;
 
     public static Block blockCustomJukebox;
 
     public static Block blockPooCollector;
-
-    public static Block blockPestKiller;
 
     public static void init() {
         Logger.INFO("Initializing Blocks.");
@@ -82,31 +72,65 @@ public final class ModBlocks {
         // Fluids
         FluidRegistryHandler.registerFluids();
 
-        // Workbench
-        blockFishTrap = new BlockFishTrap();
+        GregtechItemList.FishTrap.set(new ItemStack(new BlockFishTrap()));
         blockInfiniteFLuidTank = new BlockFluidTankInfinite();
-        blockMiningExplosive = new BlockMiningExplosives();
+        GregtechItemList.MiningExplosives.set(new ItemStack(new BlockMiningExplosives()));
         blockHellfire = new BlockHellFire();
         blockProjectTable = new BlockProjectTable();
-        blockWitherGuard = new BlockWitherProof();
-        blockCompressedObsidian = new BlockCompressedObsidian();
-
-        blockCactusCharcoal = new BlockCactusCharcoal();
-        blockCactusCoke = new BlockCactusCoke();
-        blockSugarCharcoal = new BlockSugarCharcoal();
-        blockSugarCoke = new BlockSugarCoke();
-
+        GregtechItemList.WitherGuard.set(new ItemStack(new BlockWitherProof()));
         blockCircuitProgrammer = new BlockCircuitProgrammer();
-
         blockDecayablesChest = new BlockDecayablesChest();
-
         blockCustomJukebox = new BlockSuperJukebox();
-
         blockPooCollector = new BlockPooCollector();
-
-        blockPestKiller = new BlockPestKiller();
-
+        GregtechItemList.PestKiller.set(new ItemStack(new BlockPestKiller()));
         blockVolumetricFlaskSetter = new BlockFlaskSetter();
 
+        // Compressed Blocks
+        Block cactusCharcoal = new BlockCactusCharcoal();
+        GregtechItemList.BlockCactusCharcoal.set(new ItemStack(cactusCharcoal));
+        GregtechItemList.CompressedCactusCharcoal.set(new ItemStack(cactusCharcoal, 1, 1));
+        GregtechItemList.DoubleCompressedCactusCharcoal.set(new ItemStack(cactusCharcoal, 1, 2));
+        GregtechItemList.TripleCompressedCactusCharcoal.set(new ItemStack(cactusCharcoal, 1, 3));
+        GregtechItemList.QuadrupleCompressedCactusCharcoal.set(new ItemStack(cactusCharcoal, 1, 4));
+        GregtechItemList.QuintupleCompressedCactusCharcoal.set(new ItemStack(cactusCharcoal, 1, 5));
+
+        Block cactusCoke = new BlockCactusCoke();
+        GregtechItemList.BlockCactusCoke.set(new ItemStack(cactusCoke));
+        GregtechItemList.CompressedCactusCoke.set(new ItemStack(cactusCoke, 1, 1));
+        GregtechItemList.DoubleCompressedCactusCoke.set(new ItemStack(cactusCoke, 1, 2));
+        GregtechItemList.TripleCompressedCactusCoke.set(new ItemStack(cactusCoke, 1, 3));
+        GregtechItemList.QuadrupleCompressedCactusCoke.set(new ItemStack(cactusCoke, 1, 4));
+        GregtechItemList.QuintupleCompressedCactusCoke.set(new ItemStack(cactusCoke, 1, 5));
+
+        Block sugarCharcoal = new BlockSugarCharcoal();
+        GregtechItemList.BlockSugarCharcoal.set(new ItemStack(sugarCharcoal));
+        GregtechItemList.CompressedSugarCharcoal.set(new ItemStack(sugarCharcoal, 1, 1));
+        GregtechItemList.DoubleCompressedSugarCharcoal.set(new ItemStack(sugarCharcoal, 1, 2));
+        GregtechItemList.TripleCompressedSugarCharcoal.set(new ItemStack(sugarCharcoal, 1, 3));
+        GregtechItemList.QuadrupleCompressedSugarCharcoal.set(new ItemStack(sugarCharcoal, 1, 4));
+        GregtechItemList.QuintupleCompressedSugarCharcoal.set(new ItemStack(sugarCharcoal, 1, 5));
+
+        Block sugarCoke = new BlockSugarCoke();
+        GregtechItemList.BlockSugarCoke.set(new ItemStack(sugarCoke));
+        GregtechItemList.CompressedSugarCoke.set(new ItemStack(sugarCoke, 1, 1));
+        GregtechItemList.DoubleCompressedSugarCoke.set(new ItemStack(sugarCoke, 1, 2));
+        GregtechItemList.TripleCompressedSugarCoke.set(new ItemStack(sugarCoke, 1, 3));
+        GregtechItemList.QuadrupleCompressedSugarCoke.set(new ItemStack(sugarCoke, 1, 4));
+        GregtechItemList.QuintupleCompressedSugarCoke.set(new ItemStack(sugarCoke, 1, 5));
+
+        Block compressedObsidian = new BlockCompressedObsidian();
+        GregtechItemList.CompressedObsidian.set(new ItemStack(compressedObsidian));
+        GregtechItemList.DoubleCompressedObsidian.set(new ItemStack(compressedObsidian, 1, 1));
+        GregtechItemList.TripleCompressedObsidian.set(new ItemStack(compressedObsidian, 1, 2));
+        GregtechItemList.QuadrupleCompressedObsidian.set(new ItemStack(compressedObsidian, 1, 3));
+        GregtechItemList.QuintupleCompressedObsidian.set(new ItemStack(compressedObsidian, 1, 4));
+        GregtechItemList.InvertedObsidian.set(new ItemStack(compressedObsidian, 1, 5));
+
+        // Compressed Glowstone shares the block with Compressed Obsidian
+        GregtechItemList.CompressedGlowstone.set(new ItemStack(compressedObsidian, 1, 6));
+        GregtechItemList.DoubleCompressedGlowstone.set(new ItemStack(compressedObsidian, 1, 7));
+        GregtechItemList.TripleCompressedGlowstone.set(new ItemStack(compressedObsidian, 1, 8));
+        GregtechItemList.QuadrupleCompressedGlowstone.set(new ItemStack(compressedObsidian, 1, 9));
+        GregtechItemList.QuintupleCompressedGlowstone.set(new ItemStack(compressedObsidian, 1, 10));
     }
 }

@@ -371,27 +371,32 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                 setSpeedBonus(1F / 3.5F);
                 setEuModifier(0.75F);
 
-                int recipeReq = recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0);
-
                 // Nerf when heated
                 if (overheated) {
                     setSpeedBonus(2.5F);
                     setEuModifier(1.1F);
                 }
 
-                // If HIP required, check for overheat and potentially crash
                 // If Black Hole required, no recipe
-                if (recipeReq == 1) {
-                    if (overheated) {
-                        stopMachine(SimpleShutDownReason.ofCritical("overheated"));
-                        return CheckRecipeResultRegistry.NO_RECIPE;
-                    }
-                } else if (recipeReq == 2) {
+                if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) == 2) {
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 }
                 return super.validateRecipe(recipe);
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+
+            @NotNull
+            @Override
+            protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
+                // If HIP required, check for overheat and potentially crash
+                if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) == 1) {
+                    if (overheated) {
+                        stopMachine(SimpleShutDownReason.ofCritical("overheated"));
+                        return CheckRecipeResultRegistry.NO_RECIPE;
+                    }
+                }
+                return super.onRecipeStart(recipe);
+            }
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     private int coolingTimer = 0;
@@ -432,6 +437,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
 
     }
 
+    @Override
     public int getMaxParallelRecipes() {
         return overheated ? GTUtility.getTier(this.getMaxInputVoltage())
             : (4 * GTUtility.getTier(this.getMaxInputVoltage()));

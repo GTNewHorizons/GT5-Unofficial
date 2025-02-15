@@ -176,6 +176,9 @@ public class GTItemIterator implements Runnable {
                             tItem.setMaxStackSize(OrePrefixes.stone.mDefaultStackSize);
                         }
                     }
+                    if (tName.equals("tile.tankBlock") && tBlock instanceof buildcraft.factory.BlockTank) {
+                        GTOreDictUnificator.registerOre(OreDictNames.craftingTank, new ItemStack(tItem, 1, 0));
+                    }
                 }
                 if (((tItem instanceof ItemFood)) && (tItem != ItemList.IC2_Food_Can_Filled.getItem())
                     && (tItem != ItemList.IC2_Food_Can_Spoiled.getItem())) {
@@ -268,10 +271,6 @@ public class GTItemIterator implements Runnable {
                     // buildcraft
                     case "tile.pumpBlock" -> GTOreDictUnificator
                         .registerOre(OreDictNames.craftingPump, new ItemStack(tItem, 1, 0));
-
-                    // buildcraft
-                    case "tile.tankBlock" -> GTOreDictUnificator
-                        .registerOre(OreDictNames.craftingTank, new ItemStack(tItem, 1, 0));
 
                 }
             }
