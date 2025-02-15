@@ -718,6 +718,11 @@ public class GregtechConduits {
 
     }
 
+    public static void generatePipeRecipes(final Material material) {
+        // generatePipeRecipes multiplies the voltage multiplier by 8 because ??! reasons.
+        generatePipeRecipes(material.getLocalizedName(), material.getMass(), material.vVoltageMultiplier / 8);
+    }
+
     public static void generatePipeRecipes(final String materialName, final long Mass, final long vMulti) {
 
         String output = materialName.substring(0, 1)

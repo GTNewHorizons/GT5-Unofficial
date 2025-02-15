@@ -4,14 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
-import gregtech.api.GregTechAPI;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTConfig;
 import gtPlusPlus.core.handler.CompatHandler;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.everglades.gen.gt.WorldGen_GT;
 import gtPlusPlus.recipes.CokeAndPyrolyseOven;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
@@ -69,18 +66,6 @@ public class HandlerGT {
 
         // Register some custom recipe maps for any enabled multiblocks.
         // MultiblockRecipeMapHandler.run();
-
-        if (GregtechItemList.Circuit_BioRecipeSelector.hasBeenSet()) {
-            for (int i = 1; i <= 24; i++) {
-                GregTechAPI.registerConfigurationCircuit(CI.getNumberedBioCircuit(i), 0);
-            }
-        }
-
-        if (GregtechItemList.Circuit_T3RecipeSelector.hasBeenSet()) {
-            for (int i = 1; i <= 24; i++) {
-                GregTechAPI.registerConfigurationCircuit(CI.getNumberedAdvancedCircuit(i), 3);
-            }
-        }
     }
 
     public static void onLoadComplete(FMLLoadCompleteEvent event) {
