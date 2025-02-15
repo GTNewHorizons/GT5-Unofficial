@@ -1,6 +1,5 @@
 package gregtech.common.pollution;
 
-import static gregtech.api.capability.GTCapabilities.CAPABILITY_CLEANROOM_RECEIVER;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.common.GTProxy.dimensionWisePollution;
 
@@ -35,7 +34,7 @@ import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
-import com.gtnewhorizon.gtnhlib.capability.CapabilityUtil;
+import com.gtnewhorizon.gtnhlib.capability.Capabilities;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -347,7 +346,7 @@ public class Pollution {
         if (!GTMod.gregtechproxy.mPollution || aPollution == 0 || te.getWorldObj().isRemote) return;
 
         if (aPollution > 0) {
-            ICleanroomReceiver receiver = CapabilityUtil.getCapability(te, CAPABILITY_CLEANROOM_RECEIVER);
+            ICleanroomReceiver receiver = Capabilities.getCapability(te, ICleanroomReceiver.class);
             if (receiver != null) {
                 ICleanroom cleanroom = receiver.getCleanroom();
                 if (cleanroom != null && cleanroom.isValidCleanroom()) {

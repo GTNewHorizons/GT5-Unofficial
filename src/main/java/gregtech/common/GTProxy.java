@@ -115,7 +115,6 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.capability.GTCapabilities;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
@@ -819,9 +818,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         GTLog.out.println("GTMod: Preload-Phase started!");
 
         GregTechAPI.sPreloadStarted = true;
-
-        GTCapabilities.init();
-
         this.mIgnoreTcon = OPStuff.ignoreTinkerConstruct;
         this.replicatorExponent = OPStuff.replicatorExponent;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry

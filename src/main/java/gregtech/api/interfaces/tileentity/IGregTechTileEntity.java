@@ -11,7 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import com.gtnewhorizon.gtnhlib.capability.ICapabilityProvider;
+import com.gtnewhorizon.gtnhlib.capability.CapabilityProvider;
 
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -28,7 +28,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
  */
 public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IFluidHandler, ITurnable,
     IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdateable,
-    IGregtechWailaProvider, IGetGUITextureSet, IAddInventorySlots, ICapabilityProvider {
+    IGregtechWailaProvider, IGetGUITextureSet, IAddInventorySlots, CapabilityProvider {
 
     /**
      * @return the MetaID of the Block or the MetaTileEntity ID.

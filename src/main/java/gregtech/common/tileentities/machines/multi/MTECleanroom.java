@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static bartworks.API.GlassTier.getGlassTier;
-import static gregtech.api.capability.GTCapabilities.CAPABILITY_CLEANROOM_RECEIVER;
 import static gregtech.api.enums.GTValues.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.BLOCK_PLASCRETE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM;
@@ -24,7 +23,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizon.gtnhlib.capability.CapabilityUtil;
+import com.gtnewhorizon.gtnhlib.capability.Capabilities;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -665,7 +664,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             for (int dx = dxMin + 1; dx <= dxMax - 1; ++dx) {
                 for (int dz = dzMin + 1; dz <= dzMax - 1; dz++) {
                     TileEntity te = aBaseMetaTileEntity.getTileEntityOffset(dx, dy, dz);
-                    ICleanroomReceiver receiver = CapabilityUtil.getCapability(te, CAPABILITY_CLEANROOM_RECEIVER);
+                    ICleanroomReceiver receiver = Capabilities.getCapability(te, ICleanroomReceiver.class);
                     if (receiver != null) {
                         receiver.setCleanroom(this);
                         cleanroomReceivers.add(receiver);

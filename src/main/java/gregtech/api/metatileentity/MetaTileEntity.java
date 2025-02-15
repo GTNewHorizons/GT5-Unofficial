@@ -1,12 +1,7 @@
 package gregtech.api.metatileentity;
 
-import static gregtech.api.capability.GTCapabilities.CAPABILITY_CLEANROOM_RECEIVER;
-
 import java.util.List;
 import java.util.function.Supplier;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -18,7 +13,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.gtnewhorizon.gtnhlib.capability.Capability;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
 import appeng.api.implementations.IPowerChannelState;
@@ -141,17 +138,17 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity {
     }
 
     /**
-     * Override to delegate {@link Capability} this machine implements to baseMTE. Don't forget to fall back to
+     * Override to delegate capability this machine implements to baseMTE. Don't forget to fall back to
      * {@code super.getCapability}.
      *
-     * @see com.gtnewhorizon.gtnhlib.capability.ICapabilityProvider
+     * @see com.gtnewhorizon.gtnhlib.capability.CapabilityProvider CapabilityProvider
      * @inheritDoc
      */
     @Nullable
     @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull ForgeDirection side) {
-        if (capability == CAPABILITY_CLEANROOM_RECEIVER) {
-            return CAPABILITY_CLEANROOM_RECEIVER.cast(cleanroomReference);
+    public <T> T getCapability(@NotNull Class<? extends T> capability, @NotNull ForgeDirection side) {
+        if (capability == ICleanroomReceiver.class) {
+            return capability.cast(cleanroomReference);
         }
         return super.getCapability(capability, side);
     }

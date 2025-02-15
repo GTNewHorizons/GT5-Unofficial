@@ -10,9 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -28,7 +25,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import com.gtnewhorizon.gtnhlib.capability.Capability;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
@@ -667,7 +665,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Nullable
     @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nonnull ForgeDirection side) {
+    public <T> T getCapability(@NotNull Class<? extends T> capability, @NotNull ForgeDirection side) {
         if (canAccessData()) {
             return mMetaTileEntity.getCapability(capability, side);
         }
