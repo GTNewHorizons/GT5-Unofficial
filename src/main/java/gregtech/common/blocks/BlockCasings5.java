@@ -19,8 +19,6 @@ import static gregtech.api.enums.HeatingCoilLevel.ZPM;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.coderbot.iris.api.IIrisAware;
-import net.coderbot.iris.api.IIrisRenderBlocks;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -43,7 +41,7 @@ import gregtech.common.render.GTRendererBlock;
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
  * 16 subtypes at most.
  */
-public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil, IBlockWithTextures, IIrisAware {
+public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil, IBlockWithTextures {
 
     public static final int ACTIVE_OFFSET = 16;
 
@@ -97,18 +95,6 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil,
     }
 
     @Override
-    public int getSubpassCount(int meta) {
-        if (Client.render.useOldCoils) {
-            return 1;
-        } else {
-            return switch (meta % ACTIVE_OFFSET) {
-                case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 -> 2;
-                default -> 1;
-            };
-        }
-    }
-
-    @Override
     public @Nullable ITexture[][] getTextures(int metadata) {
         // can be stubbed because the other getTextures delegates to this method
         return new ITexture[0][];
@@ -140,40 +126,32 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil,
 
             textures.add(TextureFactory.of(icon));
         } else {
-            int subpass = -1;
+            IIconContainer background = switch (metadata % ACTIVE_OFFSET) {
+                case 0 -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_BACKGROUND;
+                case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL_BACKGROUND;
+                case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME_BACKGROUND;
+                case 3 -> Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL_BACKGROUND;
+                case 4 -> Textures.BlockIcons.MACHINE_COIL_HSSG_BACKGROUND;
+                case 5 -> Textures.BlockIcons.MACHINE_COIL_NAQUADAH_BACKGROUND;
+                case 6 -> Textures.BlockIcons.MACHINE_COIL_NAQUADAHALLOY_BACKGROUND;
+                case 7 -> Textures.BlockIcons.MACHINE_COIL_ELECTRUMFLUX_BACKGROUND;
+                case 8 -> Textures.BlockIcons.MACHINE_COIL_AWAKENEDDRACONIUM_BACKGROUND;
+                case 9 -> Textures.BlockIcons.MACHINE_COIL_HSSS_BACKGROUND;
+                case 10 -> Textures.BlockIcons.MACHINE_COIL_TRINIUM_BACKGROUND;
+                case 11 -> Textures.BlockIcons.MACHINE_COIL_INFINITY_BACKGROUND;
+                case 12 -> Textures.BlockIcons.MACHINE_COIL_HYPOGEN_BACKGROUND;
+                case 13 -> Textures.BlockIcons.MACHINE_COIL_ETERNAL_BACKGROUND;
+                case 14 -> Textures.BlockIcons.MACHINE_CASING_SHIELDED_ACCELERATOR;
+                default -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_BACKGROUND;
+            };
 
-            if (rb instanceof IIrisRenderBlocks renderBlocks) {
-                subpass = renderBlocks.getCurrentSubpass();
-                switch (subpass) {
-                    case 0 -> renderBlocks.setShaderMaterialId(this, metadata % ACTIVE_OFFSET);
-                    case 1 -> renderBlocks.setShaderMaterialId(this, metadata);
-                }
-            }
+            textures.add(
+                TextureFactory.builder()
+                    .addIcon(background)
+                    .material(this, 0)
+                    .build());
 
-            if (subpass == -1 || subpass == 0) {
-                IIconContainer background = switch (metadata % ACTIVE_OFFSET) {
-                    case 0 -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_BACKGROUND;
-                    case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL_BACKGROUND;
-                    case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME_BACKGROUND;
-                    case 3 -> Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL_BACKGROUND;
-                    case 4 -> Textures.BlockIcons.MACHINE_COIL_HSSG_BACKGROUND;
-                    case 5 -> Textures.BlockIcons.MACHINE_COIL_NAQUADAH_BACKGROUND;
-                    case 6 -> Textures.BlockIcons.MACHINE_COIL_NAQUADAHALLOY_BACKGROUND;
-                    case 7 -> Textures.BlockIcons.MACHINE_COIL_ELECTRUMFLUX_BACKGROUND;
-                    case 8 -> Textures.BlockIcons.MACHINE_COIL_AWAKENEDDRACONIUM_BACKGROUND;
-                    case 9 -> Textures.BlockIcons.MACHINE_COIL_HSSS_BACKGROUND;
-                    case 10 -> Textures.BlockIcons.MACHINE_COIL_TRINIUM_BACKGROUND;
-                    case 11 -> Textures.BlockIcons.MACHINE_COIL_INFINITY_BACKGROUND;
-                    case 12 -> Textures.BlockIcons.MACHINE_COIL_HYPOGEN_BACKGROUND;
-                    case 13 -> Textures.BlockIcons.MACHINE_COIL_ETERNAL_BACKGROUND;
-                    case 14 -> Textures.BlockIcons.MACHINE_CASING_SHIELDED_ACCELERATOR;
-                    default -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_BACKGROUND;
-                };
-
-                textures.add(TextureFactory.of(background));
-            }
-
-            if (metadata >= ACTIVE_OFFSET && (subpass == -1 || subpass == 1)) {
+            if (metadata >= ACTIVE_OFFSET) {
                 IIconContainer foreground = switch (metadata % ACTIVE_OFFSET) {
                     case 0 -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_FOREGROUND;
                     case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL_FOREGROUND;
@@ -196,6 +174,7 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil,
                     TextureFactory.builder()
                         .addIcon(foreground)
                         .glow()
+                        .material(this, metadata)
                         .build());
             }
         }
