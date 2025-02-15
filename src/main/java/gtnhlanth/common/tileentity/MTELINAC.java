@@ -160,6 +160,11 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .build();
     }
 
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
     private float outputEnergy;
     private int outputRate;
     private int outputParticle;
