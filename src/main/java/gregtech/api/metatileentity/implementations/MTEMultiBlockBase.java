@@ -2700,6 +2700,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 .setPos(0, 2)
                 .setSize(120, 18));
 
+        builder.widget(new FakeSyncWidget.IntegerSyncer(this::getMaxParallelRecipes, val -> maxParallel = val));
+        builder.widget(
+            new FakeSyncWidget.IntegerSyncer(() -> powerPanelMaxParallel, val -> powerPanelMaxParallel = val));
+
         builder.widget(
             TextWidget.localised("GTPP.CC.parallel")
                 .setPos(0, 24)
@@ -2725,10 +2729,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         builder.widget(textField);
         builder.widget(createMaxParallelCheckBox());
-
-        builder.widget(new FakeSyncWidget.IntegerSyncer(this::getMaxParallelRecipes, val -> maxParallel = val));
-        builder.widget(
-            new FakeSyncWidget.IntegerSyncer(() -> powerPanelMaxParallel, val -> powerPanelMaxParallel = val));
 
         return builder.build();
     }
