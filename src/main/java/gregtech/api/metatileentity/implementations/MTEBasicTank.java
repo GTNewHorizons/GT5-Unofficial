@@ -315,7 +315,8 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
                 createFluidSlot().setBackground(GTUITextures.TRANSPARENT)
                     .setPos(58, 41))
             .widget(
-                new TextWidget(StatCollector.translateToLocal("GT5U.machines.basic_tank.liquid_amount")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("GT5U.machines.basic_tank.liquid_amount"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 20))
             .widget(
                 new TextWidget().setStringSupplier(() -> numberFormat.format(mFluid != null ? mFluid.amount : 0))
