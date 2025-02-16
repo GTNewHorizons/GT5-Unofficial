@@ -986,6 +986,13 @@ GT5U.waila.facing.west=WEST
 GT5U.waila.facing.east=EAST
 GT5U.waila.facing.unknown=UNKNOWN
 
+GT5U.waila.multiblock.status.incomplete=** INCOMPLETE STRUCTURE **
+GT5U.waila.multiblock.status.efficiency=  Efficiency: %f%%
+GT5U.waila.multiblock.status.has_problem=** HAS PROBLEMS **
+GT5U.waila.multiblock.status.running_fine=Running Fine
+GT5U.waila.multiblock.status.cpu_load=Average CPU load of ~%s ns
+GT5U.waila.multiblock.status.locked_recipe=Locked Recipe:
+
 achievement.flintpick=First Tools
 achievement.flintpick.desc=Craft a flint pick
 achievement.crops=Farming
