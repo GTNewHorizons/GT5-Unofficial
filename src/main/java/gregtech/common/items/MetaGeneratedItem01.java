@@ -452,7 +452,6 @@ import static gregtech.common.items.IDMetaItem01.Tool_MatchBox_Full;
 import static gregtech.common.items.IDMetaItem01.Tool_MatchBox_Used;
 import static gregtech.common.items.IDMetaItem01.Tool_Matches;
 import static gregtech.common.items.IDMetaItem01.Tool_Scanner;
-import static gregtech.common.items.IDMetaItem01.Tool_Sonictron;
 import static gregtech.common.items.IDMetaItem01.Upgrade_Lock;
 import static gregtech.common.items.IDMetaItem01.Upgrade_Muffler;
 import static gregtech.common.items.IDMetaItem01.ZPM2;
@@ -537,7 +536,6 @@ import gregtech.common.items.behaviors.BehaviourLighter;
 import gregtech.common.items.behaviors.BehaviourPrintedPages;
 import gregtech.common.items.behaviors.BehaviourScanner;
 import gregtech.common.items.behaviors.BehaviourSensorKit;
-import gregtech.common.items.behaviors.BehaviourSonictron;
 import gregtech.common.items.behaviors.BehaviourSprayColor;
 import gregtech.common.items.behaviors.BehaviourSprayColorInfinite;
 import gregtech.common.items.behaviors.BehaviourSprayColorRemover;
@@ -3073,13 +3071,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.TENEBRAE, 64L)));
 
-        ItemList.Tool_Sonictron.set(
-            addItem(
-                Tool_Sonictron.ID,
-                "Sonictron",
-                "Bring your Music with you",
-                BehaviourSonictron.INSTANCE,
-                new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4L)));
         ItemList.Tool_Cheat.set(
             addItem(
                 Tool_Cheat.ID,
