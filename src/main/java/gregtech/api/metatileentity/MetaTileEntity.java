@@ -44,7 +44,6 @@ import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
-import gregtech.common.capability.CleanroomReference;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
