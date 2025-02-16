@@ -73,10 +73,6 @@ public class MTEBoilerLava extends MTEBoiler {
                     + " ticks when fully heat up" });
     }
 
-    public MTEBoilerLava(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-    }
-
     public MTEBoilerLava(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }

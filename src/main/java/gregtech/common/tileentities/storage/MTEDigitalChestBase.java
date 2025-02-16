@@ -82,10 +82,6 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         };
     }
 
-    public MTEDigitalChestBase(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 3, aDescription, aTextures);
-    }
-
     public MTEDigitalChestBase(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
