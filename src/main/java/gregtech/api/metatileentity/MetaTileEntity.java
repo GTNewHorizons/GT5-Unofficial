@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -30,7 +31,6 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GUITextureSet;
-import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -41,6 +41,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
+import gregtech.common.capability.CleanroomReference;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
@@ -56,7 +57,7 @@ import tectech.thing.metaTileEntity.pipe.MTEPipeEnergy;
  * GT_MetaTileEntity_E_Furnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
  */
 @SuppressWarnings("unused")
-public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICleanroomReceiver {
+public abstract class MetaTileEntity extends CommonMetaTileEntity {
 
     /**
      * Inventory wrapper for ModularUI
@@ -71,7 +72,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
         return inventoryHandler;
     }
 
-    private ICleanroom cleanroom;
+    protected final ICleanroomReceiver cleanroomReference = new CleanroomReference();
 
     /**
      * accessibility to this Field is no longer given, see below
@@ -134,6 +135,22 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
     public boolean isValid() {
         return getBaseMetaTileEntity() != null && getBaseMetaTileEntity().getMetaTileEntity() == this
             && !getBaseMetaTileEntity().isDead();
+    }
+
+    /**
+     * Override to delegate capability this machine implements to baseMTE. Don't forget to fall back to
+     * {@code super.getCapability}.
+     *
+     * @see com.gtnewhorizon.gtnhlib.capability.CapabilityProvider CapabilityProvider
+     * @inheritDoc
+     */
+    @Nullable
+    @Override
+    public <T> T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
+        if (capability == ICleanroomReceiver.class) {
+            return capability.cast(cleanroomReference);
+        }
+        return super.getCapability(capability, side);
     }
 
     @Override
@@ -258,17 +275,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
         return onRightclick(aBaseMetaTileEntity, aPlayer);
-    }
-
-    @Nullable
-    @Override
-    public ICleanroom getCleanroom() {
-        return cleanroom;
-    }
-
-    @Override
-    public void setCleanroom(ICleanroom cleanroom) {
-        this.cleanroom = cleanroom;
     }
 
     /**

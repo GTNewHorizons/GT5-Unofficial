@@ -33,7 +33,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.sound.SoundSetupEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -64,7 +63,6 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -85,7 +83,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTPlayedSound;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.client.GTMouseEventHandler;
 import gregtech.client.SeekingOggCodec;
 import gregtech.common.blocks.BlockFrameBox;
@@ -964,64 +961,6 @@ public class GTClient extends GTProxy implements Runnable {
     @Override
     public float getPartialRenderTicks() {
         return renderTickTime;
-    }
-
-    @Override
-    public void doSonictronSound(ItemStack aStack, World aWorld, double aX, double aY, double aZ) {
-        if (GTUtility.isStackInvalid(aStack)) return;
-        String tString = SoundResource.NOTE_HARP.toString();
-        int i = 0;
-        int j = mSoundItems.size();
-        do {
-            if (i >= j) break;
-            if (GTUtility.areStacksEqual(mSoundItems.get(i), aStack)) {
-                tString = mSoundNames.get(i);
-                break;
-            }
-            i++;
-        } while (true);
-        if (tString.startsWith(SoundResource.RANDOM_EXPLODE.toString()))
-            if (aStack.stackSize == 3) tString = SoundResource.RANDOM_FUSE.toString();
-            else if (aStack.stackSize == 2) tString = "random.old_explode";
-        if (tString.startsWith("streaming.")) tString = switch (aStack.stackSize) {
-            case 1 -> // '\001'
-                tString + "13";
-            case 2 -> // '\002'
-                tString + "cat";
-            case 3 -> // '\003'
-                tString + "blocks";
-            case 4 -> // '\004'
-                tString + "chirp";
-            case 5 -> // '\005'
-                tString + "far";
-            case 6 -> // '\006'
-                tString + "mall";
-            case 7 -> // '\007'
-                tString + "mellohi";
-            case 8 -> // '\b'
-                tString + "stal";
-            case 9 -> // '\t'
-                tString + "strad";
-            case 10 -> // '\n'
-                tString + "ward";
-            case 11 -> // '\013'
-                tString + "11";
-            case 12 -> // '\f'
-                tString + "wait";
-            default -> tString + "wherearewenow";
-        };
-        if (tString.startsWith("streaming.")) {
-            new WorldSpawnedEventBuilder.RecordEffectEventBuilder().setIdentifier(tString.substring(10))
-                .setPosition(aX, aY, aZ)
-                .run();
-        } else {
-            new WorldSpawnedEventBuilder.SoundEventBuilder().setVolume(3f)
-                .setPitch(
-                    tString.startsWith("note.") ? (float) Math.pow(2D, (double) (aStack.stackSize - 13) / 12D) : 1.0F)
-                .setIdentifier(tString)
-                .setPosition(aX, aY, aZ)
-                .run();
-        }
     }
 
     public static int hideValue = 0;
