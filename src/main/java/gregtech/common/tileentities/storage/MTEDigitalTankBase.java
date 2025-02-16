@@ -104,10 +104,6 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
         };
     }
 
-    public MTEDigitalTankBase(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 3, aDescription, aTextures);
-    }
-
     public MTEDigitalTankBase(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
