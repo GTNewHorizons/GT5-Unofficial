@@ -27,10 +27,6 @@ public class MTEEnergyDistributor extends MTETransformer {
         super(aID, aName, aNameRegional, aTier, null);
     }
 
-    public MTEEnergyDistributor(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-    }
-
     public MTEEnergyDistributor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }

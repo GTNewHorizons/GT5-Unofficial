@@ -28,7 +28,6 @@ import tectech.util.TTUtility;
 
 public class MTERTGenerator extends MTEBasicGenerator {
 
-    public int mEfficiency;
     private long mTicksToBurnFor;
     private int mVoltage = 0;
     private GTRecipe mCurrentRecipe;
@@ -213,7 +212,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
 
     @Override
     public int getEfficiency() {
-        return this.mEfficiency = 100;
+        return 100;
     }
 
     @Override
