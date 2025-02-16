@@ -22,7 +22,6 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
 
 import org.apache.logging.log4j.LogManager;
@@ -102,7 +101,6 @@ import gregtech.loaders.load.CoverBehaviorLoader;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.GTItemIterator;
 import gregtech.loaders.load.MTERecipeLoader;
-import gregtech.loaders.load.SonictronLoader;
 import gregtech.loaders.misc.CoverLoader;
 import gregtech.loaders.misc.GTAchievements;
 import gregtech.loaders.misc.GTBees;
@@ -297,7 +295,6 @@ public class GTMod implements IGTMod {
 
         new LoaderCircuitBehaviors().run();
         new CoverBehaviorLoader().run();
-        new SonictronLoader().run();
         new GTSpawnEventHandler();
 
         // populate itemstack instance for NBT check in GTRecipe
@@ -737,10 +734,6 @@ public class GTMod implements IGTMod {
 
     public int addArmor(String aArmorPrefix) {
         return gregtechproxy.addArmor(aArmorPrefix);
-    }
-
-    public void doSonictronSound(ItemStack aStack, World aWorld, double aX, double aY, double aZ) {
-        gregtechproxy.doSonictronSound(aStack, aWorld, aX, aY, aZ);
     }
 
     @Mod.EventHandler
