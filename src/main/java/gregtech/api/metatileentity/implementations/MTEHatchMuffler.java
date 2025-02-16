@@ -41,10 +41,6 @@ public class MTEHatchMuffler extends MTEHatch {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public MTEHatchMuffler(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        this(aName, aTier, new String[] { aDescription }, aTextures);
-    }
-
     public MTEHatchMuffler(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         this(aName, aTier, 0, aDescription, aTextures);
     }

@@ -18,15 +18,6 @@ public class MTEBasicHull extends MTEBasicTank {
         super(aID, aName, aNameRegional, aTier, 1, aDescription, aTextures);
     }
 
-    public MTEBasicHull(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription,
-        ITexture... aTextures) {
-        super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
-    }
-
-    public MTEBasicHull(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
-
     public MTEBasicHull(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }

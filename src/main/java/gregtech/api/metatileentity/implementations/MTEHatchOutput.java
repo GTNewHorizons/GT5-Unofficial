@@ -60,10 +60,6 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                 "Restricted Output Hatches are given priority for Multiblock Fluid output" });
     }
 
-    public MTEHatchOutput(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 4, aDescription, aTextures);
-    }
-
     public MTEHatchOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 4, aDescription, aTextures);
     }
