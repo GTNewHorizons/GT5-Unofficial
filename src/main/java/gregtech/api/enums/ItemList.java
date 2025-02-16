@@ -663,7 +663,6 @@ public enum ItemList implements IItemContainer {
     Tool_Scanner,
     Tool_DataOrb,
     Tool_DataStick,
-    Tool_Sonictron,
     Tool_Sword_Bronze,
     Tool_Pickaxe_Bronze,
     Tool_Shovel_Bronze,
