@@ -33,14 +33,6 @@ public class MTEHatchMultiInput extends MTEHatchInput implements IAddUIWidgets {
         mCapacityPer = getCapacityPerTank(aTier, aSlot);
     }
 
-    public MTEHatchMultiInput(int aID, int aSlot, String aName, String aNameRegional, int aTier,
-        String[] aDescription) {
-        super(aID, aSlot, aName, aNameRegional, aTier, aDescription);
-        this.mStoredFluid = new FluidStack[aSlot];
-        fluidTanks = new FluidStackTank[aSlot];
-        mCapacityPer = getCapacityPerTank(aTier, aSlot);
-    }
-
     public MTEHatchMultiInput(String aName, int aSlot, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aSlot, aTier, aDescription, aTextures);
         this.mStoredFluid = new FluidStack[aSlot];

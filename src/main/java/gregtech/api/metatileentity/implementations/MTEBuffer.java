@@ -67,16 +67,8 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     public int mSuccess = 0, mTargetStackSize = 0;
     private int uiButtonCount = 0;
 
-    public MTEBuffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription) {
-        super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
-    }
-
     public MTEBuffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String[] aDescription) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
-    }
-
-    public MTEBuffer(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public MTEBuffer(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {

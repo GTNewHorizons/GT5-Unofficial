@@ -41,7 +41,6 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBase;
 
-@SuppressWarnings("deprecation")
 public class MTEHatchTurbine extends MTEHatch {
 
     public boolean mHasController = false;
@@ -56,12 +55,8 @@ public class MTEHatchTurbine extends MTEHatch {
         super(aID, aName, aNameRegional, aTier, 16, "Turbine Rotor holder for XL Turbines");
     }
 
-    public MTEHatchTurbine(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 1, aDescription, aTextures);
-    }
-
     public MTEHatchTurbine(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 1, aDescription[0], aTextures);
+        super(aName, aTier, 1, aDescription, aTextures);
     }
 
     @Override

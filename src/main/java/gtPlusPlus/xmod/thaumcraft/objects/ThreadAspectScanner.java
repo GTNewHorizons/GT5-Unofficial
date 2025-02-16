@@ -12,8 +12,9 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.FileUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -128,7 +129,7 @@ public class ThreadAspectScanner extends Thread {
                             ArrayList<Pair<String, Integer>> aspectPairs = new ArrayList<>();
                             for (thaumcraft.api.aspects.Aspect c : a.getAspectsSortedAmount()) {
                                 if (c != null) {
-                                    aspectPairs.add(new Pair<>(c.getName(), a.getAmount(c)));
+                                    aspectPairs.add(Pair.of(c.getName(), a.getAmount(c)));
                                 }
                             }
                             try {

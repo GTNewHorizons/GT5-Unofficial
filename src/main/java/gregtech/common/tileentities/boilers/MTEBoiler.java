@@ -61,10 +61,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         super(aID, aName, aNameRegional, 0, 4, aDescription, aTextures);
     }
 
-    public MTEBoiler(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 4, aDescription, aTextures);
-    }
-
     public MTEBoiler(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 4, aDescription, aTextures);
     }

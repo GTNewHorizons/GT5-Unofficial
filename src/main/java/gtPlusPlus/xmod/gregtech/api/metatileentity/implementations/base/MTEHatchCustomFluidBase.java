@@ -45,7 +45,7 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
 
     public MTEHatchCustomFluidBase(Fluid aFluid, int aAmount, final String aName, final int aTier,
         final String[] aDescription, final ITexture[][][] aTextures) {
-        super(aName, aTier, 3, aDescription[0], aTextures);
+        super(aName, aTier, 3, aDescription, aTextures);
         this.mLockedFluid = aFluid;
         this.mFluidCapacity = aAmount;
     }
