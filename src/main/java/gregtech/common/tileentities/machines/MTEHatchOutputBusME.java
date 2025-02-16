@@ -45,7 +45,6 @@ import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.Platform;
-import appeng.util.ReadableNumberConverter;
 import appeng.util.item.AEItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -65,7 +64,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChannelState, IMEConnectable {
 
     protected static final long DEFAULT_CAPACITY = 1_600;
-    protected long baseCapacity = DEFAULT_CAPACITY;
 
     protected BaseActionSource requestSource = null;
     protected @Nullable AENetworkProxy gridProxy = null;
@@ -142,7 +140,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof ItemBasicStorageCell) {
             return ((ItemBasicStorageCell) upgradeItemStack.getItem()).getBytesLong(upgradeItemStack) * 8;
         }
-        return baseCapacity;
+        return DEFAULT_CAPACITY;
     }
 
     /**
@@ -310,6 +308,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
+<<<<<<< HEAD
     public boolean isLocked() {
         return !this.lockedItems.isEmpty();
     }
@@ -396,6 +395,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
+=======
+>>>>>>> origin/fix/me-hatch-base-capacity
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
 
@@ -419,8 +420,11 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         }
         aNBT.setBoolean("additionalConnection", additionalConnection);
         aNBT.setTag("cachedItems", items);
+<<<<<<< HEAD
         aNBT.setLong("baseCapacity", baseCapacity);
         aNBT.setBoolean("hadCell", hadCell);
+=======
+>>>>>>> origin/fix/me-hatch-base-capacity
         getProxy().writeToNBT(aNBT);
     }
 
@@ -468,12 +472,15 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             }
         }
         additionalConnection = aNBT.getBoolean("additionalConnection");
+<<<<<<< HEAD
         baseCapacity = aNBT.getLong("baseCapacity");
         hadCell = aNBT.getBoolean("hadCell");
         // Set the base capacity of existing hatches to be infinite
         if (baseCapacity == 0) {
             baseCapacity = Long.MAX_VALUE;
         }
+=======
+>>>>>>> origin/fix/me-hatch-base-capacity
         getProxy().readFromNBT(aNBT);
     }
 
