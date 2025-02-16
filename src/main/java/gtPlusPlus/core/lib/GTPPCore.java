@@ -12,11 +12,12 @@ import java.util.function.Supplier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.GT_Version;
 import gregtech.api.objects.XSTR;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTETesseractGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTETesseractTerminal;
@@ -55,12 +56,6 @@ public class GTPPCore {
     public static final Map<String, ItemStack> sBookList = new ConcurrentHashMap<>();
 
     public static final GT_Materials[] sMU_GeneratedMaterials = new GT_Materials[1000];
-
-    public static class Everglades {
-
-        public static final String NAME = "GT++ Toxic Everglades";
-        public static final String VERSION = GT_Version.VERSION;
-    }
 
     public static void crash() {
         crash("Generic Crash");

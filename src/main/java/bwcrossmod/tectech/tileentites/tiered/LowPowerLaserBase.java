@@ -31,20 +31,8 @@ public abstract class LowPowerLaserBase extends MTETieredMachineBlock implements
     protected long AMPERES;
 
     public LowPowerLaserBase(int aID, String aName, String aNameRegional, int aTier, long aAmperes, int aInvSlotCount,
-        String aDescription, ITexture... aTextures) {
-        super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
-        this.AMPERES = aAmperes;
-    }
-
-    public LowPowerLaserBase(int aID, String aName, String aNameRegional, int aTier, long aAmperes, int aInvSlotCount,
         String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
-        this.AMPERES = aAmperes;
-    }
-
-    public LowPowerLaserBase(String aName, int aTier, long aAmperes, int aInvSlotCount, String aDescription,
-        ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
         this.AMPERES = aAmperes;
     }
 

@@ -1,6 +1,7 @@
 package gtPlusPlus.core.util.minecraft;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +17,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.TypeCounter;
 import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
@@ -29,6 +29,8 @@ import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 public class MaterialUtils {
 
@@ -247,17 +249,21 @@ public class MaterialUtils {
     }
 
     public static TextureSet getMostCommonTextureSet(List<Material> list) {
-        TypeCounter<TextureSet> aCounter = new TypeCounter<>(TextureSet.class);
+        Object2IntMap<TextureSet> counter = new Object2IntOpenHashMap<>();
         for (Material m : list) {
             TextureSet t = m.getTextureSet();
             if (t == null) {
                 t = Materials.Gold.mIconSet;
             }
             if (t != null) {
-                aCounter.add(t, t.mSetName);
+                counter.put(t, counter.getInt(t) + 1);
             }
         }
-        return aCounter.getResults();
+        return counter.object2IntEntrySet()
+            .stream()
+            .max(Comparator.comparingInt(Object2IntMap.Entry::getIntValue))
+            .map(Map.Entry::getKey)
+            .orElse(Materials.Gold.mIconSet);
     }
 
     public static Materials getMaterial(String aMaterialName, String aFallbackMaterialName) {
