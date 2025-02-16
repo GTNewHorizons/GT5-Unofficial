@@ -12,7 +12,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
@@ -25,6 +24,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverFactory;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUIInfos;
@@ -54,18 +54,6 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
     protected CoverBehaviorBase(Class<T> typeToken, ITexture coverTexture) {
         this.typeToken = typeToken;
         this.coverFGTexture = coverTexture;
-    }
-
-    public abstract T createDataObject();
-
-    public T initializeDataFromCover(ItemStack cover) {
-        return createDataObject();
-    }
-
-    public T createDataObject(NBTBase aNBT) {
-        final T ret = createDataObject();
-        ret.loadDataFromNBT(aNBT);
-        return ret;
     }
 
     final boolean acceptsDataObject(ISerializableObject aData) {
@@ -113,7 +101,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
 
     /**
      * Get the special foreground cover texture associated with this cover. Return null if one should use the texture
-     * passed to {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverBehaviorBase)} or its
+     * passed to {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverBehaviorBase, CoverFactory)} or its
      * overloads.
      */
     final ITexture getSpecialCoverFGTexture(ForgeDirection side, int aCoverID, ISerializableObject aCoverVariable,
@@ -123,7 +111,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
 
     /**
      * Get the special cover texture associated with this cover. Return null if one should use the texture passed to
-     * {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverBehaviorBase)} or its overloads.
+     * {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverBehaviorBase, CoverFactory)} or its overloads.
      */
     final ITexture getSpecialCoverTexture(ForgeDirection side, int aCoverID, ISerializableObject aCoverVariable,
         ICoverable aTileEntity) {
@@ -780,30 +768,8 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
 
     // region no data
 
-    /**
-     * Checks if the Cover can be placed on this.
-     */
-    public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable aTileEntity) {
-        return true;
-    }
-
     protected boolean hasCoverGUI() {
         return false;
-    }
-
-    /**
-     * If this is a simple Cover, which can also be used on Bronze Machines and similar.
-     */
-    public boolean isSimpleCover() {
-        return false;
-    }
-
-    /**
-     * sets the Cover upon placement.
-     */
-    public final void placeCover(EntityPlayer player, ItemStack cover, ICoverable tileEntity, ForgeDirection side) {
-        tileEntity.setCoverIdAndDataAtSide(side, GTUtility.stackToInt(cover), initializeDataFromCover(cover));
-        onPlayerAttach(player, cover, tileEntity, side);
     }
 
     boolean allowsCopyPasteTool() {

@@ -16,6 +16,7 @@ import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverFactory;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -33,13 +34,9 @@ import io.netty.buffer.ByteBuf;
 public class CoverWirelessMaintenanceDetector
     extends CoverAdvancedRedstoneTransmitterBase<CoverWirelessMaintenanceDetector.MaintenanceTransmitterData> {
 
-    public CoverWirelessMaintenanceDetector(ITexture coverTexture) {
-        super(MaintenanceTransmitterData.class, coverTexture);
-    }
-
-    @Override
-    public MaintenanceTransmitterData createDataObject() {
-        return new MaintenanceTransmitterData();
+    public CoverWirelessMaintenanceDetector(ITexture coverTexture,
+        CoverFactory<MaintenanceTransmitterData> maintenanceTransmitterDataCoverFactory) {
+        super(MaintenanceTransmitterData.class, coverTexture, maintenanceTransmitterDataCoverFactory);
     }
 
     private static byte computeSignalBasedOnMaintenance(MaintenanceTransmitterData coverVariable,

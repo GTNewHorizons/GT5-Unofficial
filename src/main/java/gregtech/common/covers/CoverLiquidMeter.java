@@ -18,6 +18,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverFactories;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -38,11 +39,6 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
 
     public CoverLiquidMeter(ITexture coverTexture) {
         super(LiquidMeterData.class, coverTexture);
-    }
-
-    @Override
-    public LiquidMeterData createDataObject() {
-        return new LiquidMeterData();
     }
 
     @Override
@@ -187,30 +183,33 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
             setMaxCapacity();
 
             builder.widget(
-                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverLiquidMeter.this)
-                    .addFollower(
-                        CoverDataFollowerToggleButtonWidget.ofRedstone(),
-                        coverData -> coverData.inverted,
-                        (coverData, state) -> {
-                            coverData.inverted = state;
-                            return coverData;
-                        },
-                        widget -> widget.addTooltip(0, NORMAL)
-                            .addTooltip(1, INVERTED)
-                            .setPos(spaceX * 0, spaceY * 0))
-                    .addFollower(
-                        new CoverDataFollowerNumericWidget<>(),
-                        coverData -> (double) coverData.threshold,
-                        (coverData, state) -> {
-                            coverData.threshold = state.intValue();
-                            return coverData;
-                        },
-                        widget -> widget.setBounds(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
-                            .setScrollValues(1000, 144, 100000)
-                            .setFocusOnGuiOpen(true)
-                            .setPos(spaceX * 0, spaceY * 1 + 2)
-                            .setSize(spaceX * 4 + 5, 12))
-                    .setPos(startX, startY))
+                new CoverDataControllerWidget<>(
+                    this::getCoverData,
+                    this::setCoverData,
+                    CoverFactories.coverLiquidMeterFactory)
+                        .addFollower(
+                            CoverDataFollowerToggleButtonWidget.ofRedstone(),
+                            coverData -> coverData.inverted,
+                            (coverData, state) -> {
+                                coverData.inverted = state;
+                                return coverData;
+                            },
+                            widget -> widget.addTooltip(0, NORMAL)
+                                .addTooltip(1, INVERTED)
+                                .setPos(spaceX * 0, spaceY * 0))
+                        .addFollower(
+                            new CoverDataFollowerNumericWidget<>(),
+                            coverData -> (double) coverData.threshold,
+                            (coverData, state) -> {
+                                coverData.threshold = state.intValue();
+                                return coverData;
+                            },
+                            widget -> widget.setBounds(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
+                                .setScrollValues(1000, 144, 100000)
+                                .setFocusOnGuiOpen(true)
+                                .setPos(spaceX * 0, spaceY * 1 + 2)
+                                .setSize(spaceX * 4 + 5, 12))
+                        .setPos(startX, startY))
                 .widget(
                     new TextWidget()
                         .setStringSupplier(

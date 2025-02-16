@@ -2,19 +2,16 @@ package gregtech.common.covers.redstone;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.covers.CoverFactory;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 
 public class CoverAdvancedRedstoneTransmitterExternal
     extends CoverAdvancedRedstoneTransmitterBase<CoverAdvancedRedstoneTransmitterBase.TransmitterData> {
 
-    public CoverAdvancedRedstoneTransmitterExternal(ITexture coverTexture) {
-        super(TransmitterData.class, coverTexture);
-    }
-
-    @Override
-    public TransmitterData createDataObject() {
-        return new TransmitterData();
+    public CoverAdvancedRedstoneTransmitterExternal(ITexture coverTexture,
+        CoverFactory<CoverAdvancedRedstoneTransmitterBase.TransmitterData> dataFactory) {
+        super(TransmitterData.class, coverTexture, dataFactory);
     }
 
     @Override

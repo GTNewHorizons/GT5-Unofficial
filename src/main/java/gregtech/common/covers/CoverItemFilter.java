@@ -23,6 +23,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
+import gregtech.api.covers.CoverFactories;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -41,11 +42,6 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
     public CoverItemFilter(boolean isExport, ITexture coverTexture) {
         super(ItemFilterData.class, coverTexture);
         this.mExport = isExport;
-    }
-
-    @Override
-    public ItemFilterData createDataObject() {
-        return new ItemFilterData();
     }
 
     @Override
@@ -197,31 +193,34 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
                 filterInvHandler.setStackInSlot(0, setStackSize1(getCoverData().mFilter));
             }
             builder.widget(
-                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverItemFilter.this)
-                    .addFollower(
-                        new CoverDataFollowerToggleButtonWidget<>(),
-                        coverData -> coverData.mWhitelist,
-                        (coverData, state) -> {
-                            coverData.mWhitelist = state;
-                            return coverData;
-                        },
-                        widget -> widget
-                            .setToggleTexture(
-                                GTUITextures.OVERLAY_BUTTON_BLACKLIST,
-                                GTUITextures.OVERLAY_BUTTON_WHITELIST)
-                            .addTooltip(0, GTUtility.trans("125.1", "Whitelist Mode"))
-                            .addTooltip(1, GTUtility.trans("124.1", "Blacklist Mode"))
-                            .setPos(spaceX * 0, spaceY * 0))
-                    .addFollower(
-                        new CoverDataFollowerSlotWidget<>(filterInvHandler, 0, true),
-                        coverData -> setStackSize1(coverData.mFilter),
-                        (coverData, stack) -> {
-                            coverData.mFilter = setStackSize1(stack);
-                            return coverData;
-                        },
-                        widget -> widget.setBackground(GTUITextures.SLOT_DARK_GRAY)
-                            .setPos(spaceX * 0, spaceY * 2))
-                    .setPos(startX, startY))
+                new CoverDataControllerWidget<>(
+                    this::getCoverData,
+                    this::setCoverData,
+                    CoverFactories.coverItemFilterFactory)
+                        .addFollower(
+                            new CoverDataFollowerToggleButtonWidget<>(),
+                            coverData -> coverData.mWhitelist,
+                            (coverData, state) -> {
+                                coverData.mWhitelist = state;
+                                return coverData;
+                            },
+                            widget -> widget
+                                .setToggleTexture(
+                                    GTUITextures.OVERLAY_BUTTON_BLACKLIST,
+                                    GTUITextures.OVERLAY_BUTTON_WHITELIST)
+                                .addTooltip(0, GTUtility.trans("125.1", "Whitelist Mode"))
+                                .addTooltip(1, GTUtility.trans("124.1", "Blacklist Mode"))
+                                .setPos(spaceX * 0, spaceY * 0))
+                        .addFollower(
+                            new CoverDataFollowerSlotWidget<>(filterInvHandler, 0, true),
+                            coverData -> setStackSize1(coverData.mFilter),
+                            (coverData, stack) -> {
+                                coverData.mFilter = setStackSize1(stack);
+                                return coverData;
+                            },
+                            widget -> widget.setBackground(GTUITextures.SLOT_DARK_GRAY)
+                                .setPos(spaceX * 0, spaceY * 2))
+                        .setPos(startX, startY))
                 .widget(
                     new TextWidget(GTUtility.trans("317", "Filter: ")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 0, 3 + startY + spaceY * 1))

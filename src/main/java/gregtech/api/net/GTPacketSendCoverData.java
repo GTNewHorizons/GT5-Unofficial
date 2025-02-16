@@ -90,7 +90,7 @@ public class GTPacketSendCoverData extends GTPacket {
             aData.readInt(),
             ForgeDirection.getOrientation(aData.readByte()),
             coverId = aData.readInt(),
-            CoverRegistry.getCoverBehaviorNew(coverId)
+            CoverRegistry.getCoverFactory(coverId)
                 .createDataObject()
                 .readFromPacket(aData, null));
     }

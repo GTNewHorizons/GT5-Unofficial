@@ -12,6 +12,7 @@ import net.minecraftforge.fluids.Fluid;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverFactories;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -180,7 +181,7 @@ public class CoverConveyor extends CoverBehavior {
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                     this::getCoverData,
                     this::setCoverData,
-                    CoverConveyor.this,
+                    CoverFactories.intCoverFactory,
                     (id, coverData) -> !getClickable(id, convert(coverData)),
                     (id, coverData) -> new ISerializableObject.LegacyCoverData(
                         getNewCoverVariable(id, convert(coverData))))

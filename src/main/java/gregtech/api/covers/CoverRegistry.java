@@ -13,9 +13,11 @@ import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.covers.CoverDefault;
 import gregtech.common.covers.CoverNone;
+import gregtech.common.covers.SimpleCoverFactory;
 
 public class CoverRegistry {
 
@@ -27,10 +29,13 @@ public class CoverRegistry {
      * The List of Cover Behaviors for the Covers
      */
     private static final Map<GTItemStack, CoverBehaviorBase<?>> coverBehaviors = new ConcurrentHashMap<>();
+    private static final Map<GTItemStack, CoverFactory<?>> coverFactories = new ConcurrentHashMap<>();
     /**
      * This is the generic Cover behavior. Used for the default Covers, which have no Behavior.
      */
-    private static final CoverBehaviorBase<?> defaultBehavior = new CoverDefault(), noBehavior = new CoverNone();
+    private static final CoverFactory<ISerializableObject.LegacyCoverData> coverDefaultFactory = new SimpleCoverFactory();
+    private static final CoverBehaviorBase<ISerializableObject.LegacyCoverData> defaultBehavior = new CoverDefault();
+    private static final CoverBehaviorBase<ISerializableObject.LegacyCoverData> noBehavior = new CoverNone();
     private static GUIColorOverride colorOverride;
     private static final String guiTexturePath = "gregtech:textures/gui/GuiCover.png";
 
@@ -39,19 +44,27 @@ public class CoverRegistry {
         GregTechAPI.sItemStackMappings.add(coverBehaviors);
     }
 
-    public static @NotNull CoverBehaviorBase<?> getEmptyCover() {
-        return noBehavior;
+    public static @NotNull ISerializableObject getEmptyCoverData() {
+        return CoverFactories.coverNoneFactory.createDataObject();
     }
 
-    public static void registerCover(ItemStack stack, ITexture cover, CoverBehaviorBase<?> behavior) {
+    public static void registerSimpleCover(@NotNull ItemStack stack, ITexture cover) {
+        CoverRegistry.registerCover(stack, cover, defaultBehavior, coverDefaultFactory);
+    }
+
+    public static <T extends ISerializableObject> void registerCover(@NotNull ItemStack stack, ITexture cover,
+        @NotNull CoverBehaviorBase<T> behavior, @NotNull CoverFactory<T> factory) {
         if (!coverTextures.containsKey(new GTItemStack(stack))) coverTextures.put(
             new GTItemStack(stack),
             cover == null || !cover.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0] : cover);
-        if (behavior != null) coverBehaviors.put(new GTItemStack(stack), behavior);
+        coverBehaviors.put(new GTItemStack(stack), behavior);
+        coverFactories.put(new GTItemStack(stack), factory);
     }
 
     @NotNull
-    public static CoverBehaviorBase<?> getCoverBehaviorNew(ItemStack stack) {
+    public static CoverBehaviorBase<?> getCoverBehaviorNew(int coverId) {
+        if (coverId == 0) return noBehavior;
+        ItemStack stack = GTUtility.intToStack(coverId);
         if (stack == null || stack.getItem() == null) return noBehavior;
         CoverBehaviorBase<?> behavior = coverBehaviors.get(new GTItemStack(stack));
         if (behavior != null) return behavior;
@@ -61,9 +74,18 @@ public class CoverRegistry {
     }
 
     @NotNull
-    public static CoverBehaviorBase<?> getCoverBehaviorNew(int coverId) {
-        if (coverId == 0) return noBehavior;
-        return getCoverBehaviorNew(GTUtility.intToStack(coverId));
+    public static CoverFactory<?> getCoverFactory(ItemStack stack) {
+        if (stack == null || stack.getItem() == null) return CoverFactories.coverNoneFactory;
+        CoverFactory<?> factory = coverFactories.get(new GTItemStack(stack));
+        if (factory == null) {
+            factory = coverFactories.get(new GTItemStack(stack, true));
+        }
+        return factory == null ? CoverFactories.coverNoneFactory : factory;
+    }
+
+    @NotNull
+    public static CoverFactory<?> getCoverFactory(int coverId) {
+        return getCoverFactory(GTUtility.intToStack(coverId));
     }
 
     public static boolean isCover(@NotNull ItemStack stack) {

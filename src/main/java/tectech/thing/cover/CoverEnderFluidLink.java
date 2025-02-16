@@ -15,6 +15,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
+import gregtech.api.covers.CoverFactories;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -208,7 +209,7 @@ public class CoverEnderFluidLink extends CoverBehavior {
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverEnderFluidLink.this,
+                        CoverFactories.intCoverFactory,
                         (id, coverData) -> !getClickable(id, convert(coverData)),
                         (id, coverData) -> new ISerializableObject.LegacyCoverData(
                             getNewCoverVariable(id, convert(coverData))))

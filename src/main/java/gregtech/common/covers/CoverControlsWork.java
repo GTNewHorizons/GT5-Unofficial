@@ -1,13 +1,13 @@
 package gregtech.common.covers;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverFactories;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -143,18 +143,6 @@ public class CoverControlsWork extends CoverBehavior {
         return 1;
     }
 
-    @Override
-    public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable aTileEntity) {
-        if (!super.isCoverPlaceable(side, aStack, aTileEntity)) return false;
-        for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
-            if (aTileEntity.getCoverInfoAtSide(tSide)
-                .getCoverBehavior() instanceof CoverControlsWork) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     // GUI stuff
 
     @Override
@@ -186,7 +174,7 @@ public class CoverControlsWork extends CoverBehavior {
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverControlsWork.this,
+                        CoverFactories.coverControlsWorkFactory,
                         (id, coverData) -> !getClickable(id, convert(coverData)),
                         (id, coverData) -> new ISerializableObject.LegacyCoverData(
                             getNewCoverVariable(id, convert(coverData))))
@@ -207,14 +195,17 @@ public class CoverControlsWork extends CoverBehavior {
                                         .setPos(spaceX * 0, spaceY * 2))
                                 .setPos(startX, startY))
                 .widget(
-                    new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverControlsWork.this)
-                        .addFollower(
-                            CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
-                            coverData -> convert(coverData) > 2,
-                            (coverData, state) -> new ISerializableObject.LegacyCoverData(
-                                adjustCoverVariable(state, convert(coverData))),
-                            widget -> widget.setPos(spaceX * 0, spaceY * 3))
-                        .setPos(startX, startY))
+                    new CoverDataControllerWidget<>(
+                        this::getCoverData,
+                        this::setCoverData,
+                        CoverFactories.intCoverFactory)
+                            .addFollower(
+                                CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
+                                coverData -> convert(coverData) > 2,
+                                (coverData, state) -> new ISerializableObject.LegacyCoverData(
+                                    adjustCoverVariable(state, convert(coverData))),
+                                widget -> widget.setPos(spaceX * 0, spaceY * 3))
+                            .setPos(startX, startY))
                 .widget(
                     new TextWidget(GTUtility.trans("243", "Enable with Redstone"))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())

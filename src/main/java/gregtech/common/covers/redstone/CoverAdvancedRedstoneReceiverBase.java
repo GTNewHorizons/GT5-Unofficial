@@ -13,6 +13,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverFactory;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -25,13 +26,8 @@ import io.netty.buffer.ByteBuf;
 public abstract class CoverAdvancedRedstoneReceiverBase
     extends CoverAdvancedWirelessRedstoneBase<CoverAdvancedRedstoneReceiverBase.ReceiverData> {
 
-    public CoverAdvancedRedstoneReceiverBase(ITexture coverTexture) {
-        super(ReceiverData.class, coverTexture);
-    }
-
-    @Override
-    public ReceiverData createDataObject() {
-        return new ReceiverData();
+    public CoverAdvancedRedstoneReceiverBase(ITexture coverTexture, CoverFactory<ReceiverData> dataFactory) {
+        super(ReceiverData.class, coverTexture, dataFactory);
     }
 
     // GUI stuff

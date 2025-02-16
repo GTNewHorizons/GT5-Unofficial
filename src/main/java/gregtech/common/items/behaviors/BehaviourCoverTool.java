@@ -21,7 +21,6 @@ import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.covers.CoverInfo;
 
 public class BehaviourCoverTool extends BehaviourNone {
@@ -64,9 +63,9 @@ public class BehaviourCoverTool extends BehaviourNone {
     private void initDataFromNBT(NBTTagCompound aNBT) {
         if (aNBT != null) {
             mCoverType = aNBT.getInteger("mCoverType");
-            CoverBehaviorBase<?> tBehavior = CoverRegistry.getCoverBehaviorNew(mCoverType);
             NBTBase tData = aNBT.getTag("mCoverData");
-            if (tData != null) mStoredData = tBehavior.createDataObject(tData);
+            if (tData != null) mStoredData = CoverRegistry.getCoverFactory(mCoverType)
+                .createDataObject(tData);
             else mStoredData = getEmptyCoverData();
             mTickRateAddition = aNBT.hasKey("mTickRateAddition") ? aNBT.getInteger("mTickRateAddition") : 0;
         }
@@ -198,7 +197,6 @@ public class BehaviourCoverTool extends BehaviourNone {
     }
 
     private static ISerializableObject getEmptyCoverData() {
-        return CoverRegistry.getEmptyCover()
-            .createDataObject();
+        return CoverRegistry.getEmptyCoverData();
     }
 }

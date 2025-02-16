@@ -17,11 +17,6 @@ public class CoverDefault extends CoverBehavior {
     }
 
     @Override
-    public boolean isSimpleCover() {
-        return true;
-    }
-
-    @Override
     public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable = ((aCoverVariable + 1) & 15);

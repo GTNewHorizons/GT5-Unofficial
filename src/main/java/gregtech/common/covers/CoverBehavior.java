@@ -7,7 +7,6 @@ import java.lang.ref.WeakReference;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
@@ -37,18 +36,6 @@ public abstract class CoverBehavior extends CoverBehaviorBase<ISerializableObjec
     }
 
     // region bridge the parent call to legacy calls
-
-    @Override
-    public final ISerializableObject.LegacyCoverData createDataObject() {
-        return new ISerializableObject.LegacyCoverData();
-    }
-
-    @Override
-    public ISerializableObject.LegacyCoverData createDataObject(NBTBase nbt) {
-        ISerializableObject.LegacyCoverData legacyCoverData = new ISerializableObject.LegacyCoverData();
-        legacyCoverData.loadDataFromNBT(nbt);
-        return legacyCoverData;
-    }
 
     @Override
     protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID,

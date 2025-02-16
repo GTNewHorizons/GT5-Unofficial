@@ -20,6 +20,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
+import gregtech.api.covers.CoverFactory;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -30,26 +31,17 @@ import io.netty.buffer.ByteBuf;
 public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
 
     private final int slots;
-    private final int stackSizeLimit = 1;
+    private final CoverFactory<CoverChest.ChestInventory> dataFactory;
 
-    public CoverChest(int slots, ITexture coverTexture) {
+    public CoverChest(int slots, ITexture coverTexture, CoverFactory<ChestInventory> dataFactory) {
         super(ChestInventory.class, coverTexture);
+        this.dataFactory = dataFactory;
         if (slots <= 0) throw new IllegalArgumentException("slots must be greater than 0");
         this.slots = slots;
     }
 
     @Override
-    public ChestInventory createDataObject() {
-        return new ChestInventory(slots, stackSizeLimit);
-    }
-
-    @Override
     public boolean hasCoverGUI() {
-        return true;
-    }
-
-    @Override
-    public boolean isSimpleCover() {
         return true;
     }
 
@@ -91,7 +83,7 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
                 }
             }
 
-            ChestInventory newData = createDataObject();
+            ChestInventory newData = dataFactory.createDataObject();
             int toCopy = Math.min(newData.items.getSlots(), aCoverVariable.items.getSlots());
             for (int i = 0; i < toCopy; i++) {
                 newData.items.setStackInSlot(i, aCoverVariable.items.getStackInSlot(i));
@@ -143,7 +135,7 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
             CoverDataControllerWidget<ChestInventory> w = new CoverDataControllerWidget<>(
                 this::getCoverData,
                 this::setCoverData,
-                CoverChest.this);
+                dataFactory);
             ChestInventory d = getCoverData();
             LimitingItemStackHandler h;
             if (d == null) {

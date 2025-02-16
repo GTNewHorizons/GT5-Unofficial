@@ -14,16 +14,6 @@ public class CoverPowerPassUpgrade extends CoverBehavior {
     public CoverPowerPassUpgrade() {}
 
     @Override
-    public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable aTileEntity) {
-        IMetaTileEntity iGregTechTileEntityOffset = aTileEntity.getIGregTechTileEntityOffset(0, 0, 0)
-            .getMetaTileEntity();
-        if (iGregTechTileEntityOffset instanceof TTMultiblockBase multi) {
-            return !multi.ePowerPassCover;
-        }
-        return false;
-    }
-
-    @Override
     public void onPlayerAttach(EntityPlayer player, ItemStack cover, ICoverable tileEntity, ForgeDirection side) {
         IMetaTileEntity iGregTechTileEntityOffset = tileEntity.getIGregTechTileEntityOffset(0, 0, 0)
             .getMetaTileEntity();

@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import org.apache.commons.lang3.StringUtils;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.covers.CoverFactories;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.render.TextureFactory;
@@ -70,7 +71,11 @@ public class MetaCustomCoverItem extends Item {
             if (i > 0 && hide()) {
                 ItemUtils.hideItemFromNEI(thisStack);
             }
-            CoverRegistry.registerCover(thisStack, TextureFactory.of(mTextures[i]), new CoverToggleVisual());
+            CoverRegistry.registerCover(
+                thisStack,
+                TextureFactory.of(mTextures[i]),
+                new CoverToggleVisual(),
+                CoverFactories.intCoverFactory);
         }
     }
 

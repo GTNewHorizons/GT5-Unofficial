@@ -19,6 +19,7 @@ import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverFactory;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -36,13 +37,9 @@ import io.netty.buffer.ByteBuf;
 public class CoverWirelessItemDetector
     extends CoverAdvancedRedstoneTransmitterBase<CoverWirelessItemDetector.ItemTransmitterData> {
 
-    public CoverWirelessItemDetector(ITexture coverTexture) {
-        super(ItemTransmitterData.class, coverTexture);
-    }
-
-    @Override
-    public ItemTransmitterData createDataObject() {
-        return new ItemTransmitterData();
+    public CoverWirelessItemDetector(ITexture coverTexture,
+        CoverFactory<ItemTransmitterData> itemTransmitterDataCoverFactory) {
+        super(ItemTransmitterData.class, coverTexture, itemTransmitterDataCoverFactory);
     }
 
     @Override

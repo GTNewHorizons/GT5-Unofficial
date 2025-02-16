@@ -15,6 +15,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverFactory;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -27,8 +28,9 @@ import io.netty.buffer.ByteBuf;
 public abstract class CoverAdvancedRedstoneTransmitterBase<T extends CoverAdvancedRedstoneTransmitterBase.TransmitterData>
     extends CoverAdvancedWirelessRedstoneBase<T> {
 
-    public CoverAdvancedRedstoneTransmitterBase(Class<T> typeToken, ITexture coverTexture) {
-        super(typeToken, coverTexture);
+    public CoverAdvancedRedstoneTransmitterBase(Class<T> typeToken, ITexture coverTexture,
+        CoverFactory<T> dataFactory) {
+        super(typeToken, coverTexture, dataFactory);
     }
 
     private static void unregisterSignal(ForgeDirection side, TransmitterData aCoverVariable, ICoverable aTileEntity) {

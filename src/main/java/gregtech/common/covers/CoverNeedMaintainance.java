@@ -8,6 +8,7 @@ import net.minecraftforge.fluids.Fluid;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverFactories;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -206,7 +207,7 @@ public class CoverNeedMaintainance extends CoverBehavior {
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverNeedMaintainance.this,
+                        CoverFactories.intCoverFactory,
                         (index, coverData) -> isEnabled(index, convert(coverData)),
                         (index, coverData) -> new ISerializableObject.LegacyCoverData(
                             getNewCoverVariable(index, convert(coverData))))

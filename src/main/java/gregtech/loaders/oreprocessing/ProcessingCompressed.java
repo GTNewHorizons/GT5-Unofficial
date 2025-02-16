@@ -20,6 +20,6 @@ public class ProcessingCompressed implements IOreRecipeRegistrator {
         ItemStack aStack) {
         GTModHandler.removeRecipeByOutputDelayed(aStack);
         CoverRegistry
-            .registerCover(aStack, TextureFactory.of(aMaterial.mIconSet.mTextures[72], aMaterial.mRGBa, false), null);
+            .registerSimpleCover(aStack, TextureFactory.of(aMaterial.mIconSet.mTextures[72], aMaterial.mRGBa, false));
     }
 }

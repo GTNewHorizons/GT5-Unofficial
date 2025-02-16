@@ -1,7 +1,5 @@
 package gregtech.common.covers;
 
-import java.util.Objects;
-
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
@@ -19,6 +17,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
+import gregtech.api.covers.CoverFactory;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
@@ -38,22 +37,6 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
      */
     public CoverFacadeBase() {
         super(FacadeData.class);
-    }
-
-    @Override
-    public boolean isSimpleCover() {
-        return true;
-    }
-
-    @Override
-    public FacadeData createDataObject() {
-        return new FacadeData();
-    }
-
-    @Override
-    public FacadeData initializeDataFromCover(ItemStack cover) {
-        if (Objects.isNull(cover)) return createDataObject();
-        return new FacadeData(GTUtility.copyAmount(1, cover), 0);
     }
 
     @Override
@@ -220,30 +203,6 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
         return super.onCoverRightClickImpl(side, aCoverID, aCoverVariable, aTileEntity, aPlayer, aX, aY, aZ);
     }
 
-    @Override
-    public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable aTileEntity) {
-        // blocks that are not rendered in pass 0 are now accepted but rendered awkwardly
-        // to render it correctly require changing GT_Block_Machine to render in both pass, which is not really a good
-        // idea...
-        if (!super.isCoverPlaceable(side, aStack, aTileEntity)) return false;
-        final Block targetBlock = getTargetBlock(aStack);
-        if (targetBlock == null) return false;
-        // we allow one single type of facade on the same block for now
-        // otherwise it's not clear which block this block should impersonate
-        // this restriction can be lifted later by specifying a certain facade as dominate one as an extension to this
-        // class
-        for (final ForgeDirection iSide : ForgeDirection.VALID_DIRECTIONS) {
-            if (iSide == side) continue;
-            final CoverInfo coverInfo = aTileEntity.getCoverInfoAtSide(iSide);
-            if (!coverInfo.isValid()) continue;
-            final Block facadeBlock = coverInfo.getFacadeBlock();
-            if (facadeBlock == null) continue;
-            if (facadeBlock != targetBlock) return false;
-            if (coverInfo.getFacadeMeta() != getTargetMeta(aStack)) return false;
-        }
-        return true;
-    }
-
     public static class FacadeData implements ISerializableObject {
 
         ItemStack mStack;
@@ -323,7 +282,7 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                     this::getCoverData,
                     this::setCoverData,
-                    CoverFacadeBase.this,
+                    getCoverFactory(),
                     this::isEnabled,
                     (id, coverData) -> {
                         coverData.mFlags = getNewCoverVariable(id, coverData);
@@ -391,4 +350,6 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
             };
         }
     }
+
+    protected abstract CoverFactory<FacadeData> getCoverFactory();
 }

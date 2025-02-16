@@ -18,7 +18,9 @@ public abstract class CoverFactoryBase<T extends ISerializableObject> implements
 
     @Override
     public T createDataObject(NBTBase nbt) {
-        return createDataObject();
+        final T ret = createDataObject();
+        ret.loadDataFromNBT(nbt);
+        return ret;
     }
 
     @Override

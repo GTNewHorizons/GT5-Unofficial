@@ -21,6 +21,7 @@ import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverFactories;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -46,11 +47,6 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
 
     public CoverFluidfilter(ITexture coverTexture) {
         super(FluidFilterData.class, coverTexture);
-    }
-
-    @Override
-    public FluidFilterData createDataObject() {
-        return new FluidFilterData(-1, 0);
     }
 
     @Override
@@ -235,7 +231,7 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                     this::getCoverData,
                     this::setCoverData,
-                    CoverFluidfilter.this,
+                    CoverFactories.coverFluidFilterFactory,
                     (id, coverData) -> !getClickable(id, coverData),
                     (id, coverData) -> {
                         coverData.mFilterMode = getNewFilterMode(id, coverData);

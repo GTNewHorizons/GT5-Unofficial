@@ -11,6 +11,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverFactories;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -186,7 +187,7 @@ public class CoverPump extends CoverBehavior {
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                     this::getCoverData,
                     this::setCoverData,
-                    CoverPump.this,
+                    CoverFactories.intCoverFactory,
                     (id, coverData) -> !getClickable(id, convert(coverData)),
                     (id, coverData) -> new ISerializableObject.LegacyCoverData(
                         getNewCoverVariable(id, convert(coverData))))

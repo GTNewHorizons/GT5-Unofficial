@@ -17,6 +17,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverFactory;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -31,8 +32,11 @@ import io.netty.buffer.ByteBuf;
 public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedWirelessRedstoneBase.WirelessData>
     extends CoverBehaviorBase<T> {
 
-    public CoverAdvancedWirelessRedstoneBase(Class<T> typeToken, ITexture coverTexture) {
+    private final CoverFactory<T> dataFactory;
+
+    public CoverAdvancedWirelessRedstoneBase(Class<T> typeToken, ITexture coverTexture, CoverFactory<T> dataFactory) {
         super(typeToken, coverTexture);
+        this.dataFactory = dataFactory;
     }
 
     public static Byte getSignalAt(UUID uuid, int frequency, CoverAdvancedRedstoneReceiverBase.GateMode mode) {
@@ -253,7 +257,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
             CoverDataControllerWidget<T> dataController = new CoverDataControllerWidget<>(
                 this::getCoverData,
                 this::setCoverData,
-                CoverAdvancedWirelessRedstoneBase.this);
+                dataFactory);
             dataController.setPos(startX, startY);
             addUIForDataController(dataController);
 

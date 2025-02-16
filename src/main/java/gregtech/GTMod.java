@@ -50,6 +50,7 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import galacticgreg.SpaceDimRegisterer;
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverFactories;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentHazmat;
@@ -490,7 +491,7 @@ public class GTMod implements IGTMod {
             .transform(i -> new ItemStack(i, 1, GTValues.W))
             .orNull();
         if (facade != null) {
-            CoverRegistry.registerCover(facade, null, new CoverFacadeAE());
+            CoverRegistry.registerCover(facade, null, new CoverFacadeAE(), CoverFactories.coverFacadeAEFactory);
         }
 
         Arrays

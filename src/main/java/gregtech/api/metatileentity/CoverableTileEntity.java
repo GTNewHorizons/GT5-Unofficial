@@ -40,6 +40,7 @@ import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.covers.CoverFactory;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
@@ -52,7 +53,6 @@ import gregtech.api.net.GTPacketSendCoverData;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.GTClient;
-import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.covers.CoverInfo;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -254,8 +254,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public void attachCover(EntityPlayer aPlayer, ItemStack aCover, ForgeDirection side) {
-        CoverBehaviorBase<?> coverBehavior = CoverRegistry.getCoverBehaviorNew(aCover);
-        coverBehavior.placeCover(aPlayer, aCover, this, side);
+        CoverFactory<?> coverFactory = CoverRegistry.getCoverFactory(aCover);
+        coverFactory.placeCover(aPlayer, aCover, this, side);
     }
 
     @Override

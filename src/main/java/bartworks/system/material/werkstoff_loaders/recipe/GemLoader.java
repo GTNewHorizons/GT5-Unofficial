@@ -44,6 +44,7 @@ import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import bartworks.util.BWColorUtil;
+import gregtech.api.covers.CoverFactories;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -204,7 +205,8 @@ public class GemLoader implements IWerkstoffRunnable {
             CoverRegistry.registerCover(
                 werkstoff.get(lens),
                 texture,
-                new CoverLens(BWColorUtil.getDyeFromColor(werkstoff.getRGBA()).mIndex, texture));
+                new CoverLens(BWColorUtil.getDyeFromColor(werkstoff.getRGBA()).mIndex, texture),
+                CoverFactories.intCoverFactory);
 
             for (ItemStack is : OreDictionary
                 .getOres("craftingLens" + BWColorUtil.getDyeFromColor(werkstoff.getRGBA()).mName.replace(" ", ""))) {

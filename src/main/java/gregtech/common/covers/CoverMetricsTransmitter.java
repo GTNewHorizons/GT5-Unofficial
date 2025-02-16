@@ -24,7 +24,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.events.MetricsCoverDataEvent;
@@ -59,19 +58,9 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
     }
 
     @Override
-    public MetricsTransmitterData createDataObject() {
-        return new MetricsTransmitterData();
-    }
-
-    @Override
     protected int getTickRateImpl(ForgeDirection side, int aCoverID, MetricsTransmitterData aCoverVariable,
         ICoverable aTileEntity) {
         return 20;
-    }
-
-    @Override
-    public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable aTileEntity) {
-        return aTileEntity instanceof final IGregTechDeviceInformation device && device.isGivingInformation();
     }
 
     @Override

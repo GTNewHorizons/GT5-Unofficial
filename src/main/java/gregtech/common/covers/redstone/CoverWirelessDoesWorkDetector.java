@@ -15,6 +15,7 @@ import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverFactory;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -29,13 +30,9 @@ import io.netty.buffer.ByteBuf;
 public class CoverWirelessDoesWorkDetector
     extends CoverAdvancedRedstoneTransmitterBase<CoverWirelessDoesWorkDetector.ActivityTransmitterData> {
 
-    public CoverWirelessDoesWorkDetector(ITexture coverTexture) {
-        super(ActivityTransmitterData.class, coverTexture);
-    }
-
-    @Override
-    public ActivityTransmitterData createDataObject() {
-        return new ActivityTransmitterData();
+    public CoverWirelessDoesWorkDetector(ITexture coverTexture,
+        CoverFactory<ActivityTransmitterData> activityTransmitterDataCoverFactory) {
+        super(ActivityTransmitterData.class, coverTexture, activityTransmitterDataCoverFactory);
     }
 
     private static byte computeSignalBasedOnActivity(ActivityTransmitterData coverVariable, ICoverable tileEntity) {

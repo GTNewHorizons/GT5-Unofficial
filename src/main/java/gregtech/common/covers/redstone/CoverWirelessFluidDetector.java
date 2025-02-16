@@ -18,6 +18,7 @@ import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverFactory;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -32,13 +33,9 @@ import io.netty.buffer.ByteBuf;
 public class CoverWirelessFluidDetector
     extends CoverAdvancedRedstoneTransmitterBase<CoverWirelessFluidDetector.FluidTransmitterData> {
 
-    public CoverWirelessFluidDetector(ITexture coverTexture) {
-        super(FluidTransmitterData.class, coverTexture);
-    }
-
-    @Override
-    public FluidTransmitterData createDataObject() {
-        return new FluidTransmitterData();
+    public CoverWirelessFluidDetector(ITexture coverTexture,
+        CoverFactory<FluidTransmitterData> fluidTransmitterDataCoverFactory) {
+        super(FluidTransmitterData.class, coverTexture, fluidTransmitterDataCoverFactory);
     }
 
     @Override

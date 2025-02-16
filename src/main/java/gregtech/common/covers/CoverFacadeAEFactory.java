@@ -5,15 +5,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import appeng.facade.IFacadeItem;
-import gregtech.api.covers.CoverFactories;
-import gregtech.api.covers.CoverFactory;
 
-public class CoverFacadeAE extends CoverFacadeBase {
-
-    @Override
-    protected CoverFactory<CoverFacadeBase.FacadeData> getCoverFactory() {
-        return CoverFactories.coverFacadeAEFactory;
-    }
+public class CoverFacadeAEFactory extends CoverFacadeBaseFactory {
 
     @Override
     protected Block getTargetBlock(ItemStack aFacadeStack) {
@@ -31,8 +24,4 @@ public class CoverFacadeAE extends CoverFacadeBase {
         return ((IFacadeItem) item).getMeta(aFacadeStack);
     }
 
-    @Override
-    protected ItemStack getDisplayStackImpl(int aCoverID, FacadeData aCoverVariable) {
-        return aCoverVariable.mStack;
-    }
 }

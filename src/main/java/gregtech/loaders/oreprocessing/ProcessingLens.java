@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.covers.CoverFactories;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -93,7 +94,8 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                 CoverRegistry.registerCover(
                     aStack,
                     TextureFactory.of(Textures.BlockIcons.MACHINE_CASINGS[2][0], lensCoverTexture),
-                    new CoverLens(aMaterial.mColor.mIndex, lensCoverTexture));
+                    new CoverLens(aMaterial.mColor.mIndex, lensCoverTexture),
+                    CoverFactories.intCoverFactory);
             }
         }
     }

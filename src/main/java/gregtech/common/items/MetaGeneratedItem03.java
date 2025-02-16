@@ -253,6 +253,7 @@ import static gregtech.common.items.IDMetaItem03.White_Dwarf_Shape_Extruder_Wire
 import static gregtech.common.items.IDMetaItem03.WovenKevlar;
 import static gregtech.common.items.IDMetaItem03.ZPM_Coil;
 
+import gregtech.api.covers.CoverFactories;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -264,6 +265,7 @@ import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.covers.CoverMetricsTransmitter;
+import gregtech.common.covers.CoverMetricsTransmitterFactory;
 import gregtech.common.covers.CoverSolarPanel;
 
 public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
@@ -1466,19 +1468,23 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         CoverRegistry.registerCover(
             ItemList.Cover_Metrics_Transmitter.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_METRICS_TRANSMITTER)),
-            new CoverMetricsTransmitter(TextureFactory.of(OVERLAY_METRICS_TRANSMITTER)));
+            new CoverMetricsTransmitter(TextureFactory.of(OVERLAY_METRICS_TRANSMITTER)),
+            new CoverMetricsTransmitterFactory());
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_UHV.get(1L),
             TextureFactory.of(SOLARPANEL_UHV),
-            new CoverSolarPanel(2097152));
+            new CoverSolarPanel(2097152),
+            CoverFactories.intCoverFactory);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_UEV.get(1L),
             TextureFactory.of(SOLARPANEL_UEV),
-            new CoverSolarPanel(8388608));
+            new CoverSolarPanel(8388608),
+            CoverFactories.intCoverFactory);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_UIV.get(1L),
             TextureFactory.of(SOLARPANEL_UIV),
-            new CoverSolarPanel(33554432));
+            new CoverSolarPanel(33554432),
+            CoverFactories.intCoverFactory);
     }
 
     @Override

@@ -16,6 +16,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverFactory;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -35,15 +36,12 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
 
     private final int minOverflowPoint = 0;
     private final int maxOverflowPoint;
+    private final CoverFactory<CoverOverflowValve.OverflowValveData> dataFactory;
 
-    public CoverOverflowValve(int maxOverflowPoint) {
+    public CoverOverflowValve(int maxOverflowPoint, CoverFactory<OverflowValveData> dataFactory) {
         super(OverflowValveData.class);
         this.maxOverflowPoint = maxOverflowPoint;
-    }
-
-    @Override
-    public OverflowValveData createDataObject() {
-        return new OverflowValveData(maxOverflowPoint, maxOverflowPoint / 10, true, true);
+        this.dataFactory = dataFactory;
     }
 
     private FluidStack doOverflowThing(FluidStack fluid, OverflowValveData data) {
@@ -227,19 +225,18 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(xOP + width + 3, yOP + 11))
                 .widget(
-                    new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverOverflowValve.this)
-                        .addFollower(
-                            new CoverDataFollowerNumericWidget<>(),
-                            coverData -> (double) coverData.overflowPoint,
-                            (coverData, state) -> {
-                                coverData.overflowPoint = state.intValue();
-                                return coverData;
-                            },
-                            widget -> widget.setBounds(minOverflowPoint, maxOverflowPoint)
-                                .setScrollValues(1000, 144, 100000)
-                                .setFocusOnGuiOpen(true)
-                                .setPos(xOP, yOP + 10)
-                                .setSize(width, height)))
+                    new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, dataFactory).addFollower(
+                        new CoverDataFollowerNumericWidget<>(),
+                        coverData -> (double) coverData.overflowPoint,
+                        (coverData, state) -> {
+                            coverData.overflowPoint = state.intValue();
+                            return coverData;
+                        },
+                        widget -> widget.setBounds(minOverflowPoint, maxOverflowPoint)
+                            .setScrollValues(1000, 144, 100000)
+                            .setFocusOnGuiOpen(true)
+                            .setPos(xOP, yOP + 10)
+                            .setSize(width, height)))
                 .widget(
                     new TextWidget(StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_voiding_rate"))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
@@ -249,24 +246,23 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(xVR + width + 3, yVR + 11))
                 .widget(
-                    new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverOverflowValve.this)
-                        .addFollower(
-                            new CoverDataFollowerNumericWidget<>(),
-                            coverData -> (double) coverData.voidingRate,
-                            (coverData, state) -> {
-                                coverData.voidingRate = state.intValue();
-                                return coverData;
-                            },
-                            widget -> widget.setBounds(minOverflowPoint, maxOverflowPoint)
-                                .setScrollValues(1000, 144, 100000)
-                                .setFocusOnGuiOpen(true)
-                                .setPos(xVR, yVR + 10)
-                                .setSize(width, height)))
+                    new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, dataFactory).addFollower(
+                        new CoverDataFollowerNumericWidget<>(),
+                        coverData -> (double) coverData.voidingRate,
+                        (coverData, state) -> {
+                            coverData.voidingRate = state.intValue();
+                            return coverData;
+                        },
+                        widget -> widget.setBounds(minOverflowPoint, maxOverflowPoint)
+                            .setScrollValues(1000, 144, 100000)
+                            .setFocusOnGuiOpen(true)
+                            .setPos(xVR, yVR + 10)
+                            .setSize(width, height)))
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverOverflowValve.this,
+                        dataFactory,
                         this::getClickable,
                         this::updateData)
                             .addToggleButton(

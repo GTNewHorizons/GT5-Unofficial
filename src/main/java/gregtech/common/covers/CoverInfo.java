@@ -17,6 +17,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 
+import gregtech.api.covers.CoverFactory;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
@@ -44,7 +45,8 @@ public final class CoverInfo {
     public CoverInfo(ForgeDirection side, ICoverable aTile) {
         coverSide = side;
         coveredTile = new WeakReference<>(aTile);
-        coverBehavior = CoverRegistry.getEmptyCover();
+        // Temporarily using an instance here, these instances will be merged in the next step.
+        coverBehavior = new CoverNone();
         coverID = 0;
     }
 
@@ -52,7 +54,8 @@ public final class CoverInfo {
         coverSide = side;
         coverID = aID;
         coverBehavior = CoverRegistry.getCoverBehaviorNew(aID);
-        coverData = aCoverData == null ? coverBehavior.createDataObject() : aCoverData;
+        coverData = aCoverData == null ? CoverRegistry.getCoverFactory(aID)
+            .createDataObject() : aCoverData;
         coveredTile = new WeakReference<>(aTile);
         tickRateAddition = coverBehavior.getDefaultTickRate(coverSide, coverID, coverData, coveredTile.get())
             - this.getMinimumTickRate();
@@ -62,8 +65,10 @@ public final class CoverInfo {
         coverSide = ForgeDirection.getOrientation(aNBT.getByte(NBT_SIDE));
         coverID = aNBT.getInteger(NBT_ID);
         coverBehavior = CoverRegistry.getCoverBehaviorNew(coverID);
-        coverData = aNBT.hasKey(NBT_DATA) ? coverBehavior.createDataObject(aNBT.getTag(NBT_DATA))
-            : coverBehavior.createDataObject();
+        // Temporarily initializing the data in the CoverInfo. This will be moved to outside the class in the next step.
+        CoverFactory<?> coverFactory = CoverRegistry.getCoverFactory(coverID);
+        coverData = aNBT.hasKey(NBT_DATA) ? coverFactory.createDataObject(aNBT.getTag(NBT_DATA))
+            : coverFactory.createDataObject();
         coveredTile = new WeakReference<>(aTile);
         tickRateAddition = aNBT.hasKey(NBT_TICK_RATE_ADDITION) ? aNBT.getInteger(NBT_TICK_RATE_ADDITION) : 0;
     }
@@ -103,8 +108,7 @@ public final class CoverInfo {
 
     public ISerializableObject getCoverData() {
         if (coverData != null) return coverData;
-        return CoverRegistry.getEmptyCover()
-            .createDataObject(null);
+        return CoverRegistry.getEmptyCoverData();
     }
 
     public boolean onCoverRemoval(boolean aForced) {

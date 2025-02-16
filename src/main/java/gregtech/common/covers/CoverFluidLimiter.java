@@ -16,6 +16,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverFactories;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -103,11 +104,6 @@ public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.Fluid
      * Data
      */
 
-    @Override
-    public FluidLimiterData createDataObject() {
-        return new FluidLimiterData(1F);
-    }
-
     public static class FluidLimiterData implements ISerializableObject {
 
         private float threshold;
@@ -176,8 +172,10 @@ public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.Fluid
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder.widget(
-                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverFluidLimiter.this)
-                    .addFollower(
+                new CoverDataControllerWidget<>(
+                    this::getCoverData,
+                    this::setCoverData,
+                    CoverFactories.coverFluidLimiterFactory).addFollower(
                         new CoverDataFollowerNumericWidget<>(),
                         coverData -> (double) Math.round(coverData.threshold * 100),
                         (coverData, val) -> {

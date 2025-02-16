@@ -7,6 +7,7 @@ import net.minecraftforge.fluids.Fluid;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverFactories;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -155,7 +156,7 @@ public class CoverShutter extends CoverBehavior {
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverShutter.this,
+                        CoverFactories.intCoverFactory,
                         (index, coverData) -> index == convert(coverData),
                         (index, coverData) -> new ISerializableObject.LegacyCoverData(index))
                             .addToggleButton(

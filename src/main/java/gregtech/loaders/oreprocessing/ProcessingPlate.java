@@ -546,7 +546,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         // Register the cover
-        CoverRegistry.registerCover(
+        CoverRegistry.registerSimpleCover(
             aStack,
             // If there is an ItemStack of Block for Materials
             tStack == NI ?
@@ -558,7 +558,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     .build()
                 :
                 // or copy Block texture
-                TextureFactory.of(Block.getBlockFromItem(tStack.getItem()), tStack.getItemDamage()),
-            null);
+                TextureFactory.of(Block.getBlockFromItem(tStack.getItem()), tStack.getItemDamage()));
     }
 }

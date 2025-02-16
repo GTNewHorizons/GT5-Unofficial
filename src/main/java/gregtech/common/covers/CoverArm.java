@@ -12,6 +12,7 @@ import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverFactories;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -313,21 +314,22 @@ public class CoverArm extends CoverBehavior {
         protected void addUIWidgets(ModularWindow.Builder builder) {
             maxSlot = getMaxSlot();
             builder.widget(
-                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverArm.this).addFollower(
-                    CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                    coverData -> getFlagExport(convert(coverData)) > 0,
-                    (coverData, state) -> {
-                        if (state) {
-                            return new ISerializableObject.LegacyCoverData(
-                                convert(coverData) | EXPORT_MASK | CONVERTED_BIT);
-                        } else {
-                            return new ISerializableObject.LegacyCoverData(
-                                convert(coverData) & ~EXPORT_MASK | CONVERTED_BIT);
-                        }
-                    },
-                    widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                        .addTooltip(GTUtility.trans("006", "Export"))
-                        .setPos(spaceX * 0, spaceY * 0))
+                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverFactories.intCoverFactory)
+                    .addFollower(
+                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                        coverData -> getFlagExport(convert(coverData)) > 0,
+                        (coverData, state) -> {
+                            if (state) {
+                                return new ISerializableObject.LegacyCoverData(
+                                    convert(coverData) | EXPORT_MASK | CONVERTED_BIT);
+                            } else {
+                                return new ISerializableObject.LegacyCoverData(
+                                    convert(coverData) & ~EXPORT_MASK | CONVERTED_BIT);
+                            }
+                        },
+                        widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
+                            .addTooltip(GTUtility.trans("006", "Export"))
+                            .setPos(spaceX * 0, spaceY * 0))
                     .addFollower(
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         coverData -> getFlagExport(convert(coverData)) == 0,

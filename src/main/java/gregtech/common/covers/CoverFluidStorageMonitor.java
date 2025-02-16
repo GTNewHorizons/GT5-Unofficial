@@ -68,11 +68,6 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
     }
 
     @Override
-    public FluidStorageData createDataObject() {
-        return new FluidStorageData();
-    }
-
-    @Override
     protected FluidStorageData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
         FluidStorageData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         final FluidTankInfo[] tanks = getValidFluidTankInfosForDisplay(aTileEntity, aCoverVariable.side);

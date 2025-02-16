@@ -2,14 +2,15 @@ package gregtech.common.covers.redstone;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.covers.CoverFactory;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 
 public class CoverAdvancedRedstoneReceiverInternal extends CoverAdvancedRedstoneReceiverBase {
 
-    public CoverAdvancedRedstoneReceiverInternal(ITexture coverTexture) {
-        super(coverTexture);
+    public CoverAdvancedRedstoneReceiverInternal(ITexture coverTexture, CoverFactory<ReceiverData> dataFactory) {
+        super(coverTexture, dataFactory);
     }
 
     @Override

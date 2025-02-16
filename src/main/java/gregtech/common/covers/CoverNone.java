@@ -99,11 +99,6 @@ public class CoverNone extends CoverBehavior {
     }
 
     @Override
-    public boolean isSimpleCover() {
-        return true;
-    }
-
-    @Override
     protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID,
         ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return false;

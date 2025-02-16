@@ -8,6 +8,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverFactories;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -182,7 +183,7 @@ public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder.widget(
-                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverRedstoneWirelessBase.this)
+                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverFactories.intCoverFactory)
 
                     .addFollower(
                         new CoverDataFollowerNumericWidget<>(),
