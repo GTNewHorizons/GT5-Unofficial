@@ -24,17 +24,13 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEGeothermalGenerator extends MTEBasicGenerator {
 
-    public int mEfficiency;
-
     public MTEGeothermalGenerator(final int aID, final String aName, final String aNameRegional, final int aTier) {
         super(aID, aName, aNameRegional, aTier, "Requires Pahoehoe Lava or Normal Lava as Fuel");
-        this.setEfficiency();
     }
 
     public MTEGeothermalGenerator(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        this.setEfficiency();
     }
 
     @Override
@@ -59,13 +55,9 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
         return 5000 * this.mTier;
     }
 
-    public void setEfficiency() {
-        this.mEfficiency = (100 - (this.mTier * 7));
-    }
-
     @Override
     public int getEfficiency() {
-        return this.mEfficiency;
+        return 100 - (this.mTier * 7);
     }
 
     @Override
