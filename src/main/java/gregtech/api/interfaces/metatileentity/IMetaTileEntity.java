@@ -22,6 +22,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 
+import com.gtnewhorizon.gtnhlib.capability.CapabilityProvider;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
 import appeng.api.crafting.ICraftingIconProvider;
@@ -44,7 +45,7 @@ import gregtech.api.util.GTUtil;
  * Don't implement this yourself and expect it to work. Extend @MetaTileEntity itself.
  */
 public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHandler, IMachineBlockUpdateable,
-    IGregtechWailaProvider, IGetGUITextureSet, ICraftingIconProvider, IGregTechDeviceInformation {
+    IGregtechWailaProvider, IGetGUITextureSet, ICraftingIconProvider, IGregTechDeviceInformation, CapabilityProvider {
 
     /**
      * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
