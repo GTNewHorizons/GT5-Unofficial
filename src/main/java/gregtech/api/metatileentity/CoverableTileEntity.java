@@ -520,8 +520,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             final ItemStack coverStack = coverInfo.getDisplayStack();
             if (coverStack != null) {
                 aList.add(
-                    String.format(
-                        "Cover on %s side: %s",
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.interface.coverTabs.cover_on",
                         getTranslation(
                             FACES[coverInfo.getSide()
                                 .ordinal()]),
@@ -533,15 +533,18 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             if ((strongRedstone & dir.flag) != 0) {
-                aList.add(String.format("Emits a strong redstone signal on the %s side", switch (dir) {
-                    case DOWN -> "bottom";
-                    case UP -> "top";
-                    case NORTH -> "north";
-                    case SOUTH -> "south";
-                    case WEST -> "west";
-                    case EAST -> "east";
-                    default -> "<unknown>";
-                }));
+                aList.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.interface.coverTabs.emits_redstone",
+                        StatCollector.translateToLocal(switch (dir) {
+                        case DOWN -> "GT5U.interface.coverTabs.redstone.bottom";
+                        case UP -> "GT5U.interface.coverTabs.redstone.top";
+                        case NORTH -> "GT5U.interface.coverTabs.redstone.north";
+                        case SOUTH -> "GT5U.interface.coverTabs.redstone.south";
+                        case WEST -> "GT5U.interface.coverTabs.redstone.west";
+                        case EAST -> "GT5U.interface.coverTabs.redstone.east";
+                        default -> "GT5U.interface.coverTabs.redstone.unknown";
+                        })));
             }
         }
     }
