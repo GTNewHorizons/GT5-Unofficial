@@ -51,11 +51,6 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
     }
 
-    public MTEBasicBatteryBuffer(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
-        int aSlotCount) {
-        super(aName, aTier, aSlotCount, aDescription, aTextures);
-    }
-
     public MTEBasicBatteryBuffer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
         int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);

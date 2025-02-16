@@ -38,10 +38,6 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
                 "A circuit must be used to select a slot (1-16)", GTPPCore.GT_Tooltip.get() });
     }
 
-    public MTEHatchElementalDataOrbHolder(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 17, aDescription, aTextures);
-    }
-
     public MTEHatchElementalDataOrbHolder(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 17, aDescription, aTextures);
     }

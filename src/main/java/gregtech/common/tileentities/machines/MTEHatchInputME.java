@@ -118,7 +118,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     protected static final FluidStack[] EMPTY_FLUID_STACK = new FluidStack[0];
 
     public MTEHatchInputME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, autoPullAvailable ? 9 : 8, 1, getDescriptionArray(autoPullAvailable));
+        super(aID, 1, aName, aNameRegional, autoPullAvailable ? 9 : 8, getDescriptionArray(autoPullAvailable));
         this.autoPullAvailable = autoPullAvailable;
     }
 

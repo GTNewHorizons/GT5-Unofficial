@@ -24,10 +24,6 @@ public class MTEQuantumChest extends MTEDigitalChestBase {
         super(aID, aName, aNameRegional, aTier);
     }
 
-    public MTEQuantumChest(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-    }
-
     public MTEQuantumChest(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
