@@ -434,20 +434,6 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     @Override
-<<<<<<< HEAD
-    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("baseCapacity")) {
-            tooltip.add(
-                "Current cache capacity: " + EnumChatFormatting.YELLOW
-                    + ReadableNumberConverter.INSTANCE
-                        .toWideReadableForm(stack.stackTagCompound.getLong("baseCapacity"))
-                    + "L");
-        }
-    }
-
-    @Override
-=======
->>>>>>> origin/fix/me-hatch-base-capacity
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
@@ -557,11 +543,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         }
         aNBT.setTag("cachedFluids", fluids);
         aNBT.setBoolean("additionalConnection", additionalConnection);
-<<<<<<< HEAD
-        aNBT.setLong("baseCapacity", baseCapacity);
         aNBT.setBoolean("hadCell", hadCell);
-=======
->>>>>>> origin/fix/me-hatch-base-capacity
         getProxy().writeToNBT(aNBT);
     }
 
@@ -597,15 +579,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             }
         }
         additionalConnection = aNBT.getBoolean("additionalConnection");
-<<<<<<< HEAD
-        baseCapacity = aNBT.getLong("baseCapacity");
         hadCell = aNBT.getBoolean("hadCell");
-        // Set the base capacity of existing hatches to be infinite
-        if (baseCapacity == 0) {
-            baseCapacity = Long.MAX_VALUE;
-        }
-=======
->>>>>>> origin/fix/me-hatch-base-capacity
         getProxy().readFromNBT(aNBT);
     }
 

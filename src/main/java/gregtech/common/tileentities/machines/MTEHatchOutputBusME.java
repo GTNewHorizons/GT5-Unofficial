@@ -308,7 +308,6 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
-<<<<<<< HEAD
     public boolean isLocked() {
         return !this.lockedItems.isEmpty();
     }
@@ -379,24 +378,6 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
-    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("baseCapacity")) {
-            tooltip.add(
-                "Current cache capacity: " + EnumChatFormatting.YELLOW
-                    + ReadableNumberConverter.INSTANCE
-                        .toWideReadableForm(stack.stackTagCompound.getLong("baseCapacity")));
-        }
-    }
-
-    @Override
-    public void setItemNBT(NBTTagCompound aNBT) {
-        super.setItemNBT(aNBT);
-        if (baseCapacity != DEFAULT_CAPACITY) aNBT.setLong("baseCapacity", baseCapacity);
-    }
-
-    @Override
-=======
->>>>>>> origin/fix/me-hatch-base-capacity
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
 
@@ -420,11 +401,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         }
         aNBT.setBoolean("additionalConnection", additionalConnection);
         aNBT.setTag("cachedItems", items);
-<<<<<<< HEAD
-        aNBT.setLong("baseCapacity", baseCapacity);
         aNBT.setBoolean("hadCell", hadCell);
-=======
->>>>>>> origin/fix/me-hatch-base-capacity
         getProxy().writeToNBT(aNBT);
     }
 
@@ -472,15 +449,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             }
         }
         additionalConnection = aNBT.getBoolean("additionalConnection");
-<<<<<<< HEAD
-        baseCapacity = aNBT.getLong("baseCapacity");
         hadCell = aNBT.getBoolean("hadCell");
-        // Set the base capacity of existing hatches to be infinite
-        if (baseCapacity == 0) {
-            baseCapacity = Long.MAX_VALUE;
-        }
-=======
->>>>>>> origin/fix/me-hatch-base-capacity
         getProxy().readFromNBT(aNBT);
     }
 
