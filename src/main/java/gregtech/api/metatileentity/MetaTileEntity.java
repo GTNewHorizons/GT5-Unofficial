@@ -43,6 +43,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
+import gregtech.common.capability.CleanroomReference;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -326,17 +327,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     protected String translate(String key, Object... params) {
         return String.format(translate(key), params);
-    }
-
-    @Nullable
-    @Override
-    public ICleanroom getCleanroom() {
-        return cleanroom;
-    }
-
-    @Override
-    public void setCleanroom(ICleanroom cleanroom) {
-        this.cleanroom = cleanroom;
     }
 
     /**
