@@ -1,8 +1,6 @@
 package gregtech.api.interfaces.internal;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 /**
  * Interface used by the Mods Main Class to reference to internals.
@@ -42,9 +40,4 @@ public interface IGTMod {
      * @return the Index of the added Armor
      */
     int addArmor(String aArmorPrefix);
-
-    /**
-     * Plays the Sonictron Sound for the ItemStack on the Client Side
-     */
-    void doSonictronSound(ItemStack aStack, World aWorld, double aX, double aY, double aZ);
 }
