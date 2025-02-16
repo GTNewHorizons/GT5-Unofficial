@@ -19,7 +19,8 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
-import gtPlusPlus.everglades.gen.gt.WorldGen_GT_Ore_Layer;
+import toxiceverglades.gen.WorldGenEvergladesOreLayer;
+import toxiceverglades.gen.WorldGenEvergladesOres;
 
 public class ItemBlockOre extends ItemBlock {
 
@@ -49,7 +50,7 @@ public class ItemBlockOre extends ItemBlock {
         final boolean bool) {
 
         if (!mInitOres_Everglades) {
-            for (WorldGen_GT_Ore_Layer f : gtPlusPlus.everglades.gen.gt.WorldGen_Ores.validOreveins.values()) {
+            for (WorldGenEvergladesOreLayer f : WorldGenEvergladesOres.validOreveins.values()) {
                 Material[] m2 = new Material[] { f.mPrimary, f.mSecondary, f.mBetween, f.mSporadic };
                 for (Material m1 : m2) {
                     HashSet<String> aMap = mMapOreBlockItemToDimName.get(
