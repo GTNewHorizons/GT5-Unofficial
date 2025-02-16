@@ -67,11 +67,6 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
         mAuto = aAuto;
     }
 
-    public MTEHatchMaintenance(String aName, int aTier, String aDescription, ITexture[][][] aTextures, boolean aAuto) {
-        super(aName, aTier, aAuto ? 4 : 1, aDescription, aTextures);
-        mAuto = aAuto;
-    }
-
     public MTEHatchMaintenance(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
         boolean aAuto) {
         super(aName, aTier, aAuto ? 4 : 1, aDescription, aTextures);
