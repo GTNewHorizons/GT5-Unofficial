@@ -177,9 +177,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         OreGenEvent.GenerateMinable.EventType.LAPIS,
         OreGenEvent.GenerateMinable.EventType.QUARTZ);
     public final HashSet<ItemStack> mRegisteredOres = new HashSet<>(10000);
-    public final ArrayList<String> mSoundNames = new ArrayList<>();
-    public final ArrayList<ItemStack> mSoundItems = new ArrayList<>();
-    public final ArrayList<Integer> mSoundCounts = new ArrayList<>();
     private final Collection<OreDictEventContainer> mEvents = new HashSet<>();
     private final Collection<String> mIgnoredItems = new HashSet<>(
         Arrays.asList(
