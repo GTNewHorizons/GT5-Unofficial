@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
+import appeng.api.crafting.ICraftingIconProvider;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.pathing.IPathingGrid;
@@ -57,7 +58,7 @@ import tectech.thing.metaTileEntity.pipe.MTEPipeEnergy;
  * GT_MetaTileEntity_E_Furnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
  */
 @SuppressWarnings("unused")
-public abstract class MetaTileEntity extends CommonMetaTileEntity {
+public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICraftingIconProvider {
 
     /**
      * Inventory wrapper for ModularUI
@@ -149,6 +150,9 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity {
     public <T> T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
         if (capability == ICleanroomReceiver.class) {
             return capability.cast(cleanroomReference);
+        }
+        if (capability == ICraftingIconProvider.class) {
+            return capability.cast(this);
         }
         return super.getCapability(capability, side);
     }
@@ -673,14 +677,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity {
 
     @Override
     public ItemStack getMachineCraftingIcon() {
-        final IGregTechTileEntity mte = getBaseMetaTileEntity();
-        if (mte == null) {
-            return null;
-        }
-        return mte.getDrops()
-            .stream()
-            .findAny()
-            .orElse(null);
+        return getStackForm(1);
     }
 
     // === Waila compat ===

@@ -12,10 +12,6 @@ import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
-import appeng.api.crafting.ICraftingIconProvider;
-import appeng.api.implementations.tiles.ISoundP2PHandler;
-import appeng.me.cache.helpers.TunnelCollection;
-import appeng.parts.p2p.PartP2PSound;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
@@ -31,8 +27,7 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 
-public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
-    implements IGregTechTileEntity, ICraftingIconProvider, ISoundP2PHandler {
+public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity implements IGregTechTileEntity {
 
     protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mSendClientData = false, mInventoryChanged = false;
 
@@ -315,11 +310,6 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public ItemStack getMachineCraftingIcon() {
-        return getMetaTileEntity() != null ? getMetaTileEntity().getMachineCraftingIcon() : null;
-    }
-
-    @Override
     public ModularWindow createWindow(UIBuildContext buildContext) {
         if (!useModularUI()) return null;
 
@@ -340,34 +330,5 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             addGregTechLogo(builder);
         }
         return builder.build();
-    }
-
-    @Override
-    public boolean allowSoundProxying(PartP2PSound p2p) {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof ISoundP2PHandler metaHandler) {
-            return metaHandler.allowSoundProxying(p2p);
-        }
-        return ISoundP2PHandler.super.allowSoundProxying(p2p);
-    }
-
-    @Override
-    public void onSoundP2PAttach(PartP2PSound p2p) {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof ISoundP2PHandler metaHandler) {
-            metaHandler.onSoundP2PAttach(p2p);
-        }
-    }
-
-    @Override
-    public void onSoundP2PDetach(PartP2PSound p2p) {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof ISoundP2PHandler metaHandler) {
-            metaHandler.onSoundP2PDetach(p2p);
-        }
-    }
-
-    @Override
-    public void onSoundP2POutputUpdate(PartP2PSound p2p, TunnelCollection<PartP2PSound> outputs) {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof ISoundP2PHandler metaHandler) {
-            metaHandler.onSoundP2POutputUpdate(p2p, outputs);
-        }
     }
 }
