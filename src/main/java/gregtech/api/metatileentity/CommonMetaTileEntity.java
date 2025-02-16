@@ -20,6 +20,9 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
@@ -78,6 +81,15 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     protected CommonMetaTileEntity(String name, int invSlotCount) {
         mInventory = new ItemStack[invSlotCount];
         mName = name;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Nullable
+    @Override
+    public <T> T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
+        return null;
     }
 
     @Override
