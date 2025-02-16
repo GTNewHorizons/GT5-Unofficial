@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -3855,6 +3856,20 @@ public class GTUtility {
 
     public static String formatNumbers(double aNumber) {
         return getDecimalFormat().format(aNumber);
+    }
+
+    /**
+     * {@link String#format} without throwing exception. Falls back to {@code format} without {@code args}.
+     * Since it suppresses errors, it should be used only when inputs are unreliable,
+     * e.g. processing text input by player, or processing placeholders in localization entries.
+     */
+    @Nonnull
+    public static String formatStringSafe(@Nonnull String format, Object... args) {
+        try {
+            return String.format(format, args);
+        } catch (IllegalFormatException ignored) {
+            return format;
+        }
     }
 
     /*

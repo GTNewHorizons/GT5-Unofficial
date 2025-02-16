@@ -3,12 +3,12 @@ package gregtech.api.enums;
 import static gregtech.api.enums.FluidState.GAS;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.util.GTUtility.formatStringSafe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.IllegalFormatException;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -3054,27 +3054,17 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public String getDefaultLocalizedNameForItem(String aFormat) {
-        try {
-            return String.format(
-                aFormat.replace("%s", "%temp")
-                    .replace("%material", "%s"),
-                this.mDefaultLocalName)
-                .replace("%temp", "%s");
-        } catch (IllegalFormatException ignored) {
-            return aFormat;
-        }
+        return formatStringSafe(
+            aFormat.replace("%s", "%temp")
+                .replace("%material", "%s"),
+            this.mDefaultLocalName).replace("%temp", "%s");
     }
 
     public String getLocalizedNameForItem(String aFormat) {
-        try {
-            return String.format(
-                aFormat.replace("%s", "%temp")
-                    .replace("%material", "%s"),
-                this.mLocalizedName)
-                .replace("%temp", "%s");
-        } catch (IllegalFormatException ignored) {
-            return aFormat;
-        }
+        return formatStringSafe(
+            aFormat.replace("%s", "%temp")
+                .replace("%material", "%s"),
+            this.mLocalizedName).replace("%temp", "%s");
     }
 
     public boolean hasCorrespondingFluid() {
