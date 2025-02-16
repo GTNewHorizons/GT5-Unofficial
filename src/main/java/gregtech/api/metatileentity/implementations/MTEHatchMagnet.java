@@ -27,7 +27,7 @@ public class MTEHatchMagnet extends MTEHatch {
     }
 
     public MTEHatchMagnet(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 1, aDescription[0], aTextures);
+        super(aName, aTier, 1, aDescription, aTextures);
     }
 
     @Override

@@ -50,10 +50,6 @@ public class MTEBoilerSolar extends MTEBoiler {
         super(aID, aName, aNameRegional, new String[0]);
     }
 
-    public MTEBoilerSolar(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-    }
-
     public MTEBoilerSolar(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
