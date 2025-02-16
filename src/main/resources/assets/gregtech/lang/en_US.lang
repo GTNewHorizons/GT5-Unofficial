@@ -85,6 +85,9 @@ GTPP.tooltip.butterfly_killer.2=Be weary of your neighbours
 GTPP.tooltip.volumetric_flask_setter.0=Easy Flask Configuration
 GTPP.tooltip.volumetric_flask_setter.1=Configure default input slot with a screwdriver
 
+# Tin Foil Hat
+GTPP.tooltip.tin_foil_hat=DoomSquirter's protection against cosmic radiation!\nGeneral paranoia makes the wearer unable to collect xp\nMovement speed is also reduced, to keep you safe\nThis hat may also have other strange powers
+
 GTPP.tooltip.bad_tooltip_id=Bad Tooltip ID - %d
 
 # Infinite Spray Can
