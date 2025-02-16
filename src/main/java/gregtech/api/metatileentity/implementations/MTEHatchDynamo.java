@@ -27,10 +27,6 @@ public class MTEHatchDynamo extends MTEHatch {
         super(aID, aName, aNameRegional, aTier, 0, aDescription);
     }
 
-    public MTEHatchDynamo(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 0, aDescription, aTextures);
-    }
-
     public MTEHatchDynamo(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }

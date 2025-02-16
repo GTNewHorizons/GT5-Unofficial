@@ -53,10 +53,6 @@ public class MTEBoilerBronze extends MTEBoiler {
         super(aID, aName, aNameRegional, aDescription);
     }
 
-    public MTEBoilerBronze(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-    }
-
     public MTEBoilerBronze(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }

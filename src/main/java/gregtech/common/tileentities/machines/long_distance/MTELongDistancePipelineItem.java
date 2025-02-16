@@ -43,7 +43,7 @@ public class MTELongDistancePipelineItem extends MTELongDistancePipelineBase {
         super(aID, aName, aNameRegional, aTier, "Sends Items over long distances");
     }
 
-    public MTELongDistancePipelineItem(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public MTELongDistancePipelineItem(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -187,7 +187,7 @@ public class MTELongDistancePipelineItem extends MTELongDistancePipelineBase {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTELongDistancePipelineItem(mName, mTier, getDescription()[0], mTextures);
+        return new MTELongDistancePipelineItem(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override

@@ -16,8 +16,8 @@ import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.everglades.dimension.DimensionEverglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import toxiceverglades.dimension.DimensionEverglades;
 
 public class RecipesLaserEngraver implements IOreRecipeRegistrator {
 
