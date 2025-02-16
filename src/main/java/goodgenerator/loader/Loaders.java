@@ -19,7 +19,6 @@ import goodgenerator.blocks.regularBlock.BlockTurbineCasing;
 import goodgenerator.blocks.tileEntity.AntimatterForge;
 import goodgenerator.blocks.tileEntity.AntimatterGenerator;
 import goodgenerator.blocks.tileEntity.AntimatterOutputHatch;
-import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEDieselGenerator;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronAccelerator;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronSensor;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEYOTTAHatch;
@@ -65,6 +64,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.tileentities.generators.MTEDieselGenerator;
 import kekztech.common.blocks.BlockTFFTStorageField;
 
 public class Loaders {
@@ -367,12 +367,14 @@ public class Loaders {
             MetaTileEntityIDs.DieselGeneratorEV.ID,
             "basicgenerator.diesel.tier.04",
             "Turbo Supercharging Combustion Generator",
-            4).getStackForm(1L);
+            4,
+            65).getStackForm(1L);
         Loaders.Generator_Diesel[1] = new MTEDieselGenerator(
             MetaTileEntityIDs.DieselGeneratorIV.ID,
             "basicgenerator.diesel.tier.05",
             "Ultimate Chemical Energy Releaser",
-            5).getStackForm(1L);
+            5,
+            50).getStackForm(1L);
         Loaders.CT = new MTECoolantTower(MetaTileEntityIDs.CoolantTower.ID, "CoolantTower", "Coolant Tower")
             .getStackForm(1L);
         Loaders.CompAssline = new MTEComponentAssemblyLine(

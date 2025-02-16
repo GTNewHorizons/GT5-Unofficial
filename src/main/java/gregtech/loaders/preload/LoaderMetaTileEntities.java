@@ -12205,19 +12205,22 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 COMBUSTION_GENERATOR_LV.ID,
                 "basicgenerator.diesel.tier.01",
                 "Basic Combustion Generator",
-                1).getStackForm(1L));
+                1,
+                95).getStackForm(1L));
         ItemList.Generator_Diesel_MV.set(
             new MTEDieselGenerator(
                 COMBUSTION_GENERATOR_MV.ID,
                 "basicgenerator.diesel.tier.02",
                 "Advanced Combustion Generator",
-                2).getStackForm(1L));
+                2,
+                90).getStackForm(1L));
         ItemList.Generator_Diesel_HV.set(
             new MTEDieselGenerator(
                 COMBUSTION_GENERATOR_HV.ID,
                 "basicgenerator.diesel.tier.03",
                 "Turbo Combustion Generator",
-                3).getStackForm(1L));
+                3,
+                85).getStackForm(1L));
     }
 
     private static void registerGasTurbines() {

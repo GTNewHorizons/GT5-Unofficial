@@ -37,10 +37,6 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
         super(aID, aName, aNameRegional, aTier);
     }
 
-    public MTEHatchWirelessDataItemsInput(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-    }
-
     public MTEHatchWirelessDataItemsInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }

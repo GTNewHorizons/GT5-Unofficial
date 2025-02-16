@@ -39,10 +39,6 @@ public class MTELocker extends MTETieredMachineBlock {
         super(aID, aName, aNameRegional, aTier, 4, "Stores and recharges Armor");
     }
 
-    public MTELocker(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 4, aDescription, aTextures);
-    }
-
     public MTELocker(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 4, aDescription, aTextures);
     }
