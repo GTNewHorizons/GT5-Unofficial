@@ -49,7 +49,6 @@ import appeng.core.stats.Stats;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
-import appeng.util.ReadableNumberConverter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
@@ -69,7 +68,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState, IMEConnectable {
 
     private static final long DEFAULT_CAPACITY = 128_000;
-    private long baseCapacity = DEFAULT_CAPACITY;
 
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
@@ -151,7 +149,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof IStorageFluidCell) {
             return ((FCBaseItemCell) upgradeItemStack.getItem()).getBytes(upgradeItemStack) * 2048;
         }
-        return baseCapacity;
+        return DEFAULT_CAPACITY;
     }
 
     /**
@@ -317,18 +315,6 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     @Override
-    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("baseCapacity")) {
-            tooltip.add(
-                "Current cache capacity: " + EnumChatFormatting.YELLOW
-                    + ReadableNumberConverter.INSTANCE
-                        .toWideReadableForm(stack.stackTagCompound.getLong("baseCapacity"))
-                    + "L");
-        }
-    }
-
-    @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
@@ -412,12 +398,6 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     @Override
-    public void setItemNBT(NBTTagCompound aNBT) {
-        super.setItemNBT(aNBT);
-        if (baseCapacity != DEFAULT_CAPACITY) aNBT.setLong("baseCapacity", baseCapacity);
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         NBTTagList fluids = new NBTTagList();
@@ -433,7 +413,6 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         }
         aNBT.setTag("cachedFluids", fluids);
         aNBT.setBoolean("additionalConnection", additionalConnection);
-        aNBT.setLong("baseCapacity", baseCapacity);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -459,11 +438,6 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             }
         }
         additionalConnection = aNBT.getBoolean("additionalConnection");
-        baseCapacity = aNBT.getLong("baseCapacity");
-        // Set the base capacity of existing hatches to be infinite
-        if (baseCapacity == 0) {
-            baseCapacity = Long.MAX_VALUE;
-        }
         getProxy().readFromNBT(aNBT);
     }
 
