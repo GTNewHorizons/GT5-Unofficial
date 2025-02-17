@@ -463,7 +463,6 @@ public class RecipeLoaderGenericChem {
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumPeroxide", 4))
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .noOptimize()
             .addTo(chemicalDehydratorRecipes);
     }
 
