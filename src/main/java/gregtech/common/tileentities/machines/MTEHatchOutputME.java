@@ -69,7 +69,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState, IMEConnectable {
 
     private static final long DEFAULT_CAPACITY = 128_000;
-    protected long baseCapacity = DEFAULT_CAPACITY;
+    private long baseCapacity = DEFAULT_CAPACITY;
 
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
@@ -317,6 +317,17 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("baseCapacity")) {
+            tooltip.add(
+                "Current cache capacity: " + EnumChatFormatting.YELLOW
+                    + ReadableNumberConverter.INSTANCE
+                        .toWideReadableForm(stack.stackTagCompound.getLong("baseCapacity"))
+                    + "L");
+        }
+    }
+
+    @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
@@ -396,16 +407,6 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             if (stackCount > stacks.tagCount()) {
                 ss.add(EnumChatFormatting.ITALIC + "And " + (stackCount - stacks.tagCount()) + " more...");
             }
-        }
-    }
-
-    @Override
-    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("baseCapacity")) {
-            tooltip.add(
-                "Current cache capacity: " + EnumChatFormatting.YELLOW
-                    + ReadableNumberConverter.INSTANCE
-                        .toWideReadableForm(stack.stackTagCompound.getLong("baseCapacity")));
         }
     }
 
