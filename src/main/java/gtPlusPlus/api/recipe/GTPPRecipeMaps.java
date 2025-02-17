@@ -69,20 +69,17 @@ public class GTPPRecipeMaps {
             return inputs.toArray(new ItemStack[0]);
         })
         .frontend(QuantumForceTransformerFrontend::new)
-        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> chemicalDehydratorRecipes = RecipeMapBuilder
         .of("gtpp.recipe.chemicaldehydrator")
         .maxIO(2, 9, 1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.DOWN)
-        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> vacuumFurnaceRecipes = RecipeMapBuilder.of("gtpp.recipe.vacfurnace")
         .maxIO(9, 9, 3, 3)
         .minInputs(0, 1)
         .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
         .frontend(LargeNEIFrontend::new)
-        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> alloyBlastSmelterRecipes = RecipeMapBuilder
         .of("gtpp.recipe.alloyblastsmelter")
@@ -105,7 +102,6 @@ public class GTPPRecipeMaps {
                 StatCollector
                     .translateToLocalFormatted("gtpp.nei.lftr.total", MathUtils.formatNumbers(duration * eut * 4)));
         })
-        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> nuclearSaltProcessingPlantRecipes = RecipeMapBuilder
         .of("gtpp.recipe.nuclearsaltprocessingplant")
@@ -116,13 +112,11 @@ public class GTPPRecipeMaps {
         .maxIO(3, 1, 0, 0)
         .minInputs(1, 0)
         .frontend(MillingFrontend::new)
-        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> fissionFuelProcessingRecipes = RecipeMapBuilder
         .of("gtpp.recipe.fissionfuel")
         .maxIO(0, 0, 6, 1)
         .frontend(FluidOnlyFrontend::new)
-        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> coldTrapRecipes = RecipeMapBuilder.of("gtpp.recipe.coldtrap")
         .maxIO(2, 9, 1, 1)
@@ -174,7 +168,6 @@ public class GTPPRecipeMaps {
                 .singletonList(StatCollector.translateToLocalFormatted("GT5U.nei.tier", tier + " - " + materialName));
         })
         .frontend(ChemicalPlantFrontend::new)
-        .disableOptimize()
         .build();
     public static final RecipeMap<FuelBackend> rtgFuels = RecipeMapBuilder
         .of("gtpp.recipe.RTGgenerators", FuelBackend::new)
@@ -207,7 +200,6 @@ public class GTPPRecipeMaps {
     public static final RecipeMap<RecipeMapBackend> spargeTowerRecipes = RecipeMapBuilder
         .of("gtpp.recipe.lftr.sparging")
         .frontend(SpargeTowerFrontend::new)
-        .disableOptimize()
         .maxIO(0, 0, 9, 9)
         .build();
     public static final RecipeMap<RecipeMapBackend> advancedFreezerRecipes = RecipeMapBuilder
@@ -244,7 +236,6 @@ public class GTPPRecipeMaps {
     public static final RecipeMap<RecipeMapBackend> flotationCellRecipes = RecipeMapBuilder
         .of("gtpp.recipe.flotationcell")
         .maxIO(6, 0, 1, 1)
-        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> treeGrowthSimulatorFakeRecipes = RecipeMapBuilder
         .of("gtpp.recipe.treefarm")
