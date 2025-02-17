@@ -104,7 +104,7 @@ public class MachineRecipes implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Graphene, 64))
                 .itemOutputs(new ItemStack(IGItems.SpaceElevatorItems, 1, 0))
                 .fluidInputs(Materials.AdvancedGlue.getFluid(720)).duration(1 * MINUTE).eut(TierEU.RECIPE_ZPM)
-                .requiresCleanRoom().noOptimize().addTo(assemblerRecipes);
+                .requiresCleanRoom().addTo(assemblerRecipes);
 
         // Space Elevator Cable
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -322,7 +322,7 @@ public class MachineRecipes implements Runnable {
                         metaStableOgScrew_64,
                         GTOreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.ProtoHalkonite, 16))
                 .itemOutputs(IGItems.SpaceElevatorModulePumpT2).fluidInputs(new FluidStack(solderUEV, 4608))
-                .duration(2 * MINUTE).eut(TierEU.RECIPE_UIV).noOptimize().addTo(assemblerRecipes);
+                .duration(2 * MINUTE).eut(TierEU.RECIPE_UIV).addTo(assemblerRecipes);
 
         // Pump Module MK-III
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -353,7 +353,7 @@ public class MachineRecipes implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.WhiteDwarfMatter, 64),
                         GTOreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.Eternity, 16))
                 .itemOutputs(IGItems.SpaceElevatorModulePumpT3).fluidInputs(new FluidStack(solderUEV, 9216))
-                .duration(2 * MINUTE).eut(TierEU.RECIPE_UIV).noOptimize().addTo(assemblerRecipes);
+                .duration(2 * MINUTE).eut(TierEU.RECIPE_UIV).addTo(assemblerRecipes);
 
         // Assembler Module MK-I
         TTRecipeAdder.addResearchableAssemblylineRecipe(
