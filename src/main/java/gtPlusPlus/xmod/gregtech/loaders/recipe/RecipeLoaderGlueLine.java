@@ -18,6 +18,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -28,11 +29,11 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.plugin.agrichem.BioRecipes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class RecipeLoaderGlueLine {
@@ -116,14 +117,11 @@ public class RecipeLoaderGlueLine {
             .metadata(CHEMPLANT_CASING_TIER, 5)
             .addTo(chemicalPlantRecipes);
 
-        BioRecipes.mFormaldehyde = FluidUtils.getFluidStack("fluid.formaldehyde", 1)
-            .getFluid();
-
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(22), GregtechItemList.SolidAcidCatalyst.get(0))
             .fluidInputs(
                 MaterialMisc.ETHYL_CYANOACETATE.getFluidStack(100),
-                FluidUtils.getFluidStack(BioRecipes.mFormaldehyde, 100))
+                new FluidStack(RocketFuels.Formaldehyde, 100))
             .fluidOutputs(MaterialMisc.CYANOACRYLATE_POLYMER.getFluidStack(100), FluidUtils.getWater(1000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
