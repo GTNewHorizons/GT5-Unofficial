@@ -53,11 +53,6 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
                 "Cleans itself automatically", "Does not explode in rain!" });
     }
 
-    public MTESolarGenerator(String aName, int aTier, int aInvSlotCount, String aDescription,
-        ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
-
     public MTESolarGenerator(String aName, int aTier, int aInvSlotCount, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);

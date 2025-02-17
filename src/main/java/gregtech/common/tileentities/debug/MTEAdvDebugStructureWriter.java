@@ -57,13 +57,13 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
         super(aID, aName, aNameRegional, aTier, 0, "");
     }
 
-    public MTEAdvDebugStructureWriter(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public MTEAdvDebugStructureWriter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEAdvDebugStructureWriter(mName, mTier, "", mTextures);
+        return new MTEAdvDebugStructureWriter(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override

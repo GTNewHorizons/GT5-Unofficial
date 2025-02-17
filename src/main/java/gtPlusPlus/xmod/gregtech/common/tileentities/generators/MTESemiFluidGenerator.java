@@ -18,22 +18,17 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.lib.GTPPCore;
 
 public class MTESemiFluidGenerator extends MTEBasicGenerator {
 
-    public int mEfficiency;
-
     public MTESemiFluidGenerator(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "Requires semifluid Fuel");
-        this.mEfficiency = 100 - (this.mTier * 5);
     }
 
     public MTESemiFluidGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        this.mEfficiency = 100 - (this.mTier * 5);
     }
 
     @Override
@@ -54,7 +49,6 @@ public class MTESemiFluidGenerator extends MTEBasicGenerator {
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        // Logger.WARNING("Fuel Count: "+Gregtech_Recipe_Map.sSemiFluidLiquidFuels.mRecipeList.size());
         return GTPPRecipeMaps.semiFluidFuels;
     }
 
@@ -69,7 +63,7 @@ public class MTESemiFluidGenerator extends MTEBasicGenerator {
 
     @Override
     public int getEfficiency() {
-        return this.mEfficiency;
+        return 100 - (this.mTier * 5);
     }
 
     @Override
@@ -88,15 +82,13 @@ public class MTESemiFluidGenerator extends MTEBasicGenerator {
 
     @Override
     public int getFuelValue(ItemStack aStack) {
-        if ((GTUtility.isStackInvalid(aStack)) || (getRecipeMap() == null)) {
-            Logger.WARNING("Bad Fuel?");
+        if (GTUtility.isStackInvalid(aStack)) {
             return 0;
         }
         int rValue = Math.max(GTModHandler.getFuelValue(aStack) * 6 / 5, super.getFuelValue(aStack));
         if (ItemList.Fuel_Can_Plastic_Filled.isStackEqual(aStack, false, true)) {
             rValue = Math.max(rValue, GameRegistry.getFuelValue(aStack) * 3);
         }
-        Logger.WARNING("Good Fuel: " + rValue);
         return rValue;
     }
 
