@@ -868,7 +868,7 @@ public class RecipesGregTech {
                 GTUtility.getIntegratedCircuit(20),
                 ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedMolybdenite", 2),
                 MaterialsElements.getInstance().CARBON.getDust(8))
-            .fluidInputs(Materials.SulfuricAcid.getFluid(1250))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1850))
             .fluidOutputs(MaterialsElements.getInstance().RHENIUM.getFluidStack(36))
             .eut(4_000)
             .duration(5 * MINUTES)
