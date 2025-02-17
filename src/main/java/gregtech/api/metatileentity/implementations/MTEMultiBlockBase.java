@@ -2103,7 +2103,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             int outputItemLength = tag.getInteger("outputItemLength");
             int outputFluidLength = tag.getInteger("outputFluidLength");
             int totalOutputs = outputItemLength + outputFluidLength;
-            if (totalOutputs > 0) {
+
+            if (tag.getBoolean("isLockedToRecipe")) {
+                String lockedRecipe = tag.getString("lockedRecipeName");
+                if (!lockedRecipe.isEmpty()) {
+                    currentTip.add("Locked Recipe:");
+                    String[] lines = lockedRecipe.split("\n");
+                    for (String line : lines) {
+                        currentTip.add(line);
+                    }
+                }
+            } else if (totalOutputs > 0) {
+                // If not locked, show "Producing"
                 currentTip.add(StatCollector.translateToLocal("GT5U.waila.producing"));
                 for (int i = 0; i < min(3, outputItemLength); i++) {
                     currentTip.add(
@@ -2136,18 +2147,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (GTMod.gregtechproxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
             currentTip.add("Average CPU load of ~" + formatNumbers(tAverageTime) + " ns");
-        }
-        // Always show locked recipe information if the machine is locked to a recipe
-        if (tag.getBoolean("isLockedToRecipe")) {
-            String lockedRecipe = tag.getString("lockedRecipeName");
-            if (!lockedRecipe.isEmpty()) {
-                // Split the string on "\n" and add each line separately.
-                String[] lines = lockedRecipe.split("\n");
-                currentTip.add("Locked Recipe:");
-                for (String line : lines) {
-                    currentTip.add(line);
-                }
-            }
         }
 
         super.getWailaBody(itemStack, currentTip, accessor, config);

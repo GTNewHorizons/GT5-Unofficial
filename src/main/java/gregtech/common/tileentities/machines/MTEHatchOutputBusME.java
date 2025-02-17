@@ -348,10 +348,6 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         }
         additionalConnection = aNBT.getBoolean("additionalConnection");
         baseCapacity = aNBT.getLong("baseCapacity");
-        // Set the base capacity of existing hatches to be infinite
-        if (baseCapacity == 0) {
-            baseCapacity = Long.MAX_VALUE;
-        }
         getProxy().readFromNBT(aNBT);
     }
 
