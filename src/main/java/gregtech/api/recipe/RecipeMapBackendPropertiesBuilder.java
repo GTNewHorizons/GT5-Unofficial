@@ -23,6 +23,7 @@ public final class RecipeMapBackendPropertiesBuilder {
 
     private int minItemInputs;
     private int minFluidInputs;
+    private boolean allowCircuitOnly;
 
     private boolean specialSlotSensitive;
 
@@ -39,6 +40,7 @@ public final class RecipeMapBackendPropertiesBuilder {
         return new RecipeMapBackendProperties(
             minItemInputs,
             minFluidInputs,
+            allowCircuitOnly,
             specialSlotSensitive,
             disableOptimize,
             recipeEmitter,
@@ -52,6 +54,11 @@ public final class RecipeMapBackendPropertiesBuilder {
 
     public RecipeMapBackendPropertiesBuilder minFluidInputs(int minFluidInputs) {
         this.minFluidInputs = minFluidInputs;
+        return this;
+    }
+
+    public RecipeMapBackendPropertiesBuilder allowCircuitOnly(boolean allowCircuitOnly) {
+        this.allowCircuitOnly = allowCircuitOnly;
         return this;
     }
 

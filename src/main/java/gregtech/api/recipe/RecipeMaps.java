@@ -310,7 +310,7 @@ public final class RecipeMaps {
     public static final RecipeMap<FormingPressBackend> formingPressRecipes = RecipeMapBuilder
         .of("gt.recipe.press", FormingPressBackend::new)
         .maxIO(6, 1, 0, 0)
-        .minInputs(2, 0)
+        .minInputs(1, 0)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (isOutput) {
                 return GTUITextures.OVERLAY_SLOT_PRESS_3;
@@ -422,7 +422,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> distilleryRecipes = RecipeMapBuilder.of("gt.recipe.distillery")
         .maxIO(1, 1, 1, 1)
-        .minInputs(1, 1)
+        .minInputs(0, 1)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (!isFluid) {
                 return null;
@@ -482,7 +482,7 @@ public final class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> fluidSolidifierRecipes = RecipeMapBuilder
         .of("gt.recipe.fluidsolidifier")
         .maxIO(1, 1, 1, 0)
-        .minInputs(1, 1)
+        .minInputs(0, 1)
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_MOLD : null)
         .build();
@@ -829,12 +829,11 @@ public final class RecipeMaps {
     public static final RecipeMap<OilCrackerBackend> crackingRecipes = RecipeMapBuilder
         .of("gt.recipe.craker", OilCrackerBackend::new)
         .maxIO(1, 1, 2, 1)
-        .minInputs(1, 2)
+        .minInputs(0, 2)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
         .build();
     public static final RecipeMap<RecipeMapBackend> pyrolyseRecipes = RecipeMapBuilder.of("gt.recipe.pyro")
         .maxIO(2, 1, 1, 1)
-        .minInputs(1, 0)
         .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> wiremillRecipes = RecipeMapBuilder.of("gt.recipe.wiremill")
@@ -846,14 +845,14 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> benderRecipes = RecipeMapBuilder.of("gt.recipe.metalbender")
         .maxIO(2, 1, 0, 0)
-        .minInputs(2, 0)
+        .minInputs(1, 0)
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_BENDER : null)
         .progressBar(GTUITextures.PROGRESSBAR_BENDING)
         .build();
     public static final RecipeMap<RecipeMapBackend> alloySmelterRecipes = RecipeMapBuilder.of("gt.recipe.alloysmelter")
         .maxIO(2, 1, 0, 0)
-        .minInputs(2, 0)
+        .minInputs(1, 0)
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_FURNACE : null)
         .slotOverlaysSteam((index, isFluid, isOutput, isSpecial) -> GTUITextures.OVERLAY_SLOT_FURNACE_STEAM)
