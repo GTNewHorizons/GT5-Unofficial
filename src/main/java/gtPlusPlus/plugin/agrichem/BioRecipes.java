@@ -391,7 +391,7 @@ public class BioRecipes {
                 ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 4),
                 ItemUtils.getSimpleStack(AgriculturalChem.mPelletMold, 0))
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 1))
-            .duration(2 * SECONDS + 10 * TICKS)
+            .duration(3 * SECONDS + 6 * TICKS)
             .eut(16)
             .addTo(extruderRecipes);
 

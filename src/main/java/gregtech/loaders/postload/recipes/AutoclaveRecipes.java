@@ -148,29 +148,29 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 8))
-            .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 8L))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 4))
+            .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 4L))
             .outputChances(10000)
-            .fluidInputs(Materials.Epoxid.getMolten(18L))
-            .duration(1 * SECONDS + 17 * TICKS)
+            .fluidInputs(Materials.Epoxid.getMolten(9L))
+            .duration(18 * TICKS)
             .eut((int) TierEU.RECIPE_HV)
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 8))
-            .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 4L))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 4))
+            .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 2L))
             .outputChances(10000)
-            .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(36L))
-            .duration(2 * SECONDS + 10 * TICKS)
+            .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(18L))
+            .duration(1 * SECONDS + 5 * TICKS)
             .eut((int) TierEU.RECIPE_MV)
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 8))
-            .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 2L))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 4))
+            .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 1L))
             .outputChances(10000)
-            .fluidInputs(Materials.Plastic.getMolten(72L))
-            .duration(3 * SECONDS + 15 * TICKS)
+            .fluidInputs(Materials.Plastic.getMolten(36L))
+            .duration(1 * SECONDS + 17 * TICKS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(autoclaveRecipes);
 

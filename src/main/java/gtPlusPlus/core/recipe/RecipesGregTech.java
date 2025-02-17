@@ -843,22 +843,22 @@ public class RecipesGregTech {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(15),
-                ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedSphalerite", 4),
-                MaterialsElements.getInstance().CARBON.getDust(16))
-            .fluidInputs(Materials.SulfuricAcid.getFluid(1000))
-            .fluidOutputs(MaterialsElements.getInstance().GERMANIUM.getFluidStack(144))
+                ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedSphalerite", 1),
+                MaterialsElements.getInstance().CARBON.getDust(4))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(250))
+            .fluidOutputs(MaterialsElements.getInstance().GERMANIUM.getFluidStack(36))
             .eut(4_000)
-            .duration(2 * MINUTES + 30 * SECONDS)
+            .duration(37 * SECONDS)
             .addTo(alloyBlastSmelterRecipes);
 
         // Rhenium Roasting
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(20),
-                ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedScheelite", 8),
-                MaterialsElements.getInstance().CARBON.getDust(32))
-            .fluidInputs(Materials.SulfuricAcid.getFluid(10000))
-            .fluidOutputs(MaterialsElements.getInstance().RHENIUM.getFluidStack(144))
+                ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedScheelite", 1),
+                MaterialsElements.getInstance().CARBON.getDust(4))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1250))
+            .fluidOutputs(MaterialsElements.getInstance().RHENIUM.getFluidStack(18))
             .eut(4_000)
             .duration(5 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
@@ -866,10 +866,10 @@ public class RecipesGregTech {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(20),
-                ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedMolybdenite", 8),
-                MaterialsElements.getInstance().CARBON.getDust(32))
-            .fluidInputs(Materials.SulfuricAcid.getFluid(7500))
-            .fluidOutputs(MaterialsElements.getInstance().RHENIUM.getFluidStack(144))
+                ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedMolybdenite", 2),
+                MaterialsElements.getInstance().CARBON.getDust(8))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1250))
+            .fluidOutputs(MaterialsElements.getInstance().RHENIUM.getFluidStack(36))
             .eut(4_000)
             .duration(5 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
@@ -877,10 +877,10 @@ public class RecipesGregTech {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(20),
-                ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedMolybdenum", 4),
-                MaterialsElements.getInstance().CARBON.getDust(16))
-            .fluidInputs(Materials.SulfuricAcid.getFluid(2500))
-            .fluidOutputs(MaterialsElements.getInstance().RHENIUM.getFluidStack(144))
+                ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedMolybdenum", 1),
+                MaterialsElements.getInstance().CARBON.getDust(4))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(625))
+            .fluidOutputs(MaterialsElements.getInstance().RHENIUM.getFluidStack(36))
             .eut(4_000)
             .duration(2 * MINUTES + 30 * SECONDS)
             .addTo(alloyBlastSmelterRecipes);
@@ -1594,13 +1594,13 @@ public class RecipesGregTech {
 
         // Synthetic Graphite
         RA.stdBuilder()
-            .itemInputs(MaterialsAlloy.SILICON_CARBIDE.getDust(8), GTUtility.getIntegratedCircuit(22))
+            .itemInputs(MaterialsAlloy.SILICON_CARBIDE.getDust(2), GTUtility.getIntegratedCircuit(22))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 4L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L))
-            .fluidInputs(Materials.Nitrogen.getGas(2000))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Silicon, 1L))
+            .fluidInputs(Materials.Nitrogen.getGas(500))
             .fluidOutputs()
-            .duration(30 * SECONDS)
+            .duration(7 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 4500)
             .addTo(blastFurnaceRecipes);
