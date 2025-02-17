@@ -140,7 +140,6 @@ public class GTPostLoad {
                 .itemOutputs(ItemList.IC2_Crop_Seeds.getWithName(1L, "Scanned Seeds"))
                 .duration(8 * SECONDS)
                 .eut(8)
-                .noOptimize()
                 .ignoreCollision()
                 .fake()
                 .addTo(scannerFakeRecipes);
@@ -151,7 +150,6 @@ public class GTPostLoad {
             .special(ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_LV)
-            .noOptimize()
             .ignoreCollision()
             .fake()
             .addTo(scannerFakeRecipes);
@@ -162,7 +160,6 @@ public class GTPostLoad {
             .special(ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_LV)
-            .noOptimize()
             .ignoreCollision()
             .fake()
             .addTo(scannerFakeRecipes);
@@ -172,7 +169,6 @@ public class GTPostLoad {
             .itemOutputs(ItemList.Tool_DataOrb.getWithName(1L, "Copy of the Orb"))
             .duration(25 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_LV)
-            .noOptimize()
             .ignoreCollision()
             .fake()
             .addTo(scannerFakeRecipes);
@@ -183,7 +179,6 @@ public class GTPostLoad {
             .special(ItemList.Tool_DataStick.getWithName(0L, "Stick to copy"))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_LV)
-            .noOptimize()
             .ignoreCollision()
             .fake()
             .addTo(scannerFakeRecipes);
@@ -193,7 +188,6 @@ public class GTPostLoad {
             .itemOutputs(ItemList.Tool_DataStick.getWithName(1L, "Analyzed Prospection Data"))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .noOptimize()
             .ignoreCollision()
             .fake()
             .addTo(scannerFakeRecipes);
@@ -209,7 +203,6 @@ public class GTPostLoad {
                 .special(ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"))
                 .duration(30 * MINUTES)
                 .eut(TierEU.RECIPE_HV)
-                .noOptimize()
                 .ignoreCollision()
                 .fake()
                 .addTo(scannerFakeRecipes);
@@ -225,7 +218,6 @@ public class GTPostLoad {
                     .special(ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"))
                     .duration(30 * MINUTES)
                     .eut(TierEU.RECIPE_MV)
-                    .noOptimize()
                     .ignoreCollision()
                     .fake()
                     .addTo(scannerFakeRecipes);
@@ -240,7 +232,6 @@ public class GTPostLoad {
                         .special(ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"))
                         .duration(30 * MINUTES)
                         .eut(TierEU.RECIPE_HV)
-                        .noOptimize()
                         .ignoreCollision()
                         .fake()
                         .addTo(scannerFakeRecipes);
@@ -307,7 +298,6 @@ public class GTPostLoad {
                 .duration(MTEMassfabricator.sDurationMultiplier)
                 .eut(MTEMassfabricator.BASE_EUT)
                 .ignoreCollision()
-                .noOptimize()
                 .fake()
                 .build()
                 .get();
@@ -323,7 +313,6 @@ public class GTPostLoad {
             .duration(MTEMassfabricator.sDurationMultiplier / MTEMassfabricator.sUUASpeedBonus)
             .eut(MTEMassfabricator.BASE_EUT)
             .ignoreCollision()
-            .noOptimize()
             .fake()
             .build()
             .get();

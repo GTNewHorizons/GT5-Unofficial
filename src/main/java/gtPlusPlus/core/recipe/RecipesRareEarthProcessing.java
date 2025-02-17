@@ -91,7 +91,6 @@ public class RecipesRareEarthProcessing {
             .fluidOutputs(HYDROGEN_CHLORIDE.getFluidStack(4000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .noOptimize()
             .addTo(laserEngraverRecipes);
 
         // Set Material Tiers correctly
