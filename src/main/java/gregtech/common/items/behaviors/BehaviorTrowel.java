@@ -1,6 +1,7 @@
 package gregtech.common.items.behaviors;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,10 +29,6 @@ public class BehaviorTrowel extends BehaviourNone {
 
     @Override
     public boolean onItemUse(final MetaBaseItem aItem, final ItemStack aStack, final EntityPlayer aPlayer, final World aWorld, final int aX, final int aY, final int aZ, final int ordinalSide, final float hitX, final float hitY, final float hitZ) {
-        if (aWorld.isRemote) {
-            return false;
-        }
-        final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
         if (null == aPlayer) {
             return false;
         }
@@ -60,13 +57,15 @@ public class BehaviorTrowel extends BehaviourNone {
         if (count == 1) {
             chosenSlot = candidates.get(0);
         } else {
-            chosenSlot = candidates.get(java.util.concurrent.ThreadLocalRandom.current().nextInt(count));
+            chosenSlot = candidates.get(ThreadLocalRandom.current().nextInt(count));
         }
 
         final ItemStack itemToPlace = aPlayer.inventory.getStackInSlot(chosenSlot);
+
         if (itemToPlace.getItem() instanceof final ItemBlock blockItem) {
             final Block blockToPlace = blockItem.field_150939_a;
             if (blockToPlace != null && blockToPlace.getMaterial().blocksMovement()) {
+                final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
                 final int newX = aX + side.offsetX;
                 final int newY = aY + side.offsetY;
                 final int newZ = aZ + side.offsetZ;
@@ -80,10 +79,15 @@ public class BehaviorTrowel extends BehaviourNone {
         final int damage = itemToPlace.getItemDamage();
         final int stackSize = itemToPlace.stackSize;
 
+        if (aWorld.isRemote) {
+            // Do swing on client side
+            return true;
+        }
+
         if (aPlayer.capabilities.isCreativeMode || ((MetaGeneratedTool) aItem).doDamage(aStack, 100)) {
             // We can guarantee getItem() is non-null here because of the isValidBlock check done previously.
             //noinspection DataFlowIssue
-            final boolean success = itemToPlace.getItem().onItemUse(itemToPlace, aPlayer, aWorld, aX, aY, aZ, side.ordinal(), hitX, hitY, hitZ);
+            final boolean success = itemToPlace.getItem().onItemUse(itemToPlace, aPlayer, aWorld, aX, aY, aZ, ordinalSide, hitX, hitY, hitZ);
 
             if (aPlayer.capabilities.isCreativeMode) {
                 itemToPlace.setItemDamage(damage);
