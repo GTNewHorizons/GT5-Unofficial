@@ -41,7 +41,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
-import gregtech.api.objects.AE2DigitalChestHandler;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
@@ -105,13 +104,6 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                         + EnumChatFormatting.GRAY);
             }
         }
-    }
-
-    public static void registerAEIntegration() {
-        appeng.api.AEApi.instance()
-            .registries()
-            .externalStorage()
-            .addExternalStorageInterface(new AE2DigitalChestHandler());
     }
 
     @Override

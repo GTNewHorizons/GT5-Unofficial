@@ -134,7 +134,6 @@ public class BioRecipeLoader {
                     .metadata(GLASS, 3)
                     .duration(17 * SECONDS + 10 * TICKS)
                     .eut(TierEU.RECIPE_EV)
-                    .noOptimize()
                     .addTo(bacterialVatRecipes);
             }
 
@@ -146,7 +145,6 @@ public class BioRecipeLoader {
                 .metadata(GLASS, 3)
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
-                .noOptimize()
                 .addTo(bacterialVatRecipes);
 
             GTValues.RA.stdBuilder()
@@ -160,7 +158,6 @@ public class BioRecipeLoader {
                 .metadata(GLASS, 3)
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .noOptimize()
                 .addTo(bacterialVatRecipes);
 
             GTValues.RA.stdBuilder()
@@ -171,7 +168,6 @@ public class BioRecipeLoader {
                 .metadata(GLASS, 3)
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .noOptimize()
                 .addTo(bacterialVatRecipes);
         }
     }
@@ -186,7 +182,6 @@ public class BioRecipeLoader {
             .metadata(GLASS, 3)
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .noOptimize()
             .addTo(bacterialVatRecipes);
 
         GTValues.RA.stdBuilder()
@@ -196,7 +191,6 @@ public class BioRecipeLoader {
             .metadata(GLASS, 3)
             .duration(2 * MINUTES + 17 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_LV)
-            .noOptimize()
             .addTo(bacterialVatRecipes);
     }
 

@@ -792,6 +792,9 @@ gt.behaviour.paintspray.infinite.tooltip.prevent_shake=%s-Middle Click: Allow/pr
 gt.behaviour.paintspray.infinite.tooltip.ctrl_pc=Ctrl
 gt.behaviour.paintspray.infinite.tooltip.ctrl_mac=Command
 
+gt.behaviour.trowel.tooltip1=Places a random block from your hotbar
+gt.behaviour.trowel.tooltip2=§o"Don't forget to bring a trowel!"§r -§cQuerns§r
+
 GT5U.hatch.disableFilter.true=Input Filter §cOff§r
 GT5U.hatch.disableFilter.false=Input Filter §aOn§r
 GT5U.hatch.disableMultiStack.true=Multi Stack Input §cOff§r
