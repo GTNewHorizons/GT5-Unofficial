@@ -1434,7 +1434,7 @@ public class ComponentAssemblyLineLoader {
                 get(frameGt, Infinity, 48),
                 get(Electric_Motor_UEV, 48),
                 get(plateDense, Infinity, 42),
-                get(Gravistar, 768),
+                get(NuclearStar, 48),
                 get(wrapCircuit, UEV, 12),
                 getIntegratedCircuit(SENSOR_CIRCUIT))
             .fluidInputs(
@@ -1453,7 +1453,7 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(frameGt, Infinity, 48),
                 get(Electric_Motor_UEV, 48),
-                get(Gravistar, 768),
+                get(NuclearStar, 48),
                 get(wrapCircuit, UEV, 12),
                 getIntegratedCircuit(EMITTER_CIRCUIT))
             .fluidInputs(
@@ -1473,7 +1473,7 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(frameGt, Infinity, 48),
                 get(plateDense, Infinity, 32),
-                get(Gravistar, 384),
+                get(NuclearStar, 24),
                 get(Emitter_UEV, 192),
                 get(wrapCircuit, UIV, 12))
             .fluidInputs(
@@ -1620,7 +1620,7 @@ public class ComponentAssemblyLineLoader {
                 get(frameGt, TranscendentMetal, 48),
                 get(Electric_Motor_UIV, 48),
                 get(plateDense, TranscendentMetal, 42),
-                get(Gravistar, 1536),
+                get(NuclearStar, 96),
                 get(wrapCircuit, UIV, 12),
                 get(cableGt16, NetherStar, 84),
                 getIntegratedCircuit(SENSOR_CIRCUIT))
@@ -1642,7 +1642,7 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(frameGt, TranscendentMetal, 48),
                 get(Electric_Motor_UIV, 48),
-                get(Gravistar, 1536),
+                get(NuclearStar, 96),
                 get(wrapCircuit, UIV, 12),
                 get(cableGt16, NetherStar, 84),
                 getIntegratedCircuit(EMITTER_CIRCUIT))
@@ -1665,7 +1665,7 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(frameGt, TranscendentMetal, 48),
                 get(plateDense, TranscendentMetal, 32),
-                get(Gravistar, 768),
+                get(NuclearStar, 48),
                 get(Emitter_UIV, 192),
                 get(wrapCircuit, UMV, 12),
                 get(cableGt16, NetherStar, 96))
@@ -1685,7 +1685,7 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(frameGt, TranscendentMetal, 48),
                 get(plateDense, TranscendentMetal, 32),
-                get(Gravistar, 768),
+                get(NuclearStar, 48),
                 get(Emitter_UIV, 192),
                 get(wrapCircuit, UMV, 12),
                 get(cableGt16, NetherStar, 96))
