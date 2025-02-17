@@ -42,6 +42,7 @@ import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.Platform;
+import appeng.util.ReadableNumberConverter;
 import appeng.util.item.AEItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -61,6 +62,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChannelState, IMEConnectable {
 
     protected static final long DEFAULT_CAPACITY = 1_600;
+    protected long baseCapacity = DEFAULT_CAPACITY;
 
     protected BaseActionSource requestSource = null;
     protected @Nullable AENetworkProxy gridProxy = null;
@@ -128,7 +130,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof ItemBasicStorageCell) {
             return ((ItemBasicStorageCell) upgradeItemStack.getItem()).getBytesLong(upgradeItemStack) * 8;
         }
-        return DEFAULT_CAPACITY;
+        return baseCapacity;
     }
 
     /**
@@ -276,6 +278,23 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+
+        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("baseCapacity")) {
+            tooltip.add(
+                "Current cache capacity: " + EnumChatFormatting.YELLOW
+                    + ReadableNumberConverter.INSTANCE
+                        .toWideReadableForm(stack.stackTagCompound.getLong("baseCapacity")));
+        }
+    }
+
+    @Override
+    public void setItemNBT(NBTTagCompound aNBT) {
+        super.setItemNBT(aNBT);
+        if (baseCapacity != DEFAULT_CAPACITY) aNBT.setLong("baseCapacity", baseCapacity);
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
 
@@ -289,6 +308,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         }
         aNBT.setBoolean("additionalConnection", additionalConnection);
         aNBT.setTag("cachedItems", items);
+        aNBT.setLong("baseCapacity", baseCapacity);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -327,6 +347,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             }
         }
         additionalConnection = aNBT.getBoolean("additionalConnection");
+        baseCapacity = aNBT.getLong("baseCapacity");
         getProxy().readFromNBT(aNBT);
     }
 
