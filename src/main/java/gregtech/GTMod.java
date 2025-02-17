@@ -32,7 +32,6 @@ import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
-import appeng.api.AEApi;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -49,7 +48,6 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import galacticgreg.SpaceDimRegisterer;
 import gregtech.api.GregTechAPI;
-import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentHazmat;
 import gregtech.api.enchants.EnchantmentRadioactivity;
@@ -62,7 +60,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.implementations.MTEHatchNonConsumableBase;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
@@ -88,13 +85,11 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.config.OPStuff;
 import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
-import gregtech.common.covers.CoverFacadeAE;
 import gregtech.common.misc.GTCommand;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
 import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
-import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
-import gregtech.common.tileentities.storage.MTEDigitalChestBase;
+import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
 import gregtech.loaders.load.CoverBehaviorLoader;
@@ -280,10 +275,7 @@ public class GTMod implements IGTMod {
                 .getParentFile());
         GTPreLoad.adjustScrap();
 
-        AEApi.instance()
-            .registries()
-            .interfaceTerminal()
-            .register(MTEHatchCraftingInputME.class);
+        AE2Compat.onPreInit();
 
         GTPreLoad.runMineTweakerCompat();
 
@@ -477,18 +469,8 @@ public class GTMod implements IGTMod {
             GTForestryCompat.transferCentrifugeRecipes();
             GTForestryCompat.transferSqueezerRecipes();
         }
-        MTEDigitalChestBase.registerAEIntegration();
-        MTEHatchNonConsumableBase.registerAEIntegration();
-        ItemStack facade = AEApi.instance()
-            .definitions()
-            .items()
-            .facade()
-            .maybeItem()
-            .transform(i -> new ItemStack(i, 1, GTValues.W))
-            .orNull();
-        if (facade != null) {
-            CoverRegistry.registerCover(facade, null, new CoverFacadeAE());
-        }
+
+        AE2Compat.onPostInit();
 
         Arrays
             .stream(
