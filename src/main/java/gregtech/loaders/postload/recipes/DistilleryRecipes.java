@@ -36,7 +36,7 @@ public class DistilleryRecipes implements Runnable {
             .itemInputs(GTUtility.getIntegratedCircuit(24))
             .fluidInputs(Materials.Creosote.getFluid(25L))
             .fluidOutputs(Materials.Lubricant.getFluid(8L))
-            .duration(2 * SECONDS + 10 * TICKS)
+            .duration(3 * SECONDS)
             .eut(30)
             .addTo(distilleryRecipes);
 

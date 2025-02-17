@@ -892,7 +892,7 @@ public class RecipeLoader2 {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(24))
             .fluidInputs(Materials.WoodTar.getFluid(100))
-            .fluidOutputs(GGMaterial.cyclopentadiene.getFluidOrGas(5))
+            .fluidOutputs(GGMaterial.cyclopentadiene.getFluidOrGas(4))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(distilleryRecipes);

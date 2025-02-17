@@ -161,7 +161,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 4L))
             .outputChances(10000)
             .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(36L))
-            .duration(3 * SECONDS + 15 * TICKS)
+            .duration(2 * SECONDS + 10 * TICKS)
             .eut((int) TierEU.RECIPE_MV)
             .addTo(autoclaveRecipes);
 
@@ -170,7 +170,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemOutputs(GTModHandler.getIC2Item("carbonFiber", 2L))
             .outputChances(10000)
             .fluidInputs(Materials.Plastic.getMolten(72L))
-            .duration(30 * SECONDS)
+            .duration(3 * SECONDS + 15 * TICKS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(autoclaveRecipes);
 
