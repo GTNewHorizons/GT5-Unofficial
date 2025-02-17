@@ -1434,7 +1434,7 @@ public class ComponentAssemblyLineLoader {
                 get(frameGt, Infinity, 48),
                 get(Electric_Motor_UEV, 48),
                 get(plateDense, Infinity, 42),
-                get(NuclearStar, 48),
+                get(Gravistar, 768),
                 get(wrapCircuit, UEV, 12),
                 getIntegratedCircuit(SENSOR_CIRCUIT))
             .fluidInputs(
@@ -1453,7 +1453,7 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(frameGt, Infinity, 48),
                 get(Electric_Motor_UEV, 48),
-                get(NuclearStar, 48),
+                get(Gravistar, 768),
                 get(wrapCircuit, UEV, 12),
                 getIntegratedCircuit(EMITTER_CIRCUIT))
             .fluidInputs(
@@ -1473,7 +1473,7 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(frameGt, Infinity, 48),
                 get(plateDense, Infinity, 32),
-                get(NuclearStar, 24),
+                get(Gravistar, 384),
                 get(Emitter_UEV, 192),
                 get(wrapCircuit, UIV, 12))
             .fluidInputs(
