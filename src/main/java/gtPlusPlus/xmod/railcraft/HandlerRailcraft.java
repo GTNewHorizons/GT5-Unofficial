@@ -51,7 +51,7 @@ public class HandlerRailcraft {
                 400,
                 0).setTextureName(GTPlusPlus.ID + ":burnables/itemCactusCharcoal"));
 
-        GregtechItemList.CactusCoke.set(
+        GregtechItemList.SugarCharcoal.set(
             new BaseItemBurnable(
                 "itemSugarCharcoal",
                 "Sugar Charcoal",
@@ -63,7 +63,7 @@ public class HandlerRailcraft {
                 400,
                 0).setTextureName(GTPlusPlus.ID + ":burnables/itemSugarCharcoal"));
 
-        GregtechItemList.SugarCharcoal.set(
+        GregtechItemList.CactusCoke.set(
             new BaseItemBurnable(
                 "itemCactusCoke",
                 "Cactus Coke",

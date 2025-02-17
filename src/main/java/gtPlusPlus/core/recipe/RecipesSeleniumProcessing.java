@@ -39,7 +39,6 @@ public class RecipesSeleniumProcessing {
             .fluidInputs(FluidUtils.getHotWater(4000), MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(1000))
             .fluidOutputs(MaterialMisc.SELENIOUS_ACID.getFluidStack(1000))
             .duration(24 * SECONDS)
-            .noOptimize()
             .eut(TierEU.RECIPE_EV)
             .addTo(cokeOvenRecipes);
 
@@ -51,7 +50,6 @@ public class RecipesSeleniumProcessing {
                 MaterialsElements.getInstance().SELENIUM.getFluidStack(144 * 2 + 36),
                 Materials.DilutedSulfuricAcid.getFluid(12000))
             .eut(TierEU.RECIPE_IV)
-            .noOptimize()
             .duration(5 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
     }
