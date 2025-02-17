@@ -111,14 +111,6 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     /**
-     * If recipe builder should stop optimizing inputs.
-     */
-    public RecipeMapBuilder<B> disableOptimize() {
-        backendPropertiesBuilder.disableOptimize();
-        return this;
-    }
-
-    /**
      * Changes how recipes are emitted by a particular recipe builder. Can emit multiple recipe per builder.
      */
     public RecipeMapBuilder<B> recipeEmitter(

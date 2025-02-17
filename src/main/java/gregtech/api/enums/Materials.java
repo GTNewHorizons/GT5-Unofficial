@@ -1974,7 +1974,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         SuperconductorUIVBase.mChemicalFormula = "(C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085";
         SuperconductorUMVBase.mChemicalFormula = "?\u2086Or\u2083(Hy\u26B6)\u2081\u2081(((CW)\u2087Ti\u2083)\u2083???)\u2085\u06DE\u2082";
         Diatomite.mChemicalFormula = "(SiO\u2082)\u2088Fe\u2082O\u2083(Al\u2082O\u2083)";
-        EnrichedHolmium.mChemicalFormula = "Nq+\u2088Ho\u2082";
+        EnrichedHolmium.mChemicalFormula = "Nq+\u2084Ho\u2081";
         Grade1PurifiedWater.mChemicalFormula = "H\u2082O";
         Grade2PurifiedWater.mChemicalFormula = "H\u2082O";
         Grade3PurifiedWater.mChemicalFormula = "H\u2082O";
