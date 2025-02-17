@@ -81,7 +81,6 @@ public class TTRecipeAdder extends RecipeAdder {
             .duration(totalComputationRequired)
             .eut(researchEUt)
             .metadata(RESEARCH_STATION_DATA, researchAmperage | computationRequiredPerSec << 16)
-            .noOptimize()
             .ignoreCollision()
             .fake()
             .addTo(researchStationFakeRecipes);
@@ -223,7 +222,6 @@ public class TTRecipeAdder extends RecipeAdder {
             .duration(totalComputationRequired)
             .eut(researchEUt)
             .metadata(RESEARCH_STATION_DATA, researchAmperage | computationRequiredPerSec << 16)
-            .noOptimize()
             .ignoreCollision()
             .fake()
             .addTo(researchStationFakeRecipes);

@@ -152,7 +152,6 @@ public class NaquadahReworkRecipeLoader {
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(600, 500))
-            .noOptimize()
             .addTo(neutronActivatorRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -164,7 +163,6 @@ public class NaquadahReworkRecipeLoader {
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(900, 850))
-            .noOptimize()
             .addTo(neutronActivatorRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(inertNaquadria.get(OrePrefixes.dust, 64), inertNaquadria.get(OrePrefixes.dust, 32))
@@ -174,7 +172,6 @@ public class NaquadahReworkRecipeLoader {
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(1100, 1080))
-            .noOptimize()
             .addTo(neutronActivatorRecipes);
 
         // Naquadah Rework Line
@@ -264,7 +261,6 @@ public class NaquadahReworkRecipeLoader {
             .duration(5 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(230, 200))
-            .noOptimize()
             .addTo(neutronActivatorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -344,7 +340,6 @@ public class NaquadahReworkRecipeLoader {
             .duration(6 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(480, 460))
-            .noOptimize()
             .addTo(neutronActivatorRecipes);
 
         // Nq+(SO4)2 + 2Zn = Nq+ + 2ZnSO4
@@ -422,7 +417,6 @@ public class NaquadahReworkRecipeLoader {
             .duration(5 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(1100, 1050))
-            .noOptimize()
             .addTo(neutronActivatorRecipes);
 
         GTValues.RA.stdBuilder()
