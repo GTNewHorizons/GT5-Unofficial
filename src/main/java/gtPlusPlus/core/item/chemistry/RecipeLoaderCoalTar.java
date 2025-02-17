@@ -81,7 +81,6 @@ public class RecipeLoaderCoalTar {
             .fluidOutputs(Materials.Methane.getGas(1000))
             .duration(10 * SECONDS)
             .eut(90)
-            .noOptimize()
             .addTo(chemicalDehydratorRecipes);
     }
 
@@ -219,10 +218,10 @@ public class RecipeLoaderCoalTar {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(6))
-            .fluidInputs(new FluidStack(GTPPFluids.SulfuricCoalTarOil, 1000))
-            .fluidOutputs(new FluidStack(GTPPFluids.Naphthalene, 1000))
+            .fluidInputs(new FluidStack(GTPPFluids.SulfuricCoalTarOil, 20))
+            .fluidOutputs(new FluidStack(GTPPFluids.Naphthalene, 20))
             .eut(TierEU.RECIPE_LV)
-            .duration(60 * SECONDS)
+            .duration(1 * SECONDS)
             .addTo(distilleryRecipes);
     }
 
@@ -234,7 +233,6 @@ public class RecipeLoaderCoalTar {
             .fluidOutputs(Materials.PhthalicAcid.getFluid(2500))
             .eut(30)
             .duration(16 * SECONDS)
-            .noOptimize()
             .addTo(UniversalChemical);
     }
 
