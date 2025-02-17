@@ -370,6 +370,13 @@ public class GTModHandler {
     /**
      * Gets an Item from the specified mod
      */
+    public static ItemStack getModItem(String aModID, String aItem) {
+        return getModItem(aModID, aItem, 1, null);
+    }
+
+    /**
+     * Gets an Item from the specified mod
+     */
     public static ItemStack getModItem(String aModID, String aItem, long aAmount) {
         return getModItem(aModID, aItem, aAmount, null);
     }

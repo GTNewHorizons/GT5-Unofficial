@@ -26,10 +26,10 @@ public final class RecipeMapBackendPropertiesBuilder {
 
     private boolean specialSlotSensitive;
 
-    private boolean disableOptimize;
-
     private Consumer<? super GTRecipeBuilder> builderTransformer;
+
     private Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter = this::defaultBuildRecipe;
+
     private Consumer<? super GTRecipe> recipeTransformer;
 
     RecipeMapBackendPropertiesBuilder() {}
@@ -39,7 +39,6 @@ public final class RecipeMapBackendPropertiesBuilder {
             minItemInputs,
             minFluidInputs,
             specialSlotSensitive,
-            disableOptimize,
             recipeEmitter,
             builderTransformer,
             recipeTransformer);
@@ -57,11 +56,6 @@ public final class RecipeMapBackendPropertiesBuilder {
 
     public RecipeMapBackendPropertiesBuilder specialSlotSensitive() {
         this.specialSlotSensitive = true;
-        return this;
-    }
-
-    public RecipeMapBackendPropertiesBuilder disableOptimize() {
-        this.disableOptimize = true;
         return this;
     }
 
@@ -94,9 +88,7 @@ public final class RecipeMapBackendPropertiesBuilder {
     private Iterable<? extends GTRecipe> defaultBuildRecipe(GTRecipeBuilder builder) {
         // TODO sensible validation
         GTRecipeBuilder b = builder;
-        if (disableOptimize && builder.isOptimize()) {
-            b = copy(builder, b).noOptimize();
-        }
+        b = copy(builder, b);
         return buildOrEmpty(b);
     }
 

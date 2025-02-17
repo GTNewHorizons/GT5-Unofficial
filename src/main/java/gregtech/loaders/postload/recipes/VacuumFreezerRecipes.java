@@ -395,7 +395,6 @@ public class VacuumFreezerRecipes implements Runnable {
                 Materials.SuperCoolant.getFluid(partFraction * multiplier * 4L))
             .duration((int) (multiplier * (SECONDS * partFraction / 144.0)))
             .eut(TierEU.RECIPE_UIV)
-            .noOptimize()
             .addTo(vacuumFreezerRecipes);
 
     }
