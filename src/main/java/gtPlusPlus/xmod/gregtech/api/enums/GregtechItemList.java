@@ -696,6 +696,8 @@ public enum GregtechItemList implements IGregtechItemContainer {
     // Items previously stored elsewhere, moved here for common reference
 
     // Catalyst Carriers
+    EmptyCatalystCarrier,
+    GreenMetalCatalyst,
     RedMetalCatalyst,
     YellowMetalCatalyst,
     BlueMetalCatalyst,
@@ -723,6 +725,31 @@ public enum GregtechItemList implements IGregtechItemContainer {
     ParticleAccelerationCatalyst,
     SynchrotronCapableCatalyst,
     AlgagenicGrowthPromoterCatalyst,
+
+    // Algae Items
+    Algae,
+    AlgaeBiomass,
+    GreenAlgaeBiomass,
+    BrownAlgaeBiomass,
+    GoldenBrownAlgaeBiomass,
+    RedAlgaeBiomass,
+    CelluloseFiber,
+    GoldenBrownCelluloseFiber,
+    RedCelluloseFiber,
+    Compost,
+    WoodPellet,
+    WoodBrick,
+    CellulosePulp,
+    RawBioResin,
+    AlginicAcid,
+    Alumina, // todo
+    AluminiumPellet,
+    SodiumAluminate, // todo
+    SodiumCarbonate, // todo?
+    LithiumChloride, // todo
+    CleanAluminiumMix,
+    Pinecone,
+    CrushedPineMaterials,
 
     // Generic Chem Items
     SodiumEthoxide,
@@ -855,6 +882,18 @@ public enum GregtechItemList implements IGregtechItemContainer {
     LithiumHydroperoxide,
     SmallLithiumHydroperoxide,
     TinyLithiumHydroperoxide,
+
+    ManureByproductsDust,
+    SmallManureByproductsDust,
+    TinyManureByproductsDust,
+
+    OrganicFertilizerDust,
+    SmallOrganicFertilizerDust,
+    TinyOrganicFertilizerDust,
+
+    DriedEarthDust,
+    SmallDriedEarthDust,
+    TinyDriedEarthDust,
 
     ;
 

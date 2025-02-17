@@ -28,7 +28,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -82,7 +81,7 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(19),
-                ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 6),
+                Materials.SodiumCarbonate.getDust(6),
                 MaterialMisc.SODIUM_CYANIDE.getDust(3))
             .itemOutputs(MaterialMisc.CYANOACETIC_ACID.getDust(9), Materials.Salt.getDust(6))
             .fluidInputs(

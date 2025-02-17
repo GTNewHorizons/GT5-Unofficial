@@ -443,12 +443,12 @@ public class MilledOreProcessing extends ItemPackage {
         ArrayList<ItemStack> aSaplings = new ArrayList<>();
         ArrayList<ItemStack> aPinecones = new ArrayList<>();
 
-        ItemStack aCrushedPine = ItemUtils.getSimpleStack(AgriculturalChem.mCrushedPine, 1);
+        ItemStack aCrushedPine = GregtechItemList.CrushedPineMaterials.get(1);
 
         aLogs.add(ItemUtils.getSimpleStack(BOPBlockRegistrator.log_Pine));
         aLeaves.add(ItemUtils.getSimpleStack(BOPBlockRegistrator.leaves_Pine));
         aSaplings.add(ItemUtils.getSimpleStack(BOPBlockRegistrator.sapling_Pine));
-        aPinecones.add(ItemUtils.getSimpleStack(AgriculturalChem.mPinecone, 1));
+        aPinecones.add(GregtechItemList.Pinecone.get(1));
 
         if (BiomesOPlenty.isModLoaded()) {
             aLogs.add(ItemUtils.simpleMetaStack(BOPCBlocks.logs4, 0, 1));

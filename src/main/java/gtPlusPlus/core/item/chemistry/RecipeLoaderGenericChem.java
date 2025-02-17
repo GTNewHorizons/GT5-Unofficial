@@ -186,7 +186,7 @@ public class RecipeLoaderGenericChem {
 
     private static void recipeGrindingBallAlumina() {
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(AgriculturalChem.mAlumina, 64), GTUtility.getIntegratedCircuit(10))
+            .itemInputs(WerkstoffLoader.Alumina.get(OrePrefixes.dust, 64), GTUtility.getIntegratedCircuit(10))
             .itemOutputs(GregtechItemList.Milling_Ball_Alumina.get(8))
             .fluidInputs(new FluidStack(GTPPFluids.Aniline, 4000))
             .duration(3 * MINUTES)
@@ -394,7 +394,7 @@ public class RecipeLoaderGenericChem {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(8),
                 new ItemStack(Items.rotten_flesh, 128),
-                ItemUtils.simpleMetaStack(AgriculturalChem.mAgrichemItem1, 8, 32))
+                GregtechItemList.Compost.get(32))
             .fluidInputs(FluidUtils.getHotWater(3000))
             .fluidOutputs(new FluidStack(GTPPFluids.Cadaverine, 750), new FluidStack(GTPPFluids.Putrescine, 750))
             .duration(2 * MINUTES)
