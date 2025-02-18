@@ -455,6 +455,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mCoils.clear();
         if (coilLease != null) {
             GTCoilTracker.deactivate(coilLease);
+            coilLease = null;
         }
     }
 

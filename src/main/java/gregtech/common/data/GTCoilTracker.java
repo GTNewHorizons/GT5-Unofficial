@@ -10,7 +10,6 @@ import net.minecraftforge.event.world.ChunkWatchEvent;
 import com.google.common.collect.MapMaker;
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
-
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -20,13 +19,13 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.net.GTCoilStatus;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectFunction;
-import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.longs.Long2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongList;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
+import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 
 /**
  * This class tracks all active heating coils. Each instance is responsible for one world.
@@ -62,7 +61,7 @@ public class GTCoilTracker {
      * Used to send active coils when the player views a new chunk.
      * {packed chunk x,0,chunk z: set of packed x,y,z active coils}
      */
-    private final Long2ObjectOpenHashMap<LongSet> activeBlocksByChunk = new Long2ObjectOpenHashMap<>();
+    private final Long2ReferenceOpenHashMap<LongSet> activeBlocksByChunk = new Long2ReferenceOpenHashMap<>();
 
     /**
      * Used to sync activations to clients in one packet.
@@ -80,14 +79,14 @@ public class GTCoilTracker {
      * Used to prevent duplicate lease registrations by the same multi.
      * {multi reference: lease reference}
      */
-    private final Object2ObjectMap<MTEMultiBlockBase, MultiCoilLease> leasesByMulti = new Object2ObjectOpenHashMap<>();
+    private final Reference2ReferenceMap<MTEMultiBlockBase, MultiCoilLease> leasesByMulti = new Reference2ReferenceOpenHashMap<>();
 
     private static final Long2ObjectFunction<LongSet> CHUNK_LIST_CTOR = ignored -> new LongOpenHashSet();
 
     /**
      * An object that represents an activated set of coils. These are always owned by a multi, and must be deactivated
-     * at some point.
-     * 
+     * at some point or the coils will remain active forever.
+     *
      * @see GTCoilTracker#activate(MTEMultiBlockBase, LongList)
      * @see GTCoilTracker#deactivate(MultiCoilLease)
      */
@@ -130,6 +129,9 @@ public class GTCoilTracker {
         for (long coil : lease.coils) {
             deactivate(coil);
         }
+
+        // remove the coils so that this lease can't be double-deactivated
+        lease.coils.clear();
 
         MTEMultiBlockBase multi = lease.multi.get();
 
@@ -225,7 +227,7 @@ public class GTCoilTracker {
     /**
      * Activates the given list of coils. A multi cannot have more than one lease at a time, and if two sets of coils
      * are activated, the oldest lease is deactivated automatically.
-     * 
+     *
      * @param multi The owning multi
      * @param coils The list of coils that should be activated
      * @return A lease owned by the given multi that should be deactivated when needed (see
@@ -243,7 +245,7 @@ public class GTCoilTracker {
     /**
      * Deactivates a set of coils. If the multi is destroyed and this is never called, the coils will remain active
      * until the server restarts or the world is garbage collected.
-     * 
+     *
      * @param lease The lease.
      */
     public static void deactivate(MultiCoilLease lease) {
