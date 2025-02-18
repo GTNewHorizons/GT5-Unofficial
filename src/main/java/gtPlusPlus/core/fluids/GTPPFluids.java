@@ -81,6 +81,12 @@ public class GTPPFluids {
     public static Fluid CN3H7O3RocketFuel;
     public static Fluid DenseHydrazineFuelMixture;
 
+    // Nuclear
+    public static Fluid BurntLiFBeF2ThF4UF4Salt;
+    public static Fluid BurntLiFBeF2ZrF4UF4Salt;
+    public static Fluid BurntLiFBeF2ZrF4U235Salt;
+    public static Fluid ImpureMoltenSaltBase;
+
     // Custom Blood Support
     private static final List<FluidStack> bloodFluids = new ArrayList<>();
 
@@ -391,6 +397,38 @@ public class GTPPFluids {
             "Dense Hydrazine Fuel Mixture",
             275,
             new short[] { 175, 80, 120, 100 },
+            null,
+            null);
+
+        BurntLiFBeF2ThF4UF4Salt = FluidUtils.generateFluidNonMolten(
+            "BurntLiFBeF2ThF4UF4",
+            "Burnt LiFBeF2ThF4UF4 Salt",
+            545,
+            new short[] { 48, 175, 48, 100 },
+            null,
+            null);
+
+        BurntLiFBeF2ZrF4UF4Salt = FluidUtils.generateFluidNonMolten(
+            "BurntLiFBeF2ZrF4UF4",
+            "Burnt LiFBeF2ZrF4UF4 Salt",
+            520,
+            new short[] { 48, 168, 68, 100 },
+            null,
+            null);
+
+        BurntLiFBeF2ZrF4U235Salt = FluidUtils.generateFluidNonMolten(
+            "BurntLiFBeF2ZrF4U235",
+            "Burnt LiFBeF2ZrF4U235 Salt",
+            533,
+            new short[] { 68, 185, 48, 100 },
+            null,
+            null);
+
+        ImpureMoltenSaltBase = FluidUtils.generateFluidNonMolten(
+            "ImpureLiFBeF2",
+            "Impure Molten Salt Base",
+            533,
+            new short[] { 110, 75, 186, 100 },
             null,
             null);
 

@@ -45,7 +45,6 @@ import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.bauble.BatteryPackBaseBauble;
 import gtPlusPlus.core.item.chemistry.IonParticles;
-import gtPlusPlus.core.item.chemistry.NuclearChem;
 import gtPlusPlus.core.item.chemistry.StandardBaseParticles;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.item.circuit.GTPPIntegratedCircuitItem;
@@ -793,9 +792,6 @@ public final class ModItems {
         GregtechItemList.AmmoniumNitrateDust.set(ammoniumNitrate[0]);
         GregtechItemList.SmallAmmoniumNitrateDust.set(ammoniumNitrate[1]);
         GregtechItemList.TinyAmmoniumNitrateDust.set(ammoniumNitrate[2]);
-
-        // Nuclear Processing
-        new NuclearChem();
 
         // Farm Animal Fun
         // Nitrogen, Ammonium Nitrate, Phosphates, Calcium, Copper, Carbon
