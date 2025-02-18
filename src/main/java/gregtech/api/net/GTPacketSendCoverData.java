@@ -4,6 +4,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.io.ByteArrayDataInput;
 
 import gregtech.api.covers.CoverRegistry;
@@ -31,7 +33,7 @@ public class GTPacketSendCoverData extends GTPacket {
     }
 
     public GTPacketSendCoverData(int mX, short mY, int mZ, ForgeDirection coverSide, int coverID,
-        ISerializableObject coverData) {
+        @NotNull ISerializableObject coverData) {
         super();
         this.mX = mX;
         this.mY = mY;
@@ -51,18 +53,6 @@ public class GTPacketSendCoverData extends GTPacket {
         this.side = info.getSide();
         this.coverID = info.getCoverID();
         this.coverData = info.getCoverData();
-    }
-
-    public GTPacketSendCoverData(ForgeDirection coverSide, int coverID, ISerializableObject coverData,
-        ICoverable tile) {
-        super();
-        this.mX = tile.getXCoord();
-        this.mY = tile.getYCoord();
-        this.mZ = tile.getZCoord();
-
-        this.side = coverSide;
-        this.coverID = coverID;
-        this.coverData = coverData;
     }
 
     @Override
