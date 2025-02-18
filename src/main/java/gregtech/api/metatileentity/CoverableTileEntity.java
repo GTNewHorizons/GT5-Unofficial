@@ -223,11 +223,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         setCoverIdAndDataAtSide(side, aID, null);
     }
 
-    @Override
-    public boolean setCoverIDAtSideNoUpdate(ForgeDirection side, int aID) {
-        return setCoverIDAtSideNoUpdate(side, aID, null);
-    }
-
     public boolean setCoverIDAtSideNoUpdate(ForgeDirection side, int aID, ISerializableObject aData) {
         final CoverInfo oldCoverInfo = getCoverInfoAtSide(side);
         if (side != ForgeDirection.UNKNOWN && oldCoverInfo.getCoverID() != aID) {
@@ -416,16 +411,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     protected void updateOutputRedstoneSignal(ForgeDirection side) {
         setOutputRedstoneSignal(side, (byte) 0);
-    }
-
-    @Override
-    public void receiveCoverData(ForgeDirection coverSide, int aCoverID, int aCoverData) {
-        if (coverSide == ForgeDirection.UNKNOWN) return;
-        final CoverInfo oldCoverInfo = getCoverInfoAtSide(coverSide);
-        if (!oldCoverInfo.isValid()) return;
-
-        setCoverIDAtSideNoUpdate(coverSide, aCoverID);
-        setCoverDataAtSide(coverSide, aCoverData);
     }
 
     @Override

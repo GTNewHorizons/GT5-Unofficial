@@ -24,8 +24,6 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
 
     void setCoverIDAtSide(ForgeDirection side, int aID);
 
-    boolean setCoverIDAtSideNoUpdate(ForgeDirection side, int aID);
-
     /**
      * Called when the cover is initially attached to a machine.
      *
@@ -62,18 +60,10 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
 
     /**
      * Receiving a packet with cover data.
-     */
-    void receiveCoverData(ForgeDirection coverSide, int coverID, int coverData);
-
-    /**
-     * Receiving a packet with cover data.
      *
      * @param coverSide cover side
      * @param aPlayer   the player who made the change
      */
-    default void receiveCoverData(ForgeDirection coverSide, int aCoverID, ISerializableObject aCoverData,
-        EntityPlayerMP aPlayer) {
-        if (aCoverData instanceof ISerializableObject.LegacyCoverData)
-            receiveCoverData(coverSide, aCoverID, ((ISerializableObject.LegacyCoverData) aCoverData).get());
-    }
+    void receiveCoverData(ForgeDirection coverSide, int aCoverID, ISerializableObject aCoverData,
+        EntityPlayerMP aPlayer);
 }
