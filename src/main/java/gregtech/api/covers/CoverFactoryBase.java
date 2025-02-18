@@ -39,7 +39,6 @@ public abstract class CoverFactoryBase<T extends ISerializableObject> implements
     @Override
     public final void placeCover(EntityPlayer player, ItemStack cover, ICoverable tileEntity, ForgeDirection side) {
         tileEntity.setCoverIdAndDataAtSide(side, GTUtility.stackToInt(cover), initializeDataFromCover(cover));
-        tileEntity.setCoverIdAndDataAtSide(side, GTUtility.stackToInt(cover), initializeDataFromCover(cover));
         onPlayerAttach(player, cover, tileEntity, side);
     }
 
