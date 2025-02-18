@@ -54,16 +54,6 @@ public class GTPacketRequestCoverData extends GTPacket {
         this.coverID = coverID;
     }
 
-    public GTPacketRequestCoverData(ForgeDirection coverSide, int coverID, ICoverable tile) {
-        super();
-        this.mX = tile.getXCoord();
-        this.mY = tile.getYCoord();
-        this.mZ = tile.getZCoord();
-
-        this.side = coverSide;
-        this.coverID = coverID;
-    }
-
     @Override
     public byte getPacketID() {
         return GTPacketTypes.REQUEST_COVER_DATA.id;
