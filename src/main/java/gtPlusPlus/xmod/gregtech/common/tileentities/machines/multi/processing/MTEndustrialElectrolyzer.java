@@ -150,7 +150,7 @@ public class MTEndustrialElectrolyzer extends GTPPMultiBlockBase<MTEndustrialEle
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 2.8F)
             .setEuModifier(0.9F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import net.minecraft.block.Block;
@@ -24,7 +25,11 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -221,7 +226,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 if (!hasValidMetaTileEntity()) return;
                 if (isServerSide()) {
                     if (mTickTimer == 10) {
-                        updateCoverBehavior();
                         issueBlockUpdate();
                         joinEnet();
                     }
@@ -482,8 +486,17 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public boolean isGivingInformation() {
-        if (canAccessData()) return mMetaTileEntity.isGivingInformation();
-        return false;
+        return canAccessData() && mMetaTileEntity.isGivingInformation();
+    }
+
+    @Override
+    public String[] getInfoData() {
+        return canAccessData() ? getMetaTileEntity().getInfoData() : new String[] {};
+    }
+
+    @Override
+    public Map<String, String> getInfoMap() {
+        return canAccessData() ? getMetaTileEntity().getInfoMap() : Collections.emptyMap();
     }
 
     @Override
@@ -650,6 +663,15 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         return mID = aID;
     }
 
+    @Nullable
+    @Override
+    public <T> T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
+        if (canAccessData()) {
+            return mMetaTileEntity.getCapability(capability, side);
+        }
+        return null;
+    }
+
     @Override
     public boolean isActive() {
         return false;
@@ -814,8 +836,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                     ? GTUtility.determineWrenchingSide(side, aX, aY, aZ)
                     : side;
                 return (getCoverInfoAtSide(tSide).hasCoverGUI());
-            } else if (getCoverBehaviorAtSideNew(side).onCoverRightclickClient(side, this, aPlayer, aX, aY, aZ)) {
-                return true;
             }
         }
         if (isServerSide()) {
@@ -966,13 +986,12 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 final CoverInfo coverInfo = getCoverInfoAtSide(coverSide);
 
                 if (coverInfo.getCoverID() == 0) {
-                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCovers.keySet())) {
-                        final CoverBehaviorBase<?> coverBehavior = GregTechAPI.getCoverBehaviorNew(tCurrentItem);
+                    if (CoverRegistry.isCover(tCurrentItem)) {
+                        final CoverBehaviorBase<?> coverBehavior = CoverRegistry.getCoverBehaviorNew(tCurrentItem);
                         if (coverBehavior.isCoverPlaceable(coverSide, tCurrentItem, this)
                             && mMetaTileEntity.allowCoverOnSide(coverSide, new GTItemStack(tCurrentItem))) {
 
-                            setCoverItemAtSide(coverSide, tCurrentItem);
-                            coverBehavior.onPlayerAttach(aPlayer, tCurrentItem, this, coverSide);
+                            attachCover(aPlayer, tCurrentItem, coverSide);
 
                             mMetaTileEntity.markDirty();
                             if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
@@ -1091,9 +1110,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     @Override
     public boolean canExtractItem(int aIndex, ItemStack aStack, int ordinalSide) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
-        return canAccessData()
-            && getCoverBehaviorAtSideNew(side)
-                .letsItemsOut(side, getCoverIDAtSide(side), getComplexCoverDataAtSide(side), aIndex, this)
+        return canAccessData() && getCoverInfoAtSide(side).letsItemsOut(aIndex)
             && mMetaTileEntity.canExtractItem(aIndex, aStack, ordinalSide);
     }
 
@@ -1327,12 +1344,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     @Override
     public boolean isUniversalEnergyStored(long aEnergyAmount) {
         return getUniversalEnergyStored() >= aEnergyAmount;
-    }
-
-    @Override
-    public String[] getInfoData() {
-        if (canAccessData()) return getMetaTileEntity().getInfoData();
-        return new String[] {};
     }
 
     @Override

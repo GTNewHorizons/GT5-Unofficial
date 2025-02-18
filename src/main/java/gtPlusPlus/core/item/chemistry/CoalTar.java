@@ -6,6 +6,7 @@ import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
@@ -24,7 +25,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -50,7 +50,9 @@ public class CoalTar extends ItemPackage {
         // C2H6O = C2H4 + H2O
         if (bioEth1 != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(CI.getNumberedBioCircuit(17), ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1))
+                .itemInputs(
+                    GTUtility.getIntegratedCircuit(17),
+                    ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 1))
                 .fluidInputs(bioEth1)
                 .fluidOutputs(FluidUtils.getWater(1000))
@@ -61,7 +63,7 @@ public class CoalTar extends ItemPackage {
 
         if (bioEth2 != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(CI.getNumberedBioCircuit(18), ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1))
+                .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 1))
                 .fluidInputs(bioEth2)
                 .fluidOutputs(FluidUtils.getWater(1000))
@@ -80,7 +82,6 @@ public class CoalTar extends ItemPackage {
             .fluidOutputs(Materials.Methane.getGas(1000))
             .duration(10 * SECONDS)
             .eut(90)
-            .noOptimize()
             .addTo(chemicalDehydratorRecipes);
     }
 
@@ -186,10 +187,10 @@ public class CoalTar extends ItemPackage {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(6))
-            .fluidInputs(FluidUtils.getFluidStack("fluid.sulfuriccoaltaroil", 1000))
-            .fluidOutputs(FluidUtils.getFluidStack("fluid.naphthalene", 1000))
+            .fluidInputs(FluidUtils.getFluidStack("fluid.sulfuriccoaltaroil", 20))
+            .fluidOutputs(FluidUtils.getFluidStack("fluid.naphthalene", 20))
             .eut(TierEU.RECIPE_LV)
-            .duration(60 * SECONDS)
+            .duration(1 * SECONDS + 4 * TICKS)
             .addTo(distilleryRecipes);
     }
 
@@ -201,13 +202,11 @@ public class CoalTar extends ItemPackage {
             .fluidOutputs(Materials.PhthalicAcid.getFluid(2500))
             .eut(30)
             .duration(16 * SECONDS)
-            .noOptimize()
             .addTo(UniversalChemical);
     }
 
     private static void recipePhthalicAcidToPhthalicAnhydride() {
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.getNumberedBioCircuit(15))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustPhthalicAnhydride", 15))
             .fluidInputs(Materials.PhthalicAcid.getFluid(1000))
             .eut(TierEU.RECIPE_MV)

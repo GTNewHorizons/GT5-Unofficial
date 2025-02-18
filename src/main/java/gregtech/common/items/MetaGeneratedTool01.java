@@ -36,6 +36,7 @@ import static gregtech.common.items.IDMetaTool01.SOFTMALLET;
 import static gregtech.common.items.IDMetaTool01.SOLDERING_IRON_HV;
 import static gregtech.common.items.IDMetaTool01.SOLDERING_IRON_LV;
 import static gregtech.common.items.IDMetaTool01.SOLDERING_IRON_MV;
+import static gregtech.common.items.IDMetaTool01.TROWEL;
 import static gregtech.common.items.IDMetaTool01.TURBINE;
 import static gregtech.common.items.IDMetaTool01.TURBINE_HUGE;
 import static gregtech.common.items.IDMetaTool01.TURBINE_LARGE;
@@ -81,6 +82,7 @@ import gregtech.common.tools.ToolScrewdriver;
 import gregtech.common.tools.ToolScrewdriverLV;
 import gregtech.common.tools.ToolSoftHammer;
 import gregtech.common.tools.ToolSolderingIron;
+import gregtech.common.tools.ToolTrowel;
 import gregtech.common.tools.ToolTurbineHuge;
 import gregtech.common.tools.ToolTurbineLarge;
 import gregtech.common.tools.ToolTurbineNormal;
@@ -512,6 +514,14 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
             new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
             new TCAspects.TC_AspectStack(TCAspects.ORDO, 3));
+        addTool(
+            TROWEL.ID,
+            "Decorator's Trowel",
+            "",
+            new ToolTrowel(),
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 8),
+            new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4),
+            new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2));
         initCraftingShapedRecipes();
         initCraftingShapelessRecipes();
     }

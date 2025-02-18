@@ -46,7 +46,6 @@ import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.api.objects.GTCoverNone;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.CoverBehaviorBase;
@@ -55,6 +54,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.GTClient;
+import gregtech.common.blocks.ItemMachines;
 import gregtech.common.covers.CoverInfo;
 import gregtech.common.covers.CoverSolarPanel;
 import ic2.api.energy.EnergyNet;
@@ -264,6 +264,154 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     }
 
     @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        // Only perform the logic if the player is sneaking.
+        if (!aPlayer.isSneaking()) {
+            return;
+        }
+
+        ItemStack handItem = aPlayer.inventory.getCurrentItem();
+        if (handItem == null) {
+            return;
+        }
+
+        IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
+        if (!(meta instanceof MTECable handCable)) {
+            return;
+        }
+
+        // 1) Record & disconnect old cable from all sides where it was connected
+        MTECable oldCable = this;
+        byte oldConnections = oldCable.mConnections;
+
+        // We'll remember which sides were connected, so we can reconnect the new cable
+        List<ForgeDirection> oldConnectedSides = new ArrayList<>();
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            if (oldCable.isConnectedAtSide(side)) {
+                oldConnectedSides.add(side);
+            }
+        }
+
+        short newMetaID = (short) handItem.getItemDamage();
+        long oldVoltage = this.mVoltage;
+        long oldAmperage = this.mAmperage;
+
+        // If the existing cable has the same specs as what we're holding, skip.
+        if (this.getClass() == handCable.getClass() && this.mMaterial == handCable.mMaterial
+            && this.mVoltage == handCable.mVoltage
+            && this.mAmperage == handCable.mAmperage) {
+            return;
+        }
+
+        short oldMetaID = (short) aBaseMetaTileEntity.getMetaTileID();
+
+        // Construct the new cable
+        MTECable newCable = new MTECable(
+            handCable.mName,
+            handCable.mThickNess,
+            handCable.mMaterial,
+            handCable.mCableLossPerMeter,
+            handCable.mAmperage,
+            handCable.mVoltage,
+            handCable.mInsulated,
+            handCable.mCanShock);
+
+        // Swap in the new cable
+        aBaseMetaTileEntity.setMetaTileID(newMetaID);
+        aBaseMetaTileEntity.setMetaTileEntity(newCable);
+
+        aBaseMetaTileEntity.markDirty();
+        aBaseMetaTileEntity.issueBlockUpdate();
+
+        // 7) Reconnect the *new* cable to the old sides (modified for both cables and machines)
+        if (newCable.getBaseMetaTileEntity() != null) {
+            // For each side that was previously connected
+            for (ForgeDirection side : oldConnectedSides) {
+                IGregTechTileEntity neighborTile = newCable.getBaseMetaTileEntity()
+                    .getIGregTechTileEntityAtSide(side);
+                int result = newCable.connect(side);
+                // If there is a neighbor tile, then:
+                if (neighborTile != null) {
+                    // If the neighbor is a cable (implements IConnectable), then require a successful connection
+                    if (neighborTile.getMetaTileEntity() instanceof IConnectable) {
+                        if (result > 0) {
+                            ((IConnectable) neighborTile.getMetaTileEntity()).connect(side.getOpposite());
+                        } else {
+                            newCable.disconnect(side);
+                        }
+                    }
+                    // Otherwise, if the neighbor is a machine (or any non-cable tile), don't connect.
+                } else {
+                    // No neighbor exists at this side, so disconnect
+                    newCable.disconnect(side);
+                }
+            }
+        }
+        aBaseMetaTileEntity.issueTextureUpdate();
+
+        // Handle inventory changes (old <-> new cable) if not creative
+        if (!aPlayer.capabilities.isCreativeMode) {
+            ItemStack oldCableStack = new ItemStack(handItem.getItem(), 1, oldMetaID);
+            boolean addedToInventory = false;
+
+            if (oldCableStack != null) {
+                // Try stacking with existing inventory
+                for (int i = 0; i < aPlayer.inventory.mainInventory.length; i++) {
+                    ItemStack slot = aPlayer.inventory.mainInventory[i];
+                    if (slot != null && slot.getItem() == oldCableStack.getItem()
+                        && slot.getItemDamage() == oldCableStack.getItemDamage()
+                        && slot.stackSize < slot.getMaxStackSize()) {
+                        slot.stackSize++;
+                        addedToInventory = true;
+                        break;
+                    }
+                }
+
+                // If not stacked, add new item
+                if (!addedToInventory) {
+                    addedToInventory = aPlayer.inventory.addItemStackToInventory(oldCableStack);
+                }
+                // If still unsuccessful, drop it
+                if (!addedToInventory) {
+                    aPlayer.dropPlayerItemWithRandomChoice(oldCableStack, false);
+                }
+            }
+
+            // Decrease the held cable quantity
+            handItem.stackSize--;
+            if (handItem.stackSize <= 0) {
+                aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
+            }
+        }
+
+        // Optionally, notify the player if voltage or amperage changed
+        if (oldAmperage != handCable.mAmperage || oldVoltage != handCable.mVoltage) {
+            StringBuilder message = new StringBuilder();
+            if (oldAmperage != handCable.mAmperage) {
+                message.append(oldAmperage)
+                    .append("A → ")
+                    .append(handCable.mAmperage > oldAmperage ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                    .append(handCable.mAmperage)
+                    .append("A")
+                    .append(EnumChatFormatting.RESET);
+            }
+            if (oldAmperage != handCable.mAmperage && oldVoltage != handCable.mVoltage) {
+                message.append(" | ");
+            }
+            if (oldVoltage != handCable.mVoltage) {
+                message.append(oldVoltage)
+                    .append("V → ")
+                    .append(handCable.mVoltage > oldVoltage ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                    .append(handCable.mVoltage)
+                    .append("V")
+                    .append(EnumChatFormatting.RESET);
+            }
+            GTUtility
+                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.item.cable.swapped") + " " + message);
+        }
+    }
+
+    @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ) {
         if (GTMod.gregtechproxy.gt6Cable
@@ -334,7 +482,6 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     @Override
     public boolean canConnect(ForgeDirection side, TileEntity tileEntity) {
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
-        final CoverBehaviorBase<?> coverBehavior = baseMetaTile.getCoverBehaviorAtSideNew(side);
         final ForgeDirection oppositeSide = side.getOpposite();
 
         // GT Machine handling
@@ -344,7 +491,8 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             return true;
 
         // Solar Panel Compat
-        if (coverBehavior instanceof CoverSolarPanel) return true;
+        if (baseMetaTile.getCoverInfoAtSide(side)
+            .getCoverBehavior() instanceof CoverSolarPanel) return true;
 
         // ((tIsGregTechTileEntity && tIsTileEntityCable) && (tAlwaysLookConnected || tLetEnergyIn || tLetEnergyOut) )
         // --> Not needed
@@ -453,6 +601,8 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     public String[] getInfoData() {
         final BaseMetaPipeEntity base = (BaseMetaPipeEntity) getBaseMetaTileEntity();
         final PowerNodePath path = (PowerNodePath) base.getNodePath();
+
+        path.reloadLocks();
 
         if (path == null)
             return new String[] { EnumChatFormatting.RED + "Failed to get Power Node info" + EnumChatFormatting.RESET };
@@ -592,7 +742,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 if (isConnectedAtSide(side)) {
                     final CoverInfo coverInfo = pipe.getCoverInfoAtSide(side);
-                    if (coverInfo.getCoverBehavior() instanceof GTCoverNone) continue;
+                    if (!coverInfo.isValid()) continue;
                     if (!letsIn(coverInfo) || !letsOut(coverInfo)) {
                         pipe.addToLock(pipe, side);
                     } else {
@@ -605,7 +755,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 if (isConnectedAtSide(side)) {
                     final CoverInfo coverInfo = pipe.getCoverInfoAtSide(side);
-                    if (coverInfo.getCoverBehavior() instanceof GTCoverNone) continue;
+                    if (!coverInfo.isValid()) continue;
 
                     if (!letsIn(coverInfo) || !letsOut(coverInfo)) {
                         dontAllow = true;

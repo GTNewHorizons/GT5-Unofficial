@@ -23,6 +23,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.enums.GTValues;
@@ -35,7 +37,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
@@ -43,7 +44,6 @@ import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.items.GTMetaTool;
@@ -656,7 +656,7 @@ public class ItemUtils {
     }
 
     public static boolean registerFuel(ItemStack aBurnable, int burn) {
-        return GTPPCore.burnables.add(new Pair<>(burn, aBurnable));
+        return GTPPCore.burnables.add(Pair.of(burn, aBurnable));
     }
 
     public static boolean checkForInvalidItems(ItemStack mInput) {
@@ -855,13 +855,8 @@ public class ItemUtils {
 
     public static boolean isControlCircuit(ItemStack aStack) {
         if (aStack != null) {
-            Item aItem = aStack.getItem();
-            return aItem == CI.getNumberedBioCircuit(0)
-                .getItem() || aItem
-                    == GTUtility.getIntegratedCircuit(0)
-                        .getItem()
-                || aItem == CI.getNumberedAdvancedCircuit(0)
-                    .getItem();
+            return aStack.getItem() == GTUtility.getIntegratedCircuit(0)
+                .getItem();
         }
         return false;
     }

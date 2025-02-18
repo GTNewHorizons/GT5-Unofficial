@@ -2,6 +2,8 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.recipe.check.SingleRecipeCheck.getDisplayString;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.formatNumbers;
 import static gregtech.api.util.GTUtility.min;
@@ -48,18 +50,24 @@ import org.jetbrains.annotations.TestOnly;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -118,6 +126,7 @@ import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public abstract class MTEMultiBlockBase extends MetaTileEntity
     implements IControllerWithOptionalFeatures, IAddGregtechLogo, IAddUIWidgets, IBindPlayerInventoryUI {
@@ -145,6 +154,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected VoidingMode voidingMode = getDefaultVoidingMode();
     protected boolean batchMode = getDefaultBatchMode();
     protected @Nonnull CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
+    protected int powerPanelMaxParallel = 1;
+    protected boolean alwaysMaxParallel = true;
+    protected int maxParallel = 1;
 
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
@@ -261,6 +273,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         aNBT.setInteger("mEfficiency", mEfficiency);
         aNBT.setInteger("mPollution", mPollution);
         aNBT.setInteger("mRuntime", mRuntime);
+        aNBT.setInteger("powerPanelMaxParallel", powerPanelMaxParallel);
         aNBT.setLong("mTotalRunTime", mTotalRunTime);
         aNBT.setLong("mLastWorkingTick", mLastWorkingTick);
         aNBT.setString("checkRecipeResultID", checkRecipeResult.getID());
@@ -298,6 +311,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         aNBT.setBoolean("mCrowbar", mCrowbar);
         aNBT.setBoolean(BATCH_MODE_NBT_KEY, batchMode);
         aNBT.setBoolean(INPUT_SEPARATION_NBT_KEY, inputSeparation);
+        aNBT.setBoolean("alwaysMaxParallel", alwaysMaxParallel);
         aNBT.setString(VOIDING_MODE_NBT_KEY, voidingMode.name);
     }
 
@@ -313,6 +327,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mRuntime = aNBT.getInteger("mRuntime");
         mTotalRunTime = aNBT.getLong("mTotalRunTime");
         mLastWorkingTick = aNBT.getLong("mLastWorkingTick");
+        // If the key doesn't exist it should default true
+        alwaysMaxParallel = !aNBT.hasKey("alwaysMaxParallel") || aNBT.getBoolean("alwaysMaxParallel");
+        powerPanelMaxParallel = aNBT.getInteger("powerPanelMaxParallel");
 
         String checkRecipeResultID = aNBT.getString("checkRecipeResultID");
         if (CheckRecipeResultRegistry.isRegistered(checkRecipeResultID)) {
@@ -1695,6 +1712,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     protected void startRecipeProcessing() {
+        mDualInputHatches.removeIf(mte -> mte == null || !((MetaTileEntity) mte).isValid());
+
         for (MTEHatchInputBus hatch : validMTEList(mInputBusses)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
                 aware.startRecipeProcessing();
@@ -1784,6 +1803,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return mEnergyHatches.add(hatch);
+        }
+        return false;
+    }
+
+    public boolean addMultiAmpEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatchEnergyMulti hatch && hatch.getHatchType() == 1) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mExoticEnergyHatches.add(hatch);
         }
         return false;
     }
@@ -1911,6 +1942,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     @Override
+    public boolean isGivingInformation() {
+        return true;
+    }
+
+    @Override
     public String[] getInfoData() {
         long storedEnergy = 0;
         long maxEnergy = 0;
@@ -1973,8 +2009,32 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
+    public Map<String, String> getInfoMap() {
+        long energy = 0, maxEnergy = 0, maxEnergyUsage = 0, minEnergyTier = Long.MAX_VALUE;
+
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
+            IGregTechTileEntity energyHatch = tHatch.getBaseMetaTileEntity();
+            energy += energyHatch.getStoredEU();
+            maxEnergy += energyHatch.getEUCapacity();
+            maxEnergyUsage += energyHatch.getInputAmperage() * energyHatch.getInputVoltage();
+            minEnergyTier = Math.min(minEnergyTier, energyHatch.getInputVoltage());
+        }
+
+        minEnergyTier = minEnergyTier == Long.MAX_VALUE ? 0 : minEnergyTier;
+
+        Map<String, String> infoMap = new HashMap<>();
+        infoMap.put("progressTime", Integer.toString(mProgresstime));
+        infoMap.put("maxProgressTime", Integer.toString(mMaxProgresstime));
+        infoMap.put("energy", Long.toString(energy));
+        infoMap.put("maxEnergy", Long.toString(maxEnergy));
+        infoMap.put("energyUsage", Long.toString(getActualEnergyUsage()));
+        infoMap.put("maxEnergyUsage", Long.toString(maxEnergyUsage));
+        infoMap.put("minEnergyTier", Long.toString(minEnergyTier));
+        infoMap.put("maintenanceIssues", Integer.toString(getIdealStatus() - getRepairStatus()));
+        infoMap.put("energyEfficiency", Double.toString(mEfficiency / 10_000F));
+        infoMap.put("pollution", Double.toString(getAveragePollutionPercentage() / 100F));
+
+        return infoMap;
     }
 
     @Override
@@ -2043,7 +2103,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             int outputItemLength = tag.getInteger("outputItemLength");
             int outputFluidLength = tag.getInteger("outputFluidLength");
             int totalOutputs = outputItemLength + outputFluidLength;
-            if (totalOutputs > 0) {
+
+            if (tag.getBoolean("isLockedToRecipe")) {
+                String lockedRecipe = tag.getString("lockedRecipeName");
+                if (!lockedRecipe.isEmpty()) {
+                    currentTip.add("Locked Recipe:");
+                    String[] lines = lockedRecipe.split("\n");
+                    for (String line : lines) {
+                        currentTip.add(line);
+                    }
+                }
+            } else if (totalOutputs > 0) {
+                // If not locked, show "Producing"
                 currentTip.add(StatCollector.translateToLocal("GT5U.waila.producing"));
                 for (int i = 0; i < min(3, outputItemLength); i++) {
                     currentTip.add(
@@ -2077,6 +2148,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             int tAverageTime = tag.getInteger("averageNS");
             currentTip.add("Average CPU load of ~" + formatNumbers(tAverageTime) + " ns");
         }
+
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 
@@ -2095,6 +2167,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         tag.setInteger("progress", mProgresstime);
         tag.setInteger("maxProgress", mMaxProgresstime);
         tag.setBoolean("incompleteStructure", (getErrorDisplayID() & 64) != 0);
+        tag.setBoolean("isLockedToRecipe", isRecipeLockingEnabled());
+        SingleRecipeCheck lockedRecipe = getSingleRecipeCheck();
+        tag.setString(
+            "lockedRecipeName",
+            lockedRecipe != null ? getDisplayString(lockedRecipe.getRecipe(), false, true, false, true) : "");
 
         if (mOutputItems != null) {
             int index = 0;
@@ -2387,6 +2464,27 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return false;
     }
 
+    /**
+     * Do not use this method as a supplier to ProcessingLogic, use getTrueParallel()
+     *
+     * @return The absolute maximum number of parallels possible right now.
+     */
+    public int getMaxParallelRecipes() {
+        return 1;
+    }
+
+    /**
+     * This method should be used as a supplier to ProcessingLogic, not getMaxParallelRecipes()
+     *
+     * @return Get real parallel count based on the maximum and the limit imposed in the power panel.
+     *         Always returns at least 1.
+     */
+    public final int getTrueParallel() {
+        return Math.max(
+            1,
+            alwaysMaxParallel ? getMaxParallelRecipes() : Math.min(getMaxParallelRecipes(), powerPanelMaxParallel));
+    }
+
     @Override
     public Pos2d getVoidingModeButtonPos() {
         return new Pos2d(8, 91);
@@ -2551,6 +2649,116 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             .widget(createBatchModeButton(builder))
             .widget(createLockToSingleRecipeButton(builder))
             .widget(createStructureUpdateButton(builder));
+        if (supportsPowerPanel()) {
+            builder.widget(createPowerPanelButton(builder));
+            buildContext.addSyncedWindow(POWER_PANEL_WINDOW_ID, this::createPowerPanel);
+        }
+    }
+
+    // Until other features are implemented, this will be the same as supporting parallel.
+    @Override
+    public boolean supportsPowerPanel() {
+        return true;
+    }
+
+    @Override
+    public Pos2d getPowerPanelButtonPos() {
+        return new Pos2d(174, 91);
+    }
+
+    @Override
+    public ModularWindow createPowerPanel(EntityPlayer player) {
+        if (getBaseMetaTileEntity().isServerSide()) maxParallel = getMaxParallelRecipes();
+        if (alwaysMaxParallel) powerPanelMaxParallel = maxParallel;
+
+        final int w = 120;
+        final int h = 130;
+        final int parentW = getGUIWidth();
+        final int parentH = getGUIHeight();
+
+        ModularWindow.Builder builder = ModularWindow.builder(w, h);
+
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        builder.setDraggable(true);
+        builder.setPos(
+            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(parentW, parentH))
+                .add(
+                    Alignment.TopRight.getAlignedPos(new Size(parentW, parentH), new Size(w, h))
+                        .add(w - 3, 0)));
+
+        // Window header
+        builder.widget(
+            new TextWidget(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("GT5U.gui.text.power_panel"))
+                .setPos(0, 2)
+                .setSize(120, 18));
+
+        // Syncing widgets
+        builder.widget(new FakeSyncWidget.IntegerSyncer(this::getMaxParallelRecipes, val -> maxParallel = val));
+        builder
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> powerPanelMaxParallel, val -> powerPanelMaxParallel = val));
+        builder.widget(new FakeSyncWidget.BooleanSyncer(() -> alwaysMaxParallel, val -> alwaysMaxParallel = val));
+
+        // "Max parallel" header text
+        builder.widget(
+            TextWidget.localised("GTPP.CC.parallel")
+                .setPos(0, 24)
+                .setSize(120, 18));
+
+        // Max parallel setter text box
+        NumericWidget textField = (NumericWidget) new NumericWidget()
+            .setSetter(val -> powerPanelMaxParallel = (int) val)
+            .setGetter(() -> powerPanelMaxParallel)
+            .setValidator(val -> {
+                // This validator sets the bounds for the text box - if "Always use maximum" is active, the bounds are
+                // set to (maxParallel, maxParallel). If not, they are set to (1, maxParallel)
+                powerPanelMaxParallel = (int) Math
+                    .min(maxParallel, Math.max(val, (alwaysMaxParallel ? maxParallel : 1)));
+                return powerPanelMaxParallel;
+            })
+            .setDefaultValue(powerPanelMaxParallel)
+            .setScrollValues(1, 4, 64)
+            .setTextAlignment(Alignment.Center)
+            .setTextColor(Color.WHITE.normal)
+            .dynamicTooltip(
+                () -> Collections.singletonList(
+                    alwaysMaxParallel
+                        ? StatCollector.translateToLocalFormatted("GT5U.gui.text.lockedvalue", maxParallel)
+                        : StatCollector.translateToLocalFormatted("GT5U.gui.text.rangedvalue", 1, maxParallel)))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setSize(70, 18)
+            .setPos(12, 40)
+            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
+
+        builder.widget(textField);
+        builder.widget(createMaxParallelCheckBox(textField));
+
+        return builder.build();
+    }
+
+    private ButtonWidget createMaxParallelCheckBox(NumericWidget textField) {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            textField.notifyTooltipChange();
+            if (getBaseMetaTileEntity().isClientSide()) return;
+            alwaysMaxParallel = !alwaysMaxParallel;
+        })
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                if (alwaysMaxParallel) {
+                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_CHECKMARK);
+                } else {
+                    ret.add(GTUITextures.BUTTON_STANDARD);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_CROSS);
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.max_parallel"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(88, 41)
+            .setSize(16, 16);
+        return (ButtonWidget) button;
     }
 
     @Override

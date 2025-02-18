@@ -1304,7 +1304,7 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GTFluidFactory.builder("antimatter")
             .withLocalizedName(MaterialsUEVplus.Antimatter.mLocalizedName)
-            .withStateAndTemperature(LIQUID, -1)
+            .withStateAndTemperature(LIQUID, 1000000)
             .buildAndRegister()
             .configureMaterials(MaterialsUEVplus.Antimatter)
             .registerBContainers(
@@ -1336,6 +1336,15 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(Materials.Bedrockium)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Bedrockium, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GTFluidFactory.builder("plasma.cosmicneutronium")
+            .withLocalizedName("Cosmic Neutronium Plasma")
+            .withStateAndTemperature(PLASMA, 10000)
+            .buildAndRegister()
+            .configureMaterials(Materials.CosmicNeutronium)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.CosmicNeutronium, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("fieryblood")

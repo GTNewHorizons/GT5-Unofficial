@@ -64,10 +64,6 @@ public enum GregtechItemList implements IGregtechItemContainer {
     TransmissionComponent_UV,
     TransmissionComponent_UHV,
 
-    // Recipe Circuit
-    Circuit_BioRecipeSelector,
-    Circuit_T3RecipeSelector,
-
     // Circuits
     Old_Circuit_Primitive,
     Old_Circuit_Basic,
@@ -194,6 +190,18 @@ public enum GregtechItemList implements IGregtechItemContainer {
     GTPP_Casing_ZPM,
     GTPP_Casing_UV,
     GTPP_Casing_UHV,
+
+    // Tiered Energy Cores
+    Energy_Core_ULV,
+    Energy_Core_LV,
+    Energy_Core_MV,
+    Energy_Core_HV,
+    Energy_Core_EV,
+    Energy_Core_IV,
+    Energy_Core_LuV,
+    Energy_Core_ZPM,
+    Energy_Core_UV,
+    Energy_Core_UHV,
 
     // IronBlastFurnace Machine_Bronze_BlastFurnace
     Casing_IronPlatedBricks,
@@ -597,9 +605,6 @@ public enum GregtechItemList implements IGregtechItemContainer {
      * Single Block Tile Entities
      */
 
-    // Crate Box
-    CrateStorage,
-
     // Auto TC Research Creator
     Thaumcraft_Researcher,
 
@@ -821,7 +826,95 @@ public enum GregtechItemList implements IGregtechItemContainer {
     RedstoneCircuitBlock,
     RedstoneLamp,
     RedstoneStrengthDisplay,
-    RedstoneStrengthScale;
+    RedstoneStrengthScale,
+
+    // ----------------------------------------------------------------------------
+    // Items previously stored elsewhere, moved here for common reference
+
+    // Compressed Stuff
+    CactusCharcoal,
+    BlockCactusCharcoal,
+    CompressedCactusCharcoal,
+    DoubleCompressedCactusCharcoal,
+    TripleCompressedCactusCharcoal,
+    QuadrupleCompressedCactusCharcoal,
+    QuintupleCompressedCactusCharcoal,
+
+    CactusCoke,
+    BlockCactusCoke,
+    CompressedCactusCoke,
+    DoubleCompressedCactusCoke,
+    TripleCompressedCactusCoke,
+    QuadrupleCompressedCactusCoke,
+    QuintupleCompressedCactusCoke,
+
+    SugarCharcoal,
+    BlockSugarCharcoal,
+    CompressedSugarCharcoal,
+    DoubleCompressedSugarCharcoal,
+    TripleCompressedSugarCharcoal,
+    QuadrupleCompressedSugarCharcoal,
+    QuintupleCompressedSugarCharcoal,
+
+    SugarCoke,
+    BlockSugarCoke,
+    CompressedSugarCoke,
+    DoubleCompressedSugarCoke,
+    TripleCompressedSugarCoke,
+    QuadrupleCompressedSugarCoke,
+    QuintupleCompressedSugarCoke,
+
+    CompressedObsidian,
+    DoubleCompressedObsidian,
+    TripleCompressedObsidian,
+    QuadrupleCompressedObsidian,
+    QuintupleCompressedObsidian,
+    InvertedObsidian,
+
+    CompressedGlowstone,
+    DoubleCompressedGlowstone,
+    TripleCompressedGlowstone,
+    QuadrupleCompressedGlowstone,
+    QuintupleCompressedGlowstone,
+
+    // IC2 Rotors
+    EnergeticAlloyRotor,
+    EnergeticAlloyRotorBlade,
+    EnergeticAlloyShaft,
+
+    TungstenSteelRotor,
+    TungstenSteelRotorBlade,
+    TungstenSteelShaft,
+
+    VibrantAlloyRotor,
+    VibrantAlloyRotorBlade,
+    VibrantAlloyShaft,
+
+    IridiumRotor,
+    IridiumRotorBlade,
+    IridiumShaft,
+
+    // Basic Turbines
+    BasicIronTurbine,
+    BasicBronzeTurbine,
+    BasicSteelTurbine,
+
+    // Misc
+    CustomCoalCoke,
+    BlueprintBase,
+    MiningExplosives,
+    AlkalusDisk,
+    WitherGuard,
+    MagicFeather,
+    PestKiller,
+    FishTrap,
+
+    // Tumbaga Mix (todo convert to material?)
+    TumbagaMixDust,
+    SmallTumbagaMixDust,
+    TinyTumbagaMixDust,
+
+    ;
 
     public static final GregtechItemList[] DYE_ONLY_ITEMS = { Energy_Buffer_1by1_EV, Energy_Buffer_1by1_EV };
     private ItemStack mStack;

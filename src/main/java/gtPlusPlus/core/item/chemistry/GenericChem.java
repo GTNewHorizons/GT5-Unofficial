@@ -10,6 +10,7 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
+import static gtPlusPlus.core.util.minecraft.ItemUtils.hideItemFromNEI;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -22,7 +23,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -68,8 +68,6 @@ public class GenericChem extends ItemPackage {
     // Phenol Byproducts
 
     public static ItemGenericChemBase mGenericChemItem1;
-    public static Item mAdvancedCircuit;
-
     private ItemStack mCatalystCarrier;
 
     public static ItemStack mRedCatalyst;
@@ -113,8 +111,10 @@ public class GenericChem extends ItemPackage {
     public void items() {
 
         mGenericChemItem1 = new ItemGenericChemBase();
-        mAdvancedCircuit = new GTPPIntegratedCircuitItem("T3RecipeSelector", "science/general/AdvancedCircuit");
-        GregtechItemList.Circuit_T3RecipeSelector.set(mAdvancedCircuit);
+
+        // TODO Remove after 2.8
+        Item t3Selector = new GTPPIntegratedCircuitItem("T3RecipeSelector", "science/general/AdvancedCircuit");
+        hideItemFromNEI(new ItemStack(t3Selector));
 
         registerItemStacks();
         registerOreDict();
@@ -304,7 +304,6 @@ public class GenericChem extends ItemPackage {
     @Override
     public boolean generateRecipes() {
 
-        recipeAdvancedChip();
         recipeCatalystRed();
         recipeCatalystYellow();
         recipeCatalystBlue();
@@ -486,7 +485,7 @@ public class GenericChem extends ItemPackage {
 
         // C6H6 + 6H = C6H12
         GTValues.RA.stdBuilder()
-            .itemInputs(getTierTwoChip(), ItemUtils.getSimpleStack(mBrownCatalyst, 0))
+            .itemInputs(GTUtility.getIntegratedCircuit(8), ItemUtils.getSimpleStack(mBrownCatalyst, 0))
             .fluidInputs(FluidUtils.getFluidStack(Benzene, 1000), FluidUtils.getFluidStack("hydrogen", 6000))
             .fluidOutputs(FluidUtils.getFluidStack(Cyclohexane, 1000))
             .duration(2 * MINUTES)
@@ -500,7 +499,7 @@ public class GenericChem extends ItemPackage {
 
         // C6H12 + 2O(Air) = C6H10O + H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(getTierTwoChip(), ItemUtils.getSimpleStack(mBlueCatalyst, 0))
+            .itemInputs(GTUtility.getIntegratedCircuit(8), ItemUtils.getSimpleStack(mBlueCatalyst, 0))
             .fluidInputs(FluidUtils.getFluidStack(Cyclohexane, 1000), FluidUtils.getFluidStack("air", 4000))
             .fluidOutputs(FluidUtils.getFluidStack(Cyclohexanone, 1000))
             .duration(2 * MINUTES)
@@ -508,7 +507,7 @@ public class GenericChem extends ItemPackage {
             .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(getTierTwoChip())
+            .itemInputs(GTUtility.getIntegratedCircuit(8))
             .fluidInputs(FluidUtils.getFluidStack(Cyclohexane, 1000), FluidUtils.getFluidStack("oxygen", 2000))
             .fluidOutputs(FluidUtils.getFluidStack(Cyclohexanone, 1000))
             .duration(2 * MINUTES)
@@ -522,7 +521,7 @@ public class GenericChem extends ItemPackage {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierOneChip(),
+                GTUtility.getIntegratedCircuit(4),
                 CI.getEmptyCatalyst(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 2L))
@@ -536,7 +535,7 @@ public class GenericChem extends ItemPackage {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierThreeChip(),
+                GTUtility.getIntegratedCircuit(12),
                 CI.getEmptyCatalyst(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 4L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 4L))
@@ -550,7 +549,7 @@ public class GenericChem extends ItemPackage {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierTwoChip(),
+                GTUtility.getIntegratedCircuit(8),
                 CI.getEmptyCatalyst(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 3L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 3L))
@@ -564,7 +563,7 @@ public class GenericChem extends ItemPackage {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierTwoChip(),
+                GTUtility.getIntegratedCircuit(8),
                 CI.getEmptyCatalyst(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 5L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 5L))
@@ -578,7 +577,7 @@ public class GenericChem extends ItemPackage {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierFourChip(),
+                GTUtility.getIntegratedCircuit(16),
                 CI.getEmptyCatalyst(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 6L),
                 MaterialsElements.getInstance().RUTHENIUM.getDust(6))
@@ -592,7 +591,7 @@ public class GenericChem extends ItemPackage {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierOneChip(),
+                GTUtility.getIntegratedCircuit(4),
                 CI.getEmptyCatalyst(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 4L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4L))
@@ -606,7 +605,7 @@ public class GenericChem extends ItemPackage {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierThreeChip(),
+                GTUtility.getIntegratedCircuit(12),
                 CI.getEmptyCatalyst(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L),
                 MaterialsElements.getInstance().RHODIUM.getDust(4))
@@ -620,7 +619,7 @@ public class GenericChem extends ItemPackage {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierThreeChip(),
+                GTUtility.getIntegratedCircuit(12),
                 CI.getEmptyCatalyst(4),
                 ItemUtils.getSimpleStack(RocketFuels.Formaldehyde_Catalyst_Dust, 8))
             .itemOutputs(ItemUtils.getSimpleStack(mFormaldehydeCatalyst, 4))
@@ -633,7 +632,7 @@ public class GenericChem extends ItemPackage {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierThreeChip(),
+                GTUtility.getIntegratedCircuit(12),
                 CI.getEmptyCatalyst(5),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 2L))
             .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 5))
@@ -647,7 +646,7 @@ public class GenericChem extends ItemPackage {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierThreeChip(),
+                GTUtility.getIntegratedCircuit(12),
                 CI.getEmptyCatalyst(5),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 10L))
@@ -661,7 +660,7 @@ public class GenericChem extends ItemPackage {
 
         // Basic Recipe
         GTValues.RA.stdBuilder()
-            .itemInputs(getTierOneChip(), ItemUtils.getSimpleStack(Items.rotten_flesh, 64))
+            .itemInputs(GTUtility.getIntegratedCircuit(4), ItemUtils.getSimpleStack(Items.rotten_flesh, 64))
             .fluidInputs(FluidUtils.getHotWater(2000))
             .fluidOutputs(FluidUtils.getFluidStack(Cadaverine, 250), FluidUtils.getFluidStack(Putrescine, 250))
             .duration(2 * MINUTES)
@@ -671,7 +670,7 @@ public class GenericChem extends ItemPackage {
         // Advanced Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierTwoChip(),
+                GTUtility.getIntegratedCircuit(8),
                 ItemUtils.getSimpleStack(Items.rotten_flesh, 128),
                 ItemUtils.simpleMetaStack(AgriculturalChem.mAgrichemItem1, 8, 32))
             .fluidInputs(FluidUtils.getHotWater(3000))
@@ -687,7 +686,7 @@ public class GenericChem extends ItemPackage {
 
         // C6H5NO2 + 6H = C6H7N + 2H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(getTierThreeChip(), ItemUtils.getSimpleStack(mBlueCatalyst, 0))
+            .itemInputs(GTUtility.getIntegratedCircuit(12), ItemUtils.getSimpleStack(mBlueCatalyst, 0))
             .fluidInputs(FluidUtils.getFluidStack(NitroBenzene, 1000), FluidUtils.getFluidStack("hydrogen", 6000))
             .fluidOutputs(FluidUtils.getFluidStack(Aniline, 1000))
             .duration(30 * SECONDS)
@@ -701,7 +700,7 @@ public class GenericChem extends ItemPackage {
 
         // C6H6 + HNO3 =H2SO4= C6H5NO2 +H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(getTierThreeChip())
+            .itemInputs(GTUtility.getIntegratedCircuit(12))
             .fluidInputs(
                 FluidUtils.getFluidStack(Benzene, 5000),
                 FluidUtils.getFluidStack("sulfuricacid", 1000),
@@ -755,7 +754,6 @@ public class GenericChem extends ItemPackage {
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumPeroxide", 4))
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .noOptimize()
             .addTo(chemicalDehydratorRecipes);
     }
 
@@ -805,126 +803,5 @@ public class GenericChem extends ItemPackage {
             .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
 
-    }
-
-    private static ItemStack getTierOneChip() {
-        return CI.getNumberedAdvancedCircuit(4);
-    }
-
-    private static ItemStack getTierTwoChip() {
-        return CI.getNumberedAdvancedCircuit(8);
-    }
-
-    private static ItemStack getTierThreeChip() {
-        return CI.getNumberedAdvancedCircuit(12);
-    }
-
-    private static ItemStack getTierFourChip() {
-        return CI.getNumberedAdvancedCircuit(16);
-    }
-
-    private static void recipeAdvancedChip() {
-        GTModHandler.addShapelessCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 0L),
-            0,
-            new Object[] { OrePrefixes.circuit.get(Materials.HV) });
-
-        final long bits = 0;
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 1L),
-            bits,
-            new Object[] { "d  ", " P ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 2L),
-            bits,
-            new Object[] { " d ", " P ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 3L),
-            bits,
-            new Object[] { "  d", " P ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 4L),
-            bits,
-            new Object[] { "   ", " Pd", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 5L),
-            bits,
-            new Object[] { "   ", " P ", "  d", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 6L),
-            bits,
-            new Object[] { "   ", " P ", " d ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 7L),
-            bits,
-            new Object[] { "   ", " P ", "d  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 8L),
-            bits,
-            new Object[] { "   ", "dP ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 9L),
-            bits,
-            new Object[] { "P d", "   ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 10L),
-            bits,
-            new Object[] { "P  ", "  d", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 11L),
-            bits,
-            new Object[] { "P  ", "   ", "  d", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 12L),
-            bits,
-            new Object[] { "P  ", "   ", " d ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 13L),
-            bits,
-            new Object[] { "  P", "   ", "  d", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 14L),
-            bits,
-            new Object[] { "  P", "   ", " d ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 15L),
-            bits,
-            new Object[] { "  P", "   ", "d  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 16L),
-            bits,
-            new Object[] { "  P", "d  ", "   ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 17L),
-            bits,
-            new Object[] { "   ", "   ", "d P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 18L),
-            bits,
-            new Object[] { "   ", "d  ", "  P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 19L),
-            bits,
-            new Object[] { "d  ", "   ", "  P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 20L),
-            bits,
-            new Object[] { " d ", "   ", "  P", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 21L),
-            bits,
-            new Object[] { "d  ", "   ", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 22L),
-            bits,
-            new Object[] { " d ", "   ", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 23L),
-            bits,
-            new Object[] { "  d", "   ", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(1L, 24L),
-            bits,
-            new Object[] { "   ", "  d", "P  ", 'P', GregtechItemList.Circuit_T3RecipeSelector.getWildcard(1L) });
     }
 }

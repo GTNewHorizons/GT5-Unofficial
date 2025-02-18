@@ -113,6 +113,11 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
     }
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.blastFurnaceRecipes;
     }

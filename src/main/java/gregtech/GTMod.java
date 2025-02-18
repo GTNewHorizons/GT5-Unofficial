@@ -22,7 +22,6 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
 
 import org.apache.logging.log4j.LogManager;
@@ -33,7 +32,6 @@ import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
-import appeng.api.AEApi;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -62,7 +60,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.implementations.MTEHatchNonConsumableBase;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
@@ -88,20 +85,17 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.config.OPStuff;
 import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
-import gregtech.common.covers.CoverFacadeAE;
 import gregtech.common.misc.GTCommand;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
 import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
-import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
-import gregtech.common.tileentities.storage.MTEDigitalChestBase;
+import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
 import gregtech.loaders.load.CoverBehaviorLoader;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.GTItemIterator;
 import gregtech.loaders.load.MTERecipeLoader;
-import gregtech.loaders.load.SonictronLoader;
 import gregtech.loaders.misc.CoverLoader;
 import gregtech.loaders.misc.GTAchievements;
 import gregtech.loaders.misc.GTBees;
@@ -281,10 +275,7 @@ public class GTMod implements IGTMod {
                 .getParentFile());
         GTPreLoad.adjustScrap();
 
-        AEApi.instance()
-            .registries()
-            .interfaceTerminal()
-            .register(MTEHatchCraftingInputME.class);
+        AE2Compat.onPreInit();
 
         GTPreLoad.runMineTweakerCompat();
 
@@ -296,7 +287,6 @@ public class GTMod implements IGTMod {
 
         new LoaderCircuitBehaviors().run();
         new CoverBehaviorLoader().run();
-        new SonictronLoader().run();
         new GTSpawnEventHandler();
 
         // populate itemstack instance for NBT check in GTRecipe
@@ -479,18 +469,8 @@ public class GTMod implements IGTMod {
             GTForestryCompat.transferCentrifugeRecipes();
             GTForestryCompat.transferSqueezerRecipes();
         }
-        MTEDigitalChestBase.registerAEIntegration();
-        MTEHatchNonConsumableBase.registerAEIntegration();
-        ItemStack facade = AEApi.instance()
-            .definitions()
-            .items()
-            .facade()
-            .maybeItem()
-            .transform(i -> new ItemStack(i, 1, GTValues.W))
-            .orNull();
-        if (facade != null) {
-            GregTechAPI.registerCover(facade, null, new CoverFacadeAE());
-        }
+
+        AE2Compat.onPostInit();
 
         Arrays
             .stream(
@@ -736,10 +716,6 @@ public class GTMod implements IGTMod {
 
     public int addArmor(String aArmorPrefix) {
         return gregtechproxy.addArmor(aArmorPrefix);
-    }
-
-    public void doSonictronSound(ItemStack aStack, World aWorld, double aX, double aY, double aZ) {
-        gregtechproxy.doSonictronSound(aStack, aWorld, aX, aY, aZ);
     }
 
     @Mod.EventHandler

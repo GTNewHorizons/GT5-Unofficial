@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -55,6 +56,7 @@ import appeng.tile.events.TileEventType;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
@@ -62,8 +64,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.graphs.GenerateNodeMap;
 import gregtech.api.graphs.GenerateNodeMapPower;
 import gregtech.api.graphs.Node;
-import gregtech.api.interfaces.ICleanroom;
-import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
@@ -95,7 +95,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  */
 public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     implements IGregTechTileEntity, IActionHost, IGridProxyable, IAlignmentProvider, IConstructableProvider,
-    IDebugableTileEntity, IGregtechWailaProvider, ICleanroomReceiver, ICustomNameObject {
+    IDebugableTileEntity, IGregtechWailaProvider, ICustomNameObject {
 
     private static final Field ENTITY_ITEM_HEALTH_FIELD = ReflectionHelper
         .findField(EntityItem.class, "health", "field_70291_e");
@@ -219,8 +219,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             if (hasValidMetaTileEntity() && mMetaTileEntity.hasSidedRedstoneOutputBehavior())
                 mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
             else mSidedRedstone = new byte[] { 15, 15, 15, 15, 15, 15 };
-
-        updateCoverBehavior();
     }
 
     /**
@@ -375,7 +373,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 }
                 if (aSideServer) {
                     if (mRedstone != oRedstone || mTickTimer == 10) {
-                        updateCoverBehavior();
                         oRedstone = mRedstone;
                         issueBlockUpdate();
                     }
@@ -876,8 +873,17 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     @Override
     public boolean isGivingInformation() {
-        if (canAccessData()) return mMetaTileEntity.isGivingInformation();
-        return false;
+        return canAccessData() && mMetaTileEntity.isGivingInformation();
+    }
+
+    @Override
+    public String[] getInfoData() {
+        return canAccessData() ? getMetaTileEntity().getInfoData() : new String[] {};
+    }
+
+    @Override
+    public Map<String, String> getInfoMap() {
+        return canAccessData() ? getMetaTileEntity().getInfoMap() : Collections.emptyMap();
     }
 
     @Override
@@ -1074,6 +1080,15 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     @Override
     public int setMetaTileID(short aID) {
         return mID = aID;
+    }
+
+    @Nullable
+    @Override
+    public <T> T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
+        if (canAccessData()) {
+            return mMetaTileEntity.getCapability(capability, side);
+        }
+        return null;
     }
 
     @Override
@@ -1340,22 +1355,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         return mLockUpgrade || mMetaTileEntity.ownerControl();
     }
 
-    @Nullable
-    @Override
-    public ICleanroom getCleanroom() {
-        if (canAccessData()) {
-            return mMetaTileEntity.getCleanroom();
-        }
-        return null;
-    }
-
-    @Override
-    public void setCleanroom(ICleanroom cleanroom) {
-        if (canAccessData()) {
-            mMetaTileEntity.setCleanroom(cleanroom);
-        }
-    }
-
     public void doEnergyExplosion() {
         if (getUniversalEnergyCapacity() > 0 && getUniversalEnergyStored() >= getUniversalEnergyCapacity() / 5) {
             GTLog.exp.println(
@@ -1458,9 +1457,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 final ForgeDirection tSide = (getCoverIDAtSide(side) == 0)
                     ? GTUtility.determineWrenchingSide(side, aX, aY, aZ)
                     : side;
-                return (getCoverBehaviorAtSideNew(tSide).hasCoverGUI());
-            } else if (getCoverBehaviorAtSideNew(side).onCoverRightclickClient(side, this, aPlayer, aX, aY, aZ)) {
-                return true;
+                return (getCoverInfoAtSide(tSide).hasCoverGUI());
             }
 
             if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
@@ -1519,15 +1516,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
                             setCoverDataAtSide(
                                 side,
-                                getCoverBehaviorAtSideNew(side).onCoverScrewdriverClick(
-                                    side,
-                                    getCoverIDAtSide(side),
-                                    getComplexCoverDataAtSide(side),
-                                    this,
-                                    aPlayer,
-                                    aX,
-                                    aY,
-                                    aZ));
+                                getCoverInfoAtSide(side).onCoverScrewdriverClick(aPlayer, aX, aY, aZ));
                             mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tCurrentItem);
                             GTUtility.sendSoundToPlayers(
                                 worldObj,
@@ -1654,13 +1643,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     if (getCoverIDAtSide(side) == 0) coverSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
 
                     if (getCoverIDAtSide(coverSide) == 0) {
-                        if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCovers.keySet())) {
-                            final CoverBehaviorBase<?> coverBehavior = GregTechAPI.getCoverBehaviorNew(tCurrentItem);
+                        if (CoverRegistry.isCover(tCurrentItem)) {
+                            final CoverBehaviorBase<?> coverBehavior = CoverRegistry.getCoverBehaviorNew(tCurrentItem);
                             if (coverBehavior.isCoverPlaceable(coverSide, tCurrentItem, this)
                                 && mMetaTileEntity.allowCoverOnSide(coverSide, new GTItemStack(tCurrentItem))) {
 
-                                setCoverItemAtSide(coverSide, tCurrentItem);
-                                coverBehavior.onPlayerAttach(aPlayer, tCurrentItem, this, coverSide);
+                                attachCover(aPlayer, tCurrentItem, coverSide);
 
                                 if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
                                 GTUtility.sendSoundToPlayers(
@@ -1695,9 +1683,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                             // Configuration of delicate electronics calls for a tool with precision and subtlety.
                             if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                                 final CoverInfo info = getCoverInfoAtSide(coverSide);
-                                if (info != CoverInfo.EMPTY_INFO) {
-                                    final CoverBehaviorBase<?> behavior = info.getCoverBehavior();
-                                    if (behavior.allowsTickRateAddition()) {
+                                if (info.isValid()) {
+                                    if (info.allowsTickRateAddition()) {
                                         info.onCoverJackhammer(aPlayer);
                                         GTUtility.sendSoundToPlayers(
                                             worldObj,
@@ -1723,23 +1710,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     // End item != null
                 } else if (aPlayer.isSneaking()) { // Sneak click, no tool -> open cover config if possible.
                     side = (getCoverIDAtSide(side) == 0) ? GTUtility.determineWrenchingSide(side, aX, aY, aZ) : side;
-                    return getCoverIDAtSide(side) > 0 && getCoverBehaviorAtSideNew(side).onCoverShiftRightClick(
-                        side,
-                        getCoverIDAtSide(side),
-                        getComplexCoverDataAtSide(side),
-                        this,
-                        aPlayer);
+                    return getCoverIDAtSide(side) > 0 && getCoverInfoAtSide(side).onCoverShiftRightClick(aPlayer);
                 }
 
-                if (getCoverBehaviorAtSideNew(side).onCoverRightClick(
-                    side,
-                    getCoverIDAtSide(side),
-                    getComplexCoverDataAtSide(side),
-                    this,
-                    aPlayer,
-                    aX,
-                    aY,
-                    aZ)) return true;
+                if (getCoverInfoAtSide(side).onCoverRightClick(aPlayer, aX, aY, aZ)) return true;
 
                 if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
 
@@ -1863,8 +1837,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     public boolean canExtractItem(int slotIndex, ItemStack stack, int ordinalSide) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
         return canAccessData() && (mRunningThroughTick || !mOutputDisabled)
-            && getCoverBehaviorAtSideNew(side)
-                .letsItemsOut(side, getCoverIDAtSide(side), getComplexCoverDataAtSide(side), slotIndex, this)
+            && getCoverInfoAtSide(side).letsItemsOut(slotIndex)
             && mMetaTileEntity.canExtractItem(slotIndex, stack, ordinalSide);
     }
 
@@ -2251,14 +2224,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         if (getUniversalEnergyStored() >= aEnergyAmount) return true;
         mHasEnoughEnergy = false;
         return false;
-    }
-
-    @Override
-    public String[] getInfoData() {
-        {
-            if (canAccessData()) return getMetaTileEntity().getInfoData();
-            return new String[] {};
-        }
     }
 
     @Override

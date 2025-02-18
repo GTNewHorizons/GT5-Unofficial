@@ -257,7 +257,7 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
                     .setEUtDiscount(1.25 * tierMachine)
                     .setSpeedBoost(1.6 / tierMachine);
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -273,7 +273,7 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
             .addInfo("Only consumes steam at 62.5% of the L/s normally required")
             .addInfo("Processes up to 8 items at once")
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-            .beginStructureBlock(3, 3, 4, false)
+            .beginStructureBlock(3, 3, 4, true)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addStructureInfo(

@@ -58,7 +58,6 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GTMod;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GTUIInfos;
@@ -79,7 +78,6 @@ import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
@@ -958,12 +956,9 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
         if (side != mMainFacing) return true;
-        CoverBehaviorBase<?> tBehavior = GregTechAPI.getCoverBehaviorNew(aCoverID.toStack());
-        return tBehavior.isGUIClickable(
-            side,
-            GTUtility.stackToInt(aCoverID.toStack()),
-            tBehavior.createDataObject(),
-            getBaseMetaTileEntity());
+        return this.getBaseMetaTileEntity()
+            .getCoverInfoAtSide(side)
+            .isGUIClickable();
     }
 
     @Override
@@ -1019,11 +1014,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public int getCircuitGUISlot() {
         return 3;
-    }
-
-    @Override
-    public List<ItemStack> getConfigurationCircuits() {
-        return GregTechAPI.getConfigurationCircuitList(mTier);
     }
 
     @Override
@@ -1106,7 +1096,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             mOutputBlocked++;
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
-        ICleanroom cleanroom = getCleanroom();
+        ICleanroom cleanroom = cleanroomReference.getCleanroom();
         if (tRecipe.mSpecialValue == -200 || tRecipe.mSpecialValue == -300) {
             if (cleanroom == null || !cleanroom.isValidCleanroom() || cleanroom.getCleanness() == 0) {
                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;

@@ -3,8 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.redstone;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -34,13 +32,12 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.CircuitryBehavior;
-import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.CoverInfo;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -270,14 +267,6 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                     if (tBehaviour != null) {
                         try {
                             tBehaviour.onTick(mGateData, this);
-                            if (tBehaviour.displayItemStack(mGateData, this, 0))
-                                mInventory[1] = getCoverByID(mGateData[0]);
-                            if (tBehaviour.displayItemStack(mGateData, this, 1))
-                                mInventory[2] = getCoverByID(mGateData[1]);
-                            if (tBehaviour.displayItemStack(mGateData, this, 2))
-                                mInventory[3] = getCoverByID(mGateData[2]);
-                            if (tBehaviour.displayItemStack(mGateData, this, 3))
-                                mInventory[4] = getCoverByID(mGateData[3]);
                         } catch (Throwable e) {
                             GTLog.err.print(e);
                         }
@@ -319,26 +308,6 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     @Override
     public boolean allowGeneralRedstoneOutput() {
         return true;
-    }
-
-    /** The Item List for Covers */
-    public static final Map<Integer, ItemStack> sCoversItems = new HashMap<>();
-
-    private static void initCovers() {
-        for (GTItemStack aKey : GregTechAPI.sCovers.keySet()) {
-            ItemStack aStack = aKey.toStack()
-                .copy();
-            if (aStack != null) {
-                sCoversItems.put(GTUtility.stackToInt(aStack), aStack);
-            }
-        }
-    }
-
-    public static ItemStack getCoverByID(int aStack) {
-        if (sCoversItems.isEmpty()) {
-            initCovers();
-        }
-        return sCoversItems.get(aStack);
     }
 
     @Override
@@ -410,8 +379,8 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     }
 
     @Override
-    public CoverBehavior getCover(ForgeDirection side) {
-        return (CoverBehavior) getBaseMetaTileEntity().getCoverBehaviorAtSideNew(side);
+    public CoverInfo getCover(ForgeDirection side) {
+        return getBaseMetaTileEntity().getCoverInfoAtSide(side);
     }
 
     @Override
@@ -420,8 +389,9 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     }
 
     @Override
-    public int getCoverVariable(ForgeDirection side) {
-        return ((ISerializableObject.LegacyCoverData) getBaseMetaTileEntity().getComplexCoverDataAtSide(side)).get();
+    public ISerializableObject getCoverData(ForgeDirection side) {
+        return getBaseMetaTileEntity().getCoverInfoAtSide(side)
+            .getCoverData();
     }
 
     @Override
