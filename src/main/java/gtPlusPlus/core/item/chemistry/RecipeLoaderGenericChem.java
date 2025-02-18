@@ -14,6 +14,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
@@ -165,7 +166,7 @@ public class RecipeLoaderGenericChem {
             .fluidInputs(
                 Materials.Tin.getPlasma(18000),
                 Materials.Bismuth.getPlasma(18000),
-                Materials.Cryotheum.getFluid(4000)) // todo check this
+                FluidRegistry.getFluidStack("cryotheum", 4000))
             .fluidOutputs(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(280 * INGOTS))
             .duration(13 * MINUTES + 20 * SECONDS)
             .eut(3842160)
