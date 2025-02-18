@@ -19,7 +19,7 @@ import static gregtech.api.enums.HeatingCoilLevel.ZPM;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -96,12 +96,6 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil,
 
     @Override
     public @Nullable ITexture[][] getTextures(int metadata) {
-        // can be stubbed because the other getTextures delegates to this method
-        return new ITexture[0][];
-    }
-
-    @Override
-    public @Nullable ITexture[][] getTextures(RenderBlocks rb, int metadata) {
         List<ITexture> textures = new ArrayList<>();
 
         if (Client.render.useOldCoils) {
@@ -148,7 +142,7 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil,
             textures.add(
                 TextureFactory.builder()
                     .addIcon(background)
-                    .material(this, 0)
+                    .material(Blocks.stone)
                     .build());
 
             if (metadata >= ACTIVE_OFFSET) {
@@ -174,7 +168,7 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil,
                     TextureFactory.builder()
                         .addIcon(foreground)
                         .glow()
-                        .material(this, metadata)
+                        .material(Blocks.glowstone)
                         .build());
             }
         }

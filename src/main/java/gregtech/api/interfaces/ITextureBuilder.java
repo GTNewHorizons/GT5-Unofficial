@@ -108,14 +108,14 @@ public interface ITextureBuilder {
     ITextureBuilder glow();
 
     /**
-     * Use this block/meta as the shader material. No effect if operation is not supported.
+     * Uses the given block/meta as the shader material. No effect shaders are off or not supported.
      *
      * @return {@link ITextureBuilder} for chaining
      */
     ITextureBuilder material(Block block, int meta);
 
     /**
-     * Use this block as the shader material. No effect if operation is not supported.
+     * Uses the given block as the shader material. No effect shaders are off or not supported.
      *
      * @return {@link ITextureBuilder} for chaining
      */

@@ -37,6 +37,8 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import cofh.asmhooks.block.BlockTickingWater;
+import cofh.asmhooks.block.BlockWater;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
@@ -45,9 +47,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureElementChain;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
-
-import cofh.asmhooks.block.BlockTickingWater;
-import cofh.asmhooks.block.BlockWater;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
@@ -527,9 +526,12 @@ public class GTStructureUtility {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
-                if (!(block instanceof IHeatingCoil)) return false;
-                HeatingCoilLevel existingLevel = aHeatingCoilGetter.apply(t),
-                    newLevel = ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z));
+
+                if (!(block instanceof IHeatingCoil coil)) return false;
+
+                HeatingCoilLevel existingLevel = aHeatingCoilGetter.apply(t);
+                HeatingCoilLevel newLevel = coil.getCoilHeat(world.getBlockMetadata(x, y, z));
+
                 if (existingLevel == null || existingLevel == HeatingCoilLevel.None) {
                     return aHeatingCoilSetter.test(t, newLevel);
                 } else {

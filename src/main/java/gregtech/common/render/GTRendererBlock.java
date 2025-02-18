@@ -585,7 +585,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
             // spotless:on
             } else if (aBlock instanceof IBlockWithTextures texturedBlock) {
-                ITexture[][] texture = texturedBlock.getTextures(aRenderer, aMeta);
+                ITexture[][] texture = texturedBlock.getTextures(aMeta);
                 if (texture != null) {
                     // spotless:off
                 aBlock.setBlockBoundsForItemRender();
@@ -762,7 +762,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
         if (aBlock instanceof IBlockWithTextures texturedBlock) {
             int meta = aWorld.getBlockMetadata(aX, aY, aZ);
-            ITexture[][] texture = texturedBlock.getTextures(aRenderer, meta);
+            ITexture[][] texture = texturedBlock.getTextures(meta);
             if (texture == null) return false;
             renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, texture);
             return true;
