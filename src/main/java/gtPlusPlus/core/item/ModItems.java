@@ -24,6 +24,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
@@ -39,11 +40,11 @@ import gtPlusPlus.core.item.base.foil.BaseItemFoil;
 import gtPlusPlus.core.item.base.gears.BaseItemSmallGear;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngotOld;
+import gtPlusPlus.core.item.base.ore.BaseItemMilledOre;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.bauble.BatteryPackBaseBauble;
 import gtPlusPlus.core.item.chemistry.IonParticles;
-import gtPlusPlus.core.item.chemistry.MilledOreProcessing;
 import gtPlusPlus.core.item.chemistry.NuclearChem;
 import gtPlusPlus.core.item.chemistry.StandardBaseParticles;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
@@ -953,7 +954,22 @@ public final class ModItems {
             .registerOre("catalystAlgagenicGrowthPromoter");
 
         // Milled Ore Processing
-        new MilledOreProcessing();
+        GregtechItemList.MilledSphalerite
+            .set(BaseItemMilledOre.generate(Materials.Sphalerite, (int) TierEU.RECIPE_LuV));
+        GregtechItemList.MilledChalcopyrite
+            .set(BaseItemMilledOre.generate(Materials.Chalcopyrite, (int) TierEU.RECIPE_IV));
+        GregtechItemList.MilledNickel.set(BaseItemMilledOre.generate(Materials.Nickel, (int) TierEU.RECIPE_IV));
+        GregtechItemList.MilledPlatinum.set(BaseItemMilledOre.generate(Materials.Platinum, (int) TierEU.RECIPE_LuV));
+        GregtechItemList.MilledPentlandite
+            .set(BaseItemMilledOre.generate(Materials.Pentlandite, (int) TierEU.RECIPE_LuV));
+
+        GregtechItemList.MilledRedstone.set(BaseItemMilledOre.generate(Materials.Redstone, (int) TierEU.RECIPE_IV));
+        GregtechItemList.MilledSpessartine
+            .set(BaseItemMilledOre.generate(Materials.Spessartine, (int) TierEU.RECIPE_LuV));
+        GregtechItemList.MilledGrossular.set(BaseItemMilledOre.generate(Materials.Grossular, (int) TierEU.RECIPE_LuV));
+        GregtechItemList.MilledAlmandine.set(BaseItemMilledOre.generate(Materials.Almandine, (int) TierEU.RECIPE_LuV));
+        GregtechItemList.MilledPyrope.set(BaseItemMilledOre.generate(Materials.Pyrope, (int) TierEU.RECIPE_EV));
+        GregtechItemList.MilledMonazite.set(BaseItemMilledOre.generate(Materials.Monazite, (int) TierEU.RECIPE_ZPM));
 
         // Baubles
         if (Baubles.isModLoaded()) {

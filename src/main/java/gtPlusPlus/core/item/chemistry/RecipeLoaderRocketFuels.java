@@ -199,10 +199,10 @@ public class RecipeLoaderRocketFuels {
     }
 
     private static void createRocketFuels() {
-        // RP1 Rocket Fuel todo test this one
+        // RP1 Rocket Fuel
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.LiquidOxygen.getFluid(2000), new FluidStack(GTPPFluids.RP1, 500))
+            .fluidInputs(Materials.LiquidOxygen.getGas(2000), new FluidStack(GTPPFluids.RP1, 500))
             .fluidOutputs(new FluidStack(GTPPFluids.RP1RocketFuel, 1500))
             .duration(15 * SECONDS)
             .eut(240)
