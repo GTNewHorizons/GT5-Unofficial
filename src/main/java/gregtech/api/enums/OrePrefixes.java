@@ -757,6 +757,8 @@ public enum OrePrefixes {
         itemCasing.mNotGeneratedItems.add(Materials.HellishMetal);
         nugget.mNotGeneratedItems.add(Materials.HellishMetal);
         nugget.mNotGeneratedItems.add(Materials.Netherite);
+        spring.mNotGeneratedItems.add(Materials.Netherite);
+        springSmall.mNotGeneratedItems.add(Materials.Netherite);
         // -----
 
         dustImpure.mGeneratedItems.add(Materials.GraniteRed);
