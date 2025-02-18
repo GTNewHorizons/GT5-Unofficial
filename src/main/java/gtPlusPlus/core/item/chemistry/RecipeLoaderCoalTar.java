@@ -89,7 +89,7 @@ public class RecipeLoaderCoalTar {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Ethylene.getCells(2), GTUtility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Cell_Empty.get(2))
-            .fluidInputs(Materials.Benzene.getGas(2000))
+            .fluidInputs(Materials.Benzene.getFluid(2000))
             .fluidOutputs(new FluidStack(GTPPFluids.Ethylbenzene, 2000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
