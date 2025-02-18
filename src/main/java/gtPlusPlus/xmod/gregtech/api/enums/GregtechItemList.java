@@ -895,6 +895,14 @@ public enum GregtechItemList implements IGregtechItemContainer {
     SmallDriedEarthDust,
     TinyDriedEarthDust,
 
+    FormaldehydeCatalystDust,
+    SmallFormaldehydeCatalystDust,
+    TinyFormaldehydeCatalystDust,
+
+    AmmoniumNitrateDust,
+    SmallAmmoniumNitrateDust,
+    TinyAmmoniumNitrateDust,
+
     ;
 
     private ItemStack mStack;

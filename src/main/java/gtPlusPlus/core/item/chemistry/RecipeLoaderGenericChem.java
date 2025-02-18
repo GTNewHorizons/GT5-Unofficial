@@ -343,7 +343,7 @@ public class RecipeLoaderGenericChem {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(12),
                 CI.getEmptyCatalyst(4),
-                new ItemStack(RocketFuels.Formaldehyde_Catalyst_Dust, 8))
+                GregtechItemList.FormaldehydeCatalystDust.get(8))
             .itemOutputs(GregtechItemList.FormaldehydeCatalyst.get(4))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)

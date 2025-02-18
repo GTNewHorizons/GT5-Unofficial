@@ -41,7 +41,6 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -651,7 +650,7 @@ public class BioRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(9))
-            .fluidInputs(new FluidStack(GTPPFluids.Urea, 200), new FluidStack(RocketFuels.Formaldehyde, 200))
+            .fluidInputs(new FluidStack(GTPPFluids.Urea, 200), new FluidStack(GTPPFluids.Formaldehyde, 200))
             .fluidOutputs(new FluidStack(GTPPFluids.LiquidResin, 200))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)

@@ -28,8 +28,8 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -121,7 +121,7 @@ public class RecipeLoaderGlueLine {
             .itemInputs(GTUtility.getIntegratedCircuit(22), GregtechItemList.SolidAcidCatalyst.get(0))
             .fluidInputs(
                 MaterialMisc.ETHYL_CYANOACETATE.getFluidStack(100),
-                new FluidStack(RocketFuels.Formaldehyde, 100))
+                new FluidStack(GTPPFluids.Formaldehyde, 100))
             .fluidOutputs(MaterialMisc.CYANOACRYLATE_POLYMER.getFluidStack(100), FluidUtils.getWater(1000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
