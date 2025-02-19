@@ -70,6 +70,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
@@ -237,6 +238,16 @@ public class RecipesGregTech {
             .eut(64)
             .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 2),
+                GTUtility.getIntegratedCircuit(20))
+            .fluidInputs(FluidRegistry.getFluidStack("mobessence", 5000))
+            .fluidOutputs(new FluidStack(GTPPFluids.GeneticMutagen, 8000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
 
         int aLaureniumTier = MaterialsAlloy.LAURENIUM.vTier;
         // Adding Recipes for Casings

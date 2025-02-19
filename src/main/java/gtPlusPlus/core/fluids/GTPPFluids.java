@@ -87,6 +87,9 @@ public class GTPPFluids {
     public static Fluid BurntLiFBeF2ZrF4U235Salt;
     public static Fluid ImpureMoltenSaltBase;
 
+    // Misc
+    public static Fluid GeneticMutagen;
+
     // Custom Blood Support
     private static final List<FluidStack> bloodFluids = new ArrayList<>();
 
@@ -429,6 +432,14 @@ public class GTPPFluids {
             "Impure Molten Salt Base",
             533,
             new short[] { 110, 75, 186, 100 },
+            null,
+            null);
+
+        GeneticMutagen = FluidUtils.generateFluidNonMolten(
+            "GeneticMutagen",
+            "Genetic Mutagen",
+            12,
+            new short[] { 22, 148, 185, 100 },
             null,
             null);
 
