@@ -8,12 +8,14 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerBronze;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerSteel;
@@ -79,13 +81,11 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
                 .eut(1)
                 .specialValue(1)
                 .setNEIDesc(
-                    "Not all solid fuels are listed.",
-                    "Any burnable item with a burn",
-                    "time of at least " + MTELargeBoilerBronze.EUT_GENERATED
-                        + " / "
-                        + MTELargeBoilerSteel.EUT_GENERATED,
-                    "will burn in a Large Bronze",
-                    "/ Steel Boiler, respectively.")
+                    GTUtility.breakLines(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.nei.large_boiler.solid",
+                            MTELargeBoilerBronze.EUT_GENERATED,
+                            MTELargeBoilerSteel.EUT_GENERATED)))
                 .build()
                 .map(this::compileRecipe);
             addedGeneralDesc = true;
@@ -125,12 +125,18 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
         tungstensteelBurnTime -= tungstensteelBurnTime % 0.05;
 
         recipe.setNeiDesc(
-            "Burn time in seconds:",
-            String.format("Bronze Boiler: %.4f", bronzeBurnTime),
-            "Steel Boiler: " + (isAllowedInSteelBoiler ? String.format("%.4f", steelBurnTime) : "Not allowed"),
-            "Titanium Boiler: " + (isHighTierAllowed ? String.format("%.4f", titaniumBurnTime) : "Not allowed"),
-            "Tungstenst. Boiler: "
-                + (isHighTierAllowed ? String.format("%.4f", tungstensteelBurnTime) : "Not allowed"));
+            StatCollector.translateToLocal("GT5U.nei.large_boiler.burn_time"),
+            StatCollector.translateToLocalFormatted("GT5U.nei.large_boiler.bronze_boiler", bronzeBurnTime),
+            isAllowedInSteelBoiler
+                ? StatCollector.translateToLocalFormatted("GT5U.nei.large_boiler.steel_boiler", steelBurnTime)
+                : StatCollector.translateToLocal("GT5U.nei.large_boiler.steel_boiler.ban"),
+            isHighTierAllowed
+                ? StatCollector.translateToLocalFormatted("GT5U.nei.large_boiler.titanium_boiler", titaniumBurnTime)
+                : StatCollector.translateToLocal("GT5U.nei.large_boiler.titanium_boiler.ban"),
+            isHighTierAllowed
+                ? StatCollector
+                    .translateToLocalFormatted("GT5U.nei.large_boiler.tungstensteel_boiler", tungstensteelBurnTime)
+                : StatCollector.translateToLocal("GT5U.nei.large_boiler.tungstensteel_boiler.ban"));
 
         return compileRecipe(recipe);
     }

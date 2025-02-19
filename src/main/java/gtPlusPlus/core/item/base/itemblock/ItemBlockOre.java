@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gtPlusPlus.core.block.base.BlockBaseOre;
@@ -80,7 +81,7 @@ public class ItemBlockOre extends ItemBlock {
         }
 
         if (this.mThisMaterial != null) {
-            list.add("Ore contains:    ");
+            list.add(StatCollector.translateToLocal("GTPP.tooltip.ore.contains"));
             if (mThisMaterial.getComposites()
                 .isEmpty()) {
                 list.add("- " + mThisMaterial.getLocalizedName());
@@ -99,7 +100,10 @@ public class ItemBlockOre extends ItemBlock {
             if (b != null) {
                 int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());
                 if (aMiningLevel1 != 0) {
-                    list.add("Mining Level: " + Math.min(Math.max(aMiningLevel1, 0), 5));
+                    list.add(
+                        StatCollector.translateToLocalFormatted(
+                            "GTPP.tooltip.ore.mining_level",
+                            Math.min(Math.max(aMiningLevel1, 0), 5)));
                 }
             }
 
@@ -112,17 +116,17 @@ public class ItemBlockOre extends ItemBlock {
                 }
             }
 
-            list.add("Found:    ");
+            list.add(StatCollector.translateToLocal("GTPP.tooltip.ore.found"));
             if (!mDimsForThisOre.isEmpty()) {
                 for (String m : mDimsForThisOre) {
                     list.add("- " + m);
                 }
             } else {
-                list.add("- Unknown");
+                list.add(StatCollector.translateToLocal("GTPP.tooltip.ore.unknown"));
             }
 
         } else {
-            list.add(EnumChatFormatting.DARK_GRAY + "Hold Ctrl to show additional info.");
+            list.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
         }
 
         super.addInformation(stack, aPlayer, list, bool);

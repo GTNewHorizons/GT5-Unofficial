@@ -4809,6 +4809,12 @@ public class GTUtility {
         }
     }
 
+    public static String[] breakLines(String... lines) {
+        return Arrays.stream(lines)
+            .flatMap(s -> Arrays.stream(s.split("\\\\n")))
+            .toArray(String[]::new);
+    }
+
     @AutoValue
     public abstract static class ItemId {
 
