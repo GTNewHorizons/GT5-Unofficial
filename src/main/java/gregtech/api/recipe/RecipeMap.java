@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -107,9 +108,20 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
         return frontend.getUIProperties().amperage;
     }
 
-    @Override
-    public void addDownstream(IRecipeMap downstream) {
-        backend.addDownstream(downstream);
+    /**
+     * Callback called before the recipe builder emits recipes. Can edit this builder to change this recipe, or
+     * use this information to add recipes elsewhere.
+     */
+    public void appendBuilderTransformer(Consumer<? super GTRecipeBuilder> builderTransformer) {
+        backend.properties.appendBuilderTransformer(builderTransformer);
+    }
+
+    /**
+     * Callback called after the recipe builder emits recipes, but before it is added to the map. Can edit this recipe
+     * for this map, or use this information to add recipes elsewhere.
+     */
+    public void appendRecipeTransformer(Consumer<? super GTRecipe> recipeTransformer) {
+        backend.properties.appendRecipeTransformer(recipeTransformer);
     }
 
     // region add recipe
