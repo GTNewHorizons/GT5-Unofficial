@@ -59,8 +59,6 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.SolarFactoryRecipeData;
 
-// TODO: add actual structures and update tooltip structure info accordingly
-
 public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory>
     implements IConstructable, ISurvivalConstructable {
 
@@ -319,13 +317,14 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             @Override
             public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 SolarFactoryRecipeData data = recipe.getMetadata(SolarFactoryRecipeDataKey.INSTANCE);
-                if (data == null || mTier < 2 || data.minimumWaferTier == 0) {
+                if (data == null || data.minimumWaferTier == 0) {
                     shouldMultiplyOutputs = false;
                     return CheckRecipeResultRegistry.SUCCESSFUL;
                 }
                 if (mTier < data.tierRequired) {
                     return CheckRecipeResultRegistry.insufficientMachineTier(data.tierRequired);
                 }
+                if (mTier < 2) shouldMultiplyOutputs = false;
                 minimumTierForRecipe = data.minimumWaferTier;
                 waferAmountInRecipe = data.minimumWaferCount;
                 findWaferStack();
@@ -347,7 +346,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             @Nonnull
             private GTRecipe adjustRecipe(@Nonnull GTRecipe recipe) {
                 GTRecipe tRecipe = recipe.copy();
-                if (shouldMultiplyOutputs) {
+                if (foundWaferStack != null) {
                     tRecipe.mInputs = ArrayUtils.add(tRecipe.mInputs, copyAmount(waferAmountInRecipe, foundWaferStack));
                 }
                 return tRecipe;
