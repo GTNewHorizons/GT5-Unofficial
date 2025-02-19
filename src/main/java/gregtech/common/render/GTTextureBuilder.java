@@ -27,6 +27,8 @@ public class GTTextureBuilder implements ITextureBuilder {
     private boolean stdOrient;
     private boolean extFacing;
     private boolean glow;
+    private Block matBlock;
+    private int matMeta;
     private Boolean worldCoord = null;
 
     public GTTextureBuilder() {
@@ -106,6 +108,13 @@ public class GTTextureBuilder implements ITextureBuilder {
         return this;
     }
 
+    @Override
+    public ITextureBuilder material(Block block, int meta) {
+        matBlock = block;
+        matMeta = meta;
+        return this;
+    }
+
     /**
      * @inheritDoc
      */
@@ -119,7 +128,15 @@ public class GTTextureBuilder implements ITextureBuilder {
         if (worldCoord != null) throw new IllegalStateException("worldCoord without from block");
         if (!textureLayers.isEmpty()) return new GTMultiTextureRender(textureLayers.toArray(new ITexture[0]));
         return switch (iconContainerList.size()) {
-            case 1 -> new GTRenderedTexture(iconContainerList.get(0), rgba, allowAlpha, glow, stdOrient, extFacing);
+            case 1 -> new GTRenderedTexture(
+                iconContainerList.get(0),
+                rgba,
+                allowAlpha,
+                glow,
+                stdOrient,
+                extFacing,
+                matBlock,
+                matMeta);
             case 6 -> new GTSidedTextureRender(
                 iconContainerList.get(ForgeDirection.DOWN.ordinal()),
                 iconContainerList.get(ForgeDirection.UP.ordinal()),

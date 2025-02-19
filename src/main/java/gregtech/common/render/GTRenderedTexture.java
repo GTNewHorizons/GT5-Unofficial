@@ -2,6 +2,7 @@ package gregtech.common.render;
 
 import static gregtech.api.util.LightingHelper.MAX_BRIGHTNESS;
 
+import net.coderbot.iris.Iris;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -19,6 +20,7 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 
 import gregtech.GTMod;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -33,20 +35,47 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     private final boolean glow;
     private final boolean stdOrient;
     private final boolean useExtFacing;
+    private final Block matBlock;
+    private final int matMeta;
 
     protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean allowAlpha, boolean glow,
-        boolean stdOrient, boolean extFacing) {
+        boolean stdOrient, boolean extFacing, Block matBlock, int matMeta) {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTRenderedTexture");
         mIconContainer = aIcon;
         mRGBa = aRGBa;
         this.glow = glow;
         this.stdOrient = stdOrient;
         this.useExtFacing = extFacing;
+        this.matBlock = matBlock;
+        this.matMeta = matMeta;
+    }
+
+    protected GTRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean allowAlpha, boolean glow,
+        boolean stdOrient, boolean extFacing) {
+        this(aIcon, aRGBa, allowAlpha, glow, stdOrient, extFacing, null, 0);
     }
 
     @Override
     public boolean isOldTexture() {
         return false;
+    }
+
+    @Override
+    public void startDrawingQuads(RenderBlocks aRenderer, float aNormalX, float aNormalY, float aNormalZ) {
+        if (matBlock != null && Mods.Angelica.isModLoaded()) {
+            Iris.setShaderMaterialOverride(matBlock, matMeta);
+        }
+
+        super.startDrawingQuads(aRenderer, aNormalX, aNormalY, aNormalZ);
+    }
+
+    @Override
+    public void draw(RenderBlocks aRenderer) {
+        super.draw(aRenderer);
+
+        if (matBlock != null && Mods.Angelica.isModLoaded()) {
+            Iris.resetShaderMaterialOverride();
+        }
     }
 
     @Override
