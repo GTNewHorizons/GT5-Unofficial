@@ -6,29 +6,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import net.minecraft.item.ItemStack;
-
+import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
 public class WirelessDataStore {
 
-    public static final long UPLOAD_TICK = 200;
-    public static final long DOWNLOAD_TICK = UPLOAD_TICK + 1;
+    public static final long IO_TICK_RATE = 200;
+    public static final long DOWNLOAD_TICK_OFFSET = 1;
 
     private long lastUploadTick = -1;
     private long lastDownloadTick = -1;
-    private final ArrayList<ItemStack> uploadedSticks = new ArrayList<>();
-    private final ArrayList<ItemStack> dataSticks = new ArrayList<>();
+    private final ArrayList<RecipeAssemblyLine> uploadedSticks = new ArrayList<>();
+    private final ArrayList<RecipeAssemblyLine> dataSticks = new ArrayList<>();
 
-    public void uploadData(List<ItemStack> sticks, long tick) {
+    public void uploadData(List<RecipeAssemblyLine> recipes, long tick) {
         if (lastUploadTick < tick) {
             uploadedSticks.clear();
             lastUploadTick = tick;
         }
-        uploadedSticks.addAll(sticks);
+        uploadedSticks.addAll(recipes);
     }
 
-    public List<ItemStack> downloadData(long tick) {
+    public List<RecipeAssemblyLine> downloadData(long tick) {
         if (lastDownloadTick < tick) {
             dataSticks.clear();
             dataSticks.addAll(uploadedSticks);
