@@ -1347,6 +1347,15 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.CosmicNeutronium, 1L),
                 ItemList.Cell_Empty.get(1L));
 
+        GTFluidFactory.builder("molten.cosmicneutronium")
+            .withLocalizedName("Molten Cosmic Neutronium")
+            .withStateAndTemperature(MOLTEN, 9900)
+            .buildAndRegister()
+            .configureMaterials(Materials.CosmicNeutronium)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.CosmicNeutronium, 1L),
+                ItemList.Cell_Empty.get(1L));
+
         GTFluidFactory.builder("fieryblood")
             .withLocalizedName("Fiery Blood")
             .withStateAndTemperature(LIQUID, 6400)
