@@ -609,16 +609,16 @@ public class Godforge implements Runnable {
                 6000 /* Zinc */));
 
         // GT++ materials
-        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().ZIRCONIUM.getTinyDust(1), 6000);
-        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().THORIUM232.getTinyDust(1), 6000);
-        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().GERMANIUM.getTinyDust(1), 2000);
-        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().THALLIUM.getTinyDust(1), 2000);
-        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().RUTHENIUM.getTinyDust(1), 6000);
-        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().RHENIUM.getTinyDust(1), 2000);
-        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().RHODIUM.getTinyDust(1), 6000);
-        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().IODINE.getTinyDust(1), 6000);
-        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().HAFNIUM.getTinyDust(1), 6000);
-        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().CURIUM.getTinyDust(1), 10000);
+        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().ZIRCONIUM.getDust(1), 6000);
+        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().THORIUM232.getDust(1), 6000);
+        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().GERMANIUM.getDust(1), 2000);
+        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().THALLIUM.getDust(1), 2000);
+        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().RUTHENIUM.getDust(1), 6000);
+        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().RHENIUM.getDust(1), 2000);
+        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().RHODIUM.getDust(1), 6000);
+        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().IODINE.getDust(1), 6000);
+        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().HAFNIUM.getDust(1), 6000);
+        exoticModulePlasmaItemMap.put(MaterialsElements.getInstance().CURIUM.getDust(1), 10000);
 
         // Mercury is weird, it has neither dust nor gas, so it needs to be added separately
         exoticModulePlasmaFluidMap.put(Materials.Mercury.getFluid(1), 6000);
@@ -629,7 +629,7 @@ public class Godforge implements Runnable {
                 .getDustTiny(1) != null) {
                 exoticModulePlasmaItemMap.put(
                     plasmaGTMaterialList.get(i)
-                        .getDustTiny(1),
+                        .getDust(1),
                     plasmaGTWeightList.get(i));
             } else {
                 exoticModulePlasmaFluidMap.put(
@@ -641,22 +641,22 @@ public class Godforge implements Runnable {
 
         // Magmatter map
         // GT materials
-        exoticModuleMagmatterItemMap.put(Materials.CosmicNeutronium.getDustTiny(1), 100000);
-        exoticModuleMagmatterItemMap.put(Materials.Draconium.getDustTiny(1), 100000);
-        exoticModuleMagmatterItemMap.put(Materials.DraconiumAwakened.getDustTiny(1), 100000);
-        exoticModuleMagmatterItemMap.put(Materials.Ichorium.getDustTiny(1), 100000);
-        exoticModuleMagmatterItemMap.put(Materials.Neutronium.getDustTiny(1), 100000);
-        exoticModuleMagmatterItemMap.put(Materials.Flerovium.getDustTiny(1), 100000);
-        exoticModuleMagmatterItemMap.put(Materials.Bedrockium.getDustTiny(1), 100000);
-        exoticModuleMagmatterItemMap.put(Materials.Infinity.getDustTiny(1), 100000);
-        exoticModuleMagmatterItemMap.put(MaterialsUEVplus.SixPhasedCopper.getDustTiny(1), 100000);
+        exoticModuleMagmatterItemMap.put(Materials.CosmicNeutronium.getDust(1), 100000);
+        exoticModuleMagmatterItemMap.put(Materials.Draconium.getDust(1), 100000);
+        exoticModuleMagmatterItemMap.put(Materials.DraconiumAwakened.getDust(1), 100000);
+        exoticModuleMagmatterItemMap.put(Materials.Ichorium.getDust(1), 100000);
+        exoticModuleMagmatterItemMap.put(Materials.Neutronium.getDust(1), 100000);
+        exoticModuleMagmatterItemMap.put(Materials.Flerovium.getDust(1), 100000);
+        exoticModuleMagmatterItemMap.put(Materials.Bedrockium.getDust(1), 100000);
+        exoticModuleMagmatterItemMap.put(Materials.Infinity.getDust(1), 100000);
+        exoticModuleMagmatterItemMap.put(MaterialsUEVplus.SixPhasedCopper.getDust(1), 100000);
 
         // GT++ materials
-        exoticModuleMagmatterItemMap.put(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getTinyDust(1), 100000);
-        exoticModuleMagmatterItemMap.put(MaterialsElements.STANDALONE.HYPOGEN.getTinyDust(1), 100000);
-        exoticModuleMagmatterItemMap.put(MaterialsElements.STANDALONE.RHUGNOR.getTinyDust(1), 100000);
-        exoticModuleMagmatterItemMap.put(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getTinyDust(1), 100000);
-        exoticModuleMagmatterItemMap.put(MaterialsElements.STANDALONE.DRAGON_METAL.getTinyDust(1), 100000);
+        exoticModuleMagmatterItemMap.put(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getDust(1), 100000);
+        exoticModuleMagmatterItemMap.put(MaterialsElements.STANDALONE.HYPOGEN.getDust(1), 100000);
+        exoticModuleMagmatterItemMap.put(MaterialsElements.STANDALONE.RHUGNOR.getDust(1), 100000);
+        exoticModuleMagmatterItemMap.put(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getDust(1), 100000);
+        exoticModuleMagmatterItemMap.put(MaterialsElements.STANDALONE.DRAGON_METAL.getDust(1), 100000);
 
         // For NEI
         for (FluidStack fluid : exoticModulePlasmaFluidMap.keySet()) {
@@ -664,7 +664,7 @@ public class Godforge implements Runnable {
             quarkGluonFluidItemsForNEI.add(GTUtility.getFluidDisplayStack(fluid, true));
         }
         for (ItemStack item : exoticModulePlasmaItemMap.keySet()) {
-            item.stackSize = getRandomIntInRange(1, 64);
+            item.stackSize = getRandomIntInRange(1, 7);
             quarkGluonItemsForNEI.add(item);
         }
         for (int i = 0; i < 21; i++) {

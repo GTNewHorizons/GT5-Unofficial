@@ -226,7 +226,7 @@ public class MTEExoticModule extends MTEBaseModule {
 
         if (numberOfItems != 0) {
             for (ItemStack itemStack : randomizedItemInput) {
-                itemStack.stackSize = 9 * GodforgeMath.getRandomIntInRange(1, 7);
+                itemStack.stackSize = GodforgeMath.getRandomIntInRange(1, 7);
             }
         }
 
@@ -237,7 +237,7 @@ public class MTEExoticModule extends MTEBaseModule {
             null,
             null,
             ArrayUtils
-                .addAll(convertItemToPlasma(randomizedItemInput, 1), convertFluidToPlasma(randomizedFluidInput, 1)),
+                .addAll(convertItemToPlasma(randomizedItemInput, 9), convertFluidToPlasma(randomizedFluidInput, 1)),
             new FluidStack[] { MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000 * actualParallel) },
             10 * SECONDS,
             (int) TierEU.RECIPE_MAX,
@@ -342,8 +342,8 @@ public class MTEExoticModule extends MTEBaseModule {
 
         for (ItemStack itemStack : items) {
             String dict = OreDictionary.getOreName(OreDictionary.getOreIDs(itemStack)[0]);
-            // substring 8 because dustTiny is 8 characters long and there is no other possible oreDict
-            String strippedOreDict = dict.substring(8);
+            // substring 4 because dust is 4 characters long and there is no other possible oreDict
+            String strippedOreDict = dict.substring(4);
             plasmas.add(
                 FluidRegistry.getFluidStack(
                     "plasma." + strippedOreDict.toLowerCase(),
