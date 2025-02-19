@@ -24,7 +24,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.item.chemistry.CoalTar;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -43,7 +43,7 @@ public class CokeAndPyrolyseOven {
                 .itemInputs(GTUtility.getIntegratedCircuit(20), GTUtility.copyAmount(20, stack))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 24))
                 .fluidInputs(GTModHandler.getSteam(1000))
-                .fluidOutputs(new FluidStack(CoalTar.Coal_Gas, 1440))
+                .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 1440))
                 .duration(72 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(pyrolyseRecipes);
@@ -56,7 +56,7 @@ public class CokeAndPyrolyseOven {
                 GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16))
             .itemOutputs(GTOreDictUnificator.get("fuelCoke", 10))
             .fluidInputs(GTModHandler.getSteam(1000))
-            .fluidOutputs(new FluidStack(CoalTar.Coal_Gas, 2880))
+            .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 2880))
             .duration(36 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(pyrolyseRecipes);
@@ -79,7 +79,7 @@ public class CokeAndPyrolyseOven {
                 GTOreDictUnificator.get("fuelCoke", 6))
             .itemOutputs(GTOreDictUnificator.get("fuelCoke", 14))
             .fluidInputs(GTModHandler.getSteam(2000))
-            .fluidOutputs(new FluidStack(CoalTar.Coal_Gas, 5040))
+            .fluidOutputs(new FluidStack(GTPPFluids.CoalGas, 5040))
             .eut(240)
             .duration(1 * MINUTES)
             .addTo(cokeOvenRecipes);

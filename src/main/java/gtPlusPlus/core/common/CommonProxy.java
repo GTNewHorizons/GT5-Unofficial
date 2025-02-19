@@ -29,6 +29,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.entity.InternalEntityRegistry;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.CompatHandler;
 import gtPlusPlus.core.handler.CompatIntermodStaging;
@@ -66,6 +67,8 @@ public class CommonProxy implements IFuelHandler {
 
         ModItems.init();
         ModBlocks.init();
+        GTPPFluids.init();
+
         CI.preInit();
         CompatIntermodStaging.preInit(e);
         BookHandler.run();

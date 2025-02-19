@@ -84,7 +84,7 @@ import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.item.chemistry.GenericChem;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class NaquadahReworkRecipeLoader {
 
@@ -107,7 +107,7 @@ public class NaquadahReworkRecipeLoader {
                 Materials.Oxygen.getGas(100L))
             .duration(10 * SECONDS)
             .eut(GTValues.VP[10])
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.SimpleNaquadahCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 2)
             .addTo(quantumForceTransformerRecipes);
         // Enriched Naquadah (UIV)
@@ -121,7 +121,7 @@ public class NaquadahReworkRecipeLoader {
             .fluidOutputs(wasteLiquid.getFluidOrGas(32000))
             .duration(10 * SECONDS)
             .eut(GTValues.VP[11])
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mSimpleNaquadahCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.SimpleNaquadahCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 2)
             .addTo(quantumForceTransformerRecipes);
         // Naquadria (UMV)
@@ -138,7 +138,7 @@ public class NaquadahReworkRecipeLoader {
                 Materials.Oxygen.getGas(100L))
             .duration(5 * SECONDS)
             .eut(GTValues.VP[12])
-            .metadata(QFT_CATALYST, GTUtility.copyAmount(0, GenericChem.mAdvancedNaquadahCatalyst))
+            .metadata(QFT_CATALYST, GregtechItemList.AdvancedNaquadahCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 3)
             .addTo(quantumForceTransformerRecipes);
 
