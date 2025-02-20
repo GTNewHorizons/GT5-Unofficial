@@ -649,7 +649,7 @@ public class Godforge implements Runnable {
         exoticModuleMagmatterItemMap.put(Materials.Flerovium.getDust(1), 100000);
         exoticModuleMagmatterItemMap.put(Materials.Bedrockium.getDust(1), 100000);
         exoticModuleMagmatterItemMap.put(Materials.Infinity.getDust(1), 100000);
-        exoticModuleMagmatterItemMap.put(MaterialsUEVplus.SixPhasedCopper.getDust(1), 100000);
+        exoticModuleMagmatterItemMap.put(Materials.Tritanium.getDust(1), 100000);
 
         // GT++ materials
         exoticModuleMagmatterItemMap.put(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getDust(1), 100000);
