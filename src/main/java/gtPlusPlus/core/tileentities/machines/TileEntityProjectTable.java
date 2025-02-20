@@ -15,7 +15,6 @@ import gtPlusPlus.core.container.ContainerProjectTable;
 import gtPlusPlus.core.inventories.projecttable.InventoryProjectMain;
 import gtPlusPlus.core.inventories.projecttable.InventoryProjectOutput;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import ic2.api.network.INetworkDataProvider;
 import ic2.api.network.INetworkUpdateListener;
@@ -124,7 +123,6 @@ public class TileEntityProjectTable extends TileEntity
             if (dataStick != null && this.container != null && container.getOutputContent() != null) {
                 if ((dataStick.getItem() instanceof MetaGeneratedItem01 && dataStick.getItemDamage() == 32708)
                     || (dataStick == ItemList.Tool_DataStick.get(1))
-                    || (dataStick == GregtechItemList.Old_Tool_DataStick.get(1))
                     || (dataStick.getItem() instanceof MetaGeneratedGregtechItems
                         && dataStick.getItemDamage() == 32208)) {
 

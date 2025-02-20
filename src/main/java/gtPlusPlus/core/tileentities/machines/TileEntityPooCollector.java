@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -110,7 +111,7 @@ public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
 
     @Override
     public Fluid fluidToProvide() {
-        return AgriculturalChem.PoopJuice;
+        return GTPPFluids.PoopJuice;
     }
 
     @Override

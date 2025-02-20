@@ -316,10 +316,17 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         final char rBracket = isLocked ? ']' : ')';
 
         if (mCurrentColor == REMOVE_COLOR) {
-            itemStack.setStackDisplayName(String.format("Infinite Spray Can %cSolvent%c", lBracket, rBracket));
+            itemStack.setStackDisplayName(
+                StatCollector
+                    .translateToLocalFormatted("item.GT5U.infinite_spray_can.name.solvent", lBracket, rBracket));
         } else {
             itemStack.setStackDisplayName(
-                String.format("Infinite Spray Can %c" + Dyes.get(mCurrentColor).mName + "%c", lBracket, rBracket));
+                StatCollector.translateToLocalFormatted(
+                    "item.GT5U.infinite_spray_can.name.colored",
+                    lBracket,
+                    Dyes.get(mCurrentColor)
+                        .getLocalizedDyeName(),
+                    rBracket));
         }
     }
 

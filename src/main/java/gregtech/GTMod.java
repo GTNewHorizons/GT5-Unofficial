@@ -16,7 +16,6 @@ import java.util.Map;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -45,7 +44,6 @@ import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 import galacticgreg.SpaceDimRegisterer;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentEnderDamage;
@@ -109,6 +107,7 @@ import gregtech.loaders.postload.GTWorldgenloader;
 import gregtech.loaders.postload.ItemMaxStacksizeLoader;
 import gregtech.loaders.postload.MachineRecipeLoader;
 import gregtech.loaders.postload.MachineTooltipsLoader;
+import gregtech.loaders.postload.MissingMappingsHandler;
 import gregtech.loaders.postload.PosteaTransformers;
 import gregtech.loaders.postload.RecyclerBlacklistLoader;
 import gregtech.loaders.postload.ScrapboxDropLoader;
@@ -747,17 +746,7 @@ public class GTMod implements IGTMod {
 
     @Mod.EventHandler
     public void onMissingMappings(FMLMissingMappingsEvent event) {
-        for (FMLMissingMappingsEvent.MissingMapping mapping : event.getAll()) {
-            if (mapping.type == GameRegistry.Type.BLOCK) {
-                if ("dreamcraft:gt.blockcasingsNH".equals(mapping.name)) {
-                    mapping.remap(GregTechAPI.sBlockCasingsNH);
-                }
-            } else if (mapping.type == GameRegistry.Type.ITEM) {
-                if ("dreamcraft:gt.blockcasingsNH".equals(mapping.name)) {
-                    mapping.remap(Item.getItemFromBlock(GregTechAPI.sBlockCasingsNH));
-                }
-            }
-        }
+        MissingMappingsHandler.handleMappings(event.getAll());
     }
 
     public static void logStackTrace(Throwable t) {

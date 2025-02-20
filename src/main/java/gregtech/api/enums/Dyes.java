@@ -3,6 +3,7 @@ package gregtech.api.enums;
 import java.util.ArrayList;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -139,5 +140,9 @@ public enum Dyes implements IColorModulationContainer {
         }
 
         return (~(byte) color) & 0xF;
+    }
+
+    public String getLocalizedDyeName() {
+        return StatCollector.translateToLocal("GT5U.infinite_spray_can.color." + this.mName);
     }
 }

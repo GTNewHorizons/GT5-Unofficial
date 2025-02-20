@@ -18,8 +18,8 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class ItemGenericChemBase extends Item {
 
@@ -266,10 +266,10 @@ public class ItemGenericChemBase extends Item {
     }
 
     public static int getMaxBallDurability(ItemStack aStack) {
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mMillingBallAlumina, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Alumina.get(1), true)) {
             return 100;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mMillingBallSoapstone, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Soapstone.get(1), true)) {
             return 50;
         }
         return 0;

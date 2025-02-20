@@ -1,7 +1,5 @@
 package gtPlusPlus.core.item.chemistry;
 
-import static gregtech.api.enums.Mods.BiomesOPlenty;
-import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
@@ -18,7 +16,6 @@ import java.util.List;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -31,8 +28,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.circuit.GTPPIntegratedCircuitItem;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -43,22 +40,6 @@ import gtPlusPlus.plugin.agrichem.item.algae.ItemAlgaeBase;
 
 public class AgriculturalChem extends ItemPackage {
 
-    private static final ArrayList<FluidStack> mBloodFluids = new ArrayList<>();
-
-    /**
-     * Fluids
-     */
-
-    // Poop Juice
-    public static Fluid PoopJuice;
-    // Manure Slurry
-    public static Fluid ManureSlurry;
-    // Fertile Manure Slurry
-    public static Fluid FertileManureSlurry;
-    // Blood
-    public static Fluid CustomBlood;
-    // Red Mud
-    public static Fluid RedMud;
     /**
      * Items
      */
@@ -246,92 +227,12 @@ public class AgriculturalChem extends ItemPackage {
     @Override
     public void fluids() {
         // Sewage
-        PoopJuice = FluidUtils.generateFluidNonMolten(
-            "raw.waste",
-            "Raw Animal Waste",
-            32 + 175,
-            new short[] { 100, 70, 30, 100 },
-            null,
-            null,
-            0,
-            true);
 
-        // Sewage
-        ManureSlurry = FluidUtils.generateFluidNonMolten(
-            "manure.slurry",
-            "Manure Slurry",
-            39 + 175,
-            new short[] { 75, 45, 15, 100 },
-            null,
-            null,
-            0,
-            true);
-
-        // Sewage
-        FertileManureSlurry = FluidUtils.generateFluidNonMolten(
-            "fertile.manure.slurry",
-            "Fertile Manure Slurry",
-            45 + 175,
-            new short[] { 65, 50, 15, 100 },
-            null,
-            null,
-            0,
-            true);
-
-        RedMud = FluidUtils.generateFluidNoPrefix(
-            "mud.red.slurry",
-            "Red Mud Slurry",
-            32 + 175,
-            new short[] { 180, 35, 25, 100 },
-            true);
     }
 
     public AgriculturalChem() {
         super();
 
-        boolean aBOP = BiomesOPlenty.isModLoaded();
-        boolean aTiCon = TinkerConstruct.isModLoaded();
-
-        Logger.INFO("Adding Agrochemical content");
-
-        FluidStack aBlood;
-        if (aBOP) {
-            aBlood = FluidUtils.getFluidStack("hell_blood", 100);
-            if (aBlood != null) {
-                Logger.INFO("Found Biome's o Plenty, enabled Blood support.");
-                CustomBlood = aBlood.getFluid();
-                mBloodFluids.add(aBlood);
-            }
-        }
-
-        if (aTiCon) {
-            aBlood = FluidUtils.getFluidStack("blood", 100);
-            if (aBlood != null) {
-                Logger.INFO("Found Tinker's Construct, enabled Blood support.");
-                CustomBlood = aBlood.getFluid();
-                mBloodFluids.add(FluidUtils.getFluidStack("blood", 100));
-            }
-        }
-
-        // Handle Blood Internally, Create if required.
-        if (mBloodFluids.isEmpty() || CustomBlood == null) {
-            Logger.INFO(
-                "Did not find any existing Blood fluids. Trying to wildcard search the fluid registry, then generate our own if that fails.");
-            FluidStack aTempBlood = FluidUtils.getWildcardFluidStack("blood", 100);
-            if (aTempBlood != null) {
-                CustomBlood = aTempBlood.getFluid();
-            } else {
-                aTempBlood = FluidUtils.getWildcardFluidStack("hell_blood", 100);
-                if (aTempBlood == null) {
-                    CustomBlood = FluidUtils
-                        .generateFluidNoPrefix("blood", "Blood", 32 + 175, new short[] { 175, 25, 25, 100 }, true);
-                } else {
-                    CustomBlood = aTempBlood.getFluid();
-                }
-            }
-            Logger.INFO("Using " + CustomBlood.getName());
-            mBloodFluids.add(FluidUtils.getFluidStack(CustomBlood, 100));
-        }
     }
 
     private static final ArrayList<ItemStack> mMeats = new ArrayList<>();
@@ -423,8 +324,8 @@ public class AgriculturalChem extends ItemPackage {
         GTValues.RA.stdBuilder()
             .itemOutputs(aDirtDust, aDirtDust, aManureByprod1, aManureByprod1, aManureByprod1, aManureByprod1)
             .outputChances(2000, 2000, 500, 500, 250, 250)
-            .fluidInputs(FluidUtils.getFluidStack(PoopJuice, 1000))
-            .fluidOutputs(FluidUtils.getFluidStack(ManureSlurry, 250))
+            .fluidInputs(new FluidStack(GTPPFluids.PoopJuice, 1000))
+            .fluidOutputs(new FluidStack(GTPPFluids.ManureSlurry, 250))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeRecipes);
@@ -434,8 +335,8 @@ public class AgriculturalChem extends ItemPackage {
             .itemInputs(GTUtility.getIntegratedCircuit(20))
             .itemOutputs(aDirtDust, aDirtDust, aManureByprod1, aManureByprod1, aManureByprod2, aManureByprod2)
             .outputChances(4000, 3000, 1250, 1250, 675, 675)
-            .fluidInputs(FluidUtils.getFluidStack(PoopJuice, 1000))
-            .fluidOutputs(FluidUtils.getFluidStack(ManureSlurry, 50))
+            .fluidInputs(new FluidStack(GTPPFluids.PoopJuice, 1000))
+            .fluidOutputs(new FluidStack(GTPPFluids.ManureSlurry, 50))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(centrifugeRecipes);
@@ -448,9 +349,9 @@ public class AgriculturalChem extends ItemPackage {
         ItemStack aMeat;
         ItemStack aEmptyCells = Materials.Empty.getCells(2);
         ItemStack aInputCells = ItemUtils.getItemStackOfAmountFromOreDict("cellRawAnimalWaste", 2);
-        FluidStack aOutput = FluidUtils.getFluidStack(FertileManureSlurry, 1000);
+        FluidStack aOutput = new FluidStack(GTPPFluids.FertileManureSlurry, 1000);
 
-        for (FluidStack aBloodStack : mBloodFluids) {
+        for (FluidStack aBloodStack : GTPPFluids.getBloodFluids()) {
             for (ItemStack aBoneStack : mList_Master_Bones) {
                 aBone = ItemUtils.getSimpleStack(aBoneStack, 2);
                 for (ItemStack aMeatStack : mList_Master_Meats) {
@@ -470,7 +371,7 @@ public class AgriculturalChem extends ItemPackage {
     }
 
     private static void addBasicOrganiseFertRecipes() {
-        FluidStack aInputFluid = FluidUtils.getFluidStack(ManureSlurry, 1000);
+        FluidStack aInputFluid = new FluidStack(GTPPFluids.ManureSlurry, 1000);
         ItemStack aOutputDust = ItemUtils.getSimpleStack(dustOrganicFertilizer, 3);
         ItemStack aPeat;
         ItemStack aMeat;
@@ -501,7 +402,7 @@ public class AgriculturalChem extends ItemPackage {
     }
 
     private static void addAdvancedOrganiseFertRecipes() {
-        FluidStack aInputFluid = FluidUtils.getFluidStack(FertileManureSlurry, 1000);
+        FluidStack aInputFluid = new FluidStack(GTPPFluids.FertileManureSlurry, 1000);
         ItemStack aOutputDust = ItemUtils.getSimpleStack(dustOrganicFertilizer, 7);
         ItemStack aPeat;
         ItemStack aMeat;
@@ -581,21 +482,21 @@ public class AgriculturalChem extends ItemPackage {
 
         // Add Fuel Usages
         GTValues.RA.stdBuilder()
-            .fluidInputs(FluidUtils.getFluidStack(PoopJuice, 1000))
+            .fluidInputs(new FluidStack(GTPPFluids.PoopJuice, 1000))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 12)
             .addTo(semiFluidFuels);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(FluidUtils.getFluidStack(ManureSlurry, 1000))
+            .fluidInputs(new FluidStack(GTPPFluids.ManureSlurry, 1000))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 24)
             .addTo(semiFluidFuels);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(FluidUtils.getFluidStack(FertileManureSlurry, 1000))
+            .fluidInputs(new FluidStack(GTPPFluids.FertileManureSlurry, 1000))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 32)
@@ -612,7 +513,7 @@ public class AgriculturalChem extends ItemPackage {
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Nickel, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lead, 1L))
             .outputChances(3000, 3000, 2000, 2000, 1000, 1000)
-            .fluidInputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 1000))
+            .fluidInputs(new FluidStack(GTPPFluids.RedMud, 1000))
             .fluidOutputs(Materials.Water.getFluid(500))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -642,10 +543,6 @@ public class AgriculturalChem extends ItemPackage {
 
     @Override
     public boolean generateRecipes() {
-        if (mBloodFluids.isEmpty()) {
-            Logger.INFO("Could not find, nor create Blood fluid. Unable to add recipes.");
-            return false;
-        }
 
         // Organise OreDict
         processAllOreDict();

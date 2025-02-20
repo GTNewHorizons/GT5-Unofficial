@@ -54,7 +54,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
 
                 if (!OrePrefixes.block.isIgnored(aMaterial.mSmeltInto)
                     && (GTOreDictUnificator.get(OrePrefixes.block, aMaterial.mSmeltInto, 1L) != null)
-                    && aMaterial != Materials.Ichorium) {
+                    && aMaterial != Materials.Ichorium
+                    && aMaterial != Materials.Obsidian) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(9, aStack), ItemList.Shape_Extruder_Block.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial.mSmeltInto, tAmount))

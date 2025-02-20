@@ -78,7 +78,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
             }
 
-            else if (aMaterial != Materials.Clay && aMaterial != Materials.Basalt) {
+            else if (aMaterial != Materials.Clay && aMaterial != Materials.Basalt && aMaterial != Materials.Obsidian) {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
@@ -134,7 +134,8 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (aMaterial.mStandardMoltenFluid != null) {
-            if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
+            if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron
+                || aMaterial == Materials.Obsidian)) {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GTValues.RA.stdBuilder()
@@ -166,7 +167,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 GTModHandler.addShapelessCraftingRecipe(tStack1, new Object[] { OrePrefixes.block.get(aMaterial) });
         }
 
-        if (!OrePrefixes.block.isIgnored(aMaterial) && tStack1 != null) {
+        if (!OrePrefixes.block.isIgnored(aMaterial) && tStack1 != null && aMaterial != Materials.Obsidian) {
             // 9 ingots -> 1 block
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L))

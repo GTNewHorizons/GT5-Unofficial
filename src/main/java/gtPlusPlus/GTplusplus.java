@@ -1,15 +1,10 @@
 package gtPlusPlus;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.Names;
 import static gregtech.api.enums.Mods.Thaumcraft;
 
-import java.util.HashMap;
-
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 
@@ -21,12 +16,9 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
-import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
-import cpw.mods.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -45,7 +37,6 @@ import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.plugin.agrichem.block.AgrichemFluids;
 import gtPlusPlus.plugin.fixes.vanilla.VanillaBedHeightFix;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -162,7 +153,6 @@ public class GTplusplus {
         proxy.preInit(event);
         Logger.INFO("Setting up our own GTProxy.");
         MetaGTProxy.preInit();
-        AgrichemFluids.preInit();
         fixVanillaOreDict();
         new VanillaBedHeightFix();
     }
@@ -281,98 +271,6 @@ public class GTplusplus {
         Material.invalidMaterials.add(Materials.Soularium);
         Material.invalidMaterials.add(Materials.PhasedIron);
 
-    }
-
-    private static final HashMap<String, Item> sMissingItemMappings = new HashMap<>();
-    private static final HashMap<String, Block> sMissingBlockMappings = new HashMap<>();
-
-    private static void processMissingMappings() {
-        sMissingItemMappings.put("miscutils:Ammonium", GameRegistry.findItem(GTPlusPlus.ID, "itemCellAmmonium"));
-        sMissingItemMappings.put("miscutils:Hydroxide", GameRegistry.findItem(GTPlusPlus.ID, "itemCellHydroxide"));
-        sMissingItemMappings.put(
-            "miscutils:BerylliumHydroxide",
-            GameRegistry.findItem(GTPlusPlus.ID, "itemCellmiscutils:BerylliumHydroxide"));
-        sMissingItemMappings.put("miscutils:Bromine", GameRegistry.findItem(GTPlusPlus.ID, "itemCellBromine"));
-        sMissingItemMappings.put("miscutils:Krypton", GameRegistry.findItem(GTPlusPlus.ID, "itemCellKrypton"));
-        sMissingItemMappings.put(
-            "miscutils:itemCellZirconiumTetrafluoride",
-            GameRegistry.findItem(GTPlusPlus.ID, "ZirconiumTetrafluoride"));
-        sMissingItemMappings
-            .put("miscutils:Li2BeF4", GameRegistry.findItem(GTPlusPlus.ID, "itemCellLithiumTetrafluoroberyllate"));
-
-        // Cryolite
-        sMissingBlockMappings.put("miscutils:oreCryolite", GameRegistry.findBlock(GTPlusPlus.ID, "oreCryoliteF"));
-        sMissingItemMappings
-            .put("miscutils:itemDustTinyCryolite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustTinyCryoliteF"));
-        sMissingItemMappings
-            .put("miscutils:itemDustSmallCryolite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustSmallCryoliteF"));
-        sMissingItemMappings
-            .put("miscutils:itemDustCryolite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustCryoliteF"));
-        sMissingItemMappings
-            .put("miscutils:dustPureCryolite", GameRegistry.findItem(GTPlusPlus.ID, "dustPureCryoliteF"));
-        sMissingItemMappings
-            .put("miscutils:dustImpureCryolite", GameRegistry.findItem(GTPlusPlus.ID, "dustImpureCryoliteF"));
-        sMissingItemMappings.put("miscutils:crushedCryolite", GameRegistry.findItem(GTPlusPlus.ID, "crushedCryoliteF"));
-        sMissingItemMappings
-            .put("miscutils:crushedPurifiedCryolite", GameRegistry.findItem(GTPlusPlus.ID, "crushedPurifiedCryoliteF"));
-        sMissingItemMappings.put(
-            "miscutils:crushedCentrifugedCryolite",
-            GameRegistry.findItem(GTPlusPlus.ID, "crushedCentrifugedCryoliteF"));
-        sMissingItemMappings.put("miscutils:oreCryolite", GameRegistry.findItem(GTPlusPlus.ID, "oreCryoliteF"));
-
-        // Fluorite
-        sMissingBlockMappings.put("miscutils:oreFluorite", GameRegistry.findBlock(GTPlusPlus.ID, "oreFluoriteF"));
-        sMissingItemMappings
-            .put("miscutils:itemDustTinyFluorite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustTinyFluoriteF"));
-        sMissingItemMappings
-            .put("miscutils:itemDustSmallFluorite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustSmallFluoriteF"));
-        sMissingItemMappings
-            .put("miscutils:itemDustFluorite", GameRegistry.findItem(GTPlusPlus.ID, "itemDustFluoriteF"));
-        sMissingItemMappings
-            .put("miscutils:dustPureFluorite", GameRegistry.findItem(GTPlusPlus.ID, "dustPureFluoriteF"));
-        sMissingItemMappings
-            .put("miscutils:dustImpureFluorite", GameRegistry.findItem(GTPlusPlus.ID, "dustImpureFluoriteF"));
-        sMissingItemMappings.put("miscutils:crushedFluorite", GameRegistry.findItem(GTPlusPlus.ID, "crushedFluoriteF"));
-        sMissingItemMappings
-            .put("miscutils:crushedPurifiedFluorite", GameRegistry.findItem(GTPlusPlus.ID, "crushedPurifiedFluoriteF"));
-        sMissingItemMappings.put(
-            "miscutils:crushedCentrifugedFluorite",
-            GameRegistry.findItem(GTPlusPlus.ID, "crushedCentrifugedFluoriteF"));
-        sMissingItemMappings.put("miscutils:oreFluorite", GameRegistry.findItem(GTPlusPlus.ID, "oreFluoriteF"));
-    }
-
-    @EventHandler
-    public void missingMapping(FMLMissingMappingsEvent event) {
-        processMissingMappings();
-        for (MissingMapping mapping : event.getAll()) {
-            if (mapping.name.startsWith("Australia:")) {
-                mapping.ignore();
-                continue;
-            }
-            if (mapping.type == GameRegistry.Type.ITEM) {
-                Item aReplacement = sMissingItemMappings.get(mapping.name);
-                if (aReplacement != null) {
-                    remap(aReplacement, mapping);
-                }
-
-            } else if (mapping.type == GameRegistry.Type.BLOCK) {
-                Block aReplacement = sMissingBlockMappings.get(mapping.name);
-                if (aReplacement != null) {
-                    remap(aReplacement, mapping);
-                }
-
-            }
-        }
-    }
-
-    private static void remap(Item item, FMLMissingMappingsEvent.MissingMapping mapping) {
-        mapping.remap(item);
-        Logger.INFO("Remapping item " + mapping.name + " to " + GTPlusPlus.ID + ":" + item.getUnlocalizedName());
-    }
-
-    private static void remap(Block block, FMLMissingMappingsEvent.MissingMapping mapping) {
-        mapping.remap(block);
-        Logger.INFO("Remapping block " + mapping.name + " to " + GTPlusPlus.ID + ":" + block.getUnlocalizedName());
     }
 
     private static void fixVanillaOreDict() {
