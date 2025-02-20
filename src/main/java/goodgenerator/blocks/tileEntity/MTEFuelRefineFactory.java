@@ -97,12 +97,13 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
                     'X',
                     buildHatchAdder(MTEFuelRefineFactory.class)
                         .atLeast(
-                            gregtech.api.enums.HatchElement.Maintenance,
                             gregtech.api.enums.HatchElement.InputHatch,
                             gregtech.api.enums.HatchElement.InputBus,
                             gregtech.api.enums.HatchElement.OutputHatch,
                             tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti
-                                .or(gregtech.api.enums.HatchElement.Energy))
+                                .or(gregtech.api.enums.HatchElement.Energy),
+                            tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti
+                                .or(gregtech.api.enums.HatchElement.Dynamo))
                         .casingIndex(179)
                         .dot(1)
                         .buildAndChain(ofBlock(Loaders.FRF_Casings, 0)))
