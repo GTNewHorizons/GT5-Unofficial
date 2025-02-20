@@ -8,6 +8,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.HatchElement;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -101,7 +102,9 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
                             gregtech.api.enums.HatchElement.InputBus,
                             gregtech.api.enums.HatchElement.OutputHatch,
                             tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti
-                                .or(gregtech.api.enums.HatchElement.Energy))
+                                .or(gregtech.api.enums.HatchElement.Energy),
+                            tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti
+                                .or(gregtech.api.enums.HatchElement.Dynamo))
                         .casingIndex(179)
                         .dot(1)
                         .buildAndChain(ofBlock(Loaders.FRF_Casings, 0)))
@@ -166,6 +169,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
             .addInputBus("The casings adjacent to field restriction glass.", 1)
             .addOutputHatch("The casings adjacent to field restriction glass.", 1)
             .addEnergyHatch("The casings adjacent to field restriction glass.", 1)
+            .addDynamoHatch("The casings adjacent to field restriction glass.", 1)
             .toolTipFinisher();
         return tt;
     }
