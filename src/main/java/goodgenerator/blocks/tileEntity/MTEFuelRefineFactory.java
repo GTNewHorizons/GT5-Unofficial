@@ -8,6 +8,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.HatchElement;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -97,6 +98,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
                     'X',
                     buildHatchAdder(MTEFuelRefineFactory.class)
                         .atLeast(
+                            gregtech.api.enums.HatchElement.Maintenance,
                             gregtech.api.enums.HatchElement.InputHatch,
                             gregtech.api.enums.HatchElement.InputBus,
                             gregtech.api.enums.HatchElement.OutputHatch,
