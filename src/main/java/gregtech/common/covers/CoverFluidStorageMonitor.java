@@ -23,7 +23,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -455,7 +454,7 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
 
         @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, @Nullable EntityPlayerMP aPlayer) {
+        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
             final ForgeDirection side = ForgeDirection.getOrientation(aBuf.readByte());
             final int slot = aBuf.readInt();
             final Fluid fluid = Util.getFluid(aBuf.readInt());

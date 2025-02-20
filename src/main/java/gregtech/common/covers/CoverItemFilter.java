@@ -8,7 +8,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -282,7 +281,7 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
 
         @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
+        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
             mWhitelist = aBuf.readBoolean();
             mFilter = ISerializableObject.readItemStackFromGreggyByteBuf(aBuf);
             return this;

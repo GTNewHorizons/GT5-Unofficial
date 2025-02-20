@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -148,8 +147,8 @@ public class CoverWirelessItemDetector
 
         @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
-            super.readFromPacket(aBuf, aPlayer);
+        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
+            super.readFromPacket(aBuf);
             threshold = aBuf.readInt();
             slot = aBuf.readInt();
             physical = aBuf.readBoolean();

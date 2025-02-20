@@ -5,7 +5,6 @@ import static gregtech.api.enums.GTValues.E;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -399,7 +398,7 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
 
         @Override
         @Nonnull
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
+        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
             mFilterMode = aBuf.readByte();
             mFluidID = aBuf.readInt();
             return this;

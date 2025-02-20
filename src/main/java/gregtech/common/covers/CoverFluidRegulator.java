@@ -3,10 +3,8 @@ package gregtech.common.covers;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -478,7 +476,7 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
 
         @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, @Nullable EntityPlayerMP aPlayer) {
+        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
             return new FluidRegulatorData(aBuf.readInt(), aBuf.readInt(), Conditional.VALUES[aBuf.readUnsignedByte()]);
         }
 

@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -286,7 +285,7 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
 
         @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
+        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
             mStack = ISerializableObject.readItemStackFromGreggyByteBuf(aBuf);
             mFlags = aBuf.readByte();
             return this;

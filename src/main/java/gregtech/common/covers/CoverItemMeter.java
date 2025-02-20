@@ -5,7 +5,6 @@ import java.text.FieldPosition;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -366,7 +365,7 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
 
         @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
+        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
             inverted = aBuf.readBoolean();
             slot = aBuf.readInt();
             threshold = aBuf.readInt();

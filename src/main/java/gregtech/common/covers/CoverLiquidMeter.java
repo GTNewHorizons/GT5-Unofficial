@@ -5,7 +5,6 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -283,7 +282,7 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
 
         @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
+        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
             inverted = aBuf.readBoolean();
             threshold = aBuf.readInt();
             return this;

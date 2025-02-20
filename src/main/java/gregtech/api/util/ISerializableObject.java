@@ -3,9 +3,7 @@ package gregtech.api.util;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
@@ -48,12 +46,10 @@ public interface ISerializableObject {
     /**
      * Read data from given parameter and return this. The data read this way is intended to be stored for short amount
      * of time over network.
-     *
-     * @param aPlayer the player who is sending this packet to server. null if it's client reading data.
      */
     // the NBT is an unfortunate piece of tech. everything uses it but its API is not as efficient as could be
     @Nonnull
-    ISerializableObject readFromPacket(ByteArrayDataInput aBuf, @Nullable EntityPlayerMP aPlayer);
+    ISerializableObject readFromPacket(ByteArrayDataInput aBuf);
 
     /**
      * Reverse engineered and adapted {@link cpw.mods.fml.common.network.ByteBufUtils#readTag(ByteBuf)} Given buffer
@@ -123,7 +119,7 @@ public interface ISerializableObject {
 
         @Override
         @Nonnull
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
+        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
             mData = aBuf.readInt();
             return this;
         }

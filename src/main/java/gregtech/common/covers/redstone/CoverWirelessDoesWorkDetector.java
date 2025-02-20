@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -168,8 +167,8 @@ public class CoverWirelessDoesWorkDetector
 
         @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
-            super.readFromPacket(aBuf, aPlayer);
+        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
+            super.readFromPacket(aBuf);
             mode = ActivityMode.values()[aBuf.readInt()];
             physical = aBuf.readBoolean();
 

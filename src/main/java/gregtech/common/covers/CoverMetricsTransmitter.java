@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,7 +14,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.ByteArrayDataInput;
@@ -197,7 +195,7 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
 
         @NotNull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, @Nullable EntityPlayerMP aPlayer) {
+        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
             return new MetricsTransmitterData(new UUID(aBuf.readLong(), aBuf.readLong()));
         }
     }

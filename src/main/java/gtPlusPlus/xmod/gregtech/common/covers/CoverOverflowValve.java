@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.covers;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -10,7 +9,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -387,7 +385,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
 
         @Override
         @NotNull
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, @Nullable EntityPlayerMP aPlayer) {
+        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
             overflowPoint = aBuf.readInt();
             voidingRate = aBuf.readInt();
             canFluidInput = aBuf.readBoolean();

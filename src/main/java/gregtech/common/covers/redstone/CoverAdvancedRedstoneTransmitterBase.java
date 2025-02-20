@@ -6,7 +6,6 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -117,8 +116,8 @@ public abstract class CoverAdvancedRedstoneTransmitterBase<T extends CoverAdvanc
 
         @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
-            super.readFromPacket(aBuf, aPlayer);
+        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
+            super.readFromPacket(aBuf);
             invert = aBuf.readBoolean();
 
             return this;

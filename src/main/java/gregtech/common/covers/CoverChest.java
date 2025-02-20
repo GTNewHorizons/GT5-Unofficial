@@ -3,14 +3,12 @@ package gregtech.common.covers;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -198,7 +196,7 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
 
         @NotNull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, @Nullable EntityPlayerMP aPlayer) {
+        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
             items.deserializeNBT(ISerializableObject.readCompoundTagFromGreggyByteBuf(aBuf));
             return this;
         }
