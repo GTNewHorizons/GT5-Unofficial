@@ -14,6 +14,8 @@
 package bartworks.common.tileentities.multis;
 
 import static bartworks.common.loaders.ItemRegistry.BW_BLOCKS;
+import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.REJECT;
+import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.SKIP;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -76,6 +78,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -93,7 +96,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 
 public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEElectricImplosionCompressor>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, INEIPreviewModifier {
 
     private static final boolean pistonEnabled = !Configuration.multiblocks.disablePistonInEIC;
     private Boolean piston = true;
@@ -188,12 +191,31 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             @Override
             public BlocksToPlace getBlocksToPlace(MTEElectricImplosionCompressor t, World world, int x, int y, int z,
                 ItemStack trigger, AutoPlaceEnvironment env) {
+                if (t.piston) {
+                    Pair<Block, Integer> tier = getTier(trigger);
+                    return BlocksToPlace.create(tier.getKey(), tier.getValue());
+                }
                 return BlocksToPlace.createEmpty();
             }
 
             @Override
             public PlaceResult survivalPlaceBlock(MTEElectricImplosionCompressor t, World world, int x, int y, int z,
                 ItemStack trigger, AutoPlaceEnvironment env) {
+                if (t.piston) {
+                    if (check(t, world, x, y, z)) return SKIP;
+                    Pair<Block, Integer> tier = getTier(trigger);
+                    if (tier == null) return REJECT;
+                    return StructureUtility.survivalPlaceBlock(
+                        tier.getKey(),
+                        tier.getValue(),
+                        world,
+                        x,
+                        y,
+                        z,
+                        env.getSource(),
+                        env.getActor(),
+                        env.getChatter());
+                }
                 return isAir().survivalPlaceBlock(t, world, x, y, z, trigger, env);
             }
         })
@@ -222,7 +244,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         if (block == GregTechAPI.sBlockMetal5 && meta == 2) {
             return 1; // Neutronium
         }
-        if (block == LudicrousBlocks.resource_block && meta == 1) {
+        if (Mods.Avaritia.isModLoaded() && block == LudicrousBlocks.resource_block && meta == 1) {
             return 2; // Infinity
         }
         if (block == GregTechAPI.sBlockMetal9) {
@@ -309,7 +331,12 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                     .setEUt(MTEElectricImplosionCompressor.this.getMaxInputEu())
                     .setAmperage(1);
             }
-        }.setMaxParallelSupplier(() -> (int) Math.pow(4, Math.max(this.mBlockTier - 1, 0)));
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return (int) Math.pow(4, Math.max(this.mBlockTier - 1, 0));
     }
 
     private void updateChunkCoordinates() {
@@ -547,5 +574,10 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     @Override
     public boolean supportsVoidProtection() {
         return true;
+    }
+
+    @Override
+    public void onPreviewStructureComplete(@NotNull ItemStack trigger) {
+        resetPiston(mBlockTier);
     }
 }

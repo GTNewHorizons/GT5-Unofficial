@@ -23,6 +23,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.capability.Capabilities;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -50,6 +51,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.common.config.MachineStats;
 
 public class MTECleanroom extends MTETooltipMultiBlockBase
@@ -203,12 +205,13 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
         // use the standard overclock mechanism to determine duration and estimate a maximum consumption
         // if the cleanroom is powered by an LV energy hatch, it will actually accept 2A instead of just 1A.
-        calculateOverclockedNessMultiInternal(
-            40,
-            45 * Math.max(1, mHeight - 1),
-            inputVoltage == TierEU.LV ? 2 : 1,
-            inputVoltage,
-            false);
+        int amperage = inputVoltage == TierEU.LV ? 2 : 1;
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(40)
+            .setEUt(inputVoltage * amperage)
+            .setDuration(45 * Math.max(1, mHeight - 1))
+            .calculate();
+        mEUt = (int) calculator.getConsumption();
+        mMaxProgresstime = calculator.getDuration();
         // negate it to trigger the special energy consumption function. divide by 10 to get the actual final
         // consumption.
         mEUt /= -10;
@@ -661,7 +664,8 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             for (int dx = dxMin + 1; dx <= dxMax - 1; ++dx) {
                 for (int dz = dzMin + 1; dz <= dzMax - 1; dz++) {
                     TileEntity te = aBaseMetaTileEntity.getTileEntityOffset(dx, dy, dz);
-                    if (te instanceof ICleanroomReceiver receiver) {
+                    ICleanroomReceiver receiver = Capabilities.getCapability(te, ICleanroomReceiver.class);
+                    if (receiver != null) {
                         receiver.setCleanroom(this);
                         cleanroomReceivers.add(receiver);
                     }

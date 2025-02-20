@@ -25,7 +25,6 @@ import gregtech.api.util.GTUtility;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.thing.metaTileEntity.Textures;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by danie_000 on 16.12.2016.
@@ -48,11 +47,15 @@ public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnec
                     + EnumChatFormatting.RESET
                     + " EU/t", },
             aAmp); // Energy injecting terminal for Multiblocks
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchEnergyTunnel(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aAmp, aDescription, aTextures);
+    }
+
+    @Override
+    public int getHatchType() {
+        return 2;
     }
 
     @Override
@@ -66,48 +69,13 @@ public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnec
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
-    public boolean isInputFacing(ForgeDirection side) {
-        return side == getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return false;
-    }
-
-    @Override
     public long getMinimumStoredEU() {
-        return V[mTier];
-    }
-
-    @Override
-    public long maxEUInput() {
         return V[mTier];
     }
 
     @Override
     public long maxEUStore() {
         return V[mTier] * 24L * Amperes;
-    }
-
-    @Override
-    public boolean isEnetOutput() {
-        return false;
     }
 
     @Override
@@ -123,18 +91,6 @@ public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnec
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchEnergyTunnel(mName, mTier, Amperes, mDescriptionArray, mTextures);
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
     }
 
     @Override

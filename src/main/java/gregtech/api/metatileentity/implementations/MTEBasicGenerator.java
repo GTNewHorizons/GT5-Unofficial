@@ -36,10 +36,6 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
         super(aID, aName, aNameRegional, aTier, 3, aDescription, aTextures);
     }
 
-    public MTEBasicGenerator(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 3, aDescription, aTextures);
-    }
-
     public MTEBasicGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
@@ -335,8 +331,4 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
         return 16000;
     }
 
-    @Override
-    public int getTankPressure() {
-        return -100;
-    }
 }

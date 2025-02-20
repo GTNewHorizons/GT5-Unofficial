@@ -3,6 +3,8 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
+import static gregtech.common.misc.WirelessNetworkManager.ticks_between_energy_addition;
+import static gregtech.common.misc.WirelessNetworkManager.totalStorage;
 import static java.lang.Long.min;
 
 import java.math.BigInteger;
@@ -16,11 +18,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
-public class MTEWirelessEnergy extends MTEHatchEnergy implements IWirelessEnergyHatchInformation {
+public class MTEWirelessEnergy extends MTEHatchEnergy {
 
     private final BigInteger eu_transferred_per_operation = BigInteger
         .valueOf(2 * V[mTier] * ticks_between_energy_addition);
@@ -28,12 +29,12 @@ public class MTEWirelessEnergy extends MTEHatchEnergy implements IWirelessEnergy
 
     private UUID owner_uuid;
 
-    public MTEWirelessEnergy(String aName, byte aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 0, aDescription, aTextures);
+    public MTEWirelessEnergy(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier);
     }
 
-    public MTEWirelessEnergy(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, new String[] { "" });
+    public MTEWirelessEnergy(String aName, byte aTier, String[] aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, aDescription, aTextures);
     }
 
     @Override

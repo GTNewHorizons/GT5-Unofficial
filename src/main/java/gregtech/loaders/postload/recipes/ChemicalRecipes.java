@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -32,7 +33,10 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.items.CombType;
+import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.material.MaterialsElements;
 
 public class ChemicalRecipes implements Runnable {
 
@@ -3804,6 +3808,93 @@ public class ChemicalRecipes implements Runnable {
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(UniversalChemical);
+
+        if (Forestry.isModLoaded()) {
+
+            // Americium comb processing
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTBees.combs.getStackForType(CombType.AMERICIUM, 4))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Americium, 1))
+                .fluidInputs(Materials.Helium.getPlasma(8175))
+                .duration(30 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(UniversalChemical);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTBees.combs.getStackForType(CombType.AMERICIUM, 4))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Americium, 2))
+                .fluidInputs(Materials.Nitrogen.getPlasma(1211))
+                .duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_UV)
+                .addTo(UniversalChemical);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTBees.combs.getStackForType(CombType.AMERICIUM, 4))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Americium, 4))
+                .fluidInputs(Materials.Silver.getPlasma(310))
+                .duration(7 * SECONDS + 10 * TICKS)
+                .eut(TierEU.RECIPE_UHV)
+                .addTo(UniversalChemical);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTBees.combs.getStackForType(CombType.AMERICIUM, 4))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Americium, 8))
+                .fluidInputs(new FluidStack(MaterialsElements.getInstance().BROMINE.getPlasma(), 29))
+                .duration(3 * SECONDS + 15 * TICKS)
+                .eut(TierEU.RECIPE_UEV)
+                .addTo(UniversalChemical);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTBees.combs.getStackForType(CombType.AMERICIUM, 4))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Americium, 16))
+                .fluidInputs(Materials.Thorium.getPlasma(68))
+                .duration(1 * SECONDS + 17 * TICKS)
+                .eut(TierEU.RECIPE_UIV)
+                .addTo(UniversalChemical);
+
+            // Europium comb processing
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTBees.combs.getStackForType(CombType.EUROPIUM, 4))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Europium, 1))
+                .fluidInputs(Materials.Helium.getPlasma(606))
+                .duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_LuV)
+                .addTo(UniversalChemical);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTBees.combs.getStackForType(CombType.EUROPIUM, 4))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Europium, 2))
+                .fluidInputs(Materials.Nitrogen.getPlasma(180))
+                .duration(7 * SECONDS + 10 * TICKS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(UniversalChemical);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTBees.combs.getStackForType(CombType.EUROPIUM, 4))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Europium, 4))
+                .fluidInputs(Materials.Silver.getPlasma(54))
+                .duration(3 * SECONDS + 15 * TICKS)
+                .eut(TierEU.RECIPE_UV)
+                .addTo(UniversalChemical);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTBees.combs.getStackForType(CombType.EUROPIUM, 4))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Europium, 8))
+                .fluidInputs(new FluidStack(MaterialsElements.getInstance().BROMINE.getPlasma(), 6))
+                .duration(1 * SECONDS + 17 * TICKS)
+                .eut(TierEU.RECIPE_UHV)
+                .addTo(UniversalChemical);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTBees.combs.getStackForType(CombType.EUROPIUM, 4))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Europium, 16))
+                .fluidInputs(Materials.Thorium.getPlasma(18))
+                .duration(18 * TICKS)
+                .eut(TierEU.RECIPE_UEV)
+                .addTo(UniversalChemical);
+        }
     }
 
     public void addDefaultPolymerizationRecipes(Fluid aBasicMaterial, ItemStack aBasicMaterialCell, Fluid aPolymer) {
@@ -4706,7 +4797,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(8),
+                GTUtility.getIntegratedCircuit(7),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 9),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminiumoxide, 9))
             .fluidInputs(Materials.Ethylene.getGas(9000), Materials.Oxygen.getGas(9000))
@@ -5931,5 +6022,6 @@ public class ChemicalRecipes implements Runnable {
             .duration(3 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
+
     }
 }

@@ -45,7 +45,7 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
 
     public MTEHatchCustomFluidBase(Fluid aFluid, int aAmount, final String aName, final int aTier,
         final String[] aDescription, final ITexture[][][] aTextures) {
-        super(aName, aTier, 3, aDescription[0], aTextures);
+        super(aName, aTier, 3, aDescription, aTextures);
         this.mLockedFluid = aFluid;
         this.mFluidCapacity = aAmount;
     }
@@ -136,11 +136,6 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
     public void updateSlots() {
         if (mInventory[getInputSlot()] != null && mInventory[getInputSlot()].stackSize <= 0)
             mInventory[getInputSlot()] = null;
-    }
-
-    @Override
-    public int getTankPressure() {
-        return -100;
     }
 
     @Override

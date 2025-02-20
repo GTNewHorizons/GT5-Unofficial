@@ -313,6 +313,11 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     }
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
@@ -361,7 +366,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             .addOtherStructurePart(
                 "Multi I/O Hatches",
                 "Instead of any casing or glass, has to touch storage field block")
-            .addStructureInfo("Use MIOH with conduits or fluid storage busses to see all fluids at once.")
+            .addStructureInfo("Use MIOH with conduits or fluid storage buses to see all fluids at once.")
             .addSubChannelUsage("field", "Maximum Field Tier")
             .addSubChannelUsage("height", "Height of structure")
             .toolTipFinisher();

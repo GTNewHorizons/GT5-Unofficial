@@ -42,10 +42,6 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public MTEHatch(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
-
     public MTEHatch(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
@@ -66,23 +62,31 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        int texturePointer = (byte) (actualTexture & 0x7F); // just to be sure, from my testing the 8th bit cannot be
-                                                            // set clientside
-        int textureIndex = texturePointer | (mTexturePage << 7); // Shift seven since one page is 128 textures!
+        // just to be sure, from my testing the 8th bit cannot be set clientside
+        int texturePointer = (byte) (actualTexture & 0x7F);
+        // Shift seven since one page is 128 textures!
+        int textureIndex = texturePointer | (mTexturePage << 7);
         try {
             if (side != aFacing) {
-                if (textureIndex > 0)
+                if (textureIndex > 0) {
                     return new ITexture[] { Textures.BlockIcons.casingTexturePages[mTexturePage][texturePointer] };
-                else return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1] };
+                } else {
+                    return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1] };
+                }
             } else {
                 if (textureIndex > 0) {
-                    if (aActive)
+                    if (aActive) {
                         return getTexturesActive(Textures.BlockIcons.casingTexturePages[mTexturePage][texturePointer]);
-                    else return getTexturesInactive(
-                        Textures.BlockIcons.casingTexturePages[mTexturePage][texturePointer]);
+                    } else {
+                        return getTexturesInactive(
+                            Textures.BlockIcons.casingTexturePages[mTexturePage][texturePointer]);
+                    }
                 } else {
-                    if (aActive) return getTexturesActive(Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1]);
-                    else return getTexturesInactive(Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1]);
+                    if (aActive) {
+                        return getTexturesActive(Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1]);
+                    } else {
+                        return getTexturesInactive(Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1]);
+                    }
                 }
             }
         } catch (NullPointerException npe) {

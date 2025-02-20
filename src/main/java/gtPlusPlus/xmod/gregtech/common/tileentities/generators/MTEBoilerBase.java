@@ -21,16 +21,16 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.boilers.MTEBoiler;
-import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 
 public class MTEBoilerBase extends MTEBoiler {
 
+    private static final int STEAM_PER_SECOND = 750;
     private final int steamPerSecond;
     private final int tier;
 
@@ -39,14 +39,14 @@ public class MTEBoilerBase extends MTEBoiler {
             aID,
             "electricboiler." + tier + ".tier.single",
             aNameRegional,
-            "Produces " + (Configuration.machines.boilerSteamPerSecond * tier) + "L of Steam per second");
-        this.steamPerSecond = (Configuration.machines.boilerSteamPerSecond * tier);
+            "Produces " + (STEAM_PER_SECOND * tier) + "L of Steam per second");
+        this.steamPerSecond = STEAM_PER_SECOND * tier;
         this.tier = tier;
     }
 
     public MTEBoilerBase(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        this.steamPerSecond = (Configuration.machines.boilerSteamPerSecond * aTier);
+        this.steamPerSecond = STEAM_PER_SECOND * aTier;
         this.tier = aTier;
     }
 
@@ -62,7 +62,7 @@ public class MTEBoilerBase extends MTEBoiler {
     }
 
     public ITexture getOverlayIcon() {
-        return new GTRenderedTexture(Textures.BlockIcons.BOILER_FRONT);
+        return TextureFactory.of(Textures.BlockIcons.BOILER_FRONT);
     }
 
     @Override
@@ -83,13 +83,13 @@ public class MTEBoilerBase extends MTEBoiler {
         return rTextures;
     }
 
-    protected GTRenderedTexture getCasingTexture() {
+    protected ITexture getCasingTexture() {
         if (this.tier == 1) {
-            return new GTRenderedTexture(Textures.BlockIcons.MACHINE_LV_SIDE);
+            return TextureFactory.of(Textures.BlockIcons.MACHINE_LV_SIDE);
         } else if (this.tier == 2) {
-            return new GTRenderedTexture(Textures.BlockIcons.MACHINE_MV_SIDE);
+            return TextureFactory.of(Textures.BlockIcons.MACHINE_MV_SIDE);
         } else {
-            return new GTRenderedTexture(Textures.BlockIcons.MACHINE_HV_SIDE);
+            return TextureFactory.of(Textures.BlockIcons.MACHINE_HV_SIDE);
         }
     }
 

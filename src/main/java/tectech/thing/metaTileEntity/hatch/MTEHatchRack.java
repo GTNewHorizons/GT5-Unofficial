@@ -3,7 +3,9 @@ package tectech.thing.metaTileEntity.hatch;
 import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.OpenComputers;
+import static gregtech.api.recipe.RecipeMaps.quantumComputerFakeRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeConstants.QUANTUM_COMPUTER_DATA;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -27,6 +29,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
@@ -36,7 +39,9 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.recipe.QuantumComputerRecipeData;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
@@ -66,7 +71,6 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
             4,
             new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.rack.desc.0"),
                 EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.rack.desc.1") });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchRack(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -99,12 +103,12 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GTRenderedTexture(EM_R_ACTIVE) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(EM_R_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GTRenderedTexture(EM_R) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(EM_R) };
     }
 
     @Override
@@ -332,10 +336,12 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
         new RackComponent(ItemList.Circuit_Wetwaresupercomputer.get(1), 200, 42, -1f, 4000, true); // UV
         new RackComponent(ItemList.Circuit_Wetwaremainframe.get(1), 220, 40, -1f, 4000, true); // UHV
 
-        new RackComponent("IC2:ic2.reactorVent", 0, -1, 40f, 2000, false); // Heat Vent
-        new RackComponent("IC2:ic2.reactorVentCore", 0, -1, 80f, 4000, false); // Reactor Heat Vent
-        new RackComponent("IC2:ic2.reactorVentGold", 0, -1, 120f, 6000, false); // Overclocked Heat Vent
-        new RackComponent("IC2:ic2.reactorVentDiamond", 0, -1, 160f, 8000, false); // Advanced Heat Vent
+        new RackComponent(GTModHandler.getIC2Item("reactorVent", 1), 0, -1, 40f, 2000, false); // Heat Vent
+        new RackComponent(GTModHandler.getIC2Item("reactorVentCore", 1), 0, -1, 80f, 4000, false); // Reactor Heat Vent
+        new RackComponent(GTModHandler.getIC2Item("reactorVentGold", 1), 0, -1, 120f, 6000, false); // Overclocked Heat
+                                                                                                    // Vent
+        new RackComponent(GTModHandler.getIC2Item("reactorVentDiamond", 1), 0, -1, 160f, 8000, false); // Advanced Heat
+                                                                                                       // Vent
 
         if (NewHorizonsCoreMod.isModLoaded()) {
             // GTNH-GT5u circuits (these components causes crashes when used with the original GT5u)
@@ -349,15 +355,15 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
             new RackComponent(ItemList.Circuit_OpticalComputer.get(1), 240, 22, -1f, 8000, true); // UEV
             new RackComponent(ItemList.Circuit_OpticalMainframe.get(1), 260, 20, -1f, 8000, true); // UIV
 
-            new RackComponent("dreamcraft:item.PikoCircuit", 260, 12, -1f, 9500, true); // UMV
-            new RackComponent("dreamcraft:item.QuantumCircuit", 320, 10, -1f, 10000, true); // UXV
+            new RackComponent(getModItem(NewHorizonsCoreMod.ID, "item.PikoCircuit", 1), 260, 12, -1f, 9500, true); // UMV
+            new RackComponent(getModItem(NewHorizonsCoreMod.ID, "item.QuantumCircuit", 1), 320, 10, -1f, 10000, true); // UXV
         }
 
         if (OpenComputers.isModLoaded()) {
-            new RackComponent("OpenComputers:item.oc.CPU2", 80, 46, -1f, 2000, true); // CPU T3
-            new RackComponent("OpenComputers:item.oc.GraphicsCard2", 100, 44, -1f, 2000, true); // GPU T3
-            new RackComponent("OpenComputers:item.oc.APU1", 120, 42, -1f, 2000, true); // APU T3
-            new RackComponent("OpenComputers:item.oc.APU2", 240, 40, -1f, 2000, true); // APU Creative
+            new RackComponent(getModItem(OpenComputers.ID, "item", 1, 43), 80, 46, -1f, 2000, true); // CPU T3
+            new RackComponent(getModItem(OpenComputers.ID, "item", 1, 10), 100, 44, -1f, 2000, true); // GPU T3
+            new RackComponent(getModItem(OpenComputers.ID, "item", 1, 102), 120, 42, -1f, 2000, true); // APU T3
+            new RackComponent(getModItem(OpenComputers.ID, "item", 1, 103), 240, 40, -1f, 2000, true); // APU Creative
         }
 
         if (GraviSuite.isModLoaded()) {
@@ -374,6 +380,16 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
         RackComponent(ItemStack is, float computation, float heatConstant, float coolConstant, float maxHeat,
             boolean subZero) {
             this(TTUtility.getUniqueIdentifier(is), computation, heatConstant, coolConstant, maxHeat, subZero);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(is)
+                .metadata(
+                    QUANTUM_COMPUTER_DATA,
+                    new QuantumComputerRecipeData(heatConstant, coolConstant, computation, maxHeat, subZero))
+                .duration(0)
+                .eut(0)
+                .fake()
+                .addTo(quantumComputerFakeRecipes);
         }
 
         RackComponent(String is, float computation, float heatConstant, float coolConstant, float maxHeat,

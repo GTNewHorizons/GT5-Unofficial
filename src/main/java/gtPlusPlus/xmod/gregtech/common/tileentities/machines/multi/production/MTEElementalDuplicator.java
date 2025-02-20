@@ -81,7 +81,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 6, 9, true)
             .addController("Top Center")
-            .addCasingInfoMin("Elemental Confinement Shell", 138, false)
+            .addCasingInfoMin("Elemental Confinement Shell", 120, false)
             .addCasingInfoMin("Matter Fabricator Casing", 24, false)
             .addCasingInfoMin("Particle Containment Casing", 24, false)
             .addCasingInfoMin("Matter Generation Coil", 24, false)
@@ -122,7 +122,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
                 .addShape(
                     STRUCTURE_PIECE_MAIN,
                     (new String[][] {
-                        { "   ccc   ", "  ccccc  ", " ccccccc ", "ccchhhccc", "ccch~hccc", "ccchhhccc", " ccccccc ",
+                        { "   ccc   ", "  ccccc  ", " ccccccc ", "ccccccccc", "cccc~cccc", "ccccccccc", " ccccccc ",
                             "  ccccc  ", "   ccc   " },
                         { "   cac   ", "  abfba  ", " abfgfba ", "cbfgdgfbc", "afgdddgfa", "cbfgdgfbc", " abfgfba ",
                             "  abfba  ", "   cac   " },
@@ -132,7 +132,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
                             "  e   e  ", "   cec   " },
                         { "   cac   ", "  abfba  ", " abfgfba ", "cbfgdgfbc", "afgdddgfa", "cbfgdgfbc", " abfgfba ",
                             "  abfba  ", "   cac   " },
-                        { "   ccc   ", "  ccccc  ", " ccccccc ", "ccchhhccc", "ccchhhccc", "ccchhhccc", " ccccccc ",
+                        { "   ccc   ", "  ccccc  ", " ccccccc ", "ccccccccc", "ccccccccc", "ccccccccc", " ccccccc ",
                             "  ccccc  ", "   ccc   " }, }))
                 .addElement('a', ofBlock(getCasingBlock4(), getCasingMeta6()))
                 .addElement('b', ofBlock(getCasingBlock4(), getCasingMeta7()))
@@ -140,9 +140,8 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
                 .addElement('e', ofBlock(getCasingBlock2(), getCasingMeta3()))
                 .addElement('f', ofBlock(getCasingBlock3(), getCasingMeta4()))
                 .addElement('g', ofBlock(getCasingBlock3(), getCasingMeta5()))
-                .addElement('c', lazy(t -> onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
                 .addElement(
-                    'h',
+                    'c',
                     lazy(
                         t -> ofChain(
                             buildHatchAdder(MTEElementalDuplicator.class)
@@ -172,13 +171,11 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         boolean aDidBuild = checkPiece(STRUCTURE_PIECE_MAIN, 4, 4, 0);
-        if (this.mInputHatches.size() != 1 || (this.mOutputBusses.size() != 1 && !this.mOutputHatches.isEmpty())
-            || this.mEnergyHatches.size() != 1
-            || this.mReplicatorDataOrbHatches.size() != 1) {
+        if (this.mReplicatorDataOrbHatches.size() != 1) {
             return false;
         }
         log("Casings: " + mCasing);
-        return aDidBuild && mCasing >= 138 && checkHatch();
+        return aDidBuild && mCasing >= 120 && checkHatch();
     }
 
     @Override
@@ -298,7 +295,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 2F)
             .enablePerfectOverclock()
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -354,10 +351,5 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
         }
         tItems.removeAll(Collections.singleton(null));
         return tItems;
-    }
-
-    @Override
-    public boolean doesBindPlayerInventory() {
-        return false;
     }
 }

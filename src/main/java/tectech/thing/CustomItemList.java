@@ -32,6 +32,8 @@ public enum CustomItemList implements IItemContainer {
     Machine_DebugPollutor,
     DATApipe,
     LASERpipe,
+    TestPipe,
+    TestHatch,
     rack_Hatch,
     holder_Hatch,
     capacitor_Hatch,
@@ -274,9 +276,6 @@ public enum CustomItemList implements IItemContainer {
     eM_energyWirelessTunnel8_UXV,
     eM_energyWirelessTunnel9_UXV,
 
-    Parametrizer_Hatch,
-    ParametrizerX_Hatch,
-    ParametrizerTXT_Hatch,
     Uncertainty_Hatch,
     UncertaintyX_Hatch,
     dataIn_Hatch,

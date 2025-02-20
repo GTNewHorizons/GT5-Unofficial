@@ -97,7 +97,9 @@ public class MTEIndustrialElectromagneticSeparator
             if (m.supportsExotic) tooltip = tooltip + "/n "
                 + EnumChatFormatting.BOLD
                 + EnumChatFormatting.GREEN
-                + "Can Use Multiamp Hatches";
+                + "Can Use Multi-Amp Hatches/n "
+                + EnumChatFormatting.RED
+                + "Limit to one energy hatch if using Multi-Amp";
 
             return tooltip;
         }
@@ -127,7 +129,7 @@ public class MTEIndustrialElectromagneticSeparator
             'B',
             ofChain(
                 buildHatchAdder(MTEIndustrialElectromagneticSeparator.class)
-                    .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .atLeast(InputBus, OutputBus, Maintenance, Energy.or(MultiAmpEnergy))
                     .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
                     .dot(1)
                     .buildAndChain(
@@ -214,7 +216,7 @@ public class MTEIndustrialElectromagneticSeparator
             .addInfo("Use screwdriver to switch mode")
             .addInfo("Insert an electromagnet into the electromagnet housing to use")
             .addInfo("Better electromagnets give further bonuses")
-            .addInfo("With Tengam electromagnet, multiamp (NOT laser) hatches are allowed")
+            .addInfo("With Tengam electromagnet, multi-amp (NOT laser) hatches are allowed")
             .beginStructureBlock(7, 6, 7, false)
             .addController("Front Center")
             .addCasingInfoMin("MagTech Casings", MIN_CASING, false)
@@ -257,12 +259,10 @@ public class MTEIndustrialElectromagneticSeparator
         if (mCasingAmount < MIN_CASING) return false;
         if (mMagHatch == null) return false;
 
-        // If there are exotic hatches, ensure there is only 1, and it is not laser. Only multiamp allowed
+        // If there are exotic hatches, ensure there is only 1.
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) return false;
-            if (mExoticEnergyHatches.size() > 1) return false;
-            return mExoticEnergyHatches.get(0)
-                .maxWorkingAmperesIn() <= 64;
+            return (mExoticEnergyHatches.size() == 1);
         }
 
         // All checks passed!
@@ -286,12 +286,14 @@ public class MTEIndustrialElectromagneticSeparator
                 }
                 return SimpleCheckRecipeResult.ofFailure("electromagnet_missing");
             }
-        }.setMaxParallelSupplier(this::getMaxParallels);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
-    private int getMaxParallels() {
+    @Override
+    public int getMaxParallelRecipes() {
+        findMagnet();
         if (magnetTier != null) return magnetTier.maxParallel;
-        return 0;
+        return 1;
     }
 
     @Override
@@ -408,7 +410,7 @@ public class MTEIndustrialElectromagneticSeparator
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         // This fix works for normal energy hatches, preventing over-paralleling with 1 energy hatch
-        // However, it does not work with multiamp. MuTEs can't come soon enough.
+        // However, it does not work with multiamp.
 
         if (mExoticEnergyHatches.isEmpty()) {
             logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));

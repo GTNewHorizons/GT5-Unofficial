@@ -42,11 +42,11 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -128,13 +128,13 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
     }
 
     @Override
-    protected GTRenderedTexture getFrontOverlay() {
-        return new GTRenderedTexture(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR);
+    protected ITexture getFrontOverlay() {
+        return TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR);
     }
 
     @Override
-    protected GTRenderedTexture getFrontOverlayActive() {
-        return new GTRenderedTexture(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR_ACTIVE);
+    protected ITexture getFrontOverlayActive() {
+        return TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR_ACTIVE);
     }
 
     @Override
@@ -256,7 +256,7 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
                     .setEUtDiscount(1.25 * tierMachine)
                     .setSpeedBoost(1.6 / tierMachine);
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -272,7 +272,7 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
             .addInfo("Only consumes steam at 62.5% of the L/s normally required")
             .addInfo("Processes up to 8 items at once")
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-            .beginStructureBlock(3, 3, 3, false)
+            .beginStructureBlock(3, 3, 3, true)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addStructureInfo(

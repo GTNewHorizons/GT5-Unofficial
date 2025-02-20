@@ -57,6 +57,7 @@ import gregtech.common.blocks.BlockBlackholeRenderer;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings11;
+import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.blocks.BlockCasings3;
 import gregtech.common.blocks.BlockCasings4;
@@ -545,6 +546,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockCasings9 = new BlockCasings9();
         GregTechAPI.sBlockCasings10 = new BlockCasings10();
         GregTechAPI.sBlockCasings11 = new BlockCasings11();
+        GregTechAPI.sBlockCasings12 = new BlockCasings12();
         GregTechAPI.sBlockCasingsNH = new BlockCasingsNH();
         GregTechAPI.sBlockGranites = new BlockGranites();
         GregTechAPI.sBlockLongDistancePipes = new BlockLongDistancePipe();
@@ -1302,7 +1304,7 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GTFluidFactory.builder("antimatter")
             .withLocalizedName(MaterialsUEVplus.Antimatter.mLocalizedName)
-            .withStateAndTemperature(LIQUID, -1)
+            .withStateAndTemperature(LIQUID, 1000000)
             .buildAndRegister()
             .configureMaterials(MaterialsUEVplus.Antimatter)
             .registerBContainers(
@@ -1334,6 +1336,15 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(Materials.Bedrockium)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Bedrockium, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GTFluidFactory.builder("plasma.cosmicneutronium")
+            .withLocalizedName("Cosmic Neutronium Plasma")
+            .withStateAndTemperature(PLASMA, 10000)
+            .buildAndRegister()
+            .configureMaterials(Materials.CosmicNeutronium)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.CosmicNeutronium, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("fieryblood")

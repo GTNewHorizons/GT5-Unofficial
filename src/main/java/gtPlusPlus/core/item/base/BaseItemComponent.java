@@ -15,15 +15,16 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
@@ -145,20 +146,16 @@ public class BaseItemComponent extends Item {
                     + "]");
             Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
             if (componentType == ComponentTypes.PLATE) {
-                GregTechAPI.registerCover(
+                CoverRegistry.registerCover(
                     componentMaterial.getPlate(1),
-                    new GTRenderedTexture(
-                        componentMaterial.getTextureSet().mTextures[71],
-                        componentMaterial.getRGBA(),
-                        false),
+                    TextureFactory
+                        .of(componentMaterial.getTextureSet().mTextures[71], componentMaterial.getRGBA(), false),
                     null);
             } else if (componentType == ComponentTypes.PLATEDOUBLE) {
-                GregTechAPI.registerCover(
+                CoverRegistry.registerCover(
                     componentMaterial.getPlateDouble(1),
-                    new GTRenderedTexture(
-                        componentMaterial.getTextureSet().mTextures[72],
-                        componentMaterial.getRGBA(),
-                        false),
+                    TextureFactory
+                        .of(componentMaterial.getTextureSet().mTextures[72], componentMaterial.getRGBA(), false),
                     null);
             }
             return true;
@@ -276,19 +273,21 @@ public class BaseItemComponent extends Item {
                         String type = this.componentMaterial.getTextureSet().mSetName;
                         String output = type.substring(0, 1)
                             .toUpperCase() + type.substring(1);
-                        list.add(EnumChatFormatting.GRAY + "Material Type: " + output + ".");
                         list.add(
-                            EnumChatFormatting.GRAY + "Material State: "
-                                + this.componentMaterial.getState()
-                                    .name()
-                                + ".");
+                            EnumChatFormatting.GRAY
+                                + StatCollector.translateToLocalFormatted("GTPP.tooltip.material.type", output));
                         list.add(
-                            EnumChatFormatting.GRAY + "Radioactivity Level: "
-                                + this.componentMaterial.vRadiationLevel
-                                + ".");
+                            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                                "GTPP.tooltip.material.state",
+                                this.componentMaterial.getState()
+                                    .name()));
+                        list.add(
+                            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                                "GTPP.tooltip.material.radioactivity",
+                                this.componentMaterial.vRadiationLevel));
                     }
                 } else {
-                    list.add(EnumChatFormatting.DARK_GRAY + "Hold Ctrl to show additional info.");
+                    list.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
                 }
             }
         } catch (Throwable t) {}

@@ -56,6 +56,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -65,7 +66,7 @@ import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState {
+public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState, IMEConnectable {
 
     private static final long DEFAULT_CAPACITY = 128_000;
     private long baseCapacity = DEFAULT_CAPACITY;
@@ -154,10 +155,17 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     /**
-     * Check if the internal cache can still fit more fluids in it
+     * Check if the internal cache can still fit more fluids in it for a recipe check
      */
     public boolean canAcceptFluid() {
-        return getCachedAmount() < getCacheCapacity() || lastInputTick == tickCounter;
+        return getCachedAmount() < getCacheCapacity();
+    }
+
+    /**
+     * Check if there is space for fluids or if we can overfill.
+     */
+    public boolean canFillFluid() {
+        return canAcceptFluid() || lastInputTick == tickCounter;
     }
 
     /**
@@ -237,6 +245,17 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     @Override
+    public boolean connectsToAllSides() {
+        return additionalConnection;
+    }
+
+    @Override
+    public void setConnectsToAllSides(boolean connects) {
+        additionalConnection = connects;
+        updateValidGridProxySides();
+    }
+
+    @Override
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
@@ -299,7 +318,6 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-
         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("baseCapacity")) {
             tooltip.add(
                 "Current cache capacity: " + EnumChatFormatting.YELLOW
@@ -441,10 +459,6 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         }
         additionalConnection = aNBT.getBoolean("additionalConnection");
         baseCapacity = aNBT.getLong("baseCapacity");
-        // Set the base capacity of existing hatches to be infinite
-        if (baseCapacity == 0) {
-            baseCapacity = Long.MAX_VALUE;
-        }
         getProxy().readFromNBT(aNBT);
     }
 

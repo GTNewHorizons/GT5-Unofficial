@@ -22,7 +22,7 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GTMod;
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
@@ -59,10 +59,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
 
     public MTEBoiler(int aID, String aName, String aNameRegional, String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, 0, 4, aDescription, aTextures);
-    }
-
-    public MTEBoiler(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 4, aDescription, aTextures);
     }
 
     public MTEBoiler(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -188,7 +184,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
 
     @Override
     public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCover) {
-        return GregTechAPI.getCoverBehaviorNew(aCover.toStack())
+        return CoverRegistry.getCoverBehaviorNew(aCover.toStack())
             .isSimpleCover();
     }
 
@@ -199,12 +195,9 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         aNBT.setInteger("mTemperature", this.mTemperature);
         aNBT.setInteger("mProcessingEnergy", this.mProcessingEnergy);
         aNBT.setInteger("mExcessWater", this.mExcessWater);
-        if (this.mSteam == null) {
-            return;
-        }
-        try {
+        if (mSteam != null) {
             aNBT.setTag("mSteam", this.mSteam.writeToNBT(new NBTTagCompound()));
-        } catch (Throwable ignored) {}
+        }
     }
 
     @Override
@@ -378,11 +371,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                     x -> x.setPosition(aX - 0.5D + XSTR_INSTANCE.nextFloat(), aY, aZ - 0.5D + XSTR_INSTANCE.nextFloat())
                         .run());
         }
-    }
-
-    @Override
-    public int getTankPressure() {
-        return 100;
     }
 
     protected abstract int getPollution();

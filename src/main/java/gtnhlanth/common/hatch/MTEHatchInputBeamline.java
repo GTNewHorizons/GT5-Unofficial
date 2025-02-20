@@ -10,10 +10,9 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
-import tectech.util.TTUtility;
 
 public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector<BeamLinePacket> {
 
@@ -28,9 +27,7 @@ public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector<BeamLinePac
     private static final Textures.BlockIcons.CustomIcon connIcon = new Textures.BlockIcons.CustomIcon(connIconPath);
 
     public MTEHatchInputBeamline(int id, String name, String nameRegional, int tier) {
-
         super(id, name, nameRegional, tier, "");
-        TTUtility.setTier(tier, this);
     }
 
     public MTEHatchInputBeamline(String name, int tier, String[] desc, ITexture[][][] textures) {
@@ -40,19 +37,17 @@ public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector<BeamLinePac
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GTRenderedTexture(
-                activeIcon,
-                Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            new GTRenderedTexture(connIcon) };
+            TextureFactory
+                .of(activeIcon, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+            TextureFactory.of(connIcon) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GTRenderedTexture(
-                sideIcon,
-                Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            new GTRenderedTexture(connIcon) };
+            TextureFactory
+                .of(sideIcon, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+            TextureFactory.of(connIcon) };
     }
 
     @Override

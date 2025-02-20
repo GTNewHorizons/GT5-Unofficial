@@ -11,7 +11,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.covers.IControlsWorkCover;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.CoverBehavior;
@@ -20,7 +19,17 @@ import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
-public class CoverControlsWork extends CoverBehavior implements IControlsWorkCover {
+public class CoverControlsWork extends CoverBehavior {
+
+    private enum State {
+        ENABLE_WITH_SIGNAL,
+        DISABLE_WITH_SIGNAL,
+        DISABLED,
+        ENABLE_WITH_SIGNAL_SAFE,
+        DISABLE_WITH_SIGNAL_SAFE;
+    }
+
+    private boolean handledShutdown = false;
 
     public CoverControlsWork(ITexture coverTexture) {
         super(coverTexture);
@@ -29,38 +38,53 @@ public class CoverControlsWork extends CoverBehavior implements IControlsWorkCov
     @Override
     public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
-        if (!makeSureOnlyOne(side, aTileEntity)) return 0;
         if (aTileEntity instanceof IMachineProgress machine) {
-            if (aCoverVariable < 2) {
-                if ((aInputRedstone > 0) == (aCoverVariable == 0)) {
-                    if (!machine.isAllowedToWork()) machine.enableWorking();
-                } else if (machine.isAllowedToWork()) machine.disableWorking();
-                machine.setWorkDataValue(aInputRedstone);
-            } else if (aCoverVariable == 2) {
-                machine.disableWorking();
-            } else {
-                if (machine.wasShutdown() && machine.getLastShutDownReason()
-                    .wasCritical()) {
-                    machine.disableWorking();
-                    if (!mPlayerNotified) {
-                        EntityPlayer player = lastPlayer == null ? null : lastPlayer.get();
-                        if (player != null) {
-                            lastPlayer = null;
-                            mPlayerNotified = true;
-                            GTUtility.sendChatToPlayer(
-                                player,
-                                aTileEntity.getInventoryName() + "at "
-                                    + String.format(
-                                        "(%d,%d,%d)",
-                                        aTileEntity.getXCoord(),
-                                        aTileEntity.getYCoord(),
-                                        aTileEntity.getZCoord())
-                                    + " shut down.");
+            State state = aCoverVariable < State.values().length ? State.values()[aCoverVariable] : State.DISABLED;
+            switch (state) {
+                case ENABLE_WITH_SIGNAL, DISABLE_WITH_SIGNAL -> {
+                    if ((aInputRedstone > 0) == (state == State.ENABLE_WITH_SIGNAL)) {
+                        if (!machine.isAllowedToWork()) {
+                            machine.enableWorking();
+                            handledShutdown = false;
+                        }
+                    } else {
+                        if (machine.isAllowedToWork()) machine.disableWorking();
+                    }
+                }
+                case DISABLED -> {
+                    if (machine.isAllowedToWork()) machine.disableWorking();
+                }
+                case ENABLE_WITH_SIGNAL_SAFE, DISABLE_WITH_SIGNAL_SAFE -> {
+                    if (machine.wasShutdown() && machine.getLastShutDownReason()
+                        .wasCritical() && !handledShutdown) {
+                        if (!mPlayerNotified) {
+                            EntityPlayer player = lastPlayer == null ? null : lastPlayer.get();
+                            if (player != null) {
+                                lastPlayer = null;
+                                mPlayerNotified = true;
+                                GTUtility.sendChatToPlayer(
+                                    player,
+                                    aTileEntity.getInventoryName() + "at "
+                                        + String.format(
+                                            "(%d,%d,%d)",
+                                            aTileEntity.getXCoord(),
+                                            aTileEntity.getYCoord(),
+                                            aTileEntity.getZCoord())
+                                        + " shut down.");
+                            }
+                        }
+                        handledShutdown = true;
+                        return State.DISABLED.ordinal();
+                    } else {
+                        if ((aInputRedstone > 0) == (state == State.ENABLE_WITH_SIGNAL_SAFE)) {
+                            if (!machine.isAllowedToWork()) {
+                                machine.enableWorking();
+                                handledShutdown = false;
+                            }
+                        } else {
+                            if (machine.isAllowedToWork()) machine.disableWorking();
                         }
                     }
-                    return 2;
-                } else {
-                    return 3 + doCoverThings(side, aInputRedstone, aCoverID, aCoverVariable - 3, aTileEntity, aTimer);
                 }
             }
         }
@@ -71,16 +95,6 @@ public class CoverControlsWork extends CoverBehavior implements IControlsWorkCov
     protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID,
         ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return aCoverVariable.get() != 2; // always off, so no redstone needed either
-    }
-
-    /**
-     * Make sure there is only one GT_Cover_ControlsWork on the aTileEntity TODO this is a migration thing. Remove this
-     * after 2.3.0 is released.
-     *
-     * @return true if the cover is the first (side) one
-     **/
-    private boolean makeSureOnlyOne(ForgeDirection side, ICoverable aTileEntity) {
-        return IControlsWorkCover.makeSureOnlyOne(side, aTileEntity);
     }
 
     @Override
@@ -122,7 +136,6 @@ public class CoverControlsWork extends CoverBehavior implements IControlsWorkCov
         boolean aForced) {
         if ((aTileEntity instanceof IMachineProgress)) {
             ((IMachineProgress) aTileEntity).enableWorking();
-            ((IMachineProgress) aTileEntity).setWorkDataValue((byte) 0);
         }
         return true;
     }
@@ -162,7 +175,8 @@ public class CoverControlsWork extends CoverBehavior implements IControlsWorkCov
     public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable aTileEntity) {
         if (!super.isCoverPlaceable(side, aStack, aTileEntity)) return false;
         for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
-            if (aTileEntity.getCoverBehaviorAtSideNew(tSide) instanceof IControlsWorkCover) {
+            if (aTileEntity.getCoverInfoAtSide(tSide)
+                .getCoverBehavior() instanceof CoverControlsWork) {
                 return false;
             }
         }

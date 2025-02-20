@@ -39,11 +39,6 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
                 + " EU/t");
     }
 
-    public MTEMonsterRepellent(String aName, int aTier, int aInvSlotCount, String aDescription,
-        ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
-
     public MTEMonsterRepellent(String aName, int aTier, int aInvSlotCount, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);

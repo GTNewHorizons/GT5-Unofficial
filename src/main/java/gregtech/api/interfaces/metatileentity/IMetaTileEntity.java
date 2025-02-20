@@ -22,15 +22,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 
+import com.gtnewhorizon.gtnhlib.capability.CapabilityProvider;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
-import appeng.api.crafting.ICraftingIconProvider;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IGetGUITextureSet;
-import gregtech.api.interfaces.tileentity.IGearEnergyTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
@@ -43,8 +43,8 @@ import gregtech.api.util.GTUtil;
  * <p/>
  * Don't implement this yourself and expect it to work. Extend @MetaTileEntity itself.
  */
-public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHandler, IGearEnergyTileEntity,
-    IMachineBlockUpdateable, IGregtechWailaProvider, IGetGUITextureSet, ICraftingIconProvider {
+public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHandler, IMachineBlockUpdateable,
+    IGregtechWailaProvider, IGetGUITextureSet, IGregTechDeviceInformation, CapabilityProvider {
 
     /**
      * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
@@ -339,7 +339,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     String getSpecialVoltageToolTip();
 
     /**
-     * Icon of the Texture. If this returns null then it falls back to getTextureIndex.
+     * Icon of the Texture.
      *
      * @param side          is the Side of the Block
      * @param facing        is the direction the Block is facing
@@ -380,10 +380,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     byte getComparatorValue(ForgeDirection side);
 
     float getExplosionResistance(ForgeDirection side);
-
-    String[] getInfoData();
-
-    boolean isGivingInformation();
 
     ItemStack[] getRealInventory();
 
@@ -493,11 +489,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @param tooltip Tooltip to which can be added
      */
     default void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {}
-
-    @Override
-    default ItemStack getMachineCraftingIcon() {
-        return null;
-    }
 
     /**
      * Gets items to be displayed for HoloInventory mod.

@@ -73,10 +73,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
                 "0.004EU Loss per 100 Blocks" });
     }
 
-    public MTEMicrowaveEnergyTransmitter(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 3, aDescription, aTextures);
-    }
-
     public MTEMicrowaveEnergyTransmitter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }

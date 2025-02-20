@@ -1,372 +1,547 @@
 package gregtech.api.metatileentity;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.Packet;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import appeng.api.crafting.ICraftingIconProvider;
-import appeng.api.implementations.tiles.ISoundP2PHandler;
-import appeng.me.cache.helpers.TunnelCollection;
-import appeng.parts.p2p.PartP2PSound;
-import gregtech.GTMod;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GUITextureSet;
-import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
-import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
-import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.util.GTLog;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
+import gregtech.common.GTClient;
+import gregtech.common.covers.CoverInfo;
 
-public abstract class CommonMetaTileEntity extends CoverableTileEntity
-    implements IGregTechTileEntity, ICraftingIconProvider, ISoundP2PHandler {
+/**
+ * {@link IMetaTileEntity} implementation combining both machine-like ({@link MetaTileEntity}) and pipe-like
+ * ({@link MetaPipeEntity}).
+ */
+public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
-    protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mSendClientData = false, mInventoryChanged = false;
+    /**
+     * Inventory of this block.
+     */
+    public final ItemStack[] mInventory;
 
-    protected boolean createNewMetatileEntity(short aID) {
-        if (aID <= 0 || aID >= GregTechAPI.METATILEENTITIES.length || GregTechAPI.METATILEENTITIES[aID] == null) {
-            GTLog.err.println("MetaID " + aID + " not loadable => locking TileEntity!");
+    /**
+     * Internal name of this block, mainly used for localization keys.
+     */
+    public final String mName;
+
+    /**
+     * While this is set to false, lag caused by this block won't be reported to console. Use it while the block is
+     * intentionally doing something that lags, such as scanning multiple chunks or file IO.
+     * Don't forget to set it back to true on the next tick.
+     */
+    public boolean doTickProfilingInThisTick = true;
+
+    /**
+     * For debugging how many sounds get requested to be played in given time.
+     */
+    public long mSoundRequests = 0;
+
+    protected CommonMetaTileEntity(int id, String basicName, String regionalName, int invSlotCount) {
+        if (GregTechAPI.sPostloadStarted || !GregTechAPI.sPreloadStarted)
+            throw new IllegalAccessError("This Constructor has to be called in the load Phase");
+        if (GregTechAPI.METATILEENTITIES[id] == null) {
+            GregTechAPI.METATILEENTITIES[id] = this;
         } else {
-            if (hasValidMetaTileEntity()) getMetaTileEntity().setBaseMetaTileEntity(null);
-            GregTechAPI.METATILEENTITIES[aID].newMetaEntity(this)
-                .setBaseMetaTileEntity(this);
-            mTickTimer = 0;
-            mID = aID;
-            return true;
+            throw new IllegalArgumentException("MetaTileEntity id " + id + " is already occupied!");
         }
-        return false;
+        mInventory = new ItemStack[invSlotCount];
+        mName = basicName.replace(" ", "_")
+            .toLowerCase(Locale.ENGLISH);
+        GTLanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", regionalName);
     }
 
-    protected void saveMetaTileNBT(NBTTagCompound aNBT) {
-        try {
-            if (hasValidMetaTileEntity()) {
-                aNBT.setInteger("nbtVersion", GTMod.NBT_VERSION);
-                final NBTTagList tItemList = new NBTTagList();
-                for (int i = 0; i < getMetaTileEntity().getRealInventory().length; i++) {
-                    final ItemStack tStack = getMetaTileEntity().getRealInventory()[i];
-                    if (tStack != null) {
-                        final NBTTagCompound tTag = new NBTTagCompound();
-                        tTag.setInteger("IntSlot", i);
-                        tStack.writeToNBT(tTag);
-                        tItemList.appendTag(tTag);
-                    }
-                }
-                aNBT.setTag("Inventory", tItemList);
-
-                try {
-                    getMetaTileEntity().saveNBTData(aNBT);
-                } catch (Throwable e) {
-                    GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.");
-                    GTMod.logStackTrace(e);
-                }
-            }
-        } catch (Throwable e) {
-            GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.");
-            GTMod.logStackTrace(e);
-        }
-    }
-
-    protected void loadMetaTileNBT(NBTTagCompound aNBT) {
-        final int nbtVersion = aNBT.getInteger("nbtVersion");
-        if (mID != 0 && createNewMetatileEntity(mID)) {
-            final NBTTagList tItemList = aNBT.getTagList("Inventory", 10);
-            for (int i = 0; i < tItemList.tagCount(); i++) {
-                final NBTTagCompound tTag = tItemList.getCompoundTagAt(i);
-                final int tSlot = migrateInventoryIndex(tTag.getInteger("IntSlot"), nbtVersion);
-                if (tSlot >= 0 && tSlot < getMetaTileEntity().getRealInventory().length) {
-                    ItemStack loadedStack = GTUtility.loadItem(tTag);
-                    // We move away from fluid display item in TEs
-                    if (loadedStack != null && loadedStack.getItem() == ItemList.Display_Fluid.getItem()) {
-                        loadedStack = null;
-                    }
-                    getMetaTileEntity().getRealInventory()[tSlot] = loadedStack;
-                }
-            }
-
-            try {
-                getMetaTileEntity().loadNBTData(aNBT);
-            } catch (Throwable e) {
-                GT_FML_LOGGER.error("Encountered Exception while loading MetaTileEntity.");
-                GTMod.logStackTrace(e);
-            }
-        }
+    protected CommonMetaTileEntity(String name, int invSlotCount) {
+        mInventory = new ItemStack[invSlotCount];
+        mName = name;
     }
 
     /**
-     * Shifts the machine Inventory index according to the change in Input/Output Slots. Default implementation does not
-     * do anything to the slotIndex.
+     * @inheritDoc
      */
-    protected int migrateInventoryIndex(int slotIndex, int nbtVersion) {
-        return slotIndex;
+    @Nullable
+    @Override
+    public <T> T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
+        return null;
     }
 
     @Override
-    public void markDirty() {
-        super.markDirty();
-        mInventoryChanged = true;
+    public void onServerStart() {}
+
+    @Override
+    public void onWorldSave(File saveDirectory) {}
+
+    @Override
+    public void onWorldLoad(File saveDirectory) {}
+
+    @Override
+    public void onConfigLoad() {}
+
+    @Override
+    public void setItemNBT(NBTTagCompound nbt) {}
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister blockIconRegister) {}
+
+    @Override
+    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack stack) {
+        return true;
     }
 
     @Override
-    public boolean hasInventoryBeenModified() {
-        return mInventoryChanged;
-    }
+    public void onFirstTick(IGregTechTileEntity baseMetaTileEntity) {}
 
     @Override
-    public boolean isValidSlot(int aIndex) {
-        if (canAccessData()) return getMetaTileEntity().isValidSlot(aIndex);
+    public void onPreTick(IGregTechTileEntity baseMetaTileEntity, long tick) {}
+
+    @Override
+    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
+        if (baseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
+            /*
+             * Client tick counter that is set to 5 on hiding pipes and covers. It triggers a texture update next client
+             * tick when reaching 4, with provision for 3 more update tasks, spreading client change detection related
+             * work and network traffic on different ticks, until it reaches 0.
+             */
+            baseMetaTileEntity.issueTextureUpdate();
+        }
+    }
+
+    public void onTickFail(IGregTechTileEntity baseMetaTileEntity, long tick) {}
+
+    public void onSetActive(boolean active) {}
+
+    public void onDisableWorking() {}
+
+    @Override
+    public void inValidate() {}
+
+    @Override
+    public void onRemoval() {}
+
+    @Override
+    public void initDefaultModes(NBTTagCompound nbt) {}
+
+    /**
+     * Called when GUI gets opened.
+     */
+    public void onOpenGUI() {}
+
+    /**
+     * Called when GUI gets closed.
+     */
+    public void onCloseGUI() {}
+
+    /**
+     * Called when a player right-clicks this block. Shift-right-clicks will not get passed to this!
+     */
+    @Override
+    public boolean onRightclick(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player, ForgeDirection side,
+        float x, float y, float z) {
         return false;
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        issueClientUpdate();
-        return null;
+    public void onLeftclick(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player) {}
+
+    @Override
+    public void onValueUpdate(byte value) {}
+
+    @Override
+    public byte getUpdateData() {
+        return 0;
     }
 
     @Override
-    public void issueTextureUpdate() {
-        mNeedsUpdate = true;
+    public void doSound(byte index, double x, double y, double z) {}
+
+    @Override
+    public void startSoundLoop(byte index, double x, double y, double z) {}
+
+    @Override
+    public void stopSoundLoop(byte value, double x, double y, double z) {}
+
+    @Override
+    public final void sendSound(byte aIndex) {
+        if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
+            getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.DO_SOUND, aIndex);
+        }
     }
 
     @Override
-    public void issueClientUpdate() {
-        mSendClientData = true;
+    public final void sendLoopStart(byte aIndex) {
+        if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
+            getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.START_SOUND_LOOP, aIndex);
+        }
+        mSoundRequests++;
     }
 
     @Override
-    public void issueBlockUpdate() {
-        mNeedsBlockUpdate = true;
+    public final void sendLoopEnd(byte aIndex) {
+        if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
+            getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.STOP_SOUND_LOOP, aIndex);
+        }
     }
 
     @Override
-    public boolean isValidFacing(ForgeDirection side) {
-        if (canAccessData()) return getMetaTileEntity().isFacingValid(side);
+    public boolean isFacingValid(ForgeDirection facing) {
         return false;
     }
 
-    protected boolean canAccessData() {
-        return !isDead && hasValidMetaTileEntity();
-    }
-
-    protected abstract boolean hasValidMetaTileEntity();
-
     @Override
-    public String[] getDescription() {
-        if (canAccessData()) return getMetaTileEntity().getDescription();
-        return new String[0];
+    public boolean isAccessAllowed(EntityPlayer player) {
+        return true;
     }
 
     @Override
-    public boolean isStillValid() {
-        return hasValidMetaTileEntity();
+    public boolean isValidSlot(int index) {
+        return true;
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
-        return hasValidMetaTileEntity() && getMetaTileEntity().allowCoverOnSide(side, aCoverID);
+    public boolean shouldDropItemAt(int index) {
+        return true;
     }
 
     @Override
-    public void issueCoverUpdate(ForgeDirection side) {
-        super.issueCoverUpdate(side);
-        issueClientUpdate();
+    public boolean setStackToZeroInsteadOfNull(int index) {
+        return false;
     }
 
-    /*
-     * IC2 Energy Compat
+    @Override
+    public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player,
+        int logLevel, ArrayList<String> list) {
+        return list;
+    }
+
+    /**
+     * Returns the fluid this block contains.
      */
     @Override
-    public boolean shouldJoinIc2Enet() {
-        final IMetaTileEntity meta = getMetaTileEntity();
-        return meta != null && meta.shouldJoinIc2Enet();
+    public FluidStack getFluid() {
+        return null;
     }
 
-    /*
-     * Modular UI Support
+    /**
+     * Tries to fill this tank.
      */
-
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IAddUIWidgets) {
-            ((IAddUIWidgets) getMetaTileEntity()).addUIWidgets(builder, buildContext);
-            return;
-        }
-        super.addUIWidgets(builder, buildContext);
+    public int fill(FluidStack resource, boolean doFill) {
+        return 0;
+    }
+
+    /**
+     * Tries to empty this tank.
+     */
+    @Override
+    public FluidStack drain(int maxDrain, boolean doDrain) {
+        return null;
+    }
+
+    /**
+     * Returns capacity of the fluid.
+     */
+    @Override
+    public int getCapacity() {
+        return 0;
+    }
+
+    /**
+     * Returns progress in ticks this machine has already made.
+     */
+    public int getProgresstime() {
+        return 0;
+    }
+
+    /**
+     * Returns total ticks required for this machine to finish one cycle of the progress.
+     */
+    public int maxProgresstime() {
+        return 0;
+    }
+
+    /**
+     * Increases the progress, returns the overflown progress.
+     */
+    public int increaseProgress(int progress) {
+        return 0;
     }
 
     @Override
-    public void bindPlayerInventoryUI(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IBindPlayerInventoryUI) {
-            ((IBindPlayerInventoryUI) getMetaTileEntity()).bindPlayerInventoryUI(builder, buildContext);
-            return;
-        }
-        super.bindPlayerInventoryUI(builder, buildContext);
+    public void onMachineBlockUpdate() {}
+
+    @Override
+    public void receiveClientEvent(byte eventID, byte value) {}
+
+    @Override
+    public boolean isSimpleMachine() {
+        return false;
+    }
+
+    /**
+     * Gets the output for the comparator on the given side
+     */
+    @Override
+    public byte getComparatorValue(ForgeDirection side) {
+        return 0;
     }
 
     @Override
-    public IConfigurationCircuitSupport getConfigurationCircuitSupport() {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IConfigurationCircuitSupport) {
-            return (IConfigurationCircuitSupport) getMetaTileEntity();
+    public String getSpecialVoltageToolTip() {
+        return null;
+    }
+
+    public boolean isDigitalChest() {
+        return false;
+    }
+
+    public ItemStack[] getStoredItemData() {
+        return null;
+    }
+
+    public void setItemCount(int count) {}
+
+    public int getMaxItemCount() {
+        return 0;
+    }
+
+    @Override
+    public int getSizeInventory() {
+        return mInventory.length;
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int index) {
+        if (index >= 0 && index < mInventory.length) {
+            return mInventory[index];
         }
         return null;
     }
 
     @Override
-    public ItemStackHandler getInventoryHandler() {
-        if (hasValidMetaTileEntity()) {
-            return getMetaTileEntity().getInventoryHandler();
+    public void setInventorySlotContents(int index, ItemStack itemStack) {
+        if (index >= 0 && index < mInventory.length) {
+            mInventory[index] = itemStack;
+        }
+        markDirty();
+    }
+
+    @Override
+    public String getInventoryName() {
+        if (GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()] != null) {
+            return GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getMetaName();
+        }
+        return "";
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+        return 64;
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return getBaseMetaTileEntity().isValidSlot(index);
+    }
+
+    @Override
+    public ItemStack decrStackSize(int index, int amount) {
+        ItemStack tStack = getStackInSlot(index), rStack = GTUtility.copyOrNull(tStack);
+        if (tStack != null) {
+            if (tStack.stackSize <= amount) {
+                if (setStackToZeroInsteadOfNull(index)) {
+                    tStack.stackSize = 0;
+                    markDirty();
+                } else setInventorySlotContents(index, null);
+            } else {
+                rStack = tStack.splitStack(amount);
+                markDirty();
+                if (tStack.stackSize == 0 && !setStackToZeroInsteadOfNull(index)) setInventorySlotContents(index, null);
+            }
+        }
+        return rStack;
+    }
+
+    @Override
+    public int[] getAccessibleSlotsFromSide(int ordinalSide) {
+        final TIntList tList = new TIntArrayList();
+        final IGregTechTileEntity tTileEntity = getBaseMetaTileEntity();
+        final CoverInfo tileCoverInfo = tTileEntity.getCoverInfoAtSide(ForgeDirection.getOrientation(ordinalSide));
+        final boolean tSkip = tileCoverInfo.letsItemsIn(-2) || tileCoverInfo.letsItemsOut(-2);
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (isValidSlot(i) && (tSkip || tileCoverInfo.letsItemsOut(i) || tileCoverInfo.letsItemsIn(i))) {
+                tList.add(i);
+            }
+        }
+        return tList.toArray();
+    }
+
+    @Override
+    public boolean canInsertItem(int index, ItemStack itemStack, int ordinalSide) {
+        return isValidSlot(index) && itemStack != null
+            && index < mInventory.length
+            && (mInventory[index] == null || GTUtility.areStacksEqual(itemStack, mInventory[index]))
+            && allowPutStack(getBaseMetaTileEntity(), index, ForgeDirection.getOrientation(ordinalSide), itemStack);
+    }
+
+    @Override
+    public boolean canExtractItem(int index, ItemStack itemStack, int ordinalSide) {
+        return isValidSlot(index) && itemStack != null
+            && index < mInventory.length
+            && allowPullStack(getBaseMetaTileEntity(), index, ForgeDirection.getOrientation(ordinalSide), itemStack);
+    }
+
+    @Override
+    public boolean canFill(ForgeDirection side, Fluid fluid) {
+        return fill(side, new FluidStack(fluid, 1), false) == 1;
+    }
+
+    @Override
+    public boolean canDrain(ForgeDirection side, Fluid fluid) {
+        return drain(side, new FluidStack(fluid, 1), false) != null;
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection side) {
+        if (getCapacity() <= 0 && !getBaseMetaTileEntity().hasSteamEngineUpgrade()) {
+            return new FluidTankInfo[] {};
+        }
+        return new FluidTankInfo[] { getInfo() };
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection side, FluidStack fluidStack, boolean doDrain) {
+        if (getFluid() != null && fluidStack != null && getFluid().isFluidEqual(fluidStack)) {
+            return drain(fluidStack.amount, doDrain);
         }
         return null;
     }
 
     @Override
-    public boolean useModularUI() {
-        return hasValidMetaTileEntity();
+    public FluidStack drain(ForgeDirection side, int maxDrain, boolean doDrain) {
+        return drain(maxDrain, doDrain);
     }
 
     @Override
-    public String getLocalName() {
-        if (hasValidMetaTileEntity()) return getMetaTileEntity().getLocalName();
-        return super.getLocalName();
+    public int getFluidAmount() {
+        return 0;
     }
 
     @Override
-    protected int getGUIWidth() {
-        if (hasValidMetaTileEntity()) return getMetaTileEntity().getGUIWidth();
-
-        return super.getGUIWidth();
+    public FluidTankInfo getInfo() {
+        return new FluidTankInfo(this);
     }
 
     @Override
-    protected int getGUIHeight() {
-        if (hasValidMetaTileEntity()) return getMetaTileEntity().getGUIHeight();
-
-        return super.getGUIHeight();
+    public String getMetaName() {
+        return mName;
     }
 
     @Override
-    protected boolean doesBindPlayerInventory() {
-        if (hasValidMetaTileEntity()) return getMetaTileEntity().doesBindPlayerInventory();
-
-        return super.doesBindPlayerInventory();
+    public ItemStack getStackInSlotOnClosing(int index) {
+        return null;
     }
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IAddGregtechLogo) {
-            ((IAddGregtechLogo) getMetaTileEntity()).addGregTechLogo(builder);
-            return;
-        }
-        super.addGregTechLogo(builder);
+    public boolean doTickProfilingMessageDuringThisTick() {
+        return doTickProfilingInThisTick;
     }
 
     @Override
-    public ItemStack getStackForm(long aAmount) {
-        if (hasValidMetaTileEntity()) {
-            return getMetaTileEntity().getStackForm(aAmount);
-        }
-        return super.getStackForm(aAmount);
+    public boolean isUseableByPlayer(EntityPlayer player) {
+        return false;
     }
 
     @Override
-    public int getTitleColor() {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IGetTitleColor) {
-            return ((IGetTitleColor) getMetaTileEntity()).getTitleColor();
-        }
-        return super.getTitleColor();
+    public boolean connectsToItemPipe(ForgeDirection side) {
+        return false;
     }
 
     @Override
-    public int getGUIColorization() {
-        if (hasValidMetaTileEntity()) {
-            return getMetaTileEntity().getGUIColorization();
-        }
-        return super.getGUIColorization();
+    public void openInventory() {}
+
+    @Override
+    public void closeInventory() {}
+
+    @Override
+    public ItemStack[] getRealInventory() {
+        return mInventory;
     }
 
     @Override
-    protected int getTextColorOrDefault(String textType, int defaultColor) {
-        if (hasValidMetaTileEntity()) {
-            return getMetaTileEntity().getTextColorOrDefault(textType, defaultColor);
-        }
-        return defaultColor;
+    public boolean hasCustomInventoryName() {
+        return false;
     }
 
     @Override
-    public GUITextureSet getGUITextureSet() {
-        if (hasValidMetaTileEntity()) {
-            return getMetaTileEntity().getGUITextureSet();
-        }
-        return super.getGUITextureSet();
+    @SideOnly(Side.CLIENT)
+    public boolean renderInInventory(Block block, int meta, RenderBlocks renderer) {
+        return false;
     }
 
     @Override
-    public ItemStack getMachineCraftingIcon() {
-        return getMetaTileEntity() != null ? getMetaTileEntity().getMachineCraftingIcon() : null;
+    @SideOnly(Side.CLIENT)
+    public boolean renderInWorld(IBlockAccess world, int x, int y, int z, Block block, RenderBlocks renderer) {
+        return false;
     }
 
     @Override
-    public ModularWindow createWindow(UIBuildContext buildContext) {
-        if (!useModularUI()) return null;
-
-        buildContext.setValidator(getValidator());
-        final ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
-        builder.setBackground(getGUITextureSet().getMainBackground());
-        builder.setGuiTint(getGUIColorization());
-        if (doesBindPlayerInventory()) {
-            bindPlayerInventoryUI(builder, buildContext);
-        }
-        addUIWidgets(builder, buildContext);
-        addTitleToUI(builder);
-        addCoverTabs(builder, buildContext);
-        final IConfigurationCircuitSupport csc = getConfigurationCircuitSupport();
-        if (csc != null && csc.allowSelectCircuit()) {
-            addConfigurationCircuitSlot(builder);
-        } else {
-            addGregTechLogo(builder);
-        }
-        return builder.build();
+    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB inputAABB,
+        List<AxisAlignedBB> outputAABB, Entity collider) {
+        AxisAlignedBB axisalignedbb1 = getCollisionBoundingBoxFromPool(world, x, y, z);
+        if (axisalignedbb1 != null && inputAABB.intersectsWith(axisalignedbb1)) outputAABB.add(axisalignedbb1);
     }
 
     @Override
-    public boolean allowSoundProxying(PartP2PSound p2p) {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof ISoundP2PHandler metaHandler) {
-            return metaHandler.allowSoundProxying(p2p);
-        }
-        return ISoundP2PHandler.super.allowSoundProxying(p2p);
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+        return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
     }
 
     @Override
-    public void onSoundP2PAttach(PartP2PSound p2p) {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof ISoundP2PHandler metaHandler) {
-            metaHandler.onSoundP2PAttach(p2p);
-        }
+    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity collider) {}
+
+    @Override
+    public void onCreated(ItemStack itemStack, World world, EntityPlayer player) {}
+
+    @Override
+    public boolean allowGeneralRedstoneOutput() {
+        return false;
     }
 
     @Override
-    public void onSoundP2PDetach(PartP2PSound p2p) {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof ISoundP2PHandler metaHandler) {
-            metaHandler.onSoundP2PDetach(p2p);
-        }
+    public boolean hasAlternativeModeText() {
+        return false;
     }
 
     @Override
-    public void onSoundP2POutputUpdate(PartP2PSound p2p, TunnelCollection<PartP2PSound> outputs) {
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof ISoundP2PHandler metaHandler) {
-            metaHandler.onSoundP2POutputUpdate(p2p, outputs);
-        }
+    public String getAlternativeModeText() {
+        return "";
     }
 }

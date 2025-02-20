@@ -51,16 +51,8 @@ public class MTEHatchInput extends MTEHatch {
         super(aID, aName, aNameRegional, aTier, aSlot, aDescription);
     }
 
-    public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier, int allSlotCount, String[] strings) {
-        super(aID, aName, aNameRegional, aTier, allSlotCount, strings);
-    }
-
     public int getCapacityPerTank(int aTier, int aSlot) {
         return (int) (8000L * (1L << aTier) / aSlot);
-    }
-
-    public MTEHatchInput(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 3, aDescription, aTextures);
     }
 
     public MTEHatchInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -185,8 +177,4 @@ public class MTEHatchInput extends MTEHatch {
         return 8000 * (1 << mTier);
     }
 
-    @Override
-    public int getTankPressure() {
-        return -100;
-    }
 }

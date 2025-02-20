@@ -19,7 +19,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -38,22 +38,18 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
                 "A circuit must be used to select a slot (1-16)", GTPPCore.GT_Tooltip.get() });
     }
 
-    public MTEHatchElementalDataOrbHolder(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 17, aDescription, aTextures);
-    }
-
     public MTEHatchElementalDataOrbHolder(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 17, aDescription, aTextures);
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GTRenderedTexture(TexturesGtBlock.Overlay_Hatch_Data_Orb) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(TexturesGtBlock.Overlay_Hatch_Data_Orb) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, new GTRenderedTexture(TexturesGtBlock.Overlay_Hatch_Data_Orb) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(TexturesGtBlock.Overlay_Hatch_Data_Orb) };
     }
 
     @Override

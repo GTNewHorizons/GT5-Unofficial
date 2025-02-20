@@ -41,7 +41,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
-import gregtech.api.objects.AE2DigitalChestHandler;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
@@ -62,7 +61,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             aNameRegional,
             aTier,
             3,
-            new String[] { "This Chest stores " + GTUtility.formatNumbers(commonSizeCompute(aTier)) + " Blocks",
+            new String[] { "Stores " + GTUtility.formatNumbers(commonSizeCompute(aTier)) + " items",
                 "Use a screwdriver to enable", "voiding items on overflow", "Will keep its contents when harvested", });
     }
 
@@ -80,10 +79,6 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             case 10 -> 2147483640;
             default -> 0;
         };
-    }
-
-    public MTEDigitalChestBase(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 3, aDescription, aTextures);
     }
 
     public MTEDigitalChestBase(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -109,13 +104,6 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                         + EnumChatFormatting.GRAY);
             }
         }
-    }
-
-    public static void registerAEIntegration() {
-        appeng.api.AEApi.instance()
-            .registries()
-            .externalStorage()
-            .addExternalStorageInterface(new AE2DigitalChestHandler());
     }
 
     @Override

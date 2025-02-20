@@ -21,6 +21,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -28,6 +30,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -43,7 +46,7 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
 public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCentrifuge>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, INEIPreviewModifier {
 
     private boolean mIsAnimated;
     private int mCasing;
@@ -129,18 +132,6 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     }
 
     @Override
-    public boolean checkStructure(boolean aForceReset, IGregTechTileEntity aBaseMetaTileEntity) {
-        boolean f = super.checkStructure(aForceReset, aBaseMetaTileEntity);
-        if (f && getBaseMetaTileEntity().isServerSide()) {
-            // while is this a client side field, blockrenderer will reuse the server world for client side rendering
-            // so we must set it as well...
-            mFormed = true;
-            return true;
-        }
-        return f;
-    }
-
-    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         return checkPiece(mName, 1, 1, 0) && mCasing >= 6 && checkHatch();
@@ -186,7 +177,7 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setEuModifier(0.9F)
             .setSpeedBonus(1F / 2.25F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -262,5 +253,10 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     @Override
     public byte getUpdateData() {
         return (byte) ((mMachine ? 1 : 0));
+    }
+
+    @Override
+    public void onPreviewStructureComplete(@NotNull ItemStack trigger) {
+        mFormed = true;
     }
 }

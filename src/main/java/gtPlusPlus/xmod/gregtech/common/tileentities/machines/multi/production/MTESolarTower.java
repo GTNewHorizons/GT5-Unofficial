@@ -255,6 +255,11 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
     };
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         resetSolarHeaters();
         this.mMaintenanceHatches.clear();
@@ -656,10 +661,5 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
     public String[] getExtraInfoData() {
         return new String[] { "Internal Heat Level: " + this.mHeatLevel,
             "Connected Solar Reflectors: " + this.mSolarHeaters.size() };
-    }
-
-    @Override
-    public boolean doesBindPlayerInventory() {
-        return false;
     }
 }

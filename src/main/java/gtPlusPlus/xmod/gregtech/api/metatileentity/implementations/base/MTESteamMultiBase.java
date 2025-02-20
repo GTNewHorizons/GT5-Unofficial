@@ -29,7 +29,6 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
-import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
@@ -71,9 +70,9 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()) };
     }
 
-    protected abstract GTRenderedTexture getFrontOverlay();
+    protected abstract ITexture getFrontOverlay();
 
-    protected abstract GTRenderedTexture getFrontOverlayActive();
+    protected abstract ITexture getFrontOverlayActive();
 
     public abstract int getTierRecipes();
 
@@ -83,7 +82,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -375,13 +374,17 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         final NBTTagCompound tag = accessor.getNBTData();
 
         if (tag.getBoolean("incompleteStructure")) {
-            currentTip.add(RED + "** INCOMPLETE STRUCTURE **" + RESET);
+            currentTip
+                .add(RED + StatCollector.translateToLocalFormatted("GT5U.waila.multiblock.status.incomplete") + RESET);
         }
-        String efficiency = RESET + "  Efficiency: " + tag.getFloat("efficiency") + "%";
+        String efficiency = RESET + StatCollector
+            .translateToLocalFormatted("GT5U.waila.multiblock.status.efficiency", tag.getFloat("efficiency"));
         if (tag.getBoolean("hasProblems")) {
-            currentTip.add(RED + "** HAS PROBLEMS **" + efficiency);
+            currentTip
+                .add(RED + StatCollector.translateToLocal("GT5U.waila.multiblock.status.has_problem") + efficiency);
         } else if (!tag.getBoolean("incompleteStructure")) {
-            currentTip.add(GREEN + "Running Fine" + efficiency);
+            currentTip
+                .add(GREEN + StatCollector.translateToLocal("GT5U.waila.multiblock.status.running_fine") + efficiency);
         }
 
         boolean isActive = tag.getBoolean("isActive");
@@ -402,7 +405,9 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         // Show ns on the tooltip
         if (GTMod.gregtechproxy.wailaAverageNS && tag.hasKey("averageNS")) {
             int tAverageTime = tag.getInteger("averageNS");
-            currentTip.add("Average CPU load of ~" + formatNumbers(tAverageTime) + " ns");
+            currentTip.add(
+                StatCollector
+                    .translateToLocalFormatted("GT5U.waila.multiblock.status.cpu_load", formatNumbers(tAverageTime)));
         }
         super.getMTEWailaBody(itemStack, currentTip, accessor, config);
     }

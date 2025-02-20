@@ -88,12 +88,10 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
-import blockrenderer6343.client.world.ClientFakePlayer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -238,35 +236,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         int realBudget = elementBudget >= 1000 ? elementBudget : Math.min(1000, elementBudget * 5);
         int built = 0;
 
-        if (Mods.BlockRenderer6343.isModLoaded() && env.getActor() instanceof ClientFakePlayer) {
-            built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 63, 14, 1, elementBudget, env, false, true);
-            if (stackSize.stackSize > 1) {
-                built += survivialBuildPiece(
-                    STRUCTURE_PIECE_SECOND_RING,
-                    stackSize,
-                    55,
-                    11,
-                    -67,
-                    realBudget,
-                    env,
-                    false,
-                    true);
-            }
-            if (stackSize.stackSize > 2) {
-                built += survivialBuildPiece(
-                    STRUCTURE_PIECE_THIRD_RING,
-                    stackSize,
-                    47,
-                    13,
-                    -76,
-                    realBudget,
-                    env,
-                    false,
-                    true);
-            }
-            return built;
-        }
-
         survivialBuildPiece(STRUCTURE_PIECE_SHAFT, stackSize, 63, 14, 1, realBudget, env, false, true);
 
         if (stackSize.stackSize > 0) {
@@ -357,6 +326,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     public MTEForgeOfGods(String aName) {
         super(aName);
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
     }
 
     @Override

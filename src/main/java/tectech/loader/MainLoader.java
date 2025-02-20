@@ -27,11 +27,7 @@ public final class MainLoader {
         creativeTabTecTech = new CreativeTabTecTech("TecTech");
 
         // set expanded texture arrays for tiers
-        try {
-            Textures.run();
-        } catch (Throwable t) {
-            LOGGER.error("Loading textures...", t);
-        }
+        Textures.run();
 
         ProgressManager.ProgressBar progressBarPreload = ProgressManager.push("TecTech Preload", 1);
 

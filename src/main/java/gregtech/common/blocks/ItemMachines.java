@@ -1,6 +1,7 @@
 package gregtech.common.blocks;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.api.util.GTUtility.formatStringSafe;
 
 import java.util.List;
 
@@ -153,6 +154,8 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 }
             }
         } catch (Throwable e) {
+            aList.add(String.format("§cAn exception was thrown while getting this item's info.§r"));
+            aList.add(e.getLocalizedMessage());
             GT_FML_LOGGER.error("addInformation", e);
         }
     }
@@ -174,8 +177,9 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     tBuffer.append("%s");
                     tRep[j / 2] = tSplitStrings[j];
                 }
-                final String tTranslated = String
-                    .format(GTLanguageManager.addStringLocalization(tKey, tBuffer.toString()), (Object[]) tRep);
+                final String tTranslated = formatStringSafe(
+                    GTLanguageManager.addStringLocalization(tKey, tBuffer.toString()),
+                    (Object[]) tRep);
                 if (aList != null) aList.add(tTranslated);
             } else {
                 String tTranslated = GTLanguageManager.addStringLocalization(tKey, tDescLine);

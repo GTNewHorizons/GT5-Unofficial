@@ -120,6 +120,11 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
     }
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEProcessingArray(this.mName);
     }
@@ -132,7 +137,7 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
             .addInfo("Runs supplied machines as if placed in the world")
             .addInfo("Place up to 64 singleblock GT machines into the controller")
             .addInfo("Note that you still need to supply power to them all")
-            .addInfo("Use a screwdriver to enable separate input busses")
+            .addInfo("Use a screwdriver to enable separate input buses")
             .addInfo("Use a wire cutter to disable UEV+ downtiering")
             .addInfo("Doesn't work on certain machines, deal with it")
             .addInfo("Use it if you hate GT++, or want even more speed later on")
@@ -253,7 +258,7 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
                 if (recipe.mEUt > availableVoltage) return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
-        }.setMaxParallelSupplier(this::getMaxParallel);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

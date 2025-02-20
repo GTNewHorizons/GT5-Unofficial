@@ -8,20 +8,22 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEEnergyBuffer extends GTPPMetaTileEntity {
+public class MTEEnergyBuffer extends MTETieredMachineBlock {
 
     protected static final byte DEFAULT_OUTPUT_AMPERAGE = 4;
     protected byte aCurrentOutputAmperage = DEFAULT_OUTPUT_AMPERAGE;
@@ -31,15 +33,19 @@ public class MTEEnergyBuffer extends GTPPMetaTileEntity {
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
     }
 
-    public MTEEnergyBuffer(final String aName, final int aTier, final String aDescription,
+    public MTEEnergyBuffer(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures, final int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
     }
 
     @Override
     public String[] getDescription() {
-        return new String[] { this.mDescription, "Defaults 4A In/Out", "Change output Amperage with a screwdriver",
-            "Now Portable!", GTPPCore.GT_Tooltip.get() };
+        return ArrayUtils.addAll(
+            this.mDescriptionArray,
+            "Defaults 4A In/Out",
+            "Change output Amperage with a screwdriver",
+            "Now Portable!",
+            GTPPCore.GT_Tooltip.get());
     }
 
     @Override
@@ -88,22 +94,22 @@ public class MTEEnergyBuffer extends GTPPMetaTileEntity {
 
     public ITexture[] getBack(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getBottom(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Screen_Logo) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Screen_Logo) };
     }
 
     public ITexture[] getSides(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getFrontActive(final byte aColor) {
@@ -113,27 +119,32 @@ public class MTEEnergyBuffer extends GTPPMetaTileEntity {
 
     public ITexture[] getBackActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getBottomActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     public ITexture[] getTopActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Screen_Logo) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Screen_Logo) };
     }
 
     public ITexture[] getSidesActive(final byte aColor) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1],
-            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
+            TextureFactory.of(TexturesGtBlock.Overlay_Machine_Dimensional_Orange) };
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEEnergyBuffer(this.mName, this.mTier, this.mDescription, this.mTextures, this.mInventory.length);
+        return new MTEEnergyBuffer(
+            this.mName,
+            this.mTier,
+            this.mDescriptionArray,
+            this.mTextures,
+            this.mInventory.length);
     }
 
     @Override
