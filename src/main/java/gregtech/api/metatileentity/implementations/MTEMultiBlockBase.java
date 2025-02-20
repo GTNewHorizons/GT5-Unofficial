@@ -74,7 +74,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.VoidingMode;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IItemLockable;
@@ -417,7 +416,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
             return true;
         }
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 

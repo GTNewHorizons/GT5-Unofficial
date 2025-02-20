@@ -552,6 +552,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
      * We're gradually migrating to MUI2. However, since cover panel is not supported for the time being,
      * leave support for MUI1 ({@link IAddUIWidgets#addUIWidgets}) as well.
      */
+    @SuppressWarnings("deprecation")
     public void openGui(EntityPlayer player) {
         if (GTGuis.GLOBAL_SWITCH_MUI2 && useMui2()) {
             MetaTileEntityGuiFactory.open(player, this);
@@ -571,7 +572,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     /**
      * Override this method to provide GUI ID if this machine supports MUI2. It's used for resource packs as a
      * distinguishable id to customize stuff. Conventionally it should be {@code mte.snake_case}.
-     * 
+     *
      * @see #useMui2
      */
     protected String getGuiId() {

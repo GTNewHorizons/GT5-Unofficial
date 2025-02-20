@@ -60,7 +60,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.GTMod;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ICleanroom;
@@ -497,12 +496,12 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         if (!GTMod.gregtechproxy.mForceFreeFace) {
-            GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            openGui(aPlayer);
             return true;
         }
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if (aBaseMetaTileEntity.getAirAtSide(side)) {
-                GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+                openGui(aPlayer);
                 return true;
             }
         }
