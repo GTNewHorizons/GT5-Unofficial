@@ -9,6 +9,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -69,6 +70,10 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     protected GUIColorOverride colorOverride;
     protected GTTooltipDataCache mTooltipCache = new GTTooltipDataCache();
+
+    private static final String[] FACING_DIRECTION_NAMES = new String[] { "GT5U.waila.facing.down",
+        "GT5U.waila.facing.up", "GT5U.waila.facing.north", "GT5U.waila.facing.south", "GT5U.waila.facing.west",
+        "GT5U.waila.facing.east", "GT5U.waila.facing.unknown" };
 
     @Override
     public ItemStackHandler getInventoryHandler() {
@@ -744,10 +749,11 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         currenttip.add(
-            String.format(
-                "Facing: %s",
-                mBaseMetaTileEntity.getFrontFacing()
-                    .name()));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.facing",
+                getFacingNameLocalized(
+                    mBaseMetaTileEntity.getFrontFacing()
+                        .ordinal())));
 
         if (this instanceof IPowerChannelState state) {
             final NBTTagCompound tag = accessor.getNBTData();
@@ -756,6 +762,13 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
             final boolean isBooting = tag.getBoolean("isBooting");
             currenttip.add(WailaText.getPowerState(isActive, isPowered, isBooting));
         }
+    }
+
+    protected static @NotNull String getFacingNameLocalized(int id) {
+        if (id >= 0 && id < FACING_DIRECTION_NAMES.length) {
+            return StatCollector.translateToLocal(FACING_DIRECTION_NAMES[id]);
+        }
+        return StatCollector.translateToLocal("GT5U.waila.facing.unknown");
     }
 
     @Override
