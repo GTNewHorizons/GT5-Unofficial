@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gregtech.api.util.GTLog;
@@ -83,8 +84,11 @@ public class ItemBlockGtBlock extends ItemBlock {
                 if (b != null) {
                     int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());
                     if (this.mMaterial != null) {
-                        list.add("Mining Level: " + Math.min(Math.max(aMiningLevel1, 0), 5));
-                        list.add("Contains:    ");
+                        list.add(
+                            StatCollector.translateToLocalFormatted(
+                                "GTPP.tooltip.block.mining_level",
+                                Math.min(Math.max(aMiningLevel1, 0), 5)));
+                        list.add(StatCollector.translateToLocal("GTPP.tooltip.block.contains"));
                         if (mMaterial.getComposites()
                             .isEmpty()) {
                             list.add("- " + mMaterial.getLocalizedName());
@@ -98,7 +102,7 @@ public class ItemBlockGtBlock extends ItemBlock {
                     }
                 }
             } else {
-                list.add(EnumChatFormatting.DARK_GRAY + "Hold Ctrl to show additional info.");
+                list.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
             }
         } else {
             Block b = Block.getBlockFromItem(stack.getItem());

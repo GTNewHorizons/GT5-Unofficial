@@ -15,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -272,19 +273,21 @@ public class BaseItemComponent extends Item {
                         String type = this.componentMaterial.getTextureSet().mSetName;
                         String output = type.substring(0, 1)
                             .toUpperCase() + type.substring(1);
-                        list.add(EnumChatFormatting.GRAY + "Material Type: " + output + ".");
                         list.add(
-                            EnumChatFormatting.GRAY + "Material State: "
-                                + this.componentMaterial.getState()
-                                    .name()
-                                + ".");
+                            EnumChatFormatting.GRAY
+                                + StatCollector.translateToLocalFormatted("GTPP.tooltip.material.type", output));
                         list.add(
-                            EnumChatFormatting.GRAY + "Radioactivity Level: "
-                                + this.componentMaterial.vRadiationLevel
-                                + ".");
+                            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                                "GTPP.tooltip.material.state",
+                                this.componentMaterial.getState()
+                                    .name()));
+                        list.add(
+                            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                                "GTPP.tooltip.material.radioactivity",
+                                this.componentMaterial.vRadiationLevel));
                     }
                 } else {
-                    list.add(EnumChatFormatting.DARK_GRAY + "Hold Ctrl to show additional info.");
+                    list.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
                 }
             }
         } catch (Throwable t) {}
