@@ -150,16 +150,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     public void initDefaultModes(NBTTagCompound nbt) {}
 
     /**
-     * Called when GUI gets opened.
-     */
-    public void onOpenGUI() {}
-
-    /**
-     * Called when GUI gets closed.
-     */
-    public void onCloseGUI() {}
-
-    /**
      * Called when a player right-clicks this block. Shift-right-clicks will not get passed to this!
      */
     @Override
