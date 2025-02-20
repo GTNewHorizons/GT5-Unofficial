@@ -168,6 +168,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
             .addInputBus("The casings adjacent to field restriction glass.", 1)
             .addOutputHatch("The casings adjacent to field restriction glass.", 1)
             .addEnergyHatch("The casings adjacent to field restriction glass.", 1)
+            .addDynamoHatch("The casings adjacent to field restriction glass.", 1)
             .toolTipFinisher();
         return tt;
     }
