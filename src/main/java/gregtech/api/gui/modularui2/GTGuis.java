@@ -26,11 +26,6 @@ public final class GTGuis {
      */
     public static boolean GLOBAL_SWITCH_MUI2 = false;
 
-    @ApiStatus.Internal
-    public static void registerFactories() {
-        GuiManager.registerFactory(MetaTileEntityGuiHandler.INSTANCE);
-    }
-
     /**
      * Creates builder object for MetaTileEntity GUI template. Call {@link GTBaseGuiBuilder#build} to retrieve panel.
      *
@@ -54,5 +49,10 @@ public final class GTGuis {
     public static ModularPanel createPopUpPanel(@NotNull String name, boolean disablePanelsBelow,
         boolean closeOnOutOfBoundsClick) {
         return new GTPopUpPanel(name, disablePanelsBelow, closeOnOutOfBoundsClick);
+    }
+
+    @ApiStatus.Internal
+    public static void registerFactories() {
+        GuiManager.registerFactory(MetaTileEntityGuiHandler.INSTANCE);
     }
 }

@@ -69,35 +69,6 @@ public final class GTBaseGuiBuilder {
     }
 
     /**
-     * Builds the resulting panel. Call after calling all the necessary feature switch methods.
-     */
-    public ModularPanel build() {
-        ModularPanel panel = ModularPanel.defaultPanel(mte.getGuiId(), width, height);
-        if (doesBindPlayerInventory) {
-            panel.bindPlayerInventory();
-        }
-        if (doesAddTitle && NetworkUtils.isClient()) {
-            panel.child(createTitle());
-        }
-        if (doesAddCoverTabs) {
-            panel.child(createCoverTabs());
-        }
-        if (doesAddGhostCircuitSlot) {
-            panel.child(createGhostCircuitSlot());
-        }
-        if (doesAddGregTechLogo) {
-            panel.child(createGregTechLogo());
-        }
-        syncManager.getContainerCustomizer()
-            .setCanInteractWith($ -> {
-                IGregTechTileEntity gtTE = mte.getBaseMetaTileEntity();
-                return gtTE != null && gtTE.canAccessData();
-            });
-        syncManager.addCloseListener($ -> mte.markDirty());
-        return panel;
-    }
-
-    /**
      * Sets width of the GUI. 176 by default.
      */
     public GTBaseGuiBuilder setWidth(int width) {
@@ -155,6 +126,35 @@ public final class GTBaseGuiBuilder {
         return this;
     }
 
+    /**
+     * Builds the resulting panel. Call after calling all the necessary feature switch methods.
+     */
+    public ModularPanel build() {
+        ModularPanel panel = ModularPanel.defaultPanel(mte.getGuiId(), width, height);
+        if (doesBindPlayerInventory) {
+            panel.bindPlayerInventory();
+        }
+        if (doesAddTitle && NetworkUtils.isClient()) {
+            panel.child(createTitle());
+        }
+        if (doesAddCoverTabs) {
+            panel.child(createCoverTabs());
+        }
+        if (doesAddGhostCircuitSlot) {
+            panel.child(createGhostCircuitSlot());
+        }
+        if (doesAddGregTechLogo) {
+            panel.child(createGregTechLogo());
+        }
+        syncManager.getContainerCustomizer()
+            .setCanInteractWith($ -> {
+                IGregTechTileEntity gtTE = mte.getBaseMetaTileEntity();
+                return gtTE != null && gtTE.canAccessData();
+            });
+        syncManager.addCloseListener($ -> mte.markDirty());
+        return panel;
+    }
+
     private IWidget createTitle() {
         String title = mte.getLocalName();
         return new ParentWidget<>().coverChildren()
@@ -179,7 +179,6 @@ public final class GTBaseGuiBuilder {
             ForgeDirection side = ForgeDirection.getOrientation(i);
             String panelKey = "cover_panel_" + side.toString()
                 .toLowerCase();
-            // todo: actual cover panel
             IPanelHandler panel = syncManager.panel(panelKey, coverPanelBuilder(panelKey, side), true);
             column.child(new ButtonWidget<>().onMousePressed(mouseButton -> {
                 panel.openPanel();
@@ -198,6 +197,7 @@ public final class GTBaseGuiBuilder {
     }
 
     private PanelSyncHandler.IPanelBuilder coverPanelBuilder(String name, ForgeDirection side) {
+        // todo: actual cover panel
         return (syncManager, syncHandler) -> GTGuis.createPopUpPanel(name)
             .size(176, 107)
             .child(
