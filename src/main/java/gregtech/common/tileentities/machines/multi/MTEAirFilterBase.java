@@ -15,6 +15,7 @@ import static java.lang.Math.min;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -50,6 +51,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.render.RenderOverlay;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -78,6 +80,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     protected boolean isFilterLoaded = false;
     protected int filterUsageRemaining = 0;
     protected int tickCounter = 0; // because we can't trust the world tick, it may be in a dim with eternal day, etc
+    protected final List<RenderOverlay.OverlayTicket> overlayTickets = new ArrayList<>();
     private boolean mFormed;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final ClassValue<IStructureDefinition<MTEAirFilterBase>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -490,6 +493,13 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     @Override
     public void onValueUpdate(byte aValue) {
         mFormed = aValue == 1;
+        setTurbineOverlay();
+    }
+
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        GTUtilityClient.clearTurbineOverlay(overlayTickets);
     }
 
     @Override
@@ -498,8 +508,30 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     }
 
     @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        setTurbineOverlay();
+    }
+
+    protected void setTurbineOverlay() {
+        IGregTechTileEntity tile = getBaseMetaTileEntity();
+        if (tile.isServerSide()) return;
+
+        IIconContainer[] tTextures = getBaseMetaTileEntity().isActive() ? TURBINE_NEW_ACTIVE : TURBINE_NEW;
+
+        GTUtilityClient.setTurbineOverlay(
+            tile.getWorld(),
+            tile.getXCoord(),
+            tile.getYCoord(),
+            tile.getZCoord(),
+            getExtendedFacing(),
+            tTextures,
+            overlayTickets);
+    }
+
+    @Override
     public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
-        if (!mFormed) return false;
+        if (!mFormed || !overlayTickets.isEmpty()) return false;
         int[] xyz = new int[3];
         ExtendedFacing ext = getExtendedFacing();
         ext.getWorldOffset(new int[] { 0, -3, 1 }, xyz);

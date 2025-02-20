@@ -37,6 +37,8 @@ import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.sound.SoundSetupEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.opengl.GL11;
@@ -75,6 +77,7 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.net.GTPacketClientPreference;
 import gregtech.api.recipe.RecipeCategory;
+import gregtech.api.render.RenderOverlay;
 import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.ColorsMetadataSectionSerializer;
 import gregtech.api.util.GTClientPreference;
@@ -95,6 +98,7 @@ import gregtech.common.render.FlaskRenderer;
 import gregtech.common.render.FluidDisplayStackRenderer;
 import gregtech.common.render.GTCapeRenderer;
 import gregtech.common.render.GTRendererBlock;
+import gregtech.common.render.GTRendererCasing;
 import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
 import gregtech.common.render.WormholeRenderer;
@@ -626,6 +630,7 @@ public class GTClient extends GTProxy implements Runnable {
     public void onLoad() {
         super.onLoad();
         GTRendererBlock.register();
+        GTRendererCasing.register();
         new DroneRender();
         new LaserRenderer();
         new WormholeRenderer();
