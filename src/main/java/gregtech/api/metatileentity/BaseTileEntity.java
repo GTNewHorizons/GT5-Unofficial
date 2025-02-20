@@ -851,7 +851,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
                         newCircuit = null;
                     }
                 } else {
-                    final List<ItemStack> tCircuits = ccs.getConfigurationCircuits();
+                    final List<ItemStack> tCircuits = GTUtility.getAllIntegratedCircuits();
                     final int index = GTUtility.findMatchingStackInList(tCircuits, cursorStack);
                     if (index < 0) {
                         int curIndex = GTUtility
@@ -906,7 +906,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
         if (!(this instanceof IInventory inv)) return;
 
-        final List<ItemStack> circuits = ccs.getConfigurationCircuits();
+        final List<ItemStack> circuits = GTUtility.getAllIntegratedCircuits();
         uiContext.openClientWindow(
             player -> new SelectItemUIFactory(
                 StatCollector.translateToLocal("GT5U.machines.select_circuit"),

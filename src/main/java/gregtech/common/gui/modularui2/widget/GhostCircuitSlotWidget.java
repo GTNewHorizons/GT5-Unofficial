@@ -25,6 +25,7 @@ import gregtech.api.gui.modularui2.GTGuiTextures;
 import gregtech.api.gui.modularui2.GTGuis;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui2.factory.SelectItemGuiBuilder;
 import gregtech.common.gui.modularui2.sync.GhostCircuitSyncHandler;
 
@@ -126,7 +127,7 @@ public class GhostCircuitSlotWidget extends ItemSlot {
         int currentSelectedIndex = currentCircuitConfig == NO_CONFIG ? -1 : currentCircuitConfig - 1;
         IPanelHandler.simple(getPanel(), (mainPanel, player) -> {
             ModularPanel panel = GTGuis.createPopUpPanel(GUI_ID);
-            return new SelectItemGuiBuilder(panel, ccs.getConfigurationCircuits()) //
+            return new SelectItemGuiBuilder(panel, GTUtility.getAllIntegratedCircuits()) //
                 .setHeaderItem(mte.getStackForm(1))
                 .setTitle(IKey.lang("GT5U.machines.select_circuit"))
                 .setSelected(currentSelectedIndex)

@@ -1011,11 +1011,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public int getCircuitGUISlot() {
-        return 3;
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return null;
     }
