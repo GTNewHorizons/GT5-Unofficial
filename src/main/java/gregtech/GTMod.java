@@ -56,6 +56,9 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.gui.modularui2.GTGuiTextures;
+import gregtech.api.gui.modularui2.GTGuiTheme;
+import gregtech.api.gui.modularui2.GTWidgetThemes;
 import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.objects.GTItemStack;
@@ -262,6 +265,11 @@ public class GTMod implements IGTMod {
         GTLog.out.println("GTMod: Setting Configs");
 
         GTPreLoad.loadConfig();
+
+        // ModularUI
+        GTGuiTextures.init();
+        GTGuiTheme.registerThemes();
+        GTWidgetThemes.register();
 
         new EnchantmentHazmat();
         new EnchantmentEnderDamage();
