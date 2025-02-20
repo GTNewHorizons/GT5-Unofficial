@@ -15,10 +15,7 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
     @Deprecated
     void setCoverDataAtSide(ForgeDirection side, int aData);
 
-    default void setCoverDataAtSide(ForgeDirection side, ISerializableObject aData) {
-        if (aData instanceof ISerializableObject.LegacyCoverData)
-            setCoverDataAtSide(side, ((ISerializableObject.LegacyCoverData) aData).get());
-    }
+    void setCoverDataAtSide(ForgeDirection side, ISerializableObject aData);
 
     void setCoverIdAndDataAtSide(ForgeDirection side, int aId, ISerializableObject aData);
 
