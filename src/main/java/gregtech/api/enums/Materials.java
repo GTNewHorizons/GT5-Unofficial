@@ -981,8 +981,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials TerbiumBondedTraceElementResidue;
     public static Materials StoneResidue;
     public static Materials TraceElementResidue;
-    public static Materials UncommonTraceResidue;
-    public static Materials PartiallyOxidizedTraceResidue;
+    public static Materials PartiallyOxidizedResidue;
     public static Materials UncommonResidue;
     public static Materials Taranium;
 
@@ -992,6 +991,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials FluorinatedTraceElementResidue;
     public static Materials TaraniumEnrichedHelium3;
     public static Materials TaraniumSemidepletedHelium3;
+    public static Materials TaraniumDepletedHelium3;
     public static Materials TaraniumDepletedHeliumPlasma;
     public static Materials TaraniumrichHelium3;
     public static Materials DustyHelium3;
@@ -1000,6 +1000,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials TraceResidue;
     public static Materials OxidizedResidualSolution;
     public static Materials DepletedTraceElementSlurry;
+    public static Materials StoneMudSlurry;
+
 
 
     // spotless:on

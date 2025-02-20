@@ -5,6 +5,7 @@ import gregtech.loaders.postload.chains.BauxiteRefineChain;
 import gregtech.loaders.postload.chains.NaniteChain;
 import gregtech.loaders.postload.chains.PCBFactoryRecipes;
 import gregtech.loaders.postload.chains.PurifiedWaterRecipes;
+import gregtech.loaders.postload.chains.TaraniumRecipes;
 import gregtech.loaders.postload.recipes.AlloySmelterRecipes;
 import gregtech.loaders.postload.recipes.ArcFurnaceRecipes;
 import gregtech.loaders.postload.recipes.AssemblerRecipes;
@@ -122,5 +123,6 @@ public class MachineRecipeLoader implements Runnable {
         NaniteChain.run();
         PCBFactoryRecipes.load();
         PurifiedWaterRecipes.run();
+        TaraniumRecipes.run();
     }
 }

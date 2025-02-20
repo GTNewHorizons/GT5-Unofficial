@@ -1053,6 +1053,9 @@ public class MaterialsInit1 {
             .addCell().setColor(Dyes.dyeBlue).addFluid().constructMaterial();
         Materials.TaraniumSemidepletedHelium3 = new MaterialBuilder(114, TextureSet.SET_FLUID, "Taranium Semidepleted Helium-3").setRGB(149, 178, 44)
             .addCell().setColor(Dyes.dyeYellow).addFluid().constructMaterial();
+        //TODO Change Color
+        Materials.TaraniumDepletedHelium3 = new MaterialBuilder(161, TextureSet.SET_FLUID, "Taranium Depleted Helium-3").setRGB(149, 178, 44)
+            .addCell().setColor(Dyes.dyeYellow).addFluid().constructMaterial();
         Materials.TaraniumDepletedHeliumPlasma = new MaterialBuilder(115, TextureSet.SET_FLUID, "Taranium Depleted Helium Plasma").setRGB(178, 214, 49)
             .addCell().setColor(Dyes.dyeYellow).addFluid().constructMaterial();
         Materials.TaraniumrichHelium3 = new MaterialBuilder(116, TextureSet.SET_FLUID, "Taranium-rich Helium-3").setRGB(27, 65, 160)
@@ -1069,12 +1072,12 @@ public class MaterialsInit1 {
             .addCell().setColor(Dyes.dyeLightBlue).addFluid().constructMaterial();
         Materials.DepletedTraceElementSlurry = new MaterialBuilder(123, TextureSet.SET_FLUID, "Depleted Trace Element Slurry").setRGB(13, 19, 22)
             .addCell().setColor(Dyes.dyeBlack).addFluid().constructMaterial();
-
+        Materials.StoneMudSlurry = new MaterialBuilder(138, TextureSet.SET_FLUID, "Stone Mud Slurry").setRGB(145, 4, 13)
+            .addCell().setColor(Dyes.dyeRed).addFluid().constructMaterial();
         Materials.TerbiumBondedTraceElementResidue = new MaterialBuilder(124, TextureSet.SET_DULL, "Terbium-bonded Trace Element Residue").setRGB(8, 211, 42).setColor(Dyes.dyeRed).addDustItems().constructMaterial();
         Materials.StoneResidue = new MaterialBuilder(128, TextureSet.SET_ROUGH, "Stone Residue").setRGB(51, 51, 51).setColor(Dyes.dyeRed).addDustItems().constructMaterial();
         Materials.TraceElementResidue = new MaterialBuilder(132, TextureSet.SET_DULL, "Trace Element Residue").setRGB(65, 73, 79).setColor(Dyes.dyeRed).addDustItems().constructMaterial();
-        Materials.UncommonTraceResidue = new MaterialBuilder(133, TextureSet.SET_DULL, "Uncommon Trace Residue").setRGB(0, 64, 81).setColor(Dyes.dyeRed).addDustItems().constructMaterial();
-        Materials.PartiallyOxidizedTraceResidue = new MaterialBuilder(135, TextureSet.SET_DULL, "Partially Oxidized Trace Residue").setRGB(35, 83, 96).setColor(Dyes.dyeRed).addDustItems().constructMaterial();
+        Materials.PartiallyOxidizedResidue = new MaterialBuilder(135, TextureSet.SET_DULL, "Partially Oxidized Trace Residue").setRGB(35, 83, 96).setColor(Dyes.dyeRed).addDustItems().constructMaterial();
         Materials.UncommonResidue = new MaterialBuilder(136, TextureSet.SET_FINE, "Uncommon Residue").setRGB(137, 196, 244).setColor(Dyes.dyeRed).addDustItems().constructMaterial();
         Materials.Taranium = new MaterialBuilder(137, TextureSet.SET_SHINY, "Taranium")
             .setRGB(12, 12, 13)
