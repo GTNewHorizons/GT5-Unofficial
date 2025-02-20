@@ -45,6 +45,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
@@ -56,7 +57,6 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.OreDictUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-import gtPlusPlus.plugin.agrichem.block.AgrichemFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.railcraft.utils.RailcraftUtils;
 import ic2.core.Ic2Items;
@@ -169,13 +169,13 @@ public class BioRecipes {
             .getFluid();
         mHydrogen = FluidUtils.getFluidStack("hydrogen", 1)
             .getFluid();
-        mAceticAcid = AgrichemFluids.mAceticAcid;
-        mPropionicAcid = AgrichemFluids.mPropionicAcid;
-        mUrea = AgrichemFluids.mUrea;
-        mLiquidResin = AgrichemFluids.mLiquidResin;
-        mFermentationBase = AgrichemFluids.mFermentationBase;
-        mButanol = AgrichemFluids.mButanol;
-        mAcetone = AgrichemFluids.mAcetone;
+        mAceticAcid = Materials.AceticAcid.mFluid;
+        mPropionicAcid = GTPPFluids.PropionicAcid;
+        mUrea = GTPPFluids.Urea;
+        mLiquidResin = GTPPFluids.LiquidResin;
+        mFermentationBase = GTPPFluids.FermentationBase;
+        mButanol = GTPPFluids.Butanol;
+        mAcetone = Materials.Acetone.mFluid;
     }
 
     private static void recipeAlgaeBiomass() {
@@ -837,9 +837,7 @@ public class BioRecipes {
                         AgriculturalChem.mCleanAluminiumMix,
                         (int) (Math.ceil(aOreData3.get(aOreName) * 1.4))))
                 .fluidInputs(FluidUtils.getSteam(2000 * aOreData2.get(aOreName)))
-                .fluidOutputs(
-                    FluidUtils
-                        .getFluidStack(AgriculturalChem.RedMud, 100 * (int) (Math.ceil(aOreData3.get(aOreName) * 1.4))))
+                .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 100 * (int) (Math.ceil(aOreData3.get(aOreName) * 1.4))))
                 .duration(60 * SECONDS)
                 .eut(aOreData1.get(aOreName))
                 .metadata(CHEMPLANT_CASING_TIER, aOreName.equals("Bauxite") ? 2 : 1)
