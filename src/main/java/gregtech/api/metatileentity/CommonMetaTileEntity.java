@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -38,7 +39,7 @@ import gregtech.api.gui.modularui2.GTGuiTheme;
 import gregtech.api.gui.modularui2.GTGuiThemes;
 import gregtech.api.gui.modularui2.GTGuis;
 import gregtech.api.gui.modularui2.GTModularScreen;
-import gregtech.api.gui.modularui2.MetaTileEntityGuiFactory;
+import gregtech.api.gui.modularui2.MetaTileEntityGuiHandler;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -555,7 +556,9 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @SuppressWarnings("deprecation")
     public void openGui(EntityPlayer player) {
         if (GTGuis.GLOBAL_SWITCH_MUI2 && useMui2()) {
-            MetaTileEntityGuiFactory.open(player, this);
+            if (!NetworkUtils.isClient(player)) {
+                MetaTileEntityGuiHandler.open(player, this);
+            }
         } else {
             GTUIInfos.openGTTileEntityUI(getBaseMetaTileEntity(), player);
         }
@@ -563,20 +566,15 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     /**
      * Whether to use MUI2 for creating GUI. Use {@link #buildUI} for MUI2, and {@link IAddUIWidgets#addUIWidgets} for
-     * MUI1. When using MUI2, {@link #getGuiId} also needs to be overridden.
+     * MUI1.
      */
     protected boolean useMui2() {
         return false;
     }
 
-    /**
-     * Override this method to provide GUI ID if this machine supports MUI2. It's used for resource packs as a
-     * distinguishable id to customize stuff. Conventionally it should be {@code mte.snake_case}.
-     *
-     * @see #useMui2
-     */
-    protected String getGuiId() {
-        throw new RuntimeException("GUI ID must be provided to create GUI with MUI2!");
+    @Override
+    public final String getGuiId() {
+        return mName;
     }
 
     /**
@@ -587,7 +585,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     }
 
     /**
-     * Override to create GUI with MUI2. Override {@link #useMui2} and {@link #getGuiId} to take effect.
+     * Override to create GUI with MUI2. You also need to override {@link #useMui2}.
      * <p>
      * Called on server and client. Create only the main panel here. Only here you can add sync handlers to widgets
      * directly. If the widget to be synced is not in this panel yet (f.e. in another panel) the sync handler must be

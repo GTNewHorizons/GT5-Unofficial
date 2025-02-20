@@ -24,8 +24,8 @@ import net.minecraftforge.fluids.IFluidTank;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.gtnewhorizon.gtnhlib.capability.CapabilityProvider;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -463,7 +463,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /*
      * ModularUI Support
      */
-    default ItemStackHandler getInventoryHandler() {
+    default IItemHandlerModifiable getInventoryHandler() {
         return null;
     }
 
@@ -502,4 +502,9 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     default List<ItemStack> getItemsForHoloGlasses() {
         return null;
     }
+
+    /**
+     * Returns GUI ID used for resource packs as a distinguishable id to customize UI elements in MUI2.
+     */
+    String getGuiId();
 }

@@ -1,11 +1,21 @@
 package gregtech.api.gui.modularui2;
 
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.factory.GuiManager;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.CommonMetaTileEntity;
+import gregtech.common.gui.modularui2.factory.GTBaseGuiBuilder;
+import gregtech.common.gui.modularui2.panel.GTPopUpPanel;
 
+/**
+ * Centralized place for starting creation of GUI/panel.
+ */
 public final class GTGuis {
 
     /**
@@ -18,6 +28,31 @@ public final class GTGuis {
 
     @ApiStatus.Internal
     public static void registerFactories() {
-        GuiManager.registerFactory(MetaTileEntityGuiFactory.INSTANCE);
+        GuiManager.registerFactory(MetaTileEntityGuiHandler.INSTANCE);
+    }
+
+    /**
+     * Creates builder object for MetaTileEntity GUI template. Call {@link GTBaseGuiBuilder#build} to retrieve panel.
+     *
+     * @see GTBaseGuiBuilder
+     */
+    public static GTBaseGuiBuilder mteTemplatePanelBuilder(IMetaTileEntity mte, PosGuiData data,
+        PanelSyncManager syncManager) {
+        return new GTBaseGuiBuilder(mte, data, syncManager);
+    }
+
+    /**
+     * Creates popup panel with GT style.
+     */
+    public static ModularPanel createPopUpPanel(@NotNull String name) {
+        return createPopUpPanel(name, false, false);
+    }
+
+    /**
+     * Creates popup panel with GT style.
+     */
+    public static ModularPanel createPopUpPanel(@NotNull String name, boolean disablePanelsBelow,
+        boolean closeOnOutOfBoundsClick) {
+        return new GTPopUpPanel(name, disablePanelsBelow, closeOnOutOfBoundsClick);
     }
 }

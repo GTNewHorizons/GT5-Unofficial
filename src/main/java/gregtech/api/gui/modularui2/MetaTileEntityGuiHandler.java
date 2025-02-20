@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.FakePlayer;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -15,11 +16,11 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
-public class MetaTileEntityGuiFactory extends AbstractUIFactory<PosGuiData> {
+public final class MetaTileEntityGuiHandler extends AbstractUIFactory<PosGuiData> {
 
-    public static final MetaTileEntityGuiFactory INSTANCE = new MetaTileEntityGuiFactory();
+    public static final MetaTileEntityGuiHandler INSTANCE = new MetaTileEntityGuiHandler();
 
-    private MetaTileEntityGuiFactory() {
+    private MetaTileEntityGuiHandler() {
         super("gregtech:mte");
     }
 
@@ -33,6 +34,9 @@ public class MetaTileEntityGuiFactory extends AbstractUIFactory<PosGuiData> {
         }
         if (!(player instanceof EntityPlayerMP playerMP)) {
             throw new IllegalArgumentException("MetaTileEntity GUI must be opened on server side!");
+        }
+        if (player instanceof FakePlayer) {
+            return;
         }
         PosGuiData data = new PosGuiData(player, baseTE.getXCoord(), baseTE.getYCoord(), baseTE.getZCoord());
         GuiManager.open(INSTANCE, data, playerMP);

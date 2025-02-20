@@ -15,6 +15,14 @@ public final class GTGuiTextures {
         public static final String BACKGROUND_BRONZE = "gregtech:bronze_bg";
         public static final String BACKGROUND_STEEL = "gregtech:steel_bg";
         public static final String BACKGROUND_PRIMITIVE = "gregtech:primitive_bg";
+        public static final String BACKGROUND_TITLE_STANDARD = "gregtech:title_standard_bg";
+        public static final String BACKGROUND_TITLE_BRONZE = "gregtech:title_bronze_bg";
+        public static final String BACKGROUND_TITLE_STEEL = "gregtech:title_steel_bg";
+        public static final String BACKGROUND_TITLE_PRIMITIVE = "gregtech:title_primitive_bg";
+        public static final String BACKGROUND_COVER_TAB_NORMAL_STANDARD = "gregtech:cover_tab_normal_standard_bg";
+        public static final String BACKGROUND_COVER_TAB_HIGHLIGHT_STANDARD = "gregtech:cover_tab_highlight_standard_bg";
+        public static final String BACKGROUND_COVER_TAB_DISABLED_STANDARD = "gregtech:cover_tab_disabled_standard_bg";
+        public static final String BACKGROUND_POPUP = "gregtech:popup_bg";
 
         public static final String SLOT_ITEM_STANDARD = "gregtech:slot_item_standard";
         public static final String SLOT_ITEM_BRONZE = "gregtech:slot_item_bronze";
@@ -28,6 +36,8 @@ public final class GTGuiTextures {
 
         public static final String BUTTON_STANDARD = "gregtech:button_standard";
         public static final String BUTTON_STANDARD_PRESSED = "gregtech:button_standard_pressed";
+
+        public static final String PICTURE_GT_LOGO_STANDARD = "gregtech:picture_gt_logo_standard";
     }
 
     public static void init() {}
@@ -61,6 +71,62 @@ public final class GTGuiTextures {
         .adaptable(4)
         .canApplyTheme()
         .name(IDs.BACKGROUND_PRIMITIVE)
+        .build();
+
+    public static final UITexture BACKGROUND_TITLE_STANDARD = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/title_dark")
+        .imageSize(28, 28)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(IDs.BACKGROUND_TITLE_STANDARD)
+        .build();
+    public static final UITexture BACKGROUND_TITLE_BRONZE = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/title_dark_bronze")
+        .imageSize(28, 28)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(IDs.BACKGROUND_TITLE_BRONZE)
+        .build();
+    public static final UITexture BACKGROUND_TITLE_STEEL = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/title_dark_steel")
+        .imageSize(28, 28)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(IDs.BACKGROUND_TITLE_STEEL)
+        .build();
+    public static final UITexture BACKGROUND_TITLE_PRIMITIVE = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/title_dark_primitive")
+        .imageSize(28, 28)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(IDs.BACKGROUND_TITLE_PRIMITIVE)
+        .build();
+
+    public static final UITexture BACKGROUND_COVER_TAB_NORMAL_STANDARD = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/cover_normal")
+        .imageSize(18, 20)
+        .canApplyTheme()
+        .name(IDs.BACKGROUND_COVER_TAB_NORMAL_STANDARD)
+        .build();
+    public static final UITexture BACKGROUND_COVER_TAB_HIGHLIGHT_STANDARD = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/cover_highlight")
+        .imageSize(18, 20)
+        .canApplyTheme()
+        .name(IDs.BACKGROUND_COVER_TAB_HIGHLIGHT_STANDARD)
+        .build();
+    public static final UITexture BACKGROUND_COVER_TAB_DISABLED_STANDARD = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/cover_disabled")
+        .imageSize(18, 20)
+        .canApplyTheme()
+        .name(IDs.BACKGROUND_COVER_TAB_DISABLED_STANDARD)
+        .build();
+
+    public static final UITexture BACKGROUND_POPUP = UITexture.builder()
+        .location(GregTech.ID, "gui/background/popup")
+        .imageSize(195, 136)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(IDs.BACKGROUND_POPUP)
         .build();
 
     // endregion background
@@ -125,6 +191,13 @@ public final class GTGuiTextures {
 
     // endregion slot
 
+    // region slot overlay
+
+    public static final UITexture OVERLAY_SLOT_DATA_ORB = fullImageColorableGT("overlay_slot/data_orb");
+    public static final UITexture OVERLAY_SLOT_INT_CIRCUIT = fullImageColorableGT("overlay_slot/int_circuit");
+
+    // endregion slot overlay
+
     // region button
 
     public static final UITexture BUTTON_STANDARD = UITexture.builder()
@@ -167,6 +240,16 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_WHITELIST = fullImageGT("overlay_button/whitelist");
 
     // endregion button overlay
+
+    // region picture
+
+    public static final UITexture PICTURE_GT_LOGO_STANDARD = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/gt_logo_standard")
+        .imageSize(17, 17)
+        .name(IDs.PICTURE_GT_LOGO_STANDARD)
+        .build();
+
+    // endregion picture
 
     /**
      * Creates texture of full image. Theme of GUI does not affect how the texture is drawn.

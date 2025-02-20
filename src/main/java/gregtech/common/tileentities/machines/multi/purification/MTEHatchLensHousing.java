@@ -1,8 +1,16 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static gregtech.common.gui.modularui2.util.CommonGuiComponents.gridTemplate1by1;
+
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ItemSlot;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
+import gregtech.api.gui.modularui2.GTGuis;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -43,6 +51,21 @@ public class MTEHatchLensHousing extends MTEHatchInputBus {
     @Override
     public boolean allowSelectCircuit() {
         return false;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+        syncManager.registerSlotGroup("item_inv", 1);
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
+            .build()
+            .child(
+                gridTemplate1by1(
+                    index -> new ItemSlot().slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv"))));
     }
 
     @Override
