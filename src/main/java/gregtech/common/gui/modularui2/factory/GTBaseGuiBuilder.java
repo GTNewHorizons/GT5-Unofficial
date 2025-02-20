@@ -24,7 +24,6 @@ import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.item.GhostCircuitItemStackHandler;
-import gregtech.common.gui.modularui2.sync.GuiValidator;
 import gregtech.common.gui.modularui2.widget.GhostCircuitSlotWidget;
 
 // spotless:off
@@ -89,10 +88,11 @@ public final class GTBaseGuiBuilder {
         if (doesAddGregTechLogo) {
             panel.child(createGregTechLogo());
         }
-        syncManager.syncValue("gui_validator", new GuiValidator(posGuiData.getPlayer(), () -> {
-            IGregTechTileEntity gtTE = mte.getBaseMetaTileEntity();
-            return gtTE != null && gtTE.canAccessData();
-        }));
+        syncManager.getContainerCustomizer()
+            .setCanInteractWith($ -> {
+                IGregTechTileEntity gtTE = mte.getBaseMetaTileEntity();
+                return gtTE != null && gtTE.canAccessData();
+            });
         syncManager.addCloseListener($ -> mte.markDirty());
         return panel;
     }
