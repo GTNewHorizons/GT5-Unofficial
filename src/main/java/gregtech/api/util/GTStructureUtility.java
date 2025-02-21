@@ -37,8 +37,6 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-import cofh.asmhooks.block.BlockTickingWater;
-import cofh.asmhooks.block.BlockWater;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
@@ -47,6 +45,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureElementChain;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
+
+import cofh.asmhooks.block.BlockTickingWater;
+import cofh.asmhooks.block.BlockWater;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;

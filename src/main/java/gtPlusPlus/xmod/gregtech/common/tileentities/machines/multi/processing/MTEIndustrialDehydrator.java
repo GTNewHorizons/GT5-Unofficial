@@ -127,7 +127,9 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
                         .casingIndex(CASING_TEXTURE_ID)
                         .dot(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings4Misc, 10))))
-                .addElement('H', activeCoils(ofCoil(MTEIndustrialDehydrator::setCoilLevel, MTEIndustrialDehydrator::getCoilLevel)))
+                .addElement(
+                    'H',
+                    activeCoils(ofCoil(MTEIndustrialDehydrator::setCoilLevel, MTEIndustrialDehydrator::getCoilLevel)))
                 .build();
         }
         return STRUCTURE_DEFINITION;

@@ -185,7 +185,9 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
                 -2,
                 MTEMultiAutoclave::setItemPipeTier,
                 MTEMultiAutoclave::getItemPipeTier))
-        .addElement('F', withChannel("coil", activeCoils(ofCoil(MTEMultiAutoclave::setCoilLevel, MTEMultiAutoclave::getCoilLevel))))
+        .addElement(
+            'F',
+            withChannel("coil", activeCoils(ofCoil(MTEMultiAutoclave::setCoilLevel, MTEMultiAutoclave::getCoilLevel))))
         .build();
 
     @Override

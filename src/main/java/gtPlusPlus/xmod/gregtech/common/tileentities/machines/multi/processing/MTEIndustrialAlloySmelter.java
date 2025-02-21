@@ -163,7 +163,8 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 1))))
                 .addElement(
                     'H',
-                    activeCoils(ofCoil(MTEIndustrialAlloySmelter::setCoilLevel, MTEIndustrialAlloySmelter::getCoilLevel)))
+                    activeCoils(
+                        ofCoil(MTEIndustrialAlloySmelter::setCoilLevel, MTEIndustrialAlloySmelter::getCoilLevel)))
                 .addElement('V', ofBlock(ModBlocks.blockCasingsTieredGTPP, 4))
                 .build();
         }

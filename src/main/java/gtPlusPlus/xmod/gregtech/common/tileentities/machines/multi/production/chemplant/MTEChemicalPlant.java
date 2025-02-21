@@ -236,7 +236,9 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                             10)))
                 .addElement(
                     'H',
-                    withChannel("coil", activeCoils(ofCoil(MTEChemicalPlant::setCoilMeta, MTEChemicalPlant::getCoilMeta))))
+                    withChannel(
+                        "coil",
+                        activeCoils(ofCoil(MTEChemicalPlant::setCoilMeta, MTEChemicalPlant::getCoilMeta))))
                 .addElement(
                     'P',
                     withChannel(
