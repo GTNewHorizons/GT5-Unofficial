@@ -2,7 +2,6 @@ package gregtech.common.render;
 
 import static gregtech.api.util.LightingHelper.MAX_BRIGHTNESS;
 
-import net.coderbot.iris.Iris;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -63,7 +62,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     @Override
     public void startDrawingQuads(RenderBlocks aRenderer, float aNormalX, float aNormalY, float aNormalZ) {
         if (matBlock != null && Mods.Angelica.isModLoaded()) {
-            Iris.setShaderMaterialOverride(matBlock, matMeta);
+            // Iris.setShaderMaterialOverride(matBlock, matMeta);
         }
 
         super.startDrawingQuads(aRenderer, aNormalX, aNormalY, aNormalZ);
@@ -74,7 +73,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         super.draw(aRenderer);
 
         if (matBlock != null && Mods.Angelica.isModLoaded()) {
-            Iris.resetShaderMaterialOverride();
+            // Iris.resetShaderMaterialOverride();
         }
     }
 
