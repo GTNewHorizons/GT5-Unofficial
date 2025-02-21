@@ -125,7 +125,6 @@ public class CommonProxy implements IFuelHandler {
 
     public void onLoadComplete(FMLLoadCompleteEvent event) {
         CompatIntermodStaging.onLoadComplete(event);
-        CompatHandler.onLoadComplete(event);
     }
 
     public void registerNetworkStuff() {

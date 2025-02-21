@@ -44,7 +44,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.item.chemistry.RocketFuels;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.METHatchAirIntake;
@@ -377,10 +377,9 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     }
 
     public boolean consumeLOH() {
+        // (40 * ((long) euProduction / 10000))
         int LOHamount = (3 * this.euProduction) / 1000;
-        return this.depleteInput(FluidUtils.getFluidStack(RocketFuels.Liquid_Hydrogen, LOHamount)); // (40 * ((long)
-                                                                                                    // euProduction /
-                                                                                                    // 10000))
+        return this.depleteInput(new FluidStack(GTPPFluids.LiquidHydrogen, LOHamount));
     }
 
     @Override
