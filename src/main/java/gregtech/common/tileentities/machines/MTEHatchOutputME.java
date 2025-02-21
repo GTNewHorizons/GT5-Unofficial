@@ -140,7 +140,9 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             boolean isOk = false;
 
             for (String lockedFluid : lockedFluids) {
-                if (lockedFluid.equals(getDrainableStack().getFluid().getName())) {
+                if (lockedFluid.equals(
+                    getDrainableStack().getFluid()
+                        .getName())) {
                     isOk = true;
 
                     break;
