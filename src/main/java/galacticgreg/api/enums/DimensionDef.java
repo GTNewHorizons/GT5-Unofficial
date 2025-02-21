@@ -10,7 +10,7 @@ import net.minecraft.world.gen.ChunkProviderHell;
 
 import galacticgreg.api.Enums.DimensionType;
 import galacticgreg.api.ModDimensionDef;
-import gtPlusPlus.everglades.chunk.ChunkProviderModded;
+import toxiceverglades.chunk.ChunkProviderModded;
 
 public enum DimensionDef {
 
