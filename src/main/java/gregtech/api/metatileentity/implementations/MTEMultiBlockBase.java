@@ -2414,10 +2414,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     }
                 }
             } else {
-                if (meBus.isLocked()) {
+                if (meBus.isLocked() && meBus.canAcceptItem()) {
                     for (ItemStack stack : meBus.getLockedItems()) {
                         ItemStack fakeItemStack = stack.copy();
-                        fakeItemStack.stackSize = 0;
+                        fakeItemStack.stackSize = 65;
                         ret.add(fakeItemStack);
                     }
                 }

@@ -136,6 +136,22 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
+        if (!lockedFluids.isEmpty()) {
+            boolean isOk = false;
+
+            for (String lockedFluid : lockedFluids) {
+                if (lockedFluid.equals(getDrainableStack().getFluid().getName())) {
+                    isOk = true;
+
+                    break;
+                }
+            }
+
+            if (!isOk) {
+                return 0;
+            }
+        }
+
         if (doFill) {
             return tryFillAE(aFluid);
         } else {
