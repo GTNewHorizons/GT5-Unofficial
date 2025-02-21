@@ -493,16 +493,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         structureErrors = EnumSet.noneOf(StructureError.class);
         structureErrorContext = new NBTTagCompound();
 
-        // intentionally not predicated on checkMachine
-        validateStructure(structureErrors, structureErrorContext);
+        // only run validation when the structure check passes, so that we don't confuse people
+        if (mMachine) {
+            validateStructure(structureErrors, structureErrorContext);
 
-        if (hasStructureErrors()) mMachine = false;
+            if (hasStructureErrors()) mMachine = false;
+        }
     }
 
     /**
      * Validates this multi's structure (hatch/casing counts mainly) for any errors. The multi will not form if any
      * errors are added to {@code errors}.
-     * Runs regardless of whether {@link #checkMachine} is successful.
+     * Only runs when {@link #checkMachine} is successful.
      *
      * @param errors  Add errors to this.
      * @param context Generic data blob that is synced with the client.
