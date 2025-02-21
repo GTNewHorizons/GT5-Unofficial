@@ -54,7 +54,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
 
                 if (!OrePrefixes.block.isIgnored(aMaterial.mSmeltInto)
                     && (GTOreDictUnificator.get(OrePrefixes.block, aMaterial.mSmeltInto, 1L) != null)
-                    && aMaterial != Materials.Ichorium) {
+                    && aMaterial != Materials.Ichorium
+                    && aMaterial != Materials.Obsidian) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(9, aStack), ItemList.Shape_Extruder_Block.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial.mSmeltInto, tAmount))
@@ -191,7 +192,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GTValues.RA.stdBuilder()
                                 .itemInputs(ItemList.Shape_Mold_Round.get(0L))
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.round, aMaterial, 1L))
-                                .fluidInputs(aMaterial.getMolten(18L))
+                                .fluidInputs(aMaterial.getMolten(16L))
                                 .duration(2 * SECONDS + 10 * TICKS)
                                 .eut(calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier))
                                 .addTo(fluidSolidifierRecipes);

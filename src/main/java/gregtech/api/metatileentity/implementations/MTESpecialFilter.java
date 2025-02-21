@@ -29,10 +29,6 @@ public abstract class MTESpecialFilter extends MTEFilterBase {
         super(aID, aName, aNameRegional, aTier, 11, aDescription);
     }
 
-    public MTESpecialFilter(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
-
     public MTESpecialFilter(String aName, int aTier, int aInvSlotCount, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);

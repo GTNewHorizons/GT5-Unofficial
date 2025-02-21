@@ -193,7 +193,6 @@ public enum ItemList implements IItemContainer {
     White_Dwarf_Shape_Extruder_Small_Gear,
     White_Dwarf_Shape_Extruder_ToolHeadDrill,
 
-    Crate_Empty,
     Credit_Copper,
     Credit_Iron,
     Credit_Silver,
@@ -664,7 +663,6 @@ public enum ItemList implements IItemContainer {
     Tool_Scanner,
     Tool_DataOrb,
     Tool_DataStick,
-    Tool_Sonictron,
     Tool_Sword_Bronze,
     Tool_Pickaxe_Bronze,
     Tool_Shovel_Bronze,
@@ -1113,6 +1111,7 @@ public enum ItemList implements IItemContainer {
     Hatch_DataAccess_UV,
 
     Hatch_HeatSensor,
+    Hatch_BlackHoleUtility,
 
     Battery_Buffer_1by1_ULV,
     Battery_Buffer_1by1_LV,

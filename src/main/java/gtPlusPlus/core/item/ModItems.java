@@ -8,16 +8,18 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
+import static gtPlusPlus.core.util.minecraft.ItemUtils.hideItemFromNEI;
 
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -41,13 +43,13 @@ import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.bauble.BatteryPackBaseBauble;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
-import gtPlusPlus.core.item.chemistry.CoalTar;
-import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.chemistry.MilledOreProcessing;
 import gtPlusPlus.core.item.chemistry.NuclearChem;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.item.chemistry.StandardBaseParticles;
+import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
+import gtPlusPlus.core.item.circuit.GTPPIntegratedCircuitItem;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.item.food.BaseItemMetaFood;
 import gtPlusPlus.core.item.general.ItemAirFilter;
@@ -82,17 +84,16 @@ import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.everglades.GTPPEverglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
+import toxiceverglades.GTPPEverglades;
 
 public final class ModItems {
 
     public static Item ZZZ_Empty;
     public static Item AAA_Broken;
 
-    public static Item itemAlkalusDisk;
     public static ItemCustomSpawnEgg itemCustomSpawnEgg;
 
     public static Item itemIngotBatteryAlloy;
@@ -104,8 +105,6 @@ public final class ModItems {
     public static Item itemPersonalHealingDevice;
     public static Item itemSupremePizzaGloves;
 
-    public static ItemBlueprint itemBlueprintBase;
-
     public static Item dustLithiumCarbonate;
     public static Item dustLithiumHydroxide;
     public static Item dustLithiumPeroxide;
@@ -115,8 +114,6 @@ public final class ModItems {
     public static Item dustCalciumCarbonate;
     public static Item dustLi2CO3CaOH2;
     public static Item dustLi2BeF4;
-
-    public static Item dustTumbagaMix;
 
     public static Item dustAer;
     public static Item dustIgnis;
@@ -144,7 +141,6 @@ public final class ModItems {
     // Possibly missing base items that GT may be missing.
 
     public static Item itemSmallWroughtIronGear;
-    public static Item itemPlateRawMeat;
     public static Item itemPlateClay;
     public static Item itemPlateLithium;
     public static Item itemPlateEuropium;
@@ -162,14 +158,7 @@ public final class ModItems {
     public static Item itemLavaFilter;
     public static Item itemAirFilter;
 
-    public static Item itemCoalCoke;
-    public static Item itemCactusCharcoal;
-    public static Item itemSugarCharcoal;
-    public static Item itemCactusCoke;
-    public static Item itemSugarCoke;
-
     public static Item itemCircuitLFTR;
-    public static Item itemBasicTurbine;
 
     public static Item itemHalfCompleteCasings;
 
@@ -213,8 +202,6 @@ public final class ModItems {
 
     public static BaseItemMetaFood itemMetaFood;
 
-    public static ItemMagicFeather itemMagicFeather;
-
     static {
         Logger.INFO("Items!");
         // Default item used when recipes fail, handy for debugging. Let's make sure they exist when this class is
@@ -225,18 +212,24 @@ public final class ModItems {
 
     public static void init() {
 
-        itemMagicFeather = new ItemMagicFeather();
+        Item magicFeather = new ItemMagicFeather();
+        GregtechItemList.MagicFeather.set(magicFeather);
+        MinecraftForge.EVENT_BUS.register(magicFeather);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(magicFeather);
 
-        itemAlkalusDisk = new BaseItemDamageable(
-            "itemAlkalusDisk",
-            AddToCreativeTab.tabMisc,
-            1,
-            0,
-            "Unknown Use",
-            EnumRarity.rare,
-            EnumChatFormatting.AQUA,
-            false,
-            null);
+        GregtechItemList.AlkalusDisk.set(
+            new BaseItemDamageable(
+                "itemAlkalusDisk",
+                AddToCreativeTab.tabMisc,
+                1,
+                0,
+                "Unknown Use",
+                EnumRarity.rare,
+                EnumChatFormatting.AQUA,
+                false,
+                null));
 
         itemGenericToken = new ItemGenericToken();
         itemDummyResearch = new ItemDummyResearch();
@@ -251,7 +244,7 @@ public final class ModItems {
         // Load Wearable Items
         WearableLoader.run();
 
-        itemBlueprintBase = new ItemBlueprint("itemBlueprint");
+        GregtechItemList.BlueprintBase.set(new ItemBlueprint("itemBlueprint"));
 
         itemHalfCompleteCasings = new ItemHalfCompleteCasings(
             "itemHalfCompleteCasings",
@@ -553,6 +546,25 @@ public final class ModItems {
             MaterialsNuclides.Li2BeF4,
             OrePrefixes.dust,
             ItemUtils.getSimpleStack(dustLi2BeF4));
+
+        Item[] phthalicAnhydride = ItemUtils.generateSpecialUseDusts(
+            "PhthalicAnhydride",
+            "Phthalic Anhydride",
+            "C6H4(CO)2O",
+            Utils.rgbtoHexValue(175, 175, 175));
+        GregtechItemList.PhthalicAnhydrideDust.set(phthalicAnhydride[0]);
+        GregtechItemList.SmallPhthalicAnhydrideDust.set(phthalicAnhydride[1]);
+        GregtechItemList.TinyPhthalicAnhydrideDust.set(phthalicAnhydride[2]);
+
+        Item[] lithiumHydroperoxide = ItemUtils.generateSpecialUseDusts(
+            "LithiumHydroperoxide",
+            "Lithium Hydroperoxide",
+            "HLiO2",
+            Utils.rgbtoHexValue(125, 125, 125));
+        GregtechItemList.LithiumHydroperoxide.set(lithiumHydroperoxide[0]);
+        GregtechItemList.SmallLithiumHydroperoxide.set(lithiumHydroperoxide[1]);
+        GregtechItemList.TinyLithiumHydroperoxide.set(lithiumHydroperoxide[2]);
+
         // fluidFLiBeSalt = ("Li2BeF4", "Li2BeF4", 7430, new short[]{255, 255, 255, 100}, 0);
         // fluidFLiBeSalt = FluidUtils.addGTFluidNoPrefix("Li2BeF4", "Lithium Tetrafluoroberyllate", new short[]{255,
         // 255, 255, 100}, 0, 743, null, CI.emptyCells(1), 1000, true);
@@ -593,7 +605,10 @@ public final class ModItems {
             false,
             null);
 
-        itemBasicTurbine = new ItemBasicScrubberTurbine();
+        Item basicTurbine = new ItemBasicScrubberTurbine();
+        GregtechItemList.BasicIronTurbine.set(new ItemStack(basicTurbine));
+        GregtechItemList.BasicBronzeTurbine.set(new ItemStack(basicTurbine, 1, 1));
+        GregtechItemList.BasicSteelTurbine.set(new ItemStack(basicTurbine, 1, 2));
 
         // Zirconium
         // Cinter Pellet.
@@ -760,7 +775,6 @@ public final class ModItems {
         itemLavaFilter = new ItemLavaFilter();
 
         // Chemistry
-        new CoalTar();
         new RocketFuels();
 
         // Nuclear Processing
@@ -770,7 +784,91 @@ public final class ModItems {
         new AgriculturalChem();
 
         // General Chemistry
-        new GenericChem();
+        // TODO Remove after 2.8
+        Item t3Selector = new GTPPIntegratedCircuitItem("T3RecipeSelector", "science/general/AdvancedCircuit");
+        hideItemFromNEI(new ItemStack(t3Selector));
+
+        Item genericChemItem = new ItemGenericChemBase();
+
+        GregtechItemList.RedMetalCatalyst.set(new ItemStack(genericChemItem));
+        GregtechItemList.YellowMetalCatalyst.set(new ItemStack(genericChemItem, 1, 1));
+        GregtechItemList.BlueMetalCatalyst.set(new ItemStack(genericChemItem, 1, 2));
+        GregtechItemList.OrangeMetalCatalyst.set(new ItemStack(genericChemItem, 1, 3));
+        GregtechItemList.PurpleMetalCatalyst.set(new ItemStack(genericChemItem, 1, 4));
+        GregtechItemList.BrownMetalCatalyst.set(new ItemStack(genericChemItem, 1, 5));
+        GregtechItemList.PinkMetalCatalyst.set(new ItemStack(genericChemItem, 1, 6));
+
+        GregtechItemList.Milling_Ball_Alumina.set(new ItemStack(genericChemItem, 1, 7));
+        GregtechItemList.Milling_Ball_Soapstone.set(new ItemStack(genericChemItem, 1, 8));
+
+        GregtechItemList.SodiumEthoxide.set(new ItemStack(genericChemItem, 1, 9));
+        GregtechItemList.SodiumEthylXanthate.set(new ItemStack(genericChemItem, 1, 10));
+        GregtechItemList.PotassiumEthylXanthate.set(new ItemStack(genericChemItem, 1, 11));
+        GregtechItemList.PotassiumHydroxide.set(new ItemStack(genericChemItem, 1, 12));
+
+        GregtechItemList.FormaldehydeCatalyst.set(new ItemStack(genericChemItem, 1, 13));
+        GregtechItemList.SolidAcidCatalyst.set(new ItemStack(genericChemItem, 1, 14));
+        GregtechItemList.InfiniteMutationCatalyst.set(new ItemStack(genericChemItem, 1, 15));
+
+        // QFT Catalysts
+        GregtechItemList.PlatinumGroupCatalyst.set(new ItemStack(genericChemItem, 1, 16));
+        GregtechItemList.PlasticPolymerCatalyst.set(new ItemStack(genericChemItem, 1, 17));
+        GregtechItemList.RubberPolymerCatalyst.set(new ItemStack(genericChemItem, 1, 18));
+        GregtechItemList.AdhesionPromoterCatalyst.set(new ItemStack(genericChemItem, 1, 19));
+        GregtechItemList.TitaTungstenIndiumCatalyst.set(new ItemStack(genericChemItem, 1, 20));
+        GregtechItemList.RadioactivityCatalyst.set(new ItemStack(genericChemItem, 1, 21));
+        GregtechItemList.RareEarthGroupCatalyst.set(new ItemStack(genericChemItem, 1, 22));
+        GregtechItemList.SimpleNaquadahCatalyst.set(new ItemStack(genericChemItem, 1, 23));
+        GregtechItemList.AdvancedNaquadahCatalyst.set(new ItemStack(genericChemItem, 1, 24));
+        GregtechItemList.RawIntelligenceCatalyst.set(new ItemStack(genericChemItem, 1, 25));
+        GregtechItemList.UltimatePlasticCatalyst.set(new ItemStack(genericChemItem, 1, 26));
+        GregtechItemList.BiologicalIntelligenceCatalyst.set(new ItemStack(genericChemItem, 1, 27));
+        GregtechItemList.TemporalHarmonyCatalyst.set(new ItemStack(genericChemItem, 1, 28));
+        GregtechItemList.ParticleAccelerationCatalyst.set(new ItemStack(genericChemItem, 1, 31));
+        GregtechItemList.SynchrotronCapableCatalyst.set(new ItemStack(genericChemItem, 1, 32));
+        GregtechItemList.AlgagenicGrowthPromoterCatalyst.set(new ItemStack(genericChemItem, 1, 33));
+
+        GTOreDictUnificator.registerOre("catalystIronCopper", GregtechItemList.RedMetalCatalyst.get(1));
+        GTOreDictUnificator.registerOre("catalystTungstenNickel", GregtechItemList.YellowMetalCatalyst.get(1));
+        GTOreDictUnificator.registerOre("catalystCobaltTitanium", GregtechItemList.BlueMetalCatalyst.get(1));
+        GTOreDictUnificator.registerOre("catalystVanadiumPalladium", GregtechItemList.OrangeMetalCatalyst.get(1));
+        GTOreDictUnificator.registerOre("catalystIridiumRuthenium", GregtechItemList.PurpleMetalCatalyst.get(1));
+        GTOreDictUnificator.registerOre("catalystNickelAluminium", GregtechItemList.BrownMetalCatalyst.get(1));
+        GTOreDictUnificator.registerOre("catalystPlatinumRhodium", GregtechItemList.PinkMetalCatalyst.get(1));
+
+        GTOreDictUnificator.registerOre("millingballAlumina", GregtechItemList.Milling_Ball_Alumina.get(1));
+        GTOreDictUnificator.registerOre("millingballSoapstone", GregtechItemList.Milling_Ball_Soapstone.get(1));
+
+        GTOreDictUnificator.registerOre("dustSodiumEthoxide", GregtechItemList.SodiumEthoxide.get(1));
+        GTOreDictUnificator.registerOre("dustSodiumEthylXanthate", GregtechItemList.SodiumEthylXanthate.get(1));
+        GTOreDictUnificator.registerOre("dustPotassiumEthylXanthate", GregtechItemList.PotassiumEthylXanthate.get(1));
+        GTOreDictUnificator.registerOre("dustPotassiumHydroxide", GregtechItemList.PotassiumHydroxide.get(1));
+
+        GTOreDictUnificator.registerOre("catalystFormaldehyde", GregtechItemList.FormaldehydeCatalyst.get(1));
+        GTOreDictUnificator.registerOre("catalystSolidAcid", GregtechItemList.SolidAcidCatalyst.get(1));
+        GTOreDictUnificator.registerOre("catalystInfiniteMutation", GregtechItemList.InfiniteMutationCatalyst.get(1));
+
+        GTOreDictUnificator.registerOre("catalystPlatinumGroup", GregtechItemList.PlatinumGroupCatalyst.get(1));
+        GTOreDictUnificator.registerOre("catalystPlasticPolymer", GregtechItemList.PlasticPolymerCatalyst.get(1));
+        GTOreDictUnificator.registerOre("catalystRubberPolymer", GregtechItemList.RubberPolymerCatalyst.get(1));
+        GTOreDictUnificator.registerOre("catalystAdhesionPromoter", GregtechItemList.AdhesionPromoterCatalyst.get(1));
+        GTOreDictUnificator
+            .registerOre("catalystTitaTungstenIndium", GregtechItemList.TitaTungstenIndiumCatalyst.get(1));
+        GTOreDictUnificator.registerOre("catalystRadioactivity", GregtechItemList.RadioactivityCatalyst.get(1));
+        GTOreDictUnificator.registerOre("catalystRareEarthGroup", GregtechItemList.RareEarthGroupCatalyst.get(1));
+        GTOreDictUnificator.registerOre("catalystSimpleNaquadah", GregtechItemList.SimpleNaquadahCatalyst.get(1));
+        GTOreDictUnificator.registerOre("catalystAdvancedNaquadah", GregtechItemList.AdvancedNaquadahCatalyst.get(1));
+        GTOreDictUnificator.registerOre("catalystRawIntelligence", GregtechItemList.RawIntelligenceCatalyst.get(1));
+        GTOreDictUnificator.registerOre("catalystUltimatePlastic", GregtechItemList.UltimatePlasticCatalyst.get(1));
+        GTOreDictUnificator
+            .registerOre("catalystBiologicalIntelligence", GregtechItemList.BiologicalIntelligenceCatalyst.get(1));
+        GTOreDictUnificator.registerOre("catalystTemporalHarmony", GregtechItemList.TemporalHarmonyCatalyst.get(1));
+        GTOreDictUnificator
+            .registerOre("catalystParticleAcceleration", GregtechItemList.ParticleAccelerationCatalyst.get(1));
+        GTOreDictUnificator
+            .registerOre("catalystSynchrotronCapable", GregtechItemList.SynchrotronCapableCatalyst.get(1));
+        GTOreDictUnificator
+            .registerOre("catalystAlgagenicGrowthPromoter", GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(1));
 
         // Milled Ore Processing
         new MilledOreProcessing();
@@ -781,11 +879,16 @@ public final class ModItems {
         }
 
         // Buffer Cores!
-        Item itemBufferCore;
-        for (int i = 1; i <= 10; i++) {
-            itemBufferCore = new ItemBufferCore("itemBufferCore", i).setCreativeTab(AddToCreativeTab.tabMachines);
-            GameRegistry.registerItem(itemBufferCore, itemBufferCore.getUnlocalizedName());
-        }
+        GregtechItemList.Energy_Core_ULV.set(new ItemBufferCore("itemBufferCore", 1));
+        GregtechItemList.Energy_Core_LV.set(new ItemBufferCore("itemBufferCore", 2));
+        GregtechItemList.Energy_Core_MV.set(new ItemBufferCore("itemBufferCore", 3));
+        GregtechItemList.Energy_Core_HV.set(new ItemBufferCore("itemBufferCore", 4));
+        GregtechItemList.Energy_Core_EV.set(new ItemBufferCore("itemBufferCore", 5));
+        GregtechItemList.Energy_Core_IV.set(new ItemBufferCore("itemBufferCore", 6));
+        GregtechItemList.Energy_Core_LuV.set(new ItemBufferCore("itemBufferCore", 7));
+        GregtechItemList.Energy_Core_ZPM.set(new ItemBufferCore("itemBufferCore", 8));
+        GregtechItemList.Energy_Core_UV.set(new ItemBufferCore("itemBufferCore", 9));
+        GregtechItemList.Energy_Core_UHV.set(new ItemBufferCore("itemBufferCore", 10));
 
         itemCustomBook = new ItemBaseBook();
         registerCustomTokens();
@@ -933,15 +1036,9 @@ public final class ModItems {
             new BaseItemPlate(MaterialsElements.getInstance().SODIUM);
         }
 
-        Material meatRaw = MaterialsOther.MEAT;
-        // A plate of Meat.
-        if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateMeatRaw", 1) == null) {
-            itemPlateRawMeat = new BaseItemPlate(meatRaw);
-            ItemUtils.registerFuel(ItemUtils.getSimpleStack(itemPlateRawMeat), 100);
-        }
         // A Block of Meat.
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("blockMeatRaw", 1) == null) {
-            blockRawMeat = new BlockBaseModular(meatRaw, BlockTypes.STANDARD);
+            blockRawMeat = new BlockBaseModular(MaterialsOther.MEAT, BlockTypes.STANDARD);
             ItemUtils.registerFuel(ItemUtils.getSimpleStack(blockRawMeat), 900);
         }
 
@@ -964,7 +1061,10 @@ public final class ModItems {
         }
 
         // Tumbaga Mix (For Simple Crafting)
-        dustTumbagaMix = ItemUtils
-            .generateSpecialUseDusts("MixTumbaga", "Tumbaga Mix", "Au2Cu", Utils.rgbtoHexValue(255, 150, 80))[0];
+        Item[] tumbagaMix = ItemUtils
+            .generateSpecialUseDusts("MixTumbaga", "Tumbaga Mix", "Au2Cu", Utils.rgbtoHexValue(255, 150, 80));
+        GregtechItemList.TumbagaMixDust.set(tumbagaMix[0]);
+        GregtechItemList.SmallTumbagaMixDust.set(tumbagaMix[1]);
+        GregtechItemList.TinyTumbagaMixDust.set(tumbagaMix[2]);
     }
 }

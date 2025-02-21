@@ -111,7 +111,7 @@ public class GregtechCustomHatches {
                 Hatch_Air_Intake_Extreme.ID,
                 "hatch.air.intake.tier.01",
                 "Extreme Air Intake Hatch",
-                6).getStackForm(1L));
+                7).getStackForm(1L));
 
         // Multiblock Reservoir Hatch
         GregtechItemList.Hatch_Reservoir.set(

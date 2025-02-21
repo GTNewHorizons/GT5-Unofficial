@@ -77,7 +77,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'a',
             buildHatchAdder(MTEIndustrialLaserEngraver.class)
-                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, ExoticEnergy)
+                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, MultiAmpEnergy)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(1))
                 .dot(1)
                 .buildAndChain(
@@ -304,13 +304,11 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         if (laserSource == null) return false;
         if (!findLaserRenderer(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord())) return false;
 
-        // If there are exotic hatches, ensure there is only 1, and it is not laser. Only multiamp allowed
+        // If there are exotic hatches, ensure there is only 1 and that the laser source requirement is met
         if (!mExoticEnergyHatches.isEmpty()) {
             if (laserSource.mTier < VoltageIndex.UEV) return false;
             if (!mEnergyHatches.isEmpty()) return false;
-            if (mExoticEnergyHatches.size() > 1) return false;
-            return mExoticEnergyHatches.get(0)
-                .maxWorkingAmperesIn() <= 64;
+            return (mExoticEnergyHatches.size() == 1);
         }
 
         return glassTier >= VoltageIndex.UMV || laserSource.mTier <= glassTier;
@@ -369,7 +367,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             }
         }.setSpeedBonus(1F / 3.5F)
             .setEuModifier(0.8F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -377,7 +375,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         return true;
     }
 
-    private int getMaxParallelRecipes() {
+    @Override
+    public int getMaxParallelRecipes() {
         return laserAmps;
     }
 

@@ -56,7 +56,6 @@ public class MicrowaveBackend extends NonGTBackend {
                 .itemOutputs(GTUtility.getWrittenBook("Manual_Microwave", ItemList.Book_Written_03.get(1)))
                 .duration(32)
                 .eut(4)
-                .noOptimize()
                 .build()
                 .orElse(null);
         }
@@ -132,7 +131,6 @@ public class MicrowaveBackend extends NonGTBackend {
                 .itemOutputs(output)
                 .duration(32)
                 .eut(4)
-                .noOptimize()
                 .build()
                 .orElse(null);
     }

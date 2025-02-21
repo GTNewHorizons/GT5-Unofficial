@@ -370,6 +370,13 @@ public class GTModHandler {
     /**
      * Gets an Item from the specified mod
      */
+    public static ItemStack getModItem(String aModID, String aItem) {
+        return getModItem(aModID, aItem, 1, null);
+    }
+
+    /**
+     * Gets an Item from the specified mod
+     */
     public static ItemStack getModItem(String aModID, String aItem, long aAmount) {
         return getModItem(aModID, aItem, aAmount, null);
     }
@@ -2319,5 +2326,16 @@ public class GTModHandler {
          * tags with output item's NBT tags if exists
          */
         public static long OVERWRITE_NBT = B[14];
+
+        /**
+         * Combination of common bits.
+         * NOT_REMOVABLE, REVERSIBLE, and BUFFERED
+         */
+        public static long BITS = NOT_REMOVABLE | REVERSIBLE | BUFFERED;
+        /**
+         * Combination of common bits.
+         * NOT_REMOVABLE, REVERSIBLE, BUFFERED, and DISMANTLEABLE
+         */
+        public static long BITSD = BITS | DISMANTLEABLE;
     }
 }

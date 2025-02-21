@@ -25,7 +25,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
@@ -115,7 +114,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
-import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -188,8 +186,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         .addElement('c', onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings2, 0)))
         .addElement(
             'C',
-            buildHatchAdder(MTEExtremeEntityCrusher.class)
-                .atLeast(InputBus, OutputBus, OutputHatch, Energy, Maintenance)
+            buildHatchAdder(MTEExtremeEntityCrusher.class).atLeast(OutputBus, OutputHatch, Energy, Maintenance)
                 .casingIndex(CASING_INDEX)
                 .dot(1)
                 .buildAndChain(onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings2, 0))))
@@ -278,7 +275,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addInfo("You can prevent infernal spawns by shift clicking with a screwdriver.")
             .addInfo("Note: If the mob has forced infernal spawn, it will do it anyway.")
             .addInfo("You can enable ritual mode with a screwdriver.")
-            .addInfo("When in ritual mode and the Well Of Suffering ritual is built directly centered on the machine,")
+            .addInfo(
+                "When in ritual mode and the Well Of Suffering ritual is built directly centered on top of the machine,")
             .addInfo("the mobs will start to buffer and die very slowly by the ritual.")
             .addInfo("You can disable mob animation with a soldering iron.")
             .beginStructureBlock(5, 7, 5, true)
@@ -555,18 +553,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt * 8);
 
             double attackDamage = DIAMOND_SPIKES_DAMAGE; // damage from spikes
-            weaponCheck: {
-                MTEHatchInputBus inputbus = this.mInputBusses.isEmpty() ? null : this.mInputBusses.get(0);
-                if (inputbus != null && !inputbus.isValid()) inputbus = null;
-                ItemStack lootingHolder = inputbus == null ? null : inputbus.getStackInSlot(0);
-                if (lootingHolder == null) break weaponCheck;
-                if (weaponCache.getStackInSlot(0) != null) break weaponCheck;
-                if (weaponCache.isItemValid(0, lootingHolder)) {
-                    weaponCache.setStackInSlot(0, lootingHolder);
-                    inputbus.setInventorySlotContents(0, null);
-                    updateSlots();
-                }
-            }
+
             if (weaponCache.isValid) attackDamage += weaponCache.attackDamage;
 
             if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
@@ -651,9 +638,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         mGlassTier = 0;
         mCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0)) return false;
-        if (mCasing < 35 || mMaintenanceHatches.size() != 1
-            || mEnergyHatches.isEmpty()
-            || !(mInputBusses.isEmpty() || (mInputBusses.size() == 1 && mInputBusses.get(0).mTier == 0))) return false;
+        if (mCasing < 35 || mMaintenanceHatches.size() != 1 || mEnergyHatches.isEmpty()) return false;
         if (mGlassTier < 8) for (MTEHatchEnergy hatch : mEnergyHatches) if (hatch.mTier > mGlassTier) return false;
         if (isInRitualMode) connectToRitual();
         return true;

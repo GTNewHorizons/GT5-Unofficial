@@ -416,6 +416,8 @@ public class GTUITextures {
     public static final UITexture OVERLAY_BUTTON_PATTERN_OPTIMIZE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/pattern_optimize");
     public static final UITexture OVERLAY_BUTTON_X2 = UITexture.fullImage(GregTech.ID, "gui/overlay_button/x2");
+    public static final UITexture OVERLAY_BUTTON_POWER_PANEL = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/power_panel");
 
     public static final UITexture OVERLAY_BUTTON_LIQUIDMODE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/LiquidMode");

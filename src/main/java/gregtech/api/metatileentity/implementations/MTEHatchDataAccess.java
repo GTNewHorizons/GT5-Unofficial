@@ -38,10 +38,6 @@ public class MTEHatchDataAccess extends MTEHatch implements IAddUIWidgets {
                 "Adds " + (aTier == 4 ? 4 : 16) + " extra slots for Data Sticks" });
     }
 
-    public MTEHatchDataAccess(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aTier == 4 ? 4 : 16, aDescription, aTextures);
-    }
-
     public MTEHatchDataAccess(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aTier == 4 ? 4 : 16, aDescription, aTextures);
     }

@@ -6,7 +6,8 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.GregTechAPI;
+import appeng.api.AEApi;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -30,6 +31,11 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
         ItemStack aStack) {
         // Blacklist materials which are handled by Werkstoff loader
         if (aMaterial == Materials.Salt || aMaterial == Materials.RockSalt || aMaterial == Materials.Spodumene) return;
+
+        AEApi.instance()
+            .registries()
+            .blockingModeIgnoreItem()
+            .register(aStack);
 
         switch (aMaterial.mName) {
             case "Diamond", "Glass" -> {
@@ -90,7 +96,7 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
                 final ITexture lensCoverTexture = TextureFactory
                     .of(Textures.BlockIcons.OVERLAY_LENS, aMaterial.mRGBa, false);
-                GregTechAPI.registerCover(
+                CoverRegistry.registerCover(
                     aStack,
                     TextureFactory.of(Textures.BlockIcons.MACHINE_CASINGS[2][0], lensCoverTexture),
                     new CoverLens(aMaterial.mColor.mIndex, lensCoverTexture));

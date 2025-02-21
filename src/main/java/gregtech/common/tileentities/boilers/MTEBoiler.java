@@ -22,7 +22,7 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GTMod;
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
@@ -59,10 +59,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
 
     public MTEBoiler(int aID, String aName, String aNameRegional, String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, 0, 4, aDescription, aTextures);
-    }
-
-    public MTEBoiler(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 4, aDescription, aTextures);
     }
 
     public MTEBoiler(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -188,7 +184,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
 
     @Override
     public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCover) {
-        return GregTechAPI.getCoverBehaviorNew(aCover.toStack())
+        return CoverRegistry.getCoverBehaviorNew(aCover.toStack())
             .isSimpleCover();
     }
 

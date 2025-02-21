@@ -78,8 +78,9 @@ public class LoaderGTItemData implements Runnable {
         GTOreDictUnificator.addItemData(new ItemStack(Items.wheat, 1, 32767), new ItemData(Materials.Wheat, 3628800L));
         GTOreDictUnificator
             .addItemData(new ItemStack(Blocks.hay_block, 1, 32767), new ItemData(Materials.Wheat, 32659200L));
-        GTOreDictUnificator.addItemData(new ItemStack(Items.snowball, 1, 32767), new ItemData(Materials.Snow, 907200L));
-        GTOreDictUnificator.addItemData(new ItemStack(Blocks.snow, 1, 32767), new ItemData(Materials.Snow, 3628800L));
+        GTOreDictUnificator
+            .addItemData(new ItemStack(Items.snowball, 1, 32767), new ItemData(Materials.Snow, 3628800L));
+        GTOreDictUnificator.addItemData(new ItemStack(Blocks.snow, 1, 32767), new ItemData(Materials.Snow, 14515200L));
         GTOreDictUnificator
             .addItemData(new ItemStack(Blocks.glowstone, 1, 32767), new ItemData(Materials.Glowstone, 14515200L));
         GTOreDictUnificator.addItemData(

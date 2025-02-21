@@ -129,7 +129,7 @@ public class MTEIndustrialElectromagneticSeparator
             'B',
             ofChain(
                 buildHatchAdder(MTEIndustrialElectromagneticSeparator.class)
-                    .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .atLeast(InputBus, OutputBus, Maintenance, Energy.or(MultiAmpEnergy))
                     .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
                     .dot(1)
                     .buildAndChain(
@@ -259,12 +259,10 @@ public class MTEIndustrialElectromagneticSeparator
         if (mCasingAmount < MIN_CASING) return false;
         if (mMagHatch == null) return false;
 
-        // If there are exotic hatches, ensure there is only 1, and it is not laser. Only multiamp allowed
+        // If there are exotic hatches, ensure there is only 1.
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) return false;
-            if (mExoticEnergyHatches.size() > 1) return false;
-            return mExoticEnergyHatches.get(0)
-                .maxWorkingAmperesIn() <= 64;
+            return (mExoticEnergyHatches.size() == 1);
         }
 
         // All checks passed!
@@ -288,12 +286,14 @@ public class MTEIndustrialElectromagneticSeparator
                 }
                 return SimpleCheckRecipeResult.ofFailure("electromagnet_missing");
             }
-        }.setMaxParallelSupplier(this::getMaxParallels);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
-    private int getMaxParallels() {
+    @Override
+    public int getMaxParallelRecipes() {
+        findMagnet();
         if (magnetTier != null) return magnetTier.maxParallel;
-        return 0;
+        return 1;
     }
 
     @Override
