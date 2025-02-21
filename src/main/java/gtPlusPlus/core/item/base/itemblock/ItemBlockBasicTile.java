@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import gtPlusPlus.api.interfaces.ITileTooltip;
 
@@ -22,27 +23,27 @@ public class ItemBlockBasicTile extends ItemBlock {
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         if (this.mID == 1) { // Fish trap
-            list.add("This trap catches fish faster if surrounded by more water blocks");
-            list.add("Can also be placed beside up to 4 other fish traps");
-            list.add("Requires at least two faces touching water");
-            list.add("1/1000 chance to produce triple loot.");
+            list.add(StatCollector.translateToLocal("GT5U.tooltip.fish_trap.0"));
+            list.add(StatCollector.translateToLocal("GT5U.tooltip.fish_trap.1"));
+            list.add(StatCollector.translateToLocal("GT5U.tooltip.fish_trap.2"));
+            list.add(StatCollector.translateToLocal("GT5U.tooltip.fish_trap.3"));
         } else if (this.mID == 2) { // Circuit Table
-            list.add("Easy Circuit Configuration");
-            list.add("Change default setting with a Screwdriver");
-            list.add("Default is used to select slot for auto-insertion");
+            list.add(StatCollector.translateToLocal("GTPP.tooltip.circuit_table.0"));
+            list.add(StatCollector.translateToLocal("GTPP.tooltip.circuit_table.1"));
+            list.add(StatCollector.translateToLocal("GTPP.tooltip.circuit_table.2"));
         } else if (this.mID == 3) { // Decayables Chest
-            list.add("Chest which holds radioactive materials");
-            list.add("Items which decay will tick while inside");
-            list.add("Place with right-click");
+            list.add(StatCollector.translateToLocal("GTPP.tooltip.decayables_chest.0"));
+            list.add(StatCollector.translateToLocal("GTPP.tooltip.decayables_chest.1"));
+            list.add(StatCollector.translateToLocal("GTPP.tooltip.decayables_chest.2"));
         } else if (this.mID == 4) { // Butterfly Killer
-            list.add("Kills Forestry Butterflies, Bats and other pests");
-            list.add("Use either Formaldehyde or Hydrogen cyanide");
-            list.add("Be weary of your neighbours");
+            list.add(StatCollector.translateToLocal("GTPP.tooltip.butterfly_killer.0"));
+            list.add(StatCollector.translateToLocal("GTPP.tooltip.butterfly_killer.1"));
+            list.add(StatCollector.translateToLocal("GTPP.tooltip.butterfly_killer.2"));
         } else if (this.mID == 5) { // Volumetric Flask Setter
-            list.add("Easy Flask Configuration");
-            list.add("Configure default input slot with a screwdriver");
+            list.add(StatCollector.translateToLocal("GTPP.tooltip.volumetric_flask_setter.0"));
+            list.add(StatCollector.translateToLocal("GTPP.tooltip.volumetric_flask_setter.1"));
         } else {
-            list.add("Bad Tooltip ID - " + mID);
+            list.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.bad_tooltip_id", mID));
         }
         super.addInformation(stack, aPlayer, list, bool);
     }

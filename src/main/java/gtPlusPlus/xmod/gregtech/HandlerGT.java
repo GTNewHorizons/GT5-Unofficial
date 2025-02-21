@@ -7,7 +7,6 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTConfig;
 import gtPlusPlus.core.handler.CompatHandler;
-import gtPlusPlus.everglades.gen.gt.WorldGen_GT;
 import gtPlusPlus.recipes.CokeAndPyrolyseOven;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
@@ -21,11 +20,12 @@ import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderMolecularTransformer;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderTreeFarm;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechAdvancedBoilers;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
+import toxiceverglades.gen.WorldGenEverglades;
 
 public class HandlerGT {
 
     public static GTConfig mMaterialProperties = null;
-    public static final List<WorldGen_GT> sWorldgenListEverglades = new ArrayList<>();
+    public static final List<WorldGenEverglades> sWorldgenListEverglades = new ArrayList<>();
     public static MetaGeneratedTool sMetaGeneratedToolInstance;
 
     public static void preInit() {

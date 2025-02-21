@@ -108,6 +108,11 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
         return (int) (currentHumidity * BASE_WATER_PER_SECOND * mSetTier);
     }
 
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
     // spotless:off
     @Override
     public IStructureDefinition<MTESteamWaterPump> getStructureDefinition() {

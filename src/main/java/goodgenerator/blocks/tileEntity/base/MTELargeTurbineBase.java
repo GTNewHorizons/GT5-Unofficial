@@ -104,6 +104,11 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     public IStructureDefinition<MTELargeTurbineBase> getStructureDefinition() {
         return STRUCTURE_DEFINITION.get(getClass());
     }

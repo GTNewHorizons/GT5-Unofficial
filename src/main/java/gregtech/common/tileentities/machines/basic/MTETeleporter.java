@@ -86,10 +86,6 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
                 "for Inter-dimensional transmission" });
     }
 
-    public MTETeleporter(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 3, aDescription, aTextures);
-    }
-
     public MTETeleporter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }

@@ -1096,7 +1096,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             mOutputBlocked++;
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
-        ICleanroom cleanroom = getCleanroom();
+        ICleanroom cleanroom = cleanroomReference.getCleanroom();
         if (tRecipe.mSpecialValue == -200 || tRecipe.mSpecialValue == -300) {
             if (cleanroom == null || !cleanroom.isValidCleanroom() || cleanroom.getCleanness() == 0) {
                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -1237,16 +1237,14 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         }
 
         currenttip.add(
-            String.format(
-                "Machine Facing: %s",
-                ForgeDirection.getOrientation(tag.getInteger("mainFacingSingleBlock"))
-                    .name()));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.machine_facing",
+                getFacingNameLocalized(tag.getInteger("mainFacingSingleBlock"))));
 
         currenttip.add(
-            String.format(
-                "Output Facing: %s",
-                ForgeDirection.getOrientation(tag.getInteger("outputFacingSingleBlock"))
-                    .name()));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.output_facing",
+                getFacingNameLocalized(tag.getInteger("outputFacingSingleBlock"))));
     }
 
     private static @NotNull String getWailaStutteringLine(NBTTagCompound tag) {

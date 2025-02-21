@@ -439,7 +439,6 @@ public enum IDMetaItem01 {
     Cover_SolarPanel_LuV(757),
     Cover_SolarPanel_ZPM(758),
     Cover_SolarPanel_UV(759),
-    Tool_Sonictron(760),
     Tool_Cheat(761),
     Tool_Scanner(762),
     NC_SensorKit(763),

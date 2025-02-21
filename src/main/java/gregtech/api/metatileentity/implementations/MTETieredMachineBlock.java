@@ -51,14 +51,6 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
         else mTextures = null;
     }
 
-    public MTETieredMachineBlock(String aName, int aTier, int aInvSlotCount, String aDescription,
-        ITexture[][][] aTextures) {
-        super(aName, aInvSlotCount);
-        mTier = (byte) aTier;
-        mDescriptionArray = aDescription == null ? new String[0] : new String[] { aDescription };
-        mTextures = aTextures;
-    }
-
     public MTETieredMachineBlock(String aName, int aTier, int aInvSlotCount, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aInvSlotCount);

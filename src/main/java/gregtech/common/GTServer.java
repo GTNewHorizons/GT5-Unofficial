@@ -1,8 +1,6 @@
 package gregtech.common;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 public class GTServer extends GTProxy {
 
@@ -20,9 +18,6 @@ public class GTServer extends GTProxy {
     public boolean isBukkitSide() {
         return false;
     }
-
-    @Override
-    public void doSonictronSound(ItemStack aStack, World aWorld, double aX, double aY, double aZ) {}
 
     @Override
     public int addArmor(String aPrefix) {

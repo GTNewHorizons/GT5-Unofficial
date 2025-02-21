@@ -23,10 +23,6 @@ public class MTELightningRod extends MTETieredMachineBlock {
         super(aID, aName, aNameRegional, aTier, 0, "Generates EU From Lightning Bolts");
     }
 
-    public MTELightningRod(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
-
     public MTELightningRod(String aName, int aTier, int aInvSlotCount, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);

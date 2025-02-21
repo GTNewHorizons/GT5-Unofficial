@@ -313,7 +313,6 @@ public class CellLoader implements IWerkstoffRunnable {
                 .special(ItemList.Tool_DataOrb.get(1L))
                 .duration(werkstoffBridgeMaterial.getMass() * 8192)
                 .eut(TierEU.RECIPE_LV)
-                .noOptimize()
                 .ignoreCollision()
                 .fake()
                 .addTo(scannerFakeRecipes);

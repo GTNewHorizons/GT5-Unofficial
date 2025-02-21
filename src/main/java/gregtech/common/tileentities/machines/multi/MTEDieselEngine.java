@@ -145,6 +145,11 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
     }
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return getMaxEfficiency(aStack) > 0;
     }

@@ -60,10 +60,6 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                 "Restricted Output Hatches are given priority for Multiblock Fluid output" });
     }
 
-    public MTEHatchOutput(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 4, aDescription, aTextures);
-    }
-
     public MTEHatchOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 4, aDescription, aTextures);
     }
@@ -473,11 +469,13 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                 .setSize(71, 45))
             .widget(new FluidLockWidget(this).setPos(149, 41))
             .widget(
-                new TextWidget("Locked Fluid").setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("GT5U.machines.hatch_output.lockfluid.label"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(101, 20))
             .widget(TextWidget.dynamicString(() -> {
                 FluidStack fluidStack = FluidRegistry.getFluidStack(lockedFluidName, 1);
-                return fluidStack != null ? fluidStack.getLocalizedName() : "None";
+                return fluidStack != null ? fluidStack.getLocalizedName()
+                    : StatCollector.translateToLocal("GT5U.machines.hatch_output.lockfluid.empty");
             })
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setTextAlignment(Alignment.CenterLeft)

@@ -397,7 +397,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                 }
                 return super.onRecipeStart(recipe);
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     private int coolingTimer = 0;
@@ -438,6 +438,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
 
     }
 
+    @Override
     public int getMaxParallelRecipes() {
         return overheated ? GTUtility.getTier(this.getMaxInputVoltage())
             : (4 * GTUtility.getTier(this.getMaxInputVoltage()));

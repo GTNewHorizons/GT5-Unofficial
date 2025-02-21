@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -3880,6 +3881,20 @@ public class GTUtility {
         return getDecimalFormat().format(aNumber);
     }
 
+    /**
+     * {@link String#format} without throwing exception. Falls back to {@code format} without {@code args}.
+     * Since it suppresses errors, it should be used only when inputs are unreliable,
+     * e.g. processing text input by player, or processing placeholders in localization entries.
+     */
+    @Nonnull
+    public static String formatStringSafe(@Nonnull String format, Object... args) {
+        try {
+            return String.format(format, args);
+        } catch (IllegalFormatException ignored) {
+            return format;
+        }
+    }
+
     /*
      * Check if stack has enough items of given type and subtract from stack, if there's no creative or 111 stack.
      */
@@ -4792,6 +4807,12 @@ public class GTUtility {
         public int size() {
             return size;
         }
+    }
+
+    public static String[] breakLines(String... lines) {
+        return Arrays.stream(lines)
+            .flatMap(s -> Arrays.stream(s.split("\\\\n")))
+            .toArray(String[]::new);
     }
 
     @AutoValue

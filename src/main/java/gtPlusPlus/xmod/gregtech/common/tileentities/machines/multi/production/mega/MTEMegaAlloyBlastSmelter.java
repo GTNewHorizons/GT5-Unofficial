@@ -181,7 +181,12 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                 return super.createOverclockCalculator(recipe).setSpeedBoost(speedBonus)
                     .setEUtDiscount(energyDiscount);
             }
-        }.setMaxParallel(MAX_PARALLELS);
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return MAX_PARALLELS;
     }
 
     @Override

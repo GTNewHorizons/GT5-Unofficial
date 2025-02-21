@@ -168,9 +168,8 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
             builder.widget(w);
 
             builder.setPos(
-                (p, t) -> Alignment.Center.getAlignedPos(
-                    new Size(getUIBuildContext().isAnotherWindow() ? t.getPos().x : p.width, p.height),
-                    new Size(getGUIWidth(), getGUIHeight())));
+                (size, mainWindow) -> Alignment.Center.getAlignedPos(size, new Size(getGUIWidth(), getGUIHeight()))
+                    .subtract(getUIBuildContext().isAnotherWindow() ? getGUIWidth() + 80 : 0, 0));
         }
 
         @Override

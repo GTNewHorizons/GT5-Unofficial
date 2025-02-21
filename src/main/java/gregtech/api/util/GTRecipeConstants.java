@@ -571,7 +571,6 @@ public class GTRecipeConstants {
                 .duration(scanningData.time)
                 .eut(scanningData.voltage)
                 .specialValue(-201) // means it's scanned
-                .noOptimize()
                 .ignoreCollision()
                 .fake()
                 .addTo(scannerFakeRecipes));

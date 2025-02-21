@@ -294,7 +294,12 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
                     ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
-        }.setMaxParallel(Configuration.Multiblocks.megaMachinesMax);
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return Configuration.Multiblocks.megaMachinesMax;
     }
 
     @Override

@@ -286,12 +286,14 @@ public class MTEIndustrialElectromagneticSeparator
                 }
                 return SimpleCheckRecipeResult.ofFailure("electromagnet_missing");
             }
-        }.setMaxParallelSupplier(this::getMaxParallels);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
-    private int getMaxParallels() {
+    @Override
+    public int getMaxParallelRecipes() {
+        findMagnet();
         if (magnetTier != null) return magnetTier.maxParallel;
-        return 0;
+        return 1;
     }
 
     @Override

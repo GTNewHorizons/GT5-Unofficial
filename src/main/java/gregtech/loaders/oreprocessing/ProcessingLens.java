@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 
 import net.minecraft.item.ItemStack;
 
+import appeng.api.AEApi;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -30,6 +31,11 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
         ItemStack aStack) {
         // Blacklist materials which are handled by Werkstoff loader
         if (aMaterial == Materials.Salt || aMaterial == Materials.RockSalt || aMaterial == Materials.Spodumene) return;
+
+        AEApi.instance()
+            .registries()
+            .blockingModeIgnoreItem()
+            .register(aStack);
 
         switch (aMaterial.mName) {
             case "Diamond", "Glass" -> {

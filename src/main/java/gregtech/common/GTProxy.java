@@ -177,9 +177,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         OreGenEvent.GenerateMinable.EventType.LAPIS,
         OreGenEvent.GenerateMinable.EventType.QUARTZ);
     public final HashSet<ItemStack> mRegisteredOres = new HashSet<>(10000);
-    public final ArrayList<String> mSoundNames = new ArrayList<>();
-    public final ArrayList<ItemStack> mSoundItems = new ArrayList<>();
-    public final ArrayList<Integer> mSoundCounts = new ArrayList<>();
     private final Collection<OreDictEventContainer> mEvents = new HashSet<>();
     private final Collection<String> mIgnoredItems = new HashSet<>(
         Arrays.asList(
@@ -582,7 +579,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public int mPollutionHighPressureLavaBoilerPerSecond = 20;
     public int mPollutionHighPressureCoalBoilerPerSecond = 30;
     public int mPollutionBaseDieselGeneratorPerSecond = 200;
-    public double[] mPollutionDieselGeneratorReleasedByTier = new double[] { 0.1, 1.0, 0.9, 0.8 };
+    public double[] mPollutionDieselGeneratorReleasedByTier = new double[] { 0.1, 1.0, 0.9, 0.8, 0.7, 0.6 };
     public int mPollutionBaseGasTurbinePerSecond = 200;
     public double[] mPollutionGasTurbineReleasedByTier = new double[] { 0.1, 1.0, 0.9, 0.8, 0.7, 0.6 };
     public final GTUODimensionList mUndergroundOil = new GTUODimensionList();
