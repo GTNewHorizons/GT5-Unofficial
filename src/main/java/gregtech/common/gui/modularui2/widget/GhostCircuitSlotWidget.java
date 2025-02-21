@@ -119,14 +119,16 @@ public class GhostCircuitSlotWidget extends ItemSlot {
             .isPanelOpen(GUI_ID);
     }
 
+    private IPanelHandler panelHandler;
+
     private void openSelectorPanel() {
         // todo: fix issue where reopened panel has config selected out of sync
         int currentCircuitConfig = getSyncHandler().getGhostCircuitHandler()
             .getCircuitConfig();
         // selected index 0 == config 1
         int currentSelectedIndex = currentCircuitConfig == NO_CONFIG ? -1 : currentCircuitConfig - 1;
-        IPanelHandler.simple(getPanel(), (mainPanel, player) -> {
-            ModularPanel panel = GTGuis.createPopUpPanel(GUI_ID);
+        IPanelHandler panelHandler = IPanelHandler.simple(getPanel(), (mainPanel, player) -> {
+            ModularPanel panel = GTGuis.createPopUpPanel(GUI_ID, false, false, this::onClose);
             return new SelectItemGuiBuilder(panel, GTUtility.getAllIntegratedCircuits()) //
                 .setHeaderItem(mte.getStackForm(1))
                 .setTitle(IKey.lang("GT5U.machines.select_circuit"))
@@ -143,7 +145,12 @@ public class GhostCircuitSlotWidget extends ItemSlot {
                 .setCurrentItemSlotOverlay(GTGuiTextures.OVERLAY_SLOT_INT_CIRCUIT)
                 .setAllowDeselected(true)
                 .build();
-        }, true)
-            .openPanel();
+        }, true);
+        this.panelHandler = panelHandler;
+        panelHandler.openPanel();
+    }
+
+    private void onClose() {
+        this.panelHandler.deleteCachedPanel();
     }
 }

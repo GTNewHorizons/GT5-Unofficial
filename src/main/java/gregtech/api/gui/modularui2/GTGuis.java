@@ -24,7 +24,7 @@ public final class GTGuis {
      *
      * @see CommonMetaTileEntity#useMui2
      */
-    public static boolean GLOBAL_SWITCH_MUI2 = false;
+    public static boolean GLOBAL_SWITCH_MUI2 = true;
 
     /**
      * Creates builder object for MetaTileEntity GUI template. Call {@link GTBaseGuiBuilder#build} to retrieve panel.
@@ -40,15 +40,15 @@ public final class GTGuis {
      * Creates popup panel with GT style.
      */
     public static ModularPanel createPopUpPanel(@NotNull String name) {
-        return createPopUpPanel(name, false, false);
+        return createPopUpPanel(name, false, false, null);
     }
 
     /**
      * Creates popup panel with GT style.
      */
     public static ModularPanel createPopUpPanel(@NotNull String name, boolean disablePanelsBelow,
-        boolean closeOnOutOfBoundsClick) {
-        return new GTPopUpPanel(name, disablePanelsBelow, closeOnOutOfBoundsClick);
+        boolean closeOnOutOfBoundsClick, Runnable onClose) {
+        return new GTPopUpPanel(name, disablePanelsBelow, closeOnOutOfBoundsClick, onClose);
     }
 
     @ApiStatus.Internal
