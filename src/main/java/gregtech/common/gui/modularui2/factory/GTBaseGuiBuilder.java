@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui2.factory;
 
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
@@ -11,6 +12,7 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ContainerCustomizer;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -26,6 +28,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.item.GhostCircuitItemStackHandler;
 import gregtech.common.gui.modularui2.widget.GhostCircuitSlotWidget;
+import gregtech.common.items.ItemIntegratedCircuit;
 
 // spotless:off
 /**
@@ -222,7 +225,17 @@ public final class GTBaseGuiBuilder {
             throw new IllegalStateException("Tried to add configuration circuit slot to an unsupported machine!");
         }
 
-        return new GhostCircuitSlotWidget(mte).slot(new ModularSlot(new GhostCircuitItemStackHandler(mte), 0, true))
+        IntSyncValue selectedSyncHandler = new IntSyncValue(() -> {
+            ItemStack selectedItem = mte.getStackInSlot(ccs.getCircuitSlot());
+            if (selectedItem != null && selectedItem.getItem() instanceof ItemIntegratedCircuit) {
+                // selected index 0 == config 1
+                return selectedItem.getItemDamage() - 1;
+            }
+            return -1;
+        });
+        syncManager.syncValue("selector_screen_selected", selectedSyncHandler);
+        return new GhostCircuitSlotWidget(mte, selectedSyncHandler)
+            .slot(new ModularSlot(new GhostCircuitItemStackHandler(mte), 0, true))
             .pos(ccs.getCircuitSlotX() - 1, ccs.getCircuitSlotY() - 1);
     }
 

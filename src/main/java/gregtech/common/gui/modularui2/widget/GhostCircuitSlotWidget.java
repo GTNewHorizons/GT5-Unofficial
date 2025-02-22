@@ -17,6 +17,7 @@ import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.theme.WidgetTheme;
 import com.cleanroommc.modularui.utils.MouseData;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.ItemSlotSH;
 import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
@@ -37,10 +38,13 @@ public class GhostCircuitSlotWidget extends ItemSlot {
     private static final String GUI_ID = "circuit_selector";
 
     private final IMetaTileEntity mte;
+    private final IntSyncValue selectedSyncHandler;
+    private IPanelHandler selectorPanelHandler;
 
-    public GhostCircuitSlotWidget(IMetaTileEntity mte) {
+    public GhostCircuitSlotWidget(IMetaTileEntity mte, IntSyncValue selectedSyncHandler) {
         super();
         this.mte = mte;
+        this.selectedSyncHandler = selectedSyncHandler;
         tooltipBuilder(this::getCircuitSlotTooltip);
     }
 
@@ -118,19 +122,22 @@ public class GhostCircuitSlotWidget extends ItemSlot {
     }
 
     private void openSelectorPanel() {
-        // todo: fix issue where reopened panel has config selected out of sync
-        int currentCircuitConfig = getSyncHandler().getGhostCircuitHandler()
-            .getCircuitConfig();
-        // selected index 0 == config 1
-        int currentSelectedIndex = currentCircuitConfig == NO_CONFIG ? -1 : currentCircuitConfig - 1;
-        IPanelHandler.simple(getPanel(), (mainPanel, player) -> {
+        if (selectorPanelHandler == null) {
+            selectorPanelHandler = buildSelectorPanel(selectedSyncHandler);
+        }
+        selectorPanelHandler.openPanel();
+    }
+
+    private IPanelHandler buildSelectorPanel(IntSyncValue selectedSyncHandler) {
+        return IPanelHandler.simple(getPanel(), (mainPanel, player) -> {
             ModularPanel panel = GTGuis.createPopUpPanel(GUI_ID);
             return new SelectItemGuiBuilder(panel, GTUtility.getAllIntegratedCircuits()) //
                 .setHeaderItem(mte.getStackForm(1))
                 .setTitle(IKey.lang("GT5U.machines.select_circuit"))
-                .setSelected(currentSelectedIndex)
+                .setSelectedSyncHandler(selectedSyncHandler)
                 .setOnSelectedClientAction((selected, mouseData) -> {
                     getSyncHandler().syncToServer(SYNC_CIRCUIT_CONFIG, buffer -> {
+                        // selected index 0 == config 1
                         int circuitConfig = selected == DESELECTED ? -1 : selected + 1;
                         buffer.writeShort(circuitConfig);
                     });
@@ -141,7 +148,6 @@ public class GhostCircuitSlotWidget extends ItemSlot {
                 .setCurrentItemSlotOverlay(GTGuiTextures.OVERLAY_SLOT_INT_CIRCUIT)
                 .setAllowDeselected(true)
                 .build();
-        }, true)
-            .openPanel();
+        }, true);
     }
 }

@@ -14,6 +14,7 @@ import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.MouseData;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
@@ -50,6 +51,7 @@ public class SelectItemGuiBuilder {
     private @Nullable ItemStack headerItem;
     private @Nullable IKey title;
     private int selected;
+    private @Nullable IntSyncValue selectedSyncHandler;
     private @Nullable SelectItemServerAction onSelectedServerAction;
     private @Nullable OnSelectedAction onSelectedClientAction;
     private @Nullable IDrawable currentItemSlotOverlay;
@@ -99,6 +101,14 @@ public class SelectItemGuiBuilder {
             return this;
         }
         this.selected = selected;
+        return this;
+    }
+
+    /**
+     * Sets sync handler for currently selected index. This allows pulling updates caused by outside this GUI.
+     */
+    public SelectItemGuiBuilder setSelectedSyncHandler(@Nullable IntSyncValue selectedSyncHandler) {
+        this.selectedSyncHandler = selectedSyncHandler;
         return this;
     }
 
@@ -206,6 +216,12 @@ public class SelectItemGuiBuilder {
                 .pos(7, 46)
                 .matrix(choiceWidgets));
 
+        if (selectedSyncHandler != null) {
+            // Correct current selected
+            setSelected(selectedSyncHandler.getIntValue());
+            // Listen to changes made by other causes such as other players configuring at the same time
+            selectedSyncHandler.setChangeListener(() -> setSelected(selectedSyncHandler.getIntValue()));
+        }
         // Check skipped during setSelected
         if (!allowDeselected && selected == DESELECTED) {
             setSelected(0);
