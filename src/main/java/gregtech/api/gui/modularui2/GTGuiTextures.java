@@ -161,6 +161,12 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(IDs.SLOT_ITEM_PRIMITIVE)
         .build();
+    public static final UITexture SLOT_ITEM_DARK = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/dark_gray")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .build();
     public static final UITexture SLOT_FLUID_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/slot/fluid_standard")
         .imageSize(18, 18)

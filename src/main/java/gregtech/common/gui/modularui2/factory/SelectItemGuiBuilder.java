@@ -177,7 +177,7 @@ public class SelectItemGuiBuilder {
         panel.child(
             new SlotLikeButtonWidget(() -> selected > -1 ? choices.get(selected) : null)
                 .background(
-                    GTGuiTextures.SLOT_ITEM_STANDARD,
+                    GTGuiTextures.SLOT_ITEM_DARK,
                     new DynamicDrawable(
                         () -> currentItemSlotOverlay != null ? currentItemSlotOverlay : IDrawable.EMPTY))
                 .playClickSound(false)
@@ -193,7 +193,10 @@ public class SelectItemGuiBuilder {
                 int index = i * COLS + j;
                 if (index >= choices.size()) break;
                 rowWidgets.add(
-                    new SlotLikeButtonWidget(choices.get(index)).size(18)
+                    new SlotLikeButtonWidget(choices.get(index)).background(
+                        new DynamicDrawable(
+                            () -> selected == index ? GTGuiTextures.SLOT_ITEM_DARK : GTGuiTextures.SLOT_ITEM_STANDARD))
+                        .size(18)
                         .onMousePressed(mouseButton -> {
                             if (mouseButton == 0) {
                                 setSelected(index);
