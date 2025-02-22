@@ -223,19 +223,11 @@ public final class CoverInfo {
     }
 
     public boolean letsFluidIn(Fluid aFluid) {
-        return letsFluidIn(aFluid, coveredTile.get());
+        return getCoverBehavior().letsFluidIn(coverSide, coverID, coverData, aFluid, coveredTile.get());
     }
 
     public boolean letsFluidOut(Fluid aFluid) {
-        return letsFluidOut(aFluid, coveredTile.get());
-    }
-
-    public boolean letsFluidIn(Fluid aFluid, ICoverable tile) {
-        return getCoverBehavior().letsFluidIn(coverSide, coverID, coverData, aFluid, tile);
-    }
-
-    public boolean letsFluidOut(Fluid aFluid, ICoverable tile) {
-        return getCoverBehavior().letsFluidOut(coverSide, coverID, coverData, aFluid, tile);
+        return getCoverBehavior().letsFluidOut(coverSide, coverID, coverData, aFluid, coveredTile.get());
     }
 
     public boolean letsEnergyIn() {
