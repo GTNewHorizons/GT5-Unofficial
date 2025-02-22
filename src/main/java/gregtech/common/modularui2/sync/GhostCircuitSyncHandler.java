@@ -1,6 +1,6 @@
-package gregtech.common.gui.modularui2.sync;
+package gregtech.common.modularui2.sync;
 
-import static gregtech.common.gui.modularui2.factory.SelectItemGuiBuilder.DESELECTED;
+import static gregtech.common.modularui2.factory.SelectItemGuiBuilder.DESELECTED;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ import gregtech.api.util.item.GhostCircuitItemStackHandler;
 import gregtech.common.items.ItemIntegratedCircuit;
 
 /**
- * Sync handler dedicated for {@link gregtech.common.gui.modularui2.widget.GhostCircuitSlotWidget
+ * Sync handler dedicated for {@link gregtech.common.modularui2.widget.GhostCircuitSlotWidget
  * GhostCircuitSlotWidget}.
  */
 public class GhostCircuitSyncHandler extends ItemSlotSH {

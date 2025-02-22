@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui2.factory;
+package gregtech.common.modularui2.factory;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -27,8 +27,8 @@ import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.item.GhostCircuitItemStackHandler;
-import gregtech.common.gui.modularui2.widget.GhostCircuitSlotWidget;
 import gregtech.common.items.ItemIntegratedCircuit;
+import gregtech.common.modularui2.widget.GhostCircuitSlotWidget;
 
 // spotless:off
 /**

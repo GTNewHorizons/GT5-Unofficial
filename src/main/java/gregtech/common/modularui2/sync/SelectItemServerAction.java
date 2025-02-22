@@ -1,11 +1,11 @@
-package gregtech.common.gui.modularui2.sync;
+package gregtech.common.modularui2.sync;
 
 import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.utils.MouseData;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
 
-import gregtech.common.gui.modularui2.factory.SelectItemGuiBuilder;
+import gregtech.common.modularui2.factory.SelectItemGuiBuilder;
 
 /**
  * Specifies action executed on server when item gets selected on item selection screen created via

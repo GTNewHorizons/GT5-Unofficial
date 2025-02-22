@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui2.util;
+package gregtech.common.modularui2.util;
 
 import java.util.function.IntFunction;
 

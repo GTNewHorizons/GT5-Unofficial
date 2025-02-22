@@ -10,8 +10,8 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.CommonMetaTileEntity;
-import gregtech.common.gui.modularui2.factory.GTBaseGuiBuilder;
-import gregtech.common.gui.modularui2.panel.GTPopUpPanel;
+import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
+import gregtech.common.modularui2.panel.GTPopUpPanel;
 
 /**
  * Centralized place for starting creation of GUI/panel.

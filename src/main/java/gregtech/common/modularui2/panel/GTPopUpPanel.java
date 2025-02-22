@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui2.panel;
+package gregtech.common.modularui2.panel;
 
 import org.jetbrains.annotations.NotNull;
 

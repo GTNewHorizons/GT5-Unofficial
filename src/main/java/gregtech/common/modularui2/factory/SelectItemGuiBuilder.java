@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui2.factory;
+package gregtech.common.modularui2.factory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +20,8 @@ import com.cleanroommc.modularui.widgets.layout.Grid;
 
 import gregtech.api.gui.modularui2.GTGuiTextures;
 import gregtech.api.gui.modularui2.GTGuis;
-import gregtech.common.gui.modularui2.sync.SelectItemServerAction;
-import gregtech.common.gui.modularui2.widget.SlotLikeButtonWidget;
+import gregtech.common.modularui2.sync.SelectItemServerAction;
+import gregtech.common.modularui2.widget.SlotLikeButtonWidget;
 
 // spotless:off
 /**

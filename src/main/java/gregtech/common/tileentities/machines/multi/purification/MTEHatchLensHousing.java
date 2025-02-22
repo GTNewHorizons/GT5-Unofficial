@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
-import static gregtech.common.gui.modularui2.util.CommonGuiComponents.gridTemplate1by1;
+import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;

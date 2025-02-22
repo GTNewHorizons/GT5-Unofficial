@@ -1,8 +1,8 @@
-package gregtech.common.gui.modularui2.widget;
+package gregtech.common.modularui2.widget;
 
 import static gregtech.api.util.item.GhostCircuitItemStackHandler.NO_CONFIG;
-import static gregtech.common.gui.modularui2.factory.SelectItemGuiBuilder.DESELECTED;
-import static gregtech.common.gui.modularui2.sync.GhostCircuitSyncHandler.SYNC_CIRCUIT_CONFIG;
+import static gregtech.common.modularui2.factory.SelectItemGuiBuilder.DESELECTED;
+import static gregtech.common.modularui2.sync.GhostCircuitSyncHandler.SYNC_CIRCUIT_CONFIG;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -27,8 +27,8 @@ import gregtech.api.gui.modularui2.GTGuis;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui2.factory.SelectItemGuiBuilder;
-import gregtech.common.gui.modularui2.sync.GhostCircuitSyncHandler;
+import gregtech.common.modularui2.factory.SelectItemGuiBuilder;
+import gregtech.common.modularui2.sync.GhostCircuitSyncHandler;
 
 /**
  * Item slot that appears on machines implementing {@link IConfigurationCircuitSupport}.

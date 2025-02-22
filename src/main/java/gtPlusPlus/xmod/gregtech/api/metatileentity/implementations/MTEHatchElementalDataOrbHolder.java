@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import static gregtech.common.gui.modularui2.util.CommonGuiComponents.gridTemplate4by4;
+import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate4by4;
 
 import java.util.ArrayList;
 

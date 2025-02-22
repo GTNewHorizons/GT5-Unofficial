@@ -1,4 +1,4 @@
-package gregtech.common.gui.modularui2.widget;
+package gregtech.common.modularui2.widget;
 
 import java.util.function.Supplier;
 
