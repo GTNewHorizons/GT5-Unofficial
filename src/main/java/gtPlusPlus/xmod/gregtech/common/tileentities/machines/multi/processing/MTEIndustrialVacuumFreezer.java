@@ -19,9 +19,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -192,15 +192,16 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
         super.localizeStructureErrors(errors, context, lines);
 
         if (errors.contains(StructureError.TOO_FEW_CASINGS)) {
-            lines.add(I18n.format("GT5U.gui.missing_casings", 10, context.getInteger("casings")));
+            lines.add(
+                StatCollector.translateToLocalFormatted("GT5U.gui.missing_casings", 10, context.getInteger("casings")));
         }
 
         if (errors.contains(StructureError.MISSING_CRYO_HATCH)) {
-            lines.add(I18n.format("GT5U.gui.missing_hatch", HATCH_NAME));
+            lines.add(StatCollector.translateToLocalFormatted("GT5U.gui.missing_hatch", HATCH_NAME));
         }
 
         if (errors.contains(StructureError.TOO_MANY_CRYO_HATCHES)) {
-            lines.add(I18n.format("GT5U.gui.too_many_hatches", HATCH_NAME, 1));
+            lines.add(StatCollector.translateToLocalFormatted("GT5U.gui.too_many_hatches", HATCH_NAME, 1));
         }
     }
 

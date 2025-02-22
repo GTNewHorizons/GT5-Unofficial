@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -374,7 +373,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
         if (errors.contains(StructureError.MISSING_STEAM_HATCH)) {
             lines.add(
-                I18n.format(
+                StatCollector.translateToLocalFormatted(
                     "GT5U.gui.missing_hatch",
                     GregtechItemList.Hatch_Input_Steam.get(1)
                         .getDisplayName()));
