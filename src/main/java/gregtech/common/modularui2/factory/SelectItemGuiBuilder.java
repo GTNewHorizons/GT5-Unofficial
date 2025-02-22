@@ -18,8 +18,8 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
-import gregtech.api.gui.modularui2.GTGuiTextures;
-import gregtech.api.gui.modularui2.GTGuis;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.common.modularui2.sync.SelectItemServerAction;
 import gregtech.common.modularui2.widget.SlotLikeButtonWidget;
 

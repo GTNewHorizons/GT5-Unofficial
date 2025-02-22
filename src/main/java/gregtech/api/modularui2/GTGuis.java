@@ -1,4 +1,4 @@
-package gregtech.api.gui.modularui2;
+package gregtech.api.modularui2;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;

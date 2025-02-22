@@ -1,4 +1,4 @@
-package gregtech.api.gui.modularui2;
+package gregtech.api.modularui2;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;

@@ -20,13 +20,13 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.gui.modularui2.GTGuiTextures;
-import gregtech.api.gui.modularui2.GTGuis;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.api.render.TextureFactory;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;

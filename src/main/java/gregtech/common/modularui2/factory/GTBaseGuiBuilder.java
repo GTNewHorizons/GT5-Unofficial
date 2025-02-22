@@ -21,11 +21,11 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui2.GTGuiTextures;
-import gregtech.api.gui.modularui2.GTGuis;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.api.util.item.GhostCircuitItemStackHandler;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.modularui2.widget.GhostCircuitSlotWidget;

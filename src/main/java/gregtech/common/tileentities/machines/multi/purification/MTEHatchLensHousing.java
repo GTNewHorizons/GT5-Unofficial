@@ -10,11 +10,11 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
-import gregtech.api.gui.modularui2.GTGuis;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.client.GTTooltipHandler;
 
 public class MTEHatchLensHousing extends MTEHatchInputBus {

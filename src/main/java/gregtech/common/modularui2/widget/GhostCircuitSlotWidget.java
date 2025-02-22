@@ -22,10 +22,10 @@ import com.cleanroommc.modularui.value.sync.ItemSlotSH;
 import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
-import gregtech.api.gui.modularui2.GTGuiTextures;
-import gregtech.api.gui.modularui2.GTGuis;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.api.util.GTUtility;
 import gregtech.common.modularui2.factory.SelectItemGuiBuilder;
 import gregtech.common.modularui2.sync.GhostCircuitSyncHandler;

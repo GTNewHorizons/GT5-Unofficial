@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 
-import gregtech.api.gui.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuiTextures;
 
 /**
  * GT themed popup panel.
