@@ -222,8 +222,7 @@ public final class GTBaseGuiBuilder {
             throw new IllegalStateException("Tried to add configuration circuit slot to an unsupported machine!");
         }
 
-        return new GhostCircuitSlotWidget(mte, ccs)
-            .slot(new ModularSlot(new GhostCircuitItemStackHandler(mte), 0, true))
+        return new GhostCircuitSlotWidget(mte).slot(new ModularSlot(new GhostCircuitItemStackHandler(mte), 0, true))
             .pos(ccs.getCircuitSlotX() - 1, ccs.getCircuitSlotY() - 1);
     }
 

@@ -37,12 +37,10 @@ public class GhostCircuitSlotWidget extends ItemSlot {
     private static final String GUI_ID = "circuit_selector";
 
     private final IMetaTileEntity mte;
-    private final IConfigurationCircuitSupport ccs;
 
-    public GhostCircuitSlotWidget(IMetaTileEntity mte, IConfigurationCircuitSupport ccs) {
+    public GhostCircuitSlotWidget(IMetaTileEntity mte) {
         super();
         this.mte = mte;
-        this.ccs = ccs;
         tooltipBuilder(this::getCircuitSlotTooltip);
     }
 
