@@ -2,10 +2,10 @@ package toxiceverglades;
 
 import static gregtech.api.enums.Mods.GTPlusPlusEverglades;
 
+import bwcrossmod.galacticgreg.VoidMinerUtility;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.DimensionManager;
 
-import bwcrossmod.galacticgreg.MTEVoidMinerBase;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -148,7 +148,7 @@ public class GTPPEverglades {
     }
 
     public void addVMDrop(Block block, int meta, float weight) {
-        MTEVoidMinerBase
+        VoidMinerUtility
             .addBlockToDimensionList(gtPlusPlus.core.config.Configuration.worldgen.EVERGLADES_ID, block, meta, weight);
     }
 
