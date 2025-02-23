@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -165,7 +166,9 @@ public class ItemAgrichemBase extends Item {
         int aDam = 0;
         EnumChatFormatting durability = EnumChatFormatting.GRAY;
         if (ItemUtils.isCatalyst(aStack)) {
-            list.add(EnumChatFormatting.GRAY + "Active Reaction Agent");
+            list.add(
+                EnumChatFormatting.GRAY
+                    + StatCollector.translateToLocal("GTPP.tooltip.catalyst.active_reaction_agent"));
             aMaxDamage = getCatalystMaxDamage(aStack);
             aDamageSegment = aMaxDamage / 5;
             aDam = aMaxDamage - getCatalystDamage(aStack);
