@@ -45,6 +45,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -488,8 +489,43 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         super.updateSlots();
     }
 
+    @Override
+    protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
+        List<String> lines) {
+        super.localizeStructureErrors(errors, context, lines);
+
+        if (errors.contains(StructureError.MISSING_MAINTENANCE)) {
+            lines.add(StatCollector.translateToLocal("GT5U.gui.text.no_maintenance"));
+        }
+
+        if (errors.contains(StructureError.MISSING_MUFFLER)) {
+            lines.add(StatCollector.translateToLocal("GT5U.gui.text.no_muffler"));
+        }
+
+        if (errors.contains(StructureError.UNNEEDED_MUFFLER)) {
+            lines.add(StatCollector.translateToLocal("GT5U.gui.text.unneeded_muffler"));
+        }
+    }
+
+    @Override
+    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
+        super.validateStructure(errors, context);
+
+        if (shouldCheckMaintenance() && mMaintenanceHatches.isEmpty()) {
+            errors.add(StructureError.MISSING_MAINTENANCE);
+        }
+
+        if (this.getPollutionPerSecond(null) > 0 && mMufflerHatches.isEmpty()) {
+            errors.add(StructureError.MISSING_MUFFLER);
+        }
+
+        if (this.getPollutionPerSecond(null) == 0 && !mMufflerHatches.isEmpty()) {
+            errors.add(StructureError.UNNEEDED_MUFFLER);
+        }
+    }
+
     public boolean checkHatch() {
-        return mMaintenanceHatches.size() <= 1 && (this.getPollutionPerSecond(null) <= 0 || !mMufflerHatches.isEmpty());
+        return true;
     }
 
     @Override
