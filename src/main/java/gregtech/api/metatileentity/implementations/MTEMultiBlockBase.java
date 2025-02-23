@@ -2155,7 +2155,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (tag.getBoolean("isLockedToRecipe")) {
                 String lockedRecipe = tag.getString("lockedRecipeName");
                 if (!lockedRecipe.isEmpty()) {
-                    currentTip.add("Locked Recipe:");
+                    currentTip.add(StatCollector.translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
                     String[] lines = lockedRecipe.split("\n");
                     for (String line : lines) {
                         currentTip.add(line);
