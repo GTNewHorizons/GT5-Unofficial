@@ -63,8 +63,7 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
 
     @Override
     public boolean isLiquidInput(ForgeDirection side) {
-        return side != this.getBaseMetaTileEntity()
-            .getFrontFacing();
+        return true;
     }
 
     @Override
