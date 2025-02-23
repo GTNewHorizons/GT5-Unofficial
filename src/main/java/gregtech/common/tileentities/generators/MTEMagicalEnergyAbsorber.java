@@ -203,7 +203,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
         description
             .add(UNDERLINE + "Feasts on " + LIGHT_PURPLE + UNDERLINE + "magic" + GRAY + UNDERLINE + " close to it:");
         description.add(
-            LI + (sAllowMultipleEggs ? "A " : "An " + YELLOW + UNDERLINE + "EXCLUSIVE" + RESET)
+            "- " + (sAllowMultipleEggs ? "A " : "An " + YELLOW + UNDERLINE + "EXCLUSIVE" + RESET)
                 + GRAY
                 + " "
                 + LIGHT_PURPLE
