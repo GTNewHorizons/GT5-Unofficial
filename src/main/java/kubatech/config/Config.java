@@ -52,6 +52,7 @@ public class Config {
     public static class MobHandler {
 
         public static double playerOnlyDropsModifier = .1d;
+        public static boolean ignorePeacefulCheck = false;
 
         private static void load(Configuration configuration) {
             Category category = Category.MOB_HANDLER;
@@ -62,6 +63,14 @@ public class Config {
                     .1d,
                     "Hard player only loot (such as core mod drops) will be multiplied by this number")
                 .getDouble();
+
+            ignorePeacefulCheck = configuration
+                .get(
+                    category.get(),
+                    "ignorePeacefulCheck",
+                    false,
+                    "Allow for EEC to run with non-passive mobs in peaceful difficulty. Useful for weak hosting machines.")
+                .getBoolean();
         }
     }
 
