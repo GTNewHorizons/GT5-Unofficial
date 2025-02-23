@@ -3,10 +3,10 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.GTValues.ALL_VALID_SIDES;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.enums.Mods.Translocator;
-import static gregtech.api.metatileentity.implementations.MTEFluid.Border.BOTTOM;
-import static gregtech.api.metatileentity.implementations.MTEFluid.Border.LEFT;
-import static gregtech.api.metatileentity.implementations.MTEFluid.Border.RIGHT;
-import static gregtech.api.metatileentity.implementations.MTEFluid.Border.TOP;
+import static gregtech.api.metatileentity.implementations.MTEFluidPipe.Border.BOTTOM;
+import static gregtech.api.metatileentity.implementations.MTEFluidPipe.Border.LEFT;
+import static gregtech.api.metatileentity.implementations.MTEFluidPipe.Border.RIGHT;
+import static gregtech.api.metatileentity.implementations.MTEFluidPipe.Border.TOP;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
@@ -72,7 +72,7 @@ import gregtech.common.covers.CoverInfo;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEFluid extends MetaPipeEntity {
+public class MTEFluidPipe extends MetaPipeEntity {
 
     protected static final EnumMap<ForgeDirection, EnumMap<Border, ForgeDirection>> FACE_BORDER_MAP = new EnumMap<>(
         ForgeDirection.class);
@@ -117,13 +117,13 @@ public class MTEFluid extends MetaPipeEntity {
      */
     public byte mDisableInput = 0;
 
-    public MTEFluid(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial, int aCapacity,
-        int aHeatResistance, boolean aGasProof) {
+    public MTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
+        int aCapacity, int aHeatResistance, boolean aGasProof) {
         this(aID, aName, aNameRegional, aThickNess, aMaterial, aCapacity, aHeatResistance, aGasProof, 1);
     }
 
-    public MTEFluid(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial, int aCapacity,
-        int aHeatResistance, boolean aGasProof, int aFluidTypes) {
+    public MTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
+        int aCapacity, int aHeatResistance, boolean aGasProof, int aFluidTypes) {
         super(aID, aName, aNameRegional, 0, false);
         mThickNess = aThickNess;
         mMaterial = aMaterial;
@@ -135,7 +135,7 @@ public class MTEFluid extends MetaPipeEntity {
         addInfo(aID);
     }
 
-    public MTEFluid(String aName, float aThickNess, Materials aMaterial, int aCapacity, int aHeatResistance,
+    public MTEFluidPipe(String aName, float aThickNess, Materials aMaterial, int aCapacity, int aHeatResistance,
         boolean aGasProof, int aFluidTypes) {
         super(aName, 0);
         mThickNess = aThickNess;
@@ -154,7 +154,7 @@ public class MTEFluid extends MetaPipeEntity {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEFluid(mName, mThickNess, mMaterial, mCapacity, mHeatResistance, mGasProof, mPipeAmount);
+        return new MTEFluidPipe(mName, mThickNess, mMaterial, mCapacity, mHeatResistance, mGasProof, mPipeAmount);
     }
 
     @Override
@@ -486,14 +486,14 @@ public class MTEFluid extends MetaPipeEntity {
         if (handItem == null) return;
 
         IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
-        if (!(meta instanceof MTEFluid handFluid)) return;
+        if (!(meta instanceof MTEFluidPipe handFluid)) return;
 
         // Preserve old connections and meta ID
         byte oldConnections = this.mConnections;
         short oldMetaID = (short) aBaseMetaTileEntity.getMetaTileID();
 
         // Create the new fluid pipe
-        MTEFluid newPipe = (MTEFluid) handFluid.newMetaEntity(aBaseMetaTileEntity);
+        MTEFluidPipe newPipe = (MTEFluidPipe) handFluid.newMetaEntity(aBaseMetaTileEntity);
         if (newPipe == null) return;
 
         // Preserve old connections
@@ -613,7 +613,7 @@ public class MTEFluid extends MetaPipeEntity {
         if (GTMod.gregtechproxy.gt6Pipe) {
             final int mode = MetaGeneratedTool.getToolMode(aTool);
             IGregTechTileEntity currentPipeBase = getBaseMetaTileEntity();
-            MTEFluid currentPipe = (MTEFluid) currentPipeBase.getMetaTileEntity();
+            MTEFluidPipe currentPipe = (MTEFluidPipe) currentPipeBase.getMetaTileEntity();
             final ForgeDirection tSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
             final byte tMask = (byte) (tSide.flag);
 
@@ -646,8 +646,8 @@ public class MTEFluid extends MetaPipeEntity {
                         return wasActionPerformed;
                     }
 
-                    MTEFluid nextPipe = nextPipeBase.getMetaTileEntity() instanceof MTEFluid
-                        ? (MTEFluid) nextPipeBase.getMetaTileEntity()
+                    MTEFluidPipe nextPipe = nextPipeBase.getMetaTileEntity() instanceof MTEFluidPipe
+                        ? (MTEFluidPipe) nextPipeBase.getMetaTileEntity()
                         : null;
 
                     // if next tile entity is not a pipe
