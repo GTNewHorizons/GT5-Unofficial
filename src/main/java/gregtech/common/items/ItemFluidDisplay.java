@@ -1,5 +1,7 @@
 package gregtech.common.items;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -125,11 +128,24 @@ public class ItemFluidDisplay extends GTGenericItem {
                         if (tMaterial.mChemicalFormula.equals("?")) {
                             return "";
                         } else {
+                            if (!tMaterial.mChemicalFormula.isEmpty()) {
+                                // See `bartworks.system.material.Werkstoff.getLocalizedToolTip`
+                                String werkstoffKey = String
+                                    .format("bw.werkstoff.%05d.tooltip", tContainer.getItemDamage());
+                                if (StatCollector.canTranslate(werkstoffKey)) {
+                                    return StatCollector.translateToLocal(werkstoffKey);
+                                } else {
+                                    GT_FML_LOGGER.warn(
+                                        "Missing Werkstoff tooltip: {} for {}",
+                                        werkstoffKey,
+                                        tMaterial.mChemicalFormula);
+                                }
+                            }
                             return tMaterial.mChemicalFormula;
                         }
                     } else {
                         // For GT++ Fluid Display
-                        // GT++ didn't register a Material in GT, so I have too find the Chemical Formula in its cell's
+                        // GT++ didn't register a Material in GT, so I have to find the Chemical Formula in its cell's
                         // tooltip
                         List<String> tTooltip = tContainer.getTooltip(null, true);
                         for (String tInfo : tTooltip) {
