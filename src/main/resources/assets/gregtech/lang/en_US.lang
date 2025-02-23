@@ -90,6 +90,10 @@ GTPP.tooltip.tin_foil_hat=DoomSquirter's protection against cosmic radiation!\nG
 
 GTPP.tooltip.bad_tooltip_id=Bad Tooltip ID - %d
 
+# GT++ chem
+GTPP.tooltip.catalyst.active_reaction_agent=Active Reaction Agent
+GTPP.tooltip.milling_ball.tumble=Tumble Tumble Tumble
+
 # Infinite Spray Can
 
 item.GT5U.infinite_spray_can.name.solvent=Infinite Spray Can %cSolvent%c
