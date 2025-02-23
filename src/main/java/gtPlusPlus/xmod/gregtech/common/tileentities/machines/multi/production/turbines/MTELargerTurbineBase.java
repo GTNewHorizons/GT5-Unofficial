@@ -167,7 +167,10 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             .addController("Top Middle")
             .addCasingInfoMin(getCasingName(), 360, false)
             .addCasingInfoMin("Turbine Shaft", 30, false)
-            .addOtherStructurePart("Rotor Assembly", "Any 1 dot hint", 1)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GTPP.tooltip.structure.rotor_assembly"),
+                "Any 1 dot hint",
+                1)
             .addInputBus("Any 4 dot hint (min 1)", 4)
             .addInputHatch("Any 4 dot hint(min 1)", 4);
         if (requiresOutputHatch()) {
