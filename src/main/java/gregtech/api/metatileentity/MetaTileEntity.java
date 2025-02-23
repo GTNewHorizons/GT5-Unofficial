@@ -17,7 +17,8 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 
 import appeng.api.crafting.ICraftingIconProvider;
 import appeng.api.implementations.IPowerChannelState;
@@ -76,7 +77,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         "GT5U.waila.facing.east", "GT5U.waila.facing.unknown" };
 
     @Override
-    public ItemStackHandler getInventoryHandler() {
+    public IItemHandlerModifiable getInventoryHandler() {
         return inventoryHandler;
     }
 
