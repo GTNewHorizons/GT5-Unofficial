@@ -46,7 +46,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import kubatech.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
@@ -126,6 +125,7 @@ import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.api.tileentity.CustomTileEntityPacketHandler;
 import kubatech.api.utils.ModUtils;
 import kubatech.client.effect.EntityRenderer;
+import kubatech.config.Config;
 import kubatech.loaders.MobHandlerLoader;
 import kubatech.network.CustomTileEntityPacket;
 import mcp.mobius.waila.api.IWailaConfigHandler;
