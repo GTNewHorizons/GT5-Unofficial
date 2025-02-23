@@ -978,7 +978,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials RadoxPolymer;
 
     // Taranium
-    public static Materials TerbiumBondedTraceElementResidue;
+    public static Materials TerbiumBondedTraceResidue;
     public static Materials StoneResidue;
     public static Materials TraceElementResidue;
     public static Materials PartiallyOxidizedResidue;
@@ -986,9 +986,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Taranium;
 
     public static Materials DirtyHexafluorosilicicAcid;
-    public static Materials DiluteHydrofluorosilicicAcid;
+    public static Materials DilutedHydrofluorosilicicAcid;
     public static Materials DioxygenDifluoride;
-    public static Materials FluorinatedTraceElementResidue;
+    public static Materials FluorinatedTraceResidue;
     public static Materials TaraniumEnrichedHelium3;
     public static Materials TaraniumSemidepletedHelium3;
     public static Materials TaraniumDepletedHelium3;

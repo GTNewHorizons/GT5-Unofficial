@@ -1190,7 +1190,7 @@ public class DistilleryRecipes implements Runnable {
     }
 
     public void addUniversalDistillationRecipewithCircuit(FluidStack aInput, ItemStack[] aCircuit,
-        FluidStack[] aOutputs, ItemStack aOutput2, int aDuration, int aEUt) {
+        FluidStack[] aOutputs, ItemStack aOutput2, int aDuration, long aEUt) {
         GTRecipeBuilder buildDT = GTValues.RA.stdBuilder()
             .itemInputs(aCircuit);
         if (aOutput2 != GTValues.NI) {
@@ -1225,8 +1225,8 @@ public class DistilleryRecipes implements Runnable {
         }
     }
 
-    public void addUniversalDistillationRecipe(FluidStack aInput, FluidStack[] aOutputs, ItemStack aOutput2,
-        int aDuration, int aEUt) {
+    public static void addUniversalDistillationRecipe(FluidStack aInput, FluidStack[] aOutputs, ItemStack aOutput2,
+        int aDuration, long aEUt) {
         GTRecipeBuilder buildDT = GTValues.RA.stdBuilder();
         if (aOutput2 != GTValues.NI) {
             buildDT.itemOutputs(aOutput2);
