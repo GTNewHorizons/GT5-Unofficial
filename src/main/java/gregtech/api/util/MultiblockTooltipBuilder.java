@@ -761,7 +761,7 @@ public class MultiblockTooltipBuilder {
      * information
      *
      * @param nameKey The name of block This should be an entry into minecraft's localization system.
-     * @param dots Possible locations of this block
+     * @param dots    Possible locations of this block
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStructureHint(String nameKey, int... dots) {
