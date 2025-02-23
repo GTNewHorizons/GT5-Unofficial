@@ -123,7 +123,7 @@ public class MultiblockTooltipBuilder {
      * Processes up to {parallels} recipes at once
      *
      * @param parallels Maximum parallels
-     * @returnInstance this method was called on.
+     * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addParallelInfo(Integer parallels) {
         iLines.add(String.format(TT_Parallels, parallels));
@@ -283,22 +283,6 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addController(String info) {
         sLines.add(TAB + EnumChatFormatting.WHITE + TT_controller + COLON + EnumChatFormatting.GRAY + info);
         return this;
-    }
-
-    /**
-     * Add a line of information about the structure:<br>
-     * (indent)minCountx casingName (minimum) (tiered)
-     *
-     * @param casingName Name of the Casing.
-     * @param minCount   Minimum needed for valid structure check.
-     * @return Instance this method was called on.
-     *
-     * @deprecated Replaced by {@link #addCasingInfoMin(String, int, boolean)}
-     *
-     */
-    @Deprecated
-    public MultiblockTooltipBuilder addCasingInfo(String casingName, int minCount) {
-        return addCasingInfoMin(casingName, minCount, false);
     }
 
     /**

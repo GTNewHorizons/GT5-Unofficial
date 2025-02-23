@@ -4,9 +4,6 @@ import net.minecraft.util.StatCollector;
 
 public class DescTextLocalization {
 
-    @Deprecated
-    public static final String BLUEPRINT_INFO = StatCollector.translateToLocal("gtnhlanth.tt.blueprint");
-
     public static final String BEAMLINE_SCANNER_INFO = StatCollector.translateToLocal("gtnhlanth.tt.beaminfo");
 
     public static String[] addText(String preFix, int length) {
