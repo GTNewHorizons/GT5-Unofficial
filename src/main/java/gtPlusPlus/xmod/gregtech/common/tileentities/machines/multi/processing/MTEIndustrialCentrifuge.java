@@ -13,12 +13,13 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -35,6 +36,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.render.RenderOverlay;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -55,6 +57,7 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     // client side stuff
     // mMachine got overwritten by StructureLib extended facing query response
     // so we use a separate field for this
+    protected final List<RenderOverlay.OverlayTicket> overlayTickets = new ArrayList<>();
     protected boolean mFormed;
 
     public MTEIndustrialCentrifuge(final int aID, final String aName, final String aNameRegional) {
@@ -152,15 +155,27 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     }
 
     @Override
-    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
-        if (!mFormed) return false;
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        setTurbineOverlay();
+    }
+
+    protected void setTurbineOverlay() {
+        IGregTechTileEntity tile = getBaseMetaTileEntity();
+        if (tile.isServerSide()) return;
 
         IIconContainer[] tTextures;
         if (getBaseMetaTileEntity().isActive() && usingAnimations()) tTextures = TURBINE_NEW_ACTIVE;
         else tTextures = TURBINE_NEW;
-        GTUtilityClient
-            .renderTurbineOverlay(aWorld, aX, aY, aZ, aRenderer, getExtendedFacing(), getCasingBlock(), tTextures);
-        return false;
+
+        GTUtilityClient.setTurbineOverlay(
+            tile.getWorld(),
+            tile.getXCoord(),
+            tile.getYCoord(),
+            tile.getZCoord(),
+            getExtendedFacing(),
+            tTextures,
+            overlayTickets);
     }
 
     @Override
@@ -247,12 +262,18 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     @Override
     public void onValueUpdate(byte aValue) {
         mFormed = (aValue & 0x1) != 0;
-
+        setTurbineOverlay();
     }
 
     @Override
     public byte getUpdateData() {
         return (byte) ((mMachine ? 1 : 0));
+    }
+
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        GTUtilityClient.clearTurbineOverlay(overlayTickets);
     }
 
     @Override
