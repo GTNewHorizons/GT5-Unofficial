@@ -533,14 +533,15 @@ public class MultiblockTooltipBuilder {
      * Use this method to add a structural part that isn't covered by the other methods.<br>
      * (indent)name: info
      *
-     * @param name Name of the hatch or other component.
-     * @param info Positional information.
-     * @param dots The valid locations for this part when asked to display hints
+     * @param localizedName Name of the hatch or other component. This entry should be localized, otherwise the
+     *                      structure hints sent to the chat can't be localized.
+     * @param info          Positional information.
+     * @param dots          The valid locations for this part when asked to display hints
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addOtherStructurePart(String name, String info, int... dots) {
-        sLines.add(EnumChatFormatting.WHITE + TAB + name + COLON + EnumChatFormatting.GRAY + info);
-        for (int dot : dots) hBlocks.put(dot, name);
+    public MultiblockTooltipBuilder addOtherStructurePart(String localizedName, String info, int... dots) {
+        sLines.add(EnumChatFormatting.WHITE + TAB + localizedName + COLON + EnumChatFormatting.GRAY + info);
+        for (int dot : dots) hBlocks.put(dot, localizedName);
         return this;
     }
 
