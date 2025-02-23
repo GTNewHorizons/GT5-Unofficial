@@ -2039,6 +2039,13 @@ GT5U.tooltip.pollution.produces.rocket.ignited=Produces %d Pollution/Second when
 GT5U.tooltip.pollution.produces.rocket.flying=Produces %d Pollution/Second when flying
 
 
+GT5U.tooltip.fluid.registry=Registry: %s
+GT5U.tooltip.fluid.amount=Amount: %s L
+GT5U.tooltip.fluid.temperature=Temperature: %s K
+GT5U.tooltip.fluid.stat=State: %s
+GT5U.tooltip.fluid.stat.gas=Gas
+GT5U.tooltip.fluid.stat.liquid=Liquid
+
 # Achievements
 
 # 4/2/19
