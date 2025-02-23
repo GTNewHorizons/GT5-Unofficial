@@ -760,12 +760,12 @@ public class MultiblockTooltipBuilder {
      * Use this method to add an entry to standard structural hint without creating a corresponding line in structure
      * information
      *
-     * @param name The name of block This should be an entry into minecraft's localization system.
+     * @param nameKey The name of block This should be an entry into minecraft's localization system.
      * @param dots Possible locations of this block
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addStructureHint(String name, int... dots) {
-        for (int dot : dots) hBlocks.put(dot, StatCollector.translateToLocal(name));
+    public MultiblockTooltipBuilder addStructureHint(String nameKey, int... dots) {
+        for (int dot : dots) hBlocks.put(dot, StatCollector.translateToLocal(nameKey));
         return this;
     }
 

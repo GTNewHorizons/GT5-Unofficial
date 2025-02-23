@@ -52,6 +52,10 @@ item.gt.pollen.name=Pollen
 item.gt.propolis.name=Propolis
 tile.gt.dronerender.name=Drone Renderer
 
+# GT++ items
+item.GTPP.air_intake_hatch.name=Air Intake Hatch
+item.GTPP.catalyst_housing.name=Catalyst Housing
+
 # Air Filter
 item.GTPP.air_filter.name=Air Filter
 item.GTPP.air_filter.name.t1=Air Filter [Tier 1]
