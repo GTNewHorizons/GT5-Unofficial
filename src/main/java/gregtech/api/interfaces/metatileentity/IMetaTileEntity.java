@@ -22,9 +22,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 
+import com.gtnewhorizon.gtnhlib.capability.CapabilityProvider;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
-import appeng.api.crafting.ICraftingIconProvider;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
@@ -44,7 +44,7 @@ import gregtech.api.util.GTUtil;
  * Don't implement this yourself and expect it to work. Extend @MetaTileEntity itself.
  */
 public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHandler, IMachineBlockUpdateable,
-    IGregtechWailaProvider, IGetGUITextureSet, ICraftingIconProvider, IGregTechDeviceInformation {
+    IGregtechWailaProvider, IGetGUITextureSet, IGregTechDeviceInformation, CapabilityProvider {
 
     /**
      * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
@@ -489,11 +489,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @param tooltip Tooltip to which can be added
      */
     default void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {}
-
-    @Override
-    default ItemStack getMachineCraftingIcon() {
-        return null;
-    }
 
     /**
      * Gets items to be displayed for HoloInventory mod.

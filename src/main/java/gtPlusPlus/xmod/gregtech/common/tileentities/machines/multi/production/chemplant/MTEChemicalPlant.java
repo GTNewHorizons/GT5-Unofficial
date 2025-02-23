@@ -27,6 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+import org.apache.commons.lang3.tuple.Triple;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
@@ -62,7 +63,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IDualInputHatch;
-import gtPlusPlus.api.objects.data.Triplet;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -89,7 +89,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     private final ArrayList<MTEHatchCatalysts> mCatalystBuses = new ArrayList<>();
 
-    private static final HashMap<Integer, Triplet<Block, Integer, Integer>> mTieredBlockRegistry = new HashMap<>();
+    private static final HashMap<Integer, Triple<Block, Integer, Integer>> mTieredBlockRegistry = new HashMap<>();
 
     public MTEChemicalPlant(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -100,7 +100,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     }
 
     public static boolean registerMachineCasingForTier(int aTier, Block aBlock, int aMeta, int aCasingTextureID) {
-        Triplet<Block, Integer, Integer> aCasingData = new Triplet<>(aBlock, aMeta, aCasingTextureID);
+        Triple<Block, Integer, Integer> aCasingData = Triple.of(aBlock, aMeta, aCasingTextureID);
         if (mTieredBlockRegistry.containsKey(aTier)) {
             GTPPCore.crash(
                 "Tried to register a Machine casing for tier " + aTier
@@ -115,7 +115,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             return 10;
         }
         return mTieredBlockRegistry.get(aTier)
-            .getValue_3();
+            .getRight();
     }
 
     @Override
@@ -273,9 +273,9 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                 Block block = world.getBlock(x, y, z);
                 int meta = world.getBlockMetadata(x, y, z);
                 Block target = mTieredBlockRegistry.get(aIndex)
-                    .getValue_1();
+                    .getLeft();
                 int targetMeta = mTieredBlockRegistry.get(aIndex)
-                    .getValue_2();
+                    .getMiddle();
                 return target.equals(block) && meta == targetMeta;
             }
 
@@ -292,9 +292,9 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                     y,
                     z,
                     mTieredBlockRegistry.get(getIndex(trigger.stackSize))
-                        .getValue_1(),
+                        .getLeft(),
                     mTieredBlockRegistry.get(getIndex(trigger.stackSize))
-                        .getValue_2());
+                        .getMiddle());
                 return true;
             }
 
@@ -305,9 +305,9 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                     y,
                     z,
                     mTieredBlockRegistry.get(getIndex(trigger.stackSize))
-                        .getValue_1(),
+                        .getLeft(),
                     mTieredBlockRegistry.get(getIndex(trigger.stackSize))
-                        .getValue_2(),
+                        .getMiddle(),
                     3);
             }
 
@@ -317,9 +317,9 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                 int z, ItemStack trigger, AutoPlaceEnvironment env) {
                 return BlocksToPlace.create(
                     mTieredBlockRegistry.get(getIndex(trigger.stackSize))
-                        .getValue_1(),
+                        .getLeft(),
                     mTieredBlockRegistry.get(getIndex(trigger.stackSize))
-                        .getValue_2());
+                        .getMiddle());
             }
 
             @Override
@@ -328,9 +328,9 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                 if (check(getIndex(trigger.stackSize), world, x, y, z)) return PlaceResult.SKIP;
                 return StructureUtility.survivalPlaceBlock(
                     mTieredBlockRegistry.get(getIndex(trigger.stackSize))
-                        .getValue_1(),
+                        .getLeft(),
                     mTieredBlockRegistry.get(getIndex(trigger.stackSize))
-                        .getValue_2(),
+                        .getMiddle(),
                     world,
                     x,
                     y,
@@ -635,7 +635,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                 }
                 return super.onRecipeStart(recipe);
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

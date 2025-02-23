@@ -55,12 +55,12 @@ import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-import gtPlusPlus.everglades.dimension.DimensionEverglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import tectech.recipe.TTRecipeAdder;
 import tectech.thing.CustomItemList;
+import toxiceverglades.dimension.DimensionEverglades;
 
 public class RecipesMachines {
 
@@ -2656,7 +2656,7 @@ public class RecipesMachines {
             CI.getTieredCircuit(5),
             plate,
             "wireFineElectrum",
-            ItemUtils.getSimpleStack(ModBlocks.blockFishTrap),
+            GregtechItemList.FishTrap.get(1),
             "wireFineElectrum",
             plate,
             CI.getTieredCircuit(5),

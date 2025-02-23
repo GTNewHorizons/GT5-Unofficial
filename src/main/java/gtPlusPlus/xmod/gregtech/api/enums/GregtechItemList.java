@@ -12,9 +12,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.xmod.gregtech.api.interfaces.IGregtechItemContainer;
 
-/**
- * Class containing all non-OreDict Items of GregTech.
- */
 public enum GregtechItemList implements IGregtechItemContainer {
 
     /**
@@ -27,32 +24,6 @@ public enum GregtechItemList implements IGregtechItemContainer {
     Armour_Hazmat_Advanced_Legs,
     Armour_Hazmat_Advanced_Boots,
 
-    // Gregtech Machine Parts
-    Electric_Motor_LuV,
-    Electric_Motor_ZPM,
-    Electric_Motor_UV,
-    Electric_Pump_LuV,
-    Electric_Pump_ZPM,
-    Electric_Pump_UV,
-    Conveyor_Module_LuV,
-    Conveyor_Module_ZPM,
-    Conveyor_Module_UV,
-    Electric_Piston_LuV,
-    Electric_Piston_ZPM,
-    Electric_Piston_UV,
-    Robot_Arm_LuV,
-    Robot_Arm_ZPM,
-    Robot_Arm_UV,
-    Field_Generator_LuV,
-    Field_Generator_ZPM,
-    Field_Generator_UV,
-    Emitter_LuV,
-    Emitter_ZPM,
-    Emitter_UV,
-    Sensor_LuV,
-    Sensor_ZPM,
-    Sensor_UV,
-
     // Mixed Components
     TransmissionComponent_LV,
     TransmissionComponent_MV,
@@ -64,48 +35,6 @@ public enum GregtechItemList implements IGregtechItemContainer {
     TransmissionComponent_UV,
     TransmissionComponent_UHV,
 
-    // Circuits
-    Old_Circuit_Primitive,
-    Old_Circuit_Basic,
-    Old_Circuit_Good,
-    Old_Circuit_Advanced,
-    Old_Circuit_Data,
-    Old_Circuit_Elite,
-    Old_Circuit_Master,
-    Old_Tool_DataOrb,
-    Old_Circuit_Ultimate,
-    Old_Tool_DataStick,
-    Circuit_IV,
-    Circuit_LuV,
-    Circuit_ZPM,
-
-    // Circuit Parts
-    Circuit_Board_IV,
-    Circuit_Board_LuV,
-    Circuit_Board_ZPM,
-    Circuit_Parts_Crystal_Chip_IV,
-    Circuit_Parts_Crystal_Chip_LuV,
-    Circuit_Parts_Crystal_Chip_ZPM,
-    Circuit_Parts_IV,
-    Circuit_Parts_LuV,
-    Circuit_Parts_ZPM,
-    Circuit_Parts_Wiring_IV,
-    Circuit_Parts_Wiring_LuV,
-    Circuit_Parts_Wiring_ZPM,
-
-    // Old Style Circuits
-    Old_Circuit_Board_Basic,
-    Old_Circuit_Board_Advanced,
-    Old_Circuit_Board_Elite,
-    Old_Circuit_Parts_Crystal_Chip_Elite,
-    Old_Circuit_Parts_Crystal_Chip_Master,
-    Old_Circuit_Parts_Advanced,
-    Old_Circuit_Parts_Wiring_Basic,
-    Old_Circuit_Parts_Wiring_Advanced,
-    Old_Circuit_Parts_Wiring_Elite,
-    Old_Empty_Board_Basic,
-    Old_Empty_Board_Elite,
-
     // Batteries
     Battery_RE_EV_Sodium,
     Battery_RE_EV_Cadmium,
@@ -114,18 +43,6 @@ public enum GregtechItemList implements IGregtechItemContainer {
     // Shapes for Extruder
     Shape_Extruder_WindmillShaft,
     Shape_Extruder_SmallGear,
-
-    // Cooked Raisin Toast for ImQ009
-    Food_Baked_Raisin_Bread,
-
-    // Fluid Cells to regulate flows.
-    Fluid_Cell_1L,
-    Fluid_Cell_16L,
-    Fluid_Cell_36L,
-    Fluid_Cell_144L,
-
-    // Debug
-    TESTITEM,
 
     // Larger Volumetric Flasks
     VOLUMETRIC_FLASK_8k,
@@ -190,6 +107,18 @@ public enum GregtechItemList implements IGregtechItemContainer {
     GTPP_Casing_ZPM,
     GTPP_Casing_UV,
     GTPP_Casing_UHV,
+
+    // Tiered Energy Cores
+    Energy_Core_ULV,
+    Energy_Core_LV,
+    Energy_Core_MV,
+    Energy_Core_HV,
+    Energy_Core_EV,
+    Energy_Core_IV,
+    Energy_Core_LuV,
+    Energy_Core_ZPM,
+    Energy_Core_UV,
+    Energy_Core_UHV,
 
     // IronBlastFurnace Machine_Bronze_BlastFurnace
     Casing_IronPlatedBricks,
@@ -333,9 +262,6 @@ public enum GregtechItemList implements IGregtechItemContainer {
     Casing_Multi_Use,
 
     // Bedrock Mining Platforms
-    /* BedrockMiner_MKI, */
-    /* BedrockMiner_MKII, */
-    /* BedrockMiner_MKIII, */
     Casing_BedrockMiner,
 
     // Large Packager
@@ -608,14 +534,6 @@ public enum GregtechItemList implements IGregtechItemContainer {
     GT4_Electric_Auto_Workbench_LuV,
     GT4_Electric_Auto_Workbench_ZPM,
     GT4_Electric_Auto_Workbench_UV,
-    GT4_Electric_Inventory_Manager_LV,
-    GT4_Electric_Inventory_Manager_MV,
-    GT4_Electric_Inventory_Manager_HV,
-    GT4_Electric_Inventory_Manager_EV,
-    GT4_Electric_Inventory_Manager_IV,
-    GT4_Electric_Inventory_Manager_LuV,
-    GT4_Electric_Inventory_Manager_ZPM,
-    GT4_Electric_Inventory_Manager_UV,
 
     // GT4 Crop Harvester
     GT4_Crop_Harvester_LV,
@@ -658,9 +576,13 @@ public enum GregtechItemList implements IGregtechItemContainer {
 
     // Basically is an automatic Cauldron
     SimpleDustWasher_ULV,
+    SimpleDustWasher_LV,
     SimpleDustWasher_MV,
+    SimpleDustWasher_HV,
     SimpleDustWasher_EV,
+    SimpleDustWasher_IV,
     SimpleDustWasher_LuV,
+    SimpleDustWasher_ZPM,
     SimpleDustWasher_UV,
 
     // Solar Tower Reflector
@@ -684,18 +606,6 @@ public enum GregtechItemList implements IGregtechItemContainer {
     // Cold Trap
     ColdTrap_IV,
     ColdTrap_ZPM,
-
-    // Solar Generators
-    GT_Solar_ULV,
-    GT_Solar_LV,
-    GT_Solar_MV,
-    GT_Solar_HV,
-    GT_Solar_EV,
-    GT_Solar_IV,
-    GT_Solar_LuV,
-    GT_Solar_ZPM,
-    GT_Solar_UV,
-    GT_Solar_MAX,
 
     // Variable voltage RF convertor
     Energy_Buffer_1by1_ULV,
@@ -732,24 +642,6 @@ public enum GregtechItemList implements IGregtechItemContainer {
     Generator_SemiFluid_EV,
     Generator_SemiFluid_IV,
 
-    // Advanced Mixer 4x4
-    Machine_Advanced_LV_Mixer,
-    Machine_Advanced_MV_Mixer,
-    Machine_Advanced_HV_Mixer,
-    Machine_Advanced_EV_Mixer,
-    Machine_Advanced_IV_Mixer,
-    Machine_Advanced_LuV_Mixer,
-    Machine_Advanced_ZPM_Mixer,
-    Machine_Advanced_UV_Mixer,
-
-    // Block that enables uplink to a superconductor network
-    SuperConductorInputNode,
-
-    // Heat Pipes
-    HeatPipe_Tier_1,
-    HeatPipe_Tier_2,
-    HeatPipe_Tier_3,
-
     // Chemical Dehydrators for nuclear fuels
     GT_Dehydrator_MV,
     GT_Dehydrator_HV,
@@ -778,9 +670,6 @@ public enum GregtechItemList implements IGregtechItemContainer {
     GT_Chisel_MV,
     GT_Chisel_HV,
 
-    // Plasma Tank
-    /* Plasma_Tank, */
-
     // ----------------------------------------------------------------------------
 
     /**
@@ -794,29 +683,181 @@ public enum GregtechItemList implements IGregtechItemContainer {
     Cover_Overflow_Valve_EV,
     Cover_Overflow_Valve_IV,
 
-    // Item Void Covers
-    Cover_Overflow_Item_ULV,
-    Cover_Overflow_Item_LV,
-    Cover_Overflow_Item_MV,
-    Cover_Overflow_Item_HV,
-    Cover_Overflow_Item_EV,
-    Cover_Overflow_Item_IV,
-
     // ----------------------------------------------------------------------------
-    // Additional washers
-    SimpleDustWasher_LV,
-    SimpleDustWasher_HV,
-    SimpleDustWasher_IV,
-    SimpleDustWasher_ZPM,
 
     // Redstone Utilities
     RedstoneButtonPanel,
     RedstoneCircuitBlock,
     RedstoneLamp,
     RedstoneStrengthDisplay,
-    RedstoneStrengthScale;
+    RedstoneStrengthScale,
 
-    public static final GregtechItemList[] DYE_ONLY_ITEMS = { Energy_Buffer_1by1_EV, Energy_Buffer_1by1_EV };
+    // ----------------------------------------------------------------------------
+    // Items previously stored elsewhere, moved here for common reference
+
+    // Catalyst Carriers
+    RedMetalCatalyst,
+    YellowMetalCatalyst,
+    BlueMetalCatalyst,
+    OrangeMetalCatalyst,
+    PurpleMetalCatalyst,
+    BrownMetalCatalyst,
+    PinkMetalCatalyst,
+    FormaldehydeCatalyst,
+    SolidAcidCatalyst,
+    InfiniteMutationCatalyst,
+
+    PlatinumGroupCatalyst,
+    PlasticPolymerCatalyst,
+    RubberPolymerCatalyst,
+    AdhesionPromoterCatalyst,
+    TitaTungstenIndiumCatalyst,
+    RadioactivityCatalyst,
+    RareEarthGroupCatalyst,
+    SimpleNaquadahCatalyst,
+    AdvancedNaquadahCatalyst,
+    RawIntelligenceCatalyst,
+    UltimatePlasticCatalyst,
+    BiologicalIntelligenceCatalyst,
+    TemporalHarmonyCatalyst,
+    ParticleAccelerationCatalyst,
+    SynchrotronCapableCatalyst,
+    AlgagenicGrowthPromoterCatalyst,
+
+    // Generic Chem Items
+    SodiumEthoxide,
+    SodiumEthylXanthate,
+    PotassiumEthylXanthate,
+    PotassiumHydroxide,
+
+    // Milled Items
+    MilledSphalerite,
+    MilledChalcopyrite,
+    MilledNickel,
+    MilledPlatinum,
+    MilledPentlandite,
+    MilledRedstone,
+    MilledSpessartine,
+    MilledGrossular,
+    MilledAlmandine,
+    MilledPyrope,
+    MilledMonazite,
+
+    // Compressed Stuff
+    CactusCharcoal,
+    BlockCactusCharcoal,
+    CompressedCactusCharcoal,
+    DoubleCompressedCactusCharcoal,
+    TripleCompressedCactusCharcoal,
+    QuadrupleCompressedCactusCharcoal,
+    QuintupleCompressedCactusCharcoal,
+
+    CactusCoke,
+    BlockCactusCoke,
+    CompressedCactusCoke,
+    DoubleCompressedCactusCoke,
+    TripleCompressedCactusCoke,
+    QuadrupleCompressedCactusCoke,
+    QuintupleCompressedCactusCoke,
+
+    SugarCharcoal,
+    BlockSugarCharcoal,
+    CompressedSugarCharcoal,
+    DoubleCompressedSugarCharcoal,
+    TripleCompressedSugarCharcoal,
+    QuadrupleCompressedSugarCharcoal,
+    QuintupleCompressedSugarCharcoal,
+
+    SugarCoke,
+    BlockSugarCoke,
+    CompressedSugarCoke,
+    DoubleCompressedSugarCoke,
+    TripleCompressedSugarCoke,
+    QuadrupleCompressedSugarCoke,
+    QuintupleCompressedSugarCoke,
+
+    CompressedObsidian,
+    DoubleCompressedObsidian,
+    TripleCompressedObsidian,
+    QuadrupleCompressedObsidian,
+    QuintupleCompressedObsidian,
+    InvertedObsidian,
+
+    CompressedGlowstone,
+    DoubleCompressedGlowstone,
+    TripleCompressedGlowstone,
+    QuadrupleCompressedGlowstone,
+    QuintupleCompressedGlowstone,
+
+    // IC2 Rotors
+    EnergeticAlloyRotor,
+    EnergeticAlloyRotorBlade,
+    EnergeticAlloyShaft,
+
+    TungstenSteelRotor,
+    TungstenSteelRotorBlade,
+    TungstenSteelShaft,
+
+    VibrantAlloyRotor,
+    VibrantAlloyRotorBlade,
+    VibrantAlloyShaft,
+
+    IridiumRotor,
+    IridiumRotorBlade,
+    IridiumShaft,
+
+    // Basic Turbines
+    BasicIronTurbine,
+    BasicBronzeTurbine,
+    BasicSteelTurbine,
+
+    // Bee Frames
+    HiveFrameAccelerated,
+    HiveFrameVoid,
+    HiveFrameMutagenic,
+    HiveFrameBusy,
+    HiveFrameDecay,
+    HiveFrameSlow,
+    HiveFrameStabilize,
+    HiveFrameArborist,
+
+    // Thermal Inspired Items
+    BlizzRod,
+    BlizzPowder,
+    CryotheumDust,
+    PyrotheumDust,
+    PyrotheumBucket,
+    CryotheumBucket,
+    EnderBucket,
+
+    // Misc
+    CustomCoalCoke,
+    BlueprintBase,
+    MiningExplosives,
+    AlkalusDisk,
+    WitherGuard,
+    MagicFeather,
+    PestKiller,
+    FishTrap,
+
+    // ----------------------------------------------------------------------------
+    // Dust Items TODO convert to materials some day
+
+    // Tumbaga Mix
+    TumbagaMixDust,
+    SmallTumbagaMixDust,
+    TinyTumbagaMixDust,
+
+    PhthalicAnhydrideDust,
+    SmallPhthalicAnhydrideDust,
+    TinyPhthalicAnhydrideDust,
+
+    LithiumHydroperoxide,
+    SmallLithiumHydroperoxide,
+    TinyLithiumHydroperoxide,
+
+    ;
+
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;
 

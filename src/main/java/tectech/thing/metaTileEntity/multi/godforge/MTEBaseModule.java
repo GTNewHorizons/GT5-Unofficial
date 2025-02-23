@@ -109,6 +109,11 @@ public class MTEBaseModule extends TTMultiblockBase {
     }
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.blastFurnaceRecipes;
     }

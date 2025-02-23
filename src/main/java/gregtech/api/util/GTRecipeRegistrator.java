@@ -173,6 +173,7 @@ public class GTRecipeRegistrator {
 
     public static void registerMaterialRecycling(ItemStack aStack, ItemData aData) {
         if (GTUtility.isStackInvalid(aStack) || GTUtility.areStacksEqual(new ItemStack(Items.blaze_rod), aStack)
+            || GTUtility.areStacksEqual(new ItemStack(Blocks.obsidian), aStack)
             || aData == null
             || !aData.hasValidMaterialData()
             || !aData.mMaterial.mMaterial.mAutoGenerateRecycleRecipes
