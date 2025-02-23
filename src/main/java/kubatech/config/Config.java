@@ -64,12 +64,11 @@ public class Config {
                     "Hard player only loot (such as core mod drops) will be multiplied by this number")
                 .getDouble();
 
-            ignorePeacefulCheck = configuration
-                .get(
-                    category.get(),
-                    "ignorePeacefulCheck",
-                    false,
-                    "Allow for EEC to run with non-passive mobs in peaceful difficulty. Useful for weak hosting machines.")
+            ignorePeacefulCheck = configuration.get(
+                category.get(),
+                "ignorePeacefulCheck",
+                false,
+                "Allow for EEC to run with non-passive mobs in peaceful difficulty. Useful for weak hosting machines.")
                 .getBoolean();
         }
     }
