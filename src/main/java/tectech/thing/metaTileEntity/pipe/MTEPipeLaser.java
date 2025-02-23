@@ -32,7 +32,7 @@ import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.mechanics.pipe.PipeActivityMessage;
 import tectech.util.CommonValues;
 
-public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTunnel, IActivePipe {
+public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTunnel, IActivePipe {
 
     static Textures.BlockIcons.CustomIcon EMcandy, EMCandyActive;
     private static Textures.BlockIcons.CustomIcon EMpipe;
@@ -40,17 +40,17 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
 
     private boolean active;
 
-    public MTEPipeEnergy(int aID, String aName, String aNameRegional) {
+    public MTEPipeLaser(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
     }
 
-    public MTEPipeEnergy(String aName) {
+    public MTEPipeLaser(String aName) {
         super(aName, 0);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new MTEPipeEnergy(mName);
+        return new MTEPipeLaser(mName);
     }
 
     @Override
@@ -87,8 +87,7 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(side);
 
-            if (gregTechTileEntity != null
-                && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeEnergy neighbor) {
+            if (gregTechTileEntity != null && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser neighbor) {
                 neighbor.updateNetwork(true);
             }
         }
@@ -143,7 +142,7 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(side);
 
-            if (gregTechTileEntity != null && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeEnergy neighbor
+            if (gregTechTileEntity != null && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser neighbor
                 && neighbor.isConnectedAtSide(side.getOpposite())) {
                 neighbor.mConnections &= ~side.getOpposite().flag;
                 neighbor.connectionCount--;

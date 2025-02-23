@@ -12,19 +12,19 @@ import org.apache.commons.lang3.ArrayUtils;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
-public class MTEPipeBlockEnergy extends MTEPipeEnergy {
+public class MTEPipeBlockLaser extends MTEPipeLaser {
 
-    public MTEPipeBlockEnergy(int aID, String aName, String aNameRegional) {
+    public MTEPipeBlockLaser(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEPipeBlockEnergy(String aName) {
+    public MTEPipeBlockLaser(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new MTEPipeBlockEnergy(mName);
+        return new MTEPipeBlockLaser(mName);
     }
 
     @Override

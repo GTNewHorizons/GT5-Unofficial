@@ -40,7 +40,7 @@ import gregtech.api.util.ISerializableObject;
 import gregtech.common.GTClient;
 import gregtech.common.covers.CoverInfo;
 
-public class MTEItem extends MetaPipeEntity implements IMetaTileEntityItemPipe {
+public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPipe {
 
     public final float mThickNess;
     public final Materials mMaterial;
@@ -52,7 +52,7 @@ public class MTEItem extends MetaPipeEntity implements IMetaTileEntityItemPipe {
     public boolean mIsRestrictive = false;
     private int[] cacheSides;
 
-    public MTEItem(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
+    public MTEItemPipe(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
         int aInvSlotCount, int aStepSize, boolean aIsRestrictive, int aTickTime) {
         super(aID, aName, aNameRegional, aInvSlotCount, false);
         mIsRestrictive = aIsRestrictive;
@@ -63,12 +63,12 @@ public class MTEItem extends MetaPipeEntity implements IMetaTileEntityItemPipe {
         addInfo(aID);
     }
 
-    public MTEItem(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
+    public MTEItemPipe(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
         int aInvSlotCount, int aStepSize, boolean aIsRestrictive) {
         this(aID, aName, aNameRegional, aThickNess, aMaterial, aInvSlotCount, aStepSize, aIsRestrictive, 20);
     }
 
-    public MTEItem(String aName, float aThickNess, Materials aMaterial, int aInvSlotCount, int aStepSize,
+    public MTEItemPipe(String aName, float aThickNess, Materials aMaterial, int aInvSlotCount, int aStepSize,
         boolean aIsRestrictive, int aTickTime) {
         super(aName, aInvSlotCount);
         mIsRestrictive = aIsRestrictive;
@@ -85,7 +85,7 @@ public class MTEItem extends MetaPipeEntity implements IMetaTileEntityItemPipe {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEItem(mName, mThickNess, mMaterial, mInventory.length, mStepSize, mIsRestrictive, mTickTime);
+        return new MTEItemPipe(mName, mThickNess, mMaterial, mInventory.length, mStepSize, mIsRestrictive, mTickTime);
     }
 
     @Override
