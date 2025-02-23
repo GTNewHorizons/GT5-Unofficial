@@ -209,7 +209,7 @@ public class PlatinumSludgeOverHaul {
                 Materials.HydrochloricAcid.getCells(3),
                 Materials.NitricAcid.getCells(1),
                 GTUtility.getIntegratedCircuit(2))
-            .itemOutputs(Materials.Empty.getCells(2))
+            .itemOutputs(Materials.Empty.getCells(4))
             .fluidOutputs(AquaRegia.getFluidOrGas(4000))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV)
@@ -226,7 +226,7 @@ public class PlatinumSludgeOverHaul {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.HydrochloricAcid.getCells(3), GTUtility.getIntegratedCircuit(4))
-            .itemOutputs(Materials.Empty.getCells(1))
+            .itemOutputs(Materials.Empty.getCells(3))
             .fluidInputs(Materials.NitricAcid.getFluid(1000))
             .fluidOutputs(AquaRegia.getFluidOrGas(4000))
             .duration(1 * SECONDS + 10 * TICKS)
