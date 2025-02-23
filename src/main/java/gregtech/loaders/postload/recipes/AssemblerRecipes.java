@@ -31,6 +31,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
@@ -3358,6 +3360,30 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(ItemRegistry.energyDistributor[11])
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("molten.indalloy140"), 144 * 8))
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 48),
+                MaterialsAlloy.PIKYONIUM.getRod(2),
+                ItemList.Circuit_Parts_Reinforced_Glass_Tube.get(4L))
+            .itemOutputs(ItemList.MicrofocusXRayTube.get(1))
+            .duration(25 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("molten.indalloy140"), 144 * 4))
+            .itemInputs(
+                WerkstoffLoader.Californium.get(OrePrefixes.wireFine, 64),
+                MaterialsAlloy.BLACK_TITANIUM.getFineWire(64),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 16),
+                MaterialsAlloy.LAFIUM.getFoil(8),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahAlloy, 1))
+            .itemOutputs(ItemList.SeparationElectromagnet.get(1))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
     }
 
