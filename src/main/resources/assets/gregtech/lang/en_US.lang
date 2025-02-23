@@ -2025,7 +2025,8 @@ GTPP.tooltip.ore.found=Found:
 GTPP.tooltip.ore.unknown=- Unknown
 GTPP.tooltip.block.mining_level=Mining Level: %d
 GTPP.tooltip.block.contains=Contains:
-
+GTPP.tooltip.meta_special.quantum_stability=Provides quantum stability
+GTPP.tooltip.meta_special.quantum_modulation=Provides quantum modulation
 
 GT5U.tooltip.pollution.produces=Produces %d Pollution/Second
 GT5U.tooltip.pollution.produces.multiblock=A complete Multiblock produces %d Pollution/Second
