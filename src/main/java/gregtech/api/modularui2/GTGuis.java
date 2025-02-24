@@ -3,9 +3,13 @@ package gregtech.api.modularui2;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.factory.ClientGUI;
 import com.cleanroommc.modularui.factory.GuiManager;
 import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ContainerCustomizer;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
+import com.cleanroommc.modularui.screen.NEISettingsImpl;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -27,6 +31,13 @@ public final class GTGuis {
     public static boolean GLOBAL_SWITCH_MUI2 = false;
 
     /**
+     * Creates simple panel with no default widgets.
+     */
+    public static ModularPanel createSimplePanel(@NotNull String name) {
+        return ModularPanel.defaultPanel(name);
+    }
+
+    /**
      * Creates builder object for MetaTileEntity GUI template. Call {@link GTBaseGuiBuilder#build} to retrieve panel.
      *
      * @see GTBaseGuiBuilder
@@ -40,7 +51,7 @@ public final class GTGuis {
      * Creates popup panel with GT style.
      */
     public static ModularPanel createPopUpPanel(@NotNull String name) {
-        return createPopUpPanel(name, false, false);
+        return new GTPopUpPanel(name, false, false);
     }
 
     /**
@@ -49,6 +60,26 @@ public final class GTGuis {
     public static ModularPanel createPopUpPanel(@NotNull String name, boolean disablePanelsBelow,
         boolean closeOnOutOfBoundsClick) {
         return new GTPopUpPanel(name, disablePanelsBelow, closeOnOutOfBoundsClick);
+    }
+
+    /**
+     * Opens client-only GUI with the supplied panel. NEI is enabled.
+     */
+    public static void openClientOnlyScreen(ModularPanel panel) {
+        openClientOnlyScreen(panel, true);
+    }
+
+    /**
+     * Opens client-only GUI with the supplied panel. Can specify whether to enable NEI.
+     */
+    public static void openClientOnlyScreen(ModularPanel panel, boolean enableNEI) {
+        ModularScreen screen = new GTModularScreen(panel, GTGuiThemes.STANDARD);
+        NEISettingsImpl neiSetting = new NEISettingsImpl();
+        if (enableNEI) {
+            neiSetting.enableNEI();
+        }
+        ContainerCustomizer containerCustomizer = enableNEI ? new ContainerCustomizer() : null;
+        ClientGUI.open(screen, neiSetting, containerCustomizer);
     }
 
     @ApiStatus.Internal

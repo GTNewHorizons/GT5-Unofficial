@@ -2,6 +2,8 @@ package gregtech.common.modularui2.factory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import net.minecraft.item.ItemStack;
 
@@ -55,6 +57,8 @@ public class SelectItemGuiBuilder {
     private @Nullable SelectItemServerAction onSelectedServerAction;
     private @Nullable OnSelectedAction onSelectedClientAction;
     private @Nullable IDrawable currentItemSlotOverlay;
+    private @Nullable Consumer<SlotLikeButtonWidget> currentItemWidgetCustomizer;
+    private @Nullable BiConsumer<Integer, SlotLikeButtonWidget> choiceWidgetCustomizer;
     private boolean allowDeselected;
 
     private boolean built = false;
@@ -139,6 +143,24 @@ public class SelectItemGuiBuilder {
     }
 
     /**
+     * Allows customizing widget that gets displayed as currently selected item.
+     */
+    public SelectItemGuiBuilder setCurrentItemWidgetCustomizer(
+        @Nullable Consumer<SlotLikeButtonWidget> currentItemWidgetCustomizer) {
+        this.currentItemWidgetCustomizer = currentItemWidgetCustomizer;
+        return this;
+    }
+
+    /**
+     * Allows customizing widget for each of the choices.
+     */
+    public SelectItemGuiBuilder setChoiceWidgetCustomizer(
+        @Nullable BiConsumer<Integer, SlotLikeButtonWidget> choiceWidgetCustomizer) {
+        this.choiceWidgetCustomizer = choiceWidgetCustomizer;
+        return this;
+    }
+
+    /**
      * Sets whether to allow the state where no item is selected. False by default.
      */
     public SelectItemGuiBuilder setAllowDeselected(boolean allowDeselected) {
@@ -174,16 +196,18 @@ public class SelectItemGuiBuilder {
                 .leftRel(0.5f, -(18 / 2) - 3, 1)
                 .height(18)
                 .top(22));
-        panel.child(
-            new SlotLikeButtonWidget(() -> selected > -1 ? choices.get(selected) : null)
-                .background(
-                    GTGuiTextures.SLOT_ITEM_DARK,
-                    new DynamicDrawable(
-                        () -> currentItemSlotOverlay != null ? currentItemSlotOverlay : IDrawable.EMPTY))
+        SlotLikeButtonWidget currentItemWidget = new SlotLikeButtonWidget(
+            () -> selected > -1 ? choices.get(selected) : null).background(
+                GTGuiTextures.SLOT_ITEM_DARK,
+                new DynamicDrawable(() -> currentItemSlotOverlay != null ? currentItemSlotOverlay : IDrawable.EMPTY))
                 .playClickSound(false)
                 .onMousePressed(mouseButton -> true)
                 .alignX(0.5f)
-                .top(22));
+                .top(22);
+        if (currentItemWidgetCustomizer != null) {
+            currentItemWidgetCustomizer.accept(currentItemWidget);
+        }
+        panel.child(currentItemWidget);
 
         List<List<IWidget>> choiceWidgets = new ArrayList<>();
         for (int i = 0; i < rows; i++) {
@@ -192,26 +216,30 @@ public class SelectItemGuiBuilder {
             for (int j = 0; j < COLS; j++) {
                 int index = i * COLS + j;
                 if (index >= choices.size()) break;
-                rowWidgets.add(
-                    new SlotLikeButtonWidget(choices.get(index)).background(
+                SlotLikeButtonWidget widget = new SlotLikeButtonWidget(choices.get(index))
+                    .background(
                         new DynamicDrawable(
                             () -> selected == index ? GTGuiTextures.SLOT_ITEM_DARK : GTGuiTextures.SLOT_ITEM_STANDARD))
-                        .size(18)
-                        .onMousePressed(mouseButton -> {
-                            if (mouseButton == 0) {
-                                setSelected(index);
-                            } else {
-                                setSelected(DESELECTED);
-                            }
-                            MouseData mouseData = MouseData.create(mouseButton);
-                            if (onSelectedServerAction != null) {
-                                onSelectedServerAction.send(selected, mouseData);
-                            }
-                            if (onSelectedClientAction != null) {
-                                onSelectedClientAction.accept(selected, mouseData);
-                            }
-                            return true;
-                        }));
+                    .size(18)
+                    .onMousePressed(mouseButton -> {
+                        if (mouseButton == 0) {
+                            setSelected(index);
+                        } else {
+                            setSelected(DESELECTED);
+                        }
+                        MouseData mouseData = MouseData.create(mouseButton);
+                        if (onSelectedServerAction != null) {
+                            onSelectedServerAction.send(selected, mouseData);
+                        }
+                        if (onSelectedClientAction != null) {
+                            onSelectedClientAction.accept(selected, mouseData);
+                        }
+                        return true;
+                    });
+                if (choiceWidgetCustomizer != null) {
+                    choiceWidgetCustomizer.accept(index, widget);
+                }
+                rowWidgets.add(widget);
             }
         }
         panel.child(
