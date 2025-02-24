@@ -52,26 +52,27 @@ public class ItemFluidDisplay extends GTGenericItem {
         if (GTValues.D1 || Minecraft.getMinecraft().gameSettings.advancedItemTooltips) {
             Fluid tFluid = FluidRegistry.getFluid(aStack.getItemDamage());
             if (tFluid != null) {
-                aList.add("Registry: " + tFluid.getName());
+                aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.fluid.registry", tFluid.getName()));
             }
         }
         if (aNBT != null) {
             long tToolTipAmount = aNBT.getLong("mFluidDisplayAmount");
             if (tToolTipAmount > 0L) {
                 aList.add(
-                    EnumChatFormatting.BLUE + "Amount: "
-                        + GTUtility.formatNumbers(tToolTipAmount)
-                        + " L"
+                    EnumChatFormatting.BLUE + StatCollector
+                        .translateToLocalFormatted("GT5U.tooltip.fluid.amount", GTUtility.formatNumbers(tToolTipAmount))
                         + EnumChatFormatting.GRAY);
             }
             aList.add(
-                EnumChatFormatting.RED + "Temperature: "
-                    + GTUtility.formatNumbers(aNBT.getLong("mFluidDisplayHeat"))
-                    + " K"
-                    + EnumChatFormatting.GRAY);
+                EnumChatFormatting.RED + StatCollector.translateToLocalFormatted(
+                    "GT5U.tooltip.fluid.temperature",
+                    GTUtility.formatNumbers(aNBT.getLong("mFluidDisplayHeat"))) + EnumChatFormatting.GRAY);
             aList.add(
                 EnumChatFormatting.GREEN
-                    + String.format(transItem("018", "State: %s"), aNBT.getBoolean("mFluidState") ? "Gas" : "Liquid")
+                    + StatCollector.translateToLocalFormatted(
+                        "GT5U.tooltip.fluid.stat",
+                        aNBT.getBoolean("mFluidState") ? StatCollector.translateToLocal("GT5U.tooltip.fluid.stat.gas")
+                            : StatCollector.translateToLocal("GT5U.tooltip.fluid.stat.liquid"))
                     + EnumChatFormatting.GRAY);
         }
     }
