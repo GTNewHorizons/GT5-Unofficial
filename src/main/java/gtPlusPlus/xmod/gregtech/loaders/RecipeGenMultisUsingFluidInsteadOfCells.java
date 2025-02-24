@@ -55,9 +55,8 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
             return false;
         }
         for (ItemStack emptyItem : mEmptyItems) {
-            ItemStack aTempStack = emptyItem.copy();
-            aTempStack.stackSize = aCell.stackSize;
-            if (GTUtility.areStacksEqual(aTempStack, aCell)) {
+            emptyItem.stackSize = aCell.stackSize;
+            if (GTUtility.areStacksEqual(emptyItem, aCell)) {
                 return true;
             }
 
