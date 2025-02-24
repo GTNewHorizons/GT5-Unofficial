@@ -207,7 +207,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             .addCasingInfoMin("Hardened Clay block", 40, false)
             .addOtherStructurePart("Dispenser", "Any Hardened Clay block")
             .addOtherStructurePart("0-1 Wooden door", "Any Hardened Clay block")
-            .addStructureHint("Primitive Kinetic Shaftbox", 1)
+            .addStructureHint("tile.BWRotorBlock.0.name", 1)
             .toolTipFinisher();
         return tt;
     }
