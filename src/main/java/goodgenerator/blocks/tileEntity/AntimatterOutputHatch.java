@@ -10,6 +10,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.util.GTUtility;
 
 public class AntimatterOutputHatch extends MTEHatchOutput {
 
@@ -19,7 +20,8 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
         super(aID, aName, aNameRegional, 11);
         this.mDescriptionArray[1] = "Stores Antimatter";
         this.mDescriptionArray[2] = "Antimatter can be inserted from any side";
-        this.mDescriptionArray[3] = "Capacity: 16,384,000L";
+        this.mDescriptionArray[3] = "Front face input can be toggled with a screwdriver";
+        this.mDescriptionArray[4] = "Capacity: 16,384,000L";
     }
 
     public AntimatterOutputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -54,16 +56,13 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
             .isGUIClickable()) return;
-        if (aPlayer.isSneaking()) {
-            mMode = (byte) ((mMode + 9) % 10);
-        } else {
-            mMode = (byte) ((mMode + 1) % 10);
-        }
+        mMode ^= 1;
+        GTUtility.sendChatToPlayer(aPlayer, "Front face input " + (mMode == 1 ? "enabled" : "disabled"));
     }
 
     @Override
     public boolean isLiquidInput(ForgeDirection side) {
-        return side != this.getBaseMetaTileEntity()
+        return mMode == 1 || side != this.getBaseMetaTileEntity()
             .getFrontFacing();
     }
 

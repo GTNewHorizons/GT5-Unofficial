@@ -52,6 +52,10 @@ item.gt.pollen.name=Pollen
 item.gt.propolis.name=Propolis
 tile.gt.dronerender.name=Drone Renderer
 
+# GT++ items
+item.GTPP.air_intake_hatch.name=Air Intake Hatch
+item.GTPP.catalyst_housing.name=Catalyst Housing
+
 # Air Filter
 item.GTPP.air_filter.name=Air Filter
 item.GTPP.air_filter.name.t1=Air Filter [Tier 1]
@@ -2025,7 +2029,8 @@ GTPP.tooltip.ore.found=Found:
 GTPP.tooltip.ore.unknown=- Unknown
 GTPP.tooltip.block.mining_level=Mining Level: %d
 GTPP.tooltip.block.contains=Contains:
-
+GTPP.tooltip.meta_special.quantum_stability=Provides quantum stability
+GTPP.tooltip.meta_special.quantum_modulation=Provides quantum modulation
 
 # GTPP structure hints
 GTPP.tooltip.structure.anvil=Anvil
@@ -2058,6 +2063,13 @@ GT5U.tooltip.structure.input_hatch_plasma=Input Hatch (Plasma)
 GT5U.tooltip.structure.input_hatch_output_hatch=Input Hatch, Output Hatch
 GT5U.tooltip.structure.lens_housing=Lens Housing
 GT5U.tooltip.structure.lens_indicator=Lens Indicator
+
+GT5U.tooltip.fluid.registry=Registry: %s
+GT5U.tooltip.fluid.amount=Amount: %s L
+GT5U.tooltip.fluid.temperature=Temperature: %s K
+GT5U.tooltip.fluid.stat=State: %s
+GT5U.tooltip.fluid.stat.gas=Gas
+GT5U.tooltip.fluid.stat.liquid=Liquid
 
 # Achievements
 
