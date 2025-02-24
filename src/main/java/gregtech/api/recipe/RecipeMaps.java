@@ -44,7 +44,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.maps.AssemblerBackend;
 import gregtech.api.recipe.maps.AssemblyLineFrontend;
@@ -476,6 +475,12 @@ public final class RecipeMaps {
         .maxIO(0, 0, 1, 1)
         .minInputs(0, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
+        .builderTransformer(
+            b -> b.copy()
+                .special(BioItemList.getPetriDish(BioCultureLoader.generalPurposeFermentingBacteria))
+                .metadata(GLASS, 3)
+                .eut(b.getEUt())
+                .addTo(BartWorksRecipeMaps.bacterialVatRecipes))
         .build();
     public static final RecipeMap<RecipeMapBackend> fluidSolidifierRecipes = RecipeMapBuilder
         .of("gt.recipe.fluidsolidifier")
@@ -736,6 +741,11 @@ public final class RecipeMaps {
                 .setInputs(input, GTModHandler.getIC2Item("industrialTnt", tITNT, null));
             return coll.getAll();
         })
+        .builderTransformer(
+            b -> b.copy()
+                .duration(1 * TICK)
+                .eut(TierEU.RECIPE_UEV)
+                .addTo(BartWorksRecipeMaps.electricImplosionCompressorRecipes))
         .build();
     public static final RecipeMap<RecipeMapBackend> vacuumFreezerRecipes = RecipeMapBuilder
         .of("gt.recipe.vacuumfreezer")
@@ -1014,6 +1024,17 @@ public final class RecipeMaps {
     public static final RecipeMap<FuelBackend> dieselFuels = RecipeMapBuilder
         .of("gt.recipe.dieselgeneratorfuel", FuelBackend::new)
         .maxIO(1, 1, 0, 0)
+        .builderTransformer(b -> {
+            b.copy()
+                .build()
+                .ifPresent(
+                    r -> RecipeMaps.largeBoilerFakeFuels.getBackend()
+                        .addDieselRecipe(r));
+            if (b.getMetadataOrDefault(FUEL_VALUE, 0) >= 1500) {
+                b.copy()
+                    .addTo(RecipeMaps.extremeDieselFuels);
+            }
+        })
         .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
         .build();
     public static final RecipeMap<FuelBackend> extremeDieselFuels = RecipeMapBuilder
@@ -1034,6 +1055,12 @@ public final class RecipeMaps {
     public static final RecipeMap<FuelBackend> denseLiquidFuels = RecipeMapBuilder
         .of("gt.recipe.semifluidboilerfuels", FuelBackend::new)
         .maxIO(1, 1, 0, 0)
+        .builderTransformer(
+            b -> b.copy()
+                .build()
+                .ifPresent(
+                    r -> RecipeMaps.largeBoilerFakeFuels.getBackend()
+                        .addDenseLiquidRecipe(r)))
         .disableRegisterNEI()
         .build();
     public static final RecipeMap<FuelBackend> plasmaFuels = RecipeMapBuilder
@@ -1185,40 +1212,4 @@ public final class RecipeMaps {
         .neiRecipeBackgroundSize(170, 60)
         .neiHandlerInfo(builder -> builder.setDisplayStack(GTModHandler.getIC2Item("nuclearReactor", 1, null)))
         .build();
-
-    static {
-        RecipeMaps.dieselFuels.addDownstream(
-            IRecipeMap.newRecipeMap(
-                b -> b.build()
-                    .map(
-                        r -> RecipeMaps.largeBoilerFakeFuels.getBackend()
-                            .addDieselRecipe(r))
-                    .map(Collections::singletonList)
-                    .orElse(Collections.emptyList())));
-        RecipeMaps.dieselFuels.addDownstream(IRecipeMap.newRecipeMap(b -> {
-            if (b.getMetadataOrDefault(FUEL_VALUE, 0) < 1500) return Collections.emptyList();
-            return b.addTo(RecipeMaps.extremeDieselFuels);
-        }));
-        RecipeMaps.denseLiquidFuels.addDownstream(
-            IRecipeMap.newRecipeMap(
-                b -> b.build()
-                    .map(
-                        r -> RecipeMaps.largeBoilerFakeFuels.getBackend()
-                            .addDenseLiquidRecipe(r))
-                    .map(Collections::singletonList)
-                    .orElse(Collections.emptyList())));
-        RecipeMaps.fermentingRecipes.addDownstream(
-            IRecipeMap.newRecipeMap(
-                b -> BartWorksRecipeMaps.bacterialVatRecipes.doAdd(
-                    b.copy()
-                        .special(BioItemList.getPetriDish(BioCultureLoader.generalPurposeFermentingBacteria))
-                        .metadata(GLASS, 3)
-                        .eut(b.getEUt()))));
-        RecipeMaps.implosionRecipes.addDownstream(
-            IRecipeMap.newRecipeMap(
-                b -> BartWorksRecipeMaps.electricImplosionCompressorRecipes.doAdd(
-                    b.copy()
-                        .duration(1 * TICK)
-                        .eut(TierEU.RECIPE_UEV))));
-    }
 }

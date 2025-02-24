@@ -72,7 +72,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
-import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch.ASSEMBLY_LINE_RESEARCH;
@@ -209,7 +208,7 @@ public class RecipesGregTech {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(21), ItemUtils.getItemStackOfAmountFromOreDict("dustBorax", 23))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustSalt", 4))
-            .fluidInputs(FluidUtils.getFluidStack(GenericChem.HydrochloricAcid, 2000))
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(2000))
             .fluidOutputs(FluidUtils.getFluidStack("boricacid", 4000), FluidUtils.getWater(5000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -1569,7 +1568,7 @@ public class RecipesGregTech {
 
         // KOH + HNO3 = KNO3 + H2O
         RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(GenericChem.mPotassiumHydroxide, 3), GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GregtechItemList.PotassiumHydroxide.get(3), GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.PotassiumNitrade, 5L))
             .fluidInputs(Materials.NitricAcid.getFluid(1000))
             .fluidOutputs(Materials.Water.getFluid(1000))
