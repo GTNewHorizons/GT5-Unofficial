@@ -13,14 +13,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import gregtech.api.enums.StoneType;
-import gregtech.api.events.GTEventBus;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.ores.OreManager;
 import gregtech.common.worldgen.IWorldgenLayer;
-import gregtech.common.worldgen.VeinGenerateEvent;
 
 public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
 
@@ -135,13 +133,6 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
     @Override
     public int executeWorldgenChunkified(World world, Random rng, String biome, int chunkX, int chunkZ, int seedX,
         int seedZ, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-        VeinGenerateEvent event = new VeinGenerateEvent(world, chunkX, chunkZ, seedX, seedZ, this);
-
-        if (GTEventBus.bus()
-            .post(event)) {
-            return event.getOreGenResult();
-        }
-
         if (mWorldGenName.equals("NoOresInVein")) {
             if (debugOrevein) GTLog.out.println(" NoOresInVein");
             // Return a special empty orevein

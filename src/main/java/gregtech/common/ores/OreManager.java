@@ -10,6 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import com.google.common.collect.ImmutableList;
@@ -41,7 +42,10 @@ public final class OreManager {
         return false;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public static OreInfo<?> getOreInfo(IBlockAccess world, int x, int y, int z) {
+        return getOreInfo(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
+    }
+
     public static OreInfo<?> getOreInfo(Block block, int meta) {
         int size = ORE_ADAPTERS.size();
 
@@ -180,7 +184,7 @@ public final class OreManager {
                 replacement = info.stoneType.getCobblestone();
             } else {
                 if (silktouch && ore.canSilkHarvest(world, null, x, y, z, meta)) {
-                    oreBlockDrops = ImmutableList.of(new ItemStack(ore, 1, meta));
+                    oreBlockDrops = ImmutableList.of(new ItemStack(ore, 1, ore.damageDropped(meta)));
                 } else {
                     // Regular ore
                     oreBlockDrops = ImmutableList.copyOf(ore.getDrops(world, x, y, z, meta, fortune));

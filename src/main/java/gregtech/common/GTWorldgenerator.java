@@ -32,10 +32,12 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.events.GTEventBus;
 import gregtech.api.net.GTPacketSendOregenPattern;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
+import gregtech.common.worldgen.VeinGenerateEvent;
 import gregtech.common.worldgen.WorldgenQuery;
 
 public class GTWorldgenerator implements IWorldGenerator {
@@ -309,6 +311,9 @@ public class GTWorldgenerator implements IWorldGenerator {
                     this.mChunkGenerator,
                     this.mChunkProvider);
 
+                VeinGenerateEvent event = new VeinGenerateEvent(mWorld, mX, mZ, oreseedX, oreseedZ, tWorldGen, placementResult);
+                GTEventBus.bus().post(event);
+
                 switch (placementResult) {
                     case WorldgenGTOreLayer.NO_ORE_IN_BOTTOM_LAYER -> {
                         if (debugOrevein) GTLog.out.println(" No ore in bottom layer");
@@ -363,6 +368,9 @@ public class GTWorldgenerator implements IWorldGenerator {
                             oreseedZ * 16,
                             this.mChunkGenerator,
                             this.mChunkProvider);
+
+                        VeinGenerateEvent event = new VeinGenerateEvent(mWorld, mX, mZ, oreseedX, oreseedZ, oreLayer, placementResult);
+                        GTEventBus.bus().post(event);
                     } catch (Throwable e) {
                         if (debugOrevein) GTLog.out.println(
                             "Exception occurred on oreVein" + oreLayer

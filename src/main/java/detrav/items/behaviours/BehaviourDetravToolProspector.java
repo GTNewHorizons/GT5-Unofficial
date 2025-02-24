@@ -22,11 +22,8 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.sinthoras.visualprospecting.VisualProspecting_API;
-
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import detrav.DetravScannerMod;
 import detrav.items.DetravMetaGeneratedTool01;
-import gregtech.api.enums.Materials;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTLanguageManager;
@@ -304,28 +301,18 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                                 if (!info.isNatural) continue;
                                 if (data != DetravMetaGeneratedTool01.MODE_ALL_ORES && info.isSmall) continue;
 
-                                ItemStack blockStack2 = new ItemStack(tBlock, 1, tMetaID);
-                                addOreToHashMap(blockStack2.getDisplayName(), aPlayer);
+                                ItemStack oreStack = new ItemStack(tBlock, 1, tMetaID);
+                                addOreToHashMap(oreStack.getDisplayName(), aPlayer);
                                 continue;
                             }
                         }
 
                         if (data == DetravMetaGeneratedTool01.MODE_ALL_ORES) {
-                            itemData = GTOreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
-                            if (itemData != null && itemData.mPrefix.toString()
-                                .startsWith("ore")) {
-                                try {
-                                    try {
-                                        tMetaID = (short) itemData.mMaterial.mMaterial.mMetaItemSubID;
-                                        String format = LanguageRegistry.instance()
-                                            .getStringLocalization("gt.blockores." + tMetaID + ".name");
-                                        String name = Materials.getLocalizedNameForItem(format, tMetaID % 1000);
-                                        addOreToHashMap(name, aPlayer);
-                                    } catch (Exception e1) {
-                                        String name = itemData.toString();
-                                        addOreToHashMap(name, aPlayer);
-                                    }
-                                } catch (Exception ignored) {}
+                            ItemStack oreStack = new ItemStack(tBlock, 1, tMetaID);
+
+                            itemData = GTOreDictUnificator.getAssociation(oreStack);
+                            if (itemData != null && itemData.mPrefix.toString().startsWith("ore")) {
+                                addOreToHashMap(oreStack.getDisplayName(), aPlayer);
                             }
                         }
                     }

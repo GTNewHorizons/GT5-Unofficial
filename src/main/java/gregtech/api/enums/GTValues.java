@@ -33,6 +33,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
+import gregtech.api.util.GTChunkAssociatedData;
 
 /**
  * Made for static imports, this Class is just a Helper.
@@ -334,7 +335,7 @@ public class GTValues {
     /**
      * Debug parameter for world generation. Measures amount of time taken to generate oreveins, stone, etc.
      */
-    public static boolean profileWorldGen = true;
+    public static boolean profileWorldGen = false;
     /**
      * Debug parameter for orevein generation.
      */

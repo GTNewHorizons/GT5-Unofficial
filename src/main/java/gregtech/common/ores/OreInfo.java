@@ -1,5 +1,7 @@
 package gregtech.common.ores;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import com.gtnewhorizon.gtnhlib.util.ObjectPooler;
 
 import gregtech.api.interfaces.IOreMaterial;
@@ -7,22 +9,22 @@ import gregtech.api.interfaces.IStoneType;
 
 /**
  * This class represents an ore block. Not all combinations are valid, it depends on what the ore adapters support.
- * 
+ *
  * <p>
- * 
+ *
  * This class comes with a built-in pooling mechanism since these objects are used in several hot-paths.
  * Any time the {@link OreManager} returns an {@link OreInfo}, it should be enclosed in a try-with-resources to release
  * the object back to the pool automatically. If a try-with-resources clutters the code significantly, you can call
  * {@link OreInfo#release()} manually. You should call {@link OreInfo#release()} unless you have a good reason not to
  * (like making thousands of objects at a time, which would cause a memory leak).
- * 
+ *
  * <p>
- * 
+ *
  * If you don't know for certain what kind of ore you're dealing with, everything should be done through the
  * {@link OreManager} where possible, and the ore adapter should be retrieved via
  * {@link OreManager#getAdapter(OreInfo)}. It's fine to refer to a concrete ore adapter if you know the ore type for
  * certain.
- * 
+ *
  * <pre>
  * {@code
  *  void foo(Block block, int meta) {
@@ -38,6 +40,7 @@ public class OreInfo<TMat extends IOreMaterial> implements AutoCloseable {
      * The cached adapter that produced this info. May not be valid, so use {@link OreManager#getAdapter(OreInfo)}
      * instead.
      */
+    @ApiStatus.Internal
     IOreAdapter<TMat> cachedAdapter;
 
     public TMat material;

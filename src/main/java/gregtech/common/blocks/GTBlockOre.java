@@ -32,6 +32,7 @@ import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.events.GTEventBus;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GTGenericBlock;
@@ -41,6 +42,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.ores.OreInfo;
+import gregtech.common.ores.OreInteractEvent;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.nei.NEIGTConfig;
 
@@ -174,7 +176,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
 
                     list.add(GTOreAdapter.INSTANCE.getStack(info, 1));
                 } else {
-                    // if this material doesn't jabe ice ore, we only want to show the stone variants
+                    // if this material doesn't have ice ore, we only want to show the stone variants
                     if (stoneType.getCategory() != StoneCategory.Stone) continue;
                     if (stoneType.isExtraneous()) continue;
 
@@ -188,13 +190,13 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
 
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        EntityPlayer harvester = this.harvesters.get();
-
-        boolean doFortune = !(harvester instanceof FakePlayer);
-        boolean doSilktouch = harvester != null && EnchantmentHelper.getSilkTouchModifier(harvester);
-
         try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, metadata)) {
             if (info == null) return new ArrayList<>();
+
+            EntityPlayer harvester = this.harvesters.get();
+
+            boolean doFortune = !(harvester instanceof FakePlayer);
+            boolean doSilktouch = harvester != null && EnchantmentHelper.getSilkTouchModifier(harvester);
 
             return GTOreAdapter.INSTANCE
                 .getOreDrops(ThreadLocalRandom.current(), info, doSilktouch, doFortune ? fortune : 0);
@@ -314,6 +316,8 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
     @Override
     public float getBlockHardness(World world, int x, int y, int z) {
         try (OreInfo<?> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z)) {
+            if (info == null) return 0;
+
             return info.stoneType.getStone()
                 .getBlock().blockHardness;
         }
@@ -323,6 +327,8 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
     public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX,
         double explosionY, double explosionZ) {
         try (OreInfo<?> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z)) {
+            if (info == null) return 0;
+
             return info.stoneType.getStone()
                 .getBlock()
                 .getExplosionResistance(entity);
@@ -332,24 +338,28 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float subX,
         float subY, float subZ) {
-        if (!world.isRemote && player.capabilities.isCreativeMode && player.getHeldItem() == null) {
-            try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z);) {
-                info.isNatural = !info.isNatural;
+        if (!world.isRemote) {
+            if (player.capabilities.isCreativeMode && player.isSneaking() && player.getHeldItem() == null) {
+                try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z);) {
+                    info.isNatural = !info.isNatural;
 
-                world.setBlockMetadataWithNotify(
-                    x,
-                    y,
-                    z,
-                    GTOreAdapter.INSTANCE.getBlock(info)
-                        .getBlockMeta(),
-                    3);
-                GTUtility.sendChatToPlayer(player, "Set ore natural flag to " + info.isNatural);
+                    world.setBlockMetadataWithNotify(
+                        x,
+                        y,
+                        z,
+                        GTOreAdapter.INSTANCE.getBlock(info)
+                            .getBlockMeta(),
+                        3);
+                    GTUtility.sendChatToPlayer(player, "Set ore natural flag to " + info.isNatural);
+                }
+
+                return true;
             }
-
-            return true;
-        } else {
-            return false;
         }
+
+        GTEventBus.bus().post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
+
+        return false;
     }
 
     @Override
