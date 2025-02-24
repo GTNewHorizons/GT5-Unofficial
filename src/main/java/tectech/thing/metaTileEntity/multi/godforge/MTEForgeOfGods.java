@@ -2479,94 +2479,101 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         builder.setBackground(TecTechUITextures.BACKGROUND_GLOW_WHITE);
         builder.setDraggable(true);
 
-        builder
+        builder.widget(
+            new TextWidget(EnumChatFormatting.GOLD + translateToLocal("gt.blockmachines.multimachine.FOG.modulestats"))
+                .setTextAlignment(Alignment.Center)
+                .setScale(1f)
+                .setPos(0, 8)
+                .setSize(300, 15))
             .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.modulestats"))
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.Center)
-                    .setScale(1f)
-                    .setPos(0, 8)
-                    .setSize(300, 15))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.heat")).setScale(0.8f)
-                    .setDefaultColor(EnumChatFormatting.GOLD)
+                new TextWidget(EnumChatFormatting.GOLD + translateToLocal("gt.blockmachines.multimachine.FOG.heat"))
+                    .setScale(0.8f)
                     .setTextAlignment(Alignment.Center)
                     .setPos(12, 56)
                     .setSize(69, 30)
                     .addTooltip(translateToLocal("fog.text.tooltip.heat"))
                     .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.effectiveheat")).setScale(0.8f)
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.Center)
-                    .setPos(12, 86)
-                    .setSize(69, 30)
-                    .addTooltip(translateToLocal("fog.text.tooltip.effectiveheat"))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY))
+                new TextWidget(
+                    EnumChatFormatting.GOLD + translateToLocal("gt.blockmachines.multimachine.FOG.effectiveheat"))
+                        .setScale(0.8f)
+                        .setTextAlignment(Alignment.Center)
+                        .setPos(12, 86)
+                        .setSize(69, 30)
+                        .addTooltip(translateToLocal("fog.text.tooltip.effectiveheat"))
+                        .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.parallel")).setScale(0.8f)
-                    .setDefaultColor(EnumChatFormatting.GOLD)
+                new TextWidget(EnumChatFormatting.GOLD + translateToLocal("gt.blockmachines.multimachine.FOG.parallel"))
+                    .setScale(0.8f)
                     .setTextAlignment(Alignment.Center)
                     .setPos(12, 116)
                     .setSize(69, 30)
                     .addTooltip(translateToLocal("fog.text.tooltip.parallel"))
                     .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.speedbonus")).setScale(0.8f)
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.Center)
-                    .setPos(12, 146)
-                    .setSize(69, 30)
-                    .addTooltip(translateToLocal("fog.text.tooltip.speedbonus"))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY))
+                new TextWidget(
+                    EnumChatFormatting.GOLD + translateToLocal("gt.blockmachines.multimachine.FOG.speedbonus"))
+                        .setScale(0.8f)
+                        .setTextAlignment(Alignment.Center)
+                        .setPos(12, 146)
+                        .setSize(69, 30)
+                        .addTooltip(translateToLocal("fog.text.tooltip.speedbonus"))
+                        .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.energydiscount")).setScale(0.8f)
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.Center)
-                    .setPos(12, 176)
-                    .setSize(69, 30)
-                    .addTooltip(translateToLocal("fog.text.tooltip.energydiscount"))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY))
+                new TextWidget(
+                    EnumChatFormatting.GOLD + translateToLocal("gt.blockmachines.multimachine.FOG.energydiscount"))
+                        .setScale(0.8f)
+                        .setTextAlignment(Alignment.Center)
+                        .setPos(12, 176)
+                        .setSize(69, 30)
+                        .addTooltip(translateToLocal("fog.text.tooltip.energydiscount"))
+                        .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.ocdivisor")).setScale(0.8f)
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.Center)
-                    .setPos(12, 206)
-                    .setSize(69, 30)
-                    .addTooltip(translateToLocal("fog.text.tooltip.ocdivisor"))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY))
+                new TextWidget(
+                    EnumChatFormatting.GOLD + translateToLocal("gt.blockmachines.multimachine.FOG.ocdivisor"))
+                        .setScale(0.8f)
+                        .setTextAlignment(Alignment.Center)
+                        .setPos(12, 206)
+                        .setSize(69, 30)
+                        .addTooltip(translateToLocal("fog.text.tooltip.ocdivisor"))
+                        .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.processingvoltage")).setScale(0.8f)
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.Center)
-                    .setPos(12, 236)
-                    .setSize(69, 30)
-                    .addTooltip(translateToLocal("fog.text.tooltip.processingvoltage"))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY))
+                new TextWidget(
+                    EnumChatFormatting.GOLD + translateToLocal("gt.blockmachines.multimachine.FOG.processingvoltage"))
+                        .setScale(0.8f)
+                        .setTextAlignment(Alignment.Center)
+                        .setPos(12, 236)
+                        .setSize(69, 30)
+                        .addTooltip(translateToLocal("fog.text.tooltip.processingvoltage"))
+                        .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.powerforge")).setScale(0.8f)
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.Center)
-                    .setPos(88, 40)
-                    .setSize(40, 10))
+                new TextWidget(
+                    EnumChatFormatting.GOLD + translateToLocal("gt.blockmachines.multimachine.FOG.powerforge"))
+                        .setScale(0.8f)
+                        .setTextAlignment(Alignment.Center)
+                        .setPos(88, 40)
+                        .setSize(40, 10))
             .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.meltingcore")).setScale(0.8f)
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.Center)
-                    .setPos(141, 40)
-                    .setSize(40, 10))
+                new TextWidget(
+                    EnumChatFormatting.GOLD + translateToLocal("gt.blockmachines.multimachine.FOG.meltingcore"))
+                        .setScale(0.8f)
+                        .setTextAlignment(Alignment.Center)
+                        .setPos(141, 40)
+                        .setSize(40, 10))
             .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.plasmafab")).setScale(0.8f)
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.Center)
-                    .setPos(193, 40)
-                    .setSize(44, 10))
+                new TextWidget(
+                    EnumChatFormatting.GOLD + translateToLocal("gt.blockmachines.multimachine.FOG.plasmafab"))
+                        .setScale(0.8f)
+                        .setTextAlignment(Alignment.Center)
+                        .setPos(193, 40)
+                        .setSize(44, 10))
             .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.exoticizer")).setScale(0.8f)
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.Center)
-                    .setPos(246, 43)
-                    .setSize(40, 10));
+                new TextWidget(
+                    EnumChatFormatting.GOLD + translateToLocal("gt.blockmachines.multimachine.FOG.exoticizer"))
+                        .setScale(0.8f)
+                        .setTextAlignment(Alignment.Center)
+                        .setPos(246, 43)
+                        .setSize(40, 10));
 
         // Vertical grid lines
         for (int i = 0; i < 4; i++) {
@@ -2608,8 +2615,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     new ButtonWidget().setOnClick((clickData, widget) -> {})
                         .setSize(53, 30))
                     .addChild(
-                        new DynamicTextWidget(() -> new Text(infoTexts.get(finalI))).setScale(1f)
-                            .setDefaultColor(EnumChatFormatting.GREEN)
+                        new DynamicTextWidget(() -> new Text(EnumChatFormatting.GREEN + infoTexts.get(finalI)))
+                            .setScale(1f)
                             .setTextAlignment(Alignment.Center)
                             .setSize(53, 30))
                     .setPos(81 + (i % 4) * 53, 55 + (i / 4 * 30)));
@@ -2639,10 +2646,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 .setPos(8, 272)
                 .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.factorpreview")).setScale(0.9f)
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setSize(100, 18)
-                    .setPos(80, 270))
+                new TextWidget(
+                    EnumChatFormatting.GOLD + translateToLocal("gt.blockmachines.multimachine.FOG.factorpreview"))
+                        .setScale(0.9f)
+                        .setSize(100, 18)
+                        .setPos(80, 270))
             .widget(
                 new NumericWidget().setSetter(val -> previewFactor = (int) val)
                     .setGetter(() -> previewFactor)
