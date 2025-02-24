@@ -223,6 +223,12 @@ huiCircuit.tooltip.4=§5Paradox§r
 EssentiaOutputHatch.tooltip.0=Shift right click it with empty hands to clear the container.
 EssentiaOutputHatch.tooltip.1=Capacity:
 
+gg.structure.tooltip.antimatter_hatch=Antimatter Hatch
+gg.structure.tooltip.laser_source_hatch=Laser Source Hatch
+gg.structure.tooltip.input_hatch=Input Hatch
+gg.structure.tooltip.output_hatch=Output Hatch
+gg.structure.tooltip.essentia_input_hatch=Essentia Input Hatch
+
 #Fluids
 fluid.lightlyCrackedNaquadahGas=Lightly Cracked Naquadah Gas
 fluid.moderatelyCrackedNaquadahGas=Moderately Cracked Naquadah Gas

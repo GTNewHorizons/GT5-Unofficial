@@ -222,7 +222,10 @@ public class MTEIndustrialElectromagneticSeparator
             .addCasingInfoMin("MagTech Casings", MIN_CASING, false)
             .addCasingInfoExactly("Any Glass", 12, false)
             .addOtherStructurePart("Magnetic Neodymium Frame Box", "x37")
-            .addOtherStructurePart("Electromagnet Housing", "1 Block Above/Behind Controller", 2)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.electromagnet_housing"),
+                "1 Block Above/Behind Controller",
+                2)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
