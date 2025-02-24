@@ -273,7 +273,7 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     @Override
     public void onRemoval() {
         super.onRemoval();
-        GTUtilityClient.clearTurbineOverlay(overlayTickets);
+        if (getBaseMetaTileEntity().isClientSide()) GTUtilityClient.clearTurbineOverlay(overlayTickets);
     }
 
     @Override

@@ -487,6 +487,6 @@ public class MTEHatchTurbine extends MTEHatch {
     @Override
     public void onRemoval() {
         super.onRemoval();
-        GTUtilityClient.clearTurbineOverlay(overlayTickets);
+        if (getBaseMetaTileEntity().isClientSide()) GTUtilityClient.clearTurbineOverlay(overlayTickets);
     }
 }

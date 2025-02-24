@@ -214,7 +214,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     @Override
     public void onRemoval() {
         super.onRemoval();
-        GTUtilityClient.clearTurbineOverlay(overlayTickets);
+        if (getBaseMetaTileEntity().isClientSide()) GTUtilityClient.clearTurbineOverlay(overlayTickets);
     }
 
     @Override
