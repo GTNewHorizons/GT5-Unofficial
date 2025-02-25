@@ -3,7 +3,31 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.s
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.AuthorSteamIsTheNumber;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_ALLOY_SMELTER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_ALLOY_SMELTER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_ALLOY_SMELTER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_EXTRACTOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_EXTRACTOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_EXTRACTOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_EXTRACTOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_ALLOY_SMELTER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_ALLOY_SMELTER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -16,6 +40,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEBetterSteamMultiBase;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class MTESteamWoodcutter extends MTEBetterSteamMultiBase<MTESteamWoodcutter> implements ISurvivalConstructable {
 
@@ -39,23 +64,85 @@ public class MTESteamWoodcutter extends MTEBetterSteamMultiBase<MTESteamWoodcutt
         return StructureDefinition.<MTESteamWoodcutter>builder()
             .addShape(
                 STRUCTURE_PIECE_MAIN,
-                (transpose(
-                    new String[][] { { "  AABAA  " }, { " BA   AB " }, { "AA     AA" }, { "A       A" },
-                        { "B       B" }, { "A       A" }, { "AA     AA" }, { " BA   AB " }, { "  AA~AA  " } })))
-            .addElement('A', ofBlock(GregTechAPI.sBlockCasingsSteam, 0))
-            .addElement('B', ofBlock(GregTechAPI.sBlockCasingsSteam, 1))
+                (new String[][]{{
+                        "  BBB  ",
+                        "       ",
+                        "       ",
+                        "       ",
+                        "       ",
+                        "       ",
+                        "  B~B  "
+                    },{
+                        " BBBBB ",
+                        "  AAA  ",
+                        "  AAA  ",
+                        "  AAA  ",
+                        "  AAA  ",
+                        "  AAA  ",
+                        " BBBBB "
+                    },{
+                        "BBBBBBB",
+                        " A~~~A ",
+                        " A~~~A ",
+                        " A~~~A ",
+                        " A~~~A ",
+                        " A~~~A ",
+                        "BBCCCBB"
+                    },{
+                        "BBBBBBB",
+                        " A~~~A ",
+                        " A~~~A ",
+                        " A~~~A ",
+                        " A~~~A ",
+                        " A~~~A ",
+                        "BBCCCBB"
+                    },{
+                        "BBBBBBB",
+                        " A~~~A ",
+                        " A~~~A ",
+                        " A~~~A ",
+                        " A~~~A ",
+                        " A~~~A ",
+                        "BBCCCBB"
+                    },{
+                        " BBBBB ",
+                        "  AAA  ",
+                        "  AAA  ",
+                        "  AAA  ",
+                        "  AAA  ",
+                        "  AAA  ",
+                        " BBBBB "
+                    },{
+                        "  BBB  ",
+                        "       ",
+                        "       ",
+                        "       ",
+                        "       ",
+                        "       ",
+                        "  BBB  "
+                    }}))
+            .addElement('A', chainAllGlasses())
+            .addElement('B', ofBlock(GregTechAPI.sBlockCasings1, 10))
+            .addElement('C', ofBlock(Blocks.dirt, 0))
             .build();
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 6, 0);
+    }
 
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 6, 0, elementBudget, env, false, true);
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addInfo(EnumChatFormatting.AQUA + "" + EnumChatFormatting.ITALIC + "Impossible machine.")
+        tt.addMachineType(getMachineType())
+            .addInfo(EnumChatFormatting.AQUA + "" + EnumChatFormatting.ITALIC + "Grows trees slowly from saplings.")
             .addInfo("Created by: ")
             .addInfo(AuthorSteamIsTheNumber)
             .beginStructureBlock(3, 3, 3, false)
@@ -64,12 +151,50 @@ public class MTESteamWoodcutter extends MTEBetterSteamMultiBase<MTESteamWoodcutt
     }
 
     @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing, int aColorIndex, boolean aActive, boolean aRedstone) {
+        ITexture[] rTexture;
+        if (side == facing) {
+            if (aActive) {
+                rTexture = new ITexture[] {
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            } else {
+                rTexture = new ITexture[] {
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            }
+        } else {
+            rTexture = new ITexture[] { Textures.BlockIcons
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)) };
+        }
+        return rTexture;
+    }
+
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return false;
+        return checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return null;
+        return new MTESteamWoodcutter(this.mName);
     }
 }
