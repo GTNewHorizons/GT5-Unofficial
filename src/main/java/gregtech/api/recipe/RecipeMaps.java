@@ -162,7 +162,6 @@ public final class RecipeMaps {
         .maxIO(2, 1, 0, 0)
         .progressBarSteam(GTUITextures.PROGRESSBAR_HAMMER_STEAM)
         .neiHandlerInfo((builder -> builder.setDisplayStack((GregtechItemList.Controller_SteamExtruder.get(1)))))
-        .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> neutroniumCompressorRecipes = RecipeMapBuilder
         .of("gt.recipe.neutroniumcompressor")

@@ -1,10 +1,17 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GTValues.AuthorSteamIsTheNumber;
+
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -25,9 +32,19 @@ public class MTESteamWoodcutter extends MTEBetterSteamMultiBase<MTESteamWoodcutt
         return "Woodcutter";
     }
 
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+
     @Override
-    public IStructureDefinition getStructureDefinition() {
-        return null;
+    public IStructureDefinition<MTESteamWoodcutter> getStructureDefinition() {
+        return StructureDefinition.<MTESteamWoodcutter>builder()
+            .addShape(
+                STRUCTURE_PIECE_MAIN,
+                (transpose(
+                    new String[][] { { "  AABAA  " }, { " BA   AB " }, { "AA     AA" }, { "A       A" },
+                        { "B       B" }, { "A       A" }, { "AA     AA" }, { " BA   AB " }, { "  AA~AA  " } })))
+            .addElement('A', ofBlock(GregTechAPI.sBlockCasingsSteam, 0))
+            .addElement('B', ofBlock(GregTechAPI.sBlockCasingsSteam, 1))
+            .build();
     }
 
     @Override
@@ -37,7 +54,13 @@ public class MTESteamWoodcutter extends MTEBetterSteamMultiBase<MTESteamWoodcutt
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return null;
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        tt.addInfo(EnumChatFormatting.AQUA + "" + EnumChatFormatting.ITALIC + "Impossible machine.")
+            .addInfo("Created by: ")
+            .addInfo(AuthorSteamIsTheNumber)
+            .beginStructureBlock(3, 3, 3, false)
+            .toolTipFinisher();
+        return tt;
     }
 
     @Override
