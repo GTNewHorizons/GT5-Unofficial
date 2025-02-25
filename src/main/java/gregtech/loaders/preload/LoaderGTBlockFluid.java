@@ -20,6 +20,7 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
+import gregtech.common.items.armor.MechArmorLoader;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -171,6 +172,7 @@ public class LoaderGTBlockFluid implements Runnable {
         new MetaGeneratedTool01();
         new ItemFluidDisplay();
         new ItemWirelessHeadphones();
+        MechArmorLoader.run();
 
         // Tiered recipe materials actually appear to be set in MTEBasicMachineWithRecipe, making these
         // unused
