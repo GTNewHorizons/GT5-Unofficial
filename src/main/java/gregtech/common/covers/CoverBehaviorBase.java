@@ -81,9 +81,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
     /** For use with NetworkUtils.readNBTBase */
     protected T createDataObject(NBTBase nbt) {
         final T ret = createDataObject();
-        if (nbt instanceof NBTTagCompound tag) {
-            ret.loadDataFromNBT(tag.getTag(NBT_DATA));
-        }
+        ret.loadDataFromNBT(nbt);
         return ret;
     }
 
