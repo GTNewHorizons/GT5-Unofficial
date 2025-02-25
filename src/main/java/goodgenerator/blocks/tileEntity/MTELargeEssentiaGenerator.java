@@ -472,7 +472,10 @@ public class MTELargeEssentiaGenerator extends MTETooltipMultiBlockBaseEM
             .addMaintenanceHatch("Hint block with dot 1", 1)
             .addInputHatch("Hint block with dot 1", 1)
             .addDynamoHatch("Hint block with dot 1", 1)
-            .addOtherStructurePart("Essentia Input Hatch", "Essentia Input", 1)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("gg.structure.tooltip.essentia_input_hatch"),
+                "Essentia Input",
+                1)
             .toolTipFinisher();
         return tt;
     }
