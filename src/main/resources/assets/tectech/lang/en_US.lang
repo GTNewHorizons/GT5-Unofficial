@@ -787,6 +787,7 @@ gt.blockmachines.multimachine.em.research.desc.5=Computation required in scanner
 gt.blockmachines.multimachine.em.research.desc.6=Recipe duration in seconds * (2 ^ (Recipe voltage tier - 1))
 gt.blockmachines.multimachine.em.research.mode.Assembly_line=Mode: Research Station
 gt.blockmachines.multimachine.em.research.mode.Scanner=Mode: Scanner
+gt.blockmachines.multimachine.em.research.computation=Computation: %,d / %,d
 
 gt.blockmachines.multimachine.em.collider.name=Matter Collider
 gt.blockmachines.multimachine.em.collider.hint.0=1 - Classic Hatches or High Power Casing
@@ -1884,6 +1885,12 @@ tt.IUPAC.E=Enn
 tt.IUPAC.ium=ium
 tt.IUPAC.Anti=Anti
 tt.keyword.Weird=*
+
+tt.tooltip.mark_general=: Interdimensional
+tt.tooltip.mark_em=: Elemental Matter
+tt.tooltip.theta_movement=: Theta Movement
+tt.tooltip.cosmic_mark=: Cosmic
+tt.tooltip.godforge_mark=: Project Godforge
 
 tt.chat.debug.generator=Laser mode: %s
 

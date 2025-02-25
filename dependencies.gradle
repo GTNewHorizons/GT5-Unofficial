@@ -39,11 +39,11 @@ dependencies {
     api("com.github.GTNewHorizons:NotEnoughItems:2.7.29-GTNH:dev")
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.6:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.6.11:dev")
-    api("com.github.GTNewHorizons:ModularUI:1.2.17:dev")
+    api("com.github.GTNewHorizons:ModularUI:1.2.18:dev")
     api("com.github.GTNewHorizons:ModularUI2:2.2.4-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.8.2:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-547-GTNH:dev")
-    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.29-gtnh:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.30-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.7.0:dev')
     api("com.github.GTNewHorizons:Postea:1.0.13:dev")
 
@@ -58,18 +58,18 @@ dependencies {
 
     compileOnlyApi("com.github.GTNewHorizons:Avaritia:1.61:dev")
 
-    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta34:api') { transitive = false }
+    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta35:api') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.4:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.42:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.9.4:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.10.2:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.10.3:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.11.1-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.16.3:dev") { transitive = false }
 
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.27:deobf") {transitive = false}
     compileOnly("com.github.GTNewHorizons:ThaumicBases:1.8.3:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:EnderCore:0.4.6:dev") { transitive = false }
-    compileOnly('com.github.GTNewHorizons:VisualProspecting:1.4.0:dev') { transitive = false }
+    compileOnly('com.github.GTNewHorizons:VisualProspecting:1.4.2:dev') { transitive = false }
     compileOnly("com.github.GTNewHorizons:Galaxy-Space-GTNH:1.1.106-GTNH:dev") { transitive = false }
 
     compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.3.4-GTNH:dev") { transitive = false }
@@ -103,7 +103,7 @@ dependencies {
     annotationProcessor("com.google.auto.value:auto-value:1.10.1")
 
     // For testing forestry integration (iApiary, combs, tree growth simulator)
-    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.10.2:dev")
+    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.10.3:dev")
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:neiaddons:1.16.0:dev')
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:MagicBees:2.9.0-GTNH:dev')
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.5.4:dev')
