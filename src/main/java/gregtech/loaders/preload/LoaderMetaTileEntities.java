@@ -929,6 +929,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
+import gregtech.common.tileentities.machines.multi.MTEIndustrialSolidifier;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.GregTechAPI;
@@ -1635,6 +1636,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_Multi_Autoclave.set(
             new MTEMultiAutoclave(MULTI_AUTOCLAVE_CONTROLLER.ID, "multimachine.autoclave", "Industrial Autoclave")
+                .getStackForm(1));
+
+        ItemList.Machine_Multi_IndustrialSolidifier.set(
+            new MTEIndustrialSolidifier(INDUSTRIAL_SOLIDIFIER_CONTROLLER.ID, "multimachine.solidifier", "Adaptive Foundry")
                 .getStackForm(1));
 
         ItemList.LargeFluidExtractor.set(
