@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.steam;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.common.misc.WirelessNetworkManager.ticks_between_energy_addition;
 import static net.minecraft.util.EnumChatFormatting.AQUA;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 import static net.minecraft.util.EnumChatFormatting.ITALIC;
@@ -32,7 +33,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
@@ -46,7 +46,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatch
 import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsUI;
 
-public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase implements IWirelessEnergyHatchInformation {
+public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase {
 
     private static final int STEAM_SELECTOR_WINDOW_ID = 11;
 
