@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamAlloySmelterMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamBlastFurnace;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamCarpenter;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamCentrifugeMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamCompressorMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamExtractinator;
@@ -14,6 +15,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMegaMacerator
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMixerMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamRockBreaker;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamWasherMulti;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamWoodcutter;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_Steamgate;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Bus_Steam;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Bus_Steam;
@@ -25,6 +27,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteam
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamAlloySmelter;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamBlastFurnace;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCarpenter;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCentrifuge;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCompressor;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamExtractinator;
@@ -36,6 +39,7 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.st
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMixer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamRockBreaker;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamWasher;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamWoodcutter;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamgate;
 
 public class GregtechSteamMultis {
@@ -110,6 +114,14 @@ public class GregtechSteamMultis {
                 "gtpp.multimachine.steam.extractinator",
                 "Steam Extractinator").getStackForm(1));
         addItemTooltip(GregtechItemList.Controller_SteamExtractinator.get(1), GTValues.AuthorNoc);
+        GregtechItemList.Controller_SteamCarpenter.set(
+            new MTESteamCarpenter(Controller_SteamCarpenter.ID, "gtpp.multimachine.steam.carpenter", "Steam Carpenter")
+                .getStackForm(1));
+        GregtechItemList.Controller_SteamWoodcutter.set(
+            new MTESteamWoodcutter(
+                Controller_SteamWoodcutter.ID,
+                "gtpp.multimachine.steam.woodcutter",
+                "Steam Woodcutter").getStackForm(1));
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(
             new MTEHatchSteamBusInput(Hatch_Input_Bus_Steam.ID, "hatch.input_bus.tier.steam", "Input Bus (Steam)", 0)

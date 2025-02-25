@@ -1941,6 +1941,8 @@ public enum MetaTileEntityIDs {
     RedstoneStrengthDisplay(31804),
     RedstoneStrengthScale(31805),
     WaterPump(31085),
+    Controller_SteamWoodcutter(31086),
+    Controller_SteamCarpenter(31087),
     UniversalChemicalFuelEngine(32001),
     LargeEssentiaGenerator(32002),
     NeutronAcceleratorULV(32003),

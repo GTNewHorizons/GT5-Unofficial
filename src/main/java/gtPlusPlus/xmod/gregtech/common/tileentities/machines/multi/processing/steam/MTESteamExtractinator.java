@@ -53,8 +53,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteam
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTESteamExtractinator extends MTESteamMultiBase<MTESteamExtractinator>
-    implements ISurvivalConstructable {
+public class MTESteamExtractinator extends MTESteamMultiBase<MTESteamExtractinator> implements ISurvivalConstructable {
 
     public MTESteamExtractinator(String aName) {
         super(aName);
