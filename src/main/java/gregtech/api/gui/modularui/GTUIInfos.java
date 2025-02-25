@@ -27,7 +27,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.net.GTPacketSendCoverData;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
 
 public class GTUIInfos {
 
@@ -70,14 +70,14 @@ public class GTUIInfos {
                     .container((player, world, x, y, z) -> {
                         final TileEntity te = world.getTileEntity(x, y, z);
                         if (!(te instanceof ICoverable gtTileEntity)) return null;
-                        return gtTileEntity.getCoverInfoAtSide(side)
+                        return gtTileEntity.getCoverAtSide(side)
                             .createCoverContainer(player);
                     })
                     .gui((player, world, x, y, z) -> {
                         if (!world.isRemote) return null;
                         final TileEntity te = world.getTileEntity(x, y, z);
                         if (!(te instanceof ICoverable gtTileEntity)) return null;
-                        ModularUIContainer container = gtTileEntity.getCoverInfoAtSide(side)
+                        ModularUIContainer container = gtTileEntity.getCoverAtSide(side)
                             .createCoverContainer(player);
                         return (container == null) ? null : new ModularGui(container);
                     })
@@ -99,13 +99,13 @@ public class GTUIInfos {
     }
 
     /**
-     * Opens cover UI, created by {@link CoverInfo#createWindow}.
+     * Opens cover UI, created by {@link Cover#createWindow}.
      */
     public static void openCoverUI(ICoverable tileEntity, EntityPlayer player, ForgeDirection side) {
         if (tileEntity.isClientSide()) return;
 
-        CoverInfo coverInfo = tileEntity.getCoverInfoAtSide(side);
-        GTValues.NW.sendToPlayer(new GTPacketSendCoverData(coverInfo, tileEntity), (EntityPlayerMP) player);
+        Cover cover = tileEntity.getCoverAtSide(side);
+        GTValues.NW.sendToPlayer(new GTPacketSendCoverData(cover, tileEntity), (EntityPlayerMP) player);
 
         coverUI.get(side)
             .open(

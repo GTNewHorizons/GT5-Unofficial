@@ -1,9 +1,9 @@
 package gregtech.api.covers;
 
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
 
 @FunctionalInterface
 public interface CoverFactory {
 
-    CoverInfo buildCover(CoverContext context);
+    Cover buildCover(CoverContext context);
 }

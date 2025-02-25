@@ -37,7 +37,7 @@ import io.netty.buffer.ByteBuf;
  *
  * @author glease
  */
-public abstract class CoverBehaviorBase<T extends ISerializableObject> extends CoverInfo {
+public abstract class CoverBehaviorBase<T extends ISerializableObject> extends Cover {
 
     private static final String NBT_DATA = "d";
 
@@ -185,11 +185,10 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
                         .setPos(getGUIWidth() - 15, 3));
             }
 
-            final CoverInfo coverInfo = uiBuildContext.getTile()
-                .getCoverInfoAtSide(uiBuildContext.getCoverSide());
-            if (coverInfo.getMinimumTickRate() > 0 && coverInfo.allowsTickRateAddition()) {
-                builder.widget(
-                    new CoverTickRateButton(coverInfo, builder).setPos(getGUIWidth() - 24, getGUIHeight() - 24));
+            final Cover cover = uiBuildContext.getTile()
+                .getCoverAtSide(uiBuildContext.getCoverSide());
+            if (cover.getMinimumTickRate() > 0 && cover.allowsTickRateAddition()) {
+                builder.widget(new CoverTickRateButton(cover, builder).setPos(getGUIWidth() - 24, getGUIHeight() - 24));
             }
 
             return builder.build();
@@ -218,7 +217,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
             if (isCoverValid()) {
                 return forceCast(
                     getUIBuildContext().getTile()
-                        .getCoverInfoAtSide(getUIBuildContext().getCoverSide())
+                        .getCoverAtSide(getUIBuildContext().getCoverSide())
                         .getCoverData());
             } else {
                 return null;
@@ -238,7 +237,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
 
         private boolean isCoverValid() {
             ICoverable tile = getUIBuildContext().getTile();
-            return !tile.isDead() && tile.getCoverInfoAtSide(getUIBuildContext().getCoverSide())
+            return !tile.isDead() && tile.getCoverAtSide(getUIBuildContext().getCoverSide())
                 .isValid();
         }
 

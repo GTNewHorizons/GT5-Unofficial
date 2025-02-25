@@ -21,7 +21,7 @@ import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
 
 public class BehaviourCoverTool extends BehaviourNone {
 
@@ -139,11 +139,11 @@ public class BehaviourCoverTool extends BehaviourNone {
                     ? GTUtility.determineWrenchingSide(side, hitX, hitY, hitZ)
                     : ForgeDirection.UNKNOWN;
             if (tSide != ForgeDirection.UNKNOWN) {
-                CoverInfo coverInfo = tCoverable.getCoverInfoAtSide(tSide);
-                if (coverInfo.allowsCopyPasteTool()) {
-                    mStoredData = coverInfo.getCoverData();
-                    mCoverType = coverInfo.getCoverID();
-                    mTickRateAddition = coverInfo.getTickRateAddition();
+                Cover cover = tCoverable.getCoverAtSide(tSide);
+                if (cover.allowsCopyPasteTool()) {
+                    mStoredData = cover.getCoverData();
+                    mCoverType = cover.getCoverID();
+                    mTickRateAddition = cover.getTickRateAddition();
 
                     aList.add("Block Side: " + EnumChatFormatting.AQUA + tSide.name() + EnumChatFormatting.RESET);
                     aList.add(
@@ -187,7 +187,7 @@ public class BehaviourCoverTool extends BehaviourNone {
                 int tCoverID = tCoverable.getCoverIDAtSide(tSide);
                 if (tCoverID == mCoverType) {
                     tCoverable.setCoverDataAtSide(tSide, mStoredData);
-                    tCoverable.getCoverInfoAtSide(tSide)
+                    tCoverable.getCoverAtSide(tSide)
                         .setTickRateAddition(mTickRateAddition);
                     GTUtility.sendChatToPlayer(aPlayer, "Cover Data Pasted.");
                 } else {

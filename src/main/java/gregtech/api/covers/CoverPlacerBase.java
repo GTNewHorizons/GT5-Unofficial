@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
 
 public class CoverPlacerBase implements CoverPlacer {
 
@@ -23,10 +23,10 @@ public class CoverPlacerBase implements CoverPlacer {
      * sets the Cover upon placement.
      */
     @Override
-    public final void placeCover(EntityPlayer player, ItemStack cover, ICoverable tileEntity, ForgeDirection side) {
-        CoverInfo coverInfo = CoverRegistry.getRegistration(cover)
-            .buildCover(side, tileEntity, cover);
-        tileEntity.attachCover(coverInfo, side);
-        coverInfo.onPlayerAttach(player, cover);
+    public final void placeCover(EntityPlayer player, ItemStack coverItem, ICoverable tileEntity, ForgeDirection side) {
+        Cover cover = CoverRegistry.getRegistration(coverItem)
+            .buildCover(side, tileEntity, coverItem);
+        tileEntity.attachCover(cover, side);
+        cover.onPlayerAttach(player, coverItem);
     }
 }

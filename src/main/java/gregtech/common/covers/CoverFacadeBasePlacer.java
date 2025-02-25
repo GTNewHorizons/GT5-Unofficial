@@ -32,12 +32,12 @@ public abstract class CoverFacadeBasePlacer extends CoverPlacerBase {
         // class
         for (final ForgeDirection iSide : ForgeDirection.VALID_DIRECTIONS) {
             if (iSide == side) continue;
-            final CoverInfo coverInfo = coverable.getCoverInfoAtSide(iSide);
-            if (!coverInfo.isValid()) continue;
-            final Block facadeBlock = coverInfo.getFacadeBlock();
+            final Cover cover = coverable.getCoverAtSide(iSide);
+            if (!cover.isValid()) continue;
+            final Block facadeBlock = cover.getFacadeBlock();
             if (facadeBlock == null) continue;
             if (facadeBlock != targetBlock) return false;
-            if (coverInfo.getFacadeMeta() != getTargetMeta(aStack)) return false;
+            if (cover.getFacadeMeta() != getTargetMeta(aStack)) return false;
         }
         return true;
     }

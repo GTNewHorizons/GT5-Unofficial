@@ -13,7 +13,7 @@ import com.google.common.io.ByteArrayDataInput;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.CoverableTileEntity;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -34,7 +34,7 @@ public class GTPacketRequestCoverData extends GTPacket {
         super();
     }
 
-    public GTPacketRequestCoverData(CoverInfo info, ICoverable tile) {
+    public GTPacketRequestCoverData(Cover info, ICoverable tile) {
         super();
         this.mX = tile.getXCoord();
         this.mY = tile.getYCoord();

@@ -62,9 +62,9 @@ import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GTClient;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Other;
+import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverDrain;
 import gregtech.common.covers.CoverFluidRegulator;
-import gregtech.common.covers.CoverInfo;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -406,9 +406,9 @@ public class MTEFluid extends MetaPipeEntity {
 
             if (isConnectedAtSide(side) && tTank != null
                 && (mLastReceivedFrom & side.flag) == 0
-                && getBaseMetaTileEntity().getCoverInfoAtSide(side)
+                && getBaseMetaTileEntity().getCoverAtSide(side)
                     .letsFluidOut(tFluid.getFluid())
-                && (gTank == null || gTank.getCoverInfoAtSide(oppositeSide)
+                && (gTank == null || gTank.getCoverAtSide(oppositeSide)
                     .letsFluidIn(tFluid.getFluid()))) {
                 if (tTank.fill(oppositeSide, tFluid, false) > 0) {
                     tTanks.add(new MutableTriple<>(tTank, oppositeSide, 0));
@@ -695,13 +695,13 @@ public class MTEFluid extends MetaPipeEntity {
     }
 
     @Override
-    public boolean letsIn(CoverInfo coverInfo) {
-        return coverInfo.letsFluidIn(null);
+    public boolean letsIn(Cover cover) {
+        return cover.letsFluidIn(null);
     }
 
     @Override
-    public boolean letsOut(CoverInfo coverInfo) {
-        return coverInfo.letsFluidOut(null);
+    public boolean letsOut(Cover cover) {
+        return cover.letsFluidOut(null);
     }
 
     @Override
@@ -712,7 +712,7 @@ public class MTEFluid extends MetaPipeEntity {
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
         if (baseMetaTile == null) return false;
 
-        final CoverInfo cover = baseMetaTile.getCoverInfoAtSide(side);
+        final Cover cover = baseMetaTile.getCoverAtSide(side);
         final IGregTechTileEntity gTileEntity = (tileEntity instanceof IGregTechTileEntity)
             ? (IGregTechTileEntity) tileEntity
             : null;
@@ -726,7 +726,7 @@ public class MTEFluid extends MetaPipeEntity {
             final FluidTankInfo[] tInfo = fTileEntity.getTankInfo(tSide);
             if (tInfo != null) {
                 return tInfo.length > 0 || (Translocator.isModLoaded() && isTranslocator(tileEntity))
-                    || gTileEntity != null && gTileEntity.getCoverInfoAtSide(side) instanceof CoverFluidRegulator;
+                    || gTileEntity != null && gTileEntity.getCoverAtSide(side) instanceof CoverFluidRegulator;
             }
         }
         return false;

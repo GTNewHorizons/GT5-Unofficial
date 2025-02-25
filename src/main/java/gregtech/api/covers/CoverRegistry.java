@@ -17,9 +17,9 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.covers.CoverDefault;
-import gregtech.common.covers.CoverInfo;
 import gregtech.common.covers.CoverNone;
 import gregtech.common.covers.SimpleCoverPlacer;
 
@@ -112,7 +112,7 @@ public class CoverRegistry {
         return colorOverride.getTextColorOrDefault(textType, defaultColor);
     }
 
-    public static CoverInfo buildCover(ICoverable coverable, NBTTagCompound nbt) {
+    public static Cover buildCover(ICoverable coverable, NBTTagCompound nbt) {
         int coverID = nbt.getInteger(NBT_ID);
         return CoverRegistry.getRegistration(coverID)
             .buildCover(coverable, nbt);

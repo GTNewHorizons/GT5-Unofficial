@@ -63,7 +63,7 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntityPipe {
                             && !((IConnectable) aMetaTileEntity).isConnectedAtSide(side)) continue;
                         final ForgeDirection oppositeSide = side.getOpposite();
                         if (aSuckItems) {
-                            if (aBaseMetaTileEntity.getCoverInfoAtSide(side)
+                            if (aBaseMetaTileEntity.getCoverAtSide(side)
                                 .letsItemsIn(-2)) {
                                 final IGregTechTileEntity tItemPipe = aBaseMetaTileEntity
                                     .getIGregTechTileEntityAtSide(side);
@@ -76,7 +76,7 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntityPipe {
                                 if (tItemPipe instanceof BaseMetaPipeEntity) {
                                     final IMetaTileEntity tMetaTileEntity = tItemPipe.getMetaTileEntity();
                                     if (tMetaTileEntity instanceof IMetaTileEntityItemPipe
-                                        && tItemPipe.getCoverInfoAtSide(oppositeSide)
+                                        && tItemPipe.getCoverAtSide(oppositeSide)
                                             .letsItemsOut(-2)) {
                                         scanPipes(
                                             (IMetaTileEntityItemPipe) tMetaTileEntity,
@@ -88,7 +88,7 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntityPipe {
                                 }
                             }
                         } else {
-                            if (aBaseMetaTileEntity.getCoverInfoAtSide(side)
+                            if (aBaseMetaTileEntity.getCoverAtSide(side)
                                 .letsItemsOut(-2)) {
                                 final IGregTechTileEntity tItemPipe = aBaseMetaTileEntity
                                     .getIGregTechTileEntityAtSide(side);
@@ -102,7 +102,7 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntityPipe {
                                     if (tItemPipe instanceof BaseMetaPipeEntity) {
                                         final IMetaTileEntity tMetaTileEntity = tItemPipe.getMetaTileEntity();
                                         if (tMetaTileEntity instanceof IMetaTileEntityItemPipe
-                                            && tItemPipe.getCoverInfoAtSide(oppositeSide)
+                                            && tItemPipe.getCoverAtSide(oppositeSide)
                                                 .letsItemsIn(-2)) {
                                             scanPipes(
                                                 (IMetaTileEntityItemPipe) tMetaTileEntity,

@@ -199,7 +199,7 @@ public class BlockFrameBox extends BlockContainer {
             default -> ForgeDirection.UNKNOWN;
         };
         final TileEntity frameEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return frameEntity instanceof CoverableTileEntity cte && cte.getCoverInfoAtSide(forgeSide)
+        return frameEntity instanceof CoverableTileEntity cte && cte.getCoverAtSide(forgeSide)
             .getCoverID() != 0;
     }
 

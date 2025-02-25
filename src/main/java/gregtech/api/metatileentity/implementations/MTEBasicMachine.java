@@ -957,7 +957,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
         if (side != mMainFacing) return true;
         return this.getBaseMetaTileEntity()
-            .getCoverInfoAtSide(side)
+            .getCoverAtSide(side)
             .isGUIClickable();
     }
 

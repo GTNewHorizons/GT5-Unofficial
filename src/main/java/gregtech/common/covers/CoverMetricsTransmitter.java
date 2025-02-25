@@ -112,7 +112,7 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
         }
 
         cardStack.setTagCompound(tagCompound);
-        coverable.getCoverInfoAtSide(coverSide)
+        coverable.getCoverAtSide(coverSide)
             .setCoverData(new MetricsTransmitterData(newFrequency));
 
         final EntityItem cardEntity = new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, cardStack);

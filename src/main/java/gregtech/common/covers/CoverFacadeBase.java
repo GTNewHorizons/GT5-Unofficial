@@ -179,7 +179,7 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
             for (final ForgeDirection iSide : ForgeDirection.VALID_DIRECTIONS) {
                 if (iSide == coverSide) continue;
                 // since we do not allow multiple type of facade per block, this check would be enough.
-                if (coverable.getCoverInfoAtSide(iSide) instanceof CoverFacadeBase) return;
+                if (coverable.getCoverAtSide(iSide) instanceof CoverFacadeBase) return;
             }
             if (coverData.mStack != null)
                 // mStack == null -> cover removed before data reach client

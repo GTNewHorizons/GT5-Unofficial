@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
 
 public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer {
 
@@ -21,9 +21,9 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
      * @param cover The cover
      * @param side  Which side the cover is attached to
      */
-    void attachCover(CoverInfo cover, ForgeDirection side);
+    void attachCover(Cover cover, ForgeDirection side);
 
-    CoverInfo getCoverInfoAtSide(ForgeDirection side);
+    Cover getCoverAtSide(ForgeDirection side);
 
     int getCoverIDAtSide(ForgeDirection side);
 
@@ -49,8 +49,8 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
     /**
      * Receiving a packet with cover data.
      *
-     * @param coverInfo
-     * @param side      cover side
+     * @param cover
+     * @param side  cover side
      */
-    void updateCover(CoverInfo coverInfo, ForgeDirection side);
+    void updateCover(Cover cover, ForgeDirection side);
 }

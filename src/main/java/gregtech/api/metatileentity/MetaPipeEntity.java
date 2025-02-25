@@ -25,7 +25,7 @@ import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -314,11 +314,11 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
         if (baseMetaTile == null || !baseMetaTile.isServerSide()) return 0;
 
-        final CoverInfo coverInfo = baseMetaTile.getCoverInfoAtSide(side);
+        final Cover cover = baseMetaTile.getCoverAtSide(side);
 
-        final boolean alwaysLookConnected = coverInfo.alwaysLookConnected();
-        final boolean letsIn = letsIn(coverInfo);
-        final boolean letsOut = letsOut(coverInfo);
+        final boolean alwaysLookConnected = cover.alwaysLookConnected();
+        final boolean letsIn = letsIn(cover);
+        final boolean letsOut = letsOut(cover);
 
         // Careful - tTileEntity might be null, and that's ok -- so handle it
         final TileEntity tTileEntity = baseMetaTile.getTileEntityAtSide(side);
@@ -389,11 +389,11 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         return (mConnections & sideDirection.flag) != 0;
     }
 
-    public boolean letsIn(CoverInfo coverInfo) {
+    public boolean letsIn(Cover cover) {
         return false;
     }
 
-    public boolean letsOut(CoverInfo coverInfo) {
+    public boolean letsOut(Cover cover) {
         return false;
     }
 

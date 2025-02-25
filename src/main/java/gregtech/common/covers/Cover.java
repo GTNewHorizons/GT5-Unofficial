@@ -35,7 +35,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
 
-public abstract class CoverInfo {
+public abstract class Cover {
 
     private static final String NBT_SIDE = "s", NBT_ID = "id", NBT_TICK_RATE_ADDITION = "tra";
 
@@ -49,7 +49,7 @@ public abstract class CoverInfo {
     protected boolean needsUpdate = false;
     protected int tickRateAddition = 0;
 
-    public CoverInfo(CoverContext context) {
+    public Cover(CoverContext context) {
         coverSide = context.getSide();
         coverID = context.getCoverId();
         coveredTile = new WeakReference<>(context.getCoverable());
@@ -389,7 +389,7 @@ public abstract class CoverInfo {
      * @return An instance of tick rate components
      */
     @NotNull
-    public CoverInfo.ClientTickRateFormatter getCurrentTickRateFormatted() {
+    public Cover.ClientTickRateFormatter getCurrentTickRateFormatted() {
         return new ClientTickRateFormatter(getTickRate());
     }
 

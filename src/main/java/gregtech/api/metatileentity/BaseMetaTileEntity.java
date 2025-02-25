@@ -81,7 +81,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
 import gregtech.common.pollution.Pollution;
 import ic2.api.Direction;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -679,12 +679,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     (short) yCoord,
                     zCoord,
                     mID,
-                    getCoverInfoAtSide(ForgeDirection.DOWN).getCoverID(),
-                    getCoverInfoAtSide(ForgeDirection.UP).getCoverID(),
-                    getCoverInfoAtSide(ForgeDirection.NORTH).getCoverID(),
-                    getCoverInfoAtSide(ForgeDirection.SOUTH).getCoverID(),
-                    getCoverInfoAtSide(ForgeDirection.WEST).getCoverID(),
-                    getCoverInfoAtSide(ForgeDirection.EAST).getCoverID(),
+                    getCoverAtSide(ForgeDirection.DOWN).getCoverID(),
+                    getCoverAtSide(ForgeDirection.UP).getCoverID(),
+                    getCoverAtSide(ForgeDirection.NORTH).getCoverID(),
+                    getCoverAtSide(ForgeDirection.SOUTH).getCoverID(),
+                    getCoverAtSide(ForgeDirection.WEST).getCoverID(),
+                    getCoverAtSide(ForgeDirection.EAST).getCoverID(),
                     oTextureData = (byte) ((mFacing.ordinal() & 7) | (mActive ? 8 : 0)
                         | (mRedstone ? 16 : 0)
                         | (mLockUpgrade ? 32 : 0)
@@ -1268,7 +1268,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     private boolean isEnergyInputSide(ForgeDirection side) {
         if (side != ForgeDirection.UNKNOWN) {
-            if (!getCoverInfoAtSide(side).letsEnergyIn()) return false;
+            if (!getCoverAtSide(side).letsEnergyIn()) return false;
             if (isInvalid() || mReleaseEnergy) return false;
             if (canAccessData() && mMetaTileEntity.isElectric() && mMetaTileEntity.isEnetInput())
                 return mMetaTileEntity.isInputFacing(side);
@@ -1278,7 +1278,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     private boolean isEnergyOutputSide(ForgeDirection side) {
         if (side != ForgeDirection.UNKNOWN) {
-            if (!getCoverInfoAtSide(side).letsEnergyOut()) return false;
+            if (!getCoverAtSide(side).letsEnergyOut()) return false;
             if (isInvalid() || mReleaseEnergy) return mReleaseEnergy;
             if (canAccessData() && mMetaTileEntity.isElectric() && mMetaTileEntity.isEnetOutput())
                 return mMetaTileEntity.isOutputFacing(side);
@@ -1448,14 +1448,14 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         final float aZ) {
         final ForgeDirection wrenchingSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
         final ForgeDirection effectiveSide = (getCoverIDAtSide(side) == 0) ? wrenchingSide : side;
-        CoverInfo effectiveSideCover = getCoverInfoAtSide(effectiveSide);
+        Cover effectiveSideCover = getCoverAtSide(effectiveSide);
         if (isClientSide()) {
             // Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
                 return (effectiveSideCover.hasCoverGUI());
             }
 
-            if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
+            if (!getCoverAtSide(side).isGUIClickable()) return false;
         }
 
         if (isServerSide()) {
@@ -1502,9 +1502,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
                     if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sScrewdriverList)) {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
-                            setCoverDataAtSide(
-                                side,
-                                getCoverInfoAtSide(side).onCoverScrewdriverClick(aPlayer, aX, aY, aZ));
+                            setCoverDataAtSide(side, getCoverAtSide(side).onCoverScrewdriverClick(aPlayer, aX, aY, aZ));
                             mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tCurrentItem);
                             GTUtility.sendSoundToPlayers(
                                 worldObj,
@@ -1697,9 +1695,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     return effectiveSideCover.isValid() && effectiveSideCover.onCoverShiftRightClick(aPlayer);
                 }
 
-                if (getCoverInfoAtSide(side).onCoverRightClick(aPlayer, aX, aY, aZ)) return true;
+                if (getCoverAtSide(side).onCoverRightClick(aPlayer, aX, aY, aZ)) return true;
 
-                if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
+                if (!getCoverAtSide(side).isGUIClickable()) return false;
 
                 if (isUpgradable() && tCurrentItem != null) {
                     if (ItemList.Upgrade_Muffler.isStackEqual(aPlayer.inventory.getCurrentItem())) {
@@ -1798,8 +1796,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
      */
     @Override
     public int[] getAccessibleSlotsFromSide(int ordinalSide) {
-        final CoverInfo coverInfo = getCoverInfoAtSide(ForgeDirection.getOrientation(ordinalSide));
-        if (canAccessData() && (coverInfo.letsItemsOut(-1) || coverInfo.letsItemsIn(-1)))
+        final Cover cover = getCoverAtSide(ForgeDirection.getOrientation(ordinalSide));
+        if (canAccessData() && (cover.letsItemsOut(-1) || cover.letsItemsIn(-1)))
             return mMetaTileEntity.getAccessibleSlotsFromSide(ordinalSide);
         return GTValues.emptyIntArray;
     }
@@ -1810,7 +1808,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     @Override
     public boolean canInsertItem(int slotIndex, ItemStack stack, int ordinalSide) {
         return canAccessData() && (mRunningThroughTick || !mInputDisabled)
-            && getCoverInfoAtSide(ForgeDirection.getOrientation(ordinalSide)).letsItemsIn(slotIndex)
+            && getCoverAtSide(ForgeDirection.getOrientation(ordinalSide)).letsItemsIn(slotIndex)
             && mMetaTileEntity.canInsertItem(slotIndex, stack, ordinalSide);
     }
 
@@ -1821,7 +1819,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     public boolean canExtractItem(int slotIndex, ItemStack stack, int ordinalSide) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
         return canAccessData() && (mRunningThroughTick || !mOutputDisabled)
-            && getCoverInfoAtSide(side).letsItemsOut(slotIndex)
+            && getCoverAtSide(side).letsItemsOut(slotIndex)
             && mMetaTileEntity.canExtractItem(slotIndex, stack, ordinalSide);
     }
 
@@ -2008,7 +2006,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         if (mTickTimer > 5 && canAccessData()
             && (mRunningThroughTick || !mInputDisabled)
             && (side == ForgeDirection.UNKNOWN || (mMetaTileEntity.isLiquidInput(side)
-                && getCoverInfoAtSide(side).letsFluidIn(aFluid == null ? null : aFluid.getFluid()))))
+                && getCoverAtSide(side).letsFluidIn(aFluid == null ? null : aFluid.getFluid()))))
             return mMetaTileEntity.fill(side, aFluid, doFill);
         return 0;
     }
@@ -2018,7 +2016,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         if (mTickTimer > 5 && canAccessData()
             && (mRunningThroughTick || !mOutputDisabled)
             && (side == ForgeDirection.UNKNOWN
-                || (mMetaTileEntity.isLiquidOutput(side) && getCoverInfoAtSide(side).letsFluidOut(
+                || (mMetaTileEntity.isLiquidOutput(side) && getCoverAtSide(side).letsFluidOut(
                     mMetaTileEntity.getFluid() == null ? null
                         : mMetaTileEntity.getFluid()
                             .getFluid()))))
@@ -2031,7 +2029,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         if (mTickTimer > 5 && canAccessData()
             && (mRunningThroughTick || !mOutputDisabled)
             && (side == ForgeDirection.UNKNOWN || (mMetaTileEntity.isLiquidOutput(side)
-                && getCoverInfoAtSide(side).letsFluidOut(aFluid == null ? null : aFluid.getFluid()))))
+                && getCoverAtSide(side).letsFluidOut(aFluid == null ? null : aFluid.getFluid()))))
             return mMetaTileEntity.drain(side, aFluid, doDrain);
         return null;
     }
@@ -2041,7 +2039,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         if (mTickTimer > 5 && canAccessData()
             && (mRunningThroughTick || !mInputDisabled)
             && (side == ForgeDirection.UNKNOWN
-                || (mMetaTileEntity.isLiquidInput(side) && getCoverInfoAtSide(side).letsFluidIn(aFluid))))
+                || (mMetaTileEntity.isLiquidInput(side) && getCoverAtSide(side).letsFluidIn(aFluid))))
             return mMetaTileEntity.canFill(side, aFluid);
         return false;
     }
@@ -2051,7 +2049,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         if (mTickTimer > 5 && canAccessData()
             && (mRunningThroughTick || !mOutputDisabled)
             && (side == ForgeDirection.UNKNOWN
-                || (mMetaTileEntity.isLiquidOutput(side) && getCoverInfoAtSide(side).letsFluidOut(aFluid))))
+                || (mMetaTileEntity.isLiquidOutput(side) && getCoverAtSide(side).letsFluidOut(aFluid))))
             return mMetaTileEntity.canDrain(side, aFluid);
         return false;
     }
@@ -2059,8 +2057,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection side) {
         if (canAccessData() && (side == ForgeDirection.UNKNOWN
-            || (mMetaTileEntity.isLiquidInput(side) && getCoverInfoAtSide(side).letsFluidIn(null))
-            || (mMetaTileEntity.isLiquidOutput(side) && getCoverInfoAtSide(side).letsFluidOut(null))))
+            || (mMetaTileEntity.isLiquidInput(side) && getCoverAtSide(side).letsFluidIn(null))
+            || (mMetaTileEntity.isLiquidOutput(side) && getCoverAtSide(side).letsFluidOut(null))))
             return mMetaTileEntity.getTankInfo(side);
         return new FluidTankInfo[] {};
     }

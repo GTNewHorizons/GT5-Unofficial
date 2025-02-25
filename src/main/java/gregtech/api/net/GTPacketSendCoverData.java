@@ -8,7 +8,7 @@ import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.CoverableTileEntity;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -21,13 +21,13 @@ public class GTPacketSendCoverData extends GTPacket {
     protected int mZ;
     protected int coverID;
 
-    protected CoverInfo info;
+    protected Cover info;
 
     public GTPacketSendCoverData() {
         super();
     }
 
-    public GTPacketSendCoverData(CoverInfo info, ICoverable tile) {
+    public GTPacketSendCoverData(Cover info, ICoverable tile) {
         super();
         this.mX = tile.getXCoord();
         this.mY = tile.getYCoord();
@@ -62,7 +62,7 @@ public class GTPacketSendCoverData extends GTPacket {
         final TileEntity tile = world.getTileEntity(data.readInt(), data.readShort(), data.readInt());
         if (tile instanceof CoverableTileEntity coverable && !coverable.isDead()) {
             int coverId = data.readInt();
-            CoverInfo cover = CoverRegistry.getRegistration(coverId)
+            Cover cover = CoverRegistry.getRegistration(coverId)
                 .buildCover(coverable, data);
             coverable.updateCover(cover, cover.getSide());
         }

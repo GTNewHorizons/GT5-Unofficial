@@ -34,7 +34,7 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.GTClient;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
 
 /**
  * {@link IMetaTileEntity} implementation combining both machine-like ({@link MetaTileEntity}) and pipe-like
@@ -393,10 +393,10 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     public int[] getAccessibleSlotsFromSide(int ordinalSide) {
         final TIntList tList = new TIntArrayList();
         final IGregTechTileEntity tTileEntity = getBaseMetaTileEntity();
-        final CoverInfo tileCoverInfo = tTileEntity.getCoverInfoAtSide(ForgeDirection.getOrientation(ordinalSide));
-        final boolean tSkip = tileCoverInfo.letsItemsIn(-2) || tileCoverInfo.letsItemsOut(-2);
+        final Cover tileCover = tTileEntity.getCoverAtSide(ForgeDirection.getOrientation(ordinalSide));
+        final boolean tSkip = tileCover.letsItemsIn(-2) || tileCover.letsItemsOut(-2);
         for (int i = 0; i < getSizeInventory(); i++) {
-            if (isValidSlot(i) && (tSkip || tileCoverInfo.letsItemsOut(i) || tileCoverInfo.letsItemsIn(i))) {
+            if (isValidSlot(i) && (tSkip || tileCover.letsItemsOut(i) || tileCover.letsItemsIn(i))) {
                 tList.add(i);
             }
         }

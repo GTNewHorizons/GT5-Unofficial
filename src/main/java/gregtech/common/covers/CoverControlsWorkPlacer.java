@@ -12,7 +12,7 @@ public class CoverControlsWorkPlacer extends CoverPlacerBase {
     public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable coverable) {
         if (!super.isCoverPlaceable(side, aStack, coverable)) return false;
         for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
-            if (coverable.getCoverInfoAtSide(tSide) instanceof CoverControlsWork) {
+            if (coverable.getCoverAtSide(tSide) instanceof CoverControlsWork) {
                 return false;
             }
         }
