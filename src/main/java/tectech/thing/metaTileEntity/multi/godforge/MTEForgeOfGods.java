@@ -2470,6 +2470,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     private int previewFactor = 0;
+    private boolean usePreviewValue = false;
     private final List<String> infoTexts = Arrays.asList(new String[28]);
 
     protected ModularWindow createStatisticsWindow(final EntityPlayer player) {
@@ -2478,6 +2479,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
         builder.setBackground(TecTechUITextures.BACKGROUND_GLOW_WHITE);
         builder.setDraggable(true);
+        usePreviewValue = false;
 
         builder.widget(
             new TextWidget(EnumChatFormatting.GOLD + translateToLocal("gt.blockmachines.multimachine.FOG.modulestats"))
@@ -2636,7 +2638,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                             molten,
                             plasma,
                             exotic,
-                            previewFactor == fuelConsumptionFactor ? fuelConsumptionFactor : previewFactor);
+                            usePreviewValue ? (previewFactor == 0 ? 1 : previewFactor) : fuelConsumptionFactor);
                     }
                 }
             })
@@ -2667,6 +2669,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .widget(new MultiChildWidget().addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
                 TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
                 if (clickData.mouseButton == 0) {
+                    usePreviewValue = true;
                     for (int i = 0; i < 28; i++) {
                         calculateRelevantStatInfo(
                             i,
@@ -2674,7 +2677,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                             molten,
                             plasma,
                             exotic,
-                            previewFactor == fuelConsumptionFactor ? fuelConsumptionFactor : previewFactor);
+                            previewFactor == 0 ? 1 : previewFactor);
                     }
                 }
             })
