@@ -8,9 +8,9 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 
 public interface CoverPlacer {
 
-    boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable coverable);
+    boolean isCoverPlaceable(ForgeDirection side, ItemStack coverItem, ICoverable coverable);
 
     boolean isSimpleCover();
 
-    void placeCover(EntityPlayer player, ItemStack cover, ICoverable tileEntity, ForgeDirection side);
+    void placeCover(EntityPlayer player, ItemStack coverItem, ICoverable tileEntity, ForgeDirection side);
 }

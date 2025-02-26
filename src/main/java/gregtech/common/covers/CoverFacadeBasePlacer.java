@@ -19,12 +19,12 @@ public abstract class CoverFacadeBasePlacer extends CoverPlacerBase {
     protected abstract int getTargetMeta(ItemStack aFacadeStack);
 
     @Override
-    public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable coverable) {
+    public boolean isCoverPlaceable(ForgeDirection side, ItemStack coverItem, ICoverable coverable) {
         // blocks that are not rendered in pass 0 are now accepted but rendered awkwardly
         // to render it correctly require changing GT_Block_Machine to render in both pass, which is not really a good
         // idea...
-        if (!super.isCoverPlaceable(side, aStack, coverable)) return false;
-        final Block targetBlock = getTargetBlock(aStack);
+        if (!super.isCoverPlaceable(side, coverItem, coverable)) return false;
+        final Block targetBlock = getTargetBlock(coverItem);
         if (targetBlock == null) return false;
         // we allow one single type of facade on the same block for now
         // otherwise it's not clear which block this block should impersonate
@@ -37,7 +37,7 @@ public abstract class CoverFacadeBasePlacer extends CoverPlacerBase {
             final Block facadeBlock = cover.getFacadeBlock();
             if (facadeBlock == null) continue;
             if (facadeBlock != targetBlock) return false;
-            if (cover.getFacadeMeta() != getTargetMeta(aStack)) return false;
+            if (cover.getFacadeMeta() != getTargetMeta(coverItem)) return false;
         }
         return true;
     }

@@ -10,7 +10,7 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 public class CoverMetricsTransmitterPlacer extends CoverPlacerBase {
 
     @Override
-    public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable coverable) {
+    public boolean isCoverPlaceable(ForgeDirection side, ItemStack coverItem, ICoverable coverable) {
         return coverable instanceof final IGregTechDeviceInformation device && device.isGivingInformation();
     }
 

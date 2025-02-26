@@ -15,7 +15,7 @@ public class CoverPowerPassUpgrade extends CoverBehavior {
     }
 
     @Override
-    public void onPlayerAttach(EntityPlayer player, ItemStack cover) {
+    public void onPlayerAttach(EntityPlayer player, ItemStack coverItem) {
         ICoverable coverable = coveredTile.get();
         if (coverable != null && coverable.getIGregTechTileEntityOffset(0, 0, 0)
             .getMetaTileEntity() instanceof TTMultiblockBase multi) {

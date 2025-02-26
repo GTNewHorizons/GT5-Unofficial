@@ -90,7 +90,7 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
     }
 
     @Override
-    public void onPlayerAttach(EntityPlayer player, ItemStack cover) {
+    public void onPlayerAttach(EntityPlayer player, ItemStack coverItem) {
         final UUID newFrequency = UUID.randomUUID();
         final ItemStack cardStack = ItemList.NC_AdvancedSensorCard.get(1);
         ICoverable coverable = coveredTile.get();

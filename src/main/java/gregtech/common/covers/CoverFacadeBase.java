@@ -104,15 +104,15 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
     }
 
     @Override
-    public void onPlayerAttach(EntityPlayer player, ItemStack cover) {
+    public void onPlayerAttach(EntityPlayer player, ItemStack coverItem) {
         ICoverable coverable = coveredTile.get();
         if (coverable != null && coverable.isClientSide()) GTRenderingWorld.getInstance()
             .register(
                 coverable.getXCoord(),
                 coverable.getYCoord(),
                 coverable.getZCoord(),
-                getTargetBlock(cover),
-                getTargetMeta(cover));
+                getTargetBlock(coverItem),
+                getTargetMeta(coverItem));
     }
 
     @Override

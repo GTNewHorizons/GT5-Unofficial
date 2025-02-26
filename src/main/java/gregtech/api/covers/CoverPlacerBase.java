@@ -10,7 +10,7 @@ import gregtech.common.covers.Cover;
 public class CoverPlacerBase implements CoverPlacer {
 
     @Override
-    public boolean isCoverPlaceable(ForgeDirection side, ItemStack cover, ICoverable tileEntity) {
+    public boolean isCoverPlaceable(ForgeDirection side, ItemStack coverItem, ICoverable tileEntity) {
         return true;
     }
 

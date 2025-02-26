@@ -11,7 +11,7 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 public class CoverPowerPassUpgradePlacer extends CoverPlacerBase {
 
     @Override
-    public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable aTileEntity) {
+    public boolean isCoverPlaceable(ForgeDirection side, ItemStack coverItem, ICoverable aTileEntity) {
         IMetaTileEntity iGregTechTileEntityOffset = aTileEntity.getIGregTechTileEntityOffset(0, 0, 0)
             .getMetaTileEntity();
         if (iGregTechTileEntityOffset instanceof TTMultiblockBase multi) {

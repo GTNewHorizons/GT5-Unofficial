@@ -106,10 +106,10 @@ public abstract class Cover {
     /**
      * Called when the cover is initially attached to a machine.
      *
-     * @param player The attaching player
-     * @param cover  An {@link ItemStack} containing the cover
+     * @param player    The attaching player
+     * @param coverItem An {@link ItemStack} containing the cover
      */
-    public void onPlayerAttach(EntityPlayer player, ItemStack cover) {
+    public void onPlayerAttach(EntityPlayer player, ItemStack coverItem) {
         // Do nothing by default.
     }
 

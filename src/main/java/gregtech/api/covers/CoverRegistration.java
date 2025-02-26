@@ -41,8 +41,8 @@ public class CoverRegistration<T extends ISerializableObject> {
         return buildCoverFromContext(ForgeDirection.getOrientation(data.readByte()), coverable, data);
     }
 
-    public Cover buildCover(@NotNull ForgeDirection side, ICoverable coverable, @NotNull ItemStack cover) {
-        return buildCoverFromContext(side, coverable, cover);
+    public Cover buildCover(@NotNull ForgeDirection side, ICoverable coverable, @NotNull ItemStack coverItem) {
+        return buildCoverFromContext(side, coverable, coverItem);
     }
 
     private Cover buildCoverFromContext(ForgeDirection side, ICoverable coverable, Object initializer) {

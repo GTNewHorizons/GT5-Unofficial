@@ -21,20 +21,20 @@ public class GTPacketSendCoverData extends GTPacket {
     protected int mZ;
     protected int coverID;
 
-    protected Cover info;
+    protected Cover cover;
 
     public GTPacketSendCoverData() {
         super();
     }
 
-    public GTPacketSendCoverData(Cover info, ICoverable tile) {
+    public GTPacketSendCoverData(Cover cover, ICoverable tile) {
         super();
         this.mX = tile.getXCoord();
         this.mY = tile.getYCoord();
         this.mZ = tile.getZCoord();
-        this.coverID = info.getCoverID();
+        this.coverID = cover.getCoverID();
 
-        this.info = info;
+        this.cover = cover;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class GTPacketSendCoverData extends GTPacket {
         aOut.writeInt(mZ);
         aOut.writeInt(coverID);
 
-        info.writeToByteBuf(aOut);
+        cover.writeToByteBuf(aOut);
     }
 
     @Override

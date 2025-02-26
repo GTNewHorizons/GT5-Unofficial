@@ -123,10 +123,10 @@ public class CoverToggleVisual extends CoverBehavior {
     }
 
     @Override
-    public void onPlayerAttach(EntityPlayer player, ItemStack cover) {
+    public void onPlayerAttach(EntityPlayer player, ItemStack coverItem) {
         String aKey = generateUniqueKey(coverSide, coveredTile.get());
-        boolean state = getCoverConnections(cover);
-        sPrefixMap.put(aKey, cover.getUnlocalizedName());
+        boolean state = getCoverConnections(coverItem);
+        sPrefixMap.put(aKey, coverItem.getUnlocalizedName());
         Logger.INFO("Mapping key " + aKey + " to " + state);
         sConnectionStateForEntityMap.put(aKey, state ? VALUE_ON : VALUE_OFF);
         Logger.INFO("Key Value: " + (state ? VALUE_ON : VALUE_OFF));

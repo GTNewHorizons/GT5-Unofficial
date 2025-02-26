@@ -9,8 +9,8 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 public class CoverControlsWorkPlacer extends CoverPlacerBase {
 
     @Override
-    public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable coverable) {
-        if (!super.isCoverPlaceable(side, aStack, coverable)) return false;
+    public boolean isCoverPlaceable(ForgeDirection side, ItemStack coverItem, ICoverable coverable) {
+        if (!super.isCoverPlaceable(side, coverItem, coverable)) return false;
         for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
             if (coverable.getCoverAtSide(tSide) instanceof CoverControlsWork) {
                 return false;
