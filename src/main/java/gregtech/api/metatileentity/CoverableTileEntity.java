@@ -260,8 +260,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final int ordinalSide = side.ordinal();
         if (side != ForgeDirection.UNKNOWN) {
             Cover cover = covers[ordinalSide];
-            if (cover == null)
-                cover = (covers[ordinalSide] = CoverRegistry.coverNone.buildCover(side, this));
+            if (cover == null) cover = (covers[ordinalSide] = CoverRegistry.coverNone.buildCover(side, this));
             return cover;
         }
         return EMPTY_INFO;
