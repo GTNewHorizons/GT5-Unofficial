@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi.nanochip.util;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 public class ModuleRecipeInfo {
+
     public static final int MODULE_RECIPE_TIME = 20 * TICKS;
 
     public final int recipeProcessingTime;
