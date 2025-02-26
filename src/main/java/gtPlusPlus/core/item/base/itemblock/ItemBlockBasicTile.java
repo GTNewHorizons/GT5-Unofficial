@@ -23,10 +23,10 @@ public class ItemBlockBasicTile extends ItemBlock {
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
         if (this.mID == 1) { // Fish trap
-            list.add(StatCollector.translateToLocal("GT5U.tooltip.fish_trap.0"));
-            list.add(StatCollector.translateToLocal("GT5U.tooltip.fish_trap.1"));
-            list.add(StatCollector.translateToLocal("GT5U.tooltip.fish_trap.2"));
-            list.add(StatCollector.translateToLocal("GT5U.tooltip.fish_trap.3"));
+            list.add(StatCollector.translateToLocal("GTPP.tooltip.fish_trap.0"));
+            list.add(StatCollector.translateToLocal("GTPP.tooltip.fish_trap.1"));
+            list.add(StatCollector.translateToLocal("GTPP.tooltip.fish_trap.2"));
+            list.add(StatCollector.translateToLocal("GTPP.tooltip.fish_trap.3"));
         } else if (this.mID == 2) { // Circuit Table
             list.add(StatCollector.translateToLocal("GTPP.tooltip.circuit_table.0"));
             list.add(StatCollector.translateToLocal("GTPP.tooltip.circuit_table.1"));
