@@ -277,27 +277,31 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     @Override
-    public boolean dropCover(ForgeDirection side, ForgeDirection droppedSide) {
+    public ItemStack detachCover(ForgeDirection side) {
         final Cover cover = getCoverAtSide(side);
-        if (!cover.isValid()) return false;
+        if (!cover.isValid()) return null;
         final ItemStack tStack = cover.getDrop();
-        if (tStack != null) {
-            cover.onCoverRemoval();
+        cover.onCoverRemoval();
+        clearCoverAtSide(side);
+        updateOutputRedstoneSignal(side);
+        return tStack;
+    }
+
+    @Override
+    public void dropCover(ForgeDirection side, ForgeDirection droppedSide) {
+        ItemStack droppedCover = detachCover(side);
+        if (droppedCover != null) {
             final EntityItem tEntity = new EntityItem(
                 worldObj,
                 getOffsetX(droppedSide, 1) + 0.5,
                 getOffsetY(droppedSide, 1) + 0.5,
                 getOffsetZ(droppedSide, 1) + 0.5,
-                tStack);
+                droppedCover);
             tEntity.motionX = 0;
             tEntity.motionY = 0;
             tEntity.motionZ = 0;
             worldObj.spawnEntityInWorld(tEntity);
         }
-        clearCoverAtSide(side);
-        updateOutputRedstoneSignal(side);
-
-        return true;
     }
 
     protected void onBaseTEDestroyed() {
