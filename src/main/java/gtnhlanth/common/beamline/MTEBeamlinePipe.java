@@ -1,6 +1,7 @@
 package gtnhlanth.common.beamline;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
+import static gregtech.api.util.GTUtility.getCollisionBoxForPipe;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
@@ -20,7 +21,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.common.GTClient;
 import gregtech.common.render.GTTextureBuilder;
@@ -168,61 +168,7 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
 
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        float tSpace = (1f - 0.375f) / 2;
-        float tSide0 = tSpace;
-        float tSide1 = 1f - tSpace;
-        float tSide2 = tSpace;
-        float tSide3 = 1f - tSpace;
-        float tSide4 = tSpace;
-        float tSide5 = 1f - tSpace;
-
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.DOWN) != 0) {
-            tSide0 = tSide2 = tSide4 = 0;
-            tSide3 = tSide5 = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.UP) != 0) {
-            tSide2 = tSide4 = 0;
-            tSide1 = tSide3 = tSide5 = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.NORTH) != 0) {
-            tSide0 = tSide2 = tSide4 = 0;
-            tSide1 = tSide5 = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.SOUTH) != 0) {
-            tSide0 = tSide4 = 0;
-            tSide1 = tSide3 = tSide5 = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.WEST) != 0) {
-            tSide0 = tSide2 = tSide4 = 0;
-            tSide1 = tSide3 = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.EAST) != 0) {
-            tSide0 = tSide2 = 0;
-            tSide1 = tSide3 = tSide5 = 1;
-        }
-
-        byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
-        if ((tConn & 1 << ForgeDirection.DOWN.ordinal()) != 0) {
-            tSide0 = 0f;
-        }
-        if ((tConn & 1 << ForgeDirection.UP.ordinal()) != 0) {
-            tSide1 = 1f;
-        }
-        if ((tConn & 1 << ForgeDirection.NORTH.ordinal()) != 0) {
-            tSide2 = 0f;
-        }
-        if ((tConn & 1 << ForgeDirection.SOUTH.ordinal()) != 0) {
-            tSide3 = 1f;
-        }
-        if ((tConn & 1 << ForgeDirection.WEST.ordinal()) != 0) {
-            tSide4 = 0f;
-        }
-        if ((tConn & 1 << ForgeDirection.EAST.ordinal()) != 0) {
-            tSide5 = 1f;
-        }
-
-        return AxisAlignedBB
-            .getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
+        return getCollisionBoxForPipe(this, aX, aY, aZ);
     }
 
     @Override
