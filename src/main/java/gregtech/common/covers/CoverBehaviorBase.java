@@ -57,7 +57,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
         if (coverData instanceof ItemStack coverStack) {
             return createDataObject(coverStack);
         } else if (coverData instanceof NBTTagCompound nbt && nbt.hasKey(NBT_DATA)) {
-            return createDataObject(nbt);
+            return createDataObject(nbt.getTag(NBT_DATA));
         } else if (coverData instanceof ByteArrayDataInput byteData) {
             return createDataObject(byteData);
         } else if (acceptsDataObject(coverData)) {
@@ -72,13 +72,6 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
         return createDataObject();
     }
 
-    protected T createDataObject(NBTTagCompound nbt) {
-        final T ret = createDataObject();
-        ret.loadDataFromNBT(nbt.getTag(NBT_DATA));
-        return ret;
-    }
-
-    /** For use with NetworkUtils.readNBTBase */
     protected T createDataObject(NBTBase nbt) {
         final T ret = createDataObject();
         ret.loadDataFromNBT(nbt);
