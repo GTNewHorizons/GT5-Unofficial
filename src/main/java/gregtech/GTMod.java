@@ -98,7 +98,6 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
 import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
-import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.multi.nanochip.util.RecipeHandlers;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
