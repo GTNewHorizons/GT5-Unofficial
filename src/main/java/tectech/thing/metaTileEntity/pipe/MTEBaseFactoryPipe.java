@@ -2,16 +2,13 @@ package tectech.thing.metaTileEntity.pipe;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTUtility.getCollisionBoxForPipe;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.GTMod;
@@ -109,11 +106,6 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
     @Override
     public String[] getDescription() {
         return new String[] {};
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        return getCollisionBoxForPipe(this, aX, aY, aZ);
     }
 
     @Override

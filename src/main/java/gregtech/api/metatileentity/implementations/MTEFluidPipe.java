@@ -8,7 +8,6 @@ import static gregtech.api.metatileentity.implementations.MTEFluidPipe.Border.LE
 import static gregtech.api.metatileentity.implementations.MTEFluidPipe.Border.RIGHT;
 import static gregtech.api.metatileentity.implementations.MTEFluidPipe.Border.TOP;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
-import static gregtech.api.util.GTUtility.getCollisionBoxForPipe;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
 import static net.minecraftforge.common.util.ForgeDirection.NORTH;
@@ -988,11 +987,6 @@ public class MTEFluidPipe extends MetaPipeEntity {
 
     public boolean isInputDisabledAtSide(ForgeDirection side) {
         return (mDisableInput & side.flag) != 0;
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        return getCollisionBoxForPipe(this, aX, aY, aZ);
     }
 
     @Override

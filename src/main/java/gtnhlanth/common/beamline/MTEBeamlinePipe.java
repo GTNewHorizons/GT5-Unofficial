@@ -1,16 +1,13 @@
 package gtnhlanth.common.beamline;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
-import static gregtech.api.util.GTUtility.getCollisionBoxForPipe;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
@@ -164,11 +161,6 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
     @Override
     public boolean isDataInputFacing(ForgeDirection side) {
         return true;
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        return getCollisionBoxForPipe(this, aX, aY, aZ);
     }
 
     @Override

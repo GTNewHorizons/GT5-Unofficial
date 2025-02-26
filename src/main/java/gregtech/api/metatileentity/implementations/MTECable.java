@@ -1,7 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Mods.GalacticraftCore;
-import static gregtech.api.util.GTUtility.getCollisionBoxForPipe;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -636,11 +634,6 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                 + GTUtility.formatNumbers(avgVoltage)
                 + EnumChatFormatting.RESET
                 + " EU/t" };
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        return getCollisionBoxForPipe(this, aX, aY, aZ);
     }
 
     @Override

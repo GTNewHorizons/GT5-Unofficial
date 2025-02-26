@@ -1,16 +1,13 @@
 package tectech.thing.metaTileEntity.pipe;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
-import static gregtech.api.util.GTUtility.getCollisionBoxForPipe;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
@@ -233,11 +230,6 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     @Override
     public boolean canConnect(ForgeDirection side) {
         return true;
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        return getCollisionBoxForPipe(this, aX, aY, aZ);
     }
 
     @Override

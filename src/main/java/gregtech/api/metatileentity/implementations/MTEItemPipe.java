@@ -2,7 +2,6 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GTValues.ALL_VALID_SIDES;
 import static gregtech.api.enums.Textures.BlockIcons.PIPE_RESTRICTOR;
-import static gregtech.api.util.GTUtility.getCollisionBoxForPipe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,8 +14,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.tileentity.TileEntityHopper;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.GTMod;
@@ -451,10 +448,5 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     public float getThickNess() {
         if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x1) != 0) return 0.0625F;
         return mThickNess;
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        return getCollisionBoxForPipe(this, aX, aY, aZ);
     }
 }
