@@ -252,7 +252,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addCasingInfoExactly("Tungstensteel Frame Box", 9, false)
             .addCasingInfoExactly("Glass", 3, true)
             .addOtherStructurePart("Laser Resistant Plate", "x1")
-            .addOtherStructurePart("Laser Source Hatch", "x1", 3)
+            .addOtherStructurePart(StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), "x1", 3)
             .addInputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
             .addOutputBus("Any Casing", 1)

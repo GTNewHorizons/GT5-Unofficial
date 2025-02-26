@@ -160,11 +160,14 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
             .beginStructureBlock(5, 4, 5, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Clean Stainless Steel Casings", 19, false)
-            .addOtherStructurePart("Glass", "Hollow two middle layers", 2)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("tooltip.bw.structure.glass"),
+                "Hollow two middle layers",
+                2)
             .addStructureInfo("The glass can be any glass, i.e. Tinkers Construct Clear Glass")
             .addStructureInfo("Some Recipes need more advanced Glass Types")
             .addMaintenanceHatch("Any casing", 1)
-            .addOtherStructurePart("Radio Hatch", "Any casing", 1)
+            .addOtherStructurePart(StatCollector.translateToLocal("tooltip.bw.structure.radio_hatch"), "Any casing", 1)
             .addInputBus("Any casing", 1)
             .addOutputBus("Any casing", 1)
             .addInputHatch("Any casing", 1)
