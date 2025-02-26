@@ -34,7 +34,7 @@ public class CoverRegistry {
      */
     private static final Map<GTItemStack, CoverBehaviorBase<?>> coverBehaviors = new ConcurrentHashMap<>();
     private static final Map<GTItemStack, CoverRegistration<?>> coverFactories = new ConcurrentHashMap<>();
-    public static CoverRegistration<ISerializableObject.LegacyCoverData> coverNoneInfoFactory = new CoverRegistration<>(
+    public static CoverRegistration<ISerializableObject.LegacyCoverData> coverNone = new CoverRegistration<>(
         0,
         CoverNone::new,
         new SimpleCoverPlacer());
@@ -48,10 +48,6 @@ public class CoverRegistry {
     static {
         GregTechAPI.sItemStackMappings.add(coverTextures);
         GregTechAPI.sItemStackMappings.add(coverBehaviors);
-    }
-
-    public static @NotNull ISerializableObject getEmptyCoverData() {
-        return new ISerializableObject.LegacyCoverData();
     }
 
     public static void registerSimpleCover(@NotNull ItemStack stack, ITexture cover) {
@@ -73,12 +69,12 @@ public class CoverRegistry {
 
     @NotNull
     public static CoverRegistration<?> getRegistration(ItemStack stack) {
-        if (stack == null || stack.getItem() == null) return coverNoneInfoFactory;
+        if (stack == null || stack.getItem() == null) return coverNone;
         CoverRegistration<?> factory = coverFactories.get(new GTItemStack(stack));
         if (factory == null) {
             factory = coverFactories.get(new GTItemStack(stack, true));
         }
-        return factory == null ? coverNoneInfoFactory : factory;
+        return factory == null ? coverNone : factory;
     }
 
     @NotNull

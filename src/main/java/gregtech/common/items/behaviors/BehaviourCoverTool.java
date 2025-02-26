@@ -216,6 +216,6 @@ public class BehaviourCoverTool extends BehaviourNone {
     }
 
     private static ISerializableObject getEmptyCoverData() {
-        return CoverRegistry.getEmptyCoverData();
+        return new ISerializableObject.LegacyCoverData();
     }
 }
