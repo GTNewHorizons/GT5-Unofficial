@@ -183,6 +183,10 @@ tooltip.tile.radhatch.10.name=Remaining: %s s / %s s
 tooltip.tile.acidgen.0.name=An Acid Generator
 tooltip.tile.acidgen.1.name=Creates Power from Chemical Energy Potentials.
 
+tooltip.bw.structure.glass=Glass
+tooltip.bw.structure.radio_hatch=Radio Hatch
+tooltip.bw.structure.tier_glass=%s+ Tier Glass
+
 # RecipeMap
 bw.recipe.biolab=Bio Lab
 bw.recipe.BacteriaVat=Bacterial Vat
