@@ -132,11 +132,11 @@ public class CoverToggleVisual extends CoverBehavior {
         Logger.INFO("Key Value: " + (state ? VALUE_ON : VALUE_OFF));
     }
 
-    public boolean onCoverRemoval(boolean aForced) {
+    @Override
+    public void onCoverRemoval() {
         String aKey = generateUniqueKey(coverSide, coveredTile.get());
         sConnectionStateForEntityMap.remove(aKey);
         // Logger.INFO("Unmapping key "+aKey+".");
-        return true;
     }
 
     public boolean getConnectionState() {

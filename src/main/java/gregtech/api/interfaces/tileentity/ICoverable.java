@@ -8,7 +8,7 @@ import gregtech.common.covers.Cover;
 
 public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer {
 
-    boolean dropCover(ForgeDirection side, ForgeDirection droppedSide, boolean aForced);
+    boolean dropCover(ForgeDirection side, ForgeDirection droppedSide);
 
     @Deprecated
     void setCoverDataAtSide(ForgeDirection side, int aData);

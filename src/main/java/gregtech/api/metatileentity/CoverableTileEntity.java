@@ -180,7 +180,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     protected void checkDropCover() {
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             final int coverId = getCoverIDAtSide(side);
-            if (coverId != 0 && !allowCoverOnSide(side, new GTItemStack(coverId))) dropCover(side, side, true);
+            if (coverId != 0 && !allowCoverOnSide(side, new GTItemStack(coverId))) dropCover(side, side);
         }
     }
 
@@ -215,7 +215,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final Cover oldCover = getCoverAtSide(side);
         int newCoverId = cover.getCoverID();
         if (side != ForgeDirection.UNKNOWN && oldCover.getCoverID() != newCoverId) {
-            if (newCoverId == 0 && isClientSide()) oldCover.onDropped();
+            if (newCoverId == 0 && isClientSide()) oldCover.onCoverRemoval();
             setCoverAtSide(side, cover);
             issueCoverUpdate(side);
             issueBlockUpdate();
@@ -277,13 +277,12 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     @Override
-    public boolean dropCover(ForgeDirection side, ForgeDirection droppedSide, boolean aForced) {
+    public boolean dropCover(ForgeDirection side, ForgeDirection droppedSide) {
         final Cover cover = getCoverAtSide(side);
         if (!cover.isValid()) return false;
-        if (!cover.onCoverRemoval(aForced) && !aForced) return false;
         final ItemStack tStack = cover.getDrop();
         if (tStack != null) {
-            cover.onDropped();
+            cover.onCoverRemoval();
             final EntityItem tEntity = new EntityItem(
                 worldObj,
                 getOffsetX(droppedSide, 1) + 0.5,

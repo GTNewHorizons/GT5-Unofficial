@@ -173,7 +173,7 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
     }
 
     @Override
-    public void onDropped() {
+    public void onCoverRemoval() {
         ICoverable coverable = coveredTile.get();
         if (coverable != null && coverable.isClientSide()) {
             for (final ForgeDirection iSide : ForgeDirection.VALID_DIRECTIONS) {

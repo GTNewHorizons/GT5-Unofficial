@@ -24,14 +24,14 @@ public class CoverPowerPassUpgrade extends CoverBehavior {
         }
     }
 
-    public boolean onCoverRemoval(boolean aForced) {
+    @Override
+    public void onCoverRemoval() {
         ICoverable coverable = coveredTile.get();
         if (coverable != null && coverable.getIGregTechTileEntityOffset(0, 0, 0)
             .getMetaTileEntity() instanceof TTMultiblockBase multi) {
             multi.ePowerPassCover = false;
             multi.ePowerPass = false;
         }
-        return true;
     }
 
     @Deprecated

@@ -114,14 +114,6 @@ public abstract class Cover {
     }
 
     /**
-     * Removes the Cover if this returns true, or if aForced is true. Doesn't get called when the Machine Block is
-     * getting broken, only if you break the Cover away from the Machine.
-     */
-    public boolean onCoverRemoval(boolean forced) {
-        return true;
-    }
-
-    /**
      * Gets the initial tick rate for doCoverThings of the Cover
      * <p/>
      * Defaults to getTickRate(), override for different initial and minimum tick rates
@@ -157,7 +149,7 @@ public abstract class Cover {
     /**
      * Called upon cover being removed. Called on both server and client.
      */
-    public void onDropped() {}
+    public void onCoverRemoval() {}
 
     public abstract boolean acceptsDataObject(Object data);
 

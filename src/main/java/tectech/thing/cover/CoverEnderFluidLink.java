@@ -105,11 +105,11 @@ public class CoverEnderFluidLink extends CoverBehavior {
         }
     }
 
-    public boolean onCoverRemoval(boolean aForced) {
+    @Override
+    public void onCoverRemoval() {
         if (coveredTile.get() instanceof IFluidHandler fluidHandlerSelf) {
             EnderWorldSavedData.unbindTank(fluidHandlerSelf);
         }
-        return true;
     }
 
     @Override

@@ -58,7 +58,7 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
     }
 
     @Override
-    public void onDropped() {
+    public void onCoverRemoval() {
         ICoverable iCoverable = coveredTile.get();
         if (iCoverable == null || iCoverable.getWorld().isRemote) return;
         coverData.dropAll(iCoverable, coverSide);

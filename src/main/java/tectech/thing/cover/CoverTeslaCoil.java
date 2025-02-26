@@ -48,11 +48,10 @@ public class CoverTeslaCoil extends CoverBehavior {
     }
 
     @Override
-    public boolean onCoverRemoval(boolean aForced) {
+    public void onCoverRemoval() {
         ICoverable coverable = coveredTile.get();
         if (coverable != null) ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove(
             new TeslaCoverConnection(coverable.getIGregTechTileEntityOffset(0, 0, 0), getTeslaReceptionCapability()));
-        return true;
     }
 
     @Override

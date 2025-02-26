@@ -28,9 +28,8 @@ public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
     }
 
     @Override
-    public boolean onCoverRemoval(boolean aForced) {
+    public void onCoverRemoval() {
         GregTechAPI.sWirelessRedstone.put(coverData.get(), (byte) 0);
-        return true;
     }
 
     @Override

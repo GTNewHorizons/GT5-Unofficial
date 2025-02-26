@@ -38,9 +38,8 @@ public abstract class CoverAdvancedRedstoneTransmitterBase<T extends CoverAdvanc
     }
 
     @Override
-    public boolean onCoverRemoval(boolean forced) {
+    public void onCoverRemoval() {
         unregisterSignal();
-        return true;
     }
 
     @Override

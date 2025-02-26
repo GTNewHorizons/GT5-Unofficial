@@ -1008,7 +1008,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                                 xCoord,
                                 yCoord,
                                 zCoord);
-                            dropCover(effectiveSide, side, false);
+                            dropCover(effectiveSide, side);
                             mMetaTileEntity.markDirty();
                         }
                         return true;

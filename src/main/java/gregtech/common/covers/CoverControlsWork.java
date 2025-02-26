@@ -144,11 +144,10 @@ public class CoverControlsWork extends CoverBehavior {
     }
 
     @Override
-    public boolean onCoverRemoval(boolean forced) {
+    public void onCoverRemoval() {
         if ((coveredTile.get() instanceof IMachineProgress machine)) {
             machine.enableWorking();
         }
-        return true;
     }
 
     @Override

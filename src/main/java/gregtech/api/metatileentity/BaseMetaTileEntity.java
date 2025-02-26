@@ -1658,7 +1658,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                     xCoord,
                                     yCoord,
                                     zCoord);
-                                dropCover(effectiveSide, side, false);
+                                dropCover(effectiveSide, side);
                                 if (tCurrentItem.stackSize == 0)
                                     ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                             }
