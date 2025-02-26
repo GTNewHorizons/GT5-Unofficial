@@ -14,7 +14,7 @@ import gregtech.api.enums.TCAspects.TC_AspectStack;
 public class MaterialsBotania {
 
     // Botania materials.
-    public static Materials Manasteel = new MaterialBuilder(201,  TextureSet.SET_METALLIC, "Manasteel")
+    public static Materials Manasteel = new MaterialBuilder(201, TextureSet.SET_METALLIC, "Manasteel")
         .setName("Manasteel")
         .setRGBA(0, 185, 255, 255)
         .addDustItems()
