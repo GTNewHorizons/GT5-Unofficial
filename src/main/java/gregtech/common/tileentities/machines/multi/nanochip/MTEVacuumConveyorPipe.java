@@ -20,7 +20,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.common.GTClient;
 import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
 import tectech.TecTech;
@@ -61,10 +61,8 @@ public class MTEVacuumConveyorPipe extends MetaPipeEntity implements IConnectsTo
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
         int colorIndex, boolean aConnected, boolean aRedstone) {
-        return new ITexture[] { new GTRenderedTexture(EMpipe),
-            new GTRenderedTexture(
-                getActive() ? EMbarActive : EMbar,
-                Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
+        return new ITexture[] { TextureFactory.of(EMpipe), TextureFactory
+            .of(getActive() ? EMbarActive : EMbar, Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
     }
 
     @Override

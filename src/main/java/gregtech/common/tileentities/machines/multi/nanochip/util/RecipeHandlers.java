@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi.nanochip.util;
 
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,8 +20,6 @@ import gregtech.api.recipe.metadata.NanochipAssemblyRecipeInfo;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 public class RecipeHandlers {
 
@@ -49,7 +49,6 @@ public class RecipeHandlers {
             .itemOutputs(output.getFakeStack(info.getBaseParallel()))
             .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
             .eut(eut)
-            .noOptimize()
             .addTo(recipeMap);
     }
 
@@ -316,7 +315,8 @@ public class RecipeHandlers {
         }
 
         ItemStack fakeOutput = outputComponent.getFakeStack(realOutput.stackSize);
-        // Add two recipes: A hidden one that outputs the fake circuit CC, and a fake, visible one that outputs the real circuit.
+        // Add two recipes: A hidden one that outputs the fake circuit CC, and a fake, visible one that outputs the real
+        // circuit.
         // This is done so we can more easily look them up in NEI
         builder = builder.itemInputs(itemInputs.toArray(new ItemStack[] {}));
         return GTUtility.concat(
@@ -324,9 +324,7 @@ public class RecipeHandlers {
                 .itemOutputs(fakeOutput)
                 .hidden()
                 .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes),
-            builder
-                .fake()
-                .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes)
-        );
+            builder.fake()
+                .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes));
     });
 }
