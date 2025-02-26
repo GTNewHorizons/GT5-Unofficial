@@ -1,7 +1,5 @@
 package gregtech.common.items;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,11 +133,6 @@ public class ItemFluidDisplay extends GTGenericItem {
                                     .format("bw.werkstoff.%05d.tooltip", tContainer.getItemDamage());
                                 if (StatCollector.canTranslate(werkstoffKey)) {
                                     return StatCollector.translateToLocal(werkstoffKey);
-                                } else {
-                                    GT_FML_LOGGER.warn(
-                                        "Missing Werkstoff tooltip: {} for {}",
-                                        werkstoffKey,
-                                        tMaterial.mChemicalFormula);
                                 }
                             }
                             return tMaterial.mChemicalFormula;
