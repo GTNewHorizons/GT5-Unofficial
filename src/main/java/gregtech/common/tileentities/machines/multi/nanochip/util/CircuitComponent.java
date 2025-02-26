@@ -95,7 +95,8 @@ public enum CircuitComponent {
 
     public final String unlocalizedName;
     public String fallbackLocalizedName = null;
-    // If this component is a direct conversion of some other item in the NAC main controller, this is the item used for that.
+    // If this component is a direct conversion of some other item in the NAC main controller, this is the item used for
+    // that.
     // Otherwise, this is null
     public IIcon icon = null;
     public final Materials material;

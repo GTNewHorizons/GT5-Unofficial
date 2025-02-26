@@ -1,12 +1,12 @@
 package gregtech.api.items;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-
-import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import net.minecraft.util.IIcon;
 
-import java.util.List;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 
 public class CircuitComponentFakeItem extends GTGenericItem {
 
@@ -45,6 +45,5 @@ public class CircuitComponentFakeItem extends GTGenericItem {
         // Else just use the texture that should be assigned to it
         return super.getIconFromDamage(meta);
     }
-
 
 }
