@@ -52,6 +52,10 @@ item.gt.pollen.name=Pollen
 item.gt.propolis.name=Propolis
 tile.gt.dronerender.name=Drone Renderer
 
+# GT++ items
+item.GTPP.air_intake_hatch.name=Air Intake Hatch
+item.GTPP.catalyst_housing.name=Catalyst Housing
+
 # Air Filter
 item.GTPP.air_filter.name=Air Filter
 item.GTPP.air_filter.name.t1=Air Filter [Tier 1]
@@ -2026,7 +2030,14 @@ GTPP.tooltip.ore.found=Found:
 GTPP.tooltip.ore.unknown=- Unknown
 GTPP.tooltip.block.mining_level=Mining Level: %d
 GTPP.tooltip.block.contains=Contains:
+GTPP.tooltip.meta_special.quantum_stability=Provides quantum stability
+GTPP.tooltip.meta_special.quantum_modulation=Provides quantum modulation
 
+# GTPP structure hints
+GTPP.tooltip.structure.anvil=Anvil
+GTPP.tooltip.structure.data_orb_repository=Data Orb Repository
+GTPP.tooltip.structure.many_bus_hatch=Input Bus, Output Bus, Input Hatch, Output Bus, Energy Hatch
+GTPP.tooltip.structure.rotor_assembly=Rotor Assembly
 
 GT5U.tooltip.pollution.produces=Produces %d Pollution/Second
 GT5U.tooltip.pollution.produces.multiblock=A complete Multiblock produces %d Pollution/Second
@@ -2034,6 +2045,32 @@ GT5U.tooltip.pollution.produces.firebox=Produces %d Pollution/Second per firebox
 GT5U.tooltip.pollution.produces.rocket.ignited=Produces %d Pollution/Second when ignited
 GT5U.tooltip.pollution.produces.rocket.flying=Produces %d Pollution/Second when flying
 
+# GT structure hints
+GT5U.tooltip.structure.data_access_hatch=Data Access Hatch
+GT5U.tooltip.structure.electromagnet_housing=Electromagnet Housing
+GT5U.tooltip.structure.laser_source_hatch=Laser Source Hatch
+GT5U.tooltip.structure.heating_coil=Heating Coil
+GT5U.tooltip.structure.four_item_pipe_casings=4 Item Pipe Casings
+GT5U.tooltip.structure.heat_sensor_hatch=Heat Sensor Hatch
+GT5U.tooltip.structure.degasser_control_hatch=Degasser Control Hatch
+GT5U.tooltip.structure.input_hatch_ozone=Input Hatch (Ozone)
+GT5U.tooltip.structure.input_hatch_water=Input Hatch (Water)
+GT5U.tooltip.structure.output_hatch=Output Hatch
+GT5U.tooltip.structure.ph_sensor_hatch=pH Sensor Hatch
+GT5U.tooltip.structure.input_bus_sodium_hydroxide=Input Bus (Sodium Hydroxide)
+GT5U.tooltip.structure.input_hatch_hydrochloric_acid=Input Hatch (Hydrochloric Acid)
+GT5U.tooltip.structure.input_hatch_coolant=Input Hatch (Coolant)
+GT5U.tooltip.structure.input_hatch_plasma=Input Hatch (Plasma)
+GT5U.tooltip.structure.input_hatch_output_hatch=Input Hatch, Output Hatch
+GT5U.tooltip.structure.lens_housing=Lens Housing
+GT5U.tooltip.structure.lens_indicator=Lens Indicator
+
+GT5U.tooltip.fluid.registry=Registry: %s
+GT5U.tooltip.fluid.amount=Amount: %s L
+GT5U.tooltip.fluid.temperature=Temperature: %s K
+GT5U.tooltip.fluid.stat=State: %s
+GT5U.tooltip.fluid.stat.gas=Gas
+GT5U.tooltip.fluid.stat.liquid=Liquid
 
 # Achievements
 
