@@ -219,13 +219,12 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             .addInfo("Energy hatch limited by glass tier, UMV Glass unlocks all")
             .addInfo(EnumChatFormatting.RED + "Limit to one energy hatch if using a Multi-Amp")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
-            .beginVariableStructureBlock(9, 33, 5, 5, 5, 5, true)
             .addController("Front Center bottom")
-            .addCasingInfoRange("Solidifier Casing", 91, 211, false)
-            .addCasingInfoRange("Solidifier Radiator", 13, 73, false)
-            .addCasingInfoRange("Heat Proof Machine Casing", 4, 16, false)
-            .addCasingInfoRange("Clean Stainless Steel Machine Casing", 4, 16, false)
-            .addCasingInfoRange("Glass", 14, 117, true)
+            .addCasingInfoMin("Solidifier Casing", 220, false)
+            .addCasingInfoMin("Solidifier Radiator",  73, false)
+            .addCasingInfoMin("Heat Proof Machine Casing",  16, false)
+            .addCasingInfoMin("Clean Stainless Steel Machine Casing",  16, false)
+            .addCasingInfoMin("Glass",  110, true)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
@@ -271,7 +270,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             }
         }
 
-        return casingAmount >= (91);
+        return casingAmount >= 220;
     }
 
     @Override
@@ -332,7 +331,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
+        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputEu()));
         logic.setAvailableAmperage(1L);
     }
 
