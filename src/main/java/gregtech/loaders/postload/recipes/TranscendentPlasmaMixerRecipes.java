@@ -212,7 +212,6 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .duration(10 * GTRecipeBuilder.TICKS)
             .metadata(GTRecipeConstants.EU_MULTIPLIER, 100)
             .eut(1_000_000L)
-            .noOptimize()
             .addTo(transcendentPlasmaMixerRecipes);
     }
 }

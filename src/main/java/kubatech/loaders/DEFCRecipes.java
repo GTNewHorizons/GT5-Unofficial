@@ -340,7 +340,6 @@ public class DEFCRecipes {
             .eut(TierEU.RECIPE_UHV)
             .duration(2800)
             .metadata(DEFC_CASING_TIER, 4)
-            .noOptimize()
             .addTo(fusionCraftingRecipes);
 
         GTValues.RA.stdBuilder()
@@ -357,7 +356,6 @@ public class DEFCRecipes {
             .eut(TierEU.RECIPE_UHV)
             .duration(2800)
             .metadata(DEFC_CASING_TIER, 4)
-            .noOptimize()
             .addTo(fusionCraftingRecipes);
 
         if (Witchery.isModLoaded()) {
