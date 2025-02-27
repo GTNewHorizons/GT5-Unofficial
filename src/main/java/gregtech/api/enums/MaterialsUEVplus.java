@@ -911,6 +911,17 @@ public class MaterialsUEVplus {
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
 
+    public static Materials PurifiedPrimordialChaoticSauce = new MaterialBuilder(
+        162,
+        new TextureSet("pureprimchaosaucefluid", true),
+        "Purified Primordial Chaotic Sauce").setName("pureprimchaosauce")
+            .addFluid()
+            .addCell()
+            .setRGBA(255, 255, 255, 0)
+            .setTransparent(false)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
+
     /**
      * called by Materials. Can be safely called multiple times. exists to allow Materials ensure this class is
      * initialized

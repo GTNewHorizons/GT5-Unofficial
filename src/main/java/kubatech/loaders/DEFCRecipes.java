@@ -1,10 +1,18 @@
 package kubatech.loaders;
 
 import static gregtech.api.enums.Mods.AdvancedSolarPanel;
+import static gregtech.api.enums.Mods.Avaritia;
+import static gregtech.api.enums.Mods.BiomesOPlenty;
+import static gregtech.api.enums.Mods.BloodMagic;
+import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.ElectroMagicTools;
+import static gregtech.api.enums.Mods.GalacticraftAmunRa;
+import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.SuperSolarPanels;
+import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Mods.ThaumicBases;
 import static gregtech.api.enums.Mods.Witchery;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
@@ -36,6 +44,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
 import kubatech.Tags;
 
@@ -314,6 +323,43 @@ public class DEFCRecipes {
             .eut(TierEU.RECIPE_UHV)
             .duration(2800)
             .metadata(DEFC_CASING_TIER, 3)
+            .noOptimize()
+            .addTo(fusionCraftingRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTModHandler.getModItem(DraconicEvolution.ID, "chaosFragment", 1, 0),
+                GTModHandler.getModItem(BloodMagic.ID, "enhancedFillingAgent", 1, 0),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.TengamPurified, 16),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.StellarAlloy, 16),
+                MaterialsAlloy.ARCANITE.getDust(16),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
+                GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 16, 14),
+                GTModHandler.getModItem(Avaritia.ID, "big_pearl", 0, 0),
+                GTModHandler.getModItem(ThaumicBases.ID, "nodeFoci", 0, 1))
+            .fluidInputs(MaterialsUEVplus.PrimordialChaoticSauce.getFluid(1000L))
+            .fluidOutputs(MaterialsUEVplus.PurifiedPrimordialChaoticSauce.getFluid(1000L))
+            .itemOutputs(GTModHandler.getModItem(Botania.ID, "manaResource", 16, 5))
+            .eut(TierEU.RECIPE_UHV)
+            .duration(2800)
+            .metadata(DEFC_CASING_TIER, 4)
+            .noOptimize()
+            .addTo(fusionCraftingRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTModHandler.getModItem(GalaxySpace.ID, "item.UnknowCrystal", 1, 0),
+                GTModHandler.getModItem(BiomesOPlenty.ID, "misc", 1, 4),
+                GTModHandler.getModItem(GalacticraftAmunRa.ID, "item.baseItem", 16, 26),
+                GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 16),
+                GTModHandler.getModItem(DraconicEvolution.ID, "reactorStabilizer", 0, 0),
+                GTModHandler.getModItem(Thaumcraft.ID, "blockCrystal", 0, 7))
+            .fluidInputs(MaterialsUEVplus.PurifiedPrimordialChaoticSauce.getFluid(100L))
+            .fluidOutputs(MaterialsUEVplus.PrimordialChaoticSauce.getFluid(10L))
+            .itemOutputs(GTModHandler.getModItem(DraconicEvolution.ID, "chaosShard", 9, 0))
+            .eut(TierEU.RECIPE_UHV)
+            .duration(2800)
+            .metadata(DEFC_CASING_TIER, 4)
             .noOptimize()
             .addTo(fusionCraftingRecipes);
 

@@ -196,26 +196,26 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(24))
             .fluidInputs(
-                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(1000),
-                getFluidStack("fluiddeath", 1000),
-                Materials.UUMatter.getFluid(1000),
-                MaterialsUEVplus.SpaceTime.getMolten(1000),
-                GGMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(1000),
-                getFluidStack("potion.diablosauce.strong", 1000),
-                Materials.EnhancedGalgadorian.getMolten(1000),
-                Materials.LifeEssence.getFluid(1000),
-                MaterialsUEVplus.PhononMedium.getFluid(1000),
-                MaterialsUEVplus.BlackDwarfMatter.getMolten(1000),
+                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(368),
+                getFluidStack("fluiddeath", 110),
+                Materials.UUMatter.getFluid(482),
+                MaterialsUEVplus.SpaceTime.getMolten(286),
+                GGMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(394),
+                getFluidStack("potion.diablosauce.strong", 258),
+                Materials.EnhancedGalgadorian.getMolten(248),
+                Materials.LifeEssence.getFluid(286),
+                MaterialsUEVplus.PhononMedium.getFluid(564),
+                MaterialsUEVplus.TranscendentMetal.getMolten(666),
                 MaterialsUEVplus.Eternity.getMolten(1000),
                 MaterialsUEVplus.PrimordialMatter.getFluid(1000),
-                MaterialsUEVplus.ProtoHalkonite.getMolten(1000),
-                MaterialsBotania.Terrasteel.getMolten(1000),
-                MaterialsUEVplus.SixPhasedCopper.getPlasma(1000),
-                Materials.Cheese.getMolten(1000),
-                MaterialsUEVplus.WhiteDwarfMatter.getMolten(1000),
-                MaterialsBotania.GaiaSpirit.getMolten(1000),
-                getFluidStack("fluidpure", 1000),
-                MaterialsUEVplus.Antimatter.getFluid(1000))
+                MaterialsUEVplus.ProtoHalkonite.getMolten(742),
+                Materials.MysteriousCrystal.getMolten(852),
+                MaterialsUEVplus.SixPhasedCopper.getPlasma(926),
+                Materials.Cheese.getMolten(684),
+                Materials.Flerovium.getMolten(458),
+                MaterialsBotania.GaiaSpirit.getMolten(576),
+                getFluidStack("fluidpure", 120),
+                MaterialsUEVplus.Antimatter.getFluid(998))
             .fluidOutputs(MaterialsUEVplus.PrimordialChaoticSauce.getFluid(1000L))
             .duration(10 * GTRecipeBuilder.TICKS)
             .metadata(GTRecipeConstants.EU_MULTIPLIER, 100)
