@@ -2,9 +2,7 @@ package tectech.thing.metaTileEntity.pipe;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -12,24 +10,19 @@ import org.apache.commons.lang3.ArrayUtils;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
-public class MTEPipeBlockEnergy extends MTEPipeEnergy {
+public class MTEPipeBlockLaser extends MTEPipeLaser {
 
-    public MTEPipeBlockEnergy(int aID, String aName, String aNameRegional) {
+    public MTEPipeBlockLaser(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEPipeBlockEnergy(String aName) {
+    public MTEPipeBlockLaser(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new MTEPipeBlockEnergy(mName);
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        return AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
+        return new MTEPipeBlockLaser(mName);
     }
 
     @Override
