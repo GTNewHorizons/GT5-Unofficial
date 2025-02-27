@@ -1244,8 +1244,9 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                         final String energyreq = GTUtility.formatNumbers(
                             (int) ((float) MTEIndustrialApiary.baseEUtUsage * getEnergyModifier() * getAcceleration())
                                 + getAdditionalEnergyUsage());
-                        final String Temp = StatCollector.translateToLocal(getTemperature().getName());
-                        final String Hum = StatCollector.translateToLocal(getHumidity().getName());
+                        // The localization in Forestry is written like this.
+                        final String Temp = AlleleManager.climateHelper.toDisplay(getTemperature());
+                        final String Hum = AlleleManager.climateHelper.toDisplay(getHumidity());
                         if (getUsedQueen() != null
                             && BeeManager.beeRoot.isMember(getUsedQueen(), EnumBeeType.QUEEN.ordinal())) {
                             final IBee bee = BeeManager.beeRoot.getMember(getUsedQueen());

@@ -137,3 +137,12 @@ tc.research_category.KUBATECH=§lCamellia sinensis
 tc.research_name.KT_UltimateTea=%s §6§lTea
 tc.research_text.KT_UltimateTea=§4§lPure power
 KT.research.ultimatetea=You have found a way to convert all this Tea into pure power creating the %s §6§lTea
+
+#Tooltip
+kubatech.tooltip.tea=Tea
+kubatech.tooltip.tea_acceptor.0=Accepts Tea items and adds them to your network
+kubatech.tooltip.tea_acceptor.1=Can accept up to 10 stacks per tick
+kubatech.tooltip.tea_storage.0=Extends Tea Storage by %s
+kubatech.tooltip.tea_ingredient.0=This is Tea ingredient
+
+kubatech.tooltip.structure.flowers=Flowers
