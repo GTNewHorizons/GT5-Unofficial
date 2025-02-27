@@ -67,6 +67,12 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirel
         TTUtility.setTier(aTier, this);
     }
 
+    @Override
+    public int getHatchType() {
+        // If amperage is > 64, this is a "wireless laser" and should not be usable on multi-amp only machines
+        return maxAmperes <= 64 ? 1 : 2;
+    }
+
     public MTEHatchWirelessMulti(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aAmp, aDescription, aTextures);
     }
