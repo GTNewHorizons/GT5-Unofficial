@@ -141,7 +141,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
             for (String lockedFluid : lockedFluids) {
                 if (lockedFluid.equals(
-                    getDrainableStack().getFluid()
+                    aFluid.getFluid()
                         .getName())) {
                     isOk = true;
 
@@ -192,6 +192,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         }
 
         if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof IStorageFluidCell) {
+            hadCell = true;
+
             if (this.mMode == 0) {
                 CellConfig cfg = (CellConfig) ((FCBaseItemCell) upgradeItemStack.getItem())
                     .getConfigInventory(upgradeItemStack);
@@ -246,6 +248,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                 }
             }
         } else {
+            hadCell = false;
+
             if (this.mMode == 10) {
                 lockedFluids.clear();
 
