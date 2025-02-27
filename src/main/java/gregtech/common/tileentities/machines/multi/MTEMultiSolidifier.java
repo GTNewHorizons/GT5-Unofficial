@@ -2,13 +2,13 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GTValues.AuthorOmdaCZ;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.MultiAmpEnergy;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
@@ -73,64 +73,78 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiSolidifier>
     implements ISurvivalConstructable {
 
-    private static final String MS_LEFT_MID = "leftmid";
-    private static final String MS_RIGHT_MID = "rightmid";
-    private static final String MS_END = "end";
-
-    private static final int BASE_PARALLELS = 2;
-    private static final int PARALLELS_PER_WIDTH = 3;
     private static final double DECAY_RATE = 0.025;
 
     private byte glassTier = 0;
-    protected int width;
     private int casingAmount;
     private float speedup = 1;
     private int runningTickCounter = 0;
+
+    // spotless:off
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEMultiSolidifier> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEMultiSolidifier>builder()
         .addShape(
-            MS_LEFT_MID,
-            (transpose(
-                new String[][] { { "  ", "BB", "BB", "BB", }, { "  ", "AA", "D ", "AA", }, { "  ", "AA", "  ", "AA", },
-                    { "  ", "CC", "FC", "CC", }, { "  ", "BB", "BB", "BB", } })))
-        .addShape(
-            MS_RIGHT_MID,
-            (transpose(
-                new String[][] { { "  ", "BB", "BB", "BB" }, { "  ", "AA", " D", "AA" }, { "  ", "AA", "  ", "AA" },
-                    { "  ", "CC", "CF", "CC" }, { "  ", "BB", "BB", "BB" } })))
-        .addShape(
-            MS_END,
-            (transpose(
-                new String[][] { { "B", "B", "B", "B", "B" }, { "B", "B", "B", "B", "B" }, { "B", "B", "B", "B", "B" },
-                    { "B", "B", "B", "B", "B" }, { "B", "B", "B", "B", "B" } })))
-        .addShape(
             STRUCTURE_PIECE_MAIN,
-            (transpose(
-                new String[][] { { "       ", "BBBBBBB", "BBBBBBB", "BBBBBBB", "       " },
-                    { "BBBBBBB", "       ", "D D D D", "       ", "BBBBBBB" },
-                    { "AAAAAAA", "       ", "       ", "       ", "AAAAAAA" },
-                    { "CCCBCCC", "       ", "F F F F", "       ", "CCCCCCC" },
-                    { "BBB~BBB", "BBBBBBB", "BBBBBBB", "BBBBBBB", "BBBBBBB" } })))
-        .addElement(
+            new String[][]{{
+            },{
+                "                                  ",
+                " C                               C",
+                " C            CCCCCCC            C",
+                " C            AAAAAAA            C",
+                " C            DDDCDDD            C",
+                " C            CCC~CCC            C"
+            },{
+                "                                  ",
+                " CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+                " CAAAAAAAAAAAA       AAAAAAAAAAAAC",
+                " CAAAAAAAAAAAA       AAAAAAAAAAAAC",
+                " CDDDDDDDDDDDD       DDDDDDDDDDDDC",
+                " CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+            },{
+                "                                  ",
+                " CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+                " CE E E E E E E E E E E E E E E EC",
+                " C                               C",
+                " CBDBDBDBDBDBDB B B BDBDBDBDBDBDBC",
+                " CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+            },{
+                "                                  ",
+                " CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+                " CAAAAAAAAAAAA       AAAAAAAAAAAAC",
+                " CAAAAAAAAAAAA       AAAAAAAAAAAAC",
+                " CDDDDDDDDDDDD       DDDDDDDDDDDDC",
+                " CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+            },{
+                "                                  ",
+                " C                               C",
+                " C            CCCCCCC            C",
+                " C            AAAAAAA            C",
+                " C            DDDDDDD            C",
+                " C            CCCCCCC            C"
+            }})
+
+    .addElement(
             'A',
             withChannel(
                 "glass",
                 BorosilicateGlass
                     .ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier)))
         .addElement(
-            'B',
-            buildHatchAdder(MTEMultiSolidifier.class).atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy)
+            'C',
+            buildHatchAdder(MTEMultiSolidifier.class).atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, MultiAmpEnergy)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(13))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(MTEMultiSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 13))))
 
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 14))
-        .addElement('F', ofBlock(GregTechAPI.sBlockCasings1, 11))
-        .addElement('D', ofBlock(GregTechAPI.sBlockCasings4, 1))
+        .addElement('D', ofBlock(GregTechAPI.sBlockCasings10, 14))
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings1, 11))
+        .addElement('E', ofBlock(GregTechAPI.sBlockCasings4, 1))
         .build();
+
+    // spotless:on
 
     public MTEMultiSolidifier(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -198,12 +212,12 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                     + "Solidifier Hatches"
                     + EnumChatFormatting.GRAY
                     + " to hold different molds")
-            .addInfo("Speeds up to a maximum of 200% faster than singleblock machines while running")
+            .addInfo("Speeds up to a maximum of 250% faster than singleblock machines while running")
             .addInfo("Decays at double the rate that it speeds up at")
             .addInfo("Only uses 80% of the EU/t normally required")
-            .addInfo("Processes " + BASE_PARALLELS + " items per voltage tier")
-            .addInfo("Processes an additional " + PARALLELS_PER_WIDTH + " items per voltage tier per width expansion")
+            .addInfo("Processes an additional " + 20 + " items per voltage")
             .addInfo("Energy hatch limited by glass tier, UMV Glass unlocks all")
+            .addInfo(EnumChatFormatting.RED + "Limit to one energy hatch if using a Multi-Amp")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .beginVariableStructureBlock(9, 33, 5, 5, 5, 5, true)
             .addController("Front Center bottom")
@@ -223,33 +237,13 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 4, 0);
-        // max Width, minimal mid-pieces to build on each side
-        int totalWidth = Math.min(stackSize.stackSize - 1, 6);
-        for (int i = 0; i < totalWidth; i++) {
-            // pieces are 2 wide so offset 5 from controller and number of pieces times width of each piece
-            buildPiece(MS_LEFT_MID, stackSize, hintsOnly, 5 + 2 * i, 4, 0);
-            // the extra offset to account for piece width isn't needed in this direction
-            buildPiece(MS_RIGHT_MID, stackSize, hintsOnly, -4 - 2 * i, 4, 0);
-        }
-        buildPiece(MS_END, stackSize, hintsOnly, 4 + 2 * totalWidth, 4, 0);
-        buildPiece(MS_END, stackSize, hintsOnly, -4 - 2 * totalWidth, 4, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 17, 5, 1);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 4, 0, elementBudget, env, false, true);
-        if (built >= 0) return built;
-        int totalWidth = Math.min(stackSize.stackSize - 1, 6);
-        for (int i = 0; i < totalWidth; i++) {
-            built = survivialBuildPiece(MS_LEFT_MID, stackSize, 5 + 2 * i, 4, 0, elementBudget, env, false, true);
-            built += survivialBuildPiece(MS_RIGHT_MID, stackSize, -4 - 2 * i, 4, 0, elementBudget, env, false, true);
-            if (built >= 0) return built;
-        }
-        built = survivialBuildPiece(MS_END, stackSize, -4 - 2 * totalWidth, 4, 0, elementBudget, env, false, true);
-        built += survivialBuildPiece(MS_END, stackSize, 4 + 2 * totalWidth, 4, 0, elementBudget, env, false, true);
-        return built;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 17, 5, 1, elementBudget, env, false, true);
     }
 
     @Override
@@ -263,19 +257,12 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        width = 0;
-        casingAmount = 0;
-        glassTier = 0;
 
-        if (checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) {
-            while (width < (6)) {
-                if (checkPiece(MS_RIGHT_MID, -4 - 2 * width, 4, 0) && checkPiece(MS_LEFT_MID, 5 + 2 * width, 4, 0)) {
-                    width++;
-                } else break;
-            }
-        } else return false;
-        if (!checkPiece(MS_END, -4 - 2 * width, 4, 0) || !checkPiece(MS_END, 4 + 2 * width, 4, 0)) {
-            return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 17, 5, 1)) return false;
+
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (!mEnergyHatches.isEmpty()) return false;
+            return (mExoticEnergyHatches.size() == 1);
         }
 
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
@@ -284,7 +271,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             }
         }
 
-        return casingAmount >= (91 + width * 20);
+        return casingAmount >= (91);
     }
 
     @Override
@@ -352,7 +339,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         runningTickCounter++;
-        if (runningTickCounter % 10 == 0 && speedup < 3) {
+        if (runningTickCounter % 10 == 0 && speedup < 3.5) {
             runningTickCounter = 0;
             speedup += 0.025F;
         }
@@ -372,7 +359,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
     @Override
     public int getMaxParallelRecipes() {
-        return (BASE_PARALLELS + (width * PARALLELS_PER_WIDTH)) * GTUtility.getTier(this.getMaxInputVoltage());
+        return (20 * GTUtility.getTierExtended(this.getMaxInputEu()));
     }
 
     @Override
