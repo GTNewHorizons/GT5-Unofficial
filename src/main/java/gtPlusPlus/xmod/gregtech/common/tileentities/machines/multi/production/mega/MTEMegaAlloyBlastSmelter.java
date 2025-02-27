@@ -317,7 +317,10 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             .addCasingInfoExactly("Coil", 360, true)
             .addCasingInfoExactly("Borosilicate Glass", 339, true)
             .addMaintenanceHatch("Around the controller", 2)
-            .addOtherStructurePart("Input Bus, Output Bus, Input Hatch, Output Bus, Energy Hatch", "Bottom Casing", 1)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GTPP.tooltip.structure.many_bus_hatch"),
+                "Bottom Casing",
+                1)
             .addMufflerHatch("1 in the center of the top layer", 3)
             .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
         return tt;
