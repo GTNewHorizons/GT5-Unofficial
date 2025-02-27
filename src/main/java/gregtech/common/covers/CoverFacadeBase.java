@@ -116,7 +116,7 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
     }
 
     @Override
-    public ItemStack getDrop() {
+    public ItemStack asItemStack() {
         return coverData.mStack;
     }
 

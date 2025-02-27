@@ -50,6 +50,7 @@ import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.net.GTPacketRequestCoverData;
 import gregtech.api.net.GTPacketSendCoverData;
 import gregtech.api.objects.GTItemStack;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.GTClient;
 import gregtech.common.covers.Cover;
@@ -242,7 +243,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public ItemStack getCoverItemAtSide(ForgeDirection side) {
-        return getCoverAtSide(side).getDisplayStack();
+        return getCoverAtSide(side).asItemStack();
     }
 
     public final void setCoverAtSide(ForgeDirection side, Cover cover) {
@@ -272,7 +273,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         cover.onCoverRemoval();
         this.attachCover(CoverRegistry.NO_COVER, side);
         updateOutputRedstoneSignal(side);
-        return cover.getDrop();
+        return GTOreDictUnificator.get(true, cover.asItemStack());
     }
 
     @Override
@@ -430,7 +431,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             final Cover cover = CoverRegistry.buildCover(this, tNBT);
             if (!cover.isValid()) continue;
 
-            final ItemStack coverStack = cover.getDisplayStack();
+            final ItemStack coverStack = cover.asItemStack();
             if (coverStack != null) {
                 currentTip.add(
                     StatCollector.translateToLocalFormatted(
@@ -477,7 +478,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             final Cover cover = CoverRegistry.buildCover(null, tNBT);
             if (!cover.isValid()) continue;
 
-            final ItemStack coverStack = cover.getDisplayStack();
+            final ItemStack coverStack = cover.asItemStack();
             if (coverStack != null) {
                 aList.add(
                     StatCollector.translateToLocalFormatted(
@@ -579,7 +580,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     @SideOnly(Side.CLIENT)
     protected List<String> getCoverTabTooltip(ForgeDirection side) {
         final Cover cover = getCoverAtSide(side);
-        final ItemStack coverItem = cover.getDisplayStack();
+        final ItemStack coverItem = cover.asItemStack();
         if (coverItem == null) return Collections.emptyList();
         final boolean coverHasGUI = cover.hasCoverGUI();
 

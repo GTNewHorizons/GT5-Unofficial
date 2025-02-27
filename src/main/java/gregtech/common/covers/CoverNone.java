@@ -74,7 +74,7 @@ public class CoverNone extends CoverBehavior {
     }
 
     @Override
-    public ItemStack getDrop() {
+    public ItemStack asItemStack() {
         return null;
     }
 

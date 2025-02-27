@@ -30,7 +30,6 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
@@ -123,16 +122,9 @@ public abstract class Cover {
     }
 
     /**
-     * @return the ItemStack dropped by this Cover
+     * Get the ItemStack representation of this cover. Default to {@code int2Stack(aCoverID)}
      */
-    public ItemStack getDrop() {
-        return GTOreDictUnificator.get(true, getDisplayStack());
-    }
-
-    /**
-     * Get the display stack. Default to {@code int2Stack(aCoverID)}
-     */
-    public ItemStack getDisplayStack() {
+    public ItemStack asItemStack() {
         return GTUtility.intToStack(coverID);
     }
 

@@ -28,9 +28,4 @@ public class CoverFacadeAE extends CoverFacadeBase {
         if (!(item instanceof IFacadeItem)) return 0;
         return ((IFacadeItem) item).getMeta(aFacadeStack);
     }
-
-    @Override
-    public ItemStack getDisplayStack() {
-        return coverData.mStack;
-    }
 }
