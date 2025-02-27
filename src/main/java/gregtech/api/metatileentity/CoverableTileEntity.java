@@ -67,7 +67,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         "GT5U.interface.coverTabs.west", "GT5U.interface.coverTabs.east" };
 
     // New Cover Information
-    private static final Cover EMPTY_INFO = CoverRegistry.coverNone.buildCover(ForgeDirection.UNKNOWN, null);
     protected final Cover[] covers = new Cover[] { null, null, null, null, null, null };
     private byte validCoversMask;
 
@@ -260,10 +259,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final int ordinalSide = side.ordinal();
         if (side != ForgeDirection.UNKNOWN) {
             Cover cover = covers[ordinalSide];
-            if (cover == null) cover = (covers[ordinalSide] = CoverRegistry.coverNone.buildCover(side, this));
+            if (cover == null) cover = (covers[ordinalSide] = CoverRegistry.NO_COVER);
             return cover;
         }
-        return EMPTY_INFO;
+        return CoverRegistry.NO_COVER;
     }
 
     @Override
@@ -271,7 +270,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final Cover cover = getCoverAtSide(side);
         if (!cover.isValid()) return null;
         cover.onCoverRemoval();
-        this.attachCover(CoverRegistry.coverNone.buildCover(side, this), side);
+        this.attachCover(CoverRegistry.NO_COVER, side);
         updateOutputRedstoneSignal(side);
         return cover.getDrop();
     }

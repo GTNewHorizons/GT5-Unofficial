@@ -34,10 +34,11 @@ public class CoverRegistry {
      */
     private static final Map<GTItemStack, CoverBehaviorBase<?>> coverBehaviors = new ConcurrentHashMap<>();
     private static final Map<GTItemStack, CoverRegistration<?>> coverFactories = new ConcurrentHashMap<>();
-    public static CoverRegistration<ISerializableObject.LegacyCoverData> coverNone = new CoverRegistration<>(
+    private static final CoverRegistration<ISerializableObject.LegacyCoverData> coverNone = new CoverRegistration<>(
         0,
         CoverNone::new,
         new SimpleCoverPlacer());
+    public static final Cover NO_COVER = CoverRegistry.coverNone.buildCover(ForgeDirection.UNKNOWN, null);
     private static final CoverPlacer DEFAULT_COVER_PLACER = new CoverPlacerBase();
     public static final CoverPlacer SIMPLE_COVER_PLACER = new SimpleCoverPlacer();
 
