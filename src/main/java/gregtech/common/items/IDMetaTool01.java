@@ -54,7 +54,8 @@ public enum IDMetaTool01 {
     POCKET_KNIFE(186),
     POCKET_SAW(188),
     POCKET_SCREWDRIVER(190),
-    POCKET_WIRECUTTER(192);
+    POCKET_WIRECUTTER(192),
+    TROWEL(194);
 
     public final int ID;
 

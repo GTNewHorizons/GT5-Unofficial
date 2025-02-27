@@ -52,6 +52,80 @@ item.gt.pollen.name=Pollen
 item.gt.propolis.name=Propolis
 tile.gt.dronerender.name=Drone Renderer
 
+# GT++ items
+item.GTPP.air_intake_hatch.name=Air Intake Hatch
+item.GTPP.catalyst_housing.name=Catalyst Housing
+
+# Air Filter
+item.GTPP.air_filter.name=Air Filter
+item.GTPP.air_filter.name.t1=Air Filter [Tier 1]
+item.GTPP.air_filter.name.t2=Air Filter [Tier 2]
+
+GTPP.tooltip.air_filter.0=An Air filter for Atmospheric Reconditioning.
+GTPP.tooltip.air_filter.1=%d/%d uses left.
+
+# Fish trap
+GTPP.tooltip.fish_trap.0=This trap catches fish faster if surrounded by more water blocks
+GTPP.tooltip.fish_trap.1=Can also be placed beside up to 4 other fish traps
+GTPP.tooltip.fish_trap.2=Requires at least two faces touching water
+GTPP.tooltip.fish_trap.3=1/1000 chance to produce triple loot.
+
+# Circuit Table
+GTPP.tooltip.circuit_table.0=Easy Circuit Configuration
+GTPP.tooltip.circuit_table.1=Change default setting with a Screwdriver
+GTPP.tooltip.circuit_table.2=Default is used to select slot for auto-insertion
+
+# Decayables Chest
+GTPP.tooltip.decayables_chest.0=Chest which holds radioactive materials
+GTPP.tooltip.decayables_chest.1=Items which decay will tick while inside
+GTPP.tooltip.decayables_chest.2=Place with right-click
+
+# Butterfly Killer
+GTPP.tooltip.butterfly_killer.0=Kills Forestry Butterflies, Bats and other pests
+GTPP.tooltip.butterfly_killer.1=Use either Formaldehyde or Hydrogen cyanide
+GTPP.tooltip.butterfly_killer.2=Be weary of your neighbours
+
+# Volumetric Flask Setter
+GTPP.tooltip.volumetric_flask_setter.0=Easy Flask Configuration
+GTPP.tooltip.volumetric_flask_setter.1=Configure default input slot with a screwdriver
+
+# Tin Foil Hat
+GTPP.tooltip.tin_foil_hat=DoomSquirter's protection against cosmic radiation!\nGeneral paranoia makes the wearer unable to collect xp\nMovement speed is also reduced, to keep you safe\nThis hat may also have other strange powers
+
+GTPP.tooltip.bad_tooltip_id=Bad Tooltip ID - %d
+
+# GT++ chem
+GTPP.tooltip.catalyst.active_reaction_agent=Active Reaction Agent
+GTPP.tooltip.milling_ball.tumble=Tumble Tumble Tumble
+
+# Infinite Spray Can
+
+item.GT5U.infinite_spray_can.name.solvent=Infinite Spray Can %cSolvent%c
+item.GT5U.infinite_spray_can.name.colored=Infinite Spray Can %c%s%c
+
+GT5U.infinite_spray_can.color.Black=Black
+GT5U.infinite_spray_can.color.Red=Red
+GT5U.infinite_spray_can.color.Green=Green
+GT5U.infinite_spray_can.color.Brown=Brown
+GT5U.infinite_spray_can.color.Blue=Blue
+GT5U.infinite_spray_can.color.Purple=Purple
+GT5U.infinite_spray_can.color.Cyan=Cyan
+GT5U.infinite_spray_can.color.Light Gray=Light Gray
+GT5U.infinite_spray_can.color.Gray=Gray
+GT5U.infinite_spray_can.color.Pink=Pink
+GT5U.infinite_spray_can.color.Lime=Lime
+GT5U.infinite_spray_can.color.Yellow=Yellow
+GT5U.infinite_spray_can.color.Light Blue=Light Blue
+GT5U.infinite_spray_can.color.Magenta=Magenta
+GT5U.infinite_spray_can.color.Orange=Orange
+GT5U.infinite_spray_can.color.White=White
+GT5U.infinite_spray_can.color.INVALID COLOR=INVALID COLOR
+GT5U.infinite_spray_can.color.Cable Insulation=Cable Insulation
+GT5U.infinite_spray_can.color.Construction Foam=Construction Foam
+GT5U.infinite_spray_can.color.Machine Metal=Machine Metal
+
+
+
 GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was found
 GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found
 GT5U.autoplace.error.no_mte.class_name=§cSuggested to place machine with class name §4%d§c but none was found
@@ -288,6 +362,7 @@ gt.recipe.purificationplantplasmaheating=Temperature Fluctuation
 gt.recipe.purificationplantuvtreatment=High Energy Laser Treatment
 gt.recipe.purificationplantdegasifier=Degassing
 gt.recipe.purificationplantquarkextractor=Baryonic Perfection
+gt.recipe.quantumcomputer=QC Components
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
@@ -512,7 +587,11 @@ GT5U.machines.betterjukebox.loop.tooltip=Loop mode (keep discs in input inventor
 GT5U.machines.betterjukebox.shuffle.tooltip=Shuffle mode (play random discs instead of in order)
 GT5U.machines.betterjukebox.headphonesbound=Headphones bound to jukebox
 GT5U.machines.betterjukebox.headphonesunbound=Shift-click on an electric jukebox to bind headphones
+GT5U.machines.computation_hatch.computation=Computation
 GT5U.machines.laser_hatch.amperage=Amperage
+GT5U.machines.hatch_output.lockfluid.label=Locked Fluid
+GT5U.machines.hatch_output.lockfluid.empty=None
+GT5U.machines.basic_tank.liquid_amount=Liquid Amount
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
@@ -557,6 +636,10 @@ GT5U.gui.button.drone_distance=Sort by §3distance
 GT5U.gui.button.drone_error=Sort by §3shutdown status
 GT5U.gui.button.drone_showLocalName=Show localized name
 GT5U.gui.button.toggle_output_slot_lock=Toggle output slot
+GT5U.gui.button.power_panel=Open Power Panel
+GT5U.gui.button.max_parallel=Always use maximum
+GT5U.gui.text.rangedvalue=Range: %s-%s
+GT5U.gui.text.lockedvalue=Locked: %s
 GT5U.gui.text.success=§aProcessing recipe
 GT5U.gui.text.generating=§aGenerating power
 GT5U.gui.text.no_recipe=§7No valid recipe found
@@ -570,6 +653,9 @@ GT5U.gui.text.no_lubricant=§7No lubricant found
 GT5U.gui.text.no_coolant=§7No coolant found
 GT5U.gui.text.cycle_idle=§6Waiting for cycle to start
 GT5U.gui.text.fuel_quality_too_high=§7Fuel quality too high to run without boost
+GT5U.gui.text.data_stick.saved=Saved Config to Data Stick
+GT5U.gui.text.data_stick.loaded=Loaded Config from Data Stick
+GT5U.gui.text.data_stick.invalid=Invalid Data Stick configuration
 GT5U.gui.text.no_data_sticks=§7No Data Sticks found
 GT5U.gui.text.bio_upgrade_missing=§7Recipe needs Bio Upgrade to start
 GT5U.gui.text.nanites_missing=§7Missing nanites
@@ -635,7 +721,18 @@ GT5U.gui.text.missing_item=§7Missing required item: §b%s§f
 GT5U.gui.text.ph_sensor=pH threshold
 GT5U.gui.text.critical_ph_value=pH exceeded critical value.
 GT5U.gui.text.heat_sensor=Heat threshold
-GT5U.item.programmed_circuit.select.header=Reprogram Circuit
+GT5U.gui.text.no_maintenance=Missing Maintenance Hatch
+GT5U.gui.text.no_muffler=Missing Muffler Hatch
+GT5U.gui.text.pulse_mode=Pulse Mode
+GT5U.gui.text.static_mode=Static Mode
+GT5U.gui.text.unneeded_muffler=Does not accept Muffler Hatches
+GT5U.gui.missing_casings=Too few casings: needs %s but has %s
+GT5U.gui.missing_hatch=Missing %s
+GT5U.gui.too_many_hatches=Too many %ses (max %s)
+GT5U.gui.text.power_panel=Power Control Panel
+GT5U.gui.text.too_uncertain=Too Uncertain.
+GT5U.gui.text.invalid_parameters=Invalid Parameters.
+
 
 GT5U.gui.config.client=Client
 GT5U.gui.config.client.color_modulation=Color Modulation
@@ -674,11 +771,13 @@ GT5U.item.programmed_circuit.no_screwdriver.count=3
 GT5U.item.programmed_circuit.no_screwdriver.0=Trying to mangle a CIRCUIT with your bare hand again huh?
 GT5U.item.programmed_circuit.no_screwdriver.1=Your thumb is not a screwdriver. Try a real one.
 GT5U.item.programmed_circuit.no_screwdriver.2=Chuck Norris stares at the circuit until it reprograms itself. You do not.
+GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
 GT5U.item.cable.max_voltage=Max Voltage
 GT5U.item.cable.max_amperage=Max Amperage
 GT5U.item.cable.loss=Loss/Meter/Ampere
 GT5U.item.cable.eu_volt=EU-Volt
+GT5U.item.cable.swapped=Cable swapped:
 GT5U.item.tank.locked_to=Content locked to %s
 
 GT5U.item.pipe.capacity=Capacity
@@ -689,6 +788,8 @@ GT5U.item.pipe.gas_proof.no=No
 GT5U.item.pipe.amount=Pipe Amount
 GT5U.item.pipe.empty=Empty
 GT5U.item.pipe.swap=Pipe Swapped:
+
+GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak middle-click to unlock.
@@ -707,6 +808,11 @@ gt.behaviour.paintspray.infinite.tooltip.gui=Middle Click: Open color choice GUI
 gt.behaviour.paintspray.infinite.tooltip.prevent_shake=%s-Middle Click: Allow/prevent left click action
 gt.behaviour.paintspray.infinite.tooltip.ctrl_pc=Ctrl
 gt.behaviour.paintspray.infinite.tooltip.ctrl_mac=Command
+
+gt.behaviour.trowel.tooltip1=Places a random block from your hotbar
+gt.behaviour.trowel.tooltip2=§o"Don't forget to bring a trowel!"§r -§cQuerns§r
+
+gt.behaviour.switch_mode.tooltip=Shift+Rclick to change mode
 
 GT5U.hatch.disableFilter.true=Input Filter §cOff§r
 GT5U.hatch.disableFilter.false=Input Filter §aOn§r
@@ -748,6 +854,30 @@ GT5U.nei.tier=Tier: %s
 GT5U.nei.start_eu=Start: %s EU (MK %s)
 GT5U.nei.stages=Stages: %s
 GT5U.nei.fuel=Fuel Value: %s EU
+GT5U.nei.qc.heating=Heating Constant: %s
+GT5U.nei.qc.cooling=Cooling Constant: %s
+GT5U.nei.qc.computation=Computation: %s
+GT5U.nei.qc.maxheat=Maximum Heat: %s
+GT5U.nei.large_boiler.burn_time=Burn time in seconds:
+GT5U.nei.large_boiler.bronze_boiler=Bronze Boiler: %.4f
+GT5U.nei.large_boiler.steel_boiler=Steel Boiler: %.4f
+GT5U.nei.large_boiler.steel_boiler.ban=Steel Boiler: Not allowed
+GT5U.nei.large_boiler.titanium_boiler=Titanium Boiler: %.4f
+GT5U.nei.large_boiler.titanium_boiler.ban=Titanium Boiler: Not allowed
+GT5U.nei.large_boiler.tungstensteel_boiler=Tungstenst. Boiler: %.4f
+GT5U.nei.large_boiler.tungstensteel_boiler.ban=Tungstenst. Boiler: Not allowed
+GT5U.nei.large_boiler.solid=Not all solid fuels are listed.\nAny burnable item with a burn\ntime of at least %d / %d\nwill burn in a Large Bronze\n/ Steel Boiler, respectively.
+GT5U.nei.nuclear.model.mox=MOX Model
+GT5U.nei.nuclear.model.uranium=Uranium Model
+GT5U.nei.nuclear.neutron_pulse=Neutron Pulse: %d
+GT5U.nei.nuclear.heat.0=Heat: %.1f * n1 * (n1 + 1)
+GT5U.nei.nuclear.heat.1=Heat: %.1f * (%d + n1) * (%d + n1)
+GT5U.nei.nuclear.energy=Energy: %.1f + n2 * %.1f EU/t
+GT5U.nei.nuclear.breeder.neutron_reflecting=Neutron reflecting Breeder
+GT5U.nei.nuclear.breeder.heat_neutral=Heat neutral Breeder
+GT5U.nei.nuclear.breeder.reactor_hull_heat=Every %d reactor hull heat\nincrease speed by %d00%%
+GT5U.nei.nuclear.breeder.required_pulse=Required pulses: %d
+
 
 GT5U.config.colormodulation=Color Modulator
 GT5U.config.colormodulation.cable_insulation=Cable Insulation
@@ -809,6 +939,16 @@ GT5U.interface.coverTabs.north=North
 GT5U.interface.coverTabs.south=South
 GT5U.interface.coverTabs.west=West
 GT5U.interface.coverTabs.east=East
+GT5U.interface.coverTabs.cover_on=Cover on %s side: %s
+GT5U.interface.coverTabs.emits_redstone=Emits a strong redstone signal on the %s side
+
+GT5U.interface.coverTabs.redstone.bottom=bottom
+GT5U.interface.coverTabs.redstone.top=top
+GT5U.interface.coverTabs.redstone.north=north
+GT5U.interface.coverTabs.redstone.south=south
+GT5U.interface.coverTabs.redstone.west=west
+GT5U.interface.coverTabs.redstone.east=east
+GT5U.interface.coverTabs.redstone.unknown=<unknown>
 
 GT5U.steam_variant.bronze=Bronze
 GT5U.steam_variant.steel=Steel
@@ -857,7 +997,26 @@ GT5U.waila.generating.on=Generating Energy
 GT5U.waila.generating.off=Not Generating
 GT5U.waila.status.insufficient_energy=Status: Insufficient energy
 GT5U.waila.status.obstructed_steam_vent=Status: Obstructed steam vent
+GT5U.waila.machine.working_disabled=Working Disabled
+GT5U.waila.machine.idle=Idle
+GT5U.waila.machine.in_progress=In progress: %,.1fs / %,.1fs (%,.1f%%)
+GT5U.waila.machine_facing=Machine Facing: %s
+GT5U.waila.output_facing=Output Facing: %s
+GT5U.waila.facing=Facing: %s
+GT5U.waila.facing.down=DOWN
+GT5U.waila.facing.up=UP
+GT5U.waila.facing.north=NORTH
+GT5U.waila.facing.south=SOUTH
+GT5U.waila.facing.west=WEST
+GT5U.waila.facing.east=EAST
+GT5U.waila.facing.unknown=UNKNOWN
 
+GT5U.waila.multiblock.status.incomplete=** INCOMPLETE STRUCTURE **
+GT5U.waila.multiblock.status.efficiency=  Efficiency: %f%%
+GT5U.waila.multiblock.status.has_problem=** HAS PROBLEMS **
+GT5U.waila.multiblock.status.running_fine=Running Fine
+GT5U.waila.multiblock.status.cpu_load=Average CPU load of ~%s ns
+GT5U.waila.multiblock.status.locked_recipe=Locked Recipe:
 
 achievement.flintpick=First Tools
 achievement.flintpick.desc=Craft a flint pick
@@ -1859,12 +2018,58 @@ GTPP.MBTT.SteamHatch=Steam Hatch
 GTPP.MBTT.SteamInputBus=Input Bus (Steam)
 GTPP.MBTT.SteamOutputBus=Output Bus (Steam)
 
+# Item Tooltips
+GTPP.tooltip.hold_ctrl=Hold Ctrl to show additional info.
+GTPP.tooltip.material.type=Material Type: %s.
+GTPP.tooltip.material.state=Material State: %s.
+GTPP.tooltip.material.radioactivity=Radioactivity Level: %s.
+GTPP.tooltip.ore.contains=Ore contains:
+GTPP.tooltip.ore.mining_level=Mining Level: %d
+GTPP.tooltip.ore.found=Found:
+GTPP.tooltip.ore.unknown=- Unknown
+GTPP.tooltip.block.mining_level=Mining Level: %d
+GTPP.tooltip.block.contains=Contains:
+GTPP.tooltip.meta_special.quantum_stability=Provides quantum stability
+GTPP.tooltip.meta_special.quantum_modulation=Provides quantum modulation
 
+# GTPP structure hints
+GTPP.tooltip.structure.anvil=Anvil
+GTPP.tooltip.structure.data_orb_repository=Data Orb Repository
+GTPP.tooltip.structure.many_bus_hatch=Input Bus, Output Bus, Input Hatch, Output Bus, Energy Hatch
+GTPP.tooltip.structure.rotor_assembly=Rotor Assembly
 
+GT5U.tooltip.pollution.produces=Produces %d Pollution/Second
+GT5U.tooltip.pollution.produces.multiblock=A complete Multiblock produces %d Pollution/Second
+GT5U.tooltip.pollution.produces.firebox=Produces %d Pollution/Second per firebox
+GT5U.tooltip.pollution.produces.rocket.ignited=Produces %d Pollution/Second when ignited
+GT5U.tooltip.pollution.produces.rocket.flying=Produces %d Pollution/Second when flying
 
+# GT structure hints
+GT5U.tooltip.structure.data_access_hatch=Data Access Hatch
+GT5U.tooltip.structure.electromagnet_housing=Electromagnet Housing
+GT5U.tooltip.structure.laser_source_hatch=Laser Source Hatch
+GT5U.tooltip.structure.heating_coil=Heating Coil
+GT5U.tooltip.structure.four_item_pipe_casings=4 Item Pipe Casings
+GT5U.tooltip.structure.heat_sensor_hatch=Heat Sensor Hatch
+GT5U.tooltip.structure.degasser_control_hatch=Degasser Control Hatch
+GT5U.tooltip.structure.input_hatch_ozone=Input Hatch (Ozone)
+GT5U.tooltip.structure.input_hatch_water=Input Hatch (Water)
+GT5U.tooltip.structure.output_hatch=Output Hatch
+GT5U.tooltip.structure.ph_sensor_hatch=pH Sensor Hatch
+GT5U.tooltip.structure.input_bus_sodium_hydroxide=Input Bus (Sodium Hydroxide)
+GT5U.tooltip.structure.input_hatch_hydrochloric_acid=Input Hatch (Hydrochloric Acid)
+GT5U.tooltip.structure.input_hatch_coolant=Input Hatch (Coolant)
+GT5U.tooltip.structure.input_hatch_plasma=Input Hatch (Plasma)
+GT5U.tooltip.structure.input_hatch_output_hatch=Input Hatch, Output Hatch
+GT5U.tooltip.structure.lens_housing=Lens Housing
+GT5U.tooltip.structure.lens_indicator=Lens Indicator
 
-
-
+GT5U.tooltip.fluid.registry=Registry: %s
+GT5U.tooltip.fluid.amount=Amount: %s L
+GT5U.tooltip.fluid.temperature=Temperature: %s K
+GT5U.tooltip.fluid.stat=State: %s
+GT5U.tooltip.fluid.stat.gas=Gas
+GT5U.tooltip.fluid.stat.liquid=Liquid
 
 # Achievements
 

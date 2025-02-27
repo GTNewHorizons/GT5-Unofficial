@@ -23,6 +23,7 @@ import static gregtech.api.util.GTUtility.filterValidMTEs;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -58,6 +59,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -73,6 +75,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings10;
@@ -133,7 +136,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         .addElement(
             'B',
             buildHatchAdder(MTEBlackHoleCompressor.class)
-                .atLeast(Energy.or(ExoticEnergy), InputBus, OutputBus, InputHatch)
+                .atLeast(Energy.or(ExoticEnergy), InputBus, OutputBus, InputHatch, SpecialHatchElement.UtilityHatch)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(12))
                 .dot(1)
                 .buildAndChain(
@@ -152,6 +155,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     private int catalyzingCounter = 0;
     private float blackHoleStability = 100;
     private final ArrayList<MTEHatchInput> spacetimeHatches = new ArrayList<>();
+    private final ArrayList<MTEBlackHoleUtility> utilityHatches = new ArrayList<>();
 
     /**
      * 1: Off
@@ -184,6 +188,46 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             }
         }
         return false;
+    }
+
+    public boolean addSensorHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity instanceof MTEBlackHoleUtility sensor) {
+            sensor.updateTexture(aBaseCasingIndex);
+            return this.utilityHatches.add(sensor);
+        }
+        return false;
+    }
+
+    private enum SpecialHatchElement implements IHatchElement<MTEBlackHoleCompressor> {
+
+        UtilityHatch(MTEBlackHoleCompressor::addSensorHatchToMachineList, MTEBlackHoleUtility.class) {
+
+            @Override
+            public long count(MTEBlackHoleCompressor bhc) {
+                return bhc.utilityHatches.size();
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<MTEBlackHoleCompressor> adder;
+
+        @SafeVarargs
+        SpecialHatchElement(IGTHatchAdder<MTEBlackHoleCompressor> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        public IGTHatchAdder<? super MTEBlackHoleCompressor> adder() {
+            return adder;
+        }
     }
 
     @Override
@@ -524,6 +568,12 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                             catalyzingCounter = 0;
                             if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
                             collapseTimer = 40;
+
+                            // Update all the utility hatches
+                            for (MTEBlackHoleUtility hatch : utilityHatches) {
+                                hatch.updateRedstoneOutput(false);
+                            }
+
                             return;
                         } else if (metaid == 32420 && blackHoleStatus == 1) {
                             bus.decrStackSize(i, 1);
@@ -598,7 +648,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 return super.validateRecipe(recipe);
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes)
+        }.setMaxParallelSupplier(this::getTrueParallel)
             .setEuModifier(0.7F)
             .setSpeedBonus(0.2F);
     }
@@ -651,7 +701,12 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         // Run stability checks once per second if a black hole is open
         if (blackHoleStatus == 1 || aTick % 20 != 0) return;
 
-        // Just render
+        // Update all the utility hatches
+        for (MTEBlackHoleUtility hatch : utilityHatches) {
+            hatch.updateRedstoneOutput(true);
+        }
+
+        // Black hole is superstable, just do rendering, no need for decay or drain logic
         if (blackHoleStatus == 4) {
             if (rendererTileEntity != null) {
                 rendererTileEntity.toggleLaser(true);
@@ -705,14 +760,20 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             catalyzingCostModifier = 1;
             rendererTileEntity = null;
             destroyRenderBlock();
+
+            // Update all the utility hatches
+            for (MTEBlackHoleUtility hatch : utilityHatches) {
+                hatch.updateRedstoneOutput(false);
+            }
         }
 
     }
 
+    @Override
     public int getMaxParallelRecipes() {
         int parallels = (8 * GTUtility.getTierExtended(this.getMaxInputEu()));
         if (blackHoleStatus == 4) parallels *= 4;
-        else if (blackHoleStability < 60) {
+        else if (blackHoleStability < 50) {
             parallels *= 2;
             if (blackHoleStability < 20) parallels *= 2;
         }

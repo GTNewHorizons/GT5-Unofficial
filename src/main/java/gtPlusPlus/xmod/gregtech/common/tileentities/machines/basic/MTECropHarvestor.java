@@ -40,6 +40,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import ic2.api.crops.CropCard;
+import ic2.api.crops.Crops;
 import ic2.api.crops.ICropTile;
 import ic2.core.item.DamageHandler;
 
@@ -196,6 +197,7 @@ public class MTECropHarvestor extends MTEBasicTank {
         }
 
         // Process Cache
+        // Note: A full inventory would also prevent processSecondaryFunctions (e.g. weed-ex)
         if (!doesInventoryHaveSpace()) return;
 
         for (ICropTile tCrop : this.mCropCache) {
@@ -204,9 +206,10 @@ public class MTECropHarvestor extends MTEBasicTank {
                 break;
             }
             CropCard aCrop = tCrop.getCrop();
-            if (aCrop == null) continue;
 
             if (this.mModeAlternative) processSecondaryFunctions(tCrop);
+
+            if (aCrop == null) continue;
             if (!this.mHarvestEnabled) continue;
 
             if (aCrop.canBeHarvested(tCrop) && tCrop.getSize() == aCrop.getOptimalHavestSize(tCrop)) {
@@ -296,22 +299,11 @@ public class MTECropHarvestor extends MTEBasicTank {
         return false;
     }
 
-    public boolean hasWeedEX() {
+    public boolean consumeWeedEX(boolean aSimulate) {
         for (int i = SLOT_WEEDEX_1; i <= SLOT_WEEDEX_2; i++) {
             if (this.mInventory[i] != null) {
+                damage(i, 1, aSimulate);
                 return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean consumeWeedEX(boolean aSimulate) {
-        if (hasWeedEX()) {
-            for (int i = SLOT_WEEDEX_1; i <= SLOT_WEEDEX_2; i++) {
-                if (this.mInventory[i] != null) {
-                    damage(i, 1, aSimulate);
-                    return true;
-                }
             }
         }
         return false;
@@ -321,6 +313,16 @@ public class MTECropHarvestor extends MTEBasicTank {
         if (!this.mModeAlternative) {
             return;
         }
+        if (consumeWeedEX(true) && this.getBaseMetaTileEntity()
+            .getUniversalEnergyStored() >= getMinimumStoredEU()
+            && getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsageSecondary(), true)
+            && applyWeedEx(aCrop)) {
+            if (consumeWeedEX(false)) {
+                // Logger.INFO("Consumed Weed-EX.");
+            }
+        }
+        if (aCrop.getCrop() == null || aCrop.getCrop()
+            .equals(Crops.weed)) return;
         if (hasFertilizer() && consumeFertilizer(true)
             && this.getBaseMetaTileEntity()
                 .getUniversalEnergyStored() >= getMinimumStoredEU()
@@ -336,43 +338,45 @@ public class MTECropHarvestor extends MTEBasicTank {
             && applyHydration(aCrop)) {
             // Logger.INFO("Consumed Water.");
         }
-        if (hasWeedEX() && consumeWeedEX(true)
-            && this.getBaseMetaTileEntity()
-                .getUniversalEnergyStored() >= getMinimumStoredEU()
-            && getBaseMetaTileEntity().decreaseStoredEnergyUnits(powerUsageSecondary(), true)
-            && applyWeedEx(aCrop)) {
-            if (consumeWeedEX(false)) {
-                // Logger.INFO("Consumed Weed-EX.");
-            }
-        }
     }
 
     public boolean applyWeedEx(ICropTile aCrop) {
-        if (aCrop.getWeedExStorage() < 150) {
-            aCrop.setWeedExStorage(aCrop.getWeedExStorage() + 50);
-            boolean triggerDecline;
-            triggerDecline = aCrop.getWorld().rand.nextInt(3) == 0;
-            if (aCrop.getCrop() != null && aCrop.getCrop()
-                .isWeed(aCrop) && aCrop.getWeedExStorage() >= 75 && triggerDecline) {
-                switch (aCrop.getWorld().rand.nextInt(5)) {
-                    case 0:
-                        if (aCrop.getGrowth() > 0) {
-                            aCrop.setGrowth((byte) (aCrop.getGrowth() - 1));
-                        }
-                    case 1:
-                        if (aCrop.getGain() > 0) {
-                            aCrop.setGain((byte) (aCrop.getGain() - 1));
-                        }
-                    default:
-                        if (aCrop.getResistance() > 0) {
-                            aCrop.setResistance((byte) (aCrop.getResistance() - 1));
-                        }
-                }
+        boolean applyDose = aCrop.getWeedExStorage() < 150;
+        if (applyDose) aCrop.setWeedExStorage(aCrop.getWeedExStorage() + 50);
+
+        boolean triggerDecline = aCrop.getWorld().rand.nextInt(3) == 0;
+        CropCard cropType = aCrop.getCrop();
+        if (!triggerDecline || cropType == null) return applyDose;
+
+        // Should there already be a weed (an actual weed, not a weed-like plant) present, either
+        // because Weed-EX got added late or it spawned on new untracked crop sticks, slowly wither it
+        if (cropType.equals(Crops.weed)) {
+            if (aCrop.getSize() == 1) {
+                aCrop.reset();
+            } else {
+                aCrop.setSize((byte) (aCrop.getSize() - 1));
             }
             return true;
-        } else {
-            return false;
         }
+
+        // Affect weed-like crops when we apply a dose of Weed-EX that crosses the threshold
+        if (applyDose && cropType.isWeed(aCrop) && aCrop.getWeedExStorage() >= 75) {
+            switch (aCrop.getWorld().rand.nextInt(5)) {
+                case 0:
+                    if (aCrop.getGrowth() > 0) {
+                        aCrop.setGrowth((byte) (aCrop.getGrowth() - 1));
+                    }
+                case 1:
+                    if (aCrop.getGain() > 0) {
+                        aCrop.setGain((byte) (aCrop.getGain() - 1));
+                    }
+                default:
+                    if (aCrop.getResistance() > 0) {
+                        aCrop.setResistance((byte) (aCrop.getResistance() - 1));
+                    }
+            }
+        }
+        return applyDose;
     }
 
     public boolean applyFertilizer(ICropTile aCrop) {

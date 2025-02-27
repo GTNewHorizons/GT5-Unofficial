@@ -72,7 +72,7 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:VisualProspecting:1.4.2:dev') { transitive = false }
     compileOnly("com.github.GTNewHorizons:Galaxy-Space-GTNH:1.1.106-GTNH:dev") { transitive = false }
 
-    compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.3.5-GTNH:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.3.4-GTNH:dev") { transitive = false }
     implementation("com.github.GTNewHorizons:TinkersConstruct:1.13.9-GTNH:dev")
 
     compileOnly("com.github.GTNewHorizons:Chisel:2.16.2-GTNH:dev") { transitive = false }
@@ -85,7 +85,7 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.5.0-GTNH:dev') { transitive = false }
     compileOnly rfg.deobf("curse.maven:extra-utilities-225561:2264384")
     compileOnly rfg.deobf('curse.maven:minefactory-reloaded-66672:2366150')
-    compileOnly("com.github.GTNewHorizons:OpenComputers:1.11.10-GTNH:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:OpenComputers:1.11.8-GTNH:dev") {transitive = false}
     // https://www.curseforge.com/minecraft/mc-mods/advancedsolarpanels
     compileOnlyApi rfg.deobf('curse.maven:advsolar-362768:2885953')
     compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.7.6-GTNH:dev') {transitive =  false}
@@ -105,7 +105,7 @@ dependencies {
     // For testing forestry integration (iApiary, combs, tree growth simulator)
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.10.3:dev")
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:neiaddons:1.16.0:dev')
-    // runtimeOnlyNonPublishable('com.github.GTNewHorizons:MagicBees:2.9.1-GTNH:dev')
+    // runtimeOnlyNonPublishable('com.github.GTNewHorizons:MagicBees:2.9.0-GTNH:dev')
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.5.4:dev')
 
     testImplementation(platform('org.junit:junit-bom:5.9.2'))

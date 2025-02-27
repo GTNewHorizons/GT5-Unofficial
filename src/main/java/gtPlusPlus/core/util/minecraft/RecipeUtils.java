@@ -2,6 +2,7 @@ package gtPlusPlus.core.util.minecraft;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,7 +29,7 @@ import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.data.ArrayUtils;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 public class RecipeUtils {
 
@@ -400,7 +401,9 @@ public class RecipeUtils {
         }
 
         Logger.RECIPE("Data Size: " + aDataObject.length);
-        aDataObject = ArrayUtils.removeNulls(aDataObject);
+        List<Object> list = new ObjectArrayList<>(aDataObject);
+        list.removeAll(Collections.singleton(null));
+        aDataObject = list.toArray(new Object[0]);
         Logger.RECIPE("Clean Size: " + aDataObject.length);
         Logger.RECIPE("ArrayData: " + Arrays.toString(aDataObject));
 

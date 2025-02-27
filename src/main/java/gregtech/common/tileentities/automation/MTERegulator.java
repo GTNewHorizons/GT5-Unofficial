@@ -42,10 +42,6 @@ public class MTERegulator extends MTEBuffer {
                 "Allows Item-specific output slot" });
     }
 
-    public MTERegulator(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
-
     public MTERegulator(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }

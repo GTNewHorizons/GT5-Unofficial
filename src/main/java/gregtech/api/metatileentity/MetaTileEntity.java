@@ -9,14 +9,17 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
+import appeng.api.crafting.ICraftingIconProvider;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.pathing.IPathingGrid;
@@ -30,7 +33,6 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GUITextureSet;
-import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -41,6 +43,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
+import gregtech.common.capability.CleanroomReference;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
@@ -56,7 +59,7 @@ import tectech.thing.metaTileEntity.pipe.MTEPipeEnergy;
  * GT_MetaTileEntity_E_Furnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
  */
 @SuppressWarnings("unused")
-public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICleanroomReceiver {
+public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICraftingIconProvider {
 
     /**
      * Inventory wrapper for ModularUI
@@ -66,12 +69,16 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
     protected GUIColorOverride colorOverride;
     protected GTTooltipDataCache mTooltipCache = new GTTooltipDataCache();
 
+    private static final String[] FACING_DIRECTION_NAMES = new String[] { "GT5U.waila.facing.down",
+        "GT5U.waila.facing.up", "GT5U.waila.facing.north", "GT5U.waila.facing.south", "GT5U.waila.facing.west",
+        "GT5U.waila.facing.east", "GT5U.waila.facing.unknown" };
+
     @Override
     public ItemStackHandler getInventoryHandler() {
         return inventoryHandler;
     }
 
-    private ICleanroom cleanroom;
+    protected final ICleanroomReceiver cleanroomReference = new CleanroomReference();
 
     /**
      * accessibility to this Field is no longer given, see below
@@ -134,6 +141,25 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
     public boolean isValid() {
         return getBaseMetaTileEntity() != null && getBaseMetaTileEntity().getMetaTileEntity() == this
             && !getBaseMetaTileEntity().isDead();
+    }
+
+    /**
+     * Override to delegate capability this machine implements to baseMTE. Don't forget to fall back to
+     * {@code super.getCapability}.
+     *
+     * @see com.gtnewhorizon.gtnhlib.capability.CapabilityProvider CapabilityProvider
+     * @inheritDoc
+     */
+    @Nullable
+    @Override
+    public <T> T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
+        if (capability == ICleanroomReceiver.class) {
+            return capability.cast(cleanroomReference);
+        }
+        if (capability == ICraftingIconProvider.class) {
+            return capability.cast(this);
+        }
+        return super.getCapability(capability, side);
     }
 
     @Override
@@ -258,17 +284,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
         return onRightclick(aBaseMetaTileEntity, aPlayer);
-    }
-
-    @Nullable
-    @Override
-    public ICleanroom getCleanroom() {
-        return cleanroom;
-    }
-
-    @Override
-    public void setCleanroom(ICleanroom cleanroom) {
-        this.cleanroom = cleanroom;
     }
 
     /**
@@ -667,14 +682,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
 
     @Override
     public ItemStack getMachineCraftingIcon() {
-        final IGregTechTileEntity mte = getBaseMetaTileEntity();
-        if (mte == null) {
-            return null;
-        }
-        return mte.getDrops()
-            .stream()
-            .findAny()
-            .orElse(null);
+        return getStackForm(1);
     }
 
     // === Waila compat ===
@@ -683,10 +691,11 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         currenttip.add(
-            String.format(
-                "Facing: %s",
-                mBaseMetaTileEntity.getFrontFacing()
-                    .name()));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.facing",
+                getFacingNameLocalized(
+                    mBaseMetaTileEntity.getFrontFacing()
+                        .ordinal())));
 
         if (this instanceof IPowerChannelState state) {
             final NBTTagCompound tag = accessor.getNBTData();
@@ -695,6 +704,13 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICl
             final boolean isBooting = tag.getBoolean("isBooting");
             currenttip.add(WailaText.getPowerState(isActive, isPowered, isBooting));
         }
+    }
+
+    protected static @NotNull String getFacingNameLocalized(int id) {
+        if (id >= 0 && id < FACING_DIRECTION_NAMES.length) {
+            return StatCollector.translateToLocal(FACING_DIRECTION_NAMES[id]);
+        }
+        return StatCollector.translateToLocal("GT5U.waila.facing.unknown");
     }
 
     @Override

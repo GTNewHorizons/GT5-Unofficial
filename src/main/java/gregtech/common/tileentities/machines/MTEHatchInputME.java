@@ -118,7 +118,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     protected static final FluidStack[] EMPTY_FLUID_STACK = new FluidStack[0];
 
     public MTEHatchInputME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, autoPullAvailable ? 9 : 8, 1, getDescriptionArray(autoPullAvailable));
+        super(aID, 1, aName, aNameRegional, autoPullAvailable ? 9 : 8, getDescriptionArray(autoPullAvailable));
         this.autoPullAvailable = autoPullAvailable;
     }
 
@@ -591,6 +591,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             setAutoPullFluidList(nbt.getBoolean("autoPull"));
             minAutoPullAmount = nbt.getInteger("minAmount");
             autoPullRefreshTime = nbt.getInteger("refreshTime");
+            expediteRecipeCheck = nbt.getBoolean("expediteRecipeCheck");
         }
         additionalConnection = nbt.getBoolean("additionalConnection");
 
@@ -612,6 +613,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         tag.setInteger("minAmount", minAutoPullAmount);
         tag.setBoolean("additionalConnection", additionalConnection);
         tag.setInteger("refreshTime", autoPullRefreshTime);
+        tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
 
         NBTTagList stockingFluids = new NBTTagList();
         if (!autoPullFluidList) {

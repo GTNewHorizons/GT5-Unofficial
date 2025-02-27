@@ -299,7 +299,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addCasingInfoMin("Protomatter Activation Coil", 126, false)
             .addInputHatch("1-6, Hint block with dot 1", 1)
             .addEnergyHatch("1-9, Hint block with dot 2", 2)
-            .addOtherStructurePart("Antimatter Hatch", "16, Hint Block with dot 3", 3)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("gg.structure.tooltip.antimatter_hatch"),
+                "16, Hint Block with dot 3",
+                3)
             .toolTipFinisher();
         return tt;
     }
@@ -307,6 +310,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     @Override
     public IStructureDefinition<AntimatterForge> getStructureDefinition() {
         return STRUCTURE_DEFINITION.get(getClass());
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
     }
 
     public Block getCasingBlock(int type) {

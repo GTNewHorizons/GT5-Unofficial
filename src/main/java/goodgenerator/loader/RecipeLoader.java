@@ -977,7 +977,6 @@ public class RecipeLoader {
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
-            .noOptimize()
             .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -1014,7 +1013,6 @@ public class RecipeLoader {
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
-            .noOptimize()
             .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
 
         for (Materials tMat : solderingMats) {
@@ -1302,7 +1300,6 @@ public class RecipeLoader {
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
-            .noOptimize()
             .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
     }
 

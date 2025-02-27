@@ -39,7 +39,6 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .fluidOutputs(MaterialsUEVplus.ExcitedDTCC.getFluid(1000L))
             .duration(100)
             .eut(CRUDE_EU_PER_L)
-            .noOptimize()
             .addTo(transcendentPlasmaMixerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -56,7 +55,6 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .fluidOutputs(MaterialsUEVplus.ExcitedDTPC.getFluid(1000L))
             .duration(100)
             .eut(PROSAIC_EU_PER_L)
-            .noOptimize()
             .addTo(transcendentPlasmaMixerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -77,7 +75,6 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .fluidOutputs(MaterialsUEVplus.ExcitedDTRC.getFluid(1000L))
             .duration(100)
             .eut(RESPLENDENT_EU_PER_L)
-            .noOptimize()
             .addTo(transcendentPlasmaMixerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -102,7 +99,6 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .fluidOutputs(MaterialsUEVplus.ExcitedDTEC.getFluid(1000L))
             .duration(100)
             .eut(EXOTIC_EU_PER_L)
-            .noOptimize()
             .addTo(transcendentPlasmaMixerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -132,7 +128,6 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .duration(100)
             .eut(STELLAR_EU_PER_HALF_L)
             .metadata(GTRecipeConstants.EU_MULTIPLIER, 20)
-            .noOptimize()
             .addTo(transcendentPlasmaMixerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -145,7 +140,6 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .fluidOutputs(MaterialsUEVplus.PrimordialMatter.getFluid(1000L))
             .duration(100)
             .eut(PRIMORDIAL_MATTER)
-            .noOptimize()
             .addTo(transcendentPlasmaMixerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -159,7 +153,6 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .fluidOutputs(MaterialsUEVplus.Creon.getPlasma(5000L))
             .duration(100)
             .eut(TierEU.RECIPE_UMV)
-            .noOptimize()
             .addTo(transcendentPlasmaMixerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -190,7 +183,6 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             // 1 Trillion EU/t
             .metadata(GTRecipeConstants.EU_MULTIPLIER, 1000)
             .eut(1_000_000_000L)
-            .noOptimize()
             .addTo(transcendentPlasmaMixerRecipes);
 
         GTValues.RA.stdBuilder()

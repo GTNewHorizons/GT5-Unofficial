@@ -63,7 +63,6 @@ import gregtech.api.util.GTUtility;
  *     <li>All circuits should convert to circuit wraps.
  *     <li>All rods should convert to long rods.
  *     <li>All small gears should convert into gears.
- *     <li>16 Gravi Stars -> 1 Nuclear Star for UHV+.
  *     <li>16 Tier N Nanites -> 1 Tier N+1 Nanite (i.e., 16 Neutronium -> 1 Gold).
  * </ul>
  * Fluid conversion rules:
@@ -1081,7 +1080,7 @@ public class ComponentAssemblyLineLoader {
                     get(cableGt16, NaquadahAlloy, 24),
                     getIntegratedCircuit(PUMP_CIRCUIT))
                 .fluidInputs(
-                    INDALLOY_140.getFluidStack(768 * L),
+                    INDALLOY_140.getFluidStack(432 * L),
                     Lubricant.getFluid(96000),
                     Naquadah.getMolten(576 * L),
                     Neutronium.getMolten(450 * L + 96),
@@ -1161,7 +1160,7 @@ public class ComponentAssemblyLineLoader {
                 get(wrapCircuit, UHV, 12))
             .fluidInputs(
                 INDALLOY_140.getFluidStack(768 * L),
-                Neutronium.getMolten(2304 * L),
+                Americium.getMolten(2304 * L),
                 NaquadahAlloy.getMolten(768 * L),
                 Naquadria.getMolten(432 * L))
             .duration(24 * MINUTES)
@@ -1276,7 +1275,7 @@ public class ComponentAssemblyLineLoader {
                 get(frameGt, CosmicNeutronium, 48),
                 get(Electric_Motor_UHV, 48),
                 get(plateDense, CosmicNeutronium, 42),
-                get(NuclearStar, 24),
+                get(Gravistar, 384),
                 get(wrapCircuit, UHV, 12),
                 getIntegratedCircuit(SENSOR_CIRCUIT))
             .fluidInputs(
@@ -1295,7 +1294,7 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(frameGt, CosmicNeutronium, 48),
                 get(Electric_Motor_UHV, 48),
-                get(NuclearStar, 24),
+                get(Gravistar, 384),
                 get(wrapCircuit, UHV, 12),
                 getIntegratedCircuit(EMITTER_CIRCUIT))
             .fluidInputs(
@@ -1315,7 +1314,7 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(frameGt, CosmicNeutronium, 48),
                 get(plateDense, CosmicNeutronium, 32),
-                get(NuclearStar, 12),
+                get(Gravistar, 192),
                 get(Emitter_UHV, 192),
                 get(wrapCircuit, UEV, 12))
             .fluidInputs(
@@ -1435,7 +1434,7 @@ public class ComponentAssemblyLineLoader {
                 get(frameGt, Infinity, 48),
                 get(Electric_Motor_UEV, 48),
                 get(plateDense, Infinity, 42),
-                get(NuclearStar, 48),
+                get(Gravistar, 768),
                 get(wrapCircuit, UEV, 12),
                 getIntegratedCircuit(SENSOR_CIRCUIT))
             .fluidInputs(
@@ -1454,7 +1453,7 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(frameGt, Infinity, 48),
                 get(Electric_Motor_UEV, 48),
-                get(NuclearStar, 48),
+                get(Gravistar, 768),
                 get(wrapCircuit, UEV, 12),
                 getIntegratedCircuit(EMITTER_CIRCUIT))
             .fluidInputs(
@@ -1474,7 +1473,7 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(frameGt, Infinity, 48),
                 get(plateDense, Infinity, 32),
-                get(NuclearStar, 24),
+                get(Gravistar, 384),
                 get(Emitter_UEV, 192),
                 get(wrapCircuit, UIV, 12))
             .fluidInputs(
