@@ -70,8 +70,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch.ASSEMBLY_LINE_RESEARCH;
@@ -238,6 +238,16 @@ public class RecipesGregTech {
             .eut(64)
             .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 2),
+                GTUtility.getIntegratedCircuit(20))
+            .fluidInputs(FluidRegistry.getFluidStack("mobessence", 5000))
+            .fluidOutputs(new FluidStack(GTPPFluids.GeneticMutagen, 8000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
 
         int aLaureniumTier = MaterialsAlloy.LAURENIUM.vTier;
         // Adding Recipes for Casings
@@ -1578,9 +1588,7 @@ public class RecipesGregTech {
 
         // Na2CO3 + 2HNO3 = 2NaNO3 + CO2 + H2O
         RA.stdBuilder()
-            .itemInputs(
-                ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 6),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(Materials.SodiumCarbonate.getDust(6), GTUtility.getIntegratedCircuit(1))
             .itemOutputs(MaterialMisc.SODIUM_NITRATE.getDust(10))
             .fluidInputs(Materials.NitricAcid.getFluid(2000))
             .fluidOutputs(Materials.CarbonDioxide.getGas(1000))
