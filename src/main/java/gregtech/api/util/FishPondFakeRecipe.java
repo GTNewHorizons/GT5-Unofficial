@@ -33,13 +33,42 @@ public class FishPondFakeRecipe {
                 .getField(FishingHooks.class, "treasure")
                 .get(null);
             final Field stackField = GTUtility.getField(WeightedRandomFishable.class, "field_150711_b");
-            generateRecipesFor(MTEIndustrialFishingPond.FISH_MODE, fish, fishList, stackField);
-            generateRecipesFor(MTEIndustrialFishingPond.JUNK_MODE, junk, junkList, stackField);
-            generateRecipesFor(MTEIndustrialFishingPond.TREASURE_MODE, treasure, treasureList, stackField);
+            tempName(MTEIndustrialFishingPond.FISH_MODE, fish, fishList, stackField);
+            tempName(MTEIndustrialFishingPond.JUNK_MODE, junk, junkList, stackField);
+            tempName(MTEIndustrialFishingPond.TREASURE_MODE, treasure, treasureList, stackField);
         } catch (Exception e) {
             Logger.INFO("Error reading the vanilla fishing loot table.");
             e.printStackTrace();
         }
+    }
+
+    private static void tempName(int circuitType, ArrayList<ItemStack> listToFill,
+        ArrayList<WeightedRandomFishable> lootTable, Field stackField) {
+
+        int totalWeight = 0;
+        int[] chances = new int[lootTable.size()];
+        ItemStack[] outputs = new ItemStack[lootTable.size()];
+        // Find the total weight of the loot table and all of our outputs
+        for (int i = 0; i < lootTable.size(); i++) {
+            totalWeight += lootTable.get(i).itemWeight;
+            chances[i] = lootTable.get(i).itemWeight * 100;
+            try {
+                listToFill.add((ItemStack) stackField.get(lootTable.get(i)));
+                outputs[i] = (ItemStack) stackField.get(lootTable.get(i));
+            } catch (IllegalArgumentException | IllegalAccessException e1) {
+                Logger.INFO("Error generating Fish Pond Recipes");
+                e1.printStackTrace();
+            }
+        }
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(circuitType))
+            .itemOutputs(outputs, chances)
+            .duration(10 * SECONDS)
+            .eut(16)
+            .ignoreCollision()
+            .addTo(GTPPRecipeMaps.fishPondRecipes);
+
     }
 
     private static void generateRecipesFor(int circuitType, ArrayList<ItemStack> listToFill,

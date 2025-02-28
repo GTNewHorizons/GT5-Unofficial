@@ -15,13 +15,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -37,16 +41,11 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.FishPondFakeRecipe;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.ReflectionUtil;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -57,6 +56,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
+import org.jetbrains.annotations.NotNull;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFishingPond>
@@ -107,7 +107,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
             .addInfo("Circuit " + FISH_MODE + " for Fish")
             .addInfo("Circuit " + JUNK_MODE + " for Junk")
             .addInfo("Circuit " + TREASURE_MODE + " for Treasure")
-            .addInfo("Need to be filled with water.")
+            .addInfo("Needs to be filled with water.")
             .addInfo("Will automatically fill water from input hatch.")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 3, 9, true)
@@ -207,83 +207,96 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
     }
 
     @Override
-    public @NotNull CheckRecipeResult checkProcessing() {
-        ItemStack controllerStack = getControllerSlot();
-        if (controllerStack != null) {
-            if (controllerStack.getItem() == CONTROL_CIRCUIT) {
-                this.isUsingControllerCircuit = true;
-                this.mMode = controllerStack.getItemDamage();
-            } else {
-                this.isUsingControllerCircuit = false;
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+
+            @Override
+            protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                if (!checkForWater()) {
+                    return SimpleCheckRecipeResult.ofFailure("no_water");
+                }
+                return super.validateRecipe(recipe);
             }
-        } else {
-            this.isUsingControllerCircuit = false;
-        }
-        if (!checkForWater()) {
-            return SimpleCheckRecipeResult.ofFailure("no_water");
-        }
-        ItemStack[] tItemInputs = getStoredInputs().toArray(new ItemStack[0]);
-        FluidStack[] tFluidInputs = getStoredFluids().toArray(new FluidStack[0]);
 
-        if (!isUsingControllerCircuit && tItemInputs.length == 0) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        long tEnergy = getMaxInputEnergy();
-
-        setModeFromInputStacks(tItemInputs);
-
-        ItemStack[] mFishOutput = generateLoot();
-        if (mFishOutput == null) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        List<ItemStack> list = new ObjectArrayList<>(mFishOutput);
-        list.removeAll(Collections.singleton((ItemStack) null));
-        mFishOutput = list.toArray(new ItemStack[0]);
-        GTRecipe g = new GTRecipe(
-            true,
-            new ItemStack[] {},
-            mFishOutput,
-            null,
-            new int[] {},
-            tFluidInputs,
-            null,
-            200,
-            16,
-            0);
-        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(g.mEUt)
-            .setEUt(tEnergy)
-            .setDuration(g.mDuration);
-        ParallelHelper helper = new ParallelHelper().setRecipe(g)
-            .setItemInputs(tItemInputs)
-            .setFluidInputs(tFluidInputs)
-            .setAvailableEUt(tEnergy)
-            .setMaxParallel(getTrueParallel())
-            .setConsumption(true)
-            .setOutputCalculation(true)
-            .setMachine(this)
-            .enableBatchMode(batchMode ? 128 : 1)
-            .setCalculator(calculator);
-
-        helper.build();
-
-        if (helper.getCurrentParallel() == 0) {
-            return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
-        }
-
-        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
-
-        lEUt = -calculator.getConsumption();
-        mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplierDouble());
-
-        mOutputItems = helper.getItemOutputs();
-        mOutputFluids = null;
-        updateSlots();
-
-        return CheckRecipeResultRegistry.SUCCESSFUL;
+        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
+
+//    @Override
+//    public @NotNull CheckRecipeResult checkProcessing() {
+//        ItemStack controllerStack = getControllerSlot();
+//        if (controllerStack != null) {
+//            if (controllerStack.getItem() == CONTROL_CIRCUIT) {
+//                this.isUsingControllerCircuit = true;
+//                this.mMode = controllerStack.getItemDamage();
+//            } else {
+//                this.isUsingControllerCircuit = false;
+//            }
+//        } else {
+//            this.isUsingControllerCircuit = false;
+//        }
+//        if (!checkForWater()) {
+//            return SimpleCheckRecipeResult.ofFailure("no_water");
+//        }
+//        ItemStack[] tItemInputs = getStoredInputs().toArray(new ItemStack[0]);
+//        FluidStack[] tFluidInputs = getStoredFluids().toArray(new FluidStack[0]);
+//
+//        if (!isUsingControllerCircuit && tItemInputs.length == 0) {
+//            return CheckRecipeResultRegistry.NO_RECIPE;
+//        }
+//
+//        long tEnergy = getMaxInputEnergy();
+//
+//        setModeFromInputStacks(tItemInputs);
+//
+//        ItemStack[] mFishOutput = generateLoot();
+//        if (mFishOutput == null) {
+//            return CheckRecipeResultRegistry.NO_RECIPE;
+//        }
+//
+//        mFishOutput = removeNulls(mFishOutput);
+//        GTRecipe g = new GTRecipe(
+//            true,
+//            new ItemStack[] {},
+//            mFishOutput,
+//            null,
+//            new int[] {},
+//            tFluidInputs,
+//            null,
+//            200,
+//            16,
+//            0);
+//        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(g.mEUt)
+//            .setEUt(tEnergy)
+//            .setDuration(g.mDuration);
+//        ParallelHelper helper = new ParallelHelper().setRecipe(g)
+//            .setItemInputs(tItemInputs)
+//            .setFluidInputs(tFluidInputs)
+//            .setAvailableEUt(tEnergy)
+//            .setMaxParallel(getMaxParallelRecipes())
+//            .setConsumption(true)
+//            .setOutputCalculation(true)
+//            .setMachine(this)
+//            .enableBatchMode(batchMode ? 128 : 1)
+//            .setCalculator(calculator);
+//
+//        helper.build();
+//
+//        if (helper.getCurrentParallel() == 0) {
+//            return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
+//        }
+//
+//        this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+//        this.mEfficiencyIncrease = 10000;
+//
+//        lEUt = -calculator.getConsumption();
+//        mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplierDouble());
+//
+//        mOutputItems = helper.getItemOutputs();
+//        mOutputFluids = null;
+//        updateSlots();
+//
+//        return CheckRecipeResultRegistry.SUCCESSFUL;
+//    }
 
     @Override
     public int getMaxParallelRecipes() {
