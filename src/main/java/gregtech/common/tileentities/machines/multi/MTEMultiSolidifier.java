@@ -89,40 +89,35 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             STRUCTURE_PIECE_MAIN,
             new String[][]{{
             },{
-                "                                  ",
-                " C                               C",
-                " C            CCCCCCC            C",
-                " C            AAAAAAA            C",
-                " C            DDDCDDD            C",
-                " C            CCC~CCC            C"
+                "C                               C",
+                "C            CCCCCCC            C",
+                "C            AAAAAAA            C",
+                "C            DDDCDDD            C",
+                "C            CCC~CCC            C"
             },{
-                "                                  ",
-                " CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
-                " CAAAAAAAAAAAA       AAAAAAAAAAAAC",
-                " CAAAAAAAAAAAA       AAAAAAAAAAAAC",
-                " CDDDDDDDDDDDD       DDDDDDDDDDDDC",
-                " CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+                "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+                "CAAAAAAAAAAAA       AAAAAAAAAAAAC",
+                "CAAAAAAAAAAAA       AAAAAAAAAAAAC",
+                "CDDDDDDDDDDDD       DDDDDDDDDDDDC",
+                "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
             },{
-                "                                  ",
-                " CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
-                " CE E E E E E E E E E E E E E E EC",
-                " C                               C",
-                " CBDBDBDBDBDBDB B B BDBDBDBDBDBDBC",
-                " CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+                "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+                "CE E E E E E E E E E E E E E E EC",
+                "C                               C",
+                "CBDBDBDBDBDBDB B B BDBDBDBDBDBDBC",
+                "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
             },{
-                "                                  ",
-                " CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
-                " CAAAAAAAAAAAA       AAAAAAAAAAAAC",
-                " CAAAAAAAAAAAA       AAAAAAAAAAAAC",
-                " CDDDDDDDDDDDD       DDDDDDDDDDDDC",
-                " CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+                "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+                "CAAAAAAAAAAAA       AAAAAAAAAAAAC",
+                "CAAAAAAAAAAAA       AAAAAAAAAAAAC",
+                "CDDDDDDDDDDDD       DDDDDDDDDDDDC",
+                "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
             },{
-                "                                  ",
-                " C                               C",
-                " C            CCCCCCC            C",
-                " C            AAAAAAA            C",
-                " C            DDDDDDD            C",
-                " C            CCCCCCC            C"
+                "C                               C",
+                "C            CCCCCCC            C",
+                "C            AAAAAAA            C",
+                "C            DDDDDDD            C",
+                "C            CCCCCCC            C"
             }})
 
     .addElement(
@@ -140,8 +135,8 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                     onElementPass(MTEMultiSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 13))))
 
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings10, 14))
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings1, 11))
-        .addElement('E', ofBlock(GregTechAPI.sBlockCasings4, 1))
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        .addElement('E', ofBlock(GregTechAPI.sBlockCasings11, 7))
         .build();
 
     // spotless:on
@@ -236,13 +231,13 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 17, 5, 1);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 16, 4, 1);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 17, 5, 1, elementBudget, env, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 16, 4, 1, elementBudget, env, false, true);
     }
 
     @Override
@@ -257,7 +252,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 17, 5, 1)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 16, 4, 1)) return false;
 
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) return false;
