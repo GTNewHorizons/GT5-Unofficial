@@ -3053,13 +3053,10 @@ public class RecipesMachines {
                 new Object[] { CI.getTieredCircuitOreDictName(6), 8 },
                 MaterialsAlloy.INCONEL_625.getGear(8),
                 MaterialsAlloy.INCONEL_625.getPlate(32),
-                MaterialsAlloy.ZERON_100.getPlateDouble(8),
-                MaterialsAlloy.ZERON_100.getPlateDouble(8),
+                MaterialsAlloy.ZERON_100.getPlateDouble(16),
                 MaterialsAlloy.ZERON_100.getScrew(64),
-                CI.getTieredComponentOfMaterial(Materials.NiobiumTitanium, OrePrefixes.wireFine, 32),
-                CI.getTieredComponentOfMaterial(Materials.NiobiumTitanium, OrePrefixes.wireFine, 32),
-                CI.getTieredComponentOfMaterial(Materials.Titanium, OrePrefixes.foil, 16),
-                CI.getTieredComponentOfMaterial(Materials.Titanium, OrePrefixes.foil, 16))
+                CI.getTieredComponentOfMaterial(Materials.NiobiumTitanium, OrePrefixes.wireFine, 64),
+                CI.getTieredComponentOfMaterial(Materials.Titanium, OrePrefixes.foil, 32))
             .fluidInputs(
                 CI.getTieredFluid(6, 16 * 144),
                 CI.getAlternativeTieredFluid(6, 32 * 144),
@@ -3123,13 +3120,11 @@ public class RecipesMachines {
                 new Object[] { CI.getTieredCircuitOreDictName(6), 8 },
                 MaterialsAlloy.STELLITE.getGear(8),
                 MaterialsAlloy.STELLITE.getPlate(32),
-                MaterialsAlloy.HASTELLOY_N.getPlateDouble(8),
-                MaterialsAlloy.HASTELLOY_N.getPlateDouble(8),
+                MaterialsAlloy.HASTELLOY_N.getPlateDouble(16),
                 MaterialsAlloy.HASTELLOY_N.getScrew(64),
                 CI.getTieredComponentOfMaterial(Materials.YttriumBariumCuprate, OrePrefixes.wireFine, 64),
                 CI.getTieredComponentOfMaterial(Materials.YttriumBariumCuprate, OrePrefixes.wireFine, 64),
-                CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 32),
-                CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 32))
+                CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 64))
             .fluidInputs(
                 CI.getTieredFluid(5, 16 * 144),
                 CI.getAlternativeTieredFluid(4, 32 * 144),
@@ -3196,13 +3191,11 @@ public class RecipesMachines {
                 new Object[] { CI.getTieredCircuitOreDictName(5), 8 },
                 MaterialsAlloy.HS188A.getGear(8),
                 MaterialsAlloy.HS188A.getPlate(32),
-                MaterialsAlloy.HASTELLOY_N.getPlateDouble(8),
-                MaterialsAlloy.HASTELLOY_N.getPlateDouble(8),
+                MaterialsAlloy.HASTELLOY_N.getPlateDouble(16),
                 MaterialsAlloy.HASTELLOY_N.getScrew(64),
                 CI.getTieredComponentOfMaterial(Materials.YttriumBariumCuprate, OrePrefixes.wireFine, 64),
                 CI.getTieredComponentOfMaterial(Materials.YttriumBariumCuprate, OrePrefixes.wireFine, 64),
-                CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 32),
-                CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 32))
+                CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 64))
             .fluidInputs(
                 CI.getTieredFluid(4, 16 * 144),
                 CI.getAlternativeTieredFluid(3, 32 * 144),

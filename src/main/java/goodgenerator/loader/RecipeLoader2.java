@@ -1467,10 +1467,7 @@ public class RecipeLoader2 {
             .metadata(SCANNING, new Scanning(2 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 ItemList.FusionComputer_ZPMV.get(48),
-                new Object[] { "circuitUltimate", 1 },
-                new Object[] { "circuitUltimate", 1 },
-                new Object[] { "circuitUltimate", 1 },
-                new Object[] { "circuitUltimate", 1 },
+                new Object[] {OrePrefixes.circuit.get(Materials.ZPM), 4 },
                 ItemList.Circuit_Wafer_UHPIC.get(32),
                 ItemList.ZPM_Coil.get(16),
                 ItemList.Neutron_Reflector.get(4),
@@ -1492,10 +1489,7 @@ public class RecipeLoader2 {
             .metadata(SCANNING, new Scanning(2 * MINUTES + 30 * SECONDS, TierEU.RECIPE_ZPM))
             .itemInputs(
                 ItemList.FusionComputer_UV.get(48),
-                new Object[] { "circuitSuperconductor", 1 },
-                new Object[] { "circuitSuperconductor", 1 },
-                new Object[] { "circuitSuperconductor", 1 },
-                new Object[] { "circuitSuperconductor", 1 },
+                new Object[] {OrePrefixes.circuit.get(Materials.UV), 4},
                 ItemList.Circuit_Wafer_NPIC.get(64),
                 ItemList.UV_Coil.get(16),
                 ItemRefer.Advanced_Radiation_Protection_Plate.get(8),
@@ -1531,15 +1525,15 @@ public class RecipeLoader2 {
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
 
+        // Compact MK4 Computer
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemRefer.Compact_Fusion_MK3.get(1),
             2_560_000,
             4_096,
             (int) TierEU.RECIPE_UHV,
             256,
-            new Object[] { GregtechItemList.FusionComputer_UV2.get(48), new Object[] { "circuitInfinite", 1 },
-                new Object[] { "circuitInfinite", 1 }, new Object[] { "circuitInfinite", 1 },
-                new Object[] { "circuitInfinite", 1 }, ItemList.Circuit_Wafer_PPIC.get(64), ItemList.UHV_Coil.get(16),
+            new Object[] { GregtechItemList.FusionComputer_UV2.get(48), new Object[] {OrePrefixes.circuit.get(Materials.UHV), 4},
+                ItemList.Circuit_Wafer_PPIC.get(64), ItemList.UHV_Coil.get(16),
                 MaterialsAlloy.TITANSTEEL.getPlateDense(8), ItemRefer.HiC_T4.get(8),
                 ItemList.Field_Generator_UHV.get(8),
                 GGMaterial.enrichedNaquadahAlloy.get(OrePrefixes.gearGtSmall, 64) },
@@ -1572,8 +1566,7 @@ public class RecipeLoader2 {
             16_384,
             (int) TierEU.RECIPE_UEV,
             256,
-            new Object[] { GregtechItemList.FusionComputer_UV3.get(48), new Object[] { "circuitBio", 1 },
-                new Object[] { "circuitBio", 1 }, new Object[] { "circuitBio", 1 }, new Object[] { "circuitBio", 1 },
+            new Object[] { GregtechItemList.FusionComputer_UV3.get(48), new Object[] {OrePrefixes.circuit.get(Materials.UEV), 4},
                 ItemList.Circuit_Wafer_QPIC.get(64), ItemList.UHV_Coil.get(64),
                 MaterialsElements.STANDALONE.HYPOGEN.getPlateDense(8), ItemRefer.HiC_T5.get(8),
                 ItemList.Field_Generator_UEV.get(8), GGMaterial.metastableOganesson.get(OrePrefixes.gearGtSmall, 64) },
