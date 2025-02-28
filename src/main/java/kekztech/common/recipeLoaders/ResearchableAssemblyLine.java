@@ -78,9 +78,8 @@ public class ResearchableAssemblyLine implements Runnable {
             32,
             new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.TranscendentMetal, 4),
                 GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.TranscendentMetal, 24),
-                HYPOGEN.getPlateDouble(64),
-                new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4 }, ItemList.ZPM4.get(8L),
-                ItemList.Field_Generator_UIV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
+                HYPOGEN.getPlateDouble(64), new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4 },
+                ItemList.ZPM4.get(8L), ItemList.Field_Generator_UIV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
                 ItemList.Circuit_Wafer_QPIC.get(64),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.RawPicoWafer", 64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(32),
@@ -101,9 +100,8 @@ public class ResearchableAssemblyLine implements Runnable {
             64,
             new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 4),
                 GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.SpaceTime, 24),
-                DRAGON_METAL.getPlateDouble(64),
-                new Object[] { OrePrefixes.circuit.get(Materials.UXV), 4 },ItemList.ZPM5.get(8L),
-                ItemList.Field_Generator_UMV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
+                DRAGON_METAL.getPlateDouble(64), new Object[] { OrePrefixes.circuit.get(Materials.UXV), 4 },
+                ItemList.ZPM5.get(8L), ItemList.Field_Generator_UMV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
                 ItemList.Circuit_Wafer_QPIC.get(64),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(64),
@@ -115,7 +113,6 @@ public class ResearchableAssemblyLine implements Runnable {
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 10),
             350 * 20,
             (int) TierEU.RECIPE_UMV);
-
 
     }
 }
