@@ -26,7 +26,7 @@ import tectech.mechanics.pipe.PipeActivityMessage;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 import tectech.util.CommonValues;
 
-public class MTEPipeEnergyMirror extends MTEPipeEnergy {
+public class MTEPipeLaserMirror extends MTEPipeLaser {
 
     private static Textures.BlockIcons.CustomIcon EMpipe;
     private final ForgeDirection[] connectedSides = { null, null };
@@ -34,17 +34,17 @@ public class MTEPipeEnergyMirror extends MTEPipeEnergy {
 
     private boolean active;
 
-    public MTEPipeEnergyMirror(int aID, String aName, String aNameRegional) {
+    public MTEPipeLaserMirror(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEPipeEnergyMirror(String aName) {
+    public MTEPipeLaserMirror(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new MTEPipeEnergyMirror(mName);
+        return new MTEPipeLaserMirror(mName);
     }
 
     @Override
@@ -160,7 +160,7 @@ public class MTEPipeEnergyMirror extends MTEPipeEnergy {
                     IMetaTileEntity aMetaTileEntity = tGTTileEntity.getMetaTileEntity();
                     if (aMetaTileEntity != null) {
                         // If we hit a mirror, use the mirror's view instead
-                        if (aMetaTileEntity instanceof MTEPipeEnergyMirror tMirror) {
+                        if (aMetaTileEntity instanceof MTEPipeLaserMirror tMirror) {
                             tGTTileEntity = tMirror.bendAround(opposite);
                             if (tGTTileEntity == null) {
                                 break;
@@ -174,11 +174,11 @@ public class MTEPipeEnergyMirror extends MTEPipeEnergy {
                         if (aMetaTileEntity instanceof MTEHatchEnergyTunnel
                             && opposite == tGTTileEntity.getFrontFacing()) {
                             return tGTTileEntity;
-                        } else if (aMetaTileEntity instanceof MTEPipeEnergy) {
-                            if (((MTEPipeEnergy) aMetaTileEntity).connectionCount < 2) {
+                        } else if (aMetaTileEntity instanceof MTEPipeLaser) {
+                            if (((MTEPipeLaser) aMetaTileEntity).connectionCount < 2) {
                                 return null;
                             } else {
-                                ((MTEPipeEnergy) aMetaTileEntity).markUsed();
+                                ((MTEPipeLaser) aMetaTileEntity).markUsed();
                             }
                         } else {
                             return null;
