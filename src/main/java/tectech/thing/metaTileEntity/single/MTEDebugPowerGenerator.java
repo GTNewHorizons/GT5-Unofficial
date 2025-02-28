@@ -40,7 +40,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
-import tectech.thing.metaTileEntity.pipe.MTEPipeEnergy;
+import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
 import tectech.util.CommonValues;
 
 /**
@@ -293,9 +293,9 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
                                     aMetaTileEntity.getBaseMetaTileEntity()
                                         .getStoredEU() + diff);
                             }
-                        } else if (aMetaTileEntity instanceof MTEPipeEnergy) {
-                            if (((MTEPipeEnergy) aMetaTileEntity).connectionCount < 2) {} else {
-                                ((MTEPipeEnergy) aMetaTileEntity).markUsed();
+                        } else if (aMetaTileEntity instanceof MTEPipeLaser) {
+                            if (((MTEPipeLaser) aMetaTileEntity).connectionCount < 2) {} else {
+                                ((MTEPipeLaser) aMetaTileEntity).markUsed();
                             }
                         }
                     }
