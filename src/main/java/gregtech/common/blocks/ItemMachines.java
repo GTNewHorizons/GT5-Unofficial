@@ -36,9 +36,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
-import gregtech.api.metatileentity.implementations.MTEFluid;
+import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.metatileentity.implementations.MTEFrame;
-import gregtech.api.metatileentity.implementations.MTEItem;
+import gregtech.api.metatileentity.implementations.MTEItemPipe;
 import gregtech.api.util.GTItsNotMyFaultException;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
@@ -228,10 +228,10 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         if (aDamage >= 0 && aDamage < GregTechAPI.METATILEENTITIES.length
             && GregTechAPI.METATILEENTITIES[aDamage] != null) {
             Materials aMaterial = null;
-            if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEItem) {
-                aMaterial = ((MTEItem) GregTechAPI.METATILEENTITIES[aDamage]).mMaterial;
-            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEFluid) {
-                aMaterial = ((MTEFluid) GregTechAPI.METATILEENTITIES[aDamage]).mMaterial;
+            if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEItemPipe) {
+                aMaterial = ((MTEItemPipe) GregTechAPI.METATILEENTITIES[aDamage]).mMaterial;
+            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEFluidPipe) {
+                aMaterial = ((MTEFluidPipe) GregTechAPI.METATILEENTITIES[aDamage]).mMaterial;
             } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTECable) {
                 aMaterial = ((MTECable) GregTechAPI.METATILEENTITIES[aDamage]).mMaterial;
             } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEFrame) {
