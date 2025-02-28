@@ -1136,6 +1136,7 @@ public class GTModHandler {
         if (sBufferCraftingRecipes && aBuffered) sBufferRecipeList.add(
             new GTShapelessRecipe(
                 GTUtility.copyOrNull(aResult),
+                aDismantleable,
                 aRemovable,
                 aKeepNBT,
                 overwriteNBT,
@@ -1145,6 +1146,7 @@ public class GTModHandler {
         else GameRegistry.addRecipe(
             new GTShapelessRecipe(
                 GTUtility.copyOrNull(aResult),
+                aDismantleable,
                 aRemovable,
                 aKeepNBT,
                 overwriteNBT,
