@@ -13,7 +13,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -953,7 +952,7 @@ public class CI {
     }
 
     public static ItemStack getEmptyCatalyst(int aAmount) {
-        return ItemUtils.simpleMetaStack(AgriculturalChem.mAgrichemItem1, 13, aAmount);
+        return GregtechItemList.EmptyCatalystCarrier.get(aAmount);
     }
 
     /**
@@ -963,7 +962,7 @@ public class CI {
      * @return - A Catalyst stack of given size
      */
     public static ItemStack getGreenCatalyst(int aAmount) {
-        return ItemUtils.simpleMetaStack(AgriculturalChem.mAgrichemItem1, 14, aAmount);
+        return GregtechItemList.GreenMetalCatalyst.get(aAmount);
     }
 
     /**
