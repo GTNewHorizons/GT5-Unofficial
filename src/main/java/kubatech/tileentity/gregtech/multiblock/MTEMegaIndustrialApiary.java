@@ -59,6 +59,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -329,7 +330,10 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addOtherStructurePart("Borosilicate Glass", "Look at the hologram")
             .addStructureInfo("The glass tier limits the Energy Input tier")
             .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
-            .addOtherStructurePart("Flowers", "On dirt/grass", 2)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("kubatech.tooltip.structure.flowers"),
+                "On dirt/grass",
+                2)
             .addInputBus("Any casing", 1)
             .addOutputBus("Any casing", 1)
             .addEnergyHatch("Any casing", 1)

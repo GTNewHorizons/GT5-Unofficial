@@ -47,7 +47,7 @@ import gregtech.common.capability.CleanroomReference;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
-import tectech.thing.metaTileEntity.pipe.MTEPipeEnergy;
+import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -606,7 +606,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
             final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(side);
 
             if (iGregTechTileEntity != null) {
-                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeEnergy neighbor) {
+                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser neighbor) {
                     neighbor.mConnections &= ~side.getOpposite().flag;
                     neighbor.connectionCount--;
                 }
@@ -631,7 +631,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
             final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(side);
             if (iGregTechTileEntity != null) {
-                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeEnergy pipe) pipe.updateNetwork(true);
+                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser pipe) pipe.updateNetwork(true);
                 if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData pipe) pipe.updateNetwork(true);
             }
         }
