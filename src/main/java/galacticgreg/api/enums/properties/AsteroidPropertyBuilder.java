@@ -2,46 +2,15 @@ package galacticgreg.api.enums.properties;
 
 public class AsteroidPropertyBuilder {
 
+    public boolean enabled = true;
     public int probability;
     public int sizeMin, sizeMax;
     public int specialBlockChance;
-    public OreSpawnPropertyBuilder oreSpawn;
+    public float oreDensityMultiplier = 1f;
+    public int smallOreChance = 10;
     public LootPropertyBuilder loot;
-
-    public static class OreSpawnPropertyBuilder {
-
-        public int baseOreChance;
-        public boolean obeyHeighLimits;
-        public boolean oresOnlyInsideAsteroids;
-        public int primaryToRareOreOffset;
-        public int smallOreChance;
-
-        public OreSpawnPropertyBuilder baseOreChance(int baseOreChance) {
-            this.baseOreChance = baseOreChance;
-            return this;
-        }
-
-        public OreSpawnPropertyBuilder doesObeyingHeightLimits(boolean obeyHeighLimits) {
-            this.obeyHeighLimits = obeyHeighLimits;
-            return this;
-        }
-
-        public OreSpawnPropertyBuilder AreOresOnlyInsideAsteroids(boolean oresOnlyInsideAsteroids) {
-            this.oresOnlyInsideAsteroids = oresOnlyInsideAsteroids;
-            return this;
-        }
-
-        public OreSpawnPropertyBuilder primaryToRareOreOffset(int primaryToRareOreOffset) {
-            this.primaryToRareOreOffset = primaryToRareOreOffset;
-            return this;
-        }
-
-        public OreSpawnPropertyBuilder smallOreChance(int smallOreChance) {
-            this.smallOreChance = smallOreChance;
-            return this;
-        }
-
-    }
+    public int positiveEllipsoids = 2, negativeEllipsoids = 2;
+    public int asteroidMinY = 50, asteroidMaxY = 100;
 
     public static class LootPropertyBuilder {
 
@@ -73,8 +42,12 @@ public class AsteroidPropertyBuilder {
     }
 
     public AsteroidPropertyBuilder() {
-        oreSpawn = new OreSpawnPropertyBuilder();
         loot = new LootPropertyBuilder();
+    }
+
+    public AsteroidPropertyBuilder enabled(boolean enabled) {
+        this.enabled = enabled;
+        return this;
     }
 
     public AsteroidPropertyBuilder probability(int probability) {
@@ -93,8 +66,29 @@ public class AsteroidPropertyBuilder {
         return this;
     }
 
-    public AsteroidPropertyBuilder oreSpawn(OreSpawnPropertyBuilder oreSpawnPropertyBuilder) {
-        this.oreSpawn = oreSpawnPropertyBuilder;
+    public AsteroidPropertyBuilder oreDensityMultiplier(float mult) {
+        this.oreDensityMultiplier = mult;
+        return this;
+    }
+
+    public AsteroidPropertyBuilder smallOreChance(int smallOreChance) {
+        this.smallOreChance = smallOreChance;
+        return this;
+    }
+
+    public AsteroidPropertyBuilder positiveEllipsoids(int positiveEllipsoids) {
+        this.positiveEllipsoids = positiveEllipsoids;
+        return this;
+    }
+
+    public AsteroidPropertyBuilder negativeEllipsoids(int negativeEllipsoids) {
+        this.negativeEllipsoids = negativeEllipsoids;
+        return this;
+    }
+
+    public AsteroidPropertyBuilder asteroidYBounds(int minY, int maxY) {
+        this.asteroidMinY = minY;
+        this.asteroidMaxY = maxY;
         return this;
     }
 

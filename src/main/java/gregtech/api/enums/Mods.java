@@ -4,9 +4,11 @@ import java.util.Locale;
 
 import net.minecraft.util.ResourceLocation;
 
+import com.gtnewhorizon.gtnhlib.util.data.IMod;
+
 import cpw.mods.fml.common.Loader;
 
-public enum Mods {
+public enum Mods implements IMod {
 
     AE2FluidCraft(Names.A_E2_FLUID_CRAFT),
     AE2Stuff(Names.AE2STUFF),
@@ -111,7 +113,13 @@ public enum Mods {
     MalisisDoors(Names.MALISIS_DOORS),
     Mantle(Names.MANTLE),
     MineAndBladeBattleGear2(Names.MINE_AND_BLADE_BATTLE_GEAR2),
-    Minecraft(Names.MINECRAFT),
+    Minecraft(Names.MINECRAFT) {
+
+        @Override
+        public boolean isModLoaded() {
+            return true;
+        }
+    },
     MineTweaker(Names.MINE_TWEAKER),
     MobsInfo(Names.MOBS_INFO),
     NEICustomDiagrams(Names.N_E_I_CUSTOM_DIAGRAMS),
@@ -384,9 +392,19 @@ public enum Mods {
         return this.modLoaded;
     }
 
+    @Override
+    public String getID() {
+        return ID;
+    }
+
     public String getResourcePath(String... path) {
         return this.getResourceLocation(path)
             .toString();
+    }
+
+    @Override
+    public String getResourceLocation() {
+        return resourceDomain;
     }
 
     public ResourceLocation getResourceLocation(String... path) {

@@ -354,7 +354,6 @@ public class GTPreLoad {
         GTValues.debugBlockPump = Gregtech.debug.debugBlockPump;
         GTValues.debugEntityCramming = Gregtech.debug.debugEntityCramming;
         GTValues.debugWorldData = Gregtech.debug.debugWorldData;
-        GTValues.oreveinPercentage = Gregtech.general.oreveinPercentage;
         GTValues.oreveinAttempts = Gregtech.general.oreveinAttempts;
         GTValues.oreveinMaxPlacementAttempts = Gregtech.general.oreveinMaxPlacementAttempts;
         GTValues.oreveinPlacerOres = Gregtech.general.oreveinPlacerOres;

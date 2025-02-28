@@ -24,7 +24,6 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.client.renderer.CustomItemBlockRenderer;
-import gtPlusPlus.core.client.renderer.CustomOreBlockRenderer;
 import gtPlusPlus.core.client.renderer.RenderDecayChest;
 import gtPlusPlus.core.client.renderer.RenderMiningExplosivesPrimed;
 import gtPlusPlus.core.client.renderer.RenderSickBlaze;
@@ -54,7 +53,6 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void init(final FMLInitializationEvent e) {
-        new CustomOreBlockRenderer();
         new CustomItemBlockRenderer();
         new MachineBlockRenderer();
         new FlaskRenderer();
