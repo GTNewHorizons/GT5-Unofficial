@@ -20,7 +20,7 @@ public class GTShapelessRecipe extends ShapelessOreRecipe implements IGTCrafting
     private final Enchantment[] mEnchantmentsAdded;
     private final int[] mEnchantmentLevelsAdded;
 
-    public GTShapelessRecipe(ItemStack aResult, boolean aRemovableByGT, boolean aKeepingNBT, boolean overwriteNBT,
+    public GTShapelessRecipe(ItemStack aResult, boolean aDismantleable, boolean aRemovableByGT, boolean aKeepingNBT, boolean overwriteNBT,
         Enchantment[] aEnchantmentsAdded, int[] aEnchantmentLevelsAdded, Object... aRecipe) {
         super(aResult, aRecipe);
         mEnchantmentsAdded = aEnchantmentsAdded;
