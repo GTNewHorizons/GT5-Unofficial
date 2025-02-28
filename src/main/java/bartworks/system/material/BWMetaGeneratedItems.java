@@ -35,6 +35,7 @@ import bartworks.API.SideReference;
 import bartworks.client.textures.PrefixTextureLinker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
@@ -250,7 +251,13 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
 
     @Override
     public ItemStack getContainerItem(ItemStack aStack) {
-        return this.orePrefixes == OrePrefixes.cell || this.orePrefixes == OrePrefixes.cellPlasma
-            || this.orePrefixes == OrePrefixes.cellMolten ? Materials.Empty.getCells(1) : null;
+        if (this.orePrefixes == OrePrefixes.cell || this.orePrefixes == OrePrefixes.cellPlasma
+            || this.orePrefixes == OrePrefixes.cellMolten) {
+            return Materials.Empty.getCells(1);
+        }
+
+        if (this.orePrefixes == OrePrefixes.capsule) return ItemList.FR_WaxCapsule.get(1);
+        if (this.orePrefixes == OrePrefixes.capsuleMolten) return ItemList.FR_RefractoryCapsule.get(1);
+        return null;
     }
 }
