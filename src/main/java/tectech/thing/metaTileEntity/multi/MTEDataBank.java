@@ -7,6 +7,7 @@ import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti;
@@ -14,10 +15,10 @@ import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElem
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -39,12 +40,12 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.WirelessComputationPacket;
-import tectech.mechanics.dataTransport.InventoryDataPacket;
-import tectech.recipe.TTRecipeAdder;
+import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataItemsInput;
@@ -58,7 +59,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     // region variables
     private final ArrayList<MTEHatchDataItemsOutput> eStacksDataOutputs = new ArrayList<>();
     private final ArrayList<MTEHatchWirelessDataItemsOutput> eWirelessStacksDataOutputs = new ArrayList<>();
-    private final ArrayList<IInventory> eDataAccessHatches = new ArrayList<>();
+    private final ArrayList<MTEHatchDataAccess> eDataAccessHatches = new ArrayList<>();
     private boolean slave = false;
     private boolean wirelessModeEnabled = false;
     // endregion
@@ -178,31 +179,30 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     @Override
     public void outputAfterRecipe_EM() {
-        ArrayList<ItemStack> stacks = new ArrayList<>();
-        for (IInventory dataAccess : eDataAccessHatches) {
-            int count = dataAccess.getSizeInventory();
-            for (int i = 0; i < count; i++) {
-                ItemStack stack = dataAccess.getStackInSlot(i);
-                if (stack != null) {
-                    stacks.add(stack);
-                }
-            }
+        HashSet<RecipeAssemblyLine> availableRecipes = new HashSet<>();
+
+        for (MTEHatchDataAccess dataAccess : validMTEList(eDataAccessHatches)) {
+            availableRecipes.addAll(dataAccess.getAssemblyLineRecipes());
         }
-        if (!stacks.isEmpty()) {
-            ItemStack[] arr = stacks.toArray(TTRecipeAdder.nullItem);
-            for (MTEHatchDataItemsOutput hatch : eStacksDataOutputs) {
-                hatch.q = new InventoryDataPacket(arr);
+
+        if (!availableRecipes.isEmpty()) {
+            RecipeAssemblyLine[] recipeArray = availableRecipes.toArray(new RecipeAssemblyLine[0]);
+
+            for (MTEHatchDataItemsOutput hatch : validMTEList(eStacksDataOutputs)) {
+                hatch.q = new ALRecipeDataPacket(recipeArray);
             }
+
             if (wirelessModeEnabled) {
-                for (MTEHatchWirelessDataItemsOutput hatch : eWirelessStacksDataOutputs) {
-                    hatch.dataPacket = new InventoryDataPacket(arr);
+                for (MTEHatchWirelessDataItemsOutput hatch : validMTEList(eWirelessStacksDataOutputs)) {
+                    hatch.dataPacket = new ALRecipeDataPacket(recipeArray);
                 }
             }
         } else {
-            for (MTEHatchDataItemsOutput hatch : eStacksDataOutputs) {
+            for (MTEHatchDataItemsOutput hatch : validMTEList(eStacksDataOutputs)) {
                 hatch.q = null;
             }
-            for (MTEHatchWirelessDataItemsOutput hatch : eWirelessStacksDataOutputs) {
+
+            for (MTEHatchWirelessDataItemsOutput hatch : validMTEList(eWirelessStacksDataOutputs)) {
                 hatch.dataPacket = null;
             }
         }
@@ -227,26 +227,34 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         if (aTileEntity == null) {
             return false;
         }
+
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) {
             return false;
         }
+
         if (aMetaTileEntity instanceof MTEHatchWirelessDataItemsOutput) {
             ((MTEHatchWirelessDataItemsOutput) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eWirelessStacksDataOutputs.add((MTEHatchWirelessDataItemsOutput) aMetaTileEntity);
         }
+
         if (aMetaTileEntity instanceof MTEHatchDataItemsOutput) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eStacksDataOutputs.add((MTEHatchDataItemsOutput) aMetaTileEntity);
-        } else
-            if (aMetaTileEntity instanceof MTEHatchDataAccess && !(aMetaTileEntity instanceof MTEHatchDataItemsInput)) {
-                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return eDataAccessHatches.add(aMetaTileEntity);
-            } else if (aMetaTileEntity instanceof MTEHatchDataItemsInput) {
-                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                slave = true;
-                return eDataAccessHatches.add(aMetaTileEntity);
-            }
+        }
+
+        if (aMetaTileEntity instanceof MTEHatchDataAccess hatch
+            && !(aMetaTileEntity instanceof MTEHatchDataItemsInput)) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return eDataAccessHatches.add(hatch);
+        }
+
+        if (aMetaTileEntity instanceof MTEHatchDataItemsInput hatch) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            slave = true;
+            return eDataAccessHatches.add(hatch);
+        }
+
         return false;
     }
 
