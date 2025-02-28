@@ -88,7 +88,10 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addCasingInfoMin("High Voltage Current Capacitor", 20, false)
             .addCasingInfoMin("Resonance Chamber III", 24, false)
             .addCasingInfoMin("Modulator III", 16, false)
-            .addOtherStructurePart("Data Orb Repository", "1x", 1)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GTPP.tooltip.structure.data_orb_repository"),
+                "1x",
+                1)
             .addInputHatch("Any 1 dot hint", 1)
             .addOutputBus("Any 1 dot hint", 1)
             .addOutputHatch("Any 1 dot hint", 1)
