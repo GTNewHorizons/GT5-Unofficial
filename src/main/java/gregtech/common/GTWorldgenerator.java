@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 
 import cpw.mods.fml.common.IWorldGenerator;
@@ -32,12 +33,11 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.events.GTEventBus;
+import gregtech.api.events.VeinGenerateEvent;
 import gregtech.api.net.GTPacketSendOregenPattern;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
-import gregtech.common.worldgen.VeinGenerateEvent;
 import gregtech.common.worldgen.WorldgenQuery;
 
 public class GTWorldgenerator implements IWorldGenerator {
@@ -311,8 +311,15 @@ public class GTWorldgenerator implements IWorldGenerator {
                     this.mChunkGenerator,
                     this.mChunkProvider);
 
-                VeinGenerateEvent event = new VeinGenerateEvent(mWorld, mX, mZ, oreseedX, oreseedZ, tWorldGen, placementResult);
-                GTEventBus.bus().post(event);
+                VeinGenerateEvent event = new VeinGenerateEvent(
+                    mWorld,
+                    mX,
+                    mZ,
+                    oreseedX,
+                    oreseedZ,
+                    tWorldGen,
+                    placementResult);
+                MinecraftForge.EVENT_BUS.post(event);
 
                 switch (placementResult) {
                     case WorldgenGTOreLayer.NO_ORE_IN_BOTTOM_LAYER -> {
@@ -369,8 +376,15 @@ public class GTWorldgenerator implements IWorldGenerator {
                             this.mChunkGenerator,
                             this.mChunkProvider);
 
-                        VeinGenerateEvent event = new VeinGenerateEvent(mWorld, mX, mZ, oreseedX, oreseedZ, oreLayer, placementResult);
-                        GTEventBus.bus().post(event);
+                        VeinGenerateEvent event = new VeinGenerateEvent(
+                            mWorld,
+                            mX,
+                            mZ,
+                            oreseedX,
+                            oreseedZ,
+                            oreLayer,
+                            placementResult);
+                        MinecraftForge.EVENT_BUS.post(event);
                     } catch (Throwable e) {
                         if (debugOrevein) GTLog.out.println(
                             "Exception occurred on oreVein" + oreLayer

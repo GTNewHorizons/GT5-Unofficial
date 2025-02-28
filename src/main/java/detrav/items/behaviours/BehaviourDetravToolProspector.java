@@ -22,6 +22,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.sinthoras.visualprospecting.VisualProspecting_API;
+
 import detrav.DetravScannerMod;
 import detrav.items.DetravMetaGeneratedTool01;
 import gregtech.api.items.MetaBaseItem;
@@ -311,7 +312,8 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                             ItemStack oreStack = new ItemStack(tBlock, 1, tMetaID);
 
                             itemData = GTOreDictUnificator.getAssociation(oreStack);
-                            if (itemData != null && itemData.mPrefix.toString().startsWith("ore")) {
+                            if (itemData != null && itemData.mPrefix.toString()
+                                .startsWith("ore")) {
                                 addOreToHashMap(oreStack.getDisplayName(), aPlayer);
                             }
                         }

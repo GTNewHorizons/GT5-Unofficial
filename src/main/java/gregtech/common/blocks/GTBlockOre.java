@@ -19,6 +19,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -32,7 +33,7 @@ import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.events.GTEventBus;
+import gregtech.api.events.OreInteractEvent;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GTGenericBlock;
@@ -42,7 +43,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.ores.OreInfo;
-import gregtech.common.ores.OreInteractEvent;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.nei.NEIGTConfig;
 
@@ -357,7 +357,8 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
             }
         }
 
-        GTEventBus.bus().post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
+        MinecraftForge.EVENT_BUS
+            .post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
 
         return false;
     }

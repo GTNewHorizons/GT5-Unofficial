@@ -1,4 +1,4 @@
-package gregtech.common.worldgen;
+package gregtech.api.events;
 
 import net.minecraft.world.World;
 
@@ -12,8 +12,8 @@ public class VeinGenerateEvent extends Event {
     public final WorldgenGTOreLayer layer;
     public final int result;
 
-    public VeinGenerateEvent(World world, int chunkX, int chunkZ, int oreSeedX, int oreSeedZ,
-        WorldgenGTOreLayer layer, int result) {
+    public VeinGenerateEvent(World world, int chunkX, int chunkZ, int oreSeedX, int oreSeedZ, WorldgenGTOreLayer layer,
+        int result) {
         this.world = world;
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;

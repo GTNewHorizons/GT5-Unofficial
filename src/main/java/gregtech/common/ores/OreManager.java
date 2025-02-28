@@ -42,11 +42,11 @@ public final class OreManager {
         return false;
     }
 
-    public static OreInfo<?> getOreInfo(IBlockAccess world, int x, int y, int z) {
+    public static OreInfo<IOreMaterial> getOreInfo(IBlockAccess world, int x, int y, int z) {
         return getOreInfo(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
     }
 
-    public static OreInfo<?> getOreInfo(Block block, int meta) {
+    public static OreInfo<IOreMaterial> getOreInfo(Block block, int meta) {
         int size = ORE_ADAPTERS.size();
 
         for (int i = 0; i < size; i++) {
@@ -62,7 +62,7 @@ public final class OreManager {
         return null;
     }
 
-    public static OreInfo<?> getOreInfo(ItemStack stack) {
+    public static OreInfo<IOreMaterial> getOreInfo(ItemStack stack) {
         if (!(stack.getItem() instanceof ItemBlock itemBlock)) return null;
 
         return getOreInfo(itemBlock.field_150939_a, Items.feather.getDamage(stack));

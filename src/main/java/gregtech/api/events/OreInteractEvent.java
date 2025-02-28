@@ -1,4 +1,4 @@
-package gregtech.common.ores;
+package gregtech.api.events;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
