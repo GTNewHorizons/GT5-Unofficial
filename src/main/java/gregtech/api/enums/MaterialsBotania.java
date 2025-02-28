@@ -16,7 +16,7 @@ public class MaterialsBotania {
     // Botania materials.
     public static Materials Manasteel = new MaterialBuilder(201, TextureSet.SET_METALLIC, "Manasteel")
         .setName("Manasteel")
-        .setRGBA(0, 185, 255, 255)
+        .setRGBA(0, 200, 255, 255)
         .addDustItems()
         .addMetalItems()
         .addToolHeadItems()
