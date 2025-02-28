@@ -7,7 +7,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.blocks.myFluids.FluidsBuilder;
 import goodgenerator.blocks.regularBlock.AntimatterRenderBlock;
@@ -43,7 +42,6 @@ import goodgenerator.blocks.tileEntity.MTESupercriticalFluidTurbine;
 import goodgenerator.blocks.tileEntity.MTEUniversalChemicalFuelEngine;
 import goodgenerator.blocks.tileEntity.MTEYottaFluidTank;
 import goodgenerator.blocks.tileEntity.render.TileAntimatter;
-import goodgenerator.client.render.BlockRenderHandler;
 import goodgenerator.crossmod.ic2.CropsLoader;
 import goodgenerator.crossmod.nei.NEIConfig;
 import goodgenerator.crossmod.thaumcraft.LargeEssentiaEnergyData;
@@ -555,11 +553,6 @@ public class Loaders {
     }
 
     public static void initLoad() {
-        if (FMLCommonHandler.instance()
-            .getSide()
-            .isClient()) {
-            new BlockRenderHandler();
-        }
         GTMetaTileRegister();
         initLoadRecipes();
         CropsLoader.registerCrops();
