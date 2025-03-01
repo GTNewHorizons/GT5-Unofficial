@@ -18,7 +18,6 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.Cover;
-import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.covers.CoverDefault;
 import gregtech.common.covers.CoverNone;
 import gregtech.common.covers.SimpleCoverPlacer;
@@ -32,13 +31,12 @@ public class CoverRegistry {
     /**
      * The List of Cover Behaviors for the Covers
      */
-    private static final Map<GTItemStack, CoverBehaviorBase<?>> coverBehaviors = new ConcurrentHashMap<>();
-    private static final Map<GTItemStack, CoverRegistration<?>> coverFactories = new ConcurrentHashMap<>();
-    private static final CoverRegistration<ISerializableObject.LegacyCoverData> coverNone = new CoverRegistration<>(
+    private static final Map<GTItemStack, CoverRegistration> coverFactories = new ConcurrentHashMap<>();
+    private static final CoverRegistration coverNone = new CoverRegistration(
         0,
         CoverNone::new,
         new SimpleCoverPlacer());
-    public static final Cover NO_COVER = CoverRegistry.coverNone.buildCover(ForgeDirection.UNKNOWN, null);
+    public static final Cover NO_COVER = coverNone.buildCover(ForgeDirection.UNKNOWN, null);
     private static final CoverPlacer DEFAULT_COVER_PLACER = new CoverPlacerBase();
     public static final CoverPlacer SIMPLE_COVER_PLACER = new SimpleCoverPlacer();
 
@@ -48,15 +46,15 @@ public class CoverRegistry {
 
     static {
         GregTechAPI.sItemStackMappings.add(coverTextures);
-        GregTechAPI.sItemStackMappings.add(coverBehaviors);
+        GregTechAPI.sItemStackMappings.add(coverFactories);
     }
 
     public static void registerSimpleCover(@NotNull ItemStack stack, ITexture cover) {
-        CoverRegistry.registerCover(stack, cover, CoverDefault::new, SIMPLE_COVER_PLACER);
+        registerCover(stack, cover, CoverDefault::new, SIMPLE_COVER_PLACER);
     }
 
     public static void registerCover(@NotNull ItemStack stack, ITexture cover, @NotNull CoverFactory constructor) {
-        CoverRegistry.registerCover(stack, cover, constructor, DEFAULT_COVER_PLACER);
+        registerCover(stack, cover, constructor, DEFAULT_COVER_PLACER);
     }
 
     public static <T extends ISerializableObject> void registerCover(@NotNull ItemStack stack, ITexture cover,
@@ -65,13 +63,13 @@ public class CoverRegistry {
             new GTItemStack(stack),
             cover == null || !cover.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0] : cover);
         coverFactories
-            .put(new GTItemStack(stack), new CoverRegistration<T>(GTUtility.stackToInt(stack), constructor, factory));
+            .put(new GTItemStack(stack), new CoverRegistration(GTUtility.stackToInt(stack), constructor, factory));
     }
 
     @NotNull
-    public static CoverRegistration<?> getRegistration(ItemStack stack) {
+    public static CoverRegistration getRegistration(ItemStack stack) {
         if (stack == null || stack.getItem() == null) return coverNone;
-        CoverRegistration<?> factory = coverFactories.get(new GTItemStack(stack));
+        CoverRegistration factory = coverFactories.get(new GTItemStack(stack));
         if (factory == null) {
             factory = coverFactories.get(new GTItemStack(stack, true));
         }
@@ -79,7 +77,7 @@ public class CoverRegistry {
     }
 
     @NotNull
-    public static CoverRegistration<?> getRegistration(int coverId) {
+    public static CoverRegistration getRegistration(int coverId) {
         return getRegistration(GTUtility.intToStack(coverId));
     }
 
@@ -109,9 +107,9 @@ public class CoverRegistry {
         return colorOverride.getTextColorOrDefault(textType, defaultColor);
     }
 
-    public static CoverRegistration<?> getRegistrationFromNbt(NBTTagCompound nbt) {
+    public static CoverRegistration getRegistrationFromNbt(NBTTagCompound nbt) {
         int coverID = nbt.getInteger(NBT_ID);
-        return CoverRegistry.getRegistration(coverID);
+        return getRegistration(coverID);
     }
 
     public static void writeCoverToNbt(Cover cover, NBTTagCompound nbt) {

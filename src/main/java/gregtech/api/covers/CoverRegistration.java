@@ -12,7 +12,7 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.Cover;
 
-public class CoverRegistration<T extends ISerializableObject> {
+public class CoverRegistration {
 
     private final int coverId;
     private final CoverFactory factory;
