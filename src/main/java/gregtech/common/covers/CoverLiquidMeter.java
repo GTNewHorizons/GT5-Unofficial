@@ -42,7 +42,7 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
 
     @Override
     protected LiquidMeterData createDataObject() {
-        return null;
+        return new LiquidMeterData();
     }
 
     public static byte computeSignalBasedOnFluid(ICoverable tileEntity, boolean inverted, int threshold) {
