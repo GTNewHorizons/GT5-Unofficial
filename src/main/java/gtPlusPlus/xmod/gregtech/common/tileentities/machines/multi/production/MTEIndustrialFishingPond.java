@@ -11,13 +11,11 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -40,16 +38,13 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.FishPondFakeRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ReflectionUtil;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
@@ -60,14 +55,9 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
     public static final int FISH_MODE = 14;
     public static final int JUNK_MODE = 15;
     public static final int TREASURE_MODE = 16;
-    private static final Item CONTROL_CIRCUIT = GTUtility.getIntegratedCircuit(0)
-        .getItem();
-    private static IStructureDefinition<MTEIndustrialFishingPond> STRUCTURE_DEFINITION;
 
-    private boolean isUsingControllerCircuit = false;
+    private static IStructureDefinition<MTEIndustrialFishingPond> STRUCTURE_DEFINITION;
     private int mCasing;
-    private int mMode = FISH_MODE;
-    private int mMax = 8;
 
     private static final Class<?> cofhWater;
 
@@ -235,83 +225,6 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
         return new ProcessingLogic() {}.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
-    // @Override
-    // public @NotNull CheckRecipeResult checkProcessing() {
-    // ItemStack controllerStack = getControllerSlot();
-    // if (controllerStack != null) {
-    // if (controllerStack.getItem() == CONTROL_CIRCUIT) {
-    // this.isUsingControllerCircuit = true;
-    // this.mMode = controllerStack.getItemDamage();
-    // } else {
-    // this.isUsingControllerCircuit = false;
-    // }
-    // } else {
-    // this.isUsingControllerCircuit = false;
-    // }
-    // if (!checkForWater()) {
-    // return SimpleCheckRecipeResult.ofFailure("no_water");
-    // }
-    // ItemStack[] tItemInputs = getStoredInputs().toArray(new ItemStack[0]);
-    // FluidStack[] tFluidInputs = getStoredFluids().toArray(new FluidStack[0]);
-    //
-    // if (!isUsingControllerCircuit && tItemInputs.length == 0) {
-    // return CheckRecipeResultRegistry.NO_RECIPE;
-    // }
-    //
-    // long tEnergy = getMaxInputEnergy();
-    //
-    // setModeFromInputStacks(tItemInputs);
-    //
-    // ItemStack[] mFishOutput = generateLoot();
-    // if (mFishOutput == null) {
-    // return CheckRecipeResultRegistry.NO_RECIPE;
-    // }
-    //
-    // mFishOutput = removeNulls(mFishOutput);
-    // GTRecipe g = new GTRecipe(
-    // true,
-    // new ItemStack[] {},
-    // mFishOutput,
-    // null,
-    // new int[] {},
-    // tFluidInputs,
-    // null,
-    // 200,
-    // 16,
-    // 0);
-    // OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(g.mEUt)
-    // .setEUt(tEnergy)
-    // .setDuration(g.mDuration);
-    // ParallelHelper helper = new ParallelHelper().setRecipe(g)
-    // .setItemInputs(tItemInputs)
-    // .setFluidInputs(tFluidInputs)
-    // .setAvailableEUt(tEnergy)
-    // .setMaxParallel(getMaxParallelRecipes())
-    // .setConsumption(true)
-    // .setOutputCalculation(true)
-    // .setMachine(this)
-    // .enableBatchMode(batchMode ? 128 : 1)
-    // .setCalculator(calculator);
-    //
-    // helper.build();
-    //
-    // if (helper.getCurrentParallel() == 0) {
-    // return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
-    // }
-    //
-    // this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-    // this.mEfficiencyIncrease = 10000;
-    //
-    // lEUt = -calculator.getConsumption();
-    // mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplierDouble());
-    //
-    // mOutputItems = helper.getItemOutputs();
-    // mOutputFluids = null;
-    // updateSlots();
-    //
-    // return CheckRecipeResultRegistry.SUCCESSFUL;
-    // }
-
     @Override
     public int getMaxParallelRecipes() {
         return (2 * (GTUtility.getTier(this.getMaxInputVoltage()) + 1));
@@ -395,59 +308,5 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
         return block == Blocks.air || block == Blocks.flowing_water
             || block == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)
             || (cofhWater != null && cofhWater.isAssignableFrom(block.getClass()) && meta != 0);
-    }
-
-    private void setModeFromInputStacks(ItemStack[] stacks) {
-        if (this.isUsingControllerCircuit) return;
-        for (ItemStack stack : stacks) {
-            if (stack.getItem() == CONTROL_CIRCUIT) {
-                if (stack.getItemDamage() == FISH_MODE) {
-                    mMode = FISH_MODE;
-                    mMax = 8 + (this.getMaxParallelRecipes() - 2);
-                    return;
-                } else if (stack.getItemDamage() == JUNK_MODE) {
-                    mMode = JUNK_MODE;
-                    mMax = 4;
-                    return;
-                } else if (stack.getItemDamage() == TREASURE_MODE) {
-                    mMode = TREASURE_MODE;
-                    mMax = 4;
-                    return;
-                } else {
-                    mMode = 0;
-                    mMax = 0;
-                    return;
-                }
-            } else {
-                mMode = 0;
-                mMax = 0;
-                break;
-            }
-        }
-    }
-
-    private ItemStack[] generateLoot() {
-        if (this.mMode == FISH_MODE) {
-            return getLootFromList(FishPondFakeRecipe.fish, (65 - getMaxParallelRecipes()));
-        } else if (this.mMode == JUNK_MODE) {
-            return getLootFromList(FishPondFakeRecipe.junk, 200);
-        } else if (this.mMode == TREASURE_MODE) {
-            return getLootFromList(FishPondFakeRecipe.treasure, 100);
-        } else {
-            return null;
-        }
-    }
-
-    private ItemStack[] getLootFromList(ArrayList<ItemStack> list, int max) {
-        ItemStack[] out = new ItemStack[this.mMax];
-        for (int i = 0; i < this.mMax; i++) {
-            for (ItemStack stack : list) {
-                if (MathUtils.randInt(0, max) <= 2) {
-                    out[i] = ItemUtils.getSimpleStack(stack, 1);
-                    break;
-                }
-            }
-        }
-        return out;
     }
 }
