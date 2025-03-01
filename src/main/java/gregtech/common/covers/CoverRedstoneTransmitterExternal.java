@@ -20,6 +20,7 @@ public class CoverRedstoneTransmitterExternal extends CoverRedstoneWirelessBase 
         return aCoverVariable;
     }
 
+
     @Override
     protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID,
         ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
