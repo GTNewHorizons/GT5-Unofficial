@@ -1,7 +1,5 @@
 package gregtech.common.covers;
 
-import static gregtech.api.enums.GTValues.E;
-
 import java.lang.ref.WeakReference;
 import java.util.List;
 
@@ -66,6 +64,7 @@ public abstract class Cover {
     }
 
     private int getDefaultTickRateAddition() {
+        if (!allowsTickRateAddition()) return 0;
         return getDefaultTickRate() - this.getMinimumTickRate();
     }
 
