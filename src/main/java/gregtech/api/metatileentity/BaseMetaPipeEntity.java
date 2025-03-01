@@ -973,7 +973,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                     return true;
                 }
 
-                if (effectiveSideCover.getCoverID() == 0) {
+                if (!hasCoverAtSide(effectiveSide)) {
                     if (CoverRegistry.isCover(tCurrentItem)) {
                         if (CoverRegistry.getCoverPlacer(tCurrentItem)
                             .isCoverPlaceable(effectiveSide, tCurrentItem, this)

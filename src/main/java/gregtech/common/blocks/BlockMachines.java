@@ -171,8 +171,8 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
             default -> ForgeDirection.UNKNOWN;
         };
         final TileEntity machineEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return machineEntity instanceof BaseMetaTileEntity bmte && (bmte.getCoverAtSide(forgeSide)
-            .getCoverID() != 0 || bmte.getMetaTileEntity() instanceof MTERedstoneBase);
+        return machineEntity instanceof BaseMetaTileEntity bmte
+            && (bmte.hasCoverAtSide(forgeSide) || bmte.getMetaTileEntity() instanceof MTERedstoneBase);
     }
 
     @Override

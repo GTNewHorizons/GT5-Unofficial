@@ -25,6 +25,7 @@ import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.covers.CoverFactory;
 import gregtech.api.covers.CoverPlacer;
+import gregtech.api.covers.CoverRegistration;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUIInfos;
@@ -82,6 +83,10 @@ public abstract class Cover {
         aOut.writeInt(tickRateAddition);
     }
 
+    /**
+     * This cover id should only be used to get the {@link CoverRegistration} from the {@link CoverRegistry}, or to
+     * compare 2 covers to see if they're of the same type.
+     */
     public int getCoverID() {
         return coverID;
     }
