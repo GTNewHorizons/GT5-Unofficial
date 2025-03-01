@@ -1469,15 +1469,18 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_UHV.get(1L),
             TextureFactory.of(SOLARPANEL_UHV),
-            context -> new CoverSolarPanel(context, 2097152));
+            context -> new CoverSolarPanel(context, 2097152),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_UEV.get(1L),
             TextureFactory.of(SOLARPANEL_UEV),
-            context -> new CoverSolarPanel(context, 8388608));
+            context -> new CoverSolarPanel(context, 8388608),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_UIV.get(1L),
             TextureFactory.of(SOLARPANEL_UIV),
-            context -> new CoverSolarPanel(context, 33554432));
+            context -> new CoverSolarPanel(context, 33554432),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
     }
 
     @Override

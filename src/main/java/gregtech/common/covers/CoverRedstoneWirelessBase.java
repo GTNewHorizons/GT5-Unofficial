@@ -46,11 +46,6 @@ public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
     }
 
     @Override
-    public boolean isGUIClickable() {
-        return false;
-    }
-
-    @Override
     public ISerializableObject.LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY,
         float aZ) {
         int coverDataValue = coverData.get();

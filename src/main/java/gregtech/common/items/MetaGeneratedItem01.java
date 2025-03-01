@@ -3806,23 +3806,28 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         CoverRegistry.registerCover(
             ItemList.Robot_Arm_LV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_ARM)),
-            context -> new CoverArm(context, 400, TextureFactory.of(OVERLAY_ARM)));
+            context -> new CoverArm(context, 400, TextureFactory.of(OVERLAY_ARM)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Robot_Arm_MV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ARM)),
-            context -> new CoverArm(context, 100, TextureFactory.of(OVERLAY_ARM)));
+            context -> new CoverArm(context, 100, TextureFactory.of(OVERLAY_ARM)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Robot_Arm_HV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(OVERLAY_ARM)),
-            context -> new CoverArm(context, 20, TextureFactory.of(OVERLAY_ARM)));
+            context -> new CoverArm(context, 20, TextureFactory.of(OVERLAY_ARM)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Robot_Arm_EV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[4][0], TextureFactory.of(OVERLAY_ARM)),
-            context -> new CoverArm(context, 4, TextureFactory.of(OVERLAY_ARM)));
+            context -> new CoverArm(context, 4, TextureFactory.of(OVERLAY_ARM)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Robot_Arm_IV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_ARM)),
-            context -> new CoverArm(context, 1, TextureFactory.of(OVERLAY_ARM)));
+            context -> new CoverArm(context, 1, TextureFactory.of(OVERLAY_ARM)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
 
         CoverRegistry.registerCover(
             ItemList.Cover_Controller.get(1L),
@@ -3878,7 +3883,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         CoverRegistry.registerCover(
             ItemList.Cover_Crafting.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_CRAFTING)),
-            context -> new CoverCrafting(context, TextureFactory.of(OVERLAY_CRAFTING)));
+            context -> new CoverCrafting(context, TextureFactory.of(OVERLAY_CRAFTING)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_Drain.get(1L),
             TextureFactory.of(MACHINE_CASINGS[0][0], TextureFactory.of(OVERLAY_DRAIN)),
@@ -3891,60 +3897,74 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel.get(1L),
             TextureFactory.of(SOLARPANEL),
-            context -> new CoverSolarPanel(context, 1));
+            context -> new CoverSolarPanel(context, 1),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_8V.get(1L),
             TextureFactory.of(SOLARPANEL_8V),
-            context -> new CoverSolarPanel(context, 8));
+            context -> new CoverSolarPanel(context, 8),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_LV.get(1L),
             TextureFactory.of(SOLARPANEL_LV),
-            context -> new CoverSolarPanel(context, 32));
+            context -> new CoverSolarPanel(context, 32),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_MV.get(1L),
             TextureFactory.of(SOLARPANEL_MV),
-            context -> new CoverSolarPanel(context, 128));
+            context -> new CoverSolarPanel(context, 128),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_HV.get(1L),
             TextureFactory.of(SOLARPANEL_HV),
-            context -> new CoverSolarPanel(context, 512));
+            context -> new CoverSolarPanel(context, 512),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_EV.get(1L),
             TextureFactory.of(SOLARPANEL_EV),
-            context -> new CoverSolarPanel(context, 2048));
+            context -> new CoverSolarPanel(context, 2048),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_IV.get(1L),
             TextureFactory.of(SOLARPANEL_IV),
-            context -> new CoverSolarPanel(context, 8192));
+            context -> new CoverSolarPanel(context, 8192),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_LuV.get(1L),
             TextureFactory.of(SOLARPANEL_LuV),
-            context -> new CoverSolarPanel(context, 32768));
+            context -> new CoverSolarPanel(context, 32768),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_ZPM.get(1L),
             TextureFactory.of(SOLARPANEL_ZPM),
-            context -> new CoverSolarPanel(context, 131072));
+            context -> new CoverSolarPanel(context, 131072),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_UV.get(1L),
             TextureFactory.of(SOLARPANEL_UV),
-            context -> new CoverSolarPanel(context, 524288));
+            context -> new CoverSolarPanel(context, 524288),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
 
         CoverRegistry.registerCover(
             ItemList.Cover_RedstoneTransmitterExternal.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)),
-            context -> new CoverRedstoneTransmitterExternal(context, TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)));
+            context -> new CoverRedstoneTransmitterExternal(context, TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_RedstoneTransmitterInternal.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)),
-            context -> new CoverRedstoneTransmitterInternal(context, TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)));
+            context -> new CoverRedstoneTransmitterInternal(context, TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_RedstoneReceiverExternal.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)),
-            context -> new CoverRedstoneReceiverExternal(context, TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)));
+            context -> new CoverRedstoneReceiverExternal(context, TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_RedstoneReceiverInternal.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)),
-            context -> new CoverRedstoneReceiverInternal(context, TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)));
+            context -> new CoverRedstoneReceiverInternal(context, TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
 
         CoverRegistry.registerCover(
             ItemList.Steam_Regulator_LV.get(1L),
@@ -3978,7 +3998,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 ItemList.WIRELESS_ENERGY_COVERS[i].get(1),
                 TextureFactory
                     .of(MACHINE_CASINGS[i + 1][0], Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0]),
-                context -> new CoverEnergyWireless(context, (int) GTValues.V[tier]));
+                context -> new CoverEnergyWireless(context, (int) GTValues.V[tier]),
+                CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         }
 
     }

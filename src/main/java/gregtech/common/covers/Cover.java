@@ -259,8 +259,9 @@ public abstract class Cover {
     /**
      * If it lets you rightclick the Machine normally
      */
-    public boolean isGUIClickable() {
-        return true;
+    public final boolean isGUIClickable() {
+        return CoverRegistry.getCoverPlacer(coverID)
+            .isGuiClickable();
     }
 
     public boolean hasCoverGUI() {

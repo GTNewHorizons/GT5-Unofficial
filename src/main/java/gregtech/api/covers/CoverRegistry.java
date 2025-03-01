@@ -20,6 +20,7 @@ import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverDefault;
 import gregtech.common.covers.CoverNone;
+import gregtech.common.covers.CoverPlacerInterceptsRightClick;
 import gregtech.common.covers.SimpleCoverPlacer;
 
 public class CoverRegistry {
@@ -39,6 +40,7 @@ public class CoverRegistry {
     public static final Cover NO_COVER = coverNone.buildCover(ForgeDirection.UNKNOWN, null);
     private static final CoverPlacer DEFAULT_COVER_PLACER = new CoverPlacerBase();
     public static final CoverPlacer SIMPLE_COVER_PLACER = new SimpleCoverPlacer();
+    public static final CoverPlacer INTERCEPTS_RIGHT_CLICK_COVER_PLACER = new CoverPlacerInterceptsRightClick();
 
     private static GUIColorOverride colorOverride;
     private static final String guiTexturePath = "gregtech:textures/gui/GuiCover.png";
@@ -88,6 +90,11 @@ public class CoverRegistry {
     @NotNull
     public static CoverPlacer getCoverPlacer(ItemStack stack) {
         return getRegistration(stack).getCoverPlacer();
+    }
+
+    @NotNull
+    public static CoverPlacer getCoverPlacer(int coverId) {
+        return getCoverPlacer(GTUtility.intToStack(coverId));
     }
 
     public static boolean isCover(@NotNull ItemStack stack) {

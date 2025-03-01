@@ -62,11 +62,6 @@ public class CoverEnergyWireless extends CoverBehavior {
     }
 
     @Override
-    public boolean isGUIClickable() {
-        return false;
-    }
-
-    @Override
     public boolean alwaysLookConnected() {
         return true;
     }

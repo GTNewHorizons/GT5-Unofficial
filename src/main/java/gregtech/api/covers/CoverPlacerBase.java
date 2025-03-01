@@ -19,6 +19,11 @@ public class CoverPlacerBase implements CoverPlacer {
         return false;
     }
 
+    @Override
+    public boolean isGuiClickable() {
+        return true;
+    }
+
     /**
      * sets the Cover upon placement.
      */

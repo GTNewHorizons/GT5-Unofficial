@@ -12,5 +12,10 @@ public interface CoverPlacer {
 
     boolean isSimpleCover();
 
+    /**
+     * If it lets you rightclick the Machine normally
+     */
+    boolean isGuiClickable();
+
     void placeCover(EntityPlayer player, ItemStack coverItem, ICoverable tileEntity, ForgeDirection side);
 }

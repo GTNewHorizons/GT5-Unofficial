@@ -166,11 +166,6 @@ public class CoverArm extends CoverBehavior {
         return true;
     }
 
-    @Override
-    public boolean isGUIClickable() {
-        return false;
-    }
-
     private void sendMessageToPlayer(EntityPlayer aPlayer, int var) {
         if ((var & EXPORT_MASK) != 0) GTUtility.sendChatToPlayer(
             aPlayer,

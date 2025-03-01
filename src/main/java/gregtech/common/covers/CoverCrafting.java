@@ -44,9 +44,4 @@ public class CoverCrafting extends CoverBehavior {
         }
         return true;
     }
-
-    @Override
-    public boolean isGUIClickable() {
-        return false;
-    }
 }

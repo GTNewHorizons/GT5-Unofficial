@@ -58,6 +58,7 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GTMod;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GTUIInfos;
@@ -955,9 +956,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         if (side != mMainFacing) return true;
-        return this.getBaseMetaTileEntity()
-            .getCoverAtSide(side)
-            .isGUIClickable();
+        return CoverRegistry.getCoverPlacer(coverItem)
+            .isGuiClickable();
     }
 
     @Override
