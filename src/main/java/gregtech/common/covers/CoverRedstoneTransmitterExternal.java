@@ -15,6 +15,7 @@ public class CoverRedstoneTransmitterExternal extends CoverRedstoneWirelessBase 
         GregTechAPI.sWirelessRedstone.put(coverData, aInputRedstone);
     }
 
+
     @Override
     public boolean letsRedstoneGoIn() {
         return true;
