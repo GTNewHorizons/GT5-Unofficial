@@ -64,7 +64,7 @@ public class GTPacketSendCoverData extends GTPacket {
             int coverId = data.readInt();
             Cover cover = CoverRegistry.getRegistration(coverId)
                 .buildCover(coverable, data);
-            coverable.updateCover(cover, cover.getSide());
+            coverable.updateAttachedCover(cover);
         }
     }
 

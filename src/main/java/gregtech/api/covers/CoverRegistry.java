@@ -135,11 +135,11 @@ public class CoverRegistry {
      * @param east      cover id
      */
     public static void cover(ICoverable coverable, int down, int up, int north, int south, int west, int east) {
-        coverable.attachCover(getRegistration(down).buildCover(ForgeDirection.DOWN, coverable), ForgeDirection.DOWN);
-        coverable.attachCover(getRegistration(up).buildCover(ForgeDirection.UP, coverable), ForgeDirection.UP);
-        coverable.attachCover(getRegistration(north).buildCover(ForgeDirection.NORTH, coverable), ForgeDirection.NORTH);
-        coverable.attachCover(getRegistration(south).buildCover(ForgeDirection.SOUTH, coverable), ForgeDirection.SOUTH);
-        coverable.attachCover(getRegistration(west).buildCover(ForgeDirection.WEST, coverable), ForgeDirection.WEST);
-        coverable.attachCover(getRegistration(east).buildCover(ForgeDirection.EAST, coverable), ForgeDirection.EAST);
+        coverable.attachCover(getRegistration(down).buildCover(ForgeDirection.DOWN, coverable));
+        coverable.attachCover(getRegistration(up).buildCover(ForgeDirection.UP, coverable));
+        coverable.attachCover(getRegistration(north).buildCover(ForgeDirection.NORTH, coverable));
+        coverable.attachCover(getRegistration(south).buildCover(ForgeDirection.SOUTH, coverable));
+        coverable.attachCover(getRegistration(west).buildCover(ForgeDirection.WEST, coverable));
+        coverable.attachCover(getRegistration(east).buildCover(ForgeDirection.EAST, coverable));
     }
 }

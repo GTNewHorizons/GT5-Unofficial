@@ -31,7 +31,7 @@ public class CoverPlacerBase implements CoverPlacer {
     public final void placeCover(EntityPlayer player, ItemStack coverItem, ICoverable tileEntity, ForgeDirection side) {
         Cover cover = CoverRegistry.getRegistration(coverItem)
             .buildCover(side, tileEntity, coverItem);
-        tileEntity.attachCover(cover, side);
+        tileEntity.attachCover(cover);
         cover.onPlayerAttach(player, coverItem);
     }
 }

@@ -27,9 +27,8 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
      * Called when the cover is initially attached to a machine.
      *
      * @param cover The cover
-     * @param side  Which side the cover is attached to
      */
-    void attachCover(Cover cover, ForgeDirection side);
+    void attachCover(Cover cover);
 
     boolean hasCoverAtSide(ForgeDirection side);
 
@@ -58,7 +57,6 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
      * Receiving a packet with cover data.
      *
      * @param cover
-     * @param side  cover side
      */
-    void updateCover(Cover cover, ForgeDirection side);
+    void updateAttachedCover(Cover cover);
 }

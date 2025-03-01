@@ -232,10 +232,9 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
             if (!isCoverValid()) return false;
             ForgeDirection side = getUIBuildContext().getCoverSide();
             ICoverable coverable = getUIBuildContext().getTile();
-            coverable.updateCover(
+            coverable.updateAttachedCover(
                 CoverRegistry.getRegistration(getUIBuildContext().getCoverID())
-                    .buildCover(side, coverable, data),
-                side);
+                    .buildCover(side, coverable, data));
             return true;
         }
 

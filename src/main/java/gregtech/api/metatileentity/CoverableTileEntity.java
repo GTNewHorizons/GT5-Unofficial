@@ -55,6 +55,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.GTClient;
 import gregtech.common.covers.Cover;
+import gregtech.common.covers.CoverNone;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -127,7 +128,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         for (byte i = 0; i < tList.tagCount(); i++) {
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
             final Cover cover = buildCover(tNBT);
-            this.setCoverAtSide(cover.getSide(), cover);
+            this.applyCover(cover);
             if (cover.isDataNeededOnClient()) issueCoverUpdate(ForgeDirection.getOrientation(i));
         }
     }
@@ -224,17 +225,22 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     @Override
-    public void attachCover(Cover cover, ForgeDirection side) {
+    public void attachCover(Cover cover) {
+        final ForgeDirection side = cover.getSide();
+        if (side == ForgeDirection.UNKNOWN) return;
         final Cover oldCover = getCoverAtSide(side);
         int newCoverId = cover.getCoverID();
-        if (side != ForgeDirection.UNKNOWN && oldCover.getCoverID() != newCoverId) {
-            if (newCoverId == 0 && isClientSide()) oldCover.onCoverRemoval();
-            updateCoverAtSide(cover, side);
+        if (oldCover.getCoverID() != newCoverId) {
+            if (cover instanceof CoverNone && isClientSide()) {
+                oldCover.onCoverRemoval();
+            }
+            synchronizeCover(cover);
         }
     }
 
-    private void updateCoverAtSide(Cover cover, ForgeDirection side) {
-        setCoverAtSide(side, cover);
+    private void synchronizeCover(Cover cover) {
+        final ForgeDirection side = cover.getSide();
+        applyCover(cover);
         issueCoverUpdate(side);
         issueBlockUpdate();
     }
@@ -250,7 +256,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return getCoverAtSide(side).asItemStack();
     }
 
-    public final void setCoverAtSide(ForgeDirection side, Cover cover) {
+    private void applyCover(Cover cover) {
+        final ForgeDirection side = cover.getSide();
         if (side != ForgeDirection.UNKNOWN) {
             covers[side.ordinal()] = cover;
 
@@ -280,7 +287,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final Cover cover = getCoverAtSide(side);
         if (!cover.isValid()) return null;
         cover.onCoverRemoval();
-        this.updateCoverAtSide(CoverRegistry.NO_COVER, side);
+        synchronizeCover(CoverRegistry.NO_COVER);
         updateOutputRedstoneSignal(side);
         return GTOreDictUnificator.get(true, cover.asItemStack());
     }
@@ -402,7 +409,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     @Override
-    public void updateCover(Cover cover, ForgeDirection side) {
+    public void updateAttachedCover(Cover cover) {
+        final ForgeDirection side = cover.getSide();
         if (side == ForgeDirection.UNKNOWN) return;
 
         final Cover oldCover = getCoverAtSide(side);
@@ -410,7 +418,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         if (!oldCover.isValid()) return;
         ISerializableObject coverData = cover.getCoverData();
         oldCover.preDataChanged(cover.getCoverID(), coverData);
-        setCoverAtSide(side, cover);
+        applyCover(cover);
 
         if (isClientSide()) {
             getCoverAtSide(side).onDataChanged();
