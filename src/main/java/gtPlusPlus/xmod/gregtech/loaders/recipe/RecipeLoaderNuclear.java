@@ -289,9 +289,7 @@ public class RecipeLoaderNuclear {
 
         // Sodium Fluoride
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(15),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3))
+            .itemInputs(GTUtility.getIntegratedCircuit(15), Materials.SodiumHydroxide.getDust(3))
             .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
             .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid", 500))
             .fluidOutputs(FluidUtils.getWater(1000))
@@ -300,9 +298,7 @@ public class RecipeLoaderNuclear {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(15),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3))
+            .itemInputs(GTUtility.getIntegratedCircuit(15), Materials.SodiumHydroxide.getDust(3))
             .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
             .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 1000))
             .fluidOutputs(FluidUtils.getWater(1000))

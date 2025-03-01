@@ -634,9 +634,6 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
                 OrePrefixes.circuit.get(Materials.UV),
                 SubTag.NO_UNIFICATION));
 
-        // ???? Scared to remove.
-        ItemList.Circuit_Ultimate.set(ItemList.Circuit_Ultimatecrystalcomputer.get(1L)); // maybe should be removed
-
         // Wetware circuits
         ItemList.Circuit_Neuroprocessor.set(
             addItem(

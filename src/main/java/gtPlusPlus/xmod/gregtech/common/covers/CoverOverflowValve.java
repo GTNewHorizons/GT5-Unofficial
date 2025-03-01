@@ -20,7 +20,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
-import gregtech.api.metatileentity.implementations.MTEFluid;
+import gregtech.api.metatileentity.implementations.MTEFluidPipe;
+import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverBehaviorBase;
@@ -63,7 +64,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
             if (tile instanceof MTEBasicTank fluidTank) {
                 fluidTank.setDrainableStack(doOverflowThing(fluidTank.getDrainableStack(), coverData));
                 return coverData;
-            } else if (tile instanceof MTEFluid fluidPipe && fluidPipe.isConnectedAtSide(coverSide)) {
+            } else if (tile instanceof MTEFluidPipe fluidPipe && fluidPipe.isConnectedAtSide(coverSide)) {
                 doOverflowThings(fluidPipe.mFluids, coverData);
                 return coverData;
             }

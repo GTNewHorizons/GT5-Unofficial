@@ -5,9 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.PIPE_RESTRICTOR;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -16,8 +14,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.tileentity.TileEntityHopper;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.GTMod;
@@ -36,7 +32,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.GTClient;
 import gregtech.common.covers.Cover;
 
-public class MTEItem extends MetaPipeEntity implements IMetaTileEntityItemPipe {
+public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPipe {
 
     public final float mThickNess;
     public final Materials mMaterial;
@@ -48,7 +44,7 @@ public class MTEItem extends MetaPipeEntity implements IMetaTileEntityItemPipe {
     public boolean mIsRestrictive = false;
     private int[] cacheSides;
 
-    public MTEItem(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
+    public MTEItemPipe(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
         int aInvSlotCount, int aStepSize, boolean aIsRestrictive, int aTickTime) {
         super(aID, aName, aNameRegional, aInvSlotCount, false);
         mIsRestrictive = aIsRestrictive;
@@ -59,12 +55,12 @@ public class MTEItem extends MetaPipeEntity implements IMetaTileEntityItemPipe {
         addInfo(aID);
     }
 
-    public MTEItem(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
+    public MTEItemPipe(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
         int aInvSlotCount, int aStepSize, boolean aIsRestrictive) {
         this(aID, aName, aNameRegional, aThickNess, aMaterial, aInvSlotCount, aStepSize, aIsRestrictive, 20);
     }
 
-    public MTEItem(String aName, float aThickNess, Materials aMaterial, int aInvSlotCount, int aStepSize,
+    public MTEItemPipe(String aName, float aThickNess, Materials aMaterial, int aInvSlotCount, int aStepSize,
         boolean aIsRestrictive, int aTickTime) {
         super(aName, aInvSlotCount);
         mIsRestrictive = aIsRestrictive;
@@ -81,7 +77,7 @@ public class MTEItem extends MetaPipeEntity implements IMetaTileEntityItemPipe {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEItem(mName, mThickNess, mMaterial, mInventory.length, mStepSize, mIsRestrictive, mTickTime);
+        return new MTEItemPipe(mName, mThickNess, mMaterial, mInventory.length, mStepSize, mIsRestrictive, mTickTime);
     }
 
     @Override
@@ -424,73 +420,5 @@ public class MTEItem extends MetaPipeEntity implements IMetaTileEntityItemPipe {
     public float getThickNess() {
         if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x1) != 0) return 0.0625F;
         return mThickNess;
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x2) != 0)
-            return AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
-        else return getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
-    }
-
-    private AxisAlignedBB getActualCollisionBoundingBoxFromPool(World ignoredAWorld, int aX, int aY, int aZ) {
-        final float tSpace = (1f - mThickNess) / 2;
-        float spaceDown = tSpace;
-        float spaceUp = 1f - tSpace;
-        float spaceNorth = tSpace;
-        float spaceSouth = 1f - tSpace;
-        float spaceWest = tSpace;
-        float spaceEast = 1f - tSpace;
-
-        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.DOWN)) {
-            spaceDown = spaceNorth = spaceWest = 0;
-            spaceSouth = spaceEast = 1;
-        }
-        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.UP)) {
-            spaceNorth = spaceWest = 0;
-            spaceUp = spaceSouth = spaceEast = 1;
-        }
-        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.NORTH)) {
-            spaceDown = spaceNorth = spaceWest = 0;
-            spaceUp = spaceEast = 1;
-        }
-        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.SOUTH)) {
-            spaceDown = spaceWest = 0;
-            spaceUp = spaceSouth = spaceEast = 1;
-        }
-        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.WEST)) {
-            spaceDown = spaceNorth = spaceWest = 0;
-            spaceUp = spaceSouth = 1;
-        }
-        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.EAST)) {
-            spaceDown = spaceNorth = 0;
-            spaceUp = spaceSouth = spaceEast = 1;
-        }
-
-        final byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
-        if ((tConn & ForgeDirection.DOWN.flag) != 0) spaceDown = 0f;
-        if ((tConn & ForgeDirection.UP.flag) != 0) spaceUp = 1f;
-        if ((tConn & ForgeDirection.NORTH.flag) != 0) spaceNorth = 0f;
-        if ((tConn & ForgeDirection.SOUTH.flag) != 0) spaceSouth = 1f;
-        if ((tConn & ForgeDirection.WEST.flag) != 0) spaceWest = 0f;
-        if ((tConn & ForgeDirection.EAST.flag) != 0) spaceEast = 1f;
-
-        return AxisAlignedBB.getBoundingBox(
-            aX + spaceWest,
-            aY + spaceDown,
-            aZ + spaceNorth,
-            aX + spaceEast,
-            aY + spaceUp,
-            aZ + spaceSouth);
-    }
-
-    @Override
-    public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
-        List<AxisAlignedBB> outputAABB, Entity collider) {
-        super.addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
-        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x2) != 0) {
-            final AxisAlignedBB aabb = getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
-            if (inputAABB.intersectsWith(aabb)) outputAABB.add(aabb);
-        }
     }
 }

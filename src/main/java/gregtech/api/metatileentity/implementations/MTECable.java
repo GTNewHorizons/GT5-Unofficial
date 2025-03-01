@@ -2,11 +2,6 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
-import static net.minecraftforge.common.util.ForgeDirection.EAST;
-import static net.minecraftforge.common.util.ForgeDirection.NORTH;
-import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
-import static net.minecraftforge.common.util.ForgeDirection.UP;
-import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -219,13 +213,6 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .letsEnergyIn()) return 0;
         return transferElectricity(side, voltage, amperage, (HashSet<TileEntity>) null);
-    }
-
-    @Override
-    @Deprecated
-    public long transferElectricity(ForgeDirection side, long aVoltage, long aAmperage,
-        ArrayList<TileEntity> aAlreadyPassedTileEntityList) {
-        return transferElectricity(side, aVoltage, aAmperage, new HashSet<>(aAlreadyPassedTileEntityList));
     }
 
     @Override
@@ -611,74 +598,6 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                 + GTUtility.formatNumbers(avgVoltage)
                 + EnumChatFormatting.RESET
                 + " EU/t" };
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x2) != 0)
-            return AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
-        else return getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
-    }
-
-    private AxisAlignedBB getActualCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        float tSpace = (1f - mThickNess) / 2;
-        float spaceDown = tSpace;
-        float spaceUp = 1f - tSpace;
-        float spaceNorth = tSpace;
-        float spaceSouth = 1f - tSpace;
-        float spaceWest = tSpace;
-        float spaceEast = 1f - tSpace;
-
-        if (getBaseMetaTileEntity().hasCoverAtSide(DOWN)) {
-            spaceDown = spaceNorth = spaceWest = 0;
-            spaceSouth = spaceEast = 1;
-        }
-        if (getBaseMetaTileEntity().hasCoverAtSide(UP)) {
-            spaceNorth = spaceWest = 0;
-            spaceUp = spaceSouth = spaceEast = 1;
-        }
-        if (getBaseMetaTileEntity().hasCoverAtSide(NORTH)) {
-            spaceDown = spaceNorth = spaceWest = 0;
-            spaceUp = spaceEast = 1;
-        }
-        if (getBaseMetaTileEntity().hasCoverAtSide(SOUTH)) {
-            spaceDown = spaceWest = 0;
-            spaceUp = spaceSouth = spaceEast = 1;
-        }
-        if (getBaseMetaTileEntity().hasCoverAtSide(WEST)) {
-            spaceDown = spaceNorth = spaceWest = 0;
-            spaceUp = spaceSouth = 1;
-        }
-        if (getBaseMetaTileEntity().hasCoverAtSide(EAST)) {
-            spaceDown = spaceNorth = 0;
-            spaceUp = spaceSouth = spaceEast = 1;
-        }
-
-        byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
-        if ((tConn & DOWN.flag) != 0) spaceDown = 0f;
-        if ((tConn & UP.flag) != 0) spaceUp = 1f;
-        if ((tConn & NORTH.flag) != 0) spaceNorth = 0f;
-        if ((tConn & SOUTH.flag) != 0) spaceSouth = 1f;
-        if ((tConn & WEST.flag) != 0) spaceWest = 0f;
-        if ((tConn & EAST.flag) != 0) spaceEast = 1f;
-
-        return AxisAlignedBB.getBoundingBox(
-            aX + spaceWest,
-            aY + spaceDown,
-            aZ + spaceNorth,
-            aX + spaceEast,
-            aY + spaceUp,
-            aZ + spaceSouth);
-    }
-
-    @Override
-    public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
-        List<AxisAlignedBB> outputAABB, Entity collider) {
-        super.addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
-        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x2) != 0) {
-            final AxisAlignedBB aabb = getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
-            if (inputAABB.intersectsWith(aabb)) outputAABB.add(aabb);
-        }
     }
 
     @Override

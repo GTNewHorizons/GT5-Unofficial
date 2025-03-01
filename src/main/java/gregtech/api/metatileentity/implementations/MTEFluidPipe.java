@@ -3,10 +3,10 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.GTValues.ALL_VALID_SIDES;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.enums.Mods.Translocator;
-import static gregtech.api.metatileentity.implementations.MTEFluid.Border.BOTTOM;
-import static gregtech.api.metatileentity.implementations.MTEFluid.Border.LEFT;
-import static gregtech.api.metatileentity.implementations.MTEFluid.Border.RIGHT;
-import static gregtech.api.metatileentity.implementations.MTEFluid.Border.TOP;
+import static gregtech.api.metatileentity.implementations.MTEFluidPipe.Border.BOTTOM;
+import static gregtech.api.metatileentity.implementations.MTEFluidPipe.Border.LEFT;
+import static gregtech.api.metatileentity.implementations.MTEFluidPipe.Border.RIGHT;
+import static gregtech.api.metatileentity.implementations.MTEFluidPipe.Border.TOP;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
@@ -68,7 +68,7 @@ import gregtech.common.covers.CoverFluidRegulator;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEFluid extends MetaPipeEntity {
+public class MTEFluidPipe extends MetaPipeEntity {
 
     protected static final EnumMap<ForgeDirection, EnumMap<Border, ForgeDirection>> FACE_BORDER_MAP = new EnumMap<>(
         ForgeDirection.class);
@@ -113,13 +113,13 @@ public class MTEFluid extends MetaPipeEntity {
      */
     public byte mDisableInput = 0;
 
-    public MTEFluid(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial, int aCapacity,
-        int aHeatResistance, boolean aGasProof) {
+    public MTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
+        int aCapacity, int aHeatResistance, boolean aGasProof) {
         this(aID, aName, aNameRegional, aThickNess, aMaterial, aCapacity, aHeatResistance, aGasProof, 1);
     }
 
-    public MTEFluid(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial, int aCapacity,
-        int aHeatResistance, boolean aGasProof, int aFluidTypes) {
+    public MTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
+        int aCapacity, int aHeatResistance, boolean aGasProof, int aFluidTypes) {
         super(aID, aName, aNameRegional, 0, false);
         mThickNess = aThickNess;
         mMaterial = aMaterial;
@@ -131,7 +131,7 @@ public class MTEFluid extends MetaPipeEntity {
         addInfo(aID);
     }
 
-    public MTEFluid(String aName, float aThickNess, Materials aMaterial, int aCapacity, int aHeatResistance,
+    public MTEFluidPipe(String aName, float aThickNess, Materials aMaterial, int aCapacity, int aHeatResistance,
         boolean aGasProof, int aFluidTypes) {
         super(aName, 0);
         mThickNess = aThickNess;
@@ -150,7 +150,7 @@ public class MTEFluid extends MetaPipeEntity {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEFluid(mName, mThickNess, mMaterial, mCapacity, mHeatResistance, mGasProof, mPipeAmount);
+        return new MTEFluidPipe(mName, mThickNess, mMaterial, mCapacity, mHeatResistance, mGasProof, mPipeAmount);
     }
 
     @Override
@@ -482,14 +482,14 @@ public class MTEFluid extends MetaPipeEntity {
         if (handItem == null) return;
 
         IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
-        if (!(meta instanceof MTEFluid handFluid)) return;
+        if (!(meta instanceof MTEFluidPipe handFluid)) return;
 
         // Preserve old connections and meta ID
         byte oldConnections = this.mConnections;
         short oldMetaID = (short) aBaseMetaTileEntity.getMetaTileID();
 
         // Create the new fluid pipe
-        MTEFluid newPipe = (MTEFluid) handFluid.newMetaEntity(aBaseMetaTileEntity);
+        MTEFluidPipe newPipe = (MTEFluidPipe) handFluid.newMetaEntity(aBaseMetaTileEntity);
         if (newPipe == null) return;
 
         // Preserve old connections
@@ -609,7 +609,7 @@ public class MTEFluid extends MetaPipeEntity {
         if (GTMod.gregtechproxy.gt6Pipe) {
             final int mode = MetaGeneratedTool.getToolMode(aTool);
             IGregTechTileEntity currentPipeBase = getBaseMetaTileEntity();
-            MTEFluid currentPipe = (MTEFluid) currentPipeBase.getMetaTileEntity();
+            MTEFluidPipe currentPipe = (MTEFluidPipe) currentPipeBase.getMetaTileEntity();
             final ForgeDirection tSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
             final byte tMask = (byte) (tSide.flag);
 
@@ -642,8 +642,8 @@ public class MTEFluid extends MetaPipeEntity {
                         return wasActionPerformed;
                     }
 
-                    MTEFluid nextPipe = nextPipeBase.getMetaTileEntity() instanceof MTEFluid
-                        ? (MTEFluid) nextPipeBase.getMetaTileEntity()
+                    MTEFluidPipe nextPipe = nextPipeBase.getMetaTileEntity() instanceof MTEFluidPipe
+                        ? (MTEFluidPipe) nextPipeBase.getMetaTileEntity()
                         : null;
 
                     // if next tile entity is not a pipe
@@ -957,69 +957,6 @@ public class MTEFluid extends MetaPipeEntity {
 
     public boolean isInputDisabledAtSide(ForgeDirection side) {
         return (mDisableInput & side.flag) != 0;
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x2) != 0)
-            return AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
-        else return getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
-    }
-
-    private AxisAlignedBB getActualCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        final float tSpace = (1f - mThickNess) / 2;
-        float tSide0 = tSpace;
-        float tSide1 = 1f - tSpace;
-        float tSide2 = tSpace;
-        float tSide3 = 1f - tSpace;
-        float tSide4 = tSpace;
-        float tSide5 = 1f - tSpace;
-
-        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.DOWN)) {
-            tSide0 = tSide2 = tSide4 = 0;
-            tSide3 = tSide5 = 1;
-        }
-        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.UP)) {
-            tSide2 = tSide4 = 0;
-            tSide1 = tSide3 = tSide5 = 1;
-        }
-        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.NORTH)) {
-            tSide0 = tSide2 = tSide4 = 0;
-            tSide1 = tSide5 = 1;
-        }
-        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.SOUTH)) {
-            tSide0 = tSide4 = 0;
-            tSide1 = tSide3 = tSide5 = 1;
-        }
-        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.WEST)) {
-            tSide0 = tSide2 = tSide4 = 0;
-            tSide1 = tSide3 = 1;
-        }
-        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.EAST)) {
-            tSide0 = tSide2 = 0;
-            tSide1 = tSide3 = tSide5 = 1;
-        }
-
-        final byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
-        if ((tConn & ForgeDirection.DOWN.flag) != 0) tSide0 = 0f;
-        if ((tConn & ForgeDirection.UP.flag) != 0) tSide1 = 1f;
-        if ((tConn & ForgeDirection.NORTH.flag) != 0) tSide2 = 0f;
-        if ((tConn & ForgeDirection.SOUTH.flag) != 0) tSide3 = 1f;
-        if ((tConn & ForgeDirection.WEST.flag) != 0) tSide4 = 0f;
-        if ((tConn & ForgeDirection.EAST.flag) != 0) tSide5 = 1f;
-
-        return AxisAlignedBB
-            .getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
-    }
-
-    @Override
-    public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
-        List<AxisAlignedBB> outputAABB, Entity collider) {
-        super.addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
-        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x2) != 0) {
-            final AxisAlignedBB aabb = getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
-            if (inputAABB.intersectsWith(aabb)) outputAABB.add(aabb);
-        }
     }
 
     @Override
