@@ -154,14 +154,11 @@ public class CoverWirelessDoesWorkDetector
             }
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
+        public void readFromPacket(ByteArrayDataInput aBuf) {
             super.readFromPacket(aBuf);
             mode = ActivityMode.values()[aBuf.readInt()];
             physical = aBuf.readBoolean();
-
-            return this;
         }
     }
 

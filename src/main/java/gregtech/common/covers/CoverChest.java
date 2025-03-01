@@ -192,11 +192,9 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
             items = new LimitingItemStackHandler(slots, stackSize);
         }
 
-        @NotNull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
+        public void readFromPacket(ByteArrayDataInput aBuf) {
             items.deserializeNBT(ISerializableObject.readCompoundTagFromGreggyByteBuf(aBuf));
-            return this;
         }
 
         @Override

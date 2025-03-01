@@ -307,14 +307,12 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
             threshold = tag.getLong("threshold");
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
+        public void readFromPacket(ByteArrayDataInput aBuf) {
             int typeOrdinal = aBuf.readInt();
             type = EnergyType.getEnergyType(typeOrdinal);
             inverted = aBuf.readBoolean();
             threshold = aBuf.readLong();
-            return this;
         }
     }
 

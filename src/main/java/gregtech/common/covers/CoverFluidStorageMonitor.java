@@ -69,11 +69,11 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
 
     @Override
     protected FluidStorageData createDataObject() {
-        return new CoverFluidStorageMonitor.FluidStorageData();
+        return new FluidStorageData();
     }
 
     @Override
-    public CoverFluidStorageMonitor.FluidStorageData doCoverThings(byte aInputRedstone, long aTimer) {
+    public FluidStorageData doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
             return coverData;
@@ -102,7 +102,7 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
 
     @Override
     public ITexture getSpecialCoverFGTexture() {
-        return null;
+        return getSpecialCoverTexture();
     }
 
     @Override
@@ -452,15 +452,13 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
             return tag;
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
-            final ForgeDirection coverSide = ForgeDirection.getOrientation(aBuf.readByte());
-            final int slot = aBuf.readInt();
-            final Fluid fluid = Util.getFluid(aBuf.readInt());
-            final int scale = aBuf.readInt();
-            final boolean dirty = aBuf.readBoolean();
-            return new FluidStorageData(coverSide, slot, fluid, scale, dirty);
+        public void readFromPacket(ByteArrayDataInput aBuf) {
+            this.coverSide = ForgeDirection.getOrientation(aBuf.readByte());
+            this.slot = aBuf.readInt();
+            this.fluid = Util.getFluid(aBuf.readInt());
+            this.scale = aBuf.readInt();
+            this.dirty = aBuf.readBoolean();
         }
 
         @Override

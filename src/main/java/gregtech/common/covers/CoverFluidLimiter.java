@@ -133,11 +133,9 @@ public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.Fluid
             }
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
+        public void readFromPacket(ByteArrayDataInput aBuf) {
             this.threshold = aBuf.readFloat();
-            return this;
         }
     }
 

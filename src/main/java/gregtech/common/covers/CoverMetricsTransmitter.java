@@ -179,10 +179,9 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
             aBuf.writeLong(frequency.getLeastSignificantBits());
         }
 
-        @NotNull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
-            return new MetricsTransmitterData(new UUID(aBuf.readLong(), aBuf.readLong()));
+        public void readFromPacket(ByteArrayDataInput aBuf) {
+            this.frequency = new UUID(aBuf.readLong(), aBuf.readLong());
         }
     }
 }

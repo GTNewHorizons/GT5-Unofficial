@@ -270,12 +270,10 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
             threshold = tag.getInteger("threshold");
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
+        public void readFromPacket(ByteArrayDataInput aBuf) {
             inverted = aBuf.readBoolean();
             threshold = aBuf.readInt();
-            return this;
         }
     }
 }

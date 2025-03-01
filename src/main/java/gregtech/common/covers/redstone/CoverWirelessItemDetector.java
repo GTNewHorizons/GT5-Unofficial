@@ -146,15 +146,12 @@ public class CoverWirelessItemDetector
             }
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
+        public void readFromPacket(ByteArrayDataInput aBuf) {
             super.readFromPacket(aBuf);
             threshold = aBuf.readInt();
             slot = aBuf.readInt();
             physical = aBuf.readBoolean();
-
-            return this;
         }
     }
 

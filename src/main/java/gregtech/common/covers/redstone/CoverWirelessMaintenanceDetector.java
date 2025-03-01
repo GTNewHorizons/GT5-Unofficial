@@ -185,14 +185,11 @@ public class CoverWirelessMaintenanceDetector
             }
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
+        public void readFromPacket(ByteArrayDataInput aBuf) {
             super.readFromPacket(aBuf);
             mode = MaintenanceMode.values()[aBuf.readInt()];
             physical = aBuf.readBoolean();
-
-            return this;
         }
     }
 

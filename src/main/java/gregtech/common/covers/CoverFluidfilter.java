@@ -369,11 +369,9 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
         }
 
         @Override
-        @Nonnull
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
+        public void readFromPacket(ByteArrayDataInput aBuf) {
             mFilterMode = aBuf.readByte();
             mFluidID = aBuf.readInt();
-            return this;
         }
     }
 }

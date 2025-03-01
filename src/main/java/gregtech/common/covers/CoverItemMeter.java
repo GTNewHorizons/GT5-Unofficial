@@ -355,13 +355,11 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
             threshold = tag.getInteger("threshold");
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
+        public void readFromPacket(ByteArrayDataInput aBuf) {
             inverted = aBuf.readBoolean();
             slot = aBuf.readInt();
             threshold = aBuf.readInt();
-            return this;
         }
     }
 }

@@ -112,13 +112,10 @@ public abstract class CoverAdvancedRedstoneTransmitterBase<T extends CoverAdvanc
             invert = tag.getBoolean("invert");
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
+        public void readFromPacket(ByteArrayDataInput aBuf) {
             super.readFromPacket(aBuf);
             invert = aBuf.readBoolean();
-
-            return this;
         }
     }
 

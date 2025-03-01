@@ -241,12 +241,10 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
             mFlags = tag.getByte("mFlags");
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
+        public void readFromPacket(ByteArrayDataInput aBuf) {
             mStack = ISerializableObject.readItemStackFromGreggyByteBuf(aBuf);
             mFlags = aBuf.readByte();
-            return this;
         }
     }
 

@@ -380,13 +380,11 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
         }
 
         @Override
-        @NotNull
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
+        public void readFromPacket(ByteArrayDataInput aBuf) {
             overflowPoint = aBuf.readInt();
             voidingRate = aBuf.readInt();
             canFluidInput = aBuf.readBoolean();
             canFluidOutput = aBuf.readBoolean();
-            return this;
         }
     }
 }

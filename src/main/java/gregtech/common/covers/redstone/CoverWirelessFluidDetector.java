@@ -126,14 +126,11 @@ public class CoverWirelessFluidDetector
             }
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
+        public void readFromPacket(ByteArrayDataInput aBuf) {
             super.readFromPacket(aBuf);
             threshold = aBuf.readInt();
             physical = aBuf.readBoolean();
-
-            return this;
         }
     }
 

@@ -465,10 +465,11 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
             condition = Conditional.VALUES[tag.getByte("mCondition")];
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
-            return new FluidRegulatorData(aBuf.readInt(), aBuf.readInt(), Conditional.VALUES[aBuf.readUnsignedByte()]);
+        public void readFromPacket(ByteArrayDataInput aBuf) {
+            this.tickRate = aBuf.readInt();
+            this.speed = aBuf.readInt();
+            this.condition = Conditional.VALUES[aBuf.readUnsignedByte()];
         }
 
         protected int getTickRate() {

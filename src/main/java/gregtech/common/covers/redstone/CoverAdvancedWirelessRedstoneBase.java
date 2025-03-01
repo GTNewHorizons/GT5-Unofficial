@@ -207,15 +207,12 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
             }
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
+        public void readFromPacket(ByteArrayDataInput aBuf) {
             frequency = aBuf.readInt();
             if (aBuf.readBoolean()) {
                 uuid = new UUID(aBuf.readLong(), aBuf.readLong());
             }
-
-            return this;
         }
     }
 

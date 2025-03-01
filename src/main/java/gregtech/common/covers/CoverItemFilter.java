@@ -261,12 +261,10 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
             else mFilter = null;
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
+        public void readFromPacket(ByteArrayDataInput aBuf) {
             mWhitelist = aBuf.readBoolean();
             mFilter = ISerializableObject.readItemStackFromGreggyByteBuf(aBuf);
-            return this;
         }
     }
 }

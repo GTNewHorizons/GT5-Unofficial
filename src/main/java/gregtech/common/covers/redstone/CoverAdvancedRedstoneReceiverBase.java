@@ -184,13 +184,10 @@ public abstract class CoverAdvancedRedstoneReceiverBase
             mode = GateMode.values()[tag.getByte("mode")];
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf) {
+        public void readFromPacket(ByteArrayDataInput aBuf) {
             super.readFromPacket(aBuf);
             mode = GateMode.values()[aBuf.readByte()];
-
-            return this;
         }
     }
 }
