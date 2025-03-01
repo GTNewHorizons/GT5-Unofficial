@@ -147,7 +147,7 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
     }
 
     @Override
-    public int getTickRate() {
+    public int getMinimumTickRate() {
         return 20;
     }
     // endregion

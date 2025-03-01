@@ -55,7 +55,7 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
     }
 
     @Override
-    public int getTickRate() {
+    public int getMinimumTickRate() {
         return 20;
     }
 

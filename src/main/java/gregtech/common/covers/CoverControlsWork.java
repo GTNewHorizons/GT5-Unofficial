@@ -176,7 +176,7 @@ public class CoverControlsWork extends CoverBehavior {
     }
 
     @Override
-    public int getTickRate() {
+    public int getMinimumTickRate() {
         return 1;
     }
 

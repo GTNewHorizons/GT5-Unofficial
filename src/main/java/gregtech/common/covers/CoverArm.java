@@ -239,7 +239,7 @@ public class CoverArm extends CoverBehavior {
     }
 
     @Override
-    public int getTickRate() {
+    public int getMinimumTickRate() {
         return this.mTickRate;
     }
 

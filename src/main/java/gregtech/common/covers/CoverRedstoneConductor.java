@@ -97,7 +97,7 @@ public class CoverRedstoneConductor extends CoverBehavior {
     }
 
     @Override
-    public int getTickRate() {
+    public int getMinimumTickRate() {
         return 1;
     }
 }

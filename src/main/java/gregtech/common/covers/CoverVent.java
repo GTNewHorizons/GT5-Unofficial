@@ -52,7 +52,7 @@ public class CoverVent extends CoverBehavior {
     }
 
     @Override
-    public int getTickRate() {
+    public int getMinimumTickRate() {
         return 100;
     }
 

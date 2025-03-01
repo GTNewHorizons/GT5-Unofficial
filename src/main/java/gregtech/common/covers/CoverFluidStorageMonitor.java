@@ -305,7 +305,7 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
     }
 
     @Override
-    public int getTickRate() {
+    public int getMinimumTickRate() {
         return 10;
     }
 

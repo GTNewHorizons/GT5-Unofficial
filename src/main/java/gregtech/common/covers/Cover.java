@@ -139,11 +139,9 @@ public abstract class Cover {
 
     /**
      * Gets the Tick Rate for doCoverThings of the Cover
-     * <p/>
-     * 0 = No Ticks! Yes, 0 is Default, you have to override this
      */
-    public int getTickRate() {
-        return 0;
+    public final int getTickRate() {
+        return getMinimumTickRate() + tickRateAddition;
     }
 
     public ForgeDirection getSide() {
@@ -358,8 +356,13 @@ public abstract class Cover {
         return new ClientTickRateFormatter(getTickRate());
     }
 
+    /**
+     * Gets the Tick Rate for doCoverThings of the Cover
+     * <p/>
+     * 0 = No Ticks! Yes, 0 is Default, you have to override this
+     */
     protected int getMinimumTickRate() {
-        return getTickRate();
+        return 0;
     }
 
     public int getTickRateAddition() {

@@ -131,7 +131,7 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
     }
 
     @Override
-    public int getTickRate() {
+    public int getMinimumTickRate() {
         return 1;
     }
 

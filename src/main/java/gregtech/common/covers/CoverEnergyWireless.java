@@ -67,7 +67,7 @@ public class CoverEnergyWireless extends CoverBehavior {
     }
 
     @Override
-    public int getTickRate() {
+    public int getMinimumTickRate() {
         return 20;
     }
 }

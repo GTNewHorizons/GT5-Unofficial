@@ -188,7 +188,7 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
     }
 
     @Override
-    public int getTickRate() {
+    public int getMinimumTickRate() {
         return coverData.tickRate;
     }
 

@@ -80,7 +80,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
     }
 
     @Override
-    public int getTickRate() {
+    public int getMinimumTickRate() {
         return 5;
     }
 

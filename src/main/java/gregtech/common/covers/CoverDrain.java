@@ -142,7 +142,7 @@ public class CoverDrain extends CoverBehavior {
     }
 
     @Override
-    public int getTickRate() {
+    public int getMinimumTickRate() {
         return coverData.get() < 3 ? 50 : 1;
     }
 }

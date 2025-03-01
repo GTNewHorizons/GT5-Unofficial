@@ -65,7 +65,7 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
     }
 
     @Override
-    public int getTickRate() {
+    public int getMinimumTickRate() {
         return coverData.firstTick ? 1 : 0;
     }
 

@@ -83,7 +83,7 @@ public class CoverTeslaCoil extends CoverBehavior {
     }
 
     @Override
-    public int getTickRate() {
+    public int getMinimumTickRate() {
         // It updates once every 10 ticks, so once every 0.5 second
         return 10;
     }

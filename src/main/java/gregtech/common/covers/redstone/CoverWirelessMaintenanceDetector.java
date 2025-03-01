@@ -115,7 +115,7 @@ public class CoverWirelessMaintenanceDetector
     }
 
     @Override
-    public int getTickRate() {
+    public int getMinimumTickRate() {
         return 60;
     }
 

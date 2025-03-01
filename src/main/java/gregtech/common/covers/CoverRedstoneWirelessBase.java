@@ -113,7 +113,7 @@ public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
     }
 
     @Override
-    public int getTickRate() {
+    public int getMinimumTickRate() {
         return 1;
     }
 

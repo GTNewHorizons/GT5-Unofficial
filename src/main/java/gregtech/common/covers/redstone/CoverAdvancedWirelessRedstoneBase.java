@@ -145,7 +145,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
     }
 
     @Override
-    public int getTickRate() {
+    public int getMinimumTickRate() {
         return 1;
     }
 

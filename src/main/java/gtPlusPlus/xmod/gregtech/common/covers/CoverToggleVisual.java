@@ -80,7 +80,7 @@ public class CoverToggleVisual extends CoverBehavior {
         return getConnectionState();
     }
 
-    public int getTickRate() {
+    public int getMinimumTickRate() {
         return 1;
     }
 

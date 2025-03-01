@@ -149,7 +149,7 @@ public class CoverConveyor extends CoverBehavior {
     }
 
     @Override
-    public int getTickRate() {
+    public int getMinimumTickRate() {
         return this.mTickRate;
     }
 

@@ -141,7 +141,7 @@ public class CoverEnderFluidLink extends CoverBehavior {
     }
 
     @Override
-    public int getTickRate() {
+    public int getMinimumTickRate() {
         // Runs each tick
         return 1;
     }
