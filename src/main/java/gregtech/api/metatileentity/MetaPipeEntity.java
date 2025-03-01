@@ -412,27 +412,27 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         float xEnd = 1f - space;
         final BaseMetaPipeEntity baseTE = (BaseMetaPipeEntity) getBaseMetaTileEntity();
 
-        if (baseTE.getCoverIDAtSide(ForgeDirection.DOWN) != 0) {
+        if (baseTE.hasCoverAtSide(ForgeDirection.DOWN)) {
             yStart = zStart = xStart = 0;
             zEnd = xEnd = 1;
         }
-        if (baseTE.getCoverIDAtSide(ForgeDirection.UP) != 0) {
+        if (baseTE.hasCoverAtSide(ForgeDirection.UP)) {
             zStart = xStart = 0;
             yEnd = zEnd = xEnd = 1;
         }
-        if (baseTE.getCoverIDAtSide(ForgeDirection.NORTH) != 0) {
+        if (baseTE.hasCoverAtSide(ForgeDirection.NORTH)) {
             yStart = zStart = xStart = 0;
             yEnd = xEnd = 1;
         }
-        if (baseTE.getCoverIDAtSide(ForgeDirection.SOUTH) != 0) {
+        if (baseTE.hasCoverAtSide(ForgeDirection.SOUTH)) {
             yStart = xStart = 0;
             yEnd = zEnd = xEnd = 1;
         }
-        if (baseTE.getCoverIDAtSide(ForgeDirection.WEST) != 0) {
+        if (baseTE.hasCoverAtSide(ForgeDirection.WEST)) {
             yStart = zStart = xStart = 0;
             yEnd = zEnd = 1;
         }
-        if (baseTE.getCoverIDAtSide(ForgeDirection.EAST) != 0) {
+        if (baseTE.hasCoverAtSide(ForgeDirection.EAST)) {
             yStart = zStart = 0;
             yEnd = zEnd = xEnd = 1;
         }
