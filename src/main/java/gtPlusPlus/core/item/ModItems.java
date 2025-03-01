@@ -24,6 +24,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
@@ -39,14 +40,11 @@ import gtPlusPlus.core.item.base.foil.BaseItemFoil;
 import gtPlusPlus.core.item.base.gears.BaseItemSmallGear;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngotOld;
+import gtPlusPlus.core.item.base.ore.BaseItemMilledOre;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.bauble.BatteryPackBaseBauble;
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.IonParticles;
-import gtPlusPlus.core.item.chemistry.MilledOreProcessing;
-import gtPlusPlus.core.item.chemistry.NuclearChem;
-import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.item.chemistry.StandardBaseParticles;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.item.circuit.GTPPIntegratedCircuitItem;
@@ -84,6 +82,8 @@ import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.plugin.agrichem.item.algae.ItemAgrichemBase;
+import gtPlusPlus.plugin.agrichem.item.algae.ItemAlgaeBase;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
@@ -775,13 +775,102 @@ public final class ModItems {
         itemLavaFilter = new ItemLavaFilter();
 
         // Chemistry
-        new RocketFuels();
+        Item[] formaldehydeCatalyst = ItemUtils.generateSpecialUseDusts(
+            "FormaldehydeCatalyst",
+            "Formaldehyde Catalyst",
+            "Fe16V1",
+            Utils.rgbtoHexValue(25, 5, 25));
+        GregtechItemList.FormaldehydeCatalystDust.set(formaldehydeCatalyst[0]);
+        GregtechItemList.SmallFormaldehydeCatalystDust.set(formaldehydeCatalyst[1]);
+        GregtechItemList.TinyFormaldehydeCatalystDust.set(formaldehydeCatalyst[2]);
 
-        // Nuclear Processing
-        new NuclearChem();
+        Item[] ammoniumNitrate = ItemUtils.generateSpecialUseDusts(
+            "AmmoniumNitrate",
+            "Ammonium Nitrate",
+            "N2H4O3",
+            Utils.rgbtoHexValue(150, 75, 150));
+        GregtechItemList.AmmoniumNitrateDust.set(ammoniumNitrate[0]);
+        GregtechItemList.SmallAmmoniumNitrateDust.set(ammoniumNitrate[1]);
+        GregtechItemList.TinyAmmoniumNitrateDust.set(ammoniumNitrate[2]);
 
         // Farm Animal Fun
-        new AgriculturalChem();
+        // Nitrogen, Ammonium Nitrate, Phosphates, Calcium, Copper, Carbon
+        Item[] manureByproducts = ItemUtils.generateSpecialUseDusts(
+            "ManureByproducts",
+            "Manure Byproduct",
+            "(N2H4O3)N2P2Ca3CuC8",
+            Utils.rgbtoHexValue(110, 75, 25));
+        GregtechItemList.ManureByproductsDust.set(manureByproducts[0]);
+        GregtechItemList.SmallManureByproductsDust.set(manureByproducts[1]);
+        GregtechItemList.TinyManureByproductsDust.set(manureByproducts[2]);
+
+        // Basically Guano
+        Item[] organicFertilizer = ItemUtils.generateSpecialUseDusts(
+            "OrganicFertilizer",
+            "Organic Fertilizer",
+            "Ca5(PO4)3(OH)",
+            Utils.rgbtoHexValue(240, 240, 240));
+        GregtechItemList.OrganicFertilizerDust.set(organicFertilizer[0]);
+        GregtechItemList.SmallOrganicFertilizerDust.set(organicFertilizer[1]);
+        GregtechItemList.TinyOrganicFertilizerDust.set(organicFertilizer[2]);
+
+        // Dirt Dust :)
+        Item[] dirt = ItemUtils.generateSpecialUseDusts("Dirt", "Dried Earth", Utils.rgbtoHexValue(65, 50, 15));
+        GregtechItemList.DriedEarthDust.set(dirt[0]);
+        GregtechItemList.SmallDriedEarthDust.set(dirt[1]);
+        GregtechItemList.TinyDriedEarthDust.set(dirt[2]);
+
+        GregtechItemList.Algae.set(new ItemAlgaeBase());
+
+        // TODO Remove after 2.8
+        Item bioSelector = new GTPPIntegratedCircuitItem("BioRecipeSelector", "bioscience/BioCircuit");
+        hideItemFromNEI(new ItemStack(bioSelector));
+
+        Item agrichemItem = new ItemAgrichemBase();
+        GregtechItemList.AlgaeBiomass.set(new ItemStack(agrichemItem));
+        GregtechItemList.GreenAlgaeBiomass.set(new ItemStack(agrichemItem, 1, 1))
+            .registerOre("biomassGreenAlgae");
+        GregtechItemList.BrownAlgaeBiomass.set(new ItemStack(agrichemItem, 1, 2))
+            .registerOre("biomassBrownAlgae");
+        GregtechItemList.GoldenBrownAlgaeBiomass.set(new ItemStack(agrichemItem, 1, 3))
+            .registerOre("biomassGoldenBrownAlgae");
+        GregtechItemList.RedAlgaeBiomass.set(new ItemStack(agrichemItem, 1, 4))
+            .registerOre("biomassRedAlgae");
+
+        GregtechItemList.CelluloseFiber.set(new ItemStack(agrichemItem, 1, 5))
+            .registerOre("fiberCellulose");
+        GregtechItemList.GoldenBrownCelluloseFiber.set(new ItemStack(agrichemItem, 1, 6))
+            .registerOre("fiberCellulose", "fiberGoldenBrownCellulose");
+        GregtechItemList.RedCelluloseFiber.set(new ItemStack(agrichemItem, 1, 7))
+            .registerOre("fiberCellulose", "fiberRedCellulose");
+
+        GregtechItemList.Compost.set(new ItemStack(agrichemItem, 1, 8));
+        GregtechItemList.WoodPellet.set(new ItemStack(agrichemItem, 1, 9))
+            .registerOre("pelletWood");
+        GregtechItemList.WoodBrick.set(new ItemStack(agrichemItem, 1, 10))
+            .registerOre("brickWood");
+        GregtechItemList.CellulosePulp.set(new ItemStack(agrichemItem, 1, 11))
+            .registerOre("pulpCellulose");
+        GregtechItemList.RawBioResin.set(new ItemStack(agrichemItem, 1, 12));
+
+        GregtechItemList.EmptyCatalystCarrier.set(new ItemStack(agrichemItem, 1, 13))
+            .registerOre("catalystEmpty");
+        GregtechItemList.GreenMetalCatalyst.set(new ItemStack(agrichemItem, 1, 14))
+            .registerOre("catalystAluminiumSilver");
+
+        GregtechItemList.AlginicAcid.set(new ItemStack(agrichemItem, 1, 15))
+            .registerOre("dustAlginicAcid");
+        // metadata 16 no longer used
+        GregtechItemList.AluminiumPellet.set(new ItemStack(agrichemItem, 1, 17))
+            .registerOre("pelletAluminium");
+        // metadata 18-21 no longer used
+        GregtechItemList.Pellet_Mold.set(new ItemStack(agrichemItem, 1, 22));
+        GregtechItemList.CleanAluminiumMix.set(new ItemStack(agrichemItem, 1, 23));
+
+        GregtechItemList.Pinecone.set(new ItemStack(agrichemItem, 1, 24))
+            .registerOre("pinecone");
+        GregtechItemList.CrushedPineMaterials.set(new ItemStack(agrichemItem, 1, 25))
+            .registerOre("crushedPineMaterial");
 
         // General Chemistry
         // TODO Remove after 2.8
@@ -790,88 +879,93 @@ public final class ModItems {
 
         Item genericChemItem = new ItemGenericChemBase();
 
-        GregtechItemList.RedMetalCatalyst.set(new ItemStack(genericChemItem));
-        GregtechItemList.YellowMetalCatalyst.set(new ItemStack(genericChemItem, 1, 1));
-        GregtechItemList.BlueMetalCatalyst.set(new ItemStack(genericChemItem, 1, 2));
-        GregtechItemList.OrangeMetalCatalyst.set(new ItemStack(genericChemItem, 1, 3));
-        GregtechItemList.PurpleMetalCatalyst.set(new ItemStack(genericChemItem, 1, 4));
-        GregtechItemList.BrownMetalCatalyst.set(new ItemStack(genericChemItem, 1, 5));
-        GregtechItemList.PinkMetalCatalyst.set(new ItemStack(genericChemItem, 1, 6));
+        GregtechItemList.RedMetalCatalyst.set(new ItemStack(genericChemItem))
+            .registerOre("catalystIronCopper");
+        GregtechItemList.YellowMetalCatalyst.set(new ItemStack(genericChemItem, 1, 1))
+            .registerOre("catalystTungstenNickel");
+        GregtechItemList.BlueMetalCatalyst.set(new ItemStack(genericChemItem, 1, 2))
+            .registerOre("catalystCobaltTitanium");
+        GregtechItemList.OrangeMetalCatalyst.set(new ItemStack(genericChemItem, 1, 3))
+            .registerOre("catalystVanadiumPalladium");
+        GregtechItemList.PurpleMetalCatalyst.set(new ItemStack(genericChemItem, 1, 4))
+            .registerOre("catalystIridiumRuthenium");
+        GregtechItemList.BrownMetalCatalyst.set(new ItemStack(genericChemItem, 1, 5))
+            .registerOre("catalystNickelAluminium");
+        GregtechItemList.PinkMetalCatalyst.set(new ItemStack(genericChemItem, 1, 6))
+            .registerOre("catalystPlatinumRhodium");
 
-        GregtechItemList.Milling_Ball_Alumina.set(new ItemStack(genericChemItem, 1, 7));
-        GregtechItemList.Milling_Ball_Soapstone.set(new ItemStack(genericChemItem, 1, 8));
+        GregtechItemList.Milling_Ball_Alumina.set(new ItemStack(genericChemItem, 1, 7))
+            .registerOre("millingballAlumina");
+        GregtechItemList.Milling_Ball_Soapstone.set(new ItemStack(genericChemItem, 1, 8))
+            .registerOre("millingballSoapstone");
 
-        GregtechItemList.SodiumEthoxide.set(new ItemStack(genericChemItem, 1, 9));
-        GregtechItemList.SodiumEthylXanthate.set(new ItemStack(genericChemItem, 1, 10));
-        GregtechItemList.PotassiumEthylXanthate.set(new ItemStack(genericChemItem, 1, 11));
-        GregtechItemList.PotassiumHydroxide.set(new ItemStack(genericChemItem, 1, 12));
+        GregtechItemList.SodiumEthoxide.set(new ItemStack(genericChemItem, 1, 9))
+            .registerOre("dustSodiumEthoxide");
+        GregtechItemList.SodiumEthylXanthate.set(new ItemStack(genericChemItem, 1, 10))
+            .registerOre("dustSodiumEthylXanthate");
+        GregtechItemList.PotassiumEthylXanthate.set(new ItemStack(genericChemItem, 1, 11))
+            .registerOre("dustPotassiumEthylXanthate");
+        GregtechItemList.PotassiumHydroxide.set(new ItemStack(genericChemItem, 1, 12))
+            .registerOre("dustPotassiumHydroxide");
 
-        GregtechItemList.FormaldehydeCatalyst.set(new ItemStack(genericChemItem, 1, 13));
-        GregtechItemList.SolidAcidCatalyst.set(new ItemStack(genericChemItem, 1, 14));
-        GregtechItemList.InfiniteMutationCatalyst.set(new ItemStack(genericChemItem, 1, 15));
+        GregtechItemList.FormaldehydeCatalyst.set(new ItemStack(genericChemItem, 1, 13))
+            .registerOre("catalystFormaldehyde");
+        GregtechItemList.SolidAcidCatalyst.set(new ItemStack(genericChemItem, 1, 14))
+            .registerOre("catalystSolidAcid");
+        GregtechItemList.InfiniteMutationCatalyst.set(new ItemStack(genericChemItem, 1, 15))
+            .registerOre("catalystInfiniteMutation");
 
         // QFT Catalysts
-        GregtechItemList.PlatinumGroupCatalyst.set(new ItemStack(genericChemItem, 1, 16));
-        GregtechItemList.PlasticPolymerCatalyst.set(new ItemStack(genericChemItem, 1, 17));
-        GregtechItemList.RubberPolymerCatalyst.set(new ItemStack(genericChemItem, 1, 18));
-        GregtechItemList.AdhesionPromoterCatalyst.set(new ItemStack(genericChemItem, 1, 19));
-        GregtechItemList.TitaTungstenIndiumCatalyst.set(new ItemStack(genericChemItem, 1, 20));
-        GregtechItemList.RadioactivityCatalyst.set(new ItemStack(genericChemItem, 1, 21));
-        GregtechItemList.RareEarthGroupCatalyst.set(new ItemStack(genericChemItem, 1, 22));
-        GregtechItemList.SimpleNaquadahCatalyst.set(new ItemStack(genericChemItem, 1, 23));
-        GregtechItemList.AdvancedNaquadahCatalyst.set(new ItemStack(genericChemItem, 1, 24));
-        GregtechItemList.RawIntelligenceCatalyst.set(new ItemStack(genericChemItem, 1, 25));
-        GregtechItemList.UltimatePlasticCatalyst.set(new ItemStack(genericChemItem, 1, 26));
-        GregtechItemList.BiologicalIntelligenceCatalyst.set(new ItemStack(genericChemItem, 1, 27));
-        GregtechItemList.TemporalHarmonyCatalyst.set(new ItemStack(genericChemItem, 1, 28));
-        GregtechItemList.ParticleAccelerationCatalyst.set(new ItemStack(genericChemItem, 1, 31));
-        GregtechItemList.SynchrotronCapableCatalyst.set(new ItemStack(genericChemItem, 1, 32));
-        GregtechItemList.AlgagenicGrowthPromoterCatalyst.set(new ItemStack(genericChemItem, 1, 33));
-
-        GTOreDictUnificator.registerOre("catalystIronCopper", GregtechItemList.RedMetalCatalyst.get(1));
-        GTOreDictUnificator.registerOre("catalystTungstenNickel", GregtechItemList.YellowMetalCatalyst.get(1));
-        GTOreDictUnificator.registerOre("catalystCobaltTitanium", GregtechItemList.BlueMetalCatalyst.get(1));
-        GTOreDictUnificator.registerOre("catalystVanadiumPalladium", GregtechItemList.OrangeMetalCatalyst.get(1));
-        GTOreDictUnificator.registerOre("catalystIridiumRuthenium", GregtechItemList.PurpleMetalCatalyst.get(1));
-        GTOreDictUnificator.registerOre("catalystNickelAluminium", GregtechItemList.BrownMetalCatalyst.get(1));
-        GTOreDictUnificator.registerOre("catalystPlatinumRhodium", GregtechItemList.PinkMetalCatalyst.get(1));
-
-        GTOreDictUnificator.registerOre("millingballAlumina", GregtechItemList.Milling_Ball_Alumina.get(1));
-        GTOreDictUnificator.registerOre("millingballSoapstone", GregtechItemList.Milling_Ball_Soapstone.get(1));
-
-        GTOreDictUnificator.registerOre("dustSodiumEthoxide", GregtechItemList.SodiumEthoxide.get(1));
-        GTOreDictUnificator.registerOre("dustSodiumEthylXanthate", GregtechItemList.SodiumEthylXanthate.get(1));
-        GTOreDictUnificator.registerOre("dustPotassiumEthylXanthate", GregtechItemList.PotassiumEthylXanthate.get(1));
-        GTOreDictUnificator.registerOre("dustPotassiumHydroxide", GregtechItemList.PotassiumHydroxide.get(1));
-
-        GTOreDictUnificator.registerOre("catalystFormaldehyde", GregtechItemList.FormaldehydeCatalyst.get(1));
-        GTOreDictUnificator.registerOre("catalystSolidAcid", GregtechItemList.SolidAcidCatalyst.get(1));
-        GTOreDictUnificator.registerOre("catalystInfiniteMutation", GregtechItemList.InfiniteMutationCatalyst.get(1));
-
-        GTOreDictUnificator.registerOre("catalystPlatinumGroup", GregtechItemList.PlatinumGroupCatalyst.get(1));
-        GTOreDictUnificator.registerOre("catalystPlasticPolymer", GregtechItemList.PlasticPolymerCatalyst.get(1));
-        GTOreDictUnificator.registerOre("catalystRubberPolymer", GregtechItemList.RubberPolymerCatalyst.get(1));
-        GTOreDictUnificator.registerOre("catalystAdhesionPromoter", GregtechItemList.AdhesionPromoterCatalyst.get(1));
-        GTOreDictUnificator
-            .registerOre("catalystTitaTungstenIndium", GregtechItemList.TitaTungstenIndiumCatalyst.get(1));
-        GTOreDictUnificator.registerOre("catalystRadioactivity", GregtechItemList.RadioactivityCatalyst.get(1));
-        GTOreDictUnificator.registerOre("catalystRareEarthGroup", GregtechItemList.RareEarthGroupCatalyst.get(1));
-        GTOreDictUnificator.registerOre("catalystSimpleNaquadah", GregtechItemList.SimpleNaquadahCatalyst.get(1));
-        GTOreDictUnificator.registerOre("catalystAdvancedNaquadah", GregtechItemList.AdvancedNaquadahCatalyst.get(1));
-        GTOreDictUnificator.registerOre("catalystRawIntelligence", GregtechItemList.RawIntelligenceCatalyst.get(1));
-        GTOreDictUnificator.registerOre("catalystUltimatePlastic", GregtechItemList.UltimatePlasticCatalyst.get(1));
-        GTOreDictUnificator
-            .registerOre("catalystBiologicalIntelligence", GregtechItemList.BiologicalIntelligenceCatalyst.get(1));
-        GTOreDictUnificator.registerOre("catalystTemporalHarmony", GregtechItemList.TemporalHarmonyCatalyst.get(1));
-        GTOreDictUnificator
-            .registerOre("catalystParticleAcceleration", GregtechItemList.ParticleAccelerationCatalyst.get(1));
-        GTOreDictUnificator
-            .registerOre("catalystSynchrotronCapable", GregtechItemList.SynchrotronCapableCatalyst.get(1));
-        GTOreDictUnificator
-            .registerOre("catalystAlgagenicGrowthPromoter", GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(1));
+        GregtechItemList.PlatinumGroupCatalyst.set(new ItemStack(genericChemItem, 1, 16))
+            .registerOre("catalystPlatinumGroup");
+        GregtechItemList.PlasticPolymerCatalyst.set(new ItemStack(genericChemItem, 1, 17))
+            .registerOre("catalystPlasticPolymer");
+        GregtechItemList.RubberPolymerCatalyst.set(new ItemStack(genericChemItem, 1, 18))
+            .registerOre("catalystRubberPolymer");
+        GregtechItemList.AdhesionPromoterCatalyst.set(new ItemStack(genericChemItem, 1, 19))
+            .registerOre("catalystAdhesionPromoter");
+        GregtechItemList.TitaTungstenIndiumCatalyst.set(new ItemStack(genericChemItem, 1, 20))
+            .registerOre("catalystTitaTungstenIndium");
+        GregtechItemList.RadioactivityCatalyst.set(new ItemStack(genericChemItem, 1, 21))
+            .registerOre("catalystRadioactivity");
+        GregtechItemList.RareEarthGroupCatalyst.set(new ItemStack(genericChemItem, 1, 22))
+            .registerOre("catalystRareEarthGroup");
+        GregtechItemList.SimpleNaquadahCatalyst.set(new ItemStack(genericChemItem, 1, 23))
+            .registerOre("catalystSimpleNaquadah");
+        GregtechItemList.AdvancedNaquadahCatalyst.set(new ItemStack(genericChemItem, 1, 24))
+            .registerOre("catalystAdvancedNaquadah");
+        GregtechItemList.RawIntelligenceCatalyst.set(new ItemStack(genericChemItem, 1, 25))
+            .registerOre("catalystRawIntelligence");
+        GregtechItemList.UltimatePlasticCatalyst.set(new ItemStack(genericChemItem, 1, 26))
+            .registerOre("catalystUltimatePlastic");
+        GregtechItemList.BiologicalIntelligenceCatalyst.set(new ItemStack(genericChemItem, 1, 27))
+            .registerOre("catalystBiologicalIntelligence");
+        GregtechItemList.TemporalHarmonyCatalyst.set(new ItemStack(genericChemItem, 1, 28))
+            .registerOre("catalystTemporalHarmony");
+        GregtechItemList.ParticleAccelerationCatalyst.set(new ItemStack(genericChemItem, 1, 31))
+            .registerOre("catalystParticleAcceleration");
+        GregtechItemList.SynchrotronCapableCatalyst.set(new ItemStack(genericChemItem, 1, 32))
+            .registerOre("catalystSynchrotronCapable");
+        GregtechItemList.AlgagenicGrowthPromoterCatalyst.set(new ItemStack(genericChemItem, 1, 33))
+            .registerOre("catalystAlgagenicGrowthPromoter");
 
         // Milled Ore Processing
-        new MilledOreProcessing();
+        GregtechItemList.MilledSphalerite
+            .set(BaseItemMilledOre.generate(Materials.Sphalerite, (int) TierEU.RECIPE_LuV));
+        GregtechItemList.MilledChalcopyrite
+            .set(BaseItemMilledOre.generate(Materials.Chalcopyrite, (int) TierEU.RECIPE_IV));
+        GregtechItemList.MilledNickel.set(BaseItemMilledOre.generate(Materials.Nickel, (int) TierEU.RECIPE_IV));
+        GregtechItemList.MilledPlatinum.set(BaseItemMilledOre.generate(Materials.Platinum, (int) TierEU.RECIPE_LuV));
+        GregtechItemList.MilledPentlandite
+            .set(BaseItemMilledOre.generate(Materials.Pentlandite, (int) TierEU.RECIPE_LuV));
+
+        GregtechItemList.MilledRedstone.set(BaseItemMilledOre.generate(Materials.Redstone, (int) TierEU.RECIPE_IV));
+        GregtechItemList.MilledSpessartine
+            .set(BaseItemMilledOre.generate(Materials.Spessartine, (int) TierEU.RECIPE_LuV));
+        GregtechItemList.MilledGrossular.set(BaseItemMilledOre.generate(Materials.Grossular, (int) TierEU.RECIPE_LuV));
+        GregtechItemList.MilledAlmandine.set(BaseItemMilledOre.generate(Materials.Almandine, (int) TierEU.RECIPE_LuV));
+        GregtechItemList.MilledPyrope.set(BaseItemMilledOre.generate(Materials.Pyrope, (int) TierEU.RECIPE_EV));
+        GregtechItemList.MilledMonazite.set(BaseItemMilledOre.generate(Materials.Monazite, (int) TierEU.RECIPE_ZPM));
 
         // Baubles
         if (Baubles.isModLoaded()) {
