@@ -941,6 +941,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.KevlarFiber.set(addItem(KevlarFiber.ID, "Kevlar Fiber", "For making Kevlar Plates", o));
         ItemList.WovenKevlar.set(addItem(WovenKevlar.ID, "Woven Kevlar", "For making Kevlar Plates", o));
         ItemList.Spinneret.set(addItem(Spinneret.ID, "Spinneret", "For making Kevlar Fiber", o));
+        ItemList.Tool_Sniffer.set(new ItemSniffer("Tool_Sniffer", "Redstone Sniffer", "What are these frequencies?!"));
 
         ItemList.IndustrialApiary_Upgrade_Frame
             .set(addItem(IndustrialApiary_Upgrade_Frame.ID, "Upgrade Frame", "Crafting component", o));
