@@ -16,27 +16,27 @@ public class CoverLoader implements Runnable {
     @Override
     public void run() {
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-            CoverRegistry.registerCover(new ItemStack(Blocks.carpet, 1, i), TextureFactory.of(Blocks.wool, i), null);
+            CoverRegistry.registerSimpleCover(new ItemStack(Blocks.carpet, 1, i), TextureFactory.of(Blocks.wool, i));
         }
         CoverRegistry.registerCover(
             GTModHandler.getIC2Item("reactorVent", 1L, 1),
             TextureFactory.of(VENT_NORMAL),
-            new CoverVent(1));
+            context -> new CoverVent(context, 1));
         CoverRegistry.registerCover(
             GTModHandler.getIC2Item("reactorVentCore", 1L, 1),
             TextureFactory.of(VENT_NORMAL),
-            new CoverVent(1));
+            context -> new CoverVent(context, 1));
         CoverRegistry.registerCover(
             GTModHandler.getIC2Item("reactorVentGold", 1L, 1),
             TextureFactory.of(VENT_ADVANCED),
-            new CoverVent(2));
+            context -> new CoverVent(context, 2));
         CoverRegistry.registerCover(
             GTModHandler.getIC2Item("reactorVentSpread", 1L),
             TextureFactory.of(VENT_NORMAL),
-            new CoverVent(2));
+            context -> new CoverVent(context, 2));
         CoverRegistry.registerCover(
             GTModHandler.getIC2Item("reactorVentDiamond", 1L, 1),
             TextureFactory.of(VENT_ADVANCED),
-            new CoverVent(3));
+            context -> new CoverVent(context, 3));
     }
 }

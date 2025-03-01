@@ -17,7 +17,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
-import gregtech.common.covers.CoverLens;
 
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -96,10 +95,9 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
                 final ITexture lensCoverTexture = TextureFactory
                     .of(Textures.BlockIcons.OVERLAY_LENS, aMaterial.mRGBa, false);
-                CoverRegistry.registerCover(
+                CoverRegistry.registerSimpleCover(
                     aStack,
-                    TextureFactory.of(Textures.BlockIcons.MACHINE_CASINGS[2][0], lensCoverTexture),
-                    new CoverLens(aMaterial.mColor.mIndex, lensCoverTexture));
+                    TextureFactory.of(Textures.BlockIcons.MACHINE_CASINGS[2][0], lensCoverTexture));
             }
         }
     }

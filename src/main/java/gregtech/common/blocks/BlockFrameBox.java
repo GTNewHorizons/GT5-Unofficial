@@ -199,8 +199,7 @@ public class BlockFrameBox extends BlockContainer {
             default -> ForgeDirection.UNKNOWN;
         };
         final TileEntity frameEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return frameEntity instanceof CoverableTileEntity cte && cte.getCoverInfoAtSide(forgeSide)
-            .getCoverID() != 0;
+        return frameEntity instanceof CoverableTileEntity cte && cte.hasCoverAtSide(forgeSide);
     }
 
     @Override
@@ -315,7 +314,7 @@ public class BlockFrameBox extends BlockContainer {
         if (tTileEntity instanceof BaseMetaPipeEntity baseMetaPipe && (baseMetaPipe.mConnections & 0xFFFFFFC0) != 0) {
             return true;
         }
-        return (tTileEntity instanceof ICoverable coverable) && coverable.getCoverIDAtSide(side) != 0;
+        return (tTileEntity instanceof ICoverable coverable) && coverable.hasCoverAtSide(side);
     }
 
     @Override // THIS

@@ -87,7 +87,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                     texSet.mTextures[PrefixTextureLinker.blockTexMap.getOrDefault(texSet, block.mTextureIndex)],
                     werkstoff.getRGBA(),
                     false) : TextureFactory.of(texSet.mTextures[block.mTextureIndex], werkstoff.getRGBA(), false);
-                CoverRegistry.registerCover(werkstoff.get(plate), texture, null);
+                CoverRegistry.registerSimpleCover(werkstoff.get(plate), texture);
 
                 return;
             }
@@ -136,10 +136,9 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 .eut(16)
                 .addTo(hammerRecipes);
 
-            CoverRegistry.registerCover(
+            CoverRegistry.registerSimpleCover(
                 werkstoff.get(plate),
-                TextureFactory.of(werkstoff.getTexSet().mTextures[71], werkstoff.getRGBA(), false),
-                null);
+                TextureFactory.of(werkstoff.getTexSet().mTextures[71], werkstoff.getRGBA(), false));
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot))

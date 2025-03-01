@@ -146,10 +146,9 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .eut(material.vVoltageMultiplier)
                 .addTo(benderRecipes);
 
-            CoverRegistry.registerCover(
+            CoverRegistry.registerSimpleCover(
                 material.getFoil(1),
-                TextureFactory.of(material.getTextureSet().mTextures[70], material.getRGBA(), false),
-                null);
+                TextureFactory.of(material.getTextureSet().mTextures[70], material.getRGBA(), false));
             Logger.WARNING("Bender Foil Recipe: " + material.getLocalizedName() + " - Success");
         }
 

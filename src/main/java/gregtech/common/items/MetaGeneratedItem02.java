@@ -2869,220 +2869,208 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
     }
 
     public void registerCovers() {
-        CoverRegistry.registerCover(ItemList.Plank_Oak.get(1L), TextureFactory.of(Blocks.planks, 0), null);
-        CoverRegistry.registerCover(ItemList.Plank_Spruce.get(1L), TextureFactory.of(Blocks.planks, 1), null);
-        CoverRegistry.registerCover(ItemList.Plank_Birch.get(1L), TextureFactory.of(Blocks.planks, 2), null);
-        CoverRegistry.registerCover(ItemList.Plank_Jungle.get(1L), TextureFactory.of(Blocks.planks, 3), null);
-        CoverRegistry.registerCover(ItemList.Plank_Acacia.get(1L), TextureFactory.of(Blocks.planks, 4), null);
-        CoverRegistry.registerCover(ItemList.Plank_DarkOak.get(1L), TextureFactory.of(Blocks.planks, 5), null);
-        CoverRegistry.registerCover(
+        CoverRegistry.registerSimpleCover(ItemList.Plank_Oak.get(1L), TextureFactory.of(Blocks.planks, 0));
+        CoverRegistry.registerSimpleCover(ItemList.Plank_Spruce.get(1L), TextureFactory.of(Blocks.planks, 1));
+        CoverRegistry.registerSimpleCover(ItemList.Plank_Birch.get(1L), TextureFactory.of(Blocks.planks, 2));
+        CoverRegistry.registerSimpleCover(ItemList.Plank_Jungle.get(1L), TextureFactory.of(Blocks.planks, 3));
+        CoverRegistry.registerSimpleCover(ItemList.Plank_Acacia.get(1L), TextureFactory.of(Blocks.planks, 4));
+        CoverRegistry.registerSimpleCover(ItemList.Plank_DarkOak.get(1L), TextureFactory.of(Blocks.planks, 5));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Larch.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 0, new ItemStack(Blocks.planks, 1, 0))),
-                0),
-            null);
-        CoverRegistry.registerCover(
+                0));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Teak.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 1, new ItemStack(Blocks.planks, 1, 0))),
-                1),
-            null);
-        CoverRegistry.registerCover(
+                1));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Acacia_Green.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 2, new ItemStack(Blocks.planks, 1, 0))),
-                2),
-            null);
-        CoverRegistry.registerCover(
+                2));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Lime.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 3, new ItemStack(Blocks.planks, 1, 0))),
-                3),
-            null);
-        CoverRegistry.registerCover(
+                3));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Chestnut.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 4, new ItemStack(Blocks.planks, 1, 0))),
-                4),
-            null);
-        CoverRegistry.registerCover(
+                4));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Wenge.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 5, new ItemStack(Blocks.planks, 1, 0))),
-                5),
-            null);
-        CoverRegistry.registerCover(
+                5));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Baobab.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 6, new ItemStack(Blocks.planks, 1, 0))),
-                6),
-            null);
-        CoverRegistry.registerCover(
+                6));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Sequoia.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 7, new ItemStack(Blocks.planks, 1, 0))),
-                7),
-            null);
-        CoverRegistry.registerCover(
+                7));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Kapok.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 8, new ItemStack(Blocks.planks, 1, 0))),
-                8),
-            null);
-        CoverRegistry.registerCover(
+                8));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Ebony.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 9, new ItemStack(Blocks.planks, 1, 0))),
-                9),
-            null);
-        CoverRegistry.registerCover(
+                9));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Mahagony.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 10, new ItemStack(Blocks.planks, 1, 0))),
-                10),
-            null);
-        CoverRegistry.registerCover(
+                10));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Balsa.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 11, new ItemStack(Blocks.planks, 1, 0))),
-                11),
-            null);
-        CoverRegistry.registerCover(
+                11));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Willow.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 12, new ItemStack(Blocks.planks, 1, 0))),
-                12),
-            null);
-        CoverRegistry.registerCover(
+                12));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Walnut.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 13, new ItemStack(Blocks.planks, 1, 0))),
-                13),
-            null);
-        CoverRegistry.registerCover(
+                13));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Greenheart.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 14, new ItemStack(Blocks.planks, 1, 0))),
-                14),
-            null);
-        CoverRegistry.registerCover(
+                14));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Cherry.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 15, new ItemStack(Blocks.planks, 1, 0))),
-                15),
-            null);
-        CoverRegistry.registerCover(
+                15));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Mahoe.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 16, new ItemStack(Blocks.planks, 1, 0))),
-                0),
-            null);
-        CoverRegistry.registerCover(
+                0));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Poplar.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 17, new ItemStack(Blocks.planks, 1, 0))),
-                1),
-            null);
-        CoverRegistry.registerCover(
+                1));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Palm.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 18, new ItemStack(Blocks.planks, 1, 0))),
-                2),
-            null);
-        CoverRegistry.registerCover(
+                2));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Papaya.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 19, new ItemStack(Blocks.planks, 1, 0))),
-                3),
-            null);
-        CoverRegistry.registerCover(
+                3));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Pine.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 20, new ItemStack(Blocks.planks, 1, 0))),
-                4),
-            null);
-        CoverRegistry.registerCover(
+                4));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Plum.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 21, new ItemStack(Blocks.planks, 1, 0))),
-                5),
-            null);
-        CoverRegistry.registerCover(
+                5));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Maple.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 22, new ItemStack(Blocks.planks, 1, 0))),
-                6),
-            null);
-        CoverRegistry.registerCover(
+                6));
+        CoverRegistry.registerSimpleCover(
             ItemList.Plank_Citrus.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 23, new ItemStack(Blocks.planks, 1, 0))),
-                7),
-            null);
+                7));
 
         CoverRegistry.registerCover(
             ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)),
-            new CoverAdvancedRedstoneTransmitterExternal(TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)));
+            context -> new CoverAdvancedRedstoneTransmitterExternal(
+                context,
+                TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)));
 
         CoverRegistry.registerCover(
             ItemList.Cover_AdvancedRedstoneTransmitterInternal.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)),
-            new CoverAdvancedRedstoneTransmitterInternal(TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)));
+            context -> new CoverAdvancedRedstoneTransmitterInternal(
+                context,
+                TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)));
 
         CoverRegistry.registerCover(
             ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)),
-            new CoverAdvancedRedstoneReceiverExternal(TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)));
+            context -> new CoverAdvancedRedstoneReceiverExternal(
+                context,
+                TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)));
 
         CoverRegistry.registerCover(
             ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)),
-            new CoverAdvancedRedstoneReceiverInternal(TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)));
+            context -> new CoverAdvancedRedstoneReceiverInternal(
+                context,
+                TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)));
 
         CoverRegistry.registerCover(
             ItemList.Cover_WirelessFluidDetector.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_FLUID_DETECTOR)),
-            new CoverWirelessFluidDetector(TextureFactory.of(OVERLAY_WIRELESS_FLUID_DETECTOR)));
+            context -> new CoverWirelessFluidDetector(context, TextureFactory.of(OVERLAY_WIRELESS_FLUID_DETECTOR)));
 
         CoverRegistry.registerCover(
             ItemList.Cover_WirelessItemDetector.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_ITEM_DETECTOR)),
-            new CoverWirelessItemDetector(TextureFactory.of(OVERLAY_WIRELESS_ITEM_DETECTOR)));
+            context -> new CoverWirelessItemDetector(context, TextureFactory.of(OVERLAY_WIRELESS_ITEM_DETECTOR)));
 
         CoverRegistry.registerCover(
             ItemList.Cover_WirelessActivityDetector.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_ACTIVITYDETECTOR)),
-            new CoverWirelessDoesWorkDetector(TextureFactory.of(OVERLAY_WIRELESS_ACTIVITYDETECTOR)));
+            context -> new CoverWirelessDoesWorkDetector(
+                context,
+                TextureFactory.of(OVERLAY_WIRELESS_ACTIVITYDETECTOR)));
 
         CoverRegistry.registerCover(
             ItemList.Cover_WirelessNeedsMaintainance.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_MAINTENANCE_DETECTOR)),
-            new CoverWirelessMaintenanceDetector(TextureFactory.of(OVERLAY_WIRELESS_MAINTENANCE_DETECTOR)));
+            context -> new CoverWirelessMaintenanceDetector(
+                context,
+                TextureFactory.of(OVERLAY_WIRELESS_MAINTENANCE_DETECTOR)));
     }
 
     @Override

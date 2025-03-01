@@ -28,6 +28,7 @@ import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ExplosionEvent.Detonate;
@@ -37,9 +38,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.CoverInfo;
 import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.events.MetricsCoverDataEvent;
 import gregtech.common.events.MetricsCoverHostDeconstructedEvent;
@@ -307,7 +308,10 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
                 .getTagList(GTValues.NBT.COVERS, TAG_COMPOUND);
             return IntStream.range(0, tagList.tagCount())
                 .mapToObj(tagList::getCompoundTagAt)
-                .map(nbt -> new CoverInfo(null, nbt).getCoverData())
+                .map(
+                    nbt -> CoverRegistry.getRegistrationFromNbt(nbt)
+                        .buildCover(ForgeDirection.UNKNOWN, null, nbt)
+                        .getCoverData())
                 .filter(
                     serializableObject -> serializableObject instanceof CoverMetricsTransmitter.MetricsTransmitterData)
                 .map(data -> ((CoverMetricsTransmitter.MetricsTransmitterData) data).getFrequency());

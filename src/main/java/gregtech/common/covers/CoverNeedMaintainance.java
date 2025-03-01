@@ -2,12 +2,12 @@ package gregtech.common.covers;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -15,7 +15,6 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
-import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -23,8 +22,8 @@ import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
 public class CoverNeedMaintainance extends CoverBehavior {
 
-    public CoverNeedMaintainance(ITexture coverTexture) {
-        super(coverTexture);
+    public CoverNeedMaintainance(CoverContext context, ITexture coverTexture) {
+        super(context, coverTexture);
     }
 
     public static boolean isRotor(ItemStack rotor) {
@@ -33,23 +32,25 @@ public class CoverNeedMaintainance extends CoverBehavior {
             && rotor.getItemDamage() <= 176);
     }
 
-    @Override
-    public boolean isRedstoneSensitive(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        long aTimer) {
+    public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
+    public ISerializableObject.LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return coverData;
+        }
+        int coverDataValue = coverData.get();
         boolean needsRepair = false;
-        if (aTileEntity instanceof IGregTechTileEntity tTileEntity) {
+        if (coverable instanceof IGregTechTileEntity tTileEntity) {
             final IMetaTileEntity mTileEntity = tTileEntity.getMetaTileEntity();
             if (mTileEntity instanceof MTEMultiBlockBase multi) {
                 final int ideal = multi.getIdealStatus();
                 final int real = multi.getRepairStatus();
                 final ItemStack tRotor = multi.getRealInventory()[1];
-                final int coverVar = aCoverVariable >>> 1;
+                final int coverVar = coverDataValue >>> 1;
                 if (coverVar < 5) {
                     if (ideal - real > coverVar) needsRepair = true;
                 } else if (coverVar == 5 || coverVar == 6) {
@@ -71,23 +72,28 @@ public class CoverNeedMaintainance extends CoverBehavior {
                 }
             }
         }
-        if (aCoverVariable % 2 == 0) {
+        if (coverDataValue % 2 == 0) {
             needsRepair = !needsRepair;
         }
 
-        aTileEntity.setOutputRedstoneSignal(side, (byte) (needsRepair ? 0 : 15));
-        aTileEntity.setOutputRedstoneSignal(side.getOpposite(), (byte) (needsRepair ? 0 : 15));
-        return aCoverVariable;
+        coverable.setOutputRedstoneSignal(coverSide, (byte) (needsRepair ? 0 : 15));
+        coverable.setOutputRedstoneSignal(coverSide.getOpposite(), (byte) (needsRepair ? 0 : 15));
+        return ISerializableObject.LegacyCoverData.of(coverDataValue);
     }
 
     @Override
-    public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        aCoverVariable = (aCoverVariable + (aPlayer.isSneaking() ? -1 : 1)) % 14;
-        if (aCoverVariable < 0) {
-            aCoverVariable = 13;
+    public ISerializableObject.LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY,
+        float aZ) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return coverData;
         }
-        switch (aCoverVariable) {
+        int coverDataValue = coverData.get();
+        coverDataValue = (coverDataValue + (aPlayer.isSneaking() ? -1 : 1)) % 14;
+        if (coverDataValue < 0) {
+            coverDataValue = 13;
+        }
+        switch (coverDataValue) {
             case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("056", "Emit if 1 Maintenance Needed"));
             case 1 -> GTUtility
                 .sendChatToPlayer(aPlayer, GTUtility.trans("057", "Emit if 1 Maintenance Needed(inverted)"));
@@ -114,51 +120,46 @@ public class CoverNeedMaintainance extends CoverBehavior {
                 aPlayer,
                 GTUtility.trans("069", "Emit if rotor needs maintenance high accuracy mod(inverted)"));
         }
-        return aCoverVariable;
+        return ISerializableObject.LegacyCoverData.of(coverDataValue);
     }
 
     @Override
-    public boolean letsEnergyIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyIn() {
         return true;
     }
 
     @Override
-    public boolean letsEnergyOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyOut() {
         return true;
     }
 
     @Override
-    public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidIn(Fluid aFluid) {
         return true;
     }
 
     @Override
-    public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidOut(Fluid aFluid) {
         return true;
     }
 
     @Override
-    public boolean letsItemsIn(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsIn(int aSlot) {
         return true;
     }
 
     @Override
-    public boolean letsItemsOut(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsOut(int aSlot) {
         return true;
     }
 
     @Override
-    public boolean manipulatesSidedRedstoneOutput(ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean manipulatesSidedRedstoneOutput() {
         return true;
     }
 
     @Override
-    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getMinimumTickRate() {
         return 60;
     }
 
@@ -207,7 +208,7 @@ public class CoverNeedMaintainance extends CoverBehavior {
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverNeedMaintainance.this,
+                        CoverNeedMaintainance.this::createDataObject,
                         (index, coverData) -> isEnabled(index, convert(coverData)),
                         (index, coverData) -> new ISerializableObject.LegacyCoverData(
                             getNewCoverVariable(index, convert(coverData))))

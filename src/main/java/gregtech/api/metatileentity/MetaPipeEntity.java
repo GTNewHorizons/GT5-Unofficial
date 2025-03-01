@@ -24,15 +24,11 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.CoverBehavior;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTUtil;
-import gregtech.api.util.ISerializableObject;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.GTClient;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -170,7 +166,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         if (difference > 1.05 && difference < 1.4) {
             side = ForgeDirection.EAST;
         }
-        boolean tCovered = side != ForgeDirection.UNKNOWN && mBaseMetaTileEntity.getCoverIDAtSide(side) > 0;
+        boolean tCovered = side != ForgeDirection.UNKNOWN && mBaseMetaTileEntity.hasCoverAtSide(side);
         if (isConnectedAtSide(side)) {
             tCovered = true;
         }
@@ -321,11 +317,11 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
         if (baseMetaTile == null || !baseMetaTile.isServerSide()) return 0;
 
-        final CoverInfo coverInfo = baseMetaTile.getCoverInfoAtSide(side);
+        final Cover cover = baseMetaTile.getCoverAtSide(side);
 
-        final boolean alwaysLookConnected = coverInfo.alwaysLookConnected();
-        final boolean letsIn = letsIn(coverInfo);
-        final boolean letsOut = letsOut(coverInfo);
+        final boolean alwaysLookConnected = cover.alwaysLookConnected();
+        final boolean letsIn = letsIn(cover);
+        final boolean letsOut = letsOut(cover);
 
         // Careful - tTileEntity might be null, and that's ok -- so handle it
         final TileEntity tTileEntity = baseMetaTile.getTileEntityAtSide(side);
@@ -416,27 +412,27 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         float xEnd = 1f - space;
         final BaseMetaPipeEntity baseTE = (BaseMetaPipeEntity) getBaseMetaTileEntity();
 
-        if (baseTE.getCoverIDAtSide(ForgeDirection.DOWN) != 0) {
+        if (baseTE.hasCoverAtSide(ForgeDirection.DOWN)) {
             yStart = zStart = xStart = 0;
             zEnd = xEnd = 1;
         }
-        if (baseTE.getCoverIDAtSide(ForgeDirection.UP) != 0) {
+        if (baseTE.hasCoverAtSide(ForgeDirection.UP)) {
             zStart = xStart = 0;
             yEnd = zEnd = xEnd = 1;
         }
-        if (baseTE.getCoverIDAtSide(ForgeDirection.NORTH) != 0) {
+        if (baseTE.hasCoverAtSide(ForgeDirection.NORTH)) {
             yStart = zStart = xStart = 0;
             yEnd = xEnd = 1;
         }
-        if (baseTE.getCoverIDAtSide(ForgeDirection.SOUTH) != 0) {
+        if (baseTE.hasCoverAtSide(ForgeDirection.SOUTH)) {
             yStart = xStart = 0;
             yEnd = zEnd = xEnd = 1;
         }
-        if (baseTE.getCoverIDAtSide(ForgeDirection.WEST) != 0) {
+        if (baseTE.hasCoverAtSide(ForgeDirection.WEST)) {
             yStart = zStart = xStart = 0;
             yEnd = zEnd = 1;
         }
-        if (baseTE.getCoverIDAtSide(ForgeDirection.EAST) != 0) {
+        if (baseTE.hasCoverAtSide(ForgeDirection.EAST)) {
             yStart = zStart = 0;
             yEnd = zEnd = xEnd = 1;
         }
@@ -465,31 +461,11 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         return AxisAlignedBB.getBoundingBox(x + xStart, y + yStart, z + zStart, x + xEnd, y + yEnd, z + zEnd);
     }
 
-    public boolean letsIn(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean letsIn(Cover cover) {
         return false;
     }
 
-    public boolean letsIn(CoverInfo coverInfo) {
-        return false;
-    }
-
-    public boolean letsOut(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return false;
-    }
-
-    public boolean letsOut(CoverInfo coverInfo) {
-        return false;
-    }
-
-    public boolean letsIn(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return false;
-    }
-
-    public boolean letsOut(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsOut(Cover cover) {
         return false;
     }
 

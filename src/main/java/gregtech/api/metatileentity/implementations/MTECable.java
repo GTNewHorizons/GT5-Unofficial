@@ -35,21 +35,17 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.CoverBehavior;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTGCCompat;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.GTClient;
 import gregtech.common.blocks.ItemMachines;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverSolarPanel;
 import ic2.api.energy.EnergyNet;
 import ic2.api.energy.tile.IEnergyEmitter;
@@ -214,7 +210,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     @Override
     public long injectEnergyUnits(ForgeDirection side, long voltage, long amperage) {
         if (!isConnectedAtSide(side) && side != ForgeDirection.UNKNOWN) return 0;
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
+        if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .letsEnergyIn()) return 0;
         return transferElectricity(side, voltage, amperage, (HashSet<TileEntity>) null);
     }
@@ -433,37 +429,13 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     }
 
     @Override
-    public boolean letsIn(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return coverBehavior.letsEnergyIn(side, aCoverID, aCoverVariable, aTileEntity);
+    public boolean letsIn(Cover cover) {
+        return cover.letsEnergyIn();
     }
 
     @Override
-    public boolean letsOut(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return coverBehavior.letsEnergyOut(side, aCoverID, aCoverVariable, aTileEntity);
-    }
-
-    @Override
-    public boolean letsIn(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return coverBehavior.letsEnergyIn(side, aCoverID, aCoverVariable, aTileEntity);
-    }
-
-    @Override
-    public boolean letsOut(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return coverBehavior.letsEnergyOut(side, aCoverID, aCoverVariable, aTileEntity);
-    }
-
-    @Override
-    public boolean letsIn(CoverInfo coverInfo) {
-        return coverInfo.letsEnergyIn();
-    }
-
-    @Override
-    public boolean letsOut(CoverInfo coverInfo) {
-        return coverInfo.letsEnergyOut();
+    public boolean letsOut(Cover cover) {
+        return cover.letsEnergyOut();
     }
 
     @Override
@@ -478,8 +450,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             return true;
 
         // Solar Panel Compat
-        if (baseMetaTile.getCoverInfoAtSide(side)
-            .getCoverBehavior() instanceof CoverSolarPanel) return true;
+        if (baseMetaTile.getCoverAtSide(side) instanceof CoverSolarPanel) return true;
 
         // ((tIsGregTechTileEntity && tIsTileEntityCable) && (tAlwaysLookConnected || tLetEnergyIn || tLetEnergyOut) )
         // --> Not needed
@@ -660,9 +631,9 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         if (pipe.getNode() != null) {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 if (isConnectedAtSide(side)) {
-                    final CoverInfo coverInfo = pipe.getCoverInfoAtSide(side);
-                    if (!coverInfo.isValid()) continue;
-                    if (!letsIn(coverInfo) || !letsOut(coverInfo)) {
+                    final Cover cover = pipe.getCoverAtSide(side);
+                    if (!cover.isValid()) continue;
+                    if (!letsIn(cover) || !letsOut(cover)) {
                         pipe.addToLock(pipe, side);
                     } else {
                         pipe.removeFromLock(pipe, side);
@@ -673,10 +644,10 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             boolean dontAllow = false;
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 if (isConnectedAtSide(side)) {
-                    final CoverInfo coverInfo = pipe.getCoverInfoAtSide(side);
-                    if (!coverInfo.isValid()) continue;
+                    final Cover cover = pipe.getCoverAtSide(side);
+                    if (!cover.isValid()) continue;
 
-                    if (!letsIn(coverInfo) || !letsOut(coverInfo)) {
+                    if (!letsIn(cover) || !letsOut(cover)) {
                         dontAllow = true;
                     }
                 }

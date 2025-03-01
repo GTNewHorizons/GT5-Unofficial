@@ -23,7 +23,6 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 
@@ -171,8 +170,8 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
-        return hasValidMetaTileEntity() && getMetaTileEntity().allowCoverOnSide(side, aCoverID);
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
+        return hasValidMetaTileEntity() && getMetaTileEntity().allowCoverOnSide(side, coverItem);
     }
 
     @Override
