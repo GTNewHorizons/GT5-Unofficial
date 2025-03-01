@@ -23,13 +23,26 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.network.NetworkUtils;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GregTechAPI;
+import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.modularui2.GTGuis;
+import gregtech.api.modularui2.GTModularScreen;
+import gregtech.api.modularui2.MetaTileEntityGuiHandler;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
@@ -148,16 +161,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public void initDefaultModes(NBTTagCompound nbt) {}
-
-    /**
-     * Called when GUI gets opened.
-     */
-    public void onOpenGUI() {}
-
-    /**
-     * Called when GUI gets closed.
-     */
-    public void onCloseGUI() {}
 
     /**
      * Called when a player right-clicks this block. Shift-right-clicks will not get passed to this!
@@ -543,5 +546,61 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @Override
     public String getAlternativeModeText() {
         return "";
+    }
+
+    /**
+     * Opens GUI for the specified player. Currently, we have two ways to create GUI: MUI1 and MUI2.
+     * We're gradually migrating to MUI2. However, since cover panel is not supported for the time being,
+     * leave support for MUI1 ({@link IAddUIWidgets#addUIWidgets}) as well.
+     */
+    @SuppressWarnings("deprecation")
+    public void openGui(EntityPlayer player) {
+        if (GTGuis.GLOBAL_SWITCH_MUI2 && useMui2()) {
+            if (!NetworkUtils.isClient(player)) {
+                MetaTileEntityGuiHandler.open(player, this);
+            }
+        } else {
+            GTUIInfos.openGTTileEntityUI(getBaseMetaTileEntity(), player);
+        }
+    }
+
+    /**
+     * Whether to use MUI2 for creating GUI. Use {@link #buildUI} for MUI2, and {@link IAddUIWidgets#addUIWidgets} for
+     * MUI1.
+     */
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
+    public final String getGuiId() {
+        return mName;
+    }
+
+    /**
+     * Specifies theme of this GUI. {@link GTGuiThemes} lists all the themes you can use.
+     */
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.STANDARD;
+    }
+
+    /**
+     * Override to create GUI with MUI2. You also need to override {@link #useMui2}.
+     * <p>
+     * Called on server and client. Create only the main panel here. Only here you can add sync handlers to widgets
+     * directly. If the widget to be synced is not in this panel yet (f.e. in another panel) the sync handler must be
+     * registered here with {@link PanelSyncManager}.
+     *
+     * @inheritDoc
+     */
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+        return null;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
+        return new GTModularScreen(mainPanel, getGuiTheme());
     }
 }

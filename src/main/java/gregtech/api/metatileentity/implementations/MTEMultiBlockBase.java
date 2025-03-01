@@ -79,7 +79,6 @@ import gregtech.GTMod;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.widgets.StructureErrorSyncer;
 import gregtech.api.interfaces.fluid.IFluidStore;
@@ -106,7 +105,6 @@ import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
 import gregtech.api.util.OutputHatchWrapper;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -433,7 +431,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
             return true;
         }
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -1393,27 +1391,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         return rTier;
-    }
-
-    /**
-     * Calcualtes the overclockedness using long integers
-     *
-     * @param aEUt            - recipe EUt
-     * @param aDuration       - recipe Duration
-     * @param mAmperage       - should be 1 ?
-     * @param maxInputVoltage - Multiblock Max input voltage. Voltage is rounded up to higher tier voltage.
-     * @param perfectOC       - If the Multiblock OCs perfectly, i.e. the large Chemical Reactor
-     */
-    protected void calculateOverclockedNessMultiInternal(long aEUt, int aDuration, int mAmperage, long maxInputVoltage,
-        boolean perfectOC) {
-        byte tier = (byte) Math.max(0, GTUtility.getTier(maxInputVoltage));
-        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(aEUt)
-            .setEUt(V[tier] * mAmperage)
-            .setDuration(aDuration)
-            .setDurationDecreasePerOC(perfectOC ? 4.0 : 2.0)
-            .calculate();
-        mEUt = (int) calculator.getConsumption();
-        mMaxProgresstime = calculator.getDuration();
     }
 
     public boolean drainEnergyInput(long aEU) {

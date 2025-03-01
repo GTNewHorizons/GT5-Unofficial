@@ -41,7 +41,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -204,7 +203,7 @@ public class MTEBoilerLava extends MTEBoiler {
         } else if (GTModHandler.isLava(equippedContainerFluidStack)) {
             tank = lavaTank;
         } else {
-            GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            openGui(aPlayer);
             return true;
         }
         returnedItemStack = fillIFluidTankFromItemStack(tank, equippedItemStack);

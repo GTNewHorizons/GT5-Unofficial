@@ -32,7 +32,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -177,7 +176,7 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
         // else if(heat>0)
         // aPlayer.addChatComponentMessage(new ChatComponentText("It is still warm..."));
         // else
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 

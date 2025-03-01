@@ -22,8 +22,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 
+import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.gtnewhorizon.gtnhlib.capability.CapabilityProvider;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -44,7 +46,7 @@ import gregtech.api.util.GTUtil;
  * Don't implement this yourself and expect it to work. Extend @MetaTileEntity itself.
  */
 public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHandler, IMachineBlockUpdateable,
-    IGregtechWailaProvider, IGetGUITextureSet, IGregTechDeviceInformation, CapabilityProvider {
+    IGregtechWailaProvider, IGetGUITextureSet, IGregTechDeviceInformation, CapabilityProvider, IGuiHolder<PosGuiData> {
 
     /**
      * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
@@ -461,7 +463,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /*
      * ModularUI Support
      */
-    default ItemStackHandler getInventoryHandler() {
+    default IItemHandlerModifiable getInventoryHandler() {
         return null;
     }
 
@@ -500,4 +502,9 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     default List<ItemStack> getItemsForHoloGlasses() {
         return null;
     }
+
+    /**
+     * Returns GUI ID used for resource packs as a distinguishable id to customize UI elements in MUI2.
+     */
+    String getGuiId();
 }

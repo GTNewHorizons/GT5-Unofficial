@@ -15,8 +15,6 @@ import gtPlusPlus.core.lib.GTPPCore;
 
 public abstract class MTERedstoneBase extends MTETieredMachineBlock {
 
-    protected int mOpenerCount;
-
     public MTERedstoneBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
         String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
@@ -66,18 +64,6 @@ public abstract class MTERedstoneBase extends MTETieredMachineBlock {
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
         return false;
-    }
-
-    @Override
-    public final void onOpenGUI() {
-        super.onOpenGUI();
-        mOpenerCount++;
-    }
-
-    @Override
-    public final void onCloseGUI() {
-        super.onCloseGUI();
-        mOpenerCount--;
     }
 
     public boolean hasRedstoneSignal() {
