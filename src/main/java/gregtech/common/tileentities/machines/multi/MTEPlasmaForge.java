@@ -768,6 +768,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                         if (queryFluids[i].isFluidEqual(fuel)) {
                             queryFluids[i].amount = (int) Math
                                 .min(Math.round(queryFluids[i].amount / discount), Integer.MAX_VALUE);
+                            break;
                         }
                     }
                 }
