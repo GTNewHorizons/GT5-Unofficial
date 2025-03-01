@@ -229,10 +229,14 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         int newCoverId = cover.getCoverID();
         if (side != ForgeDirection.UNKNOWN && oldCover.getCoverID() != newCoverId) {
             if (newCoverId == 0 && isClientSide()) oldCover.onCoverRemoval();
-            setCoverAtSide(side, cover);
-            issueCoverUpdate(side);
-            issueBlockUpdate();
+            updateCoverAtSide(cover, side);
         }
+    }
+
+    private void updateCoverAtSide(Cover cover, ForgeDirection side) {
+        setCoverAtSide(side, cover);
+        issueCoverUpdate(side);
+        issueBlockUpdate();
     }
 
     @Override
@@ -276,7 +280,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final Cover cover = getCoverAtSide(side);
         if (!cover.isValid()) return null;
         cover.onCoverRemoval();
-        this.attachCover(CoverRegistry.NO_COVER, side);
+        this.updateCoverAtSide(CoverRegistry.NO_COVER, side);
         updateOutputRedstoneSignal(side);
         return GTOreDictUnificator.get(true, cover.asItemStack());
     }
