@@ -39,8 +39,6 @@ public interface IRedstoneCircuitBlock {
      */
     Cover getCover(ForgeDirection side);
 
-    int getCoverID(ForgeDirection side);
-
     ISerializableObject getCoverData(ForgeDirection side);
 
     /**

@@ -384,11 +384,6 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     }
 
     @Override
-    public int getCoverID(ForgeDirection side) {
-        return getBaseMetaTileEntity().getCoverIDAtSide(side);
-    }
-
-    @Override
     public ISerializableObject getCoverData(ForgeDirection side) {
         return getBaseMetaTileEntity().getCoverAtSide(side)
             .getCoverData();
