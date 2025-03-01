@@ -344,7 +344,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         // 1A of full power if one energy hatch, 4A if two
         long voltage = (this.mEnergyHatches.size() == 1) ? this.getMaxInputVoltage() : this.getMaxInputPower();
 
-        machineEnergy = (float) Math.max(length / 4 * Math.pow(voltage, 1.0 / 3.0), 50); // Minimum of 50keV
+        machineEnergy = (float) Math.max(length / 4.0 * Math.pow(voltage, 1.0 / 3.0), 50); // Minimum of 50keV
 
         inputEnergy = this.getInputInformation()
             .getEnergy();
