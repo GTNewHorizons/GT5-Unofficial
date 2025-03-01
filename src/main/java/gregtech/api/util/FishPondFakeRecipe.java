@@ -41,12 +41,11 @@ public class FishPondFakeRecipe {
 
     private static void generateRecipeForFishable(int circuitType, ArrayList<WeightedRandomFishable> lootTable,
         Field stackField) {
-        double totalWeight = 0;
         int[] chances = new int[lootTable.size()];
         ItemStack[] outputs = new ItemStack[lootTable.size()];
 
         for (int i = 0; i < lootTable.size(); i++) {
-            totalWeight += lootTable.get(i).itemWeight;
+            chances[i] = lootTable.get(i).itemWeight * 100;
             try {
                 outputs[i] = ItemUtils.getSimpleStack((ItemStack) stackField.get(lootTable.get(i)), 1);
             } catch (IllegalArgumentException | IllegalAccessException e1) {
@@ -54,10 +53,6 @@ public class FishPondFakeRecipe {
                 e1.printStackTrace();
             }
         }
-        for (int i = 0; i < lootTable.size(); i++) {
-            chances[i] = (int) ((((double) lootTable.get(i).itemWeight) / totalWeight) * 10000);
-        }
-
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(circuitType))
             .itemOutputs(outputs, chances)
