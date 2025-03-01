@@ -242,7 +242,7 @@ public abstract class Cover {
      * Gives a small Text for the status of the Cover.
      */
     public String getDescription() {
-        return E;
+        return "";
     }
 
     public ModularWindow createCoverWindow(EntityPlayer player) {
