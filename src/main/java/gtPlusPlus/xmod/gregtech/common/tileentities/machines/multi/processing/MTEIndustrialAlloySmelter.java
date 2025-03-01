@@ -129,7 +129,7 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
             .addInfo("Gains one multiplier per coil tier")
             .addInfo("Parallel = Tier * Coil Tier")
             .addInfo("Gains 5% speed bonus per coil tier")
-            .addInfo("For every 1,800K, an overclock can be upgraded to a perfect overclock.")
+            .addInfo("For every 900K, an overclock can be upgraded to a perfect overclock.")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, true)
             .addController("Bottom center")
