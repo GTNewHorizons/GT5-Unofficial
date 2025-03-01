@@ -26,6 +26,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
@@ -58,6 +60,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class CoverableTileEntity extends BaseTileEntity implements ICoverable, IGregtechWailaProvider {
 
+    // TODO DEPRECATED: Remove for 2.9. Only kept around for the name remover
+    @Deprecated
     public static final String[] COVER_DATA_NBT_KEYS = Arrays.stream(ForgeDirection.VALID_DIRECTIONS)
         .mapToInt(Enum::ordinal)
         .mapToObj(i -> "mCoverData" + i)
@@ -79,22 +83,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     public long mTickTimer = 0;
 
     protected void writeCoverNBT(NBTTagCompound aNBT, boolean isDrop) {
-        final NBTTagList tList = new NBTTagList();
-
-        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            final Cover cover = getCoverAtSide(side);
-            if (!cover.isValid()) continue;
-
-            // Backwards compat, in case of a revert... for now
-            NBTTagCompound nbt = new NBTTagCompound();
-            nbt.setByte(NBT_COVER_SIDE, (byte) side.ordinal());
-            CoverRegistry.writeCoverToNbt(cover, nbt);
-            tList.appendTag(nbt);
-            aNBT.setTag(
-                COVER_DATA_NBT_KEYS[side.ordinal()],
-                cover.getCoverData()
-                    .saveDataToNBT());
-        }
+        final NBTTagList tList = buildCoversNbtTag();
         if (tList.tagCount() > 0) {
             aNBT.setTag(GTValues.NBT.COVERS, tList);
         }
@@ -105,6 +94,21 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             aNBT.setByteArray("mRedstoneSided", mSidedRedstone);
             aNBT.setBoolean("mRedstone", mRedstone);
         }
+    }
+
+    private @NotNull NBTTagList buildCoversNbtTag() {
+        final NBTTagList covers = new NBTTagList();
+
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            final Cover cover = getCoverAtSide(side);
+            if (!cover.isValid()) continue;
+
+            NBTTagCompound nbt = new NBTTagCompound();
+            nbt.setByte(NBT_COVER_SIDE, (byte) side.ordinal());
+            CoverRegistry.writeCoverToNbt(cover, nbt);
+            covers.appendTag(nbt);
+        }
+        return covers;
     }
 
     protected void readCoverNBT(NBTTagCompound aNBT) {
