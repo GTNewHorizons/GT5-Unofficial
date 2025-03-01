@@ -18,9 +18,6 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
      */
     ItemStack detachCover(ForgeDirection side);
 
-    @Deprecated
-    void setCoverDataAtSide(ForgeDirection side, int aData);
-
     void setCoverDataAtSide(ForgeDirection side, ISerializableObject aData);
 
     /**

@@ -233,14 +233,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     @Override
-    @Deprecated
-    public void setCoverDataAtSide(ForgeDirection side, int aData) {
-        final Cover cover = getCoverAtSide(side);
-        if (cover.isValid() && cover.getCoverData() instanceof ISerializableObject.LegacyCoverData)
-            cover.setCoverData(new ISerializableObject.LegacyCoverData(aData));
-    }
-
-    @Override
     public void setCoverDataAtSide(ForgeDirection side, ISerializableObject aData) {
         final Cover cover = getCoverAtSide(side);
         if (cover.isValid() && cover.acceptsDataObject(aData)) cover.setCoverData(aData);
