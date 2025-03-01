@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -17,13 +18,19 @@ import gtPlusPlus.core.util.recipe.GTRecipeUtils;
 
 public class RecipeGenMultisUsingFluidInsteadOfCells {
 
-    private static ItemStack mEmptyCell;
+    private static final ArrayList<ItemStack> mEmptyItems = new ArrayList<>();
     private static final ArrayList<ItemStack> mItemsToIgnore = new ArrayList<>();
     private static boolean mInit = false;
 
     private static void init() {
         if (!mInit) {
             mInit = true;
+
+            mEmptyItems.add(CI.emptyCells(1));
+            mEmptyItems.add(new ItemStack(Items.bowl));
+            mEmptyItems.add(new ItemStack(Items.bucket));
+            mEmptyItems.add(new ItemStack(Items.glass_bottle));
+
             mItemsToIgnore.add(
                 ItemUtils.simpleMetaStack(
                     CI.emptyCells(1)
@@ -47,13 +54,12 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
         if (aCell == null) {
             return false;
         }
-        if (mEmptyCell == null) {
-            mEmptyCell = CI.emptyCells(1);
-        }
-        if (mEmptyCell != null) {
-            ItemStack aTempStack = mEmptyCell.copy();
-            aTempStack.stackSize = aCell.stackSize;
-            return GTUtility.areStacksEqual(aTempStack, aCell);
+        for (ItemStack emptyItem : mEmptyItems) {
+            emptyItem.stackSize = aCell.stackSize;
+            if (GTUtility.areStacksEqual(emptyItem, aCell)) {
+                return true;
+            }
+
         }
         return false;
     }

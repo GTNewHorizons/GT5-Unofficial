@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -189,14 +190,16 @@ public class ItemGenericChemBase extends Item {
         int aDam = 0;
         EnumChatFormatting durability = EnumChatFormatting.GRAY;
         if (ItemUtils.isMillingBall(aStack)) {
-            list.add(EnumChatFormatting.GRAY + "Tumble Tumble Tumble");
+            list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("GTPP.tooltip.milling_ball.tumble"));
             aMaxDamage = getMillingBallMaxDamage(aStack);
             aDamageSegment = aMaxDamage / 5;
             aDam = aMaxDamage - getMillingBallDamage(aStack);
             aHasSpecialTooltips = true;
         }
         if (ItemUtils.isCatalyst(aStack)) {
-            list.add(EnumChatFormatting.GRAY + "Active Reaction Agent");
+            list.add(
+                EnumChatFormatting.GRAY
+                    + StatCollector.translateToLocal("GTPP.tooltip.catalyst.active_reaction_agent"));
             aMaxDamage = getCatalystMaxDamage(aStack);
             aDamageSegment = aMaxDamage / 5;
             aDam = aMaxDamage - getCatalystDamage(aStack);
