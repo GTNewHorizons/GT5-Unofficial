@@ -32,7 +32,7 @@ import io.netty.buffer.ByteBuf;
 
 /**
  * TODO: Implement overlay rendering only with
- * {@link CoverBehaviorBase#getSpecialCoverFGTexture()}
+ * {@link CoverBehaviorBase#getOverlayTexture()}
  */
 public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidMeterData> {
 

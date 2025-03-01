@@ -121,12 +121,12 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
     }
 
     @Override
-    public ITexture getSpecialCoverFGTexture() {
-        return getSpecialCoverTexture();
+    public ITexture getOverlayTexture() {
+        return getSpecialFaceTexture();
     }
 
     @Override
-    public ITexture getSpecialCoverTexture() {
+    public ITexture getSpecialFaceTexture() {
         if (GTUtility.isStackInvalid(coverData.mStack)) return Textures.BlockIcons.ERROR_RENDERING[0];
         Block block = getTargetBlock(coverData.mStack);
         if (block == null) return Textures.BlockIcons.ERROR_RENDERING[0];

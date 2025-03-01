@@ -127,13 +127,22 @@ public abstract class Cover {
 
     public abstract void setCoverData(ISerializableObject aData);
 
-    public abstract ITexture getSpecialCoverFGTexture();
+    /**
+     * Get the special foreground cover texture associated with this cover. Return null if one should use the texture
+     * passed to {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverFactory, CoverPlacer)} or its
+     * overloads.
+     * <br>
+     * This texture will be overlaid on top of the block's base texture for that face.
+     */
+    public abstract ITexture getOverlayTexture();
 
     /**
      * Get the special cover texture associated with this cover. Return null if one should use the texture passed to
      * {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverFactory, CoverPlacer)} or its overloads.
+     * <br>
+     * This texture takes up the entire face on which it is rendered.
      */
-    public ITexture getSpecialCoverTexture() {
+    public ITexture getSpecialFaceTexture() {
         return null;
     }
 

@@ -52,7 +52,7 @@ import io.netty.buffer.ByteBuf;
 
 /**
  * TODO: Implement overlay rendering only with
- * {@link CoverBehaviorBase#getSpecialCoverFGTexture()}
+ * {@link CoverBehaviorBase#getOverlayTexture()}
  */
 public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorageMonitor.FluidStorageData> {
 
@@ -101,12 +101,12 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
     }
 
     @Override
-    public ITexture getSpecialCoverFGTexture() {
-        return getSpecialCoverTexture();
+    public ITexture getOverlayTexture() {
+        return getSpecialFaceTexture();
     }
 
     @Override
-    public ITexture getSpecialCoverTexture() {
+    public ITexture getSpecialFaceTexture() {
         if (coverData.slot == -1 || coverData.fluid == null || coverData.scale == 0) {
             return TextureFactory.of(OVERLAY_FLUID_STORAGE_MONITOR0);
         }

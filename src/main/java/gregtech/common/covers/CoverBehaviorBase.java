@@ -20,8 +20,6 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.covers.CoverContext;
-import gregtech.api.covers.CoverFactory;
-import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GUITextureSet;
@@ -142,13 +140,8 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
 
     // region facade
 
-    /**
-     * Get the special foreground cover texture associated with this cover. Return null if one should use the texture
-     * passed to {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverFactory, CoverPlacer)} or its
-     * overloads.
-     */
     @Override
-    public ITexture getSpecialCoverFGTexture() {
+    public ITexture getOverlayTexture() {
         return coverFGTexture;
     }
 
