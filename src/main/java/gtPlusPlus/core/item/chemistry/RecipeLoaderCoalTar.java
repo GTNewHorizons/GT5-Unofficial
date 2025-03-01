@@ -186,7 +186,7 @@ public class RecipeLoaderCoalTar {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(5))
             .fluidInputs(new FluidStack(GTPPFluids.CoalTar, 1000))
-            .fluidOutputs(new FluidStack(RocketFuels.Kerosene, 600))
+            .fluidOutputs(new FluidStack(GTPPFluids.Kerosene, 600))
             .duration(30 * SECONDS)
             .eut(64)
             .addTo(distilleryRecipes);
@@ -199,7 +199,7 @@ public class RecipeLoaderCoalTar {
                 Materials.Naphtha.getFluid(150),
                 new FluidStack(GTPPFluids.Ethylbenzene, 200),
                 new FluidStack(GTPPFluids.Anthracene, 50),
-                new FluidStack(RocketFuels.Kerosene, 600))
+                new FluidStack(GTPPFluids.Kerosene, 600))
             .duration(15 * SECONDS)
             .eut(256)
             .addTo(distillationTowerRecipes);

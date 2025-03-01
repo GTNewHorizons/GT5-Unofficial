@@ -397,15 +397,6 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         return pipe != null && pipe.stackSize > minCount - 1 && pipe.isItemEqual(miningPipe);
     }
 
-    /**
-     * @deprecated Readded for compability
-     * @return if no pipes are present
-     */
-    @Deprecated
-    protected boolean waitForPipes() {
-        return !isHasMiningPipes();
-    }
-
     private boolean isEnergyEnough() {
         long requiredEnergy = 512 + getMaxInputVoltage() * 4;
         for (MTEHatchEnergy energyHatch : mEnergyHatches) {
