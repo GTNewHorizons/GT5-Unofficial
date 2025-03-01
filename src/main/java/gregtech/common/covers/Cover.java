@@ -15,7 +15,6 @@ import net.minecraftforge.fluids.Fluid;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
@@ -35,8 +34,6 @@ import io.netty.buffer.ByteBuf;
 
 public abstract class Cover {
 
-    private static final String NBT_TICK_RATE_ADDITION = "tra";
-
     // One minute
     public static final int MAX_TICK_RATE_ADDITION = 1200;
 
@@ -51,35 +48,16 @@ public abstract class Cover {
         coverSide = context.getSide();
         coverID = context.getCoverId();
         coveredTile = new WeakReference<>(context.getCoverable());
-        tickRateAddition = initializeTickRateAddition(context.getCoverData());
-    }
-
-    private int initializeTickRateAddition(Object coverData) {
-        if (coverData instanceof NBTTagCompound nbt && nbt.hasKey(NBT_TICK_RATE_ADDITION)) {
-            return nbt.getInteger(NBT_TICK_RATE_ADDITION);
-        } else if (coverData instanceof ByteArrayDataInput byteData) {
-            return byteData.readInt();
-        }
-        return getDefaultTickRateAddition();
-    }
-
-    private int getDefaultTickRateAddition() {
-        if (!allowsTickRateAddition()) return 0;
-        return getDefaultTickRate() - this.getMinimumTickRate();
     }
 
     public boolean isValid() {
         return coverID != 0 && coverSide != ForgeDirection.UNKNOWN;
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound aNBT) {
-        aNBT.setInteger(NBT_TICK_RATE_ADDITION, tickRateAddition);
-        return aNBT;
-    }
+    public abstract NBTTagCompound writeToNBT(NBTTagCompound aNBT);
 
     public void writeToByteBuf(ByteBuf aOut) {
         aOut.writeByte(coverSide.ordinal());
-        aOut.writeInt(tickRateAddition);
     }
 
     /**

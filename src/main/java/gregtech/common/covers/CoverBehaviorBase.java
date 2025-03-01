@@ -40,6 +40,7 @@ import io.netty.buffer.ByteBuf;
 public abstract class CoverBehaviorBase<T extends ISerializableObject> extends Cover {
 
     private static final String NBT_DATA = "d";
+    private static final String NBT_TICK_RATE_ADDITION = "tra";
 
     protected @NotNull T coverData;
 
@@ -51,6 +52,8 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
         this.typeToken = typeToken;
         this.coverData = initializeData(context.getCoverData());
         this.coverFGTexture = coverFGTexture;
+        // Calling after data was initialized since overrides may depend on data.
+        this.tickRateAddition = initializeTickRateAddition(context.getCoverData());
     }
 
     private T initializeData(Object coverData) {
@@ -64,6 +67,20 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
             return forceCast(coverData);
         }
         return createDataObject();
+    }
+
+    private int initializeTickRateAddition(Object coverData) {
+        if (coverData instanceof NBTTagCompound nbt && nbt.hasKey(NBT_TICK_RATE_ADDITION)) {
+            return nbt.getInteger(NBT_TICK_RATE_ADDITION);
+        } else if (coverData instanceof ByteArrayDataInput byteData) {
+            return byteData.readInt();
+        }
+        return getDefaultTickRateAddition();
+    }
+
+    private int getDefaultTickRateAddition() {
+        if (!allowsTickRateAddition()) return 0;
+        return getDefaultTickRate() - this.getMinimumTickRate();
     }
 
     protected abstract T createDataObject();
@@ -106,8 +123,8 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-        super.writeToNBT(nbt);
         nbt.setTag(NBT_DATA, coverData.saveDataToNBT());
+        nbt.setInteger(NBT_TICK_RATE_ADDITION, tickRateAddition);
         return nbt;
     }
 
@@ -115,6 +132,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
     public void writeToByteBuf(ByteBuf byteBuf) {
         super.writeToByteBuf(byteBuf);
         coverData.writeToByteBuf(byteBuf);
+        byteBuf.writeInt(tickRateAddition);
     }
 
     @Override
