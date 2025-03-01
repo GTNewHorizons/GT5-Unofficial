@@ -86,11 +86,6 @@ public class CoverRegistry {
         return getRegistration(stack).getCoverPlacer();
     }
 
-    @NotNull
-    public static CoverPlacer getCoverPlacer(int coverId) {
-        return getCoverPlacer(GTUtility.intToStack(coverId));
-    }
-
     public static boolean isCover(@NotNull ItemStack stack) {
         return GTUtility.isStackInList(new GTItemStack(stack), coverTextures.keySet());
     }
