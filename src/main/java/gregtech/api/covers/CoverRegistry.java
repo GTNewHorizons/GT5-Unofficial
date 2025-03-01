@@ -59,16 +59,20 @@ public class CoverRegistry {
 
     public static <T extends ISerializableObject> void registerCover(@NotNull ItemStack stack, ITexture cover,
         @NotNull CoverFactory constructor, @NotNull CoverPlacer factory) {
-        if (!coverTextures.containsKey(new GTItemStack(stack))) coverTextures.put(
-            new GTItemStack(stack),
-            cover == null || !cover.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0] : cover);
+        if (!coverTextures.containsKey(new GTItemStack(stack))) {
+            coverTextures.put(
+                new GTItemStack(stack),
+                cover == null || !cover.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0] : cover);
+        }
         coverFactories
             .put(new GTItemStack(stack), new CoverRegistration(GTUtility.stackToInt(stack), constructor, factory));
     }
 
     @NotNull
     public static CoverRegistration getRegistration(ItemStack stack) {
-        if (stack == null || stack.getItem() == null) return coverNone;
+        if (stack == null || stack.getItem() == null) {
+            return coverNone;
+        }
         CoverRegistration factory = coverFactories.get(new GTItemStack(stack));
         if (factory == null) {
             factory = coverFactories.get(new GTItemStack(stack, true));
