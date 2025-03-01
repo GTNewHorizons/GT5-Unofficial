@@ -148,11 +148,6 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
         return STRUCTURE_DEFINITION;
     }
 
-    // @Override
-    // protected IAlignmentLimits getInitialAlignmentLimits() {
-    // return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && f.isNotFlipped();
-    // }
-
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
