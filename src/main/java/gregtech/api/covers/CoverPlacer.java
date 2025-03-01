@@ -10,7 +10,7 @@ public interface CoverPlacer {
 
     boolean isCoverPlaceable(ForgeDirection side, ItemStack coverItem, ICoverable coverable);
 
-    boolean isSimpleCover();
+    boolean allowOnPrimitiveBlock();
 
     /**
      * If it lets you rightclick the Machine normally

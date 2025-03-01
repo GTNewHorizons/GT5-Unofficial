@@ -18,10 +18,10 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.Cover;
-import gregtech.common.covers.CoverDefault;
+import gregtech.common.covers.CoverDecorative;
 import gregtech.common.covers.CoverNone;
 import gregtech.common.covers.CoverPlacerInterceptsRightClick;
-import gregtech.common.covers.SimpleCoverPlacer;
+import gregtech.common.covers.PrimitiveCoverPlacer;
 
 public class CoverRegistry {
 
@@ -36,10 +36,10 @@ public class CoverRegistry {
     private static final CoverRegistration coverNone = new CoverRegistration(
         0,
         CoverNone::new,
-        new SimpleCoverPlacer());
+        new PrimitiveCoverPlacer());
     public static final Cover NO_COVER = coverNone.buildCover(ForgeDirection.UNKNOWN, null);
     private static final CoverPlacer DEFAULT_COVER_PLACER = new CoverPlacerBase();
-    public static final CoverPlacer SIMPLE_COVER_PLACER = new SimpleCoverPlacer();
+    public static final CoverPlacer PRIMITIVE_COVER_PLACER = new PrimitiveCoverPlacer();
     public static final CoverPlacer INTERCEPTS_RIGHT_CLICK_COVER_PLACER = new CoverPlacerInterceptsRightClick();
 
     private static GUIColorOverride colorOverride;
@@ -51,8 +51,8 @@ public class CoverRegistry {
         GregTechAPI.sItemStackMappings.add(coverFactories);
     }
 
-    public static void registerSimpleCover(@NotNull ItemStack stack, ITexture cover) {
-        registerCover(stack, cover, CoverDefault::new, SIMPLE_COVER_PLACER);
+    public static void registerDecorativeCover(@NotNull ItemStack stack, ITexture cover) {
+        registerCover(stack, cover, CoverDecorative::new, PRIMITIVE_COVER_PLACER);
     }
 
     public static void registerCover(@NotNull ItemStack stack, ITexture cover, @NotNull CoverFactory constructor) {

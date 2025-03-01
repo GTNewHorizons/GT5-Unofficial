@@ -184,7 +184,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     @Override
     public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         return CoverRegistry.getCoverPlacer(coverItem)
-            .isSimpleCover();
+            .allowOnPrimitiveBlock();
     }
 
     @Override

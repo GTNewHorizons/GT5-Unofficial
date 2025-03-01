@@ -546,7 +546,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         // Register the cover
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             aStack,
             // If there is an ItemStack of Block for Materials
             tStack == NI ?

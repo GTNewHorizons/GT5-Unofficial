@@ -7,12 +7,12 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject.LegacyCoverData;
 
-public class CoverDefault extends CoverBehavior {
+public class CoverDecorative extends CoverBehavior {
 
     /**
      * This is the Dummy, if there is a generic Cover without behavior
      */
-    public CoverDefault(CoverContext context) {
+    public CoverDecorative(CoverContext context) {
         super(context);
     }
 

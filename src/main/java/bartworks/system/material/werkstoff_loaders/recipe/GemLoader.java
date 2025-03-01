@@ -200,7 +200,7 @@ public class GemLoader implements IWerkstoffRunnable {
             final ITexture texture = TextureFactory.of(
                 Textures.BlockIcons.MACHINE_CASINGS[2][0],
                 TextureFactory.of(Textures.BlockIcons.OVERLAY_LENS, werkstoff.getRGBA(), false));
-            CoverRegistry.registerSimpleCover(werkstoff.get(lens), texture);
+            CoverRegistry.registerDecorativeCover(werkstoff.get(lens), texture);
 
             for (ItemStack is : OreDictionary
                 .getOres("craftingLens" + BWColorUtil.getDyeFromColor(werkstoff.getRGBA()).mName.replace(" ", ""))) {

@@ -15,7 +15,7 @@ public class CoverPlacerBase implements CoverPlacer {
     }
 
     @Override
-    public boolean isSimpleCover() {
+    public boolean allowOnPrimitiveBlock() {
         return false;
     }
 

@@ -2,10 +2,10 @@ package gregtech.common.covers;
 
 import gregtech.api.covers.CoverPlacerBase;
 
-public class SimpleCoverPlacer extends CoverPlacerBase {
+public class PrimitiveCoverPlacer extends CoverPlacerBase {
 
     @Override
-    public boolean isSimpleCover() {
+    public boolean allowOnPrimitiveBlock() {
         return true;
     }
 }

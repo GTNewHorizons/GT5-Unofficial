@@ -3619,7 +3619,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 .glow()
                 .build());
 
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID),
             TextureFactory.of(COVER_WOOD_PLATE));
 
@@ -3839,17 +3839,17 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             ItemList.Cover_Chest_Basic.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_1)),
             context -> new CoverChest(context, 9, TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_1)),
-            CoverRegistry.SIMPLE_COVER_PLACER);
+            CoverRegistry.PRIMITIVE_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_Chest_Good.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_2)),
             context -> new CoverChest(context, 12, TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_2)),
-            CoverRegistry.SIMPLE_COVER_PLACER);
+            CoverRegistry.PRIMITIVE_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_Chest_Advanced.get(1L),
             TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_3)),
             context -> new CoverChest(context, 15, TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_3)),
-            CoverRegistry.SIMPLE_COVER_PLACER);
+            CoverRegistry.PRIMITIVE_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_ActivityDetector.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], doesWorkCoverTexture),

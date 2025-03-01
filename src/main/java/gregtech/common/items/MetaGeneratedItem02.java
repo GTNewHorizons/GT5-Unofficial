@@ -2869,151 +2869,151 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
     }
 
     public void registerCovers() {
-        CoverRegistry.registerSimpleCover(ItemList.Plank_Oak.get(1L), TextureFactory.of(Blocks.planks, 0));
-        CoverRegistry.registerSimpleCover(ItemList.Plank_Spruce.get(1L), TextureFactory.of(Blocks.planks, 1));
-        CoverRegistry.registerSimpleCover(ItemList.Plank_Birch.get(1L), TextureFactory.of(Blocks.planks, 2));
-        CoverRegistry.registerSimpleCover(ItemList.Plank_Jungle.get(1L), TextureFactory.of(Blocks.planks, 3));
-        CoverRegistry.registerSimpleCover(ItemList.Plank_Acacia.get(1L), TextureFactory.of(Blocks.planks, 4));
-        CoverRegistry.registerSimpleCover(ItemList.Plank_DarkOak.get(1L), TextureFactory.of(Blocks.planks, 5));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(ItemList.Plank_Oak.get(1L), TextureFactory.of(Blocks.planks, 0));
+        CoverRegistry.registerDecorativeCover(ItemList.Plank_Spruce.get(1L), TextureFactory.of(Blocks.planks, 1));
+        CoverRegistry.registerDecorativeCover(ItemList.Plank_Birch.get(1L), TextureFactory.of(Blocks.planks, 2));
+        CoverRegistry.registerDecorativeCover(ItemList.Plank_Jungle.get(1L), TextureFactory.of(Blocks.planks, 3));
+        CoverRegistry.registerDecorativeCover(ItemList.Plank_Acacia.get(1L), TextureFactory.of(Blocks.planks, 4));
+        CoverRegistry.registerDecorativeCover(ItemList.Plank_DarkOak.get(1L), TextureFactory.of(Blocks.planks, 5));
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Larch.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 0, new ItemStack(Blocks.planks, 1, 0))),
                 0));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Teak.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 1, new ItemStack(Blocks.planks, 1, 0))),
                 1));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Acacia_Green.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 2, new ItemStack(Blocks.planks, 1, 0))),
                 2));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Lime.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 3, new ItemStack(Blocks.planks, 1, 0))),
                 3));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Chestnut.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 4, new ItemStack(Blocks.planks, 1, 0))),
                 4));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Wenge.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 5, new ItemStack(Blocks.planks, 1, 0))),
                 5));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Baobab.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 6, new ItemStack(Blocks.planks, 1, 0))),
                 6));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Sequoia.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 7, new ItemStack(Blocks.planks, 1, 0))),
                 7));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Kapok.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 8, new ItemStack(Blocks.planks, 1, 0))),
                 8));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Ebony.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 9, new ItemStack(Blocks.planks, 1, 0))),
                 9));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Mahagony.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 10, new ItemStack(Blocks.planks, 1, 0))),
                 10));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Balsa.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 11, new ItemStack(Blocks.planks, 1, 0))),
                 11));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Willow.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 12, new ItemStack(Blocks.planks, 1, 0))),
                 12));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Walnut.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 13, new ItemStack(Blocks.planks, 1, 0))),
                 13));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Greenheart.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 14, new ItemStack(Blocks.planks, 1, 0))),
                 14));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Cherry.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 15, new ItemStack(Blocks.planks, 1, 0))),
                 15));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Mahoe.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 16, new ItemStack(Blocks.planks, 1, 0))),
                 0));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Poplar.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 17, new ItemStack(Blocks.planks, 1, 0))),
                 1));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Palm.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 18, new ItemStack(Blocks.planks, 1, 0))),
                 2));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Papaya.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 19, new ItemStack(Blocks.planks, 1, 0))),
                 3));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Pine.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 20, new ItemStack(Blocks.planks, 1, 0))),
                 4));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Plum.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 21, new ItemStack(Blocks.planks, 1, 0))),
                 5));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Maple.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 22, new ItemStack(Blocks.planks, 1, 0))),
                 6));
-        CoverRegistry.registerSimpleCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Plank_Citrus.get(1L),
             TextureFactory.of(
                 GTUtility.getBlockFromStack(

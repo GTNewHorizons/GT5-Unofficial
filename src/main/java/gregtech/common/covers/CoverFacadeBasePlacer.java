@@ -10,7 +10,7 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 public abstract class CoverFacadeBasePlacer extends CoverPlacerBase {
 
     @Override
-    public boolean isSimpleCover() {
+    public boolean allowOnPrimitiveBlock() {
         return true;
     }
 
