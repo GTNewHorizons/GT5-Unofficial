@@ -601,8 +601,8 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
             sendRenderPackets(xDir, zDir, offsetX_L, offsetY_L, offsetZ_L, offsetX_U, offsetY_U, offsetZ_U);
         } else if (aBaseMetaTileEntity.getWorld()
             .getWorldTime() % 20 == 7) {
-            sendRenderPackets(xDir, zDir, offsetX_L, offsetY_L, offsetZ_L, offsetX_U, offsetY_U, offsetZ_U);
-        }
+                sendRenderPackets(xDir, zDir, offsetX_L, offsetY_L, offsetZ_L, offsetX_U, offsetY_U, offsetZ_U);
+            }
 
         super.onRemoval();
     }
