@@ -9,12 +9,15 @@ import gregtech.common.covers.Cover;
 public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer {
 
     /**
-     * Remove the cover from the coverable and spawn the result of detachCover in the world on the dropped side.
+     * Remove the cover from the coverable and spawn the result of {@link #detachCover(ForgeDirection)} in the world on
+     * the dropped side.
      */
     void dropCover(ForgeDirection side, ForgeDirection droppedSide);
 
     /**
-     * Actually removes the cover from the coverable and return the cover item. Called by dropCover.
+     * Actually removes the cover from the coverable and return the cover item.
+     * <br>
+     * Called by {@link #dropCover(ForgeDirection, ForgeDirection)}
      */
     ItemStack detachCover(ForgeDirection side);
 
