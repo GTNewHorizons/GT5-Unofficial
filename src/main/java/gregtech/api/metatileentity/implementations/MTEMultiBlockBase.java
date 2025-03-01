@@ -93,7 +93,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -221,7 +220,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         return side != getBaseMetaTileEntity().getFrontFacing();
     }
 

@@ -49,7 +49,6 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.net.GTPacketRequestCoverData;
 import gregtech.api.net.GTPacketSendCoverData;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.GTClient;
@@ -185,12 +184,12 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return true;
     }
 
-    public abstract boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID);
+    public abstract boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem);
 
     protected void checkDropCover() {
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            final int coverId = getCoverIDAtSide(side);
-            if (coverId != 0 && !allowCoverOnSide(side, new GTItemStack(coverId))) dropCover(side, side);
+            final Cover cover = getCoverAtSide(side);
+            if (cover.isValid() && !allowCoverOnSide(side, cover.asItemStack())) dropCover(side, side);
         }
     }
 

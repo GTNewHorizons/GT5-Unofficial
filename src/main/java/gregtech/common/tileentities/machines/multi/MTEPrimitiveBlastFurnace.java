@@ -42,7 +42,6 @@ import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
@@ -121,9 +120,9 @@ public abstract class MTEPrimitiveBlastFurnace extends MetaTileEntity
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
-        return (CoverRegistry.getCoverPlacer(aCoverID.toStack())
-            .isSimpleCover()) && (super.allowCoverOnSide(side, aCoverID));
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
+        return (CoverRegistry.getCoverPlacer(coverItem)
+            .isSimpleCover()) && (super.allowCoverOnSide(side, coverItem));
     }
 
     @Override

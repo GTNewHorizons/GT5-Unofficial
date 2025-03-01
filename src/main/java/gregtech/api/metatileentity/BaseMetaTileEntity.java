@@ -73,7 +73,6 @@ import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.net.GTPacketTileEntity;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.blockupdate.BlockUpdateHandler;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -1628,7 +1627,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                         if (CoverRegistry.isCover(tCurrentItem)) {
                             if (CoverRegistry.getCoverPlacer(tCurrentItem)
                                 .isCoverPlaceable(effectiveSide, tCurrentItem, this)
-                                && mMetaTileEntity.allowCoverOnSide(effectiveSide, new GTItemStack(tCurrentItem))) {
+                                && mMetaTileEntity.allowCoverOnSide(effectiveSide, tCurrentItem)) {
 
                                 CoverRegistry.getCoverPlacer(tCurrentItem)
                                     .placeCover(aPlayer, tCurrentItem, this, effectiveSide);

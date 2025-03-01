@@ -45,7 +45,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.net.GTPacketCreateTE;
 import gregtech.api.net.GTPacketTileEntity;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -978,7 +977,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                     if (CoverRegistry.isCover(tCurrentItem)) {
                         if (CoverRegistry.getCoverPlacer(tCurrentItem)
                             .isCoverPlaceable(effectiveSide, tCurrentItem, this)
-                            && mMetaTileEntity.allowCoverOnSide(effectiveSide, new GTItemStack(tCurrentItem))) {
+                            && mMetaTileEntity.allowCoverOnSide(effectiveSide, tCurrentItem)) {
 
                             CoverRegistry.getCoverPlacer(tCurrentItem)
                                 .placeCover(aPlayer, tCurrentItem, this, effectiveSide);

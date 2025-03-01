@@ -12,6 +12,7 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import java.util.Arrays;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
@@ -33,7 +34,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
 import gregtech.api.render.TextureFactory;
@@ -236,9 +236,9 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
-        return CoverRegistry.getCoverPlacer(aCoverID.toStack())
-            .isSimpleCover() && super.allowCoverOnSide(side, aCoverID);
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
+        return CoverRegistry.getCoverPlacer(coverItem)
+            .isSimpleCover() && super.allowCoverOnSide(side, coverItem);
     }
 
     public float getSteamDamage() {

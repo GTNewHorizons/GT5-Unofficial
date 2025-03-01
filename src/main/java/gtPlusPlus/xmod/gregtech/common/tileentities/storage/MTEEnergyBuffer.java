@@ -15,7 +15,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
@@ -49,12 +48,12 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCover) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         if (side != this.getBaseMetaTileEntity()
             .getFrontFacing()) {
             return true;
         }
-        return super.allowCoverOnSide(side, aCover);
+        return super.allowCoverOnSide(side, coverItem);
     }
 
     /*

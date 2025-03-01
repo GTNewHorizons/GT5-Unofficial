@@ -30,7 +30,6 @@ import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.GTClient;
@@ -112,7 +111,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     public void registerIcons(IIconRegister blockIconRegister) {}
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack stack) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         return true;
     }
 

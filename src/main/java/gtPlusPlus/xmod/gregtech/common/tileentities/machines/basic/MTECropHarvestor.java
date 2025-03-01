@@ -30,7 +30,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
@@ -509,7 +508,7 @@ public class MTECropHarvestor extends MTEBasicTank {
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         return true;
     }
 
