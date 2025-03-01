@@ -442,27 +442,27 @@ public class MTEItem extends MetaPipeEntity implements IMetaTileEntityItemPipe {
         float spaceWest = tSpace;
         float spaceEast = 1f - tSpace;
 
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.DOWN) != 0) {
+        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.DOWN)) {
             spaceDown = spaceNorth = spaceWest = 0;
             spaceSouth = spaceEast = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.UP) != 0) {
+        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.UP)) {
             spaceNorth = spaceWest = 0;
             spaceUp = spaceSouth = spaceEast = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.NORTH) != 0) {
+        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.NORTH)) {
             spaceDown = spaceNorth = spaceWest = 0;
             spaceUp = spaceEast = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.SOUTH) != 0) {
+        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.SOUTH)) {
             spaceDown = spaceWest = 0;
             spaceUp = spaceSouth = spaceEast = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.WEST) != 0) {
+        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.WEST)) {
             spaceDown = spaceNorth = spaceWest = 0;
             spaceUp = spaceSouth = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.EAST) != 0) {
+        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.EAST)) {
             spaceDown = spaceNorth = 0;
             spaceUp = spaceSouth = spaceEast = 1;
         }

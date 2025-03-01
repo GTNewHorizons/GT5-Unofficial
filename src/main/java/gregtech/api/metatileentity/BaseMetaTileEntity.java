@@ -273,15 +273,14 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         final int precipitationHeightAtSide3 = worldObj.getPrecipitationHeight(xCoord, zCoord + 1);
         final int precipitationHeightAtSide4 = worldObj.getPrecipitationHeight(xCoord - 1, zCoord);
         final int precipitationHeightAtSide5 = worldObj.getPrecipitationHeight(xCoord + 1, zCoord);
-        return (getCoverIDAtSide(ForgeDirection.UP) == 0
-            && worldObj.getPrecipitationHeight(xCoord, zCoord) - 2 < yCoord)
-            || (getCoverIDAtSide(ForgeDirection.NORTH) == 0 && precipitationHeightAtSide2 - 1 < yCoord
+        return (!hasCoverAtSide(ForgeDirection.UP) && worldObj.getPrecipitationHeight(xCoord, zCoord) - 2 < yCoord)
+            || (!hasCoverAtSide(ForgeDirection.NORTH) && precipitationHeightAtSide2 - 1 < yCoord
                 && precipitationHeightAtSide2 > -1)
-            || (getCoverIDAtSide(ForgeDirection.SOUTH) == 0 && precipitationHeightAtSide3 - 1 < yCoord
+            || (!hasCoverAtSide(ForgeDirection.SOUTH) && precipitationHeightAtSide3 - 1 < yCoord
                 && precipitationHeightAtSide3 > -1)
-            || (getCoverIDAtSide(ForgeDirection.WEST) == 0 && precipitationHeightAtSide4 - 1 < yCoord
+            || (!hasCoverAtSide(ForgeDirection.WEST) && precipitationHeightAtSide4 - 1 < yCoord
                 && precipitationHeightAtSide4 > -1)
-            || (getCoverIDAtSide(ForgeDirection.EAST) == 0 && precipitationHeightAtSide5 - 1 < yCoord
+            || (!hasCoverAtSide(ForgeDirection.EAST) && precipitationHeightAtSide5 - 1 < yCoord
                 && precipitationHeightAtSide5 > -1);
     }
 
@@ -1447,7 +1446,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     public boolean onRightclick(final EntityPlayer aPlayer, final ForgeDirection side, final float aX, final float aY,
         final float aZ) {
         final ForgeDirection wrenchingSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
-        final ForgeDirection effectiveSide = (getCoverIDAtSide(side) == 0) ? wrenchingSide : side;
+        final ForgeDirection effectiveSide = !hasCoverAtSide(side) ? wrenchingSide : side;
         Cover effectiveSideCover = getCoverAtSide(effectiveSide);
         if (isClientSide()) {
             // Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
@@ -1625,7 +1624,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                         return true;
                     }
 
-                    if (getCoverIDAtSide(effectiveSide) == 0) {
+                    if (!hasCoverAtSide(effectiveSide)) {
                         if (CoverRegistry.isCover(tCurrentItem)) {
                             if (CoverRegistry.getCoverPlacer(tCurrentItem)
                                 .isCoverPlaceable(effectiveSide, tCurrentItem, this)

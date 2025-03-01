@@ -315,7 +315,7 @@ public class BlockFrameBox extends BlockContainer {
         if (tTileEntity instanceof BaseMetaPipeEntity baseMetaPipe && (baseMetaPipe.mConnections & 0xFFFFFFC0) != 0) {
             return true;
         }
-        return (tTileEntity instanceof ICoverable coverable) && coverable.getCoverIDAtSide(side) != 0;
+        return (tTileEntity instanceof ICoverable coverable) && coverable.hasCoverAtSide(side);
     }
 
     @Override // THIS

@@ -313,7 +313,7 @@ public class MTEBoilerLava extends MTEBoiler {
             final ForgeDirection frontFacing = aBaseMetaTileEntity.getFrontFacing();
 
             if ((frontFacing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0
-                && aBaseMetaTileEntity.getCoverIDAtSide(frontFacing) == 0
+                && !aBaseMetaTileEntity.hasCoverAtSide(frontFacing)
                 && !aBaseMetaTileEntity.getOpacityAtSide(frontFacing)) {
 
                 final double oX = aBaseMetaTileEntity.getOffsetX(frontFacing, 1) + 8D / 16D;

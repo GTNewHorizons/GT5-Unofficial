@@ -176,27 +176,27 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
         float tSide4 = tSpace;
         float tSide5 = 1f - tSpace;
 
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.DOWN) != 0) {
+        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.DOWN)) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.UP) != 0) {
+        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.UP)) {
             tSide2 = tSide4 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.NORTH) != 0) {
+        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.NORTH)) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide1 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.SOUTH) != 0) {
+        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.SOUTH)) {
             tSide0 = tSide4 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.WEST) != 0) {
+        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.WEST)) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide1 = tSide3 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.EAST) != 0) {
+        if (getBaseMetaTileEntity().hasCoverAtSide(ForgeDirection.EAST)) {
             tSide0 = tSide2 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }

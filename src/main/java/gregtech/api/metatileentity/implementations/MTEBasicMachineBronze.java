@@ -156,8 +156,7 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
 
     @Override
     public boolean allowToCheckRecipe() {
-        if (mNeedsSteamVenting
-            && getBaseMetaTileEntity().getCoverIDAtSide(getBaseMetaTileEntity().getFrontFacing()) == 0
+        if (mNeedsSteamVenting && !getBaseMetaTileEntity().hasCoverAtSide(getBaseMetaTileEntity().getFrontFacing())
             && !GTUtility.hasBlockHitBox(
                 getBaseMetaTileEntity().getWorld(),
                 getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 1),

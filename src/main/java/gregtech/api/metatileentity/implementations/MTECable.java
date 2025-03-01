@@ -629,27 +629,27 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         float spaceWest = tSpace;
         float spaceEast = 1f - tSpace;
 
-        if (getBaseMetaTileEntity().getCoverIDAtSide(DOWN) != 0) {
+        if (getBaseMetaTileEntity().hasCoverAtSide(DOWN)) {
             spaceDown = spaceNorth = spaceWest = 0;
             spaceSouth = spaceEast = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(UP) != 0) {
+        if (getBaseMetaTileEntity().hasCoverAtSide(UP)) {
             spaceNorth = spaceWest = 0;
             spaceUp = spaceSouth = spaceEast = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(NORTH) != 0) {
+        if (getBaseMetaTileEntity().hasCoverAtSide(NORTH)) {
             spaceDown = spaceNorth = spaceWest = 0;
             spaceUp = spaceEast = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(SOUTH) != 0) {
+        if (getBaseMetaTileEntity().hasCoverAtSide(SOUTH)) {
             spaceDown = spaceWest = 0;
             spaceUp = spaceSouth = spaceEast = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(WEST) != 0) {
+        if (getBaseMetaTileEntity().hasCoverAtSide(WEST)) {
             spaceDown = spaceNorth = spaceWest = 0;
             spaceUp = spaceSouth = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(EAST) != 0) {
+        if (getBaseMetaTileEntity().hasCoverAtSide(EAST)) {
             spaceDown = spaceNorth = 0;
             spaceUp = spaceSouth = spaceEast = 1;
         }

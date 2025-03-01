@@ -257,7 +257,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         }
     }
 
-    public boolean hasCoverItemAtSide(ForgeDirection side) {
+    // TODO: Re-implement using validCoversMask, if that makes sense.
+    public boolean hasCoverAtSide(ForgeDirection side) {
         return getCoverAtSide(side) != CoverRegistry.NO_COVER;
     }
 

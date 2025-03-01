@@ -563,7 +563,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 && (((BaseMetaPipeEntity) tTileEntity).mConnections & 0xFFFFFFC0) != 0) {
                 return true;
             }
-            return tTileEntity instanceof ICoverable && ((ICoverable) tTileEntity).getCoverIDAtSide(side) != 0;
+            return tTileEntity instanceof ICoverable && ((ICoverable) tTileEntity).hasCoverAtSide(side);
         }
         return false;
     }
