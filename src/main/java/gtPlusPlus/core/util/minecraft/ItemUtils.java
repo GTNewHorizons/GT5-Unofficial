@@ -40,7 +40,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
@@ -892,7 +891,7 @@ public class ItemUtils {
         if (GTUtility.areStacksEqual(aStack, GregtechItemList.InfiniteMutationCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, AgriculturalChem.mGreenCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.GreenMetalCatalyst.get(1), true)) {
             return true;
         }
         if (GTUtility.areStacksEqual(aStack, GregtechItemList.PlatinumGroupCatalyst.get(1), true)) {

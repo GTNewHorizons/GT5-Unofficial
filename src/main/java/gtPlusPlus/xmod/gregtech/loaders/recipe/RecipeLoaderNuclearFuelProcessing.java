@@ -18,7 +18,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.item.chemistry.NuclearChem;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
@@ -174,7 +174,7 @@ public class RecipeLoaderNuclearFuelProcessing {
             .itemOutputs(MaterialsNuclides.UF6F2FP.getCell(1))
             .outputChances(10000)
             .fluidInputs(MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(1000))
-            .fluidOutputs(FluidUtils.getFluidStack(NuclearChem.Impure_LiFBeF2, 1000))
+            .fluidOutputs(new FluidStack(GTPPFluids.ImpureMoltenSaltBase, 1000))
             .duration(2 * HOURS)
             .eut(TierEU.RECIPE_HV)
             .addTo(reactorProcessingUnitRecipes);
@@ -184,7 +184,7 @@ public class RecipeLoaderNuclearFuelProcessing {
             .itemInputs(GTUtility.getIntegratedCircuit(1), MaterialsElements.getInstance().FLUORINE.getCell(3))
             .itemOutputs(CI.emptyCells(1), MaterialsNuclides.UF6F2FP.getCell(2))
             .fluidInputs(MaterialsNuclides.Sparged_LiFBeF2UF4FP.getFluidStack(1000))
-            .fluidOutputs(FluidUtils.getFluidStack(NuclearChem.Impure_LiFBeF2, 2000))
+            .fluidOutputs(new FluidStack(GTPPFluids.ImpureMoltenSaltBase, 2000))
             .duration(60 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .addTo(reactorProcessingUnitRecipes);
@@ -210,7 +210,7 @@ public class RecipeLoaderNuclearFuelProcessing {
 
         // Reactor Core step 2B - Distillation
         GTValues.RA.stdBuilder()
-            .fluidInputs(FluidUtils.getFluidStack(NuclearChem.Impure_LiFBeF2, 1000))
+            .fluidInputs(new FluidStack(GTPPFluids.ImpureMoltenSaltBase, 1000))
             .fluidOutputs(MaterialsNuclides.LiFBeF2.getFluidStack(250))
             .duration(7 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
