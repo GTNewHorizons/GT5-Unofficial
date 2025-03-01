@@ -95,10 +95,10 @@ public abstract class Cover {
     /**
      * Gets the initial tick rate for doCoverThings of the Cover
      * <p/>
-     * Defaults to getTickRate(), override for different initial and minimum tick rates
+     * Defaults to getMinimumTickRate(), override for different initial and minimum tick rates
      */
     public int getDefaultTickRate() {
-        return 0;
+        return getMinimumTickRate();
     }
 
     /**
@@ -342,8 +342,12 @@ public abstract class Cover {
         final int currentTickRate = getTickRate();
         final int stepAmount = currentTickRate == 20 ? (isDecreasing ? 5 : 20) : (currentTickRate < 20 ? 5 : 20);
 
-        tickRateAddition = clamp(tickRateAddition + (isDecreasing ? -1 : 1) * stepAmount);
-        tickRateAddition = clamp(tickRateAddition - (getTickRate() % stepAmount));
+        setTickRateAddition(tickRateAddition + (isDecreasing ? -1 : 1) * stepAmount);
+        setTickRateAddition(tickRateAddition - (getTickRate() % stepAmount));
+    }
+
+    protected void setTickRateAddition(int newValue) {
+        tickRateAddition = Math.min(MAX_TICK_RATE_ADDITION, Math.max(0, newValue));
     }
 
     /**
@@ -397,10 +401,6 @@ public abstract class Cover {
     @NotNull
     public List<String> getAdditionalTooltip() {
         return ImmutableList.of();
-    }
-
-    private static int clamp(int input) {
-        return Math.min(MAX_TICK_RATE_ADDITION, Math.max(0, input));
     }
 
     public boolean allowsCopyPasteTool() {

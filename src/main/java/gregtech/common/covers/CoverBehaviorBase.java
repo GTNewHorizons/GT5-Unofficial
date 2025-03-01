@@ -53,7 +53,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
         this.coverData = initializeData(context.getCoverData());
         this.coverFGTexture = coverFGTexture;
         // Calling after data was initialized since overrides may depend on data.
-        this.tickRateAddition = initializeTickRateAddition(context.getCoverData());
+        setTickRateAddition(initializeTickRateAddition(context.getCoverData()));
     }
 
     private T initializeData(Object coverData) {
