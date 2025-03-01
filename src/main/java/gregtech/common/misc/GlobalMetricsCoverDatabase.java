@@ -28,6 +28,7 @@ import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ExplosionEvent.Detonate;
@@ -308,7 +309,8 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
             return IntStream.range(0, tagList.tagCount())
                 .mapToObj(tagList::getCompoundTagAt)
                 .map(
-                    nbt -> CoverRegistry.buildCover(null, nbt)
+                    nbt -> CoverRegistry.getRegistrationFromNbt(nbt)
+                        .buildCover(ForgeDirection.UNKNOWN, null, nbt)
                         .getCoverData())
                 .filter(
                     serializableObject -> serializableObject instanceof CoverMetricsTransmitter.MetricsTransmitterData)

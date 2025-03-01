@@ -109,10 +109,14 @@ public class CoverRegistry {
         return colorOverride.getTextColorOrDefault(textType, defaultColor);
     }
 
-    public static Cover buildCover(ICoverable coverable, NBTTagCompound nbt) {
+    public static CoverRegistration<?> getRegistrationFromNbt(NBTTagCompound nbt) {
         int coverID = nbt.getInteger(NBT_ID);
-        return CoverRegistry.getRegistration(coverID)
-            .buildCover(coverable, nbt);
+        return CoverRegistry.getRegistration(coverID);
+    }
+
+    public static void writeCoverToNbt(Cover cover, NBTTagCompound nbt) {
+        nbt.setInteger(NBT_ID, cover.getCoverID());
+        cover.writeToNBT(nbt);
     }
 
     /**

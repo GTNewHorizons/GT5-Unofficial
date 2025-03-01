@@ -36,7 +36,7 @@ import io.netty.buffer.ByteBuf;
 
 public abstract class Cover {
 
-    private static final String NBT_SIDE = "s", NBT_ID = "id", NBT_TICK_RATE_ADDITION = "tra";
+    private static final String NBT_TICK_RATE_ADDITION = "tra";
 
     // One minute
     public static final int MAX_TICK_RATE_ADDITION = 1200;
@@ -73,8 +73,6 @@ public abstract class Cover {
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound aNBT) {
-        aNBT.setByte(NBT_SIDE, (byte) coverSide.ordinal());
-        aNBT.setInteger(NBT_ID, coverID);
         aNBT.setInteger(NBT_TICK_RATE_ADDITION, tickRateAddition);
         return aNBT;
     }
@@ -383,10 +381,6 @@ public abstract class Cover {
 
     public int getTickRateAddition() {
         return tickRateAddition;
-    }
-
-    public void setTickRateAddition(final int tickRateAddition) {
-        this.tickRateAddition = clamp(tickRateAddition);
     }
 
     /**

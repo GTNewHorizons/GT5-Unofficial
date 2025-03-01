@@ -63,6 +63,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         .mapToInt(Enum::ordinal)
         .mapToObj(i -> "mCoverData" + i)
         .toArray(String[]::new);
+    private static final String NBT_COVER_SIDE = "s";
     private static final String[] COVER_DIRECTION_NAMES = new String[] { "GT5U.interface.coverTabs.down",
         "GT5U.interface.coverTabs.up", "GT5U.interface.coverTabs.north", "GT5U.interface.coverTabs.south",
         "GT5U.interface.coverTabs.west", "GT5U.interface.coverTabs.east" };
@@ -86,7 +87,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             if (!cover.isValid()) continue;
 
             // Backwards compat, in case of a revert... for now
-            tList.appendTag(cover.writeToNBT(new NBTTagCompound()));
+            NBTTagCompound nbt = new NBTTagCompound();
+            nbt.setByte(NBT_COVER_SIDE, (byte) side.ordinal());
+            CoverRegistry.writeCoverToNbt(cover, nbt);
+            tList.appendTag(nbt);
             aNBT.setTag(
                 COVER_DATA_NBT_KEYS[side.ordinal()],
                 cover.getCoverData()
@@ -119,10 +123,16 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final NBTTagList tList = aNBT.getTagList(GTValues.NBT.COVERS, 10);
         for (byte i = 0; i < tList.tagCount(); i++) {
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
-            final Cover cover = CoverRegistry.buildCover(this, tNBT);
+            final Cover cover = buildCover(tNBT);
             this.setCoverAtSide(cover.getSide(), cover);
             if (cover.isDataNeededOnClient()) issueCoverUpdate(ForgeDirection.getOrientation(i));
         }
+    }
+
+    private Cover buildCover(NBTTagCompound nbt) {
+        ForgeDirection side = ForgeDirection.getOrientation(nbt.getByte(NBT_COVER_SIDE));
+        return CoverRegistry.getRegistrationFromNbt(nbt)
+            .buildCover(side, this, nbt);
     }
 
     public abstract boolean isStillValid();
@@ -253,6 +263,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             validCoversMask &= (byte) ~side.flag;
             if (cover.isValid()) validCoversMask |= side.flag;
         }
+    }
+
+    public boolean hasCoverItemAtSide(ForgeDirection side) {
+        return getCoverAtSide(side) != CoverRegistry.NO_COVER;
     }
 
     @Override
@@ -428,7 +442,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final NBTTagList tList = tag.getTagList(GTValues.NBT.COVERS, 10);
         for (byte i = 0; i < tList.tagCount(); i++) {
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
-            final Cover cover = CoverRegistry.buildCover(this, tNBT);
+            final Cover cover = buildCover(tNBT);
             if (!cover.isValid()) continue;
 
             final ItemStack coverStack = cover.asItemStack();
@@ -475,7 +489,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
         for (byte i = 0; i < tList.tagCount(); i++) {
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
-            final Cover cover = CoverRegistry.buildCover(null, tNBT);
+            final Cover cover = CoverRegistry.getRegistrationFromNbt(tNBT)
+                .buildCover(ForgeDirection.UNKNOWN, null, tNBT);
             if (!cover.isValid()) continue;
 
             final ItemStack coverStack = cover.asItemStack();
@@ -483,9 +498,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                 aList.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.interface.coverTabs.cover_on",
-                        getTranslation(
-                            FACES[cover.getSide()
-                                .ordinal()]),
+                        getTranslation(FACES[tNBT.getByte(NBT_COVER_SIDE)]),
                         coverStack.getDisplayName()));
             }
         }

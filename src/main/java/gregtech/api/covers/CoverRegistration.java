@@ -17,7 +17,6 @@ public class CoverRegistration<T extends ISerializableObject> {
     private final int coverId;
     private final CoverFactory factory;
     private final CoverPlacer coverPlacer;
-    private static final String NBT_SIDE = "s";
 
     public CoverRegistration(int coverId, CoverFactory factory, CoverPlacer coverPlacer) {
         this.coverId = coverId;
@@ -29,12 +28,12 @@ public class CoverRegistration<T extends ISerializableObject> {
         return buildCoverFromContext(side, coverable, null);
     }
 
-    public Cover buildCover(ForgeDirection side, ICoverable coverable, ISerializableObject data) {
+    public Cover buildCover(ForgeDirection side, ICoverable coverable, @NotNull ISerializableObject data) {
         return buildCoverFromContext(side, coverable, data);
     }
 
-    public Cover buildCover(ICoverable coverable, @NotNull NBTTagCompound nbt) {
-        return buildCoverFromContext(ForgeDirection.getOrientation(nbt.getByte(NBT_SIDE)), coverable, nbt);
+    public Cover buildCover(ForgeDirection side, ICoverable coverable, @NotNull NBTTagCompound nbt) {
+        return buildCoverFromContext(side, coverable, nbt);
     }
 
     public Cover buildCover(ICoverable coverable, @NotNull ByteArrayDataInput data) {

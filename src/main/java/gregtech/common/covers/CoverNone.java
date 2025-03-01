@@ -83,4 +83,9 @@ public class CoverNone extends CoverBehavior {
         // Cancel opening the UI.
         return null;
     }
+
+    @Override
+    public boolean allowsCopyPasteTool() {
+        return false;
+    }
 }
