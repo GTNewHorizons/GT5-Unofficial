@@ -163,7 +163,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         if (difference > 1.05 && difference < 1.4) {
             side = ForgeDirection.EAST;
         }
-        boolean tCovered = side != ForgeDirection.UNKNOWN && mBaseMetaTileEntity.getCoverIDAtSide(side) > 0;
+        boolean tCovered = side != ForgeDirection.UNKNOWN && mBaseMetaTileEntity.hasCoverAtSide(side);
         if (isConnectedAtSide(side)) {
             tCovered = true;
         }

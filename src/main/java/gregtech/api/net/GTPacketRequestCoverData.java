@@ -94,7 +94,8 @@ public class GTPacketRequestCoverData extends GTPacket {
         if (world != null) {
             final TileEntity tile = world.getTileEntity(mX, mY, mZ);
             if (tile instanceof CoverableTileEntity te) {
-                if (!te.isDead() && te.getCoverIDAtSide(side) == coverID) {
+                if (!te.isDead() && te.getCoverAtSide(side)
+                    .getCoverID() == coverID) {
                     te.issueCoverUpdate(side);
                 }
             }

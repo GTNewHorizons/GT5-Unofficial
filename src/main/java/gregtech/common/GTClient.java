@@ -831,7 +831,7 @@ public class GTClient extends GTProxy implements Runnable {
             || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sScrewdriverList)) {
             if (!((ICoverable) aTileEntity).hasCoverAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)))
                 for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
-                    if (((ICoverable) aTileEntity).getCoverIDAtSide(tSide) > 0) {
+                    if (((ICoverable) aTileEntity).hasCoverAtSide(tSide)) {
                         drawGrid(aEvent, true, false, true);
                         return;
                     }

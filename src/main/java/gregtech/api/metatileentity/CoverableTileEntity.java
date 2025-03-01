@@ -208,7 +208,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final ITexture coverTexture = (!(this instanceof BaseMetaPipeEntity)) ? cover.getSpecialCoverFGTexture()
             : cover.getSpecialCoverTexture();
 
-        return coverTexture != null ? coverTexture : CoverRegistry.getCoverTexture(getCoverIDAtSide(side));
+        return coverTexture != null ? coverTexture : CoverRegistry.getCoverTexture(cover.getCoverID());
     }
 
     protected void requestCoverDataIfNeeded() {
@@ -235,11 +235,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     public void setCoverDataAtSide(ForgeDirection side, ISerializableObject aData) {
         final Cover cover = getCoverAtSide(side);
         if (cover.isValid() && cover.acceptsDataObject(aData)) cover.setCoverData(aData);
-    }
-
-    @Override
-    public int getCoverIDAtSide(ForgeDirection side) {
-        return getCoverAtSide(side).getCoverID();
     }
 
     @Override
