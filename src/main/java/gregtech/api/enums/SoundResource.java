@@ -11,10 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.util.ResourceLocation;
 
-import com.google.common.collect.Maps;
-
-import gregtech.api.GregTechAPI;
-
 /**
  * Enumerates known sounds with id and resource-location
  *
@@ -52,8 +48,7 @@ public enum SoundResource {
     IC2_MACHINES_MINER_OP(205, IndustrialCraft2.ID, "machines.MinerOp"),
     IC2_MACHINES_PUMP_OP(206, IndustrialCraft2.ID, "machines.PumpOp"),
     IC2_MACHINES_ELECTROFURNACE_LOOP(207, IndustrialCraft2.ID, "machines.ElectroFurnaceLoop"),
-    @Deprecated
-    DEPRECATED_DUPE_OF_IC2_MACHINES_INDUCTION_LOOP(208, IndustrialCraft2.ID, "machines.InductionLoop"),
+    // 208 not used
     IC2_MACHINES_MACHINE_OVERLOAD(209, IndustrialCraft2.ID, "machines.MachineOverload"),
     IC2_MACHINES_INTERRUPT_ONE(210, IndustrialCraft2.ID, "machines.InterruptOne"),
     IC2_MACHINES_KA_CHING(211, IndustrialCraft2.ID, "machines.KaChing"),
@@ -402,20 +397,6 @@ public enum SoundResource {
      */
     public static SoundResource get(String resourceStr) {
         return RESOURCE_STR_SOUND_MAP.get(resourceStr);
-    }
-
-    /**
-     * Provides a backward-compatible Sounds {@code Map<Integer, String>} sound list
-     *
-     * @return The map for the deprecated {@link GregTechAPI#sSoundList}
-     * @deprecated This method is planned for removal.
-     *             <p>
-     *             Use this {@link SoundResource} enum instead.
-     *             </p>
-     */
-    @Deprecated
-    public static Map<Integer, String> asSoundList() {
-        return Maps.transformValues(ID_SOUND_MAP, SoundResource::toString);
     }
 
     /**

@@ -18,6 +18,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -27,13 +28,12 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.plugin.agrichem.BioRecipes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class RecipeLoaderGlueLine {
@@ -82,7 +82,7 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(19),
-                ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 6),
+                Materials.SodiumCarbonate.getDust(6),
                 MaterialMisc.SODIUM_CYANIDE.getDust(3))
             .itemOutputs(MaterialMisc.CYANOACETIC_ACID.getDust(9), Materials.Salt.getDust(6))
             .fluidInputs(
@@ -117,14 +117,11 @@ public class RecipeLoaderGlueLine {
             .metadata(CHEMPLANT_CASING_TIER, 5)
             .addTo(chemicalPlantRecipes);
 
-        BioRecipes.mFormaldehyde = FluidUtils.getFluidStack("fluid.formaldehyde", 1)
-            .getFluid();
-
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(22), GregtechItemList.SolidAcidCatalyst.get(0))
             .fluidInputs(
                 MaterialMisc.ETHYL_CYANOACETATE.getFluidStack(100),
-                FluidUtils.getFluidStack(BioRecipes.mFormaldehyde, 100))
+                new FluidStack(GTPPFluids.Formaldehyde, 100))
             .fluidOutputs(MaterialMisc.CYANOACRYLATE_POLYMER.getFluidStack(100), FluidUtils.getWater(1000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -148,9 +145,7 @@ public class RecipeLoaderGlueLine {
     private static void chemicalReactorRecipes() {
         // NaOH + HCN = NaCN + H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(17),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3))
+            .itemInputs(GTUtility.getIntegratedCircuit(17), Materials.SodiumHydroxide.getDust(3))
             .itemOutputs(MaterialMisc.SODIUM_CYANIDE.getDust(3))
             .fluidInputs(MaterialMisc.HYDROGEN_CYANIDE.getFluidStack(1000))
             .fluidOutputs(FluidUtils.getWater(1000))
@@ -160,9 +155,7 @@ public class RecipeLoaderGlueLine {
 
         // #UniversalChemical recipemap won't generate LCR recipe if config >= 10
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(17),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3))
+            .itemInputs(GTUtility.getIntegratedCircuit(17), Materials.SodiumHydroxide.getDust(3))
             .itemOutputs(MaterialMisc.SODIUM_CYANIDE.getDust(3))
             .fluidInputs(MaterialMisc.HYDROGEN_CYANIDE.getFluidStack(1000))
             .fluidOutputs(FluidUtils.getWater(1000))
