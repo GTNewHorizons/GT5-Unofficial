@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -332,6 +333,10 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
         @Override
         public int hashCode() {
             return this.hash;
+        }
+
+        public String getInfo() {
+            return String.format("%d, %d, %d DIM: %d",x,y,z,dim);
         }
     }
 }
