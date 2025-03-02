@@ -15,6 +15,7 @@ import java.util.function.IntFunction;
 
 import javax.annotation.Nonnull;
 
+import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -109,7 +110,7 @@ public class GregTechAPI {
     /**
      * The Advanced Redstone Frequencies
      */
-    public static final Map<String, Map<Integer, Map<Long, Byte>>> sAdvancedWirelessRedstone = new ConcurrentHashMap<>();
+    public static final Map<String, Map<Integer, Map<CoverAdvancedWirelessRedstoneBase.CoverData, Byte>>> sAdvancedWirelessRedstone = new ConcurrentHashMap<>();
 
     /**
      * The IDSU Frequencies
