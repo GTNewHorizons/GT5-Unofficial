@@ -929,6 +929,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
+import gregtech.common.tileentities.machines.basic.MTEModificationTable;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.GregTechAPI;
@@ -12376,6 +12377,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTENameRemover(NAME_REMOVER.ID, "fix.name.remover", "Name Remover", 0).getStackForm(1L));
     }
 
+    private static void registerModificationTable() {
+        ItemList.ModificationTable
+            .set(new MTEModificationTable(MODIFICATION_TABLE.ID, "modificationtable", "Modification Table", 0).getStackForm(1L));
+    }
+
     private static void registerAirFilters() {
         ItemList.Machine_Multi_AirFilterT1.set(
             new MTEAirFilter1(AIR_FILTER_CONTROLLER_T1.ID, "multimachine.airfilter.01", "Electric Air Filter T1")
@@ -12956,6 +12962,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerPrinter();
         registerOven();
         registerNameRemover();
+        registerModificationTable();
         registerAirFilters();
 
         ItemList.AdvDebugStructureWriter.set(

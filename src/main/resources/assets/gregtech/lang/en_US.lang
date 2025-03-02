@@ -9,6 +9,8 @@ itemGroup.GregTech.Main=Main
 itemGroup.GregTech.Materials=Materials
 itemGroup.GregTech.Ores=Ores
 
+item.itemHelmetMech.name=Mechanical Helmet
+
 item.gt.advancedsensorcard.name=GregTech Advanced Sensor Card
 gt.blackholerenderer.name=Black Hole Renderer
 gt.block.longdistancepipe.name=Long Distance Pipeline Pipe

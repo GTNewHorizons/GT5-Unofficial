@@ -2607,6 +2607,9 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_AirFilterT2,
     Machine_Multi_AirFilterT3,
 
+    ModificationTable,
+    Armor_Core_T1,
+
     // semicolon after the comment to reduce merge conflicts
     ;
 
