@@ -115,7 +115,7 @@ public class MTEDieselGenerator extends MTEBasicGenerator {
     public void onRandomDisplayTick(IGregTechTileEntity aBaseMetaTileEntity) {
         if (aBaseMetaTileEntity.isActive()) {
 
-            if (aBaseMetaTileEntity.getCoverIDAtSide(ForgeDirection.UP) == 0
+            if (!aBaseMetaTileEntity.hasCoverAtSide(ForgeDirection.UP)
                 && !aBaseMetaTileEntity.getOpacityAtSide(ForgeDirection.UP)) {
 
                 final double x = aBaseMetaTileEntity.getOffsetX(ForgeDirection.UP, 1) + 2D / 16D

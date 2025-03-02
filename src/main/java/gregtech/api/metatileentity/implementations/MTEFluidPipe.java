@@ -51,24 +51,20 @@ import gregtech.api.enums.ToolModes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.CoverBehavior;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GTClient;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Other;
+import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverDrain;
 import gregtech.common.covers.CoverFluidRegulator;
-import gregtech.common.covers.CoverInfo;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -410,9 +406,9 @@ public class MTEFluidPipe extends MetaPipeEntity {
 
             if (isConnectedAtSide(side) && tTank != null
                 && (mLastReceivedFrom & side.flag) == 0
-                && getBaseMetaTileEntity().getCoverInfoAtSide(side)
+                && getBaseMetaTileEntity().getCoverAtSide(side)
                     .letsFluidOut(tFluid.getFluid())
-                && (gTank == null || gTank.getCoverInfoAtSide(oppositeSide)
+                && (gTank == null || gTank.getCoverAtSide(oppositeSide)
                     .letsFluidIn(tFluid.getFluid()))) {
                 if (tTank.fill(oppositeSide, tFluid, false) > 0) {
                     tTanks.add(new MutableTriple<>(tTank, oppositeSide, 0));
@@ -699,37 +695,13 @@ public class MTEFluidPipe extends MetaPipeEntity {
     }
 
     @Override
-    public boolean letsIn(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return coverBehavior.letsFluidIn(side, aCoverID, aCoverVariable, null, aTileEntity);
+    public boolean letsIn(Cover cover) {
+        return cover.letsFluidIn(null);
     }
 
     @Override
-    public boolean letsOut(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return coverBehavior.letsFluidOut(side, aCoverID, aCoverVariable, null, aTileEntity);
-    }
-
-    @Override
-    public boolean letsIn(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return coverBehavior.letsFluidIn(side, aCoverID, aCoverVariable, null, aTileEntity);
-    }
-
-    @Override
-    public boolean letsOut(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return coverBehavior.letsFluidOut(side, aCoverID, aCoverVariable, null, aTileEntity);
-    }
-
-    @Override
-    public boolean letsIn(CoverInfo coverInfo) {
-        return coverInfo.letsFluidIn(null);
-    }
-
-    @Override
-    public boolean letsOut(CoverInfo coverInfo) {
-        return coverInfo.letsFluidOut(null);
+    public boolean letsOut(Cover cover) {
+        return cover.letsFluidOut(null);
     }
 
     @Override
@@ -740,13 +712,12 @@ public class MTEFluidPipe extends MetaPipeEntity {
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
         if (baseMetaTile == null) return false;
 
-        final CoverBehaviorBase<?> coverBehavior = baseMetaTile.getCoverInfoAtSide(side)
-            .getCoverBehavior();
+        final Cover cover = baseMetaTile.getCoverAtSide(side);
         final IGregTechTileEntity gTileEntity = (tileEntity instanceof IGregTechTileEntity)
             ? (IGregTechTileEntity) tileEntity
             : null;
 
-        if (coverBehavior instanceof CoverDrain || (TinkerConstruct.isModLoaded() && isTConstructFaucet(tileEntity)))
+        if (cover instanceof CoverDrain || (TinkerConstruct.isModLoaded() && isTConstructFaucet(tileEntity)))
             return true;
 
         final IFluidHandler fTileEntity = (tileEntity instanceof IFluidHandler) ? (IFluidHandler) tileEntity : null;
@@ -755,8 +726,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
             final FluidTankInfo[] tInfo = fTileEntity.getTankInfo(tSide);
             if (tInfo != null) {
                 return tInfo.length > 0 || (Translocator.isModLoaded() && isTranslocator(tileEntity))
-                    || gTileEntity != null && gTileEntity.getCoverInfoAtSide(side)
-                        .getCoverBehavior() instanceof CoverFluidRegulator;
+                    || gTileEntity != null && gTileEntity.getCoverAtSide(side) instanceof CoverFluidRegulator;
             }
         }
         return false;

@@ -15,13 +15,14 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
+import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
+import gregtech.api.util.ISerializableObject.LegacyCoverData;
+import gregtech.common.covers.CoverBehavior;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
@@ -34,51 +35,57 @@ public class CoverEnderFluidLink extends CoverBehavior {
     private static final int IMPORT_EXPORT_MASK = 0b0001;
     private static final int PUBLIC_PRIVATE_MASK = 0b0010;
 
-    public CoverEnderFluidLink() {}
+    public CoverEnderFluidLink(CoverContext context) {
+        super(context);
+    }
 
-    private void transferFluid(IFluidHandler source, ForgeDirection side, IFluidHandler target, ForgeDirection tSide,
-        int amount) {
-        FluidStack fluidStack = source.drain(side, amount, false);
+    private void transferFluid(IFluidHandler source, ForgeDirection coverSide, IFluidHandler target,
+        ForgeDirection tSide, int amount) {
+        FluidStack fluidStack = source.drain(coverSide, amount, false);
 
         if (fluidStack != null) {
             int fluidTransferred = target.fill(tSide, fluidStack, true);
-            source.drain(side, fluidTransferred, true);
+            source.drain(coverSide, fluidTransferred, true);
         }
     }
 
-    private static boolean testBit(int aCoverVariable, int bitMask) {
-        return (aCoverVariable & bitMask) != 0;
+    private static boolean testBit(int coverDataValue, int bitMask) {
+        return (coverDataValue & bitMask) != 0;
     }
 
-    private static int toggleBit(int aCoverVariable, int bitMask) {
-        return (aCoverVariable ^ bitMask);
+    private static int toggleBit(int coverDataValue, int bitMask) {
+        return (coverDataValue ^ bitMask);
     }
 
     @Override
-    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
-        if ((aTileEntity instanceof IFluidHandler teTank)) {
-            EnderLinkTag tag = EnderWorldSavedData.getEnderLinkTag((IFluidHandler) aTileEntity);
+    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return coverData;
+        }
+        int coverDataValue = coverData.get();
+        if ((coverable instanceof IFluidHandler teTank)) {
+            EnderLinkTag tag = EnderWorldSavedData.getEnderLinkTag(teTank);
 
             if (tag != null) {
-                boolean shouldBePrivate = testBit(aCoverVariable, PUBLIC_PRIVATE_MASK);
+                boolean shouldBePrivate = testBit(coverDataValue, PUBLIC_PRIVATE_MASK);
                 boolean isPrivate = tag.getUUID() != null;
 
                 if (shouldBePrivate != isPrivate) {
-                    tag = new EnderLinkTag(tag.getFrequency(), shouldBePrivate ? getOwner(aTileEntity) : null);
+                    tag = new EnderLinkTag(tag.getFrequency(), shouldBePrivate ? getOwner(coverable) : null);
                     EnderWorldSavedData.bindEnderLinkTag(teTank, tag);
                 }
 
                 IFluidHandler enderTank = EnderWorldSavedData.getEnderFluidContainer(tag);
 
-                if (testBit(aCoverVariable, IMPORT_EXPORT_MASK)) {
-                    transferFluid(enderTank, ForgeDirection.UNKNOWN, teTank, side, L_PER_TICK);
+                if (testBit(coverDataValue, IMPORT_EXPORT_MASK)) {
+                    transferFluid(enderTank, ForgeDirection.UNKNOWN, teTank, coverSide, L_PER_TICK);
                 } else {
-                    transferFluid(teTank, side, enderTank, ForgeDirection.UNKNOWN, L_PER_TICK);
+                    transferFluid(teTank, coverSide, enderTank, ForgeDirection.UNKNOWN, L_PER_TICK);
                 }
             }
         }
-        return aCoverVariable;
+        return LegacyCoverData.of(coverDataValue);
     }
 
     private static UUID getOwner(Object te) {
@@ -92,53 +99,49 @@ public class CoverEnderFluidLink extends CoverBehavior {
     }
 
     @Override
-    public void onBaseTEDestroyed(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        if (aTileEntity instanceof IFluidHandler fluidHandlerSelf) {
+    public void onBaseTEDestroyed() {
+        if (coveredTile.get() instanceof IFluidHandler fluidHandlerSelf) {
             EnderWorldSavedData.unbindTank(fluidHandlerSelf);
         }
     }
 
     @Override
-    public boolean onCoverRemoval(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        boolean aForced) {
-        if (aTileEntity instanceof IFluidHandler fluidHandlerSelf) {
+    public void onCoverRemoval() {
+        if (coveredTile.get() instanceof IFluidHandler fluidHandlerSelf) {
             EnderWorldSavedData.unbindTank(fluidHandlerSelf);
         }
-        return true;
     }
 
     @Override
-    public String getDescription(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public String getDescription() {
         return "";
     }
 
     @Override
-    public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidIn(Fluid aFluid) {
         return true;
     }
 
     @Override
-    public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidOut(Fluid aFluid) {
         return true;
     }
 
     @Override
-    public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int newCoverVariable = toggleBit(aCoverVariable, IMPORT_EXPORT_MASK);
+    public LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        int coverDataValue = coverData.get();
+        int newCoverVariable = toggleBit(coverDataValue, IMPORT_EXPORT_MASK);
 
-        if (testBit(aCoverVariable, IMPORT_EXPORT_MASK)) {
+        if (testBit(coverDataValue, IMPORT_EXPORT_MASK)) {
             PlayerChatHelper.SendInfo(aPlayer, "Ender Suction Engaged!"); // TODO Translation support
         } else {
             PlayerChatHelper.SendInfo(aPlayer, "Ender Filling Engaged!");
         }
-        return newCoverVariable;
+        return LegacyCoverData.of(newCoverVariable);
     }
 
     @Override
-    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getMinimumTickRate() {
         // Runs each tick
         return 1;
     }
@@ -208,34 +211,33 @@ public class CoverEnderFluidLink extends CoverBehavior {
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverEnderFluidLink.this,
+                        CoverEnderFluidLink.this::loadFromNbt,
                         (id, coverData) -> !getClickable(id, convert(coverData)),
-                        (id, coverData) -> new ISerializableObject.LegacyCoverData(
-                            getNewCoverVariable(id, convert(coverData))))
-                                .addToggleButton(
-                                    PUBLIC_BUTTON_ID,
-                                    CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_WHITELIST)
-                                        .addTooltip(GTUtility.trans("326", "Public"))
-                                        .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 2))
-                                .addToggleButton(
-                                    PRIVATE_BUTTON_ID,
-                                    CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLACKLIST)
-                                        .addTooltip(GTUtility.trans("327", "Private"))
-                                        .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 2))
-                                .addToggleButton(
-                                    IMPORT_BUTTON_ID,
-                                    CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                                        .addTooltip(GTUtility.trans("007", "Import"))
-                                        .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 3))
-                                .addToggleButton(
-                                    EXPORT_BUTTON_ID,
-                                    CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                                        .addTooltip(GTUtility.trans("006", "Export"))
-                                        .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 3)))
+                        (id, coverData) -> new LegacyCoverData(getNewCoverVariable(id, convert(coverData))))
+                            .addToggleButton(
+                                PUBLIC_BUTTON_ID,
+                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_WHITELIST)
+                                    .addTooltip(GTUtility.trans("326", "Public"))
+                                    .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 2))
+                            .addToggleButton(
+                                PRIVATE_BUTTON_ID,
+                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLACKLIST)
+                                    .addTooltip(GTUtility.trans("327", "Private"))
+                                    .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 2))
+                            .addToggleButton(
+                                IMPORT_BUTTON_ID,
+                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
+                                    .addTooltip(GTUtility.trans("007", "Import"))
+                                    .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 3))
+                            .addToggleButton(
+                                EXPORT_BUTTON_ID,
+                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
+                                    .addTooltip(GTUtility.trans("006", "Export"))
+                                    .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 3)))
                 .widget(
                     new TextWidget(GTUtility.trans("328", "Channel")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(START_X + SPACE_X * 5, 4 + START_Y + SPACE_Y * 0))
@@ -248,29 +250,21 @@ public class CoverEnderFluidLink extends CoverBehavior {
         }
 
         private int getNewCoverVariable(int id, int coverVariable) {
-            switch (id) {
-                case PUBLIC_BUTTON_ID:
-                case PRIVATE_BUTTON_ID:
-                    return toggleBit(coverVariable, PUBLIC_PRIVATE_MASK);
-                case IMPORT_BUTTON_ID:
-                case EXPORT_BUTTON_ID:
-                    return toggleBit(coverVariable, IMPORT_EXPORT_MASK);
-            }
-            return coverVariable;
+            return switch (id) {
+                case PUBLIC_BUTTON_ID, PRIVATE_BUTTON_ID -> toggleBit(coverVariable, PUBLIC_PRIVATE_MASK);
+                case IMPORT_BUTTON_ID, EXPORT_BUTTON_ID -> toggleBit(coverVariable, IMPORT_EXPORT_MASK);
+                default -> coverVariable;
+            };
         }
 
         private boolean getClickable(int id, int coverVariable) {
-            switch (id) {
-                case PUBLIC_BUTTON_ID:
-                    return testBit(coverVariable, PUBLIC_PRIVATE_MASK);
-                case PRIVATE_BUTTON_ID:
-                    return !testBit(coverVariable, PUBLIC_PRIVATE_MASK);
-                case IMPORT_BUTTON_ID:
-                    return testBit(coverVariable, IMPORT_EXPORT_MASK);
-                case EXPORT_BUTTON_ID:
-                    return !testBit(coverVariable, IMPORT_EXPORT_MASK);
-            }
-            return false;
+            return switch (id) {
+                case PUBLIC_BUTTON_ID -> testBit(coverVariable, PUBLIC_PRIVATE_MASK);
+                case PRIVATE_BUTTON_ID -> !testBit(coverVariable, PUBLIC_PRIVATE_MASK);
+                case IMPORT_BUTTON_ID -> testBit(coverVariable, IMPORT_EXPORT_MASK);
+                case EXPORT_BUTTON_ID -> !testBit(coverVariable, IMPORT_EXPORT_MASK);
+                default -> false;
+            };
         }
 
         private UUID getUUID() {

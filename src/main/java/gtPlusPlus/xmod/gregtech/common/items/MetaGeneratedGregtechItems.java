@@ -367,36 +367,20 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
     }
 
     private void registerCovers() {
+        registerOverflowValveCover(GregtechItemList.Cover_Overflow_Valve_LV, 4, 64_000);
+        registerOverflowValveCover(GregtechItemList.Cover_Overflow_Valve_MV, 5, 512_000);
+        registerOverflowValveCover(GregtechItemList.Cover_Overflow_Valve_HV, 5, 4_096_000);
+        registerOverflowValveCover(GregtechItemList.Cover_Overflow_Valve_EV, 8, 32_768_000);
+        registerOverflowValveCover(GregtechItemList.Cover_Overflow_Valve_IV, 8, 262_144_000);
+    }
+
+    private static void registerOverflowValveCover(GregtechItemList cover, int tier, int maxOverflowPoint) {
         CoverRegistry.registerCover(
-            GregtechItemList.Cover_Overflow_Valve_LV.get(1L),
+            cover.get(1L),
             TextureFactory.of(
-                Textures.BlockIcons.MACHINE_CASINGS[4][0],
+                Textures.BlockIcons.MACHINE_CASINGS[tier][0],
                 TextureFactory.of(TexturesGtBlock.Overlay_Overflow_Valve)),
-            new CoverOverflowValve(64_000));
-        CoverRegistry.registerCover(
-            GregtechItemList.Cover_Overflow_Valve_MV.get(1L),
-            TextureFactory.of(
-                Textures.BlockIcons.MACHINE_CASINGS[5][0],
-                TextureFactory.of(TexturesGtBlock.Overlay_Overflow_Valve)),
-            new CoverOverflowValve(512_000));
-        CoverRegistry.registerCover(
-            GregtechItemList.Cover_Overflow_Valve_HV.get(1L),
-            TextureFactory.of(
-                Textures.BlockIcons.MACHINE_CASINGS[5][0],
-                TextureFactory.of(TexturesGtBlock.Overlay_Overflow_Valve)),
-            new CoverOverflowValve(4_096_000));
-        CoverRegistry.registerCover(
-            GregtechItemList.Cover_Overflow_Valve_EV.get(1L),
-            TextureFactory.of(
-                Textures.BlockIcons.MACHINE_CASINGS[8][0],
-                TextureFactory.of(TexturesGtBlock.Overlay_Overflow_Valve)),
-            new CoverOverflowValve(32_768_000));
-        CoverRegistry.registerCover(
-            GregtechItemList.Cover_Overflow_Valve_IV.get(1L),
-            TextureFactory.of(
-                Textures.BlockIcons.MACHINE_CASINGS[8][0],
-                TextureFactory.of(TexturesGtBlock.Overlay_Overflow_Valve)),
-            new CoverOverflowValve(262_144_000));
+            context -> new CoverOverflowValve(context, maxOverflowPoint));
     }
 
 }

@@ -638,7 +638,7 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
             // noinspection SwitchStatementWithTooFewBranches
             switch (this.mSpecialEffect) {
                 case TOP_SMOKE -> {
-                    if (aBaseMetaTileEntity.getFrontFacing() != UP && aBaseMetaTileEntity.getCoverIDAtSide(UP) == 0
+                    if (aBaseMetaTileEntity.getFrontFacing() != UP && !aBaseMetaTileEntity.hasCoverAtSide(UP)
                         && !aBaseMetaTileEntity.getOpacityAtSide(UP)) {
 
                         new ParticleEventBuilder().setMotion(0.0D, 0.0D, 0.0D)
@@ -674,7 +674,7 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
                     final ForgeDirection mainFacing = this.mMainFacing;
 
                     if ((mainFacing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0
-                        && aBaseMetaTileEntity.getCoverIDAtSide(mainFacing) == 0
+                        && !aBaseMetaTileEntity.hasCoverAtSide(mainFacing)
                         && !aBaseMetaTileEntity.getOpacityAtSide(mainFacing)) {
 
                         final double oX = aBaseMetaTileEntity.getXCoord();

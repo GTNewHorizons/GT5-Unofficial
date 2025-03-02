@@ -1,20 +1,20 @@
 package gregtech.common.covers;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.api.util.ISerializableObject.LegacyCoverData;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
@@ -24,26 +24,29 @@ public class CoverDoesWork extends CoverBehavior {
     private static final int FLAG_PROGRESS = 0x2;
     private static final int FLAG_ENABLED = 0x4;
 
-    public CoverDoesWork(ITexture coverTexture) {
-        super(coverTexture);
+    public CoverDoesWork(CoverContext context, ITexture coverTexture) {
+        super(context, coverTexture);
     }
 
     @Override
-    public boolean isRedstoneSensitive(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        long aTimer) {
+    public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
-        if ((aTileEntity instanceof IMachineProgress mProgress)) {
-            boolean inverted = isFlagSet(aCoverVariable, FLAG_INVERTED);
+    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return coverData;
+        }
+        int coverDataValue = coverData.get();
+        if ((coverable instanceof IMachineProgress mProgress)) {
+            boolean inverted = isFlagSet(coverDataValue, FLAG_INVERTED);
             int signal = 0;
 
-            if (isFlagSet(aCoverVariable, FLAG_ENABLED)) {
+            if (isFlagSet(coverDataValue, FLAG_ENABLED)) {
                 signal = inverted == mProgress.isAllowedToWork() ? 0 : 15;
-            } else if (isFlagSet(aCoverVariable, FLAG_PROGRESS)) {
+            } else if (isFlagSet(coverDataValue, FLAG_PROGRESS)) {
                 signal = inverted == (mProgress.getMaxProgress() == 0) ? 0 : 15;
             } else {
                 int tScale = mProgress.getMaxProgress() / 15;
@@ -55,21 +58,22 @@ public class CoverDoesWork extends CoverBehavior {
                 }
             }
 
-            aTileEntity.setOutputRedstoneSignal(side, (byte) signal);
+            coverable.setOutputRedstoneSignal(coverSide, (byte) signal);
         } else {
-            aTileEntity.setOutputRedstoneSignal(side, (byte) 0);
+            coverable.setOutputRedstoneSignal(coverSide, (byte) 0);
         }
-        return aCoverVariable;
+        return coverData;
     }
 
     @Override
-    public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        aCoverVariable = (aCoverVariable + (aPlayer.isSneaking() ? -1 : 1)) % 6;
-        if (aCoverVariable < 0) {
-            aCoverVariable = 5;
+    public ISerializableObject.LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY,
+        float aZ) {
+        int coverDataValue = coverData.get();
+        coverDataValue = (coverDataValue + (aPlayer.isSneaking() ? -1 : 1)) % 6;
+        if (coverDataValue < 0) {
+            coverDataValue = 5;
         }
-        switch (aCoverVariable) {
+        switch (coverDataValue) {
             case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("018", "Normal"));
             // Progress scaled
             case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("019", "Inverted"));
@@ -83,51 +87,46 @@ public class CoverDoesWork extends CoverBehavior {
             case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("029", "Machine Disabled"));
             // Disabled
         }
-        return aCoverVariable;
+        return LegacyCoverData.of(coverDataValue);
     }
 
     @Override
-    public boolean letsEnergyIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyIn() {
         return true;
     }
 
     @Override
-    public boolean letsEnergyOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyOut() {
         return true;
     }
 
     @Override
-    public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidIn(Fluid aFluid) {
         return true;
     }
 
     @Override
-    public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidOut(Fluid aFluid) {
         return true;
     }
 
     @Override
-    public boolean letsItemsIn(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsIn(int aSlot) {
         return true;
     }
 
     @Override
-    public boolean letsItemsOut(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsOut(int aSlot) {
         return true;
     }
 
     @Override
-    public boolean manipulatesSidedRedstoneOutput(ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean manipulatesSidedRedstoneOutput() {
         return true;
     }
 
     @Override
-    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getMinimumTickRate() {
         return 5;
     }
 
@@ -166,30 +165,29 @@ public class CoverDoesWork extends CoverBehavior {
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverDoesWork.this,
+                        CoverDoesWork.this::loadFromNbt,
                         (id, coverData) -> isEnabled(id, convert(coverData)),
-                        (id, coverData) -> new ISerializableObject.LegacyCoverData(
-                            getNewCoverVariable(id, convert(coverData))))
-                                .addToggleButton(
-                                    0,
-                                    CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_PROGRESS)
-                                        .setPos(spaceX * 0, spaceY * 0))
-                                .addToggleButton(
-                                    1,
-                                    CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK)
-                                        .setPos(spaceX * 1, spaceY * 0))
-                                .addToggleButton(
-                                    2,
-                                    CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
-                                        .setPos(spaceX * 2, spaceY * 0))
-                                .addToggleButton(
-                                    3,
-                                    CoverDataFollowerToggleButtonWidget.ofRedstone(),
-                                    widget -> widget.setPos(spaceX * 0, spaceY * 1))
-                                .setPos(startX, startY))
+                        (id, coverData) -> new LegacyCoverData(getNewCoverVariable(id, convert(coverData))))
+                            .addToggleButton(
+                                0,
+                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_PROGRESS)
+                                    .setPos(spaceX * 0, spaceY * 0))
+                            .addToggleButton(
+                                1,
+                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK)
+                                    .setPos(spaceX * 1, spaceY * 0))
+                            .addToggleButton(
+                                2,
+                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
+                                    .setPos(spaceX * 2, spaceY * 0))
+                            .addToggleButton(
+                                3,
+                                CoverDataFollowerToggleButtonWidget.ofRedstone(),
+                                widget -> widget.setPos(spaceX * 0, spaceY * 1))
+                            .setPos(startX, startY))
                 .widget(TextWidget.dynamicString(() -> {
                     int coverVariable = convert(getCoverData());
 

@@ -16,6 +16,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.AE2DigitalChestHandler;
 import gregtech.api.objects.AE2NonconsumableHatchHandler;
 import gregtech.common.covers.CoverFacadeAE;
+import gregtech.common.covers.CoverFacadeAEPlacer;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 
 public final class AE2Compat {
@@ -42,7 +43,7 @@ public final class AE2Compat {
             .transform(i -> new ItemStack(i, 1, GTValues.W))
             .orNull();
         if (facade != null) {
-            CoverRegistry.registerCover(facade, null, new CoverFacadeAE());
+            CoverRegistry.registerCover(facade, null, CoverFacadeAE::new, new CoverFacadeAEPlacer());
         }
     }
 

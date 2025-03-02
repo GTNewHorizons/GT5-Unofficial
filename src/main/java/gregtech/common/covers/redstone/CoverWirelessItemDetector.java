@@ -5,13 +5,11 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
@@ -19,6 +17,7 @@ import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -36,50 +35,46 @@ import io.netty.buffer.ByteBuf;
 public class CoverWirelessItemDetector
     extends CoverAdvancedRedstoneTransmitterBase<CoverWirelessItemDetector.ItemTransmitterData> {
 
-    public CoverWirelessItemDetector(ITexture coverTexture) {
-        super(ItemTransmitterData.class, coverTexture);
+    public CoverWirelessItemDetector(CoverContext context, ITexture coverTexture) {
+        super(context, ItemTransmitterData.class, coverTexture);
     }
 
     @Override
-    public ItemTransmitterData createDataObject() {
-        return new ItemTransmitterData();
+    protected ItemTransmitterData initializeData() {
+        return new CoverWirelessItemDetector.ItemTransmitterData();
     }
 
     @Override
-    public ItemTransmitterData createDataObject(int aLegacyData) {
-        return createDataObject();
-    }
-
-    @Override
-    public ItemTransmitterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
-        ItemTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public ItemTransmitterData doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return coverData;
+        }
         byte signal = CoverItemMeter.computeSignalBasedOnItems(
-            aTileEntity,
-            aCoverVariable.invert,
-            aCoverVariable.threshold,
-            aCoverVariable.slot,
-            side.ordinal());
-        final long hash = hashCoverCoords(aTileEntity, side);
-        setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
+            coverable,
+            coverData.invert,
+            coverData.threshold,
+            coverData.slot,
+            coverSide.ordinal());
+        final long hash = hashCoverCoords(coverable, coverSide);
+        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, signal);
 
-        if (aCoverVariable.physical) {
-            aTileEntity.setOutputRedstoneSignal(side, signal);
+        if (coverData.physical) {
+            coverable.setOutputRedstoneSignal(coverSide, signal);
         } else {
-            aTileEntity.setOutputRedstoneSignal(side, (byte) 0);
+            coverable.setOutputRedstoneSignal(coverSide, (byte) 0);
         }
 
-        return aCoverVariable;
+        return coverData;
     }
 
     @Override
-    public boolean letsRedstoneGoOutImpl(ForgeDirection side, int aCoverID, ItemTransmitterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean letsRedstoneGoOut() {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection side, int aCoverID,
-        ItemTransmitterData aCoverVariable, ICoverable aTileEntity) {
+    public boolean manipulatesSidedRedstoneOutput() {
         return true;
     }
 
@@ -151,15 +146,12 @@ public class CoverWirelessItemDetector
             }
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
-            super.readFromPacket(aBuf, aPlayer);
+        public void readFromPacket(ByteArrayDataInput aBuf) {
+            super.readFromPacket(aBuf);
             threshold = aBuf.readInt();
             slot = aBuf.readInt();
             physical = aBuf.readBoolean();
-
-            return this;
         }
     }
 
@@ -196,16 +188,6 @@ public class CoverWirelessItemDetector
         @Override
         protected int getGUIHeight() {
             return 143;
-        }
-
-        @Override
-        protected int getFrequencyRow() {
-            return 0;
-        }
-
-        @Override
-        protected int getButtonRow() {
-            return 1;
         }
 
         @Override

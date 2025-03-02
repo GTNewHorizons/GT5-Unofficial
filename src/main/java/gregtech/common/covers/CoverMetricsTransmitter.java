@@ -5,31 +5,26 @@ import java.util.UUID;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.ByteArrayDataInput;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.events.MetricsCoverDataEvent;
-import gregtech.common.events.MetricsCoverSelfDestructEvent;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.GlobalMetricsCoverDatabase.State;
 import io.netty.buffer.ByteBuf;
@@ -50,41 +45,27 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
     public static final String MACHINE_KEY = "machine_name";
     public static final String CARD_STATE_KEY = "card_state";
 
-    @SuppressWarnings("unused")
-    public CoverMetricsTransmitter() {
-        this(null);
-    }
-
-    public CoverMetricsTransmitter(ITexture coverTexture) {
-        super(MetricsTransmitterData.class, coverTexture);
+    public CoverMetricsTransmitter(CoverContext context, ITexture coverTexture) {
+        super(context, MetricsTransmitterData.class, coverTexture);
     }
 
     @Override
-    public MetricsTransmitterData createDataObject(int aLegacyData) {
-        // As a new cover, this shouldn't fire.
-        return new MetricsTransmitterData();
+    protected MetricsTransmitterData initializeData() {
+        return new CoverMetricsTransmitter.MetricsTransmitterData();
     }
 
     @Override
-    public MetricsTransmitterData createDataObject() {
-        return new MetricsTransmitterData();
-    }
-
-    @Override
-    protected int getTickRateImpl(ForgeDirection side, int aCoverID, MetricsTransmitterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public int getMinimumTickRate() {
         return 20;
     }
 
     @Override
-    public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable aTileEntity) {
-        return aTileEntity instanceof final IGregTechDeviceInformation device && device.isGivingInformation();
-    }
-
-    @Override
-    protected MetricsTransmitterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
-        MetricsTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        if (aTileEntity instanceof final BaseMetaTileEntity baseMTE && baseMTE.isGivingInformation()) {
+    public CoverMetricsTransmitter.MetricsTransmitterData doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return coverData;
+        }
+        if (coverable instanceof final BaseMetaTileEntity baseMTE && baseMTE.isGivingInformation()) {
             final List<String> payload;
 
             if (baseMTE.getMetaTileEntity() instanceof final IMetricsExporter metricsExporter) {
@@ -94,7 +75,7 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
             }
 
             MinecraftForge.EVENT_BUS.post(new MetricsCoverDataEvent(
-                aCoverVariable.frequency,
+                coverData.frequency,
                 payload,
                 new GlobalMetricsCoverDatabase.Coordinates(
                     baseMTE.getWorld().provider.getDimensionName(),
@@ -105,21 +86,16 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
             ));
         }
 
-        return aCoverVariable;
+        return coverData;
     }
 
     @Override
-    protected void onDroppedImpl(ForgeDirection side, int aCoverID, MetricsTransmitterData aCoverVariable,
-        ICoverable aTileEntity) {
-        MinecraftForge.EVENT_BUS.post(new MetricsCoverSelfDestructEvent(aCoverVariable.frequency));
-    }
-
-    @Override
-    public void onPlayerAttach(EntityPlayer player, ItemStack aCover, ICoverable aTileEntity, ForgeDirection side) {
+    public void onPlayerAttach(EntityPlayer player, ItemStack coverItem) {
         final UUID newFrequency = UUID.randomUUID();
         final ItemStack cardStack = ItemList.NC_AdvancedSensorCard.get(1);
+        ICoverable coverable = coveredTile.get();
 
-        if (cardStack == null) {
+        if (cardStack == null || coverable == null) {
             return;
         }
 
@@ -128,7 +104,7 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
         tagCompound.setLong(FREQUENCY_LSB_KEY, newFrequency.getLeastSignificantBits());
         tagCompound.setInteger(CARD_STATE_KEY, State.OPERATIONAL.getType());
 
-        if (aTileEntity instanceof final BaseMetaTileEntity baseMTE) {
+        if (coverable instanceof final BaseMetaTileEntity baseMTE) {
             final ItemStack baseMTEStack = baseMTE.getStackForm(1);
             if (baseMTEStack != null) {
                 tagCompound.setTag(MACHINE_KEY, baseMTEStack.writeToNBT(new NBTTagCompound()));
@@ -136,7 +112,7 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
         }
 
         cardStack.setTagCompound(tagCompound);
-        aTileEntity.getCoverInfoAtSide(side)
+        coverable.getCoverAtSide(coverSide)
             .setCoverData(new MetricsTransmitterData(newFrequency));
 
         final EntityItem cardEntity = new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, cardStack);
@@ -149,12 +125,13 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
         return false;
     }
 
+    @NotNull
     @Override
-    public List<String> getAdditionalTooltipImpl(MetricsTransmitterData data) {
+    public List<String> getAdditionalTooltip() {
         return ImmutableList.of(
             StatCollector.translateToLocalFormatted(
                 "gt.item.adv_sensor_card.tooltip.frequency",
-                EnumChatFormatting.UNDERLINE.toString() + EnumChatFormatting.YELLOW + data.frequency.toString()));
+                EnumChatFormatting.UNDERLINE.toString() + EnumChatFormatting.YELLOW + coverData.frequency.toString()));
     }
 
     public static class MetricsTransmitterData implements ISerializableObject {
@@ -202,10 +179,9 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
             aBuf.writeLong(frequency.getLeastSignificantBits());
         }
 
-        @NotNull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, @Nullable EntityPlayerMP aPlayer) {
-            return new MetricsTransmitterData(new UUID(aBuf.readLong(), aBuf.readLong()));
+        public void readFromPacket(ByteArrayDataInput aBuf) {
+            this.frequency = new UUID(aBuf.readLong(), aBuf.readLong());
         }
     }
 }
