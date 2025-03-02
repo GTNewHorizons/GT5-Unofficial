@@ -1880,12 +1880,14 @@ public class GTUtility {
             }
             return null;
         }
-        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem
-            && ((IFluidContainerItem) aStack.getItem()).getFluid(aStack) == null
-            && ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) <= aFluid.amount) {
-            if (aRemoveFluidDirectly) aFluid.amount -= ((IFluidContainerItem) aStack.getItem())
-                .fill(aStack = copyAmount(1, aStack), aFluid, true);
-            else((IFluidContainerItem) aStack.getItem()).fill(aStack = copyAmount(1, aStack), aFluid, true);
+        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem fluidContainerItem
+            && fluidContainerItem.getFluid(aStack) == null
+            && fluidContainerItem.getCapacity(aStack) <= aFluid.amount) {
+            if (aRemoveFluidDirectly) {
+                aFluid.amount -= fluidContainerItem.fill(aStack = copyAmount(1, aStack), aFluid, true);
+            } else {
+                fluidContainerItem.fill(aStack = copyAmount(1, aStack), aFluid, true);
+            }
             return aStack;
         }
         Map<String, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new GTItemStack(aStack));
