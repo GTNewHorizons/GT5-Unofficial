@@ -1955,7 +1955,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MeteoricIron.mChemicalFormula = "SpFe";
         MeteoricSteel.mChemicalFormula = "SpFe\u2085\u2080C";
         Duranium.mChemicalFormula = "Du";
-        Tritanium.mChemicalFormula = "Tn";
+        Tritanium.mChemicalFormula = "Tr";
         Ardite.mChemicalFormula = "Ai";
         Manyullyn.mChemicalFormula = "AiCo";
         Mytryl.mChemicalFormula = "SpPt\u2082FeMa";
@@ -1993,7 +1993,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.Eternity.mChemicalFormula = "En\u29BC";
         MaterialsUEVplus.MagMatter.mChemicalFormula = "M\u238B";
         Longasssuperconductornameforuvwire.mChemicalFormula = "Nq*\u2084(Ir\u2083Os)\u2083EuSm";
-        Longasssuperconductornameforuhvwire.mChemicalFormula = "D\u2086(SpNt)\u2087Tn\u2085Am\u2086";
+        Longasssuperconductornameforuhvwire.mChemicalFormula = "D\u2086(SpNt)\u2087Tr\u2085Am\u2086";
         SuperconductorUEVBase.mChemicalFormula = "D*\u2085If*\u2085(\u2726\u25C6\u2726)(\u26B7\u2699\u26B7 Ni4Ti6)";
         SuperconductorUIVBase.mChemicalFormula = "(C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085";
         SuperconductorUMVBase.mChemicalFormula = "?\u2086Or\u2083(Hy\u26B6)\u2081\u2081(((CW)\u2087Ti\u2083)\u2083???)\u2085\u06DE\u2082";
@@ -2023,7 +2023,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.PhononCrystalSolution.mChemicalFormula = "\u3004";
         MaterialsUEVplus.PhononMedium.mChemicalFormula = "((Si\u2085O\u2081\u2080Fe)\u2083(Bi\u2082Te\u2083)\u2084ZrO\u2082Fe\u2085\u2080C)\u2085Og*Pr\u2081\u2085((C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085)\u2086\u3004\u2084";
         MaterialsUEVplus.SixPhasedCopper.mChemicalFormula = "\u2722";
-        MaterialsUEVplus.Mellion.mChemicalFormula = "Tn\u2081\u2081Or\u2088Rb\u2081\u2081?\u2087?\u2081\u2083?\u2081\u2083";
+        MaterialsUEVplus.Mellion.mChemicalFormula = "Tr\u2081\u2081Or\u2088Rb\u2081\u2081?\u2087?\u2081\u2083?\u2081\u2083";
         MaterialsUEVplus.Creon.mChemicalFormula = "\u2E0E";
         Tartarite.mChemicalFormula = "Tt";
         MaterialsUEVplus.TranscendentMetal.mChemicalFormula = "TsЖ";
@@ -2040,6 +2040,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             + "If*";
         MaterialsUEVplus.HotProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
         MaterialsUEVplus.ProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
+        Taranium.mChemicalFormula = "Tn";
     }
 
     private static void initSubTags() {
