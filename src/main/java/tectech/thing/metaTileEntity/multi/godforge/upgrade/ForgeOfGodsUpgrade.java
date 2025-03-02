@@ -117,7 +117,7 @@ public enum ForgeOfGodsUpgrade {
             .treePos(126, 296));
 
         REC.build(b -> b
-            .prereqs(GISS, FDIM)
+            .prereqs(GISS, GPCI)
             .requireAllPrereqs()
             .cost(2)
             .background(RED, CHARGE)

@@ -27,7 +27,7 @@ import tectech.util.CommonValues;
 /**
  * Created by danie_000 on 11.12.2016.
  */
-public abstract class MTEHatchDataConnector<T extends DataPacket> extends MTEHatch implements IConnectsToDataPipe {
+public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTEHatch implements IConnectsToDataPipe {
 
     public static Textures.BlockIcons.CustomIcon EM_D_SIDES;
     public static Textures.BlockIcons.CustomIcon EM_D_ACTIVE;
