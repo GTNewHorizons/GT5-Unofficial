@@ -24,6 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -162,6 +163,7 @@ public class TaraniumRecipes {
             .addTo(centrifugeNonCellRecipes);
 
         GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.SeparationElectromagnet.get(0))
             .fluidInputs(Materials.TaraniumSemidepletedHelium3.getFluid(1000))
             .fluidOutputs(
                 Materials.TaraniumEnrichedHelium3.getFluid(100),
@@ -178,6 +180,7 @@ public class TaraniumRecipes {
             .addTo(mixerNonCellRecipes);
 
         GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.SeparationElectromagnet.get(0))
             .fluidInputs(Materials.TaraniumDepletedHeliumPlasma.getFluid(10000))
             .fluidOutputs(Materials.Helium.getPlasma(4000))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.UncommonResidue, 6))
@@ -234,6 +237,14 @@ public class TaraniumRecipes {
             .fluidOutputs(Materials.Grade2PurifiedWater.getFluid(3000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_IV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.MicrofocusXRayTube.get(0))
+            .fluidInputs(Materials.Oxygen.getGas(2000), Materials.Fluorine.getGas(2000))
+            .fluidOutputs(Materials.DioxygenDifluoride.getFluid(1000))
+            .duration(45 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
     }

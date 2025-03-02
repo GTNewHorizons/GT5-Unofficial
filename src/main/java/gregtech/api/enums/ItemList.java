@@ -1972,6 +1972,8 @@ public enum ItemList implements IItemContainer {
     KevlarFiber,
     WovenKevlar,
     Spinneret,
+    MicrofocusXRayTube,
+    SeparationElectromagnet,
     GalliumArsenideCrystal,
     GalliumArsenideCrystalSmallPart,
 

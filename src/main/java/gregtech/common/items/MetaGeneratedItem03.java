@@ -199,6 +199,7 @@ import static gregtech.common.items.IDMetaItem03.KevlarFiber;
 import static gregtech.common.items.IDMetaItem03.LV_Coil;
 import static gregtech.common.items.IDMetaItem03.LuV_Coil;
 import static gregtech.common.items.IDMetaItem03.MV_Coil;
+import static gregtech.common.items.IDMetaItem03.MicrofocusXRayTube;
 import static gregtech.common.items.IDMetaItem03.NandChip;
 import static gregtech.common.items.IDMetaItem03.NuclearStar;
 import static gregtech.common.items.IDMetaItem03.Optical_Cpu_Containment_Housing;
@@ -214,6 +215,7 @@ import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Top;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Unaligned;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Up;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
+import static gregtech.common.items.IDMetaItem03.SeparationElectromagnet;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
 import static gregtech.common.items.IDMetaItem03.Thermal_Superconductor;
 import static gregtech.common.items.IDMetaItem03.Timepiece;
@@ -903,6 +905,8 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.KevlarFiber.set(addItem(KevlarFiber.ID, "Kevlar Fiber", "For making Kevlar Plates", o));
         ItemList.WovenKevlar.set(addItem(WovenKevlar.ID, "Woven Kevlar", "For making Kevlar Plates", o));
         ItemList.Spinneret.set(addItem(Spinneret.ID, "Spinneret", "For making Kevlar Fiber", o));
+        ItemList.MicrofocusXRayTube.set(addItem(MicrofocusXRayTube.ID, "Microfocus X-Ray Tube", "", o));
+        ItemList.SeparationElectromagnet.set(addItem(SeparationElectromagnet.ID, "Separation Electromagnet", "", o));
 
         ItemList.IndustrialApiary_Upgrade_Frame
             .set(addItem(IndustrialApiary_Upgrade_Frame.ID, "Upgrade Frame", "Crafting component", o));
