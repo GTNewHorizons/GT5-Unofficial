@@ -10,6 +10,9 @@ itemGroup.GregTech.Materials=Materials
 itemGroup.GregTech.Ores=Ores
 
 item.itemHelmetMech.name=Mechanical Helmet
+item.itemChestplateMech.name=Mechanical Chestplate
+item.itemLeggingsMech.name=Mechanical Leggings
+item.itemBootsMech.name=Mechanical Boots
 
 item.gt.advancedsensorcard.name=GregTech Advanced Sensor Card
 gt.blackholerenderer.name=Black Hole Renderer

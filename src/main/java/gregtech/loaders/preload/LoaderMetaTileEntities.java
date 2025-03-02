@@ -929,7 +929,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
-import gregtech.common.tileentities.machines.basic.MTEModificationTable;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.GregTechAPI;
@@ -1014,6 +1013,7 @@ import gregtech.common.tileentities.machines.basic.MTEIndustrialApiary;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTEMicrowaveEnergyTransmitter;
 import gregtech.common.tileentities.machines.basic.MTEMiner;
+import gregtech.common.tileentities.machines.basic.MTEModificationTable;
 import gregtech.common.tileentities.machines.basic.MTEMonsterRepellent;
 import gregtech.common.tileentities.machines.basic.MTENameRemover;
 import gregtech.common.tileentities.machines.basic.MTEPotionBrewer;
@@ -12378,8 +12378,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerModificationTable() {
-        ItemList.ModificationTable
-            .set(new MTEModificationTable(MODIFICATION_TABLE.ID, "modificationtable", "Modification Table", 0).getStackForm(1L));
+        ItemList.ModificationTable.set(
+            new MTEModificationTable(MODIFICATION_TABLE.ID, "modificationtable", "Modification Table", 0)
+                .getStackForm(1L));
     }
 
     private static void registerAirFilters() {
