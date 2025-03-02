@@ -1047,6 +1047,8 @@ public class MaterialsInit1 {
         Materials.FluorinatedTraceResidue = new MaterialBuilder(107, TextureSet.SET_FLUID, "Fluorinated Trace Residue").setRGB(2, 247, 92).addCell().setColor(Dyes.dyeLime).addFluid().constructMaterial();
         Materials.TaraniumEnrichedHelium3 = new MaterialBuilder(108, TextureSet.SET_FLUID, "Taranium Enriched Helium-3").setRGB(37, 57, 130).addCell().setColor(Dyes.dyeBlue).addFluid().constructMaterial();
         Materials.TaraniumSemidepletedHelium3 = new MaterialBuilder(114, TextureSet.SET_FLUID, "Taranium Semidepleted Helium-3").setRGB(149, 178, 44).addCell().setColor(Dyes.dyeYellow).addFluid().constructMaterial();
+        //TODO Change Color
+        Materials.TaraniumDepletedHelium3 = new MaterialBuilder(161, TextureSet.SET_FLUID, "Taranium Depleted Helium-3").setRGB(149, 178, 44).addCell().setColor(Dyes.dyeYellow).addFluid().constructMaterial();
         Materials.TaraniumDepletedHeliumPlasma = new MaterialBuilder(115, TextureSet.SET_FLUID, "Taranium Depleted Helium Plasma").setRGB(178, 214, 49).addCell().setColor(Dyes.dyeYellow).addFluid().constructMaterial();
         Materials.TaraniumrichHelium3 = new MaterialBuilder(116, TextureSet.SET_FLUID, "Taranium-rich Helium-3").setRGB(27, 65, 160).addCell().setColor(Dyes.dyeYellow).addFluid().constructMaterial();
         Materials.DustyHelium3 = new MaterialBuilder(117, TextureSet.SET_FLUID, "Dusty Helium-3").setRGB(80, 96, 21).addCell().setColor(Dyes.dyeGreen).addFluid().constructMaterial();
