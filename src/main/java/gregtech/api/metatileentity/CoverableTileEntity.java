@@ -128,7 +128,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         for (byte i = 0; i < tList.tagCount(); i++) {
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
             final Cover cover = buildCover(tNBT);
-            this.applyCover(cover);
+            this.applyCover(cover, cover.getSide());
             if (cover.isDataNeededOnClient()) issueCoverUpdate(ForgeDirection.getOrientation(i));
         }
     }
@@ -234,13 +234,16 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             if (cover instanceof CoverNone && isClientSide()) {
                 oldCover.onCoverRemoval();
             }
-            synchronizeCover(cover);
+            synchronizeCover(cover, side);
         }
     }
 
-    private void synchronizeCover(Cover cover) {
-        final ForgeDirection side = cover.getSide();
-        applyCover(cover);
+    /**
+     * @param cover the cover to synchronize. Not guaranteed to have a side.
+     * @param side  the side to apply the cover to.
+     */
+    private void synchronizeCover(Cover cover, ForgeDirection side) {
+        applyCover(cover, side);
         issueCoverUpdate(side);
         issueBlockUpdate();
     }
@@ -256,8 +259,11 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return getCoverAtSide(side).asItemStack();
     }
 
-    private void applyCover(Cover cover) {
-        final ForgeDirection side = cover.getSide();
+    /**
+     * @param cover the cover to apply. Not guaranteed to have a side.
+     * @param side  the side to apply the cover to.
+     */
+    private void applyCover(Cover cover, ForgeDirection side) {
         if (side != ForgeDirection.UNKNOWN) {
             covers[side.ordinal()] = cover;
 
@@ -287,7 +293,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final Cover cover = getCoverAtSide(side);
         if (!cover.isValid()) return null;
         cover.onCoverRemoval();
-        synchronizeCover(CoverRegistry.NO_COVER);
+        synchronizeCover(CoverRegistry.NO_COVER, side);
         updateOutputRedstoneSignal(side);
         return GTOreDictUnificator.get(true, cover.asItemStack());
     }
@@ -418,7 +424,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         if (!oldCover.isValid()) return;
         ISerializableObject coverData = cover.getCoverData();
         oldCover.preDataChanged(cover.getCoverID(), coverData);
-        applyCover(cover);
+        applyCover(cover, side);
 
         if (isClientSide()) {
             getCoverAtSide(side).onDataChanged();
