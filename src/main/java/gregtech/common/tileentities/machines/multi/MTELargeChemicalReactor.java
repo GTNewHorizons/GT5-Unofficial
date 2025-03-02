@@ -110,7 +110,10 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
             .addController("Front center")
             .addCasingInfoRange("Chemically Inert Machine Casing", 8, 22, false)
             .addOtherStructurePart("PTFE Pipe Machine Casing", "Center")
-            .addOtherStructurePart("Heating Coil", "Adjacent to the PTFE Pipe Machine Casing", 1)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.heating_coil"),
+                "Adjacent to the PTFE Pipe Machine Casing",
+                1)
             .addEnergyHatch("Any casing", 1, 2)
             .addMaintenanceHatch("Any casing", 1, 2)
             .addInputBus("Any casing", 1, 2)
