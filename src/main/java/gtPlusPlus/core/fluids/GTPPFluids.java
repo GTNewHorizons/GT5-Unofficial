@@ -67,6 +67,29 @@ public class GTPPFluids {
     public static Fluid LithiumPeroxide;
     public static Fluid CarbonDisulfide;
 
+    // Rocket Fuel
+    public static Fluid Kerosene;
+    public static Fluid RP1;
+    public static Fluid NitrogenTetroxide;
+    public static Fluid Hydrazine;
+    public static Fluid Monomethylhydrazine;
+    public static Fluid HydratedAmmoniumNitrateSlurry;
+    public static Fluid LiquidHydrogen;
+    public static Fluid Formaldehyde;
+    public static Fluid H8N4C2O4RocketFuel;
+    public static Fluid RP1RocketFuel;
+    public static Fluid CN3H7O3RocketFuel;
+    public static Fluid DenseHydrazineFuelMixture;
+
+    // Nuclear
+    public static Fluid BurntLiFBeF2ThF4UF4Salt;
+    public static Fluid BurntLiFBeF2ZrF4UF4Salt;
+    public static Fluid BurntLiFBeF2ZrF4U235Salt;
+    public static Fluid ImpureMoltenSaltBase;
+
+    // Misc
+    public static Fluid GeneticMutagen;
+
     // Custom Blood Support
     private static final List<FluidStack> bloodFluids = new ArrayList<>();
 
@@ -304,6 +327,121 @@ public class GTPPFluids {
 
         CarbonDisulfide = FluidUtils
             .generateFluidNoPrefix("CarbonDisulfide", "Carbon Disulfide", 350, new short[] { 175, 175, 175, 100 });
+
+        Kerosene = FluidUtils
+            .generateFluidNonMolten("Kerosene", "Kerosene", 233, new short[] { 150, 40, 150, 100 }, null, null);
+
+        RP1 = FluidUtils.generateFluidNonMolten("RP1Fuel", "RP-1", 500, new short[] { 210, 50, 50, 100 }, null, null);
+
+        NitrogenTetroxide = FluidUtils.generateFluidNonMolten(
+            "NitrogenTetroxide",
+            "Nitrogen Tetroxide",
+            261,
+            new short[] { 170, 170, 0, 100 },
+            null,
+            null);
+
+        Hydrazine = FluidUtils
+            .generateFluidNonMolten("Hydrazine", "Hydrazine", 275, new short[] { 250, 250, 250, 100 }, null, null);
+
+        Monomethylhydrazine = FluidUtils.generateFluidNonMolten(
+            "Monomethylhydrazine",
+            "Monomethylhydrazine",
+            221,
+            new short[] { 125, 125, 125, 100 },
+            null,
+            null);
+
+        HydratedAmmoniumNitrateSlurry = FluidUtils.generateFluidNonMolten(
+            "AmmoniumNitrateSlurry",
+            "Hydrated Ammonium Nitrate Slurry",
+            450,
+            new short[] { 150, 75, 150, 100 },
+            null,
+            null);
+
+        LiquidHydrogen = FluidUtils.generateFluidNonMolten(
+            "LiquidHydrogen",
+            "Liquid Hydrogen",
+            14,
+            new short[] { 75, 75, 220, 100 },
+            null,
+            null);
+
+        Formaldehyde = FluidUtils
+            .generateFluidNonMolten("Formaldehyde", "Formaldehyde", 185, new short[] { 150, 75, 150, 100 }, null, null);
+
+        H8N4C2O4RocketFuel = FluidUtils.generateFluidNonMolten(
+            "RocketFuelMixA",
+            "H8N4C2O4 Rocket Fuel",
+            216,
+            new short[] { 50, 220, 50, 100 },
+            null,
+            null);
+
+        RP1RocketFuel = FluidUtils.generateFluidNonMolten(
+            "RocketFuelMixB",
+            "Rp-1 Rocket Fuel",
+            250,
+            new short[] { 250, 50, 50, 100 },
+            null,
+            null);
+
+        CN3H7O3RocketFuel = FluidUtils.generateFluidNonMolten(
+            "RocketFuelMixC",
+            "CN3H7O3 Rocket Fuel",
+            221,
+            new short[] { 125, 75, 180, 100 },
+            null,
+            null);
+
+        DenseHydrazineFuelMixture = FluidUtils.generateFluidNonMolten(
+            "RocketFuelMixD",
+            "Dense Hydrazine Fuel Mixture",
+            275,
+            new short[] { 175, 80, 120, 100 },
+            null,
+            null);
+
+        BurntLiFBeF2ThF4UF4Salt = FluidUtils.generateFluidNonMolten(
+            "BurntLiFBeF2ThF4UF4",
+            "Burnt LiFBeF2ThF4UF4 Salt",
+            545,
+            new short[] { 48, 175, 48, 100 },
+            null,
+            null);
+
+        BurntLiFBeF2ZrF4UF4Salt = FluidUtils.generateFluidNonMolten(
+            "BurntLiFBeF2ZrF4UF4",
+            "Burnt LiFBeF2ZrF4UF4 Salt",
+            520,
+            new short[] { 48, 168, 68, 100 },
+            null,
+            null);
+
+        BurntLiFBeF2ZrF4U235Salt = FluidUtils.generateFluidNonMolten(
+            "BurntLiFBeF2ZrF4U235",
+            "Burnt LiFBeF2ZrF4U235 Salt",
+            533,
+            new short[] { 68, 185, 48, 100 },
+            null,
+            null);
+
+        ImpureMoltenSaltBase = FluidUtils.generateFluidNonMolten(
+            "ImpureLiFBeF2",
+            "Impure Molten Salt Base",
+            533,
+            new short[] { 110, 75, 186, 100 },
+            null,
+            null);
+
+        GeneticMutagen = FluidUtils.generateFluidNonMolten(
+            "GeneticMutagen",
+            "Genetic Mutagen",
+            12,
+            new short[] { 22, 148, 185, 100 },
+            null,
+            null);
 
         handleBlood();
     }
