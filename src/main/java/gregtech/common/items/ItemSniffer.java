@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+import bartworks.MainMod;
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.GuiData;
@@ -16,14 +17,21 @@ import com.cleanroommc.modularui.widgets.*;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+import cpw.mods.fml.common.FMLLog;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.items.GTGenericItem;
+import gregtech.api.net.PacketTeleportPlayer;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase.CoverData;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+import gtPlusPlus.core.handler.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +41,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
+    public static final Logger LOGGER = LogManager.getLogger("SNIFFER");
+
     private static final Map<Integer, String> regularWirelessLabels = new HashMap<>();
     private static final Map<String, Map<Integer, Map<CoverData, String>>> advWirelessLabels = new HashMap<>();
     private final ItemStackHandler stackHandler = new ItemStackHandler(1);
@@ -242,6 +252,15 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
                         }))
                     )
+                    .child(new ButtonWidget<>()
+                        .widthRel(0.15f)
+                        .overlay(IKey.str("Teleport"))
+                        .onMousePressed(mouseButton -> {
+                            LOGGER.debug("Teleporting");
+                            GTValues.NW.sendToServer(new PacketTeleportPlayer(cover.dim, cover.x, cover.y, cover.z));
+                            return true;
+                        })
+                    )
                 );
                 i.getAndIncrement();
             });
@@ -274,6 +293,15 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
                         }))
                         .setValidator(s -> s)
+                    )
+                    .child(new ButtonWidget<>()
+                        .widthRel(0.15f)
+                        .overlay(IKey.str("Teleport"))
+                        .onMousePressed(mouseButton -> {
+                            LOGGER.debug("Teleporting");
+                            GTValues.NW.sendToServer(new PacketTeleportPlayer(cover.dim, cover.x, cover.y, cover.z));
+                            return true;
+                        })
                     )
                 );
                 i.getAndIncrement();
