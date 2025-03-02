@@ -3,10 +3,12 @@ package gregtech.common.items;
 import bartworks.MainMod;
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.factory.GuiFactories;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
@@ -24,6 +26,7 @@ import gregtech.api.items.GTGenericItem;
 import gregtech.api.net.PacketTeleportPlayer;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase.CoverData;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gtPlusPlus.core.handler.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -223,90 +226,8 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
         advWirelessPage.getScrollArea().getScrollY().setScrollSize(35*(advFreqSize+1));
 
         i.set(0);
-
-        publicFreqs.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(frequencyEntry ->{
-            frequencyEntry.getValue().forEach((cover,useless) ->{
-                int freq = frequencyEntry.getKey();
-                advWirelessPage.child(new Row()
-                    .sizeRel(1f,0.2f)
-                    .pos(0,i.get()*35)
-                    .child(new TextWidget("Public")
-                        .widthRel(0.2f)
-                        .alignment(Alignment.Center))
-                    .child(new TextWidget(String.valueOf(freq)).widthRel(0.2f).alignment(Alignment.Center))
-                    .child(new TextWidget(cover.getInfo()).widthRel(0.25f).alignment(Alignment.Center))
-                    .child(new TextFieldWidget()
-                        .sizeRel(0.2f, 1)
-                        .value(SyncHandlers.string(() -> {
-                            Map<CoverData, String> coversOnFrequency = getCoversOnFrequency("Public", freq);
-                            return coversOnFrequency.getOrDefault(cover, "Description");
-                        }, label -> {
-                            if(!guiSyncManager.isClient()){
-                                Map<Integer, Map<CoverData,String>> frequencies = advWirelessLabels.computeIfAbsent("Public",k -> new HashMap<>());
-                                Map<CoverData, String> covers = frequencies.computeIfAbsent(freq, k -> new HashMap<>());
-                                covers.put(cover, label);
-                                NBTTagCompound tag = serializeAdvancedToNBT(new NBTTagCompound(), advWirelessLabels);
-                                System.out.println(tag);
-                                guiSyncManager.getPlayer().getHeldItem().setTagCompound(tag);
-                            }
-
-                        }))
-                    )
-                    .child(new ButtonWidget<>()
-                        .widthRel(0.15f)
-                        .overlay(IKey.str("Teleport"))
-                        .onMousePressed(mouseButton -> {
-                            LOGGER.debug("Teleporting");
-                            GTValues.NW.sendToServer(new PacketTeleportPlayer(cover.dim, cover.x, cover.y, cover.z));
-                            return true;
-                        })
-                    )
-                );
-                i.getAndIncrement();
-            });
-        });
-        privateFreqs.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(frequencyEntry ->{
-            frequencyEntry.getValue().forEach((cover,useless) ->{
-                int freq = frequencyEntry.getKey();
-                advWirelessPage.child(new Row()
-                    .sizeRel(1f,0.2f)
-                    .pos(0,i.get()*35)
-                    .child(new TextWidget(SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(this.uuid)))
-                        .widthRel(0.2f)
-                        .alignment(Alignment.Center))
-                    .child(new TextWidget(String.valueOf(freq)).widthRel(0.2f).alignment(Alignment.Center))
-                    .child(new TextWidget(cover.getInfo()).widthRel(0.25f).alignment(Alignment.Center))
-                    .child(new TextFieldWidget()
-                        .sizeRel(0.2f, 1)
-                        .value(SyncHandlers.string(() -> {
-                            Map<CoverData, String> coversOnFrequency = getCoversOnFrequency(this.uuid, freq);
-                            return coversOnFrequency.getOrDefault(cover, "Description");
-                        }, label -> {
-                            if(!guiSyncManager.isClient()){
-                                Map<Integer, Map<CoverData,String>> frequencies = advWirelessLabels.computeIfAbsent(this.uuid,k -> new HashMap<>());
-                                Map<CoverData, String> covers = frequencies.computeIfAbsent(freq, k -> new HashMap<>());
-                                covers.put(cover, label);
-                                NBTTagCompound tag = serializeAdvancedToNBT(new NBTTagCompound(), advWirelessLabels);
-                                System.out.println(tag);
-                                guiSyncManager.getPlayer().getHeldItem().setTagCompound(tag);
-                            }
-
-                        }))
-                        .setValidator(s -> s)
-                    )
-                    .child(new ButtonWidget<>()
-                        .widthRel(0.15f)
-                        .overlay(IKey.str("Teleport"))
-                        .onMousePressed(mouseButton -> {
-                            LOGGER.debug("Teleporting");
-                            GTValues.NW.sendToServer(new PacketTeleportPlayer(cover.dim, cover.x, cover.y, cover.z));
-                            return true;
-                        })
-                    )
-                );
-                i.getAndIncrement();
-            });
-        });
+        processAdvancedFrequencies(publicFreqs, "Public", advWirelessPage, i, guiSyncManager);
+        processAdvancedFrequencies(privateFreqs, this.uuid, advWirelessPage, i, guiSyncManager);
 
         ParentWidget advWireless = new ParentWidget();
         advWireless.sizeRel(1);
@@ -346,8 +267,50 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
     }
 
 
-    public void processAdvancedFrequencies(Map<Integer, Map<CoverData, Byte>> frequencyMap, String owner, ScrollWidget widget, AtomicInteger i, ItemStack itemStack){
+    public void processAdvancedFrequencies(Map<Integer, Map<CoverData, Byte>> frequencyMap, String owner, ScrollWidget widget, AtomicInteger i, PanelSyncManager guiSyncManager){
+        frequencyMap.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(frequencyEntry ->{
+            frequencyEntry.getValue().forEach((cover,useless) ->{
+                int freq = frequencyEntry.getKey();
+                widget.child(new Row()
+                    .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
+                    .sizeRel(1f,0.2f)
+                    .pos(0,i.get()*35)
+                    .child(new TextWidget(owner == "Public" ? "Public" : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(owner)))
+                        .widthRel(0.2f)
+                        .alignment(Alignment.Center))
+                    .child(new TextWidget(String.valueOf(freq)).widthRel(0.2f).alignment(Alignment.Center))
+                    .child(new TextWidget(cover.getInfo()).widthRel(0.25f).alignment(Alignment.Center))
+                    .child(new TextFieldWidget()
+                        .sizeRel(0.2f, 1)
+                        .value(SyncHandlers.string(() -> {
+                            Map<CoverData, String> coversOnFrequency = getCoversOnFrequency(owner, freq);
+                            return coversOnFrequency.getOrDefault(cover, "Description");
+                        }, label -> {
+                            if(!guiSyncManager.isClient()){
+                                Map<Integer, Map<CoverData,String>> frequencies = advWirelessLabels.computeIfAbsent(owner,k -> new HashMap<>());
+                                Map<CoverData, String> covers = frequencies.computeIfAbsent(freq, k -> new HashMap<>());
+                                covers.put(cover, label);
+                                NBTTagCompound tag = serializeAdvancedToNBT(new NBTTagCompound(), advWirelessLabels);
+                                System.out.println(tag);
+                                guiSyncManager.getPlayer().getHeldItem().setTagCompound(tag);
+                            }
 
+                        }))
+                    )
+                    .child(new ButtonWidget<>()
+                        .widthRel(0.12f)
+                        .marginLeft(5)
+                        .overlay(IKey.str("Teleport"))
+                        .onMousePressed(mouseButton -> {
+                            LOGGER.debug("Teleporting");
+                            GTValues.NW.sendToServer(new PacketTeleportPlayer(cover.dim, cover.x, cover.y, cover.z));
+                            return true;
+                        })
+                    )
+                );
+                i.getAndIncrement();
+            });
+        });
     }
 
 }
