@@ -560,7 +560,6 @@ public class GTRecipeConstants {
             r.mOreDictAlt);
         tRecipe.setPersistentHash(tPersistentHash);
         GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes.add(tRecipe);
-        AssemblyLineUtils.addRecipeToCache(tRecipe);
 
         Collection<GTRecipe> ret = new ArrayList<>(3);
         ret.addAll(

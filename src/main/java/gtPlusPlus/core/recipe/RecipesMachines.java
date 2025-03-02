@@ -46,7 +46,6 @@ import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch.ASSEMBLY_LINE_RESEARCH;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -821,8 +820,8 @@ public class RecipesMachines {
 
         // Give the bad algae a use.
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 32))
-            .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 4))
+            .itemInputs(GregtechItemList.AlgaeBiomass.get(32))
+            .itemOutputs(GregtechItemList.GreenAlgaeBiomass.get(4))
             .duration(15 * SECONDS)
             .eut(16)
             .addTo(distilleryRecipes);
