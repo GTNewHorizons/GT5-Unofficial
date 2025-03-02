@@ -6,9 +6,9 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTModHandler;
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.forestry.ForestryTreeHandler;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarm;
 
 public class RecipeLoaderTreeFarm {
@@ -120,7 +120,7 @@ public class RecipeLoaderTreeFarm {
             new ItemStack(BOPBlockRegistrator.sapling_Pine, 1, 0),
             new ItemStack(BOPBlockRegistrator.log_Pine, 1, 0),
             new ItemStack(BOPBlockRegistrator.leaves_Pine, 1, 0),
-            new ItemStack(AgriculturalChem.mAgrichemItem1, 1, 24));
+            GregtechItemList.Pinecone.get(1));
     }
 
     private static void generateTwilightForestTrees() {
