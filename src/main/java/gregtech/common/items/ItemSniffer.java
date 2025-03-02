@@ -22,6 +22,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.ibm.icu.impl.TextTrieMap;
 import gregtech.api.GregTechAPI;
 import gregtech.api.items.GTGenericItem;
+import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -45,19 +46,8 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
 
 
-        Map<Integer, Map<Long, Byte>> publicFreqs = GregTechAPI.sAdvancedWirelessRedstone.get("null");
-        Map<Integer, Map<Long, Byte>> privateFreqs = GregTechAPI.sAdvancedWirelessRedstone.get(this.uuid);
-
-        publicFreqs.forEach((frequency, map) -> {
-            map.forEach((hash,str) -> {
-            });
-
-        });
-        privateFreqs.forEach((frequency, map) -> {
-            map.forEach((hash,str) -> {
-            });
-
-        });
+        Map<Integer, Map<CoverAdvancedWirelessRedstoneBase.CoverData, Byte>> allFreqs = GregTechAPI.sAdvancedWirelessRedstone.get("null");
+        allFreqs.putAll(GregTechAPI.sAdvancedWirelessRedstone.get(this.uuid));
 
         ModularPanel panel = ModularPanel.defaultPanel("redstone_sniffer");
         panel.flex()
