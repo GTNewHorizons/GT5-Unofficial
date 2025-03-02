@@ -51,8 +51,8 @@ public class CoverWirelessFluidDetector
         FluidTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         final byte signal = CoverLiquidMeter
             .computeSignalBasedOnFluid(aTileEntity, aCoverVariable.invert, aCoverVariable.threshold);
-        final long hash = hashCoverCoords(aTileEntity, side);
-        setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
+        final CoverData key = getCoverKey(aTileEntity, side);
+        setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), key, signal);
 
         if (aCoverVariable.physical) {
             aTileEntity.setOutputRedstoneSignal(side, signal);

@@ -32,8 +32,8 @@ public abstract class CoverAdvancedRedstoneTransmitterBase<T extends CoverAdvanc
     }
 
     private static void unregisterSignal(ForgeDirection side, TransmitterData aCoverVariable, ICoverable aTileEntity) {
-        final long hash = hashCoverCoords(aTileEntity, side);
-        removeSignalAt(aCoverVariable.uuid, aCoverVariable.frequency, hash);
+        final CoverData key = getCoverKey(aTileEntity, side);
+        removeSignalAt(aCoverVariable.uuid, aCoverVariable.frequency, key);
     }
 
     @Override
