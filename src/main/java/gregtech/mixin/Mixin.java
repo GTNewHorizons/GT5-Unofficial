@@ -51,6 +51,7 @@ public enum Mixin {
     VanillaAccessors(new Builder("Adds various accessors")
         .addMixinClasses(
             "minecraft.accessors.BlockStemMixin",
+            "minecraft.accessors.ChunkCacheMixin",
             "minecraft.accessors.VanillaShapedRecipeMixin",
             "minecraft.accessors.VanillaShapelessRecipeMixin",
             "minecraft.accessors.ForgeShapedRecipeMixin",
