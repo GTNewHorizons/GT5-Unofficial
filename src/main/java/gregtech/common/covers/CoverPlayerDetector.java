@@ -171,7 +171,7 @@ public class CoverPlayerDetector extends CoverBehavior {
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverPlayerDetector.this::createDataObject,
+                        CoverPlayerDetector.this::loadFromNbt,
                         (index, coverData) -> index == convert(coverData),
                         (index, coverData) -> new LegacyCoverData(index))
                             .addToggleButton(

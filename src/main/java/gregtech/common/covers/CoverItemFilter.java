@@ -43,7 +43,7 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
     }
 
     @Override
-    protected ItemFilterData createDataObject() {
+    protected ItemFilterData initializeData() {
         return new CoverItemFilter.ItemFilterData();
     }
 
@@ -178,7 +178,7 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
                 new CoverDataControllerWidget<>(
                     this::getCoverData,
                     this::setCoverData,
-                    CoverItemFilter.this::createDataObject)
+                    CoverItemFilter.this::loadFromNbt)
                         .addFollower(
                             new CoverDataFollowerToggleButtonWidget<>(),
                             coverData -> coverData.mWhitelist,

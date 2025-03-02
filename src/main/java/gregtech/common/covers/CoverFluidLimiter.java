@@ -33,7 +33,7 @@ public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.Fluid
     }
 
     @Override
-    protected FluidLimiterData createDataObject() {
+    protected FluidLimiterData initializeData() {
         return new CoverFluidLimiter.FluidLimiterData(1F);
     }
 
@@ -168,7 +168,7 @@ public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.Fluid
                 new CoverDataControllerWidget<>(
                     this::getCoverData,
                     this::setCoverData,
-                    CoverFluidLimiter.this::createDataObject).addFollower(
+                    CoverFluidLimiter.this::loadFromNbt).addFollower(
                         new CoverDataFollowerNumericWidget<>(),
                         coverData -> (double) Math.round(coverData.threshold * 100),
                         (coverData, val) -> {

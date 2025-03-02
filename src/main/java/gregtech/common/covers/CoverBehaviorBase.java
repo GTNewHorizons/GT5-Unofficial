@@ -56,15 +56,15 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
 
     private T initializeData(Object coverData) {
         if (coverData instanceof ItemStack coverStack) {
-            return createDataObject(coverStack);
+            return loadFromItemStack(coverStack);
         } else if (coverData instanceof NBTTagCompound nbt && nbt.hasKey(NBT_DATA)) {
-            return createDataObject(nbt.getTag(NBT_DATA));
+            return loadFromNbt(nbt.getTag(NBT_DATA));
         } else if (coverData instanceof ByteArrayDataInput byteData) {
-            return createDataObject(byteData);
+            return loadFromPacket(byteData);
         } else if (acceptsDataObject(coverData)) {
             return forceCast(coverData);
         }
-        return createDataObject();
+        return initializeData();
     }
 
     private int initializeTickRateAddition(Object coverData) {
@@ -81,20 +81,20 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
         return getDefaultTickRate() - this.getMinimumTickRate();
     }
 
-    protected abstract T createDataObject();
+    protected abstract T initializeData();
 
-    protected T createDataObject(ItemStack cover) {
-        return createDataObject();
+    protected T loadFromItemStack(ItemStack cover) {
+        return initializeData();
     }
 
-    protected T createDataObject(NBTBase nbt) {
-        final T ret = createDataObject();
+    protected T loadFromNbt(NBTBase nbt) {
+        final T ret = initializeData();
         ret.loadDataFromNBT(nbt);
         return ret;
     }
 
-    protected T createDataObject(ByteArrayDataInput byteData) {
-        final T ret = createDataObject();
+    protected T loadFromPacket(ByteArrayDataInput byteData) {
+        final T ret = initializeData();
         ret.readFromPacket(byteData);
         return ret;
     }

@@ -50,7 +50,7 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
     }
 
     @Override
-    protected MetricsTransmitterData createDataObject() {
+    protected MetricsTransmitterData initializeData() {
         return new CoverMetricsTransmitter.MetricsTransmitterData();
     }
 

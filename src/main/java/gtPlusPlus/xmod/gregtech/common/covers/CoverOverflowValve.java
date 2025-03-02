@@ -40,7 +40,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
     }
 
     @Override
-    protected OverflowValveData createDataObject() {
+    protected OverflowValveData initializeData() {
         return new CoverOverflowValve.OverflowValveData(maxOverflowPoint, maxOverflowPoint / 10, true, true);
     }
 
@@ -220,7 +220,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                     new CoverDataControllerWidget<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverOverflowValve.this::createDataObject).addFollower(
+                        CoverOverflowValve.this::loadFromNbt).addFollower(
                             new CoverDataFollowerNumericWidget<>(),
                             coverData -> (double) coverData.overflowPoint,
                             (coverData, state) -> {
@@ -244,7 +244,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                     new CoverDataControllerWidget<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverOverflowValve.this::createDataObject).addFollower(
+                        CoverOverflowValve.this::loadFromNbt).addFollower(
                             new CoverDataFollowerNumericWidget<>(),
                             coverData -> (double) coverData.voidingRate,
                             (coverData, state) -> {
@@ -260,7 +260,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverOverflowValve.this::createDataObject,
+                        CoverOverflowValve.this::loadFromNbt,
                         this::getClickable,
                         this::updateData)
                             .addToggleButton(

@@ -68,7 +68,7 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
     }
 
     @Override
-    protected FluidStorageData createDataObject() {
+    protected FluidStorageData initializeData() {
         return new FluidStorageData();
     }
 

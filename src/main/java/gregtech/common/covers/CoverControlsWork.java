@@ -211,7 +211,7 @@ public class CoverControlsWork extends CoverBehavior {
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverControlsWork.this::createDataObject,
+                        CoverControlsWork.this::loadFromNbt,
                         (id, coverData) -> !getClickable(id, convert(coverData)),
                         (id, coverData) -> new LegacyCoverData(getNewCoverVariable(id, convert(coverData))))
                             .addToggleButton(
@@ -234,7 +234,7 @@ public class CoverControlsWork extends CoverBehavior {
                     new CoverDataControllerWidget<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverControlsWork.this::createDataObject).addFollower(
+                        CoverControlsWork.this::loadFromNbt).addFollower(
                             CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
                             coverData -> convert(coverData) > 2,
                             (coverData, state) -> new LegacyCoverData(adjustCoverVariable(state, convert(coverData))),

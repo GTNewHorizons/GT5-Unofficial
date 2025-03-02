@@ -41,13 +41,13 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
     }
 
     @Override
-    protected FacadeData createDataObject() {
+    protected FacadeData initializeData() {
         return new CoverFacadeBase.FacadeData();
     }
 
     @Override
-    public FacadeData createDataObject(ItemStack cover) {
-        if (Objects.isNull(cover)) return createDataObject();
+    public FacadeData loadFromItemStack(ItemStack cover) {
+        if (Objects.isNull(cover)) return initializeData();
         return new CoverFacadeBase.FacadeData(GTUtility.copyAmount(1, cover), 0);
     }
 
@@ -278,7 +278,7 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                     this::getCoverData,
                     this::setCoverData,
-                    CoverFacadeBase.this::createDataObject,
+                    CoverFacadeBase.this::loadFromNbt,
                     this::isEnabled,
                     (id, coverData) -> {
                         coverData.mFlags = getNewCoverVariable(id, coverData);

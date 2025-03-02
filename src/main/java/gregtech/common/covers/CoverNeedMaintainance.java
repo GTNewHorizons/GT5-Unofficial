@@ -208,7 +208,7 @@ public class CoverNeedMaintainance extends CoverBehavior {
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverNeedMaintainance.this::createDataObject,
+                        CoverNeedMaintainance.this::loadFromNbt,
                         (index, coverData) -> isEnabled(index, convert(coverData)),
                         (index, coverData) -> new ISerializableObject.LegacyCoverData(
                             getNewCoverVariable(index, convert(coverData))))

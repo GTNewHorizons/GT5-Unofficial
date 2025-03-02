@@ -37,7 +37,7 @@ public class CoverWirelessFluidDetector
     }
 
     @Override
-    protected FluidTransmitterData createDataObject() {
+    protected FluidTransmitterData initializeData() {
         return new CoverWirelessFluidDetector.FluidTransmitterData();
     }
 

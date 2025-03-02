@@ -44,11 +44,11 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
     }
 
     @Override
-    public CoverChest.ChestInventory createDataObject() {
+    public CoverChest.ChestInventory initializeData() {
         if (slots > 0) {
             return createChestInventoryFromState();
         }
-        return createDataObject(GTOreDictUnificator.get(true, asItemStack()));
+        return loadFromItemStack(GTOreDictUnificator.get(true, asItemStack()));
     }
 
     /**
@@ -60,7 +60,7 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
     }
 
     @Override
-    protected ChestInventory createDataObject(ItemStack coverItem) {
+    protected ChestInventory loadFromItemStack(ItemStack coverItem) {
         if (ItemStack.areItemStacksEqual(ItemList.Cover_Chest_Basic.get(1L), coverItem)) {
             return new ChestInventory(BASIC_INVENTORY_SIZE, STACK_SIZE_LIMIT);
         } else if (ItemStack.areItemStacksEqual(ItemList.Cover_Chest_Good.get(1L), coverItem)) {
@@ -72,14 +72,14 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
     }
 
     @Override
-    protected ChestInventory createDataObject(NBTBase nbt) {
+    protected ChestInventory loadFromNbt(NBTBase nbt) {
         final ChestInventory ret = createChestInventoryFromState();
         ret.loadDataFromNBT(nbt);
         return ret;
     }
 
     @Override
-    protected ChestInventory createDataObject(ByteArrayDataInput byteData) {
+    protected ChestInventory loadFromPacket(ByteArrayDataInput byteData) {
         final ChestInventory ret = createChestInventoryFromState();
         ret.readFromPacket(byteData);
         return ret;
@@ -130,7 +130,7 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
                 }
             }
 
-            ChestInventory newData = createDataObject();
+            ChestInventory newData = initializeData();
             int toCopy = Math.min(newData.items.getSlots(), coverData.items.getSlots());
             for (int i = 0; i < toCopy; i++) {
                 newData.items.setStackInSlot(i, coverData.items.getStackInSlot(i));
@@ -182,7 +182,7 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
             CoverDataControllerWidget<ChestInventory> w = new CoverDataControllerWidget<>(
                 this::getCoverData,
                 this::setCoverData,
-                CoverChest.this::createDataObject);
+                CoverChest.this::loadFromNbt);
             ChestInventory d = getCoverData();
             LimitingItemStackHandler h;
             if (d == null) {

@@ -49,7 +49,7 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
     }
 
     @Override
-    protected FluidFilterData createDataObject() {
+    protected FluidFilterData initializeData() {
         return new CoverFluidfilter.FluidFilterData(-1, 0);
     }
 
@@ -206,7 +206,7 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                     this::getCoverData,
                     this::setCoverData,
-                    CoverFluidfilter.this::createDataObject,
+                    CoverFluidfilter.this::loadFromNbt,
                     (id, coverData) -> !getClickable(id, coverData),
                     (id, coverData) -> {
                         coverData.mFilterMode = getNewFilterMode(id, coverData);

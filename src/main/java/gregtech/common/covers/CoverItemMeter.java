@@ -44,7 +44,7 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
     }
 
     @Override
-    protected ItemMeterData createDataObject() {
+    protected ItemMeterData initializeData() {
         return new CoverItemMeter.ItemMeterData();
     }
 
@@ -215,7 +215,7 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
                 new CoverDataControllerWidget<>(
                     this::getCoverData,
                     this::setCoverData,
-                    CoverItemMeter.this::createDataObject)
+                    CoverItemMeter.this::loadFromNbt)
                         .addFollower(
                             CoverDataFollowerToggleButtonWidget.ofRedstone(),
                             coverData -> coverData.inverted,

@@ -147,7 +147,7 @@ public class CoverShutter extends CoverBehavior {
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverShutter.this::createDataObject,
+                        CoverShutter.this::loadFromNbt,
                         (index, coverData) -> index == convert(coverData),
                         (index, coverData) -> new ISerializableObject.LegacyCoverData(index))
                             .addToggleButton(

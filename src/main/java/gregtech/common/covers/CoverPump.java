@@ -194,7 +194,7 @@ public class CoverPump extends CoverBehavior {
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                     this::getCoverData,
                     this::setCoverData,
-                    CoverPump.this::createDataObject,
+                    CoverPump.this::loadFromNbt,
                     (id, coverData) -> !getClickable(id, convert(coverData)),
                     (id, coverData) -> new LegacyCoverData(getNewCoverVariable(id, convert(coverData))))
                         .addToggleButton(

@@ -12,7 +12,7 @@ public class CoverAdvancedRedstoneTransmitterExternal
     }
 
     @Override
-    protected TransmitterData createDataObject() {
+    protected TransmitterData initializeData() {
         return new CoverAdvancedRedstoneTransmitterBase.TransmitterData();
     }
 

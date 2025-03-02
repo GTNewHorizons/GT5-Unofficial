@@ -64,7 +64,7 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
     }
 
     @Override
-    protected FluidRegulatorData createDataObject() {
+    protected FluidRegulatorData initializeData() {
         return new CoverFluidRegulator.FluidRegulatorData();
     }
 
@@ -230,7 +230,7 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
                 new CoverDataControllerWidget<>(
                     this::getCoverData,
                     this::setCoverData,
-                    CoverFluidRegulator.this::createDataObject)
+                    CoverFluidRegulator.this::loadFromNbt)
                         .addFollower(
                             CoverDataFollowerToggleButtonWidget.ofDisableable(),
                             coverData -> coverData.speed >= 0,
