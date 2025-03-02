@@ -411,8 +411,10 @@ GT5U.machines.digitaltank.voidoverflow.tooltip.1=§7Voids all fluid excess if th
 GT5U.machines.digitaltank.voidfull.tooltip=Void Full Mode
 GT5U.machines.digitaltank.voidfull.tooltip.1=§7Voids all fluids that enter the tank
 GT5U.machines.digitaltank.inputfromoutput.tooltip=Input Fluid from Output Side
-GT5U.machines.select_circuit=Select Machine Mode
+GT5U.machines.select_circuit=Configure Circuit
 GT5U.machines.select_circuit.tooltip=Ghost Circuit Slot
+GT5U.machines.select_circuit.tooltip.configuration=§aConfiguration: §f%s§r
+GT5U.machines.select_circuit.tooltip.configuration.none=None
 GT5U.machines.select_circuit.tooltip.1=§7LMB/RMB/scroll to cycle through the list
 GT5U.machines.select_circuit.tooltip.2=§7Shift left click to open GUI
 GT5U.machines.select_circuit.tooltip.3=§7Shift right click to clear
@@ -1900,7 +1902,6 @@ gt.wrench.mode.1=Line Mode
 
 
 # GT++
-# Shit I stole from GTNH~
 
 GT5U.gui.text.no_water=§7Missing water
 GT5U.gui.text.no_lava=§7Missing lava
