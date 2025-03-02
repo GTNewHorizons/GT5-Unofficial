@@ -1882,6 +1882,7 @@ public class GTUtility {
         }
         if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem fluidContainerItem
             && fluidContainerItem.getFluid(aStack) == null
+            && fluidContainerItem.getCapacity(aStack) > 0
             && fluidContainerItem.getCapacity(aStack) <= aFluid.amount) {
             if (aRemoveFluidDirectly) {
                 aFluid.amount -= fluidContainerItem.fill(aStack = copyAmount(1, aStack), aFluid, true);
