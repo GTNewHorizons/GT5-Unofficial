@@ -43,7 +43,6 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.modularui2.MetaTileEntityGuiHandler;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.GTClient;
