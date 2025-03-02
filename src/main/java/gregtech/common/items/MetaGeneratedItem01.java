@@ -3838,26 +3838,17 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         CoverRegistry.registerCover(
             ItemList.Cover_Chest_Basic.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_1)),
-            context -> new CoverChest(
-                context,
-                CoverChest.BASIC_INVENTORY_SIZE,
-                TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_1)),
+            context -> new CoverChest(context, 9, TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_1)),
             CoverRegistry.PRIMITIVE_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_Chest_Good.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_2)),
-            context -> new CoverChest(
-                context,
-                CoverChest.GOOD_INVENTORY_SIZE,
-                TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_2)),
+            context -> new CoverChest(context, 12, TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_2)),
             CoverRegistry.PRIMITIVE_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_Chest_Advanced.get(1L),
             TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_3)),
-            context -> new CoverChest(
-                context,
-                CoverChest.ADVANCED_INVENTORY_SIZE,
-                TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_3)),
+            context -> new CoverChest(context, 15, TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_3)),
             CoverRegistry.PRIMITIVE_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_ActivityDetector.get(1L),
