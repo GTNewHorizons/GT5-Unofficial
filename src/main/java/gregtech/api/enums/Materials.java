@@ -977,6 +977,30 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials RadoxGas;
     public static Materials RadoxPolymer;
 
+    // Taranium
+    public static Materials TerbiumBondedTraceResidue;
+    public static Materials StoneResidue;
+    public static Materials TraceElementResidue;
+    public static Materials PartiallyOxidizedResidue;
+    public static Materials UncommonResidue;
+    public static Materials Taranium;
+
+    public static Materials DirtyHexafluorosilicicAcid;
+    public static Materials DilutedHydrofluorosilicicAcid;
+    public static Materials DioxygenDifluoride;
+    public static Materials FluorinatedTraceResidue;
+    public static Materials TaraniumEnrichedHelium3;
+    public static Materials TaraniumSemidepletedHelium3;
+    public static Materials TaraniumDepletedHelium3;
+    public static Materials TaraniumDepletedHeliumPlasma;
+    public static Materials TaraniumrichHelium3;
+    public static Materials DustyHelium3;
+    public static Materials StoneFroth;
+    public static Materials TraceElementSlurry;
+    public static Materials TraceResidue;
+    public static Materials OxidizedResidualSolution;
+    public static Materials DepletedTraceElementSlurry;
+    public static Materials StoneMudSlurry;
 
     // spotless:on
 
