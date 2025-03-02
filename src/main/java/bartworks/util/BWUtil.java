@@ -61,10 +61,6 @@ import gregtech.api.util.GTUtility;
 public class BWUtil {
 
     @Deprecated
-    public static final int STANDART = 0;
-    @Deprecated
-    public static final int LOWGRAVITY = -100;
-    @Deprecated
     public static final int CLEANROOM = -200;
 
     public static String translateGTItemStack(ItemStack itemStack) {
@@ -211,23 +207,6 @@ public class BWUtil {
         if (EnumRarity.epic.equals(rarity)) return 2;
         else if (EnumRarity.rare.equals(rarity)) return 3;
         return 0;
-    }
-
-    /**
-     * @deprecated Use stuff in {@link BorosilicateGlass} instead
-     */
-    @Deprecated
-    public static byte getTierFromGlasMeta(int meta) {
-        return switch (meta) {
-            case 1 -> 4;
-            case 2, 12 -> 5;
-            case 3 -> 6;
-            case 4 -> 7;
-            case 5 -> 8;
-            case 13 -> 9;
-            case 14 -> 10;
-            default -> 3;
-        };
     }
 
     public static EnumRarity getRarityFromByte(byte b) {

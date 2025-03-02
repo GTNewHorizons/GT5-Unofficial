@@ -221,10 +221,19 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
             .addCasingInfoExactly("EV+ Glass", 72, false)
             .addCasingInfoExactly("Pressure Resistant Wall", 48, false)
             .addCasingInfoExactly("Tungstensteel Pipe Casing", 60, false)
-            .addOtherStructurePart("Input Hatch", "Distilled water", 1)
-            .addOtherStructurePart("Output Hatch", "SC Steam/SH Steam", 2)
-            .addOtherStructurePart("Input Hatch", "Hot fluid or plasma", 3)
-            .addOtherStructurePart("Output Hatch", "Cold fluid", 4)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
+                "Distilled water",
+                1)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"),
+                "SC Steam/SH Steam",
+                2)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
+                "Hot fluid or plasma",
+                3)
+            .addOtherStructurePart(StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"), "Cold fluid", 4)
             .addMaintenanceHatch("Any Casing", 1, 2, 5)
             .toolTipFinisher();
         return tt;

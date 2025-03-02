@@ -7,9 +7,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
@@ -21,7 +19,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.GTClient;
@@ -32,7 +29,7 @@ import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.mechanics.pipe.PipeActivityMessage;
 import tectech.util.CommonValues;
 
-public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTunnel, IActivePipe {
+public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTunnel, IActivePipe {
 
     static Textures.BlockIcons.CustomIcon EMcandy, EMCandyActive;
     private static Textures.BlockIcons.CustomIcon EMpipe;
@@ -40,17 +37,17 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
 
     private boolean active;
 
-    public MTEPipeEnergy(int aID, String aName, String aNameRegional) {
+    public MTEPipeLaser(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
     }
 
-    public MTEPipeEnergy(String aName) {
+    public MTEPipeLaser(String aName) {
         super(aName, 0);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new MTEPipeEnergy(mName);
+        return new MTEPipeLaser(mName);
     }
 
     @Override
@@ -87,8 +84,7 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(side);
 
-            if (gregTechTileEntity != null
-                && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeEnergy neighbor) {
+            if (gregTechTileEntity != null && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser neighbor) {
                 neighbor.updateNetwork(true);
             }
         }
@@ -143,7 +139,7 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(side);
 
-            if (gregTechTileEntity != null && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeEnergy neighbor
+            if (gregTechTileEntity != null && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser neighbor
                 && neighbor.isConnectedAtSide(side.getOpposite())) {
                 neighbor.mConnections &= ~side.getOpposite().flag;
                 neighbor.connectionCount--;
@@ -234,71 +230,6 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
     @Override
     public boolean canConnect(ForgeDirection side) {
         return true;
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x2) != 0)
-            return AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
-        else return getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
-    }
-
-    public AxisAlignedBB getActualCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        float tSpace = (1f - 0.5f) / 2;
-        float tSide0 = tSpace;
-        float tSide1 = 1f - tSpace;
-        float tSide2 = tSpace;
-        float tSide3 = 1f - tSpace;
-        float tSide4 = tSpace;
-        float tSide5 = 1f - tSpace;
-
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.DOWN) != 0) {
-            tSide0 = tSide2 = tSide4 = 0;
-            tSide3 = tSide5 = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.UP) != 0) {
-            tSide2 = tSide4 = 0;
-            tSide1 = tSide3 = tSide5 = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.NORTH) != 0) {
-            tSide0 = tSide2 = tSide4 = 0;
-            tSide1 = tSide5 = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.SOUTH) != 0) {
-            tSide0 = tSide4 = 0;
-            tSide1 = tSide3 = tSide5 = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.WEST) != 0) {
-            tSide0 = tSide2 = tSide4 = 0;
-            tSide1 = tSide3 = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.EAST) != 0) {
-            tSide0 = tSide2 = 0;
-            tSide1 = tSide3 = tSide5 = 1;
-        }
-
-        byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
-        if ((tConn & 1 << ForgeDirection.DOWN.ordinal()) != 0) {
-            tSide0 = 0f;
-        }
-        if ((tConn & 1 << ForgeDirection.UP.ordinal()) != 0) {
-            tSide1 = 1f;
-        }
-        if ((tConn & 1 << ForgeDirection.NORTH.ordinal()) != 0) {
-            tSide2 = 0f;
-        }
-        if ((tConn & 1 << ForgeDirection.SOUTH.ordinal()) != 0) {
-            tSide3 = 1f;
-        }
-        if ((tConn & 1 << ForgeDirection.WEST.ordinal()) != 0) {
-            tSide4 = 0f;
-        }
-        if ((tConn & 1 << ForgeDirection.EAST.ordinal()) != 0) {
-            tSide5 = 1f;
-        }
-
-        return AxisAlignedBB
-            .getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
     }
 
     @Override

@@ -201,12 +201,4 @@ public class MTEHatchMuffler extends MTEHatch {
         }
         return false;
     }
-
-    /**
-     * @deprecated Use {@link #polluteEnvironment(MetaTileEntity, int)}.
-     */
-    @Deprecated
-    public boolean polluteEnvironment(MetaTileEntity mte) {
-        return polluteEnvironment(mte, 10000);
-    }
 }
