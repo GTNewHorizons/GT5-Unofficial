@@ -38,6 +38,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -275,7 +276,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                     .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
                     .sizeRel(1f,0.2f)
                     .pos(0,i.get()*35)
-                    .child(new TextWidget(owner == "Public" ? "Public" : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(owner)))
+                    .child(new TextWidget(owner.equals("Public") ? "Public" : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(owner)))
                         .widthRel(0.2f)
                         .alignment(Alignment.Center))
                     .child(new TextWidget(String.valueOf(freq)).widthRel(0.2f).alignment(Alignment.Center))
