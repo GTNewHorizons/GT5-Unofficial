@@ -41,7 +41,7 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
     }
 
     @Override
-    protected LiquidMeterData createDataObject() {
+    protected LiquidMeterData initializeData() {
         return new LiquidMeterData();
     }
 
@@ -176,7 +176,7 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
                 new CoverDataControllerWidget<>(
                     this::getCoverData,
                     this::setCoverData,
-                    CoverLiquidMeter.this::createDataObject)
+                    CoverLiquidMeter.this::loadFromNbt)
                         .addFollower(
                             CoverDataFollowerToggleButtonWidget.ofRedstone(),
                             coverData -> coverData.inverted,

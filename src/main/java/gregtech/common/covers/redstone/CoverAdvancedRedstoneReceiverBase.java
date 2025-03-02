@@ -30,7 +30,7 @@ public abstract class CoverAdvancedRedstoneReceiverBase
     }
 
     @Override
-    protected ReceiverData createDataObject() {
+    protected ReceiverData initializeData() {
         return new CoverAdvancedRedstoneReceiverBase.ReceiverData();
     }
     // GUI stuff

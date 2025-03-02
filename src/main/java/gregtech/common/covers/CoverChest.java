@@ -19,70 +19,33 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.covers.CoverContext;
-import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import io.netty.buffer.ByteBuf;
 
 public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
 
-    public static final int BASIC_INVENTORY_SIZE = 9;
-    public static final int GOOD_INVENTORY_SIZE = 12;
-    public static final int ADVANCED_INVENTORY_SIZE = 15;
-    private static final int STACK_SIZE_LIMIT = 1;
-
     private final int slots;
+    private final int stackSizeLimit = 1;
 
     public CoverChest(CoverContext context, int slots, ITexture coverTexture) {
         super(context, ChestInventory.class, coverTexture);
         if (slots <= 0) throw new IllegalArgumentException("slots must be greater than 0");
         this.slots = slots;
-    }
-
-    @Override
-    public CoverChest.ChestInventory createDataObject() {
-        if (slots > 0) {
-            return createChestInventoryFromState();
+        Object initializer = context.getCoverData();
+        if (initializer == null || initializer instanceof ItemStack) {
+            // Re-initialization required until we merge covers and their data objects,
+            // since this relies on an instance field.
+            coverData = initializeData();
         }
-        return createDataObject(GTOreDictUnificator.get(true, asItemStack()));
-    }
-
-    /**
-     * Note: slots is not guaranteed to have a valid value at the time this is called, in which case
-     * the data should be overwritten right away with loadDataFromNBT or readFromPacket.
-     */
-    private @NotNull ChestInventory createChestInventoryFromState() {
-        return new ChestInventory(slots, STACK_SIZE_LIMIT);
     }
 
     @Override
-    protected ChestInventory createDataObject(ItemStack coverItem) {
-        if (ItemStack.areItemStacksEqual(ItemList.Cover_Chest_Basic.get(1L), coverItem)) {
-            return new ChestInventory(BASIC_INVENTORY_SIZE, STACK_SIZE_LIMIT);
-        } else if (ItemStack.areItemStacksEqual(ItemList.Cover_Chest_Good.get(1L), coverItem)) {
-            return new ChestInventory(GOOD_INVENTORY_SIZE, STACK_SIZE_LIMIT);
-        } else if (ItemStack.areItemStacksEqual(ItemList.Cover_Chest_Advanced.get(1L), coverItem)) {
-            return new ChestInventory(ADVANCED_INVENTORY_SIZE, STACK_SIZE_LIMIT);
-        }
-        throw new IllegalStateException("Unsupported Chest Cover");
-    }
-
-    @Override
-    protected ChestInventory createDataObject(NBTBase nbt) {
-        final ChestInventory ret = createChestInventoryFromState();
-        ret.loadDataFromNBT(nbt);
-        return ret;
-    }
-
-    @Override
-    protected ChestInventory createDataObject(ByteArrayDataInput byteData) {
-        final ChestInventory ret = createChestInventoryFromState();
-        ret.readFromPacket(byteData);
-        return ret;
+    public CoverChest.ChestInventory initializeData() {
+        return new CoverChest.ChestInventory(slots, stackSizeLimit);
     }
 
     @Override
@@ -130,7 +93,7 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
                 }
             }
 
-            ChestInventory newData = createDataObject();
+            ChestInventory newData = initializeData();
             int toCopy = Math.min(newData.items.getSlots(), coverData.items.getSlots());
             for (int i = 0; i < toCopy; i++) {
                 newData.items.setStackInSlot(i, coverData.items.getStackInSlot(i));
@@ -182,7 +145,7 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
             CoverDataControllerWidget<ChestInventory> w = new CoverDataControllerWidget<>(
                 this::getCoverData,
                 this::setCoverData,
-                CoverChest.this::createDataObject);
+                CoverChest.this::loadFromNbt);
             ChestInventory d = getCoverData();
             LimitingItemStackHandler h;
             if (d == null) {

@@ -37,7 +37,7 @@ public class CoverWirelessMaintenanceDetector
     }
 
     @Override
-    protected MaintenanceTransmitterData createDataObject() {
+    protected MaintenanceTransmitterData initializeData() {
         return new CoverWirelessMaintenanceDetector.MaintenanceTransmitterData();
     }
 

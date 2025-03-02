@@ -165,7 +165,7 @@ public class CoverDoesWork extends CoverBehavior {
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverDoesWork.this::createDataObject,
+                        CoverDoesWork.this::loadFromNbt,
                         (id, coverData) -> isEnabled(id, convert(coverData)),
                         (id, coverData) -> new LegacyCoverData(getNewCoverVariable(id, convert(coverData))))
                             .addToggleButton(

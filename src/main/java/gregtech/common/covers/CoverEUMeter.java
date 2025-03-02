@@ -37,7 +37,7 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
     }
 
     @Override
-    protected EUMeterData createDataObject() {
+    protected EUMeterData initializeData() {
         return new CoverEUMeter.EUMeterData();
     }
 
@@ -183,42 +183,39 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
             final CoverDataFollowerNumericWidget<EUMeterData> numericWidget = new CoverDataFollowerNumericWidget<>();
 
             builder.widget(
-                new CoverDataControllerWidget<>(
-                    this::getCoverData,
-                    this::setCoverData,
-                    CoverEUMeter.this::createDataObject)
-                        .addFollower(
-                            new CoverDataFollowerCycleButtonWidget<>(),
-                            coverData -> coverData.type.ordinal(),
-                            (coverData, state) -> {
-                                coverData.type = EnergyType.getEnergyType(state);
-                                return coverData;
-                            },
-                            widget -> widget.setLength(EnergyType.values().length)
-                                .addTooltip(
-                                    state -> EnergyType.getEnergyType(state)
-                                        .getTooltip())
-                                .setStaticTexture(GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                                .setPos(spaceX * 0, spaceY * 0))
-                        .addFollower(
-                            CoverDataFollowerToggleButtonWidget.ofRedstone(),
-                            coverData -> coverData.inverted,
-                            (coverData, state) -> {
-                                coverData.inverted = state;
-                                return coverData;
-                            },
-                            widget -> widget.addTooltip(0, NORMAL)
-                                .addTooltip(1, INVERTED)
-                                .setPos(spaceX * 0, spaceY * 1))
-                        .addFollower(numericWidget, coverData -> (double) coverData.threshold, (coverData, state) -> {
-                            coverData.threshold = state.longValue();
+                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverEUMeter.this::loadFromNbt)
+                    .addFollower(
+                        new CoverDataFollowerCycleButtonWidget<>(),
+                        coverData -> coverData.type.ordinal(),
+                        (coverData, state) -> {
+                            coverData.type = EnergyType.getEnergyType(state);
                             return coverData;
                         },
-                            widget -> widget.setScrollValues(1000, 100, 100000)
-                                .setFocusOnGuiOpen(true)
-                                .setPos(spaceX * 0, spaceY * 2 + 2)
-                                .setSize(spaceX * 8, 12))
-                        .setPos(startX, startY))
+                        widget -> widget.setLength(EnergyType.values().length)
+                            .addTooltip(
+                                state -> EnergyType.getEnergyType(state)
+                                    .getTooltip())
+                            .setStaticTexture(GTUITextures.OVERLAY_BUTTON_CYCLIC)
+                            .setPos(spaceX * 0, spaceY * 0))
+                    .addFollower(
+                        CoverDataFollowerToggleButtonWidget.ofRedstone(),
+                        coverData -> coverData.inverted,
+                        (coverData, state) -> {
+                            coverData.inverted = state;
+                            return coverData;
+                        },
+                        widget -> widget.addTooltip(0, NORMAL)
+                            .addTooltip(1, INVERTED)
+                            .setPos(spaceX * 0, spaceY * 1))
+                    .addFollower(numericWidget, coverData -> (double) coverData.threshold, (coverData, state) -> {
+                        coverData.threshold = state.longValue();
+                        return coverData;
+                    },
+                        widget -> widget.setScrollValues(1000, 100, 100000)
+                            .setFocusOnGuiOpen(true)
+                            .setPos(spaceX * 0, spaceY * 2 + 2)
+                            .setSize(spaceX * 8, 12))
+                    .setPos(startX, startY))
                 .widget(
                     new TextWidget()
                         .setStringSupplier(() -> getCoverData() != null ? getCoverData().type.getTitle() : "")

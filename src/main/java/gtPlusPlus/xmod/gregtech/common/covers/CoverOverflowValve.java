@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.covers;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -37,10 +38,16 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
     public CoverOverflowValve(CoverContext context, int maxOverflowPoint) {
         super(context, OverflowValveData.class, null);
         this.maxOverflowPoint = maxOverflowPoint;
+        Object initializer = context.getCoverData();
+        if (initializer == null || initializer instanceof ItemStack) {
+            // Re-initialization required until we merge covers and their data objects,
+            // since this relies on an instance field.
+            coverData = initializeData();
+        }
     }
 
     @Override
-    protected OverflowValveData createDataObject() {
+    protected OverflowValveData initializeData() {
         return new CoverOverflowValve.OverflowValveData(maxOverflowPoint, maxOverflowPoint / 10, true, true);
     }
 
@@ -220,7 +227,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                     new CoverDataControllerWidget<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverOverflowValve.this::createDataObject).addFollower(
+                        CoverOverflowValve.this::loadFromNbt).addFollower(
                             new CoverDataFollowerNumericWidget<>(),
                             coverData -> (double) coverData.overflowPoint,
                             (coverData, state) -> {
@@ -244,7 +251,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                     new CoverDataControllerWidget<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverOverflowValve.this::createDataObject).addFollower(
+                        CoverOverflowValve.this::loadFromNbt).addFollower(
                             new CoverDataFollowerNumericWidget<>(),
                             coverData -> (double) coverData.voidingRate,
                             (coverData, state) -> {
@@ -260,7 +267,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
                         this::setCoverData,
-                        CoverOverflowValve.this::createDataObject,
+                        CoverOverflowValve.this::loadFromNbt,
                         this::getClickable,
                         this::updateData)
                             .addToggleButton(

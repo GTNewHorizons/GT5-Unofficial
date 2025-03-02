@@ -246,7 +246,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
             CoverDataControllerWidget<T> dataController = new CoverDataControllerWidget<>(
                 this::getCoverData,
                 this::setCoverData,
-                CoverAdvancedWirelessRedstoneBase.this::createDataObject);
+                CoverAdvancedWirelessRedstoneBase.this::loadFromNbt);
             dataController.setPos(startX, startY);
             addUIForDataController(dataController);
 

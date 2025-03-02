@@ -33,7 +33,7 @@ public class CoverWirelessDoesWorkDetector
     }
 
     @Override
-    protected ActivityTransmitterData createDataObject() {
+    protected ActivityTransmitterData initializeData() {
         return new CoverWirelessDoesWorkDetector.ActivityTransmitterData();
     }
 

@@ -40,7 +40,7 @@ public class CoverWirelessItemDetector
     }
 
     @Override
-    protected ItemTransmitterData createDataObject() {
+    protected ItemTransmitterData initializeData() {
         return new CoverWirelessItemDetector.ItemTransmitterData();
     }
 

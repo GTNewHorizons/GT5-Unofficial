@@ -22,7 +22,7 @@ public abstract class CoverBehavior extends CoverBehaviorBase<ISerializableObjec
     }
 
     @Override
-    public final ISerializableObject.LegacyCoverData createDataObject() {
+    public final ISerializableObject.LegacyCoverData initializeData() {
         return new ISerializableObject.LegacyCoverData();
     }
 
