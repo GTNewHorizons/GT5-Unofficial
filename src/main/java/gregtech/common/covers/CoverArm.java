@@ -47,7 +47,8 @@ public class CoverArm extends CoverBehavior {
     @Override
     public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
-        if (coverable == null || (((coverable instanceof IMachineProgress machine)) && (!machine.isAllowedToWork()))) {
+        if (coverable == null || (((coverable instanceof IMachineProgress machine)) && (!machine.isAllowedToWork()))
+            || !(coverable instanceof TileEntity tileEntity)) {
             return coverData;
         }
 
@@ -59,35 +60,36 @@ public class CoverArm extends CoverBehavior {
             coverDataValue = CONVERTED_BIT | Math.min(Math.abs(coverDataValue - 1), SLOT_ID_MASK);
         }
 
-        final ICoverable toTile;
-        final ICoverable fromTile;
+        final TileEntity toTile;
+        final TileEntity fromTile;
         final int toSlot;
         final int fromSlot;
 
         if ((coverDataValue & EXPORT_MASK) > 0) {
-            fromTile = coverable;
-            toTile = (ICoverable) coverable.getTileEntityAtSide(coverSide);
+            fromTile = tileEntity;
+            toTile = coverable.getTileEntityAtSide(coverSide);
             fromSlot = coverDataValue & SLOT_ID_MASK;
             toSlot = (coverDataValue >> 14) & SLOT_ID_MASK;
         } else {
-            fromTile = (ICoverable) coverable.getTileEntityAtSide(coverSide);
-            toTile = coverable;
+            fromTile = coverable.getTileEntityAtSide(coverSide);
+            toTile = tileEntity;
             fromSlot = (coverDataValue >> 14) & SLOT_ID_MASK;
             toSlot = coverDataValue & SLOT_ID_MASK;
         }
 
         if (fromSlot > 0 && toSlot > 0) {
-            GTUtility.moveFromSlotToSlot(
-                fromTile,
-                toTile,
-                fromSlot - 1,
-                toSlot - 1,
-                null,
-                false,
-                (byte) 64,
-                (byte) 1,
-                (byte) 64,
-                (byte) 1);
+            if (fromTile instanceof IInventory fromInventory && toTile instanceof IInventory toInventory)
+                GTUtility.moveFromSlotToSlot(
+                    fromInventory,
+                    toInventory,
+                    fromSlot - 1,
+                    toSlot - 1,
+                    null,
+                    false,
+                    (byte) 64,
+                    (byte) 1,
+                    (byte) 64,
+                    (byte) 1);
         } else if (toSlot > 0) {
             final ForgeDirection toSide;
             if ((coverDataValue & EXPORT_MASK) > 0) toSide = coverSide;
@@ -107,8 +109,8 @@ public class CoverArm extends CoverBehavior {
             final ForgeDirection toSide;
             if ((coverDataValue & EXPORT_MASK) > 0) toSide = coverSide;
             else toSide = coverSide.getOpposite();
-            GTUtility.moveFromSlotToSide(
-                fromTile,
+            if (fromTile instanceof IInventory fromIventory) GTUtility.moveFromSlotToSide(
+                fromIventory,
                 toTile,
                 fromSlot - 1,
                 toSide,
