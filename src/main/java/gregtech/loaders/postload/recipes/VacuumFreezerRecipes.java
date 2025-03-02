@@ -382,6 +382,13 @@ public class VacuumFreezerRecipes implements Runnable {
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(vacuumFreezerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.Taranium, 1L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Taranium, 1L))
+            .duration(12 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(vacuumFreezerRecipes);
     }
 
     private void addProtoHalkonitePartRecipe(OrePrefixes prefix, final int multiplier) {
@@ -396,6 +403,5 @@ public class VacuumFreezerRecipes implements Runnable {
             .duration((int) (multiplier * (SECONDS * partFraction / 144.0)))
             .eut(TierEU.RECIPE_UIV)
             .addTo(vacuumFreezerRecipes);
-
     }
 }

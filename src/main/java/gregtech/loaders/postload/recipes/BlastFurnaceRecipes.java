@@ -687,6 +687,15 @@ public class BlastFurnaceRecipes implements Runnable {
             .eut((int) TierEU.RECIPE_UXV)
             .metadata(COIL_HEAT, 14000)
             .addTo(blastFurnaceRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Taranium.getDust(1), GTUtility.getIntegratedCircuit(11))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.Taranium, 1))
+            .fluidInputs(Materials.Radon.getGas(1000))
+            .duration(45 * SECONDS)
+            .eut((int) TierEU.RECIPE_ZPM)
+            .metadata(COIL_HEAT, 8800)
+            .addTo(blastFurnaceRecipes);
     }
 
     public void registerPrimitiveBlastFurnaceRecipes() {
