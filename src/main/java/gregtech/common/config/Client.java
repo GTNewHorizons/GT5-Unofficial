@@ -167,6 +167,11 @@ public class Client {
         @Config.Comment("enables BaseMetaTileEntity block updates handled by BlockUpdateHandler.")
         @Config.DefaultBoolean(false)
         public boolean useBlockUpdateHandler;
+
+        @Config.Comment("Disables coil lighting. Requires world reload (f3 + a or relog).")
+        @Config.DefaultBoolean(false)
+        @Config.Name("Use Old Coil Textures")
+        public boolean useOldCoils;
     }
 
     @Config.LangKey("GT5U.gui.config.client.waila")
