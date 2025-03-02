@@ -310,7 +310,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
         public final int x,y,z;
         public final int dim;
         public final int side;
-        private int hash;
+        private final int hash;
 
         public CoverData(int x, int y, int z, int dim, int side) {
             this.x = x;
