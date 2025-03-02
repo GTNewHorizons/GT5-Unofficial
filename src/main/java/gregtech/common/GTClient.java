@@ -358,7 +358,7 @@ public class GTClient extends GTProxy implements Runnable {
         if (tTile instanceof ICoverable iCoverable) {
             if (showCoverConnections) {
                 for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
-                    if (iCoverable.getCoverIDAtSide(tSide) != 0) tConnections |= tSide.flag;
+                    if (iCoverable.hasCoverAtSide(tSide)) tConnections |= tSide.flag;
                 }
             } else if (tTile instanceof BaseMetaTileEntity baseMetaTile && baseMetaTile.getAlignment() == null) {
                 if (!aIsSneaking) tConnections |= baseMetaTile.getFrontFacing().flag;
@@ -823,7 +823,7 @@ public class GTClient extends GTProxy implements Runnable {
         if (GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sWireCutterList)
             || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sSolderingToolList)
                 && aEvent.player.isSneaking()) {
-            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
+            if (!((ICoverable) aTileEntity).hasCoverAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)))
                 drawGrid(aEvent, false, false, aEvent.player.isSneaking());
             return;
         }
@@ -831,9 +831,9 @@ public class GTClient extends GTProxy implements Runnable {
         if ((aEvent.currentItem == null && aEvent.player.isSneaking())
             || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sCrowbarList)
             || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sScrewdriverList)) {
-            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
+            if (!((ICoverable) aTileEntity).hasCoverAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)))
                 for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
-                    if (((ICoverable) aTileEntity).getCoverIDAtSide(tSide) > 0) {
+                    if (((ICoverable) aTileEntity).hasCoverAtSide(tSide)) {
                         drawGrid(aEvent, true, false, true);
                         return;
                     }
@@ -842,12 +842,12 @@ public class GTClient extends GTProxy implements Runnable {
         }
 
         if (CoverRegistry.isCover(aEvent.currentItem)) {
-            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
+            if (!((ICoverable) aTileEntity).hasCoverAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)))
                 drawGrid(aEvent, true, false, aEvent.player.isSneaking());
         }
 
         if (GTUtility.areStacksEqual(ItemList.Tool_Cover_Copy_Paste.get(1), aEvent.currentItem, true)) {
-            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
+            if (!((ICoverable) aTileEntity).hasCoverAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)))
                 drawGrid(aEvent, true, false, aEvent.player.isSneaking());
         }
     }

@@ -3,14 +3,12 @@ package gregtech.common.covers;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -20,42 +18,75 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
+import gregtech.api.covers.CoverContext;
+import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.CoverBehaviorBase;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import io.netty.buffer.ByteBuf;
 
 public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
 
-    private final int slots;
-    private final int stackSizeLimit = 1;
+    public static final int BASIC_INVENTORY_SIZE = 9;
+    public static final int GOOD_INVENTORY_SIZE = 12;
+    public static final int ADVANCED_INVENTORY_SIZE = 15;
+    private static final int STACK_SIZE_LIMIT = 1;
 
-    public CoverChest(int slots, ITexture coverTexture) {
-        super(ChestInventory.class, coverTexture);
+    private final int slots;
+
+    public CoverChest(CoverContext context, int slots, ITexture coverTexture) {
+        super(context, ChestInventory.class, coverTexture);
         if (slots <= 0) throw new IllegalArgumentException("slots must be greater than 0");
         this.slots = slots;
     }
 
     @Override
-    public ChestInventory createDataObject(int aLegacyData) {
-        return new ChestInventory(slots, stackSizeLimit);
+    public CoverChest.ChestInventory createDataObject() {
+        if (slots > 0) {
+            return createChestInventoryFromState();
+        }
+        return createDataObject(GTOreDictUnificator.get(true, asItemStack()));
+    }
+
+    /**
+     * Note: slots is not guaranteed to have a valid value at the time this is called, in which case
+     * the data should be overwritten right away with loadDataFromNBT or readFromPacket.
+     */
+    private @NotNull ChestInventory createChestInventoryFromState() {
+        return new ChestInventory(slots, STACK_SIZE_LIMIT);
     }
 
     @Override
-    public ChestInventory createDataObject() {
-        return new ChestInventory(slots, stackSizeLimit);
+    protected ChestInventory createDataObject(ItemStack coverItem) {
+        if (ItemStack.areItemStacksEqual(ItemList.Cover_Chest_Basic.get(1L), coverItem)) {
+            return new ChestInventory(BASIC_INVENTORY_SIZE, STACK_SIZE_LIMIT);
+        } else if (ItemStack.areItemStacksEqual(ItemList.Cover_Chest_Good.get(1L), coverItem)) {
+            return new ChestInventory(GOOD_INVENTORY_SIZE, STACK_SIZE_LIMIT);
+        } else if (ItemStack.areItemStacksEqual(ItemList.Cover_Chest_Advanced.get(1L), coverItem)) {
+            return new ChestInventory(ADVANCED_INVENTORY_SIZE, STACK_SIZE_LIMIT);
+        }
+        throw new IllegalStateException("Unsupported Chest Cover");
+    }
+
+    @Override
+    protected ChestInventory createDataObject(NBTBase nbt) {
+        final ChestInventory ret = createChestInventoryFromState();
+        ret.loadDataFromNBT(nbt);
+        return ret;
+    }
+
+    @Override
+    protected ChestInventory createDataObject(ByteArrayDataInput byteData) {
+        final ChestInventory ret = createChestInventoryFromState();
+        ret.readFromPacket(byteData);
+        return ret;
     }
 
     @Override
     public boolean hasCoverGUI() {
-        return true;
-    }
-
-    @Override
-    public boolean isSimpleCover() {
         return true;
     }
 
@@ -70,42 +101,44 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
     }
 
     @Override
-    protected void onDroppedImpl(ForgeDirection side, int aCoverID, ChestInventory aCoverVariable,
-        ICoverable aTileEntity) {
-        if (aTileEntity.getWorld().isRemote) return;
-        aCoverVariable.dropAll(aTileEntity, side);
+    public void onCoverRemoval() {
+        ICoverable iCoverable = coveredTile.get();
+        if (iCoverable == null || iCoverable.getWorld().isRemote) return;
+        coverData.dropAll(iCoverable, coverSide);
     }
 
     @Override
-    protected int getTickRateImpl(ForgeDirection side, int aCoverID, ChestInventory aCoverVariable,
-        ICoverable aTileEntity) {
-        return aCoverVariable.firstTick ? 1 : 0;
+    public int getMinimumTickRate() {
+        return coverData.firstTick ? 1 : 0;
     }
 
     @Override
-    protected ChestInventory doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
-        ChestInventory aCoverVariable, ICoverable aTileEntity, long aTimer) {
+    public ChestInventory doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return coverData;
+        }
         // migrate slots. mostly needed while in development. still can be useful if we ever resize the inventory in the
         // future
-        if (aCoverVariable.items.getSlots() != slots) {
-            if (aCoverVariable.items.getSlots() > slots) {
-                for (int i = slots; i < aCoverVariable.items.getSlots(); i++) {
-                    ItemStack item = aCoverVariable.items.getStackInSlot(i);
+        if (coverData.items.getSlots() != slots) {
+            if (coverData.items.getSlots() > slots) {
+                for (int i = slots; i < coverData.items.getSlots(); i++) {
+                    ItemStack item = coverData.items.getStackInSlot(i);
                     if (item != null) {
-                        dropItem(aTileEntity, side, item);
+                        dropItem(coverable, coverSide, item);
                     }
                 }
             }
 
             ChestInventory newData = createDataObject();
-            int toCopy = Math.min(newData.items.getSlots(), aCoverVariable.items.getSlots());
+            int toCopy = Math.min(newData.items.getSlots(), coverData.items.getSlots());
             for (int i = 0; i < toCopy; i++) {
-                newData.items.setStackInSlot(i, aCoverVariable.items.getStackInSlot(i));
+                newData.items.setStackInSlot(i, coverData.items.getStackInSlot(i));
             }
             return newData;
         }
-        aCoverVariable.firstTick = false;
-        return super.doCoverThingsImpl(side, aInputRedstone, aCoverID, aCoverVariable, aTileEntity, aTimer);
+        coverData.firstTick = false;
+        return coverData;
     }
 
     @Override
@@ -149,7 +182,7 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
             CoverDataControllerWidget<ChestInventory> w = new CoverDataControllerWidget<>(
                 this::getCoverData,
                 this::setCoverData,
-                CoverChest.this);
+                CoverChest.this::createDataObject);
             ChestInventory d = getCoverData();
             LimitingItemStackHandler h;
             if (d == null) {
@@ -202,11 +235,9 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
             items = new LimitingItemStackHandler(slots, stackSize);
         }
 
-        @NotNull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, @Nullable EntityPlayerMP aPlayer) {
+        public void readFromPacket(ByteArrayDataInput aBuf) {
             items.deserializeNBT(ISerializableObject.readCompoundTagFromGreggyByteBuf(aBuf));
-            return this;
         }
 
         @Override

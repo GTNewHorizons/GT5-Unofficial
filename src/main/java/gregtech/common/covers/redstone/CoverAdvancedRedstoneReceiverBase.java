@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -13,6 +12,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -25,20 +25,14 @@ import io.netty.buffer.ByteBuf;
 public abstract class CoverAdvancedRedstoneReceiverBase
     extends CoverAdvancedWirelessRedstoneBase<CoverAdvancedRedstoneReceiverBase.ReceiverData> {
 
-    public CoverAdvancedRedstoneReceiverBase(ITexture coverTexture) {
-        super(ReceiverData.class, coverTexture);
+    public CoverAdvancedRedstoneReceiverBase(CoverContext context, ITexture coverTexture) {
+        super(context, ReceiverData.class, coverTexture);
     }
 
     @Override
-    public ReceiverData createDataObject() {
-        return new ReceiverData();
+    protected ReceiverData createDataObject() {
+        return new CoverAdvancedRedstoneReceiverBase.ReceiverData();
     }
-
-    @Override
-    public ReceiverData createDataObject(int aLegacyData) {
-        return createDataObject();
-    }
-
     // GUI stuff
 
     @Override
@@ -190,13 +184,10 @@ public abstract class CoverAdvancedRedstoneReceiverBase
             mode = GateMode.values()[tag.getByte("mode")];
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
-            super.readFromPacket(aBuf, aPlayer);
+        public void readFromPacket(ByteArrayDataInput aBuf) {
+            super.readFromPacket(aBuf);
             mode = GateMode.values()[aBuf.readByte()];
-
-            return this;
         }
     }
 }

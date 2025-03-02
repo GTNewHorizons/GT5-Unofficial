@@ -12,14 +12,14 @@ import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
+import gregtech.api.util.ISerializableObject.LegacyCoverData;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
@@ -34,65 +34,64 @@ public class CoverArm extends CoverBehavior {
     protected static final int SLOT_ID_MIN = 0;
     protected static final int CONVERTED_BIT = 0x80000000;
 
-    public CoverArm(int aTickRate, ITexture coverTexture) {
-        super(coverTexture);
+    public CoverArm(CoverContext context, int aTickRate, ITexture coverTexture) {
+        super(context, coverTexture);
         this.mTickRate = aTickRate;
     }
 
     @Override
-    public boolean isRedstoneSensitive(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        long aTimer) {
+    public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
-        if ((((aTileEntity instanceof IMachineProgress)) && (!((IMachineProgress) aTileEntity).isAllowedToWork()))) {
-            return aCoverVariable;
+    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null || (((coverable instanceof IMachineProgress machine)) && (!machine.isAllowedToWork()))) {
+            return coverData;
         }
 
         // Convert from ver. 5.09.33.50, check if 3 last bits are equal
-        if ((aCoverVariable >>> 29) == 0) {
-            aCoverVariable = CONVERTED_BIT | (((aCoverVariable + 1) & SLOT_ID_MASK) << 14) | EXPORT_MASK;
-        } else if ((aCoverVariable >>> 29) == 7) {
-            aCoverVariable = CONVERTED_BIT | Math.min(Math.abs(aCoverVariable - 1), SLOT_ID_MASK);
+        int coverDataValue = convert(coverData);
+        if ((coverDataValue >>> 29) == 0) {
+            coverDataValue = CONVERTED_BIT | (((coverDataValue + 1) & SLOT_ID_MASK) << 14) | EXPORT_MASK;
+        } else if ((coverDataValue >>> 29) == 7) {
+            coverDataValue = CONVERTED_BIT | Math.min(Math.abs(coverDataValue - 1), SLOT_ID_MASK);
         }
 
-        final TileEntity toTile;
-        final TileEntity fromTile;
+        final ICoverable toTile;
+        final ICoverable fromTile;
         final int toSlot;
         final int fromSlot;
 
-        if ((aCoverVariable & EXPORT_MASK) > 0) {
-            fromTile = (TileEntity) aTileEntity;
-            toTile = aTileEntity.getTileEntityAtSide(side);
-            fromSlot = aCoverVariable & SLOT_ID_MASK;
-            toSlot = (aCoverVariable >> 14) & SLOT_ID_MASK;
+        if ((coverDataValue & EXPORT_MASK) > 0) {
+            fromTile = coverable;
+            toTile = (ICoverable) coverable.getTileEntityAtSide(coverSide);
+            fromSlot = coverDataValue & SLOT_ID_MASK;
+            toSlot = (coverDataValue >> 14) & SLOT_ID_MASK;
         } else {
-            fromTile = aTileEntity.getTileEntityAtSide(side);
-            toTile = (TileEntity) aTileEntity;
-            fromSlot = (aCoverVariable >> 14) & SLOT_ID_MASK;
-            toSlot = aCoverVariable & SLOT_ID_MASK;
+            fromTile = (ICoverable) coverable.getTileEntityAtSide(coverSide);
+            toTile = coverable;
+            fromSlot = (coverDataValue >> 14) & SLOT_ID_MASK;
+            toSlot = coverDataValue & SLOT_ID_MASK;
         }
 
         if (fromSlot > 0 && toSlot > 0) {
-            if (fromTile instanceof IInventory fromInventory && toTile instanceof IInventory toInventory)
-                GTUtility.moveFromSlotToSlot(
-                    fromInventory,
-                    toInventory,
-                    fromSlot - 1,
-                    toSlot - 1,
-                    null,
-                    false,
-                    (byte) 64,
-                    (byte) 1,
-                    (byte) 64,
-                    (byte) 1);
+            GTUtility.moveFromSlotToSlot(
+                fromTile,
+                toTile,
+                fromSlot - 1,
+                toSlot - 1,
+                null,
+                false,
+                (byte) 64,
+                (byte) 1,
+                (byte) 64,
+                (byte) 1);
         } else if (toSlot > 0) {
             final ForgeDirection toSide;
-            if ((aCoverVariable & EXPORT_MASK) > 0) toSide = side;
-            else toSide = side.getOpposite();
+            if ((coverDataValue & EXPORT_MASK) > 0) toSide = coverSide;
+            else toSide = coverSide.getOpposite();
             GTUtility.moveOneItemStackIntoSlot(
                 fromTile,
                 toTile,
@@ -106,10 +105,10 @@ public class CoverArm extends CoverBehavior {
                 (byte) 1);
         } else if (fromSlot > 0) {
             final ForgeDirection toSide;
-            if ((aCoverVariable & EXPORT_MASK) > 0) toSide = side;
-            else toSide = side.getOpposite();
-            if (fromTile instanceof IInventory) GTUtility.moveFromSlotToSide(
-                (IInventory) fromTile,
+            if ((coverDataValue & EXPORT_MASK) > 0) toSide = coverSide;
+            else toSide = coverSide.getOpposite();
+            GTUtility.moveFromSlotToSide(
+                fromTile,
                 toTile,
                 fromSlot - 1,
                 toSide,
@@ -122,12 +121,12 @@ public class CoverArm extends CoverBehavior {
         } else {
             final ForgeDirection fromSide;
             final ForgeDirection toSide;
-            if ((aCoverVariable & EXPORT_MASK) > 0) {
-                fromSide = side;
-                toSide = side.getOpposite();
+            if ((coverDataValue & EXPORT_MASK) > 0) {
+                fromSide = coverSide;
+                toSide = coverSide.getOpposite();
             } else {
-                fromSide = side.getOpposite();
-                toSide = side;
+                fromSide = coverSide.getOpposite();
+                toSide = coverSide;
             }
             GTUtility.moveOneItemStack(
                 fromTile,
@@ -142,49 +141,29 @@ public class CoverArm extends CoverBehavior {
                 (byte) 1);
         }
 
-        return aCoverVariable;
+        return LegacyCoverData.of(coverDataValue);
     }
 
     @Override
-    public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int step = 0;
-        if (GTUtility.getClickedFacingCoords(side, aX, aY, aZ)[0] >= 0.5F) {
+        if (GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ)[0] >= 0.5F) {
             step += aPlayer.isSneaking() ? 256 : 16;
         } else {
             step -= aPlayer.isSneaking() ? 256 : 16;
         }
-        aCoverVariable = getNewVar(aCoverVariable, step);
-        sendMessageToPlayer(aPlayer, aCoverVariable);
-        return aCoverVariable;
+        int newCoverData = getNewVar(convert(coverData), step);
+        sendMessageToPlayer(aPlayer, newCoverData);
+        return LegacyCoverData.of(newCoverData);
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX,
-        float aY, float aZ) {
-        int step = (GTUtility.getClickedFacingCoords(side, aX, aY, aZ)[0] >= 0.5F) ? 1 : -1;
-        int tCoverVariable = getNewVar(aCoverVariable.get(), step);
+    public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        int step = (GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ)[0] >= 0.5F) ? 1 : -1;
+        int tCoverVariable = getNewVar(convert(coverData), step);
         sendMessageToPlayer(aPlayer, tCoverVariable);
-        aCoverVariable.set(tCoverVariable);
+        coverData.set(tCoverVariable);
         return true;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean onCoverRightclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        final int step = (GTUtility.getClickedFacingCoords(side, aX, aY, aZ)[0] >= 0.5F) ? 1 : -1;
-        aCoverVariable = getNewVar(aCoverVariable, step);
-        sendMessageToPlayer(aPlayer, aCoverVariable);
-        aTileEntity.setCoverDataAtSide(side, aCoverVariable);
-        return true;
-    }
-
-    @Override
-    protected boolean isGUIClickableImpl(ForgeDirection side, int aCoverID,
-        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity) {
-        return false;
     }
 
     private void sendMessageToPlayer(EntityPlayer aPlayer, int var) {
@@ -216,56 +195,51 @@ public class CoverArm extends CoverBehavior {
     }
 
     @Override
-    public boolean letsRedstoneGoIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsRedstoneGoIn() {
+        return true;
+    }
+
+    public boolean letsRedstoneGoOut() {
         return true;
     }
 
     @Override
-    public boolean letsRedstoneGoOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyIn() {
         return true;
     }
 
     @Override
-    public boolean letsEnergyIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyOut() {
         return true;
     }
 
     @Override
-    public boolean letsEnergyOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsFluidIn(Fluid fluid) {
         return true;
     }
 
     @Override
-    public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidOut(Fluid fluid) {
         return true;
     }
 
     @Override
-    public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsItemsIn(int slot) {
         return true;
     }
 
     @Override
-    public boolean letsItemsIn(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsOut(int slot) {
         return true;
     }
 
     @Override
-    public boolean letsItemsOut(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean alwaysLookConnected() {
         return true;
     }
 
     @Override
-    public boolean alwaysLookConnected(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getMinimumTickRate() {
         return this.mTickRate;
     }
 
@@ -314,31 +288,28 @@ public class CoverArm extends CoverBehavior {
         protected void addUIWidgets(ModularWindow.Builder builder) {
             maxSlot = getMaxSlot();
             builder.widget(
-                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverArm.this).addFollower(
-                    CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                    coverData -> getFlagExport(convert(coverData)) > 0,
-                    (coverData, state) -> {
-                        if (state) {
-                            return new ISerializableObject.LegacyCoverData(
-                                convert(coverData) | EXPORT_MASK | CONVERTED_BIT);
-                        } else {
-                            return new ISerializableObject.LegacyCoverData(
-                                convert(coverData) & ~EXPORT_MASK | CONVERTED_BIT);
-                        }
-                    },
-                    widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                        .addTooltip(GTUtility.trans("006", "Export"))
-                        .setPos(spaceX * 0, spaceY * 0))
+                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverArm.this::createDataObject)
+                    .addFollower(
+                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                        coverData -> getFlagExport(convert(coverData)) > 0,
+                        (coverData, state) -> {
+                            if (state) {
+                                return new LegacyCoverData(convert(coverData) | EXPORT_MASK | CONVERTED_BIT);
+                            } else {
+                                return new LegacyCoverData(convert(coverData) & ~EXPORT_MASK | CONVERTED_BIT);
+                            }
+                        },
+                        widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
+                            .addTooltip(GTUtility.trans("006", "Export"))
+                            .setPos(spaceX * 0, spaceY * 0))
                     .addFollower(
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         coverData -> getFlagExport(convert(coverData)) == 0,
                         (coverData, state) -> {
                             if (state) {
-                                return new ISerializableObject.LegacyCoverData(
-                                    convert(coverData) & ~EXPORT_MASK | CONVERTED_BIT);
+                                return new LegacyCoverData(convert(coverData) & ~EXPORT_MASK | CONVERTED_BIT);
                             } else {
-                                return new ISerializableObject.LegacyCoverData(
-                                    convert(coverData) | EXPORT_MASK | CONVERTED_BIT);
+                                return new LegacyCoverData(convert(coverData) | EXPORT_MASK | CONVERTED_BIT);
                             }
                         },
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
@@ -349,7 +320,7 @@ public class CoverArm extends CoverBehavior {
                         coverData -> (double) (getFlagInternalSlot(convert(coverData)) - 1),
                         (coverData, state) -> {
                             final int coverVariable = convert(coverData);
-                            return new ISerializableObject.LegacyCoverData(
+                            return new LegacyCoverData(
                                 getFlagExport(coverVariable) | ((state.intValue() + 1) & SLOT_ID_MASK)
                                     | (getFlagAdjacentSlot(coverVariable) << 14)
                                     | CONVERTED_BIT);
@@ -365,7 +336,7 @@ public class CoverArm extends CoverBehavior {
                         coverData -> (double) (getFlagAdjacentSlot(convert(coverData)) - 1),
                         (coverData, state) -> {
                             final int coverVariable = convert(coverData);
-                            return new ISerializableObject.LegacyCoverData(
+                            return new LegacyCoverData(
                                 getFlagExport(coverVariable) | getFlagInternalSlot(coverVariable)
                                     | (((state.intValue() + 1) & SLOT_ID_MASK) << 14)
                                     | CONVERTED_BIT);
