@@ -7,11 +7,13 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.*;
-
-import java.util.ArrayList;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.flotationCellRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.vacuumFurnaceRecipes;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import biomesoplenty.api.content.BOPCBlocks;
@@ -23,65 +25,20 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.fluids.GTPPFluids;
-import gtPlusPlus.core.item.base.ore.BaseItemMilledOre;
-import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.helpers.FlotationRecipeHandler;
 
-public class MilledOreProcessing extends ItemPackage {
+public class RecipeLoaderMilling {
 
-    @Override
-    public void items() {
-        GregtechItemList.MilledSphalerite
-            .set(BaseItemMilledOre.generate(Materials.Sphalerite, (int) TierEU.RECIPE_LuV));
-        GregtechItemList.MilledChalcopyrite
-            .set(BaseItemMilledOre.generate(Materials.Chalcopyrite, (int) TierEU.RECIPE_IV));
-        GregtechItemList.MilledNickel.set(BaseItemMilledOre.generate(Materials.Nickel, (int) TierEU.RECIPE_IV));
-        GregtechItemList.MilledPlatinum.set(BaseItemMilledOre.generate(Materials.Platinum, (int) TierEU.RECIPE_LuV));
-        GregtechItemList.MilledPentlandite
-            .set(BaseItemMilledOre.generate(Materials.Pentlandite, (int) TierEU.RECIPE_LuV));
-
-        GregtechItemList.MilledRedstone.set(BaseItemMilledOre.generate(Materials.Redstone, (int) TierEU.RECIPE_IV));
-        GregtechItemList.MilledSpessartine
-            .set(BaseItemMilledOre.generate(Materials.Spessartine, (int) TierEU.RECIPE_LuV));
-        GregtechItemList.MilledGrossular.set(BaseItemMilledOre.generate(Materials.Grossular, (int) TierEU.RECIPE_LuV));
-        GregtechItemList.MilledAlmandine.set(BaseItemMilledOre.generate(Materials.Almandine, (int) TierEU.RECIPE_LuV));
-        GregtechItemList.MilledPyrope.set(BaseItemMilledOre.generate(Materials.Pyrope, (int) TierEU.RECIPE_EV));
-        GregtechItemList.MilledMonazite.set(BaseItemMilledOre.generate(Materials.Monazite, (int) TierEU.RECIPE_ZPM));
-    }
-
-    @Override
-    public void blocks() {}
-
-    @Override
-    public void fluids() {}
-
-    public MilledOreProcessing() {
-        super();
-    }
-
-    @Override
-    public String errorMessage() {
-        return "Failed to generate recipes for OreMillingProc.";
-    }
-
-    @Override
-    public boolean generateRecipes() {
+    public static void generate() {
         addPineOilExtraction();
         addFlotationRecipes();
         addVacuumFurnaceRecipes();
-        return true;
     }
 
-    private void addVacuumFurnaceRecipes() {
+    private static void addVacuumFurnaceRecipes() {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .itemOutputs(
@@ -255,21 +212,17 @@ public class MilledOreProcessing extends ItemPackage {
             // 60s UV instead of 120s ZPM to avoid fusion skip
             .duration(1 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
-
     }
 
-    private void addFlotationRecipes() {
-
+    private static void addFlotationRecipes() {
         // Sphalerite
-        Material aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Sphalerite);
-        FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.SodiumEthylXanthate.get(32),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Sphalerite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Sphalerite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Sphalerite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Sphalerite, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 14000))
             .fluidOutputs(new FluidStack(GTPPFluids.SphaleriteFlotationFroth, 1000))
             .duration(8 * MINUTES)
@@ -277,15 +230,13 @@ public class MilledOreProcessing extends ItemPackage {
             .addTo(flotationCellRecipes);
 
         // Chalcopyrite
-        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Chalcopyrite);
-        FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.SodiumEthylXanthate.get(32),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Chalcopyrite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Chalcopyrite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Chalcopyrite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Chalcopyrite, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 12000))
             .fluidOutputs(new FluidStack(GTPPFluids.ChalcopyriteFlotationFroth, 1000))
             .duration(8 * MINUTES)
@@ -293,15 +244,13 @@ public class MilledOreProcessing extends ItemPackage {
             .addTo(flotationCellRecipes);
 
         // Nickel
-        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Nickel);
-        FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.PotassiumEthylXanthate.get(32),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Nickel, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Nickel, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Nickel, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Nickel, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 25000))
             .fluidOutputs(new FluidStack(GTPPFluids.NickelFlotationFroth, 1000))
             .duration(8 * MINUTES)
@@ -309,15 +258,13 @@ public class MilledOreProcessing extends ItemPackage {
             .addTo(flotationCellRecipes);
 
         // Platinum
-        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Platinum);
-        FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.PotassiumEthylXanthate.get(32),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Platinum, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Platinum, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Platinum, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Platinum, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 35000))
             .fluidOutputs(new FluidStack(GTPPFluids.PlatinumFlotationFroth, 1000))
             .duration(8 * MINUTES)
@@ -325,15 +272,13 @@ public class MilledOreProcessing extends ItemPackage {
             .addTo(flotationCellRecipes);
 
         // Pentlandite
-        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Pentlandite);
-        FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.SodiumEthylXanthate.get(32),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Pentlandite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Pentlandite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Pentlandite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Pentlandite, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 14000))
             .fluidOutputs(new FluidStack(GTPPFluids.PentlanditeFlotationFroth, 1000))
             .duration(8 * MINUTES)
@@ -341,15 +286,13 @@ public class MilledOreProcessing extends ItemPackage {
             .addTo(flotationCellRecipes);
 
         // Redstone
-        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Redstone);
-        FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.SodiumEthylXanthate.get(32),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Redstone, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Redstone, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Redstone, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Redstone, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 13000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedstoneFlotationFroth, 1000))
             .duration(8 * MINUTES)
@@ -357,15 +300,13 @@ public class MilledOreProcessing extends ItemPackage {
             .addTo(flotationCellRecipes);
 
         // Spessartine
-        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Spessartine);
-        FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.PotassiumEthylXanthate.get(32),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Spessartine, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Spessartine, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Spessartine, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Spessartine, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 35000))
             .fluidOutputs(new FluidStack(GTPPFluids.SpessartineFlotationFroth, 1000))
             .duration(8 * MINUTES)
@@ -373,15 +314,13 @@ public class MilledOreProcessing extends ItemPackage {
             .addTo(flotationCellRecipes);
 
         // Grossular
-        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Grossular);
-        FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.PotassiumEthylXanthate.get(32),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Grossular, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Grossular, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Grossular, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Grossular, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 28000))
             .fluidOutputs(new FluidStack(GTPPFluids.GrossularFlotationFroth, 1000))
             .duration(8 * MINUTES)
@@ -389,15 +328,13 @@ public class MilledOreProcessing extends ItemPackage {
             .addTo(flotationCellRecipes);
 
         // Almandine
-        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Almandine);
-        FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.SodiumEthylXanthate.get(32),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Almandine, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Almandine, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Almandine, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Almandine, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 18000))
             .fluidOutputs(new FluidStack(GTPPFluids.AlmandineFlotationFroth, 1000))
             .duration(8 * MINUTES)
@@ -405,15 +342,13 @@ public class MilledOreProcessing extends ItemPackage {
             .addTo(flotationCellRecipes);
 
         // Pyrope
-        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Pyrope);
-        FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.SodiumEthylXanthate.get(32),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Pyrope, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Pyrope, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Pyrope, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Pyrope, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 8000))
             .fluidOutputs(new FluidStack(GTPPFluids.PyropeFlotationFroth, 1000))
             .duration(8 * MINUTES)
@@ -421,15 +356,13 @@ public class MilledOreProcessing extends ItemPackage {
             .addTo(flotationCellRecipes);
 
         // Monazite
-        aMat = MaterialUtils.generateMaterialFromGtENUM(Materials.Monazite);
-        FlotationRecipeHandler.registerOreType(aMat);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.PotassiumEthylXanthate.get(32),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64),
-                aMat.getMilled(64))
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Monazite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Monazite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Monazite, 64),
+                GTOreDictUnificator.get(OrePrefixes.milled, Materials.Monazite, 64))
             .fluidInputs(new FluidStack(GTPPFluids.PineOil, 30000))
             .fluidOutputs(new FluidStack(GTPPFluids.MonaziteFlotationFroth, 1000))
             .duration(8 * MINUTES)
@@ -437,123 +370,99 @@ public class MilledOreProcessing extends ItemPackage {
             .addTo(flotationCellRecipes);
     }
 
-    private void addPineOilExtraction() {
-        ArrayList<ItemStack> aLogs = new ArrayList<>();
-        ArrayList<ItemStack> aLeaves = new ArrayList<>();
-        ArrayList<ItemStack> aSaplings = new ArrayList<>();
-        ArrayList<ItemStack> aPinecones = new ArrayList<>();
-
-        ItemStack aCrushedPine = ItemUtils.getSimpleStack(AgriculturalChem.mCrushedPine, 1);
-
-        aLogs.add(ItemUtils.getSimpleStack(BOPBlockRegistrator.log_Pine));
-        aLeaves.add(ItemUtils.getSimpleStack(BOPBlockRegistrator.leaves_Pine));
-        aSaplings.add(ItemUtils.getSimpleStack(BOPBlockRegistrator.sapling_Pine));
-        aPinecones.add(ItemUtils.getSimpleStack(AgriculturalChem.mPinecone, 1));
+    private static void addPineOilExtraction() {
+        addPineLogRecipe(new ItemStack(BOPBlockRegistrator.log_Pine));
+        addPineLeafRecipe(new ItemStack(BOPBlockRegistrator.leaves_Pine));
+        addPineSaplingRecipe(new ItemStack(BOPBlockRegistrator.sapling_Pine));
+        addPineconeRecipe(GregtechItemList.Pinecone.get(1));
 
         if (BiomesOPlenty.isModLoaded()) {
-            aLogs.add(ItemUtils.simpleMetaStack(BOPCBlocks.logs4, 0, 1));
-            aLeaves.add(ItemUtils.simpleMetaStack(BOPCBlocks.colorizedLeaves2, 1, 1));
-            aSaplings.add(ItemUtils.simpleMetaStack(BOPCBlocks.colorizedSaplings, 5, 1));
-            aPinecones.add(ItemUtils.simpleMetaStack(BOPCItems.misc, 13, 1));
-        }
-        if (Forestry.isModLoaded()) {
-            ItemStack aForestryLog = ItemUtils.getItemStackFromFQRN("Forestry:logs", 1);
-            if (aForestryLog != null) {
-                aForestryLog.setItemDamage(20); // Set to Pine
-                aLogs.add(aForestryLog);
-            }
-            ItemStack aForestryLeaves = ItemUtils.getItemStackFromFQRN("Forestry:leaves", 1);
-            if (aForestryLeaves != null) {
-                NBTUtils.setString(aForestryLeaves, "species", "forestry.treePine"); // Set to Pine
-                aLeaves.add(aForestryLeaves);
-            }
+            addPineLogRecipe(new ItemStack(BOPCBlocks.logs4));
+            addPineLeafRecipe(new ItemStack(BOPCBlocks.colorizedLeaves2, 1, 1));
+            addPineSaplingRecipe(new ItemStack(BOPCBlocks.colorizedSaplings, 1, 5));
+            addPineconeRecipe(new ItemStack(BOPCItems.misc, 1, 13));
         }
 
-        for (ItemStack aLog : aLogs) {
-            addRecipe(aLog, ItemUtils.getSimpleStack(aCrushedPine, 16), new int[] { 10000, 7500, 5000, 2500 }, 10, 120);
-        }
-        for (ItemStack aLeaf : aLeaves) {
-            addRecipe(aLeaf, ItemUtils.getSimpleStack(aCrushedPine, 2), new int[] { 5000, 5000, 2500, 2500 }, 10, 30);
-        }
-        for (ItemStack aSapling : aSaplings) {
-            addRecipe(
-                aSapling,
-                ItemUtils.getSimpleStack(aCrushedPine, 4),
-                new int[] { 7500, 7500, 2500, 2500 },
-                10,
-                60);
-        }
-        for (ItemStack aCone : aPinecones) {
-            addRecipe(aCone, ItemUtils.getSimpleStack(aCrushedPine, 1), new int[] { 7500, 7500, 5000, 2500 }, 10, 60);
+        if (Forestry.isModLoaded()) {
+            addPineLogRecipe(GTModHandler.getModItem(Forestry.ID, "logs", 1, 20));
+
+            ItemStack forestryLeaves = GTModHandler.getModItem(Forestry.ID, "leaves", 1);
+            if (forestryLeaves != null) {
+                NBTTagCompound tag = forestryLeaves.getTagCompound();
+                if (tag == null) {
+                    forestryLeaves.setTagCompound(tag = new NBTTagCompound());
+                }
+                tag.setString("species", "forestry.treePine"); // Set to Pine
+                addPineLeafRecipe(forestryLeaves);
+            }
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(16), ItemUtils.getSimpleStack(aCrushedPine, 64))
+            .itemInputs(GTUtility.getIntegratedCircuit(16), GregtechItemList.CrushedPineMaterials.get(64))
             .itemOutputs(
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5))
+                Materials.Ash.getDustTiny(5),
+                Materials.Ash.getDustTiny(5),
+                Materials.DarkAsh.getDustTiny(5),
+                Materials.DarkAsh.getDustTiny(5))
             .fluidInputs(GTModHandler.getSteam(5000))
             .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 500))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
             .addTo(chemicalPlantRecipes);
+
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(18), ItemUtils.getSimpleStack(aCrushedPine, 64))
+            .itemInputs(GTUtility.getIntegratedCircuit(18), GregtechItemList.CrushedPineMaterials.get(64))
             .itemOutputs(
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAsh", 5),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyDarkAsh", 5))
-            .fluidInputs(FluidUtils.getSuperHeatedSteam(5000))
+                Materials.Ash.getDustTiny(5),
+                Materials.Ash.getDustTiny(5),
+                Materials.DarkAsh.getDustTiny(5),
+                Materials.DarkAsh.getDustTiny(5))
+            .fluidInputs(FluidRegistry.getFluidStack("ic2superheatedsteam", 5000))
             .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 1500))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 4)
             .addTo(chemicalPlantRecipes);
-
     }
 
-    public boolean addRecipe(ItemStack aInput, ItemStack aOutput1, int[] aChances, int aTime, int aEU) {
-        aOutput1 = GTOreDictUnificator.get(true, aOutput1);
-        ItemStack[] aOutputs = new ItemStack[4];
-        for (int i = 0; i < aChances.length; i++) {
-            aOutputs[i] = aOutput1;
-        }
-        aOutputs = cleanArray(aOutputs);
-        if ((GTUtility.isStackInvalid(aInput))
-            || (GTUtility.isStackInvalid(aOutput1) || (GTUtility.getContainerItem(aInput, false) != null))) {
-            return false;
-        }
-
+    private static void addPineLogRecipe(ItemStack log) {
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(14), aInput)
-            .itemOutputs(aOutputs)
-            .duration(aTime * 20)
-            .eut(aEU)
+            .itemInputs(GTUtility.getIntegratedCircuit(14), log)
+            .itemOutputs(GregtechItemList.CrushedPineMaterials.get(64))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
             .addTo(chemicalPlantRecipes);
-
-        return true;
     }
 
-    public static ItemStack[] cleanArray(ItemStack[] input) {
-        int aArraySize = input.length;
-        ArrayList<ItemStack> aCleanedItems = new ArrayList<>();
-        for (ItemStack checkStack : input) {
-            if (ItemUtils.checkForInvalidItems(checkStack)) {
-                aCleanedItems.add(checkStack);
-            }
-        }
-        ItemStack[] aOutput = new ItemStack[aCleanedItems.size()];
-        for (int i = 0; i < aArraySize; i++) {
-            ItemStack aMappedStack = aCleanedItems.get(i);
-            if (aMappedStack != null) {
-                aOutput[i] = aMappedStack;
-            }
-        }
-        return aOutput;
+    private static void addPineLeafRecipe(ItemStack leaf) {
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(14), leaf)
+            .itemOutputs(GregtechItemList.CrushedPineMaterials.get(8))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .metadata(CHEMPLANT_CASING_TIER, 3)
+            .addTo(chemicalPlantRecipes);
+    }
+
+    private static void addPineSaplingRecipe(ItemStack sapling) {
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(14), sapling)
+            .itemOutputs(GregtechItemList.CrushedPineMaterials.get(16))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_MV / 2)
+            .metadata(CHEMPLANT_CASING_TIER, 3)
+            .addTo(chemicalPlantRecipes);
+    }
+
+    private static void addPineconeRecipe(ItemStack cone) {
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(14), cone)
+            .itemOutputs(GregtechItemList.CrushedPineMaterials.get(4))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_MV / 2)
+            .metadata(CHEMPLANT_CASING_TIER, 3)
+            .addTo(chemicalPlantRecipes);
     }
 }

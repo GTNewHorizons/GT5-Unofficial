@@ -162,7 +162,7 @@ public class UpgradeStorage {
     public int getTotalActiveUpgrades() {
         return (int) unlockedUpgrades.values()
             .stream()
-            .map(UpgradeData::isActive)
+            .filter(UpgradeData::isActive)
             .count();
     }
 

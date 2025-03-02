@@ -8,25 +8,25 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEFluid;
+import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.render.TextureFactory;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 
-public class GTPPMTEFluid extends MTEFluid {
+public class GTPPMTEFluidPipe extends MTEFluidPipe {
 
     public final GT_Materials mMaterial;
 
-    public GTPPMTEFluid(int aID, String aName, String aNameRegional, float aThickNess, GT_Materials aMaterial,
+    public GTPPMTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, GT_Materials aMaterial,
         int aCapacity, int aHeatResistance, boolean aGasProof) {
         this(aID, aName, aNameRegional, aThickNess, aMaterial, aCapacity, aHeatResistance, aGasProof, 1);
     }
 
-    public GTPPMTEFluid(final String aName, final float aThickNess, final GT_Materials aMaterial, final int aCapacity,
-        final int aHeatResistance, final boolean aGasProof) {
+    public GTPPMTEFluidPipe(final String aName, final float aThickNess, final GT_Materials aMaterial,
+        final int aCapacity, final int aHeatResistance, final boolean aGasProof) {
         this(aName, aThickNess, aMaterial, aCapacity, aHeatResistance, aGasProof, 1);
     }
 
-    public GTPPMTEFluid(int aID, String aName, String aNameRegional, float aThickNess, GT_Materials aMaterial,
+    public GTPPMTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, GT_Materials aMaterial,
         int aCapacity, int aHeatResistance, boolean aGasProof, int aFluidTypes) {
         super(aID, aName, aNameRegional, aThickNess, null, aCapacity, aHeatResistance, aGasProof, aFluidTypes);
         this.mLastReceivedFrom = 0;
@@ -34,7 +34,7 @@ public class GTPPMTEFluid extends MTEFluid {
         this.mMaterial = aMaterial;
     }
 
-    public GTPPMTEFluid(String aName, float aThickNess, GT_Materials aMaterial, int aCapacity, int aHeatResistance,
+    public GTPPMTEFluidPipe(String aName, float aThickNess, GT_Materials aMaterial, int aCapacity, int aHeatResistance,
         boolean aGasProof, int aFluidTypes) {
         super(aName, aThickNess, null, aCapacity, aHeatResistance, aGasProof, aFluidTypes);
         this.mLastReceivedFrom = 0;
@@ -51,7 +51,7 @@ public class GTPPMTEFluid extends MTEFluid {
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new GTPPMTEFluid(
+        return new GTPPMTEFluidPipe(
             this.mName,
             this.mThickNess,
             this.mMaterial,

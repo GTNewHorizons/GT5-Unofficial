@@ -13,7 +13,6 @@
 
 package bwcrossmod.tectech.tileentites.tiered;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import net.minecraft.block.Block;
@@ -134,13 +133,6 @@ public class MTELowPowerLaserPipe extends MTECable implements LowPowerLaser {
 
     @Override
     public long injectEnergyUnits(ForgeDirection side, long aVoltage, long aAmperage) {
-        return 0L;
-    }
-
-    @Override
-    @Deprecated
-    public long transferElectricity(ForgeDirection side, long aVoltage, long aAmperage,
-        ArrayList<TileEntity> aAlreadyPassedTileEntityList) {
         return 0L;
     }
 

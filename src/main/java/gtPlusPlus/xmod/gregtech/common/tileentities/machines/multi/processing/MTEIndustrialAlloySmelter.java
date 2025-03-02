@@ -126,10 +126,9 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Gains one parallel per voltage tier")
-            .addInfo("Gains one multiplier per coil tier")
-            .addInfo("Parallel = Tier * Coil Tier")
-            .addInfo("Gains 5% speed bonus per coil tier")
+            .addInfo("Processes Voltage Tier * Coil Tier items")
+            .addInfo("Gains a 5% speed bonus for each coil tier")
+            .addInfo("Each 900K of heat upgrades an overclock to a perfect overclock")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, true)
             .addController("Bottom center")
