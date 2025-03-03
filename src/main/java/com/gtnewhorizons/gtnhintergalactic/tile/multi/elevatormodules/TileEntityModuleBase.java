@@ -327,16 +327,6 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     }
 
     /**
-     * Is this a simple machine?
-     *
-     * @return True
-     */
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    /**
      * Will this machine explode in rain?
      *
      * @return False
