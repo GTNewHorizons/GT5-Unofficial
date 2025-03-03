@@ -2607,6 +2607,10 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_AirFilterT2,
     Machine_Multi_AirFilterT3,
 
+    Mechanical_Helmet,
+    Mechanical_Chestplate,
+    Mechanical_Leggings,
+    Mechanical_Boots,
     ModificationTable,
     Armor_Core_T1,
 

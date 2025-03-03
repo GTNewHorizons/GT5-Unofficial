@@ -6,8 +6,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
 
 public class MechArmorBase extends ItemArmor {
+
+    protected IIcon coreIcon;
 
     static final int SLOT_HELMET = 0;
     static final int SLOT_CHEST = 1;
@@ -16,6 +19,10 @@ public class MechArmorBase extends ItemArmor {
 
     public MechArmorBase(int slot) {
         super(ArmorMaterial.IRON, 2, slot);
+    }
+
+    public IIcon getCoreIcon() {
+        return coreIcon;
     }
 
     @Override

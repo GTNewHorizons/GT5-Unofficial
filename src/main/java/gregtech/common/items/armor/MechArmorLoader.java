@@ -2,6 +2,7 @@ package gregtech.common.items.armor;
 
 import static gregtech.api.enums.Mods.GregTech;
 
+import gregtech.api.enums.ItemList;
 import net.minecraft.item.Item;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -23,5 +24,10 @@ public class MechArmorLoader {
         GameRegistry.registerItem(MechArmorChestplate, "itemChestplateMech", GregTech.ID);
         GameRegistry.registerItem(MechArmorLeggings, "itemLeggingsMech", GregTech.ID);
         GameRegistry.registerItem(MechArmorBoots, "itemBootsMech", GregTech.ID);
+
+        ItemList.Mechanical_Helmet.set(MechArmorHelmet);
+        ItemList.Mechanical_Chestplate.set(MechArmorChestplate);
+        ItemList.Mechanical_Leggings.set(MechArmorLeggings);
+        ItemList.Mechanical_Boots.set(MechArmorBoots);
     }
 }

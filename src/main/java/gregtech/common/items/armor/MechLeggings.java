@@ -18,5 +18,6 @@ public class MechLeggings extends MechArmorBase {
     public void registerIcons(final IIconRegister aIconRegister) {
         super.registerIcons(aIconRegister);
         itemIcon = aIconRegister.registerIcon(GregTech.ID + ":gt.itemLeggingsMech");
+        coreIcon = aIconRegister.registerIcon(GregTech.ID + ":gt.mechanicalCoreLeggings");
     }
 }
