@@ -335,7 +335,7 @@ public class DEFCRecipes {
                 GTModHandler.getModItem(Avaritia.ID, "big_pearl", 0, 0),
                 GTModHandler.getModItem(ThaumicBases.ID, "nodeFoci", 0, 1))
             .fluidInputs(MaterialsUEVplus.PrimordialChaoticSauce.getFluid(1000L))
-            .fluidOutputs(MaterialsUEVplus.PurifiedPrimordialChaoticSauce.getFluid(1000L))
+            .fluidOutputs(MaterialsUEVplus.PurifiedPrimordialChaoticSauce.getFluid(10000L))
             .itemOutputs(GTModHandler.getModItem(Botania.ID, "manaResource", 16, 5))
             .eut(TierEU.RECIPE_UHV)
             .duration(2800)
