@@ -43,7 +43,7 @@ public class SelectItemGuiBuilder {
 
     public static final int DESELECTED = -1;
     private static final int COLS = 9;
-    private static final int GUI_WIDTH = 176;
+    private static final int GUI_WIDTH = 18 * COLS + 7 * 2;
 
     private final ModularPanel panel;
     private final List<ItemStack> choices;
