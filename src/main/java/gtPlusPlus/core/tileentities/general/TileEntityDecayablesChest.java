@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
 
+import gtPlusPlus.core.block.ModBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -28,6 +29,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.inventories.InventoryDecayablesChest;
 import gtPlusPlus.core.item.materials.DustDecayable;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityDecayablesChest extends TileEntity implements ISidedInventory, IGuiHolder {
 
@@ -44,7 +46,8 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
     private String customName;
 
     private int cachedChestType;
-    private int tickCount = 0;
+    private int tickCount = -1;
+    private int facing;
 
     public TileEntityDecayablesChest() {
         this.inventoryContents = new InventoryDecayablesChest();
@@ -146,6 +149,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
         if (this.hasCustomInventoryName()) {
             nbt.setString("CustomName", this.getCustomName());
         }
+        nbt.setByte("facing", (byte) facing);
     }
 
     @Override
@@ -156,6 +160,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
         if (nbt.hasKey("CustomName", 8)) {
             this.setCustomName(nbt.getString("CustomName"));
         }
+        facing = nbt.getByte("facing");
     }
 
     @Override
@@ -192,6 +197,14 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
     public int getInventoryStackLimit() {
         return this.getInventory()
             .getInventoryStackLimit();
+    }
+
+    public int getFacing() {
+        return this.facing;
+    }
+
+    public void setFacing(int facing) {
+        this.facing = facing;
     }
 
     @Override
@@ -294,6 +307,16 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
                 this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
         }
 
+        if (!worldObj.isRemote && tickCount < 0) {
+            worldObj.addBlockEvent(
+                xCoord,
+                yCoord,
+                zCoord,
+                ModBlocks.blockDecayablesChest,
+                3,
+                ((numPlayersUsing << 3) & 0xF8) | (facing & 0x7));
+        }
+
         if (this.numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F) {
             float f1 = this.lidAngle;
             if (this.numPlayersUsing > 0) {
@@ -329,13 +352,19 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
      * Called when a client event is received with the event number and argument, see World.sendClientEvent
      */
     @Override
-    public boolean receiveClientEvent(int p_145842_1_, int p_145842_2_) {
-        if (p_145842_1_ == 1) {
-            this.numPlayersUsing = p_145842_2_;
+    public boolean receiveClientEvent(int id, int type) {
+        if (id == 1) {
+            this.numPlayersUsing = type;
             return true;
+        } else if (id == 2) {
+            facing = (byte) type;
+        } else if (id == 3) {
+            facing = (byte) (type & 0x7);
+            numPlayersUsing = (type & 0xF8) >> 3;
         } else {
-            return super.receiveClientEvent(p_145842_1_, p_145842_2_);
+            return super.receiveClientEvent(id, type);
         }
+        return true;
     }
 
     /**
@@ -392,5 +421,10 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
                         .marginTop(15)
                         .leftRelAnchor(0.5f, 0.5f)));
         return panel;
+    }
+
+    public void rotateAround(ForgeDirection axis) {
+        setFacing((byte) ForgeDirection.getOrientation(facing).getRotation(axis).ordinal());
+        worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ModBlocks.blockDecayablesChest, 2, getFacing());
     }
 }
