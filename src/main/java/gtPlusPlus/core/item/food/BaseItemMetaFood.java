@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -48,7 +49,7 @@ public class BaseItemMetaFood extends ItemFood {
     public static void registerMetaFoods() {
         registerNewMetaFood(
             0,
-            "I wouldn't eat this unless I was starving",
+            StatCollector.translateToLocal("GTPP.tooltip.meta_food.unless_starving"),
             2,
             0,
             64,
@@ -56,7 +57,7 @@ public class BaseItemMetaFood extends ItemFood {
             getOreDictNamesAsArrayList("listAllmeatraw"));
         registerNewMetaFood(
             1,
-            "Doesn't look any better cooked",
+            StatCollector.translateToLocal("GTPP.tooltip.meta_food.better_cooked"),
             4,
             1,
             64,
@@ -91,7 +92,7 @@ public class BaseItemMetaFood extends ItemFood {
         registerNewMetaFood(7, "", 4, 1, 64, getOreDictNamesAsArrayList("listAllmeatcooked"));
         registerNewMetaFood(
             8,
-            "Warm to the touch",
+            StatCollector.translateToLocal("GTPP.tooltip.meta_food.warm_touch"),
             EnumRarity.uncommon,
             4,
             1,
