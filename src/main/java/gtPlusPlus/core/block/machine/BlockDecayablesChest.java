@@ -32,15 +32,7 @@ import gtPlusPlus.core.util.minecraft.InventoryUtils;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockDecayablesChest extends BlockContainer implements ITileTooltip {
-
-    @SideOnly(Side.CLIENT)
-    private IIcon textureTop;
-
-    @SideOnly(Side.CLIENT)
-    private IIcon textureBottom;
-
-    @SideOnly(Side.CLIENT)
-    private IIcon textureSide;
+    private static final ForgeDirection[] validRotationAxes = new ForgeDirection[] { UP, DOWN };
 
     /**
      * Determines which tooltip is displayed within the itemblock.
@@ -95,27 +87,10 @@ public class BlockDecayablesChest extends BlockContainer implements ITileTooltip
         }
     }
 
-
-    /**
-     * Gets the block's texture. Args: side, meta
-     */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(final int ordinalSide, final int meta) {
-        return switch (ordinalSide) {
-            case 0 -> textureBottom;
-            case 1 -> textureTop;
-            default -> textureSide;
-        };
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister p_149651_1_) {
         this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/DecayablesChest_top");
-        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/DecayablesChest_top");
-        this.textureBottom = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/DecayablesChest_bottom");
-        this.textureSide = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/DecayablesChest_Side");
     }
 
     @Override
@@ -185,7 +160,7 @@ public class BlockDecayablesChest extends BlockContainer implements ITileTooltip
         return false;
     }
 
-    private static final ForgeDirection[] validRotationAxes = new ForgeDirection[] { UP, DOWN };
+
 
     @Override
     public ForgeDirection[] getValidRotations(World worldObj, int x, int y, int z) {
