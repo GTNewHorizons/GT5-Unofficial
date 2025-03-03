@@ -2075,6 +2075,9 @@ GT5U.tooltip.fluid.stat=State: %s
 GT5U.tooltip.fluid.stat.gas=Gas
 GT5U.tooltip.fluid.stat.liquid=Liquid
 
+GT5U.tooltip.comb.ban_forestry=Forestry can't process it
+GT5U.tooltip.mega_apiary.only_producer=Will only be produced in mega Apiary
+
 # Achievements
 
 # 4/2/19
