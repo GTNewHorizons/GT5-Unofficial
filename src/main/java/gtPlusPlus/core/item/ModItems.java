@@ -10,6 +10,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 import static gtPlusPlus.core.util.minecraft.ItemUtils.hideItemFromNEI;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -966,6 +967,7 @@ public final class ModItems {
         GregtechItemList.MilledAlmandine.set(BaseItemMilledOre.generate(Materials.Almandine, (int) TierEU.RECIPE_LuV));
         GregtechItemList.MilledPyrope.set(BaseItemMilledOre.generate(Materials.Pyrope, (int) TierEU.RECIPE_EV));
         GregtechItemList.MilledMonazite.set(BaseItemMilledOre.generate(Materials.Monazite, (int) TierEU.RECIPE_ZPM));
+        GregtechItemList.MilledNetherite.set(BaseItemMilledOre.generate(Materials.Netherrack, (int) TierEU.RECIPE_IV, new ItemStack(Blocks.netherrack, 1024)));
 
         // Baubles
         if (Baubles.isModLoaded()) {

@@ -769,6 +769,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     MilledAlmandine,
     MilledPyrope,
     MilledMonazite,
+    MilledNetherite,
 
     // Compressed Stuff
     CactusCharcoal,

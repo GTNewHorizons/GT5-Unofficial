@@ -48,7 +48,6 @@ public class NetheriteRecipes {
             .fluidOutputs(Materials.NetherSemiFluid.getFluid(100))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .noOptimize()
             .addTo(vacuumFreezerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -63,7 +62,6 @@ public class NetheriteRecipes {
                 Materials.NitrogenDioxide.getGas(14000))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_IV)
-            .noOptimize()
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -72,7 +70,6 @@ public class NetheriteRecipes {
             .fluidOutputs(Materials.NefariousOil.getFluid(12000))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
-            .noOptimize()
             .addTo(crackingRecipes);
 
         GTValues.RA.stdBuilder()
@@ -81,7 +78,6 @@ public class NetheriteRecipes {
             .fluidOutputs(Materials.RichNetherWaste.getFluid(16000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
-            .noOptimize()
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -91,7 +87,6 @@ public class NetheriteRecipes {
             .outputChances(1000)
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
-            .noOptimize()
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
