@@ -21,9 +21,9 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
         this(aID, aName, aNameRegional, aThickNess, pipeStats, aCapacity, aHeatResistance, aGasProof, 1);
     }
 
-    public GTPPMTEFluidPipe(final String aName, final float aThickNess, final PipeStats pipeStats,
-        final int aCapacity, final int aHeatResistance, final boolean aGasProof) {
-        this(aName, aThickNess, aMaterial, aCapacity, aHeatResistance, aGasProof, 1);
+    public GTPPMTEFluidPipe(final String aName, final float aThickNess, final PipeStats pipeStats, final int aCapacity,
+        final int aHeatResistance, final boolean aGasProof) {
+        this(aName, aThickNess, pipeStats, aCapacity, aHeatResistance, aGasProof, 1);
     }
 
     public GTPPMTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, PipeStats pipeStats,
