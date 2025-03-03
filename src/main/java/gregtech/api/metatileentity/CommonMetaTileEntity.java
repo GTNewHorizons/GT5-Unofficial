@@ -151,6 +151,8 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     public void onSetActive(boolean active) {}
 
+    public void onEnableWorking() {}
+
     public void onDisableWorking() {}
 
     @Override
