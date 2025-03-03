@@ -91,23 +91,6 @@ public class BlockDecayablesChest extends BlockContainer implements ITileTooltip
         }
     }
 
-    /**
-     * Updates the blocks bounds based on its current state.
-     */
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-        if (world.getBlock(x, y, z - 1) == this) {
-            this.setBlockBounds(0.0625F, 0.0F, 0.0F, 0.9375F, 0.875F, 0.9375F);
-        } else if (world.getBlock(x, y, z + 1) == this) {
-            this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 1.0F);
-        } else if (world.getBlock(x - 1, y, z) == this) {
-            this.setBlockBounds(0.0F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
-        } else if (world.getBlock(x + 1, y, z) == this) {
-            this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 1.0F, 0.875F, 0.9375F);
-        } else {
-            this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
-        }
-    }
 
     /**
      * Gets the block's texture. Args: side, meta

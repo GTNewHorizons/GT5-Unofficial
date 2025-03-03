@@ -34,16 +34,6 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
     private final InventoryDecayablesChest inventoryContents;
 
     /** Determines if the check for adjacent chests has taken place. */
-    public boolean adjacentChestChecked;
-    /** Contains the chest tile located adjacent to this one (if any) */
-    public TileEntityDecayablesChest adjacentChestZNeg;
-    /** Contains the chest tile located adjacent to this one (if any) */
-    public TileEntityDecayablesChest adjacentChestXPos;
-    /** Contains the chest tile located adjacent to this one (if any) */
-    public TileEntityDecayablesChest adjacentChestXNeg;
-    /** Contains the chest tile located adjacent to this one (if any) */
-    public TileEntityDecayablesChest adjacentChestZPos;
-    /** The current angle of the lid (between 0 and 1) */
     public float lidAngle;
     /** The angle of the lid last tick */
     public float prevLidAngle;
@@ -287,37 +277,12 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
         return (this.customName != null) && !this.customName.isEmpty();
     }
 
-    /**
-     * Causes the TileEntity to reset all it's cached values for it's container Block, metadata and in the case of
-     * chests, the adjacent chest check
-     */
-    @Override
-    public void updateContainingBlockInfo() {
-        super.updateContainingBlockInfo();
-        this.adjacentChestChecked = false;
-    }
-
-    /**
-     * Performs the check for adjacent chests to determine if this chest is double or not.
-     */
-    public void checkForAdjacentChests() {
-        if (!this.adjacentChestChecked) {
-            this.adjacentChestChecked = true;
-            this.adjacentChestZNeg = null;
-            this.adjacentChestXPos = null;
-            this.adjacentChestXNeg = null;
-            this.adjacentChestZPos = null;
-        }
-    }
-
     public void updateEntityChest() {
         float f;
         this.prevLidAngle = this.lidAngle;
         f = 0.04F;
         double d2;
-        if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F
-            && this.adjacentChestZNeg == null
-            && this.adjacentChestXNeg == null) {
+        if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F) {
             double d1 = (double) this.xCoord + 0.5D;
             d2 = (double) this.zCoord + 0.5D;
             this.worldObj.playSoundEffect(
@@ -342,7 +307,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
                 this.lidAngle = 1.0F;
             }
             float f2 = 0.5F;
-            if (this.lidAngle < f2 && f1 >= f2 && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null) {
+            if (this.lidAngle < f2 && f1 >= f2) {
                 d2 = (double) this.xCoord + 0.5D;
                 double d0 = (double) this.zCoord + 0.5D;
                 this.worldObj.playSoundEffect(
@@ -381,7 +346,6 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
         super.invalidate();
         cachedChestType = 1;
         this.updateContainingBlockInfo();
-        this.checkForAdjacentChests();
     }
 
     private int updateSlots() {
