@@ -17,7 +17,6 @@ import gtPlusPlus.xmod.tinkers.HandlerTinkers;
 public class CompatIntermodStaging {
 
     public static void preInit(FMLPreInitializationEvent preinit) {
-        HandlerGT.preInit();
         HandlerTF.preInit();
         ForestryHandler.preInit();
         HandlerIC2.preInit();

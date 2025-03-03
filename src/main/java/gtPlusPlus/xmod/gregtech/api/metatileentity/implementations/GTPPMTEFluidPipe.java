@@ -10,36 +10,36 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.render.TextureFactory;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.PipeStats;
 
 public class GTPPMTEFluidPipe extends MTEFluidPipe {
 
-    public final GT_Materials mMaterial;
+    public final PipeStats pipeStats;
 
-    public GTPPMTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, GT_Materials aMaterial,
+    public GTPPMTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, PipeStats pipeStats,
         int aCapacity, int aHeatResistance, boolean aGasProof) {
-        this(aID, aName, aNameRegional, aThickNess, aMaterial, aCapacity, aHeatResistance, aGasProof, 1);
+        this(aID, aName, aNameRegional, aThickNess, pipeStats, aCapacity, aHeatResistance, aGasProof, 1);
     }
 
-    public GTPPMTEFluidPipe(final String aName, final float aThickNess, final GT_Materials aMaterial,
-        final int aCapacity, final int aHeatResistance, final boolean aGasProof) {
-        this(aName, aThickNess, aMaterial, aCapacity, aHeatResistance, aGasProof, 1);
+    public GTPPMTEFluidPipe(final String aName, final float aThickNess, final PipeStats pipeStats, final int aCapacity,
+        final int aHeatResistance, final boolean aGasProof) {
+        this(aName, aThickNess, pipeStats, aCapacity, aHeatResistance, aGasProof, 1);
     }
 
-    public GTPPMTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, GT_Materials aMaterial,
+    public GTPPMTEFluidPipe(int aID, String aName, String aNameRegional, float aThickNess, PipeStats pipeStats,
         int aCapacity, int aHeatResistance, boolean aGasProof, int aFluidTypes) {
         super(aID, aName, aNameRegional, aThickNess, null, aCapacity, aHeatResistance, aGasProof, aFluidTypes);
         this.mLastReceivedFrom = 0;
         this.oLastReceivedFrom = 0;
-        this.mMaterial = aMaterial;
+        this.pipeStats = pipeStats;
     }
 
-    public GTPPMTEFluidPipe(String aName, float aThickNess, GT_Materials aMaterial, int aCapacity, int aHeatResistance,
+    public GTPPMTEFluidPipe(String aName, float aThickNess, PipeStats pipeStats, int aCapacity, int aHeatResistance,
         boolean aGasProof, int aFluidTypes) {
         super(aName, aThickNess, null, aCapacity, aHeatResistance, aGasProof, aFluidTypes);
         this.mLastReceivedFrom = 0;
         this.oLastReceivedFrom = 0;
-        this.mMaterial = aMaterial;
+        this.pipeStats = pipeStats;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
         return new GTPPMTEFluidPipe(
             this.mName,
             this.mThickNess,
-            this.mMaterial,
+            this.pipeStats,
             this.mCapacity,
             this.mHeatResistance,
             this.mGasProof);
@@ -85,33 +85,5 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
                 mMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
                 Dyes.getModulation(aColorIndex, mMaterial.mRGBa)),
             getRestrictorTexture(tMask) };
-    }
-
-    protected static ITexture getBaseTexture(float aThickNess, int aPipeAmount, GT_Materials aMaterial,
-        int aColorIndex) {
-        if (aPipeAmount >= 9) return TextureFactory.of(
-            aMaterial.mIconSet.mTextures[OrePrefixes.pipeNonuple.mTextureIndex],
-            Dyes.getModulation(aColorIndex, aMaterial.mRGBa));
-        if (aPipeAmount >= 4) return TextureFactory.of(
-            aMaterial.mIconSet.mTextures[OrePrefixes.pipeQuadruple.mTextureIndex],
-            Dyes.getModulation(aColorIndex, aMaterial.mRGBa));
-        if (aThickNess < 0.124F) return TextureFactory.of(
-            aMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
-            Dyes.getModulation(aColorIndex, aMaterial.mRGBa));
-        if (aThickNess < 0.374F) return TextureFactory.of(
-            aMaterial.mIconSet.mTextures[OrePrefixes.pipeTiny.mTextureIndex],
-            Dyes.getModulation(aColorIndex, aMaterial.mRGBa));
-        if (aThickNess < 0.499F) return TextureFactory.of(
-            aMaterial.mIconSet.mTextures[OrePrefixes.pipeSmall.mTextureIndex],
-            Dyes.getModulation(aColorIndex, aMaterial.mRGBa));
-        if (aThickNess < 0.749F) return TextureFactory.of(
-            aMaterial.mIconSet.mTextures[OrePrefixes.pipeMedium.mTextureIndex],
-            Dyes.getModulation(aColorIndex, aMaterial.mRGBa));
-        if (aThickNess < 0.874F) return TextureFactory.of(
-            aMaterial.mIconSet.mTextures[OrePrefixes.pipeLarge.mTextureIndex],
-            Dyes.getModulation(aColorIndex, aMaterial.mRGBa));
-        return TextureFactory.of(
-            aMaterial.mIconSet.mTextures[OrePrefixes.pipeHuge.mTextureIndex],
-            Dyes.getModulation(aColorIndex, aMaterial.mRGBa));
     }
 }
