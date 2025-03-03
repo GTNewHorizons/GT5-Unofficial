@@ -18,7 +18,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -116,7 +115,7 @@ public class MTEHatchObjectHolder extends MTEHatch implements IAddGregtechLogo {
         // else if(heat>0)
         // aPlayer.addChatComponentMessage(new ChatComponentText("It is still warm..."));
         // else
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
