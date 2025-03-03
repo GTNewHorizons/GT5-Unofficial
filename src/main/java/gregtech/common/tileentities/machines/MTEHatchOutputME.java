@@ -351,7 +351,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         lastClickedPlayer = aPlayer;
 
         openGui(aPlayer);
-      
+
         return true;
     }
 

@@ -214,7 +214,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         this.lastClickedPlayer = aPlayer;
 
         openGui(aPlayer);
-      
+
         return true;
     }
 
