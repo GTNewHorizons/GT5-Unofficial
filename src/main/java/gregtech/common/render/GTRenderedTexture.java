@@ -6,12 +6,11 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.joml.Vector2f;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
@@ -214,122 +213,18 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         return mIconContainer != null;
     }
 
-    private static class TexCoords {
-
-        public float u1, u2, v1, v2;
-
-        public TexCoords(IIcon icon) {
-            u1 = icon.getMinU();
-            u2 = icon.getMaxU();
-            v1 = icon.getMinV();
-            v2 = icon.getMaxV();
-        }
-
-        public void flipU() {
-            float temp = u1;
-            u1 = u2;
-            u2 = temp;
-        }
-
-        public void flipV() {
-            float temp = v1;
-            v1 = v2;
-            v2 = temp;
-        }
-
-        public Vector2f[] toUVs() {
-            // spotless:off
-            return new Vector2f[] {
-                new Vector2f(u2, v1),
-                new Vector2f(u1, v1),
-                new Vector2f(u1, v2),
-                new Vector2f(u2, v2)
-            };
-            // spotless:on
-        }
-    }
-
     /**
      * Renders the given texture to the bottom face of the block. Args: block, x, y, z, texture
      */
     protected void renderFaceYNeg(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
         ExtendedFacing extendedFacing) {
 
-        TexCoords texCoords = new TexCoords(icon);
+        aRenderer.uvRotateBottom = getRotation(extendedFacing);
+        icon = getFlipped(extendedFacing, icon);
 
-        int rotation = extendedFacing.getRotation()
-            .getIndex() + 3;
+        aRenderer.renderFaceYNeg(Blocks.air, x, y, z, icon);
 
-        if (extendedFacing.getFlip()
-            .isHorizontallyFlipped()) {
-            if (rotation % 2 == 1) {
-                texCoords.flipU();
-            } else {
-                texCoords.flipV();
-            }
-        }
-
-        if (extendedFacing.getFlip()
-            .isVerticallyFliped()) {
-            if (rotation % 2 == 1) {
-                texCoords.flipV();
-            } else {
-                texCoords.flipU();
-            }
-        }
-
-        double x0 = x + 0;
-        double x1 = x + 1;
-        double y0 = y + 0;
-        double z0 = z + 0;
-        double z1 = z + 1;
-
-        Tessellator tessellator = Tessellator.instance;
-
-        Vector2f[] uvs = texCoords.toUVs();
-        Vector2f uv;
-
-        if (aRenderer.enableAO) {
-            tessellator
-                .setColorOpaque_F(aRenderer.colorRedTopLeft, aRenderer.colorGreenTopLeft, aRenderer.colorBlueTopLeft);
-            tessellator.setBrightness(aRenderer.brightnessTopLeft);
-        }
-
-        uv = uvs[(0 + rotation) % 4];
-        tessellator.addVertexWithUV(x0, y0, z1, uv.x, uv.y);
-
-        if (aRenderer.enableAO) {
-            tessellator.setColorOpaque_F(
-                aRenderer.colorRedBottomLeft,
-                aRenderer.colorGreenBottomLeft,
-                aRenderer.colorBlueBottomLeft);
-            tessellator.setBrightness(aRenderer.brightnessBottomLeft);
-        }
-
-        uv = uvs[(1 + rotation) % 4];
-        tessellator.addVertexWithUV(x0, y0, z0, uv.x, uv.y);
-
-        if (aRenderer.enableAO) {
-            tessellator.setColorOpaque_F(
-                aRenderer.colorRedBottomRight,
-                aRenderer.colorGreenBottomRight,
-                aRenderer.colorBlueBottomRight);
-            tessellator.setBrightness(aRenderer.brightnessBottomRight);
-        }
-
-        uv = uvs[(2 + rotation) % 4];
-        tessellator.addVertexWithUV(x1, y0, z0, uv.x, uv.y);
-
-        if (aRenderer.enableAO) {
-            tessellator.setColorOpaque_F(
-                aRenderer.colorRedTopRight,
-                aRenderer.colorGreenTopRight,
-                aRenderer.colorBlueTopRight);
-            tessellator.setBrightness(aRenderer.brightnessTopRight);
-        }
-
-        uv = uvs[(3 + rotation) % 4];
-        tessellator.addVertexWithUV(x1, y0, z1, uv.x, uv.y);
+        aRenderer.uvRotateBottom = 0;
     }
 
     /**
@@ -338,81 +233,12 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     protected void renderFaceYPos(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
         ExtendedFacing extendedFacing) {
 
-        TexCoords texCoords = new TexCoords(icon);
+        aRenderer.uvRotateTop = getRotation(extendedFacing);
+        icon = getFlipped(extendedFacing, icon);
 
-        int rotation = extendedFacing.getRotation()
-            .getIndex() + 3;
+        aRenderer.renderFaceYPos(Blocks.air, x, y, z, icon);
 
-        if (extendedFacing.getFlip()
-            .isHorizontallyFlipped()) {
-            if (rotation % 2 == 1) {
-                texCoords.flipU();
-            } else {
-                texCoords.flipV();
-            }
-        }
-
-        if (extendedFacing.getFlip()
-            .isVerticallyFliped()) {
-            if (rotation % 2 == 1) {
-                texCoords.flipV();
-            } else {
-                texCoords.flipU();
-            }
-        }
-
-        double x0 = x + 0;
-        double x1 = x + 1;
-        double y1 = y + 1;
-        double z0 = z + 0;
-        double z1 = z + 1;
-
-        Tessellator tessellator = Tessellator.instance;
-
-        Vector2f[] uvs = texCoords.toUVs();
-        Vector2f uv;
-
-        if (aRenderer.enableAO) {
-            tessellator
-                .setColorOpaque_F(aRenderer.colorRedTopLeft, aRenderer.colorGreenTopLeft, aRenderer.colorBlueTopLeft);
-            tessellator.setBrightness(aRenderer.brightnessTopLeft);
-        }
-
-        uv = uvs[(0 + rotation) % 4];
-        tessellator.addVertexWithUV(x1, y1, z1, uv.x, uv.y);
-
-        if (aRenderer.enableAO) {
-            tessellator.setColorOpaque_F(
-                aRenderer.colorRedBottomLeft,
-                aRenderer.colorGreenBottomLeft,
-                aRenderer.colorBlueBottomLeft);
-            tessellator.setBrightness(aRenderer.brightnessBottomLeft);
-        }
-
-        uv = uvs[(1 + rotation) % 4];
-        tessellator.addVertexWithUV(x1, y1, z0, uv.x, uv.y);
-
-        if (aRenderer.enableAO) {
-            tessellator.setColorOpaque_F(
-                aRenderer.colorRedBottomRight,
-                aRenderer.colorGreenBottomRight,
-                aRenderer.colorBlueBottomRight);
-            tessellator.setBrightness(aRenderer.brightnessBottomRight);
-        }
-
-        uv = uvs[(2 + rotation) % 4];
-        tessellator.addVertexWithUV(x0, y1, z0, uv.x, uv.y);
-
-        if (aRenderer.enableAO) {
-            tessellator.setColorOpaque_F(
-                aRenderer.colorRedTopRight,
-                aRenderer.colorGreenTopRight,
-                aRenderer.colorBlueTopRight);
-            tessellator.setBrightness(aRenderer.brightnessTopRight);
-        }
-
-        uv = uvs[(3 + rotation) % 4];
-        tessellator.addVertexWithUV(x0, y1, z1, uv.x, uv.y);
+        aRenderer.uvRotateTop = 0;
     }
 
     /**
@@ -421,81 +247,12 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     protected void renderFaceZNeg(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
         ExtendedFacing extendedFacing) {
 
-        TexCoords texCoords = new TexCoords(icon);
+        aRenderer.uvRotateEast = getRotation(extendedFacing);
+        icon = getFlipped(extendedFacing, icon);
 
-        int rotation = extendedFacing.getRotation()
-            .getIndex();
+        aRenderer.renderFaceZNeg(Blocks.air, x, y, z, icon);
 
-        if (extendedFacing.getFlip()
-            .isHorizontallyFlipped()) {
-            if (rotation % 2 == 1) {
-                texCoords.flipV();
-            } else {
-                texCoords.flipU();
-            }
-        }
-
-        if (extendedFacing.getFlip()
-            .isVerticallyFliped()) {
-            if (rotation % 2 == 1) {
-                texCoords.flipU();
-            } else {
-                texCoords.flipV();
-            }
-        }
-
-        double x0 = x + 0;
-        double x1 = x + 1;
-        double y0 = y + 0;
-        double y1 = y + 1;
-        double z0 = z + 0;
-
-        Tessellator tessellator = Tessellator.instance;
-
-        Vector2f[] uvs = texCoords.toUVs();
-        Vector2f uv;
-
-        if (aRenderer.enableAO) {
-            tessellator
-                .setColorOpaque_F(aRenderer.colorRedTopLeft, aRenderer.colorGreenTopLeft, aRenderer.colorBlueTopLeft);
-            tessellator.setBrightness(aRenderer.brightnessTopLeft);
-        }
-
-        uv = uvs[(0 + rotation) % 4];
-        tessellator.addVertexWithUV(x0, y1, z0, uv.x, uv.y);
-
-        if (aRenderer.enableAO) {
-            tessellator.setColorOpaque_F(
-                aRenderer.colorRedBottomLeft,
-                aRenderer.colorGreenBottomLeft,
-                aRenderer.colorBlueBottomLeft);
-            tessellator.setBrightness(aRenderer.brightnessBottomLeft);
-        }
-
-        uv = uvs[(1 + rotation) % 4];
-        tessellator.addVertexWithUV(x1, y1, z0, uv.x, uv.y);
-
-        if (aRenderer.enableAO) {
-            tessellator.setColorOpaque_F(
-                aRenderer.colorRedBottomRight,
-                aRenderer.colorGreenBottomRight,
-                aRenderer.colorBlueBottomRight);
-            tessellator.setBrightness(aRenderer.brightnessBottomRight);
-        }
-
-        uv = uvs[(2 + rotation) % 4];
-        tessellator.addVertexWithUV(x1, y0, z0, uv.x, uv.y);
-
-        if (aRenderer.enableAO) {
-            tessellator.setColorOpaque_F(
-                aRenderer.colorRedTopRight,
-                aRenderer.colorGreenTopRight,
-                aRenderer.colorBlueTopRight);
-            tessellator.setBrightness(aRenderer.brightnessTopRight);
-        }
-
-        uv = uvs[(3 + rotation) % 4];
-        tessellator.addVertexWithUV(x0, y0, z0, uv.x, uv.y);
+        aRenderer.uvRotateEast = 0;
     }
 
     /**
@@ -504,81 +261,12 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     protected void renderFaceZPos(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
         ExtendedFacing extendedFacing) {
 
-        TexCoords texCoords = new TexCoords(icon);
+        aRenderer.uvRotateWest = getRotation(extendedFacing);
+        icon = getFlipped(extendedFacing, icon);
 
-        int rotation = extendedFacing.getRotation()
-            .getIndex() + 1;
+        aRenderer.renderFaceZPos(Blocks.air, x, y, z, icon);
 
-        if (extendedFacing.getFlip()
-            .isHorizontallyFlipped()) {
-            if (rotation % 2 == 1) {
-                texCoords.flipU();
-            } else {
-                texCoords.flipV();
-            }
-        }
-
-        if (extendedFacing.getFlip()
-            .isVerticallyFliped()) {
-            if (rotation % 2 == 1) {
-                texCoords.flipV();
-            } else {
-                texCoords.flipU();
-            }
-        }
-
-        double x0 = x + 0;
-        double x1 = x + 1;
-        double y0 = y + 0;
-        double y1 = y + 1;
-        double z1 = z + 1;
-
-        Tessellator tessellator = Tessellator.instance;
-
-        Vector2f[] uvs = texCoords.toUVs();
-        Vector2f uv;
-
-        if (aRenderer.enableAO) {
-            tessellator
-                .setColorOpaque_F(aRenderer.colorRedTopLeft, aRenderer.colorGreenTopLeft, aRenderer.colorBlueTopLeft);
-            tessellator.setBrightness(aRenderer.brightnessTopLeft);
-        }
-
-        uv = uvs[(0 + rotation) % 4];
-        tessellator.addVertexWithUV(x0, y1, z1, uv.x, uv.y);
-
-        if (aRenderer.enableAO) {
-            tessellator.setColorOpaque_F(
-                aRenderer.colorRedBottomLeft,
-                aRenderer.colorGreenBottomLeft,
-                aRenderer.colorBlueBottomLeft);
-            tessellator.setBrightness(aRenderer.brightnessBottomLeft);
-        }
-
-        uv = uvs[(1 + rotation) % 4];
-        tessellator.addVertexWithUV(x0, y0, z1, uv.x, uv.y);
-
-        if (aRenderer.enableAO) {
-            tessellator.setColorOpaque_F(
-                aRenderer.colorRedBottomRight,
-                aRenderer.colorGreenBottomRight,
-                aRenderer.colorBlueBottomRight);
-            tessellator.setBrightness(aRenderer.brightnessBottomRight);
-        }
-
-        uv = uvs[(2 + rotation) % 4];
-        tessellator.addVertexWithUV(x1, y0, z1, uv.x, uv.y);
-
-        if (aRenderer.enableAO) {
-            tessellator.setColorOpaque_F(
-                aRenderer.colorRedTopRight,
-                aRenderer.colorGreenTopRight,
-                aRenderer.colorBlueTopRight);
-            tessellator.setBrightness(aRenderer.brightnessTopRight);
-        }
-
-        uv = uvs[(3 + rotation) % 4];
-        tessellator.addVertexWithUV(x1, y1, z1, uv.x, uv.y);
+        aRenderer.uvRotateWest = 0;
     }
 
     /**
@@ -587,81 +275,12 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     protected void renderFaceXNeg(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
         ExtendedFacing extendedFacing) {
 
-        TexCoords texCoords = new TexCoords(icon);
+        aRenderer.uvRotateNorth = getRotation(extendedFacing);
+        icon = getFlipped(extendedFacing, icon);
 
-        int rotation = extendedFacing.getRotation()
-            .getIndex();
+        aRenderer.renderFaceXNeg(Blocks.air, x, y, z, icon);
 
-        if (extendedFacing.getFlip()
-            .isHorizontallyFlipped()) {
-            if (rotation % 2 == 1) {
-                texCoords.flipV();
-            } else {
-                texCoords.flipU();
-            }
-        }
-
-        if (extendedFacing.getFlip()
-            .isVerticallyFliped()) {
-            if (rotation % 2 == 1) {
-                texCoords.flipU();
-            } else {
-                texCoords.flipV();
-            }
-        }
-
-        double x0 = x + 0;
-        double y0 = y + 0;
-        double y1 = y + 1;
-        double z0 = z + 0;
-        double z1 = z + 1;
-
-        Tessellator tessellator = Tessellator.instance;
-
-        Vector2f[] uvs = texCoords.toUVs();
-        Vector2f uv;
-
-        if (aRenderer.enableAO) {
-            tessellator
-                .setColorOpaque_F(aRenderer.colorRedTopLeft, aRenderer.colorGreenTopLeft, aRenderer.colorBlueTopLeft);
-            tessellator.setBrightness(aRenderer.brightnessTopLeft);
-        }
-
-        uv = uvs[(0 + rotation) % 4];
-        tessellator.addVertexWithUV(x0, y1, z1, uv.x, uv.y);
-
-        if (aRenderer.enableAO) {
-            tessellator.setColorOpaque_F(
-                aRenderer.colorRedBottomLeft,
-                aRenderer.colorGreenBottomLeft,
-                aRenderer.colorBlueBottomLeft);
-            tessellator.setBrightness(aRenderer.brightnessBottomLeft);
-        }
-
-        uv = uvs[(1 + rotation) % 4];
-        tessellator.addVertexWithUV(x0, y1, z0, uv.x, uv.y);
-
-        if (aRenderer.enableAO) {
-            tessellator.setColorOpaque_F(
-                aRenderer.colorRedBottomRight,
-                aRenderer.colorGreenBottomRight,
-                aRenderer.colorBlueBottomRight);
-            tessellator.setBrightness(aRenderer.brightnessBottomRight);
-        }
-
-        uv = uvs[(2 + rotation) % 4];
-        tessellator.addVertexWithUV(x0, y0, z0, uv.x, uv.y);
-
-        if (aRenderer.enableAO) {
-            tessellator.setColorOpaque_F(
-                aRenderer.colorRedTopRight,
-                aRenderer.colorGreenTopRight,
-                aRenderer.colorBlueTopRight);
-            tessellator.setBrightness(aRenderer.brightnessTopRight);
-        }
-
-        uv = uvs[(3 + rotation) % 4];
-        tessellator.addVertexWithUV(x0, y0, z1, uv.x, uv.y);
+        aRenderer.uvRotateNorth = 0;
     }
 
     /**
@@ -670,81 +289,55 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     protected void renderFaceXPos(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
         ExtendedFacing extendedFacing) {
 
-        TexCoords texCoords = new TexCoords(icon);
+        aRenderer.uvRotateSouth = getRotation(extendedFacing);
+        icon = getFlipped(extendedFacing, icon);
 
-        int rotation = extendedFacing.getRotation()
-            .getIndex() + 2;
+        aRenderer.renderFaceXPos(Blocks.air, x, y, z, icon);
 
-        if (extendedFacing.getFlip()
-            .isHorizontallyFlipped()) {
-            if (rotation % 2 == 1) {
-                texCoords.flipV();
-            } else {
-                texCoords.flipU();
+        aRenderer.uvRotateSouth = 0;
+    }
+
+    private static final int NORMAL = 0;
+    private static final int CLOCKWISE = 1;
+    private static final int COUNTER_CLOCKWISE = 2;
+    private static final int UPSIDE_DOWN = 3;
+
+    private int getRotation(ExtendedFacing extendedFacing) {
+        return switch (extendedFacing.getRotation()) {
+            case NORMAL -> NORMAL;
+            case CLOCKWISE -> CLOCKWISE;
+            case UPSIDE_DOWN -> UPSIDE_DOWN;
+            case COUNTER_CLOCKWISE -> COUNTER_CLOCKWISE;
+        };
+    }
+
+    private GTIconFlipped getFlipped(ExtendedFacing extendedFacing, IIcon icon) {
+        boolean flipU = false, flipV = false;
+
+        ForgeDirection dir = extendedFacing.getDirection();
+
+        // certain directions need to be flipped horizontally seemingly randomly
+        // maybe there's a reason, maybe there isn't, I haven't bothered to dig into the code to figure out why
+
+        // spotless:off
+        if (extendedFacing.getRotation().getIndex() % 2 == 0) {
+            // flip U's if normal or upside down
+            flipU ^= extendedFacing.getFlip().isHorizontallyFlipped();
+        } else {
+            // flip V's if clockwise or counter-clockwise
+            flipV ^= extendedFacing.getFlip().isHorizontallyFlipped();
+
+            if (dir == ForgeDirection.EAST || dir == ForgeDirection.NORTH) {
+                flipU ^= true;
             }
         }
+        // spotless:on
 
-        if (extendedFacing.getFlip()
-            .isVerticallyFliped()) {
-            if (rotation % 2 == 1) {
-                texCoords.flipU();
-            } else {
-                texCoords.flipV();
-            }
+        if (dir == ForgeDirection.DOWN) {
+            flipU ^= true;
         }
 
-        double x1 = x + 1;
-        double y0 = y + 0;
-        double y1 = y + 1;
-        double z0 = z + 0;
-        double z1 = z + 1;
-
-        Tessellator tessellator = Tessellator.instance;
-
-        Vector2f[] uvs = texCoords.toUVs();
-        Vector2f uv;
-
-        if (aRenderer.enableAO) {
-            tessellator
-                .setColorOpaque_F(aRenderer.colorRedTopLeft, aRenderer.colorGreenTopLeft, aRenderer.colorBlueTopLeft);
-            tessellator.setBrightness(aRenderer.brightnessTopLeft);
-        }
-
-        uv = uvs[(0 + rotation) % 4];
-        tessellator.addVertexWithUV(x1, y0, z1, uv.x, uv.y);
-
-        if (aRenderer.enableAO) {
-            tessellator.setColorOpaque_F(
-                aRenderer.colorRedBottomLeft,
-                aRenderer.colorGreenBottomLeft,
-                aRenderer.colorBlueBottomLeft);
-            tessellator.setBrightness(aRenderer.brightnessBottomLeft);
-        }
-
-        uv = uvs[(1 + rotation) % 4];
-        tessellator.addVertexWithUV(x1, y0, z0, uv.x, uv.y);
-
-        if (aRenderer.enableAO) {
-            tessellator.setColorOpaque_F(
-                aRenderer.colorRedBottomRight,
-                aRenderer.colorGreenBottomRight,
-                aRenderer.colorBlueBottomRight);
-            tessellator.setBrightness(aRenderer.brightnessBottomRight);
-        }
-
-        uv = uvs[(2 + rotation) % 4];
-        tessellator.addVertexWithUV(x1, y1, z0, uv.x, uv.y);
-
-        if (aRenderer.enableAO) {
-            tessellator.setColorOpaque_F(
-                aRenderer.colorRedTopRight,
-                aRenderer.colorGreenTopRight,
-                aRenderer.colorBlueTopRight);
-            tessellator.setBrightness(aRenderer.brightnessTopRight);
-        }
-
-        uv = uvs[(3 + rotation) % 4];
-        tessellator.addVertexWithUV(x1, y1, z1, uv.x, uv.y);
+        return new GTIconFlipped(icon, flipU, flipV);
     }
 
     private ExtendedFacing getExtendedFacing(int x, int y, int z) {
