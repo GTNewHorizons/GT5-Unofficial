@@ -1,11 +1,14 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.transcendentPlasmaMixerRecipes;
+import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraftforge.fluids.FluidStack;
 
+import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsBotania;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTRecipeBuilder;
@@ -180,6 +183,35 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             // 1 Trillion EU/t
             .metadata(GTRecipeConstants.EU_MULTIPLIER, 1000)
             .eut(1_000_000_000L)
+            .addTo(transcendentPlasmaMixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(24))
+            .fluidInputs(
+                MaterialsUEVplus.DimensionallyShiftedSuperfluid.getFluid(368),
+                getFluidStack("fluiddeath", 110),
+                Materials.UUMatter.getFluid(482),
+                MaterialsUEVplus.SpaceTime.getMolten(286),
+                GGMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(394),
+                getFluidStack("potion.diablosauce.strong", 258),
+                Materials.EnhancedGalgadorian.getMolten(248),
+                Materials.LifeEssence.getFluid(286),
+                MaterialsUEVplus.PhononMedium.getFluid(564),
+                MaterialsUEVplus.TranscendentMetal.getMolten(666),
+                MaterialsUEVplus.Eternity.getMolten(1000),
+                MaterialsUEVplus.PrimordialMatter.getFluid(1000),
+                MaterialsUEVplus.ProtoHalkonite.getMolten(742),
+                Materials.MysteriousCrystal.getMolten(852),
+                MaterialsUEVplus.SixPhasedCopper.getPlasma(926),
+                Materials.Cheese.getMolten(684),
+                Materials.Flerovium.getMolten(458),
+                MaterialsBotania.GaiaSpirit.getMolten(576),
+                getFluidStack("fluidpure", 120),
+                MaterialsUEVplus.Antimatter.getFluid(998))
+            .fluidOutputs(MaterialsUEVplus.PrimordialChaoticSauce.getFluid(1000L))
+            .duration(10 * GTRecipeBuilder.TICKS)
+            .metadata(GTRecipeConstants.EU_MULTIPLIER, 100)
+            .eut(1_000_000L)
             .addTo(transcendentPlasmaMixerRecipes);
     }
 }
