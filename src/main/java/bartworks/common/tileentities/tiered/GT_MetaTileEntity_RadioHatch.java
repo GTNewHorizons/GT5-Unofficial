@@ -53,7 +53,6 @@ import bartworks.util.BWTooltipReference;
 import bartworks.util.MathUtils;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
@@ -145,7 +144,7 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 

@@ -36,7 +36,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -187,9 +186,9 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
                     if (--tStack.stackSize == 0) {
                         aPlayer.inventory.mainInventory[aPlayer.inventory.currentItem] = null;
                     }
-                } else GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+                } else openGui(aPlayer);
             } else {
-                GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+                openGui(aPlayer);
             }
             return true;
         }
