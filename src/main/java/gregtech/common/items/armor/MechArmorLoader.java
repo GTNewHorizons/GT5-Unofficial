@@ -2,10 +2,10 @@ package gregtech.common.items.armor;
 
 import static gregtech.api.enums.Mods.GregTech;
 
-import gregtech.api.enums.ItemList;
 import net.minecraft.item.Item;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.ItemList;
 
 public class MechArmorLoader {
 

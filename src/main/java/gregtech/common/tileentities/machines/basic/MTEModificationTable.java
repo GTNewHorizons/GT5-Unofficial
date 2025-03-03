@@ -1,10 +1,13 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static gregtech.common.items.IDMetaItem01.Armor_Core_T1;
+import static gregtech.common.items.IDMetaItem01.Armor_Core_T2;
+import static gregtech.common.items.IDMetaItem01.Armor_Core_T3;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -17,7 +20,6 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
-import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -42,18 +44,21 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
 
     private ItemStackHandler inputHandler = new ItemStackHandler(2);
 
-    private NBTTagCompound getTagFromItem(Item item) {
+    private NBTTagCompound getTagFromItem(ItemStack item) {
 
         NBTTagCompound armorItemTag = new NBTTagCompound();
 
-        if (item == ItemList.Armor_Core_T1.getItem()) {
-            armorItemTag.setInteger("core", 1);
-        }
+        int metaID = item.getItemDamage() - 32000;
+        int coreID = 0;
+        if (metaID == Armor_Core_T1.ID) coreID = 1;
+        else if (metaID == Armor_Core_T2.ID) coreID = 2;
+        else if (metaID == Armor_Core_T3.ID) coreID = 3;
+
+        armorItemTag.setInteger("core", coreID);
 
         return armorItemTag;
     }
 
-    // TODO: need to be checks for damage
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
@@ -66,11 +71,11 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 ItemStack coreItem = inputHandler.getStackInSlot(0);
                 ItemStack armorItem = inputHandler.getStackInSlot(1);
+
                 if (coreItem == null || armorItem == null) return;
-                if (coreItem.getItem() == ItemList.Armor_Core_T1.getItem()) {
-                    coreItem.stackSize -= 1;
-                    armorItem.setTagCompound(getTagFromItem(coreItem.getItem()));
-                }
+                coreItem.stackSize -= 1;
+                armorItem.setTagCompound(getTagFromItem(coreItem));
+
             })
                 .setPos(20, 20)
                 .setSize(16, 16)

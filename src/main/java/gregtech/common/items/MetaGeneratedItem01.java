@@ -49,6 +49,8 @@ import static gregtech.client.GTTooltipHandler.Tier.UXV;
 import static gregtech.client.GTTooltipHandler.Tier.ZPM;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gregtech.common.items.IDMetaItem01.Armor_Core_T1;
+import static gregtech.common.items.IDMetaItem01.Armor_Core_T2;
+import static gregtech.common.items.IDMetaItem01.Armor_Core_T3;
 import static gregtech.common.items.IDMetaItem01.BatteryHull_EV;
 import static gregtech.common.items.IDMetaItem01.BatteryHull_EV_Full;
 import static gregtech.common.items.IDMetaItem01.BatteryHull_IV;
@@ -3260,6 +3262,20 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 Armor_Core_T1.ID,
                 "Armor Core (Nano)",
                 "Basic core for Mechanical Armor",
+                new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 4),
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2)));
+        ItemList.Armor_Core_T2.set(
+            addItem(
+                Armor_Core_T2.ID,
+                "Armor Core (Quantum)",
+                "Advanced core for Mechanical Armor",
+                new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 4),
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2)));
+        ItemList.Armor_Core_T3.set(
+            addItem(
+                Armor_Core_T3.ID,
+                "Armor Core (Living)",
+                "Supreme core for Mechanical Armor",
                 new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 4),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2)));
 

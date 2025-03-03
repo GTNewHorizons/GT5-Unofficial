@@ -2613,6 +2613,8 @@ public enum ItemList implements IItemContainer {
     Mechanical_Boots,
     ModificationTable,
     Armor_Core_T1,
+    Armor_Core_T2,
+    Armor_Core_T3,
 
     // semicolon after the comment to reduce merge conflicts
     ;

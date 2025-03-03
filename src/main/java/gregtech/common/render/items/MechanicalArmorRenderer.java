@@ -1,20 +1,21 @@
 package gregtech.common.render.items;
 
-import gregtech.api.enums.ItemList;
-import gregtech.common.items.armor.MechArmorBase;
-import gregtech.common.items.armor.MechHelmet;
-import gregtech.common.render.GTRenderUtil;
+import static gregtech.api.enums.Dyes.dyeGreen;
+import static gregtech.api.enums.Dyes.dyeLightBlue;
+import static gregtech.api.enums.Dyes.dyeRed;
+import static gregtech.api.enums.Dyes.dyeWhite;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
+
 import org.lwjgl.opengl.GL11;
 
-import static gregtech.api.enums.Dyes.dyeGreen;
-import static gregtech.api.enums.Dyes.dyeLightBlue;
-import static gregtech.api.enums.Dyes.dyeRed;
-import static gregtech.api.enums.Dyes.dyeWhite;
+import gregtech.api.enums.ItemList;
+import gregtech.common.items.armor.MechArmorBase;
+import gregtech.common.render.GTRenderUtil;
 
 public class MechanicalArmorRenderer implements IItemRenderer {
 
@@ -34,7 +35,7 @@ public class MechanicalArmorRenderer implements IItemRenderer {
 
     @Override
     public boolean shouldUseRenderHelper(final ItemRenderType type, final ItemStack item,
-                                         final ItemRendererHelper helper) {
+        final ItemRendererHelper helper) {
         return type == ItemRenderType.ENTITY && helper == ItemRendererHelper.ENTITY_BOBBING
             || (helper == ItemRendererHelper.ENTITY_ROTATION && Minecraft.getMinecraft().gameSettings.fancyGraphics);
 
@@ -54,7 +55,8 @@ public class MechanicalArmorRenderer implements IItemRenderer {
         int coreTier = 0;
 
         if (item.hasTagCompound()) {
-            coreTier = item.getTagCompound().getInteger("core");
+            coreTier = item.getTagCompound()
+                .getInteger("core");
         }
 
         GL11.glEnable(GL11.GL_BLEND);
