@@ -273,6 +273,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     // TODO: Re-implement using validCoversMask, if that makes sense.
+    @Override
     public boolean hasCoverAtSide(ForgeDirection side) {
         return getCoverAtSide(side).isValid();
     }
@@ -436,7 +437,11 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             final Cover cover = getCoverAtSide(side);
             if (cover.needsUpdate()) {
-                NW.sendPacketToAllPlayersInRange(worldObj, new GTPacketSendCoverData(cover, this), xCoord, zCoord);
+                NW.sendPacketToAllPlayersInRange(
+                    worldObj,
+                    new GTPacketSendCoverData(cover, this, side),
+                    xCoord,
+                    zCoord);
                 cover.setNeedsUpdate(false);
             }
         }
