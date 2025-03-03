@@ -952,14 +952,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public void openInventory() {
-        if (canAccessData()) mMetaTileEntity.onOpenGUI();
-    }
+    public void openInventory() {}
 
     @Override
-    public void closeInventory() {
-        if (canAccessData()) mMetaTileEntity.onCloseGUI();
-    }
+    public void closeInventory() {}
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer aPlayer) {
