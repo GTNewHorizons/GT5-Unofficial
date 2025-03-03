@@ -3,6 +3,8 @@ package gregtech.common.items;
 import bartworks.MainMod;
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.factory.GuiFactories;
@@ -14,6 +16,8 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.ScrollWidget;
+import com.cleanroommc.modularui.widget.Widget;
+import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
 import com.cleanroommc.modularui.widgets.*;
 import com.cleanroommc.modularui.widgets.layout.Column;
@@ -28,6 +32,7 @@ import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase.CoverDa
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gtPlusPlus.core.handler.PacketHandler;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -35,13 +40,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
@@ -51,6 +56,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
     private static final Map<String, Map<Integer, Map<CoverData, String>>> advWirelessLabels = new HashMap<>();
     private final ItemStackHandler stackHandler = new ItemStackHandler(1);
     private String uuid;
+    private String filter = "";
 
     public ItemSniffer(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
@@ -69,13 +75,9 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
         if (!world.isRemote) {
             this.uuid = String.valueOf(player.getUniqueID());
-
-            //this.stack = stack;
+            this.filter = "";
             loadFromNBT(stack.getTagCompound());
             GuiFactories.item().open(player);
-//            NBTTagCompound tag = serializeMapToNBT(new NBTTagCompound(), advWirelessLabels);
-//            System.out.println(tag);
-//            stack.setTagCompound(tag);
 
         }
         return super.onItemRightClick(stack,world,player);
@@ -148,6 +150,39 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
         }
         System.out.println(tag);
     }
+//        @Override
+//    public ModularPanel buildUI(GuiData guiData, PanelSyncManager guiSyncManager) {
+//
+//            List<String> a = IntStream.range(0,10).mapToObj(i -> "Option" + (i+1)).collect(Collectors.toList());
+//            final Map<String, SortableListWidget.Item<String>> items = new Object2ObjectOpenHashMap<>();
+//            for (String line : a) {
+//                items.put(line, new SortableListWidget.Item<>(line).child(item -> new Row()
+//                    .child(new Widget<>()
+//                        .addTooltipLine(line)
+//                        .background(GuiTextures.BUTTON_CLEAN)
+//                        .overlay(IKey.str(line))
+//                        .expanded().heightRel(1f))
+//                    .child(new ButtonWidget<>()
+//                        .onMousePressed(button -> {
+//                            return true;})
+//                        .overlay(GuiTextures.CROSS_TINY.asIcon().size(10))
+//                        .width(10).heightRel(1f))));
+//            }
+//            SortableListWidget<String> sortableListWidget = new SortableListWidget<String>()
+//                .children(a, items::get)
+//                .debugName("sortable list");
+//            ModularPanel panel = ModularPanel.defaultPanel("redstone_sniffer");
+//            panel.flex()
+//                .sizeRel(0.5f, 0.75f)
+//                .align(Alignment.Center);
+//            panel.child(new Column()
+//                .sizeRel(1)
+//                .child(sortableListWidget)
+//            );
+//            return panel;
+//        }
+
+
     @Override
     public ModularPanel buildUI(GuiData guiData, PanelSyncManager guiSyncManager) {
         PagedWidget.Controller controller = new PagedWidget.Controller();
@@ -158,7 +193,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
         ModularPanel panel = ModularPanel.defaultPanel("redstone_sniffer");
         panel.flex()
-                .sizeRel(0.5f, 0.5f)
+                .sizeRel(0.5f, 0.75f)
                 .align(Alignment.Center);
 
         PagedWidget data = new PagedWidget();
@@ -187,15 +222,16 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                 .child(new TextWidget(isPrivate ? "Yes" : "No").widthRel(1.0f/3.0f).alignment(Alignment.Center))
                 .child(new TextFieldWidget()
                     .align(Alignment.CenterRight)
-                    .sizeRel(1.0f/3.25f, 1)
-                    .value(SyncHandlers.string(() -> regularWirelessLabels.getOrDefault(freq, "Description"),
+                    .sizeRel(1.0f/3.25f, 0.5f)
+                    .value(SyncHandlers.string(
+                        () -> regularWirelessLabels.getOrDefault(freq, "Description"),
                         label -> {
-                        regularWirelessLabels.put(freq, label);
-                        if(!guiSyncManager.isClient()){
-                            NBTTagCompound tag = serializeRegularToNBT(guiSyncManager.getPlayer().getHeldItem().getTagCompound());
-                            System.out.println(tag);
-                            guiSyncManager.getPlayer().getHeldItem().setTagCompound(tag);
-                        }
+                            regularWirelessLabels.put(freq, label);
+                            if(!guiSyncManager.isClient()){
+                                NBTTagCompound tag = serializeRegularToNBT(guiSyncManager.getPlayer().getHeldItem().getTagCompound());
+                                System.out.println(tag);
+                                guiSyncManager.getPlayer().getHeldItem().setTagCompound(tag);
+                            }
                         }))
                     ));
             i.getAndIncrement();
@@ -223,7 +259,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
         int advFreqSize = publicFreqs.size() + privateFreqs.size();
         ScrollWidget advWirelessPage = new ScrollWidget(new VerticalScrollData());
-        advWirelessPage.sizeRel(1, 0.9f);
+        advWirelessPage.sizeRel(1, 0.8f);
         advWirelessPage.getScrollArea().getScrollY().setScrollSize(35*(advFreqSize+1));
 
         i.set(0);
@@ -232,6 +268,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
         ParentWidget advWireless = new ParentWidget();
         advWireless.sizeRel(1);
+
         advWireless.child(new Column()
             .child(new Row()
                 .margin(5)
@@ -240,13 +277,11 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                 .child(new TextWidget("Frequency").widthRel(0.2f).alignment(Alignment.Center))
                 .child(new TextWidget("Coords").widthRel(0.25f).alignment(Alignment.Center))
                 .child(new TextWidget("Label").widthRel(0.2f).alignment(Alignment.Center))
-                .child(new TextWidget("Action?").widthRel(0.15f).alignment(Alignment.Center))
+                .child(new TextWidget("Action").widthRel(0.15f).alignment(Alignment.Center))
             )
             .child(advWirelessPage)
         );
         data.addPage(advWireless);
-
-
 
         panel.child(new Column()
             .child(new Row()
@@ -260,10 +295,22 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                     .widthRel(0.5f)
                     .align(Alignment.CenterRight)
                     .overlay(IKey.dynamic(() -> "Advanced Wireless"))))
+                .child(new Row()
+                    .heightRel(0.1f)
+                    .child(new TextWidget("Filter frequency: ")
+                        .widthRel(0.25f)
+                        .alignment(Alignment.Center)
+                    )
+                    .child(new TextFieldWidget()
+                        .sizeRel(0.25f, 0.5f)
+                        .value(SyncHandlers.string(() -> this.filter, filter -> {
+                            this.filter = filter;
+                        }))
+
+                    )
+                )
             .child(data)
             .margin(10));
-        System.out.println(wirelessPage.getChildren().size());
-
         return panel;
     }
 
@@ -273,16 +320,26 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
             frequencyEntry.getValue().forEach((cover,useless) ->{
                 int freq = frequencyEntry.getKey();
                 widget.child(new Row()
+                        .setEnabledIf(w -> {
+                            try{
+                                if(Integer.parseInt(this.filter) != freq){
+                                    return false;
+                                }
+                            } catch(NumberFormatException ignored){
+
+                            }
+                            return true;
+                        })
                     .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
                     .sizeRel(1f,0.2f)
-                    .pos(0,i.get()*35)
+                    .pos(0, i.get()*35)
                     .child(new TextWidget(owner.equals("Public") ? "Public" : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(owner)))
                         .widthRel(0.2f)
                         .alignment(Alignment.Center))
                     .child(new TextWidget(String.valueOf(freq)).widthRel(0.2f).alignment(Alignment.Center))
                     .child(new TextWidget(cover.getInfo()).widthRel(0.25f).alignment(Alignment.Center))
                     .child(new TextFieldWidget()
-                        .sizeRel(0.2f, 1)
+                        .sizeRel(0.2f, 0.5f)
                         .value(SyncHandlers.string(() -> {
                             Map<CoverData, String> coversOnFrequency = getCoversOnFrequency(owner, freq);
                             return coversOnFrequency.getOrDefault(cover, "Description");
@@ -292,7 +349,6 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                                 Map<CoverData, String> covers = frequencies.computeIfAbsent(freq, k -> new HashMap<>());
                                 covers.put(cover, label);
                                 NBTTagCompound tag = serializeAdvancedToNBT(new NBTTagCompound(), advWirelessLabels);
-                                System.out.println(tag);
                                 guiSyncManager.getPlayer().getHeldItem().setTagCompound(tag);
                             }
 
@@ -301,10 +357,11 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                     .child(new ButtonWidget<>()
                         .widthRel(0.12f)
                         .marginLeft(5)
-                        .overlay(IKey.str("Teleport"))
+                        .overlay(IKey.str("Debug"))
                         .onMousePressed(mouseButton -> {
-                            LOGGER.debug("Teleporting");
+                            LOGGER.debug("Debugging on cover");
                             GTValues.NW.sendToServer(new PacketTeleportPlayer(cover.dim, cover.x, cover.y, cover.z));
+                            widget.getPanel().closeIfOpen(false);
                             return true;
                         })
                     )
@@ -313,5 +370,6 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
             });
         });
     }
+
 
 }
