@@ -2042,6 +2042,9 @@ GTPP.tooltip.block.mining_level=Mining Level: %d
 GTPP.tooltip.block.contains=Contains:
 GTPP.tooltip.meta_special.quantum_stability=Provides quantum stability
 GTPP.tooltip.meta_special.quantum_modulation=Provides quantum modulation
+GTPP.tooltip.meta_food.unless_starving=I wouldn't eat this unless I was starving
+GTPP.tooltip.meta_food.better_cooked=Doesn't look any better cooked
+GTPP.tooltip.meta_food.warm_touch=Warm to the touch
 
 # GTPP structure hints
 GTPP.tooltip.structure.anvil=Anvil
@@ -2081,6 +2084,9 @@ GT5U.tooltip.fluid.temperature=Temperature: %s K
 GT5U.tooltip.fluid.stat=State: %s
 GT5U.tooltip.fluid.stat.gas=Gas
 GT5U.tooltip.fluid.stat.liquid=Liquid
+
+GT5U.tooltip.comb.ban_forestry=Forestry can't process it
+GT5U.tooltip.mega_apiary.only_producer=Will only be produced in mega Apiary
 
 # Achievements
 
