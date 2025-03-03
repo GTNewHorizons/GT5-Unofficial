@@ -52,6 +52,7 @@ import org.jetbrains.annotations.TestOnly;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -111,6 +112,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.common.config.MachineStats;
+import gregtech.common.data.GTCoilTracker;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -126,6 +128,7 @@ import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -178,6 +181,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public ArrayList<MTEHatchMuffler> mMufflerHatches = new ArrayList<>();
     public ArrayList<MTEHatchEnergy> mEnergyHatches = new ArrayList<>();
     public ArrayList<MTEHatchMaintenance> mMaintenanceHatches = new ArrayList<>();
+
+    /**
+     * The list of coils in this multi's structure.
+     * Use {@link gregtech.api.util.GTStructureUtility#activeCoils(IStructureElement)} to add them automatically.
+     */
+    public LongArrayList mCoils = new LongArrayList();
+    private GTCoilTracker.MultiCoilLease coilLease = null;
+
     protected List<MTEHatch> mExoticEnergyHatches = new ArrayList<>();
     protected final ProcessingLogic processingLogic;
     @SideOnly(Side.CLIENT)
@@ -468,6 +479,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mMaintenanceHatches.clear();
         mDualInputHatches.clear();
         mSmartInputHatches.clear();
+
+        mCoils.clear();
+        if (coilLease != null) {
+            GTCoilTracker.deactivate(coilLease);
+            coilLease = null;
+        }
     }
 
     public boolean checkStructure(boolean aForceReset) {
@@ -551,6 +568,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         this.errorDisplayID = errorID;
     }
 
+    private boolean wereCoilsActive = false;
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
@@ -586,9 +605,20 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     | (mSolderingTool ? 0 : 16)
                     | (mCrowbar ? 0 : 32)
                     | (mMachine ? 0 : 64));
+
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
-            boolean active = aBaseMetaTileEntity.isActive() && mPollution > 0;
-            setMufflers(active);
+            setMufflers(aBaseMetaTileEntity.isActive() && mPollution > 0);
+
+            boolean isActive = mMaxProgresstime > 0;
+
+            if ((!mMachine || !isActive) && coilLease != null) {
+                GTCoilTracker.deactivate(coilLease);
+                coilLease = null;
+            }
+
+            if (mMachine && !mCoils.isEmpty() && isActive && coilLease == null) {
+                coilLease = GTCoilTracker.activate(this, mCoils);
+            }
         } else {
             if (!aBaseMetaTileEntity.hasMufflerUpgrade()) {
                 doActivitySound(getActivitySoundLoop());
@@ -2290,6 +2320,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         super.onRemoval();
         // Deactivate mufflers
         setMufflers(false);
+
+        if (coilLease != null) {
+            GTCoilTracker.deactivate(coilLease);
+            coilLease = null;
+        }
     }
 
     public List<MTEHatch> getExoticEnergyHatches() {

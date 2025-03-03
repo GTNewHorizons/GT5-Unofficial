@@ -37,6 +37,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
@@ -56,6 +57,7 @@ import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.common.blocks.BlockCasings5;
 import gregtech.common.blocks.BlockCyclotronCoils;
@@ -483,6 +485,30 @@ public class GTStructureUtility {
         }, aHeatingCoilGetter);
     }
 
+    public static <T extends MTEMultiBlockBase> IStructureElement<T> activeCoils(IStructureElement<T> element) {
+        return new IStructureElement<>() {
+
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                if (!element.check(t, world, x, y, z)) return false;
+
+                t.mCoils.add(CoordinatePacker.pack(x, y, z));
+
+                return true;
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                return element.spawnHint(t, world, x, y, z, trigger);
+            }
+
+            @Override
+            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                return element.placeBlock(t, world, x, y, z, trigger);
+            }
+        };
+    }
+
     /**
      * Heating coil structure element.
      *
@@ -501,9 +527,12 @@ public class GTStructureUtility {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
-                if (!(block instanceof IHeatingCoil)) return false;
-                HeatingCoilLevel existingLevel = aHeatingCoilGetter.apply(t),
-                    newLevel = ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z));
+
+                if (!(block instanceof IHeatingCoil coil)) return false;
+
+                HeatingCoilLevel existingLevel = aHeatingCoilGetter.apply(t);
+                HeatingCoilLevel newLevel = coil.getCoilHeat(world.getBlockMetadata(x, y, z));
+
                 if (existingLevel == null || existingLevel == HeatingCoilLevel.None) {
                     return aHeatingCoilSetter.test(t, newLevel);
                 } else {
