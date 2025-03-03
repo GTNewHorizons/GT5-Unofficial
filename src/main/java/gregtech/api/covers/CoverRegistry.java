@@ -16,7 +16,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverDecorative;
 import gregtech.common.covers.CoverNone;
@@ -59,8 +58,8 @@ public class CoverRegistry {
         registerCover(stack, cover, constructor, DEFAULT_COVER_PLACER);
     }
 
-    public static <T extends ISerializableObject> void registerCover(@NotNull ItemStack stack, ITexture cover,
-        @NotNull CoverFactory constructor, @NotNull CoverPlacer factory) {
+    public static void registerCover(@NotNull ItemStack stack, ITexture cover, @NotNull CoverFactory constructor,
+        @NotNull CoverPlacer factory) {
         if (!coverTextures.containsKey(new GTItemStack(stack))) {
             coverTextures.put(
                 new GTItemStack(stack),
