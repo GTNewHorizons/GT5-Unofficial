@@ -32,6 +32,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -124,7 +125,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean debugInfo) {
-        tooltip.add(EnumChatFormatting.DARK_RED + "Forestry can't process it");
+        tooltip.add(EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.tooltip.comb.ban_forestry"));
     }
 
     @Override
