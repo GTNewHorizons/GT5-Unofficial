@@ -15,6 +15,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
