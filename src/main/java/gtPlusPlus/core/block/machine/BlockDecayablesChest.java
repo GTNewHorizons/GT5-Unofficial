@@ -13,10 +13,10 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.GuiFactories;
 
@@ -29,9 +29,9 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 import gtPlusPlus.core.util.minecraft.InventoryUtils;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockDecayablesChest extends BlockContainer implements ITileTooltip {
+
     private static final ForgeDirection[] validRotationAxes = new ForgeDirection[] { UP, DOWN };
 
     /**
@@ -144,8 +144,7 @@ public class BlockDecayablesChest extends BlockContainer implements ITileTooltip
             chestFacing = 4;
         }
         TileEntity te = world.getTileEntity(x, y, z);
-        if (te instanceof TileEntityDecayablesChest) {
-            TileEntityDecayablesChest tileEntityChest = (TileEntityDecayablesChest) te;
+        if (te instanceof TileEntityDecayablesChest tileEntityChest) {
             tileEntityChest.setFacing(chestFacing);
             world.markBlockForUpdate(x, y, z);
         }
@@ -160,8 +159,6 @@ public class BlockDecayablesChest extends BlockContainer implements ITileTooltip
         return false;
     }
 
-
-
     @Override
     public ForgeDirection[] getValidRotations(World worldObj, int x, int y, int z) {
         return validRotationAxes;
@@ -174,8 +171,7 @@ public class BlockDecayablesChest extends BlockContainer implements ITileTooltip
         }
         if (axis == UP || axis == DOWN) {
             TileEntity tileEntity = worldObj.getTileEntity(x, y, z);
-            if (tileEntity instanceof TileEntityDecayablesChest) {
-                TileEntityDecayablesChest tileEntityChest = (TileEntityDecayablesChest) tileEntity;
+            if (tileEntity instanceof TileEntityDecayablesChest tileEntityChest) {
                 tileEntityChest.rotateAround(axis);
             }
             return true;

@@ -4,13 +4,13 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-import gtPlusPlus.core.block.ModBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -26,12 +26,12 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.InventoryDecayablesChest;
 import gtPlusPlus.core.item.materials.DustDecayable;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityDecayablesChest extends TileEntity implements ISidedInventory, IGuiHolder {
+public class TileEntityDecayablesChest extends TileEntity implements ISidedInventory, IGuiHolder<GuiData> {
 
     private final InventoryDecayablesChest inventoryContents;
 
@@ -63,7 +63,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
         // Try do chesty stuff
         try {
             this.updateEntityChest();
-        } catch (Throwable t) {
+        } catch (Throwable ignored) {
 
         }
 
@@ -87,7 +87,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
                 }
                 updateSlots();
             }
-        } catch (final Throwable t) {}
+        } catch (final Throwable ignored) {}
     }
 
     public void tryUpdateDecayable(final DustDecayable b, ItemStack iStack, final World world) {
@@ -424,7 +424,10 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
     }
 
     public void rotateAround(ForgeDirection axis) {
-        setFacing((byte) ForgeDirection.getOrientation(facing).getRotation(axis).ordinal());
+        setFacing(
+            (byte) ForgeDirection.getOrientation(facing)
+                .getRotation(axis)
+                .ordinal());
         worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, ModBlocks.blockDecayablesChest, 2, getFacing());
     }
 }

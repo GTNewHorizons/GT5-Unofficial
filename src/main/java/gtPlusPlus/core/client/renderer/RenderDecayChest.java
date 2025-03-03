@@ -34,8 +34,8 @@ public class RenderDecayChest extends TileEntitySpecialRenderer {
         Logger.INFO("Registered Lead Lined Chest Renderer.");
     }
 
-    public void renderTileEntityAt(TileEntityDecayablesChest tile, double xPos, double yPos,
-        double zPos, float partialTick) {
+    public void renderTileEntityAt(TileEntityDecayablesChest tile, double xPos, double yPos, double zPos,
+        float partialTick) {
         int facing = 3;
         if (tile.hasWorldObj()) {
             facing = tile.getFacing();
@@ -53,8 +53,6 @@ public class RenderDecayChest extends TileEntitySpecialRenderer {
         int k = 0;
         if (facing == 2) {
             k = 180;
-        } else if (facing == 3) {
-            k = 0;
         } else if (facing == 4) {
             k = 90;
         } else if (facing == 5) {
