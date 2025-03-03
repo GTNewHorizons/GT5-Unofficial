@@ -128,7 +128,6 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
 
     @Override
     public void writeToByteBuf(ByteBuf byteBuf) {
-        super.writeToByteBuf(byteBuf);
         coverData.writeToByteBuf(byteBuf);
         byteBuf.writeInt(tickRateAddition);
     }

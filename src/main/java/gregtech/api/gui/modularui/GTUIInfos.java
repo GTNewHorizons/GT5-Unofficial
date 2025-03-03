@@ -105,7 +105,7 @@ public class GTUIInfos {
         if (tileEntity.isClientSide()) return;
 
         Cover cover = tileEntity.getCoverAtSide(side);
-        GTValues.NW.sendToPlayer(new GTPacketSendCoverData(cover, tileEntity), (EntityPlayerMP) player);
+        GTValues.NW.sendToPlayer(new GTPacketSendCoverData(cover, tileEntity, side), (EntityPlayerMP) player);
 
         coverUI.get(side)
             .open(

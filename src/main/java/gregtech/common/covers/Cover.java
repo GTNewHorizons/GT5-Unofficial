@@ -56,9 +56,7 @@ public abstract class Cover {
 
     public abstract NBTTagCompound writeToNBT(NBTTagCompound aNBT);
 
-    public void writeToByteBuf(ByteBuf aOut) {
-        aOut.writeByte(coverSide.ordinal());
-    }
+    public abstract void writeToByteBuf(ByteBuf aOut);
 
     /**
      * This cover id should only be used to get the {@link CoverRegistration} from the {@link CoverRegistry}, or to

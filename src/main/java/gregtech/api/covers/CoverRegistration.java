@@ -36,8 +36,8 @@ public class CoverRegistration {
         return buildCoverFromContext(side, coverable, nbt);
     }
 
-    public Cover buildCover(ICoverable coverable, @NotNull ByteArrayDataInput data) {
-        return buildCoverFromContext(ForgeDirection.getOrientation(data.readByte()), coverable, data);
+    public Cover buildCover(ForgeDirection side, ICoverable coverable, @NotNull ByteArrayDataInput data) {
+        return buildCoverFromContext(side, coverable, data);
     }
 
     public Cover buildCover(@NotNull ForgeDirection side, ICoverable coverable, @NotNull ItemStack coverItem) {

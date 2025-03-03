@@ -2,6 +2,7 @@ package gregtech.api.net;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 
@@ -19,6 +20,7 @@ public class GTPacketSendCoverData extends GTPacket {
     protected int mX;
     protected short mY;
     protected int mZ;
+    protected ForgeDirection side;
     protected int coverID;
 
     protected Cover cover;
@@ -27,12 +29,14 @@ public class GTPacketSendCoverData extends GTPacket {
         super();
     }
 
-    public GTPacketSendCoverData(Cover cover, ICoverable tile) {
+    public GTPacketSendCoverData(Cover cover, ICoverable tile, ForgeDirection side) {
         super();
         this.mX = tile.getXCoord();
         this.mY = tile.getYCoord();
         this.mZ = tile.getZCoord();
         this.coverID = cover.getCoverID();
+
+        this.side = side;
 
         this.cover = cover;
     }
@@ -48,6 +52,7 @@ public class GTPacketSendCoverData extends GTPacket {
         aOut.writeShort(mY);
         aOut.writeInt(mZ);
         aOut.writeInt(coverID);
+        aOut.writeByte(side.ordinal());
 
         cover.writeToByteBuf(aOut);
     }
@@ -62,8 +67,9 @@ public class GTPacketSendCoverData extends GTPacket {
         final TileEntity tile = world.getTileEntity(data.readInt(), data.readShort(), data.readInt());
         if (tile instanceof CoverableTileEntity coverable && !coverable.isDead()) {
             int coverId = data.readInt();
+            ForgeDirection side = ForgeDirection.getOrientation(data.readByte());
             Cover cover = CoverRegistry.getRegistration(coverId)
-                .buildCover(coverable, data);
+                .buildCover(side, coverable, data);
             coverable.updateAttachedCover(cover);
         }
     }
