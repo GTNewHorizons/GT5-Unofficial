@@ -33,7 +33,7 @@ public class CoverRegistry {
      */
     private static final Map<GTItemStack, CoverRegistration> coverFactories = new ConcurrentHashMap<>();
     private static final CoverRegistration coverNone = new CoverRegistration(
-        0,
+        null,
         CoverNone::new,
         new PrimitiveCoverPlacer());
     public static final Cover NO_COVER = coverNone.buildCover(ForgeDirection.UNKNOWN, null);
@@ -65,8 +65,7 @@ public class CoverRegistry {
                 new GTItemStack(stack),
                 cover == null || !cover.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0] : cover);
         }
-        coverFactories
-            .put(new GTItemStack(stack), new CoverRegistration(GTUtility.stackToInt(stack), constructor, factory));
+        coverFactories.put(new GTItemStack(stack), new CoverRegistration(stack, constructor, factory));
     }
 
     @NotNull

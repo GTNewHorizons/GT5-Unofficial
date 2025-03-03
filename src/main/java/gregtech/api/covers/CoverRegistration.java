@@ -9,17 +9,19 @@ import org.jetbrains.annotations.NotNull;
 import com.google.common.io.ByteArrayDataInput;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.Cover;
 
 public class CoverRegistration {
 
-    private final int coverId;
+    // Keeping an ItemStack reference so it remains valid through world load item remaps.
+    private final ItemStack coverIdStack;
     private final CoverFactory factory;
     private final CoverPlacer coverPlacer;
 
-    public CoverRegistration(int coverId, CoverFactory factory, CoverPlacer coverPlacer) {
-        this.coverId = coverId;
+    public CoverRegistration(ItemStack coverIdStack, CoverFactory factory, CoverPlacer coverPlacer) {
+        this.coverIdStack = coverIdStack;
         this.factory = factory;
         this.coverPlacer = coverPlacer;
     }
@@ -45,7 +47,7 @@ public class CoverRegistration {
     }
 
     private Cover buildCoverFromContext(ForgeDirection side, ICoverable coverable, Object initializer) {
-        return factory.buildCover(new CoverContext(coverId, side, coverable, initializer));
+        return factory.buildCover(new CoverContext(GTUtility.stackToInt(coverIdStack), side, coverable, initializer));
     }
 
     public CoverPlacer getCoverPlacer() {
