@@ -3,6 +3,9 @@ package gregtech.common.items;
 import bartworks.MainMod;
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.layout.ILayoutWidget;
+import com.cleanroommc.modularui.api.widget.IGuiElement;
+import com.cleanroommc.modularui.api.widget.IParentWidget;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.Rectangle;
@@ -19,8 +22,11 @@ import com.cleanroommc.modularui.widget.ScrollWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
+import com.cleanroommc.modularui.widget.sizer.Unit;
 import com.cleanroommc.modularui.widgets.*;
 import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import cpw.mods.fml.common.FMLLog;
@@ -185,7 +191,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
     @Override
     public ModularPanel buildUI(GuiData guiData, PanelSyncManager guiSyncManager) {
-        PagedWidget.Controller controller = new PagedWidget.Controller();
+        // PagedWidget.Controller controller = new PagedWidget.Controller();
 
 
 
@@ -196,9 +202,9 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                 .sizeRel(0.5f, 0.75f)
                 .align(Alignment.Center);
 
-        PagedWidget data = new PagedWidget();
-        data.sizeRel(1,0.75f);
-        data.controller(controller);
+//        PagedWidget data = new PagedWidget();
+//        data.sizeRel(1,0.75f);
+//        data.controller(controller);
 
 
 
@@ -249,7 +255,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                 .child(new TextWidget("Label").widthRel(1.0f/3.0f).alignment(Alignment.Center)))
             .child(wirelessPage)
         );
-        data.addPage(regularWireless);
+        //data.addPage(regularWireless);
 
 
 
@@ -266,6 +272,21 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
         processAdvancedFrequencies(publicFreqs, "Public", advWirelessPage, i, guiSyncManager);
         processAdvancedFrequencies(privateFreqs, this.uuid, advWirelessPage, i, guiSyncManager);
 
+        List<List<IWidget>> whatever = Grid.mapToMatrix(1, advFreqSize, (a) -> {
+            String key = "aaaaa"+a;
+            IWidget row = new Row()
+                .child(new TextWidget(key))
+                .expanded()
+                .heightRel(0.2f)
+                .setEnabledIf((w) -> key.contains(this.filter));
+            return row;
+        });
+        Grid grid = new Grid()
+            .matrix(whatever)
+            .scrollable()
+            .sizeRel(1,0.5f);
+        grid.getScrollArea().getScrollY().setScrollSize(35*advFreqSize);
+
         ParentWidget advWireless = new ParentWidget();
         advWireless.sizeRel(1);
 
@@ -281,20 +302,20 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
             )
             .child(advWirelessPage)
         );
-        data.addPage(advWireless);
+        //data.addPage(advWireless);
 
         panel.child(new Column()
-            .child(new Row()
-                .heightRel(0.1f)
-                .margin(10)
-                .child(new PageButton(0, controller)
-                    .widthRel(0.5f)
-                    .align(Alignment.CenterLeft)
-                    .overlay(IKey.dynamic(() -> "Regular Wireless")))
-                .child(new PageButton(1, controller)
-                    .widthRel(0.5f)
-                    .align(Alignment.CenterRight)
-                    .overlay(IKey.dynamic(() -> "Advanced Wireless"))))
+//            .child(new Row()
+//                .heightRel(0.1f)
+//                .margin(10)
+//                .child(new PageButton(0, controller)
+//                    .widthRel(0.5f)
+//                    .align(Alignment.CenterLeft)
+//                    .overlay(IKey.dynamic(() -> "Regular Wireless")))
+//                .child(new PageButton(1, controller)
+//                    .widthRel(0.5f)
+//                    .align(Alignment.CenterRight)
+//                    .overlay(IKey.dynamic(() -> "Advanced Wireless"))))
                 .child(new Row()
                     .heightRel(0.1f)
                     .child(new TextWidget("Filter frequency: ")
@@ -305,17 +326,20 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                         .sizeRel(0.25f, 0.5f)
                         .value(SyncHandlers.string(() -> this.filter, filter -> {
                             this.filter = filter;
+                            WidgetTree.resize(grid);
                         }))
 
                     )
                 )
-            .child(data)
+            //.child(data)
+                .child(grid)
             .margin(10));
         return panel;
     }
 
 
     public void processAdvancedFrequencies(Map<Integer, Map<CoverData, Byte>> frequencyMap, String owner, ScrollWidget widget, AtomicInteger i, PanelSyncManager guiSyncManager){
+
         frequencyMap.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(frequencyEntry ->{
             frequencyEntry.getValue().forEach((cover,useless) ->{
                 int freq = frequencyEntry.getKey();
@@ -332,7 +356,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                         })
                     .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
                     .sizeRel(1f,0.2f)
-                    .pos(0, i.get()*35)
+                    .expanded()
                     .child(new TextWidget(owner.equals("Public") ? "Public" : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(owner)))
                         .widthRel(0.2f)
                         .alignment(Alignment.Center))
@@ -366,7 +390,6 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                         })
                     )
                 );
-                i.getAndIncrement();
             });
         });
     }
