@@ -180,7 +180,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                     }
                 }.setEnabledIf(w -> {
                         try{
-                            if(String.valueOf(displayFreq).equals(this.filter) || this.filter.isEmpty()){
+                            if(displayFreq == Integer.parseInt(this.filter) || this.filter.isEmpty()){
                                 return true;
                             }
                         } catch(NumberFormatException ignored){
@@ -317,7 +317,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                     }
                 }.setEnabledIf(w -> {
                         try{
-                            if(entry.getKey().toString().equals(this.filter) || this.filter.isEmpty()){
+                            if(entry.getKey() == Integer.parseInt(this.filter) || this.filter.isEmpty()){
                                 return true;
                             }
                         } catch(NumberFormatException ignored){
