@@ -643,6 +643,7 @@ GT5U.gui.button.max_parallel=Always use maximum
 GT5U.gui.text.rangedvalue=Range: %s-%s
 GT5U.gui.text.lockedvalue=Locked: %s
 GT5U.gui.text.success=§aProcessing recipe
+GT5U.gui.text.progress=§fProgress: 
 GT5U.gui.text.generating=§aGenerating power
 GT5U.gui.text.no_recipe=§7No valid recipe found
 GT5U.gui.text.item_output_full=§7Not enough item output space
