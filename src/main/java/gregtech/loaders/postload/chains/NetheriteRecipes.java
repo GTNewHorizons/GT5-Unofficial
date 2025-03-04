@@ -1,28 +1,13 @@
 package gregtech.loaders.postload.chains;
 
-import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.ForbiddenMagic;
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
-import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
-import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
-import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
-import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
-import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
-import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
-import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
-import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
-import static gregtech.api.recipe.RecipeMaps.plasmaArcFurnaceRecipes;
-import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
+import static gregtech.api.recipe.RecipeMaps.*;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.*;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 
-import gregtech.api.enums.MaterialsUEVplus;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
@@ -34,7 +19,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import tectech.recipe.TecTechRecipeMaps;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -81,18 +65,36 @@ public class NetheriteRecipes {
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(getModItem(EtFuturumRequiem.ID, "netherite_scrap", 0))
+            .itemInputs(getModItem(EtFuturumRequiem.ID, "ancient_debris", 1))
+            .itemOutputs(getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1))
+            .outputChances(2500)
+            .duration(77 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(hammerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1))
             .fluidInputs(Materials.RichNetherWaste.getFluid(2000))
-            .itemOutputs(ItemList.Netherite_Crystal_Seed.get(1))
-            .outputChances(1000)
+            .itemOutputs(ItemList.Netherite_Scrap_Seed.get(1), getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1))
+            .outputChances(1000, 10000)
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Netherite_Crystal_Seed.get(1))
+            .itemInputs(getModItem(EtFuturumRequiem.ID, "netherite_scrap", 64), ItemList.Heavy_Hellish_Mud.get(64))
+            .fluidInputs(Materials.PoorNetherWaste.getFluid(32000))
+            .itemOutputs(
+                ItemList.Brittle_Netherite_Scrap.get(4),
+                getModItem(EtFuturumRequiem.ID, "netherite_scrap", 64))
+            .duration(45 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(chemicalBathRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Netherite_Scrap_Seed.get(1))
             .fluidInputs(Materials.PoorNetherWaste.getFluid(16000))
-            .itemOutputs(ItemList.Brittle_Netherite_Crystal.get(1), ItemList.Netherite_Crystal_Seed.get(1))
+            .itemOutputs(ItemList.Brittle_Netherite_Scrap.get(1), ItemList.Netherite_Scrap_Seed.get(1))
             .outputChances(5000, 5000)
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -142,7 +144,7 @@ public class NetheriteRecipes {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Brittle_Netherite_Crystal.get(1))
+            .itemInputs(ItemList.Brittle_Netherite_Scrap.get(1))
             .itemOutputs(ItemList.Netherite_Nanoparticles.get(1))
             .duration(180 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -158,45 +160,50 @@ public class NetheriteRecipes {
             .metadata(COIL_HEAT, 7500)
             .addTo(blastFurnaceRecipes);
 
-        //GTValues.RA.stdBuilder() TODO add whenever this has a proper use and recipe thought out
-        //    .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherite, 1))
-        //    .fluidOutputs(Materials.ActivatedNetherite.getFluid(144))
-        //    .duration(400 * SECONDS)
-        //    .eut(TierEU.RECIPE_MAX)
-        //    .metadata(COIL_HEAT, 45700)
-        //    .addTo(TecTechRecipeMaps.godforgeMoltenRecipes);
+        // GTValues.RA.stdBuilder() TODO add whenever this has a proper use and recipe thought out
+        // .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherite, 1))
+        // .fluidOutputs(Materials.ActivatedNetherite.getFluid(144))
+        // .duration(400 * SECONDS)
+        // .eut(TierEU.RECIPE_MAX)
+        // .metadata(COIL_HEAT, 45700)
+        // .addTo(TecTechRecipeMaps.godforgeMoltenRecipes);
 
         NetheriteRecipes.addNetheriteParts();
     }
 
     private static void addNetheriteParts() {
-        addNetheritePartRecipe(OrePrefixes.block, 1,9);
-        addNetheritePartRecipe(OrePrefixes.ingot, 1,1);
-        addNetheritePartRecipe(OrePrefixes.plate, 1,1);
-        addNetheritePartRecipe(OrePrefixes.plateDouble, 1,2);
-        addNetheritePartRecipe(OrePrefixes.plateDense, 1,9);
-        addNetheritePartRecipe(OrePrefixes.stick, 2,1);
-        addNetheritePartRecipe(OrePrefixes.round, 9,1);
-        addNetheritePartRecipe(OrePrefixes.bolt, 8,1);
-        addNetheritePartRecipe(OrePrefixes.screw, 8,1);
-        addNetheritePartRecipe(OrePrefixes.ring, 4,1);
-        addNetheritePartRecipe(OrePrefixes.foil, 8,1);
-        addNetheritePartRecipe(OrePrefixes.itemCasing, 2,1);
-        addNetheritePartRecipe(OrePrefixes.gearGtSmall, 1,1);
-        addNetheritePartRecipe(OrePrefixes.rotor, 1,5);
-        addNetheritePartRecipe(OrePrefixes.stickLong, 1,1);
-        addNetheritePartRecipe(OrePrefixes.gearGt, 1,4);
+        addNetheritePartRecipe(OrePrefixes.ingot, 1, 1);
+        addNetheritePartRecipe(OrePrefixes.plate, 1, 1);
+        addNetheritePartRecipe(OrePrefixes.plateDouble, 1, 2);
+        addNetheritePartRecipe(OrePrefixes.plateDense, 1, 9);
+        addNetheritePartRecipe(OrePrefixes.stick, 2, 1);
+        addNetheritePartRecipe(OrePrefixes.round, 9, 1);
+        addNetheritePartRecipe(OrePrefixes.bolt, 8, 1);
+        addNetheritePartRecipe(OrePrefixes.screw, 8, 1);
+        addNetheritePartRecipe(OrePrefixes.ring, 4, 1);
+        addNetheritePartRecipe(OrePrefixes.foil, 8, 1);
+        addNetheritePartRecipe(OrePrefixes.itemCasing, 2, 1);
+        addNetheritePartRecipe(OrePrefixes.gearGtSmall, 1, 1);
+        addNetheritePartRecipe(OrePrefixes.rotor, 1, 5);
+        addNetheritePartRecipe(OrePrefixes.stickLong, 1, 1);
+        addNetheritePartRecipe(OrePrefixes.gearGt, 1, 4);
+        addNetheritePartRecipe(
+            GTOreDictUnificator.get(OrePrefixes.block, Materials.InfusedGold, 1),
+            getModItem(EtFuturumRequiem.ID, "netherite_block", 1),
+            9);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Netherite, 4), GTUtility.getIntegratedCircuit(4))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite,1))
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Netherite, 4),
+                GTUtility.getIntegratedCircuit(4))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite, 1))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Netherite, 64))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Netherite,1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Netherite, 1))
             .duration(500 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(COMPRESSION_TIER, 1)
@@ -204,12 +211,27 @@ public class NetheriteRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherite, 2))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.InfusedGold,1), ItemList.Netherite_Nanoparticles.get(1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.InfusedGold, 1),
+                ItemList.Netherite_Nanoparticles.get(1))
             .duration(23 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(centrifugeRecipes);
-    }
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Netherite, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherite, 1))
+            .duration(4 * SECONDS + 18 * TICKS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(getModItem(EtFuturumRequiem.ID, "netherite_block", 4))
+            .itemOutputs(getModItem(EtFuturumRequiem.ID, "netherite_stairs", 3))
+            .duration(1 * HOURS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(cutterRecipes);
+    }
 
     private static void addNetheritePartRecipe(OrePrefixes prefix, int multiplier, int inverseMultiplier) {
 
@@ -220,7 +242,20 @@ public class NetheriteRecipes {
             .itemOutputs(GTOreDictUnificator.get(prefix, Materials.Netherite, multiplier))
             .fluidInputs(Materials.Calcium.getPlasma(2L * inverseMultiplier))
             .fluidOutputs(Materials.Calcium.getMolten(2L * inverseMultiplier))
-            .duration(12 * SECONDS)
+            .duration(34 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(plasmaArcFurnaceRecipes);
+
+    }
+
+    private static void addNetheritePartRecipe(ItemStack inputStack, ItemStack outputStack, int inverseMultiplier) {
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(inputStack, ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(inverseMultiplier))
+            .itemOutputs(outputStack)
+            .fluidInputs(Materials.Calcium.getPlasma(2L * inverseMultiplier))
+            .fluidOutputs(Materials.Calcium.getMolten(2L * inverseMultiplier))
+            .duration(34 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(plasmaArcFurnaceRecipes);
 
