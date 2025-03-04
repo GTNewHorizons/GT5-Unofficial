@@ -24,11 +24,6 @@ import gregtech.common.blocks.BlockFrameBox;
 
 public final class LoaderMetaPipeEntities implements Runnable {
 
-    private static final String aTextWire1 = "wire.";
-    private static final String aTextCable1 = "cable.";
-    private static final String aTextWire2 = " Wire";
-    private static final String aTextCable2 = " Cable";
-
     @Override
     public void run() {
         registerFrames();
@@ -77,85 +72,507 @@ public final class LoaderMetaPipeEntities implements Runnable {
     }
 
     private static void registerWiresAndCables() {
-        makeWires(Materials.RedAlloy, 2000, 0L, 1L, 1L, GTValues.V[0], true, false);
+        // ULV
+        WireCableBuilder.builder()
+            .material(Materials.RedAlloy)
+            .startId(2000)
+            .lossCable(0)
+            .lossWire(1)
+            .amperage(1)
+            .voltage(TierEU.ULV)
+            .build();
 
-        makeWires(Materials.Cobalt, 1200, 1L, 2L, 2L, GTValues.V[1], true, false);
-        makeWires(Materials.Lead, 1220, 2L, 4L, 2L, GTValues.V[1], true, false);
-        makeWires(Materials.Tin, 1240, 1L, 2L, 1L, GTValues.V[1], true, false);
-        makeWires(Materials.Zinc, 1260, 1L, 2L, 1L, GTValues.V[1], true, false);
-        makeWires(Materials.SolderingAlloy, 1280, 1L, 2L, 1L, GTValues.V[1], true, false);
+        // LV
+        WireCableBuilder.builder()
+            .material(Materials.Cobalt)
+            .startId(1200)
+            .lossCable(1)
+            .lossWire(2)
+            .amperage(2)
+            .voltage(TierEU.LV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Lead)
+            .startId(1220)
+            .lossCable(2)
+            .lossWire(4)
+            .amperage(2)
+            .voltage(TierEU.LV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Tin)
+            .startId(1240)
+            .lossCable(1)
+            .lossWire(2)
+            .amperage(1)
+            .voltage(TierEU.LV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Zinc)
+            .startId(1260)
+            .lossCable(1)
+            .lossWire(2)
+            .amperage(1)
+            .voltage(TierEU.LV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.SolderingAlloy)
+            .startId(1280)
+            .lossCable(1)
+            .lossWire(2)
+            .amperage(1)
+            .voltage(TierEU.LV)
+            .build();
 
-        makeWires(Materials.Iron, 1300, 3L, 6L, 2L, GTValues.V[2], true, false);
-        makeWires(Materials.Nickel, 1320, 3L, 6L, 3L, GTValues.V[2], true, false);
-        makeWires(Materials.Cupronickel, 1340, 3L, 6L, 4L, GTValues.V[2], true, false);
-        makeWires(Materials.Copper, 1360, 2L, 4L, 1L, GTValues.V[2], true, false);
-        makeWires(Materials.AnnealedCopper, 1380, 1L, 2L, 1L, GTValues.V[2], true, false);
+        // MV
+        WireCableBuilder.builder()
+            .material(Materials.Iron)
+            .startId(1300)
+            .lossCable(3)
+            .lossWire(6)
+            .amperage(2)
+            .voltage(TierEU.MV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Nickel)
+            .startId(1320)
+            .lossCable(3)
+            .lossWire(6)
+            .amperage(3)
+            .voltage(TierEU.MV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Cupronickel)
+            .startId(1340)
+            .lossCable(3)
+            .lossWire(6)
+            .amperage(4)
+            .voltage(TierEU.MV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Copper)
+            .startId(1360)
+            .lossCable(2)
+            .lossWire(4)
+            .amperage(1)
+            .voltage(TierEU.MV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.AnnealedCopper)
+            .startId(1380)
+            .lossCable(1)
+            .lossWire(2)
+            .amperage(1)
+            .voltage(TierEU.MV)
+            .build();
 
-        makeWires(Materials.Kanthal, 1400, 3L, 6L, 5L, GTValues.V[3], true, false);
-        makeWires(Materials.Gold, 1420, 2L, 4L, 3L, GTValues.V[3], true, false);
-        makeWires(Materials.Electrum, 1440, 1L, 2L, 2L, GTValues.V[3], true, false);
-        makeWires(Materials.Silver, 1460, 1L, 2L, 1L, GTValues.V[3], true, false);
-        makeWires(Materials.BlueAlloy, 1480, 1L, 2L, 2L, GTValues.V[3], true, false);
+        // HV
+        WireCableBuilder.builder()
+            .material(Materials.Kanthal)
+            .startId(1400)
+            .lossCable(3)
+            .lossWire(6)
+            .amperage(5)
+            .voltage(TierEU.HV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Gold)
+            .startId(1420)
+            .lossCable(2)
+            .lossWire(4)
+            .amperage(3)
+            .voltage(TierEU.HV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Electrum)
+            .startId(1440)
+            .lossCable(1)
+            .lossWire(2)
+            .amperage(2)
+            .voltage(TierEU.HV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Silver)
+            .startId(1460)
+            .lossCable(1)
+            .lossWire(2)
+            .amperage(1)
+            .voltage(TierEU.HV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.BlueAlloy)
+            .startId(1480)
+            .lossCable(1)
+            .lossWire(2)
+            .amperage(2)
+            .voltage(TierEU.HV)
+            .build();
 
-        makeWires(Materials.Nichrome, 1500, 4L, 8L, 6L, GTValues.V[4], true, false);
-        makeWires(Materials.Steel, 1520, 3L, 6L, 2L, GTValues.V[4], true, false);
-        makeWires(Materials.BlackSteel, 1540, 1L, 2L, 4L, GTValues.V[4], true, false);
-        makeWires(Materials.Titanium, 1560, 2L, 4L, 4L, GTValues.V[4], true, false);
-        makeWires(Materials.Aluminium, 1580, 1L, 2L, 1L, GTValues.V[4], true, false);
-        makeWires(Materials.TPV, 1840, 1L, 2L, 6L, GTValues.V[4], true, false);
+        // EV
+        WireCableBuilder.builder()
+            .material(Materials.Nichrome)
+            .startId(1500)
+            .lossCable(4)
+            .lossWire(8)
+            .amperage(6)
+            .voltage(TierEU.EV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Steel)
+            .startId(1520)
+            .lossCable(3)
+            .lossWire(6)
+            .amperage(2)
+            .voltage(TierEU.EV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.BlackSteel)
+            .startId(1540)
+            .lossCable(1)
+            .lossWire(2)
+            .amperage(4)
+            .voltage(TierEU.EV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Titanium)
+            .startId(1560)
+            .lossCable(2)
+            .lossWire(4)
+            .amperage(4)
+            .voltage(TierEU.EV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Aluminium)
+            .startId(1580)
+            .lossCable(1)
+            .lossWire(2)
+            .amperage(1)
+            .voltage(TierEU.EV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.TPV)
+            .startId(1840)
+            .lossCable(1)
+            .lossWire(2)
+            .amperage(6)
+            .voltage(TierEU.EV)
+            .build();
 
-        makeWires(Materials.Graphene, 1600, 1L, 2L, 1L, GTValues.V[5], false, true);
-        makeWires(Materials.Platinum, 1640, 1L, 2L, 2L, GTValues.V[5], true, false);
-        makeWires(Materials.TungstenSteel, 1660, 4L, 8L, 4L, GTValues.V[5], true, false);
-        makeWires(Materials.Tungsten, 1680, 2L, 4L, 6L, GTValues.V[5], true, false);
+        // IV
+        WireCableBuilder.builder()
+            .material(Materials.Graphene)
+            .startId(1600)
+            .lossWire(2)
+            .amperage(1)
+            .voltage(TierEU.IV)
+            .disableCable()
+            .disableElectricDamage()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Platinum)
+            .startId(1640)
+            .lossCable(1)
+            .lossWire(2)
+            .amperage(2)
+            .voltage(TierEU.IV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.TungstenSteel)
+            .startId(1660)
+            .lossCable(4)
+            .lossWire(8)
+            .amperage(4)
+            .voltage(TierEU.IV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Tungsten)
+            .startId(1680)
+            .lossCable(2)
+            .lossWire(4)
+            .amperage(6)
+            .voltage(TierEU.IV)
+            .build();
 
-        makeWires(Materials.Osmium, 1620, 2L, 4L, 4L, GTValues.V[6], true, false);
-        makeWires(Materials.HSSG, 1700, 2L, 4L, 4L, GTValues.V[6], true, false);
-        makeWires(Materials.NiobiumTitanium, 1720, 2L, 4L, 4L, GTValues.V[6], true, false);
-        makeWires(Materials.VanadiumGallium, 1740, 4L, 8L, 4L, GTValues.V[6], true, false);
-        makeWires(Materials.YttriumBariumCuprate, 1760, 3L, 6L, 6L, GTValues.V[6], true, false);
+        // LuV
+        WireCableBuilder.builder()
+            .material(Materials.Osmium)
+            .startId(1620)
+            .lossCable(2)
+            .lossWire(4)
+            .amperage(4)
+            .voltage(TierEU.LuV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.HSSG)
+            .startId(1700)
+            .lossCable(2)
+            .lossWire(4)
+            .amperage(4)
+            .voltage(TierEU.LuV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.NiobiumTitanium)
+            .startId(1720)
+            .lossCable(2)
+            .lossWire(4)
+            .amperage(4)
+            .voltage(TierEU.LuV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.VanadiumGallium)
+            .startId(1740)
+            .lossCable(4)
+            .lossWire(8)
+            .amperage(4)
+            .voltage(TierEU.LuV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.YttriumBariumCuprate)
+            .startId(1760)
+            .lossCable(3)
+            .lossWire(6)
+            .amperage(6)
+            .voltage(TierEU.LuV)
+            .build();
 
-        makeWires(Materials.Naquadah, 1780, 2L, 4L, 2L, GTValues.V[7], true, false);
+        // ZPM
+        WireCableBuilder.builder()
+            .material(Materials.Naquadah)
+            .startId(1780)
+            .lossCable(2)
+            .lossWire(4)
+            .amperage(2)
+            .voltage(TierEU.ZPM)
+            .build();
 
-        makeWires(Materials.NaquadahAlloy, 1800, 4L, 8L, 6L, GTValues.V[8], true, false);
-        makeWires(Materials.Duranium, 1820, 2L, 4L, 4L, GTValues.V[8], true, false);
+        // UV
+        WireCableBuilder.builder()
+            .material(Materials.NaquadahAlloy)
+            .startId(1800)
+            .lossCable(4)
+            .lossWire(8)
+            .amperage(6)
+            .voltage(TierEU.UV)
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Duranium)
+            .startId(1820)
+            .lossCable(2)
+            .lossWire(4)
+            .amperage(4)
+            .voltage(TierEU.UV)
+            .build();
 
-        // Superconductor base.
-        makeWires(Materials.Pentacadmiummagnesiumhexaoxid, 2200, 1L, 2L, 1L, GTValues.V[2], false, false);
-        makeWires(Materials.Titaniumonabariumdecacoppereikosaoxid, 2220, 1L, 8L, 2L, GTValues.V[3], false, false);
-        makeWires(Materials.Uraniumtriplatinid, 2240, 1L, 16L, 3L, GTValues.V[4], false, false);
-        makeWires(Materials.Vanadiumtriindinid, 2260, 1L, 64L, 4L, GTValues.V[5], false, false);
-        makeWires(
-            Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
-            2280,
-            2L,
-            256L,
-            6L,
-            GTValues.V[6],
-            false,
-            false);
-        makeWires(Materials.Tetranaquadahdiindiumhexaplatiumosminid, 2300, 2L, 1024L, 8L, GTValues.V[7], false, false);
-        makeWires(Materials.Longasssuperconductornameforuvwire, 2500, 2L, 4096L, 12L, GTValues.V[8], false, false);
-        makeWires(Materials.Longasssuperconductornameforuhvwire, 2520, 2L, 16384L, 16L, GTValues.V[9], false, false);
-        makeWires(Materials.SuperconductorUEVBase, 2032, 2L, 65536L, 24L, GTValues.V[10], false, false);
-        makeWires(Materials.SuperconductorUIVBase, 2052, 2L, 262144L, 32L, GTValues.V[11], false, false);
-        makeWires(Materials.SuperconductorUMVBase, 2072, 2L, 1048576L, 32L, GTValues.V[12], false, false);
+        // Superconductor base
+        WireCableBuilder.builder()
+            .material(Materials.Pentacadmiummagnesiumhexaoxid)
+            .startId(2200)
+            .lossWire(2)
+            .amperage(1)
+            .voltage(TierEU.MV)
+            .disableCable()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Titaniumonabariumdecacoppereikosaoxid)
+            .startId(2220)
+            .lossWire(8)
+            .amperage(2)
+            .voltage(TierEU.HV)
+            .disableCable()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Uraniumtriplatinid)
+            .startId(2240)
+            .lossWire(16)
+            .amperage(3)
+            .voltage(TierEU.EV)
+            .disableCable()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Vanadiumtriindinid)
+            .startId(2260)
+            .lossWire(64)
+            .amperage(4)
+            .voltage(TierEU.IV)
+            .disableCable()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid)
+            .startId(2280)
+            .lossWire(256)
+            .amperage(6)
+            .voltage(TierEU.LuV)
+            .disableCable()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Tetranaquadahdiindiumhexaplatiumosminid)
+            .startId(2300)
+            .lossWire(1024)
+            .amperage(8)
+            .voltage(TierEU.ZPM)
+            .disableCable()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Longasssuperconductornameforuvwire)
+            .startId(2500)
+            .lossWire(4096)
+            .amperage(12)
+            .voltage(TierEU.UV)
+            .disableCable()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.Longasssuperconductornameforuhvwire)
+            .startId(2520)
+            .lossWire(16384)
+            .amperage(16)
+            .voltage(TierEU.UHV)
+            .disableCable()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.SuperconductorUEVBase)
+            .startId(2032)
+            .lossWire(65536)
+            .amperage(24)
+            .voltage(TierEU.UEV)
+            .disableCable()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.SuperconductorUIVBase)
+            .startId(2052)
+            .lossWire(262144)
+            .amperage(32)
+            .voltage(TierEU.UIV)
+            .disableCable()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.SuperconductorUMVBase)
+            .startId(2072)
+            .lossWire(1048576)
+            .amperage(32)
+            .voltage(TierEU.UMV)
+            .disableCable()
+            .build();
 
-        // Actual superconductors.
-        makeWires(Materials.SuperconductorMV, 2320, 0L, 0L, 4L, GTValues.V[2], false, true);
-        makeWires(Materials.SuperconductorHV, 2340, 0L, 0L, 6L, GTValues.V[3], false, true);
-        makeWires(Materials.SuperconductorEV, 2360, 0L, 0L, 8L, GTValues.V[4], false, true);
-        makeWires(Materials.SuperconductorIV, 2380, 0L, 0L, 12L, GTValues.V[5], false, true);
-        makeWires(Materials.SuperconductorLuV, 2400, 0L, 0L, 16L, GTValues.V[6], false, true);
-        makeWires(Materials.SuperconductorZPM, 2420, 0L, 0L, 24L, GTValues.V[7], false, true);
-        makeWires(Materials.SuperconductorUV, 2440, 0L, 0L, 32L, GTValues.V[8], false, true);
-        makeWires(Materials.SuperconductorUHV, 2020, 0L, 0L, 48L, GTValues.V[9], false, true);
-        makeWires(Materials.SuperconductorUEV, 2026, 0L, 0L, 64L, GTValues.V[10], false, true);
-        makeWires(Materials.SuperconductorUIV, 2081, 0L, 0L, 64L, GTValues.V[11], false, true);
-        makeWires(Materials.SuperconductorUMV, 2089, 0L, 0L, 64L, GTValues.V[12], false, true);
+        // Superconductor
+        WireCableBuilder.builder()
+            .material(Materials.SuperconductorMV)
+            .startId(2320)
+            .lossWire(0)
+            .amperage(4)
+            .voltage(TierEU.MV)
+            .disableCable()
+            .disableElectricDamage()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.SuperconductorHV)
+            .startId(2340)
+            .lossWire(0)
+            .amperage(6)
+            .voltage(TierEU.HV)
+            .disableCable()
+            .disableElectricDamage()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.SuperconductorEV)
+            .startId(2360)
+            .lossWire(0)
+            .amperage(8)
+            .voltage(TierEU.EV)
+            .disableCable()
+            .disableElectricDamage()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.SuperconductorIV)
+            .startId(2380)
+            .lossWire(0)
+            .amperage(12)
+            .voltage(TierEU.IV)
+            .disableCable()
+            .disableElectricDamage()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.SuperconductorLuV)
+            .startId(2400)
+            .lossWire(0)
+            .amperage(16)
+            .voltage(TierEU.LuV)
+            .disableCable()
+            .disableElectricDamage()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.SuperconductorZPM)
+            .startId(2420)
+            .lossWire(0)
+            .amperage(24)
+            .voltage(TierEU.ZPM)
+            .disableCable()
+            .disableElectricDamage()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.SuperconductorUV)
+            .startId(2440)
+            .lossWire(0)
+            .amperage(32)
+            .voltage(TierEU.UV)
+            .disableCable()
+            .disableElectricDamage()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.SuperconductorUHV)
+            .startId(2020)
+            .lossWire(0)
+            .amperage(48)
+            .voltage(TierEU.UHV)
+            .disableCable()
+            .disableElectricDamage()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.SuperconductorUEV)
+            .startId(2026)
+            .lossWire(0)
+            .amperage(64)
+            .voltage(TierEU.UEV)
+            .disableCable()
+            .disableElectricDamage()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.SuperconductorUIV)
+            .startId(2081)
+            .lossWire(0)
+            .amperage(64)
+            .voltage(TierEU.UIV)
+            .disableCable()
+            .disableElectricDamage()
+            .build();
+        WireCableBuilder.builder()
+            .material(Materials.SuperconductorUMV)
+            .startId(2089)
+            .lossWire(0)
+            .amperage(64)
+            .voltage(TierEU.UMV)
+            .disableCable()
+            .disableElectricDamage()
+            .build();
 
-        makeWires(Materials.Ichorium, 2600, 4L, 8L, 12L, GTValues.V[9], false, true);
-        makeWires(MaterialsUEVplus.SpaceTime, 2606, 0L, 0L, 1_000_000L, GTValues.V[14], false, true);
+        // Others
+        WireCableBuilder.builder()
+            .material(Materials.Ichorium)
+            .startId(2600)
+            .lossWire(8)
+            .amperage(12)
+            .voltage(TierEU.UHV)
+            .disableCable()
+            .disableElectricDamage()
+            .build();
+        WireCableBuilder.builder()
+            .material(MaterialsUEVplus.SpaceTime)
+            .startId(2606)
+            .lossWire(0)
+            .amperage(1_000_000)
+            .voltage(TierEU.MAX)
+            .disableCable()
+            .disableElectricDamage()
+            .build();
     }
 
     private static void registerFluidPipes() {
@@ -337,177 +754,273 @@ public final class LoaderMetaPipeEntities implements Runnable {
         generateItemPipes(Materials.Aluminium, Materials.Aluminium.mName, 5720, 2);
     }
 
-    @SuppressWarnings("PointlessArithmeticExpression")
-    private static void makeWires(Materials aMaterial, int aStartID, long aLossInsulated, long aLoss, long aAmperage,
-        long aVoltage, boolean aInsulatable, boolean aAutoInsulated) {
-        String name = GTLanguageManager.i18nPlaceholder ? "%material" : aMaterial.mDefaultLocalName;
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wireGt01,
-            aMaterial,
-            new MTECable(
-                aStartID + 0,
-                aTextWire1 + aMaterial.mName.toLowerCase() + ".01",
-                "1x " + name + aTextWire2,
-                0.125F,
-                aMaterial,
-                aLoss,
-                1L * aAmperage,
-                aVoltage,
-                false,
-                !aAutoInsulated).getStackForm(1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wireGt02,
-            aMaterial,
-            new MTECable(
-                aStartID + 1,
-                aTextWire1 + aMaterial.mName.toLowerCase() + ".02",
-                "2x " + name + aTextWire2,
-                0.25F,
-                aMaterial,
-                aLoss,
-                2L * aAmperage,
-                aVoltage,
-                false,
-                !aAutoInsulated).getStackForm(1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wireGt04,
-            aMaterial,
-            new MTECable(
-                aStartID + 2,
-                aTextWire1 + aMaterial.mName.toLowerCase() + ".04",
-                "4x " + name + aTextWire2,
-                0.375F,
-                aMaterial,
-                aLoss,
-                4L * aAmperage,
-                aVoltage,
-                false,
-                !aAutoInsulated).getStackForm(1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wireGt08,
-            aMaterial,
-            new MTECable(
-                aStartID + 3,
-                aTextWire1 + aMaterial.mName.toLowerCase() + ".08",
-                "8x " + name + aTextWire2,
-                0.5F,
-                aMaterial,
-                aLoss,
-                8L * aAmperage,
-                aVoltage,
-                false,
-                !aAutoInsulated).getStackForm(1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wireGt12,
-            aMaterial,
-            new MTECable(
-                aStartID + 4,
-                aTextWire1 + aMaterial.mName.toLowerCase() + ".12",
-                "12x " + name + aTextWire2,
-                0.625F,
-                aMaterial,
-                aLoss,
-                12L * aAmperage,
-                aVoltage,
-                false,
-                !aAutoInsulated).getStackForm(1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wireGt16,
-            aMaterial,
-            new MTECable(
-                aStartID + 5,
-                aTextWire1 + aMaterial.mName.toLowerCase() + ".16",
-                "16x " + name + aTextWire2,
-                0.75F,
-                aMaterial,
-                aLoss,
-                16L * aAmperage,
-                aVoltage,
-                false,
-                !aAutoInsulated).getStackForm(1L));
-        if (aInsulatable) {
+    private static class WireCableBuilder {
+
+        private Materials material;
+        private Integer startId;
+        private Integer lossCable;
+        private Integer lossWire;
+        private Integer amperage;
+        private Integer voltage;
+        private boolean generateCable = true;
+        private boolean canShock = true;
+
+        private WireCableBuilder() {}
+
+        private static WireCableBuilder builder() {
+            return new WireCableBuilder();
+        }
+
+        /**
+         * Sets material used for this wire/cable.
+         */
+        private WireCableBuilder material(Materials material) {
+            this.material = material;
+            return this;
+        }
+
+        /**
+         * Sets MTE id to start. Takes up 6 for wires, another 6 for cables.
+         */
+        private WireCableBuilder startId(int startId) {
+            this.startId = startId;
+            return this;
+        }
+
+        /**
+         * Sets voltage loss for cables. Can be skipped if {@link #disableCable} is set to false.
+         */
+        private WireCableBuilder lossCable(int lossCable) {
+            this.lossCable = lossCable;
+            return this;
+        }
+
+        /**
+         * Sets voltage loss for wires.
+         */
+        private WireCableBuilder lossWire(int lossWire) {
+            this.lossWire = lossWire;
+            return this;
+        }
+
+        /**
+         * Sets amperage for 1x wire/cable. Automatically gets multiplied for thicker ones.
+         */
+        private WireCableBuilder amperage(int amperage) {
+            this.amperage = amperage;
+            return this;
+        }
+
+        /**
+         * Sets voltage this wire/cable can handle.
+         */
+        private WireCableBuilder voltage(long voltage) {
+            this.voltage = (int) voltage;
+            return this;
+        }
+
+        /**
+         * Disables cable generation.
+         */
+        private WireCableBuilder disableCable() {
+            this.generateCable = false;
+            return this;
+        }
+
+        /**
+         * Disables bare wire to deal electric damage to player on contact.
+         */
+        private WireCableBuilder disableElectricDamage() {
+            this.canShock = false;
+            return this;
+        }
+
+        @SuppressWarnings("PointlessArithmeticExpression")
+        private void build() {
+            if (material == null) throw new IllegalStateException("material must be set!");
+            if (startId == null) throw new IllegalStateException("startId must be set!");
+            if (lossWire == null) throw new IllegalStateException("lossWire must be set!");
+            if (amperage == null) throw new IllegalStateException("amperage must be set!");
+            if (voltage == null) throw new IllegalStateException("voltage must be set!");
+
+            final String displayNameMaterial = GTLanguageManager.i18nPlaceholder ? "%material"
+                : material.mDefaultLocalName;
+            final String displayNameWire = displayNameMaterial + " Wire";
+            final String displayNameCable = displayNameMaterial + " Cable";
+            final String internalNameWire = "wire." + material.mName.toLowerCase();
+            final String internalNameCable = "cable." + material.mName.toLowerCase();
+
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.wireGt01,
+                material,
+                new MTECable(
+                    startId + 0,
+                    internalNameWire + ".01",
+                    "1x " + displayNameWire,
+                    0.125F,
+                    material,
+                    lossWire,
+                    1L * amperage,
+                    voltage,
+                    false,
+                    canShock).getStackForm(1L));
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.wireGt02,
+                material,
+                new MTECable(
+                    startId + 1,
+                    internalNameWire + ".02",
+                    "2x " + displayNameWire,
+                    0.25F,
+                    material,
+                    lossWire,
+                    2L * amperage,
+                    voltage,
+                    false,
+                    canShock).getStackForm(1L));
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.wireGt04,
+                material,
+                new MTECable(
+                    startId + 2,
+                    internalNameWire + ".04",
+                    "4x " + displayNameWire,
+                    0.375F,
+                    material,
+                    lossWire,
+                    4L * amperage,
+                    voltage,
+                    false,
+                    canShock).getStackForm(1L));
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.wireGt08,
+                material,
+                new MTECable(
+                    startId + 3,
+                    internalNameWire + ".08",
+                    "8x " + displayNameWire,
+                    0.5F,
+                    material,
+                    lossWire,
+                    8L * amperage,
+                    voltage,
+                    false,
+                    canShock).getStackForm(1L));
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.wireGt12,
+                material,
+                new MTECable(
+                    startId + 4,
+                    internalNameWire + ".12",
+                    "12x " + displayNameWire,
+                    0.625F,
+                    material,
+                    lossWire,
+                    12L * amperage,
+                    voltage,
+                    false,
+                    canShock).getStackForm(1L));
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.wireGt16,
+                material,
+                new MTECable(
+                    startId + 5,
+                    internalNameWire + ".16",
+                    "16x " + displayNameWire,
+                    0.75F,
+                    material,
+                    lossWire,
+                    16L * amperage,
+                    voltage,
+                    false,
+                    canShock).getStackForm(1L));
+
+            if (!generateCable) return;
+
+            if (lossCable == null) throw new IllegalStateException("lossCable must be set to generate cable!");
+
             GTOreDictUnificator.registerOre(
                 OrePrefixes.cableGt01,
-                aMaterial,
+                material,
                 new MTECable(
-                    aStartID + 6,
-                    aTextCable1 + aMaterial.mName.toLowerCase() + ".01",
-                    "1x " + name + aTextCable2,
+                    startId + 6,
+                    internalNameCable + ".01",
+                    "1x " + displayNameCable,
                     0.25F,
-                    aMaterial,
-                    aLossInsulated,
-                    1L * aAmperage,
-                    aVoltage,
+                    material,
+                    lossCable,
+                    1L * amperage,
+                    voltage,
                     true,
                     false).getStackForm(1L));
             GTOreDictUnificator.registerOre(
                 OrePrefixes.cableGt02,
-                aMaterial,
+                material,
                 new MTECable(
-                    aStartID + 7,
-                    aTextCable1 + aMaterial.mName.toLowerCase() + ".02",
-                    "2x " + name + aTextCable2,
+                    startId + 7,
+                    internalNameCable + ".02",
+                    "2x " + displayNameCable,
                     0.375F,
-                    aMaterial,
-                    aLossInsulated,
-                    2L * aAmperage,
-                    aVoltage,
+                    material,
+                    lossCable,
+                    2L * amperage,
+                    voltage,
                     true,
                     false).getStackForm(1L));
             GTOreDictUnificator.registerOre(
                 OrePrefixes.cableGt04,
-                aMaterial,
+                material,
                 new MTECable(
-                    aStartID + 8,
-                    aTextCable1 + aMaterial.mName.toLowerCase() + ".04",
-                    "4x " + name + aTextCable2,
+                    startId + 8,
+                    internalNameCable + ".04",
+                    "4x " + displayNameCable,
                     0.5F,
-                    aMaterial,
-                    aLossInsulated,
-                    4L * aAmperage,
-                    aVoltage,
+                    material,
+                    lossCable,
+                    4L * amperage,
+                    voltage,
                     true,
                     false).getStackForm(1L));
             GTOreDictUnificator.registerOre(
                 OrePrefixes.cableGt08,
-                aMaterial,
+                material,
                 new MTECable(
-                    aStartID + 9,
-                    aTextCable1 + aMaterial.mName.toLowerCase() + ".08",
-                    "8x " + name + aTextCable2,
+                    startId + 9,
+                    internalNameCable + ".08",
+                    "8x " + displayNameCable,
                     0.625F,
-                    aMaterial,
-                    aLossInsulated,
-                    8L * aAmperage,
-                    aVoltage,
+                    material,
+                    lossCable,
+                    8L * amperage,
+                    voltage,
                     true,
                     false).getStackForm(1L));
             GTOreDictUnificator.registerOre(
                 OrePrefixes.cableGt12,
-                aMaterial,
+                material,
                 new MTECable(
-                    aStartID + 10,
-                    aTextCable1 + aMaterial.mName.toLowerCase() + ".12",
-                    "12x " + name + aTextCable2,
+                    startId + 10,
+                    internalNameCable + ".12",
+                    "12x " + displayNameCable,
                     0.75F,
-                    aMaterial,
-                    aLossInsulated,
-                    12L * aAmperage,
-                    aVoltage,
+                    material,
+                    lossCable,
+                    12L * amperage,
+                    voltage,
                     true,
                     false).getStackForm(1L));
             GTOreDictUnificator.registerOre(
                 OrePrefixes.cableGt16,
-                aMaterial,
+                material,
                 new MTECable(
-                    aStartID + 11,
-                    aTextCable1 + aMaterial.mName.toLowerCase() + ".16",
-                    "16x " + name + aTextCable2,
+                    startId + 11,
+                    internalNameCable + ".16",
+                    "16x " + displayNameCable,
                     0.875F,
-                    aMaterial,
-                    aLossInsulated,
-                    16L * aAmperage,
-                    aVoltage,
+                    material,
+                    lossCable,
+                    16L * amperage,
+                    voltage,
                     true,
                     false).getStackForm(1L));
         }
