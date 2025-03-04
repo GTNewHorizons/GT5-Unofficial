@@ -29,6 +29,7 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,7 +45,6 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
     private static final Map<Integer, String> regularWirelessLabels = new HashMap<>();
     private static final Map<String, Map<Integer, Map<CoverData, String>>> advWirelessLabels = new HashMap<>();
-    private final ItemStackHandler stackHandler = new ItemStackHandler(1);
     private String uuid;
     private String freqFilter = "";
     private String ownerFilter = "";
@@ -54,13 +54,17 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
         ;
     }
 
+
     public Map<CoverData, String> getCoversOnFrequency(String uuid, int frequency){
         Map<Integer, Map<CoverData, String>> publicCovers = advWirelessLabels.getOrDefault(uuid, new HashMap<>());
         return publicCovers.getOrDefault(frequency, new HashMap<>());
     }
 
 
-
+    @Override
+    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
+        aList.add("Author: §9Frosty§4Fire1");
+    }
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 
