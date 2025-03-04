@@ -23,7 +23,7 @@ import static gregtech.client.GTTooltipHandler.Tier.UXV;
 import static gregtech.client.GTTooltipHandler.Tier.ZPM;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gregtech.common.items.IDMetaItem03.Activated_Carbon_Filter_Mesh;
-import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Crystal;
+import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
 import static gregtech.common.items.IDMetaItem03.Circuit_Bioprocessor;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biowarecomputer;
@@ -203,7 +203,7 @@ import static gregtech.common.items.IDMetaItem03.LV_Coil;
 import static gregtech.common.items.IDMetaItem03.LuV_Coil;
 import static gregtech.common.items.IDMetaItem03.MV_Coil;
 import static gregtech.common.items.IDMetaItem03.NandChip;
-import static gregtech.common.items.IDMetaItem03.Netherite_Crystal_Seed;
+import static gregtech.common.items.IDMetaItem03.Netherite_Scrap_Seed;
 import static gregtech.common.items.IDMetaItem03.Netherite_Nanoparticles;
 import static gregtech.common.items.IDMetaItem03.NuclearStar;
 import static gregtech.common.items.IDMetaItem03.Optical_Cpu_Containment_Housing;
@@ -1201,8 +1201,8 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
             .set(addItem(Phononic_Seed_Crystal.ID, "Phononic Seed Crystal", "Perfect Thermal Conductance", o));
 
         ItemList.Heavy_Hellish_Mud.set(addItem(Heavy_Hellish_Mud.ID, "Heavy Hellish Mud", "God wouldn't touch this"));
-        ItemList.Netherite_Crystal_Seed.set(addItem(Netherite_Crystal_Seed.ID, "Netherite Crystal Seed", ""));
-        ItemList.Brittle_Netherite_Crystal.set(addItem(Brittle_Netherite_Crystal.ID, "Brittle Netherite Crystal", ""));
+        ItemList.Netherite_Scrap_Seed.set(addItem(Netherite_Scrap_Seed.ID, "Netherite Scrap Seed", ""));
+        ItemList.Brittle_Netherite_Scrap.set(addItem(Brittle_Netherite_Scrap.ID, "Brittle Netherite Scrap", ""));
         ItemList.Netherite_Nanoparticles.set(addItem(Netherite_Nanoparticles.ID, "Netherite Nanoparticles", ""));
         ItemList.Intensely_Bonded_Netherite_Nanoparticles.set(
             addItem(Instensely_Bonded_Netherite_Nanoparticles.ID, "Instensely Bonded Netherite Nanoparticles", ""));
