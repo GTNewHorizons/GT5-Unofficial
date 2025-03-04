@@ -775,43 +775,43 @@ public final class LoaderMetaPipeEntities implements Runnable {
         ItemPipeBuilder.builder()
             .material(Materials.Brass)
             .startId(5602)
-            .baseInvSlots(1)
+            .invSlotsForHugePipe(4)
             .build();
         ItemPipeBuilder.builder()
             .material(Materials.Electrum)
             .startId(5612)
-            .baseInvSlots(2)
+            .invSlotsForHugePipe(8)
             .build();
         ItemPipeBuilder.builder()
             .material(Materials.Platinum)
             .startId(5622)
-            .baseInvSlots(4)
+            .invSlotsForHugePipe(16)
             .build();
         ItemPipeBuilder.builder()
             .material(Materials.Osmium)
             .startId(5632)
-            .baseInvSlots(8)
+            .invSlotsForHugePipe(32)
             .build();
         ItemPipeBuilder.builder()
             .material(Materials.PolyvinylChloride)
             .displayName("PVC")
             .startId(5690)
-            .baseInvSlots(4)
+            .invSlotsForHugePipe(16)
             .build();
         ItemPipeBuilder.builder()
             .material(Materials.Nickel)
             .startId(5700)
-            .baseInvSlots(1)
+            .invSlotsForHugePipe(4)
             .build();
         ItemPipeBuilder.builder()
             .material(Materials.Cobalt)
             .startId(5710)
-            .baseInvSlots(2)
+            .invSlotsForHugePipe(8)
             .build();
         ItemPipeBuilder.builder()
             .material(Materials.Aluminium)
             .startId(5720)
-            .baseInvSlots(2)
+            .invSlotsForHugePipe(8)
             .build();
     }
 
@@ -1253,7 +1253,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
         private Materials material;
         private String displayName;
         private Integer startId;
-        private Integer baseInvSlots;
+        private Integer invSlotsForHugePipe;
 
         private static ItemPipeBuilder builder() {
             return new ItemPipeBuilder();
@@ -1284,17 +1284,17 @@ public final class LoaderMetaPipeEntities implements Runnable {
         }
 
         /**
-         * Sets how many item stacks medium pipe can hold.
+         * Sets how many item stacks huge pipe can hold. Automatically scales for other sizes.
          */
-        private ItemPipeBuilder baseInvSlots(int baseInvSlots) {
-            this.baseInvSlots = baseInvSlots;
+        private ItemPipeBuilder invSlotsForHugePipe(int invSlotsForHugePipe) {
+            this.invSlotsForHugePipe = invSlotsForHugePipe;
             return this;
         }
 
         private void build() {
             if (material == null) throw new IllegalStateException("material must be set!");
             if (startId == null) throw new IllegalStateException("startId must be set!");
-            if (baseInvSlots == null) throw new IllegalStateException("baseInvSlots must be set!");
+            if (invSlotsForHugePipe == null) throw new IllegalStateException("invSlotsForHugePipe must be set!");
             if (displayName == null) {
                 displayName = GTLanguageManager.i18nPlaceholder ? "%material" : material.mDefaultLocalName;
             }
@@ -1311,8 +1311,8 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     displayNameItemPipe,
                     0.50F,
                     material,
-                    baseInvSlots,
-                    32768 / baseInvSlots,
+                    Math.max(invSlotsForHugePipe / 4, 1),
+                    131072 / invSlotsForHugePipe,
                     false).getStackForm(1L));
             GTOreDictUnificator.registerOre(
                 OrePrefixes.pipeLarge.get(material),
@@ -1322,8 +1322,8 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     "Large " + displayNameItemPipe,
                     0.75F,
                     material,
-                    baseInvSlots * 2,
-                    16384 / baseInvSlots,
+                    Math.max(invSlotsForHugePipe / 2, 1),
+                    65536 / invSlotsForHugePipe,
                     false).getStackForm(1L));
             GTOreDictUnificator.registerOre(
                 OrePrefixes.pipeHuge.get(material),
@@ -1333,8 +1333,8 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     "Huge " + displayNameItemPipe,
                     1.00F,
                     material,
-                    baseInvSlots * 4,
-                    8192 / baseInvSlots,
+                    invSlotsForHugePipe,
+                    32768 / invSlotsForHugePipe,
                     false).getStackForm(1L));
             GTOreDictUnificator.registerOre(
                 OrePrefixes.pipeRestrictiveMedium.get(material),
@@ -1344,8 +1344,8 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     "Restrictive " + displayNameItemPipe,
                     0.50F,
                     material,
-                    baseInvSlots,
-                    3276800 / baseInvSlots,
+                    Math.max(invSlotsForHugePipe / 4, 1),
+                    13107200 / invSlotsForHugePipe,
                     true).getStackForm(1L));
             GTOreDictUnificator.registerOre(
                 OrePrefixes.pipeRestrictiveLarge.get(material),
@@ -1355,8 +1355,8 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     "Large Restrictive " + displayNameItemPipe,
                     0.75F,
                     material,
-                    baseInvSlots * 2,
-                    1638400 / baseInvSlots,
+                    Math.max(invSlotsForHugePipe / 2, 1),
+                    6553600 / invSlotsForHugePipe,
                     true).getStackForm(1L));
             GTOreDictUnificator.registerOre(
                 OrePrefixes.pipeRestrictiveHuge.get(material),
@@ -1366,8 +1366,8 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     "Huge Restrictive " + displayNameItemPipe,
                     0.875F,
                     material,
-                    baseInvSlots * 4,
-                    819200 / baseInvSlots,
+                    invSlotsForHugePipe,
+                    3276800 / invSlotsForHugePipe,
                     true).getStackForm(1L));
         }
     }
