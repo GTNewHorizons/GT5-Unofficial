@@ -551,13 +551,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     /**
-     * If this accepts Transformer Upgrades
-     */
-    public boolean isTransformerUpgradable() {
-        return false;
-    }
-
-    /**
      * If this TileEntity makes use of Sided Redstone behaviors. Determines only, if the Output Redstone Array is
      * getting filled with 0 for true, or 15 for false.
      */

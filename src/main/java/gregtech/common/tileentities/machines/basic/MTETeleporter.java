@@ -378,11 +378,6 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
     }
 
     @Override
-    public boolean isTransformerUpgradable() {
-        return false;
-    }
-
-    @Override
     public boolean isElectric() {
         return true;
     }

@@ -421,11 +421,6 @@ public class MTEWirelessCharger extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isTransformerUpgradable() {
-        return false;
-    }
-
-    @Override
     public void saveNBTData(final NBTTagCompound aNBT) {
         aNBT.setBoolean("mLocked", this.mLocked);
         aNBT.setInteger("mMode", this.mMode);

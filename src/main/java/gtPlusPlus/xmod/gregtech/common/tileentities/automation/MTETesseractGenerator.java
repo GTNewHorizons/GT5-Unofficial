@@ -61,11 +61,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
     }
 
     @Override
-    public boolean isTransformerUpgradable() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(final ForgeDirection facing) {
         return true;
     }

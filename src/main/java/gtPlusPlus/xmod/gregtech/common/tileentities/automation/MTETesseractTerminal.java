@@ -50,11 +50,6 @@ public class MTETesseractTerminal extends MTEBasicTank {
     }
 
     @Override
-    public boolean isTransformerUpgradable() {
-        return false;
-    }
-
-    @Override
     public boolean isFacingValid(final ForgeDirection facing) {
         return true;
     }

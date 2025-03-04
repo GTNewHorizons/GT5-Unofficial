@@ -384,11 +384,6 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isTransformerUpgradable() {
-        return false;
-    }
-
-    @Override
     public void saveNBTData(final NBTTagCompound aNBT) {
         aNBT.setInteger("mCurrentPollution", this.mCurrentPollution);
         aNBT.setInteger("mAveragePollution", this.mAveragePollution);
