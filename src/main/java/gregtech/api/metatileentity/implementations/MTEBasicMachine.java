@@ -288,11 +288,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    @Override
     public boolean isTransformerUpgradable() {
         return false;
     }

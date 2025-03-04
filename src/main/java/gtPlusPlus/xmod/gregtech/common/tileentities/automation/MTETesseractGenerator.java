@@ -66,11 +66,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
     }
 
     @Override
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    @Override
     public boolean isFacingValid(final ForgeDirection facing) {
         return true;
     }

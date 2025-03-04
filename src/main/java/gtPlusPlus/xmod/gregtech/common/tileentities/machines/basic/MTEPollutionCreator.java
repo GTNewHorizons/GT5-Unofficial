@@ -384,11 +384,6 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    @Override
     public boolean isTransformerUpgradable() {
         return false;
     }

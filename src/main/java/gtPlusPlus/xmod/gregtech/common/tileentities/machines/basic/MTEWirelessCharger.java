@@ -421,11 +421,6 @@ public class MTEWirelessCharger extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    @Override
     public boolean isTransformerUpgradable() {
         return false;
     }

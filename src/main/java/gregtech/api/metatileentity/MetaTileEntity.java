@@ -551,13 +551,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     /**
-     * If this accepts up to 4 Overclockers
-     */
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    /**
      * If this accepts Transformer Upgrades
      */
     public boolean isTransformerUpgradable() {
