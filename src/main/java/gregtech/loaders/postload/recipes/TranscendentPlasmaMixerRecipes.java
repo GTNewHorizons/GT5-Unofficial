@@ -200,7 +200,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 MaterialsUEVplus.TranscendentMetal.getMolten(666),
                 MaterialsUEVplus.Eternity.getMolten(1000),
                 MaterialsUEVplus.PrimordialMatter.getFluid(1000),
-                MaterialsUEVplus.ProtoHalkonite.getMolten(742),
+                MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(742),
                 Materials.MysteriousCrystal.getMolten(852),
                 MaterialsUEVplus.SixPhasedCopper.getPlasma(926),
                 Materials.Cheese.getMolten(684),
