@@ -109,8 +109,8 @@ public class CoverArm extends CoverBehavior {
             final ForgeDirection toSide;
             if ((coverDataValue & EXPORT_MASK) > 0) toSide = coverSide;
             else toSide = coverSide.getOpposite();
-            if (fromTile instanceof IInventory fromIventory) GTUtility.moveFromSlotToSide(
-                fromIventory,
+            if (fromTile instanceof IInventory fromInventory) GTUtility.moveFromSlotToSide(
+                fromInventory,
                 toTile,
                 fromSlot - 1,
                 toSide,

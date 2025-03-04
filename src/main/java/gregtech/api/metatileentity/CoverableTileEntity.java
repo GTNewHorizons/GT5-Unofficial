@@ -55,7 +55,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.GTClient;
 import gregtech.common.covers.Cover;
-import gregtech.common.covers.CoverNone;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -231,7 +230,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final Cover oldCover = getCoverAtSide(side);
         int newCoverId = cover.getCoverID();
         if (oldCover.getCoverID() != newCoverId) {
-            if (cover instanceof CoverNone && isClientSide()) {
+            if (!cover.isValid() && isClientSide()) {
                 oldCover.onCoverRemoval();
             }
             synchronizeCover(cover, side);
