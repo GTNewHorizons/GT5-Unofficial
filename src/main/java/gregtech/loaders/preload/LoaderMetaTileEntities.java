@@ -884,7 +884,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.transformer_UHV_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_UV_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_ZPM_LuV;
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.amplifierRecipes;
@@ -12682,9 +12681,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         generateItemPipes(Materials.Nickel, Materials.Nickel.mName, 5700, 1);
         generateItemPipes(Materials.Cobalt, Materials.Cobalt.mName, 5710, 2);
         generateItemPipes(Materials.Aluminium, Materials.Aluminium.mName, 5720, 2);
-        if (NewHorizonsCoreMod.isModLoaded()) {
-            generateFluidPipes(Materials.get("RadoxPoly"), "RadoxPoly", 5760, 5000, 1500, true);
-        }
+        generateFluidPipes(Materials.RadoxPolymer, Materials.RadoxPolymer.mName, 5760, 5000, 1500, true);
     }
 
     @SuppressWarnings("PointlessArithmeticExpression")
