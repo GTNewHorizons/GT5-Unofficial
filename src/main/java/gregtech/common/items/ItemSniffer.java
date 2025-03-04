@@ -13,10 +13,7 @@ import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
-import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widget.ScrollWidget;
 import com.cleanroommc.modularui.widget.WidgetTree;
-import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
 import com.cleanroommc.modularui.widgets.*;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -49,7 +46,8 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
     private static final Map<String, Map<Integer, Map<CoverData, String>>> advWirelessLabels = new HashMap<>();
     private final ItemStackHandler stackHandler = new ItemStackHandler(1);
     private String uuid;
-    private String filter = "";
+    private String freqFilter = "";
+    private String ownerFilter = "";
 
     public ItemSniffer(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
@@ -68,7 +66,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
         if (!world.isRemote) {
             this.uuid = String.valueOf(player.getUniqueID());
-            this.filter = "";
+            this.freqFilter = "";
             loadFromNBT(stack.getTagCompound());
             GuiFactories.item().open(player);
 
@@ -180,7 +178,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                     }
                 }.setEnabledIf(w -> {
                         try{
-                            if(displayFreq == Integer.parseInt(this.filter)){
+                            if(displayFreq == Integer.parseInt(this.freqFilter)){
                                 return true;
                             }
                         } catch(NumberFormatException ignored){
@@ -194,8 +192,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                 .child(new TextWidget(String.valueOf(displayFreq)).widthRel(1.0f/3.0f).alignment(Alignment.Center))
                 .child(new TextWidget(isPrivate ? "Yes" : "No").widthRel(1.0f/3.0f).alignment(Alignment.Center))
                 .child(new TextFieldWidget()
-                    .align(Alignment.CenterRight)
-                    .sizeRel(1.0f/3.25f, 0.5f)
+                    .sizeRel(1.0f/3.0f, 0.5f)
                     .value(SyncHandlers.string(
                         () -> regularWirelessLabels.getOrDefault(freq, "Description"),
                         label -> {
@@ -216,6 +213,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
             .minRowHeight(0)
             .scrollable()
             .matrix(regularMatrix);
+        regularGrid.getScrollArea().setScrollDataX(null);
 
 
         data.addPage(new Column()
@@ -232,7 +230,6 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
         Map<Integer, Map<CoverData, Byte>> publicFreqs = GregTechAPI.sAdvancedWirelessRedstone.getOrDefault("null", new ConcurrentHashMap<>());
         Map<Integer, Map<CoverData, Byte>> privateFreqs = GregTechAPI.sAdvancedWirelessRedstone.getOrDefault(this.uuid, new ConcurrentHashMap<>());
 
-        int advFreqSize = publicFreqs.size() + privateFreqs.size();
 
 
 
@@ -240,9 +237,16 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
             .minColWidth(0)
             .minRowHeight(0)
             .scrollable();
+        advGrid.getScrollArea().setScrollDataX(null);
 
         List<List<IWidget>> advancedMatrix = (processAdvancedFrequencies(publicFreqs, "Public", advGrid, guiSyncManager));
-        advancedMatrix.addAll((processAdvancedFrequencies(privateFreqs, this.uuid, advGrid, guiSyncManager)));
+        UUID leader = SpaceProjectManager.getLeader(UUID.fromString(this.uuid));
+        GregTechAPI.sAdvancedWirelessRedstone.keySet().forEach(uuid -> {
+            if (!uuid.equals("null") && SpaceProjectManager.getLeader(UUID.fromString(uuid)).equals(leader)){
+                advancedMatrix.addAll((processAdvancedFrequencies(privateFreqs, uuid, advGrid, guiSyncManager)));
+            }
+        });
+
         advGrid.matrix(advancedMatrix);
 
 
@@ -279,11 +283,23 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                     )
                     .child(new TextFieldWidget()
                         .sizeRel(0.25f, 0.5f)
-                        .value(SyncHandlers.string(() -> this.filter, filter -> {
-                            this.filter = filter;
-                            System.out.println(filter);
+                        .value(SyncHandlers.string(() -> this.freqFilter, filter -> {
+                            this.freqFilter = filter;
                             if(NetworkUtils.isClient()){
                                 WidgetTree.resize(regularGrid);
+                                WidgetTree.resize(advGrid);
+                            }
+                        }))
+                    )
+                    .child(new TextWidget("Filter owner: ")
+                        .widthRel(0.25f)
+                        .alignment(Alignment.Center)
+                    )
+                    .child(new TextFieldWidget()
+                        .sizeRel(0.25f, 0.5f)
+                        .value(SyncHandlers.string(() -> this.ownerFilter, ownerFilter -> {
+                            this.ownerFilter = ownerFilter;
+                            if(NetworkUtils.isClient()){
                                 WidgetTree.resize(advGrid);
                             }
                         }))
@@ -296,7 +312,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
     public List<List<IWidget>> processAdvancedFrequencies(Map<Integer, Map<CoverData, Byte>> frequencyMap, String owner, Grid grid, PanelSyncManager guiSyncManager){
 
-
+        String ownerString = owner.equals("Public") ? "Public" : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(owner));
         AtomicInteger size = new AtomicInteger();
         frequencyMap.forEach((k, v) -> {
             size.addAndGet(v.size());
@@ -317,9 +333,14 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                     }
                 }.setEnabledIf(w -> {
                         try{
-                            if(entry.getKey() == Integer.parseInt(this.filter)){
-                                return true;
+                            if(this.ownerFilter.replaceAll(" ","").isEmpty() || this.ownerFilter.equals(ownerString)){
+                                if(entry.getKey() == Integer.parseInt(this.freqFilter)){
+                                    return true;
+                                }
+                            } else{
+                                return false;
                             }
+
                         } catch(NumberFormatException ignored){
                             return true;
                         }
@@ -328,7 +349,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                     .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
                     .sizeRel(1f,0.2f)
                     .expanded()
-                    .child(new TextWidget(owner.equals("Public") ? "Public" : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(owner)))
+                    .child(new TextWidget(ownerString)
                         .widthRel(0.2f)
                         .alignment(Alignment.Center))
                     .child(new TextWidget(String.valueOf(freq)).widthRel(0.2f).alignment(Alignment.Center))
