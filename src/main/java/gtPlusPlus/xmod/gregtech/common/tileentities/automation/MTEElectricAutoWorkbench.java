@@ -59,21 +59,6 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
     }
 
     @Override
-    public boolean isTransformerUpgradable() {
-        return true;
-    }
-
-    @Override
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex < 19;
     }
@@ -181,16 +166,6 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
     @Override
     public boolean canTankBeEmptied() {
         return true;
-    }
-
-    @Override
-    public boolean displaysItemStack() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
-        return false;
     }
 
     @Override

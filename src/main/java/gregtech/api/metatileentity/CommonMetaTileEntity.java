@@ -304,11 +304,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @Override
     public void receiveClientEvent(byte eventID, byte value) {}
 
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
     /**
      * Gets the output for the comparator on the given side
      */

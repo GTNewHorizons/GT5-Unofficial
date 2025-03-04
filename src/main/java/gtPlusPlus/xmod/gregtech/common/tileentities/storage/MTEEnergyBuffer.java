@@ -147,11 +147,6 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public boolean isElectric() {
         return true;
     }

@@ -204,11 +204,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         } catch (final GridAccessException ignored) {}
     }
 
-    @Override
-    public boolean displaysStackSize() {
-        return true;
-    }
-
     protected void setSavedFluid(int i, FluidStack stack) {
         shadowStoredFluids[i] = stack;
         savedStackSizes[i] = stack == null ? 0 : stack.amount;

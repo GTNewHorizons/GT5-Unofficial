@@ -117,11 +117,6 @@ public class MTELightningRod extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return facing == ForgeDirection.UP;
     }
