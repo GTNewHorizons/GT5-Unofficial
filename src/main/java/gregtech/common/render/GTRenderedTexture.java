@@ -15,8 +15,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 
 import gregtech.GTMod;
 import gregtech.api.interfaces.IColorModulationContainer;
@@ -221,22 +219,11 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     protected void renderFaceYNeg(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
         ExtendedFacing extendedFacing) {
 
-        switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
-            case COUNTER_CLOCKWISE -> aRenderer.uvRotateBottom = 2;
-            case CLOCKWISE -> aRenderer.uvRotateBottom = 1;
-            case UPSIDE_DOWN -> aRenderer.uvRotateBottom = 3;
-            default -> aRenderer.uvRotateBottom = 0;
-        }
+        aRenderer.uvRotateBottom = getRotation(extendedFacing);
+        icon = getFlipped(extendedFacing, icon);
 
-        final Flip aFlip = extendedFacing.getFlip();
-        aRenderer.renderFaceYNeg(
-            Blocks.air,
-            x,
-            y,
-            z,
-            useExtFacing && GTMod.gregtechproxy.mRenderFlippedMachinesFlipped
-                ? new GTIconFlipped(icon, aFlip.isHorizontallyFlipped() ^ !stdOrient, aFlip.isVerticallyFliped())
-                : new GTIconFlipped(icon, !stdOrient, false));
+        aRenderer.renderFaceYNeg(Blocks.air, x, y, z, icon);
+
         aRenderer.uvRotateBottom = 0;
     }
 
@@ -246,22 +233,11 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
     protected void renderFaceYPos(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
         ExtendedFacing extendedFacing) {
 
-        switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
-            case COUNTER_CLOCKWISE -> aRenderer.uvRotateTop = 2;
-            case CLOCKWISE -> aRenderer.uvRotateTop = 1;
-            case UPSIDE_DOWN -> aRenderer.uvRotateTop = 3;
-            default -> aRenderer.uvRotateTop = 0;
-        }
+        aRenderer.uvRotateTop = getRotation(extendedFacing);
+        icon = getFlipped(extendedFacing, icon);
 
-        final Flip aFlip = extendedFacing.getFlip();
-        aRenderer.renderFaceYPos(
-            Blocks.air,
-            x,
-            y,
-            z,
-            useExtFacing && GTMod.gregtechproxy.mRenderFlippedMachinesFlipped
-                ? new GTIconFlipped(icon, aFlip.isHorizontallyFlipped(), aFlip.isVerticallyFliped())
-                : icon);
+        aRenderer.renderFaceYPos(Blocks.air, x, y, z, icon);
+
         aRenderer.uvRotateTop = 0;
     }
 
@@ -270,26 +246,13 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
      */
     protected void renderFaceZNeg(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
         ExtendedFacing extendedFacing) {
-        aRenderer.field_152631_f = true;
-        // **NOT A BUG**: aRenderer.uvRotateEast REALLY CONTROLS THE ROTATION OF THE NORTH SIDE
-        switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
-            case COUNTER_CLOCKWISE -> aRenderer.uvRotateEast = 2;
-            case CLOCKWISE -> aRenderer.uvRotateEast = 1;
-            case UPSIDE_DOWN -> aRenderer.uvRotateEast = 3;
-            default -> aRenderer.uvRotateEast = 0;
-        }
 
-        final Flip aFlip = extendedFacing.getFlip();
-        aRenderer.renderFaceZNeg(
-            Blocks.air,
-            x,
-            y,
-            z,
-            useExtFacing && GTMod.gregtechproxy.mRenderFlippedMachinesFlipped
-                ? new GTIconFlipped(icon, aFlip.isHorizontallyFlipped(), aFlip.isVerticallyFliped())
-                : icon);
+        aRenderer.uvRotateEast = getRotation(extendedFacing);
+        icon = getFlipped(extendedFacing, icon);
+
+        aRenderer.renderFaceZNeg(Blocks.air, x, y, z, icon);
+
         aRenderer.uvRotateEast = 0;
-        aRenderer.field_152631_f = false;
     }
 
     /**
@@ -297,23 +260,12 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
      */
     protected void renderFaceZPos(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
         ExtendedFacing extendedFacing) {
-        // **NOT A BUG**: aRenderer.uvRotateWest REALLY CONTROLS THE ROTATION OF THE SOUTH SIDE
-        switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
-            case COUNTER_CLOCKWISE -> aRenderer.uvRotateWest = 2;
-            case CLOCKWISE -> aRenderer.uvRotateWest = 1;
-            case UPSIDE_DOWN -> aRenderer.uvRotateWest = 3;
-            default -> aRenderer.uvRotateWest = 0;
-        }
 
-        final Flip aFlip = extendedFacing.getFlip();
-        aRenderer.renderFaceZPos(
-            Blocks.air,
-            x,
-            y,
-            z,
-            useExtFacing && GTMod.gregtechproxy.mRenderFlippedMachinesFlipped
-                ? new GTIconFlipped(icon, aFlip.isHorizontallyFlipped(), aFlip.isVerticallyFliped())
-                : icon);
+        aRenderer.uvRotateWest = getRotation(extendedFacing);
+        icon = getFlipped(extendedFacing, icon);
+
+        aRenderer.renderFaceZPos(Blocks.air, x, y, z, icon);
+
         aRenderer.uvRotateWest = 0;
     }
 
@@ -322,23 +274,12 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
      */
     protected void renderFaceXNeg(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
         ExtendedFacing extendedFacing) {
-        // **NOT A BUG**: aRenderer.uvRotateNorth REALLY CONTROLS THE ROTATION OF THE WEST SIDE
-        switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
-            case COUNTER_CLOCKWISE -> aRenderer.uvRotateNorth = 2;
-            case CLOCKWISE -> aRenderer.uvRotateNorth = 1;
-            case UPSIDE_DOWN -> aRenderer.uvRotateNorth = 3;
-            default -> aRenderer.uvRotateNorth = 0;
-        }
 
-        final Flip aFlip = extendedFacing.getFlip();
-        aRenderer.renderFaceXNeg(
-            Blocks.air,
-            x,
-            y,
-            z,
-            useExtFacing && GTMod.gregtechproxy.mRenderFlippedMachinesFlipped
-                ? new GTIconFlipped(icon, aFlip.isHorizontallyFlipped(), aFlip.isVerticallyFliped())
-                : icon);
+        aRenderer.uvRotateNorth = getRotation(extendedFacing);
+        icon = getFlipped(extendedFacing, icon);
+
+        aRenderer.renderFaceXNeg(Blocks.air, x, y, z, icon);
+
         aRenderer.uvRotateNorth = 0;
     }
 
@@ -347,38 +288,74 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
      */
     protected void renderFaceXPos(RenderBlocks aRenderer, double x, double y, double z, IIcon icon,
         ExtendedFacing extendedFacing) {
-        aRenderer.field_152631_f = true;
-        // **NOT A BUG**: aRenderer.uvRotateSouth REALLY CONTROLS THE ROTATION OF THE EAST SIDE
-        switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
-            case COUNTER_CLOCKWISE -> aRenderer.uvRotateSouth = 2;
-            case CLOCKWISE -> aRenderer.uvRotateSouth = 1;
-            case UPSIDE_DOWN -> aRenderer.uvRotateSouth = 3;
-            default -> aRenderer.uvRotateSouth = 0;
+
+        aRenderer.uvRotateSouth = getRotation(extendedFacing);
+        icon = getFlipped(extendedFacing, icon);
+
+        aRenderer.renderFaceXPos(Blocks.air, x, y, z, icon);
+
+        aRenderer.uvRotateSouth = 0;
+    }
+
+    private static final int NORMAL = 0;
+    private static final int CLOCKWISE = 1;
+    private static final int COUNTER_CLOCKWISE = 2;
+    private static final int UPSIDE_DOWN = 3;
+
+    private int getRotation(ExtendedFacing extendedFacing) {
+        return switch (extendedFacing.getRotation()) {
+            case NORMAL -> NORMAL;
+            case CLOCKWISE -> CLOCKWISE;
+            case UPSIDE_DOWN -> UPSIDE_DOWN;
+            case COUNTER_CLOCKWISE -> COUNTER_CLOCKWISE;
+        };
+    }
+
+    private GTIconFlipped getFlipped(ExtendedFacing extendedFacing, IIcon icon) {
+        boolean flipU = false, flipV = false;
+
+        ForgeDirection dir = extendedFacing.getDirection();
+
+        // certain directions need to be flipped horizontally seemingly randomly
+        // maybe there's a reason, maybe there isn't, I haven't bothered to dig into the code to figure out why
+
+        // spotless:off
+        if (extendedFacing.getRotation().getIndex() % 2 == 0) {
+            // flip U's if normal or upside down
+            flipU ^= extendedFacing.getFlip().isHorizontallyFlipped();
+        } else {
+            // flip V's if clockwise or counter-clockwise
+            flipV ^= extendedFacing.getFlip().isHorizontallyFlipped();
+
+            if (dir == ForgeDirection.EAST || dir == ForgeDirection.NORTH) {
+                flipU ^= true;
+            }
+        }
+        // spotless:on
+
+        if (dir == ForgeDirection.DOWN) {
+            flipU ^= true;
         }
 
-        final Flip aFlip = extendedFacing.getFlip();
-        aRenderer.renderFaceXPos(
-            Blocks.air,
-            x,
-            y,
-            z,
-            useExtFacing && GTMod.gregtechproxy.mRenderFlippedMachinesFlipped
-                ? new GTIconFlipped(icon, aFlip.isHorizontallyFlipped(), aFlip.isVerticallyFliped())
-                : icon);
-        aRenderer.uvRotateSouth = 0;
-        aRenderer.field_152631_f = false;
+        return new GTIconFlipped(icon, flipU, flipV);
     }
 
     private ExtendedFacing getExtendedFacing(int x, int y, int z) {
-        if (stdOrient) return ExtendedFacing.DEFAULT;
+        if (stdOrient || !useExtFacing) return ExtendedFacing.DEFAULT;
+
         final EntityPlayer player = GTMod.gregtechproxy.getThePlayer();
         if (player == null) return ExtendedFacing.DEFAULT;
+
         final World w = player.getEntityWorld();
         if (w == null) return ExtendedFacing.DEFAULT;
+
         final TileEntity te = w.getTileEntity(x, y, z);
+
         IAlignment alignment = null;
+
         if (te instanceof IGregTechTileEntity) {
             final IMetaTileEntity meta = ((IGregTechTileEntity) te).getMetaTileEntity();
+
             if (meta instanceof IAlignmentProvider) {
                 alignment = ((IAlignmentProvider) meta).getAlignment();
             } else if (meta != null) {
@@ -389,7 +366,9 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         } else if (te instanceof IAlignmentProvider) {
             alignment = ((IAlignmentProvider) te).getAlignment();
         }
+
         if (alignment != null) return alignment.getExtendedFacing();
+
         return ExtendedFacing.DEFAULT;
     }
 }

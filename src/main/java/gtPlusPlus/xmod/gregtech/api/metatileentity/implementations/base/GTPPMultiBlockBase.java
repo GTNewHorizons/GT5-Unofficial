@@ -89,10 +89,10 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 // Glee8e - 11/12/21 - 2:15pm
-// Yeah, now I see what's wrong. Someone inherited from GregtechMeta_MultiBlockBase instead of
-// GregtechMeta_MultiBlockBase<GregtechMetaTileEntity_IndustrialDehydrator> as it should have been
-// so any method in GregtechMetaTileEntity_IndustrialDehydrator would see generic field declared in
-// GregtechMeta_MultiBlockBase without generic parameter
+// Yeah, now I see what's wrong. Someone inherited from GTPPMultiBlockBase instead of
+// GTPPMultiBlockBase<MTEIndustrialDehydrator> as it should have been
+// so any method in MTEIndustrialDehydrator would see generic field declared in
+// GTPPMultiBlockBase without generic parameter
 
 public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBase<T>>
     extends MTEExtendedPowerMultiBlockBase<T> {

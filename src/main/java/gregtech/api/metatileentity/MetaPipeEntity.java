@@ -41,7 +41,7 @@ import gregtech.common.covers.CoverInfo;
  * also not postload!) Implement the newMetaEntity-Method to return a new ready instance of your MetaTileEntity
  * <p/>
  * Call the Constructor like the following example inside the Load Phase, to register it. "new
- * GT_MetaTileEntity_E_Furnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
+ * MTEFurnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
  */
 public abstract class MetaPipeEntity extends CommonMetaTileEntity implements IConnectable {
 
@@ -65,7 +65,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
      *
      * <pre>
      *
-     * public GT_MetaTileEntity_EBench(int id, String name, String nameRegional) {
+     * public MTEBench(int id, String name, String nameRegional) {
      *     super(id, name, nameRegional);
      * }
      * </pre>

@@ -20,8 +20,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -59,7 +63,7 @@ import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsUI;
 
-public class MTEBaseModule extends TTMultiblockBase {
+public class MTEBaseModule extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 
     protected final int tier = getTier();
     protected boolean isConnected = false;
@@ -260,6 +264,11 @@ public class MTEBaseModule extends TTMultiblockBase {
         return GTValues.V[tier];
     }
 
+    // This prevents processingLogic from overflowing on energy, can be changed if/when it can handle > max long
+    protected long getSafeProcessingVoltage() {
+        return Math.min(getProcessingVoltage(), Long.MAX_VALUE / getMaxParallel());
+    }
+
     @Override
     public IStructureDefinition<? extends TTMultiblockBase> getStructure_EM() {
         if (this instanceof MTESmeltingModule) {
@@ -271,6 +280,11 @@ public class MTEBaseModule extends TTMultiblockBase {
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         structureBuild_EM(STRUCTURE_PIECE_MAIN, 3, 3, 0, stackSize, hintsOnly);
+    }
+
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        int realBudget = elementBudget >= 200 ? elementBudget : Math.min(1000, elementBudget * 5);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 3, 0, realBudget, env, false, true);
     }
 
     @Override
@@ -408,6 +422,13 @@ public class MTEBaseModule extends TTMultiblockBase {
                 .setPos(3, 4)
                 .setSize(150, 20))
             .widget(
+                new DrawableWidget().setDrawable(ModularUITextures.ICON_INFO)
+                    .setPos(142, 12)
+                    .setSize(12, 12)
+                    .addTooltip(translateToLocal("fog.text.tooltip.voltageadjustment"))
+                    .addTooltip(translateToLocal("fog.text.tooltip.voltageadjustment.1"))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY))
+            .widget(
                 new NumericWidget().setSetter(val -> processingVoltage = (long) val)
                     .setGetter(() -> processingVoltage)
                     .setBounds(2_000_000_000, Long.MAX_VALUE)
@@ -483,11 +504,6 @@ public class MTEBaseModule extends TTMultiblockBase {
 
     @Override
     public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
         return true;
     }
 

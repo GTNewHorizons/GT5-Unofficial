@@ -182,11 +182,6 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return false;
     }
@@ -217,13 +212,6 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
             .letsEnergyIn()) return 0;
         return transferElectricity(side, voltage, amperage, (HashSet<TileEntity>) null);
-    }
-
-    @Override
-    @Deprecated
-    public long transferElectricity(ForgeDirection side, long aVoltage, long aAmperage,
-        ArrayList<TileEntity> aAlreadyPassedTileEntityList) {
-        return transferElectricity(side, aVoltage, aAmperage, new HashSet<>(aAlreadyPassedTileEntityList));
     }
 
     @Override

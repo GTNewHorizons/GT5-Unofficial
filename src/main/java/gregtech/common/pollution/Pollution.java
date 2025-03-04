@@ -25,10 +25,8 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
@@ -418,23 +416,10 @@ public class Pollution {
             .getAmount();
     }
 
-    @Deprecated
-    public static int getPollution(ChunkCoordIntPair aCh, int aDim) {
-        return getPollution(DimensionManager.getWorld(aDim), aCh.chunkXPos, aCh.chunkZPos);
-    }
-
     public static boolean hasPollution(Chunk ch) {
         if (!GTMod.gregtechproxy.mPollution) return false;
         return STORAGE.isCreated(ch.worldObj, ch.getChunkCoordIntPair()) && STORAGE.get(ch)
             .getAmount() > 0;
-    }
-
-    // Add compatibility with old code
-    @Deprecated /* Don't use it... too weird way of passing position */
-    public static void addPollution(World aWorld, ChunkPosition aPos, int aPollution) {
-        // The abuse of ChunkPosition to store block position and dim...
-        // is just bad especially when that is both used to store ChunkPos and BlockPos depending on context
-        addPollution(aWorld.getChunkFromBlockCoords(aPos.chunkPosX, aPos.chunkPosZ), aPollution);
     }
 
     public static void migrate(ChunkDataEvent.Load e) {

@@ -6,8 +6,6 @@ public enum IDMetaTool01 {
     SAW(10),
     HARDHAMMER(12),
     SOFTMALLET(14),
-    @Deprecated
-    SOFTHAMMER(14),
     WRENCH(16),
     FILE(18),
     CROWBAR(20),
@@ -32,8 +30,6 @@ public enum IDMetaTool01 {
     WRENCH_HV(124),
     JACKHAMMER(130),
     BUZZSAW_LV(140),
-    @Deprecated
-    BUZZSAW(140),
     BUZZSAW_MV(142),
     BUZZSAW_HV(144),
     SCREWDRIVER_LV(150),
@@ -46,8 +42,6 @@ public enum IDMetaTool01 {
     TURBINE(172),
     TURBINE_LARGE(174),
     TURBINE_HUGE(176),
-    @Deprecated
-    TURBINE_BLADE(178),
     POCKET_MULTITOOL(180),
     POCKET_BRANCHCUTTER(182),
     POCKET_FILE(184),
