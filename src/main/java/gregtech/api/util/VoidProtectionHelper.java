@@ -318,6 +318,16 @@ public class VoidProtectionHelper {
             for (ItemStack tBusStack : busStacks) {
                 if (tBusStack == null) {
                     tSlotsFree++;
+                } else if (tBusStack.stackSize == 65) {
+                    for (Map.Entry<ItemStack, ParallelData> entry : tParallels.entrySet()) {
+                        ItemStack tItemOutput = entry.getKey();
+                        if (!tBusStack.isItemEqual(tItemOutput)) continue;
+                        // this fluid is not prevented by restrictions on output hatch
+                        ParallelData tParallel = entry.getValue();
+                        Integer tCraftSize = tItemOutputMap.get(tBusStack);
+                        tParallel.batch += (tParallel.partial + Integer.MAX_VALUE) / tCraftSize;
+                        tParallel.partial = (tParallel.partial + Integer.MAX_VALUE) % tCraftSize;
+                    }
                 } else {
                     // get the real stack size
                     // we ignore the bus inventory stack limit here as no one set it to anything other than 64
