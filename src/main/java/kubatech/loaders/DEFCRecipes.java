@@ -9,6 +9,7 @@ import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.ElectroMagicTools;
 import static gregtech.api.enums.Mods.GalacticraftAmunRa;
 import static gregtech.api.enums.Mods.GalaxySpace;
+import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.SuperSolarPanels;
 import static gregtech.api.enums.Mods.Thaumcraft;
@@ -347,8 +348,11 @@ public class DEFCRecipes {
                 GTModHandler.getModItem(GalaxySpace.ID, "item.UnknowCrystal", 1, 0),
                 GTModHandler.getModItem(BiomesOPlenty.ID, "misc", 1, 4),
                 GTModHandler.getModItem(GalacticraftAmunRa.ID, "item.baseItem", 16, 26),
+                GTModHandler.getModItem(HardcoreEnderExpansion.ID, "transference_gem", 1, 0),
                 GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 16),
                 GTModHandler.getModItem(DraconicEvolution.ID, "reactorStabilizer", 0, 0),
+                GTModHandler.getModItem(Botania.ID, "laputaShard", 0, 19),
+                GTModHandler.getModItem(Avaritia.ID, "Endest_Pearl", 0, 0),
                 GTModHandler.getModItem(Thaumcraft.ID, "blockCrystal", 0, 7))
             .fluidInputs(MaterialsUEVplus.PurifiedPrimordialChaoticSauce.getFluid(100L))
             .fluidOutputs(MaterialsUEVplus.PrimordialChaoticSauce.getFluid(10L))
