@@ -4,7 +4,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -44,9 +43,7 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
 
     @Override
     public byte getTileEntityBaseType() {
-        return this.mMaterial == null ? 4
-            : (byte) ((this.mMaterial.contains(SubTag.WOOD) ? 12 : 4)
-                + Math.max(0, Math.min(3, this.mMaterial.mToolQuality)));
+        return 4;
     }
 
     @Override
@@ -65,10 +62,10 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
         int aColorIndex, boolean aConnected, boolean aRedstone) {
         float tThickNess = getThickness();
         if (mDisableInput == 0)
-            return new ITexture[] { aConnected ? getBaseTexture(tThickNess, mPipeAmount, mMaterial, aColorIndex)
+            return new ITexture[] { aConnected ? getBaseTexture(tThickNess, mPipeAmount, aColorIndex)
                 : TextureFactory.of(
-                    mMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
-                    Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
+                    pipeStats.iconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
+                    Dyes.getModulation(aColorIndex, pipeStats.rgba)) };
         int tMask = 0;
         int[][] sRestrictionArray = { { 2, 3, 5, 4 }, { 2, 3, 5, 4 }, { 1, 0, 5, 4 }, { 1, 0, 4, 5 }, { 1, 0, 2, 3 },
             { 1, 0, 2, 3 } };
@@ -80,10 +77,37 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
             if (side == ForgeDirection.EAST || side == ForgeDirection.UP)
                 if (tMask > 3 && tMask < 12) tMask = (tMask ^ 12);
         }
-        return new ITexture[] { aConnected ? getBaseTexture(tThickNess, mPipeAmount, mMaterial, aColorIndex)
+        return new ITexture[] { aConnected ? getBaseTexture(tThickNess, mPipeAmount, aColorIndex)
             : TextureFactory.of(
-                mMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
-                Dyes.getModulation(aColorIndex, mMaterial.mRGBa)),
+                pipeStats.iconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
+                Dyes.getModulation(aColorIndex, pipeStats.rgba)),
             getRestrictorTexture(tMask) };
+    }
+
+    protected ITexture getBaseTexture(float aThickNess, int aPipeAmount, int colorIndex) {
+        if (aPipeAmount >= 9) return TextureFactory.of(
+            pipeStats.iconSet.mTextures[OrePrefixes.pipeNonuple.mTextureIndex],
+            Dyes.getModulation(colorIndex, pipeStats.rgba));
+        if (aPipeAmount >= 4) return TextureFactory.of(
+            pipeStats.iconSet.mTextures[OrePrefixes.pipeQuadruple.mTextureIndex],
+            Dyes.getModulation(colorIndex, pipeStats.rgba));
+        if (aThickNess < 0.124F) return TextureFactory.of(
+            pipeStats.iconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
+            Dyes.getModulation(colorIndex, pipeStats.rgba));
+        if (aThickNess < 0.374F) return TextureFactory.of(
+            pipeStats.iconSet.mTextures[OrePrefixes.pipeTiny.mTextureIndex],
+            Dyes.getModulation(colorIndex, pipeStats.rgba));
+        if (aThickNess < 0.499F) return TextureFactory.of(
+            pipeStats.iconSet.mTextures[OrePrefixes.pipeSmall.mTextureIndex],
+            Dyes.getModulation(colorIndex, pipeStats.rgba));
+        if (aThickNess < 0.749F) return TextureFactory.of(
+            pipeStats.iconSet.mTextures[OrePrefixes.pipeMedium.mTextureIndex],
+            Dyes.getModulation(colorIndex, pipeStats.rgba));
+        if (aThickNess < 0.874F) return TextureFactory.of(
+            pipeStats.iconSet.mTextures[OrePrefixes.pipeLarge.mTextureIndex],
+            Dyes.getModulation(colorIndex, pipeStats.rgba));
+        return TextureFactory.of(
+            pipeStats.iconSet.mTextures[OrePrefixes.pipeHuge.mTextureIndex],
+            Dyes.getModulation(colorIndex, pipeStats.rgba));
     }
 }
