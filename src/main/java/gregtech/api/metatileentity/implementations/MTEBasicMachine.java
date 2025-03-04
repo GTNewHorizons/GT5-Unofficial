@@ -680,8 +680,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         // Only using mNeedsSteamVenting right now and assigning it to 64 to space in the range for more single block
         // machine problems.
         // Value | Class | Field
-        // 1 | GT_MetaTileEntity_BasicMachine | mStuttering
-        // 64 | GT_MetaTileEntity_BasicMachine_Bronze | mNeedsSteamVenting
+        // 1 | MTEBasicMachine | mStuttering
+        // 64 | MTEBasicMachineBronze | mNeedsSteamVenting
         setErrorDisplayID((getErrorDisplayID() & ~127)); // | (mStuttering ? 1 :
                                                          // 0));
     }
