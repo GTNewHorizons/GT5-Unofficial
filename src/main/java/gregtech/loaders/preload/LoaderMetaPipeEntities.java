@@ -772,14 +772,47 @@ public final class LoaderMetaPipeEntities implements Runnable {
     }
 
     private static void registerItemPipes() {
-        generateItemPipes(Materials.Brass, Materials.Brass.mName, 5602, 1);
-        generateItemPipes(Materials.Electrum, Materials.Electrum.mName, 5612, 2);
-        generateItemPipes(Materials.Platinum, Materials.Platinum.mName, 5622, 4);
-        generateItemPipes(Materials.Osmium, Materials.Osmium.mName, 5632, 8);
-        generateItemPipes(Materials.PolyvinylChloride, Materials.PolyvinylChloride.mName, "PVC", 5690, 4);
-        generateItemPipes(Materials.Nickel, Materials.Nickel.mName, 5700, 1);
-        generateItemPipes(Materials.Cobalt, Materials.Cobalt.mName, 5710, 2);
-        generateItemPipes(Materials.Aluminium, Materials.Aluminium.mName, 5720, 2);
+        ItemPipeBuilder.builder()
+            .material(Materials.Brass)
+            .startId(5602)
+            .baseInvSlots(1)
+            .build();
+        ItemPipeBuilder.builder()
+            .material(Materials.Electrum)
+            .startId(5612)
+            .baseInvSlots(2)
+            .build();
+        ItemPipeBuilder.builder()
+            .material(Materials.Platinum)
+            .startId(5622)
+            .baseInvSlots(4)
+            .build();
+        ItemPipeBuilder.builder()
+            .material(Materials.Osmium)
+            .startId(5632)
+            .baseInvSlots(8)
+            .build();
+        ItemPipeBuilder.builder()
+            .material(Materials.PolyvinylChloride)
+            .displayName("PVC")
+            .startId(5690)
+            .baseInvSlots(4)
+            .build();
+        ItemPipeBuilder.builder()
+            .material(Materials.Nickel)
+            .startId(5700)
+            .baseInvSlots(1)
+            .build();
+        ItemPipeBuilder.builder()
+            .material(Materials.Cobalt)
+            .startId(5710)
+            .baseInvSlots(2)
+            .build();
+        ItemPipeBuilder.builder()
+            .material(Materials.Aluminium)
+            .startId(5720)
+            .baseInvSlots(2)
+            .build();
     }
 
     private static class WireCableBuilder {
@@ -1215,82 +1248,127 @@ public final class LoaderMetaPipeEntities implements Runnable {
         }
     }
 
-    private static void generateItemPipes(Materials aMaterial, String name, int startID, int baseInvSlots) {
-        generateItemPipes(
-            aMaterial,
-            name,
-            GTLanguageManager.i18nPlaceholder ? "%material" : aMaterial.mDefaultLocalName,
-            startID,
-            baseInvSlots);
-    }
+    private static class ItemPipeBuilder {
 
-    private static void generateItemPipes(Materials aMaterial, String name, String displayName, int startID,
-        int baseInvSlots) {
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeMedium.get(aMaterial),
-            new MTEItemPipe(
-                startID,
-                "GT_Pipe_" + name,
-                displayName + " Item Pipe",
-                0.50F,
-                aMaterial,
-                baseInvSlots,
-                32768 / baseInvSlots,
-                false).getStackForm(1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeLarge.get(aMaterial),
-            new MTEItemPipe(
-                startID + 1,
-                "GT_Pipe_" + name + "_Large",
-                "Large " + displayName + " Item Pipe",
-                0.75F,
-                aMaterial,
-                baseInvSlots * 2,
-                16384 / baseInvSlots,
-                false).getStackForm(1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeHuge.get(aMaterial),
-            new MTEItemPipe(
-                startID + 2,
-                "GT_Pipe_" + name + "_Huge",
-                "Huge " + displayName + " Item Pipe",
-                1.00F,
-                aMaterial,
-                baseInvSlots * 4,
-                8192 / baseInvSlots,
-                false).getStackForm(1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeRestrictiveMedium.get(aMaterial),
-            new MTEItemPipe(
-                startID + 3,
-                "GT_Pipe_Restrictive_" + name,
-                "Restrictive " + displayName + " Item Pipe",
-                0.50F,
-                aMaterial,
-                baseInvSlots,
-                3276800 / baseInvSlots,
-                true).getStackForm(1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeRestrictiveLarge.get(aMaterial),
-            new MTEItemPipe(
-                startID + 4,
-                "GT_Pipe_Restrictive_" + name + "_Large",
-                "Large Restrictive " + displayName + " Item Pipe",
-                0.75F,
-                aMaterial,
-                baseInvSlots * 2,
-                1638400 / baseInvSlots,
-                true).getStackForm(1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeRestrictiveHuge.get(aMaterial),
-            new MTEItemPipe(
-                startID + 5,
-                "GT_Pipe_Restrictive_" + name + "_Huge",
-                "Huge Restrictive " + displayName + " Item Pipe",
-                0.875F,
-                aMaterial,
-                baseInvSlots * 4,
-                819200 / baseInvSlots,
-                true).getStackForm(1L));
+        private Materials material;
+        private String displayName;
+        private Integer startId;
+        private Integer baseInvSlots;
+
+        private static ItemPipeBuilder builder() {
+            return new ItemPipeBuilder();
+        }
+
+        /**
+         * Sets material used for this item pipe.
+         */
+        private ItemPipeBuilder material(Materials material) {
+            this.material = material;
+            return this;
+        }
+
+        /**
+         * Sets English display name. Material name by default.
+         */
+        private ItemPipeBuilder displayName(String displayName) {
+            this.displayName = displayName;
+            return this;
+        }
+
+        /**
+         * Sets MTE id to start. Takes up 3 for regular pipes, another 3 for restrictive pipes.
+         */
+        private ItemPipeBuilder startId(int startId) {
+            this.startId = startId;
+            return this;
+        }
+
+        /**
+         * Sets how many item stacks medium pipe can hold.
+         */
+        private ItemPipeBuilder baseInvSlots(int baseInvSlots) {
+            this.baseInvSlots = baseInvSlots;
+            return this;
+        }
+
+        private void build() {
+            if (material == null) throw new IllegalStateException("material must be set!");
+            if (startId == null) throw new IllegalStateException("startId must be set!");
+            if (baseInvSlots == null) throw new IllegalStateException("baseInvSlots must be set!");
+            if (displayName == null) {
+                displayName = GTLanguageManager.i18nPlaceholder ? "%material" : material.mDefaultLocalName;
+            }
+
+            final String internalNameItemPipe = "GT_Pipe_" + material.mName;
+            final String internalNameRestrictivePipe = "GT_Pipe_Restrictive_" + material.mName;
+            final String displayNameItemPipe = displayName + " Item Pipe";
+
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.pipeMedium.get(material),
+                new MTEItemPipe(
+                    startId,
+                    internalNameItemPipe,
+                    displayNameItemPipe,
+                    0.50F,
+                    material,
+                    baseInvSlots,
+                    32768 / baseInvSlots,
+                    false).getStackForm(1L));
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.pipeLarge.get(material),
+                new MTEItemPipe(
+                    startId + 1,
+                    internalNameItemPipe + "_Large",
+                    "Large " + displayNameItemPipe,
+                    0.75F,
+                    material,
+                    baseInvSlots * 2,
+                    16384 / baseInvSlots,
+                    false).getStackForm(1L));
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.pipeHuge.get(material),
+                new MTEItemPipe(
+                    startId + 2,
+                    internalNameItemPipe + "_Huge",
+                    "Huge " + displayNameItemPipe,
+                    1.00F,
+                    material,
+                    baseInvSlots * 4,
+                    8192 / baseInvSlots,
+                    false).getStackForm(1L));
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.pipeRestrictiveMedium.get(material),
+                new MTEItemPipe(
+                    startId + 3,
+                    internalNameRestrictivePipe,
+                    "Restrictive " + displayNameItemPipe,
+                    0.50F,
+                    material,
+                    baseInvSlots,
+                    3276800 / baseInvSlots,
+                    true).getStackForm(1L));
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.pipeRestrictiveLarge.get(material),
+                new MTEItemPipe(
+                    startId + 4,
+                    internalNameRestrictivePipe + "_Large",
+                    "Large Restrictive " + displayNameItemPipe,
+                    0.75F,
+                    material,
+                    baseInvSlots * 2,
+                    1638400 / baseInvSlots,
+                    true).getStackForm(1L));
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.pipeRestrictiveHuge.get(material),
+                new MTEItemPipe(
+                    startId + 5,
+                    internalNameRestrictivePipe + "_Huge",
+                    "Huge Restrictive " + displayNameItemPipe,
+                    0.875F,
+                    material,
+                    baseInvSlots * 4,
+                    819200 / baseInvSlots,
+                    true).getStackForm(1L));
+        }
     }
 }
