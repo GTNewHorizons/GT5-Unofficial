@@ -106,7 +106,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
     }
 
     public void loadFromNBT(NBTTagCompound tag){
-        System.out.println(tag);
+        if(tag == null || tag.hasNoTags()) return;
         NBTTagCompound regular = tag.getCompoundTag("Regular");
         if (!regular.hasNoTags()){
             regular.tagMap.keySet().forEach(frequency -> {
@@ -180,13 +180,13 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                     }
                 }.setEnabledIf(w -> {
                         try{
-                            if(Integer.parseInt(this.filter) != freq){
-                                return false;
+                            if(String.valueOf(displayFreq).equals(this.filter) || this.filter.isEmpty()){
+                                return true;
                             }
                         } catch(NumberFormatException ignored){
 
                         }
-                        return true;
+                        return false;
                     })
                 .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
                 .sizeRel(1f,0.2f)
@@ -201,7 +201,9 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                         label -> {
                             regularWirelessLabels.put(freq, label);
                             if(!guiSyncManager.isClient()){
-                                NBTTagCompound tag = serializeRegularToNBT(guiSyncManager.getPlayer().getHeldItem().getTagCompound());
+                                NBTTagCompound currentTag = guiSyncManager.getPlayer().getHeldItem().getTagCompound();
+                                if (currentTag == null) currentTag = new NBTTagCompound();
+                                NBTTagCompound tag = serializeRegularToNBT(currentTag);
                                 System.out.println(tag);
                                 guiSyncManager.getPlayer().getHeldItem().setTagCompound(tag);
                             }
@@ -281,6 +283,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                         .value(SyncHandlers.string(() -> this.filter, filter -> {
                             this.filter = filter;
                             if(NetworkUtils.isClient()){
+                                WidgetTree.resize(regularGrid);
                                 WidgetTree.resize(advGrid);
                             }
                         }))
@@ -314,13 +317,13 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                     }
                 }.setEnabledIf(w -> {
                         try{
-                            if(Integer.parseInt(this.filter) != entry.getKey()){
-                                return false;
+                            if(entry.getKey().toString().equals(this.filter) || this.filter.isEmpty()){
+                                return true;
                             }
                         } catch(NumberFormatException ignored){
 
                         }
-                        return true;
+                        return false;
                     })
                     .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
                     .sizeRel(1f,0.2f)
