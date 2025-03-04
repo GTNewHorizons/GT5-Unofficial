@@ -312,11 +312,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     void doExplosion(long aExplosionPower);
 
     /**
-     * If this is just a simple Machine, which can be wrenched at 100%
-     */
-    boolean isSimpleMachine();
-
-    /**
      * If there should be a Lag Warning if something laggy happens during this Tick.
      * <p/>
      * The Advanced Pump uses this to not cause the Lag Message, while it scans for all close Fluids. The Item Pipes and

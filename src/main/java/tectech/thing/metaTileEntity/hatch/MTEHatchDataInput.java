@@ -61,11 +61,6 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean canConnectData(ForgeDirection side) {
         return isInputFacing(side);
     }

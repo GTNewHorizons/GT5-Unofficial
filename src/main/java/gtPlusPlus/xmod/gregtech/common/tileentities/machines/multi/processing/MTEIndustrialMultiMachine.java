@@ -409,7 +409,7 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
                 }
             }
 
-            // Logic for GT_MetaTileEntity_Hatch_Solidifier
+            // Logic for MTEHatchInput
             for (MTEHatchInput solidifierHatch : mInputHatches) {
                 if (solidifierHatch instanceof MTEHatchSolidifier) {
                     ItemStack mold = ((MTEHatchSolidifier) solidifierHatch).getMold();

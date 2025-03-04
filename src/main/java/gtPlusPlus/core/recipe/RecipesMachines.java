@@ -3052,13 +3052,10 @@ public class RecipesMachines {
                 new Object[] { CI.getTieredCircuitOreDictName(6), 8 },
                 MaterialsAlloy.INCONEL_625.getGear(8),
                 MaterialsAlloy.INCONEL_625.getPlate(32),
-                MaterialsAlloy.ZERON_100.getPlateDouble(8),
-                MaterialsAlloy.ZERON_100.getPlateDouble(8),
+                MaterialsAlloy.ZERON_100.getPlateDouble(16),
                 MaterialsAlloy.ZERON_100.getScrew(64),
-                CI.getTieredComponentOfMaterial(Materials.NiobiumTitanium, OrePrefixes.wireFine, 32),
-                CI.getTieredComponentOfMaterial(Materials.NiobiumTitanium, OrePrefixes.wireFine, 32),
-                CI.getTieredComponentOfMaterial(Materials.Titanium, OrePrefixes.foil, 16),
-                CI.getTieredComponentOfMaterial(Materials.Titanium, OrePrefixes.foil, 16))
+                CI.getTieredComponentOfMaterial(Materials.NiobiumTitanium, OrePrefixes.wireFine, 64),
+                CI.getTieredComponentOfMaterial(Materials.Titanium, OrePrefixes.foil, 32))
             .fluidInputs(
                 CI.getTieredFluid(6, 16 * 144),
                 CI.getAlternativeTieredFluid(6, 32 * 144),
@@ -3122,13 +3119,11 @@ public class RecipesMachines {
                 new Object[] { CI.getTieredCircuitOreDictName(6), 8 },
                 MaterialsAlloy.STELLITE.getGear(8),
                 MaterialsAlloy.STELLITE.getPlate(32),
-                MaterialsAlloy.HASTELLOY_N.getPlateDouble(8),
-                MaterialsAlloy.HASTELLOY_N.getPlateDouble(8),
+                MaterialsAlloy.HASTELLOY_N.getPlateDouble(16),
                 MaterialsAlloy.HASTELLOY_N.getScrew(64),
                 CI.getTieredComponentOfMaterial(Materials.YttriumBariumCuprate, OrePrefixes.wireFine, 64),
                 CI.getTieredComponentOfMaterial(Materials.YttriumBariumCuprate, OrePrefixes.wireFine, 64),
-                CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 32),
-                CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 32))
+                CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 64))
             .fluidInputs(
                 CI.getTieredFluid(5, 16 * 144),
                 CI.getAlternativeTieredFluid(4, 32 * 144),
@@ -3195,13 +3190,11 @@ public class RecipesMachines {
                 new Object[] { CI.getTieredCircuitOreDictName(5), 8 },
                 MaterialsAlloy.HS188A.getGear(8),
                 MaterialsAlloy.HS188A.getPlate(32),
-                MaterialsAlloy.HASTELLOY_N.getPlateDouble(8),
-                MaterialsAlloy.HASTELLOY_N.getPlateDouble(8),
+                MaterialsAlloy.HASTELLOY_N.getPlateDouble(16),
                 MaterialsAlloy.HASTELLOY_N.getScrew(64),
                 CI.getTieredComponentOfMaterial(Materials.YttriumBariumCuprate, OrePrefixes.wireFine, 64),
                 CI.getTieredComponentOfMaterial(Materials.YttriumBariumCuprate, OrePrefixes.wireFine, 64),
-                CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 32),
-                CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 32))
+                CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 64))
             .fluidInputs(
                 CI.getTieredFluid(4, 16 * 144),
                 CI.getAlternativeTieredFluid(3, 32 * 144),
@@ -3381,9 +3374,8 @@ public class RecipesMachines {
         ItemStack[] mSuperBusesInput = new ItemStack[] { GregtechItemList.Hatch_SuperBus_Input_LV.get(1),
             GregtechItemList.Hatch_SuperBus_Input_MV.get(1), GregtechItemList.Hatch_SuperBus_Input_HV.get(1), };
 
-        ItemStack[] mChiselBuses = new ItemStack[] { GregtechItemList.GT_MetaTileEntity_ChiselBus_LV.get(1),
-            GregtechItemList.GT_MetaTileEntity_ChiselBus_MV.get(1),
-            GregtechItemList.GT_MetaTileEntity_ChiselBus_HV.get(1), };
+        ItemStack[] mChiselBuses = new ItemStack[] { GregtechItemList.ChiselBus_LV.get(1),
+            GregtechItemList.ChiselBus_MV.get(1), GregtechItemList.ChiselBus_HV.get(1), };
 
         for (int tier = 1; tier < mChiselBuses.length + 1; tier++) {
             GTValues.RA.stdBuilder()
@@ -3407,10 +3399,9 @@ public class RecipesMachines {
         ItemStack[] mSuperBusesInput = new ItemStack[] { ItemList.Hatch_Input_IV.get(1),
             ItemList.Hatch_Input_LuV.get(1), ItemList.Hatch_Input_ZPM.get(1), ItemList.Hatch_Input_UV.get(1), };
 
-        ItemStack[] mSolidifierHatches = new ItemStack[] { GregtechItemList.GT_MetaTileEntity_Solidifier_I.get(1),
-            GregtechItemList.GT_MetaTileEntity_Solidifier_II.get(1),
-            GregtechItemList.GT_MetaTileEntity_Solidifier_III.get(1),
-            GregtechItemList.GT_MetaTileEntity_Solidifier_IV.get(1), };
+        ItemStack[] mSolidifierHatches = new ItemStack[] { GregtechItemList.Hatch_Solidifier_I.get(1),
+            GregtechItemList.Hatch_Solidifier_II.get(1), GregtechItemList.Hatch_Solidifier_III.get(1),
+            GregtechItemList.Hatch_Solidifier_IV.get(1), };
 
         for (int i = 0; i < 4; i++) {
             int componentTier = i + 5;

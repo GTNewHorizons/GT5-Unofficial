@@ -31,11 +31,6 @@ public abstract class MTERedstoneBase extends MTETieredMachineBlock {
     }
 
     @Override
-    public final boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
         return side != getBaseMetaTileEntity().getFrontFacing();
     }

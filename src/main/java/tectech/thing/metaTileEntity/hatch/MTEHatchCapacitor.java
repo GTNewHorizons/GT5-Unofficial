@@ -85,11 +85,6 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
