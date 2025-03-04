@@ -71,11 +71,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public boolean isFacingValid(final ForgeDirection facing) {
         return true;
     }

@@ -135,11 +135,6 @@ public abstract class MTERocketFuelGeneratorBase extends MTEBasicTank implements
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public boolean isValidSlot(final int aIndex) {
         return aIndex < 2;
     }

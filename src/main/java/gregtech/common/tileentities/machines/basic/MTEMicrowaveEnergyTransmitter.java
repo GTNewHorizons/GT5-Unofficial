@@ -265,11 +265,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public boolean isOverclockerUpgradable() {
         return false;
     }

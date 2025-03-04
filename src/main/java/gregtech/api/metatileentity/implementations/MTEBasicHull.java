@@ -78,11 +78,6 @@ public class MTEBasicHull extends MTEBasicTank {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }

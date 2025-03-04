@@ -208,11 +208,6 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean doesFillContainers() {
         return true;
     }

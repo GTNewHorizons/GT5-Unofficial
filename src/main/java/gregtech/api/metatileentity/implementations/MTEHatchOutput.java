@@ -87,11 +87,6 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }

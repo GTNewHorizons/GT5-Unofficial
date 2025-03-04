@@ -138,11 +138,6 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             aBaseMetaTileEntity.setActive(producing);

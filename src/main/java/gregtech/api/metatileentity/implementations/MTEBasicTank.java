@@ -55,11 +55,6 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex != getStackDisplaySlot();
     }

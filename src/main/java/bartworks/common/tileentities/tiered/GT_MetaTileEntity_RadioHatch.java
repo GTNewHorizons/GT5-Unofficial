@@ -272,11 +272,6 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }

@@ -378,11 +378,6 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public boolean isOverclockerUpgradable() {
         return false;
     }

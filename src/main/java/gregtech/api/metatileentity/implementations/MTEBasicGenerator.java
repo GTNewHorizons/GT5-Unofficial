@@ -125,11 +125,6 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex < 2;
     }

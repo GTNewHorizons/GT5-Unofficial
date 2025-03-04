@@ -239,11 +239,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }

@@ -93,11 +93,6 @@ public class MTETieredTank extends MTEBasicTank {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(final ForgeDirection facing) {
         return true;
     }
