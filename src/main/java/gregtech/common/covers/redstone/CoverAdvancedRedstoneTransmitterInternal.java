@@ -31,8 +31,8 @@ public class CoverAdvancedRedstoneTransmitterInternal
             else outputRedstone = 15;
         }
 
-        final long hash = hashCoverCoords(aTileEntity, side);
-        setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, outputRedstone);
+        final CoverData key = getCoverKey(aTileEntity, side);
+        setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), key, outputRedstone);
         return aCoverVariable;
     }
 

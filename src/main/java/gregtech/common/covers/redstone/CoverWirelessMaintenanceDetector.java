@@ -95,8 +95,8 @@ public class CoverWirelessMaintenanceDetector
     public MaintenanceTransmitterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
         MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         final byte signal = computeSignalBasedOnMaintenance(aCoverVariable, aTileEntity);
-        final long hash = hashCoverCoords(aTileEntity, side);
-        setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
+        final CoverData key = getCoverKey(aTileEntity, side);
+        setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), key, signal);
 
         if (aCoverVariable.physical) {
             aTileEntity.setOutputRedstoneSignal(side, signal);

@@ -33,6 +33,7 @@ public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
     public boolean onCoverRemoval(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         boolean aForced) {
         GregTechAPI.sWirelessRedstone.put(aCoverVariable, (byte) 0);
+        GregTechAPI.sWirelessRedstone.remove(aCoverVariable);
         return true;
     }
 
