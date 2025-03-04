@@ -212,11 +212,6 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
         return false;
     }
 
-    @Override
-    public boolean isOverclockerUpgradable() {
-        return true;
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {

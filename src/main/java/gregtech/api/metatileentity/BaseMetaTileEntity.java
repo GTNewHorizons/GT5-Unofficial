@@ -2210,7 +2210,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     /**
      * Shifts the machine Inventory index according to the change in Input/Output Slots. This is NOT done automatically.
      * If you want to change slot count for a machine this method needs to be adapted. Currently this method only works
-     * for GT_MetaTileEntity_BasicMachine
+     * for MTEBasicMachine
      *
      * @param slotIndex  The original Inventory index
      * @param nbtVersion The GregTech version in which the original Inventory Index was saved.
@@ -2227,7 +2227,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         final int wireAdditionVersion = GTMod.calculateTotalGTVersion(509, 41);
         final int disassemblerRemoveVersion = GTMod.calculateTotalGTVersion(509, 42, 44);
         if (nbtVersion < 1000000) nbtVersion *= 1000;
-        // 4 is old GT_MetaTileEntity_BasicMachine.OTHER_SLOT_COUNT
+        // 4 is old MTEBasicMachine.OTHER_SLOT_COUNT
         if (nbtVersion < configCircuitAdditionVersion && getMetaTileEntity() instanceof MTEBasicMachine
             && slotIndex >= 4) slotIndex += 1;
         if (mID >= 211 && mID <= 218) { // Assembler

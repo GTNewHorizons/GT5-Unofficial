@@ -59,7 +59,7 @@ import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
  * and also not postload!) Implement the newMetaEntity-Method to return a new ready instance of your MetaTileEntity
  * <p/>
  * Call the Constructor like the following example inside the Load Phase, to register it. "new
- * GT_MetaTileEntity_E_Furnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
+ * MTEFurnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
  */
 @SuppressWarnings("unused")
 public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICraftingIconProvider {
@@ -99,7 +99,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
      *
      * <pre>
      *
-     * public GT_MetaTileEntity_EBench(int id, String name, String nameRegional) {
+     * public MTEBench(int id, String name, String nameRegional) {
      *     super(id, name, nameRegional);
      * }
      * </pre>
@@ -548,20 +548,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
      */
     public int getRealCapacity() {
         return getCapacity();
-    }
-
-    /**
-     * If this accepts up to 4 Overclockers
-     */
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    /**
-     * If this accepts Transformer Upgrades
-     */
-    public boolean isTransformerUpgradable() {
-        return false;
     }
 
     /**
