@@ -75,11 +75,6 @@ public class MTEHatchMultiInput extends MTEHatchInput implements IAddUIWidgets {
         }
     }
 
-    @Override
-    public boolean displaysStackSize() {
-        return true;
-    }
-
     public FluidStack[] getStoredFluid() {
         return mStoredFluid;
     }

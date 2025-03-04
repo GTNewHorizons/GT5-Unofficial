@@ -86,8 +86,10 @@ public class GTUIInfos {
     }
 
     /**
-     * Opens TileEntity UI, created by {@link ITileWithModularUI#createWindow}.
+     * @deprecated Use {@link gregtech.api.metatileentity.CommonMetaTileEntity#openGui}
      */
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     public static void openGTTileEntityUI(IHasWorldObjectAndCoords aTileEntity, EntityPlayer aPlayer) {
         if (aTileEntity.isClientSide() || aPlayer instanceof FakePlayer) return;
         GTTileEntityDefaultUI.open(
