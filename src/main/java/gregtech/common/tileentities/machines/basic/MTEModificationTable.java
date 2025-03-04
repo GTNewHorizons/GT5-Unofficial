@@ -7,6 +7,9 @@ import static gregtech.common.items.IDMetaItem01.Armor_Core_T3;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTOreDictUnificator;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -44,19 +47,40 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
 
     private ItemStackHandler inputHandler = new ItemStackHandler(2);
 
-    private NBTTagCompound getTagFromItem(ItemStack item) {
+    private void setTagFromItem(ItemStack armorItem, ItemStack modItem) {
+        if (armorItem.getTagCompound() == null) {
+            armorItem.setTagCompound(new NBTTagCompound());
+        }
 
-        NBTTagCompound armorItemTag = new NBTTagCompound();
+        NBTTagCompound tag = armorItem.getTagCompound();
 
-        int metaID = item.getItemDamage() - 32000;
+        int metaID = modItem.getItemDamage() - 32000;
         int coreID = 0;
+        int frameID = 0;
         if (metaID == Armor_Core_T1.ID) coreID = 1;
         else if (metaID == Armor_Core_T2.ID) coreID = 2;
         else if (metaID == Armor_Core_T3.ID) coreID = 3;
 
-        armorItemTag.setInteger("core", coreID);
+        else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1))) {
+            tag.setString("frame", "Copper");
+            tag.setShort("frameR", Materials.Copper.mRGBa[0]);
+            tag.setShort("frameG", Materials.Copper.mRGBa[1]);
+            tag.setShort("frameB", Materials.Copper.mRGBa[2]);
+        }
+        else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1))) {
+            tag.setString("frame", "Copper");
+            tag.setShort("frameR", Materials.Iron.mRGBa[0]);
+            tag.setShort("frameG", Materials.Iron.mRGBa[1]);
+            tag.setShort("frameB", Materials.Iron.mRGBa[2]);
+        }
+        else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1))) {
+            tag.setString("frame", "Copper");
+            tag.setShort("frameR", Materials.Gold.mRGBa[0]);
+            tag.setShort("frameG", Materials.Gold.mRGBa[1]);
+            tag.setShort("frameB", Materials.Gold.mRGBa[2]);
+        }
 
-        return armorItemTag;
+        if (coreID != 0) armorItem.getTagCompound().setInteger("core", coreID);
     }
 
     @Override
@@ -74,7 +98,7 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
 
                 if (coreItem == null || armorItem == null) return;
                 coreItem.stackSize -= 1;
-                armorItem.setTagCompound(getTagFromItem(coreItem));
+                setTagFromItem(armorItem, coreItem);
 
             })
                 .setPos(20, 20)

@@ -14,18 +14,6 @@ public class MechBoots extends MechArmorBase {
 
     public MechBoots() {
         super(SLOT_BOOTS);
-    }
-
-    @Override
-    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-        return super.getIcon(stack, renderPass, player, usingItem, useRemaining);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(final IIconRegister aIconRegister) {
-        super.registerIcons(aIconRegister);
-        itemIcon = aIconRegister.registerIcon(GregTech.ID + ":gt.itemBootsMech");
-        coreIcon = aIconRegister.registerIcon(GregTech.ID + ":gt.mechanicalCoreBoots");
+        type = "boots";
     }
 }

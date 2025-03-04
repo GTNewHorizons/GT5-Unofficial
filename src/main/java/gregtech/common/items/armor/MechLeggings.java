@@ -11,13 +11,6 @@ public class MechLeggings extends MechArmorBase {
 
     public MechLeggings() {
         super(SLOT_LEGS);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(final IIconRegister aIconRegister) {
-        super.registerIcons(aIconRegister);
-        itemIcon = aIconRegister.registerIcon(GregTech.getResourcePath("mech_armor", "itemLeggingsMech"));
-        coreIcon = aIconRegister.registerIcon(GregTech.ID + ":gt.mechanicalCoreLeggings");
+        type = "leggings";
     }
 }

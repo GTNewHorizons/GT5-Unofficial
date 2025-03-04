@@ -15,14 +15,7 @@ public class MechChestplate extends MechArmorBase {
 
     public MechChestplate() {
         super(SLOT_CHEST);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(final IIconRegister aIconRegister) {
-        super.registerIcons(aIconRegister);
-        itemIcon = aIconRegister.registerIcon(GregTech.ID + ":gt.itemChestplateMech");
-        coreIcon = aIconRegister.registerIcon(GregTech.ID + ":gt.mechanicalCoreChestplate");
+        type = "chestplate";
     }
 
     @Override

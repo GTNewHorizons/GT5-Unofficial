@@ -7,6 +7,7 @@ import static gregtech.api.enums.Dyes.dyeWhite;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -47,16 +48,22 @@ public class MechanicalArmorRenderer implements IItemRenderer {
 
         IIcon baseLayer = item.getIconIndex();
         IIcon coreLayer = armorItem.getCoreIcon();
+        IIcon frameLayer = armorItem.getFrameIcon();
 
         if (baseLayer == null || coreLayer == null) {
             return;
         }
 
         int coreTier = 0;
+        short frameR = -1, frameG = -1, frameB = -1;
 
         if (item.hasTagCompound()) {
-            coreTier = item.getTagCompound()
-                .getInteger("core");
+            NBTTagCompound tag = item.getTagCompound();
+            coreTier = tag.getInteger("core");
+
+            frameR = tag.getShort("frameR");
+            frameG = tag.getShort("frameG");
+            frameB = tag.getShort("frameB");
         }
 
         GL11.glEnable(GL11.GL_BLEND);
@@ -64,6 +71,11 @@ public class MechanicalArmorRenderer implements IItemRenderer {
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
         GTRenderUtil.renderItem(type, baseLayer);
+
+        if (frameR != -1) {
+            GL11.glColor4f(frameR / 255.0F, frameG / 255.0F, frameB/ 255.0F, 1);
+            GTRenderUtil.renderItem(type, frameLayer);
+        }
 
         if (coreTier != 0) {
             short[] modulation = dyeWhite.getRGBA();
