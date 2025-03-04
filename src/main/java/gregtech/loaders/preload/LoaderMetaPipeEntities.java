@@ -5,6 +5,8 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
+import java.util.stream.IntStream;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -773,45 +775,74 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
     private static void registerItemPipes() {
         ItemPipeBuilder.builder()
+            .material(Materials.Tin)
+            .startId(5589)
+            .invSlotsForHugePipe(2)
+            .build();
+        ItemPipeBuilder.builder()
             .material(Materials.Brass)
-            .startId(5602)
+            .idList(5600, 5601, 5602, 5603, 5604, 5640, 5641, 5605, 5606, 5607)
             .invSlotsForHugePipe(4)
             .build();
         ItemPipeBuilder.builder()
             .material(Materials.Electrum)
-            .startId(5612)
+            .idList(5610, 5611, 5612, 5613, 5614, 5642, 5643, 5615, 5616, 5617)
             .invSlotsForHugePipe(8)
             .build();
         ItemPipeBuilder.builder()
             .material(Materials.Platinum)
-            .startId(5622)
+            .idList(5620, 5621, 5622, 5623, 5624, 5644, 5645, 5625, 5626, 5627)
             .invSlotsForHugePipe(16)
             .build();
         ItemPipeBuilder.builder()
             .material(Materials.Osmium)
-            .startId(5632)
+            .idList(5630, 5631, 5632, 5633, 5634, 5646, 5647, 5635, 5636, 5637)
             .invSlotsForHugePipe(32)
+            .build();
+        ItemPipeBuilder.builder()
+            .material(Materials.ElectrumFlux)
+            .startId(5650)
+            .invSlotsForHugePipe(64)
+            .build();
+        ItemPipeBuilder.builder()
+            .material(Materials.BlackPlutonium)
+            .startId(5660)
+            .invSlotsForHugePipe(128)
+            .build();
+        ItemPipeBuilder.builder()
+            .material(Materials.Bedrockium)
+            .startId(5670)
+            .invSlotsForHugePipe(256)
             .build();
         ItemPipeBuilder.builder()
             .material(Materials.PolyvinylChloride)
             .displayName("PVC")
             .startId(5690)
             .invSlotsForHugePipe(16)
+            .disableTinyAndSmall()
             .build();
         ItemPipeBuilder.builder()
             .material(Materials.Nickel)
             .startId(5700)
             .invSlotsForHugePipe(4)
+            .disableTinyAndSmall()
             .build();
         ItemPipeBuilder.builder()
             .material(Materials.Cobalt)
             .startId(5710)
             .invSlotsForHugePipe(8)
+            .disableTinyAndSmall()
             .build();
         ItemPipeBuilder.builder()
             .material(Materials.Aluminium)
             .startId(5720)
             .invSlotsForHugePipe(8)
+            .disableTinyAndSmall()
+            .build();
+        ItemPipeBuilder.builder()
+            .material(Materials.Quantium)
+            .startId(5730)
+            .invSlotsForHugePipe(512)
             .build();
     }
 
@@ -1253,7 +1284,9 @@ public final class LoaderMetaPipeEntities implements Runnable {
         private Materials material;
         private String displayName;
         private Integer startId;
+        private int[] idList;
         private Integer invSlotsForHugePipe;
+        private boolean generateTinyAndSmall = true;
 
         private static ItemPipeBuilder builder() {
             return new ItemPipeBuilder();
@@ -1284,6 +1317,15 @@ public final class LoaderMetaPipeEntities implements Runnable {
         }
 
         /**
+         * Sets sequence of MTE ids to use. Mostly for legacy reason. If your ids are sequential,
+         * use {@link #startId(int)} instead.
+         */
+        private ItemPipeBuilder idList(int... idList) {
+            this.idList = idList;
+            return this;
+        }
+
+        /**
          * Sets how many item stacks huge pipe can hold. Automatically scales for other sizes.
          */
         private ItemPipeBuilder invSlotsForHugePipe(int invSlotsForHugePipe) {
@@ -1291,44 +1333,97 @@ public final class LoaderMetaPipeEntities implements Runnable {
             return this;
         }
 
+        /**
+         * Disables generating tiny and small pipes.
+         */
+        private ItemPipeBuilder disableTinyAndSmall() {
+            this.generateTinyAndSmall = false;
+            return this;
+        }
+
         private void build() {
             if (material == null) throw new IllegalStateException("material must be set!");
-            if (startId == null) throw new IllegalStateException("startId must be set!");
+            if (startId == null && idList == null)
+                throw new IllegalStateException("Either of startId or idList must be set!");
+            if (startId != null && idList != null)
+                throw new IllegalStateException("startId and idList cannot be set at the same time!");
             if (invSlotsForHugePipe == null) throw new IllegalStateException("invSlotsForHugePipe must be set!");
             if (displayName == null) {
                 displayName = GTLanguageManager.i18nPlaceholder ? "%material" : material.mDefaultLocalName;
+            }
+            if (idList == null) {
+                if (generateTinyAndSmall) {
+                    idList = IntStream.range(startId, startId + 10)
+                        .toArray();
+                } else {
+                    idList = IntStream.range(startId, startId + 6)
+                        .toArray();
+                }
             }
 
             final String internalNameItemPipe = "GT_Pipe_" + material.mName;
             final String internalNameRestrictivePipe = "GT_Pipe_Restrictive_" + material.mName;
             final String displayNameItemPipe = displayName + " Item Pipe";
+            int idIndex = 0;
 
+            if (generateTinyAndSmall) {
+                GTOreDictUnificator.registerOre(
+                    OrePrefixes.pipeTiny.get(material),
+                    new MTEItemPipe(
+                        idList[idIndex],
+                        internalNameItemPipe + "_Tiny",
+                        "Tiny " + displayNameItemPipe,
+                        0.25F,
+                        material,
+                        Math.max(invSlotsForHugePipe / 16, 1),
+                        524288 / invSlotsForHugePipe,
+                        false,
+                        Math.max(16 / invSlotsForHugePipe, 1) * 20).getStackForm(1L));
+                idIndex++;
+                GTOreDictUnificator.registerOre(
+                    OrePrefixes.pipeSmall.get(material),
+                    new MTEItemPipe(
+                        idList[idIndex],
+                        internalNameItemPipe + "_Small",
+                        "Small " + displayNameItemPipe,
+                        0.375F,
+                        material,
+                        Math.max(invSlotsForHugePipe / 8, 1),
+                        262144 / invSlotsForHugePipe,
+                        false,
+                        Math.max(8 / invSlotsForHugePipe, 1) * 20).getStackForm(1L));
+                idIndex++;
+            }
             GTOreDictUnificator.registerOre(
                 OrePrefixes.pipeMedium.get(material),
                 new MTEItemPipe(
-                    startId,
+                    idList[idIndex],
                     internalNameItemPipe,
                     displayNameItemPipe,
                     0.50F,
                     material,
                     Math.max(invSlotsForHugePipe / 4, 1),
                     131072 / invSlotsForHugePipe,
-                    false).getStackForm(1L));
+                    false,
+                    Math.max(4 / invSlotsForHugePipe, 1) * 20).getStackForm(1L));
+            idIndex++;
             GTOreDictUnificator.registerOre(
                 OrePrefixes.pipeLarge.get(material),
                 new MTEItemPipe(
-                    startId + 1,
+                    idList[idIndex],
                     internalNameItemPipe + "_Large",
                     "Large " + displayNameItemPipe,
                     0.75F,
                     material,
                     Math.max(invSlotsForHugePipe / 2, 1),
                     65536 / invSlotsForHugePipe,
-                    false).getStackForm(1L));
+                    false,
+                    Math.max(2 / invSlotsForHugePipe, 1) * 20).getStackForm(1L));
+            idIndex++;
             GTOreDictUnificator.registerOre(
                 OrePrefixes.pipeHuge.get(material),
                 new MTEItemPipe(
-                    startId + 2,
+                    idList[idIndex],
                     internalNameItemPipe + "_Huge",
                     "Huge " + displayNameItemPipe,
                     1.00F,
@@ -1336,32 +1431,65 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     invSlotsForHugePipe,
                     32768 / invSlotsForHugePipe,
                     false).getStackForm(1L));
+            idIndex++;
+            if (generateTinyAndSmall) {
+                GTOreDictUnificator.registerOre(
+                    OrePrefixes.pipeRestrictiveTiny.get(material),
+                    new MTEItemPipe(
+                        idList[idIndex],
+                        internalNameRestrictivePipe + "_Tiny",
+                        "Tiny Restrictive " + displayNameItemPipe,
+                        0.25F,
+                        material,
+                        Math.max(invSlotsForHugePipe / 16, 1),
+                        52428800 / invSlotsForHugePipe,
+                        true,
+                        Math.max(16 / invSlotsForHugePipe, 1) * 20).getStackForm(1L));
+                idIndex++;
+                GTOreDictUnificator.registerOre(
+                    OrePrefixes.pipeRestrictiveSmall.get(material),
+                    new MTEItemPipe(
+                        idList[idIndex],
+                        internalNameRestrictivePipe + "_Small",
+                        "Small Restrictive " + displayNameItemPipe,
+                        0.375F,
+                        material,
+                        Math.max(invSlotsForHugePipe / 8, 1),
+                        26214400 / invSlotsForHugePipe,
+                        true,
+                        Math.max(8 / invSlotsForHugePipe, 1) * 20).getStackForm(1L));
+                idIndex++;
+            }
             GTOreDictUnificator.registerOre(
                 OrePrefixes.pipeRestrictiveMedium.get(material),
                 new MTEItemPipe(
-                    startId + 3,
+                    idList[idIndex],
                     internalNameRestrictivePipe,
                     "Restrictive " + displayNameItemPipe,
                     0.50F,
                     material,
                     Math.max(invSlotsForHugePipe / 4, 1),
                     13107200 / invSlotsForHugePipe,
-                    true).getStackForm(1L));
+                    true,
+                    Math.max(4 / invSlotsForHugePipe, 1) * 20).getStackForm(1L));
+            idIndex++;
             GTOreDictUnificator.registerOre(
                 OrePrefixes.pipeRestrictiveLarge.get(material),
                 new MTEItemPipe(
-                    startId + 4,
+                    idList[idIndex],
                     internalNameRestrictivePipe + "_Large",
                     "Large Restrictive " + displayNameItemPipe,
                     0.75F,
                     material,
                     Math.max(invSlotsForHugePipe / 2, 1),
                     6553600 / invSlotsForHugePipe,
-                    true).getStackForm(1L));
+                    true,
+                    Math.max(2 / invSlotsForHugePipe, 1) * 20).getStackForm(1L));
+            idIndex++;
             GTOreDictUnificator.registerOre(
                 OrePrefixes.pipeRestrictiveHuge.get(material),
                 new MTEItemPipe(
-                    startId + 5,
+                    idList[idIndex],
                     internalNameRestrictivePipe + "_Huge",
                     "Huge Restrictive " + displayNameItemPipe,
                     0.875F,
