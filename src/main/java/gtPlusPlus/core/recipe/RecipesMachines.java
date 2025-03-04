@@ -3406,10 +3406,9 @@ public class RecipesMachines {
         ItemStack[] mSuperBusesInput = new ItemStack[] { ItemList.Hatch_Input_IV.get(1),
             ItemList.Hatch_Input_LuV.get(1), ItemList.Hatch_Input_ZPM.get(1), ItemList.Hatch_Input_UV.get(1), };
 
-        ItemStack[] mSolidifierHatches = new ItemStack[] { GregtechItemList.GT_MetaTileEntity_Solidifier_I.get(1),
-            GregtechItemList.GT_MetaTileEntity_Solidifier_II.get(1),
-            GregtechItemList.GT_MetaTileEntity_Solidifier_III.get(1),
-            GregtechItemList.GT_MetaTileEntity_Solidifier_IV.get(1), };
+        ItemStack[] mSolidifierHatches = new ItemStack[] { GregtechItemList.Hatch_Solidifier_I.get(1),
+            GregtechItemList.Hatch_Solidifier_II.get(1), GregtechItemList.Hatch_Solidifier_III.get(1),
+            GregtechItemList.Hatch_Solidifier_IV.get(1), };
 
         for (int i = 0; i < 4; i++) {
             int componentTier = i + 5;
