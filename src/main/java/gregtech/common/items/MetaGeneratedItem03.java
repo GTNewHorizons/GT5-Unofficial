@@ -256,12 +256,7 @@ import static gregtech.common.items.IDMetaItem03.ZPM_Coil;
 
 import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
-import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TCAspects;
+import gregtech.api.enums.*;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
@@ -941,7 +936,6 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.KevlarFiber.set(addItem(KevlarFiber.ID, "Kevlar Fiber", "For making Kevlar Plates", o));
         ItemList.WovenKevlar.set(addItem(WovenKevlar.ID, "Woven Kevlar", "For making Kevlar Plates", o));
         ItemList.Spinneret.set(addItem(Spinneret.ID, "Spinneret", "For making Kevlar Fiber", o));
-        ItemList.Item_Sniffer.set(new ItemSniffer("Item_Sniffer", "Redstone Sniffer", "What are these frequencies?!"));
 
         ItemList.IndustrialApiary_Upgrade_Frame
             .set(addItem(IndustrialApiary_Upgrade_Frame.ID, "Upgrade Frame", "Crafting component", o));
@@ -1533,4 +1527,5 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
             || pref.contains("rawore")
             || pref.contains("platesuperdense");
     }
+
 }
