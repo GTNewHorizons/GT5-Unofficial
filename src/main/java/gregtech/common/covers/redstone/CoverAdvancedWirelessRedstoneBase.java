@@ -7,12 +7,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -29,7 +30,6 @@ import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedWirelessRedstoneBase.WirelessData>
     extends CoverBehaviorBase<T> {
@@ -39,7 +39,8 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
     }
 
     public static Byte getSignalAt(UUID uuid, int frequency, CoverAdvancedRedstoneReceiverBase.GateMode mode) {
-        Map<Integer, Map<CoverData, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
+        Map<Integer, Map<CoverData, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone
+            .get(String.valueOf(uuid));
         if (frequencies == null) return 0;
 
         Map<CoverData, Byte> signals = frequencies.get(frequency);
@@ -86,7 +87,8 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
     }
 
     public static void removeSignalAt(UUID uuid, int frequency, CoverData key) {
-        Map<Integer, Map<CoverData, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
+        Map<Integer, Map<CoverData, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone
+            .get(String.valueOf(uuid));
         if (frequencies == null) return;
         frequencies.computeIfPresent(frequency, (freq, longByteMap) -> {
             longByteMap.remove(key);
@@ -101,8 +103,13 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
         signals.put(key, value);
     }
 
-    public static CoverData getCoverKey(@NotNull ICoverable tile, ForgeDirection side){
-        return new CoverData(tile.getXCoord(), tile.getYCoord(), tile.getZCoord(), tile.getWorld().provider.dimensionId, side.ordinal());
+    public static CoverData getCoverKey(@NotNull ICoverable tile, ForgeDirection side) {
+        return new CoverData(
+            tile.getXCoord(),
+            tile.getYCoord(),
+            tile.getZCoord(),
+            tile.getWorld().provider.dimensionId,
+            side.ordinal());
     }
 
     /**
@@ -110,7 +117,8 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
      * bytes side hashed into last 4 bytes
      */
     public static long hashCoverCoords(@NotNull ICoverable tile, ForgeDirection side) {
-        return (((((long) tile.getXCoord() << 20) + tile.getZCoord() << 10) + tile.getYCoord() << 10) + tile.getWorld().provider.dimensionId << 4) + side.ordinal();
+        return (((((long) tile.getXCoord() << 20) + tile.getZCoord() << 10) + tile.getYCoord() << 10)
+            + tile.getWorld().provider.dimensionId << 4) + side.ordinal();
     }
 
     @Override
@@ -306,8 +314,10 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
 
         protected abstract boolean isShiftPrivateLeft();
     }
+
     public static class CoverData {
-        public final int x,y,z;
+
+        public final int x, y, z;
         public final int dim;
         public final int side;
         private final int hash;
@@ -318,16 +328,18 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
             this.z = z;
             this.dim = dim;
             this.side = side;
-            this.hash = Objects.hash(x,y,z,dim,side);
+            this.hash = Objects.hash(x, y, z, dim, side);
         }
+
         @Override
         public boolean equals(Object o) {
-            if (this == o)
-                return true;
-            if (o == null || getClass() != o.getClass())
-                return false;
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
             CoverData that = (CoverData) o;
-            return this.x == that.x && this.y == that.y && this.z == that.z && this.dim == that.dim && this.side == that.side;
+            return this.x == that.x && this.y == that.y
+                && this.z == that.z
+                && this.dim == that.dim
+                && this.side == that.side;
         }
 
         @Override
@@ -336,7 +348,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
         }
 
         public String getInfo() {
-            return String.format("%d, %d, %d DIM: %d",x,y,z,dim);
+            return String.format("%d, %d, %d DIM: %d", x, y, z, dim);
         }
     }
 }
