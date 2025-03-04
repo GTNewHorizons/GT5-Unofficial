@@ -582,11 +582,6 @@ public class MTETesseractTerminal extends MTEBasicTank {
     }
 
     @Override
-    public boolean displaysStackSize() {
-        return false;
-    }
-
-    @Override
     public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         if (this.getBaseMetaTileEntity()
             .getOwnerName() != null

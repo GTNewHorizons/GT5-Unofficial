@@ -760,11 +760,6 @@ public class MTETesseractGenerator extends MTEBasicTank {
         return false;
     }
 
-    @Override
-    public boolean displaysStackSize() {
-        return false;
-    }
-
     private MTETesseractGenerator getGeneratorEntity() {
         return TesseractHelper.getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), this.mFrequency);
     }

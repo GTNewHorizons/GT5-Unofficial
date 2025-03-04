@@ -365,11 +365,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     }
 
     @Override
-    public boolean displaysStackSize() {
-        return false;
-    }
-
-    @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         return null;
     }

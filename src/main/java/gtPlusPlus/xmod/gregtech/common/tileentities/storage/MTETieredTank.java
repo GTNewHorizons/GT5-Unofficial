@@ -155,11 +155,6 @@ public class MTETieredTank extends MTEBasicTank {
     }
 
     @Override
-    public boolean displaysStackSize() {
-        return false;
-    }
-
-    @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         if (mFluid != null) {
             Logger.WARNING("Setting item fluid nbt");

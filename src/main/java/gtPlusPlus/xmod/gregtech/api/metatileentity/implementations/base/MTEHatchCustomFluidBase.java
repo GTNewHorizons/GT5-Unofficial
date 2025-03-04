@@ -117,11 +117,6 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
         return true;
     }
 
-    @Override
-    public boolean displaysStackSize() {
-        return false;
-    }
-
     public void updateSlots() {
         if (mInventory[getInputSlot()] != null && mInventory[getInputSlot()].stackSize <= 0)
             mInventory[getInputSlot()] = null;

@@ -478,11 +478,6 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
     }
 
     @Override
-    public boolean displaysStackSize() {
-        return false;
-    }
-
-    @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         return null;
     }

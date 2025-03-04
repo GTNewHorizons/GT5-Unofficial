@@ -219,11 +219,6 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
     }
 
     @Override
-    public boolean displaysStackSize() {
-        return false;
-    }
-
-    @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) { // in that method since it is usually
                                                                                  // not overriden, especially for
                                                                                  // hatches.

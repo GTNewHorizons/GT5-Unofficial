@@ -571,11 +571,6 @@ public class MTECropHarvestor extends MTEBasicTank {
     }
 
     @Override
-    public boolean displaysStackSize() {
-        return false;
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mModeAlternative", this.mModeAlternative);

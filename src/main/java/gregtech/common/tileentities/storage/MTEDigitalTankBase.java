@@ -228,11 +228,6 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     }
 
     @Override
-    public boolean displaysStackSize() {
-        return false;
-    }
-
-    @Override
     public void setLockedFluidName(String lockedFluidName) {
         lockedFluidName = GTUtility.isStringInvalid(lockedFluidName) ? null : lockedFluidName;
         this.lockedFluidName = lockedFluidName;

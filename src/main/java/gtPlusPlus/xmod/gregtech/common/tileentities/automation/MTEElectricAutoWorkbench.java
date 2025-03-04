@@ -170,11 +170,6 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
     }
 
     @Override
-    public boolean displaysStackSize() {
-        return false;
-    }
-
-    @Override
     public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
         return side != getBaseMetaTileEntity().getFrontFacing() && side != getBaseMetaTileEntity().getBackFacing();
     }

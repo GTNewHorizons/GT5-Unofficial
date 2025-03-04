@@ -168,11 +168,6 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
         return true;
     }
 
-    @Override
-    public boolean displaysStackSize() {
-        return false;
-    }
-
     public int getLockedDisplaySlot() {
         return 3;
     }

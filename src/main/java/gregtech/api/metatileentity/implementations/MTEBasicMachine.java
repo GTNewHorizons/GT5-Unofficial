@@ -451,11 +451,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public boolean displaysStackSize() {
-        return true;
-    }
-
-    @Override
     public FluidStack getDrainableStack() {
         return mFluidOut;
     }

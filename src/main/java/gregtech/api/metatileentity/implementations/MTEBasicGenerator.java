@@ -176,11 +176,6 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
     }
 
     @Override
-    public boolean displaysStackSize() {
-        return false;
-    }
-
-    @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
         return getFuelValue(aFluid) > 0;
     }

@@ -186,11 +186,6 @@ public abstract class MTERocketFuelGeneratorBase extends MTEBasicTank implements
     }
 
     @Override
-    public boolean displaysStackSize() {
-        return false;
-    }
-
-    @Override
     public boolean isFluidInputAllowed(final FluidStack aFluid) {
         return this.getFuelValue(aFluid) > 0;
     }

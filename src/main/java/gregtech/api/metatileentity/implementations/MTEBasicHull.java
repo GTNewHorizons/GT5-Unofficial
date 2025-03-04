@@ -143,11 +143,6 @@ public class MTEBasicHull extends MTEBasicTank {
     }
 
     @Override
-    public boolean displaysStackSize() {
-        return false;
-    }
-
-    @Override
     public int getCapacity() {
         return (mTier + 1) * 1000;
     }

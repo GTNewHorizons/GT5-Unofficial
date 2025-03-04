@@ -77,11 +77,6 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
 
     public abstract boolean canTankBeEmptied();
 
-    /**
-     * @return If fluid amount is shown on FluidDisplayItem
-     */
-    public abstract boolean displaysStackSize();
-
     public int getInputSlot() {
         return 0;
     }
