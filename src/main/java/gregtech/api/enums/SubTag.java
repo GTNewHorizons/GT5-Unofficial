@@ -92,7 +92,7 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      */
     public static final SubTag NO_RECIPES = getNewSubTag("NO_RECIPES");
 
-    //public static final SubTag NO_RECYCLING = getNewSubTag("ONLY_RECYCLING");
+    // public static final SubTag NO_RECYCLING = getNewSubTag("ONLY_RECYCLING");
     /**
      * This Material cannot be unificated
      */
