@@ -143,42 +143,11 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
         }
         System.out.println(tag);
     }
-//        @Override
-//    public ModularPanel buildUI(GuiData guiData, PanelSyncManager guiSyncManager) {
-//
-//            List<String> a = IntStream.range(0,10).mapToObj(i -> "Option" + (i+1)).collect(Collectors.toList());
-//            final Map<String, SortableListWidget.Item<String>> items = new Object2ObjectOpenHashMap<>();
-//            for (String line : a) {
-//                items.put(line, new SortableListWidget.Item<>(line).child(item -> new Row()
-//                    .child(new Widget<>()
-//                        .addTooltipLine(line)
-//                        .background(GuiTextures.BUTTON_CLEAN)
-//                        .overlay(IKey.str(line))
-//                        .expanded().heightRel(1f))
-//                    .child(new ButtonWidget<>()
-//                        .onMousePressed(button -> {
-//                            return true;})
-//                        .overlay(GuiTextures.CROSS_TINY.asIcon().size(10))
-//                        .width(10).heightRel(1f))));
-//            }
-//            SortableListWidget<String> sortableListWidget = new SortableListWidget<String>()
-//                .children(a, items::get)
-//                .debugName("sortable list");
-//            ModularPanel panel = ModularPanel.defaultPanel("redstone_sniffer");
-//            panel.flex()
-//                .sizeRel(0.5f, 0.75f)
-//                .align(Alignment.Center);
-//            panel.child(new Column()
-//                .sizeRel(1)
-//                .child(sortableListWidget)
-//            );
-//            return panel;
-//        }
 
 
     @Override
     public ModularPanel buildUI(GuiData guiData, PanelSyncManager guiSyncManager) {
-        //PagedWidget.Controller controller = new PagedWidget.Controller();
+        PagedWidget.Controller controller = new PagedWidget.Controller();
 
 
 
@@ -188,29 +157,40 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
         panel.flex()
                 .sizeRel(0.5f, 0.75f)
                 .align(Alignment.Center);
-//
-//        PagedWidget data = new PagedWidget();
-//        data.sizeRel(1,0.75f);
-//        data.controller(controller);
 
-
-
-        ScrollWidget wirelessPage = new ScrollWidget(new VerticalScrollData());
-        wirelessPage.sizeRel(1, 0.8f);
-        wirelessPage.getScrollArea().getScrollY().setScrollSize(35*GregTechAPI.sWirelessRedstone.size());
-
-        AtomicInteger i = new AtomicInteger(0);
+        PagedWidget data = new PagedWidget();
+        data.sizeRel(1,0.8f);
+        data.controller(controller);
 
         //Process regular wireless redstone frequencies
-
+        List<List<IWidget>> regularMatrix = new ArrayList<>();
         GregTechAPI.sWirelessRedstone.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(entry ->{
             int freq = entry.getKey();
             boolean isPrivate = freq > 65535;
             int displayFreq = isPrivate ? freq - 65536 : freq;
-            wirelessPage.child(
-                new Row()
+            List<IWidget> row = new ArrayList<>();
+            row.add(
+                new Row(){
+                    @Override
+                    public Flow setEnabledIf(Predicate<Flow> condition) {
+                        return onUpdateListener(w -> {
+                            setEnabled(condition.test(w));
+                            heightRel(isEnabled() ? 0.2f : 0);
+                        }, true);
+                    }
+                }.setEnabledIf(w -> {
+                        try{
+                            if(Integer.parseInt(this.filter) != freq){
+                                return false;
+                            }
+                        } catch(NumberFormatException ignored){
+
+                        }
+                        return true;
+                    })
+                .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
                 .sizeRel(1f,0.2f)
-                .pos(0,i.get()*35)
+                .expanded()
                 .child(new TextWidget(String.valueOf(displayFreq)).widthRel(1.0f/3.0f).alignment(Alignment.Center))
                 .child(new TextWidget(isPrivate ? "Yes" : "No").widthRel(1.0f/3.0f).alignment(Alignment.Center))
                 .child(new TextFieldWidget()
@@ -227,25 +207,25 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                             }
                         }))
                     ));
-            i.getAndIncrement();
+            regularMatrix.add(row);
         });
 
+        Grid regularGrid = new Grid()
+            .minColWidth(0)
+            .minRowHeight(0)
+            .scrollable()
+            .matrix(regularMatrix);
 
-        ParentWidget regularWireless = new ParentWidget();
-        regularWireless.sizeRel(1);
-        regularWireless.child(new Column()
+
+        data.addPage(new Column()
             .child(new Row()
-                .margin(5)
                 .heightRel(0.1f)
-                .align(Alignment.TopLeft)
                 .child(new TextWidget("Frequency").widthRel(1.0f/3.0f).alignment(Alignment.Center))
                 .child(new TextWidget("Private").widthRel(1.0f/3.0f).alignment(Alignment.Center))
-                .child(new TextWidget("Label").widthRel(1.0f/3.0f).alignment(Alignment.Center)))
-            .child(wirelessPage)
+                .child(new TextWidget("Label").widthRel(1.0f/3.0f).alignment(Alignment.Center))
+            )
+            .child(new Row().heightRel(0.9f).child(regularGrid.sizeRel(1,1f)))
         );
-        // data.addPage(regularWireless);
-
-
 
         //Process advanced wireless redstone frequencies
         Map<Integer, Map<CoverData, Byte>> publicFreqs = GregTechAPI.sAdvancedWirelessRedstone.getOrDefault("null", new ConcurrentHashMap<>());
@@ -254,85 +234,42 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
         int advFreqSize = publicFreqs.size() + privateFreqs.size();
 
 
-        i.set(0);
 
-        Grid grid = new Grid()
+        Grid advGrid = new Grid()
             .minColWidth(0)
             .minRowHeight(0)
             .scrollable();
-        grid.getScrollArea().getScrollY().setScrollSize(35*advFreqSize);
 
-        List<List<IWidget>> matrix = (processAdvancedFrequencies(publicFreqs, "Public", grid, guiSyncManager));
-        matrix.addAll((processAdvancedFrequencies(privateFreqs, this.uuid, grid, guiSyncManager)));
-        grid.matrix(matrix);
-
-//        ParentWidget advWireless = new ParentWidget();
-//        advWireless.sizeRel(1);
-//
-//        advWireless.child(new Column()
-//            .child(new Row()
-//                .margin(5)
-//                .heightRel(0.1f)
-//                .child(new TextWidget("Owner").widthRel(0.2f).alignment(Alignment.Center))
-//                .child(new TextWidget("Frequency").widthRel(0.2f).alignment(Alignment.Center))
-//                .child(new TextWidget("Coords").widthRel(0.25f).alignment(Alignment.Center))
-//                .child(new TextWidget("Label").widthRel(0.2f).alignment(Alignment.Center))
-//                .child(new TextWidget("Action").widthRel(0.15f).alignment(Alignment.Center))
-//            )
-//            .child(grid.posRel(0, 0.6f).sizeRel(1,0.8f))
-//        );
-//
-//        data.addPage(advWireless);
+        List<List<IWidget>> advancedMatrix = (processAdvancedFrequencies(publicFreqs, "Public", advGrid, guiSyncManager));
+        advancedMatrix.addAll((processAdvancedFrequencies(privateFreqs, this.uuid, advGrid, guiSyncManager)));
+        advGrid.matrix(advancedMatrix);
 
 
+        data.addPage(new Column()
+            .child(new Row()
+                .heightRel(0.1f)
+                .child(new TextWidget("Owner").widthRel(0.2f).alignment(Alignment.Center))
+                .child(new TextWidget("Frequency").widthRel(0.2f).alignment(Alignment.Center))
+                .child(new TextWidget("Coords").widthRel(0.25f).alignment(Alignment.Center))
+                .child(new TextWidget("Label").widthRel(0.2f).alignment(Alignment.Center))
+                .child(new TextWidget("Action").widthRel(0.15f).alignment(Alignment.Center))
+            )
+            .child(new Row().heightRel(0.9f).child(advGrid.sizeRel(1f)))
+        );
 
-
-        //data.addPage(advWireless);
-//        panel.child(new Column()
-////            .child(new Row()
-////                .heightRel(0.1f)
-////                .margin(10)
-////                .child(new PageButton(0, controller)
-////                    .widthRel(0.5f)
-////                    .align(Alignment.CenterLeft)
-////                    .overlay(IKey.dynamic(() -> "Regular Wireless")))
-////                .child(new PageButton(1, controller)
-////                    .widthRel(0.5f)
-////                    .align(Alignment.CenterRight)
-////                    .overlay(IKey.dynamic(() -> "Advanced Wireless"))))
-//                .child(new Row()
-//                    .heightRel(0.1f)
-//                    .child(new TextWidget("Filter frequency: ")
-//                        .widthRel(0.25f)
-//                        .alignment(Alignment.Center)
-//                    )
-//                    .child(new TextFieldWidget()
-//                        .sizeRel(0.25f, 0.5f)
-//                        .value(SyncHandlers.string(() -> this.filter, filter -> {
-//                            this.filter = filter;
-//                            if(NetworkUtils.isClient()){
-//                                System.out.println("RESIZING!!!!!\n\n\n");
-//                                //WidgetTree.resize(grid);
-//                            }
-//                        }))
-//
-//                    )
-//                )
-//                .child(new Row()
-//                    .margin(5)
-//                    .heightRel(0.1f)
-//                    .child(new TextWidget("Owner").widthRel(0.2f).alignment(Alignment.Center))
-//                    .child(new TextWidget("Frequency").widthRel(0.2f).alignment(Alignment.Center))
-//                    .child(new TextWidget("Coords").widthRel(0.25f).alignment(Alignment.Center))
-//                    .child(new TextWidget("Label").widthRel(0.2f).alignment(Alignment.Center))
-//                    .child(new TextWidget("Action").widthRel(0.15f).alignment(Alignment.Center))
-//                )
-//            //.child(data)
-//                .child(grid.posRel(0,0.6f).sizeRel(1, 0.5f))
-//            .margin(10));
-        panel
-            .child(new Column()
+        panel.child(
+            new Column()
                 .margin(10)
+                .child(new Row()
+                    .heightRel(0.1f)
+                    .child(new PageButton(0, controller)
+                        .widthRel(0.5f)
+                        .align(Alignment.CenterLeft)
+                        .overlay(IKey.dynamic(() -> "Regular Wireless")))
+                    .child(new PageButton(1, controller)
+                        .widthRel(0.5f)
+                        .align(Alignment.CenterRight)
+                        .overlay(IKey.dynamic(() -> "Advanced Wireless"))))
                 .child(new Row()
                     .heightRel(0.1f)
                     .child(new TextWidget("Filter frequency: ")
@@ -344,22 +281,12 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                         .value(SyncHandlers.string(() -> this.filter, filter -> {
                             this.filter = filter;
                             if(NetworkUtils.isClient()){
-                                WidgetTree.resize(grid);
+                                WidgetTree.resize(advGrid);
                             }
                         }))
                     )
                 )
-                .child(new Row()
-                    .margin(5)
-                    .heightRel(0.1f)
-                    .child(new TextWidget("Owner").widthRel(0.2f).alignment(Alignment.Center))
-                    .child(new TextWidget("Frequency").widthRel(0.2f).alignment(Alignment.Center))
-                    .child(new TextWidget("Coords").widthRel(0.25f).alignment(Alignment.Center))
-                    .child(new TextWidget("Label").widthRel(0.2f).alignment(Alignment.Center))
-                    .child(new TextWidget("Action").widthRel(0.15f).alignment(Alignment.Center))
-                )
-                .child(new Row().heightRel(0.8f).child(grid.sizeRel(1)))
-            );
+                .child(data));
 
         return panel;
     }
@@ -436,62 +363,6 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
         });
         return result;
     }
-
-//    public void processAdvancedFrequencies(Map<Integer, Map<CoverData, Byte>> frequencyMap, String owner, ScrollWidget widget, AtomicInteger i, PanelSyncManager guiSyncManager){
-//
-//        frequencyMap.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(frequencyEntry ->{
-//            frequencyEntry.getValue().forEach((cover,useless) ->{
-//                int freq = frequencyEntry.getKey();
-//                widget.child(new Row()
-//                        .setEnabledIf(w -> {
-//                            try{
-//                                if(Integer.parseInt(this.filter) != freq){
-//                                    return false;
-//                                }
-//                            } catch(NumberFormatException ignored){
-//
-//                            }
-//                            return true;
-//                        })
-//                    .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
-//                    .sizeRel(1f,0.2f)
-//                    .expanded()
-//                    .child(new TextWidget(owner.equals("Public") ? "Public" : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(owner)))
-//                        .widthRel(0.2f)
-//                        .alignment(Alignment.Center))
-//                    .child(new TextWidget(String.valueOf(freq)).widthRel(0.2f).alignment(Alignment.Center))
-//                    .child(new TextWidget(cover.getInfo()).widthRel(0.25f).alignment(Alignment.Center))
-//                    .child(new TextFieldWidget()
-//                        .sizeRel(0.2f, 0.5f)
-//                        .value(SyncHandlers.string(() -> {
-//                            Map<CoverData, String> coversOnFrequency = getCoversOnFrequency(owner, freq);
-//                            return coversOnFrequency.getOrDefault(cover, "Description");
-//                        }, label -> {
-//                            if(!guiSyncManager.isClient()){
-//                                Map<Integer, Map<CoverData,String>> frequencies = advWirelessLabels.computeIfAbsent(owner,k -> new HashMap<>());
-//                                Map<CoverData, String> covers = frequencies.computeIfAbsent(freq, k -> new HashMap<>());
-//                                covers.put(cover, label);
-//                                NBTTagCompound tag = serializeAdvancedToNBT(new NBTTagCompound(), advWirelessLabels);
-//                                guiSyncManager.getPlayer().getHeldItem().setTagCompound(tag);
-//                            }
-//
-//                        }))
-//                    )
-//                    .child(new ButtonWidget<>()
-//                        .widthRel(0.12f)
-//                        .marginLeft(5)
-//                        .overlay(IKey.str("Debug"))
-//                        .onMousePressed(mouseButton -> {
-//                            LOGGER.debug("Debugging on cover");
-//                            GTValues.NW.sendToServer(new PacketTeleportPlayer(cover.dim, cover.x, cover.y, cover.z));
-//                            widget.getPanel().closeIfOpen(false);
-//                            return true;
-//                        })
-//                    )
-//                );
-//            });
-//        });
-//    }
 
 
 }
