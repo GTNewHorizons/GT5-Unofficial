@@ -23,7 +23,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.items.GTGenericItem;
-import gregtech.api.net.PacketTeleportPlayer;
+import gregtech.api.net.PacketDebugRedstoneCover;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase.CoverData;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -153,8 +153,8 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
         ModularPanel panel = ModularPanel.defaultPanel("redstone_sniffer");
         panel.flex()
-                .sizeRel(0.5f, 0.75f)
-                .align(Alignment.Center);
+            .sizeRel(0.5f, 0.75f)
+            .align(Alignment.Center);
 
         PagedWidget data = new PagedWidget();
         data.sizeRel(1,0.8f);
@@ -186,24 +186,24 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                         }
                         return false;
                     })
-                .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
-                .sizeRel(1f,0.2f)
-                .expanded()
-                .child(new TextWidget(String.valueOf(displayFreq)).widthRel(1.0f/3.0f).alignment(Alignment.Center))
-                .child(new TextWidget(isPrivate ? "Yes" : "No").widthRel(1.0f/3.0f).alignment(Alignment.Center))
-                .child(new TextFieldWidget()
-                    .sizeRel(1.0f/3.0f, 0.5f)
-                    .value(SyncHandlers.string(
-                        () -> regularWirelessLabels.getOrDefault(freq, "Description"),
-                        label -> {
-                            regularWirelessLabels.put(freq, label);
-                            if(!guiSyncManager.isClient()){
-                                NBTTagCompound currentTag = guiSyncManager.getPlayer().getHeldItem().getTagCompound();
-                                if (currentTag == null) currentTag = new NBTTagCompound();
-                                NBTTagCompound tag = serializeRegularToNBT(currentTag);
-                                guiSyncManager.getPlayer().getHeldItem().setTagCompound(tag);
-                            }
-                        }))
+                    .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
+                    .sizeRel(1f,0.2f)
+                    .expanded()
+                    .child(new TextWidget(String.valueOf(displayFreq)).widthRel(1.0f/3.0f).alignment(Alignment.Center))
+                    .child(new TextWidget(isPrivate ? "Yes" : "No").widthRel(1.0f/3.0f).alignment(Alignment.Center))
+                    .child(new TextFieldWidget()
+                        .sizeRel(1.0f/3.0f, 0.5f)
+                        .value(SyncHandlers.string(
+                            () -> regularWirelessLabels.getOrDefault(freq, "Description"),
+                            label -> {
+                                regularWirelessLabels.put(freq, label);
+                                if(!guiSyncManager.isClient()){
+                                    NBTTagCompound currentTag = guiSyncManager.getPlayer().getHeldItem().getTagCompound();
+                                    if (currentTag == null) currentTag = new NBTTagCompound();
+                                    NBTTagCompound tag = serializeRegularToNBT(currentTag);
+                                    guiSyncManager.getPlayer().getHeldItem().setTagCompound(tag);
+                                }
+                            }))
                     ));
             regularMatrix.add(row);
         });
@@ -253,11 +253,11 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
         data.addPage(new Column()
             .child(new Row()
                 .heightRel(0.1f)
-                .child(new TextWidget("Owner").widthRel(0.2f).alignment(Alignment.Center))
-                .child(new TextWidget("Frequency").widthRel(0.2f).alignment(Alignment.Center))
+                .child(new TextWidget("Owner").widthRel(0.15f).alignment(Alignment.Center))
+                .child(new TextWidget("Frequency").widthRel(0.15f).alignment(Alignment.Center))
                 .child(new TextWidget("Coords").widthRel(0.25f).alignment(Alignment.Center))
                 .child(new TextWidget("Label").widthRel(0.2f).alignment(Alignment.Center))
-                .child(new TextWidget("Action").widthRel(0.15f).alignment(Alignment.Center))
+                .child(new TextWidget("Action").widthRel(0.25f).alignment(Alignment.Center))
             )
             .child(new Row().heightRel(0.9f).child(advGrid.sizeRel(1f)))
         );
@@ -324,63 +324,75 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
             coverMap.forEach((cover, useless) -> {
                 List<IWidget> row = new ArrayList<>();
                 row.add(new Row(){
-                    @Override
-                    public Flow setEnabledIf(Predicate<Flow> condition) {
-                        return onUpdateListener(w -> {
-                            setEnabled(condition.test(w));
-                            heightRel(isEnabled() ? 0.2f : 0);
-                        }, true);
-                    }
-                }.setEnabledIf(w -> {
-                        try{
-                            if(this.ownerFilter.replaceAll(" ","").isEmpty() || this.ownerFilter.equals(ownerString)){
-                                if(entry.getKey() == Integer.parseInt(this.freqFilter)){
-                                    return true;
-                                }
-                            } else{
-                                return false;
-                            }
-
-                        } catch(NumberFormatException ignored){
-                            return true;
+                        @Override
+                        public Flow setEnabledIf(Predicate<Flow> condition) {
+                            return onUpdateListener(w -> {
+                                setEnabled(condition.test(w));
+                                heightRel(isEnabled() ? 0.2f : 0);
+                            }, true);
                         }
-                        return false;
-                    })
-                    .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
-                    .sizeRel(1f,0.2f)
-                    .expanded()
-                    .child(new TextWidget(ownerString)
-                        .widthRel(0.2f)
-                        .alignment(Alignment.Center))
-                    .child(new TextWidget(String.valueOf(freq)).widthRel(0.2f).alignment(Alignment.Center))
-                    .child(new TextWidget(cover.getInfo()).widthRel(0.25f).alignment(Alignment.Center))
-                    .child(new TextFieldWidget()
-                        .sizeRel(0.2f, 0.5f)
-                        .value(SyncHandlers.string(() -> {
-                            Map<CoverData, String> coversOnFrequency = getCoversOnFrequency(owner, freq);
-                            return coversOnFrequency.getOrDefault(cover, "Description");
-                        }, label -> {
-                            if(!guiSyncManager.isClient()){
-                                Map<Integer, Map<CoverData,String>> frequencies = advWirelessLabels.computeIfAbsent(owner,k -> new HashMap<>());
-                                Map<CoverData, String> covers = frequencies.computeIfAbsent(freq, k -> new HashMap<>());
-                                covers.put(cover, label);
-                                NBTTagCompound tag = serializeAdvancedToNBT(new NBTTagCompound(), advWirelessLabels);
-                                guiSyncManager.getPlayer().getHeldItem().setTagCompound(tag);
-                            }
+                    }.setEnabledIf(w -> {
+                            try{
+                                if(this.ownerFilter.replaceAll(" ","").isEmpty() || this.ownerFilter.equals(ownerString)){
+                                    if(entry.getKey() == Integer.parseInt(this.freqFilter)){
+                                        return true;
+                                    }
+                                } else{
+                                    return false;
+                                }
 
-                        }))
-                    )
-                    .child(new ButtonWidget<>()
-                        .widthRel(0.12f)
-                        .marginLeft(5)
-                        .overlay(IKey.str("Debug"))
-                        .onMousePressed(mouseButton -> {
-                            LOGGER.debug("Debugging on cover");
-                            GTValues.NW.sendToServer(new PacketTeleportPlayer(cover.dim, cover.x, cover.y, cover.z));
-                            grid.getPanel().closeIfOpen(false);
-                            return true;
+                            } catch(NumberFormatException ignored){
+                                return true;
+                            }
+                            return false;
                         })
-                    ));
+                        .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
+                        .sizeRel(1f,0.2f)
+                        .expanded()
+                        .child(new TextWidget(ownerString)
+                            .widthRel(0.15f)
+                            .alignment(Alignment.Center))
+                        .child(new TextWidget(String.valueOf(freq)).widthRel(0.15f).alignment(Alignment.Center))
+                        .child(new TextWidget(cover.getInfo()).widthRel(0.25f).alignment(Alignment.Center))
+                        .child(new TextFieldWidget()
+                            .sizeRel(0.2f, 0.5f)
+                            .value(SyncHandlers.string(() -> {
+                                Map<CoverData, String> coversOnFrequency = getCoversOnFrequency(owner, freq);
+                                return coversOnFrequency.getOrDefault(cover, "Description");
+                            }, label -> {
+                                if(!guiSyncManager.isClient()){
+                                    Map<Integer, Map<CoverData,String>> frequencies = advWirelessLabels.computeIfAbsent(owner,k -> new HashMap<>());
+                                    Map<CoverData, String> covers = frequencies.computeIfAbsent(freq, k -> new HashMap<>());
+                                    covers.put(cover, label);
+                                    NBTTagCompound tag = serializeAdvancedToNBT(new NBTTagCompound(), advWirelessLabels);
+                                    guiSyncManager.getPlayer().getHeldItem().setTagCompound(tag);
+                                }
+
+                            }))
+                        )
+                        .child(new ButtonWidget<>()
+                            .widthRel(0.11f)
+                            .marginLeft(5)
+                            .overlay(IKey.str("Locate"))
+                            .onMousePressed(mouseButton -> {
+                                LOGGER.debug("Locating cover " + cover.getInfo() + " For player " + guiSyncManager.getPlayer().getDisplayName());
+                                GTValues.NW.sendToServer(new PacketDebugRedstoneCover(cover.dim, cover.x, cover.y, cover.z, false));
+                                grid.getPanel().closeIfOpen(false);
+                                return true;
+                            })
+                        )
+                        .child(new ButtonWidget<>()
+                            .widthRel(0.11f)
+                            .marginLeft(5)
+                            .overlay(IKey.str("Teleport"))
+                            .onMousePressed(mouseButton -> {
+                                LOGGER.debug("Teleporting player " + guiSyncManager.getPlayer().getDisplayName() + " to " + cover.getInfo());
+                                GTValues.NW.sendToServer(new PacketDebugRedstoneCover(cover.dim, cover.x, cover.y, cover.z, true));
+                                grid.getPanel().closeIfOpen(false);
+                                return true;
+                            })
+                        )
+                );
                 result.add(row);
             });
 
