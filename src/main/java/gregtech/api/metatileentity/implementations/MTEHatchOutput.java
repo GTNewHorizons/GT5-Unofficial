@@ -169,11 +169,6 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     }
 
     @Override
-    public boolean displaysItemStack() {
-        return true;
-    }
-
-    @Override
     public boolean displaysStackSize() {
         return false;
     }

@@ -176,11 +176,6 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
     }
 
     @Override
-    public boolean displaysItemStack() {
-        return true;
-    }
-
-    @Override
     public boolean displaysStackSize() {
         return false;
     }

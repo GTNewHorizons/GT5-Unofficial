@@ -155,11 +155,6 @@ public class MTETieredTank extends MTEBasicTank {
     }
 
     @Override
-    public boolean displaysItemStack() {
-        return true;
-    }
-
-    @Override
     public boolean displaysStackSize() {
         return false;
     }

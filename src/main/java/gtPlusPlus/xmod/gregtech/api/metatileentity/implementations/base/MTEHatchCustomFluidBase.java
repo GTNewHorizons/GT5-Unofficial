@@ -118,11 +118,6 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
     }
 
     @Override
-    public boolean displaysItemStack() {
-        return true;
-    }
-
-    @Override
     public boolean displaysStackSize() {
         return false;
     }

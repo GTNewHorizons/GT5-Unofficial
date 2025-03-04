@@ -133,11 +133,6 @@ public class MTEHatchInput extends MTEHatch {
     }
 
     @Override
-    public boolean displaysItemStack() {
-        return true;
-    }
-
-    @Override
     public boolean displaysStackSize() {
         return false;
     }

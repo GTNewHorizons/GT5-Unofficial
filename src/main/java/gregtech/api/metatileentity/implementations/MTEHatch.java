@@ -219,11 +219,6 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
     }
 
     @Override
-    public boolean displaysItemStack() {
-        return false;
-    }
-
-    @Override
     public boolean displaysStackSize() {
         return false;
     }

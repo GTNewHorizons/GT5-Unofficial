@@ -143,11 +143,6 @@ public class MTEBasicHull extends MTEBasicTank {
     }
 
     @Override
-    public boolean displaysItemStack() {
-        return false;
-    }
-
-    @Override
     public boolean displaysStackSize() {
         return false;
     }
