@@ -180,11 +180,11 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                     }
                 }.setEnabledIf(w -> {
                         try{
-                            if(displayFreq == Integer.parseInt(this.filter) || this.filter.isEmpty()){
+                            if(displayFreq == Integer.parseInt(this.filter)){
                                 return true;
                             }
                         } catch(NumberFormatException ignored){
-
+                            return true;
                         }
                         return false;
                     })
@@ -204,7 +204,6 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                                 NBTTagCompound currentTag = guiSyncManager.getPlayer().getHeldItem().getTagCompound();
                                 if (currentTag == null) currentTag = new NBTTagCompound();
                                 NBTTagCompound tag = serializeRegularToNBT(currentTag);
-                                System.out.println(tag);
                                 guiSyncManager.getPlayer().getHeldItem().setTagCompound(tag);
                             }
                         }))
@@ -282,6 +281,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                         .sizeRel(0.25f, 0.5f)
                         .value(SyncHandlers.string(() -> this.filter, filter -> {
                             this.filter = filter;
+                            System.out.println(filter);
                             if(NetworkUtils.isClient()){
                                 WidgetTree.resize(regularGrid);
                                 WidgetTree.resize(advGrid);
@@ -317,11 +317,11 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                     }
                 }.setEnabledIf(w -> {
                         try{
-                            if(entry.getKey() == Integer.parseInt(this.filter) || this.filter.isEmpty()){
+                            if(entry.getKey() == Integer.parseInt(this.filter)){
                                 return true;
                             }
                         } catch(NumberFormatException ignored){
-
+                            return true;
                         }
                         return false;
                     })
