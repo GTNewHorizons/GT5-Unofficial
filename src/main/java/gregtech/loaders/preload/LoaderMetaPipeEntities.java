@@ -603,34 +603,52 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 350,
                 false).getStackForm(1L));
 
-        generateFluidPipes(Materials.Copper, Materials.Copper.mName, 5110, 20, 1000, true);
-        generateFluidMultiPipes(Materials.Copper, Materials.Copper.mName, 5115, 20, 1000, true);
-        generateFluidPipes(Materials.Bronze, Materials.Bronze.mName, 5120, 120, 2000, true);
-        generateFluidMultiPipes(Materials.Bronze, Materials.Bronze.mName, 5125, 120, 2000, true);
-        generateFluidPipes(Materials.Steel, Materials.Steel.mName, 5130, 240, 2500, true);
-        generateFluidMultiPipes(Materials.Steel, Materials.Steel.mName, 5135, 240, 2500, true);
-        generateFluidPipes(Materials.StainlessSteel, Materials.StainlessSteel.mName, 5140, 360, 3000, true);
-        generateFluidMultiPipes(Materials.StainlessSteel, Materials.StainlessSteel.mName, 5145, 360, 3000, true);
-        generateFluidPipes(Materials.Titanium, Materials.Titanium.mName, 5150, 480, 5000, true);
-        generateFluidMultiPipes(Materials.Titanium, Materials.Titanium.mName, 5155, 480, 5000, true);
-        generateFluidPipes(Materials.TungstenSteel, Materials.TungstenSteel.mName, 5160, 600, 7500, true);
-        generateFluidMultiPipes(Materials.TungstenSteel, Materials.TungstenSteel.mName, 5270, 600, 7500, true);
-        generateFluidPipes(
-            Materials.Polybenzimidazole,
-            Materials.Polybenzimidazole.mName,
-            "PBI",
-            5280,
-            600,
-            1000,
-            true);
-        generateFluidMultiPipes(
-            Materials.Polybenzimidazole,
-            Materials.Polybenzimidazole.mName,
-            "PBI",
-            5290,
-            600,
-            1000,
-            true);
+        FluidPipeBuilder.builder()
+            .material(Materials.Copper)
+            .startId(5110)
+            .baseCapacity(20)
+            .heatCapacity(1000)
+            .build();
+        FluidPipeBuilder.builder()
+            .material(Materials.Bronze)
+            .startId(5120)
+            .baseCapacity(120)
+            .heatCapacity(2000)
+            .build();
+        FluidPipeBuilder.builder()
+            .material(Materials.Steel)
+            .startId(5130)
+            .baseCapacity(240)
+            .heatCapacity(2500)
+            .build();
+        FluidPipeBuilder.builder()
+            .material(Materials.StainlessSteel)
+            .startId(5140)
+            .baseCapacity(360)
+            .heatCapacity(3000)
+            .build();
+        FluidPipeBuilder.builder()
+            .material(Materials.Titanium)
+            .startId(5150)
+            .baseCapacity(480)
+            .heatCapacity(5000)
+            .build();
+        FluidPipeBuilder.builder()
+            .material(Materials.TungstenSteel)
+            .startId(5160)
+            .multiFluidStartId(5270)
+            .baseCapacity(600)
+            .heatCapacity(7500)
+            .build();
+        FluidPipeBuilder.builder()
+            .material(Materials.Polybenzimidazole)
+            .displayName("PBI")
+            .startId(5280)
+            .multiFluidStartId(5290)
+            .baseCapacity(600)
+            .heatCapacity(1000)
+            .build();
+
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeSmall.get(Materials.Ultimate),
             new MTEFluidPipe(
@@ -664,83 +682,93 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 9600,
                 1500,
                 true).getStackForm(1L));
-        generateFluidPipes(Materials.Plastic, Materials.Plastic.mName, "Plastic", 5170, 360, 350, true);
-        generateFluidMultiPipes(Materials.Plastic, Materials.Plastic.mName, "Plastic", 5175, 360, 350, true);
-        generateFluidPipes(Materials.NiobiumTitanium, Materials.NiobiumTitanium.mName, 5180, 900, 2900, true);
-        generateFluidMultiPipes(Materials.NiobiumTitanium, Materials.NiobiumTitanium.mName, 5185, 900, 2900, true);
-        generateFluidPipes(Materials.Enderium, Materials.Enderium.mName, 5190, 1800, 15000, true);
-        generateFluidMultiPipes(Materials.Enderium, Materials.Enderium.mName, 5195, 1800, 15000, true);
-        generateFluidPipes(Materials.Naquadah, Materials.Naquadah.mName, 5200, 9000, 19000, true);
-        generateFluidMultiPipes(Materials.Naquadah, Materials.Naquadah.mName, 5205, 9000, 19000, true);
-        generateFluidPipes(Materials.Neutronium, Materials.Neutronium.mName, 5210, 16800, 1000000, true);
-        generateFluidMultiPipes(Materials.Neutronium, Materials.Neutronium.mName, 5215, 16800, 1000000, true);
-        generateFluidPipes(Materials.NetherStar, Materials.NetherStar.mName, 5220, 19200, 1000000, true);
-        generateFluidMultiPipes(Materials.NetherStar, Materials.NetherStar.mName, 5225, 19200, 1000000, true);
-        generateFluidPipes(Materials.MysteriousCrystal, Materials.MysteriousCrystal.mName, 5230, 24000, 1000000, true);
-        generateFluidMultiPipes(
-            Materials.MysteriousCrystal,
-            Materials.MysteriousCrystal.mName,
-            5235,
-            24000,
-            1000000,
-            true);
-        generateFluidPipes(Materials.DraconiumAwakened, Materials.DraconiumAwakened.mName, 5240, 45000, 10000000, true);
-        generateFluidMultiPipes(
-            Materials.DraconiumAwakened,
-            Materials.DraconiumAwakened.mName,
-            5245,
-            45000,
-            10000000,
-            true);
-        generateFluidPipes(Materials.Infinity, Materials.Infinity.mName, 5250, 60000, 10000000, true);
-        generateFluidMultiPipes(Materials.Infinity, Materials.Infinity.mName, 5255, 60000, 10000000, true);
-        generateFluidPipes(Materials.WroughtIron, Materials.WroughtIron.mName, 5260, 180, 2250, true);
-        generateFluidMultiPipes(Materials.WroughtIron, Materials.WroughtIron.mName, 5265, 180, 2250, true);
-        generateFluidPipes(
-            Materials.Polytetrafluoroethylene,
-            Materials.Polytetrafluoroethylene.mName,
-            "PTFE",
-            5680,
-            480,
-            600,
-            true);
-        generateFluidMultiPipes(
-            Materials.Polytetrafluoroethylene,
-            Materials.Polytetrafluoroethylene.mName,
-            "PTFE",
-            5685,
-            480,
-            600,
-            true);
-        generateFluidPipes(
-            MaterialsUEVplus.SpaceTime,
-            MaterialsUEVplus.SpaceTime.mName,
-            5300,
-            250000,
-            2147483647,
-            true);
-        generateFluidMultiPipes(
-            MaterialsUEVplus.SpaceTime,
-            MaterialsUEVplus.SpaceTime.mName,
-            5305,
-            250000,
-            2147483647,
-            true);
-        generateFluidPipes(
-            MaterialsUEVplus.TranscendentMetal,
-            MaterialsUEVplus.TranscendentMetal.mName,
-            5310,
-            220000,
-            2147483647,
-            true);
-        generateFluidMultiPipes(
-            MaterialsUEVplus.TranscendentMetal,
-            MaterialsUEVplus.TranscendentMetal.mName,
-            5315,
-            220000,
-            2147483647,
-            true);
-        generateFluidPipes(Materials.RadoxPolymer, Materials.RadoxPolymer.mName, 5760, 5000, 1500, true);
+
+        FluidPipeBuilder.builder()
+            .material(Materials.Plastic)
+            .displayName("Plastic")
+            .startId(5170)
+            .baseCapacity(360)
+            .heatCapacity(350)
+            .build();
+        FluidPipeBuilder.builder()
+            .material(Materials.NiobiumTitanium)
+            .startId(5180)
+            .baseCapacity(900)
+            .heatCapacity(2900)
+            .build();
+        FluidPipeBuilder.builder()
+            .material(Materials.Enderium)
+            .startId(5190)
+            .baseCapacity(1800)
+            .heatCapacity(15000)
+            .build();
+        FluidPipeBuilder.builder()
+            .material(Materials.Naquadah)
+            .startId(5200)
+            .baseCapacity(9000)
+            .heatCapacity(19000)
+            .build();
+        FluidPipeBuilder.builder()
+            .material(Materials.Neutronium)
+            .startId(5210)
+            .baseCapacity(16800)
+            .heatCapacity(1_000_000)
+            .build();
+        FluidPipeBuilder.builder()
+            .material(Materials.NetherStar)
+            .startId(5220)
+            .baseCapacity(19200)
+            .heatCapacity(1_000_000)
+            .build();
+        FluidPipeBuilder.builder()
+            .material(Materials.MysteriousCrystal)
+            .startId(5230)
+            .baseCapacity(24000)
+            .heatCapacity(1_000_000)
+            .build();
+        FluidPipeBuilder.builder()
+            .material(Materials.DraconiumAwakened)
+            .startId(5240)
+            .baseCapacity(45000)
+            .heatCapacity(10_000_000)
+            .build();
+        FluidPipeBuilder.builder()
+            .material(Materials.Infinity)
+            .startId(5250)
+            .baseCapacity(60000)
+            .heatCapacity(10_000_000)
+            .build();
+        FluidPipeBuilder.builder()
+            .material(Materials.WroughtIron)
+            .startId(5260)
+            .baseCapacity(180)
+            .heatCapacity(2250)
+            .build();
+        FluidPipeBuilder.builder()
+            .material(Materials.Polytetrafluoroethylene)
+            .displayName("PTFE")
+            .startId(5680)
+            .baseCapacity(480)
+            .heatCapacity(600)
+            .build();
+        FluidPipeBuilder.builder()
+            .material(MaterialsUEVplus.SpaceTime)
+            .startId(5300)
+            .baseCapacity(250000)
+            .heatCapacity(Integer.MAX_VALUE)
+            .build();
+        FluidPipeBuilder.builder()
+            .material(MaterialsUEVplus.TranscendentMetal)
+            .startId(5310)
+            .baseCapacity(220000)
+            .heatCapacity(Integer.MAX_VALUE)
+            .build();
+        FluidPipeBuilder.builder()
+            .material(Materials.RadoxPolymer)
+            .startId(5760)
+            .baseCapacity(5000)
+            .heatCapacity(1500)
+            .build();
     }
 
     private static void registerItemPipes() {
@@ -1026,6 +1054,167 @@ public final class LoaderMetaPipeEntities implements Runnable {
         }
     }
 
+    private static class FluidPipeBuilder {
+
+        private Materials material;
+        private String displayName;
+        private Integer startId;
+        private Integer multiFluidStartId;
+        private Integer baseCapacity;
+        private Integer heatCapacity;
+
+        private FluidPipeBuilder() {}
+
+        private static FluidPipeBuilder builder() {
+            return new FluidPipeBuilder();
+        }
+
+        /**
+         * Sets material used for this fluid pipe.
+         */
+        private FluidPipeBuilder material(Materials material) {
+            this.material = material;
+            return this;
+        }
+
+        /**
+         * Sets English display name. Material name by default.
+         */
+        private FluidPipeBuilder displayName(String displayName) {
+            this.displayName = displayName;
+            return this;
+        }
+
+        /**
+         * Sets MTE id to start. Takes up 5 for regular pipes, another 2 for multi fluid pipes.
+         */
+        private FluidPipeBuilder startId(int startId) {
+            this.startId = startId;
+            return this;
+        }
+
+        /**
+         * Manually sets MTE id to start for multi fluid pipes. Mostly for legacy reason.
+         * Default to {@link #startId} plus 5.
+         */
+        private FluidPipeBuilder multiFluidStartId(int multiFluidStartId) {
+            this.multiFluidStartId = multiFluidStartId;
+            return this;
+        }
+
+        /**
+         * Sets capacity for regular size pipe. Automatically scales for other sizes.
+         */
+        private FluidPipeBuilder baseCapacity(int baseCapacity) {
+            this.baseCapacity = baseCapacity;
+            return this;
+        }
+
+        /**
+         * Sets heat capacity.
+         */
+        private FluidPipeBuilder heatCapacity(int heatCapacity) {
+            this.heatCapacity = heatCapacity;
+            return this;
+        }
+
+        private void build() {
+            if (material == null) throw new IllegalStateException("material must be set!");
+            if (startId == null) throw new IllegalStateException("startId must be set!");
+            if (baseCapacity == null) throw new IllegalStateException("baseCapacity must be set!");
+            if (heatCapacity == null) throw new IllegalStateException("heatCapacity must be set!");
+            if (displayName == null) {
+                displayName = GTLanguageManager.i18nPlaceholder ? "%material" : material.mDefaultLocalName;
+            }
+            if (multiFluidStartId == null) {
+                multiFluidStartId = startId + 5;
+            }
+
+            final String displayNameFluidPipe = displayName + " Fluid Pipe";
+            final String internalNameFluidPipe = "GT_Pipe_" + material.mName;
+
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.pipeTiny.get(material),
+                new MTEFluidPipe(
+                    startId,
+                    internalNameFluidPipe + "_Tiny",
+                    "Tiny " + displayNameFluidPipe,
+                    0.25F,
+                    material,
+                    baseCapacity / 6,
+                    heatCapacity,
+                    true).getStackForm(1L));
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.pipeSmall.get(material),
+                new MTEFluidPipe(
+                    startId + 1,
+                    internalNameFluidPipe + "_Small",
+                    "Small " + displayNameFluidPipe,
+                    0.375F,
+                    material,
+                    baseCapacity / 3,
+                    heatCapacity,
+                    true).getStackForm(1L));
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.pipeMedium.get(material),
+                new MTEFluidPipe(
+                    startId + 2,
+                    internalNameFluidPipe,
+                    displayNameFluidPipe,
+                    0.5F,
+                    material,
+                    baseCapacity,
+                    heatCapacity,
+                    true).getStackForm(1L));
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.pipeLarge.get(material),
+                new MTEFluidPipe(
+                    startId + 3,
+                    internalNameFluidPipe + "_Large",
+                    "Large " + displayNameFluidPipe,
+                    0.75F,
+                    material,
+                    baseCapacity * 2,
+                    heatCapacity,
+                    true).getStackForm(1L));
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.pipeHuge.get(material),
+                new MTEFluidPipe(
+                    startId + 4,
+                    internalNameFluidPipe + "_Huge",
+                    "Huge " + displayNameFluidPipe,
+                    0.875F,
+                    material,
+                    baseCapacity * 4,
+                    heatCapacity,
+                    true).getStackForm(1L));
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.pipeQuadruple.get(material),
+                new MTEFluidPipe(
+                    multiFluidStartId,
+                    internalNameFluidPipe + "_Quadruple",
+                    "Quadruple " + displayNameFluidPipe,
+                    1.0F,
+                    material,
+                    baseCapacity,
+                    heatCapacity,
+                    true,
+                    4).getStackForm(1L));
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.pipeNonuple.get(material),
+                new MTEFluidPipe(
+                    multiFluidStartId + 1,
+                    internalNameFluidPipe + "_Nonuple",
+                    "Nonuple " + displayNameFluidPipe,
+                    1.0F,
+                    material,
+                    baseCapacity / 3,
+                    heatCapacity,
+                    true,
+                    9).getStackForm(1L));
+        }
+    }
+
     private static void generateItemPipes(Materials aMaterial, String name, int startID, int baseInvSlots) {
         generateItemPipes(
             aMaterial,
@@ -1103,111 +1292,5 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 baseInvSlots * 4,
                 819200 / baseInvSlots,
                 true).getStackForm(1L));
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    private static void generateFluidPipes(Materials aMaterial, String name, int startID, int baseCapacity,
-        int heatCapacity, boolean gasProof) {
-        generateFluidPipes(
-            aMaterial,
-            name,
-            GTLanguageManager.i18nPlaceholder ? "%material" : aMaterial.mDefaultLocalName,
-            startID,
-            baseCapacity,
-            heatCapacity,
-            gasProof);
-    }
-
-    private static void generateFluidPipes(Materials aMaterial, String name, String displayName, int startID,
-        int baseCapacity, int heatCapacity, boolean gasProof) {
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeTiny.get(aMaterial),
-            new MTEFluidPipe(
-                startID,
-                "GT_Pipe_" + name + "_Tiny",
-                "Tiny " + displayName + " Fluid Pipe",
-                0.25F,
-                aMaterial,
-                baseCapacity / 6,
-                heatCapacity,
-                gasProof).getStackForm(1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeSmall.get(aMaterial),
-            new MTEFluidPipe(
-                startID + 1,
-                "GT_Pipe_" + name + "_Small",
-                "Small " + displayName + " Fluid Pipe",
-                0.375F,
-                aMaterial,
-                baseCapacity / 3,
-                heatCapacity,
-                gasProof).getStackForm(1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeMedium.get(aMaterial),
-            new MTEFluidPipe(
-                startID + 2,
-                "GT_Pipe_" + name,
-                displayName + " Fluid Pipe",
-                0.5F,
-                aMaterial,
-                baseCapacity,
-                heatCapacity,
-                gasProof).getStackForm(1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeLarge.get(aMaterial),
-            new MTEFluidPipe(
-                startID + 3,
-                "GT_Pipe_" + name + "_Large",
-                "Large " + displayName + " Fluid Pipe",
-                0.75F,
-                aMaterial,
-                baseCapacity * 2,
-                heatCapacity,
-                gasProof).getStackForm(1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeHuge.get(aMaterial),
-            new MTEFluidPipe(
-                startID + 4,
-                "GT_Pipe_" + name + "_Huge",
-                "Huge " + displayName + " Fluid Pipe",
-                0.875F,
-                aMaterial,
-                baseCapacity * 4,
-                heatCapacity,
-                gasProof).getStackForm(1L));
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    private static void generateFluidMultiPipes(Materials aMaterial, String name, int startID, int baseCapacity,
-        int heatCapacity, boolean gasProof) {
-        generateFluidMultiPipes(aMaterial, name, "%material", startID, baseCapacity, heatCapacity, gasProof);
-    }
-
-    private static void generateFluidMultiPipes(Materials aMaterial, String name, String displayName, int startID,
-        int baseCapacity, int heatCapacity, boolean gasProof) {
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeQuadruple.get(aMaterial),
-            new MTEFluidPipe(
-                startID,
-                "GT_Pipe_" + name + "_Quadruple",
-                "Quadruple " + displayName + " Fluid Pipe",
-                1.0F,
-                aMaterial,
-                baseCapacity,
-                heatCapacity,
-                gasProof,
-                4).getStackForm(1L));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.pipeNonuple.get(aMaterial),
-            new MTEFluidPipe(
-                startID + 1,
-                "GT_Pipe_" + name + "_Nonuple",
-                "Nonuple " + displayName + " Fluid Pipe",
-                1.0F,
-                aMaterial,
-                baseCapacity / 3,
-                heatCapacity,
-                gasProof,
-                9).getStackForm(1L));
     }
 }
