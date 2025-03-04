@@ -31,10 +31,13 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
     @Override
     public void run() {
-        generateWiresAndPipes();
+        registerFrames();
+        registerWiresAndCables();
+        registerFluidPipes();
+        registerItemPipes();
     }
 
-    private static void generateWiresAndPipes() {
+    private static void registerFrames() {
         for (int meta = 0; meta < GregTechAPI.sGeneratedMaterials.length; meta++) {
             Materials material = GregTechAPI.sGeneratedMaterials[meta];
             // This check is separated out because IntelliJ thinks Materials.Wood can be null.
@@ -71,7 +74,9 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 }
             }
         }
+    }
 
+    private static void registerWiresAndCables() {
         makeWires(Materials.RedAlloy, 2000, 0L, 1L, 1L, GTValues.V[0], true, false);
 
         makeWires(Materials.Cobalt, 1200, 1L, 2L, 2L, GTValues.V[1], true, false);
@@ -151,7 +156,9 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
         makeWires(Materials.Ichorium, 2600, 4L, 8L, 12L, GTValues.V[9], false, true);
         makeWires(MaterialsUEVplus.SpaceTime, 2606, 0L, 0L, 1_000_000L, GTValues.V[14], false, true);
+    }
 
+    private static void registerFluidPipes() {
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeSmall.get(Materials.Wood),
             new MTEFluidPipe(
@@ -316,7 +323,10 @@ public final class LoaderMetaPipeEntities implements Runnable {
             220000,
             2147483647,
             true);
+        generateFluidPipes(Materials.RadoxPolymer, Materials.RadoxPolymer.mName, 5760, 5000, 1500, true);
+    }
 
+    private static void registerItemPipes() {
         generateItemPipes(Materials.Brass, Materials.Brass.mName, 5602, 1);
         generateItemPipes(Materials.Electrum, Materials.Electrum.mName, 5612, 2);
         generateItemPipes(Materials.Platinum, Materials.Platinum.mName, 5622, 4);
@@ -325,7 +335,6 @@ public final class LoaderMetaPipeEntities implements Runnable {
         generateItemPipes(Materials.Nickel, Materials.Nickel.mName, 5700, 1);
         generateItemPipes(Materials.Cobalt, Materials.Cobalt.mName, 5710, 2);
         generateItemPipes(Materials.Aluminium, Materials.Aluminium.mName, 5720, 2);
-        generateFluidPipes(Materials.RadoxPolymer, Materials.RadoxPolymer.mName, 5760, 5000, 1500, true);
     }
 
     @SuppressWarnings("PointlessArithmeticExpression")
