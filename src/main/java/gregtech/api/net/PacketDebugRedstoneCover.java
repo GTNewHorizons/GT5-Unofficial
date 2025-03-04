@@ -63,7 +63,7 @@ public class PacketDebugRedstoneCover extends GTPacket{
                 if(player.dimension != this.dim){
                     manager.transferPlayerToDimension(player, this.dim);
                 }
-                player.playerNetServerHandler.setPlayerLocation(x, y, z, player.cameraYaw, player.cameraPitch);
+                player.playerNetServerHandler.setPlayerLocation(x, y+1, z, player.cameraYaw, player.cameraPitch); //try not to tp the player into the hull
             } else{
                 player.addChatMessage(new ChatComponentText("Can't teleport because you don't have permission!"));
                 return;
