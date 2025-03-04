@@ -30,11 +30,6 @@ public class MTEHatchMagnet extends MTEHatch {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }

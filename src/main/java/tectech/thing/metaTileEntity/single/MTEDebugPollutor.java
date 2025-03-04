@@ -106,11 +106,6 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (pollution > 0) {

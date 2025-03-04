@@ -70,21 +70,6 @@ public class MTECropHarvestor extends MTEBasicTank {
     }
 
     @Override
-    public boolean isTransformerUpgradable() {
-        return true;
-    }
-
-    @Override
-    public boolean isOverclockerUpgradable() {
-        return true;
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
@@ -582,16 +567,6 @@ public class MTECropHarvestor extends MTEBasicTank {
 
     @Override
     public boolean canTankBeEmptied() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysItemStack() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
         return false;
     }
 

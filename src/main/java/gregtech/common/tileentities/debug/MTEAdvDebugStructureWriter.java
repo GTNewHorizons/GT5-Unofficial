@@ -118,11 +118,6 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
         bondingBoxes.put(this, boundingBox);

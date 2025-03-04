@@ -66,11 +66,6 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(final ForgeDirection facing) {
         return true;
     }
