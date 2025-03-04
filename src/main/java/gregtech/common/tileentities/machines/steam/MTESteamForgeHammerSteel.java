@@ -155,7 +155,7 @@ public class MTESteamForgeHammerSteel extends MTEBasicMachineSteel {
             final ForgeDirection mainFacing = this.mMainFacing;
 
             if ((mainFacing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0
-                && aBaseMetaTileEntity.getCoverIDAtSide(mainFacing) == 0
+                && !aBaseMetaTileEntity.hasCoverAtSide(mainFacing)
                 && !aBaseMetaTileEntity.getOpacityAtSide(mainFacing)) {
 
                 final double oX = aBaseMetaTileEntity.getXCoord();

@@ -24,17 +24,13 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityItemPipe;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.CoverBehavior;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.GTClient;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
 
 public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPipe {
 
@@ -246,37 +242,13 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     }
 
     @Override
-    public boolean letsIn(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return coverBehavior.letsItemsIn(side, aCoverID, aCoverVariable, -1, aTileEntity);
+    public boolean letsIn(Cover cover) {
+        return cover.letsItemsOut(-1);
     }
 
     @Override
-    public boolean letsOut(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return coverBehavior.letsItemsOut(side, aCoverID, aCoverVariable, -1, aTileEntity);
-    }
-
-    @Override
-    public boolean letsIn(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return coverBehavior.letsItemsIn(side, aCoverID, aCoverVariable, -1, aTileEntity);
-    }
-
-    @Override
-    public boolean letsOut(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return coverBehavior.letsItemsOut(side, aCoverID, aCoverVariable, -1, aTileEntity);
-    }
-
-    @Override
-    public boolean letsIn(CoverInfo coverInfo) {
-        return coverInfo.letsItemsOut(-1);
-    }
-
-    @Override
-    public boolean letsOut(CoverInfo coverInfo) {
-        return coverInfo.letsItemsOut(-1);
+    public boolean letsOut(Cover cover) {
+        return cover.letsItemsOut(-1);
     }
 
     @Override
@@ -339,7 +311,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
 
     @Override
     public boolean insertItemStackIntoTileEntity(Object aSender, ForgeDirection side) {
-        if (getBaseMetaTileEntity().getCoverInfoAtSide(side)
+        if (getBaseMetaTileEntity().getCoverAtSide(side)
             .letsItemsOut(-1)) {
             final TileEntity tInventory = getBaseMetaTileEntity().getTileEntityAtSide(side);
             if (tInventory != null && !(tInventory instanceof BaseMetaPipeEntity)) {
@@ -403,8 +375,8 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     @Override
     public int[] getAccessibleSlotsFromSide(int ordinalSide) {
         final IGregTechTileEntity tTileEntity = getBaseMetaTileEntity();
-        final CoverInfo coverInfo = tTileEntity.getCoverInfoAtSide(ForgeDirection.getOrientation(ordinalSide));
-        final boolean tAllow = coverInfo.letsItemsIn(-2) || coverInfo.letsItemsOut(-2);
+        final Cover cover = tTileEntity.getCoverAtSide(ForgeDirection.getOrientation(ordinalSide));
+        final boolean tAllow = cover.letsItemsIn(-2) || cover.letsItemsOut(-2);
         if (tAllow) {
             if (cacheSides == null) cacheSides = super.getAccessibleSlotsFromSide(ordinalSide);
             return cacheSides;
