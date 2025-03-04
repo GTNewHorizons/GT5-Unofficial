@@ -3381,9 +3381,8 @@ public class RecipesMachines {
         ItemStack[] mSuperBusesInput = new ItemStack[] { GregtechItemList.Hatch_SuperBus_Input_LV.get(1),
             GregtechItemList.Hatch_SuperBus_Input_MV.get(1), GregtechItemList.Hatch_SuperBus_Input_HV.get(1), };
 
-        ItemStack[] mChiselBuses = new ItemStack[] { GregtechItemList.GT_MetaTileEntity_ChiselBus_LV.get(1),
-            GregtechItemList.GT_MetaTileEntity_ChiselBus_MV.get(1),
-            GregtechItemList.GT_MetaTileEntity_ChiselBus_HV.get(1), };
+        ItemStack[] mChiselBuses = new ItemStack[] { GregtechItemList.ChiselBus_LV.get(1),
+            GregtechItemList.ChiselBus_MV.get(1), GregtechItemList.ChiselBus_HV.get(1), };
 
         for (int tier = 1; tier < mChiselBuses.length + 1; tier++) {
             GTValues.RA.stdBuilder()

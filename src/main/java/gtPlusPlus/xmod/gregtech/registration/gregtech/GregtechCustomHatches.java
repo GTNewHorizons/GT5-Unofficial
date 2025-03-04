@@ -1,8 +1,8 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gregtech.api.enums.MetaTileEntityIDs.GT_MetaTileEntity_ChiselBus_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.GT_MetaTileEntity_ChiselBus_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.GT_MetaTileEntity_ChiselBus_MV;
+import static gregtech.api.enums.MetaTileEntityIDs.ChiselBus_HV;
+import static gregtech.api.enums.MetaTileEntityIDs.ChiselBus_LV;
+import static gregtech.api.enums.MetaTileEntityIDs.ChiselBus_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.GT_MetaTileEntity_Solidifier_I;
 import static gregtech.api.enums.MetaTileEntityIDs.GT_MetaTileEntity_Solidifier_II;
 import static gregtech.api.enums.MetaTileEntityIDs.GT_MetaTileEntity_Solidifier_III;
@@ -313,15 +313,12 @@ public class GregtechCustomHatches {
     }
 
     private static void run4() {
-        GregtechItemList.GT_MetaTileEntity_ChiselBus_LV.set(
-            (makeChiselBus(GT_MetaTileEntity_ChiselBus_LV.ID, "hatch.chisel.tier.01", "Chisel Bus I", 1))
-                .getStackForm(1L));
-        GregtechItemList.GT_MetaTileEntity_ChiselBus_MV.set(
-            (makeChiselBus(GT_MetaTileEntity_ChiselBus_MV.ID, "hatch.chisel.tier.02", "Chisel Bus II", 2))
-                .getStackForm(1L));
-        GregtechItemList.GT_MetaTileEntity_ChiselBus_HV.set(
-            (makeChiselBus(GT_MetaTileEntity_ChiselBus_HV.ID, "hatch.chisel.tier.03", "Chisel Bus III", 3))
-                .getStackForm(1L));
+        GregtechItemList.ChiselBus_LV
+            .set((makeChiselBus(ChiselBus_LV.ID, "hatch.chisel.tier.01", "Chisel Bus I", 1)).getStackForm(1L));
+        GregtechItemList.ChiselBus_MV
+            .set((makeChiselBus(ChiselBus_MV.ID, "hatch.chisel.tier.02", "Chisel Bus II", 2)).getStackForm(1L));
+        GregtechItemList.ChiselBus_HV
+            .set((makeChiselBus(ChiselBus_HV.ID, "hatch.chisel.tier.03", "Chisel Bus III", 3)).getStackForm(1L));
 
     }
 
