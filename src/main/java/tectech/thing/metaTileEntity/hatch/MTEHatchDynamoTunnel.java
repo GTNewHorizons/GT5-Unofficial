@@ -16,7 +16,6 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -64,11 +63,6 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, Textures.OVERLAYS_ENERGY_OUT_LASER_TT[mTier] };
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
     }
 
     @Override
@@ -241,7 +235,7 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        GTUIInfos.openGTTileEntityUI(this.getBaseMetaTileEntity(), aPlayer);
+        openGui(aPlayer);
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 

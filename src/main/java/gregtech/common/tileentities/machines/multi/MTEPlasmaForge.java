@@ -25,8 +25,10 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -751,6 +753,34 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
+
+            @Nonnull
+            protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+                if (map == null) {
+                    return Stream.empty();
+                }
+
+                recalculateDiscount();
+                // Allow recipes to start without having 100% of the catalyst required, aka discount > 0%
+                FluidStack[] queryFluids = new FluidStack[inputFluids.length];
+                for (int i = 0; i < inputFluids.length; i++) {
+                    queryFluids[i] = new FluidStack(inputFluids[i].getFluid(), inputFluids[i].amount);
+                    for (FluidStack fuel : valid_fuels) {
+                        if (queryFluids[i].isFluidEqual(fuel)) {
+                            queryFluids[i].amount = (int) Math
+                                .min(Math.round(queryFluids[i].amount / discount), Integer.MAX_VALUE);
+                            break;
+                        }
+                    }
+                }
+
+                return map.findRecipeQuery()
+                    .items(inputItems)
+                    .fluids(queryFluids)
+                    .specialSlot(specialSlotItem)
+                    .cachedRecipe(lastRecipe)
+                    .findAll();
+            }
 
             @Nonnull
             @Override

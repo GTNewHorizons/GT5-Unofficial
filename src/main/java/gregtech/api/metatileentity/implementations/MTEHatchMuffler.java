@@ -66,11 +66,6 @@ public class MTEHatchMuffler extends MTEHatch {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return false;
     }

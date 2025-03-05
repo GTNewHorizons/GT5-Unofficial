@@ -53,7 +53,6 @@ import bartworks.util.BWTooltipReference;
 import bartworks.util.MathUtils;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
@@ -71,7 +70,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 
-public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGregtechLogo {
+public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGregtechLogo {
 
     public int sievert;
     private long timer = 1;
@@ -84,7 +83,7 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
     private boolean lastFail = false;
     private RadioHatchMaterial radioHatchMaterial = null;
 
-    public GT_MetaTileEntity_RadioHatch(int aID, String aName, String aNameRegional, int aTier, boolean isDeprecated) {
+    public MTERadioHatch(int aID, String aName, String aNameRegional, int aTier, boolean isDeprecated) {
         super(
             aID,
             aName,
@@ -99,7 +98,7 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
                 BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get(), });
     }
 
-    public GT_MetaTileEntity_RadioHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public MTERadioHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures);
     }
 
@@ -140,12 +139,12 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new GT_MetaTileEntity_RadioHatch(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new MTERadioHatch(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -273,11 +272,6 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
@@ -370,17 +364,17 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
 
                 @Override
                 public void draw(float partialTicks) {
-                    if (GT_MetaTileEntity_RadioHatch.this.decayTime > 0) {
+                    if (MTERadioHatch.this.decayTime > 0) {
                         int height = MathUtils.ceilInt(
-                            48 * ((GT_MetaTileEntity_RadioHatch.this.decayTime
-                                - GT_MetaTileEntity_RadioHatch.this.timer % GT_MetaTileEntity_RadioHatch.this.decayTime)
-                                / (float) GT_MetaTileEntity_RadioHatch.this.decayTime));
+                            48 * ((MTERadioHatch.this.decayTime
+                                - MTERadioHatch.this.timer % MTERadioHatch.this.decayTime)
+                                / (float) MTERadioHatch.this.decayTime));
                         new Rectangle()
                             .setColor(
                                 Color.argb(
-                                    GT_MetaTileEntity_RadioHatch.this.colorForGUI[0],
-                                    GT_MetaTileEntity_RadioHatch.this.colorForGUI[1],
-                                    GT_MetaTileEntity_RadioHatch.this.colorForGUI[2],
+                                    MTERadioHatch.this.colorForGUI[0],
+                                    MTERadioHatch.this.colorForGUI[1],
+                                    MTERadioHatch.this.colorForGUI[2],
                                     255))
                             .draw(new Pos2d(0, 48 - height), new Size(16, height), partialTicks);
                     }

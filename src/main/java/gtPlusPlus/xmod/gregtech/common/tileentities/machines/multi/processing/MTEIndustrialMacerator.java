@@ -252,7 +252,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())
             && (aBaseMetaTileEntity.getFrontFacing() != ForgeDirection.UP)
-            && (aBaseMetaTileEntity.getCoverIDAtSide(ForgeDirection.UP) == 0)
+            && (!aBaseMetaTileEntity.hasCoverAtSide(ForgeDirection.UP))
             && (!aBaseMetaTileEntity.getOpacityAtSide(ForgeDirection.UP))) {
             final Random tRandom = aBaseMetaTileEntity.getWorld().rand;
             aBaseMetaTileEntity.getWorld()
@@ -368,11 +368,6 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialMacerator;
-    }
-
-    @Override
-    public boolean isOverclockerUpgradable() {
-        return true;
     }
 
     @Override
