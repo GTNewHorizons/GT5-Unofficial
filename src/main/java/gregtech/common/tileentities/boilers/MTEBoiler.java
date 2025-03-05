@@ -35,7 +35,6 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -172,9 +171,9 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCover) {
-        return CoverRegistry.getCoverBehaviorNew(aCover.toStack())
-            .isSimpleCover();
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
+        return CoverRegistry.getCoverPlacer(coverItem)
+            .allowOnPrimitiveBlock();
     }
 
     @Override

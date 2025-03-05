@@ -47,10 +47,9 @@ public class MultipleMetalLoader implements IWerkstoffRunnable {
                         1L),
                     60,
                     0));
-            CoverRegistry.registerCover(
+            CoverRegistry.registerDecorativeCover(
                 werkstoff.get(plateDouble),
-                TextureFactory.of(werkstoff.getTexSet().mTextures[72], werkstoff.getRGBA(), false),
-                null);
+                TextureFactory.of(werkstoff.getTexSet().mTextures[72], werkstoff.getRGBA(), false));
         }
     }
 }

@@ -70,7 +70,7 @@ public class MetaCustomCoverItem extends Item {
             if (i > 0 && hide()) {
                 ItemUtils.hideItemFromNEI(thisStack);
             }
-            CoverRegistry.registerCover(thisStack, TextureFactory.of(mTextures[i]), new CoverToggleVisual());
+            CoverRegistry.registerCover(thisStack, TextureFactory.of(mTextures[i]), CoverToggleVisual::new);
         }
     }
 
