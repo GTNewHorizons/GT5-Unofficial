@@ -151,16 +151,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     }
 
     @Override
-    public boolean displaysItemStack() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
-        return false;
-    }
-
-    @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
         return GTModHandler.isWater(aFluid);
     }
