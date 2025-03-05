@@ -7,9 +7,6 @@ import static gregtech.common.items.IDMetaItem01.Armor_Core_T3;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTOreDictUnificator;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,12 +20,15 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.util.GTOreDictUnificator;
 
 public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidgets {
 
@@ -66,21 +66,20 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
             tag.setShort("frameR", Materials.Copper.mRGBa[0]);
             tag.setShort("frameG", Materials.Copper.mRGBa[1]);
             tag.setShort("frameB", Materials.Copper.mRGBa[2]);
-        }
-        else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1))) {
+        } else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1))) {
             tag.setString("frame", "Copper");
             tag.setShort("frameR", Materials.Iron.mRGBa[0]);
             tag.setShort("frameG", Materials.Iron.mRGBa[1]);
             tag.setShort("frameB", Materials.Iron.mRGBa[2]);
-        }
-        else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1))) {
+        } else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1))) {
             tag.setString("frame", "Copper");
             tag.setShort("frameR", Materials.Gold.mRGBa[0]);
             tag.setShort("frameG", Materials.Gold.mRGBa[1]);
             tag.setShort("frameB", Materials.Gold.mRGBa[2]);
         }
 
-        if (coreID != 0) armorItem.getTagCompound().setInteger("core", coreID);
+        if (coreID != 0) armorItem.getTagCompound()
+            .setInteger("core", coreID);
     }
 
     @Override

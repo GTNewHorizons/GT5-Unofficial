@@ -52,6 +52,8 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
+import gregtech.api.items.armor.ArmorEventHandlers;
+import gregtech.api.items.armor.ArmorKeybinds;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -1085,6 +1087,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GTWorldgenerator.OregenPatternSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GlobalMetricsCoverDatabase());
+        MinecraftForge.EVENT_BUS.register(new ArmorEventHandlers());
         FMLCommonHandler.instance()
             .bus()
             .register(new GTWorldgenerator.OregenPatternSavedData(""));
@@ -1220,6 +1223,8 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public void onPostLoad() {
         GTLog.out.println("GTMod: Beginning PostLoad-Phase.");
         GregTechAPI.sPostloadStarted = true;
+
+        new ArmorKeybinds();
 
         // This needs to happen late enough that all of the fluids we need have been registered.
         // onLoad() seems to be too early, as the New Horizons Core Mod registers some fluids in post-load.

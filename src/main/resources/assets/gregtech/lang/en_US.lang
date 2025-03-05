@@ -703,6 +703,9 @@ GT5U.item.pipe.amount=Pipe Amount
 GT5U.item.pipe.empty=Empty
 GT5U.item.pipe.swap=Pipe Swapped:
 
+GT5U.armor.message.nightvision.enabled=Night Vision enabled
+GT5U.armor.message.nightvision.disabled=Night Vision disabled
+
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak middle-click to unlock.
 gt.behaviour.paintspray.infinite.gui.solvent=Solvent

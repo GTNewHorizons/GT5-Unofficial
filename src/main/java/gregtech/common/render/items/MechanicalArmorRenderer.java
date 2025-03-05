@@ -73,7 +73,7 @@ public class MechanicalArmorRenderer implements IItemRenderer {
         GTRenderUtil.renderItem(type, baseLayer);
 
         if (frameR != -1) {
-            GL11.glColor4f(frameR / 255.0F, frameG / 255.0F, frameB/ 255.0F, 1);
+            GL11.glColor4f(frameR / 255.0F, frameG / 255.0F, frameB / 255.0F, 1);
             GTRenderUtil.renderItem(type, frameLayer);
         }
 

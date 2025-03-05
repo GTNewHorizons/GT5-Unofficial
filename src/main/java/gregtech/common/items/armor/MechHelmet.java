@@ -1,16 +1,20 @@
 package gregtech.common.items.armor;
 
-import static gregtech.api.enums.Mods.GregTech;
+import gregtech.api.items.armor.behaviors.IArmorBehavior;
+import gregtech.api.items.armor.behaviors.NightVisionBehavior;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
 
 public class MechHelmet extends MechArmorBase {
 
     public MechHelmet() {
-        super(SLOT_HELMET);
+        super(REGISTER_HELMET);
         type = "helmet";
+        behaviors.add(NightVisionBehavior.INSTANCE);
+    }
+
+    @Override
+    protected int getEquipmentSlot() {
+        return SLOT_HELMET;
     }
 }

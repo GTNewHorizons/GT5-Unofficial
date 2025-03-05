@@ -4622,6 +4622,15 @@ public class GTUtility {
         return v;
     }
 
+    public static NBTTagCompound getOrCreateNbtCompound(ItemStack stack) {
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null) {
+            compound = new NBTTagCompound();
+            stack.setTagCompound(compound);
+        }
+        return compound;
+    }
+
     /**
      * Hash an item stack for the purpose of storing hash across launches
      */
