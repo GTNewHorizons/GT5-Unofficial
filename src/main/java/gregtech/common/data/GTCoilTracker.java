@@ -68,13 +68,13 @@ public class GTCoilTracker {
      * Used to sync activations to clients in one packet.
      * [packed x,y,z]
      */
-    private LongList pendingActivations = new LongArrayList();
+    private LongSet pendingActivations = new LongOpenHashSet();
 
     /**
      * Used to sync deactivations to clients in one packet.
      * [packed x,y,z]
      */
-    private LongList pendingDeactivations = new LongArrayList();
+    private LongSet pendingDeactivations = new LongOpenHashSet();
 
     /**
      * Used to prevent duplicate lease registrations by the same multi.
@@ -147,6 +147,7 @@ public class GTCoilTracker {
         // if this coil wasn't activated by any multis and we just activated it, then the state changed
         if (old == 0) {
             pendingActivations.add(coil);
+            pendingDeactivations.remove(coil);
 
             // maybe there's a more efficient way to do this, but I couldn't figure out how to shove a chunk coord into
             // a long
@@ -164,6 +165,7 @@ public class GTCoilTracker {
         // if this coil was only activated by 1 multi, and we just deactivated it, then the state changed
         if (old == 1) {
             pendingDeactivations.add(coil);
+            pendingActivations.remove(coil);
 
             long chunk = CoordinatePacker
                 .pack(CoordinatePacker.unpackX(coil) >> 4, 0, CoordinatePacker.unpackZ(coil) >> 4);
@@ -190,7 +192,7 @@ public class GTCoilTracker {
 
                 // I have no idea if packet encoding is immediate
                 // Let's just allocate another list instead of finding out
-                tracker.pendingActivations = new LongArrayList();
+                tracker.pendingActivations = new LongOpenHashSet();
 
                 GTValues.NW.sendToWorld(world, packet);
             }
@@ -198,7 +200,7 @@ public class GTCoilTracker {
             if (!tracker.pendingDeactivations.isEmpty()) {
                 GTCoilStatus packet = new GTCoilStatus(world.provider.dimensionId, false, tracker.pendingDeactivations);
 
-                tracker.pendingDeactivations = new LongArrayList();
+                tracker.pendingDeactivations = new LongOpenHashSet();
 
                 GTValues.NW.sendToWorld(world, packet);
             }
