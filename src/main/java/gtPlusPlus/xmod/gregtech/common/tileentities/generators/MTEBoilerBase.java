@@ -20,7 +20,6 @@ import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.pollution.PollutionConfig;
@@ -273,12 +272,12 @@ public class MTEBoilerBase extends MTEBoiler {
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCover) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         if (side != this.getBaseMetaTileEntity()
             .getFrontFacing()) {
             return true;
         }
-        return super.allowCoverOnSide(side, aCover);
+        return super.allowCoverOnSide(side, coverItem);
     }
 
     @Override
