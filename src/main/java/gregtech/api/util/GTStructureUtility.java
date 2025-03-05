@@ -37,6 +37,8 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
@@ -486,7 +488,7 @@ public class GTStructureUtility {
     }
 
     public static <T extends MTEMultiBlockBase> IStructureElement<T> activeCoils(IStructureElement<T> element) {
-        return new IStructureElement<>() {
+        return new ProxyStructureElement<>(element) {
 
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
@@ -495,16 +497,6 @@ public class GTStructureUtility {
                 t.mCoils.add(CoordinatePacker.pack(x, y, z));
 
                 return true;
-            }
-
-            @Override
-            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return element.spawnHint(t, world, x, y, z, trigger);
-            }
-
-            @Override
-            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                return element.placeBlock(t, world, x, y, z, trigger);
             }
         };
     }
@@ -768,5 +760,97 @@ public class GTStructureUtility {
 
             // warded glass
             ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false));
+    }
+
+    /**
+     * Just a structure element that proxies its operations to another one. Useful for overriding or hooking into
+     * specific operations while keeping the rest unchanged.
+     */
+    public static class ProxyStructureElement<T, E extends IStructureElement<T>> implements IStructureElement<T> {
+
+        public final E proxiedElement;
+
+        public ProxyStructureElement(E proxiedElement) {
+            this.proxiedElement = proxiedElement;
+        }
+
+        @Override
+        public boolean check(T t, World world, int x, int y, int z) {
+            return proxiedElement.check(t, world, x, y, z);
+        }
+
+        @Override
+        public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+            return proxiedElement.couldBeValid(t, world, x, y, z, trigger);
+        }
+
+        @Override
+        public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+            return proxiedElement.spawnHint(t, world, x, y, z, trigger);
+        }
+
+        @Override
+        public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+            return proxiedElement.placeBlock(t, world, x, y, z, trigger);
+        }
+
+        @SuppressWarnings("deprecation")
+        @Override
+        public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger, IItemSource s,
+            EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+            return proxiedElement.survivalPlaceBlock(t, world, x, y, z, trigger, s, actor, chatter);
+        }
+
+        @Override
+        public @Nullable BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
+            AutoPlaceEnvironment env) {
+            return proxiedElement.getBlocksToPlace(t, world, x, y, z, trigger, env);
+        }
+
+        @Override
+        public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+            AutoPlaceEnvironment env) {
+            return proxiedElement.survivalPlaceBlock(t, world, x, y, z, trigger, env);
+        }
+
+        @Override
+        public IStructureElementNoPlacement<T> noPlacement() {
+            return proxiedElement.noPlacement();
+        }
+
+        @Override
+        public int getStepA() {
+            return proxiedElement.getStepA();
+        }
+
+        @Override
+        public int getStepB() {
+            return proxiedElement.getStepB();
+        }
+
+        @Override
+        public int getStepC() {
+            return proxiedElement.getStepC();
+        }
+
+        @Override
+        public boolean resetA() {
+            return proxiedElement.resetA();
+        }
+
+        @Override
+        public boolean resetB() {
+            return proxiedElement.resetB();
+        }
+
+        @Override
+        public boolean resetC() {
+            return proxiedElement.resetC();
+        }
+
+        @Override
+        public boolean isNavigating() {
+            return proxiedElement.isNavigating();
+        }
     }
 }
