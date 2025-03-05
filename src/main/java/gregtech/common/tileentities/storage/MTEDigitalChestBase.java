@@ -352,11 +352,6 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public int getProgresstime() {
         return getItemCount() + (mInventory[0] == null ? 0 : mInventory[0].stackSize)
             + (mInventory[1] == null ? 0 : mInventory[1].stackSize);

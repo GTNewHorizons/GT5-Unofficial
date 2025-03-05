@@ -111,11 +111,6 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
         aBaseMetaTileEntity.disableWorking();

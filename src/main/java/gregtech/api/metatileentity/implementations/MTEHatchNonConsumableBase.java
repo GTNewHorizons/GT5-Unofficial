@@ -55,11 +55,6 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch implements IMEM
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }

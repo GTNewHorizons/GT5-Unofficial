@@ -154,8 +154,7 @@ public class MTEBoilerBase extends MTEBoiler {
 
     // Please find out what I do.
     // I do stuff within the GUI.
-    // this.mTemperature = Math.min(54, Math.max(0, this.mTemperature * 54 / (((GT_MetaTileEntity_Boiler)
-    // this.mTileEntity.getMetaTileEntity()).maxProgresstime() - 10)));
+    // this.mTemperature = Math.min(54, Math.max(0, this.mTemperature * 54 / (this.maxProgresstime() - 10)));
     @Override
     public int maxProgresstime() {
         return 1000 + (250 * tier);

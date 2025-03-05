@@ -87,11 +87,6 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
@@ -171,16 +166,6 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     @Override
     public boolean canTankBeEmptied() {
         return true;
-    }
-
-    @Override
-    public boolean displaysItemStack() {
-        return true;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
-        return false;
     }
 
     public int getLockedDisplaySlot() {
