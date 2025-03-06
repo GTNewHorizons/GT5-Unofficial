@@ -1,40 +1,37 @@
 package tectech.thing.cover;
 
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
-import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.covers.CoverContext;
 
 public class CoverTeslaCoilUltimate extends CoverTeslaCoil {
 
-    public CoverTeslaCoilUltimate() {}
+    public CoverTeslaCoilUltimate(CoverContext context) {
+        super(context);
+    }
 
     @Override
-    public boolean letsEnergyOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyOut() {
         return true;
     }
 
     @Override
-    public boolean letsItemsIn(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsIn(int aSlot) {
         return true;
     }
 
     @Override
-    public boolean letsItemsOut(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsOut(int aSlot) {
         return true;
     }
 
     @Override
-    public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidIn(Fluid aFluid) {
         return true;
     }
 
     @Override
-    public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidOut(Fluid aFluid) {
         return true;
     }
 
