@@ -4,7 +4,9 @@ import static gregtech.api.enums.Dyes.dyeGreen;
 import static gregtech.api.enums.Dyes.dyeLightBlue;
 import static gregtech.api.enums.Dyes.dyeRed;
 import static gregtech.api.enums.Dyes.dyeWhite;
+import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
+import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -58,15 +60,13 @@ public class MechanicalArmorRenderer implements IItemRenderer {
         String frame = "None";
         short frameR = -1, frameG = -1, frameB = -1;
 
-        if (item.hasTagCompound()) {
-            NBTTagCompound tag = item.getTagCompound();
-            coreTier = tag.getInteger("core");
-            frame = tag.getString("frame");
+        NBTTagCompound tag = getOrCreateNbtCompound(item);
+        coreTier = tag.getInteger("core");
+        frame = tag.getString("frame");
 
-            frameR = tag.getShort("frameR");
-            frameG = tag.getShort("frameG");
-            frameB = tag.getShort("frameB");
-        }
+        frameR = tag.getShort("frameR");
+        frameG = tag.getShort("frameG");
+        frameB = tag.getShort("frameB");
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -88,6 +88,11 @@ public class MechanicalArmorRenderer implements IItemRenderer {
             }
             GL11.glColor4f(modulation[0] / 255.0F, modulation[1] / 255.0F, modulation[2] / 255.0F, 1);
             GTRenderUtil.renderItem(type, coreLayer);
+            GL11.glColor4f(1, 1, 1, 1);
+        }
+
+        for (IArmorBehavior behavior : armorItem.getBehaviors()) {
+            if (tag.hasKey(behavior.getMainNBTTag())) GTRenderUtil.renderItem(type, behavior.getModularArmorTexture());
         }
 
         GL11.glDisable(GL11.GL_BLEND);

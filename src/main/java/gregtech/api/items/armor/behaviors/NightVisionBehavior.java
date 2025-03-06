@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
@@ -19,17 +20,29 @@ import org.jetbrains.annotations.Nullable;
 import gregtech.api.items.armor.ArmorHelper;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
+import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.items.armor.ArmorKeybinds.NIGHT_VISION_KEY;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
+import static gregtech.loaders.ExtraIcons.nightVisionAugment;
 
 public class NightVisionBehavior implements IArmorBehavior {
 
     public static final NightVisionBehavior INSTANCE = new NightVisionBehavior();
 
+    @Override
+    public IIcon getModularArmorTexture() {
+        return nightVisionAugment;
+    }
+
     protected NightVisionBehavior() {/**/}
 
     @Override
-    public void onKeyPressed(@NotNull ItemStack stack, @NotNull EntityPlayer player) {
+    public String getMainNBTTag() {
+        return ArmorHelper.NIGHT_VISION_KEY;
+    }
+
+    @Override
+    public void onKeyPressed(@NotNull ItemStack stack, @NotNull EntityPlayer player, SyncedKeybind keyPressed) {
         NBTTagCompound tag = getOrCreateNbtCompound(stack);
         if (!tag.hasKey(ArmorHelper.NIGHT_VISION_KEY)) return;
 

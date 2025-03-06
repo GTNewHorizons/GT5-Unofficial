@@ -46,6 +46,10 @@ public interface IArmorBehavior {
 
     default void addBehaviorNBT(@NotNull ItemStack stack, @NotNull NBTTagCompound tag) {}
 
+    default String getMainNBTTag() {
+        return "";
+    }
+
     default Set<SyncedKeybind> getListenedKeys() {
         return Collections.emptySet();
     }

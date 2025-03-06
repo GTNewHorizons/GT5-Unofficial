@@ -21,6 +21,9 @@ public class ExtraIcons {
     public static IIcon osmiumLargeCellInner;
     public static IIcon neutroniumLargeCellInner;
 
+    // Modular Augments
+    public static IIcon nightVisionAugment;
+
     @SubscribeEvent
     public void regIcons(TextureStitchEvent.Pre event) {
         TextureMap reg = event.map;
@@ -41,6 +44,7 @@ public class ExtraIcons {
             osmiumLargeCellInner = reg.registerIcon(GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "osmium_inner"));
             neutroniumLargeCellInner = reg
                 .registerIcon(GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "neutronium_inner"));
+            nightVisionAugment = reg.registerIcon(GregTech.getResourcePath("mech_armor/helmet/helmet_augment_nightvision"));
         }
     }
 }

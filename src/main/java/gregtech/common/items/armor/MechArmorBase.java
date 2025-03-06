@@ -63,6 +63,10 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener {
         return stack;
     }
 
+    public List<IArmorBehavior> getBehaviors() {
+        return behaviors;
+    }
+
     @Override
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
         for (IArmorBehavior behavior : behaviors) {
