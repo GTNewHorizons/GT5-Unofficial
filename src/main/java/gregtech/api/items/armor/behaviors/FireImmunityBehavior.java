@@ -37,6 +37,11 @@ public class FireImmunityBehavior implements IArmorBehavior {
     }
 
     @Override
+    public String getMainNBTTag() {
+        return ArmorHelper.FIRE_IMMUNITY_KEY;
+    }
+
+    @Override
     public void addInformation(@NotNull ItemStack stack, @NotNull List<String> tooltip) {
         if (!getOrCreateNbtCompound(stack).hasKey(ArmorHelper.FIRE_IMMUNITY_KEY)) return;
         tooltip.add(StatCollector.translateToLocal("GT5U.armor.message.fireimmunity"));

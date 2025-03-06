@@ -26,6 +26,7 @@ import gregtech.api.items.ItemAugmentCore;
 import gregtech.api.items.armor.behaviors.CreativeFlightBehavior;
 import gregtech.api.items.armor.behaviors.FireImmunityBehavior;
 import gregtech.api.items.armor.behaviors.JetpackBehavior;
+import gregtech.api.items.armor.behaviors.JetpackPerfectHoverBehavior;
 import gregtech.api.items.armor.behaviors.NightVisionBehavior;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -242,6 +243,14 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Augment: Jetpack",
                 "blah",
                 Collections.singletonList(JetpackBehavior.INSTANCE)));
+        ItemList.Augment_Jetpack.set(
+            new ItemAugmentBase(
+                "augmentjetpackperfecthover",
+                "Augment: Jetpack Perfect Hover",
+                "blah",
+                Collections.singletonList(JetpackPerfectHoverBehavior.INSTANCE),
+                Collections.singletonList(JetpackBehavior.INSTANCE),
+                Collections.emptyList()));
         ItemList.Augment_FireImmunity.set(
             new ItemAugmentBase(
                 "augmentfireimmunity",

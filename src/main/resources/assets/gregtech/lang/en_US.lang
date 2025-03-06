@@ -711,6 +711,7 @@ GT5U.armor.message.jetpack.enabled=Jetpack On
 GT5U.armor.message.jetpack.disabled=Jetpack Off
 GT5U.armor.message.jetpackhover.enabled=Jetpack Hover Mode On
 GT5U.armor.message.jetpackhover.disabled=Jetpack Hover Mode Off
+GT5U.armor.message.jetpackperfecthover=Jetpack Stabilization Installed
 GT5U.armor.message.fireimmunity=Fire Immunity Installed
 
 gt.behaviour.paintspray.infinite.gui.header=Select a Color

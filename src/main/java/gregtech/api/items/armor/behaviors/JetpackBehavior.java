@@ -22,7 +22,7 @@ import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 public class JetpackBehavior implements IArmorBehavior {
 
-    public static final JetpackBehavior INSTANCE = new JetpackBehavior(JetpackStats.QUANTUM);
+    public static final JetpackBehavior INSTANCE = new JetpackBehavior(JetpackStats.ADVANCED);
     private final JetpackStats jetpackStats;
 
     protected JetpackBehavior(JetpackStats stats) {jetpackStats = stats;}
@@ -78,6 +78,11 @@ public class JetpackBehavior implements IArmorBehavior {
         if (tag.hasKey(ArmorHelper.JETPACK_KEY)) tooltip.add(StatCollector.translateToLocal("GT5U.armor.message.jetpack"));
     }
 
+    @Override
+    public String getMainNBTTag() {
+        return ArmorHelper.JETPACK_KEY;
+    }
+
     /*
     protected boolean drainFuel(@NotNull ItemStack stack, int amount, boolean simulate) {
         IElectricItem electricItem = getElectricItem(stack);
@@ -120,7 +125,7 @@ public class JetpackBehavior implements IArmorBehavior {
                 } else if (descendKeyDown) {
                     player.motionY = Math.min(player.motionY + currentAccel, -jetpackStats.getVerticalHoverSpeed());
                 } else {
-                    player.motionY = Math.min(player.motionY + currentAccel, -jetpackStats.getVerticalHoverSlowSpeed());
+                    player.motionY = Math.min(player.motionY + currentAccel, stack.getTagCompound().hasKey(ArmorHelper.JETPACK_PERFECT_HOVER_KEY) ? 0 : -jetpackStats.getVerticalHoverSlowSpeed());
                 }
                 float speedSideways = (float) (player.isSneaking() ? jetpackStats.getSidewaysSpeed() * 0.5f :
                     jetpackStats.getSidewaysSpeed());

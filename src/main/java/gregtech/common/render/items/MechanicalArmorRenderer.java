@@ -92,7 +92,7 @@ public class MechanicalArmorRenderer implements IItemRenderer {
         }
 
         for (IArmorBehavior behavior : armorItem.getBehaviors()) {
-            if (tag.hasKey(behavior.getMainNBTTag())) GTRenderUtil.renderItem(type, behavior.getModularArmorTexture());
+            if (tag.hasKey(behavior.getMainNBTTag()) && behavior.getModularArmorTexture() != null) GTRenderUtil.renderItem(type, behavior.getModularArmorTexture());
         }
 
         GL11.glDisable(GL11.GL_BLEND);

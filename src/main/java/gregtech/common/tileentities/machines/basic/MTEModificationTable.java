@@ -9,6 +9,7 @@ import gregtech.api.items.ItemAugmentBase;
 import gregtech.api.items.ItemAugmentCore;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import gregtech.common.items.armor.MechArmorBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -52,15 +53,32 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
     private void setTagFromItem(ItemStack armorItem, ItemStack modItem) {
         NBTTagCompound tag = getOrCreateNbtCompound(armorItem);
 
-        if (modItem.getItem() instanceof ItemAugmentBase augment && armorItem.getItem() instanceof MechArmorBase armor) {
-            augment.getAttachedBehaviors().forEach(behavior -> behavior.addBehaviorNBT(armorItem, tag));
+        // Sanity check, filter on the item slots should already verify this
+        if (!(modItem.getItem() instanceof ItemAugmentBase augment && armorItem.getItem() instanceof MechArmorBase armor)) {
+            return;
         }
 
-        int coreID = 0;
-        if (modItem.getItem() instanceof ItemAugmentCore core) {
-            coreID = core.getCoreid();
+        // Verify behaviors meet requirements
+        for (IArmorBehavior requiredBehavior : augment.getRequiredBehaviors()) {
+            if (!tag.hasKey(requiredBehavior.getMainNBTTag())) return;
+        }
+        for (IArmorBehavior incompatibleBehavior : augment.getIncompatibleBehaviors()) {
+            if (tag.hasKey(incompatibleBehavior.getMainNBTTag())) return;
         }
 
+        // At this point the modification should be successful, verification has passed
+
+        //TODO: frames
+
+        if (augment instanceof ItemAugmentCore core) {
+            armorItem.getTagCompound().setInteger("core", core.getCoreid());
+        }
+
+        augment.getAttachedBehaviors().forEach(behavior -> behavior.addBehaviorNBT(armorItem, tag));
+
+        if (--modItem.stackSize == 0) inputHandler.setStackInSlot(0, null);
+
+        /*
         else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1))) {
             tag.setString("frame", "Copper");
             tag.setShort("frameR", Materials.Copper.mRGBa[0]);
@@ -77,10 +95,10 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
             tag.setShort("frameG", Materials.Gold.mRGBa[1]);
             tag.setShort("frameB", Materials.Gold.mRGBa[2]);
         }
-
-        if (coreID != 0) armorItem.getTagCompound()
-            .setInteger("core", coreID);
+         */
     }
+
+    final static int MOD_WINDOW_ID = 250;
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
@@ -96,7 +114,6 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
                 ItemStack armorItem = inputHandler.getStackInSlot(1);
 
                 if (coreItem == null || armorItem == null) return;
-                coreItem.stackSize -= 1;
                 setTagFromItem(armorItem, coreItem);
 
             })
@@ -107,6 +124,29 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
                     ret.add(GTUITextures.BUTTON_STANDARD);
                     ret.add(GTUITextures.OVERLAY_BUTTON_CHECKMARK);
                     return ret.toArray(new IDrawable[0]);
+                }))
+            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                    if (!widget.isClient()) widget.getContext()
+                        .openSyncedWindow(MOD_WINDOW_ID);
+                })
+                .setPos(36, 20)
+                .setSize(16, 16)
+                .setBackground(() -> {
+                    List<UITexture> ret = new ArrayList<>();
+                    ret.add(GTUITextures.BUTTON_STANDARD);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM);
+                    return ret.toArray(new IDrawable[0]);
                 }));
+
+        buildContext.addSyncedWindow(MOD_WINDOW_ID, this::createEquipmentGrid);
+    }
+
+    private ModularWindow createEquipmentGrid(final EntityPlayer player) {
+        ModularWindow.Builder builder = ModularWindow.builder(170, 85)
+            .setDraggable(false);
+
+
+
+        return builder.build();
     }
 }

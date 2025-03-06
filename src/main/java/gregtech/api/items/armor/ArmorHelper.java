@@ -8,6 +8,7 @@ public class ArmorHelper {
     public static final String CREATIVE_FLIGHT_KEY = "Flight";
     public static final String JETPACK_KEY = "Jetpack";
     public static final String JETPACK_HOVER_KEY = "JetpackHover";
+    public static final String JETPACK_PERFECT_HOVER_KEY = "JetpackPerfectHover";
     public static final String FIRE_IMMUNITY_KEY = "FireImmunity";
 
 
