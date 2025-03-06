@@ -2615,7 +2615,9 @@ public enum ItemList implements IItemContainer {
     Armor_Core_T1,
     Armor_Core_T2,
     Armor_Core_T3,
-    Augment_NightVision
+    Augment_NightVision,
+    Augment_CreativeFlight,
+    Augment_Jetpack,
 
     // semicolon after the comment to reduce merge conflicts
     ;

@@ -96,7 +96,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener {
     public void onKeyPressed(EntityPlayerMP player, SyncedKeybind keyPressed) {
         for (IArmorBehavior behavior : behaviors) {
             if (behavior.getListenedKeys().contains(keyPressed)) {
-                behavior.onKeyPressed(player.getCurrentArmor(getEquipmentSlot()), player);
+                behavior.onKeyPressed(player.getCurrentArmor(getEquipmentSlot()), player, keyPressed);
             }
         }
     }

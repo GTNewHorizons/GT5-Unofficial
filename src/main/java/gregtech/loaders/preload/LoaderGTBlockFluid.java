@@ -23,6 +23,8 @@ import java.util.Locale;
 
 import gregtech.api.items.ItemAugmentBase;
 import gregtech.api.items.ItemAugmentCore;
+import gregtech.api.items.armor.behaviors.CreativeFlightBehavior;
+import gregtech.api.items.armor.behaviors.JetpackBehavior;
 import gregtech.api.items.armor.behaviors.NightVisionBehavior;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -227,6 +229,18 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Augment: Night Vision",
                 "blah",
                 Collections.singletonList(NightVisionBehavior.INSTANCE)));
+        ItemList.Augment_CreativeFlight.set(
+            new ItemAugmentBase(
+                "augmentcreativeflight",
+                "Augment: Gravity Manipulation Module",
+                "blah",
+                Collections.singletonList(CreativeFlightBehavior.INSTANCE)));
+        ItemList.Augment_Jetpack.set(
+            new ItemAugmentBase(
+                "augmentjetpack",
+                "Augment: Jetpack",
+                "blah",
+                Collections.singletonList(JetpackBehavior.INSTANCE)));
 
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));

@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,6 +20,11 @@ public interface IArmorBehavior {
      * Armor behavior system adapted from GTCEU
      */
 
+    /**
+     * Used in renderItem to get the texture that will be drawn onto modular armor. Ignore if this behavior is not
+     * intended to dynamically change a texture.
+     */
+    default IIcon getModularArmorTexture() {return null;}
 
     /**
      * Called every tick that this behavior's armor item is equipped.
@@ -36,7 +42,7 @@ public interface IArmorBehavior {
     /** Add to this behavior's armor item tooltip. */
     default void addInformation(@NotNull ItemStack stack, @NotNull List<String> tooltip) {}
 
-    default void onKeyPressed(@NotNull ItemStack stack, @NotNull EntityPlayer player) {}
+    default void onKeyPressed(@NotNull ItemStack stack, @NotNull EntityPlayer player, SyncedKeybind keyPressed) {}
 
     default void addBehaviorNBT(@NotNull ItemStack stack, @NotNull NBTTagCompound tag) {}
 
