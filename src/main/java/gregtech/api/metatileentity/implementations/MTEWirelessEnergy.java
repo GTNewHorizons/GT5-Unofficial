@@ -29,12 +29,12 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
 
     private UUID owner_uuid;
 
-    public MTEWirelessEnergy(String aName, byte aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 0, aDescription, aTextures);
+    public MTEWirelessEnergy(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier);
     }
 
-    public MTEWirelessEnergy(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, new String[] { "" });
+    public MTEWirelessEnergy(String aName, byte aTier, String[] aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
@@ -52,11 +52,6 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier] };
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
     }
 
     @Override

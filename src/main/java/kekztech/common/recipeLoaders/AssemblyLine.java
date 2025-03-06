@@ -86,8 +86,7 @@ public class AssemblyLine implements Runnable {
             .itemInputs(
                 ItemList.Quantum_Tank_IV.get(1),
                 ItemList.Machine_Multi_NeutroniumCompressor.get(1),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.StellarAlloy, 6),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.StellarAlloy, 6),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.StellarAlloy, 12),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.DraconiumAwakened, 3),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.NeutroniumBars", 6),
                 GTOreDictUnificator.get(OrePrefixes.rotor, Materials.InfinityCatalyst, 6),
@@ -130,15 +129,13 @@ public class AssemblyLine implements Runnable {
             .itemInputs(
                 ItemList.Quantum_Tank_IV.get(16),
                 ItemList.Machine_Multi_NeutroniumCompressor.get(4),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 6),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 6),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 12),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, MaterialsUEVplus.SpaceTime, 3),
                 ItemList.EnergisedTesseract.get(6),
                 GTOreDictUnificator.get(OrePrefixes.rotor, MaterialsUEVplus.SpaceTime, 6),
                 ItemList.Field_Generator_UEV.get(16),
                 ItemList.Field_Generator_UIV.get(4),
-                new ItemStack(huiCircuit, 4, 4),
-                new ItemStack(huiCircuit, 4, 4),
+                new ItemStack(huiCircuit, 8, 4),
                 GTModHandler.getModItem(EnderIO.ID, "itemBasicCapacitor", 64, 6),
                 GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1))
             .fluidInputs(Materials.StellarAlloy.getMolten(7200), new FluidStack(radoxPoly, 4608))

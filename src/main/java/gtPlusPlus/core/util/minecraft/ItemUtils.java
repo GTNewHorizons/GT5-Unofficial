@@ -23,6 +23,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.enums.GTValues;
@@ -35,16 +37,14 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
-import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.items.GTMetaTool;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
@@ -655,7 +655,7 @@ public class ItemUtils {
     }
 
     public static boolean registerFuel(ItemStack aBurnable, int burn) {
-        return GTPPCore.burnables.add(new Pair<>(burn, aBurnable));
+        return GTPPCore.burnables.add(Pair.of(burn, aBurnable));
     }
 
     public static boolean checkForInvalidItems(ItemStack mInput) {
@@ -861,91 +861,91 @@ public class ItemUtils {
     }
 
     public static boolean isCatalyst(ItemStack aStack) {
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mBlueCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.BlueMetalCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mBrownCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.BrownMetalCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mOrangeCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.OrangeMetalCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mPurpleCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.PurpleMetalCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mRedCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.RedMetalCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mYellowCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.YellowMetalCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mPinkCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.PinkMetalCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mFormaldehydeCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.FormaldehydeCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mSolidAcidCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.SolidAcidCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mInfiniteMutationCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.InfiniteMutationCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, AgriculturalChem.mGreenCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.GreenMetalCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mPlatinumGroupCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.PlatinumGroupCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mPlasticPolymerCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.PlasticPolymerCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mRubberPolymerCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.RubberPolymerCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mAdhesionPromoterCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.AdhesionPromoterCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mTitaTungstenIndiumCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.TitaTungstenIndiumCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mRadioactivityCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.RadioactivityCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mRareEarthGroupCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.RareEarthGroupCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mSimpleNaquadahCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.SimpleNaquadahCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mAdvancedNaquadahCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.AdvancedNaquadahCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mRawIntelligenceCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.RawIntelligenceCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mUltimatePlasticCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.UltimatePlasticCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mBiologicalIntelligenceCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.BiologicalIntelligenceCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.TemporalHarmonyCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.TemporalHarmonyCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mParticleAccelerationCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.ParticleAccelerationCatalyst.get(1), true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mSynchrotronCapableCatalyst, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.SynchrotronCapableCatalyst.get(1), true)) {
             return true;
         }
-        return GTUtility.areStacksEqual(aStack, GenericChem.mAlgagenicGrowthPromoterCatalyst, true);
+        return GTUtility.areStacksEqual(aStack, GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(1), true);
     }
 
     public static boolean isMillingBall(ItemStack aStack) {
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mMillingBallAlumina, true)) {
+        if (GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Alumina.get(1), true)) {
             return true;
         }
-        return GTUtility.areStacksEqual(aStack, GenericChem.mMillingBallSoapstone, true);
+        return GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Soapstone.get(1), true);
     }
 }

@@ -28,7 +28,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
@@ -36,7 +35,6 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -59,10 +57,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
 
     public MTEBoiler(int aID, String aName, String aNameRegional, String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, 0, 4, aDescription, aTextures);
-    }
-
-    public MTEBoiler(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 4, aDescription, aTextures);
     }
 
     public MTEBoiler(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -129,7 +123,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                         .func_150996_a(Items.bucket);
                 }
             } else {
-                GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+                openGui(aPlayer);
             }
         }
         return true;
@@ -156,16 +150,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     }
 
     @Override
-    public boolean displaysItemStack() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
-        return false;
-    }
-
-    @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
         return GTModHandler.isWater(aFluid);
     }
@@ -187,9 +171,9 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCover) {
-        return CoverRegistry.getCoverBehaviorNew(aCover.toStack())
-            .isSimpleCover();
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
+        return CoverRegistry.getCoverPlacer(coverItem)
+            .allowOnPrimitiveBlock();
     }
 
     @Override

@@ -46,7 +46,6 @@ import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch.ASSEMBLY_LINE_RESEARCH;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -55,12 +54,12 @@ import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-import gtPlusPlus.everglades.dimension.DimensionEverglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import tectech.recipe.TTRecipeAdder;
 import tectech.thing.CustomItemList;
+import toxiceverglades.dimension.DimensionEverglades;
 
 public class RecipesMachines {
 
@@ -821,8 +820,8 @@ public class RecipesMachines {
 
         // Give the bad algae a use.
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 32))
-            .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 4))
+            .itemInputs(GregtechItemList.AlgaeBiomass.get(32))
+            .itemOutputs(GregtechItemList.GreenAlgaeBiomass.get(4))
             .duration(15 * SECONDS)
             .eut(16)
             .addTo(distilleryRecipes);
@@ -2656,7 +2655,7 @@ public class RecipesMachines {
             CI.getTieredCircuit(5),
             plate,
             "wireFineElectrum",
-            ItemUtils.getSimpleStack(ModBlocks.blockFishTrap),
+            GregtechItemList.FishTrap.get(1),
             "wireFineElectrum",
             plate,
             CI.getTieredCircuit(5),
@@ -3053,13 +3052,10 @@ public class RecipesMachines {
                 new Object[] { CI.getTieredCircuitOreDictName(6), 8 },
                 MaterialsAlloy.INCONEL_625.getGear(8),
                 MaterialsAlloy.INCONEL_625.getPlate(32),
-                MaterialsAlloy.ZERON_100.getPlateDouble(8),
-                MaterialsAlloy.ZERON_100.getPlateDouble(8),
+                MaterialsAlloy.ZERON_100.getPlateDouble(16),
                 MaterialsAlloy.ZERON_100.getScrew(64),
-                CI.getTieredComponentOfMaterial(Materials.NiobiumTitanium, OrePrefixes.wireFine, 32),
-                CI.getTieredComponentOfMaterial(Materials.NiobiumTitanium, OrePrefixes.wireFine, 32),
-                CI.getTieredComponentOfMaterial(Materials.Titanium, OrePrefixes.foil, 16),
-                CI.getTieredComponentOfMaterial(Materials.Titanium, OrePrefixes.foil, 16))
+                CI.getTieredComponentOfMaterial(Materials.NiobiumTitanium, OrePrefixes.wireFine, 64),
+                CI.getTieredComponentOfMaterial(Materials.Titanium, OrePrefixes.foil, 32))
             .fluidInputs(
                 CI.getTieredFluid(6, 16 * 144),
                 CI.getAlternativeTieredFluid(6, 32 * 144),
@@ -3123,13 +3119,11 @@ public class RecipesMachines {
                 new Object[] { CI.getTieredCircuitOreDictName(6), 8 },
                 MaterialsAlloy.STELLITE.getGear(8),
                 MaterialsAlloy.STELLITE.getPlate(32),
-                MaterialsAlloy.HASTELLOY_N.getPlateDouble(8),
-                MaterialsAlloy.HASTELLOY_N.getPlateDouble(8),
+                MaterialsAlloy.HASTELLOY_N.getPlateDouble(16),
                 MaterialsAlloy.HASTELLOY_N.getScrew(64),
                 CI.getTieredComponentOfMaterial(Materials.YttriumBariumCuprate, OrePrefixes.wireFine, 64),
                 CI.getTieredComponentOfMaterial(Materials.YttriumBariumCuprate, OrePrefixes.wireFine, 64),
-                CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 32),
-                CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 32))
+                CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 64))
             .fluidInputs(
                 CI.getTieredFluid(5, 16 * 144),
                 CI.getAlternativeTieredFluid(4, 32 * 144),
@@ -3196,13 +3190,11 @@ public class RecipesMachines {
                 new Object[] { CI.getTieredCircuitOreDictName(5), 8 },
                 MaterialsAlloy.HS188A.getGear(8),
                 MaterialsAlloy.HS188A.getPlate(32),
-                MaterialsAlloy.HASTELLOY_N.getPlateDouble(8),
-                MaterialsAlloy.HASTELLOY_N.getPlateDouble(8),
+                MaterialsAlloy.HASTELLOY_N.getPlateDouble(16),
                 MaterialsAlloy.HASTELLOY_N.getScrew(64),
                 CI.getTieredComponentOfMaterial(Materials.YttriumBariumCuprate, OrePrefixes.wireFine, 64),
                 CI.getTieredComponentOfMaterial(Materials.YttriumBariumCuprate, OrePrefixes.wireFine, 64),
-                CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 32),
-                CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 32))
+                CI.getTieredComponentOfMaterial(Materials.Platinum, OrePrefixes.foil, 64))
             .fluidInputs(
                 CI.getTieredFluid(4, 16 * 144),
                 CI.getAlternativeTieredFluid(3, 32 * 144),
@@ -3382,9 +3374,8 @@ public class RecipesMachines {
         ItemStack[] mSuperBusesInput = new ItemStack[] { GregtechItemList.Hatch_SuperBus_Input_LV.get(1),
             GregtechItemList.Hatch_SuperBus_Input_MV.get(1), GregtechItemList.Hatch_SuperBus_Input_HV.get(1), };
 
-        ItemStack[] mChiselBuses = new ItemStack[] { GregtechItemList.GT_MetaTileEntity_ChiselBus_LV.get(1),
-            GregtechItemList.GT_MetaTileEntity_ChiselBus_MV.get(1),
-            GregtechItemList.GT_MetaTileEntity_ChiselBus_HV.get(1), };
+        ItemStack[] mChiselBuses = new ItemStack[] { GregtechItemList.ChiselBus_LV.get(1),
+            GregtechItemList.ChiselBus_MV.get(1), GregtechItemList.ChiselBus_HV.get(1), };
 
         for (int tier = 1; tier < mChiselBuses.length + 1; tier++) {
             GTValues.RA.stdBuilder()
@@ -3408,10 +3399,9 @@ public class RecipesMachines {
         ItemStack[] mSuperBusesInput = new ItemStack[] { ItemList.Hatch_Input_IV.get(1),
             ItemList.Hatch_Input_LuV.get(1), ItemList.Hatch_Input_ZPM.get(1), ItemList.Hatch_Input_UV.get(1), };
 
-        ItemStack[] mSolidifierHatches = new ItemStack[] { GregtechItemList.GT_MetaTileEntity_Solidifier_I.get(1),
-            GregtechItemList.GT_MetaTileEntity_Solidifier_II.get(1),
-            GregtechItemList.GT_MetaTileEntity_Solidifier_III.get(1),
-            GregtechItemList.GT_MetaTileEntity_Solidifier_IV.get(1), };
+        ItemStack[] mSolidifierHatches = new ItemStack[] { GregtechItemList.Hatch_Solidifier_I.get(1),
+            GregtechItemList.Hatch_Solidifier_II.get(1), GregtechItemList.Hatch_Solidifier_III.get(1),
+            GregtechItemList.Hatch_Solidifier_IV.get(1), };
 
         for (int i = 0; i < 4; i++) {
             int componentTier = i + 5;

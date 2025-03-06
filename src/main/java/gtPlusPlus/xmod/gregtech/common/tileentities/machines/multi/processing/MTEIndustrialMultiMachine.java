@@ -347,7 +347,7 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
             }
         }.setSpeedBonus(1F / 3.5F)
             .setEuModifier(0.8F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -409,7 +409,7 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
                 }
             }
 
-            // Logic for GT_MetaTileEntity_Hatch_Solidifier
+            // Logic for MTEHatchInput
             for (MTEHatchInput solidifierHatch : mInputHatches) {
                 if (solidifierHatch instanceof MTEHatchSolidifier) {
                     ItemStack mold = ((MTEHatchSolidifier) solidifierHatch).getMold();

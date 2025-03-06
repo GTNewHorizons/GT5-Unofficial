@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.relauncher.Side;
@@ -37,10 +38,10 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
         public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
             int aMeta = aStack.getItemDamage();
             if (aMeta < 4) {
-                aList.add("Provides quantum stability");
+                aList.add(StatCollector.translateToLocal("GTPP.tooltip.meta_special.quantum_stability"));
             }
             if (aMeta >= 4 && aMeta < 8) {
-                aList.add("Provides quantum modulation");
+                aList.add(StatCollector.translateToLocal("GTPP.tooltip.meta_special.quantum_modulation"));
             }
             super.addInformation(aStack, aPlayer, aList, aF3_H);
         }

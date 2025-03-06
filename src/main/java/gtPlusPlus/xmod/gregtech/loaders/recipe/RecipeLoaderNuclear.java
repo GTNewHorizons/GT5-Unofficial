@@ -32,7 +32,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -290,9 +289,7 @@ public class RecipeLoaderNuclear {
 
         // Sodium Fluoride
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(15),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3))
+            .itemInputs(GTUtility.getIntegratedCircuit(15), Materials.SodiumHydroxide.getDust(3))
             .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
             .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid", 500))
             .fluidOutputs(FluidUtils.getWater(1000))
@@ -301,9 +298,7 @@ public class RecipeLoaderNuclear {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(15),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3))
+            .itemInputs(GTUtility.getIntegratedCircuit(15), Materials.SodiumHydroxide.getDust(3))
             .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
             .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 1000))
             .fluidOutputs(FluidUtils.getWater(1000))
@@ -379,7 +374,7 @@ public class RecipeLoaderNuclear {
             .addTo(chemicalDehydratorRecipes);
 
         // Zirconium Chloride -> TetraFluoride
-        FluidStack aHydrogenChloride = new FluidStack(GenericChem.HydrochloricAcid, 800);
+        FluidStack aHydrogenChloride = Materials.HydrochloricAcid.getFluid(800);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(11),

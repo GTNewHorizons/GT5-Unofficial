@@ -39,16 +39,6 @@ public class MTEItemDistributor extends MTEBuffer {
                 "Use Screwdriver to increase/decrease Items per Side" });
     }
 
-    public MTEItemDistributor(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
-        String aDescription) {
-        super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
-    }
-
-    public MTEItemDistributor(String aName, int aTier, int aInvSlotCount, String aDescription,
-        ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
-
     public MTEItemDistributor(String aName, int aTier, int aInvSlotCount, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);

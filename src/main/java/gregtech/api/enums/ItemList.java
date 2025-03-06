@@ -378,8 +378,6 @@ public enum ItemList implements IItemContainer {
     Circuit_Data,
     Circuit_Elite,
     Circuit_Master,
-    @Deprecated
-    Circuit_Ultimate,
     Circuit_Biowarecomputer,
     Circuit_Biowaresupercomputer,
 
@@ -663,7 +661,6 @@ public enum ItemList implements IItemContainer {
     Tool_Scanner,
     Tool_DataOrb,
     Tool_DataStick,
-    Tool_Sonictron,
     Tool_Sword_Bronze,
     Tool_Pickaxe_Bronze,
     Tool_Shovel_Bronze,

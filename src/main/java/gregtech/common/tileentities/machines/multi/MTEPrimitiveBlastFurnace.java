@@ -34,7 +34,6 @@ import gregtech.GTMod;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -42,7 +41,6 @@ import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
@@ -121,9 +119,9 @@ public abstract class MTEPrimitiveBlastFurnace extends MetaTileEntity
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
-        return (CoverRegistry.getCoverBehaviorNew(aCoverID.toStack())
-            .isSimpleCover()) && (super.allowCoverOnSide(side, aCoverID));
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
+        return (CoverRegistry.getCoverPlacer(coverItem)
+            .allowOnPrimitiveBlock()) && (super.allowCoverOnSide(side, coverItem));
     }
 
     @Override
@@ -157,7 +155,7 @@ public abstract class MTEPrimitiveBlastFurnace extends MetaTileEntity
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 

@@ -41,10 +41,6 @@ public class MTEHatchMuffler extends MTEHatch {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public MTEHatchMuffler(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        this(aName, aTier, new String[] { aDescription }, aTextures);
-    }
-
     public MTEHatchMuffler(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         this(aName, aTier, 0, aDescription, aTextures);
     }
@@ -67,11 +63,6 @@ public class MTEHatchMuffler extends MTEHatch {
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_MUFFLER) };
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
     }
 
     @Override
@@ -204,13 +195,5 @@ public class MTEHatchMuffler extends MTEHatch {
             return true;
         }
         return false;
-    }
-
-    /**
-     * @deprecated Use {@link #polluteEnvironment(MetaTileEntity, int)}.
-     */
-    @Deprecated
-    public boolean polluteEnvironment(MetaTileEntity mte) {
-        return polluteEnvironment(mte, 10000);
     }
 }

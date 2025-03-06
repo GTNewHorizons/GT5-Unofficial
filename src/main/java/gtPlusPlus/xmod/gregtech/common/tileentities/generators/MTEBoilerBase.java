@@ -20,17 +20,16 @@ import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.boilers.MTEBoiler;
-import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 
 public class MTEBoilerBase extends MTEBoiler {
 
+    private static final int STEAM_PER_SECOND = 750;
     private final int steamPerSecond;
     private final int tier;
 
@@ -39,14 +38,14 @@ public class MTEBoilerBase extends MTEBoiler {
             aID,
             "electricboiler." + tier + ".tier.single",
             aNameRegional,
-            "Produces " + (Configuration.machines.boilerSteamPerSecond * tier) + "L of Steam per second");
-        this.steamPerSecond = (Configuration.machines.boilerSteamPerSecond * tier);
+            "Produces " + (STEAM_PER_SECOND * tier) + "L of Steam per second");
+        this.steamPerSecond = STEAM_PER_SECOND * tier;
         this.tier = tier;
     }
 
     public MTEBoilerBase(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        this.steamPerSecond = (Configuration.machines.boilerSteamPerSecond * aTier);
+        this.steamPerSecond = STEAM_PER_SECOND * aTier;
         this.tier = aTier;
     }
 
@@ -154,8 +153,7 @@ public class MTEBoilerBase extends MTEBoiler {
 
     // Please find out what I do.
     // I do stuff within the GUI.
-    // this.mTemperature = Math.min(54, Math.max(0, this.mTemperature * 54 / (((GT_MetaTileEntity_Boiler)
-    // this.mTileEntity.getMetaTileEntity()).maxProgresstime() - 10)));
+    // this.mTemperature = Math.min(54, Math.max(0, this.mTemperature * 54 / (this.maxProgresstime() - 10)));
     @Override
     public int maxProgresstime() {
         return 1000 + (250 * tier);
@@ -274,12 +272,12 @@ public class MTEBoilerBase extends MTEBoiler {
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCover) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         if (side != this.getBaseMetaTileEntity()
             .getFrontFacing()) {
             return true;
         }
-        return super.allowCoverOnSide(side, aCover);
+        return super.allowCoverOnSide(side, coverItem);
     }
 
     @Override

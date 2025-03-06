@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -276,7 +277,10 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             .addCasingInfoExactly("Heating Duct", 12, false)
             .addCasingInfoExactly("Any Glass", 22, false)
             .addCasingInfoExactly("Coil", 30, true)
-            .addOtherStructurePart("Heat Sensor Hatch", "Any Electric Compressor Casing", 1)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.heat_sensor_hatch"),
+                "Any Electric Compressor Casing",
+                1)
             .addInputBus("Pipe Casings on Side", 2)
             .addInputHatch("Pipe Casings on Side", 2)
             .addOutputBus("Pipe Casings on Side", 2)
@@ -396,7 +400,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                 }
                 return super.onRecipeStart(recipe);
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     private int coolingTimer = 0;
@@ -437,6 +441,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
 
     }
 
+    @Override
     public int getMaxParallelRecipes() {
         return overheated ? GTUtility.getTier(this.getMaxInputVoltage())
             : (4 * GTUtility.getTier(this.getMaxInputVoltage()));

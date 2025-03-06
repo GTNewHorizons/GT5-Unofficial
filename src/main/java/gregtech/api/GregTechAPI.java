@@ -26,11 +26,8 @@ import com.google.common.collect.SetMultimap;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IDamagableItem;
-import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
@@ -116,13 +113,6 @@ public class GregTechAPI {
      */
     public static final Map<String, ItemStack> sBookList = new ConcurrentHashMap<>();
     /**
-     * The List of all Sounds used in GT, indices are in the static Block at the bottom
-     *
-     * @deprecated Use {@link SoundResource}
-     */
-    @Deprecated
-    public static final Map<Integer, String> sSoundList = SoundResource.asSoundList();
-    /**
      * The List of Tools, which can be used. Accepts regular damageable Items and Electric Items
      */
     public static final GTHashSet sToolList = new GTHashSet(), sCrowbarList = new GTHashSet(),
@@ -155,12 +145,6 @@ public class GregTechAPI {
      */
     public static volatile int VERSION = 509;
 
-    /**
-     * @deprecated Use {@link GTValues#RA}
-     */
-    @SuppressWarnings("DeprecatedIsStillUsed") // Still need be initialized for backward compat
-    @Deprecated
-    public static IGTRecipeAdder sRecipeAdder;
     /**
      * Registers Aspects to Thaumcraft. This Object might be {@code null} if Thaumcraft isn't installed.
      */

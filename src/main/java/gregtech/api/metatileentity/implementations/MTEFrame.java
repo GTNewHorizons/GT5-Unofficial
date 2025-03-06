@@ -57,11 +57,6 @@ public class MTEFrame extends MetaPipeEntity implements ITemporaryTE {
     }
 
     @Override
-    public final boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public final boolean isFacingValid(ForgeDirection facing) {
         return false;
     }

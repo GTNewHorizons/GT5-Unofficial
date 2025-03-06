@@ -77,9 +77,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
@@ -118,7 +116,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.ManualOreDictTweaks;
@@ -179,9 +176,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         OreGenEvent.GenerateMinable.EventType.LAPIS,
         OreGenEvent.GenerateMinable.EventType.QUARTZ);
     public final HashSet<ItemStack> mRegisteredOres = new HashSet<>(10000);
-    public final ArrayList<String> mSoundNames = new ArrayList<>();
-    public final ArrayList<ItemStack> mSoundItems = new ArrayList<>();
-    public final ArrayList<Integer> mSoundCounts = new ArrayList<>();
     private final Collection<OreDictEventContainer> mEvents = new HashSet<>();
     private final Collection<String> mIgnoredItems = new HashSet<>(
         Arrays.asList(
@@ -584,7 +578,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public int mPollutionHighPressureLavaBoilerPerSecond = 20;
     public int mPollutionHighPressureCoalBoilerPerSecond = 30;
     public int mPollutionBaseDieselGeneratorPerSecond = 200;
-    public double[] mPollutionDieselGeneratorReleasedByTier = new double[] { 0.1, 1.0, 0.9, 0.8 };
+    public double[] mPollutionDieselGeneratorReleasedByTier = new double[] { 0.1, 1.0, 0.9, 0.8, 0.7, 0.6 };
     public int mPollutionBaseGasTurbinePerSecond = 200;
     public double[] mPollutionGasTurbineReleasedByTier = new double[] { 0.1, 1.0, 0.9, 0.8, 0.7, 0.6 };
     public final GTUODimensionList mUndergroundOil = new GTUODimensionList();
@@ -2572,50 +2566,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         aMaterial.setSteamCrackedFluids(crackedFluids);
     }
 
-    /**
-     * @see GTFluidFactory#of(String, String, Materials, FluidState, int)
-     * @see GTFluidFactory#of(String, String, FluidState, int)
-     * @deprecated use {@link GTFluidFactory#builder}
-     */
-    @Deprecated
-    public Fluid addFluid(String aName, String aLocalized, Materials aMaterial, int aState, int aTemperatureK) {
-        return GTFluidFactory.of(aName, aLocalized, aMaterial, FluidState.VALID_STATES[aState], aTemperatureK);
-    }
-
-    /**
-     * @deprecated use {@link GTFluidFactory#builder}
-     */
-    @SuppressWarnings({ "MethodWithTooManyParameters" }) // Deprecated method
-    @Deprecated
-    public Fluid addFluid(String aName, String aLocalized, Materials aMaterial, int aState, int aTemperatureK,
-        ItemStack aFullContainer, ItemStack aEmptyContainer, int aFluidAmount) {
-        return GTFluidFactory.builder(aName)
-            .withLocalizedName(aLocalized)
-            .withStateAndTemperature(FluidState.fromValue(aState), aTemperatureK)
-            .buildAndRegister()
-            .configureMaterials(aMaterial)
-            .registerContainers(aFullContainer, aEmptyContainer, aFluidAmount)
-            .asFluid();
-    }
-
-    /**
-     * @deprecated use {@link GTFluidFactory#builder}
-     */
-    @Deprecated
-    @SuppressWarnings({ "MethodWithTooManyParameters" }) // Deprecated method
-    public Fluid addFluid(String aName, String aTexture, String aLocalized, Materials aMaterial, short[] aRGBa,
-        int aState, int aTemperatureK, ItemStack aFullContainer, ItemStack aEmptyContainer, int aFluidAmount) {
-        return GTFluidFactory.builder(aName)
-            .withLocalizedName(aLocalized)
-            .withStillIconResourceLocation(new ResourceLocation(GregTech.ID, "fluids/fluid." + aTexture))
-            .withColorRGBA(aRGBa)
-            .withStateAndTemperature(FluidState.fromValue(aState), aTemperatureK)
-            .buildAndRegister()
-            .configureMaterials(aMaterial)
-            .registerContainers(aFullContainer, aEmptyContainer, aFluidAmount)
-            .asFluid();
-    }
-
     public File getSaveDirectory() {
         return this.mUniverse == null ? null
             : this.mUniverse.getSaveHandler()
@@ -2663,29 +2613,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         }
     }
 
-    @Deprecated
-    public static final HashMap<Integer, HashMap<ChunkCoordIntPair, int[]>> dimensionWiseChunkData = new HashMap<>(16); // stores
-    // chunk
-    // data
-    // that
-    // is
-    // loaded/saved
-
     public static final HashMap<Integer, Pollution> dimensionWisePollution = new HashMap<>(16); // stores
-    // GT_Polluttors
-    // objects
-    public static final byte GTOIL = 3, GTOILFLUID = 2, GTPOLLUTION = 1, GTMETADATA = 0, NOT_LOADED = 0, LOADED = 1; // consts
-
-    // TO get default's fast
-    @Deprecated
-    public static int[] getDefaultChunkDataOnCreation() {
-        return new int[] { NOT_LOADED, 0, -1, -1 };
-    }
-
-    @Deprecated
-    public static int[] getDefaultChunkDataOnLoad() {
-        return new int[] { LOADED, 0, -1, -1 };
-    }
 
     @SubscribeEvent
     public void handleChunkLoadEvent(ChunkDataEvent.Load event) {

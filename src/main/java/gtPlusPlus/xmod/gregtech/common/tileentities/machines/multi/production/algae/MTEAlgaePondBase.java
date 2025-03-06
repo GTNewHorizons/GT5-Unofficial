@@ -51,11 +51,10 @@ import gregtech.api.util.ReflectionUtil;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import ic2.core.init.BlocksItems;
@@ -81,6 +80,11 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
     public MTEAlgaePondBase(final String aName) {
         super(aName);
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
     }
 
     @Override
@@ -359,7 +363,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         }.setEuModifier(0F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     private int getCasingTier() {
@@ -402,7 +406,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     }
 
     private static boolean isUsingCompost(ItemStack[] aItemInputs, int aTier) {
-        ItemStack aCompost = ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 1);
+        ItemStack aCompost = GregtechItemList.Compost.get(1);
         final int compostForTier = compostForTier(aTier);
         int compostFound = 0;
         for (ItemStack i : aItemInputs) {
@@ -428,7 +432,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
         if (isUsingCompost) {
             // Make it use 4 compost per tier if we have some available
             // Compost consumption maxes out at 1 stack per cycle
-            ItemStack aCompost = ItemUtils.getSimpleStack(AgriculturalChem.mCompost, compostForTier(aTier));
+            ItemStack aCompost = GregtechItemList.Compost.get(compostForTier(aTier));
             aInputs = new ItemStack[] { aCompost };
             // Boost Tier by one if using compost, so it gets a speed boost
             aTier++;
@@ -468,61 +472,61 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
         ArrayList<ItemStack> outputList = new ArrayList<>();
 
         if (aTier >= 0) {
-            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 2));
-            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 4));
+            outputList.add(GregtechItemList.AlgaeBiomass.get(2));
+            outputList.add(GregtechItemList.AlgaeBiomass.get(4));
             if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 2));
+                outputList.add(GregtechItemList.GreenAlgaeBiomass.get(2));
             }
         }
         if (aTier >= 1) {
-            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 4));
-            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 2));
+            outputList.add(GregtechItemList.AlgaeBiomass.get(4));
+            outputList.add(GregtechItemList.GreenAlgaeBiomass.get(2));
             if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 4));
+                outputList.add(GregtechItemList.GreenAlgaeBiomass.get(4));
             }
         }
         if (aTier >= 2) {
-            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 2));
-            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 3));
+            outputList.add(GregtechItemList.GreenAlgaeBiomass.get(2));
+            outputList.add(GregtechItemList.GreenAlgaeBiomass.get(3));
             if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 8));
+                outputList.add(GregtechItemList.GreenAlgaeBiomass.get(8));
             }
         }
         if (aTier >= 3) {
-            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 4));
-            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 1));
+            outputList.add(GregtechItemList.GreenAlgaeBiomass.get(4));
+            outputList.add(GregtechItemList.BrownAlgaeBiomass.get(1));
             if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 4));
+                outputList.add(GregtechItemList.BrownAlgaeBiomass.get(4));
             }
         }
         if (aTier >= 4) {
-            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 2));
-            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 3));
+            outputList.add(GregtechItemList.BrownAlgaeBiomass.get(2));
+            outputList.add(GregtechItemList.BrownAlgaeBiomass.get(3));
             if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, 4));
+                outputList.add(GregtechItemList.GoldenBrownAlgaeBiomass.get(4));
             }
         }
         if (aTier >= 5) {
-            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 4));
-            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, 2));
+            outputList.add(GregtechItemList.BrownAlgaeBiomass.get(4));
+            outputList.add(GregtechItemList.GoldenBrownAlgaeBiomass.get(2));
             if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 4));
+                outputList.add(GregtechItemList.RedAlgaeBiomass.get(4));
             }
         }
         if (aTier >= 6) {
-            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, 4));
-            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 2));
+            outputList.add(GregtechItemList.GoldenBrownAlgaeBiomass.get(4));
+            outputList.add(GregtechItemList.RedAlgaeBiomass.get(2));
             if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 8));
+                outputList.add(GregtechItemList.RedAlgaeBiomass.get(8));
             }
             // Iterate a special loop at higher tiers to provide more Red/Gold Algae.
             for (int i = 0; i < 20; i++) {
                 if (aTier >= (6 + i)) {
                     int aMulti = i + 1;
-                    outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, aMulti * 4));
-                    outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, aMulti * 3));
-                    outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, aMulti * 2));
-                    outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, aMulti));
+                    outputList.add(GregtechItemList.GreenAlgaeBiomass.get(aMulti * 4));
+                    outputList.add(GregtechItemList.BrownAlgaeBiomass.get(aMulti * 3));
+                    outputList.add(GregtechItemList.GoldenBrownAlgaeBiomass.get(aMulti * 2));
+                    outputList.add(GregtechItemList.RedAlgaeBiomass.get(aMulti));
                 } else {
                     break;
                 }

@@ -24,6 +24,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4i;
 
 import com.google.common.collect.ImmutableList;
@@ -190,6 +192,15 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEBetterJukebox(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+    }
+
+    @Nullable
+    @Override
+    public <T> T getCapability(@NotNull Class<T> capability, @NotNull ForgeDirection side) {
+        if (capability == ISoundP2PHandler.class) {
+            return capability.cast(this);
+        }
+        return super.getCapability(capability, side);
     }
 
     @Override

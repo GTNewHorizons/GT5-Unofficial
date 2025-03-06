@@ -10,7 +10,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GTMod;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -51,16 +50,8 @@ public class MTEHatchInput extends MTEHatch {
         super(aID, aName, aNameRegional, aTier, aSlot, aDescription);
     }
 
-    public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier, int allSlotCount, String[] strings) {
-        super(aID, aName, aNameRegional, aTier, allSlotCount, strings);
-    }
-
     public int getCapacityPerTank(int aTier, int aSlot) {
         return (int) (8000L * (1L << aTier) / aSlot);
-    }
-
-    public MTEHatchInput(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 3, aDescription, aTextures);
     }
 
     public MTEHatchInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -83,11 +74,6 @@ public class MTEHatchInput extends MTEHatch {
         return GTMod.gregtechproxy.mRenderIndicatorsOnHatch
             ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(FLUID_IN_SIGN) }
             : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
     }
 
     @Override
@@ -121,7 +107,7 @@ public class MTEHatchInput extends MTEHatch {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -144,16 +130,6 @@ public class MTEHatchInput extends MTEHatch {
     @Override
     public boolean canTankBeEmptied() {
         return true;
-    }
-
-    @Override
-    public boolean displaysItemStack() {
-        return true;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
-        return false;
     }
 
     public void updateSlots() {

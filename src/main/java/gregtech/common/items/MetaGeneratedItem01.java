@@ -452,7 +452,6 @@ import static gregtech.common.items.IDMetaItem01.Tool_MatchBox_Full;
 import static gregtech.common.items.IDMetaItem01.Tool_MatchBox_Used;
 import static gregtech.common.items.IDMetaItem01.Tool_Matches;
 import static gregtech.common.items.IDMetaItem01.Tool_Scanner;
-import static gregtech.common.items.IDMetaItem01.Tool_Sonictron;
 import static gregtech.common.items.IDMetaItem01.Upgrade_Lock;
 import static gregtech.common.items.IDMetaItem01.Upgrade_Muffler;
 import static gregtech.common.items.IDMetaItem01.ZPM2;
@@ -505,6 +504,7 @@ import gregtech.common.config.Other;
 import gregtech.common.covers.CoverArm;
 import gregtech.common.covers.CoverChest;
 import gregtech.common.covers.CoverControlsWork;
+import gregtech.common.covers.CoverControlsWorkPlacer;
 import gregtech.common.covers.CoverConveyor;
 import gregtech.common.covers.CoverCrafting;
 import gregtech.common.covers.CoverDoesWork;
@@ -537,7 +537,6 @@ import gregtech.common.items.behaviors.BehaviourLighter;
 import gregtech.common.items.behaviors.BehaviourPrintedPages;
 import gregtech.common.items.behaviors.BehaviourScanner;
 import gregtech.common.items.behaviors.BehaviourSensorKit;
-import gregtech.common.items.behaviors.BehaviourSonictron;
 import gregtech.common.items.behaviors.BehaviourSprayColor;
 import gregtech.common.items.behaviors.BehaviourSprayColorInfinite;
 import gregtech.common.items.behaviors.BehaviourSprayColorRemover;
@@ -2755,7 +2754,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         ItemList.Circuit_Master.set(
             addItem(
                 Circuit_Master.ID,
-                "Nanoprocessor Mainframe",
+                "Nano Mainframe",
                 "A Master Circuit",
                 OrePrefixes.circuit.get(Materials.LuV),
                 SubTag.NO_UNIFICATION));
@@ -3073,13 +3072,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.TENEBRAE, 64L)));
 
-        ItemList.Tool_Sonictron.set(
-            addItem(
-                Tool_Sonictron.ID,
-                "Sonictron",
-                "Bring your Music with you",
-                BehaviourSonictron.INSTANCE,
-                new TCAspects.TC_AspectStack(TCAspects.SENSUS, 4L)));
         ItemList.Tool_Cheat.set(
             addItem(
                 Tool_Cheat.ID,
@@ -3627,360 +3619,387 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 .glow()
                 .build());
 
-        CoverRegistry.registerCover(
+        CoverRegistry.registerDecorativeCover(
             new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID),
-            TextureFactory.of(COVER_WOOD_PLATE),
-            null);
+            TextureFactory.of(COVER_WOOD_PLATE));
 
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_LV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverPump(32, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 32, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_MV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverPump(128, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 128, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_HV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverPump(512, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 512, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_EV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[4][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverPump(2048, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 2048, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_IV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverPump(8192, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 8192, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_LuV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[6][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverPump(32768, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 32768, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_ZPM.get(1L),
             TextureFactory.of(MACHINE_CASINGS[7][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverPump(131072, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 131072, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_UV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[8][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverPump(524288, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 524288, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_UHV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[9][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverPump(1048576, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 1048576, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_UEV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[10][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverPump(2097152, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 2097152, TextureFactory.of(OVERLAY_PUMP)));
 
         CoverRegistry.registerCover(
             ItemList.Steam_Valve_LV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_VALVE)),
-            new CoverSteamValve(1024, TextureFactory.of(OVERLAY_VALVE)));
+            context -> new CoverSteamValve(context, 1024, TextureFactory.of(OVERLAY_VALVE)));
         CoverRegistry.registerCover(
             ItemList.Steam_Valve_MV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_VALVE)),
-            new CoverSteamValve(2048, TextureFactory.of(OVERLAY_VALVE)));
+            context -> new CoverSteamValve(context, 2048, TextureFactory.of(OVERLAY_VALVE)));
         CoverRegistry.registerCover(
             ItemList.Steam_Valve_HV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(OVERLAY_VALVE)),
-            new CoverSteamValve(4096, TextureFactory.of(OVERLAY_VALVE)));
+            context -> new CoverSteamValve(context, 4096, TextureFactory.of(OVERLAY_VALVE)));
         CoverRegistry.registerCover(
             ItemList.Steam_Valve_EV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[4][0], TextureFactory.of(OVERLAY_VALVE)),
-            new CoverSteamValve(8192, TextureFactory.of(OVERLAY_VALVE)));
+            context -> new CoverSteamValve(context, 8192, TextureFactory.of(OVERLAY_VALVE)));
         CoverRegistry.registerCover(
             ItemList.Steam_Valve_IV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_VALVE)),
-            new CoverSteamValve(16384, TextureFactory.of(OVERLAY_VALVE)));
+            context -> new CoverSteamValve(context, 16384, TextureFactory.of(OVERLAY_VALVE)));
 
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_LV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverFluidRegulator(32, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 32, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_MV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverFluidRegulator(128, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 128, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_HV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverFluidRegulator(512, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 512, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_EV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[4][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverFluidRegulator(2048, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 2048, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_IV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverFluidRegulator(8192, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 8192, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_LuV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[6][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverFluidRegulator(32768, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 32768, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_ZPM.get(1L),
             TextureFactory.of(MACHINE_CASINGS[7][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverFluidRegulator(131072, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 131072, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_UV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[8][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverFluidRegulator(524288, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 524288, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_UHV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[9][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverFluidRegulator(1048576, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 1048576, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_UEV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[10][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverFluidRegulator(2097152, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 2097152, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_UIV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[11][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverFluidRegulator(4194304, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 4194304, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_UMV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[12][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverFluidRegulator(8388608, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 8388608, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_UXV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[12][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverFluidRegulator(16777216, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 16777216, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_MAX.get(1L),
             TextureFactory.of(MACHINE_CASINGS[13][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverFluidRegulator(33554432, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 33554432, TextureFactory.of(OVERLAY_PUMP)));
 
         CoverRegistry.registerCover(
             ItemList.FluidFilter.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_SHUTTER)),
-            new CoverFluidfilter(TextureFactory.of(OVERLAY_SHUTTER)));
+            context -> new CoverFluidfilter(context, TextureFactory.of(OVERLAY_SHUTTER)));
 
         CoverRegistry.registerCover(
             ItemList.ItemFilter_Export.get(1L),
             TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            new CoverItemFilter(true, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverItemFilter(context, true, TextureFactory.of(OVERLAY_CONVEYOR)));
 
         CoverRegistry.registerCover(
             ItemList.ItemFilter_Import.get(1L),
             TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            new CoverItemFilter(false, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverItemFilter(context, false, TextureFactory.of(OVERLAY_CONVEYOR)));
 
         CoverRegistry.registerCover(
             ItemList.Cover_FluidLimiter.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_SHUTTER)),
-            new CoverFluidLimiter(TextureFactory.of(OVERLAY_SHUTTER)));
+            context -> new CoverFluidLimiter(context, TextureFactory.of(OVERLAY_SHUTTER)));
 
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_LV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            new CoverConveyor(400, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 400, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_MV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            new CoverConveyor(100, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 100, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_HV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            new CoverConveyor(20, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 20, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_EV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[4][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            new CoverConveyor(4, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 4, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_IV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            new CoverConveyor(1, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_LuV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[6][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            new CoverConveyor(1, 2, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 2, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_ZPM.get(1L),
             TextureFactory.of(MACHINE_CASINGS[7][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            new CoverConveyor(1, 4, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 4, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_UV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[8][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            new CoverConveyor(1, 8, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 8, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_UHV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[9][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            new CoverConveyor(1, 16, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 16, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_UEV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[10][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            new CoverConveyor(1, 32, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 32, TextureFactory.of(OVERLAY_CONVEYOR)));
 
         CoverRegistry.registerCover(
             ItemList.Robot_Arm_LV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_ARM)),
-            new CoverArm(400, TextureFactory.of(OVERLAY_ARM)));
+            context -> new CoverArm(context, 400, TextureFactory.of(OVERLAY_ARM)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Robot_Arm_MV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ARM)),
-            new CoverArm(100, TextureFactory.of(OVERLAY_ARM)));
+            context -> new CoverArm(context, 100, TextureFactory.of(OVERLAY_ARM)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Robot_Arm_HV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(OVERLAY_ARM)),
-            new CoverArm(20, TextureFactory.of(OVERLAY_ARM)));
+            context -> new CoverArm(context, 20, TextureFactory.of(OVERLAY_ARM)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Robot_Arm_EV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[4][0], TextureFactory.of(OVERLAY_ARM)),
-            new CoverArm(4, TextureFactory.of(OVERLAY_ARM)));
+            context -> new CoverArm(context, 4, TextureFactory.of(OVERLAY_ARM)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Robot_Arm_IV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_ARM)),
-            new CoverArm(1, TextureFactory.of(OVERLAY_ARM)));
+            context -> new CoverArm(context, 1, TextureFactory.of(OVERLAY_ARM)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
 
         CoverRegistry.registerCover(
             ItemList.Cover_Controller.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_CONTROLLER)),
-            new CoverControlsWork(TextureFactory.of(OVERLAY_CONTROLLER)));
+            context -> new CoverControlsWork(context, TextureFactory.of(OVERLAY_CONTROLLER)),
+            new CoverControlsWorkPlacer());
 
         CoverRegistry.registerCover(
             ItemList.Cover_Chest_Basic.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_1)),
-            new CoverChest(9, TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_1)));
+            context -> new CoverChest(context, 9, TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_1)),
+            CoverRegistry.PRIMITIVE_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_Chest_Good.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_2)),
-            new CoverChest(12, TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_2)));
+            context -> new CoverChest(context, 12, TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_2)),
+            CoverRegistry.PRIMITIVE_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_Chest_Advanced.get(1L),
             TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_3)),
-            new CoverChest(15, TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_3)));
+            context -> new CoverChest(context, 15, TextureFactory.of(Textures.BlockIcons.OVERLAY_COVER_CHEST_3)),
+            CoverRegistry.PRIMITIVE_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_ActivityDetector.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], doesWorkCoverTexture),
-            new CoverDoesWork(doesWorkCoverTexture));
+            context -> new CoverDoesWork(context, doesWorkCoverTexture));
         CoverRegistry.registerCover(
             ItemList.Cover_FluidDetector.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_FLUIDDETECTOR)),
-            new CoverLiquidMeter(TextureFactory.of(OVERLAY_FLUIDDETECTOR)));
+            context -> new CoverLiquidMeter(context, TextureFactory.of(OVERLAY_FLUIDDETECTOR)));
         CoverRegistry.registerCover(
             ItemList.Cover_ItemDetector.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ITEMDETECTOR)),
-            new CoverItemMeter(TextureFactory.of(OVERLAY_ITEMDETECTOR)));
+            context -> new CoverItemMeter(context, TextureFactory.of(OVERLAY_ITEMDETECTOR)));
         CoverRegistry.registerCover(
             ItemList.Cover_EnergyDetector.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ENERGYDETECTOR)),
-            new CoverEUMeter(TextureFactory.of(OVERLAY_ENERGYDETECTOR)));
+            context -> new CoverEUMeter(context, TextureFactory.of(OVERLAY_ENERGYDETECTOR)));
 
         CoverRegistry.registerCover(
             ItemList.Cover_PlayerDetector.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], playerDectectorCoverTexture),
-            new CoverPlayerDetector(playerDectectorCoverTexture));
+            context -> new CoverPlayerDetector(context, playerDectectorCoverTexture));
         CoverRegistry.registerCover(
             ItemList.Cover_FluidStorageMonitor.get(1L),
             TextureFactory.of(OVERLAY_FLUID_STORAGE_MONITOR0),
-            new CoverFluidStorageMonitor());
+            CoverFluidStorageMonitor::new);
 
         CoverRegistry.registerCover(
             ItemList.Cover_Screen.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], screenCoverTexture),
-            new CoverScreen(screenCoverTexture));
+            context -> new CoverScreen(context, screenCoverTexture));
         CoverRegistry.registerCover(
             ItemList.Cover_Crafting.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_CRAFTING)),
-            new CoverCrafting(TextureFactory.of(OVERLAY_CRAFTING)));
+            context -> new CoverCrafting(context, TextureFactory.of(OVERLAY_CRAFTING)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_Drain.get(1L),
             TextureFactory.of(MACHINE_CASINGS[0][0], TextureFactory.of(OVERLAY_DRAIN)),
-            new CoverDrain(TextureFactory.of(OVERLAY_DRAIN)));
+            context -> new CoverDrain(context, TextureFactory.of(OVERLAY_DRAIN)));
         CoverRegistry.registerCover(
             ItemList.Cover_Shutter.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_SHUTTER)),
-            new CoverShutter(TextureFactory.of(OVERLAY_SHUTTER)));
+            context -> new CoverShutter(context, TextureFactory.of(OVERLAY_SHUTTER)));
 
-        CoverRegistry
-            .registerCover(ItemList.Cover_SolarPanel.get(1L), TextureFactory.of(SOLARPANEL), new CoverSolarPanel(1));
+        CoverRegistry.registerCover(
+            ItemList.Cover_SolarPanel.get(1L),
+            TextureFactory.of(SOLARPANEL),
+            context -> new CoverSolarPanel(context, 1),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_8V.get(1L),
             TextureFactory.of(SOLARPANEL_8V),
-            new CoverSolarPanel(8));
+            context -> new CoverSolarPanel(context, 8),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_LV.get(1L),
             TextureFactory.of(SOLARPANEL_LV),
-            new CoverSolarPanel(32));
+            context -> new CoverSolarPanel(context, 32),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_MV.get(1L),
             TextureFactory.of(SOLARPANEL_MV),
-            new CoverSolarPanel(128));
+            context -> new CoverSolarPanel(context, 128),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_HV.get(1L),
             TextureFactory.of(SOLARPANEL_HV),
-            new CoverSolarPanel(512));
+            context -> new CoverSolarPanel(context, 512),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_EV.get(1L),
             TextureFactory.of(SOLARPANEL_EV),
-            new CoverSolarPanel(2048));
+            context -> new CoverSolarPanel(context, 2048),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_IV.get(1L),
             TextureFactory.of(SOLARPANEL_IV),
-            new CoverSolarPanel(8192));
+            context -> new CoverSolarPanel(context, 8192),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_LuV.get(1L),
             TextureFactory.of(SOLARPANEL_LuV),
-            new CoverSolarPanel(32768));
+            context -> new CoverSolarPanel(context, 32768),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_ZPM.get(1L),
             TextureFactory.of(SOLARPANEL_ZPM),
-            new CoverSolarPanel(131072));
+            context -> new CoverSolarPanel(context, 131072),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_UV.get(1L),
             TextureFactory.of(SOLARPANEL_UV),
-            new CoverSolarPanel(524288));
+            context -> new CoverSolarPanel(context, 524288),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
 
         CoverRegistry.registerCover(
             ItemList.Cover_RedstoneTransmitterExternal.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)),
-            new CoverRedstoneTransmitterExternal(TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)));
+            context -> new CoverRedstoneTransmitterExternal(context, TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_RedstoneTransmitterInternal.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)),
-            new CoverRedstoneTransmitterInternal(TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)));
+            context -> new CoverRedstoneTransmitterInternal(context, TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_RedstoneReceiverExternal.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)),
-            new CoverRedstoneReceiverExternal(TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)));
+            context -> new CoverRedstoneReceiverExternal(context, TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_RedstoneReceiverInternal.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)),
-            new CoverRedstoneReceiverInternal(TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)));
+            context -> new CoverRedstoneReceiverInternal(context, TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
 
         CoverRegistry.registerCover(
             ItemList.Steam_Regulator_LV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_VALVE)),
-            new CoverSteamRegulator(1024, TextureFactory.of(OVERLAY_VALVE)));
+            context -> new CoverSteamRegulator(context, 1024, TextureFactory.of(OVERLAY_VALVE)));
         CoverRegistry.registerCover(
             ItemList.Steam_Regulator_MV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_VALVE)),
-            new CoverSteamRegulator(2048, TextureFactory.of(OVERLAY_VALVE)));
+            context -> new CoverSteamRegulator(context, 2048, TextureFactory.of(OVERLAY_VALVE)));
         CoverRegistry.registerCover(
             ItemList.Steam_Regulator_HV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(OVERLAY_VALVE)),
-            new CoverSteamRegulator(4096, TextureFactory.of(OVERLAY_VALVE)));
+            context -> new CoverSteamRegulator(context, 4096, TextureFactory.of(OVERLAY_VALVE)));
         CoverRegistry.registerCover(
             ItemList.Steam_Regulator_EV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[4][0], TextureFactory.of(OVERLAY_VALVE)),
-            new CoverSteamRegulator(8192, TextureFactory.of(OVERLAY_VALVE)));
+            context -> new CoverSteamRegulator(context, 8192, TextureFactory.of(OVERLAY_VALVE)));
         CoverRegistry.registerCover(
             ItemList.Steam_Regulator_IV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_VALVE)),
-            new CoverSteamRegulator(16384, TextureFactory.of(OVERLAY_VALVE)));
+            context -> new CoverSteamRegulator(context, 16384, TextureFactory.of(OVERLAY_VALVE)));
 
         CoverRegistry.registerCover(
             ItemList.Cover_NeedsMaintainance.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_MAINTENANCE_DETECTOR)),
-            new CoverNeedMaintainance(TextureFactory.of(OVERLAY_MAINTENANCE_DETECTOR)));
+            context -> new CoverNeedMaintainance(context, TextureFactory.of(OVERLAY_MAINTENANCE_DETECTOR)));
 
         for (int i = 0; i < 14; i++) {
+            int tier = i + 1;
             CoverRegistry.registerCover(
                 ItemList.WIRELESS_ENERGY_COVERS[i].get(1),
                 TextureFactory
                     .of(MACHINE_CASINGS[i + 1][0], Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0]),
-                new CoverEnergyWireless((int) GTValues.V[i + 1]));
+                context -> new CoverEnergyWireless(context, (int) GTValues.V[tier]),
+                CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         }
 
     }

@@ -41,7 +41,6 @@ public class TFGregtechRecipes {
             .fluidInputs(Materials.LiquidNitrogen.getGas(100L))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
-            .noOptimize()
             .addTo(chemicalBathRecipes);
 
         // Blizz Rod

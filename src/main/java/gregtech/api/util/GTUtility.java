@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -1879,12 +1880,15 @@ public class GTUtility {
             }
             return null;
         }
-        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem
-            && ((IFluidContainerItem) aStack.getItem()).getFluid(aStack) == null
-            && ((IFluidContainerItem) aStack.getItem()).getCapacity(aStack) <= aFluid.amount) {
-            if (aRemoveFluidDirectly) aFluid.amount -= ((IFluidContainerItem) aStack.getItem())
-                .fill(aStack = copyAmount(1, aStack), aFluid, true);
-            else((IFluidContainerItem) aStack.getItem()).fill(aStack = copyAmount(1, aStack), aFluid, true);
+        if (aCheckIFluidContainerItems && aStack.getItem() instanceof IFluidContainerItem fluidContainerItem
+            && fluidContainerItem.getFluid(aStack) == null
+            && fluidContainerItem.getCapacity(aStack) > 0
+            && fluidContainerItem.getCapacity(aStack) <= aFluid.amount) {
+            if (aRemoveFluidDirectly) {
+                aFluid.amount -= fluidContainerItem.fill(aStack = copyAmount(1, aStack), aFluid, true);
+            } else {
+                fluidContainerItem.fill(aStack = copyAmount(1, aStack), aFluid, true);
+            }
             return aStack;
         }
         Map<String, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData.get(new GTItemStack(aStack));
@@ -3592,8 +3596,8 @@ public class GTUtility {
         try {
             if (tTileEntity instanceof ICoverable coverable) {
                 rEUAmount += 300;
-                final String tString = coverable.getCoverInfoAtSide(side)
-                    .getBehaviorDescription();
+                final String tString = coverable.getCoverAtSide(side)
+                    .getDescription();
                 if (tString != null && !tString.equals(E)) tList.add(tString);
             }
         } catch (Throwable e) {
@@ -3798,54 +3802,57 @@ public class GTUtility {
 
     /**
      * This Function determines the direction a Block gets when being Wrenched. returns -1 if invalid. Even though that
-     * could never happen.
+     * could never happen. Normalizes values into the range [0.0f, 1.0f].
      */
     public static ForgeDirection determineWrenchingSide(ForgeDirection side, float aX, float aY, float aZ) {
+        float modX = (aX % 1.0f + 1.0f) % 1.0f;
+        float modY = (aY % 1.0f + 1.0f) % 1.0f;
+        float modZ = (aZ % 1.0f + 1.0f) % 1.0f;
         ForgeDirection tBack = side.getOpposite();
         switch (side) {
             case DOWN, UP -> {
-                if (aX < 0.25) {
-                    if (aZ < 0.25) return tBack;
-                    if (aZ > 0.75) return tBack;
+                if (modX < 0.25) {
+                    if (modZ < 0.25) return tBack;
+                    if (modZ > 0.75) return tBack;
                     return WEST;
                 }
-                if (aX > 0.75) {
-                    if (aZ < 0.25) return tBack;
-                    if (aZ > 0.75) return tBack;
+                if (modX > 0.75) {
+                    if (modZ < 0.25) return tBack;
+                    if (modZ > 0.75) return tBack;
                     return EAST;
                 }
-                if (aZ < 0.25) return NORTH;
-                if (aZ > 0.75) return SOUTH;
+                if (modZ < 0.25) return NORTH;
+                if (modZ > 0.75) return SOUTH;
                 return side;
             }
             case NORTH, SOUTH -> {
-                if (aX < 0.25) {
-                    if (aY < 0.25) return tBack;
-                    if (aY > 0.75) return tBack;
+                if (modX < 0.25) {
+                    if (modY < 0.25) return tBack;
+                    if (modY > 0.75) return tBack;
                     return WEST;
                 }
-                if (aX > 0.75) {
-                    if (aY < 0.25) return tBack;
-                    if (aY > 0.75) return tBack;
+                if (modX > 0.75) {
+                    if (modY < 0.25) return tBack;
+                    if (modY > 0.75) return tBack;
                     return EAST;
                 }
-                if (aY < 0.25) return DOWN;
-                if (aY > 0.75) return UP;
+                if (modY < 0.25) return DOWN;
+                if (modY > 0.75) return UP;
                 return side;
             }
             case WEST, EAST -> {
-                if (aZ < 0.25) {
-                    if (aY < 0.25) return tBack;
-                    if (aY > 0.75) return tBack;
+                if (modZ < 0.25) {
+                    if (modY < 0.25) return tBack;
+                    if (modY > 0.75) return tBack;
                     return NORTH;
                 }
-                if (aZ > 0.75) {
-                    if (aY < 0.25) return tBack;
-                    if (aY > 0.75) return tBack;
+                if (modZ > 0.75) {
+                    if (modY < 0.25) return tBack;
+                    if (modY > 0.75) return tBack;
                     return SOUTH;
                 }
-                if (aY < 0.25) return DOWN;
-                if (aY > 0.75) return UP;
+                if (modY < 0.25) return DOWN;
+                if (modY > 0.75) return UP;
                 return side;
             }
         }
@@ -3875,6 +3882,20 @@ public class GTUtility {
 
     public static String formatNumbers(double aNumber) {
         return getDecimalFormat().format(aNumber);
+    }
+
+    /**
+     * {@link String#format} without throwing exception. Falls back to {@code format} without {@code args}.
+     * Since it suppresses errors, it should be used only when inputs are unreliable,
+     * e.g. processing text input by player, or processing placeholders in localization entries.
+     */
+    @Nonnull
+    public static String formatStringSafe(@Nonnull String format, Object... args) {
+        try {
+            return String.format(format, args);
+        } catch (IllegalFormatException ignored) {
+            return format;
+        }
     }
 
     /*
@@ -4798,6 +4819,12 @@ public class GTUtility {
         public int size() {
             return size;
         }
+    }
+
+    public static String[] breakLines(String... lines) {
+        return Arrays.stream(lines)
+            .flatMap(s -> Arrays.stream(s.split("\\\\n")))
+            .toArray(String[]::new);
     }
 
     @AutoValue

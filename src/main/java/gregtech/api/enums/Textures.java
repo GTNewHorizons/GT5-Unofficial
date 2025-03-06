@@ -1779,11 +1779,6 @@ public class Textures {
             TextureFactory.of(OVERLAY_LOCKER_009), TextureFactory.of(OVERLAY_LOCKER_010),
             TextureFactory.of(OVERLAY_LOCKER_011), TextureFactory.of(OVERLAY_LOCKER_012),
             TextureFactory.of(OVERLAY_LOCKER_013), };
-        /**
-         * USE casingTexturePages[page] instead of CASING_BLOCKS since it is casingTexturePages[0]
-         */
-        @Deprecated
-        public static final ITexture[] CASING_BLOCKS = new ITexture[128]; // original variable still limited to 128
 
         public static ITexture[][] MACHINE_CASINGS = new ITexture[15][17];
         // spotless:off
@@ -1956,7 +1951,9 @@ public class Textures {
         POCKET_MULTITOOL_SCREWDRIVER,
         POCKET_MULTITOOL_WIRECUTTER,
         HALO,
-        HALO_FUZZY;
+        HALO_FUZZY,
+        TROWEL,
+        HANDLE_TROWEL;
 
         public static final IIconContainer[] DURABILITY_BAR = { DURABILITY_BAR_0, DURABILITY_BAR_1, DURABILITY_BAR_2,
             DURABILITY_BAR_3, DURABILITY_BAR_4, DURABILITY_BAR_5, DURABILITY_BAR_6, DURABILITY_BAR_7,

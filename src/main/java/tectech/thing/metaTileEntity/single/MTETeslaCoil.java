@@ -20,7 +20,6 @@ import com.google.common.collect.MultimapBuilder;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -282,7 +281,7 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
             if (aPlayer instanceof EntityPlayerMPAccessor) {
                 clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
             }
-            GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            openGui(aPlayer);
         }
         return true;
     }

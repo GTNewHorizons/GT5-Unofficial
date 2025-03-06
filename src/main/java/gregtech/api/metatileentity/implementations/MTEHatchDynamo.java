@@ -27,10 +27,6 @@ public class MTEHatchDynamo extends MTEHatch {
         super(aID, aName, aNameRegional, aTier, 0, aDescription);
     }
 
-    public MTEHatchDynamo(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 0, aDescription, aTextures);
-    }
-
     public MTEHatchDynamo(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
@@ -43,11 +39,6 @@ public class MTEHatchDynamo extends MTEHatch {
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
     }
 
     @Override

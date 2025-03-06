@@ -35,8 +35,8 @@ import bartworks.common.tileentities.multis.MTEBioVat;
 import bartworks.common.tileentities.multis.MTELESU;
 import bartworks.common.tileentities.multis.MTEManualTrafo;
 import bartworks.common.tileentities.multis.MTEWindmill;
-import bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
 import bartworks.common.tileentities.tiered.MTEBioLab;
+import bartworks.common.tileentities.tiered.MTERadioHatch;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.GregTechAPI;
@@ -511,7 +511,7 @@ public class CraftingRecipes implements Runnable {
 
         // Radio Hatches
         GTModHandler.addCraftingRecipe(
-            new GT_MetaTileEntity_RadioHatch(
+            new MTERadioHatch(
                 RadioHatch_HV.ID,
                 "bw.radiohatchHV",
                 StatCollector.translateToLocal("tile.radiohatch.name"),
@@ -524,35 +524,35 @@ public class CraftingRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Gold, 1L), 'P',
                 ItemList.Electric_Piston_HV.get(1) });
 
-        new GT_MetaTileEntity_RadioHatch(
+        new MTERadioHatch(
             RadioHatch_EV.ID,
             "bw.radiohatchEV",
             "EV " + StatCollector.translateToLocal("tile.radiohatch.name"),
             4,
             true);
 
-        new GT_MetaTileEntity_RadioHatch(
+        new MTERadioHatch(
             RadioHatch_IV.ID,
             "bw.radiohatchIV",
             "IV " + StatCollector.translateToLocal("tile.radiohatch.name"),
             5,
             true);
 
-        new GT_MetaTileEntity_RadioHatch(
+        new MTERadioHatch(
             RadioHatch_LuV.ID,
             "bw.radiohatchLuV",
             "LuV " + StatCollector.translateToLocal("tile.radiohatch.name"),
             6,
             true);
 
-        new GT_MetaTileEntity_RadioHatch(
+        new MTERadioHatch(
             RadioHatch_ZPM.ID,
             "bw.radiohatchZPM",
             "ZPM " + StatCollector.translateToLocal("tile.radiohatch.name"),
             7,
             true);
 
-        new GT_MetaTileEntity_RadioHatch(
+        new MTERadioHatch(
             RadioHatch_UV.ID,
             "bw.radiohatchUV",
             "UV " + StatCollector.translateToLocal("tile.radiohatch.name"),
