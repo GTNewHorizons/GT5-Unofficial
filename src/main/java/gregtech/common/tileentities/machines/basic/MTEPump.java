@@ -214,7 +214,7 @@ public class MTEPump extends MTEBasicMachine {
         this.mRetractDone = aNBT.getBoolean("mRetractDone");
         this.mDisallowRetract = aNBT.getBoolean("mDisallowRetract");
 
-        // Transition from old TE which was derived from GT_MetaTileEntity_Hatch
+        // Transition from old TE which was derived from MTEHatch
         if (!aNBT.hasKey("mEUt")) {
             // Output of old pump always faces up.
             getBaseMetaTileEntity().setFrontFacing(ForgeDirection.UP);

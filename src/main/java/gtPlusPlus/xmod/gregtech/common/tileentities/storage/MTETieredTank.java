@@ -93,11 +93,6 @@ public class MTETieredTank extends MTEBasicTank {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(final ForgeDirection facing) {
         return true;
     }
@@ -157,16 +152,6 @@ public class MTETieredTank extends MTEBasicTank {
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
         openGui(aPlayer);
         return true;
-    }
-
-    @Override
-    public boolean displaysItemStack() {
-        return true;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
-        return false;
     }
 
     @Override

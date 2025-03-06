@@ -36,7 +36,6 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTUtil;
 
 /**
@@ -129,7 +128,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * If a Cover of that Type can be placed on this Side. Also Called when the Facing of the Block Changes and a Cover
      * is on said Side.
      */
-    boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack);
+    boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem);
 
     /**
      * When a Player right-clicks the Facing with a Screwdriver.
@@ -310,11 +309,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @param aExplosionPower explosion power
      */
     void doExplosion(long aExplosionPower);
-
-    /**
-     * If this is just a simple Machine, which can be wrenched at 100%
-     */
-    boolean isSimpleMachine();
 
     /**
      * If there should be a Lag Warning if something laggy happens during this Tick.

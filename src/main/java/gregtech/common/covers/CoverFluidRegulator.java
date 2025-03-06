@@ -3,10 +3,8 @@ package gregtech.common.covers;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -20,12 +18,12 @@ import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -60,60 +58,54 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
     public final int mTransferRate;
     private boolean allowFluid = false;
 
-    public CoverFluidRegulator(int aTransferRate, ITexture coverTexture) {
-        super(FluidRegulatorData.class, coverTexture);
+    public CoverFluidRegulator(CoverContext context, int aTransferRate, ITexture coverTexture) {
+        super(context, FluidRegulatorData.class, coverTexture);
         this.mTransferRate = aTransferRate;
     }
 
     @Override
-    public FluidRegulatorData createDataObject(int aLegacyData) {
-        return new FluidRegulatorData(aLegacyData);
+    protected FluidRegulatorData initializeData() {
+        return new CoverFluidRegulator.FluidRegulatorData();
     }
 
     @Override
-    public FluidRegulatorData createDataObject() {
-        return new FluidRegulatorData();
+    public boolean isRedstoneSensitive(long aTimer) {
+        return coverData.condition.isRedstoneSensitive();
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
-        return aCoverVariable.condition.isRedstoneSensitive();
-    }
-
-    @Override
-    protected FluidRegulatorData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
-        FluidRegulatorData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        if (aCoverVariable.speed == 0 || !aCoverVariable.condition.isAllowedToWork(side, aCoverID, aTileEntity)) {
-            return aCoverVariable;
+    public CoverFluidRegulator.FluidRegulatorData doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null || coverData.speed == 0
+            || !coverData.condition.isAllowedToWork(coverSide, coverID, coverable)) {
+            return coverData;
         }
-        if ((aTileEntity instanceof IFluidHandler)) {
+        if ((coverable instanceof IFluidHandler fluidHandler)) {
             final IFluidHandler tTank1;
             final IFluidHandler tTank2;
             final ForgeDirection directionFrom;
-            if (aCoverVariable.speed > 0) {
-                tTank2 = aTileEntity.getITankContainerAtSide(side);
-                tTank1 = (IFluidHandler) aTileEntity;
-                directionFrom = side;
+            if (coverData.speed > 0) {
+                tTank2 = coverable.getITankContainerAtSide(coverSide);
+                tTank1 = fluidHandler;
+                directionFrom = coverSide;
             } else {
-                tTank1 = aTileEntity.getITankContainerAtSide(side);
-                tTank2 = (IFluidHandler) aTileEntity;
-                directionFrom = side.getOpposite();
+                tTank1 = coverable.getITankContainerAtSide(coverSide);
+                tTank2 = fluidHandler;
+                directionFrom = coverSide.getOpposite();
             }
             if (tTank1 != null && tTank2 != null) {
                 allowFluid = true;
-                GTUtility
-                    .moveFluid(tTank1, tTank2, directionFrom, Math.abs(aCoverVariable.speed), this::canTransferFluid);
+                GTUtility.moveFluid(tTank1, tTank2, directionFrom, Math.abs(coverData.speed), this::canTransferFluid);
                 allowFluid = false;
             }
         }
-        return aCoverVariable;
+        return coverData;
     }
 
-    private void adjustSpeed(EntityPlayer aPlayer, FluidRegulatorData aCoverVariable, int scale) {
-        int tSpeed = aCoverVariable.speed;
+    private void adjustSpeed(EntityPlayer aPlayer, FluidRegulatorData coverData, int scale) {
+        int tSpeed = coverData.speed;
         tSpeed += scale;
-        int tTickRate = aCoverVariable.tickRate;
+        int tTickRate = coverData.tickRate;
         if (Math.abs(tSpeed) > mTransferRate * tTickRate) {
             tSpeed = mTransferRate * tTickRate * (tSpeed > 0 ? 1 : -1);
             GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("316", "Pump speed limit reached!"));
@@ -137,14 +129,13 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
     }
 
     @Override
-    public FluidRegulatorData onCoverScrewdriverClickImpl(ForgeDirection side, int aCoverID,
-        FluidRegulatorData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (GTUtility.getClickedFacingCoords(side, aX, aY, aZ)[0] >= 0.5F) {
-            adjustSpeed(aPlayer, aCoverVariable, aPlayer.isSneaking() ? 256 : 16);
+    public FluidRegulatorData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ)[0] >= 0.5F) {
+            adjustSpeed(aPlayer, coverData, aPlayer.isSneaking() ? 256 : 16);
         } else {
-            adjustSpeed(aPlayer, aCoverVariable, aPlayer.isSneaking() ? -256 : -16);
+            adjustSpeed(aPlayer, coverData, aPlayer.isSneaking() ? -256 : -16);
         }
-        return aCoverVariable;
+        return coverData;
     }
 
     protected boolean canTransferFluid(FluidStack fluid) {
@@ -152,63 +143,53 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
     }
 
     @Override
-    public boolean letsRedstoneGoInImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean letsRedstoneGoIn() {
         return true;
     }
 
     @Override
-    public boolean letsRedstoneGoOutImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean letsRedstoneGoOut() {
         return true;
     }
 
     @Override
-    public boolean letsEnergyInImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean letsEnergyIn() {
         return true;
     }
 
     @Override
-    public boolean letsEnergyOutImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean letsEnergyOut() {
         return true;
     }
 
     @Override
-    public boolean letsItemsInImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsIn(int aSlot) {
         return true;
     }
 
     @Override
-    public boolean letsItemsOutImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable, int aSlot,
-        ICoverable aTileEntity) {
+    public boolean letsItemsOut(int aSlot) {
         return true;
     }
 
     @Override
-    public boolean letsFluidInImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidIn(Fluid aFluid) {
         return allowFluid;
     }
 
     @Override
-    public boolean letsFluidOutImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    public boolean letsFluidOut(Fluid aFluid) {
         return allowFluid;
     }
 
     @Override
-    protected boolean alwaysLookConnectedImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean alwaysLookConnected() {
         return true;
     }
 
     @Override
-    protected int getTickRateImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable,
-        ICoverable aTileEntity) {
-        return aCoverVariable.tickRate;
+    public int getMinimumTickRate() {
+        return coverData.tickRate;
     }
 
     // GUI stuff
@@ -246,109 +227,112 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
             AtomicBoolean warn = new AtomicBoolean(false);
 
             builder.widget(
-                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverFluidRegulator.this)
-                    .addFollower(
-                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                        coverData -> coverData.speed >= 0,
-                        (coverData, state) -> {
-                            coverData.speed = Math.abs(coverData.speed);
-                            return coverData;
-                        },
-                        widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                            .addTooltip(GTUtility.trans("006", "Export"))
-                            .setPos(spaceX * 0, spaceY * 0))
-                    .addFollower(
-                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                        coverData -> coverData.speed <= 0,
-                        (coverData, state) -> {
-                            coverData.speed = -Math.abs(coverData.speed);
-                            return coverData;
-                        },
-                        widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                            .addTooltip(GTUtility.trans("007", "Import"))
-                            .setPos(spaceX * 1, spaceY * 0))
-                    .addFollower(
-                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                        coverData -> coverData.condition == Conditional.Always,
-                        (coverData, state) -> {
-                            coverData.condition = Conditional.Always;
-                            return coverData;
-                        },
-                        widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK)
-                            .addTooltip(GTUtility.trans("224", "Always On"))
-                            .setPos(spaceX * 0, spaceY * 1))
-                    .addFollower(
-                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                        coverData -> coverData.condition == Conditional.Conditional,
-                        (coverData, state) -> {
-                            coverData.condition = Conditional.Conditional;
-                            return coverData;
-                        },
-                        widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_USE_PROCESSING_STATE)
-                            .addTooltip(GTUtility.trans("343", "Use Machine Processing State"))
-                            .setPos(spaceX * 1, spaceY * 1))
-                    .addFollower(
-                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                        coverData -> coverData.condition == Conditional.Inverted,
-                        (coverData, state) -> {
-                            coverData.condition = Conditional.Inverted;
-                            return coverData;
-                        },
-                        widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
-                            .addTooltip(GTUtility.trans("343.1", "Use Inverted Machine Processing State"))
-                            .setPos(spaceX * 2, spaceY * 1))
-                    .addFollower(
-                        new CoverDataFollowerNumericWidget<>(),
-                        coverData -> (double) coverData.speed,
-                        (coverData, state) -> {
-                            coverData.speed = state.intValue();
-                            return coverData;
-                        },
-                        widget -> widget.setBounds(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY)
-                            .setValidator(val -> {
-                                final int tickRate = getCoverData() != null ? getCoverData().tickRate : 0;
-                                final long maxFlow = (long) mTransferRate
-                                    * GTUtility.clamp(tickRate, TICK_RATE_MIN, TICK_RATE_MAX);
-                                warn.set(false);
-                                if (val > maxFlow) {
-                                    val = maxFlow;
-                                    warn.set(true);
-                                } else if (val < -maxFlow) {
-                                    val = -maxFlow;
-                                    warn.set(true);
-                                }
-                                return val;
-                            })
-                            .setScrollValues(1, 144, 1000)
-                            .setFocusOnGuiOpen(true)
-                            .setPos(spaceX * 0, spaceY * 2 + 2)
-                            .setSize(spaceX * 4 - 3, 12))
-                    .addFollower(
-                        new CoverDataFollowerNumericWidget<>(),
-                        coverData -> (double) coverData.tickRate,
-                        (coverData, state) -> {
-                            coverData.tickRate = state.intValue();
-                            return coverData;
-                        },
-                        widget -> widget.setBounds(0, TICK_RATE_MAX)
-                            .setValidator(val -> {
-                                final int speed = getCoverData() != null ? getCoverData().speed : 0;
-                                warn.set(false);
-                                if (val > TICK_RATE_MAX) {
-                                    val = (long) TICK_RATE_MAX;
-                                    warn.set(true);
-                                } else if (Math.abs(speed) > mTransferRate * val) {
-                                    val = (long) Math
-                                        .min(TICK_RATE_MAX, (Math.abs(speed) + mTransferRate - 1) / mTransferRate);
-                                    warn.set(true);
-                                } else if (val < TICK_RATE_MIN) {
-                                    val = 1L;
-                                }
-                                return val;
-                            })
-                            .setPos(spaceX * 5, spaceY * 2 + 2)
-                            .setSize(spaceX * 2 - 3, 12))
-                    .setPos(startX, startY))
+                new CoverDataControllerWidget<>(
+                    this::getCoverData,
+                    this::setCoverData,
+                    CoverFluidRegulator.this::loadFromNbt)
+                        .addFollower(
+                            CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                            coverData -> coverData.speed >= 0,
+                            (coverData, state) -> {
+                                coverData.speed = Math.abs(coverData.speed);
+                                return coverData;
+                            },
+                            widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
+                                .addTooltip(GTUtility.trans("006", "Export"))
+                                .setPos(spaceX * 0, spaceY * 0))
+                        .addFollower(
+                            CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                            coverData -> coverData.speed <= 0,
+                            (coverData, state) -> {
+                                coverData.speed = -Math.abs(coverData.speed);
+                                return coverData;
+                            },
+                            widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
+                                .addTooltip(GTUtility.trans("007", "Import"))
+                                .setPos(spaceX * 1, spaceY * 0))
+                        .addFollower(
+                            CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                            coverData -> coverData.condition == Conditional.Always,
+                            (coverData, state) -> {
+                                coverData.condition = Conditional.Always;
+                                return coverData;
+                            },
+                            widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK)
+                                .addTooltip(GTUtility.trans("224", "Always On"))
+                                .setPos(spaceX * 0, spaceY * 1))
+                        .addFollower(
+                            CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                            coverData -> coverData.condition == Conditional.Conditional,
+                            (coverData, state) -> {
+                                coverData.condition = Conditional.Conditional;
+                                return coverData;
+                            },
+                            widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_USE_PROCESSING_STATE)
+                                .addTooltip(GTUtility.trans("343", "Use Machine Processing State"))
+                                .setPos(spaceX * 1, spaceY * 1))
+                        .addFollower(
+                            CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                            coverData -> coverData.condition == Conditional.Inverted,
+                            (coverData, state) -> {
+                                coverData.condition = Conditional.Inverted;
+                                return coverData;
+                            },
+                            widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
+                                .addTooltip(GTUtility.trans("343.1", "Use Inverted Machine Processing State"))
+                                .setPos(spaceX * 2, spaceY * 1))
+                        .addFollower(
+                            new CoverDataFollowerNumericWidget<>(),
+                            coverData -> (double) coverData.speed,
+                            (coverData, state) -> {
+                                coverData.speed = state.intValue();
+                                return coverData;
+                            },
+                            widget -> widget.setBounds(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY)
+                                .setValidator(val -> {
+                                    final int tickRate = getCoverData() != null ? getCoverData().tickRate : 0;
+                                    final long maxFlow = (long) mTransferRate
+                                        * GTUtility.clamp(tickRate, TICK_RATE_MIN, TICK_RATE_MAX);
+                                    warn.set(false);
+                                    if (val > maxFlow) {
+                                        val = maxFlow;
+                                        warn.set(true);
+                                    } else if (val < -maxFlow) {
+                                        val = -maxFlow;
+                                        warn.set(true);
+                                    }
+                                    return val;
+                                })
+                                .setScrollValues(1, 144, 1000)
+                                .setFocusOnGuiOpen(true)
+                                .setPos(spaceX * 0, spaceY * 2 + 2)
+                                .setSize(spaceX * 4 - 3, 12))
+                        .addFollower(
+                            new CoverDataFollowerNumericWidget<>(),
+                            coverData -> (double) coverData.tickRate,
+                            (coverData, state) -> {
+                                coverData.tickRate = state.intValue();
+                                return coverData;
+                            },
+                            widget -> widget.setBounds(0, TICK_RATE_MAX)
+                                .setValidator(val -> {
+                                    final int speed = getCoverData() != null ? getCoverData().speed : 0;
+                                    warn.set(false);
+                                    if (val > TICK_RATE_MAX) {
+                                        val = (long) TICK_RATE_MAX;
+                                        warn.set(true);
+                                    } else if (Math.abs(speed) > mTransferRate * val) {
+                                        val = (long) Math
+                                            .min(TICK_RATE_MAX, (Math.abs(speed) + mTransferRate - 1) / mTransferRate);
+                                        warn.set(true);
+                                    } else if (val < TICK_RATE_MIN) {
+                                        val = 1L;
+                                    }
+                                    return val;
+                                })
+                                .setPos(spaceX * 5, spaceY * 2 + 2)
+                                .setSize(spaceX * 2 - 3, 12))
+                        .setPos(startX, startY))
                 .widget(
                     new TextWidget(GTUtility.trans("229", "Export/Import")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(3 + startX + spaceX * 4, 4 + startY + spaceY * 0))
@@ -386,23 +370,22 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
         Always(false) {
 
             @Override
-            boolean isAllowedToWork(ForgeDirection side, int aCoverID, ICoverable aTileEntity) {
+            boolean isAllowedToWork(ForgeDirection coverSide, int coverID, ICoverable coverable) {
                 return true;
             }
         },
         Conditional(true) {
 
             @Override
-            boolean isAllowedToWork(ForgeDirection side, int aCoverID, ICoverable aTileEntity) {
-                return !(aTileEntity instanceof IMachineProgress) || ((IMachineProgress) aTileEntity).isAllowedToWork();
+            boolean isAllowedToWork(ForgeDirection coverSide, int coverID, ICoverable coverable) {
+                return !(coverable instanceof IMachineProgress) || ((IMachineProgress) coverable).isAllowedToWork();
             }
         },
         Inverted(true) {
 
             @Override
-            boolean isAllowedToWork(ForgeDirection side, int aCoverID, ICoverable aTileEntity) {
-                return !(aTileEntity instanceof IMachineProgress)
-                    || !((IMachineProgress) aTileEntity).isAllowedToWork();
+            boolean isAllowedToWork(ForgeDirection coverSide, int coverID, ICoverable coverable) {
+                return !(coverable instanceof IMachineProgress) || !((IMachineProgress) coverable).isAllowedToWork();
             }
         };
 
@@ -413,7 +396,7 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
             this.redstoneSensitive = redstoneSensitive;
         }
 
-        abstract boolean isAllowedToWork(ForgeDirection side, int aCoverID, ICoverable aTileEntity);
+        abstract boolean isAllowedToWork(ForgeDirection coverSide, int coverID, ICoverable coverable);
 
         boolean isRedstoneSensitive() {
             return redstoneSensitive;
@@ -426,15 +409,15 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
         private int speed;
         private Conditional condition;
 
-        private static int getSpeed(int aCoverVariable) {
+        private static int getSpeed(int coverData) {
             // positive or 0 -> interval bits need to be set to zero
             // negative -> interval bits need to be set to one
-            return aCoverVariable >= 0 ? aCoverVariable & ~TICK_RATE_BITMASK : aCoverVariable | TICK_RATE_BITMASK;
+            return coverData >= 0 ? coverData & ~TICK_RATE_BITMASK : coverData | TICK_RATE_BITMASK;
         }
 
-        private static int getTickRate(int aCoverVariable) {
+        private static int getTickRate(int coverData) {
             // range: TICK_RATE_MIN ~ TICK_RATE_MAX
-            return ((Math.abs(aCoverVariable) & TICK_RATE_BITMASK) >>> SPEED_LENGTH) + TICK_RATE_MIN;
+            return ((Math.abs(coverData) & TICK_RATE_BITMASK) >>> SPEED_LENGTH) + TICK_RATE_MIN;
         }
 
         public FluidRegulatorData() {
@@ -482,13 +465,14 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
             condition = Conditional.VALUES[tag.getByte("mCondition")];
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, @Nullable EntityPlayerMP aPlayer) {
-            return new FluidRegulatorData(aBuf.readInt(), aBuf.readInt(), Conditional.VALUES[aBuf.readUnsignedByte()]);
+        public void readFromPacket(ByteArrayDataInput aBuf) {
+            this.tickRate = aBuf.readInt();
+            this.speed = aBuf.readInt();
+            this.condition = Conditional.VALUES[aBuf.readUnsignedByte()];
         }
 
-        public int getTickRate() {
+        protected int getTickRate() {
             return tickRate;
         }
 

@@ -25,7 +25,6 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -57,21 +56,6 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
     public MTEElectricAutoWorkbench(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures) {
         super(aName, aTier, 30, aDescription, aTextures);
-    }
-
-    @Override
-    public boolean isTransformerUpgradable() {
-        return true;
-    }
-
-    @Override
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
     }
 
     @Override
@@ -185,17 +169,7 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
     }
 
     @Override
-    public boolean displaysItemStack() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
-        return false;
-    }
-
-    @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         return side != getBaseMetaTileEntity().getFrontFacing() && side != getBaseMetaTileEntity().getBackFacing();
     }
 

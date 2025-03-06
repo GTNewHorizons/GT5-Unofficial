@@ -265,21 +265,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    @Override
-    public boolean isTransformerUpgradable() {
-        return false;
-    }
-
-    @Override
     public boolean isElectric() {
         return true;
     }
@@ -377,16 +362,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     @Override
     public boolean canTankBeEmptied() {
         return true;
-    }
-
-    @Override
-    public boolean displaysItemStack() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
-        return false;
     }
 
     @Override

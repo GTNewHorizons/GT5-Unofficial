@@ -58,6 +58,7 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GTMod;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -70,7 +71,6 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.overclockdescriber.EUOverclockDescriber;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.BasicUIProperties;
@@ -288,21 +288,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    @Override
-    public boolean isTransformerUpgradable() {
-        return false;
-    }
-
-    @Override
     public boolean isElectric() {
         return true;
     }
@@ -462,16 +447,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
     @Override
     public boolean canTankBeEmptied() {
-        return true;
-    }
-
-    @Override
-    public boolean displaysItemStack() {
-        return true;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
         return true;
     }
 
@@ -705,8 +680,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         // Only using mNeedsSteamVenting right now and assigning it to 64 to space in the range for more single block
         // machine problems.
         // Value | Class | Field
-        // 1 | GT_MetaTileEntity_BasicMachine | mStuttering
-        // 64 | GT_MetaTileEntity_BasicMachine_Bronze | mNeedsSteamVenting
+        // 1 | MTEBasicMachine | mStuttering
+        // 64 | MTEBasicMachineBronze | mNeedsSteamVenting
         setErrorDisplayID((getErrorDisplayID() & ~127)); // | (mStuttering ? 1 :
                                                          // 0));
     }
@@ -953,11 +928,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         if (side != mMainFacing) return true;
-        return this.getBaseMetaTileEntity()
-            .getCoverInfoAtSide(side)
-            .isGUIClickable();
+        return CoverRegistry.getCoverPlacer(coverItem)
+            .isGuiClickable();
     }
 
     @Override
