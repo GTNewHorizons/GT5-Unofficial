@@ -18,8 +18,6 @@ import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.items.armor.ArmorHelper;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import ic2.api.item.ElectricItem;
-import ic2.api.item.IElectricItem;
 
 import static gregtech.api.items.armor.ArmorKeybinds.NIGHT_VISION_KEY;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
@@ -33,6 +31,8 @@ public class NightVisionBehavior implements IArmorBehavior {
     @Override
     public void onKeyPressed(@NotNull ItemStack stack, @NotNull EntityPlayer player) {
         NBTTagCompound tag = getOrCreateNbtCompound(stack);
+        if (!tag.hasKey(ArmorHelper.NIGHT_VISION_KEY)) return;
+
         boolean wasEnabled = tag.getBoolean(ArmorHelper.NIGHT_VISION_KEY);
         tag.setBoolean(ArmorHelper.NIGHT_VISION_KEY, !wasEnabled);
 
@@ -69,12 +69,13 @@ public class NightVisionBehavior implements IArmorBehavior {
 
     @Override
     public void addBehaviorNBT(@NotNull ItemStack stack, @NotNull NBTTagCompound tag) {
-        tag.setBoolean(ArmorHelper.NIGHT_VISION_KEY, false); // disabled by default
+        tag.setBoolean(ArmorHelper.NIGHT_VISION_KEY, false);
     }
 
     @Override
-    public void addInformation(@NotNull ItemStack stack, @Nullable World world, @NotNull List<String> tooltip) {
+    public void addInformation(@NotNull ItemStack stack, @NotNull List<String> tooltip) {
         NBTTagCompound tag = getOrCreateNbtCompound(stack);
+        if (!tag.hasKey(ArmorHelper.NIGHT_VISION_KEY)) return;
         if (tag.getBoolean(ArmorHelper.NIGHT_VISION_KEY)) {
             tooltip.add(StatCollector.translateToLocal("GT5U.armor.message.nightvision.enabled"));
         } else {

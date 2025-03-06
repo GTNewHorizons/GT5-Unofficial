@@ -1,6 +1,7 @@
 package gregtech.common.items.armor;
 
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +10,10 @@ import com.gtnewhorizon.gtnhlib.keybind.IKeyPressedListener;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,6 +23,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class MechArmorBase extends ItemArmor implements IKeyPressedListener {
 
@@ -42,6 +46,21 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener {
 
     public MechArmorBase(int slot) {
         super(ArmorMaterial.IRON, 2, slot);
+    }
+
+    @Override
+    public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List<ItemStack> p_150895_3_) {
+        p_150895_3_.add(getStack());
+    }
+
+    public @NotNull ItemStack getStack() {
+        ItemStack stack = new ItemStack(this);
+
+        // Set behaviors
+        NBTTagCompound tag = getOrCreateNbtCompound(stack);
+        tag.setInteger("core", 0);
+        tag.setString("frame", "None");
+        return stack;
     }
 
     @Override
@@ -112,6 +131,10 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener {
             }
             if (tag.hasKey("frame")) {
                 aList.add("Frame: " + tag.getString("frame"));
+            }
+            // todo armor toughness tooltip
+            for (IArmorBehavior behavior : behaviors) {
+                behavior.addInformation(aStack, aList);
             }
         }
     }

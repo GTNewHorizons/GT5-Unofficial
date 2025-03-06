@@ -34,7 +34,7 @@ public interface IArmorBehavior {
     default void onArmorEquip(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {}
 
     /** Add to this behavior's armor item tooltip. */
-    default void addInformation(@NotNull ItemStack stack, @Nullable World world, @NotNull List<String> tooltip) {}
+    default void addInformation(@NotNull ItemStack stack, @NotNull List<String> tooltip) {}
 
     default void onKeyPressed(@NotNull ItemStack stack, @NotNull EntityPlayer player) {}
 

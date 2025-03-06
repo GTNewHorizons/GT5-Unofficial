@@ -1,12 +1,14 @@
 package gregtech.common.tileentities.machines.basic;
 
-import static gregtech.common.items.IDMetaItem01.Armor_Core_T1;
-import static gregtech.common.items.IDMetaItem01.Armor_Core_T2;
-import static gregtech.common.items.IDMetaItem01.Armor_Core_T3;
+import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.items.ItemAugmentBase;
+import gregtech.api.items.ItemAugmentCore;
+import gregtech.api.items.armor.behaviors.IArmorBehavior;
+import gregtech.common.items.armor.MechArmorBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -48,18 +50,16 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
     private ItemStackHandler inputHandler = new ItemStackHandler(2);
 
     private void setTagFromItem(ItemStack armorItem, ItemStack modItem) {
-        if (armorItem.getTagCompound() == null) {
-            armorItem.setTagCompound(new NBTTagCompound());
+        NBTTagCompound tag = getOrCreateNbtCompound(armorItem);
+
+        if (modItem.getItem() instanceof ItemAugmentBase augment && armorItem.getItem() instanceof MechArmorBase armor) {
+            augment.getAttachedBehaviors().forEach(behavior -> behavior.addBehaviorNBT(armorItem, tag));
         }
 
-        NBTTagCompound tag = armorItem.getTagCompound();
-
-        int metaID = modItem.getItemDamage() - 32000;
         int coreID = 0;
-        int frameID = 0;
-        if (metaID == Armor_Core_T1.ID) coreID = 1;
-        else if (metaID == Armor_Core_T2.ID) coreID = 2;
-        else if (metaID == Armor_Core_T3.ID) coreID = 3;
+        if (modItem.getItem() instanceof ItemAugmentCore core) {
+            coreID = core.getCoreid();
+        }
 
         else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1))) {
             tag.setString("frame", "Copper");
@@ -67,12 +67,12 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
             tag.setShort("frameG", Materials.Copper.mRGBa[1]);
             tag.setShort("frameB", Materials.Copper.mRGBa[2]);
         } else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1))) {
-            tag.setString("frame", "Copper");
+            tag.setString("frame", "Iron");
             tag.setShort("frameR", Materials.Iron.mRGBa[0]);
             tag.setShort("frameG", Materials.Iron.mRGBa[1]);
             tag.setShort("frameB", Materials.Iron.mRGBa[2]);
         } else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1))) {
-            tag.setString("frame", "Copper");
+            tag.setString("frame", "Gold");
             tag.setShort("frameR", Materials.Gold.mRGBa[0]);
             tag.setShort("frameG", Materials.Gold.mRGBa[1]);
             tag.setShort("frameB", Materials.Gold.mRGBa[2]);
@@ -85,10 +85,10 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new SlotWidget(inputHandler, 0).setAccess(true, true)
+            new SlotWidget(inputHandler, 0).setFilter((x) -> x.getItem() instanceof ItemAugmentBase).setAccess(true, true)
                 .setPos(79, 34))
             .widget(
-                new SlotWidget(inputHandler, 1).setAccess(true, true)
+                new SlotWidget(inputHandler, 1).setFilter((x) -> x.getItem() instanceof MechArmorBase).setAccess(true, true)
                     .setPos(79, 50)
                     .setBackground(() -> new IDrawable[] { new ItemDrawable(new ItemStack(Items.iron_helmet)) }))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
