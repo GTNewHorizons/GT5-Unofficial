@@ -706,10 +706,12 @@ GT5U.item.pipe.swap=Pipe Swapped:
 GT5U.armor.message.nightvision.enabled=Night Vision Enabled
 GT5U.armor.message.nightvision.disabled=Night Vision Disabled
 GT5U.armor.message.creativeflight=Gravity Manipulation Installed
+GT5U.armor.message.jetpack=Jetpack Installed
 GT5U.armor.message.jetpack.enabled=Jetpack On
 GT5U.armor.message.jetpack.disabled=Jetpack Off
 GT5U.armor.message.jetpackhover.enabled=Jetpack Hover Mode On
 GT5U.armor.message.jetpackhover.disabled=Jetpack Hover Mode Off
+GT5U.armor.message.fireimmunity=Fire Immunity Installed
 
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak middle-click to unlock.

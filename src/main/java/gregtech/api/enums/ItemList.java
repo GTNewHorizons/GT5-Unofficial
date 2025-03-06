@@ -2618,6 +2618,7 @@ public enum ItemList implements IItemContainer {
     Augment_NightVision,
     Augment_CreativeFlight,
     Augment_Jetpack,
+    Augment_FireImmunity,
 
     // semicolon after the comment to reduce merge conflicts
     ;
