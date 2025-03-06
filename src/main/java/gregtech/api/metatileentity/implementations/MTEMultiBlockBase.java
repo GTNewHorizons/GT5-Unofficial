@@ -2826,6 +2826,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     protected String generateCurrentRecipeInfoString() {
         StringBuffer ret = new StringBuffer(StatCollector.translateToLocal("GT5U.gui.text.progress"));
+        ret.append(" ");
 
         numberFormat.setMinimumFractionDigits(2);
         numberFormat.setMaximumFractionDigits(2);
