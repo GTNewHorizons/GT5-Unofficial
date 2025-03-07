@@ -72,8 +72,8 @@ public class CoverWirelessDoesWorkDetector
             return coverData;
         }
         final byte signal = computeSignalBasedOnActivity(coverData, coverable);
-        final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, signal);
+        final CoverData key = new CoverData(coverable.getCoords(), coverable.getWorld().provider.dimensionId, coverSide.ordinal());
+        setSignalAt(coverData.getUuid(), coverData.getFrequency(), key, signal);
 
         if (coverData.physical) {
             coverable.setOutputRedstoneSignal(coverSide, signal);

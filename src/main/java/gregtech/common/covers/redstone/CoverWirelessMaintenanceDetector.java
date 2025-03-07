@@ -92,8 +92,8 @@ public class CoverWirelessMaintenanceDetector
             return coverData;
         }
         final byte signal = computeSignalBasedOnMaintenance(coverData, coverable);
-        final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, signal);
+        final CoverData key = getCoverKey(coverable, coverSide);
+        setSignalAt(coverData.getUuid(), coverData.getFrequency(), key, signal);
 
         if (coverData.physical) {
             coverable.setOutputRedstoneSignal(coverSide, signal);

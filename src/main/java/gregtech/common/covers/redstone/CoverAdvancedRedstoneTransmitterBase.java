@@ -33,8 +33,8 @@ public abstract class CoverAdvancedRedstoneTransmitterBase<T extends CoverAdvanc
     private void unregisterSignal() {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) return;
-        final long hash = hashCoverCoords(coverable, coverSide);
-        removeSignalAt(coverData.uuid, coverData.frequency, hash);
+        final CoverData key = getCoverKey(coverable, coverSide);
+        removeSignalAt(coverData.uuid, coverData.frequency, key);
     }
 
     @Override

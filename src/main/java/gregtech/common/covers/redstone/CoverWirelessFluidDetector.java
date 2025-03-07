@@ -49,8 +49,8 @@ public class CoverWirelessFluidDetector
         }
         final byte signal = CoverLiquidMeter
             .computeSignalBasedOnFluid(coverable, coverData.invert, coverData.threshold);
-        final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, signal);
+        final CoverData key = getCoverKey(coverable, coverSide);
+        setSignalAt(coverData.getUuid(), coverData.getFrequency(), key, signal);
 
         if (coverData.physical) {
             coverable.setOutputRedstoneSignal(coverSide, signal);

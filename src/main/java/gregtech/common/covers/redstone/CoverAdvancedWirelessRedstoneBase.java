@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
@@ -105,20 +106,9 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
 
     public static CoverData getCoverKey(@NotNull ICoverable tile, ForgeDirection side) {
         return new CoverData(
-            tile.getXCoord(),
-            tile.getYCoord(),
-            tile.getZCoord(),
+            tile.getCoords(),
             tile.getWorld().provider.dimensionId,
             side.ordinal());
-    }
-
-    /**
-     * x hashed into first 20 bytes y hashed into second 20 bytes z hashed into fifth 10 bytes dim hashed into sixth 10
-     * bytes side hashed into last 4 bytes
-     */
-    public static long hashCoverCoords(@NotNull ICoverable tile, ForgeDirection side) {
-        return (((((long) tile.getXCoord() << 20) + tile.getZCoord() << 10) + tile.getYCoord() << 10)
-            + tile.getWorld().provider.dimensionId << 4) + side.ordinal();
     }
 
     @Override
@@ -315,10 +305,10 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
         public final int side;
         private final int hash;
 
-        public CoverData(int x, int y, int z, int dim, int side) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
+        public CoverData(ChunkCoordinates coords, int dim, int side) {
+            this.x = coords.posX;
+            this.y = coords.posY;
+            this.z = coords.posZ;
             this.dim = dim;
             this.side = side;
             this.hash = Objects.hash(x, y, z, dim, side);
