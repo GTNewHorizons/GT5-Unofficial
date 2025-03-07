@@ -148,7 +148,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                                 int z = data.getInteger("z");
                                 int dim = data.getInteger("dim");
                                 int side = data.getInteger("side");
-                                CoverData coverData = new CoverData(new ChunkCoordinates(x,y,z), dim, side);
+                                CoverData coverData = new CoverData(new ChunkCoordinates(x, y, z), dim, side);
                                 Map<Integer, Map<CoverData, String>> frequencies = advWirelessLabels
                                     .computeIfAbsent(owner, k -> new HashMap<>());
                                 Map<CoverData, String> covers = frequencies
