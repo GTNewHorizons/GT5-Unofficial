@@ -7,6 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
 
+import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollowerTextFieldWidget;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
@@ -158,6 +160,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
     public abstract static class WirelessData implements ISerializableObject {
 
         protected int frequency;
+        protected String label = "";
 
         /**
          * If UUID is set to null, the cover frequency is public, rather than private
@@ -182,6 +185,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
         public NBTBase saveDataToNBT() {
             NBTTagCompound tag = new NBTTagCompound();
             tag.setInteger("frequency", frequency);
+            tag.setString("label", this.label);
             if (uuid != null) {
                 tag.setString("uuid", uuid.toString());
             }
@@ -203,6 +207,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
         public void loadDataFromNBT(NBTBase aNBT) {
             NBTTagCompound tag = (NBTTagCompound) aNBT;
             frequency = tag.getInteger("frequency");
+            this.label = tag.getString("label");
             if (tag.hasKey("uuid")) {
                 uuid = UUID.fromString(tag.getString("uuid"));
             }
@@ -258,7 +263,11 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
                 .widget(
                     new TextWidget(GTUtility.trans("602", "Use Private Frequency"))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * privateExtraColumn, 4 + startY + spaceY * getButtonRow()));
+                        .setPos(startX + spaceX * privateExtraColumn, 4 + startY + spaceY * getButtonRow()))
+                .widget(
+                    new TextWidget("Label")
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2));
         }
 
         protected void addUIForDataController(CoverDataControllerWidget<T> controller) {
@@ -273,6 +282,15 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
                     .setBounds(0, Integer.MAX_VALUE)
                     .setPos(1, 2 + spaceY * getFrequencyRow())
                     .setSize(spaceX * 5 - 4, 12))
+                .addFollower(
+                    new CoverDataFollowerTextFieldWidget<>(),
+                    coverData -> coverData.label,
+                    (coverData, newLabel) -> {
+                        coverData.label = newLabel;
+                        return coverData;
+                    },
+                    widget -> widget.setPos(1, 2 + spaceY * (getButtonRow()+1))
+                        .setSize(spaceX * 5 - 4, 12))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofCheck(),
                     coverData -> coverData.uuid != null,

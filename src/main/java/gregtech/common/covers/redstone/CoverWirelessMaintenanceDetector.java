@@ -211,7 +211,7 @@ public class CoverWirelessMaintenanceDetector
 
         @Override
         protected int getGUIHeight() {
-            return 175;
+            return 193;
         }
 
         @Override
@@ -220,7 +220,7 @@ public class CoverWirelessMaintenanceDetector
             for (int i = 0; i < 8; i++) {
                 builder.widget(
                     new TextWidget(extraTexts[i]).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * (i % 2 == 0 ? 1 : 7), 4 + startY + spaceY * (2 + i / 2)));
+                        .setPos(startX + spaceX * (i % 2 == 0 ? 1 : 7), 4 + startY + spaceY * (3 + i / 2)));
             }
             builder.widget(TextWidget.dynamicString(() -> {
                 MaintenanceTransmitterData coverData = getCoverData();
@@ -235,7 +235,7 @@ public class CoverWirelessMaintenanceDetector
                 .setSynced(false)
                 .setDefaultColor(COLOR_TEXT_GRAY.get())
                 .setTextAlignment(Alignment.CenterLeft)
-                .setPos(startX + spaceX, 4 + startY + spaceY * 6)
+                .setPos(startX + spaceX, 4 + startY + spaceY * 7)
                 .setSize(spaceX * 10, 12));
         }
 
@@ -252,7 +252,7 @@ public class CoverWirelessMaintenanceDetector
                         return coverData;
                     },
                     widget -> widget.setToggleTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK, GTUITextures.TRANSPARENT)
-                        .setPos(spaceX * (index % 2 == 0 ? 0 : 6), spaceY * (2 + index / 2)));
+                        .setPos(spaceX * (index % 2 == 0 ? 0 : 6), spaceY * (3 + index / 2)));
             }
             controller.addFollower(
                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
@@ -263,7 +263,7 @@ public class CoverWirelessMaintenanceDetector
                 },
                 widget -> widget
                     .addTooltip(StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.tooltip"))
-                    .setPos(0, 1 + spaceY * 6));
+                    .setPos(0, 1 + spaceY * 7));
         }
     }
 }
