@@ -105,10 +105,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
     }
 
     public static CoverData getCoverKey(@NotNull ICoverable tile, ForgeDirection side) {
-        return new CoverData(
-            tile.getCoords(),
-            tile.getWorld().provider.dimensionId,
-            side.ordinal());
+        return new CoverData(tile.getCoords(), tile.getWorld().provider.dimensionId, side.ordinal());
     }
 
     @Override

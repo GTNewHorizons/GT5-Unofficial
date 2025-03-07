@@ -72,7 +72,10 @@ public class CoverWirelessDoesWorkDetector
             return coverData;
         }
         final byte signal = computeSignalBasedOnActivity(coverData, coverable);
-        final CoverData key = new CoverData(coverable.getCoords(), coverable.getWorld().provider.dimensionId, coverSide.ordinal());
+        final CoverData key = new CoverData(
+            coverable.getCoords(),
+            coverable.getWorld().provider.dimensionId,
+            coverSide.ordinal());
         setSignalAt(coverData.getUuid(), coverData.getFrequency(), key, signal);
 
         if (coverData.physical) {
