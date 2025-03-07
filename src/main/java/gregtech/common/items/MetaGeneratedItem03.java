@@ -254,7 +254,12 @@ import static gregtech.common.items.IDMetaItem03.WovenKevlar;
 import static gregtech.common.items.IDMetaItem03.ZPM_Coil;
 
 import gregtech.api.covers.CoverRegistry;
-import gregtech.api.enums.*;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TCAspects;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
