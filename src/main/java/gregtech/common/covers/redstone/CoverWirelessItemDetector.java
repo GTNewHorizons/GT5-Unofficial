@@ -56,7 +56,7 @@ public class CoverWirelessItemDetector
             coverData.threshold,
             coverData.slot,
             coverSide.ordinal());
-        final CoverData key = getCoverKey(coverable, coverSide);
+        final CoverPosition key = getCoverKey(coverable, coverSide);
         setSignalAt(coverData.getUuid(), coverData.getFrequency(), key, signal);
 
         if (coverData.physical) {
