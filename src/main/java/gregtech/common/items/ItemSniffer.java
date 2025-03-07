@@ -60,6 +60,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
     public ItemSniffer(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);;
+        setMaxStackSize(1);
     }
 
     public Map<CoverData, String> getCoversOnFrequency(String uuid, int frequency) {
