@@ -161,7 +161,6 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                                     .computeIfAbsent(owner, k -> new HashMap<>());
                                 Map<CoverData, String> covers = frequencies
                                     .computeIfAbsent(Integer.valueOf((String) frequency), k -> new HashMap<>());
-                                System.out.println(data.getString("label"));
                                 covers.put(coverData, data.getString("label"));
                             });
 
@@ -169,7 +168,6 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
             }
         }
-        System.out.println(tag);
     }
 
     @Override
