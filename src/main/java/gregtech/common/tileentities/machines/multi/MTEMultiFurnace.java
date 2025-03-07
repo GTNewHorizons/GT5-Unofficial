@@ -52,7 +52,6 @@ import gregtech.api.util.OverclockCalculator;
 public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> implements ISurvivalConstructable {
 
     private int mLevel = 0;
-    private int mCostDiscount = 1;
 
     private static final long RECIPE_EUT = 4;
     private static final int RECIPE_DURATION = 512;
@@ -94,8 +93,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Furnace")
-            .addInfo("Smelts 4 * 2^(Coil Tier) items, capped at 8,192")
-            .addInfo("Receives an energy discount of 2^(Coil Tier - 4) for tiers past TPV-Alloy")
+            .addInfo("Smelts 4 * 2^(Coil Tier) items in parallel")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front bottom")
@@ -246,7 +244,6 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.mLevel = 0;
-        this.mCostDiscount = 1;
 
         replaceDeprecatedCoils(aBaseMetaTileEntity);
 
@@ -258,8 +255,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
 
         if (mMaintenanceHatches.size() != 1) return false;
 
-        this.mLevel = Math.min(8192, 4 << (getCoilLevel().ordinal() - 1));
-        this.mCostDiscount = 1 << Math.max(0, getCoilLevel().ordinal() - 5);
+        this.mLevel = 4 << (getCoilLevel().ordinal() - 1);
 
         return true;
     }
@@ -340,10 +336,6 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             StatCollector.translateToLocal("GT5U.MS.multismelting") + ": "
                 + EnumChatFormatting.GREEN
                 + mLevel
-                + EnumChatFormatting.RESET
-                + " Discount: (EU/t) / "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mCostDiscount)
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
