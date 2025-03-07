@@ -94,8 +94,8 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Furnace")
-            .addInfo("Smelts up to 8-8192 items at once")
-            .addInfo("Items smelted increases with coil tier")
+            .addInfo("Smelts 4 * 2^(Coil Tier) items, capped at 8,192")
+            .addInfo("Receives an energy discount of 2^(Coil Tier - 4) for tiers past TPV-Alloy")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front bottom")
@@ -258,12 +258,9 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
 
         if (mMaintenanceHatches.size() != 1) return false;
 
-        if (getCoilLevel().getHeat() < 9000) {
-            this.mLevel = 8 * getCoilLevel().getLevel();
-        } else {
-            this.mLevel = 1 << (getCoilLevel().getTier());
-        }
-        this.mCostDiscount = getCoilLevel().getCostDiscount();
+        this.mLevel = Math.min(8192, 4 << (getCoilLevel().ordinal() - 1));
+        this.mCostDiscount = 1 << Math.max(0, getCoilLevel().ordinal() - 5);
+
         return true;
     }
 
