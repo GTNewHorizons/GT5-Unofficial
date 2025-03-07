@@ -267,8 +267,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
         // Process advanced wireless redstone frequencies
         Map<Integer, Map<CoverData, Byte>> publicFreqs = GregTechAPI.sAdvancedWirelessRedstone
             .getOrDefault("null", new ConcurrentHashMap<>());
-        Map<Integer, Map<CoverData, Byte>> privateFreqs = GregTechAPI.sAdvancedWirelessRedstone
-            .getOrDefault(this.uuid, new ConcurrentHashMap<>());
+        Map<String, Map<Integer, Map<CoverData, Byte>>> allFreqs = GregTechAPI.sAdvancedWirelessRedstone;
 
         Grid advGrid = new Grid().minColWidth(0)
             .minRowHeight(0)
@@ -286,7 +285,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
             .forEach(uuid -> {
                 if (!uuid.equals("null") && SpaceProjectManager.getLeader(UUID.fromString(uuid))
                     .equals(leader)) {
-                    advancedMatrix.addAll((processAdvancedFrequencies(privateFreqs, uuid, advGrid, guiSyncManager)));
+                    advancedMatrix.addAll((processAdvancedFrequencies(allFreqs.getOrDefault(uuid, new ConcurrentHashMap<>()), uuid, advGrid, guiSyncManager)));
                 }
             });
 
@@ -362,7 +361,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
         String ownerString = owner.equals("Public") ? "Public"
             : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(owner));
         AtomicInteger size = new AtomicInteger();
-        frequencyMap.forEach((k, v) -> { size.addAndGet(v.size()); });
+        frequencyMap.forEach((k, v) -> size.addAndGet(v.size()));
         List<List<IWidget>> result = new ArrayList<>();
         frequencyMap.entrySet()
             .stream()
