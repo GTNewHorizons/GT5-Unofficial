@@ -17,6 +17,7 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -151,20 +152,24 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
-        ArrayList<ItemStack> tInputList = getAllStoredInputs();
-        if (tInputList.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
+        List<ItemStack> tInput = getStoredInputs();
+        long availableEUt = GTUtility.roundUpVoltage(getMaxInputVoltage());
+        if (availableEUt < RECIPE_EUT) {
+            return CheckRecipeResultRegistry.insufficientPower(RECIPE_EUT);
+        }
+        if (tInput.isEmpty()) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+        int maxParallel = this.mLevel;
+        int originalMaxParallel = this.mLevel;
 
-        int fakeOriginalMaxParallel = 1;
-        OverclockCalculator calculator = new OverclockCalculator().setEUt(getAverageInputVoltage())
-            .setAmperage(getMaxInputAmps())
+        OverclockCalculator calculator = new OverclockCalculator().setEUt(availableEUt)
             .setRecipeEUt(RECIPE_EUT)
             .setDuration(RECIPE_DURATION)
-            .setAmperageOC(mEnergyHatches.size() != 1)
-            .setParallel(fakeOriginalMaxParallel);
+            .setParallel(originalMaxParallel);
 
-        int maxParallel = this.mLevel;
-        int originalMaxParallel = maxParallel;
         double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
+
         if (tickTimeAfterOC < 1) {
             maxParallel = GTUtility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
         }
@@ -174,26 +179,25 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             maxParallel = GTUtility.safeInt((long) maxParallel * getMaxBatchSize(), 0);
         }
 
-        // Calculate parallel
-        int currentParallel = 0;
-        for (ItemStack item : tInputList) {
+        int currentParallel = (int) Math.min(maxParallel, availableEUt / RECIPE_EUT);
+        int itemParallel = 0;
+        for (ItemStack item : tInput) {
             ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(item, false, null);
             if (smeltedOutput != null) {
-                if (item.stackSize <= (maxParallel - currentParallel)) {
-                    currentParallel += item.stackSize;
+                if (itemParallel + item.stackSize <= currentParallel) {
+                    itemParallel += item.stackSize;
                 } else {
-                    currentParallel = maxParallel;
+                    itemParallel = currentParallel;
                     break;
                 }
             }
         }
+        currentParallel = itemParallel;
         if (currentParallel <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
         int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallelBeforeBatchMode);
-        int fakeCurrentParallel = (int) Math.ceil((double) currentParallelBeforeBatchMode / originalMaxParallel);
-
-        calculator.setCurrentParallel(fakeCurrentParallel)
+        calculator.setCurrentParallel(currentParallelBeforeBatchMode)
             .calculate();
 
         double batchMultiplierMax = 1;
@@ -202,14 +206,15 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             batchMultiplierMax = (double) getMaxBatchSize() / calculator.getDuration();
             batchMultiplierMax = Math.min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
         }
+
         int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
 
-        // Consume inputs and generate outputs
+        // Consume items and generate outputs
         ArrayList<ItemStack> smeltedOutputs = new ArrayList<>();
         int remainingCost = finalParallel;
-        for (ItemStack item : tInputList) {
+        for (ItemStack item : tInput) {
             ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(item, false, null);
-            if (smeltedOutput != null && remainingCost > 0) {
+            if (smeltedOutput != null) {
                 if (remainingCost >= item.stackSize) {
                     remainingCost -= item.stackSize;
                     smeltedOutput.stackSize *= item.stackSize;
@@ -223,16 +228,18 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
                 }
             }
         }
+
         this.mOutputItems = smeltedOutputs.toArray(new ItemStack[0]);
 
         this.mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
         this.mEfficiencyIncrease = 10000;
         this.mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMax);
         this.lEUt = calculator.getConsumption();
+        if (this.lEUt > 0) {
+            this.lEUt = -this.lEUt;
+        }
+        this.updateSlots();
 
-        if (this.lEUt > 0) this.lEUt = -this.lEUt;
-
-        updateSlots();
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
