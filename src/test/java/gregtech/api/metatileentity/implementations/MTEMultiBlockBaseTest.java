@@ -16,11 +16,7 @@ import org.mockito.Mockito;
  * <a href="https://junit.org/junit5/docs/snapshot/user-guide/#writing-tests-classes-and-methods">recommends</a>
  * to omit the {@code public} modifier.
  */
-@SuppressWarnings("NewClassNamingConvention") /*
-                                               * The name of the original class does not fit the convention,
-                                               * but refactoring that is a story for another time.
-                                               */
-class GT_MetaTileEntity_MultiBlockBaseTest {
+class MTEMultiBlockBaseTest {
 
     @ParameterizedTest
     @CsvSource({ "0,0,false", "2,0,false", "1,0,true", "1,1,false", "0,1,true", "0,2,true", "0,3,false" })

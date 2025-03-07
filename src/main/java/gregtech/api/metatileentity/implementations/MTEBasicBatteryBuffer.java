@@ -88,11 +88,6 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public boolean isElectric() {
         return true;
     }

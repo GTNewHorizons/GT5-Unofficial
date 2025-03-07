@@ -125,11 +125,6 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex < 2;
     }
@@ -178,16 +173,6 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
     @Override
     public boolean canTankBeEmptied() {
         return getBaseMetaTileEntity().isAllowedToWork();
-    }
-
-    @Override
-    public boolean displaysItemStack() {
-        return true;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
-        return false;
     }
 
     @Override

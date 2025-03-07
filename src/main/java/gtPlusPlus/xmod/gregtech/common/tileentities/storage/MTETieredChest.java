@@ -53,11 +53,6 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
         return ArrayUtils.add(this.mDescriptionArray, GTPPCore.GT_Tooltip.get());
     }
 
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }

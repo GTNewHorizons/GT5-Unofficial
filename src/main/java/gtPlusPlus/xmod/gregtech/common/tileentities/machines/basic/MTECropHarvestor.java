@@ -29,7 +29,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
@@ -67,21 +66,6 @@ public class MTECropHarvestor extends MTEBasicTank {
     public MTECropHarvestor(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures) {
         super(aName, aTier, 21, aDescription, aTextures);
-    }
-
-    @Override
-    public boolean isTransformerUpgradable() {
-        return true;
-    }
-
-    @Override
-    public boolean isOverclockerUpgradable() {
-        return true;
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
     }
 
     @Override
@@ -508,7 +492,7 @@ public class MTECropHarvestor extends MTEBasicTank {
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         return true;
     }
 
@@ -582,16 +566,6 @@ public class MTECropHarvestor extends MTEBasicTank {
 
     @Override
     public boolean canTankBeEmptied() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysItemStack() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
         return false;
     }
 

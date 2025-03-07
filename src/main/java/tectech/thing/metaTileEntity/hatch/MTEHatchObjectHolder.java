@@ -74,11 +74,6 @@ public class MTEHatchObjectHolder extends MTEHatch implements IAddGregtechLogo {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return facing.offsetY == 0;
     }
