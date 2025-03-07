@@ -4,18 +4,17 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -33,18 +32,13 @@ import io.netty.buffer.ByteBuf;
 public class CoverWirelessMaintenanceDetector
     extends CoverAdvancedRedstoneTransmitterBase<CoverWirelessMaintenanceDetector.MaintenanceTransmitterData> {
 
-    public CoverWirelessMaintenanceDetector(ITexture coverTexture) {
-        super(MaintenanceTransmitterData.class, coverTexture);
+    public CoverWirelessMaintenanceDetector(CoverContext context, ITexture coverTexture) {
+        super(context, MaintenanceTransmitterData.class, coverTexture);
     }
 
     @Override
-    public MaintenanceTransmitterData createDataObject() {
-        return new MaintenanceTransmitterData();
-    }
-
-    @Override
-    public MaintenanceTransmitterData createDataObject(int aLegacyData) {
-        return createDataObject();
+    protected MaintenanceTransmitterData initializeData() {
+        return new CoverWirelessMaintenanceDetector.MaintenanceTransmitterData();
     }
 
     private static byte computeSignalBasedOnMaintenance(MaintenanceTransmitterData coverVariable,
@@ -92,36 +86,36 @@ public class CoverWirelessMaintenanceDetector
     }
 
     @Override
-    public MaintenanceTransmitterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
-        MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        final byte signal = computeSignalBasedOnMaintenance(aCoverVariable, aTileEntity);
-        final CoverData key = getCoverKey(aTileEntity, side);
-        setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), key, signal);
+    public MaintenanceTransmitterData doCoverThings(byte aInputRedstone, long aTimer) {
+        ICoverable coverable = coveredTile.get();
+        if (coverable == null) {
+            return coverData;
+        }
+        final byte signal = computeSignalBasedOnMaintenance(coverData, coverable);
+        final long hash = hashCoverCoords(coverable, coverSide);
+        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, signal);
 
-        if (aCoverVariable.physical) {
-            aTileEntity.setOutputRedstoneSignal(side, signal);
+        if (coverData.physical) {
+            coverable.setOutputRedstoneSignal(coverSide, signal);
         } else {
-            aTileEntity.setOutputRedstoneSignal(side, (byte) 0);
+            coverable.setOutputRedstoneSignal(coverSide, (byte) 0);
         }
 
-        return aCoverVariable;
+        return coverData;
     }
 
     @Override
-    public boolean letsRedstoneGoOutImpl(ForgeDirection side, int aCoverID, MaintenanceTransmitterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public boolean letsRedstoneGoOut() {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection side, int aCoverID,
-        MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity) {
+    public boolean manipulatesSidedRedstoneOutput() {
         return true;
     }
 
     @Override
-    public int getTickRateImpl(ForgeDirection side, int aCoverID, MaintenanceTransmitterData aCoverVariable,
-        ICoverable aTileEntity) {
+    public int getMinimumTickRate() {
         return 60;
     }
 
@@ -191,14 +185,11 @@ public class CoverWirelessMaintenanceDetector
             }
         }
 
-        @Nonnull
         @Override
-        public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
-            super.readFromPacket(aBuf, aPlayer);
+        public void readFromPacket(ByteArrayDataInput aBuf) {
+            super.readFromPacket(aBuf);
             mode = MaintenanceMode.values()[aBuf.readInt()];
             physical = aBuf.readBoolean();
-
-            return this;
         }
     }
 
@@ -221,16 +212,6 @@ public class CoverWirelessMaintenanceDetector
         @Override
         protected int getGUIHeight() {
             return 175;
-        }
-
-        @Override
-        protected int getFrequencyRow() {
-            return 0;
-        }
-
-        @Override
-        protected int getButtonRow() {
-            return 1;
         }
 
         @Override

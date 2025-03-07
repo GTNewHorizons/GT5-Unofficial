@@ -1,40 +1,35 @@
 package gregtech.common.covers.redstone;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
+import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 
 public class CoverAdvancedRedstoneReceiverInternal extends CoverAdvancedRedstoneReceiverBase {
 
-    public CoverAdvancedRedstoneReceiverInternal(ITexture coverTexture) {
-        super(coverTexture);
+    public CoverAdvancedRedstoneReceiverInternal(CoverContext context, ITexture coverTexture) {
+        super(context, coverTexture);
     }
 
     @Override
-    public ReceiverData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
-        ReceiverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        if (aTileEntity instanceof IMachineProgress machine) {
-            if (getRedstoneInput(side, aInputRedstone, aCoverID, aCoverVariable, aTileEntity) > 0) {
+    public ReceiverData doCoverThings(byte aInputRedstone, long aTimer) {
+        if (coveredTile instanceof IMachineProgress machine) {
+            if (getRedstoneInput(aInputRedstone) > 0) {
                 machine.enableWorking();
             } else {
                 machine.disableWorking();
             }
         }
 
-        return aCoverVariable;
+        return coverData;
     }
 
     @Override
-    protected byte getRedstoneInputImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
-        ReceiverData aCoverVariable, ICoverable aTileEntity) {
-        return getSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), aCoverVariable.getGateMode());
+    public byte getRedstoneInput(byte aInputRedstone) {
+        return getSignalAt(coverData.getUuid(), coverData.getFrequency(), coverData.getGateMode());
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID, ReceiverData aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
+    public boolean isRedstoneSensitive(long aTimer) {
         return true;
     }
 }

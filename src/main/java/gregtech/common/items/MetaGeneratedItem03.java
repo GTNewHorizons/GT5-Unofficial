@@ -259,6 +259,7 @@ import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.covers.CoverMetricsTransmitter;
+import gregtech.common.covers.CoverMetricsTransmitterPlacer;
 import gregtech.common.covers.CoverSolarPanel;
 
 public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
@@ -1458,19 +1459,23 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         CoverRegistry.registerCover(
             ItemList.Cover_Metrics_Transmitter.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_METRICS_TRANSMITTER)),
-            new CoverMetricsTransmitter(TextureFactory.of(OVERLAY_METRICS_TRANSMITTER)));
+            context -> new CoverMetricsTransmitter(context, TextureFactory.of(OVERLAY_METRICS_TRANSMITTER)),
+            new CoverMetricsTransmitterPlacer());
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_UHV.get(1L),
             TextureFactory.of(SOLARPANEL_UHV),
-            new CoverSolarPanel(2097152));
+            context -> new CoverSolarPanel(context, 2097152),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_UEV.get(1L),
             TextureFactory.of(SOLARPANEL_UEV),
-            new CoverSolarPanel(8388608));
+            context -> new CoverSolarPanel(context, 8388608),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
             ItemList.Cover_SolarPanel_UIV.get(1L),
             TextureFactory.of(SOLARPANEL_UIV),
-            new CoverSolarPanel(33554432));
+            context -> new CoverSolarPanel(context, 33554432),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
     }
 
     @Override
