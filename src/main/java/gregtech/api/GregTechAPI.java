@@ -110,7 +110,7 @@ public class GregTechAPI {
     /**
      * The Advanced Redstone Frequencies
      */
-    public static final Map<String, Map<Integer, Map<CoverAdvancedWirelessRedstoneBase.CoverData, Byte>>> sAdvancedWirelessRedstone = new ConcurrentHashMap<>();
+    public static final Map<String, Map<Integer, Map<CoverAdvancedWirelessRedstoneBase.CoverPosition, Byte>>> sAdvancedWirelessRedstone = new ConcurrentHashMap<>();
 
     /**
      * The IDSU Frequencies
