@@ -134,7 +134,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
                 new String[][] {
                     { "  AAA  ", "  AFA  ", "  AFA  ", "  AFA  ", "  AFA  ", "  AFA  ", "  AFA  ", "  AFA  ",
                         "  AAA  " },
-                    { " ABBBA ", " A   A ", " A   A ", " A   A ", " A   A ", " A   A ", " A   A ", " A   A ",
+                    { " ABBBA ", " AA AA ", " A   A ", " A   A ", " A   A ", " A   A ", " A   A ", " AA AA ",
                         " ABBBA ", },
                     { "ABBBBBA", "A C C A", "A C C A", "A C C A", "A C C A", "A C C A", "A C C A", "A C C A",
                         "ABBBBBA", },
@@ -142,7 +142,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
                         "ABBBBBA", },
                     { "ABBBBBA", "A C C A", "A C C A", "A C C A", "A C C A", "A C C A", "A C C A", "A C C A",
                         "ABBBBBA", },
-                    { "AABBBAA", " A   A ", " A   A ", " A   A ", " A   A ", " A   A ", " A   A ", " A   A ",
+                    { "AABBBAA", " AA AA ", " A   A ", " A   A ", " A   A ", " A   A ", " A   A ", " AA AA ",
                         "AABBBAA", },
                     { "A A~A A", "  AAA  ", "  AAA  ", "  AAA  ", "  AAA  ", "  AAA  ", "  AAA  ", "  AAA  ",
                         "A AAA A" } }))
@@ -232,6 +232,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         mEnergyHatches.clear();
         setCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0)) return false;
+        if (fluidPipeTier == -1 || itemPipeTier == -1) return false;
         return mCasingAmount >= 128;
     }
 

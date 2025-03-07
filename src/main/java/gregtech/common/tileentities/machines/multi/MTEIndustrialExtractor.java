@@ -204,6 +204,7 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
         itemPipeTier = -2;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) return false;
+        if (itemPipeTier == -1) return false;
         return mCasingAmount >= 45;
     }
 

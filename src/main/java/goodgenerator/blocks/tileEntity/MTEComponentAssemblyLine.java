@@ -9,6 +9,8 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
 
+import bartworks.API.BorosilicateGlass;
+import gregtech.api.enums.VoltageIndex;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -48,7 +50,8 @@ import gregtech.api.util.OverclockCalculator;
 public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEComponentAssemblyLine>
     implements ISurvivalConstructable {
 
-    private int casingTier;
+    private int casingTier = -2;
+    private byte glassTier = -2;
     private double speedBonus;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEComponentAssemblyLine> STRUCTURE_DEFINITION = StructureDefinition
@@ -124,12 +127,10 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
                     "H       H", "H  KKK  H", "HHHHHHHHH" } })
         .addElement(
             'A',
-            ofChain(
-                ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 5),
-                ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 13),
-                ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 14),
-                ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 15),
-                ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks2", 0)))
+            withChannel(
+                "glass",
+                BorosilicateGlass
+                    .ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier)))
         .addElement('H', ofBlock(GregTechAPI.sBlockCasings8, 7))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 5))
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 9))
@@ -144,8 +145,8 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
                     .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
                     .collect(Collectors.toList()),
                 -2,
-                (t, meta) -> t.casingTier = meta,
-                t -> t.casingTier))
+                MTEComponentAssemblyLine::setCasingTier,
+                MTEComponentAssemblyLine::getCasingTier))
         .addElement(
             'J',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
@@ -337,10 +338,23 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 2, 0, realBudget, env, false, true);
     }
 
+    private void setCasingTier(int tier) {
+        this.casingTier = tier;
+    }
+
+    private int getCasingTier() {
+        return this.casingTier;
+    }
+
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        casingTier = -2;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0);
+        this.casingTier = -2;
+        this.glassTier = -2;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0)) {
+            return false;
+        }
+
+        return this.casingTier != -1 && this.glassTier >= VoltageIndex.UV;
     }
 
     @Override

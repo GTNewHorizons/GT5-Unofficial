@@ -15,6 +15,7 @@ import java.util.function.IntFunction;
 
 import javax.annotation.Nonnull;
 
+import gregtech.common.blocks.BlockCasingsAbstract;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -324,7 +325,11 @@ public class GregTechAPI {
     public static boolean isMachineBlock(Block aBlock, int aMeta) {
         if (aBlock != null) {
             Integer id = sMachineIDs.get(aBlock);
-            return id != null && (id & B[aMeta]) != 0;
+            if (id != null) {
+                if (id == -1) // for all-meta registrations, also with meta > 32
+                    return true;
+                return (id & B[aMeta]) != 0;
+            }
         }
         return false;
     }
