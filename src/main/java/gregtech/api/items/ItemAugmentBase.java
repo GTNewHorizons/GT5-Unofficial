@@ -14,6 +14,11 @@ public class ItemAugmentBase extends GTGenericItem {
     private final Collection<IArmorBehavior> requiredBehaviors;
     private final Collection<IArmorBehavior> incompatibleBehaviors;
 
+    byte[][] size = new byte[][] {
+        { 0, 1 },
+        { 1, 1 }
+    };
+
     public ItemAugmentBase(String aUnlocalized, String aEnglish, String aEnglishTooltip, Collection<IArmorBehavior> attachedBehaviors, Collection<IArmorBehavior> requiredBehaviors, Collection<IArmorBehavior> incompatibleBehaviors) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
         this.attachedBehaviors = attachedBehaviors;

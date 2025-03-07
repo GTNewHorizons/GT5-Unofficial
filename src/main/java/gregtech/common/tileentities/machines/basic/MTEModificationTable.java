@@ -4,7 +4,14 @@ import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
+import com.cleanroommc.modularui.widgets.ItemSlot;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import gregtech.api.items.ItemAugmentBase;
 import gregtech.api.items.ItemAugmentCore;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
@@ -23,15 +30,12 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidgets {
 
@@ -48,7 +52,7 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
         return new MTEModificationTable(mName, mTier, mDescriptionArray, mTextures);
     }
 
-    private ItemStackHandler inputHandler = new ItemStackHandler(2);
+    private final ItemStackHandler inputHandler = new ItemStackHandler(2);
 
     private void setTagFromItem(ItemStack armorItem, ItemStack modItem) {
         NBTTagCompound tag = getOrCreateNbtCompound(armorItem);
@@ -144,9 +148,49 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
     private ModularWindow createEquipmentGrid(final EntityPlayer player) {
         ModularWindow.Builder builder = ModularWindow.builder(170, 85)
             .setDraggable(false);
-
-
-
+        SlotGroup slots = createSlotGrid(4, 4);
+        builder.widget(slots);
+        updateTextures(builder, slots);
         return builder.build();
+    }
+
+    private void updateTextures(ModularWindow.Builder builder, SlotGroup slots) {
+        for (int slot = 0; slot < equipmentGridHandler.getSlots(); slot++) {
+            ItemStack item = equipmentGridHandler.getStackInSlot(slot);
+            if (item != null) builder.widget(
+                new DrawableWidget()
+                    .setDrawable(new ItemDrawable(item))
+                    .setSize(32, 32)
+                    .setPos(getSlotOffset(slots, slot)));
+        }
+    }
+
+    private Pos2d getSlotOffset(SlotGroup slots, int slot) {
+        int x = slots.getPos().x + ((slot % 4) * 16);
+        int y = slots.getPos().y + ((slot / 4) * 16);
+
+        return new Pos2d(x + 5, y + 2);
+    }
+
+    private final ItemStackHandler equipmentGridHandler = new ItemStackHandler(16);
+
+    private SlotGroup createSlotGrid(int length, int height, IDrawable... background) {
+        if (background.length == 0) {
+            background = new IDrawable[] { getGUITextureSet().getItemSlot() };
+        }
+        return (SlotGroup) SlotGroup.ofItemHandler(equipmentGridHandler, 4)
+                .startFromSlot(0)
+                .endAtSlot(15)
+                .background(background)
+                .applyForWidget(widget -> {
+                    widget.setFilter(this::slotFilter);
+
+                })
+                .build()
+                .setPos(52, 7);
+    }
+
+    private boolean slotFilter(ItemStack item) {
+        return item.getItem() instanceof ItemAugmentBase;
     }
 }
