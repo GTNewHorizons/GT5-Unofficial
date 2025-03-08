@@ -15,7 +15,6 @@ import java.util.function.IntFunction;
 
 import javax.annotation.Nonnull;
 
-import gregtech.common.blocks.BlockCasingsAbstract;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;

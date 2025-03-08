@@ -3,14 +3,13 @@ package goodgenerator.blocks.tileEntity;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
 
-import bartworks.API.BorosilicateGlass;
-import gregtech.api.enums.VoltageIndex;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,6 +31,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -51,7 +51,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     implements ISurvivalConstructable {
 
     private int casingTier = -2;
-    private byte glassTier = -2;
+    private int glassTier = -2;
     private double speedBonus;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEComponentAssemblyLine> STRUCTURE_DEFINITION = StructureDefinition
@@ -125,12 +125,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
                     "A  HHH  A", "A       A", "MHHHHHHHM" },
                 { "         ", "         ", " HHHHHHH ", "HH     HH", "H       H", "H       H", "H       H",
                     "H       H", "H  KKK  H", "HHHHHHHHH" } })
-        .addElement(
-            'A',
-            withChannel(
-                "glass",
-                BorosilicateGlass
-                    .ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier)))
+        .addElement('A', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('H', ofBlock(GregTechAPI.sBlockCasings8, 7))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 5))
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 9))
@@ -224,13 +219,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
                     + "limits the recipes the machine can perform. See the NEI pages for details.")
             .addInfo("Using casings above the required recipe tier provides a speed bonus:")
             .addInfo(EnumChatFormatting.YELLOW + "Halves recipe time per tier above recipe")
-            .addInfo(
-                "Supports " + EnumChatFormatting.BLUE
-                    + "Tec"
-                    + EnumChatFormatting.DARK_BLUE
-                    + "Tech"
-                    + EnumChatFormatting.GRAY
-                    + " laser and multi-amp hatches!")
+            .addTecTechHatchInfo()
             .addInfo("Supports overclocking beyond MAX!")
             .addInfo(EnumChatFormatting.ITALIC + "Much more efficient than other competing brands!")
             .addTecTechHatchInfo()
@@ -238,7 +227,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             .addController("Mid of the eighth layer")
             .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 644, false)
             .addCasingInfoExactly("Advanced Filter Casing", 124, false)
-            .addCasingInfoExactly("Borosilicate Glass (UV+)", 280, false)
+            .addCasingInfoExactly("Glass (UV+)", 280, false)
             .addCasingInfoExactly("Assembler Machine Casing", 30, false)
             .addCasingInfoExactly("Component Assembly Line Casing", 43, true)
             .addCasingInfoExactly("PBI Pipe Casing", 126, false)
@@ -249,6 +238,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             .addEnergyHatch("Second-top layer", 3)
             .addMaintenanceHatch("Around the controller", 4)
             .addInputHatch("Bottom left and right corners", 5)
+            .addSubChannelUsage("glass", "Glass Tier")
             .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
         return tt;
     }
@@ -354,7 +344,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             return false;
         }
 
-        return this.casingTier != -1 && this.glassTier >= VoltageIndex.UV;
+        return this.casingTier > -1 && this.glassTier >= VoltageIndex.UV;
     }
 
     @Override

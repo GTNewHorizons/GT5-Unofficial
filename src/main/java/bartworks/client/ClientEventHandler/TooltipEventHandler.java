@@ -6,11 +6,11 @@ import net.minecraft.block.Block;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
-import bartworks.API.GlassTier;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GlassTier;
 
 @SideOnly(Side.CLIENT)
 public class TooltipEventHandler {

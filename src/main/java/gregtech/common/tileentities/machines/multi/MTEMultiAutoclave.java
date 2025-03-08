@@ -203,7 +203,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .beginStructureBlock(7, 7, 9, true)
             .addController("Front Center")
             .addCasingInfoMin("Pressure Containment Casings", 128, false)
-            .addCasingInfoExactly("Any Glass", 42, false)
+            .addCasingInfoExactly("Glass", 42, false)
             .addCasingInfoExactly("Item Pipe Casings", 7, true)
             .addCasingInfoExactly("Pipe Casings", 14, true)
             .addCasingInfoExactly("Heating Coils", 7, true)
@@ -214,6 +214,8 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addOutputHatch("Any Pressure Containment Casing", 1)
             .addEnergyHatch("Any Pressure Containment Casing", 1)
             .addMaintenanceHatch("Any Pressure Containment Casing", 1)
+            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage("coil", "Heating Coils")
             .toolTipFinisher(AuthorVolence);
         return tt;
     }

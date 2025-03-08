@@ -36,6 +36,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 import static kubatech.api.utils.ItemUtils.writeItemStackToNBT;
 
@@ -93,7 +94,6 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import bartworks.API.BorosilicateGlass;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.apiculture.EnumBeeType;
@@ -111,6 +111,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -132,7 +133,7 @@ import kubatech.client.effect.MegaApiaryBeesRenderer;
 public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaIndustrialApiary>
     implements ISurvivalConstructable {
 
-    private byte mGlassTier = 0;
+    private int glassTier = -2;
     private int mCasing = 0;
     private int mMaxSlots = 0;
     private int mPrimaryMode = 0;
@@ -180,7 +181,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                                 .replaceAll("F", " "))
                         .toArray(String[]::new))
                 .toArray(String[][]::new))
-        .addElement('A', BorosilicateGlass.ofBoroGlass((byte) 0, (t, v) -> t.mGlassTier = v, t -> t.mGlassTier))
+        .addElement('A', chainAllGlasses(0, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('B', ofChain(ofBlockAnyMeta(Blocks.dirt, 0), ofBlock(Blocks.grass, 0)))
         .addElement(
             'G',
@@ -345,7 +346,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setByte("mGlassTier", mGlassTier);
         aNBT.setInteger("mPrimaryMode", mPrimaryMode);
         aNBT.setInteger("mSecondaryMode", mSecondaryMode);
         aNBT.setInteger("mStorageSize", mStorage.size());
@@ -359,7 +359,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mGlassTier = aNBT.getByte("mGlassTier");
         mPrimaryMode = aNBT.getInteger("mPrimaryMode");
         mSecondaryMode = aNBT.getInteger("mSecondaryMode");
         for (int i = 0, isize = aNBT.getInteger("mStorageSize"); i < isize; i++)
@@ -578,7 +577,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mGlassTier = 0;
+        glassTier = -2;
         mCasing = 0;
         if (isCacheDirty) {
             flowersCache.clear();
@@ -589,13 +588,11 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         flowersCheck.clear();
         flowersCheck.addAll(flowersCache.keySet());
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 8, 0)) return false;
-        if (this.mGlassTier < 10 && !this.mEnergyHatches.isEmpty())
-            for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches)
-                if (this.mGlassTier < hatchEnergy.mTier) return false;
-        boolean valid = this.mMaintenanceHatches.size() == 1 && !this.mEnergyHatches.isEmpty() && this.mCasing >= 190;
-        flowersError = valid && !this.flowersCheck.isEmpty();
-        if (valid) updateMaxSlots();
-        return valid;
+        if (this.glassTier < VoltageIndex.UEV && !this.mEnergyHatches.isEmpty())
+            for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) if (this.glassTier < hatchEnergy.mTier) return false;
+        flowersError = !this.flowersCheck.isEmpty();
+        if (!this.mEnergyHatches.isEmpty() && flowersError) updateMaxSlots();
+        return flowersError && this.mCasing >= 190;
     }
 
     @Override
