@@ -142,11 +142,6 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public boolean isElectric() {
         return true;
     }
@@ -385,16 +380,6 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
 
     @Override
     public boolean isItemValidForSlot(final int p_94041_1_, final ItemStack p_94041_2_) {
-        return false;
-    }
-
-    @Override
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    @Override
-    public boolean isTransformerUpgradable() {
         return false;
     }
 

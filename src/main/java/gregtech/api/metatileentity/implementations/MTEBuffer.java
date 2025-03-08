@@ -183,11 +183,6 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex < mInventory.length - 1;
     }

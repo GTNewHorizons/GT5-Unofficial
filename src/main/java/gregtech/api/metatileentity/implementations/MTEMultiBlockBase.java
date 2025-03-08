@@ -92,7 +92,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -219,7 +218,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         return side != getBaseMetaTileEntity().getFrontFacing();
     }
 
@@ -236,11 +235,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 mSingleRecipeCheck = null;
             }
         }
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
     }
 
     @Override
@@ -2825,7 +2819,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     protected String generateCurrentRecipeInfoString() {
-        StringBuffer ret = new StringBuffer(EnumChatFormatting.WHITE + "Progress: ");
+        StringBuffer ret = new StringBuffer(StatCollector.translateToLocal("GT5U.gui.text.progress"));
+        ret.append(" ");
 
         numberFormat.setMinimumFractionDigits(2);
         numberFormat.setMaximumFractionDigits(2);

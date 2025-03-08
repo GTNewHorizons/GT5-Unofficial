@@ -1,45 +1,38 @@
 package gregtech.api.interfaces.tileentity;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
 
 public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer {
 
-    boolean dropCover(ForgeDirection side, ForgeDirection droppedSide, boolean aForced);
+    /**
+     * Remove the cover from the coverable and spawn the result of {@link #detachCover(ForgeDirection)} in the world on
+     * the dropped side.
+     */
+    void dropCover(ForgeDirection side, ForgeDirection droppedSide);
 
-    @Deprecated
-    void setCoverDataAtSide(ForgeDirection side, int aData);
+    /**
+     * Actually removes the cover from the coverable and return the cover item.
+     * <br>
+     * Called by {@link #dropCover(ForgeDirection, ForgeDirection)}
+     */
+    ItemStack detachCover(ForgeDirection side);
 
-    default void setCoverDataAtSide(ForgeDirection side, ISerializableObject aData) {
-        if (aData instanceof ISerializableObject.LegacyCoverData)
-            setCoverDataAtSide(side, ((ISerializableObject.LegacyCoverData) aData).get());
-    }
-
-    void setCoverIdAndDataAtSide(ForgeDirection side, int aId, ISerializableObject aData);
-
-    void setCoverIDAtSide(ForgeDirection side, int aID);
-
-    boolean setCoverIDAtSideNoUpdate(ForgeDirection side, int aID);
+    void setCoverDataAtSide(ForgeDirection side, ISerializableObject aData);
 
     /**
      * Called when the cover is initially attached to a machine.
      *
-     * @param player The attaching player
-     * @param aCover An {@link ItemStack} containing the cover
-     * @param side   Which side the cover is attached to
+     * @param cover The cover
      */
-    void attachCover(EntityPlayer player, ItemStack aCover, ForgeDirection side);
+    void attachCover(Cover cover);
 
-    default CoverInfo getCoverInfoAtSide(ForgeDirection side) {
-        return null;
-    }
+    boolean hasCoverAtSide(ForgeDirection side);
 
-    int getCoverIDAtSide(ForgeDirection side);
+    Cover getCoverAtSide(ForgeDirection side);
 
     ItemStack getCoverItemAtSide(ForgeDirection side);
 
@@ -62,18 +55,8 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
 
     /**
      * Receiving a packet with cover data.
-     */
-    void receiveCoverData(ForgeDirection coverSide, int coverID, int coverData);
-
-    /**
-     * Receiving a packet with cover data.
      *
-     * @param coverSide cover side
-     * @param aPlayer   the player who made the change
+     * @param cover
      */
-    default void receiveCoverData(ForgeDirection coverSide, int aCoverID, ISerializableObject aCoverData,
-        EntityPlayerMP aPlayer) {
-        if (aCoverData instanceof ISerializableObject.LegacyCoverData)
-            receiveCoverData(coverSide, aCoverID, ((ISerializableObject.LegacyCoverData) aCoverData).get());
-    }
+    void updateAttachedCover(Cover cover);
 }

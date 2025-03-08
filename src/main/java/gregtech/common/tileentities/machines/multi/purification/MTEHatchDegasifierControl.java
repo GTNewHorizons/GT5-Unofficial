@@ -33,11 +33,6 @@ public class MTEHatchDegasifierControl extends MTEHatch {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean allowGeneralRedstoneOutput() {
         return true;
     }
