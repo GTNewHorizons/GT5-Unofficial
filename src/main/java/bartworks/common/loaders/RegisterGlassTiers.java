@@ -72,6 +72,7 @@ public class RegisterGlassTiers {
         GlassTier.addCustomGlass(ItemRegistry.bw_realglas, 12, 5, 1);
         if (Botania.isModLoaded()) {
             GlassTier.addCustomGlass(Botania.ID, "elfGlass", 0, 5, 2);
+            GlassTier.addCustomGlass(Botania.ID, "bifrostPerm", 0, 5, 3);
         }
 
         // --- LuV ---
