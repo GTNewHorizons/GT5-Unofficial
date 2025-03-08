@@ -29,6 +29,7 @@ public final class GTGuiThemes {
         .themedTexture(
             GTWidgetThemes.BACKGROUND_COVER_TAB_DISABLED,
             GTTextureIds.BACKGROUND_COVER_TAB_DISABLED_STANDARD)
+        .themedTexture(GTWidgetThemes.BACKGROUND_POPUP, GTTextureIds.BACKGROUND_POPUP_STANDARD)
         .themedTexture(GTWidgetThemes.BACKGROUND_TITLE, GTTextureIds.BACKGROUND_TITLE_STANDARD)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_DUST, GTTextureIds.OVERLAY_SLOT_DUST_STANDARD)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_INGOT, GTTextureIds.OVERLAY_SLOT_INGOT_STANDARD)
@@ -41,11 +42,14 @@ public final class GTGuiThemes {
         .itemSlot(GTTextureIds.SLOT_ITEM_BRONZE)
         .fluidSlot(GTTextureIds.SLOT_FLUID_BRONZE)
         .color(Dyes.dyeWhite.toInt())
+        .button(GTTextureIds.BUTTON_BRONZE)
+        .simpleToggleButton(GTTextureIds.BUTTON_BRONZE, GTTextureIds.BUTTON_BRONZE_PRESSED, Dyes.dyeWhite.toInt())
         .themedTexture(GTWidgetThemes.BACKGROUND_COVER_TAB_NORMAL, GTTextureIds.BACKGROUND_COVER_TAB_NORMAL_BRONZE)
         .themedTexture(
             GTWidgetThemes.BACKGROUND_COVER_TAB_HIGHLIGHT,
             GTTextureIds.BACKGROUND_COVER_TAB_HIGHLIGHT_BRONZE)
         .themedTexture(GTWidgetThemes.BACKGROUND_COVER_TAB_DISABLED, GTTextureIds.BACKGROUND_COVER_TAB_DISABLED_BRONZE)
+        .themedTexture(GTWidgetThemes.BACKGROUND_POPUP, GTTextureIds.BACKGROUND_POPUP_BRONZE)
         .themedTexture(GTWidgetThemes.BACKGROUND_TITLE, GTTextureIds.BACKGROUND_TITLE_BRONZE)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_DUST, GTTextureIds.OVERLAY_SLOT_DUST_BRONZE)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_INGOT, GTTextureIds.OVERLAY_SLOT_INGOT_BRONZE)
@@ -60,9 +64,12 @@ public final class GTGuiThemes {
         .color(Dyes.dyeWhite.toInt())
         .textColor(0xfafaff)
         .customTextColor(GTWidgetThemes.TEXT_TITLE, 0xfafaff)
+        .button(GTTextureIds.BUTTON_STEEL)
+        .simpleToggleButton(GTTextureIds.BUTTON_STEEL, GTTextureIds.BUTTON_STEEL_PRESSED, Dyes.dyeWhite.toInt())
         .themedTexture(GTWidgetThemes.BACKGROUND_COVER_TAB_NORMAL, GTTextureIds.BACKGROUND_COVER_TAB_NORMAL_STEEL)
         .themedTexture(GTWidgetThemes.BACKGROUND_COVER_TAB_HIGHLIGHT, GTTextureIds.BACKGROUND_COVER_TAB_HIGHLIGHT_STEEL)
         .themedTexture(GTWidgetThemes.BACKGROUND_COVER_TAB_DISABLED, GTTextureIds.BACKGROUND_COVER_TAB_DISABLED_STEEL)
+        .themedTexture(GTWidgetThemes.BACKGROUND_POPUP, GTTextureIds.BACKGROUND_POPUP_STEEL)
         .themedTexture(GTWidgetThemes.BACKGROUND_TITLE, GTTextureIds.BACKGROUND_TITLE_STEEL)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_DUST, GTTextureIds.OVERLAY_SLOT_DUST_STEEL)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_INGOT, GTTextureIds.OVERLAY_SLOT_INGOT_STEEL)
@@ -77,6 +84,8 @@ public final class GTGuiThemes {
         .color(Dyes.dyeWhite.toInt())
         .textColor(0xfafaff)
         .customTextColor(GTWidgetThemes.TEXT_TITLE, 0xfafaff)
+        .button(GTTextureIds.BUTTON_PRIMITIVE)
+        .simpleToggleButton(GTTextureIds.BUTTON_PRIMITIVE, GTTextureIds.BUTTON_PRIMITIVE_PRESSED, Dyes.dyeWhite.toInt())
         .themedTexture(GTWidgetThemes.BACKGROUND_COVER_TAB_NORMAL, GTTextureIds.BACKGROUND_COVER_TAB_NORMAL_PRIMITIVE)
         .themedTexture(
             GTWidgetThemes.BACKGROUND_COVER_TAB_HIGHLIGHT,
@@ -84,6 +93,7 @@ public final class GTGuiThemes {
         .themedTexture(
             GTWidgetThemes.BACKGROUND_COVER_TAB_DISABLED,
             GTTextureIds.BACKGROUND_COVER_TAB_DISABLED_PRIMITIVE)
+        .themedTexture(GTWidgetThemes.BACKGROUND_POPUP, GTTextureIds.BACKGROUND_POPUP_PRIMITIVE)
         .themedTexture(GTWidgetThemes.BACKGROUND_TITLE, GTTextureIds.BACKGROUND_TITLE_PRIMITIVE)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_DUST, GTTextureIds.OVERLAY_SLOT_DUST_PRIMITIVE)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_INGOT, GTTextureIds.OVERLAY_SLOT_INGOT_PRIMITIVE)
