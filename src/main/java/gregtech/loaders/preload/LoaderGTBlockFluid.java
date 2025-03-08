@@ -21,13 +21,6 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import java.util.Collections;
 import java.util.Locale;
 
-import gregtech.api.items.ItemAugmentBase;
-import gregtech.api.items.ItemAugmentCore;
-import gregtech.api.items.armor.behaviors.CreativeFlightBehavior;
-import gregtech.api.items.armor.behaviors.FireImmunityBehavior;
-import gregtech.api.items.armor.behaviors.JetpackBehavior;
-import gregtech.api.items.armor.behaviors.JetpackPerfectHoverBehavior;
-import gregtech.api.items.armor.behaviors.NightVisionBehavior;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -52,9 +45,17 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.items.BlockLongDistancePipe;
 import gregtech.api.items.GTGenericItem;
+import gregtech.api.items.ItemAugmentBase;
+import gregtech.api.items.ItemAugmentCore;
 import gregtech.api.items.ItemBreederCell;
 import gregtech.api.items.ItemCoolantCellIC;
 import gregtech.api.items.ItemRadioactiveCellIC;
+import gregtech.api.items.armor.behaviors.CreativeFlightBehavior;
+import gregtech.api.items.armor.behaviors.FireImmunityBehavior;
+import gregtech.api.items.armor.behaviors.JetpackBehavior;
+import gregtech.api.items.armor.behaviors.JetpackPerfectHoverBehavior;
+import gregtech.api.items.armor.behaviors.NightVisionBehavior;
+import gregtech.api.items.armor.behaviors.StepAssistBehavior;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GTLog;
@@ -257,7 +258,12 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Augment: Fire Immunity",
                 "blah",
                 Collections.singletonList(FireImmunityBehavior.INSTANCE)));
-
+        ItemList.Augment_StepAssist.set(
+            new ItemAugmentBase(
+                "augmentstepassist",
+                "Augment: Step Assist",
+                "blah",
+                Collections.singletonList(StepAssistBehavior.INSTANCE)));
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1

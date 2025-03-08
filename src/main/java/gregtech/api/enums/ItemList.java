@@ -2617,6 +2617,7 @@ public enum ItemList implements IItemContainer {
     Augment_Jetpack,
     Augment_Jetpack_PerfectHover,
     Augment_FireImmunity,
+    Augment_StepAssist
 
     // semicolon after the comment to reduce merge conflicts
     ;

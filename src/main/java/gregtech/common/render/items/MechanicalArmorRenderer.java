@@ -6,7 +6,6 @@ import static gregtech.api.enums.Dyes.dyeRed;
 import static gregtech.api.enums.Dyes.dyeWhite;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
-import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,6 +16,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
 
 import gregtech.api.enums.ItemList;
+import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import gregtech.common.items.armor.MechArmorBase;
 import gregtech.common.render.GTRenderUtil;
 
@@ -92,7 +92,8 @@ public class MechanicalArmorRenderer implements IItemRenderer {
         }
 
         for (IArmorBehavior behavior : armorItem.getBehaviors()) {
-            if (tag.hasKey(behavior.getMainNBTTag()) && behavior.getModularArmorTexture() != null) GTRenderUtil.renderItem(type, behavior.getModularArmorTexture());
+            if (tag.hasKey(behavior.getMainNBTTag()) && behavior.getModularArmorTexture() != null)
+                GTRenderUtil.renderItem(type, behavior.getModularArmorTexture());
         }
 
         GL11.glDisable(GL11.GL_BLEND);

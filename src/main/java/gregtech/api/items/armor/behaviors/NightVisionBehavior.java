@@ -1,10 +1,13 @@
 package gregtech.api.items.armor.behaviors;
 
+import static gregtech.api.items.armor.ArmorKeybinds.NIGHT_VISION_KEY;
+import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
+import static gregtech.loaders.ExtraIcons.nightVisionAugment;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,15 +18,11 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import gregtech.api.items.armor.ArmorHelper;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-
-import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.items.armor.ArmorKeybinds.NIGHT_VISION_KEY;
-import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
-import static gregtech.loaders.ExtraIcons.nightVisionAugment;
 
 public class NightVisionBehavior implements IArmorBehavior {
 
@@ -69,7 +68,7 @@ public class NightVisionBehavior implements IArmorBehavior {
         if (world.isRemote) return;
         NBTTagCompound tag = getOrCreateNbtCompound(stack);
         if (tag.getBoolean(ArmorHelper.NIGHT_VISION_KEY)) {
-            //ElectricItem.manager.discharge(stack, 5, 1, true, true, false);
+            // ElectricItem.manager.discharge(stack, 5, 1, true, true, false);
             player.removePotionEffect(Potion.blindness.id);
             player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 999999, 0, true));
         }

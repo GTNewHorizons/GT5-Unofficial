@@ -5,11 +5,6 @@ import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.items.ItemAugmentBase;
-import gregtech.api.items.ItemAugmentCore;
-import gregtech.api.items.armor.behaviors.IArmorBehavior;
-import gregtech.common.items.armor.MechArmorBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,15 +18,16 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.ItemAugmentBase;
+import gregtech.api.items.ItemAugmentCore;
+import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.items.armor.MechArmorBase;
 
 public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidgets {
 
@@ -54,7 +50,8 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
         NBTTagCompound tag = getOrCreateNbtCompound(armorItem);
 
         // Sanity check, filter on the item slots should already verify this
-        if (!(modItem.getItem() instanceof ItemAugmentBase augment && armorItem.getItem() instanceof MechArmorBase armor)) {
+        if (!(modItem.getItem() instanceof ItemAugmentBase augment
+            && armorItem.getItem() instanceof MechArmorBase armor)) {
             return;
         }
 
@@ -68,45 +65,47 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
 
         // At this point the modification should be successful, verification has passed
 
-        //TODO: frames
+        // TODO: frames
 
         if (augment instanceof ItemAugmentCore core) {
-            armorItem.getTagCompound().setInteger("core", core.getCoreid());
+            armorItem.getTagCompound()
+                .setInteger("core", core.getCoreid());
         }
 
-        augment.getAttachedBehaviors().forEach(behavior -> behavior.addBehaviorNBT(armorItem, tag));
+        augment.getAttachedBehaviors()
+            .forEach(behavior -> behavior.addBehaviorNBT(armorItem, tag));
 
         if (--modItem.stackSize == 0) inputHandler.setStackInSlot(0, null);
 
         /*
-        else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1))) {
-            tag.setString("frame", "Copper");
-            tag.setShort("frameR", Materials.Copper.mRGBa[0]);
-            tag.setShort("frameG", Materials.Copper.mRGBa[1]);
-            tag.setShort("frameB", Materials.Copper.mRGBa[2]);
-        } else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1))) {
-            tag.setString("frame", "Iron");
-            tag.setShort("frameR", Materials.Iron.mRGBa[0]);
-            tag.setShort("frameG", Materials.Iron.mRGBa[1]);
-            tag.setShort("frameB", Materials.Iron.mRGBa[2]);
-        } else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1))) {
-            tag.setString("frame", "Gold");
-            tag.setShort("frameR", Materials.Gold.mRGBa[0]);
-            tag.setShort("frameG", Materials.Gold.mRGBa[1]);
-            tag.setShort("frameB", Materials.Gold.mRGBa[2]);
-        }
+         * else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1))) {
+         * tag.setString("frame", "Copper");
+         * tag.setShort("frameR", Materials.Copper.mRGBa[0]);
+         * tag.setShort("frameG", Materials.Copper.mRGBa[1]);
+         * tag.setShort("frameB", Materials.Copper.mRGBa[2]);
+         * } else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1))) {
+         * tag.setString("frame", "Iron");
+         * tag.setShort("frameR", Materials.Iron.mRGBa[0]);
+         * tag.setShort("frameG", Materials.Iron.mRGBa[1]);
+         * tag.setShort("frameB", Materials.Iron.mRGBa[2]);
+         * } else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1))) {
+         * tag.setString("frame", "Gold");
+         * tag.setShort("frameR", Materials.Gold.mRGBa[0]);
+         * tag.setShort("frameG", Materials.Gold.mRGBa[1]);
+         * tag.setShort("frameB", Materials.Gold.mRGBa[2]);
+         * }
          */
     }
-
-    final static int MOD_WINDOW_ID = 250;
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new SlotWidget(inputHandler, 0).setFilter((x) -> x.getItem() instanceof ItemAugmentBase).setAccess(true, true)
+            new SlotWidget(inputHandler, 0).setFilter((x) -> x.getItem() instanceof ItemAugmentBase)
+                .setAccess(true, true)
                 .setPos(79, 34))
             .widget(
-                new SlotWidget(inputHandler, 1).setFilter((x) -> x.getItem() instanceof MechArmorBase).setAccess(true, true)
+                new SlotWidget(inputHandler, 1).setFilter((x) -> x.getItem() instanceof MechArmorBase)
+                    .setAccess(true, true)
                     .setPos(79, 50)
                     .setBackground(() -> new IDrawable[] { new ItemDrawable(new ItemStack(Items.iron_helmet)) }))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
@@ -124,29 +123,6 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
                     ret.add(GTUITextures.BUTTON_STANDARD);
                     ret.add(GTUITextures.OVERLAY_BUTTON_CHECKMARK);
                     return ret.toArray(new IDrawable[0]);
-                }))
-            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                    if (!widget.isClient()) widget.getContext()
-                        .openSyncedWindow(MOD_WINDOW_ID);
-                })
-                .setPos(36, 20)
-                .setSize(16, 16)
-                .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(GTUITextures.BUTTON_STANDARD);
-                    ret.add(GTUITextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM);
-                    return ret.toArray(new IDrawable[0]);
                 }));
-
-        buildContext.addSyncedWindow(MOD_WINDOW_ID, this::createEquipmentGrid);
-    }
-
-    private ModularWindow createEquipmentGrid(final EntityPlayer player) {
-        ModularWindow.Builder builder = ModularWindow.builder(170, 85)
-            .setDraggable(false);
-
-
-
-        return builder.build();
     }
 }

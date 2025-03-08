@@ -12,23 +12,26 @@ import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.items.armor.ArmorHelper;
 
-public class JetpackPerfectHoverBehavior implements IArmorBehavior {
+public class StepAssistBehavior implements IArmorBehavior {
 
-    public static JetpackPerfectHoverBehavior INSTANCE = new JetpackPerfectHoverBehavior();
+    public static final StepAssistBehavior INSTANCE = new StepAssistBehavior();
+
+    protected StepAssistBehavior() {/**/}
 
     @Override
     public void addBehaviorNBT(@NotNull ItemStack stack, @NotNull NBTTagCompound tag) {
-        tag.setBoolean(ArmorHelper.JETPACK_PERFECT_HOVER_KEY, true);
+        tag.setBoolean(ArmorHelper.STEP_ASSIST_KEY, true);
     }
 
     @Override
     public String getMainNBTTag() {
-        return ArmorHelper.JETPACK_PERFECT_HOVER_KEY;
+        return ArmorHelper.STEP_ASSIST_KEY;
     }
 
     @Override
     public void addInformation(@NotNull ItemStack stack, @NotNull List<String> tooltip) {
-        if (!getOrCreateNbtCompound(stack).hasKey(ArmorHelper.JETPACK_PERFECT_HOVER_KEY)) return;
-        tooltip.add(StatCollector.translateToLocal("GT5U.armor.message.jetpackperfecthover"));
+        NBTTagCompound tag = getOrCreateNbtCompound(stack);
+        if (tag.hasKey(ArmorHelper.STEP_ASSIST_KEY))
+            tooltip.add(StatCollector.translateToLocal("GT5U.armor.message.stepassist"));
     }
 }

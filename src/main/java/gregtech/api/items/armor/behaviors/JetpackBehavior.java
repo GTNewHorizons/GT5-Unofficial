@@ -1,31 +1,34 @@
 package gregtech.api.items.armor.behaviors;
 
-import com.google.common.collect.ImmutableSet;
-import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
-import gregtech.api.enums.ParticleFX;
-import gregtech.api.items.armor.ArmorHelper;
-import gregtech.api.items.armor.ArmorKeybinds;
-import gregtech.api.items.armor.JetpackStats;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import ic2.api.item.IElectricItem;
+import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
+
+import java.util.List;
+import java.util.Set;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Set;
+import com.google.common.collect.ImmutableSet;
+import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
-import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
+import gregtech.api.items.armor.ArmorHelper;
+import gregtech.api.items.armor.ArmorKeybinds;
+import gregtech.api.items.armor.JetpackStats;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class JetpackBehavior implements IArmorBehavior {
 
     public static final JetpackBehavior INSTANCE = new JetpackBehavior(JetpackStats.ADVANCED);
     private final JetpackStats jetpackStats;
 
-    protected JetpackBehavior(JetpackStats stats) {jetpackStats = stats;}
+    protected JetpackBehavior(JetpackStats stats) {
+        jetpackStats = stats;
+    }
 
     // TODO: we should have our own electric item wrapper
     @Override
@@ -46,16 +49,19 @@ public class JetpackBehavior implements IArmorBehavior {
             tag.setBoolean(ArmorHelper.JETPACK_HOVER_KEY, !wasHover);
 
             if (wasHover) {
-                PlayerUtils.messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.jetpackhover.disabled"));
+                PlayerUtils
+                    .messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.jetpackhover.disabled"));
             } else {
-                PlayerUtils.messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.jetpackhover.enabled"));
+                PlayerUtils
+                    .messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.jetpackhover.enabled"));
             }
         } else if (keyPressed == ArmorKeybinds.JETPACK_KEY) {
             boolean wasActive = tag.getBoolean(ArmorHelper.JETPACK_KEY);
             tag.setBoolean(ArmorHelper.JETPACK_KEY, !wasActive);
 
             if (wasActive) {
-                PlayerUtils.messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.jetpack.disabled"));
+                PlayerUtils
+                    .messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.jetpack.disabled"));
             } else {
                 PlayerUtils.messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.jetpack.enabled"));
             }
@@ -75,7 +81,8 @@ public class JetpackBehavior implements IArmorBehavior {
     @Override
     public void addInformation(@NotNull ItemStack stack, @NotNull List<String> tooltip) {
         NBTTagCompound tag = getOrCreateNbtCompound(stack);
-        if (tag.hasKey(ArmorHelper.JETPACK_KEY)) tooltip.add(StatCollector.translateToLocal("GT5U.armor.message.jetpack"));
+        if (tag.hasKey(ArmorHelper.JETPACK_KEY))
+            tooltip.add(StatCollector.translateToLocal("GT5U.armor.message.jetpack"));
     }
 
     @Override
@@ -84,13 +91,13 @@ public class JetpackBehavior implements IArmorBehavior {
     }
 
     /*
-    protected boolean drainFuel(@NotNull ItemStack stack, int amount, boolean simulate) {
-        IElectricItem electricItem = getElectricItem(stack);
-        if (electricItem != null) {
-            return electricItem.discharge(amount, Integer.MAX_VALUE, true, false, simulate) >= amount;
-        }
-        return false;
-    };
+     * protected boolean drainFuel(@NotNull ItemStack stack, int amount, boolean simulate) {
+     * IElectricItem electricItem = getElectricItem(stack);
+     * if (electricItem != null) {
+     * return electricItem.discharge(amount, Integer.MAX_VALUE, true, false, simulate) >= amount;
+     * }
+     * return false;
+     * };
      */
 
     /*
@@ -106,44 +113,46 @@ public class JetpackBehavior implements IArmorBehavior {
 
         if (flyKeyDown || hover && !player.onGround) {
             if (!player.isInWater()) {// && drainFuel(stack, getFuelPerUse(), true)) {
-                /*drainFuel(stack,
-                    (int) (player.isSprinting() ?
-                        Math.round(getFuelPerUse() * jetpackStats.getSprintEnergyModifier()) : getFuelPerUse()),
-                    false);
-
+                /*
+                 * drainFuel(stack,
+                 * (int) (player.isSprinting() ?
+                 * Math.round(getFuelPerUse() * jetpackStats.getSprintEnergyModifier()) : getFuelPerUse()),
+                 * false);
                  */
 
                 if (flyKeyDown) {
                     if (!hover) {
                         player.motionY = Math.min(player.motionY + currentAccel, currentSpeedVertical);
                     } else {
-                        if (descendKeyDown) player.motionY = Math.min(player.motionY + currentAccel,
-                            jetpackStats.getVerticalHoverSlowSpeed());
-                        else player.motionY = Math.min(player.motionY + currentAccel,
-                            jetpackStats.getVerticalHoverSpeed());
+                        if (descendKeyDown) player.motionY = Math
+                            .min(player.motionY + currentAccel, jetpackStats.getVerticalHoverSlowSpeed());
+                        else player.motionY = Math
+                            .min(player.motionY + currentAccel, jetpackStats.getVerticalHoverSpeed());
                     }
                 } else if (descendKeyDown) {
                     player.motionY = Math.min(player.motionY + currentAccel, -jetpackStats.getVerticalHoverSpeed());
                 } else {
-                    player.motionY = Math.min(player.motionY + currentAccel, stack.getTagCompound().hasKey(ArmorHelper.JETPACK_PERFECT_HOVER_KEY) ? 0 : -jetpackStats.getVerticalHoverSlowSpeed());
+                    player.motionY = Math.min(
+                        player.motionY + currentAccel,
+                        stack.getTagCompound()
+                            .hasKey(ArmorHelper.JETPACK_PERFECT_HOVER_KEY) ? 0
+                                : -jetpackStats.getVerticalHoverSlowSpeed());
                 }
-                float speedSideways = (float) (player.isSneaking() ? jetpackStats.getSidewaysSpeed() * 0.5f :
-                    jetpackStats.getSidewaysSpeed());
-                float speedForward = (float) (player.isSprinting() ?
-                    speedSideways * jetpackStats.getSprintSpeedModifier() : speedSideways);
+                float speedSideways = (float) (player.isSneaking() ? jetpackStats.getSidewaysSpeed() * 0.5f
+                    : jetpackStats.getSidewaysSpeed());
+                float speedForward = (float) (player.isSprinting()
+                    ? speedSideways * jetpackStats.getSprintSpeedModifier()
+                    : speedSideways);
 
-                if (ArmorKeybinds.VANILLA_FORWARD.isKeyDown(player))
-                    player.moveFlying(0, speedForward, speedForward);
+                if (ArmorKeybinds.VANILLA_FORWARD.isKeyDown(player)) player.moveFlying(0, speedForward, speedForward);
                 if (ArmorKeybinds.VANILLA_BACK.isKeyDown(player))
                     player.moveFlying(0, -speedSideways, speedSideways * 0.8f);
-                if (ArmorKeybinds.VANILLA_LEFT.isKeyDown(player))
-                    player.moveFlying(speedSideways, 0, speedSideways);
-                if (ArmorKeybinds.VANILLA_RIGHT.isKeyDown(player))
-                    player.moveFlying(-speedSideways, 0, speedSideways);
+                if (ArmorKeybinds.VANILLA_LEFT.isKeyDown(player)) player.moveFlying(speedSideways, 0, speedSideways);
+                if (ArmorKeybinds.VANILLA_RIGHT.isKeyDown(player)) player.moveFlying(-speedSideways, 0, speedSideways);
                 if (!player.getEntityWorld().isRemote) {
                     player.fallDistance = 0;
                 }
-                //spawnParticle(player.getEntityWorld(), player, jetpackStats.getParticle());
+                // spawnParticle(player.getEntityWorld(), player, jetpackStats.getParticle());
             }
         }
     }

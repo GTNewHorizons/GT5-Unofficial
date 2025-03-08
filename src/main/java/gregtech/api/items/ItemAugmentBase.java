@@ -1,9 +1,9 @@
 package gregtech.api.items;
 
-import gregtech.api.items.armor.behaviors.IArmorBehavior;
-
 import java.util.Collection;
 import java.util.Collections;
+
+import gregtech.api.items.armor.behaviors.IArmorBehavior;
 
 public class ItemAugmentBase extends GTGenericItem {
 
@@ -14,14 +14,17 @@ public class ItemAugmentBase extends GTGenericItem {
     private final Collection<IArmorBehavior> requiredBehaviors;
     private final Collection<IArmorBehavior> incompatibleBehaviors;
 
-    public ItemAugmentBase(String aUnlocalized, String aEnglish, String aEnglishTooltip, Collection<IArmorBehavior> attachedBehaviors, Collection<IArmorBehavior> requiredBehaviors, Collection<IArmorBehavior> incompatibleBehaviors) {
+    public ItemAugmentBase(String aUnlocalized, String aEnglish, String aEnglishTooltip,
+        Collection<IArmorBehavior> attachedBehaviors, Collection<IArmorBehavior> requiredBehaviors,
+        Collection<IArmorBehavior> incompatibleBehaviors) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
         this.attachedBehaviors = attachedBehaviors;
         this.requiredBehaviors = requiredBehaviors;
         this.incompatibleBehaviors = incompatibleBehaviors;
     }
 
-    public ItemAugmentBase(String aUnlocalized, String aEnglish, String aEnglishTooltip, Collection<IArmorBehavior> attachedBehaviors) {
+    public ItemAugmentBase(String aUnlocalized, String aEnglish, String aEnglishTooltip,
+        Collection<IArmorBehavior> attachedBehaviors) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
         this.attachedBehaviors = attachedBehaviors;
         this.requiredBehaviors = Collections.emptyList();
