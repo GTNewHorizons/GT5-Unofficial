@@ -379,7 +379,7 @@ public class PlatinumSludgeOverHaul {
             .fluidInputs(PTConcentrate.getFluidOrGas(36000), AmmoniumChloride.getFluidOrGas(3600))
             .fluidOutputs(
                 PDAmmonia.getFluidOrGas(3600),
-                Materials.NitrogenDioxide.getGas(900),
+                Materials.NitrogenDioxide.getGas(9000),
                 Materials.HydrochloricAcid.getFluid(27000))
             .duration(700)
             .eut(480)
