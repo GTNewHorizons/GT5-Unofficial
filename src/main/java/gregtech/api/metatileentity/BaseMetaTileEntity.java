@@ -1443,8 +1443,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         final ForgeDirection wrenchingSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
         final ForgeDirection effectiveSide = !hasCoverAtSide(side) ? wrenchingSide : side;
         Cover effectiveSideCover = getCoverAtSide(effectiveSide);
+        final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
         if (isClientSide()) {
-            // Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
+            // Place/configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
                 return (effectiveSideCover.hasCoverGUI());
             }
@@ -1455,7 +1456,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         if (isServerSide()) {
             if (!privateAccess() || aPlayer.getDisplayName()
                 .equalsIgnoreCase(getOwnerName())) {
-                final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
+
                 if (tCurrentItem != null) {
                     if (getColorization() >= 0
                         && GTUtility.areStacksEqual(new ItemStack(Items.water_bucket, 1), tCurrentItem)) {
@@ -1620,7 +1621,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     }
 
                     if (!hasCoverAtSide(effectiveSide)) {
-                        if (CoverRegistry.isCover(tCurrentItem)) {
+                        if (aPlayer.isSneaking() && CoverRegistry.isCover(tCurrentItem)) {
                             if (CoverRegistry.getCoverPlacer(tCurrentItem)
                                 .isCoverPlaceable(effectiveSide, tCurrentItem, this)
                                 && mMetaTileEntity.allowCoverOnSide(effectiveSide, tCurrentItem)) {

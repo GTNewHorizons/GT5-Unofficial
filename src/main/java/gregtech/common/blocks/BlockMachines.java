@@ -35,6 +35,7 @@ import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -366,7 +367,8 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)
                 && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)
                 && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
-                && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sJackhammerList)) return false;
+                && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sJackhammerList)
+                && !CoverRegistry.isCover(tCurrentItem)) return false;
         }
 
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
