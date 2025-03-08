@@ -55,7 +55,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
     private int mLevel = 0;
 
     private static final long RECIPE_EUT = 4;
-    private static final int RECIPE_DURATION = 512;
+    private static final int RECIPE_DURATION = 128;
     private static final int CASING_INDEX = 11;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEMultiFurnace> STRUCTURE_DEFINITION = StructureDefinition
