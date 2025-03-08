@@ -152,7 +152,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
-        List<ItemStack> tInput = getStoredInputs();
+        List<ItemStack> tInput = getAllStoredInputs();
         long availableEUt = GTUtility.roundUpVoltage(getMaxInputVoltage());
         if (availableEUt < RECIPE_EUT) {
             return CheckRecipeResultRegistry.insufficientPower(RECIPE_EUT);
