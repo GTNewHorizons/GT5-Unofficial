@@ -25,6 +25,7 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.ItemAugmentBase;
 import gregtech.api.items.ItemAugmentCore;
+import gregtech.api.items.armor.ArmorHelper;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.common.items.armor.MechArmorBase;
@@ -64,6 +65,9 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
         }
 
         // At this point the modification should be successful, verification has passed
+        tag.setInteger(
+            ArmorHelper.VIS_DISCOUNT_KEY,
+            tag.getInteger(ArmorHelper.VIS_DISCOUNT_KEY) + augment.getVisDiscount());
 
         // TODO: frames
 

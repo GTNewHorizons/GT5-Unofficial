@@ -51,7 +51,6 @@ public class GogglesOfRevealingBehavior implements IArmorBehavior {
     @Override
     public void addBehaviorNBT(@NotNull ItemStack stack, @NotNull NBTTagCompound tag) {
         tag.setBoolean(ArmorHelper.GOGGLES_OF_REVEALING_KEY, true);
-        tag.setInteger(ArmorHelper.VIS_DISCOUNT_KEY, tag.getInteger(ArmorHelper.VIS_DISCOUNT_KEY) + 10);
     }
 
     @Override

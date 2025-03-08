@@ -270,7 +270,8 @@ public class LoaderGTBlockFluid implements Runnable {
                 "augmentgogglesofrevealing",
                 "Augment: Goggles Of Revealing",
                 "blah",
-                Collections.singletonList(GogglesOfRevealingBehavior.INSTANCE)));
+                Collections.singletonList(GogglesOfRevealingBehavior.INSTANCE),
+                7));
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1
