@@ -44,7 +44,7 @@ public class JetpackBehavior implements IArmorBehavior {
         NBTTagCompound tag = getOrCreateNbtCompound(stack);
         if (!tag.hasKey(ArmorHelper.JETPACK_KEY)) return;
 
-        if (keyPressed == ArmorKeybinds.JETPACK_HOVER_KEY) {
+        if (keyPressed == ArmorKeybinds.JETPACK_HOVER_KEYBIND) {
             boolean wasHover = tag.getBoolean(ArmorHelper.JETPACK_HOVER_KEY);
             tag.setBoolean(ArmorHelper.JETPACK_HOVER_KEY, !wasHover);
 
@@ -55,7 +55,7 @@ public class JetpackBehavior implements IArmorBehavior {
                 PlayerUtils
                     .messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.jetpackhover.enabled"));
             }
-        } else if (keyPressed == ArmorKeybinds.JETPACK_KEY) {
+        } else if (keyPressed == ArmorKeybinds.JETPACK_KEYBIND) {
             boolean wasActive = tag.getBoolean(ArmorHelper.JETPACK_KEY);
             tag.setBoolean(ArmorHelper.JETPACK_KEY, !wasActive);
 
@@ -70,7 +70,7 @@ public class JetpackBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys() {
-        return ImmutableSet.of(ArmorKeybinds.JETPACK_HOVER_KEY, ArmorKeybinds.JETPACK_KEY);
+        return ImmutableSet.of(ArmorKeybinds.JETPACK_HOVER_KEYBIND, ArmorKeybinds.JETPACK_KEYBIND);
     }
 
     @Override

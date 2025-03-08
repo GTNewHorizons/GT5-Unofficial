@@ -800,6 +800,8 @@ GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
 GT5U.armor.message.nightvision.enabled=Night Vision Enabled
 GT5U.armor.message.nightvision.disabled=Night Vision Disabled
+GT5U.armor.message.gogglesofrevealing.enabled=Thaumic Sight Enabled
+GT5U.armor.message.gogglesofrevealing.disabled=Thaumic Sight Disabled
 GT5U.armor.message.creativeflight=Gravity Manipulation Installed
 GT5U.armor.message.jetpack=Jetpack Installed
 GT5U.armor.message.jetpack.enabled=Jetpack On

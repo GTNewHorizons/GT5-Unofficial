@@ -9,6 +9,9 @@ public class ArmorHelper {
     public static final String JETPACK_PERFECT_HOVER_KEY = "JetpackPerfectHover";
     public static final String FIRE_IMMUNITY_KEY = "FireImmunity";
     public static final String STEP_ASSIST_KEY = "StepAssist";
+    public static final String GOGGLES_OF_REVEALING_KEY = "GogglesOfRevealing";
+
+    public static final String VIS_DISCOUNT_KEY = "VisDiscount";
 
     public enum ArmorType {
 

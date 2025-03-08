@@ -1,6 +1,9 @@
 package gregtech.common.items.armor;
 
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.items.armor.ArmorHelper.GOGGLES_OF_REVEALING_KEY;
+import static gregtech.api.items.armor.ArmorHelper.VIS_DISCOUNT_KEY;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.ArrayList;
@@ -8,13 +11,16 @@ import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
@@ -22,11 +28,16 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.gtnhlib.keybind.IKeyPressedListener;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
+import thaumcraft.api.IGoggles;
+import thaumcraft.api.IVisDiscountGear;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.nodes.IRevealer;
 
-public class MechArmorBase extends ItemArmor implements IKeyPressedListener {
+public class MechArmorBase extends ItemArmor implements IKeyPressedListener, IGoggles, IRevealer, IVisDiscountGear {
 
     protected IIcon coreIcon;
     protected IIcon frameIcon;
@@ -143,5 +154,31 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener {
                 behavior.addInformation(aStack, aList);
             }
         }
+        if (Loader.isModLoaded(Thaumcraft.ID)) {
+            int visDiscount = this.getVisDiscount(aStack, aPlayer, (Aspect) null);
+            if (visDiscount > 0) {
+                aList.add("");
+                aList.add(
+                    EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount")
+                        + ": "
+                        + visDiscount
+                        + "%");
+            }
+        }
+    }
+
+    @Override
+    public boolean showIngamePopups(ItemStack item, EntityLivingBase var2) {
+        return (getOrCreateNbtCompound(item).getBoolean(GOGGLES_OF_REVEALING_KEY));
+    }
+
+    @Override
+    public boolean showNodes(ItemStack item, EntityLivingBase var2) {
+        return (getOrCreateNbtCompound(item).getBoolean(GOGGLES_OF_REVEALING_KEY));
+    }
+
+    @Override
+    public int getVisDiscount(ItemStack item, EntityPlayer var2, Aspect var3) {
+        return (getOrCreateNbtCompound(item).getInteger(VIS_DISCOUNT_KEY));
     }
 }

@@ -8,12 +8,15 @@ import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 public class ArmorKeybinds {
 
-    public static final SyncedKeybind NIGHT_VISION_KEY = SyncedKeybind
+    public static final SyncedKeybind NIGHT_VISION_KEYBIND = SyncedKeybind
         .createConfigurable("gregtech.toggle_night_vision", "key.categories.gameplay", Keyboard.KEY_R);
-    public static final SyncedKeybind JETPACK_HOVER_KEY = SyncedKeybind
+    public static final SyncedKeybind JETPACK_HOVER_KEYBIND = SyncedKeybind
         .createConfigurable("gregtech.toggle_jetpack_hover", "key.categories.gameplay", Keyboard.KEY_G);
-    public static final SyncedKeybind JETPACK_KEY = SyncedKeybind
+    public static final SyncedKeybind JETPACK_KEYBIND = SyncedKeybind
         .createConfigurable("gregtech.toggle_jetpack", "key.categories.gameplay", Keyboard.KEY_F);
+    public static final SyncedKeybind GOGGLES_OF_REVEALING_KEYBIND = SyncedKeybind
+        .createConfigurable("gregtech.toggle_goggles_of_revealing", "key.categories.gameplay", Keyboard.KEY_T);
+
     public static final SyncedKeybind VANILLA_JUMP = SyncedKeybind
         .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindJump);
     public static final SyncedKeybind VANILLA_SNEAK = SyncedKeybind

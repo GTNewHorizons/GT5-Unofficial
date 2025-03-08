@@ -52,6 +52,7 @@ import gregtech.api.items.ItemCoolantCellIC;
 import gregtech.api.items.ItemRadioactiveCellIC;
 import gregtech.api.items.armor.behaviors.CreativeFlightBehavior;
 import gregtech.api.items.armor.behaviors.FireImmunityBehavior;
+import gregtech.api.items.armor.behaviors.GogglesOfRevealingBehavior;
 import gregtech.api.items.armor.behaviors.JetpackBehavior;
 import gregtech.api.items.armor.behaviors.JetpackPerfectHoverBehavior;
 import gregtech.api.items.armor.behaviors.NightVisionBehavior;
@@ -264,6 +265,12 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Augment: Step Assist",
                 "blah",
                 Collections.singletonList(StepAssistBehavior.INSTANCE)));
+        ItemList.Augment_GogglesOfRevealing.set(
+            new ItemAugmentBase(
+                "augmentgogglesofrevealing",
+                "Augment: Goggles Of Revealing",
+                "blah",
+                Collections.singletonList(GogglesOfRevealingBehavior.INSTANCE)));
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1

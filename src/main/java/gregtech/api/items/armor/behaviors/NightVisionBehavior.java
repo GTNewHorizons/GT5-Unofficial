@@ -1,6 +1,6 @@
 package gregtech.api.items.armor.behaviors;
 
-import static gregtech.api.items.armor.ArmorKeybinds.NIGHT_VISION_KEY;
+import static gregtech.api.items.armor.ArmorKeybinds.NIGHT_VISION_KEYBIND;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 import static gregtech.loaders.ExtraIcons.nightVisionAugment;
 
@@ -59,7 +59,7 @@ public class NightVisionBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys() {
-        return Collections.singleton(NIGHT_VISION_KEY);
+        return Collections.singleton(NIGHT_VISION_KEYBIND);
     }
 
     // TODO: we should have our own electric item wrapper
