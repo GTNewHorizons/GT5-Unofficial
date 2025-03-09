@@ -29,7 +29,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -546,7 +546,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         // Register the cover
-        GregTechAPI.registerCover(
+        CoverRegistry.registerDecorativeCover(
             aStack,
             // If there is an ItemStack of Block for Materials
             tStack == NI ?
@@ -558,7 +558,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     .build()
                 :
                 // or copy Block texture
-                TextureFactory.of(Block.getBlockFromItem(tStack.getItem()), tStack.getItemDamage()),
-            null);
+                TextureFactory.of(Block.getBlockFromItem(tStack.getItem()), tStack.getItemDamage()));
     }
 }

@@ -54,11 +54,12 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
 
                 if (!OrePrefixes.block.isIgnored(aMaterial.mSmeltInto)
                     && (GTOreDictUnificator.get(OrePrefixes.block, aMaterial.mSmeltInto, 1L) != null)
-                    && aMaterial != Materials.Ichorium) {
+                    && aMaterial != Materials.Ichorium
+                    && aMaterial != Materials.Obsidian) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(9, aStack), ItemList.Shape_Extruder_Block.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial.mSmeltInto, tAmount))
-                        .duration((10 * tAmount) * TICKS)
+                        .duration(aMaterialMass * 9 * TICKS)
                         .eut(calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier))
                         .addTo(extruderRecipes);
 
@@ -67,7 +68,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(9, aStack), ItemList.Shape_Mold_Block.get(0L))
                             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial.mSmeltInto, tAmount))
-                            .duration((5 * tAmount) * TICKS)
+                            .duration(aMaterialMass * 9 * TICKS)
                             .eut(calculateRecipeEU(aMaterial, 4 * tVoltageMultiplier))
                             .recipeCategory(RecipeCategories.alloySmelterMolding)
                             .addTo(alloySmelterRecipes);
@@ -191,7 +192,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GTValues.RA.stdBuilder()
                                 .itemInputs(ItemList.Shape_Mold_Round.get(0L))
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.round, aMaterial, 1L))
-                                .fluidInputs(aMaterial.getMolten(18L))
+                                .fluidInputs(aMaterial.getMolten(16L))
                                 .duration(2 * SECONDS + 10 * TICKS)
                                 .eut(calculateRecipeEU(aMaterial, 2 * tVoltageMultiplier))
                                 .addTo(fluidSolidifierRecipes);
@@ -426,7 +427,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                     case "Iron", "WroughtIron" -> {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Shape_Extruder_Cell.get(0L))
-                            .itemOutputs(GTModHandler.getIC2Item("fuelRod", tAmount))
+                            .itemOutputs(ItemList.IC2_Fuel_Rod_Empty.get(tAmount))
                             .duration((tAmount * 128) * TICKS)
                             .eut(TierEU.RECIPE_LV)
                             .addTo(extruderRecipes);

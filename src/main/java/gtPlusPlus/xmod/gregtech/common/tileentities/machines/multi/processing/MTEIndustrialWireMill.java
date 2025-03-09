@@ -162,7 +162,7 @@ public class MTEIndustrialWireMill extends GTPPMultiBlockBase<MTEIndustrialWireM
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 3F)
             .setEuModifier(0.75F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

@@ -15,7 +15,6 @@ package bartworks.system.material.processingLoaders;
 
 import static bartworks.API.recipe.BartWorksRecipeMaps.bacterialVatRecipes;
 import static bartworks.API.recipe.BartWorksRecipeMaps.bioLabRecipes;
-import static bartworks.util.BWRecipes.computeSieverts;
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.enums.OrePrefixes.bolt;
 import static gregtech.api.enums.OrePrefixes.crushed;
@@ -49,7 +48,7 @@ import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
-import static gregtech.api.util.GTRecipeConstants.SIEVERTS;
+import static gregtech.api.util.GTRecipeConstants.GLASS;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 
 import java.util.Arrays;
@@ -232,7 +231,7 @@ public class AdditionalRecipes {
                         .special(BioItemList.getPetriDish(bioCulture))
                         .fluidInputs(fluidStack)
                         .fluidOutputs(new FluidStack(bioCulture.getFluid(), 10))
-                        .metadata(SIEVERTS, computeSieverts(0, 3, false, false, false))
+                        .metadata(GLASS, 3)
                         .duration(50 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
                         .addTo(bacterialVatRecipes);
@@ -344,9 +343,9 @@ public class AdditionalRecipes {
 
         // Prasiolite
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(dust, Materials.Quartzite, 40L), Materials.Amethyst.getDust(10))
-            .itemOutputs(WerkstoffLoader.Prasiolite.get(OrePrefixes.gemFlawed, 20))
-            .duration(40 * SECONDS)
+            .itemInputs(GTOreDictUnificator.get(dust, Materials.Quartzite, 4L), Materials.Amethyst.getDust(1))
+            .itemOutputs(WerkstoffLoader.Prasiolite.get(OrePrefixes.gemFlawed, 2))
+            .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 500)
             .addTo(blastFurnaceRecipes);
@@ -377,14 +376,13 @@ public class AdditionalRecipes {
             .duration(48 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 2953)
-            .noOptimize()
             .addTo(blastFurnaceRecipes);
 
         // Tellurium
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(crushed, Materials.Lead, 10L), GTUtility.getIntegratedCircuit(17))
-            .itemOutputs(Materials.Lead.getIngots(10), Materials.Tellurium.getNuggets(20))
-            .duration(40 * SECONDS)
+            .itemInputs(GTOreDictUnificator.get(crushed, Materials.Lead, 1L), GTUtility.getIntegratedCircuit(17))
+            .itemOutputs(Materials.Lead.getIngots(1), Materials.Tellurium.getNuggets(2))
+            .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 722)
             .addTo(blastFurnaceRecipes);

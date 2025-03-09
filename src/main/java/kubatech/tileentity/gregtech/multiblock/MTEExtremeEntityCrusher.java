@@ -25,7 +25,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
@@ -43,6 +42,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -60,11 +60,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderHell;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -112,7 +114,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
-import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -124,8 +125,11 @@ import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.api.tileentity.CustomTileEntityPacketHandler;
 import kubatech.api.utils.ModUtils;
 import kubatech.client.effect.EntityRenderer;
+import kubatech.config.Config;
 import kubatech.loaders.MobHandlerLoader;
 import kubatech.network.CustomTileEntityPacket;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtremeEntityCrusher>
     implements CustomTileEntityPacketHandler, ISurvivalConstructable {
@@ -183,8 +187,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         .addElement('c', onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings2, 0)))
         .addElement(
             'C',
-            buildHatchAdder(MTEExtremeEntityCrusher.class)
-                .atLeast(InputBus, OutputBus, OutputHatch, Energy, Maintenance)
+            buildHatchAdder(MTEExtremeEntityCrusher.class).atLeast(OutputBus, OutputHatch, Energy, Maintenance)
                 .casingIndex(CASING_INDEX)
                 .dot(1)
                 .buildAndChain(onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings2, 0))))
@@ -273,7 +276,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addInfo("You can prevent infernal spawns by shift clicking with a screwdriver.")
             .addInfo("Note: If the mob has forced infernal spawn, it will do it anyway.")
             .addInfo("You can enable ritual mode with a screwdriver.")
-            .addInfo("When in ritual mode and the Well Of Suffering ritual is built directly centered on the machine,")
+            .addInfo(
+                "When in ritual mode and the Well Of Suffering ritual is built directly centered on top of the machine,")
             .addInfo("the mobs will start to buffer and die very slowly by the ritual.")
             .addInfo("You can disable mob animation with a soldering iron.")
             .beginStructureBlock(5, 7, 5, true)
@@ -534,7 +538,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
         if (recipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
         if (!recipe.recipe.isPeacefulAllowed && this.getBaseMetaTileEntity()
-            .getWorld().difficultySetting == EnumDifficulty.PEACEFUL)
+            .getWorld().difficultySetting == EnumDifficulty.PEACEFUL && !Config.MobHandler.ignorePeacefulCheck)
             return SimpleCheckRecipeResult.ofFailure("EEC_peaceful");
 
         if (isInRitualMode && isRitualValid()) {
@@ -550,18 +554,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt * 8);
 
             double attackDamage = DIAMOND_SPIKES_DAMAGE; // damage from spikes
-            weaponCheck: {
-                MTEHatchInputBus inputbus = this.mInputBusses.isEmpty() ? null : this.mInputBusses.get(0);
-                if (inputbus != null && !inputbus.isValid()) inputbus = null;
-                ItemStack lootingHolder = inputbus == null ? null : inputbus.getStackInSlot(0);
-                if (lootingHolder == null) break weaponCheck;
-                if (weaponCache.getStackInSlot(0) != null) break weaponCheck;
-                if (weaponCache.isItemValid(0, lootingHolder)) {
-                    weaponCache.setStackInSlot(0, lootingHolder);
-                    inputbus.setInventorySlotContents(0, null);
-                    updateSlots();
-                }
-            }
+
             if (weaponCache.isValid) attackDamage += weaponCache.attackDamage;
 
             if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
@@ -646,9 +639,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         mGlassTier = 0;
         mCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0)) return false;
-        if (mCasing < 35 || mMaintenanceHatches.size() != 1
-            || mEnergyHatches.isEmpty()
-            || !(mInputBusses.isEmpty() || (mInputBusses.size() == 1 && mInputBusses.get(0).mTier == 0))) return false;
+        if (mCasing < 35 || mMaintenanceHatches.size() != 1 || mEnergyHatches.isEmpty()) return false;
         if (mGlassTier < 8) for (MTEHatchEnergy hatch : mEnergyHatches) if (hatch.mTier > mGlassTier) return false;
         if (isInRitualMode) connectToRitual();
         return true;
@@ -657,6 +648,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        String mobName = getCurrentMob();
+        info.add("Current Mob: " + EnumChatFormatting.YELLOW + (mobName != null ? mobName : "None"));
         info.add("Animations: " + EnumChatFormatting.YELLOW + (mAnimationEnabled ? "Enabled" : "Disabled"));
         info.add(
             "Is allowed to produce infernal drops: " + EnumChatFormatting.YELLOW
@@ -771,6 +764,50 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_EXTREME_ENTITY_CRUSHER_LOOP;
+    }
+
+    private String getCurrentMob() {
+        ItemStack spawner = mInventory[1];
+        if (spawner != null && spawner.getTagCompound() != null) {
+            return spawner.getTagCompound()
+                .getString("mobType");
+        }
+        return null;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        String mob = getCurrentMob();
+        if (mob != null) {
+            tag.setString("eecMobType", mob);
+        }
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+
+        if (tag.hasKey("eecMobType", Constants.NBT.TAG_STRING)) {
+            String mob = tag.getString("eecMobType");
+            String mobKey = "entity." + mob + ".name";
+            if (StatCollector.canTranslate(mobKey)) {
+                currentTip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "kubatech.waila.eec.mob_type",
+                        StatCollector.translateToLocal(mobKey)));
+            } else {
+                currentTip.add(StatCollector.translateToLocalFormatted("kubatech.waila.eec.mob_type", mob));
+            }
+        } else {
+            currentTip.add(
+                StatCollector.translateToLocalFormatted(
+                    "kubatech.waila.eec.mob_type",
+                    StatCollector.translateToLocal("kubatech.waila.eec.no_mob")));
+        }
     }
 
     private static class EECFakePlayer extends FakePlayer {

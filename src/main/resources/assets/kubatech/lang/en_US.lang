@@ -13,7 +13,7 @@ kubatech.commandhandler.invalid=§cInvalid use ! The proper use of this command 
 kubatech.commandhandler.cant_find=§cCan't find command option %s
 kubatech.commandhandler.generic_help=§cYou can also use "/kubatech help" to get possible commands
 kubatech.commandhandler.usage=<option>
-kubatech.command.help.possible_commands=Possible commands: 
+kubatech.command.help.possible_commands=Possible commands:
 kubatech.command.help.usage=- Shows all possible commands
 kubatech.command.config.invalid_option=§cInvalid option ! Possible options: reload
 kubatech.command.config.success=§aConfig reloaded successfully !
@@ -36,6 +36,10 @@ GT5U.gui.text.EIG_slotoverflow=Too many seed types inside!
 GT5U.gui.text.EIG_seedOverflow=Too many seeds inside!
 GT5U.gui.text.EIG_missingwater=No water!
 GT5U.gui.text.EIG_ic2glass=Insufficient glass tier!
+
+#Waila
+kubatech.waila.eec.mob_type=Mob Type: %s
+kubatech.waila.eec.no_mob=None
 
 #Blocks
 kubablock.tea_acceptor.name=§4§lTea Acceptor
@@ -133,3 +137,12 @@ tc.research_category.KUBATECH=§lCamellia sinensis
 tc.research_name.KT_UltimateTea=%s §6§lTea
 tc.research_text.KT_UltimateTea=§4§lPure power
 KT.research.ultimatetea=You have found a way to convert all this Tea into pure power creating the %s §6§lTea
+
+#Tooltip
+kubatech.tooltip.tea=Tea
+kubatech.tooltip.tea_acceptor.0=Accepts Tea items and adds them to your network
+kubatech.tooltip.tea_acceptor.1=Can accept up to 10 stacks per tick
+kubatech.tooltip.tea_storage.0=Extends Tea Storage by %s
+kubatech.tooltip.tea_ingredient.0=This is Tea ingredient
+
+kubatech.tooltip.structure.flowers=Flowers

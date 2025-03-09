@@ -29,7 +29,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
@@ -73,10 +72,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
                 "0.004EU Loss per 100 Blocks" });
     }
 
-    public MTEMicrowaveEnergyTransmitter(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 3, aDescription, aTextures);
-    }
-
     public MTEMicrowaveEnergyTransmitter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
@@ -85,7 +80,7 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         this.hasBlock = checkForBlock();
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -270,21 +265,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
-    public boolean isOverclockerUpgradable() {
-        return false;
-    }
-
-    @Override
-    public boolean isTransformerUpgradable() {
-        return false;
-    }
-
-    @Override
     public boolean isElectric() {
         return true;
     }
@@ -382,16 +362,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     @Override
     public boolean canTankBeEmptied() {
         return true;
-    }
-
-    @Override
-    public boolean displaysItemStack() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
-        return false;
     }
 
     @Override

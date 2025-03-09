@@ -123,7 +123,7 @@ public class MultiblockTooltipBuilder {
      * Processes up to {parallels} recipes at once
      *
      * @param parallels Maximum parallels
-     * @returnInstance this method was called on.
+     * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addParallelInfo(Integer parallels) {
         iLines.add(String.format(TT_Parallels, parallels));
@@ -283,22 +283,6 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addController(String info) {
         sLines.add(TAB + EnumChatFormatting.WHITE + TT_controller + COLON + EnumChatFormatting.GRAY + info);
         return this;
-    }
-
-    /**
-     * Add a line of information about the structure:<br>
-     * (indent)minCountx casingName (minimum) (tiered)
-     *
-     * @param casingName Name of the Casing.
-     * @param minCount   Minimum needed for valid structure check.
-     * @return Instance this method was called on.
-     *
-     * @deprecated Replaced by {@link #addCasingInfoMin(String, int, boolean)}
-     *
-     */
-    @Deprecated
-    public MultiblockTooltipBuilder addCasingInfo(String casingName, int minCount) {
-        return addCasingInfoMin(casingName, minCount, false);
     }
 
     /**
@@ -549,14 +533,15 @@ public class MultiblockTooltipBuilder {
      * Use this method to add a structural part that isn't covered by the other methods.<br>
      * (indent)name: info
      *
-     * @param name Name of the hatch or other component.
-     * @param info Positional information.
-     * @param dots The valid locations for this part when asked to display hints
+     * @param localizedName Name of the hatch or other component. This entry should be localized, otherwise the
+     *                      structure hints sent to the chat can't be localized.
+     * @param info          Positional information.
+     * @param dots          The valid locations for this part when asked to display hints
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addOtherStructurePart(String name, String info, int... dots) {
-        sLines.add(EnumChatFormatting.WHITE + TAB + name + COLON + EnumChatFormatting.GRAY + info);
-        for (int dot : dots) hBlocks.put(dot, name);
+    public MultiblockTooltipBuilder addOtherStructurePart(String localizedName, String info, int... dots) {
+        sLines.add(EnumChatFormatting.WHITE + TAB + localizedName + COLON + EnumChatFormatting.GRAY + info);
+        for (int dot : dots) hBlocks.put(dot, localizedName);
         return this;
     }
 
@@ -567,7 +552,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addTecTechHatchInfo() {
-        iLines.add(EnumChatFormatting.BLUE + TT_tectechhatch);
+        iLines.add(EnumChatFormatting.GREEN + TT_tectechhatch);
         return this;
     }
 
@@ -760,12 +745,12 @@ public class MultiblockTooltipBuilder {
      * Use this method to add an entry to standard structural hint without creating a corresponding line in structure
      * information
      *
-     * @param name The name of block This should be an entry into minecraft's localization system.
-     * @param dots Possible locations of this block
+     * @param nameKey The name of block This should be an entry into minecraft's localization system.
+     * @param dots    Possible locations of this block
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addStructureHint(String name, int... dots) {
-        for (int dot : dots) hBlocks.put(dot, StatCollector.translateToLocal(name));
+    public MultiblockTooltipBuilder addStructureHint(String nameKey, int... dots) {
+        for (int dot : dots) hBlocks.put(dot, StatCollector.translateToLocal(nameKey));
         return this;
     }
 

@@ -78,7 +78,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
             }
 
-            else if (aMaterial != Materials.Clay && aMaterial != Materials.Basalt) {
+            else if (aMaterial != Materials.Clay && aMaterial != Materials.Basalt && aMaterial != Materials.Obsidian) {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
@@ -134,15 +134,16 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (aMaterial.mStandardMoltenFluid != null) {
-            if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
+            if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron
+                || aMaterial == Materials.Obsidian)) {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Block.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
                         .fluidInputs(aMaterial.getMolten(1296L))
-                        .duration(14 * SECONDS + 8 * TICKS)
-                        .eut(8)
+                        .duration(aMaterial.getMass() * 9 * TICKS)
+                        .eut(calculateRecipeEU(aMaterial, 8))
                         .addTo(fluidSolidifierRecipes);
                 }
             }
@@ -166,12 +167,12 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 GTModHandler.addShapelessCraftingRecipe(tStack1, new Object[] { OrePrefixes.block.get(aMaterial) });
         }
 
-        if (!OrePrefixes.block.isIgnored(aMaterial) && tStack1 != null) {
+        if (!OrePrefixes.block.isIgnored(aMaterial) && tStack1 != null && aMaterial != Materials.Obsidian) {
             // 9 ingots -> 1 block
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
-                .duration(15 * SECONDS)
+                .duration(aMaterial.getMass() * 2 * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 2))
                 .addTo(compressorRecipes);
         }

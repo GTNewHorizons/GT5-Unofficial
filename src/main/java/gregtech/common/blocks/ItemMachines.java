@@ -1,6 +1,7 @@
 package gregtech.common.blocks;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.api.util.GTUtility.formatStringSafe;
 
 import java.util.List;
 
@@ -35,9 +36,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
-import gregtech.api.metatileentity.implementations.MTEFluid;
+import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.metatileentity.implementations.MTEFrame;
-import gregtech.api.metatileentity.implementations.MTEItem;
+import gregtech.api.metatileentity.implementations.MTEItemPipe;
 import gregtech.api.util.GTItsNotMyFaultException;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
@@ -153,6 +154,8 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 }
             }
         } catch (Throwable e) {
+            aList.add(String.format("§cAn exception was thrown while getting this item's info.§r"));
+            aList.add(e.getLocalizedMessage());
             GT_FML_LOGGER.error("addInformation", e);
         }
     }
@@ -174,8 +177,9 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     tBuffer.append("%s");
                     tRep[j / 2] = tSplitStrings[j];
                 }
-                final String tTranslated = String
-                    .format(GTLanguageManager.addStringLocalization(tKey, tBuffer.toString()), (Object[]) tRep);
+                final String tTranslated = formatStringSafe(
+                    GTLanguageManager.addStringLocalization(tKey, tBuffer.toString()),
+                    (Object[]) tRep);
                 if (aList != null) aList.add(tTranslated);
             } else {
                 String tTranslated = GTLanguageManager.addStringLocalization(tKey, tDescLine);
@@ -224,10 +228,10 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         if (aDamage >= 0 && aDamage < GregTechAPI.METATILEENTITIES.length
             && GregTechAPI.METATILEENTITIES[aDamage] != null) {
             Materials aMaterial = null;
-            if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEItem) {
-                aMaterial = ((MTEItem) GregTechAPI.METATILEENTITIES[aDamage]).mMaterial;
-            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEFluid) {
-                aMaterial = ((MTEFluid) GregTechAPI.METATILEENTITIES[aDamage]).mMaterial;
+            if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEItemPipe) {
+                aMaterial = ((MTEItemPipe) GregTechAPI.METATILEENTITIES[aDamage]).mMaterial;
+            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEFluidPipe) {
+                aMaterial = ((MTEFluidPipe) GregTechAPI.METATILEENTITIES[aDamage]).mMaterial;
             } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTECable) {
                 aMaterial = ((MTECable) GregTechAPI.METATILEENTITIES[aDamage]).mMaterial;
             } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEFrame) {

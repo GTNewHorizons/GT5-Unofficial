@@ -110,14 +110,17 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
             .addController("Front center")
             .addCasingInfoRange("Chemically Inert Machine Casing", 8, 22, false)
             .addOtherStructurePart("PTFE Pipe Machine Casing", "Center")
-            .addOtherStructurePart("Heating Coil", "Adjacent to the PTFE Pipe Machine Casing", 1)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.heating_coil"),
+                "Adjacent to the PTFE Pipe Machine Casing",
+                1)
             .addEnergyHatch("Any casing", 1, 2)
             .addMaintenanceHatch("Any casing", 1, 2)
             .addInputBus("Any casing", 1, 2)
             .addInputHatch("Any casing", 1, 2)
             .addOutputBus("Any casing", 1, 2)
             .addOutputHatch("Any casing", 1, 2)
-            .addStructureInfo("You can have multiple hatches/busses")
+            .addStructureInfo("You can have multiple hatches/buses")
             .toolTipFinisher();
         return tt;
     }
@@ -263,8 +266,8 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
         }
 
         @Override
-        public BlocksToPlace getBlocksToPlace(MTELargeChemicalReactor gt_metaTileEntity_largeChemicalReactor,
-            World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+        public BlocksToPlace getBlocksToPlace(MTELargeChemicalReactor largeChemicalReactor, World world, int x, int y,
+            int z, ItemStack trigger, AutoPlaceEnvironment env) {
             return BlocksToPlace.create(
                 IntStream.range(0, 8)
                     .mapToObj(i -> new ItemStack(GregTechAPI.sBlockCasings5, 1, i))

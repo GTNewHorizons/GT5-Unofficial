@@ -24,7 +24,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
@@ -32,14 +31,13 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWidgets, IAddGregtechLogo {
 
-    private static GTRenderedTexture BUCK, BUCK_ACTIVE;
+    private static ITexture BUCK, BUCK_ACTIVE;
     public int EUT = 0, AMP = 0;
     private static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
@@ -52,12 +50,10 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
             0,
             new String[] { CommonValues.TEC_MARK_GENERAL, translateToLocal("gt.blockmachines.machine.tt.buck.desc.0"),
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.buck.desc.1"), });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEBuckConverter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-        TTUtility.setTier(aTier, this);
     }
 
     @Override
@@ -69,8 +65,8 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        BUCK = new GTRenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/BUCK"));
-        BUCK_ACTIVE = new GTRenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/BUCK_ACTIVE"));
+        BUCK = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/BUCK"));
+        BUCK_ACTIVE = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/BUCK_ACTIVE"));
     }
 
     @Override
@@ -115,13 +111,8 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 

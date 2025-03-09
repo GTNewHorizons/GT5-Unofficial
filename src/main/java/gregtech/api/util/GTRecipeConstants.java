@@ -26,7 +26,9 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
+import gregtech.api.util.recipe.QuantumComputerRecipeData;
 import gregtech.api.util.recipe.Scanning;
+import gregtech.api.util.recipe.Sievert;
 import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
 import gtnhlanth.common.item.ItemPhotolithographicMask;
@@ -111,10 +113,22 @@ public class GTRecipeConstants {
     public static final RecipeMetadataKey<Boolean> ON_FIRE = SimpleRecipeMetadataKey.create(Boolean.class, "on_fire");
 
     /**
+     * Values of items used in quantum computer, used to show NEI recipes
+     */
+    public static final RecipeMetadataKey<QuantumComputerRecipeData> QUANTUM_COMPUTER_DATA = SimpleRecipeMetadataKey
+        .create(QuantumComputerRecipeData.class, "quantum_computer_data");
+
+    /**
      * Nano Forge Tier.
      */
     public static final RecipeMetadataKey<Integer> NANO_FORGE_TIER = SimpleRecipeMetadataKey
         .create(Integer.class, "nano_forge_tier");
+
+    /**
+     * PCB Factory nanite material
+     */
+    public static final RecipeMetadataKey<Materials> PCB_NANITE_MATERIAL = SimpleRecipeMetadataKey
+        .create(Materials.class, "pcb_nanite_material");
 
     /**
      * FOG Exotic recipe tier.
@@ -157,6 +171,12 @@ public class GTRecipeConstants {
      */
     public static final RecipeMetadataKey<Integer> QFT_FOCUS_TIER = SimpleRecipeMetadataKey
         .create(Integer.class, "qft_focus_tier");
+
+    /**
+     * QFT catalyst meta.
+     */
+    public static final RecipeMetadataKey<ItemStack> QFT_CATALYST = SimpleRecipeMetadataKey
+        .create(ItemStack.class, "qft_catalyst");
 
     /**
      * Tier of advanced compression (HIP/black hole)
@@ -223,12 +243,14 @@ public class GTRecipeConstants {
         .create(Integer.class, "research_station_data");
 
     /**
-     * glass tier required for the biovat recipes.
+     * sievert data required for the biovat recipes.
      */
-    public static final RecipeMetadataKey<Integer> SIEVERTS = SimpleRecipeMetadataKey.create(Integer.class, "sieverts");
 
-    public static final RecipeMetadataKey<Integer> DECAY_TICKS = SimpleRecipeMetadataKey
-        .create(Integer.class, "decay_ticks");
+    public static final RecipeMetadataKey<Sievert> SIEVERT = SimpleRecipeMetadataKey.create(Sievert.class, "SIEVERT");
+
+    public static final RecipeMetadataKey<Integer> GLASS = SimpleRecipeMetadataKey.create(Integer.class, "GLASS");
+
+    public static final RecipeMetadataKey<Integer> MASS = SimpleRecipeMetadataKey.create(Integer.class, "mass");
 
     public static final RecipeMetadataKey<Boolean> NOBLE_GASES = SimpleRecipeMetadataKey
         .create(Boolean.class, "noble_gases");
@@ -538,7 +560,6 @@ public class GTRecipeConstants {
             r.mOreDictAlt);
         tRecipe.setPersistentHash(tPersistentHash);
         GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes.add(tRecipe);
-        AssemblyLineUtils.addRecipeToCache(tRecipe);
 
         Collection<GTRecipe> ret = new ArrayList<>(3);
         ret.addAll(
@@ -549,7 +570,6 @@ public class GTRecipeConstants {
                 .duration(scanningData.time)
                 .eut(scanningData.voltage)
                 .specialValue(-201) // means it's scanned
-                .noOptimize()
                 .ignoreCollision()
                 .fake()
                 .addTo(scannerFakeRecipes));
@@ -720,8 +740,5 @@ public class GTRecipeConstants {
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(PRECISE_ASSEMBLER_CASING_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COAL_CASING_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(RESEARCH_STATION_DATA);
-        GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(SIEVERTS);
-        GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DECAY_TICKS);
-
     }
 }

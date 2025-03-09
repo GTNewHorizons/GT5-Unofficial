@@ -72,11 +72,11 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
             .beginStructureBlock(3, 2, 3, false)
             .addController("Front Center")
             .addCasingInfoMin("Thermal Processing Casings/Noise Hazard Sign Blocks", 8, false)
-            .addInputBus("Bottom Casing", 1)
-            .addOutputBus("Bottom Casing", 1)
-            .addEnergyHatch("Bottom Casing", 1)
-            .addMaintenanceHatch("Bottom Casing", 1)
-            .addMufflerHatch("Bottom Casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -85,7 +85,7 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
     public IStructureDefinition<MTEIndustrialThermalCentrifuge> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialThermalCentrifuge>builder()
-                .addShape(mName, transpose(new String[][] { { "X~X", "XXX", "XXX" }, { "CCC", "CCC", "CCC" }, }))
+                .addShape(mName, transpose(new String[][] { { "C~C", "CCC", "CCC" }, { "CCC", "CCC", "CCC" }, }))
                 .addElement(
                     'C',
                     ofChain(
@@ -94,11 +94,6 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
                             .casingIndex(getCasingTextureIndex())
                             .dot(1)
                             .build(),
-                        onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 0)),
-                        onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings3, 9))))
-                .addElement(
-                    'X',
-                    ofChain(
                         onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 0)),
                         onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings3, 9))))
                 .build();
@@ -157,7 +152,7 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 2.5F)
             .setEuModifier(0.8F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

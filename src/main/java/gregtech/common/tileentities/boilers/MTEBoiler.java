@@ -22,13 +22,12 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GTMod;
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
@@ -36,7 +35,6 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -59,10 +57,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
 
     public MTEBoiler(int aID, String aName, String aNameRegional, String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, 0, 4, aDescription, aTextures);
-    }
-
-    public MTEBoiler(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 4, aDescription, aTextures);
     }
 
     public MTEBoiler(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -129,7 +123,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                         .func_150996_a(Items.bucket);
                 }
             } else {
-                GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+                openGui(aPlayer);
             }
         }
         return true;
@@ -156,16 +150,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     }
 
     @Override
-    public boolean displaysItemStack() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
-        return false;
-    }
-
-    @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
         return GTModHandler.isWater(aFluid);
     }
@@ -187,9 +171,9 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCover) {
-        return GregTechAPI.getCoverBehaviorNew(aCover.toStack())
-            .isSimpleCover();
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
+        return CoverRegistry.getCoverPlacer(coverItem)
+            .allowOnPrimitiveBlock();
     }
 
     @Override
@@ -199,12 +183,9 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         aNBT.setInteger("mTemperature", this.mTemperature);
         aNBT.setInteger("mProcessingEnergy", this.mProcessingEnergy);
         aNBT.setInteger("mExcessWater", this.mExcessWater);
-        if (this.mSteam == null) {
-            return;
-        }
-        try {
+        if (mSteam != null) {
             aNBT.setTag("mSteam", this.mSteam.writeToNBT(new NBTTagCompound()));
-        } catch (Throwable ignored) {}
+        }
     }
 
     @Override
@@ -378,11 +359,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                     x -> x.setPosition(aX - 0.5D + XSTR_INSTANCE.nextFloat(), aY, aZ - 0.5D + XSTR_INSTANCE.nextFloat())
                         .run());
         }
-    }
-
-    @Override
-    public int getTankPressure() {
-        return 100;
     }
 
     protected abstract int getPollution();

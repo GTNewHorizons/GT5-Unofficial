@@ -32,7 +32,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -77,7 +76,7 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         return side != getBaseMetaTileEntity().getFrontFacing();
     }
 
@@ -339,11 +338,6 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
 
         return new String[] { "COMET - Compact Cyclotron MK " + tier, "EU Required: " + powerRequired + "EU/t",
             "Stored EU: " + this.getEUVar() + " / " + maxEUStore() };
-    }
-
-    @Override
-    public boolean doesBindPlayerInventory() {
-        return false;
     }
 
     @Override

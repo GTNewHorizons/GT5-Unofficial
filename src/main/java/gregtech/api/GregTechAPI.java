@@ -5,66 +5,45 @@ import static gregtech.api.enums.Mods.IndustrialCraft2;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BiFunction;
 import java.util.function.IntFunction;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDamagableItem;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.objects.GTCoverDefault;
-import gregtech.api.objects.GTCoverNone;
 import gregtech.api.objects.GTHashSet;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.threads.RunnableCableUpdate;
 import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.CircuitryBehavior;
-import gregtech.api.util.CoverBehavior;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTCreativeTab;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.item.ItemHolder;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.GTDummyWorld;
-import gregtech.common.items.ItemIntegratedCircuit;
 
 /**
  * Please do not include this File in your Mod-download as it ruins compatibility, like with the IC2-API You may just
@@ -93,7 +72,7 @@ public class GregTechAPI {
      * {@link GTItemStack}
      */
     public static final Collection<Map<?, ?>> sItemStackMappings = new ArrayList<>();
-    public static final Collection<SetMultimap<? extends ItemHolder, ?>> itemStackMultiMaps = new ArrayList<>();
+    public static final Collection<SetMultimap<GTItemStack, ?>> itemStackMultiMaps = new ArrayList<>();
 
     /**
      * The MetaTileEntity-ID-List-Length
@@ -107,14 +86,7 @@ public class GregTechAPI {
         TAB_GREGTECH_ORES = new GTCreativeTab("Ores", "Ores");
 
     public static final IMetaTileEntity[] METATILEENTITIES = new IMetaTileEntity[MAXIMUM_METATILE_IDS];
-    /**
-     * The Icon List for Covers
-     */
-    public static final Map<GTItemStack, ITexture> sCovers = new ConcurrentHashMap<>();
-    /**
-     * The List of Cover Behaviors for the Covers
-     */
-    public static final Map<GTItemStack, CoverBehaviorBase<?>> sCoverBehaviors = new ConcurrentHashMap<>();
+
     /**
      * The List of Circuit Behaviors for the Redstone Circuit Block
      */
@@ -141,33 +113,18 @@ public class GregTechAPI {
      */
     public static final Map<String, ItemStack> sBookList = new ConcurrentHashMap<>();
     /**
-     * The List of all Sounds used in GT, indices are in the static Block at the bottom
-     *
-     * @deprecated Use {@link SoundResource}
-     */
-    @Deprecated
-    public static final Map<Integer, String> sSoundList = SoundResource.asSoundList();
-    /**
      * The List of Tools, which can be used. Accepts regular damageable Items and Electric Items
      */
-    public static final GTHashSet<GTItemStack> sToolList = new GTHashSet<>(), sCrowbarList = new GTHashSet<>(),
-        sScrewdriverList = new GTHashSet<>(), sWrenchList = new GTHashSet<>(), sSoftHammerList = new GTHashSet<>(),
-        sHardHammerList = new GTHashSet<>(), sWireCutterList = new GTHashSet<>(),
-        sSolderingToolList = new GTHashSet<>(), sSolderingMetalList = new GTHashSet<>(),
-        sJackhammerList = new GTHashSet<>();
+    public static final GTHashSet sToolList = new GTHashSet(), sCrowbarList = new GTHashSet(),
+        sScrewdriverList = new GTHashSet(), sWrenchList = new GTHashSet(), sSoftHammerList = new GTHashSet(),
+        sHardHammerList = new GTHashSet(), sWireCutterList = new GTHashSet(), sSolderingToolList = new GTHashSet(),
+        sSolderingMetalList = new GTHashSet(), sJackhammerList = new GTHashSet();
     /**
      * The List of Hazmat Armors
      */
-    public static final GTHashSet<GTItemStack> sGasHazmatList = new GTHashSet<>(), sBioHazmatList = new GTHashSet<>(),
-        sFrostHazmatList = new GTHashSet<>(), sHeatHazmatList = new GTHashSet<>(), sRadioHazmatList = new GTHashSet<>(),
-        sElectroHazmatList = new GTHashSet<>();
-
-    private static final Multimap<Integer, ItemStack> sRealConfigurationList = Multimaps
-        .newListMultimap(new TreeMap<>(), ArrayList::new);
-    private static final Map<Integer, List<ItemStack>> sConfigurationLists = new ConcurrentHashMap<>();
-    private static final Map<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> sRealCircuitProgrammerList = new LinkedHashMap<>();
-    public static final Map<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> sCircuitProgrammerList = Collections
-        .unmodifiableMap(sRealCircuitProgrammerList);
+    public static final GTHashSet sGasHazmatList = new GTHashSet(), sBioHazmatList = new GTHashSet(),
+        sFrostHazmatList = new GTHashSet(), sHeatHazmatList = new GTHashSet(), sRadioHazmatList = new GTHashSet(),
+        sElectroHazmatList = new GTHashSet();
 
     /**
      * The List of Dimensions, which are Whitelisted for the Teleporter. This list should not contain other Planets.
@@ -184,20 +141,10 @@ public class GregTechAPI {
      */
     public static final Materials[] sGeneratedMaterials = new Materials[1000];
     /**
-     * This is the generic Cover behavior. Used for the default Covers, which have no Behavior.
-     */
-    public static final CoverBehavior sDefaultBehavior = new GTCoverDefault(), sNoBehavior = new GTCoverNone();
-    /**
      * For the API Version check
      */
     public static volatile int VERSION = 509;
 
-    /**
-     * @deprecated Use {@link GTValues#RA}
-     */
-    @SuppressWarnings("DeprecatedIsStillUsed") // Still need be initialized for backward compat
-    @Deprecated
-    public static IGTRecipeAdder sRecipeAdder;
     /**
      * Registers Aspects to Thaumcraft. This Object might be {@code null} if Thaumcraft isn't installed.
      */
@@ -233,7 +180,8 @@ public class GregTechAPI {
         sBlockMetal9, sBlockGem1, sBlockGem2, sBlockGem3, sBlockReinforced;
     public static Block sBlockGranites, sBlockConcretes, sBlockStones;
     public static Block sBlockCasings1, sBlockCasings2, sBlockCasings3, sBlockCasings4, sBlockCasings5, sBlockCasings6,
-        sBlockCasings8, sBlockCasings9, sBlockCasings10, sBlockCasings11, sSolenoidCoilCasings, sBlockCasingsNH;
+        sBlockCasings8, sBlockCasings9, sBlockCasings10, sBlockCasings11, sBlockCasings12, sSolenoidCoilCasings,
+        sBlockCasingsNH;
     public static Block sBlockLongDistancePipes;
     public static Block sDroneRender;
     public static Block sBlockFrames;
@@ -274,8 +222,6 @@ public class GregTechAPI {
     private static final Set<Class<?>> dummyWorlds = new HashSet<>();
 
     static {
-        sItemStackMappings.add(sCovers);
-        sItemStackMappings.add(sCoverBehaviors);
         dummyWorlds.add(GTDummyWorld.class);
     }
 
@@ -395,136 +341,6 @@ public class GregTechAPI {
             e.printStackTrace(GTLog.err);
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Register a new ItemStack as configuration circuits. Duplicates or invalid stacks will be silently ignored.
-     */
-    public static void registerConfigurationCircuit(ItemStack aStack) {
-        registerConfigurationCircuit(aStack, 0);
-    }
-
-    /**
-     * Register a new ItemStack as configuration circuits. Duplicates or invalid stacks will be silently ignored.
-     *
-     * @param minTier the minimal tier this circuit can be offered for free, e.g. normal configuration circuit is
-     *                available in LV+ single blocks, GT++ breakthrough circuit is offered in HV+ single blocks
-     */
-    public static void registerConfigurationCircuit(ItemStack aStack, int minTier) {
-        if (GTUtility.isStackInvalid(aStack)) return;
-        for (ItemStack tRegistered : sRealConfigurationList.values())
-            if (GTUtility.areStacksEqual(tRegistered, aStack)) return;
-        ItemStack stack = GTUtility.copyAmount(0, aStack);
-        sRealConfigurationList.put(minTier, stack);
-        for (Map.Entry<Integer, List<ItemStack>> e : sConfigurationLists.entrySet()) {
-            if (e.getKey() >= minTier) {
-                e.getValue()
-                    .add(stack);
-                e.getValue()
-                    .sort(getConfigurationCircuitsComparator());
-            }
-        }
-    }
-
-    /**
-     * Get a list of Configuration circuits. These stacks will have a stack size of 0. Use
-     * {@link #registerConfigurationCircuit(ItemStack, int)} or its overload to add to this list.
-     *
-     * @param machineTier The voltage tier where this list will be used. use Integer.MAX_VALUE to get all circuits
-     * @return An unmodifiable view of actual list. DO NOT MODIFY THE ItemStacks!
-     */
-    public static List<ItemStack> getConfigurationCircuitList(int machineTier) {
-        return Collections.unmodifiableList(
-            sConfigurationLists.computeIfAbsent(
-                machineTier,
-                (t) -> sRealConfigurationList.entries()
-                    .stream()
-                    .filter(e -> e.getKey() <= machineTier)
-                    .map(Map.Entry::getValue)
-                    .sorted(getConfigurationCircuitsComparator())
-                    .collect(Collectors.toList())));
-    }
-
-    public static Comparator<ItemStack> getConfigurationCircuitsComparator() {
-        return Comparator.comparingInt((ItemStack is) -> is.getItem() instanceof ItemIntegratedCircuit ? 0 : 1)
-            .thenComparing(ItemStack::getUnlocalizedName)
-            .thenComparing(ItemStack::getItemDamage);
-    }
-
-    public static void registerCircuitProgrammer(ItemStack stack, boolean ignoreNBT, boolean useContainer) {
-        registerCircuitProgrammer(rhs -> GTUtility.areStacksEqual(stack, rhs, ignoreNBT), useContainer);
-    }
-
-    public static void registerCircuitProgrammer(Predicate<ItemStack> predicate, boolean useContainer) {
-        sRealCircuitProgrammerList.put(
-            predicate,
-            useContainer ? (s, p) -> s.getItem()
-                .getContainerItem(s) : (s, p) -> s);
-    }
-
-    public static void registerCircuitProgrammer(Predicate<ItemStack> predicate,
-        BiFunction<ItemStack, EntityPlayerMP, ItemStack> doDamage) {
-        sRealCircuitProgrammerList.put(predicate, doDamage);
-    }
-
-    public static void registerCover(ItemStack aStack, ITexture aCover, CoverBehavior aBehavior) {
-        registerCover(aStack, aCover, (CoverBehaviorBase<?>) aBehavior);
-    }
-
-    public static void registerCover(ItemStack aStack, ITexture aCover, CoverBehaviorBase<?> aBehavior) {
-        if (!sCovers.containsKey(new GTItemStack(aStack))) sCovers.put(
-            new GTItemStack(aStack),
-            aCover == null || !aCover.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0] : aCover);
-        if (aBehavior != null) sCoverBehaviors.put(new GTItemStack(aStack), aBehavior);
-    }
-
-    public static void registerCoverBehavior(ItemStack aStack, CoverBehavior aBehavior) {
-        registerCoverBehavior(aStack, (CoverBehaviorBase<?>) aBehavior);
-    }
-
-    public static void registerCoverBehavior(ItemStack aStack, CoverBehaviorBase<?> aBehavior) {
-        sCoverBehaviors.put(new GTItemStack(aStack), aBehavior == null ? sDefaultBehavior : aBehavior);
-    }
-
-    /**
-     * Registers multiple Cover Items. I use that for the OreDict Functionality.
-     *
-     * @param aBehavior can be null
-     */
-    public static void registerCover(Collection<ItemStack> aStackList, ITexture aCover, CoverBehavior aBehavior) {
-        registerCover(aStackList, aCover, (CoverBehaviorBase<?>) aBehavior);
-    }
-
-    /**
-     * Registers multiple Cover Items. I use that for the OreDict Functionality.
-     *
-     * @param aBehavior can be null
-     */
-    public static void registerCover(Collection<ItemStack> aStackList, ITexture aCover,
-        CoverBehaviorBase<?> aBehavior) {
-        if (aCover.isValidTexture()) aStackList.forEach(tStack -> GregTechAPI.registerCover(tStack, aCover, aBehavior));
-    }
-
-    /**
-     * returns a Cover behavior, guaranteed to not return null after preload
-     *
-     * @return The Cover behavior
-     */
-    public static CoverBehaviorBase<?> getCoverBehaviorNew(ItemStack aStack) {
-        if (aStack == null || aStack.getItem() == null) return sNoBehavior;
-        CoverBehaviorBase<?> rCover = sCoverBehaviors.get(new GTItemStack(aStack));
-        if (rCover != null) return rCover;
-        rCover = sCoverBehaviors.get(new GTItemStack(aStack, true));
-        if (rCover != null) return rCover;
-        return sDefaultBehavior;
-    }
-
-    /**
-     * returns a Cover behavior, guaranteed to not return null
-     */
-    public static CoverBehaviorBase<?> getCoverBehaviorNew(int aStack) {
-        if (aStack == 0) return sNoBehavior;
-        return getCoverBehaviorNew(GTUtility.intToStack(aStack));
     }
 
     /**

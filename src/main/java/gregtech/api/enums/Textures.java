@@ -890,6 +890,21 @@ public class Textures {
         OVERLAY_SIDE_INDUSTRIAL_APIARY_ACTIVE,
         OVERLAY_SIDE_INDUSTRIAL_APIARY_ACTIVE_GLOW,
 
+        OVERLAY_TOP_RTG_ACTIVE,
+        OVERLAY_TOP_RTG_ACTIVE_GLOW,
+        OVERLAY_TOP_RTG,
+        OVERLAY_SIDE_RTG_ACTIVE,
+        OVERLAY_SIDE_RTG_ACTIVE_GLOW,
+        OVERLAY_SIDE_RTG,
+
+        OVERLAY_CHARCOAL_PIT,
+        OVERLAY_CHARCOAL_PIT_ACTIVE,
+        OVERLAY_CHARCOAL_PIT_ACTIVE_GLOW,
+
+        OVERLAY_FRONT_SEISMIC_PROSPECTOR,
+        OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE,
+        OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE_GLOW,
+
         OVERLAY_ADV_PUMP,
         OVERLAY_TELEPORTER,
         OVERLAY_TELEPORTER_GLOW,
@@ -1460,7 +1475,12 @@ public class Textures {
         NEUTRONIUM_STABLE_CASING,
         EXTREME_DENSITY_CASING,
         RADIATION_ABSORBENT_CASING,
-        HAWKING_GLASS;
+        HAWKING_GLASS,
+        OVERLAY_NANITE_HATCH,
+        OVERLAY_NANITE_HATCH_GLOW
+
+        // semicolon after the comment to reduce merge conflicts
+        ;
 
         /**
          * Icon for Fresh CFoam
@@ -1759,11 +1779,6 @@ public class Textures {
             TextureFactory.of(OVERLAY_LOCKER_009), TextureFactory.of(OVERLAY_LOCKER_010),
             TextureFactory.of(OVERLAY_LOCKER_011), TextureFactory.of(OVERLAY_LOCKER_012),
             TextureFactory.of(OVERLAY_LOCKER_013), };
-        /**
-         * USE casingTexturePages[page] instead of CASING_BLOCKS since it is casingTexturePages[0]
-         */
-        @Deprecated
-        public static final ITexture[] CASING_BLOCKS = new ITexture[128]; // original variable still limited to 128
 
         public static ITexture[][] MACHINE_CASINGS = new ITexture[15][17];
         // spotless:off
@@ -1774,7 +1789,7 @@ public class Textures {
          * page 2: 0-15 solenoid coils
          * page 8: 0-111 TecTech, 112-127 GT casing 6
          * page 12: 0-127 GlodBlock
-         * page 16: 0-15 GT glass 1, 16-31 GT casing 9, 32-47 GT glass 2, 48-63 GT casing 10, 64-79 GT casing 11
+         * page 16: 0-15 GT glass 1, 16-31 GT casing 9, 32-47 GT glass 2, 48-63 GT casing 10, 64-79 GT casing 11, 80-95 GT casing 12
          * page 42: 0-126 glee8e, 127 KekzTech LSC base
          */
         // spotless:on
@@ -1936,7 +1951,9 @@ public class Textures {
         POCKET_MULTITOOL_SCREWDRIVER,
         POCKET_MULTITOOL_WIRECUTTER,
         HALO,
-        HALO_FUZZY;
+        HALO_FUZZY,
+        TROWEL,
+        HANDLE_TROWEL;
 
         public static final IIconContainer[] DURABILITY_BAR = { DURABILITY_BAR_0, DURABILITY_BAR_1, DURABILITY_BAR_2,
             DURABILITY_BAR_3, DURABILITY_BAR_4, DURABILITY_BAR_5, DURABILITY_BAR_6, DURABILITY_BAR_7,

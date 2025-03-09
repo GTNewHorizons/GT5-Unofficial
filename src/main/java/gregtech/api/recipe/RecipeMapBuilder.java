@@ -11,6 +11,9 @@ import java.util.function.UnaryOperator;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -108,10 +111,12 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     /**
-     * If recipe builder should stop optimizing inputs.
+     * Transformer which allows you to modify the recipe builder before it emits recipes.
+     * <br>
+     * Allows modification of the builder to modify this recipe, or adding recipes to other places based on the builder.
      */
-    public RecipeMapBuilder<B> disableOptimize() {
-        backendPropertiesBuilder.disableOptimize();
+    public RecipeMapBuilder<B> builderTransformer(Consumer<? super GTRecipeBuilder> builderTransformer) {
+        backendPropertiesBuilder.builderTransformer(builderTransformer);
         return this;
     }
 
@@ -161,52 +166,13 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     /**
-     * Runs a custom hook on all recipes added <b>via builder</b>. For more complicated behavior,
-     * use {@link #recipeEmitter}.
-     * <p>
-     * Recipes added via one of the overloads of addRecipe will NOT be affected by this function.
+     * Transformer which allows for modification of a recipe after it is "finalized" but before it is added to the map.
+     * <br>
+     * Allows modification of the recipe to change this map's recipe, or add this recipe copied and/or edited elsewhere.
      */
-    public RecipeMapBuilder<B> recipeTransformer(Function<? super GTRecipe, ? extends GTRecipe> recipeTransformer) {
+    public RecipeMapBuilder<B> recipeTransformer(Consumer<? super GTRecipe> recipeTransformer) {
         backendPropertiesBuilder.recipeTransformer(recipeTransformer);
         return this;
-    }
-
-    /**
-     * Runs a custom hook on all recipes added <b>via builder</b>. For more complicated behavior,
-     * use {@link #recipeEmitter}.
-     * <p>
-     * Recipes added via one of the overloads of addRecipe will NOT be affected by this function.
-     */
-    public RecipeMapBuilder<B> recipeTransformer(Consumer<GTRecipe> recipeTransformer) {
-        return recipeTransformer(withIdentityReturn(recipeTransformer));
-    }
-
-    /**
-     * Runs a custom hook on all recipes added <b>via builder</b>. For more complicated behavior,
-     * use {@link #recipeEmitter}.
-     * <p>
-     * Recipes added via one of the overloads of addRecipe will NOT be affected by this function.
-     * <p>
-     * Unlike {@link #recipeTransformer(Function)}, this one will not replace the existing special handler.
-     * The supplied function will be given the output of existing handler when a recipe is added.
-     */
-    public RecipeMapBuilder<B> chainRecipeTransformer(
-        Function<? super GTRecipe, ? extends GTRecipe> recipeTransformer) {
-        backendPropertiesBuilder.chainRecipeTransformer(recipeTransformer);
-        return this;
-    }
-
-    /**
-     * Runs a custom hook on all recipes added <b>via builder</b>. For more complicated behavior,
-     * use {@link #recipeEmitter}.
-     * <p>
-     * Recipes added via one of the overloads of addRecipe will NOT be affected by this function.
-     * <p>
-     * Unlike {@link #recipeTransformer(Function)}, this one will not replace the existing special handler.
-     * The supplied function will be given the output of existing handler when a recipe is added.
-     */
-    public RecipeMapBuilder<B> chainRecipeTransformer(Consumer<GTRecipe> recipeTransformer) {
-        return chainRecipeTransformer(withIdentityReturn(recipeTransformer));
     }
 
     // endregion
@@ -472,6 +438,38 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
      */
     public RecipeMapBuilder<B> disableRenderRealStackSizes() {
         neiPropertiesBuilder.disableRenderRealStackSizes();
+        return this;
+    }
+
+    /**
+     * Allows modifying what item inputs get displayed on NEI, without affecting GTRecipe object on backend.
+     */
+    public RecipeMapBuilder<B> neiItemInputsGetter(Function<GTRecipe, ItemStack[]> itemInputsGetter) {
+        neiPropertiesBuilder.itemInputsGetter(itemInputsGetter);
+        return this;
+    }
+
+    /**
+     * Allows modifying what fluid inputs get displayed on NEI, without affecting GTRecipe object on backend.
+     */
+    public RecipeMapBuilder<B> neiFluidInputsGetter(Function<GTRecipe, FluidStack[]> fluidInputsGetter) {
+        neiPropertiesBuilder.fluidInputsGetter(fluidInputsGetter);
+        return this;
+    }
+
+    /**
+     * Allows modifying what item outputs get displayed on NEI, without affecting GTRecipe object on backend.
+     */
+    public RecipeMapBuilder<B> neiItemOutputsGetter(Function<GTRecipe, ItemStack[]> itemOutputsGetter) {
+        neiPropertiesBuilder.itemOutputsGetter(itemOutputsGetter);
+        return this;
+    }
+
+    /**
+     * Allows modifying what fluid outputs get displayed on NEI, without affecting GTRecipe object on backend.
+     */
+    public RecipeMapBuilder<B> neiFluidOutputsGetter(Function<GTRecipe, FluidStack[]> fluidOutputsGetter) {
+        neiPropertiesBuilder.fluidOutputsGetter(fluidOutputsGetter);
         return this;
     }
 

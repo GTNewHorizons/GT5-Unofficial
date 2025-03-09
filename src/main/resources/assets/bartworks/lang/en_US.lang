@@ -137,8 +137,6 @@ tooltip.bw.1.name=Added by bartimaeusnek via
 tooltip.bw.yes.name=Yes
 tooltip.bw.no.name=No
 tooltip.bw.tier.name=Tier:
-tooltip.bw.kg.0.name=kg
-tooltip.bw.kg.1.name=kgs
 tooltip.bw.empty.name=Empty
 tooltip.bw.mb_via.name=%s§7 via §2BartWorks
 
@@ -175,7 +173,7 @@ tooltip.tile.radhatch.0.name=Radioactive Item Chamber for Multiblocks
 tooltip.tile.radhatch.1.name=Use a screwdriver to set the containment level
 tooltip.tile.radhatch.2.name=Material:
 tooltip.tile.radhatch.3.name=Sievert:
-tooltip.tile.radhatch.4.name=Amount:
+tooltip.tile.radhatch.4.name=Mass:
 tooltip.tile.radhatch.5.name=Time (in t/s/m/h) to decay (1kg):
 tooltip.tile.radhatch.6.name=t
 tooltip.tile.radhatch.7.name=s
@@ -184,6 +182,10 @@ tooltip.tile.radhatch.9.name=h
 tooltip.tile.radhatch.10.name=Remaining: %s s / %s s
 tooltip.tile.acidgen.0.name=An Acid Generator
 tooltip.tile.acidgen.1.name=Creates Power from Chemical Energy Potentials.
+
+tooltip.bw.structure.glass=Glass
+tooltip.bw.structure.radio_hatch=Radio Hatch
+tooltip.bw.structure.tier_glass=%s+ Tier Glass
 
 # RecipeMap
 bw.recipe.biolab=Bio Lab

@@ -114,7 +114,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Neutronium.getMolten(144))
             .duration(12 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
-            .metadata(FUSION_THRESHOLD, 640000000)
+            .metadata(FUSION_THRESHOLD, 600000000)
             .addTo(fusionRecipes); // FT3 - utility
 
         GTValues.RA.stdBuilder()

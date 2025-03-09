@@ -945,8 +945,9 @@ import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
 import gregtech.api.metatileentity.implementations.MTEBasicHull;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.metatileentity.implementations.MTECable;
-import gregtech.api.metatileentity.implementations.MTEFluid;
+import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.metatileentity.implementations.MTEFrame;
+import gregtech.api.metatileentity.implementations.MTEHatchBulkCatalystHousing;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
@@ -956,10 +957,11 @@ import gregtech.api.metatileentity.implementations.MTEHatchMagnet;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
+import gregtech.api.metatileentity.implementations.MTEHatchNanite;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchQuadrupleHumongous;
-import gregtech.api.metatileentity.implementations.MTEItem;
+import gregtech.api.metatileentity.implementations.MTEItemPipe;
 import gregtech.api.metatileentity.implementations.MTETransformer;
 import gregtech.api.metatileentity.implementations.MTEWetTransformer;
 import gregtech.api.metatileentity.implementations.MTEWirelessDynamo;
@@ -1085,6 +1087,7 @@ import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTEVacuumFreezer;
 import gregtech.common.tileentities.machines.multi.MTEWormholeGenerator;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleCompressor;
+import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleUtility;
 import gregtech.common.tileentities.machines.multi.compressor.MTEHIPCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.MTEHeatSensor;
 import gregtech.common.tileentities.machines.multi.compressor.MTEIndustrialCompressor;
@@ -4364,7 +4367,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.FLUID_HEATER.tooltipDescription(),
                 RecipeMaps.fluidHeaterRecipes,
                 1,
-                0,
+                1,
                 true,
                 SoundResource.NONE,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -4380,7 +4383,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.FLUID_HEATER.tooltipDescription(),
                 RecipeMaps.fluidHeaterRecipes,
                 1,
-                0,
+                1,
                 true,
                 SoundResource.NONE,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -4396,7 +4399,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.FLUID_HEATER.tooltipDescription(),
                 RecipeMaps.fluidHeaterRecipes,
                 1,
-                0,
+                1,
                 true,
                 SoundResource.NONE,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -4412,7 +4415,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.FLUID_HEATER.tooltipDescription(),
                 RecipeMaps.fluidHeaterRecipes,
                 1,
-                0,
+                1,
                 true,
                 SoundResource.NONE,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -4428,7 +4431,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.FLUID_HEATER.tooltipDescription(),
                 RecipeMaps.fluidHeaterRecipes,
                 1,
-                0,
+                1,
                 true,
                 SoundResource.NONE,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -4444,7 +4447,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.FLUID_HEATER.tooltipDescription(),
                 fluidHeaterRecipes,
                 1,
-                0,
+                1,
                 true,
                 SoundResource.NONE,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -4460,7 +4463,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.FLUID_HEATER.tooltipDescription(),
                 fluidHeaterRecipes,
                 1,
-                0,
+                1,
                 true,
                 SoundResource.NONE,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -4476,7 +4479,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.FLUID_HEATER.tooltipDescription(),
                 fluidHeaterRecipes,
                 1,
-                0,
+                1,
                 true,
                 SoundResource.NONE,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -4492,7 +4495,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.FLUID_HEATER.tooltipDescription(),
                 fluidHeaterRecipes,
                 1,
-                0,
+                1,
                 true,
                 SoundResource.NONE,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -4508,7 +4511,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.FLUID_HEATER.tooltipDescription(),
                 fluidHeaterRecipes,
                 1,
-                0,
+                1,
                 true,
                 SoundResource.NONE,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -4524,7 +4527,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.FLUID_HEATER.tooltipDescription(),
                 fluidHeaterRecipes,
                 1,
-                0,
+                1,
                 true,
                 SoundResource.NONE,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -4540,7 +4543,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MachineType.FLUID_HEATER.tooltipDescription(),
                 fluidHeaterRecipes,
                 1,
-                0,
+                1,
                 true,
                 SoundResource.NONE,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
@@ -12217,19 +12220,22 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 COMBUSTION_GENERATOR_LV.ID,
                 "basicgenerator.diesel.tier.01",
                 "Basic Combustion Generator",
-                1).getStackForm(1L));
+                1,
+                95).getStackForm(1L));
         ItemList.Generator_Diesel_MV.set(
             new MTEDieselGenerator(
                 COMBUSTION_GENERATOR_MV.ID,
                 "basicgenerator.diesel.tier.02",
                 "Advanced Combustion Generator",
-                2).getStackForm(1L));
+                2,
+                90).getStackForm(1L));
         ItemList.Generator_Diesel_HV.set(
             new MTEDieselGenerator(
                 COMBUSTION_GENERATOR_HV.ID,
                 "basicgenerator.diesel.tier.03",
                 "Turbo Combustion Generator",
-                3).getStackForm(1L));
+                3,
+                85).getStackForm(1L));
     }
 
     private static void registerGasTurbines() {
@@ -12520,16 +12526,30 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeSmall.get(Materials.Wood),
-            new MTEFluid(5101, "GT_Pipe_Wood_Small", "Small Wooden Fluid Pipe", 0.375F, Materials.Wood, 10, 350, false)
-                .getStackForm(1L));
+            new MTEFluidPipe(
+                5101,
+                "GT_Pipe_Wood_Small",
+                "Small Wooden Fluid Pipe",
+                0.375F,
+                Materials.Wood,
+                10,
+                350,
+                false).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(Materials.Wood),
-            new MTEFluid(5102, "GT_Pipe_Wood", "Wooden Fluid Pipe", 0.5F, Materials.Wood, 30, 350, false)
+            new MTEFluidPipe(5102, "GT_Pipe_Wood", "Wooden Fluid Pipe", 0.5F, Materials.Wood, 30, 350, false)
                 .getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeLarge.get(Materials.Wood),
-            new MTEFluid(5103, "GT_Pipe_Wood_Large", "Large Wooden Fluid Pipe", 0.75F, Materials.Wood, 60, 350, false)
-                .getStackForm(1L));
+            new MTEFluidPipe(
+                5103,
+                "GT_Pipe_Wood_Large",
+                "Large Wooden Fluid Pipe",
+                0.75F,
+                Materials.Wood,
+                60,
+                350,
+                false).getStackForm(1L));
 
         generateFluidPipes(Materials.Copper, Materials.Copper.mName, 5110, 20, 1000, true);
         generateFluidMultiPipes(Materials.Copper, Materials.Copper.mName, 5115, 20, 1000, true);
@@ -12561,7 +12581,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             true);
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeSmall.get(Materials.Ultimate),
-            new MTEFluid(
+            new MTEFluidPipe(
                 5165,
                 "GT_Pipe_HighPressure_Small",
                 "Small High Pressure Fluid Pipe",
@@ -12572,7 +12592,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 true).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(Materials.Ultimate),
-            new MTEFluid(
+            new MTEFluidPipe(
                 5166,
                 "GT_Pipe_HighPressure",
                 "High Pressure Fluid Pipe",
@@ -12583,7 +12603,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 true).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeLarge.get(Materials.Ultimate),
-            new MTEFluid(
+            new MTEFluidPipe(
                 5167,
                 "GT_Pipe_HighPressure_Large",
                 "Large High Pressure Fluid Pipe",
@@ -13005,6 +13025,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 8).getStackForm(1L));
         ItemList.Hatch_HeatSensor
             .set(new MTEHeatSensor(HEAT_DETECTOR_HATCH.ID, "hatch.heatsensor", "Heat Sensor Hatch", 7).getStackForm(1));
+        ItemList.Hatch_BlackHoleUtility.set(
+            new MTEBlackHoleUtility(
+                HATCH_BLACK_HOLE_UTILITY.ID,
+                "hatch.blackholeutility",
+                "Black Hole Utility Hatch",
+                11).getStackForm(1));
         ItemList.Hatch_pHSensor
             .set(new MTEHatchPHSensor(HATCH_PH_SENSOR.ID, "hatch.phsensor", "pH Sensor Hatch", 7).getStackForm(1));
         ItemList.Hatch_LensHousing
@@ -13012,6 +13038,15 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Hatch_LensIndicator.set(
             new MTEHatchLensIndicator(HATCH_LENS_INDICATOR.ID, "hatch.lensindicator", "Lens Indicator Hatch", 8)
                 .getStackForm(1L));
+        ItemList.Hatch_Nanite.set(
+            new MTEHatchNanite(HATCH_NANITE.ID, "hatch.nanite", "Nanite Containment Bus", 9, 2048).getStackForm(1));
+        ItemList.Hatch_Catalyst_Bulk.set(
+            new MTEHatchBulkCatalystHousing(
+                HATCH_CATALYST_BULK.ID,
+                "hatch.catalystbulk",
+                "Bulk Catalyst Housing",
+                10,
+                Integer.MAX_VALUE).getStackForm(1));
         generateWiresAndPipes();
     }
 
@@ -13028,7 +13063,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         int baseInvSlots) {
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(aMaterial),
-            new MTEItem(
+            new MTEItemPipe(
                 startID,
                 "GT_Pipe_" + name,
                 displayName + " Item Pipe",
@@ -13039,7 +13074,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 false).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeLarge.get(aMaterial),
-            new MTEItem(
+            new MTEItemPipe(
                 startID + 1,
                 "GT_Pipe_" + name + "_Large",
                 "Large " + displayName + " Item Pipe",
@@ -13050,7 +13085,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 false).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeHuge.get(aMaterial),
-            new MTEItem(
+            new MTEItemPipe(
                 startID + 2,
                 "GT_Pipe_" + name + "_Huge",
                 "Huge " + displayName + " Item Pipe",
@@ -13061,7 +13096,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 false).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeRestrictiveMedium.get(aMaterial),
-            new MTEItem(
+            new MTEItemPipe(
                 startID + 3,
                 "GT_Pipe_Restrictive_" + name,
                 "Restrictive " + displayName + " Item Pipe",
@@ -13072,7 +13107,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 true).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeRestrictiveLarge.get(aMaterial),
-            new MTEItem(
+            new MTEItemPipe(
                 startID + 4,
                 "GT_Pipe_Restrictive_" + name + "_Large",
                 "Large Restrictive " + displayName + " Item Pipe",
@@ -13083,7 +13118,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 true).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeRestrictiveHuge.get(aMaterial),
-            new MTEItem(
+            new MTEItemPipe(
                 startID + 5,
                 "GT_Pipe_Restrictive_" + name + "_Huge",
                 "Huge Restrictive " + displayName + " Item Pipe",
@@ -13111,7 +13146,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         int baseCapacity, int heatCapacity, boolean gasProof) {
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeTiny.get(aMaterial),
-            new MTEFluid(
+            new MTEFluidPipe(
                 startID,
                 "GT_Pipe_" + name + "_Tiny",
                 "Tiny " + displayName + " Fluid Pipe",
@@ -13122,7 +13157,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 gasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeSmall.get(aMaterial),
-            new MTEFluid(
+            new MTEFluidPipe(
                 startID + 1,
                 "GT_Pipe_" + name + "_Small",
                 "Small " + displayName + " Fluid Pipe",
@@ -13133,7 +13168,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 gasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(aMaterial),
-            new MTEFluid(
+            new MTEFluidPipe(
                 startID + 2,
                 "GT_Pipe_" + name,
                 displayName + " Fluid Pipe",
@@ -13144,7 +13179,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 gasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeLarge.get(aMaterial),
-            new MTEFluid(
+            new MTEFluidPipe(
                 startID + 3,
                 "GT_Pipe_" + name + "_Large",
                 "Large " + displayName + " Fluid Pipe",
@@ -13155,7 +13190,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 gasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeHuge.get(aMaterial),
-            new MTEFluid(
+            new MTEFluidPipe(
                 startID + 4,
                 "GT_Pipe_" + name + "_Huge",
                 "Huge " + displayName + " Fluid Pipe",
@@ -13176,7 +13211,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         int baseCapacity, int heatCapacity, boolean gasProof) {
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeQuadruple.get(aMaterial),
-            new MTEFluid(
+            new MTEFluidPipe(
                 startID,
                 "GT_Pipe_" + name + "_Quadruple",
                 "Quadruple " + displayName + " Fluid Pipe",
@@ -13188,7 +13223,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 4).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeNonuple.get(aMaterial),
-            new MTEFluid(
+            new MTEFluidPipe(
                 startID + 1,
                 "GT_Pipe_" + name + "_Nonuple",
                 "Nonuple " + displayName + " Fluid Pipe",

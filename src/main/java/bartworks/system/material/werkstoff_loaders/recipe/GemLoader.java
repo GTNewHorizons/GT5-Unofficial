@@ -44,7 +44,7 @@ import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import bartworks.util.BWColorUtil;
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -53,7 +53,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.common.covers.CoverLens;
 
 public class GemLoader implements IWerkstoffRunnable {
 
@@ -201,10 +200,7 @@ public class GemLoader implements IWerkstoffRunnable {
             final ITexture texture = TextureFactory.of(
                 Textures.BlockIcons.MACHINE_CASINGS[2][0],
                 TextureFactory.of(Textures.BlockIcons.OVERLAY_LENS, werkstoff.getRGBA(), false));
-            GregTechAPI.registerCover(
-                werkstoff.get(lens),
-                texture,
-                new CoverLens(BWColorUtil.getDyeFromColor(werkstoff.getRGBA()).mIndex, texture));
+            CoverRegistry.registerDecorativeCover(werkstoff.get(lens), texture);
 
             for (ItemStack is : OreDictionary
                 .getOres("craftingLens" + BWColorUtil.getDyeFromColor(werkstoff.getRGBA()).mName.replace(" ", ""))) {

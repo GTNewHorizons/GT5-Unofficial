@@ -6,10 +6,15 @@ import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_ACTI
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_CONN;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDES;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
@@ -17,15 +22,17 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.common.WirelessDataStore;
-import tectech.mechanics.dataTransport.InventoryDataPacket;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
 
-    public InventoryDataPacket dataPacket = null;
+    public ALRecipeDataPacket dataPacket = null;
 
     public MTEHatchWirelessDataItemsOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -37,16 +44,10 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
             new String[] { CommonValues.TEC_MARK_EM,
                 translateToLocal("gt.blockmachines.hatch.wirelessdataoutass.desc.0"),
                 translateToLocal("gt.blockmachines.hatch.wirelessdataoutass.desc.1"), });
-        TTUtility.setTier(aTier, this);
     }
 
     public MTEHatchWirelessDataItemsOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
     }
 
     @Override
@@ -73,7 +74,7 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
 
     @Override
     public int getInventoryStackLimit() {
-        return 1;
+        return 0;
     }
 
     @Override
@@ -98,7 +99,7 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         if (aNBT.hasKey("eDATA")) {
-            dataPacket = new InventoryDataPacket(aNBT.getCompoundTag("eDATA"));
+            dataPacket = new ALRecipeDataPacket(aNBT.getCompoundTag("eDATA"));
         }
     }
 
@@ -107,7 +108,7 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
         if (aBaseMetaTileEntity.isServerSide()) {
             // Upload data packet and mark it as uploaded, so it will not be uploaded again
             // until the data bank resets the wireless network
-            if (dataPacket != null && (aTick % WirelessDataStore.UPLOAD_TICK) == 0) {
+            if (dataPacket != null && aTick % WirelessDataStore.IO_TICK_RATE == 0) {
                 WirelessDataStore wirelessDataStore = WirelessDataStore
                     .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());
                 wirelessDataStore.uploadData(Arrays.asList(dataPacket.getContent()), aTick);
@@ -117,19 +118,56 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture,
-            new GTRenderedTexture(
-                EM_D_ACTIVE,
-                Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            new GTRenderedTexture(EM_D_CONN) };
+        return new ITexture[] { aBaseTexture, TextureFactory
+            .of(EM_D_ACTIVE, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+            TextureFactory.of(EM_D_CONN) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GTRenderedTexture(
-                EM_D_SIDES,
-                Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            new GTRenderedTexture(EM_D_CONN) };
+            TextureFactory
+                .of(EM_D_SIDES, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+            TextureFactory.of(EM_D_CONN) };
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("recipeCount", dataPacket == null ? 0 : dataPacket.getContent().length);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+
+        NBTTagCompound tag = accessor.getNBTData();
+        currenttip.add(translate("tt.keyphrase.AL_Recipe_Transmitting", tag.getInteger("recipeCount")));
+    }
+
+    @Override
+    public boolean isGivingInformation() {
+        return true;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        ArrayList<String> lines = new ArrayList<>();
+
+        if (dataPacket != null) {
+            for (RecipeAssemblyLine recipe : dataPacket.getContent()) {
+                lines.add(translate("tt.keyphrase.AL_Recipe_Desc", recipe.mOutput.getDisplayName()));
+            }
+        } else {
+            lines.add(translate("tt.keyphrase.AL_Recipe_None"));
+        }
+
+        lines.sort(String::compareTo);
+
+        lines.add(0, translate("tt.keyphrase.AL_Recipe_Header"));
+
+        return lines.toArray(new String[0]);
     }
 }

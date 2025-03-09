@@ -25,6 +25,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -395,10 +396,22 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                 9,
                 EnumChatFormatting.GOLD,
                 false)
-            .addOtherStructurePart("Input Hatch (Water)", EnumChatFormatting.GOLD + "1+", 1)
-            .addOtherStructurePart("Output Hatch", EnumChatFormatting.GOLD + "1", 1)
-            .addOtherStructurePart("Input Hatch (Coolant)", EnumChatFormatting.GOLD + "1", 2)
-            .addOtherStructurePart("Input Hatch (Plasma)", EnumChatFormatting.GOLD + "1", 3)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_water"),
+                EnumChatFormatting.GOLD + "1+",
+                1)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.output_hatch"),
+                EnumChatFormatting.GOLD + "1",
+                1)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_coolant"),
+                EnumChatFormatting.GOLD + "1",
+                2)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_plasma"),
+                EnumChatFormatting.GOLD + "1",
+                3)
             .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
@@ -432,7 +445,8 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
     public void addRecipeOutputs() {
         super.addRecipeOutputs();
         // If the cycle was ruined, output steam
-        if (this.ruinedCycle) {
+        // currentRecipe is null when multi is unloaded and reloaded
+        if (this.ruinedCycle && currentRecipe != null) {
             FluidStack insertedWater = currentRecipe.mFluidInputs[0];
             // Multiply by 60 since that's the water:steam ratio in GTNH
             long steamAmount = insertedWater.amount * 60L;

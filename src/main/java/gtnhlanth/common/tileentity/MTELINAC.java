@@ -1,6 +1,7 @@
 package gtnhlanth.common.tileentity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -116,12 +117,14 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addElement('g', ofBlock(GregTechAPI.sBlockCasings3, 10)) // Grate Machine Casing
             .addElement(
                 'b',
-                BorosilicateGlass.ofBoroGlass(
-                    (byte) 0,
-                    MIN_GLASS_TIER,
-                    Byte.MAX_VALUE,
-                    (te, t) -> te.glassTier = t,
-                    te -> te.glassTier))
+                withChannel(
+                    "glass",
+                    BorosilicateGlass.ofBoroGlass(
+                        (byte) 0,
+                        MIN_GLASS_TIER,
+                        Byte.MAX_VALUE,
+                        (te, t) -> te.glassTier = t,
+                        te -> te.glassTier)))
             .addElement(
                 'i',
                 buildHatchAdder(MTELINAC.class).hatchClass(MTEHatchInputBeamline.class)
@@ -155,6 +158,11 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                     .buildAndChain(ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0)))
 
             .build();
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
     }
 
     private float outputEnergy;
@@ -323,16 +331,10 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         // Particle stays the same with this multiblock
         outputParticle = particleId;
 
-        if (primFluid.isFluidEqual(new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1))) {
-            tempFactor = calculateTemperatureFactor(60); // Default temp of 300 is unreasonable
-            machineTemp = 60; // Solely for tricorder use
-        } else {
-            tempFactor = calculateTemperatureFactor(
-                primFluid.getFluid()
-                    .getTemperature());
-            machineTemp = primFluid.getFluid()
-                .getTemperature(); // Solely for tricorder use
-        }
+        int coolantTemperature = Util.coolantFluidTemperature(primFluid);
+
+        tempFactor = calculateTemperatureFactor(coolantTemperature);
+        machineTemp = coolantTemperature; // Solely for tricorder use
 
         machineFocus = Math.max(((-0.9f) * this.length * tempFactor) + 110, 5); // Min of 5
         if (machineFocus > 90) { // Max of 90
@@ -349,7 +351,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         // 1A of full power if one energy hatch, 4A if two
         long voltage = (this.mEnergyHatches.size() == 1) ? this.getMaxInputVoltage() : this.getMaxInputPower();
 
-        machineEnergy = (float) Math.max(length / 4 * Math.pow(voltage, 1.0 / 3.0), 50); // Minimum of 50keV
+        machineEnergy = (float) Math.max(length / 4.0 * Math.pow(voltage, 1.0 / 3.0), 50); // Minimum of 50keV
 
         inputEnergy = this.getInputInformation()
             .getEnergy();

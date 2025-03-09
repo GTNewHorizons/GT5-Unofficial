@@ -55,6 +55,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.tileentities.render.TileEntityLaser;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -76,7 +77,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'a',
             buildHatchAdder(MTEIndustrialLaserEngraver.class)
-                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy)
+                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, MultiAmpEnergy)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(1))
                 .dot(1)
                 .buildAndChain(
@@ -235,10 +236,11 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Laser Engraver, HILE")
-            .addInfo("200% faster than single block machines of the same voltage")
+            .addInfo("250% faster than single block machines of the same voltage")
             .addInfo("Uses 80% of the EU normally required")
             .addInfo("Laser source hatch determines maximum recipe tier and parallels")
-            .addInfo("Can perform recipes up to laser source tier + 1")
+            .addInfo("Recipe tier and overclocks limited to laser source tier + 1")
+            .addInfo("With UEV laser source, 1 multi-amp energy hatch is allowed (instead of regular hatches)")
             .addInfo("Parallels equal to the cube root of laser source amperage input")
             .addInfo("Glass tier determines maximum laser source tier")
             .addInfo("UMV glass accepts all laser source hatches")
@@ -250,7 +252,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addCasingInfoExactly("Tungstensteel Frame Box", 9, false)
             .addCasingInfoExactly("Glass", 3, true)
             .addOtherStructurePart("Laser Resistant Plate", "x1")
-            .addOtherStructurePart("Laser Source Hatch", "x1", 3)
+            .addOtherStructurePart(StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), "x1", 3)
             .addInputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
@@ -301,6 +303,14 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         if (mCasingAmount < 35) return false;
         if (laserSource == null) return false;
         if (!findLaserRenderer(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord())) return false;
+
+        // If there are exotic hatches, ensure there is only 1 and that the laser source requirement is met
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (laserSource.mTier < VoltageIndex.UEV) return false;
+            if (!mEnergyHatches.isEmpty()) return false;
+            return (mExoticEnergyHatches.size() == 1);
+        }
+
         return glassTier >= VoltageIndex.UMV || laserSource.mTier <= glassTier;
     }
 
@@ -341,14 +351,23 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
                 return super.onRecipeStart(recipe);
             }
 
+            @NotNull
+            @Override
+            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                // Limit ocs up to hatch tier + 1
+                int ocs = (laserSource.mTier + 1) - GTUtility.getTier(recipe.mEUt);
+                if (ocs < 0) ocs = 0;
+                return super.createOverclockCalculator(recipe).limitOverclockCount(ocs);
+            }
+
             @Override
             public ProcessingLogic clear() {
                 if (renderer != null) renderer.setShouldRender(false);
                 return super.clear();
             }
-        }.setSpeedBonus(1F / 3F)
+        }.setSpeedBonus(1F / 3.5F)
             .setEuModifier(0.8F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -356,7 +375,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         return true;
     }
 
-    private int getMaxParallelRecipes() {
+    @Override
+    public int getMaxParallelRecipes() {
         return laserAmps;
     }
 
@@ -407,8 +427,10 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
-        logic.setAvailableAmperage(1L);
+        if (mExoticEnergyHatches.isEmpty()) {
+            logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
+            logic.setAvailableAmperage(1L);
+        } else super.setProcessingLogicPower(logic);
     }
 
     @Override

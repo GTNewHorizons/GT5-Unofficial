@@ -25,14 +25,14 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.event.world.WorldEvent;
+
+import com.gtnewhorizon.gtnhlib.capability.Capabilities;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -343,10 +343,13 @@ public class Pollution {
     public static void addPollution(TileEntity te, int aPollution) {
         if (!GTMod.gregtechproxy.mPollution || aPollution == 0 || te.getWorldObj().isRemote) return;
 
-        if (aPollution > 0 && te instanceof ICleanroomReceiver receiver) {
-            ICleanroom cleanroom = receiver.getCleanroom();
-            if (cleanroom != null && cleanroom.isValidCleanroom()) {
-                cleanroom.pollute();
+        if (aPollution > 0) {
+            ICleanroomReceiver receiver = Capabilities.getCapability(te, ICleanroomReceiver.class);
+            if (receiver != null) {
+                ICleanroom cleanroom = receiver.getCleanroom();
+                if (cleanroom != null && cleanroom.isValidCleanroom()) {
+                    cleanroom.pollute();
+                }
             }
         }
 
@@ -413,23 +416,10 @@ public class Pollution {
             .getAmount();
     }
 
-    @Deprecated
-    public static int getPollution(ChunkCoordIntPair aCh, int aDim) {
-        return getPollution(DimensionManager.getWorld(aDim), aCh.chunkXPos, aCh.chunkZPos);
-    }
-
     public static boolean hasPollution(Chunk ch) {
         if (!GTMod.gregtechproxy.mPollution) return false;
         return STORAGE.isCreated(ch.worldObj, ch.getChunkCoordIntPair()) && STORAGE.get(ch)
             .getAmount() > 0;
-    }
-
-    // Add compatibility with old code
-    @Deprecated /* Don't use it... too weird way of passing position */
-    public static void addPollution(World aWorld, ChunkPosition aPos, int aPollution) {
-        // The abuse of ChunkPosition to store block position and dim...
-        // is just bad especially when that is both used to store ChunkPos and BlockPos depending on context
-        addPollution(aWorld.getChunkFromBlockCoords(aPos.chunkPosX, aPos.chunkPosZ), aPollution);
     }
 
     public static void migrate(ChunkDataEvent.Load e) {

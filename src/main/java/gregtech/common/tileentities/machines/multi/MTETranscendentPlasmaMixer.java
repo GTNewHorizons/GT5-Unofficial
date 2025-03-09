@@ -108,6 +108,11 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
     }
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     public IStructureDefinition<MTETranscendentPlasmaMixer> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
@@ -210,7 +215,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
                     return CheckRecipeResultRegistry.insufficientStartupPower(finalConsumption);
                 }
                 // Energy consumed all at once from wireless net.
-                setCalculatedEut(0);
+                overwriteCalculatedEut(0);
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
@@ -219,7 +224,12 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe);
             }
-        }.setMaxParallelSupplier(() -> multiplier);
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return multiplier;
     }
 
     @Override

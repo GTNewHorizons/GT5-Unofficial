@@ -36,7 +36,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -64,11 +63,6 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
 
     public MTEHatchMaintenance(int aID, String aName, String aNameRegional, int aTier, boolean aAuto) {
         super(aID, aName, aNameRegional, aTier, 4, "For automatically maintaining Multiblocks");
-        mAuto = aAuto;
-    }
-
-    public MTEHatchMaintenance(String aName, int aTier, String aDescription, ITexture[][][] aTextures, boolean aAuto) {
-        super(aName, aTier, aAuto ? 4 : 1, aDescription, aTextures);
         mAuto = aAuto;
     }
 
@@ -147,11 +141,6 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
@@ -192,9 +181,9 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
                     if (--tStack.stackSize == 0) {
                         aPlayer.inventory.mainInventory[aPlayer.inventory.currentItem] = null;
                     }
-                } else GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+                } else openGui(aPlayer);
             } else {
-                GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+                openGui(aPlayer);
             }
             return true;
         }

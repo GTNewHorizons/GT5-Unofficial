@@ -193,7 +193,6 @@ public enum ItemList implements IItemContainer {
     White_Dwarf_Shape_Extruder_Small_Gear,
     White_Dwarf_Shape_Extruder_ToolHeadDrill,
 
-    Crate_Empty,
     Credit_Copper,
     Credit_Iron,
     Credit_Silver,
@@ -379,8 +378,6 @@ public enum ItemList implements IItemContainer {
     Circuit_Data,
     Circuit_Elite,
     Circuit_Master,
-    @Deprecated
-    Circuit_Ultimate,
     Circuit_Biowarecomputer,
     Circuit_Biowaresupercomputer,
 
@@ -664,7 +661,6 @@ public enum ItemList implements IItemContainer {
     Tool_Scanner,
     Tool_DataOrb,
     Tool_DataStick,
-    Tool_Sonictron,
     Tool_Sword_Bronze,
     Tool_Pickaxe_Bronze,
     Tool_Shovel_Bronze,
@@ -1113,6 +1109,7 @@ public enum ItemList implements IItemContainer {
     Hatch_DataAccess_UV,
 
     Hatch_HeatSensor,
+    Hatch_BlackHoleUtility,
 
     Battery_Buffer_1by1_ULV,
     Battery_Buffer_1by1_LV,
@@ -1526,6 +1523,7 @@ public enum ItemList implements IItemContainer {
     Hawking_Glass,
     Black_Hole_Opener,
     Black_Hole_Closer,
+    Black_Hole_Stabilizer,
 
     Machine_Multi_IndustrialBrewery,
 
@@ -2604,9 +2602,12 @@ public enum ItemList implements IItemContainer {
     Casing_AirFilter_Vent_T3,
     Casing_Pyrolyse,
     NameRemover,
+    Hatch_Nanite,
+    Hatch_Catalyst_Bulk,
     Machine_Multi_AirFilterT1,
     Machine_Multi_AirFilterT2,
     Machine_Multi_AirFilterT3,
+
     // semicolon after the comment to reduce merge conflicts
     ;
 

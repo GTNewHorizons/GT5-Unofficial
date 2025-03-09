@@ -39,11 +39,6 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
                 + " EU/t");
     }
 
-    public MTEMonsterRepellent(String aName, int aTier, int aInvSlotCount, String aDescription,
-        ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
-
     public MTEMonsterRepellent(String aName, int aTier, int aInvSlotCount, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
@@ -110,11 +105,6 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
             this.getBaseMetaTileEntity()
                 .getWorld().provider.dimensionId };
         GTSpawnEventHandler.mobReps.removeIf(coords -> Arrays.equals(coords, tCoords));
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
     }
 
     @Override

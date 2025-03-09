@@ -100,14 +100,14 @@ public class MTEPlasmaModule extends MTEBaseModule {
                 addToRecipeTally(calculatedParallels);
                 currentParallel = calculatedParallels;
                 EUt = calculatedEut;
-                setCalculatedEut(0);
+                overwriteCalculatedEut(0);
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
+                return super.createOverclockCalculator(recipe).setEUt(getSafeProcessingVoltage())
                     .setDurationDecreasePerOC(getOverclockTimeFactor());
             }
         };

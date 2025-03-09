@@ -50,7 +50,6 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.overclockdescriber.FusionOverclockDescriber;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
@@ -105,10 +104,8 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                             .atLeast(
                                 gregtech.api.enums.HatchElement.InputHatch.or(gregtech.api.enums.HatchElement.InputBus),
                                 gregtech.api.enums.HatchElement.OutputHatch)
-                            .adder(MTELargeFusionComputer::addFluidIO)
                             .casingIndex(x.textureIndex())
                             .dot(1)
-                            .hatchItemFilterAnd(x2 -> filterByMTETier(x2.hatchTier(), Integer.MAX_VALUE))
                             .buildAndChain(x.getGlassBlock(), x.getGlassMeta())))
                 .addElement(
                     'E',
@@ -119,7 +116,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                                     .or(gregtech.api.enums.HatchElement.Energy))
                             .adder(MTELargeFusionComputer::addEnergyInjector)
                             .casingIndex(x.textureIndex())
-                            .hatchItemFilterAnd(x2 -> filterByMTETier(x2.hatchTier(), Integer.MAX_VALUE))
+                            .hatchItemFilterAnd(x2 -> filterByMTETier(x2.energyHatchTier(), Integer.MAX_VALUE))
                             .dot(2)
                             .buildAndChain(x.getCasingBlock(), x.getCasingMeta())))
                 .addElement('F', lazy(x -> ofFrame(x.getFrameBox())))
@@ -197,7 +194,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
 
     public abstract int getGlassMeta();
 
-    public abstract int hatchTier();
+    public abstract int energyHatchTier();
 
     public abstract Materials getFrameBox();
 
@@ -212,7 +209,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     public abstract ITexture getTextureOverlay();
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         return side != getBaseMetaTileEntity().getFrontFacing();
     }
 
@@ -340,8 +337,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                     stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
                 }
             }
-            aBaseMetaTileEntity
-                .setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
+            setErrorDisplayID((getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
         } else {
             doActivitySound(getActivitySoundLoop());
@@ -485,36 +481,13 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchEnergy tHatch) {
-            if (tHatch.getTierForStructure() < hatchTier()) return false;
+            if (tHatch.getTierForStructure() < energyHatchTier()) return false;
             tHatch.updateTexture(aBaseCasingIndex);
             return mEnergyHatches.add(tHatch);
         } else if (aMetaTileEntity instanceof MTEHatchEnergyMulti tHatch) {
-            if (tHatch.getTierForStructure() < hatchTier()) return false;
+            if (tHatch.getTierForStructure() < energyHatchTier()) return false;
             tHatch.updateTexture(aBaseCasingIndex);
             return eEnergyMulti.add(tHatch);
-        }
-        return false;
-    }
-
-    private boolean addFluidIO(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
-        IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatch hatch) {
-            hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-        }
-        if (aMetaTileEntity instanceof MTEHatchInput tInput) {
-            if (tInput.getTierForStructure() < hatchTier()) return false;
-            tInput.mRecipeMap = getRecipeMap();
-            return mInputHatches.add(tInput);
-        }
-        if (aMetaTileEntity instanceof MTEHatchOutput tOutput) {
-            if (tOutput.getTierForStructure() < hatchTier()) return false;
-            return mOutputHatches.add(tOutput);
-        }
-        if (aMetaTileEntity instanceof IDualInputHatch tInput) {
-            tInput.updateCraftingIcon(this.getMachineCraftingIcon());
-            return mDualInputHatches.add(tInput);
         }
         return false;
     }
@@ -609,7 +582,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                             + " EU")
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
+                    .setEnabled(widget -> getErrorDisplayID() == 0))
             .widget(new FakeSyncWidget.LongSyncer(this::maxEUStore, val -> energyStorageCache = val))
             .widget(
                 new TextWidget()
@@ -619,7 +592,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                             + " EU")
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
+                    .setEnabled(widget -> getErrorDisplayID() == 0))
             .widget(new FakeSyncWidget.LongSyncer(this::getEUVar, this::setEUVar));
     }
 

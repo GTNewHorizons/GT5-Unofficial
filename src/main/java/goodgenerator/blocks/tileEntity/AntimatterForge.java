@@ -50,7 +50,6 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.objects.GTChunkManager;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -67,7 +66,7 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterForge>
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
-    private static final FluidStack[] magneticUpgrades = { Materials.TengamAttuned.getMolten(1L),
+    private static final FluidStack[] magneticUpgrades = { Materials.TengamPurified.getMolten(1L),
         MaterialsUEVplus.Time.getMolten(1L) };
     private static final FluidStack[] gravityUpgrades = { MaterialsUEVplus.SpaceTime.getMolten(1L),
         MaterialsUEVplus.Space.getMolten(1L), MaterialsUEVplus.Eternity.getMolten(1L) };
@@ -299,7 +298,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addCasingInfoMin("Protomatter Activation Coil", 126, false)
             .addInputHatch("1-6, Hint block with dot 1", 1)
             .addEnergyHatch("1-9, Hint block with dot 2", 2)
-            .addOtherStructurePart("Antimatter Hatch", "16, Hint Block with dot 3", 3)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("gg.structure.tooltip.antimatter_hatch"),
+                "16, Hint Block with dot 3",
+                3)
             .toolTipFinisher();
         return tt;
     }
@@ -307,6 +309,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     @Override
     public IStructureDefinition<AntimatterForge> getStructureDefinition() {
         return STRUCTURE_DEFINITION.get(getClass());
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
     }
 
     public Block getCasingBlock(int type) {
@@ -359,7 +366,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         return side != getBaseMetaTileEntity().getFrontFacing();
     }
 

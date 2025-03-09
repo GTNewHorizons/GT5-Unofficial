@@ -131,6 +131,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     }
 
     @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
+
+    @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
     }
@@ -346,7 +351,10 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addCasingInfoMin("Naquadria Frame Box", 293, false)
             .addCasingInfoMin("Advanced Filter Casing", 209, false)
             .addInputHatch("2, Hint block with dot 1", 1)
-            .addOtherStructurePart("Laser Source Hatch", "1-64, Hint Block with dot 2", 2)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("gg.structure.tooltip.laser_source_hatch"),
+                "1-64, Hint Block with dot 2",
+                2)
             .toolTipFinisher();
         return tt;
     }

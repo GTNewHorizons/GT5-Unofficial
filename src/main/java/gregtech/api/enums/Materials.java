@@ -3,12 +3,12 @@ package gregtech.api.enums;
 import static gregtech.api.enums.FluidState.GAS;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.util.GTUtility.formatStringSafe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.IllegalFormatException;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -1974,7 +1974,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         SuperconductorUIVBase.mChemicalFormula = "(C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085";
         SuperconductorUMVBase.mChemicalFormula = "?\u2086Or\u2083(Hy\u26B6)\u2081\u2081(((CW)\u2087Ti\u2083)\u2083???)\u2085\u06DE\u2082";
         Diatomite.mChemicalFormula = "(SiO\u2082)\u2088Fe\u2082O\u2083(Al\u2082O\u2083)";
-        EnrichedHolmium.mChemicalFormula = "Nq+\u2088Ho\u2082";
+        EnrichedHolmium.mChemicalFormula = "Nq+\u2084Ho\u2081";
         Grade1PurifiedWater.mChemicalFormula = "H\u2082O";
         Grade2PurifiedWater.mChemicalFormula = "H\u2082O";
         Grade3PurifiedWater.mChemicalFormula = "H\u2082O";
@@ -2294,6 +2294,64 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             MaterialsUEVplus.ProtoHalkonite,
             MaterialsUEVplus.HotExoHalkonite,
             MaterialsUEVplus.ExoHalkonite);
+
+        SubTag.MULTI_PLATE.addTo(
+            Adamantium,
+            Aluminium,
+            Americium,
+            BlackPlutonium,
+            BlackSteel,
+            Bronze,
+            CallistoIce,
+            Cobalt,
+            Copper,
+            CosmicNeutronium,
+            CrystallinePinkSlime,
+            Desh,
+            Duralumin,
+            Europium,
+            Gold,
+            HSSG,
+            HSSS,
+            Infinity,
+            InfinityCatalyst,
+            Iridium,
+            Iron,
+            Lead,
+            Ledox,
+            Magnesium,
+            MaterialsKevlar.Kevlar,
+            MelodicAlloy,
+            MeteoricIron,
+            Mithril,
+            MysteriousCrystal,
+            Mytryl,
+            Naquadah,
+            Naquadria,
+            Neutronium,
+            Nickel,
+            Oriharukon,
+            Osmiridium,
+            Osmium,
+            Paper,
+            Platinum,
+            Plutonium,
+            Polybenzimidazole,
+            Polycaprolactam,
+            Polytetrafluoroethylene,
+            Quantium,
+            Shadow,
+            SiliconSG,
+            Silver,
+            StainlessSteel,
+            Steel,
+            Sunnarium,
+            Thaumium,
+            Tin,
+            Titanium,
+            Trinium,
+            Tungsten,
+            TungstenSteel);
 
         SubTag.FOOD.addTo(
             MeatRaw,
@@ -3051,27 +3109,17 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public String getDefaultLocalizedNameForItem(String aFormat) {
-        try {
-            return String.format(
-                aFormat.replace("%s", "%temp")
-                    .replace("%material", "%s"),
-                this.mDefaultLocalName)
-                .replace("%temp", "%s");
-        } catch (IllegalFormatException ignored) {
-            return aFormat;
-        }
+        return formatStringSafe(
+            aFormat.replace("%s", "%temp")
+                .replace("%material", "%s"),
+            this.mDefaultLocalName).replace("%temp", "%s");
     }
 
     public String getLocalizedNameForItem(String aFormat) {
-        try {
-            return String.format(
-                aFormat.replace("%s", "%temp")
-                    .replace("%material", "%s"),
-                this.mLocalizedName)
-                .replace("%temp", "%s");
-        } catch (IllegalFormatException ignored) {
-            return aFormat;
-        }
+        return formatStringSafe(
+            aFormat.replace("%s", "%temp")
+                .replace("%material", "%s"),
+            this.mLocalizedName).replace("%temp", "%s");
     }
 
     public boolean hasCorrespondingFluid() {

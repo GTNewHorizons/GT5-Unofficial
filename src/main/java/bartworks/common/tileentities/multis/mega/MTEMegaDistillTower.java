@@ -385,7 +385,12 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setMaxParallel(Configuration.Multiblocks.megaMachinesMax);
+        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return Configuration.Multiblocks.megaMachinesMax;
     }
 
     @Override
@@ -398,7 +403,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
 
             for (IFluidStore tHatch : tLayerOutputHatches) {
                 if (tHatch instanceof MTEHatchOutputME tMEHatch) {
-                    if (tMEHatch.canAcceptFluid()) {
+                    if (tMEHatch.canFillFluid()) {
                         foundMEHatch = true;
                         break;
                     }
