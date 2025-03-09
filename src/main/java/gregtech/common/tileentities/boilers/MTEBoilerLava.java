@@ -455,12 +455,12 @@ public class MTEBoilerLava extends MTEBoiler {
     @Override
     protected com.cleanroommc.modularui.widget.Widget<?> createFuelSlot() {
         return new FluidSlot().syncHandler(lavaTank)
-            .widgetTheme(GTWidgetThemes.OVERLAY_SLOT_IN);
+            .widgetTheme(GTWidgetThemes.OVERLAY_FLUID_SLOT_IN);
     }
 
     @Override
     protected com.cleanroommc.modularui.widget.Widget<?> createAshSlot() {
-        return super.createAshSlot().widgetTheme(GTWidgetThemes.OVERLAY_SLOT_BLOCK);
+        return super.createAshSlot().widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_BLOCK);
     }
 
     @Override

@@ -428,7 +428,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                 new ItemSlot().slot(
                     new ModularSlot(inventoryHandler, 0).slotGroup("item_inv")
                         .filter(this::isValidFluidInputSlotItem))
-                    .widgetTheme(GTWidgetThemes.OVERLAY_SLOT_IN))
+                    .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_IN))
             .child(
                 new com.cleanroommc.modularui.widget.Widget<>().widgetTheme(GTWidgetThemes.PICTURE_CANISTER)
                     .size(18))
@@ -436,7 +436,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                 new ItemSlot().slot(
                     new ModularSlot(inventoryHandler, 1).slotGroup("item_inv")
                         .accessibility(false, true))
-                    .widgetTheme(GTWidgetThemes.OVERLAY_SLOT_OUT));
+                    .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_OUT));
         IWidget indicators = Flow.row()
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.CENTER)
@@ -494,7 +494,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         return new ItemSlot().slot(
             new ModularSlot(inventoryHandler, 2).slotGroup("item_inv")
                 .filter(this::isItemValidFuel))
-            .widgetTheme(GTWidgetThemes.OVERLAY_SLOT_COAL);
+            .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_COAL);
     }
 
     protected boolean doesAddAshSlot() {
@@ -505,7 +505,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
         return new ItemSlot().slot(
             new ModularSlot(inventoryHandler, 3).slotGroup("item_inv")
                 .accessibility(false, true))
-            .widgetTheme(GTWidgetThemes.OVERLAY_SLOT_DUST);
+            .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST);
     }
 
     @Override

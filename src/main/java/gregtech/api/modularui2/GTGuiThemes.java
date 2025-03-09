@@ -32,13 +32,14 @@ public final class GTGuiThemes {
             GTTextureIds.BACKGROUND_COVER_TAB_DISABLED_STANDARD)
         .themedTexture(GTWidgetThemes.BACKGROUND_POPUP, GTTextureIds.BACKGROUND_POPUP_STANDARD)
         .themedTexture(GTWidgetThemes.BACKGROUND_TITLE, GTTextureIds.BACKGROUND_TITLE_STANDARD)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_COAL, GTTextureIds.OVERLAY_SLOT_COAL_STANDARD)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_DUST, GTTextureIds.OVERLAY_SLOT_DUST_STANDARD)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_IN, GTTextureIds.OVERLAY_SLOT_IN_STANDARD)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_INGOT, GTTextureIds.OVERLAY_SLOT_INGOT_STANDARD)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_FURNACE, GTTextureIds.OVERLAY_SLOT_FURNACE_STANDARD)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_OUT, GTTextureIds.OVERLAY_SLOT_OUT_STANDARD)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_BLOCK, GTTextureIds.OVERLAY_SLOT_BLOCK_STANDARD)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_COAL, GTTextureIds.OVERLAY_SLOT_COAL_STANDARD)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST, GTTextureIds.OVERLAY_SLOT_DUST_STANDARD)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_IN, GTTextureIds.OVERLAY_SLOT_IN_STANDARD)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_INGOT, GTTextureIds.OVERLAY_SLOT_INGOT_STANDARD)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_FURNACE, GTTextureIds.OVERLAY_SLOT_FURNACE_STANDARD)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_OUT, GTTextureIds.OVERLAY_SLOT_OUT_STANDARD)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_BLOCK, GTTextureIds.OVERLAY_SLOT_BLOCK_STANDARD)
+        .themedOverlayFluidSlot(GTWidgetThemes.OVERLAY_FLUID_SLOT_IN, GTTextureIds.OVERLAY_SLOT_IN_STANDARD)
         .progressbar(
             GTWidgetThemes.PROGRESSBAR_BOILER_HEAT,
             GTTextureIds.SLOT_FLUID_STANDARD,
@@ -63,13 +64,14 @@ public final class GTGuiThemes {
         .themedTexture(GTWidgetThemes.BACKGROUND_COVER_TAB_DISABLED, GTTextureIds.BACKGROUND_COVER_TAB_DISABLED_BRONZE)
         .themedTexture(GTWidgetThemes.BACKGROUND_POPUP, GTTextureIds.BACKGROUND_POPUP_BRONZE)
         .themedTexture(GTWidgetThemes.BACKGROUND_TITLE, GTTextureIds.BACKGROUND_TITLE_BRONZE)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_COAL, GTTextureIds.OVERLAY_SLOT_COAL_BRONZE)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_DUST, GTTextureIds.OVERLAY_SLOT_DUST_BRONZE)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_IN, GTTextureIds.OVERLAY_SLOT_IN_BRONZE)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_INGOT, GTTextureIds.OVERLAY_SLOT_INGOT_BRONZE)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_FURNACE, GTTextureIds.OVERLAY_SLOT_FURNACE_BRONZE)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_OUT, GTTextureIds.OVERLAY_SLOT_OUT_BRONZE)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_BLOCK, GTTextureIds.OVERLAY_SLOT_BLOCK_BRONZE)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_COAL, GTTextureIds.OVERLAY_SLOT_COAL_BRONZE)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST, GTTextureIds.OVERLAY_SLOT_DUST_BRONZE)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_IN, GTTextureIds.OVERLAY_SLOT_IN_BRONZE)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_INGOT, GTTextureIds.OVERLAY_SLOT_INGOT_BRONZE)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_FURNACE, GTTextureIds.OVERLAY_SLOT_FURNACE_BRONZE)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_OUT, GTTextureIds.OVERLAY_SLOT_OUT_BRONZE)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_BLOCK, GTTextureIds.OVERLAY_SLOT_BLOCK_BRONZE)
+        .themedOverlayFluidSlot(GTWidgetThemes.OVERLAY_FLUID_SLOT_IN, GTTextureIds.OVERLAY_SLOT_IN_BRONZE)
         .progressbar(
             GTWidgetThemes.PROGRESSBAR_BOILER_HEAT,
             GTTextureIds.SLOT_FLUID_BRONZE,
@@ -94,13 +96,14 @@ public final class GTGuiThemes {
         .themedTexture(GTWidgetThemes.BACKGROUND_COVER_TAB_DISABLED, GTTextureIds.BACKGROUND_COVER_TAB_DISABLED_STEEL)
         .themedTexture(GTWidgetThemes.BACKGROUND_POPUP, GTTextureIds.BACKGROUND_POPUP_STEEL)
         .themedTexture(GTWidgetThemes.BACKGROUND_TITLE, GTTextureIds.BACKGROUND_TITLE_STEEL)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_COAL, GTTextureIds.OVERLAY_SLOT_COAL_STEEL)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_DUST, GTTextureIds.OVERLAY_SLOT_DUST_STEEL)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_IN, GTTextureIds.OVERLAY_SLOT_IN_STEEL)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_INGOT, GTTextureIds.OVERLAY_SLOT_INGOT_STEEL)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_FURNACE, GTTextureIds.OVERLAY_SLOT_FURNACE_STEEL)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_OUT, GTTextureIds.OVERLAY_SLOT_OUT_STEEL)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_BLOCK, GTTextureIds.OVERLAY_SLOT_BLOCK_STEEL)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_COAL, GTTextureIds.OVERLAY_SLOT_COAL_STEEL)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST, GTTextureIds.OVERLAY_SLOT_DUST_STEEL)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_IN, GTTextureIds.OVERLAY_SLOT_IN_STEEL)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_INGOT, GTTextureIds.OVERLAY_SLOT_INGOT_STEEL)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_FURNACE, GTTextureIds.OVERLAY_SLOT_FURNACE_STEEL)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_OUT, GTTextureIds.OVERLAY_SLOT_OUT_STEEL)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_BLOCK, GTTextureIds.OVERLAY_SLOT_BLOCK_STEEL)
+        .themedOverlayFluidSlot(GTWidgetThemes.OVERLAY_FLUID_SLOT_IN, GTTextureIds.OVERLAY_SLOT_IN_STEEL)
         .progressbar(
             GTWidgetThemes.PROGRESSBAR_BOILER_HEAT,
             GTTextureIds.SLOT_FLUID_STEEL,
@@ -129,10 +132,10 @@ public final class GTGuiThemes {
             GTTextureIds.BACKGROUND_COVER_TAB_DISABLED_PRIMITIVE)
         .themedTexture(GTWidgetThemes.BACKGROUND_POPUP, GTTextureIds.BACKGROUND_POPUP_PRIMITIVE)
         .themedTexture(GTWidgetThemes.BACKGROUND_TITLE, GTTextureIds.BACKGROUND_TITLE_PRIMITIVE)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_DUST, GTTextureIds.OVERLAY_SLOT_DUST_PRIMITIVE)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_INGOT, GTTextureIds.OVERLAY_SLOT_INGOT_PRIMITIVE)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_FURNACE, GTTextureIds.OVERLAY_SLOT_FURNACE_PRIMITIVE)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_BLOCK, GTTextureIds.OVERLAY_SLOT_BLOCK_PRIMITIVE)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST, GTTextureIds.OVERLAY_SLOT_DUST_PRIMITIVE)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_INGOT, GTTextureIds.OVERLAY_SLOT_INGOT_PRIMITIVE)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_FURNACE, GTTextureIds.OVERLAY_SLOT_FURNACE_PRIMITIVE)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_BLOCK, GTTextureIds.OVERLAY_SLOT_BLOCK_PRIMITIVE)
         .progressbar(
             GTWidgetThemes.PROGRESSBAR_BOILER_HEAT,
             GTTextureIds.SLOT_FLUID_PRIMITIVE,
