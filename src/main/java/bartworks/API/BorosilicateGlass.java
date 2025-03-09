@@ -35,6 +35,7 @@ import cpw.mods.fml.common.LoaderState;
  * IStructureElements returned from this class <b>SHOULD NOT</b> have its methods called before post init, or else you
  * might end up with wrong autoplace hints.
  */
+@Deprecated
 public class BorosilicateGlass {
 
     private static List<Pair<Block, Integer>> representatives;
@@ -117,6 +118,7 @@ public class BorosilicateGlass {
      * <p>
      * Can only be called at INIT stage.
      */
+    @Deprecated
     public static void registerGlass(Block block, int meta, byte tier) {
         if (Loader.instance()
             .hasReachedState(LoaderState.POSTINITIALIZATION)) throw new IllegalStateException("register too late!");
@@ -140,6 +142,7 @@ public class BorosilicateGlass {
      * <p>
      * Use this if you just want boroglass here and doesn't care what tier it is.
      */
+    @Deprecated
     public static <T> IStructureElement<T> ofBoroGlass(int tier) {
         if (!hasGlassInTier(tier)) throw new IllegalArgumentException();
         return lazy(t -> {
@@ -154,6 +157,7 @@ public class BorosilicateGlass {
      * <p>
      * Use this if you just want boroglass here and doesn't care what tier it is.
      */
+    @Deprecated
     public static <T> IStructureElement<T> ofBoroGlassAnyTier() {
         return lazy(t -> ofBlockAnyMeta(getGlassBlock()));
     }
@@ -169,6 +173,7 @@ public class BorosilicateGlass {
      *
      * @param initialValue the value set before structure check started
      */
+    @Deprecated
     public static <T> IStructureElement<T> ofBoroGlass(byte initialValue, BiConsumer<T, Byte> setter,
         Function<T, Byte> getter) {
         return lazy(
