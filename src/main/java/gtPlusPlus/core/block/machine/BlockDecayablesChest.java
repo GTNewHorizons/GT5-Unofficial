@@ -1,6 +1,8 @@
 package gtPlusPlus.core.block.machine;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
+import static net.minecraftforge.common.util.ForgeDirection.DOWN;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -11,9 +13,10 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.GuiFactories;
 
@@ -29,14 +32,7 @@ import gtPlusPlus.core.util.minecraft.InventoryUtils;
 
 public class BlockDecayablesChest extends BlockContainer implements ITileTooltip {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon textureTop;
-
-    @SideOnly(Side.CLIENT)
-    private IIcon textureBottom;
-
-    @SideOnly(Side.CLIENT)
-    private IIcon textureSide;
+    private static final ForgeDirection[] validRotationAxes = new ForgeDirection[] { UP, DOWN };
 
     /**
      * Determines which tooltip is displayed within the itemblock.
@@ -91,44 +87,10 @@ public class BlockDecayablesChest extends BlockContainer implements ITileTooltip
         }
     }
 
-    /**
-     * Updates the blocks bounds based on its current state.
-     */
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-        if (world.getBlock(x, y, z - 1) == this) {
-            this.setBlockBounds(0.0625F, 0.0F, 0.0F, 0.9375F, 0.875F, 0.9375F);
-        } else if (world.getBlock(x, y, z + 1) == this) {
-            this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 1.0F);
-        } else if (world.getBlock(x - 1, y, z) == this) {
-            this.setBlockBounds(0.0F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
-        } else if (world.getBlock(x + 1, y, z) == this) {
-            this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 1.0F, 0.875F, 0.9375F);
-        } else {
-            this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
-        }
-    }
-
-    /**
-     * Gets the block's texture. Args: side, meta
-     */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(final int ordinalSide, final int meta) {
-        return switch (ordinalSide) {
-            case 0 -> textureBottom;
-            case 1 -> textureTop;
-            default -> textureSide;
-        };
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister p_149651_1_) {
         this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/DecayablesChest_top");
-        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/DecayablesChest_top");
-        this.textureBottom = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/DecayablesChest_bottom");
-        this.textureSide = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/DecayablesChest_Side");
     }
 
     @Override
@@ -167,6 +129,25 @@ public class BlockDecayablesChest extends BlockContainer implements ITileTooltip
     @Override
     public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity,
         final ItemStack stack) {
+        byte chestFacing = 0;
+        int facing = MathHelper.floor_double((double) ((entity.rotationYaw * 4F) / 360F) + 0.5D) & 3;
+        if (facing == 0) {
+            chestFacing = 2;
+        }
+        if (facing == 1) {
+            chestFacing = 5;
+        }
+        if (facing == 2) {
+            chestFacing = 3;
+        }
+        if (facing == 3) {
+            chestFacing = 4;
+        }
+        TileEntity te = world.getTileEntity(x, y, z);
+        if (te instanceof TileEntityDecayablesChest tileEntityChest) {
+            tileEntityChest.setFacing(chestFacing);
+            world.markBlockForUpdate(x, y, z);
+        }
         if (stack.hasDisplayName()) {
             ((TileEntityDecayablesChest) world.getTileEntity(x, y, z)).setCustomName(stack.getDisplayName());
         }
@@ -175,6 +156,26 @@ public class BlockDecayablesChest extends BlockContainer implements ITileTooltip
     @Override
     public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
         final int z) {
+        return false;
+    }
+
+    @Override
+    public ForgeDirection[] getValidRotations(World worldObj, int x, int y, int z) {
+        return validRotationAxes;
+    }
+
+    @Override
+    public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis) {
+        if (worldObj.isRemote) {
+            return false;
+        }
+        if (axis == UP || axis == DOWN) {
+            TileEntity tileEntity = worldObj.getTileEntity(x, y, z);
+            if (tileEntity instanceof TileEntityDecayablesChest tileEntityChest) {
+                tileEntityChest.rotateAround(axis);
+            }
+            return true;
+        }
         return false;
     }
 }

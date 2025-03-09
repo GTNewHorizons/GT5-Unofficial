@@ -12,6 +12,7 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import java.util.Arrays;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
@@ -33,7 +34,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
 import gregtech.api.render.TextureFactory;
@@ -156,8 +156,7 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
 
     @Override
     public boolean allowToCheckRecipe() {
-        if (mNeedsSteamVenting
-            && getBaseMetaTileEntity().getCoverIDAtSide(getBaseMetaTileEntity().getFrontFacing()) == 0
+        if (mNeedsSteamVenting && !getBaseMetaTileEntity().hasCoverAtSide(getBaseMetaTileEntity().getFrontFacing())
             && !GTUtility.hasBlockHitBox(
                 getBaseMetaTileEntity().getWorld(),
                 getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 1),
@@ -237,9 +236,9 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
-        return CoverRegistry.getCoverBehaviorNew(aCoverID.toStack())
-            .isSimpleCover() && super.allowCoverOnSide(side, aCoverID);
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
+        return CoverRegistry.getCoverPlacer(coverItem)
+            .allowOnPrimitiveBlock() && super.allowCoverOnSide(side, coverItem);
     }
 
     public float getSteamDamage() {
