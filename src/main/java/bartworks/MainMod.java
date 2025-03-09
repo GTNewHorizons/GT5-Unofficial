@@ -19,7 +19,6 @@ import static gregtech.api.enums.Mods.BartWorks;
 
 import java.io.IOException;
 
-import gregtech.api.util.GlassTier;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -29,7 +28,6 @@ import org.apache.logging.log4j.Logger;
 import bartworks.API.BioObjectAdder;
 import bartworks.API.BioVatLogicAdder;
 import bartworks.API.SideReference;
-import bartworks.client.ClientEventHandler.TooltipEventHandler;
 import bartworks.client.creativetabs.BartWorksTab;
 import bartworks.client.creativetabs.BioTab;
 import bartworks.client.creativetabs.GT2Tab;
@@ -71,6 +69,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.util.GlassTier;
 import tectech.loader.recipe.Godforge;
 
 @Mod(
@@ -138,7 +137,7 @@ public final class MainMod {
     @Mod.EventHandler
     public void init(FMLInitializationEvent init) {
         if (SideReference.Side.Client && Configuration.tooltip.addGlassTierInTooltips)
-            MinecraftForge.EVENT_BUS.register(new TooltipEventHandler());
+            MinecraftForge.EVENT_BUS.register(new GlassTier.GlassTooltipHandler());
         ServerEventHandler serverEventHandler = new ServerEventHandler();
         if (SideReference.Side.Server) {
             MinecraftForge.EVENT_BUS.register(serverEventHandler);

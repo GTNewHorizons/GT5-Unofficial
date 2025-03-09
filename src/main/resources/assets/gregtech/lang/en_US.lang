@@ -162,6 +162,7 @@ GT5U.MBTT.Structure.SeeStructure1=To see the structure, use a
 GT5U.MBTT.Structure.SeeStructure2=Hologram Projector on the Controller!
 
 GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
+GT5U.tooltip.channelvalue=Use value §6%d§r§7 for sub channel §6%s
 
 GT5U.cracker.io_side=Input/Output Hatches must be on opposite sides!
 
@@ -2077,6 +2078,9 @@ GT5U.tooltip.fluid.stat.liquid=Liquid
 
 GT5U.tooltip.comb.ban_forestry=Forestry can't process it
 GT5U.tooltip.mega_apiary.only_producer=Will only be produced in mega Apiary
+
+gt.coilheattooltip=Base Heating Capacity =
+gt.coilunittooltip= Kelvin
 
 # Achievements
 
