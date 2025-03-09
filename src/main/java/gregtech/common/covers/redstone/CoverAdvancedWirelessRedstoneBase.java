@@ -1,6 +1,7 @@
 package gregtech.common.covers.redstone;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -8,8 +9,11 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -25,6 +29,7 @@ import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollowerTextFieldWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
@@ -36,10 +41,11 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
     }
 
     public static Byte getSignalAt(UUID uuid, int frequency, CoverAdvancedRedstoneReceiverBase.GateMode mode) {
-        Map<Integer, Map<Long, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
+        Map<Integer, Map<CoverData, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone
+            .get(String.valueOf(uuid));
         if (frequencies == null) return 0;
 
-        Map<Long, Byte> signals = frequencies.get(frequency);
+        Map<CoverData, Byte> signals = frequencies.get(frequency);
         if (signals == null) signals = new ConcurrentHashMap<>();
 
         switch (mode) {
@@ -82,29 +88,25 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
         }
     }
 
-    public static void removeSignalAt(UUID uuid, int frequency, long hash) {
-        Map<Integer, Map<Long, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
+    public static void removeSignalAt(UUID uuid, int frequency, CoverData key) {
+        Map<Integer, Map<CoverData, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone
+            .get(String.valueOf(uuid));
         if (frequencies == null) return;
         frequencies.computeIfPresent(frequency, (freq, longByteMap) -> {
-            longByteMap.remove(hash);
+            longByteMap.remove(key);
             return longByteMap.isEmpty() ? null : longByteMap;
         });
     }
 
-    public static void setSignalAt(UUID uuid, int frequency, long hash, byte value) {
-        Map<Integer, Map<Long, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone
+    public static void setSignalAt(UUID uuid, int frequency, CoverData key, byte value) {
+        Map<Integer, Map<CoverData, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone
             .computeIfAbsent(String.valueOf(uuid), k -> new ConcurrentHashMap<>());
-        Map<Long, Byte> signals = frequencies.computeIfAbsent(frequency, k -> new ConcurrentHashMap<>());
-        signals.put(hash, value);
+        Map<CoverData, Byte> signals = frequencies.computeIfAbsent(frequency, k -> new ConcurrentHashMap<>());
+        signals.put(key, value);
     }
 
-    /**
-     * x hashed into first 20 bytes y hashed into second 20 bytes z hashed into fifth 10 bytes dim hashed into sixth 10
-     * bytes side hashed into last 4 bytes
-     */
-    public static long hashCoverCoords(ICoverable tile, ForgeDirection side) {
-        return (((((long) tile.getXCoord() << 20) + tile.getZCoord() << 10) + tile.getYCoord() << 10)
-            + tile.getWorld().provider.dimensionId << 4) + side.ordinal();
+    public static CoverData getCoverKey(@NotNull ICoverable tile, ForgeDirection side) {
+        return new CoverData(tile.getCoords(), tile.getWorld().provider.dimensionId, side.ordinal());
     }
 
     @Override
@@ -157,6 +159,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
     public abstract static class WirelessData implements ISerializableObject {
 
         protected int frequency;
+        protected String label = "";
 
         /**
          * If UUID is set to null, the cover frequency is public, rather than private
@@ -181,6 +184,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
         public NBTBase saveDataToNBT() {
             NBTTagCompound tag = new NBTTagCompound();
             tag.setInteger("frequency", frequency);
+            tag.setString("label", this.label);
             if (uuid != null) {
                 tag.setString("uuid", uuid.toString());
             }
@@ -202,6 +206,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
         public void loadDataFromNBT(NBTBase aNBT) {
             NBTTagCompound tag = (NBTTagCompound) aNBT;
             frequency = tag.getInteger("frequency");
+            this.label = tag.getString("label");
             if (tag.hasKey("uuid")) {
                 uuid = UUID.fromString(tag.getString("uuid"));
             }
@@ -257,7 +262,10 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
                 .widget(
                     new TextWidget(GTUtility.trans("602", "Use Private Frequency"))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * privateExtraColumn, 4 + startY + spaceY * getButtonRow()));
+                        .setPos(startX + spaceX * privateExtraColumn, 4 + startY + spaceY * getButtonRow()))
+                .widget(
+                    new TextWidget("Label").setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2));
         }
 
         protected void addUIForDataController(CoverDataControllerWidget<T> controller) {
@@ -272,6 +280,15 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
                     .setBounds(0, Integer.MAX_VALUE)
                     .setPos(1, 2 + spaceY * getFrequencyRow())
                     .setSize(spaceX * 5 - 4, 12))
+                .addFollower(
+                    new CoverDataFollowerTextFieldWidget<>(),
+                    coverData -> coverData.label,
+                    (coverData, newLabel) -> {
+                        coverData.label = newLabel;
+                        return coverData;
+                    },
+                    widget -> widget.setPos(1, 2 + spaceY * (getButtonRow() + 1))
+                        .setSize(spaceX * 5 - 4, 12))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofCheck(),
                     coverData -> coverData.uuid != null,
@@ -292,5 +309,42 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
         protected abstract int getButtonRow();
 
         protected abstract boolean isShiftPrivateLeft();
+    }
+
+    public static class CoverData {
+
+        public final int x, y, z;
+        public final int dim;
+        public final int side;
+        private final int hash;
+
+        public CoverData(ChunkCoordinates coords, int dim, int side) {
+            this.x = coords.posX;
+            this.y = coords.posY;
+            this.z = coords.posZ;
+            this.dim = dim;
+            this.side = side;
+            this.hash = Objects.hash(x, y, z, dim, side);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            CoverData that = (CoverData) o;
+            return this.x == that.x && this.y == that.y
+                && this.z == that.z
+                && this.dim == that.dim
+                && this.side == that.side;
+        }
+
+        @Override
+        public int hashCode() {
+            return this.hash;
+        }
+
+        public String getInfo() {
+            return String.format("%d, %d, %d DIM: %d", x, y, z, dim);
+        }
     }
 }

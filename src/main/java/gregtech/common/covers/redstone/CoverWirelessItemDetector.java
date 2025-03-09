@@ -56,8 +56,8 @@ public class CoverWirelessItemDetector
             coverData.threshold,
             coverData.slot,
             coverSide.ordinal());
-        final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, signal);
+        final CoverData key = getCoverKey(coverable, coverSide);
+        setSignalAt(coverData.getUuid(), coverData.getFrequency(), key, signal);
 
         if (coverData.physical) {
             coverable.setOutputRedstoneSignal(coverSide, signal);
@@ -187,7 +187,7 @@ public class CoverWirelessItemDetector
 
         @Override
         protected int getGUIHeight() {
-            return 143;
+            return 161;
         }
 
         @Override
@@ -197,13 +197,13 @@ public class CoverWirelessItemDetector
             super.addUIWidgets(builder);
             builder.widget(
                 new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
-                    .setPos(startX + spaceX * 4 - 1, startY + spaceY * 3))
+                    .setPos(startX + spaceX * 4 - 1, startY + spaceY * 4))
                 .widget(
                     new TextWidget(GTUtility.trans("221", "Item threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
+                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * 3))
                 .widget(
                     new TextWidget(GTUtility.trans("254", "Detect Slot #")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * 3))
+                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * 4))
                 .widget(TextWidget.dynamicString(() -> {
                     ItemTransmitterData coverData = getCoverData();
                     if (coverData != null) {
@@ -217,7 +217,7 @@ public class CoverWirelessItemDetector
                     .setSynced(false)
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(startX + spaceX, 5 + startY + spaceY * 4)
+                    .setPos(startX + spaceX, 5 + startY + spaceY * 5)
                     .setSize(spaceX * 10, 12));
         }
 
@@ -234,7 +234,7 @@ public class CoverWirelessItemDetector
                 widget -> widget.setBounds(0, maxThreshold)
                     .setScrollValues(1, 64, 1000)
                     .setFocusOnGuiOpen(true)
-                    .setPos(1, 2 + spaceY * 2)
+                    .setPos(1, 2 + spaceY * 3)
                     .setSize(spaceX * 5 - 4, 12))
                 .addFollower(
                     new CoverDataFollowerNumericWidget<>(),
@@ -247,7 +247,7 @@ public class CoverWirelessItemDetector
                         .setDefaultValue(-1)
                         .setScrollValues(1, 100, 10)
                         .setNumberFormat(numberFormatAll)
-                        .setPos(1, 2 + spaceY * 3)
+                        .setPos(1, 2 + spaceY * 4)
                         .setSize(spaceX * 4 - 8, 12))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
@@ -258,7 +258,7 @@ public class CoverWirelessItemDetector
                     },
                     widget -> widget
                         .addTooltip(StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.tooltip"))
-                        .setPos(0, 2 + spaceY * 4));
+                        .setPos(0, 2 + spaceY * 5));
         }
 
         private void setMaxSlot() {
