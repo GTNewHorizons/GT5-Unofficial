@@ -247,18 +247,18 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         inputFocus = 0;
 
         ArrayList<ItemStack> tItems = this.getStoredInputs();
-        ItemStack tFocusItem = this.getFocusItemStack();
+        ArrayList<ItemStack> tFocusItemArray = this.getFocusItemStack();
 
         ItemStack tFocusItemZeroDamage = null;
 
-        if (tFocusItem != null) {
+        ArrayList<ItemStack> tItemsWithFocusItem = new ArrayList<>();
 
-            tFocusItemZeroDamage = tFocusItem.copy();
+        for (ItemStack focus : tFocusItemArray) {
+            tFocusItemZeroDamage = focus.copy();
             tFocusItemZeroDamage.setItemDamage(0);
+            tItemsWithFocusItem.add(tFocusItemZeroDamage);
         }
 
-        ArrayList<ItemStack> tItemsWithFocusItem = new ArrayList<>();
-        tItemsWithFocusItem.add(tFocusItemZeroDamage);
         tItemsWithFocusItem.addAll(tItems);
 
         long tVoltageActual = GTValues.VP[(int) this.getInputVoltageTier()];
@@ -302,8 +302,10 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         if (inputParticle != tRecipe.particleId) return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (tRecipe.focusItem != null) {
-            if (tFocusItem != null && tRecipe.focusItem.getItem() != tFocusItem.getItem())
-                return CheckRecipeResultRegistry.NO_RECIPE;
+            for (ItemStack focus : tFocusItemArray) {
+                if (focus != null && tRecipe.focusItem.getItem() != focus.getItem())
+                    return CheckRecipeResultRegistry.NO_RECIPE;
+            }
         }
 
         int focusDurabilityDepletion;
@@ -317,7 +319,10 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             batchAmount = (int) Math.round(1.0 / progressTime);
 
             if (tRecipe.focusItem != null) {
-                int maskLimit = tFocusItem.getMaxDamage() - tFocusItem.getItemDamage() + 1;
+                int maskLimit = 0;
+                for (ItemStack focus : tFocusItemArray) {
+                    maskLimit += focus.getMaxDamage() - focus.getItemDamage() + 1;
+                }
 
                 if (batchAmount > maskLimit) batchAmount = maskLimit; // Limited by mask durability first, if it's
                                                                       // present in recipe. Assume mask is present in
@@ -385,19 +390,18 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         return null;
     }
 
-    private ItemStack getFocusItemStack() {
+    private ArrayList<ItemStack> getFocusItemStack() {
 
+        ArrayList<ItemStack> ret = new ArrayList<>();
         for (MTEBusInputFocus hatch : this.mInputFocus) {
 
             if (hatch.getContentUsageSlots()
-                .isEmpty()) return null;
+                .isEmpty()) continue;
 
-            return hatch.getContentUsageSlots()
-                .get(0);
+            ret = hatch.getContentUsageSlots();
         }
 
-        return null;
-
+        return ret;
     }
 
     @Override
