@@ -242,13 +242,13 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
-    void stopsCorrectlyWhenOneTicking_Test() {
+    void correctWhenOneTicking_Test() {
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setDuration(1)
             .calculate();
         assertEquals(1, calculator.getDuration(), messageDuration);
-        assertEquals(VP[1], calculator.getConsumption(), messageEUt);
+        assertEquals(VP[1] * Math.pow(4, 5), calculator.getConsumption(), messageEUt);
     }
 
     @Test
@@ -311,67 +311,6 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
-    void oneTickDiscountTurnsToOne_Test() {
-        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
-            .setEUt(V[6])
-            .setDuration(1)
-            .calculate();
-        assertEquals(1, calculator.getDuration(), messageDuration);
-        assertEquals(1, calculator.getConsumption(), messageEUt);
-    }
-
-    @Test
-    void oneTickDiscountImperfectOC_Test() {
-        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
-            .setEUt(V[6])
-            .setDurationModifier(1.1)
-            .setDuration(4)
-            .calculate();
-        assertEquals(1, calculator.getDuration(), messageDuration);
-
-        /*
-         * duration with speedboost = 4.4
-         * log_2(5) ~ 2.14;
-         * round up to 3 to reach one tick duration
-         */
-        int overclocksTillOneTick = 3;
-        int overclocksBeyondOneTick = 2;
-
-        // 3 overclocks, each gives 4x consumption growth per tick (1920)
-        long targetEUt = (long) (VP[1] * Math.pow(4, overclocksTillOneTick));
-        // 2 remaining overclocks are beyond 1 tick, each provides 2x comsumption discount (480)
-        targetEUt /= Math.pow(2, overclocksBeyondOneTick);
-
-        assertEquals(targetEUt, calculator.getConsumption(), messageEUt);
-    }
-
-    @Test
-    void oneTickDiscountPerfectOC_Test() {
-        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
-            .setEUt(V[6])
-            .setDurationModifier(1.1)
-            .setDuration(16)
-            .enablePerfectOC()
-            .calculate();
-
-        /*
-         * duration with speedboost = 17.6
-         * log_4(18) ~ 2.06;
-         * round up to 3 to reach one tick duration
-         */
-        int overclocksTillOneTick = 3;
-        int overclocksBeyondOneTick = 2;
-
-        // 3 overclocks, each gives 4x consumption growth per tick (1920)
-        long targetEUt = (long) (VP[1] * Math.pow(4, overclocksTillOneTick));
-        // 2 remaining overclocks are beyond 1 tick, each provides 4x consumption discount (120)
-        targetEUt /= Math.pow(4, overclocksBeyondOneTick);
-
-        assertEquals(targetEUt, calculator.getConsumption(), messageEUt);
-        assertEquals(1, calculator.getDuration(), messageDuration);
-    }
-
-    @Test
     void ulvRecipeWithDiscount_Test() {
         long correctConsumption = (long) Math.ceil((VP[0] << 12) * 0.9f);
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[0])
@@ -397,13 +336,13 @@ class GT_OverclockCalculator_UnitTest {
     }
 
     @Test
-    void ulvRecipeStopsWhenOneTicked_Test() {
+    void ulvRecipeCorrectWhenOneTicked_Test() {
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[0])
             .setEUt(V[6])
             .setDuration(1)
             .calculate();
         assertEquals(1, calculator.getDuration(), messageDuration);
-        assertEquals(VP[0], calculator.getConsumption(), messageEUt);
+        assertEquals(VP[0] * Math.pow(4, 6), calculator.getConsumption(), messageEUt);
     }
 
     @Test
@@ -421,6 +360,8 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void testCorrectEUtWhenOverclockingUnderOneTick_Test() {
+        // log4(24 * 56) ~= 5.2
+        // log4(V[14] * 1_048_576) ~= 25.5
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(24)
             .setParallel(56)
             .setAmperage(1)
@@ -430,7 +371,7 @@ class GT_OverclockCalculator_UnitTest {
             .setDuration(56)
             .setCurrentParallel(6144)
             .calculate();
-        assertEquals((24 * 56) * Math.pow(4, 10), calculator.getConsumption());
+        assertEquals((24 * 56) * Math.pow(4, 20), calculator.getConsumption());
     }
 
     @Test
@@ -475,7 +416,7 @@ class GT_OverclockCalculator_UnitTest {
             .setAmperage(16)
             .setCurrentParallel(16)
             .calculate();
-        assertEquals((VP[2] * 4) * Math.pow(4, 6), calculator.getConsumption());
+        assertEquals((VP[2] * 4) * Math.pow(4, 7), calculator.getConsumption());
     }
 
     @Test
@@ -583,13 +524,13 @@ class GT_OverclockCalculator_UnitTest {
     @Test
     void ulvRecipeWorkCorrectlyWithCalculatingEutUnderOneTick() {
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(2)
-            .setEUt(TierEU.UV)
+            .setEUt(V[8])
             .setParallel(64)
             .setDuration(300)
             .setAmperage(64)
             .setAmperageOC(false)
             .calculate();
-        assertEquals(TierEU.LuV * 64, calculator.getConsumption(), messageEUt);
+        assertEquals(2 * 64 * Math.pow(4, 8), calculator.getConsumption(), messageEUt);
     }
 
     @Test

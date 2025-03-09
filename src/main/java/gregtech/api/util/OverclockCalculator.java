@@ -389,6 +389,11 @@ public class OverclockCalculator {
             overclocks = Math.min(overclocks, voltageTierMachine - voltageTierRecipe);
         }
 
+        // If triggered, it indicates that recipe power > machine power. Not just a safeguard.
+        // This also means that you can run a 1.2A recipe on a single hatch for a regular gt multi.
+        // This is intended, including the fact that you don't get an OC with a one tier upgrade in that case.
+        overclocks = Math.max(overclocks, 0);
+
         int heatOverclocks = Math.min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
         int regularOverclocks = overclocks - heatOverclocks;
 
