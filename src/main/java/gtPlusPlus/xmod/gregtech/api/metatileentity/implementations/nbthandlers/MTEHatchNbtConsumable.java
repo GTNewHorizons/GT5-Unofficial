@@ -52,11 +52,6 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
     public abstract int getInputSlotCount();
 
     @Override
-    public final boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }

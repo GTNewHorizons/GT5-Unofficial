@@ -111,11 +111,6 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         openGui(aPlayer);
         return true;

@@ -48,7 +48,7 @@ public class MTEBlackHoleUtility extends MTEHatch {
     }
 
     @Override
-    public boolean isSimpleMachine() {
+    public boolean isAccessAllowed(EntityPlayer player) {
         return true;
     }
 

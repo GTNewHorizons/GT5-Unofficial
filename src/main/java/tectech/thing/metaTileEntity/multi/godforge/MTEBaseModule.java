@@ -508,11 +508,6 @@ public class MTEBaseModule extends TTMultiblockBase implements IConstructable, I
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean willExplodeInRain() {
         return false;
     }

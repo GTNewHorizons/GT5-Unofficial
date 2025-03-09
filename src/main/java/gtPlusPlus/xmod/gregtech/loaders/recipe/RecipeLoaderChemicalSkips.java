@@ -122,7 +122,7 @@ public class RecipeLoaderChemicalSkips {
                 WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.dust, 64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(QFT_CATALYST, GregtechItemList.PlasticPolymerCatalyst.get(0))
+            .metadata(QFT_CATALYST, GregtechItemList.PlatinumGroupCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         GTValues.RA.stdBuilder()

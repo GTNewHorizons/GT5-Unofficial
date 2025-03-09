@@ -55,11 +55,6 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex != getStackDisplaySlot();
     }
@@ -81,13 +76,6 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
     public abstract boolean canTankBeFilled();
 
     public abstract boolean canTankBeEmptied();
-
-    public abstract boolean displaysItemStack();
-
-    /**
-     * @return If fluid amount is shown on FluidDisplayItem
-     */
-    public abstract boolean displaysStackSize();
 
     public int getInputSlot() {
         return 0;
