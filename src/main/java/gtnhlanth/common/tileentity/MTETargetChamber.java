@@ -326,7 +326,8 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
                 if (batchAmount > maskLimit) batchAmount = maskLimit; // Limited by mask durability first, if it's
                                                                       // present in recipe. Assume mask is present in
-                                                                      // machine from above condition
+                progressTime = 1;                                                  // machine from above condition
+
                 if (batchAmount < maskLimit) {
                     int ratio = Math.min(maskLimit/batchAmount, 128);
                     batchAmount *= ratio;
@@ -334,7 +335,8 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
                 }
             }
 
-            progressTime = 1;
+
+
         }
 
         this.mMaxProgresstime = (int) progressTime; // 5
