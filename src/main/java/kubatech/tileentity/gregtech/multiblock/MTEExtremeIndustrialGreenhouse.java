@@ -263,9 +263,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         if (this.glassTier < VoltageIndex.UV && !this.mEnergyHatches.isEmpty())
             for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) if (this.glassTier < hatchEnergy.mTier) return false;
 
-        boolean valid = this.mCasing >= 70;
+        boolean valid = !this.mEnergyHatches.isEmpty() && this.mCasing >= 70;
 
-        if (!this.mEnergyHatches.isEmpty()) this.updateSeedLimits();
+        if (valid) this.updateSeedLimits();
 
         return valid;
     }

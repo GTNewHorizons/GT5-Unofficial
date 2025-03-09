@@ -591,9 +591,10 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 8, 0)) return false;
         if (this.glassTier < VoltageIndex.UEV && !this.mEnergyHatches.isEmpty())
             for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) if (this.glassTier < hatchEnergy.mTier) return false;
-        flowersError = !this.flowersCheck.isEmpty();
-        if (!this.mEnergyHatches.isEmpty() && flowersError) updateMaxSlots();
-        return flowersError && this.mCasing >= 190;
+        boolean valid = !this.mEnergyHatches.isEmpty() && this.mCasing >= 190;
+        flowersError = valid && !this.flowersCheck.isEmpty();
+        if (valid) updateMaxSlots();
+        return valid;
     }
 
     @Override

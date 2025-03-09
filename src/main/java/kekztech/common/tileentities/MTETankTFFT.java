@@ -436,7 +436,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                 return true;
             }
 
-            return this.glassTier >= VoltageIndex.EV;
+            return !mEnergyHatches.isEmpty() && this.glassTier >= VoltageIndex.EV;
         }
         return false;
     }
