@@ -45,11 +45,6 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataP
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }

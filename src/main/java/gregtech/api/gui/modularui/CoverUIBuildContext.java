@@ -5,6 +5,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.interfaces.tileentity.ICoverable;
 
 public class CoverUIBuildContext extends UIBuildContext {
@@ -18,7 +19,7 @@ public class CoverUIBuildContext extends UIBuildContext {
 
     /**
      * @param player          Player opened this UI
-     * @param coverID         See {@link ICoverable#getCoverIDAtSide}
+     * @param coverID         See {@link CoverRegistry}
      * @param side            Side this cover is attached to
      * @param tile            Tile this cover is attached to
      * @param anotherWindow   If cover UI is shown on top of another window
@@ -36,7 +37,7 @@ public class CoverUIBuildContext extends UIBuildContext {
 
     /**
      * @param player        Player opened this UI
-     * @param coverID       See {@link ICoverable#getCoverIDAtSide}
+     * @param coverID       See {@link CoverRegistry}
      * @param side          Side this cover is attached to
      * @param tile          Tile this cover is attached to
      * @param anotherWindow If cover GUI is shown in opened on top of another window
