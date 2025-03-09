@@ -139,8 +139,8 @@ class GT_OverclockCalculator_UnitTest {
             .setDuration(1024)
             .setAmperageOC(true)
             .calculate();
-        assertEquals(1024 / Math.pow(2, 6), calculator.getDuration(), messageDuration);
-        assertEquals(VP[0] * Math.pow(4, 6), calculator.getConsumption(), messageEUt);
+        assertEquals(1024 / Math.pow(2, 7), calculator.getDuration(), messageDuration);
+        assertEquals(VP[0] * Math.pow(4, 7), calculator.getConsumption(), messageEUt);
     }
 
     @Test
@@ -364,7 +364,7 @@ class GT_OverclockCalculator_UnitTest {
 
         // 3 overclocks, each gives 4x consumption growth per tick (1920)
         long targetEUt = (long) (VP[1] * Math.pow(4, overclocksTillOneTick));
-        // 2 remaining overclocks are beyond 1 tick, each provides 4x comsumption discount (120)
+        // 2 remaining overclocks are beyond 1 tick, each provides 4x consumption discount (120)
         targetEUt /= Math.pow(4, overclocksBeyondOneTick);
 
         assertEquals(targetEUt, calculator.getConsumption(), messageEUt);
@@ -373,13 +373,13 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void ulvRecipeWithDiscount_Test() {
-        long correctConsumption = (long) Math.ceil((VP[0] << 10) * 0.9f);
+        long correctConsumption = (long) Math.ceil((VP[0] << 12) * 0.9f);
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[0])
             .setEUt(V[6])
             .setEUtDiscount(0.9)
             .setDuration(1024)
             .calculate();
-        assertEquals(1024 / Math.pow(2, 5), calculator.getDuration(), messageDuration);
+        assertEquals(1024 / Math.pow(2, 6), calculator.getDuration(), messageDuration);
         assertEquals(correctConsumption, calculator.getConsumption(), messageEUt);
     }
 
@@ -494,7 +494,7 @@ class GT_OverclockCalculator_UnitTest {
             .setAmperageOC(false)
             .setAmperage(16)
             .calculate();
-        assertEquals(32 * 16, calculator.getConsumption(), messageEUt);
+        assertEquals(128 * 16, calculator.getConsumption(), messageEUt);
     }
 
     @Test
@@ -506,7 +506,7 @@ class GT_OverclockCalculator_UnitTest {
             .setAmperageOC(false)
             .setAmperage(16)
             .calculate();
-        assertEquals(32 * 64, calculator.getConsumption(), messageEUt);
+        assertEquals(128 * 64, calculator.getConsumption(), messageEUt);
     }
 
     @Test
@@ -518,7 +518,7 @@ class GT_OverclockCalculator_UnitTest {
             .setAmperageOC(false)
             .setAmperage(64)
             .calculate();
-        assertEquals(32 * 16, calculator.getConsumption(), messageEUt);
+        assertEquals(128 * 16, calculator.getConsumption(), messageEUt);
     }
 
     @Test
@@ -530,7 +530,7 @@ class GT_OverclockCalculator_UnitTest {
             .setAmperageOC(false)
             .setAmperage(16)
             .calculate();
-        assertEquals((8 * 16) * Math.pow(4, 2), calculator.getConsumption(), messageEUt);
+        assertEquals((8 * 16) * Math.pow(4, 3), calculator.getConsumption(), messageEUt);
     }
 
     @Test
@@ -553,7 +553,7 @@ class GT_OverclockCalculator_UnitTest {
             .setAmperage(64)
             .setAmperageOC(false)
             .calculate();
-        assertEquals((7 * 64) * Math.pow(4, 2), calculator.getConsumption(), messageEUt);
+        assertEquals((7 * 64) * Math.pow(4, 3), calculator.getConsumption(), messageEUt);
     }
 
     @Test
@@ -565,7 +565,7 @@ class GT_OverclockCalculator_UnitTest {
             .setAmperage(19)
             .setAmperageOC(false)
             .calculate();
-        assertEquals((7 * 19) * Math.pow(4, 2), calculator.getConsumption(), messageEUt);
+        assertEquals((7 * 19) * Math.pow(4, 3), calculator.getConsumption(), messageEUt);
     }
 
     @Test
@@ -594,7 +594,7 @@ class GT_OverclockCalculator_UnitTest {
 
     @Test
     void overclockWithAbnormalEnergyIncrease_Test() {
-        long expectedEUt = (long) Math.floor(VP[1] * Math.pow(4.1, 5));
+        long expectedEUt = (long) Math.ceil(VP[1] * Math.pow(4.1, 5));
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[1])
             .setEUt(V[6])
             .setDuration(1024)

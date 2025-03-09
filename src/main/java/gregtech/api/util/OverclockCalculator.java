@@ -320,7 +320,7 @@ public class OverclockCalculator {
                 overclocks++;
             }
 
-            calculatedConsumption = (long) Math.floor(eutLaserOverclock);
+            calculatedConsumption = (long) Math.ceil(eutLaserOverclock);
             duration /= Math.pow(durationDecreasePerOC, overclocks);
             calculatedDuration = (int) Math.max(duration, 1);
             return;
@@ -331,9 +331,9 @@ public class OverclockCalculator {
 
         // Limit overclocks by voltage tier if amperage overclocks are disabled.
         if (!amperageOC) {
-            double voltageMachine = Math.log((double) machineVoltage / 8) / LOG4;
-            double voltageRecipe = Math.log((double) recipeEUt / 8) / LOG4;
-            overclocks = Math.min(overclocks, (int) (Math.ceil(voltageMachine) - Math.ceil(voltageRecipe)));
+            int voltageTierMachine = (int) Math.max(Math.ceil(Math.log((double) machineVoltage / 8) / LOG4), 0);
+            int voltageTierRecipe = (int) Math.max(Math.ceil(Math.log((double) recipeEUt / 8) / LOG4), 0);
+            overclocks = Math.min(overclocks, voltageTierMachine - voltageTierRecipe);
         }
 
         // If triggered, it indicates that recipe power > machine power. Not just a safeguard.
@@ -344,7 +344,7 @@ public class OverclockCalculator {
         int heatOverclocks = Math.min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
         int regularOverclocks = overclocks - heatOverclocks;
 
-        calculatedConsumption = (long) Math.floor(recipePower * Math.pow(eutIncreasePerOC, overclocks));
+        calculatedConsumption = (long) Math.ceil(recipePower * Math.pow(eutIncreasePerOC, overclocks));
         duration /= Math.pow(durationDecreasePerHeatOC, heatOverclocks);
         duration /= Math.pow(durationDecreasePerOC, regularOverclocks);
         calculatedDuration = (int) Math.max(duration, 1);
@@ -384,9 +384,9 @@ public class OverclockCalculator {
 
         // Limit overclocks by voltage tier if amperage overclocks are disabled.
         if (!amperageOC) {
-            double voltageMachine = Math.log((double) machineVoltage / 8) / LOG4;
-            double voltageRecipe = Math.log((double) recipeEUt / 8) / LOG4;
-            overclocks = Math.min(overclocks, (int) (Math.ceil(voltageMachine) - Math.ceil(voltageRecipe)));
+            int voltageTierMachine = (int) Math.max(Math.ceil(Math.log((double) machineVoltage / 8) / LOG4), 0);
+            int voltageTierRecipe = (int) Math.max(Math.ceil(Math.log((double) recipeEUt / 8) / LOG4), 0);
+            overclocks = Math.min(overclocks, voltageTierMachine - voltageTierRecipe);
         }
 
         int heatOverclocks = Math.min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
