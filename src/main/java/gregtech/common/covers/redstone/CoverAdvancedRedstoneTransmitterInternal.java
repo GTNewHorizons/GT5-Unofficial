@@ -28,8 +28,8 @@ public class CoverAdvancedRedstoneTransmitterInternal
             else outputRedstone = 15;
         }
 
-        final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, outputRedstone);
+        final CoverData key = getCoverKey(coverable, coverSide);
+        setSignalAt(coverData.getUuid(), coverData.getFrequency(), key, outputRedstone);
         return coverData;
     }
 

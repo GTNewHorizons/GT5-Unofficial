@@ -72,8 +72,11 @@ public class CoverWirelessDoesWorkDetector
             return coverData;
         }
         final byte signal = computeSignalBasedOnActivity(coverData, coverable);
-        final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, signal);
+        final CoverData key = new CoverData(
+            coverable.getCoords(),
+            coverable.getWorld().provider.dimensionId,
+            coverSide.ordinal());
+        setSignalAt(coverData.getUuid(), coverData.getFrequency(), key, signal);
 
         if (coverData.physical) {
             coverable.setOutputRedstoneSignal(coverSide, signal);
@@ -175,7 +178,7 @@ public class CoverWirelessDoesWorkDetector
 
         @Override
         protected int getGUIHeight() {
-            return 123;
+            return 141;
         }
 
         @Override
@@ -196,7 +199,7 @@ public class CoverWirelessDoesWorkDetector
             })
                 .setSynced(false)
                 .setDefaultColor(COLOR_TEXT_GRAY.get())
-                .setPos(startX + spaceX * 3, 4 + startY + spaceY * 2))
+                .setPos(startX + spaceX * 3, 4 + startY + spaceY * 3))
                 .widget(TextWidget.dynamicString(() -> {
                     ActivityTransmitterData coverData = getCoverData();
                     if (coverData != null) {
@@ -210,7 +213,7 @@ public class CoverWirelessDoesWorkDetector
                     .setSynced(false)
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(startX + spaceX, 4 + startY + spaceY * 3)
+                    .setPos(startX + spaceX, 4 + startY + spaceY * 4)
                     .setSize(spaceX * 10, 12));
         }
 
@@ -227,7 +230,7 @@ public class CoverWirelessDoesWorkDetector
                 },
                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_PROGRESS)
                     .addTooltip(GTUtility.trans("241", "Recipe progress"))
-                    .setPos(spaceX * 0, spaceY * 2))
+                    .setPos(spaceX * 0, spaceY * 3))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
                     coverData -> coverData.mode == ActivityMode.MACHINE_IDLE,
@@ -237,7 +240,7 @@ public class CoverWirelessDoesWorkDetector
                     },
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK)
                         .addTooltip(GTUtility.trans("242", "Machine idle"))
-                        .setPos(spaceX * 1, spaceY * 2))
+                        .setPos(spaceX * 1, spaceY * 3))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
                     coverData -> coverData.mode == ActivityMode.MACHINE_ENABLED,
@@ -247,7 +250,7 @@ public class CoverWirelessDoesWorkDetector
                     },
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
                         .addTooltip(GTUtility.trans("271", "Machine enabled"))
-                        .setPos(spaceX * 2, spaceY * 2))
+                        .setPos(spaceX * 2, spaceY * 3))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
                     coverData -> coverData.physical,
@@ -257,7 +260,7 @@ public class CoverWirelessDoesWorkDetector
                     },
                     widget -> widget
                         .addTooltip(StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.tooltip"))
-                        .setPos(0, 1 + spaceY * 3));
+                        .setPos(0, 1 + spaceY * 4));
         }
     }
 
