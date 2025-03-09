@@ -94,16 +94,15 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings10, 10))
         .addElement(
             'F',
-            withChannel("coil", activeCoils(ofCoil(MTEHIPCompressor::setCoilLevel, MTEHIPCompressor::getCoilLevel)))
-                .addElement(
-                    'G',
-                    buildHatchAdder(MTEHIPCompressor.class).atLeast(InputBus, OutputBus, InputHatch)
-                        .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(5))
-                        .dot(2)
-                        .buildAndChain(
-                            onElementPass(MTEHIPCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 5))))
-                .addElement('H', ofBlock(GregTechAPI.sBlockCasings10, 5))
-                .build());
+            withChannel("coil", activeCoils(ofCoil(MTEHIPCompressor::setCoilLevel, MTEHIPCompressor::getCoilLevel))))
+        .addElement(
+            'G',
+            buildHatchAdder(MTEHIPCompressor.class).atLeast(InputBus, OutputBus, InputHatch)
+                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(5))
+                .dot(2)
+                .buildAndChain(onElementPass(MTEHIPCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 5))))
+        .addElement('H', ofBlock(GregTechAPI.sBlockCasings10, 5))
+        .build();
 
     private final ArrayList<MTEHeatSensor> sensorHatches = new ArrayList<>();
 
