@@ -45,6 +45,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTEFluidPipe;
 
 public class ItemMachines extends ItemBlock implements IFluidContainerItem {
 
@@ -230,6 +231,8 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             Materials aMaterial = null;
             if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEItemPipe) {
                 aMaterial = ((MTEItemPipe) GregTechAPI.METATILEENTITIES[aDamage]).mMaterial;
+            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof GTPPMTEFluidPipe) {
+                aName = ((GTPPMTEFluidPipe) GregTechAPI.METATILEENTITIES[aDamage]).pipeStats.defaultLocalName;
             } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEFluidPipe) {
                 aMaterial = ((MTEFluidPipe) GregTechAPI.METATILEENTITIES[aDamage]).mMaterial;
             } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTECable) {
