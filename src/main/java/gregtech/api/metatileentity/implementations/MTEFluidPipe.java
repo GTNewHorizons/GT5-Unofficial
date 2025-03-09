@@ -703,7 +703,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
     public boolean canConnect(ForgeDirection side, TileEntity tileEntity) {
         if (tileEntity == null) return false;
 
-        final ForgeDirection tSide = side.getOpposite();
+        final ForgeDirection oppositeSide = side.getOpposite();
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
         if (baseMetaTile == null) return false;
 
@@ -718,10 +718,10 @@ public class MTEFluidPipe extends MetaPipeEntity {
         final IFluidHandler fTileEntity = (tileEntity instanceof IFluidHandler) ? (IFluidHandler) tileEntity : null;
 
         if (fTileEntity != null) {
-            final FluidTankInfo[] tInfo = fTileEntity.getTankInfo(tSide);
+            final FluidTankInfo[] tInfo = fTileEntity.getTankInfo(oppositeSide);
             if (tInfo != null) {
                 return tInfo.length > 0 || (Translocator.isModLoaded() && isTranslocator(tileEntity))
-                    || gTileEntity != null && gTileEntity.getCoverAtSide(side) instanceof CoverFluidRegulator;
+                    || gTileEntity != null && gTileEntity.getCoverAtSide(oppositeSide) instanceof CoverFluidRegulator;
             }
         }
         return false;

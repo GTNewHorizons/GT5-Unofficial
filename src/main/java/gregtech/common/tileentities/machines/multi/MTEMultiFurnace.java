@@ -20,6 +20,7 @@ import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -54,10 +55,9 @@ import gregtech.api.util.OverclockCalculator;
 public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> implements ISurvivalConstructable {
 
     private int mLevel = 0;
-    private int mCostDiscount = 1;
 
     private static final long RECIPE_EUT = 4;
-    private static final int RECIPE_DURATION = 512;
+    private static final int RECIPE_DURATION = 128;
     private static final int CASING_INDEX = 11;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEMultiFurnace> STRUCTURE_DEFINITION = StructureDefinition
@@ -95,8 +95,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Furnace")
-            .addInfo("Smelts up to 8-8192 items at once")
-            .addInfo("Items smelted increases with coil tier")
+            .addInfo("Smelts 4 * 2^(Coil Tier) items in parallel")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front bottom")
@@ -154,20 +153,24 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
-        ArrayList<ItemStack> tInputList = getAllStoredInputs();
-        if (tInputList.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
+        List<ItemStack> tInput = getAllStoredInputs();
+        long availableEUt = GTUtility.roundUpVoltage(getMaxInputVoltage());
+        if (availableEUt < RECIPE_EUT) {
+            return CheckRecipeResultRegistry.insufficientPower(RECIPE_EUT);
+        }
+        if (tInput.isEmpty()) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+        int maxParallel = this.mLevel;
+        int originalMaxParallel = this.mLevel;
 
-        int fakeOriginalMaxParallel = 1;
-        OverclockCalculator calculator = new OverclockCalculator().setEUt(getAverageInputVoltage())
-            .setAmperage(getMaxInputAmps())
+        OverclockCalculator calculator = new OverclockCalculator().setEUt(availableEUt)
             .setRecipeEUt(RECIPE_EUT)
             .setDuration(RECIPE_DURATION)
-            .setAmperageOC(mEnergyHatches.size() != 1)
-            .setParallel(fakeOriginalMaxParallel);
+            .setParallel(originalMaxParallel);
 
-        int maxParallel = this.mLevel;
-        int originalMaxParallel = maxParallel;
         double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
+
         if (tickTimeAfterOC < 1) {
             maxParallel = GTUtility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
         }
@@ -177,26 +180,25 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             maxParallel = GTUtility.safeInt((long) maxParallel * getMaxBatchSize(), 0);
         }
 
-        // Calculate parallel
-        int currentParallel = 0;
-        for (ItemStack item : tInputList) {
+        int currentParallel = (int) Math.min(maxParallel, availableEUt / RECIPE_EUT);
+        int itemParallel = 0;
+        for (ItemStack item : tInput) {
             ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(item, false, null);
             if (smeltedOutput != null) {
-                if (item.stackSize <= (maxParallel - currentParallel)) {
-                    currentParallel += item.stackSize;
+                if (itemParallel + item.stackSize <= currentParallel) {
+                    itemParallel += item.stackSize;
                 } else {
-                    currentParallel = maxParallel;
+                    itemParallel = currentParallel;
                     break;
                 }
             }
         }
+        currentParallel = itemParallel;
         if (currentParallel <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
         int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallelBeforeBatchMode);
-        int fakeCurrentParallel = (int) Math.ceil((double) currentParallelBeforeBatchMode / originalMaxParallel);
-
-        calculator.setCurrentParallel(fakeCurrentParallel)
+        calculator.setCurrentParallel(currentParallelBeforeBatchMode)
             .calculate();
 
         double batchMultiplierMax = 1;
@@ -205,14 +207,15 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             batchMultiplierMax = (double) getMaxBatchSize() / calculator.getDuration();
             batchMultiplierMax = Math.min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
         }
+
         int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
 
-        // Consume inputs and generate outputs
+        // Consume items and generate outputs
         ArrayList<ItemStack> smeltedOutputs = new ArrayList<>();
         int remainingCost = finalParallel;
-        for (ItemStack item : tInputList) {
+        for (ItemStack item : tInput) {
             ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(item, false, null);
-            if (smeltedOutput != null && remainingCost > 0) {
+            if (smeltedOutput != null) {
                 if (remainingCost >= item.stackSize) {
                     remainingCost -= item.stackSize;
                     smeltedOutput.stackSize *= item.stackSize;
@@ -226,16 +229,18 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
                 }
             }
         }
+
         this.mOutputItems = smeltedOutputs.toArray(new ItemStack[0]);
 
         this.mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
         this.mEfficiencyIncrease = 10000;
         this.mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMax);
         this.lEUt = calculator.getConsumption();
+        if (this.lEUt > 0) {
+            this.lEUt = -this.lEUt;
+        }
+        this.updateSlots();
 
-        if (this.lEUt > 0) this.lEUt = -this.lEUt;
-
-        updateSlots();
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -247,7 +252,6 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.mLevel = 0;
-        this.mCostDiscount = 1;
 
         replaceDeprecatedCoils(aBaseMetaTileEntity);
 
@@ -259,12 +263,8 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
 
         if (mMaintenanceHatches.size() != 1) return false;
 
-        if (getCoilLevel().getHeat() < 9000) {
-            this.mLevel = 8 * getCoilLevel().getLevel();
-        } else {
-            this.mLevel = 1 << (getCoilLevel().getTier());
-        }
-        this.mCostDiscount = getCoilLevel().getCostDiscount();
+        this.mLevel = 4 << (getCoilLevel().ordinal() - 1);
+
         return true;
     }
 
@@ -344,10 +344,6 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             StatCollector.translateToLocal("GT5U.MS.multismelting") + ": "
                 + EnumChatFormatting.GREEN
                 + mLevel
-                + EnumChatFormatting.RESET
-                + " Discount: (EU/t) / "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mCostDiscount)
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
