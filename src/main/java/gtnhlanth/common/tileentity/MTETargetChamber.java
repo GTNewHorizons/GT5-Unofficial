@@ -263,8 +263,6 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
         long tVoltageActual = GTValues.VP[(int) this.getInputVoltageTier()];
 
-        ItemStack[] tItemsArray = tItems.toArray(new ItemStack[0]);
-
         ItemStack[] tItemsWithFocusItemArray = tItemsWithFocusItem.toArray(new ItemStack[0]);
 
         RecipeTC tRecipe = (RecipeTC) BeamlineRecipeAdder2.instance.TargetChamberRecipes.findRecipeQuery()
@@ -304,10 +302,11 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         if (inputParticle != tRecipe.particleId) return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (tRecipe.focusItem != null) {
-            if (tRecipe.focusItem.getItem() != tFocusItem.getItem()) return CheckRecipeResultRegistry.NO_RECIPE;
+            if (tFocusItem != null && tRecipe.focusItem.getItem() != tFocusItem.getItem())
+                return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        int focusDurabilityDepletion = 1;
+        int focusDurabilityDepletion;
 
         float progressTime = tRecipe.amount / inputRate * 5 * TickTime.SECOND;
 
@@ -340,9 +339,6 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
         double maxParallel = tRecipe
             .maxParallelCalculatedByInputs(batchAmount, new FluidStack[] {}, tItemsWithFocusItemArray);
-
-        if (maxParallel < 1) // Insufficient items
-            return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
 

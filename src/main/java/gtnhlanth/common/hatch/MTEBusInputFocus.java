@@ -16,14 +16,14 @@ import gtnhlanth.util.Util;
 
 public class MTEBusInputFocus extends MTEHatchNbtConsumable {
 
-    private static final int INPUT_SLOTS = 4;
+    private static final int INPUT_SLOTS = 16;
 
     public MTEBusInputFocus(int id, String name, String nameRegional) {
-        super(id, name, nameRegional, 0, INPUT_SLOTS, "Input Bus for Foci", false);
+        super(id, name, nameRegional, 0, INPUT_SLOTS, "Input Bus for Foci", true);
     }
 
     public MTEBusInputFocus(String name, String[] descriptionArray, ITexture[][][] textures) {
-        super(name, 0, INPUT_SLOTS, descriptionArray, false, textures);
+        super(name, 0, INPUT_SLOTS, descriptionArray, true, textures);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class MTEBusInputFocus extends MTEHatchNbtConsumable {
     public boolean isItemValidForUsageSlot(ItemStack aStack) {
 
         if (this.getContentUsageSlots()
-            .isEmpty()) {
+            .size() < 16) {
             return aStack.getItem() instanceof ICanFocus;
         } else {
             return false;
