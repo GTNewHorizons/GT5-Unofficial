@@ -18,6 +18,13 @@ public interface IMEAwareItemInventory {
 
     int getItemCapacity();
 
+    /**
+     * Output slot etc.
+     */
+    ItemStack getExtraItemStack();
+
+    void setExtraItemStack(ItemStack stack);
+
     default boolean isValidItem(ItemStack item) {
         return true;
     }

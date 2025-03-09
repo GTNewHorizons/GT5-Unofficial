@@ -77,25 +77,27 @@ public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInve
 
     @Override
     public IItemList<IAEItemStack> getAvailableItems(IItemList<IAEItemStack> out, int iteration) {
+        return gatherItems(out);
+    }
+
+    @Override
+    public IItemList<IAEItemStack> getStorageList() {
+        return gatherItems(new ItemList());
+    }
+
+    private IItemList<IAEItemStack> gatherItems(IItemList<IAEItemStack> out) {
         ItemStack storedStack = machine.getItemStack();
         if (storedStack != null) {
             AEItemStack s = AEItemStack.create(storedStack);
             s.setStackSize(machine.getItemCount());
             out.add(s);
         }
-        return out;
-    }
-
-    @Override
-    public IItemList<IAEItemStack> getStorageList() {
-        IItemList<IAEItemStack> res = new ItemList();
-        ItemStack storedStack = machine.getItemStack();
-        if (storedStack != null) {
-            AEItemStack s = AEItemStack.create(storedStack);
-            s.setStackSize(machine.getItemCount());
-            res.add(s);
+        ItemStack extraStoredStack = machine.getExtraItemStack();
+        if (extraStoredStack != null) {
+            AEItemStack s = AEItemStack.create(extraStoredStack);
+            out.add(s);
         }
-        return res;
+        return out;
     }
 
     @Override
@@ -142,18 +144,71 @@ public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInve
 
     @Override
     public IAEItemStack extractItems(IAEItemStack request, Actionable mode, BaseActionSource src) {
+        if (machine.getBaseMetaTileEntity() == null) return null;
+
         if (request.isSameType(machine.getItemStack())) {
-            if (machine.getBaseMetaTileEntity() == null) return null;
-            if (mode != Actionable.SIMULATE) machine.getBaseMetaTileEntity()
-                .markDirty();
-            if (request.getStackSize() >= machine.getItemCount()) {
+            // Internal inv content is queried
+            if (mode != Actionable.SIMULATE) {
+                machine.getBaseMetaTileEntity()
+                    .markDirty();
+            }
+            final ItemStack storedItemStack = machine.getItemStack();
+            final ItemStack storedExtraItemStack = machine.getExtraItemStack();
+            final int storedItemCount = machine.getItemCount();
+            final boolean isExtraItemSameType = GTUtility.areStacksEqual(storedItemStack, storedExtraItemStack);
+            // Also account for extra inv if it's the same item
+            final int extraItemCount = isExtraItemSameType ? storedExtraItemStack.stackSize : 0;
+            final long totalItemCount = (long) storedItemCount + extraItemCount;
+            if (request.getStackSize() >= totalItemCount) {
+                // Cannot provide all the items required with internal inv and extra inv combined
                 AEItemStack result = AEItemStack.create(machine.getItemStack());
-                result.setStackSize(machine.getItemCount());
-                if (mode != Actionable.SIMULATE) machine.setItemCount(0);
+                result.setStackSize(totalItemCount);
+                if (mode != Actionable.SIMULATE) {
+                    // Consume items
+                    machine.setItemCount(0);
+                    if (isExtraItemSameType) {
+                        machine.setExtraItemStack(null);
+                    }
+                }
                 return result;
             } else {
-                if (mode != Actionable.SIMULATE)
-                    machine.setItemCount(machine.getItemCount() - (int) request.getStackSize());
+                // Requested items can be fully provided
+                if (mode != Actionable.SIMULATE) {
+                    // Consume items
+                    if (request.getStackSize() > storedItemCount) {
+                        // Internal inv cannot provide all, but with extra inv it can
+                        machine.setItemCount(0);
+                        // request.getStackSize() < storedItemCount + extraItemCount
+                        // <=> request.getStackSize() - storedItemCount < extraItemCount
+                        storedExtraItemStack.stackSize -= (int) (request.getStackSize() - storedItemCount);
+                    } else {
+                        // Internal inv can provide all
+                        machine.setItemCount(storedItemCount - (int) request.getStackSize());
+                    }
+                }
+                return request.copy();
+            }
+        } else if (request.isSameType(machine.getExtraItemStack())) {
+            // Requested specifically for extra inv
+            ItemStack extraItemStack = machine.getExtraItemStack();
+            if (mode != Actionable.SIMULATE) {
+                machine.getBaseMetaTileEntity()
+                    .markDirty();
+            }
+            if (request.getStackSize() >= extraItemStack.stackSize) {
+                // Cannot provide all the items required
+                AEItemStack result = AEItemStack.create(extraItemStack);
+                if (mode != Actionable.SIMULATE) {
+                    // Consume items
+                    machine.setExtraItemStack(null);
+                }
+                return result;
+            } else {
+                // Can provide all
+                if (mode != Actionable.SIMULATE) {
+                    // Consume items
+                    extraItemStack.stackSize -= (int) request.getStackSize();
+                }
                 return request.copy();
             }
         }

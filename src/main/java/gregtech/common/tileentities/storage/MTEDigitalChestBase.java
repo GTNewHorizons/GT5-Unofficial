@@ -179,6 +179,16 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
+    public ItemStack getExtraItemStack() {
+        return mInventory[1];
+    }
+
+    @Override
+    public void setExtraItemStack(ItemStack stack) {
+        mInventory[1] = stack;
+    }
+
+    @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         return new ITexture[0][0][0];
     }

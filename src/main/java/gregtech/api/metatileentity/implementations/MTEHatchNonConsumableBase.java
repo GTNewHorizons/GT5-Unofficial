@@ -87,6 +87,16 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
     @Override
     public abstract boolean isValidItem(ItemStack item);
 
+    @Override
+    public ItemStack getExtraItemStack() {
+        return mInventory[1];
+    }
+
+    @Override
+    public void setExtraItemStack(ItemStack stack) {
+        mInventory[1] = stack;
+    }
+
     protected int clientItemCount;
 
     @Override
