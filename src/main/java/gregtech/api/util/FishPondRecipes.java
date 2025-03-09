@@ -14,11 +14,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEIndustrialFishingPond;
 
-public class FishPondFakeRecipe {
-
-    public static final ArrayList<ItemStack> fish = new ArrayList<>();
-    public static final ArrayList<ItemStack> junk = new ArrayList<>();
-    public static final ArrayList<ItemStack> treasure = new ArrayList<>();
+public class FishPondRecipes {
 
     @SuppressWarnings("unchecked")
     public static void generateFishPondRecipes() {
@@ -33,33 +29,36 @@ public class FishPondFakeRecipe {
                 .getField(FishingHooks.class, "treasure")
                 .get(null);
             final Field stackField = GTUtility.getField(WeightedRandomFishable.class, "field_150711_b");
-            generateRecipesFor(MTEIndustrialFishingPond.FISH_MODE, fish, fishList, stackField);
-            generateRecipesFor(MTEIndustrialFishingPond.JUNK_MODE, junk, junkList, stackField);
-            generateRecipesFor(MTEIndustrialFishingPond.TREASURE_MODE, treasure, treasureList, stackField);
+            generateRecipeForFishable(MTEIndustrialFishingPond.FISH_MODE, fishList, stackField, 0.8);
+            generateRecipeForFishable(MTEIndustrialFishingPond.JUNK_MODE, junkList, stackField, 1.35);
+            generateRecipeForFishable(MTEIndustrialFishingPond.TREASURE_MODE, treasureList, stackField, 20D);
         } catch (Exception e) {
             Logger.INFO("Error reading the vanilla fishing loot table.");
             e.printStackTrace();
         }
     }
 
-    private static void generateRecipesFor(int circuitType, ArrayList<ItemStack> listToFill,
-        ArrayList<WeightedRandomFishable> lootTable, Field stackField) {
-        for (WeightedRandomFishable fishable : lootTable) {
+    private static void generateRecipeForFishable(int circuitType, ArrayList<WeightedRandomFishable> lootTable,
+        Field stackField, double chanceMultiplier) {
+        int[] chances = new int[lootTable.size()];
+        ItemStack[] outputs = new ItemStack[lootTable.size()];
+
+        for (int i = 0; i < lootTable.size(); i++) {
+            chances[i] = (int) (lootTable.get(i).itemWeight * 100 * chanceMultiplier);
             try {
-                ItemStack stack = (ItemStack) stackField.get(fishable);
-                listToFill.add(stack.copy());
-                GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.getIntegratedCircuit(circuitType))
-                    .itemOutputs(stack)
-                    .duration(5 * SECONDS)
-                    .eut(0)
-                    .ignoreCollision()
-                    .addTo(GTPPRecipeMaps.fishPondRecipes);
+                outputs[i] = (ItemStack) stackField.get(lootTable.get(i));
             } catch (IllegalArgumentException | IllegalAccessException e1) {
                 Logger.INFO("Error generating Fish Pond Recipes");
                 e1.printStackTrace();
             }
         }
-        listToFill.trimToSize();
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(circuitType))
+            .itemOutputs(outputs, chances)
+            .duration(10 * SECONDS)
+            .eut(16)
+            .ignoreCollision()
+            .addTo(GTPPRecipeMaps.fishPondRecipes);
     }
 }
