@@ -18,7 +18,9 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
+import com.gtnewhorizons.angelica.api.IBlockAccessExtended;
 
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.ITexture;
 import gregtech.mixin.interfaces.accessors.ChunkCacheAccessor;
 
@@ -122,6 +124,8 @@ public class RenderOverlay {
             world = cache.getWorld();
         } else if (b instanceof World w) {
             world = w;
+        } else if (Mods.Angelica.isModLoaded() && b instanceof IBlockAccessExtended w) {
+            world = w.getWorld();
         } else {
             return null;
         }
