@@ -5,7 +5,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 /**
@@ -20,6 +19,8 @@ public class ItemCasings11 extends ItemCasingsAbstract {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", aStack.getItemDamage() + 1, "item pipe"));
+        aList.add(
+            StatCollector
+                .translateToLocalFormatted("GT5U.tooltip.channelvalue", aStack.getItemDamage() + 1, "item pipe"));
     }
 }
