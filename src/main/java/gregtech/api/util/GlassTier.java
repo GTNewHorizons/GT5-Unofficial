@@ -1,6 +1,12 @@
 package gregtech.api.util;
 
 import static cpw.mods.fml.common.registry.GameRegistry.findBlock;
+import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.enums.Mods.BloodArsenal;
+import static gregtech.api.enums.Mods.Botania;
+import static gregtech.api.enums.Mods.EnderIO;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.enums.Mods.Thaumcraft;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,12 +17,17 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
+import bartworks.common.loaders.ItemRegistry;
+import gregtech.api.GregTechAPI;
 import net.minecraft.block.Block;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.enums.VoltageIndex;
+import tectech.thing.block.BlockQuantumGlass;
 
 public class GlassTier {
 
@@ -79,5 +90,96 @@ public class GlassTier {
             glassList.add(mainGlass.get(mainGlass.size() - 1));
         }
         return glassList;
+    }
+
+    // Register all your glasses here.
+    public static class RegisterGlassTiers {
+
+        public static void run() {
+            registerGlassAsTiered();
+            registerGlassOreDicts();
+        }
+
+        private static void registerGlassAsTiered() {
+
+            // --- HV ---
+            addCustomGlass(ItemRegistry.bw_realglas, 0, 3, 0);
+            // Stained boro glass
+            for (int i = 0; i < 6; ++i) {
+                addCustomGlass(ItemRegistry.bw_realglas, i + 6, 3, i + 1);
+            }
+            if (EnderIO.isModLoaded()) {
+                GlassTier.addCustomGlass(EnderIO.ID, "blockFusedQuartz", 0, 3, 7);
+            }
+            if (Thaumcraft.isModLoaded()) {
+                // Warded glass
+                addCustomGlass(Thaumcraft.ID, "blockCosmeticOpaque", 2, 3, 8);
+            }
+
+            // --- EV ---
+            addCustomGlass(ItemRegistry.bw_realglas, 1, 4, 0);
+            for (int i = 0; i < 4; i++) {
+                addCustomGlass(GregTechAPI.sBlockTintedGlass, i, 4, i + 1);
+            }
+            addCustomGlass(GregTechAPI.sBlockGlass1, 0, 4, 1);
+            addCustomGlass(IndustrialCraft2.ID, "blockAlloyGlass", 0, 4, 5);
+            if (BloodArsenal.isModLoaded()) {
+                addCustomGlass(BloodArsenal.ID, "blood_stained_glass", 0, 4, 6);
+            }
+            if (Botania.isModLoaded()) {
+                addCustomGlass(Botania.ID, "manaGlass", 0, 4, 7);
+            }
+
+            // --- IV ---
+            addCustomGlass(ItemRegistry.bw_realglas, 2, 5, 0);
+            // Thorium-Yttrium
+            addCustomGlass(ItemRegistry.bw_realglas, 12, 5, 1);
+            if (Botania.isModLoaded()) {
+                addCustomGlass(Botania.ID, "elfGlass", 0, 5, 2);
+                addCustomGlass(Botania.ID, "bifrostPerm", 0, 5, 3);
+            }
+
+            // --- LuV ---
+            addCustomGlass(ItemRegistry.bw_realglas, 3, 6, 0);
+
+            // --- ZPM ---
+            addCustomGlass(ItemRegistry.bw_realglas, 4, 7, 0);
+
+            // --- UV ---
+            addCustomGlass(ItemRegistry.bw_realglas, 5, 8, 0);
+            addCustomGlass(BlockQuantumGlass.INSTANCE, 0, 8, 1);
+
+            // --- UHV ---
+            addCustomGlass(ItemRegistry.bw_realglas, 13, 9, 0);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 1, 9, 1);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 2, 9, 2);
+
+            // --- UEV ---
+            addCustomGlass(ItemRegistry.bw_realglas, 14, 10, 0);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 3, 10, 1);
+
+            // --- UIV ---
+            addCustomGlass(ItemRegistry.bw_realglas, 15, 11, 0);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 4, 11, 1);
+
+            // --- UMV ---
+            addCustomGlass(ItemRegistry.bw_realglas2, 0, 12, 0);
+        }
+
+        private static void registerGlassOreDicts() {
+
+            // Register glass ore dict entries.
+            for (Map.Entry<Pair<Block, Integer>, Integer> pair : getGlassMap()
+                .entrySet()) {
+                String oreName = "blockGlass" + VN[pair.getValue()];
+                ItemStack itemStack = new ItemStack(
+                    pair.getKey()
+                        .getLeft(),
+                    1,
+                    pair.getKey()
+                        .getRight());
+                OreDictionary.registerOre(oreName, itemStack);
+            }
+        }
     }
 }

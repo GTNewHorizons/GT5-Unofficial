@@ -19,6 +19,7 @@ import static gregtech.api.enums.Mods.BartWorks;
 
 import java.io.IOException;
 
+import gregtech.api.util.GlassTier;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -42,7 +43,6 @@ import bartworks.common.loaders.ItemRegistry;
 import bartworks.common.loaders.LocalisationLoader;
 import bartworks.common.loaders.RadioHatchMaterialLoader;
 import bartworks.common.loaders.RecipeLoader;
-import bartworks.common.loaders.RegisterGlassTiers;
 import bartworks.common.loaders.RegisterServerCommands;
 import bartworks.common.loaders.StaticRecipeChangeLoaders;
 import bartworks.server.EventHandler.ServerEventHandler;
@@ -132,7 +132,7 @@ public final class MainMod {
             GregTechAPI.sBeforeGTLoad.add(new PrefixTextureLinker());
         }
 
-        RegisterGlassTiers.run();
+        GlassTier.RegisterGlassTiers.run();
     }
 
     @Mod.EventHandler
