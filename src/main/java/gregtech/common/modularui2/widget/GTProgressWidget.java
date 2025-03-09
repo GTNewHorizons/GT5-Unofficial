@@ -5,13 +5,20 @@ import net.minecraft.util.StatCollector;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.widget.Interactable;
+import com.cleanroommc.modularui.theme.WidgetTheme;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.common.modularui2.theme.ProgressbarWidgetTheme;
 
 /**
- * Progressbar widget that can have NEI transferrect; An area which player can click to see relevant recipes on NEI.
+ * Progressbar widget that can:
+ * <ol>
+ * <li>Have NEI transferrect; An area which player can click to see relevant recipes on NEI.</li>
+ * <li>Specify widget theme to use for progressbar texture. Textures specified by {@link ProgressWidget#texture} will be
+ * ignored in such a case.</li>
+ * </ol>
  */
 public class GTProgressWidget extends ProgressWidget implements Interactable {
 
@@ -59,6 +66,18 @@ public class GTProgressWidget extends ProgressWidget implements Interactable {
         return neiTransferRect(
             recipeMap.getFrontend()
                 .getUIProperties().neiTransferRectId);
+    }
+
+    @Override
+    public void onInit() {
+        WidgetTheme widgetTheme = getWidgetTheme(getContext().getTheme());
+        if (widgetTheme instanceof ProgressbarWidgetTheme progressbarWidgetTheme) {
+            texture(
+                progressbarWidgetTheme.getEmptyTexture(),
+                progressbarWidgetTheme.getFullTexture(),
+                progressbarWidgetTheme.getImageSize());
+        }
+        super.onInit();
     }
 
     @Override

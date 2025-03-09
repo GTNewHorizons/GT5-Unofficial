@@ -1,6 +1,7 @@
 package gregtech.api.modularui2;
 
 import gregtech.api.enums.Dyes;
+import gtPlusPlus.xmod.gregtech.common.modularui2.GTPPTextureIds;
 
 /**
  * Holds all the {@link GTGuiTheme}s registered.
@@ -31,9 +32,20 @@ public final class GTGuiThemes {
             GTTextureIds.BACKGROUND_COVER_TAB_DISABLED_STANDARD)
         .themedTexture(GTWidgetThemes.BACKGROUND_POPUP, GTTextureIds.BACKGROUND_POPUP_STANDARD)
         .themedTexture(GTWidgetThemes.BACKGROUND_TITLE, GTTextureIds.BACKGROUND_TITLE_STANDARD)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_COAL, GTTextureIds.OVERLAY_SLOT_COAL_STANDARD)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_DUST, GTTextureIds.OVERLAY_SLOT_DUST_STANDARD)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_IN, GTTextureIds.OVERLAY_SLOT_IN_STANDARD)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_INGOT, GTTextureIds.OVERLAY_SLOT_INGOT_STANDARD)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_FURNACE, GTTextureIds.OVERLAY_SLOT_FURNACE_STANDARD)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_OUT, GTTextureIds.OVERLAY_SLOT_OUT_STANDARD)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_BLOCK, GTTextureIds.OVERLAY_SLOT_BLOCK_STANDARD)
+        .progressbar(
+            GTWidgetThemes.PROGRESSBAR_BOILER_HEAT,
+            GTTextureIds.SLOT_FLUID_STANDARD,
+            GTTextureIds.PROGRESSBAR_BOILER_HEAT,
+            54)
+        .progressbar(GTWidgetThemes.PROGRESSBAR_FUEL, GTTextureIds.PROGRESSBAR_FUEL_STANDARD, 14)
+        .themedTexture(GTWidgetThemes.PICTURE_CANISTER, GTPPTextureIds.PICTURE_CANISTER_DARK)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO, GTTextureIds.PICTURE_GT_LOGO_STANDARD)
         .build();
     public static final GTGuiTheme BRONZE = GTGuiTheme.builder("gregtech:bronze")
@@ -51,9 +63,20 @@ public final class GTGuiThemes {
         .themedTexture(GTWidgetThemes.BACKGROUND_COVER_TAB_DISABLED, GTTextureIds.BACKGROUND_COVER_TAB_DISABLED_BRONZE)
         .themedTexture(GTWidgetThemes.BACKGROUND_POPUP, GTTextureIds.BACKGROUND_POPUP_BRONZE)
         .themedTexture(GTWidgetThemes.BACKGROUND_TITLE, GTTextureIds.BACKGROUND_TITLE_BRONZE)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_COAL, GTTextureIds.OVERLAY_SLOT_COAL_BRONZE)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_DUST, GTTextureIds.OVERLAY_SLOT_DUST_BRONZE)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_IN, GTTextureIds.OVERLAY_SLOT_IN_BRONZE)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_INGOT, GTTextureIds.OVERLAY_SLOT_INGOT_BRONZE)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_FURNACE, GTTextureIds.OVERLAY_SLOT_FURNACE_BRONZE)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_OUT, GTTextureIds.OVERLAY_SLOT_OUT_BRONZE)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_BLOCK, GTTextureIds.OVERLAY_SLOT_BLOCK_BRONZE)
+        .progressbar(
+            GTWidgetThemes.PROGRESSBAR_BOILER_HEAT,
+            GTTextureIds.SLOT_FLUID_BRONZE,
+            GTTextureIds.PROGRESSBAR_BOILER_HEAT,
+            54)
+        .progressbar(GTWidgetThemes.PROGRESSBAR_FUEL, GTTextureIds.PROGRESSBAR_FUEL_BRONZE, 14)
+        .themedTexture(GTWidgetThemes.PICTURE_CANISTER, GTTextureIds.OVERLAY_SLOT_CANISTER_BRONZE)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO, GTTextureIds.PICTURE_GT_LOGO_BRONZE)
         .build();
     public static final GTGuiTheme STEEL = GTGuiTheme.builder("gregtech:steel")
@@ -71,9 +94,20 @@ public final class GTGuiThemes {
         .themedTexture(GTWidgetThemes.BACKGROUND_COVER_TAB_DISABLED, GTTextureIds.BACKGROUND_COVER_TAB_DISABLED_STEEL)
         .themedTexture(GTWidgetThemes.BACKGROUND_POPUP, GTTextureIds.BACKGROUND_POPUP_STEEL)
         .themedTexture(GTWidgetThemes.BACKGROUND_TITLE, GTTextureIds.BACKGROUND_TITLE_STEEL)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_COAL, GTTextureIds.OVERLAY_SLOT_COAL_STEEL)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_DUST, GTTextureIds.OVERLAY_SLOT_DUST_STEEL)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_IN, GTTextureIds.OVERLAY_SLOT_IN_STEEL)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_INGOT, GTTextureIds.OVERLAY_SLOT_INGOT_STEEL)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_FURNACE, GTTextureIds.OVERLAY_SLOT_FURNACE_STEEL)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_OUT, GTTextureIds.OVERLAY_SLOT_OUT_STEEL)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_BLOCK, GTTextureIds.OVERLAY_SLOT_BLOCK_STEEL)
+        .progressbar(
+            GTWidgetThemes.PROGRESSBAR_BOILER_HEAT,
+            GTTextureIds.SLOT_FLUID_STEEL,
+            GTTextureIds.PROGRESSBAR_BOILER_HEAT,
+            54)
+        .progressbar(GTWidgetThemes.PROGRESSBAR_FUEL, GTTextureIds.PROGRESSBAR_FUEL_STEEL, 14)
+        .themedTexture(GTWidgetThemes.PICTURE_CANISTER, GTTextureIds.OVERLAY_SLOT_CANISTER_STEEL)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO, GTTextureIds.PICTURE_GT_LOGO_STEEL)
         .build();
     public static final GTGuiTheme PRIMITIVE = GTGuiTheme.builder("gregtech:primitive")
@@ -98,6 +132,12 @@ public final class GTGuiThemes {
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_DUST, GTTextureIds.OVERLAY_SLOT_DUST_PRIMITIVE)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_INGOT, GTTextureIds.OVERLAY_SLOT_INGOT_PRIMITIVE)
         .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_FURNACE, GTTextureIds.OVERLAY_SLOT_FURNACE_PRIMITIVE)
+        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_SLOT_BLOCK, GTTextureIds.OVERLAY_SLOT_BLOCK_PRIMITIVE)
+        .progressbar(
+            GTWidgetThemes.PROGRESSBAR_BOILER_HEAT,
+            GTTextureIds.SLOT_FLUID_PRIMITIVE,
+            GTTextureIds.PROGRESSBAR_BOILER_HEAT,
+            54)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO, GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
         .build();
 }

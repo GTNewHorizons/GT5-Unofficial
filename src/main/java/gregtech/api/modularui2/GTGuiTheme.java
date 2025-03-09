@@ -401,7 +401,7 @@ public class GTGuiTheme {
 
         /**
          * Registers texture which can be changed depending on theme.
-         * 
+         *
          * @param textureThemeId Widget theme id. See {@link GTWidgetThemes}.
          * @param textureId      Texture id found at {@link GTTextureIds}.
          */
@@ -419,7 +419,7 @@ public class GTGuiTheme {
 
         /**
          * Registers item slot overlay which can be changed depending on theme.
-         * 
+         *
          * @param textureThemeId Widget theme id. See {@link GTWidgetThemes}.
          * @param textureId      Texture id found at {@link GTTextureIds}.
          */
@@ -429,7 +429,7 @@ public class GTGuiTheme {
 
         /**
          * Registers fluid slot overlay which can be changed depending on theme.
-         * 
+         *
          * @param textureThemeId Widget theme id. See {@link GTWidgetThemes}.
          * @param textureId      Texture id found at {@link GTTextureIds}.
          */
@@ -456,6 +456,49 @@ public class GTGuiTheme {
                                         .add("id", textureId)))
                         .add("slotHoverColor", hoverColor));
             });
+            return this;
+        }
+
+        /**
+         * Registers progressbar texture which can be changed depending on theme.
+         *
+         * @param textureThemeId Widget theme id. See {@link GTWidgetThemes}.
+         * @param wholeTextureId Texture id found at {@link GTTextureIds}, having empty and full texture in one image.
+         * @param imageSize      Size of the image for the direction in which the progressbar fills up.
+         */
+        public Builder progressbar(String textureThemeId, String wholeTextureId, int imageSize) {
+            theme.elementBuilder.add(
+                b -> b.add(
+                    textureThemeId,
+                    new JsonBuilder().add(
+                        "wholeTexture",
+                        new JsonBuilder().add("type", "texture")
+                            .add("id", wholeTextureId))
+                        .add("imageSize", imageSize)));
+            return this;
+        }
+
+        /**
+         * Registers progressbar texture which can be changed depending on theme.
+         *
+         * @param textureThemeId Widget theme id. See {@link GTWidgetThemes}.
+         * @param emptyTextureId Texture id found at {@link GTTextureIds}, shown when progress is empty.
+         * @param fullTextureId  Texture id found at {@link GTTextureIds}, shown when progress is full.
+         * @param imageSize      Size of the image for the direction in which the progressbar fills up.
+         */
+        public Builder progressbar(String textureThemeId, String emptyTextureId, String fullTextureId, int imageSize) {
+            theme.elementBuilder.add(
+                b -> b.add(
+                    textureThemeId,
+                    new JsonBuilder().add(
+                        "emptyTexture",
+                        new JsonBuilder().add("type", "texture")
+                            .add("id", emptyTextureId))
+                        .add(
+                            "fullTexture",
+                            new JsonBuilder().add("type", "texture")
+                                .add("id", fullTextureId))
+                        .add("imageSize", imageSize)));
             return this;
         }
 
