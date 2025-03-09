@@ -328,7 +328,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .beginStructureBlock(15, 17, 15, false)
             .addController("Front Bottom Center")
             .addCasingInfoMin("Bronze Plated Bricks", 190, false)
-            .addOtherStructurePart("Borosilicate Glass", "Look at the hologram")
+            .addCasingInfoExactly("Glass", 121, false)
             .addStructureInfo("The glass tier limits the Energy Input tier")
             .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
             .addOtherStructurePart(
@@ -339,6 +339,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addOutputBus("Any casing", 1)
             .addEnergyHatch("Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
+            .addSubChannelUsage("glass", "Glass Tier")
             .toolTipFinisher(GTValues.AuthorKuba, "Runakai");
         return tt;
     }

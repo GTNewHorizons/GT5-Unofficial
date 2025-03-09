@@ -158,32 +158,36 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         .addElement('C', ofFrame(Materials.Polytetrafluoroethylene)) // PTFE Frame
         .addElement(
             'D',
-            ofBlocksTiered(
-                MTEMultiAutoclave::getFluidTierFromMeta,
-                ImmutableList.of(
-                    Pair.of(GregTechAPI.sBlockCasings2, 12),
-                    Pair.of(GregTechAPI.sBlockCasings2, 13),
-                    Pair.of(GregTechAPI.sBlockCasings2, 14),
-                    Pair.of(GregTechAPI.sBlockCasings2, 15)),
-                -2,
-                MTEMultiAutoclave::setFluidPipeTier,
-                MTEMultiAutoclave::getFluidPipeTier))
+            withChannel(
+                "fluid pipe",
+                ofBlocksTiered(
+                    MTEMultiAutoclave::getFluidTierFromMeta,
+                    ImmutableList.of(
+                        Pair.of(GregTechAPI.sBlockCasings2, 12),
+                        Pair.of(GregTechAPI.sBlockCasings2, 13),
+                        Pair.of(GregTechAPI.sBlockCasings2, 14),
+                        Pair.of(GregTechAPI.sBlockCasings2, 15)),
+                    -2,
+                    MTEMultiAutoclave::setFluidPipeTier,
+                    MTEMultiAutoclave::getFluidPipeTier)))
         .addElement(
             'E',
-            ofBlocksTiered(
-                MTEMultiAutoclave::getItemPipeTierFromMeta,
-                ImmutableList.of(
-                    Pair.of(GregTechAPI.sBlockCasings11, 0),
-                    Pair.of(GregTechAPI.sBlockCasings11, 1),
-                    Pair.of(GregTechAPI.sBlockCasings11, 2),
-                    Pair.of(GregTechAPI.sBlockCasings11, 3),
-                    Pair.of(GregTechAPI.sBlockCasings11, 4),
-                    Pair.of(GregTechAPI.sBlockCasings11, 5),
-                    Pair.of(GregTechAPI.sBlockCasings11, 6),
-                    Pair.of(GregTechAPI.sBlockCasings11, 7)),
-                -2,
-                MTEMultiAutoclave::setItemPipeTier,
-                MTEMultiAutoclave::getItemPipeTier))
+            withChannel(
+                "item pipe",
+                ofBlocksTiered(
+                    MTEMultiAutoclave::getItemPipeTierFromMeta,
+                    ImmutableList.of(
+                        Pair.of(GregTechAPI.sBlockCasings11, 0),
+                        Pair.of(GregTechAPI.sBlockCasings11, 1),
+                        Pair.of(GregTechAPI.sBlockCasings11, 2),
+                        Pair.of(GregTechAPI.sBlockCasings11, 3),
+                        Pair.of(GregTechAPI.sBlockCasings11, 4),
+                        Pair.of(GregTechAPI.sBlockCasings11, 5),
+                        Pair.of(GregTechAPI.sBlockCasings11, 6),
+                        Pair.of(GregTechAPI.sBlockCasings11, 7)),
+                    -2,
+                    MTEMultiAutoclave::setItemPipeTier,
+                    MTEMultiAutoclave::getItemPipeTier)))
         .addElement('F', withChannel("coil", ofCoil(MTEMultiAutoclave::setCoilLevel, MTEMultiAutoclave::getCoilLevel)))
         .build();
 
@@ -215,6 +219,8 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addEnergyHatch("Any Pressure Containment Casing", 1)
             .addMaintenanceHatch("Any Pressure Containment Casing", 1)
             .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage("item pipe", "Item Pipe Casings")
+            .addSubChannelUsage("fluid pipe", "Pipe Casings")
             .addSubChannelUsage("coil", "Heating Coils")
             .toolTipFinisher(AuthorVolence);
         return tt;
