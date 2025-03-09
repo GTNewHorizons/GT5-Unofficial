@@ -83,7 +83,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         .addElement('m', Muffler.newAny(CASING_INDEX, 2))
         .addElement(
             'C',
-                        withChannel(
+            withChannel(
                 "coil",
                 activeCoils(ofCoil(MTEMegaBlastFurnace::setCoilLevel, MTEMegaBlastFurnace::getCoilLevel))))
         .addElement('g', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
