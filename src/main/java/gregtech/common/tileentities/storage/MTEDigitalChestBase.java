@@ -249,19 +249,14 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             int count = getItemCount();
             ItemStack stack = getItemStack();
             int savedCount = count;
+            final int availableSpace = mVoidOverflow ? getMaxItemCount() : getMaxItemCount() - savedCount;
 
-            if ((mInventory[0] != null) && ((count < getMaxItemCount()) || mVoidOverflow)
-                && GTUtility.areStacksEqual(mInventory[0], stack)) {
-                count += mInventory[0].stackSize;
-                if (count <= getMaxItemCount()) {
+            if ((mInventory[0] != null) && availableSpace > 0 && GTUtility.areStacksEqual(mInventory[0], stack)) {
+                final int stackToMove = Math.min(mInventory[0].stackSize, availableSpace);
+                count = (int) Math.min((long) count + stackToMove, getMaxItemCount());
+                mInventory[0].stackSize -= stackToMove;
+                if (mInventory[0].stackSize <= 0) {
                     mInventory[0] = null;
-                } else {
-                    if (mVoidOverflow) {
-                        mInventory[0] = null;
-                    } else {
-                        mInventory[0].stackSize = (count - getMaxItemCount());
-                    }
-                    count = getMaxItemCount();
                 }
             }
             if (mInventory[1] == null && stack != null) {
@@ -406,7 +401,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         super.getWailaBody(itemStack, currenttip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("itemType", Constants.NBT.TAG_COMPOUND)) {
-            currenttip.add("Item Count: " + GTUtility.parseNumberToString(tag.getInteger("itemCount")));
+            currenttip.add("Item Count: " + GTUtility.formatNumbers(tag.getLong("itemCount")));
             currenttip.add(
                 "Item Type: " + ItemStack.loadItemStackFromNBT(tag.getCompoundTag("itemType"))
                     .getDisplayName());
@@ -421,10 +416,10 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         ItemStack is = getItemStack();
         if (GTUtility.isStackInvalid(is)) return;
-        int realItemCount = getItemCount();
+        long realItemCount = getItemCount();
         if (GTUtility.isStackValid(mInventory[1]) && GTUtility.areStacksEqual(mInventory[1], is))
             realItemCount += mInventory[1].stackSize;
-        tag.setInteger("itemCount", realItemCount);
+        tag.setLong("itemCount", realItemCount);
         tag.setTag("itemType", is.writeToNBT(new NBTTagCompound()));
     }
 
