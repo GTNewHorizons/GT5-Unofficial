@@ -29,9 +29,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
@@ -627,7 +627,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     // === GUI stuff ===
 
-    public ItemStackHandler getInventoryHandler() {
+    public IItemHandlerModifiable getInventoryHandler() {
         return null;
     }
 
@@ -751,7 +751,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public void add1by1Slot(ModularWindow.Builder builder, IDrawable... background) {
-        final ItemStackHandler inventoryHandler = getInventoryHandler();
+        final IItemHandlerModifiable inventoryHandler = getInventoryHandler();
         if (inventoryHandler == null) return;
 
         if (background.length == 0) {
@@ -768,7 +768,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public void add2by2Slots(ModularWindow.Builder builder, IDrawable... background) {
-        final ItemStackHandler inventoryHandler = getInventoryHandler();
+        final IItemHandlerModifiable inventoryHandler = getInventoryHandler();
         if (inventoryHandler == null) return;
 
         if (background.length == 0) {
@@ -785,7 +785,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public void add3by3Slots(ModularWindow.Builder builder, IDrawable... background) {
-        final ItemStackHandler inventoryHandler = getInventoryHandler();
+        final IItemHandlerModifiable inventoryHandler = getInventoryHandler();
         if (inventoryHandler == null) return;
 
         if (background.length == 0) {
@@ -802,7 +802,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public void add4by4Slots(ModularWindow.Builder builder, IDrawable... background) {
-        final ItemStackHandler inventoryHandler = getInventoryHandler();
+        final IItemHandlerModifiable inventoryHandler = getInventoryHandler();
         if (inventoryHandler == null) return;
 
         if (background.length == 0) {
@@ -827,7 +827,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     protected void addConfigurationCircuitSlot(ModularWindow.Builder builder) {
-        final ItemStackHandler inventoryHandler = getInventoryHandler();
+        final IItemHandlerModifiable inventoryHandler = getInventoryHandler();
         if (inventoryHandler == null) return;
 
         if (!(this instanceof IInventory inv)) return;
@@ -851,7 +851,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
                         newCircuit = null;
                     }
                 } else {
-                    final List<ItemStack> tCircuits = ccs.getConfigurationCircuits();
+                    final List<ItemStack> tCircuits = GTUtility.getAllIntegratedCircuits();
                     final int index = GTUtility.findMatchingStackInList(tCircuits, cursorStack);
                     if (index < 0) {
                         int curIndex = GTUtility
@@ -906,7 +906,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
         if (!(this instanceof IInventory inv)) return;
 
-        final List<ItemStack> circuits = ccs.getConfigurationCircuits();
+        final List<ItemStack> circuits = GTUtility.getAllIntegratedCircuits();
         uiContext.openClientWindow(
             player -> new SelectItemUIFactory(
                 StatCollector.translateToLocal("GT5U.machines.select_circuit"),

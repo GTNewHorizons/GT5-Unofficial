@@ -85,7 +85,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
          */
         TOO_FAR,
         /**
-         * No valid GT_MetaTileEntity_PurificationPlant was found at the link target position.
+         * No valid MTEPurificationPlant was found at the link target position.
          */
         NO_VALID_PLANT,
         /**
