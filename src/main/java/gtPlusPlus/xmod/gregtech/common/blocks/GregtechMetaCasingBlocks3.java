@@ -18,7 +18,7 @@ import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler3;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.GregtechMetaTileEntity_PowerSubStationController;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.MTEPowerSubStation;
 
 public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract {
 
@@ -33,9 +33,9 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
         @Override
         public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
             int meta = aStack.getItemDamage();
-            int tier = GregtechMetaTileEntity_PowerSubStationController.getCellTier(field_150939_a, meta);
+            int tier = MTEPowerSubStation.getCellTier(field_150939_a, meta);
             if (tier > 0) {
-                long capacity = GregtechMetaTileEntity_PowerSubStationController.getCapacityFromCellTier(tier);
+                long capacity = MTEPowerSubStation.getCapacityFromCellTier(tier);
                 aList.add("Energy Storage: " + GTUtility.formatNumbers(capacity));
             }
             super.addInformation(aStack, aPlayer, aList, aF3_H);

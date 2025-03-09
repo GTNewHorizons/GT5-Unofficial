@@ -88,11 +88,6 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }

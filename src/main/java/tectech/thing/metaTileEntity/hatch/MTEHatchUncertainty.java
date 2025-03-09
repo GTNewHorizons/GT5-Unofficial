@@ -119,11 +119,6 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
