@@ -326,16 +326,14 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
                 if (batchAmount > maskLimit) batchAmount = maskLimit; // Limited by mask durability first, if it's
                                                                       // present in recipe. Assume mask is present in
-                progressTime = 1;                                                  // machine from above condition
+                progressTime = 1; // machine from above condition
 
                 if (batchAmount < maskLimit) {
-                    int ratio = Math.min(maskLimit/batchAmount, 128);
+                    int ratio = Math.min(maskLimit / batchAmount, 128);
                     batchAmount *= ratio;
                     progressTime = ratio;
                 }
             }
-
-
 
         }
 
@@ -381,8 +379,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             if (focusDurabilityDepletion + stack.getItemDamage() > stack.getMaxDamage()) {
                 focusDurabilityDepletion -= stack.getMaxDamage() - stack.getItemDamage();
                 stack.stackSize--;
-            }
-            else {
+            } else {
                 stack.setItemDamage(stack.getItemDamage() + focusDurabilityDepletion);
                 focusDurabilityDepletion = 0;
                 break;
