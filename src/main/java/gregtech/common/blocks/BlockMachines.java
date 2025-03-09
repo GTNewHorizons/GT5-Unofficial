@@ -35,6 +35,7 @@ import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -51,7 +52,7 @@ import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.util.GTBaseCrop;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.common.tileentities.storage.MTEQuantumChest;
 import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.MTERedstoneBase;
@@ -171,8 +172,8 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
             default -> ForgeDirection.UNKNOWN;
         };
         final TileEntity machineEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return machineEntity instanceof BaseMetaTileEntity bmte && (bmte.getCoverInfoAtSide(forgeSide)
-            .getCoverID() != 0 || bmte.getMetaTileEntity() instanceof MTERedstoneBase);
+        return machineEntity instanceof BaseMetaTileEntity bmte
+            && (bmte.hasCoverAtSide(forgeSide) || bmte.getMetaTileEntity() instanceof MTERedstoneBase);
     }
 
     @Override
@@ -366,7 +367,8 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)
                 && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)
                 && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
-                && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sJackhammerList)) return false;
+                && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sJackhammerList)
+                && !CoverRegistry.isCover(tCurrentItem)) return false;
         }
 
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
@@ -563,7 +565,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 && (((BaseMetaPipeEntity) tTileEntity).mConnections & 0xFFFFFFC0) != 0) {
                 return true;
             }
-            return tTileEntity instanceof ICoverable && ((ICoverable) tTileEntity).getCoverIDAtSide(side) != 0;
+            return tTileEntity instanceof ICoverable && ((ICoverable) tTileEntity).hasCoverAtSide(side);
         }
         return false;
     }
@@ -675,14 +677,14 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         if (tTileEntity instanceof CoverableTileEntity tile) {
             final ForgeDirection dir = ForgeDirection.getOrientation(ordinalSide);
             if (dir != ForgeDirection.UNKNOWN) {
-                final Block facadeBlock = tile.getCoverInfoAtSide(dir)
+                final Block facadeBlock = tile.getCoverAtSide(dir)
                     .getFacadeBlock();
                 if (facadeBlock != null) return facadeBlock;
             } else {
                 // we do not allow more than one type of facade per block, so no need to check every side
                 // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
                 for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
-                    final Block facadeBlock = tile.getCoverInfoAtSide(tSide)
+                    final Block facadeBlock = tile.getCoverAtSide(tSide)
                         .getFacadeBlock();
                     if (facadeBlock != null) {
                         return facadeBlock;
@@ -699,17 +701,17 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         if (tTileEntity instanceof CoverableTileEntity tile) {
             final ForgeDirection dir = ForgeDirection.getOrientation(ordinalSide);
             if (ordinalSide != -1) {
-                final CoverInfo coverInfo = tile.getCoverInfoAtSide(dir);
-                final Block facadeBlock = coverInfo.getFacadeBlock();
-                if (facadeBlock != null) return coverInfo.getFacadeMeta();
+                final Cover cover = tile.getCoverAtSide(dir);
+                final Block facadeBlock = cover.getFacadeBlock();
+                if (facadeBlock != null) return cover.getFacadeMeta();
             } else {
                 // we do not allow more than one type of facade per block, so no need to check every side
                 // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
                 for (final ForgeDirection d : ForgeDirection.VALID_DIRECTIONS) {
-                    final CoverInfo coverInfo = tile.getCoverInfoAtSide(d);
-                    final Block facadeBlock = coverInfo.getFacadeBlock();
+                    final Cover cover = tile.getCoverAtSide(d);
+                    final Block facadeBlock = cover.getFacadeBlock();
                     if (facadeBlock != null) {
-                        return coverInfo.getFacadeMeta();
+                        return cover.getFacadeMeta();
                     }
                 }
             }

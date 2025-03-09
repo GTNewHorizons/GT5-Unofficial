@@ -266,8 +266,8 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
         }
 
         @Override
-        public BlocksToPlace getBlocksToPlace(MTELargeChemicalReactor gt_metaTileEntity_largeChemicalReactor,
-            World world, int x, int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
+        public BlocksToPlace getBlocksToPlace(MTELargeChemicalReactor largeChemicalReactor, World world, int x, int y,
+            int z, ItemStack trigger, AutoPlaceEnvironment env) {
             return BlocksToPlace.create(
                 IntStream.range(0, 8)
                     .mapToObj(i -> new ItemStack(GregTechAPI.sBlockCasings5, 1, i))

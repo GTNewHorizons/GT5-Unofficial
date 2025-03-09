@@ -10,6 +10,9 @@ import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
+/**
+ * Textures for MUI1.
+ */
 public class GTUITextures {
 
     public static final UITexture TRANSPARENT = UITexture.fullImage(GregTech.ID, "gui/picture/transparent");
@@ -476,8 +479,6 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/picture/gt_logo_17x17_transparent_gray");
     public static final SteamTexture PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM = SteamTexture
         .fullImage(GregTech.ID, "gui/picture/gt_logo_17x17_transparent_%s");
-    public static final UITexture PICTURE_GT_LOGO_18x18 = UITexture.fullImage(GregTech.ID, "gui/picture/gt_logo_18x18");
-    public static final UITexture PICTURE_GT_LOGO_19x19 = UITexture.fullImage(GregTech.ID, "gui/picture/gt_logo_19x19");
     public static final UITexture PICTURE_INFORMATION = UITexture.fullImage(GregTech.ID, "gui/picture/information");
     public static final UITexture PICTURE_STALLED_ELECTRICITY = UITexture
         .fullImage(GregTech.ID, "gui/picture/stalled_electricity");

@@ -12,7 +12,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.render.TextureFactory;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -247,7 +246,7 @@ public class MTESolarHeater extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         return false;
     }
 

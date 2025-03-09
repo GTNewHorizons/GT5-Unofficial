@@ -41,7 +41,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -204,7 +203,7 @@ public class MTEBoilerLava extends MTEBoiler {
         } else if (GTModHandler.isLava(equippedContainerFluidStack)) {
             tank = lavaTank;
         } else {
-            GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+            openGui(aPlayer);
             return true;
         }
         returnedItemStack = fillIFluidTankFromItemStack(tank, equippedItemStack);
@@ -313,7 +312,7 @@ public class MTEBoilerLava extends MTEBoiler {
             final ForgeDirection frontFacing = aBaseMetaTileEntity.getFrontFacing();
 
             if ((frontFacing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0
-                && aBaseMetaTileEntity.getCoverIDAtSide(frontFacing) == 0
+                && !aBaseMetaTileEntity.hasCoverAtSide(frontFacing)
                 && !aBaseMetaTileEntity.getOpacityAtSide(frontFacing)) {
 
                 final double oX = aBaseMetaTileEntity.getOffsetX(frontFacing, 1) + 8D / 16D;
