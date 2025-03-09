@@ -1498,6 +1498,10 @@ public enum ItemList implements IItemContainer {
 
     Hatch_Antimatter,
 
+    Railgun_Launcher,
+    DysonReciever1,
+    DysonReciever2,
+
     Machine_Multi_Canner,
     Machine_Multi_Solidifier,
 

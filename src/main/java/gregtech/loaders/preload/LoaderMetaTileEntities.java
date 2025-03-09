@@ -1023,6 +1023,9 @@ import gregtech.common.tileentities.machines.basic.MTETurboCharger;
 import gregtech.common.tileentities.machines.basic.MTEWorldAccelerator;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineFluid;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineItem;
+import gregtech.common.tileentities.machines.multi.Dyson.MTEDysonReciever1;
+import gregtech.common.tileentities.machines.multi.Dyson.MTEDysonReciever2;
+import gregtech.common.tileentities.machines.multi.Dyson.MTERailgunLauncher;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter1;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter2;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter3;
@@ -1636,6 +1639,18 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.LargeFluidExtractor.set(
             new MTELargeFluidExtractor(LARGE_FLUID_EXTRACTOR.ID, "multimachine.fluidextractor", "Large Fluid Extractor")
+                .getStackForm(1));
+
+        ItemList.Railgun_Launcher.set(
+            new MTERailgunLauncher(RAILGUN_LAUNCHER.ID, "multimachine.railgunlauncher", "Railgun Launcher")
+                .getStackForm(1));
+
+        ItemList.DysonReciever1.set(
+            new MTEDysonReciever1(DYSON_RECIEVER1.ID, "multimachine.dysonreciever1", "Ray Reciever MKI")
+                .getStackForm(1));
+
+        ItemList.DysonReciever2.set(
+            new MTEDysonReciever2(DYSON_RECIEVER2.ID, "multimachine.dysonreciever2", "Ray Reciever MKII")
                 .getStackForm(1));
 
         if (Thaumcraft.isModLoaded()) {
