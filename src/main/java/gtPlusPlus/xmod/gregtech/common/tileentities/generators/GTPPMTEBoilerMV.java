@@ -6,24 +6,24 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 
-public class MTEBoilerHV extends MTEBoilerBase {
+public class GTPPMTEBoilerMV extends GTPPMTEBoilerBase {
 
-    public MTEBoilerHV(int aID, String aNameRegional, int aBoilerTier) {
+    public GTPPMTEBoilerMV(int aID, String aNameRegional, int aBoilerTier) {
         super(aID, aNameRegional, aBoilerTier);
     }
 
-    public MTEBoilerHV(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GTPPMTEBoilerMV(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEBoilerHV(this.mName, 3, this.mDescriptionArray, this.mTextures);
+        return new GTPPMTEBoilerMV(this.mName, 2, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
     protected ITexture getCasingTexture() {
-        return TextureFactory.of(Textures.BlockIcons.MACHINE_HV_SIDE);
+        return TextureFactory.of(Textures.BlockIcons.MACHINE_MV_SIDE);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class MTEBoilerHV extends MTEBoilerBase {
     @Override
     public ITexture[] getTop(final byte aColor) {
         return new ITexture[] { super.getTop(aColor)[0], this.getCasingTexture(),
-            TextureFactory.of(Textures.BlockIcons.MACHINE_HV_TOP) };
+            TextureFactory.of(Textures.BlockIcons.MACHINE_MV_TOP) };
     }
 
     @Override
