@@ -290,7 +290,12 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
             .forEach(uuid -> {
                 if (!uuid.equals("null") && SpaceProjectManager.getLeader(UUID.fromString(uuid))
                     .equals(leader)) {
-                    advancedMatrix.addAll((processAdvancedFrequencies(allFreqs.getOrDefault(uuid, new ConcurrentHashMap<>()), uuid, advGrid, guiSyncManager)));
+                    advancedMatrix.addAll(
+                        (processAdvancedFrequencies(
+                            allFreqs.getOrDefault(uuid, new ConcurrentHashMap<>()),
+                            uuid,
+                            advGrid,
+                            guiSyncManager)));
                 }
             });
 
