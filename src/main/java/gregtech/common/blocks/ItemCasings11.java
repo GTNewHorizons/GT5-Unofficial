@@ -20,9 +20,6 @@ public class ItemCasings11 extends ItemCasingsAbstract {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        aList.add(
-            StatCollector.translateToLocalFormatted(
-                "gt.casing.tiertooltip",
-                (EnumChatFormatting.YELLOW + Integer.toString(getDamage(aStack) + 1))));
+        aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", aStack.getItemDamage() + 1, "item pipe"));
     }
 }
