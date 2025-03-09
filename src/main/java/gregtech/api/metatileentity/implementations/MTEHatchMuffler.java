@@ -66,11 +66,6 @@ public class MTEHatchMuffler extends MTEHatch {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return false;
     }
@@ -200,13 +195,5 @@ public class MTEHatchMuffler extends MTEHatch {
             return true;
         }
         return false;
-    }
-
-    /**
-     * @deprecated Use {@link #polluteEnvironment(MetaTileEntity, int)}.
-     */
-    @Deprecated
-    public boolean polluteEnvironment(MetaTileEntity mte) {
-        return polluteEnvironment(mte, 10000);
     }
 }

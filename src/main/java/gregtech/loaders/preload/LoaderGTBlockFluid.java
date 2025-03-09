@@ -2112,6 +2112,11 @@ public class LoaderGTBlockFluid implements Runnable {
         GTOreDictUnificator
             .set(OrePrefixes.ingot, Materials.Void, GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 16));
 
+        // Special secondary oredict for Sodium Hydroxide
+        GTOreDictUnificator.registerOre("dustSodiumHydroxide", Materials.SodiumHydroxide.getDust(1));
+        GTOreDictUnificator.registerOre("dustSmallSodiumHydroxide", Materials.SodiumHydroxide.getDustSmall(1));
+        GTOreDictUnificator.registerOre("dustTinySodiumHydroxide", Materials.SodiumHydroxide.getDustTiny(1));
+
         GTOreDictUnificator.set(
             OrePrefixes.dust,
             Materials.Cocoa,

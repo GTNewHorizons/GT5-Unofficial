@@ -282,7 +282,7 @@ public class MachineBlockRenderer extends GTRendererBlock {
                 final EnumSet<ForgeDirection> coveredSides = EnumSet.noneOf(ForgeDirection.class);
 
                 for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                    if (aTileEntity.getCoverIDAtSide(side) != 0) coveredSides.add(side);
+                    if (aTileEntity.hasCoverAtSide(side)) coveredSides.add(side);
                 }
 
                 if (coveredSides.containsAll(EnumSet.of(DOWN, UP, NORTH, SOUTH, WEST, EAST))) {

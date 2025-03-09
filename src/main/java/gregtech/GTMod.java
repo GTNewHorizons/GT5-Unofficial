@@ -58,6 +58,10 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuis;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
@@ -205,12 +209,8 @@ public class GTMod implements IGTMod {
     public static final boolean DEBUG = Boolean.getBoolean("gt.debug");
 
     public static GTAchievements achievements;
-    @Deprecated
-    public static final String aTextGeneral = "general";
-    public static final String aTextIC2 = "ic2_";
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
 
-    @SuppressWarnings("deprecation")
     public GTMod() {
         GTValues.GT = this;
         GTValues.DW = new GTDummyWorld();
@@ -223,9 +223,6 @@ public class GTMod implements IGTMod {
         for (int i = 4; i < 12; i++) {
             GregTechAPI.registerTileEntityConstructor(i, i2 -> new BaseMetaPipeEntity());
         }
-
-        // noinspection deprecation// Need run-time initialization
-        GregTechAPI.sRecipeAdder = GTValues.RA;
 
         // noinspection ResultOfMethodCallIgnored// Suspicious likely pointless
         Textures.BlockIcons.VOID.name();
@@ -262,6 +259,12 @@ public class GTMod implements IGTMod {
         GTLog.out.println("GTMod: Setting Configs");
 
         GTPreLoad.loadConfig();
+
+        // ModularUI
+        GTGuis.registerFactories();
+        GTGuiTextures.init();
+        GTGuiTheme.registerThemes();
+        GTWidgetThemes.register();
 
         new EnchantmentHazmat();
         new EnchantmentEnderDamage();

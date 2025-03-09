@@ -15,7 +15,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.metatileentity.implementations.MTEFluid;
+import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
@@ -30,7 +30,7 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTECable;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTEFluid;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTEFluidPipe;
 
 public class GregtechConduits {
 
@@ -103,7 +103,7 @@ public class GregtechConduits {
     private static void generateFluidMultiPipes(Materials aMaterial, String name, String displayName, int startID,
         int transferRatePerSec, int heatCapacity) {
         final int transferRatePerTick = transferRatePerSec / 20;
-        MTEFluid aPipe = new MTEFluid(
+        MTEFluidPipe aPipe = new MTEFluidPipe(
             startID,
             "GT_Pipe_" + name + "_Hexadecuple",
             "Hexadecuple " + displayName + " Fluid Pipe",
@@ -602,7 +602,7 @@ public class GregtechConduits {
         final long voltage = material.mMeltingPoint >= 2800 ? 64 : 16;
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeTiny.get(material),
-            new MTEFluid(
+            new MTEFluidPipe(
                 startID,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Tiny",
                 "Tiny " + material.mDefaultLocalName + " Fluid Pipe",
@@ -613,7 +613,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeSmall.get(material),
-            new MTEFluid(
+            new MTEFluidPipe(
                 startID + 1,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Small",
                 "Small " + material.mDefaultLocalName + " Fluid Pipe",
@@ -624,7 +624,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(material),
-            new MTEFluid(
+            new MTEFluidPipe(
                 startID + 2,
                 "GT_Pipe_" + material.mDefaultLocalName,
                 material.mDefaultLocalName + " Fluid Pipe",
@@ -635,7 +635,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeLarge.get(material),
-            new MTEFluid(
+            new MTEFluidPipe(
                 startID + 3,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Large",
                 "Large " + material.mDefaultLocalName + " Fluid Pipe",
@@ -646,7 +646,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeHuge.get(material),
-            new MTEFluid(
+            new MTEFluidPipe(
                 startID + 4,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Huge",
                 "Huge " + material.mDefaultLocalName + " Fluid Pipe",
@@ -662,7 +662,7 @@ public class GregtechConduits {
         final int transferRatePerTick = transferRatePerSec / 20;
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeTiny.get(material),
-            new GTPPMTEFluid(
+            new GTPPMTEFluidPipe(
                 startID,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Tiny",
                 "Tiny " + material.mDefaultLocalName + " Fluid Pipe",
@@ -673,7 +673,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeSmall.get(material),
-            new GTPPMTEFluid(
+            new GTPPMTEFluidPipe(
                 startID + 1,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Small",
                 "Small " + material.mDefaultLocalName + " Fluid Pipe",
@@ -684,7 +684,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(material),
-            new GTPPMTEFluid(
+            new GTPPMTEFluidPipe(
                 startID + 2,
                 "GT_Pipe_" + material.mDefaultLocalName,
                 material.mDefaultLocalName + " Fluid Pipe",
@@ -695,7 +695,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeLarge.get(material),
-            new GTPPMTEFluid(
+            new GTPPMTEFluidPipe(
                 startID + 3,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Large",
                 "Large " + material.mDefaultLocalName + " Fluid Pipe",
@@ -706,7 +706,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeHuge.get(material),
-            new GTPPMTEFluid(
+            new GTPPMTEFluidPipe(
                 startID + 4,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Huge",
                 "Huge " + material.mDefaultLocalName + " Fluid Pipe",
