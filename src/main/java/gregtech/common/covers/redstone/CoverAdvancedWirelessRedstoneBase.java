@@ -7,8 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
 
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerTextFieldWidget;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
@@ -31,6 +29,7 @@ import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollowerTextFieldWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
@@ -265,8 +264,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * privateExtraColumn, 4 + startY + spaceY * getButtonRow()))
                 .widget(
-                    new TextWidget("Label")
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    new TextWidget("Label").setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2));
         }
 
@@ -289,7 +287,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
                         coverData.label = newLabel;
                         return coverData;
                     },
-                    widget -> widget.setPos(1, 2 + spaceY * (getButtonRow()+1))
+                    widget -> widget.setPos(1, 2 + spaceY * (getButtonRow() + 1))
                         .setSize(spaceX * 5 - 4, 12))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofCheck(),
