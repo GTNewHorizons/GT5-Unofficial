@@ -13,7 +13,7 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.GregtechMetaTileEntity_PowerSubStationController;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.MTEPowerSubStation;
 
 public class GregtechPowerSubStation {
 
@@ -25,10 +25,8 @@ public class GregtechPowerSubStation {
     private static void run1() {
         // Steam Condensors
         GregtechItemList.PowerSubStation.set(
-            new GregtechMetaTileEntity_PowerSubStationController(
-                PowerSubStation.ID,
-                "substation.01.input.single",
-                "Power Station Control Node").getStackForm(1L));
+            new MTEPowerSubStation(PowerSubStation.ID, "substation.01.input.single", "Power Station Control Node")
+                .getStackForm(1L));
         int tID = 886;
         GregtechItemList.Hatch_Input_Battery_MV.set(
             new MTEHatchInputBattery(Hatch_Input_Battery_MV.ID, "hatch.input_battery.tier.00", "Charging Bus (MV)", 2)

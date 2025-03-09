@@ -410,8 +410,10 @@ GT5U.machines.digitaltank.voidoverflow.tooltip.1=§7Voids all fluid excess if th
 GT5U.machines.digitaltank.voidfull.tooltip=Void Full Mode
 GT5U.machines.digitaltank.voidfull.tooltip.1=§7Voids all fluids that enter the tank
 GT5U.machines.digitaltank.inputfromoutput.tooltip=Input Fluid from Output Side
-GT5U.machines.select_circuit=Select Machine Mode
+GT5U.machines.select_circuit=Configure Circuit
 GT5U.machines.select_circuit.tooltip=Ghost Circuit Slot
+GT5U.machines.select_circuit.tooltip.configuration=§aConfiguration: §f%s§r
+GT5U.machines.select_circuit.tooltip.configuration.none=None
 GT5U.machines.select_circuit.tooltip.1=§7LMB/RMB/scroll to cycle through the list
 GT5U.machines.select_circuit.tooltip.2=§7Shift left click to open GUI
 GT5U.machines.select_circuit.tooltip.3=§7Shift right click to clear
@@ -641,6 +643,7 @@ GT5U.gui.button.max_parallel=Always use maximum
 GT5U.gui.text.rangedvalue=Range: %s-%s
 GT5U.gui.text.lockedvalue=Locked: %s
 GT5U.gui.text.success=§aProcessing recipe
+GT5U.gui.text.progress=§fProgress:
 GT5U.gui.text.generating=§aGenerating power
 GT5U.gui.text.no_recipe=§7No valid recipe found
 GT5U.gui.text.item_output_full=§7Not enough item output space
@@ -1894,7 +1897,6 @@ gt.wrench.mode.1=Line Mode
 
 
 # GT++
-# Shit I stole from GTNH~
 
 GT5U.gui.text.no_water=§7Missing water
 GT5U.gui.text.no_lava=§7Missing lava
@@ -2033,6 +2035,9 @@ GTPP.tooltip.block.mining_level=Mining Level: %d
 GTPP.tooltip.block.contains=Contains:
 GTPP.tooltip.meta_special.quantum_stability=Provides quantum stability
 GTPP.tooltip.meta_special.quantum_modulation=Provides quantum modulation
+GTPP.tooltip.meta_food.unless_starving=I wouldn't eat this unless I was starving
+GTPP.tooltip.meta_food.better_cooked=Doesn't look any better cooked
+GTPP.tooltip.meta_food.warm_touch=Warm to the touch
 
 # GTPP structure hints
 GTPP.tooltip.structure.anvil=Anvil
@@ -2072,6 +2077,9 @@ GT5U.tooltip.fluid.temperature=Temperature: %s K
 GT5U.tooltip.fluid.stat=State: %s
 GT5U.tooltip.fluid.stat.gas=Gas
 GT5U.tooltip.fluid.stat.liquid=Liquid
+
+GT5U.tooltip.comb.ban_forestry=Forestry can't process it
+GT5U.tooltip.mega_apiary.only_producer=Will only be produced in mega Apiary
 
 # Achievements
 
