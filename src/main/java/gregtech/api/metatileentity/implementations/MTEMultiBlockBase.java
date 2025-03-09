@@ -2835,7 +2835,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     protected String generateCurrentRecipeInfoString() {
-        StringBuffer ret = new StringBuffer(EnumChatFormatting.WHITE + "Progress: ");
+        StringBuffer ret = new StringBuffer(StatCollector.translateToLocal("GT5U.gui.text.progress"));
+        ret.append(" ");
 
         numberFormat.setMinimumFractionDigits(2);
         numberFormat.setMaximumFractionDigits(2);
