@@ -460,6 +460,38 @@ public class GTGuiTheme {
         }
 
         /**
+         * Registers button texture which can be changed depending on theme.
+         *
+         * @param textureThemeId Widget theme id. See {@link GTWidgetThemes}.
+         * @param backgroundId   Texture id found at {@link GTTextureIds}.
+         */
+        public Builder themedButton(String textureThemeId, String backgroundId) {
+            return themedButton(textureThemeId, backgroundId, backgroundId);
+        }
+
+        /**
+         * Registers button texture which can be changed depending on theme.
+         *
+         * @param textureThemeId    Widget theme id. See {@link GTWidgetThemes}.
+         * @param backgroundId      Texture id found at {@link GTTextureIds}.
+         * @param hoverBackgroundId Texture id found at {@link GTTextureIds}.
+         */
+        public Builder themedButton(String textureThemeId, String backgroundId, String hoverBackgroundId) {
+            theme.elementBuilder.add(
+                b -> b.add(
+                    textureThemeId,
+                    new JsonBuilder().add(
+                        "background",
+                        new JsonBuilder().add("type", "texture")
+                            .add("id", backgroundId))
+                        .add(
+                            "hoverBackground",
+                            new JsonBuilder().add("type", "texture")
+                                .add("id", hoverBackgroundId))));
+            return this;
+        }
+
+        /**
          * Registers progressbar texture which can be changed depending on theme.
          *
          * @param textureThemeId Widget theme id. See {@link GTWidgetThemes}.

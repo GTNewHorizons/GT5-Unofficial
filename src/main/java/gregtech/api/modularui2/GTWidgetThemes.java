@@ -32,9 +32,6 @@ public final class GTWidgetThemes {
 
     public static final String TEXT_TITLE = "textTitle";
 
-    public static final String BACKGROUND_COVER_TAB_NORMAL = "backgroundCoverTabNormal";
-    public static final String BACKGROUND_COVER_TAB_HIGHLIGHT = "backgroundCoverTabHighlight";
-    public static final String BACKGROUND_COVER_TAB_DISABLED = "backgroundCoverTabDisabled";
     public static final String BACKGROUND_POPUP = "backgroundPopup";
     public static final String BACKGROUND_TITLE = "backgroundTitle";
 
@@ -51,6 +48,9 @@ public final class GTWidgetThemes {
     public static final String PROGRESSBAR_BOILER_HEAT = "progressbarBoilerHeat";
     public static final String PROGRESSBAR_FUEL = "progressbarFuel";
 
+    public static final String BUTTON_COVER_TAB_ENABLED = "buttonCoverTabEnabled";
+    public static final String BUTTON_COVER_TAB_DISABLED = "buttonCoverTabDisabled";
+
     public static final String PICTURE_CANISTER = "pictureCanister";
     public static final String PICTURE_LOGO = "pictureLogo";
 
@@ -62,9 +62,6 @@ public final class GTWidgetThemes {
             new WidgetTheme(null, null, Color.WHITE.main, 0x404040, false),
             WidgetTheme::new);
 
-        registerThemedTexture(BACKGROUND_COVER_TAB_NORMAL);
-        registerThemedTexture(BACKGROUND_COVER_TAB_HIGHLIGHT);
-        registerThemedTexture(BACKGROUND_COVER_TAB_DISABLED);
         registerThemedTexture(BACKGROUND_POPUP);
         registerThemedTexture(BACKGROUND_TITLE);
 
@@ -86,6 +83,9 @@ public final class GTWidgetThemes {
             PROGRESSBAR_FUEL,
             new ProgressbarWidgetTheme(GTGuiTextures.PROGRESSBAR_FUEL_STANDARD, 14),
             ProgressbarWidgetTheme::new);
+
+        registerThemedButton(BUTTON_COVER_TAB_ENABLED);
+        registerThemedButton(BUTTON_COVER_TAB_DISABLED);
 
         registerThemedTexture(PICTURE_CANISTER);
         registerThemedTexture(PICTURE_LOGO);
@@ -113,5 +113,13 @@ public final class GTWidgetThemes {
             textureThemeId,
             new WidgetSlotTheme(GuiTextures.SLOT_FLUID, Color.withAlpha(Color.WHITE.main, 0x60)),
             WidgetSlotTheme::new);
+    }
+
+    private static void registerThemedButton(String textureThemeId) {
+        IThemeApi themeApi = IThemeApi.get();
+        themeApi.registerWidgetTheme(
+            textureThemeId,
+            new WidgetTheme(null, null, Color.WHITE.main, 0xFF404040, false),
+            WidgetTheme::new);
     }
 }
