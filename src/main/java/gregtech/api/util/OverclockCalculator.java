@@ -291,30 +291,32 @@ public class OverclockCalculator {
     }
 
     private void calculateOverclock() {
-        // Get the base duration
+        // Determine the base duration, using the custom supplier if available.
         double duration = durationUnderOneTickSupplier != null ? durationUnderOneTickSupplier.get()
             : this.duration * durationModifier;
 
-        // Usually a safeguard when currentParallel is not set: We assume parallel is fully used.
+        // If currentParallel isn't set, assume full parallel usage.
         currentParallel = Math.max(currentParallel, parallel);
 
+        // Treat ULV (tier 0) as LV (tier 1) for overclocking calculations.
         double recipePower = recipeEUt * parallel * eutModifier * calculateHeatDiscountMultiplier();
-        double recipePowerTier = Math.log(recipePower / 8) / LOG4;
+        double recipePowerTier = Math.max(Math.log(recipePower / 8) / LOG4, 1);
         double machinePower = machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel));
-        double machinePowerTier = Math.log(machinePower / 8) / LOG4;
+        double machinePowerTier = Math.max(Math.log(machinePower / 8) / LOG4, 1);
 
-        // Early return if overclocks are disabled.
+        // If overclocking is disabled, use the base values and return.
         if (noOverclock) {
             calculatedConsumption = (long) Math.ceil(recipePower);
             calculatedDuration = (int) Math.ceil(duration);
             return;
         }
 
-        // Specialized logic for laser overclocks.
+        // Special handling for laser overclocking.
         if (laserOC) {
             double eutLaserOverclock = recipePower;
             overclocks = 0;
 
+            // Keep increasing power until it hits the machine's limit.
             while (eutLaserOverclock * (4.0 + 0.3 * (overclocks + 1)) < machinePower) {
                 eutLaserOverclock *= (4.0 + 0.3 * (overclocks + 1));
                 overclocks++;
@@ -326,24 +328,24 @@ public class OverclockCalculator {
             return;
         }
 
-        // Limit overclocks by power tier.
+        // Limit overclocks allowed by power tier.
         overclocks = Math.min(maxOverclocks, (int) (machinePowerTier - recipePowerTier));
 
-        // Limit overclocks by voltage tier if amperage overclocks are disabled.
+        // If amperage overclocks are disabled, limit overclocks by voltage tier.
         if (!amperageOC) {
-            int voltageTierMachine = (int) Math.max(Math.ceil(Math.log((double) machineVoltage / 8) / LOG4), 0);
-            int voltageTierRecipe = (int) Math.max(Math.ceil(Math.log((double) recipeEUt / 8) / LOG4), 0);
+            int voltageTierMachine = (int) Math.max(Math.ceil(Math.log((double) machineVoltage / 8) / LOG4), 1);
+            int voltageTierRecipe = (int) Math.max(Math.ceil(Math.log((double) recipeEUt / 8) / LOG4), 1);
             overclocks = Math.min(overclocks, voltageTierMachine - voltageTierRecipe);
         }
 
-        // If triggered, it indicates that recipe power > machine power. Not just a safeguard.
-        // This also means that you can run a 1.2A recipe on a single hatch for a regular gt multi.
-        // This is intended, including the fact that you don't get an OC with a one tier upgrade in that case.
+        // Make sure overclocks don't go negative. This allows recipes needing >1A to run on a single hatch.
         overclocks = Math.max(overclocks, 0);
 
+        // Split overclocks into heat-based and regular overclocks.
         int heatOverclocks = Math.min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
         int regularOverclocks = overclocks - heatOverclocks;
 
+        // Adjust power consumption and processing time based on overclocks.
         calculatedConsumption = (long) Math.ceil(recipePower * Math.pow(eutIncreasePerOC, overclocks));
         duration /= Math.pow(durationDecreasePerHeatOC, heatOverclocks);
         duration /= Math.pow(durationDecreasePerOC, regularOverclocks);
@@ -355,18 +357,20 @@ public class OverclockCalculator {
      * doesn't count as calculating
      */
     public double calculateDurationUnderOneTick() {
-        // Get the base duration
+        // Determine the base duration, using the custom supplier if available.
         double duration = durationUnderOneTickSupplier != null ? durationUnderOneTickSupplier.get()
             : this.duration * durationModifier;
 
+        // Treat ULV (tier 0) as LV (tier 1) for overclocking calculations.
         double recipePower = recipeEUt * parallel * eutModifier * calculateHeatDiscountMultiplier();
-        double recipePowerTier = Math.log(recipePower / 8) / LOG4;
+        double recipePowerTier = Math.max(Math.log(recipePower / 8) / LOG4, 1);
         double machinePower = machineVoltage * (amperageOC ? machineAmperage : Math.min(machineAmperage, parallel));
-        double machinePowerTier = Math.log(machinePower / 8) / LOG4;
+        double machinePowerTier = Math.max(Math.log(machinePower / 8) / LOG4, 1);
 
+        // If overclocking is disabled, use the base values and return.
         if (noOverclock) return duration;
 
-        // Specialized logic for laser overclocks.
+        // Special handling for laser overclocking.
         if (laserOC) {
             double eutLaserOverclock = recipePower;
             int overclocks = 0;
@@ -379,24 +383,24 @@ public class OverclockCalculator {
             return duration / Math.pow(durationDecreasePerOC, overclocks);
         }
 
-        // Limit overclocks by power tier.
+        // Limit overclocks allowed by power tier.
         int overclocks = Math.min(maxOverclocks, (int) (machinePowerTier - recipePowerTier));
 
-        // Limit overclocks by voltage tier if amperage overclocks are disabled.
+        // If amperage overclocks are disabled, limit overclocks by voltage tier.
         if (!amperageOC) {
-            int voltageTierMachine = (int) Math.max(Math.ceil(Math.log((double) machineVoltage / 8) / LOG4), 0);
-            int voltageTierRecipe = (int) Math.max(Math.ceil(Math.log((double) recipeEUt / 8) / LOG4), 0);
+            int voltageTierMachine = (int) Math.max(Math.ceil(Math.log((double) machineVoltage / 8) / LOG4), 1);
+            int voltageTierRecipe = (int) Math.max(Math.ceil(Math.log((double) recipeEUt / 8) / LOG4), 1);
             overclocks = Math.min(overclocks, voltageTierMachine - voltageTierRecipe);
         }
 
-        // If triggered, it indicates that recipe power > machine power. Not just a safeguard.
-        // This also means that you can run a 1.2A recipe on a single hatch for a regular gt multi.
-        // This is intended, including the fact that you don't get an OC with a one tier upgrade in that case.
+        // Make sure overclocks don't go negative. This allows recipes needing >1A to run on a single hatch.
         overclocks = Math.max(overclocks, 0);
 
+        // Split overclocks into heat-based and regular overclocks.
         int heatOverclocks = Math.min(heatOC ? (machineHeat - recipeHeat) / HEAT_OVERCLOCK_THRESHOLD : 0, overclocks);
         int regularOverclocks = overclocks - heatOverclocks;
 
+        // Adjust power consumption and processing time based on overclocks.
         duration /= Math.pow(durationDecreasePerHeatOC, heatOverclocks);
         duration /= Math.pow(durationDecreasePerOC, regularOverclocks);
 
