@@ -12,7 +12,6 @@ import gregtech.api.render.TextureFactory;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.MTEHatchNbtConsumable;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtnhlanth.common.item.ICanFocus;
-import gtnhlanth.util.Util;
 
 public class MTEBusInputFocus extends MTEHatchNbtConsumable {
 
@@ -46,7 +45,11 @@ public class MTEBusInputFocus extends MTEHatchNbtConsumable {
 
         if (this.getContentUsageSlots()
             .size() < 16) {
-            return aStack.getItem() instanceof ICanFocus;
+            if (this.getContentUsageSlots()
+                .isEmpty()) return aStack.getItem() instanceof ICanFocus;
+            return aStack.getItem() == this.getContentUsageSlots()
+                .get(0)
+                .getItem();
         } else {
             return false;
         }
@@ -56,15 +59,6 @@ public class MTEBusInputFocus extends MTEHatchNbtConsumable {
     @Override
     public String getNameGUI() {
         return "Focus Input Bus";
-    }
-
-    public void depleteFocusDurability(int damage) {
-
-        ItemStack stack = this.getContentUsageSlots()
-            .get(0);
-
-        Util.depleteDurabilityOfStack(stack, damage);
-
     }
 
     @Override

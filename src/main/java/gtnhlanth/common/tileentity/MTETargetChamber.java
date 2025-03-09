@@ -249,14 +249,16 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         ArrayList<ItemStack> tItems = this.getStoredInputs();
         ArrayList<ItemStack> tFocusItemArray = this.getFocusItemStack();
 
-        ItemStack tFocusItemZeroDamage = null;
+        ItemStack tFocusItemZeroDamage;
 
         ArrayList<ItemStack> tItemsWithFocusItem = new ArrayList<>();
 
-        for (ItemStack focus : tFocusItemArray) {
-            tFocusItemZeroDamage = focus.copy();
-            tFocusItemZeroDamage.setItemDamage(0);
-            tItemsWithFocusItem.add(tFocusItemZeroDamage);
+        if (tFocusItemArray != null) {
+            for (ItemStack focus : tFocusItemArray) {
+                tFocusItemZeroDamage = focus.copy();
+                tFocusItemZeroDamage.setItemDamage(0);
+                tItemsWithFocusItem.add(tFocusItemZeroDamage);
+            }
         }
 
         tItemsWithFocusItem.addAll(tItems);
@@ -276,9 +278,12 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
                 int particle = recipeTc.particleId;
 
-                return (particle == inputInfo.getParticleId()
-                    && !(inputInfo.getEnergy() < recipeTc.minEnergy || inputInfo.getEnergy() > recipeTc.maxEnergy));
+                if (inputInfo != null) {
+                    return (particle == inputInfo.getParticleId()
+                        && !(inputInfo.getEnergy() < recipeTc.minEnergy || inputInfo.getEnergy() > recipeTc.maxEnergy));
+                }
 
+                return false;
             })
             .cachedRecipe(this.lastRecipe)
             .find();
@@ -302,9 +307,11 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         if (inputParticle != tRecipe.particleId) return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (tRecipe.focusItem != null) {
-            for (ItemStack focus : tFocusItemArray) {
-                if (focus != null && tRecipe.focusItem.getItem() != focus.getItem())
-                    return CheckRecipeResultRegistry.NO_RECIPE;
+            if (tFocusItemArray != null) {
+                for (ItemStack focus : tFocusItemArray) {
+                    if (focus != null && tRecipe.focusItem.getItem() != focus.getItem())
+                        return CheckRecipeResultRegistry.NO_RECIPE;
+                }
             }
         }
 
@@ -320,8 +327,10 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
             if (tRecipe.focusItem != null) {
                 int maskLimit = 0;
-                for (ItemStack focus : tFocusItemArray) {
-                    maskLimit += focus.getMaxDamage() - focus.getItemDamage() + 1;
+                if (tFocusItemArray != null) {
+                    for (ItemStack focus : tFocusItemArray) {
+                        maskLimit += focus.getMaxDamage() - focus.getItemDamage() + 1;
+                    }
                 }
 
                 if (batchAmount > maskLimit) batchAmount = maskLimit; // Limited by mask durability first, if it's
@@ -374,15 +383,17 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
         this.mOutputItems = itemOutputArray;
 
-        for (ItemStack stack : tFocusItemArray) {
+        if (tFocusItemArray != null) {
+            for (ItemStack stack : tFocusItemArray) {
 
-            if (focusDurabilityDepletion + stack.getItemDamage() > stack.getMaxDamage()) {
-                focusDurabilityDepletion -= stack.getMaxDamage() - stack.getItemDamage();
-                stack.stackSize--;
-            } else {
-                stack.setItemDamage(stack.getItemDamage() + focusDurabilityDepletion);
-                focusDurabilityDepletion = 0;
-                break;
+                if (focusDurabilityDepletion + stack.getItemDamage() > stack.getMaxDamage()) {
+                    focusDurabilityDepletion -= stack.getMaxDamage() - stack.getItemDamage();
+                    stack.stackSize--;
+                } else {
+                    stack.setItemDamage(stack.getItemDamage() + focusDurabilityDepletion);
+                    focusDurabilityDepletion = 0;
+                    break;
+                }
             }
         }
 
@@ -408,7 +419,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         for (MTEBusInputFocus hatch : this.mInputFocus) {
 
             if (hatch.getContentUsageSlots()
-                .isEmpty()) continue;
+                .isEmpty()) return null;
 
             ret = hatch.getContentUsageSlots();
         }
