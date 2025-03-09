@@ -18,6 +18,7 @@ import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 
 /**
  * This makes it easier to build multi tooltips, with a standardized format. <br>
@@ -553,6 +554,54 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addTecTechHatchInfo() {
         iLines.add(EnumChatFormatting.GREEN + TT_tectechhatch);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * t-tier Glass required for TecTech Laser Hatches.
+     *
+     * @param t Tier of glass that unlocks all energy hatches
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addGlassTecTechInfo(int t) {
+        iLines.add(
+            GTValues.TIER_COLORS[t] + GTValues.VN[t]
+                + EnumChatFormatting.GRAY
+                + "-tier glass required for "
+                + EnumChatFormatting.BLUE
+                + "Tec"
+                + EnumChatFormatting.DARK_BLUE
+                + "Tech"
+                + EnumChatFormatting.GRAY
+                + " Laser Hatches.");
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * Energy Hatch limited by Glass tier.
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addGlassEnergyLimitInfo() {
+        iLines.add("Energy Hatch limited by Glass tier.");
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * Energy Hatch limited by Glass tier, t-tier Glass unlocks all.
+     *
+     * @param t Tier of glass that unlocks all energy hatches
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addGlassEnergyLimitInfo(int t) {
+        iLines.add(
+            "Energy Hatch limited by Glass tier, " + GTValues.TIER_COLORS[t]
+                + GTValues.VN[t]
+                + EnumChatFormatting.GRAY
+                + "-tier Glass unlocks all.");
         return this;
     }
 

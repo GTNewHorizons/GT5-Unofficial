@@ -14,6 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
@@ -40,10 +41,10 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
-import bartworks.API.BorosilicateGlass;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TickTime;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -88,15 +89,13 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
     private static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings5, 14);
 
-    private static final byte MIN_GLASS_TIER = 6;
-
     private int energyHatchTier;
 
     private boolean usingExotic = false;
 
     private int antennaeTier;
 
-    private Byte glassTier;
+    private int glassTier = -2;
 
     /*
      * c: Shielded accelerator casing v: Vacuum k: Superconducting coil d: Coolant Delivery casing
@@ -474,7 +473,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                         .dot(1).adder(MTESynchrotron::addBeamlineInputHatch).build())
                 .addElement('b', buildHatchAdder(MTESynchrotron.class).hatchClass(MTEHatchOutputBeamline.class).casingIndex(CASING_INDEX)
                         .dot(2).adder(MTESynchrotron::addBeamlineOutputHatch).build())
-                .addElement('g', withChannel("glass", BorosilicateGlass.ofBoroGlass((byte) 0, MIN_GLASS_TIER, Byte.MAX_VALUE, (te, t) ->  te.glassTier = t, te -> te.glassTier)))
+                .addElement('g', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement('j',
                 		buildHatchAdder(MTESynchrotron.class).atLeast(Maintenance).dot(3).casingIndex(CASING_INDEX)
                 		.buildAndChain(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
@@ -549,7 +548,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             .addCasingInfoExactly("Superconducting Coil Block", 90, false)
             .addCasingInfoExactly("Niobium Cavity Casing", 64, false)
             .addCasingInfoExactly(LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), 28, false)
-            .addCasingInfoExactly("Borosilicate Glass Block (LuV+)", 16, false)
+            .addCasingInfoExactly("Glass (LuV+)", 16, false)
             .addCasingInfoExactly("Antenna Casing (must match)", 4, true)
             .addOtherStructurePart("Beamline Input Hatch", addDotText(1))
             .addOtherStructurePart("Beamline Output Hatch", addDotText(2))
@@ -557,6 +556,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             .addInputHatch(addDotText(4))
             .addOutputHatch(addDotText(5))
             .addEnergyHatch(addDotText(6))
+            .addSubChannelUsage("glass", "Glass Tier")
             .toolTipFinisher();
         return tt;
     }
@@ -1092,7 +1092,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
         this.antennaeTier = -2;
 
-        this.glassTier = 0;
+        this.glassTier = -2;
 
         this.outputEnergy = 0;
         this.outputRate = 0;
@@ -1104,9 +1104,8 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
         return this.mInputBeamline.size() == 1 && this.mOutputBeamline.size() == 1
             && this.antennaeTier > 0
-            && this.mMaintenanceHatches.size() == 1
             && (this.mEnergyHatches.size() == 4 || this.mExoticEnergyHatches.size() == 4)
-            && this.glassTier >= MIN_GLASS_TIER;
+            && this.glassTier >= VoltageIndex.LuV;
     }
 
     @Override

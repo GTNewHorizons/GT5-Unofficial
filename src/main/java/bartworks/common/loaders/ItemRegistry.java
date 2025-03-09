@@ -180,7 +180,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
-import bartworks.API.BorosilicateGlass;
 import bartworks.MainMod;
 import bartworks.common.blocks.BWBlocks;
 import bartworks.common.blocks.BWBlocksGlass;
@@ -394,7 +393,6 @@ public class ItemRegistry {
     public static void run() {
         GameRegistry.registerBlock(ItemRegistry.bw_fake_glasses, "BW_FakeGlasBlock");
         GameRegistry.registerBlock(ItemRegistry.bw_fake_glasses2, "BW_FakeGlasBlocks2");
-        BorosilicateGlass.registerBorosilicateGlass();
 
         GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[2], BWItemBlocks.class, "BW_Machinery_Casings");
         GameRegistry.registerItem(ItemRegistry.LEATHER_ROTOR, "BW_LeatherRotor");

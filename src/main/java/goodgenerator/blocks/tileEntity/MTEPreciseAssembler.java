@@ -1,9 +1,9 @@
 package goodgenerator.blocks.tileEntity;
 
-import static bartworks.util.BWUtil.ofGlassTieredMixed;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 
@@ -50,6 +50,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -100,6 +101,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     protected int mode;
     protected int energyHatchTier;
     private static final int CASING_INDEX = 1541;
+    private int glassTier = -2;
 
     public MTEPreciseAssembler(String name) {
         super(name);
@@ -153,7 +155,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                                         MTEPreciseAssembler::setCasingTier,
                                         MTEPreciseAssembler::getCasingTier)))))
                 .addElement('F', ofFrame(Materials.TungstenSteel))
-                .addElement('G', withChannel("glass", ofGlassTieredMixed((byte) 4, (byte) 127, 2)))
+                .addElement('G', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement(
                     'M',
                     withChannel(
@@ -325,6 +327,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         this.machineTier = -1;
         this.casingAmount = 0;
         this.casingTier = -3;
+        this.glassTier = -2;
         this.energyHatchTier = 0;
         if (checkPiece(mName, 4, 4, 0)) {
             energyHatchTier = checkEnergyHatchTier();
@@ -334,7 +337,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
             return casingAmount >= 42 && machineTier >= 0
                 && casingTier >= -1
-                && mMaintenanceHatches.size() == 1
+                && glassTier >= VoltageIndex.EV
                 && !mMufflerHatches.isEmpty();
         }
         return false;
@@ -368,6 +371,9 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addEnergyHatch("Any Casing")
             .addMufflerHatch("Any Casing")
             .addMaintenanceHatch("Any Casing")
+            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage("unit casing", "Precise Electronic Unit Casing Tier")
+            .addSubChannelUsage("machine casing", "Machine Casing Tier")
             .toolTipFinisher();
         return tt;
     }
