@@ -441,13 +441,19 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(44),
-                TextureFactory.of(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE), TextureFactory.builder()
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(44), TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
                     .addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE_GLOW)
+                    .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(44),
-                TextureFactory.of(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT) };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(44), TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT)
+                .extFacing()
+                .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(44) };
     }

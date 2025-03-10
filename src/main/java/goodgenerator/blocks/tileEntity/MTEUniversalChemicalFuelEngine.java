@@ -332,14 +332,22 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][50],
-                TextureFactory.of(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE), TextureFactory.builder()
+            if (aActive) return new ITexture[] { casingTexturePages[0][50], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW)
+                    .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[0][50], TextureFactory.of(OVERLAY_FRONT_DIESEL_ENGINE),
+            return new ITexture[] { casingTexturePages[0][50], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_DIESEL_ENGINE)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_GLOW)
+                    .extFacing()
                     .glow()
                     .build() };
         }
