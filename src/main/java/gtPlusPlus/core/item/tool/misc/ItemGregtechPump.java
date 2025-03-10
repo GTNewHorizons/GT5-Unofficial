@@ -193,8 +193,9 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                             + StatCollector.translateToLocalFormatted(
                                 "item.itemBaseEuItem.tooltip.3",
                                 formatNumbers(tCharge),
-                                formatNumbers(Math.abs(tStats[0])) + " EU - Voltage: ",
-                                V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)])
+                                formatNumbers(Math.abs(tStats[0])),
+                                formatNumbers(
+                                    V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)]))
                             + EnumChatFormatting.GRAY);
                 }
             }

@@ -12,6 +12,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gtPlusPlus.core.block.ModBlocks;
@@ -45,19 +46,14 @@ public class ItemEvergladesPortalTrigger extends Item {
 
     @Override
     public String getItemStackDisplayName(final ItemStack p_77653_1_) {
-        return EnumChatFormatting.GOLD + "Alkalus Disk ["
-            + EnumChatFormatting.RED
-            + "Activated"
-            + EnumChatFormatting.GOLD
-            + "]";
+        return StatCollector.translateToLocal("item.everglades.trigger.name");
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-        list.add(EnumChatFormatting.GREEN + "Shines the way, towards the far away Everglades.");
-        list.add(
-            EnumChatFormatting.GREEN + "This item produces such a temperature, that you'd hate to use it incorrectly.");
+        list.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("gtpp.tooltip.alkalus_disk.0"));
+        list.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("gtpp.tooltip.alkalus_disk.1"));
         super.addInformation(stack, aPlayer, list, bool);
     }
 

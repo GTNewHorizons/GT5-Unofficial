@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
@@ -55,24 +56,25 @@ public abstract class GTMetaItemBase extends GTGenericItem
         if (tStats != null) {
             if (tStats[3] > 0) {
                 aList.add(
-                    EnumChatFormatting.AQUA + "Contains "
-                        + GTUtility.formatNumbers(tStats[3])
-                        + " EU   Tier: "
-                        + (tStats[2] >= 0 ? tStats[2] : 0)
-                        + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                        "item.itemBaseEuItem.tooltip.1",
+                        GTUtility.formatNumbers(tStats[3]),
+                        (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
             } else {
                 final long tCharge = this.getRealCharge(aStack);
                 if ((tStats[3] == -2) && (tCharge <= 0)) {
                     aList.add(
-                        EnumChatFormatting.AQUA + "Empty. You should recycle it properly." + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.itemBaseEuItem.tooltip.2")
+                            + EnumChatFormatting.GRAY);
                 } else {
                     aList.add(
-                        EnumChatFormatting.AQUA + GTUtility.formatNumbers(tCharge)
-                            + " / "
-                            + GTUtility.formatNumbers(Math.abs(tStats[0]))
-                            + " EU - Voltage: "
-                            + GTUtility.formatNumbers(
-                                V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)])
+                        EnumChatFormatting.AQUA
+                            + StatCollector.translateToLocalFormatted(
+                                "item.itemBaseEuItem.tooltip.3",
+                                GTUtility.formatNumbers(tCharge),
+                                GTUtility.formatNumbers(Math.abs(tStats[0])),
+                                GTUtility.formatNumbers(
+                                    V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)]))
                             + EnumChatFormatting.GRAY);
                 }
             }

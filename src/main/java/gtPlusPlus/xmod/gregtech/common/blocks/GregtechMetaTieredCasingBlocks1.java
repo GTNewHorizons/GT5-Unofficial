@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
@@ -35,7 +36,7 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
         public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
             int aMeta = aStack.getItemDamage();
             if (aMeta < 10) {
-                aList.add("Tier: " + GTValues.VN[aMeta]);
+                aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier.s", GTValues.VN[aMeta]));
             }
             super.addInformation(aStack, aPlayer, aList, aF3_H);
         }

@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.Materials;
 import gtPlusPlus.core.item.base.misc.BaseItemParticle;
@@ -108,29 +109,22 @@ public class IonParticles extends BaseItemParticle {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
         long aCharge = getChargeState(stack);
-        String aState = EnumChatFormatting.YELLOW + "Unknown" + EnumChatFormatting.GRAY;
+        String ionName = MetaToNameMap.get(stack.getItemDamage());
         // State not set
         if (aCharge == 0) {
             list.add(
-                EnumChatFormatting.GRAY + "A "
-                    + MetaToNameMap.get(stack.getItemDamage())
-                    + " Ion with an "
-                    + aState
-                    + " charge state");
+                EnumChatFormatting.GRAY
+                    + StatCollector.translateToLocalFormatted("gtpp.tooltip.ion_particles.state_not_set", ionName));
         } else {
             if (aCharge > 0) {
-                aState = EnumChatFormatting.GREEN + "Positive" + EnumChatFormatting.GRAY;
+                list.add(
+                    EnumChatFormatting.GRAY + StatCollector
+                        .translateToLocalFormatted("gtpp.tooltip.ion_particles.charge_positive", ionName, aCharge));
             } else {
-                aState = EnumChatFormatting.RED + "Negative" + EnumChatFormatting.GRAY;
+                list.add(
+                    EnumChatFormatting.GRAY + StatCollector
+                        .translateToLocalFormatted("gtpp.tooltip.ion_particles.charge_negative", ionName, aCharge));
             }
-
-            list.add(
-                EnumChatFormatting.GRAY + "A "
-                    + MetaToNameMap.get(stack.getItemDamage())
-                    + " Ion with a "
-                    + aState
-                    + " charge state of "
-                    + aCharge);
         }
         super.addInformation(stack, player, list, bool);
     }

@@ -166,3 +166,8 @@ particle.alpha=Alpha
 particle.neutron=Neutron
 particle.proton=Proton
 GT5U.gui.text.dissolution_ratio=§7Wrong fluid input ratio
+
+tooltip.gtnhlanth.particle.rest_mass=Rest Mass: %f MeV
+tooltip.gtnhlanth.particle.charge=Charge: %s e
+tooltip.gtnhlanth.photomask.desc_spectrum=Suitable for the %s segment of the electromagnetic spectrum and lower
+tooltip.gtnhlanth.photomask.max_uses=Max Uses: %d

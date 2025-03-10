@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import gregtech.common.blocks.ItemCasingsAbstract;
 import tectech.util.CommonValues;
@@ -125,8 +126,8 @@ public class ItemCasingsTT extends ItemCasingsAbstract {
                 aList.add(EnumChatFormatting.BLUE + translateToLocal("gt.blockcasingsTT.15.desc.1"));
                 break;
             default: // WTF?
-                aList.add("Damn son where did you get that!?");
-                aList.add(EnumChatFormatting.BLUE + "From outer space... I guess...");
+                aList.add(translateToLocal("gt.blockcasingsTT.default.desc.0"));
+                aList.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("gt.blockcasingsTT.default.desc.1"));
         }
     }
 }
