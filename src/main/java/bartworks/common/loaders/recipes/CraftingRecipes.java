@@ -21,6 +21,8 @@ import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.Windmill;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gtPlusPlus.core.recipe.RecipesTools.craftingToolScrewdriver;
+import static gtPlusPlus.core.recipe.RecipesTools.craftingToolWrench;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -47,6 +49,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
 
 public class CraftingRecipes implements Runnable {
@@ -558,5 +561,11 @@ public class CraftingRecipes implements Runnable {
             "UV " + StatCollector.translateToLocal("tile.radiohatch.name"),
             8,
             true);
+        GTModHandler.addCraftingRecipe(
+            ItemList.Item_Sniffer.get(1L),
+            0,
+            new Object[] { " M ", "STS", "RPW", 'M', ItemList.Cover_Screen.get(1L), 'S',
+                OrePrefixes.screw.get(Materials.Titanium), 'T', GregtechItemList.TransmissionComponent_EV.get(1), 'R',
+                craftingToolScrewdriver, 'P', OrePrefixes.plate.get(Materials.Titanium), 'W', craftingToolWrench });
     }
 }

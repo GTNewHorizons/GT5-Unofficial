@@ -2387,6 +2387,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 "(or at least almost free)",
                 SubTag.INVISIBLE,
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
+        ItemList.Item_Sniffer.set(new ItemSniffer("Item_Sniffer", "Redstone Sniffer", "What are these frequencies?!"));
 
         try {
             CropCard tCrop;
