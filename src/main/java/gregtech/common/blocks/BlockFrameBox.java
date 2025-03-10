@@ -71,6 +71,7 @@ public class BlockFrameBox extends BlockContainer {
                     .addStringLocalization(getUnlocalizedName() + "." + meta + DOT_TOOLTIP, material.getToolTip());
             }
         }
+        GregTechAPI.registerMachineBlock(this, -1);
     }
 
     public ItemStack getStackForm(int amount, int meta) {
