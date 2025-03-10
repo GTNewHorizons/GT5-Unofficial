@@ -61,6 +61,11 @@ public enum Mixin {
         .setApplyIf(() -> true)
         .setPhase(Phase.EARLY)
         .setSide(Side.BOTH)),
+    ItemMixinCoverFix(new Builder("Allow cover items to bypass sneak checks").addMixinClasses("minecraft.ItemMixin")
+        .addTargetedMod(VANILLA)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.EARLY)
+        .setSide(Side.BOTH)),
 
     VanillaToolChanges(
         new Builder("Changes wooden tools to be a little faster").addMixinClasses("minecraft.ItemToolMaterialMixin")
