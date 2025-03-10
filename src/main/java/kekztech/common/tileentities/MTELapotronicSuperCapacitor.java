@@ -129,7 +129,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     private final LongRunningAverage wirelessEnergyInputValues1h = new LongRunningAverage(3600 * 20);
     private final LongRunningAverage wirelessEnergyOutputValues1h = new LongRunningAverage(3600 * 20);
-    
+
     private final LongData wirelessEnergyInputValues5m = wirelessEnergyInputValues1h.view(5 * 60 * 20);
     private final LongData wirelessEnergyOutputValues5m = wirelessEnergyOutputValues1h.view(5 * 60 * 20);
 
@@ -923,14 +923,16 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     private String getWirelessTimeTo() {
-        BigInteger avgOutWireless = BigInteger.valueOf(wirelessEnergyOutputValues5m.avgLong()); 
-        BigInteger wirelessStored = new BigInteger(WirelessNetworkManager.getUserEU(global_energy_user_uuid).toString());
-        
+        BigInteger avgOutWireless = BigInteger.valueOf(wirelessEnergyOutputValues5m.avgLong());
+        BigInteger wirelessStored = new BigInteger(
+            WirelessNetworkManager.getUserEU(global_energy_user_uuid)
+                .toString());
+
         // If average output is greater than zero, calculate time to empty
         if (avgOutWireless.compareTo(BigInteger.ZERO) > 0) {
             BigInteger timeToEmptyTicks = wirelessStored.divide(avgOutWireless);
             BigInteger timeToEmptySeconds = timeToEmptyTicks.divide(BigInteger.valueOf(20));
-            
+
             long seconds = timeToEmptySeconds.longValueExact();
             return "Wireless Time to Empty: " + formatTime(seconds, false);
         } else {
