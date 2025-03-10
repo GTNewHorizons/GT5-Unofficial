@@ -8,10 +8,12 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.util.GTRecipeConstants;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -200,7 +202,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
 
     public abstract int getMaxPara();
 
-    public abstract int extraPara(int startEnergy);
+    public abstract int extraPara(long startEnergy);
 
     public int textureIndex() {
         return 53;
@@ -434,15 +436,16 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                long powerToStart = recipe.getMetadataOrDefault(GTRecipeConstants.FUSION_THRESHOLD, 0L);
                 if (!mRunningOnLoad) {
-                    if (recipe.mSpecialValue > maxEUStore()) {
-                        return CheckRecipeResultRegistry.insufficientStartupPower(recipe.mSpecialValue);
+                    if (powerToStart > maxEUStore()) {
+                        return CheckRecipeResultRegistry.insufficientStartupPower(BigInteger.valueOf(powerToStart));
                     }
                     if (recipe.mEUt > GTValues.V[tier()]) {
                         return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                     }
                 }
-                maxParallel = getMaxPara() * extraPara(recipe.mSpecialValue);
+                maxParallel = getMaxPara() * extraPara(powerToStart);
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
