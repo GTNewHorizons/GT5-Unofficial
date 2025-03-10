@@ -11,6 +11,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.Lists;
@@ -19,6 +20,8 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.render.RenderOverlay;
+import gregtech.api.render.TextureFactory;
 import gregtech.common.render.GTRenderUtil;
 
 public class GTUtilityClient {
@@ -56,6 +59,36 @@ public class GTUtilityClient {
                     + aStack.getDisplayName());
             return Lists.newArrayList(aStack.getDisplayName());
         }
+    }
+
+    public static void clearTurbineOverlay(List<RenderOverlay.OverlayTicket> tickets) {
+        tickets.forEach(RenderOverlay.OverlayTicket::remove);
+        tickets.clear();
+    }
+
+    public static void setTurbineOverlay(World aWorld, int aX, int aY, int aZ, ExtendedFacing tExtendedFacing,
+        IIconContainer[] tTextures, List<RenderOverlay.OverlayTicket> ticketContainer) {
+        clearTurbineOverlay(ticketContainer);
+
+        int[] tABCCoord = new int[] { -1, -1, 0 };
+        int[] tXYZOffset = new int[3];
+        final ForgeDirection tDirection = tExtendedFacing.getDirection();
+        tExtendedFacing = ExtendedFacing.of(tDirection);
+
+        RenderOverlay overlay = RenderOverlay.getOrCreate(aWorld);
+
+        for (int i = 0; i < 9; i++) {
+            tExtendedFacing.getWorldOffset(tABCCoord, tXYZOffset);
+            int tX = tXYZOffset[0] + aX;
+            int tY = tXYZOffset[1] + aY;
+            int tZ = tXYZOffset[2] + aZ;
+            ticketContainer.add(overlay.set(aX, aY, aZ, tX, tY, tZ, tDirection, TextureFactory.of(tTextures[i]), 0));
+            if (++tABCCoord[0] == 2) {
+                tABCCoord[0] = -1;
+                tABCCoord[1]++;
+            }
+        }
+
     }
 
     public static void renderTurbineOverlay(IBlockAccess aWorld, int aX, int aY, int aZ, RenderBlocks aRenderer,
