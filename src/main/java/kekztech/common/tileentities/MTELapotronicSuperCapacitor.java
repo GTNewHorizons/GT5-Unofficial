@@ -127,8 +127,11 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private final LongData energyInputValues5m = energyInputValues1h.view(5 * 60 * 20);
     private final LongData energyOutputValues5m = energyOutputValues1h.view(5 * 60 * 20);
 
-    private Average wirelessEnergyInputValues5m = new Average();
-    private Average wirelessEnergyOutputValues5m = new Average();
+    private final LongRunningAverage wirelessEnergyInputValues1h = new LongRunningAverage(3600 * 20);
+    private final LongRunningAverage wirelessEnergyOutputValues1h = new LongRunningAverage(3600 * 20);
+    
+    private final LongData wirelessEnergyInputValues5m = wirelessEnergyInputValues1h.view(5 * 60 * 20);
+    private final LongData wirelessEnergyOutputValues5m = wirelessEnergyOutputValues1h.view(5 * 60 * 20);
 
     private final long max_passive_drain_eu_per_tick_per_uhv_cap = 1_000_000;
     private final long max_passive_drain_eu_per_tick_per_uev_cap = 100_000_000;
