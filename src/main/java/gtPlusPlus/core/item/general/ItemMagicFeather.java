@@ -16,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBeacon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -62,10 +63,10 @@ public class ItemMagicFeather extends CoreItem {
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-        list.add("Does not need to be the item held in your hand to work");
+        list.add(StatCollector.translateToLocal("gtpp.tooltip.magic_feather.0"));
         super.addInformation(stack, aPlayer, list, bool);
-        list.add("Needs to be within beacon range");
-        list.add("Range is beacon level * 10 + 10");
+        list.add(StatCollector.translateToLocal("gtpp.tooltip.magic_feather.1"));
+        list.add(StatCollector.translateToLocal("gtpp.tooltip.magic_feather.2"));
     }
 
     @Override

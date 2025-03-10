@@ -71,6 +71,7 @@ item.em.parametrizerMemoryCard.desc.0=Stores Parameters
 item.em.parametrizerMemoryCard.desc.1=Use on Multiblock Controller to configure it
 item.em.parametrizerMemoryCard.desc.2=Use on Multiblock Controller to store parameters
 item.em.parametrizerMemoryCard.desc.3=Sneak right click to lock/unlock
+item.em.parametrizerMemoryCard.desc.copied_controller=Copied from: %s at %s
 item.em.parametrizerMemoryCard.copyMessage=Configuration copied to the card
 item.em.parametrizerMemoryCard.pasteMessage=Configuration pasted from the card
 item.em.parametrizerMemoryCard.controllerMismatch=Can't paste configuration from %s to %s!
@@ -634,6 +635,8 @@ gt.blockcasingsTT.14.desc.1=Meh...
 gt.blockcasingsTT.15.name=Debug Sides
 gt.blockcasingsTT.15.desc.0=Lazy man way of determining sides.
 gt.blockcasingsTT.15.desc.1=0, 1, 2, 3, 4, 5, 6?!
+gt.blockcasingsTT.default.desc.0=Damn son where did you get that!?
+gt.blockcasingsTT.default.desc.1=From outer space... I guess...
 
 gt.blockcasingsBA0.name=Primary Tesla Windings
 gt.blockcasingsBA0.0.name=Redstone Alloy Primary Tesla Windings
