@@ -44,7 +44,8 @@ public class ExtraIcons {
             osmiumLargeCellInner = reg.registerIcon(GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "osmium_inner"));
             neutroniumLargeCellInner = reg
                 .registerIcon(GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "neutronium_inner"));
-            nightVisionAugment = reg.registerIcon(GregTech.getResourcePath("mech_armor/helmet/helmet_augment_nightvision"));
+            nightVisionAugment = reg
+                .registerIcon(GregTech.getResourcePath("mech_armor/helmet/helmet_augment_nightvision"));
         }
     }
 }

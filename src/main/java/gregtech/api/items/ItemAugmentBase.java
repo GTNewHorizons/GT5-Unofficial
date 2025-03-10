@@ -1,9 +1,9 @@
 package gregtech.api.items;
 
-import gregtech.api.items.armor.behaviors.IArmorBehavior;
-
 import java.util.Collection;
 import java.util.Collections;
+
+import gregtech.api.items.armor.behaviors.IArmorBehavior;
 
 public class ItemAugmentBase extends GTGenericItem {
 
@@ -14,23 +14,35 @@ public class ItemAugmentBase extends GTGenericItem {
     private final Collection<IArmorBehavior> requiredBehaviors;
     private final Collection<IArmorBehavior> incompatibleBehaviors;
 
-    byte[][] size = new byte[][] {
-        { 0, 1 },
-        { 1, 1 }
-    };
+    private final int id;
 
-    public ItemAugmentBase(String aUnlocalized, String aEnglish, String aEnglishTooltip, Collection<IArmorBehavior> attachedBehaviors, Collection<IArmorBehavior> requiredBehaviors, Collection<IArmorBehavior> incompatibleBehaviors) {
+    public String[] size = new String[] { "01", "11" };
+
+    public ItemAugmentBase(String aUnlocalized, String aEnglish, String aEnglishTooltip,
+        Collection<IArmorBehavior> attachedBehaviors, Collection<IArmorBehavior> requiredBehaviors,
+        Collection<IArmorBehavior> incompatibleBehaviors, int id) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
+        this.id = id;
         this.attachedBehaviors = attachedBehaviors;
         this.requiredBehaviors = requiredBehaviors;
         this.incompatibleBehaviors = incompatibleBehaviors;
     }
 
-    public ItemAugmentBase(String aUnlocalized, String aEnglish, String aEnglishTooltip, Collection<IArmorBehavior> attachedBehaviors) {
+    public ItemAugmentBase(String aUnlocalized, String aEnglish, String aEnglishTooltip,
+        Collection<IArmorBehavior> attachedBehaviors, int id) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
+        this.id = id;
         this.attachedBehaviors = attachedBehaviors;
         this.requiredBehaviors = Collections.emptyList();
         this.incompatibleBehaviors = Collections.emptyList();
+    }
+
+    public boolean isSimpleAugment() {
+        return true;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public Collection<IArmorBehavior> getAttachedBehaviors() {

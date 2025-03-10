@@ -18,16 +18,8 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
-import java.util.Collections;
 import java.util.Locale;
 
-import gregtech.api.items.ItemAugmentBase;
-import gregtech.api.items.ItemAugmentCore;
-import gregtech.api.items.armor.behaviors.CreativeFlightBehavior;
-import gregtech.api.items.armor.behaviors.FireImmunityBehavior;
-import gregtech.api.items.armor.behaviors.JetpackBehavior;
-import gregtech.api.items.armor.behaviors.JetpackPerfectHoverBehavior;
-import gregtech.api.items.armor.behaviors.NightVisionBehavior;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -104,7 +96,6 @@ import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.items.MetaGeneratedTool01;
-import gregtech.common.items.armor.MechArmorLoader;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gregtech.common.tileentities.render.TileEntityDrone;
 import gregtech.common.tileentities.render.TileEntityLaser;
@@ -180,7 +171,6 @@ public class LoaderGTBlockFluid implements Runnable {
         new MetaGeneratedTool01();
         new ItemFluidDisplay();
         new ItemWirelessHeadphones();
-        MechArmorLoader.run();
 
         // Tiered recipe materials actually appear to be set in MTEBasicMachineWithRecipe, making these
         // unused
@@ -204,60 +194,6 @@ public class LoaderGTBlockFluid implements Runnable {
                     "GregTech Advanced Sensor Card",
                     "Nuclear Control not installed"));
         }
-        ItemList.Armor_Core_T1.set(
-            new ItemAugmentCore(
-                "armorcore1",
-                "Armor Core (Nano)",
-                "Basic core for Mechanical Armor",
-                Collections.emptyList(),
-                1));
-        ItemList.Armor_Core_T2.set(
-            new ItemAugmentCore(
-                "armorcore2",
-                "Armor Core (Quantum)",
-                "Advanced core for Mechanical Armor",
-                Collections.emptyList(),
-                2));
-        ItemList.Armor_Core_T3.set(
-            new ItemAugmentCore(
-                "armorcore3",
-                "Armor Core (Living)",
-                "Supreme core for Mechanical Armor",
-                Collections.emptyList(),
-                3));
-        ItemList.Augment_NightVision.set(
-            new ItemAugmentBase(
-                "augmentnightvision",
-                "Augment: Night Vision",
-                "blah",
-                Collections.singletonList(NightVisionBehavior.INSTANCE)));
-        ItemList.Augment_CreativeFlight.set(
-            new ItemAugmentBase(
-                "augmentcreativeflight",
-                "Augment: Gravity Manipulation Module",
-                "blah",
-                Collections.singletonList(CreativeFlightBehavior.INSTANCE)));
-        ItemList.Augment_Jetpack.set(
-            new ItemAugmentBase(
-                "augmentjetpack",
-                "Augment: Jetpack",
-                "blah",
-                Collections.singletonList(JetpackBehavior.INSTANCE)));
-        ItemList.Augment_Jetpack.set(
-            new ItemAugmentBase(
-                "augmentjetpackperfecthover",
-                "Augment: Jetpack Perfect Hover",
-                "blah",
-                Collections.singletonList(JetpackPerfectHoverBehavior.INSTANCE),
-                Collections.singletonList(JetpackBehavior.INSTANCE),
-                Collections.emptyList()));
-        ItemList.Augment_FireImmunity.set(
-            new ItemAugmentBase(
-                "augmentfireimmunity",
-                "Augment: Fire Immunity",
-                "blah",
-                Collections.singletonList(FireImmunityBehavior.INSTANCE)));
-
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1

@@ -1,7 +1,8 @@
 package gregtech.api.items.armor;
 
-import gregtech.api.enums.ParticleFX;
 import org.jetbrains.annotations.Nullable;
+
+import gregtech.api.enums.ParticleFX;
 
 public enum JetpackStats {
 
@@ -20,9 +21,9 @@ public enum JetpackStats {
     private final float fallDamageReduction;
     private final ParticleFX particle;
 
-    JetpackStats(float sprintEnergyMod, float sprintSpeedMod, float hoverSpeed,
-                 float hoverSlowSpeed, float acceleration, float verticalSpeed,
-                 float horizontalSpeed, float fallDamageReduction, ParticleFX particle) {
+    JetpackStats(float sprintEnergyMod, float sprintSpeedMod, float hoverSpeed, float hoverSlowSpeed,
+        float acceleration, float verticalSpeed, float horizontalSpeed, float fallDamageReduction,
+        ParticleFX particle) {
         this.sprintEnergyMod = sprintEnergyMod;
         this.sprintSpeedMod = sprintSpeedMod;
         this.hoverSpeed = hoverSpeed;

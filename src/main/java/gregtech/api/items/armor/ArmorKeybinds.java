@@ -1,11 +1,13 @@
 package gregtech.api.items.armor;
 
 import net.minecraft.client.Minecraft;
+
 import org.lwjgl.input.Keyboard;
 
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 public class ArmorKeybinds {
+
     public static final SyncedKeybind NIGHT_VISION_KEY = SyncedKeybind
         .createConfigurable("gregtech.toggle_night_vision", "key.categories.gameplay", Keyboard.KEY_R);
     public static final SyncedKeybind JETPACK_HOVER_KEY = SyncedKeybind
@@ -14,7 +16,7 @@ public class ArmorKeybinds {
         .createConfigurable("gregtech.toggle_jetpack", "key.categories.gameplay", Keyboard.KEY_F);
     public static final SyncedKeybind VANILLA_JUMP = SyncedKeybind
         .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindJump);
-    public static final SyncedKeybind VANILLA_SNEAK= SyncedKeybind
+    public static final SyncedKeybind VANILLA_SNEAK = SyncedKeybind
         .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindSneak);
     public static final SyncedKeybind VANILLA_FORWARD = SyncedKeybind
         .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindForward);

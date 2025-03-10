@@ -1,19 +1,19 @@
 package gregtech.api.items.armor.behaviors;
 
-import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
-import ic2.api.item.IElectricItem;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import org.jetbrains.annotations.NotNull;
+
+import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 public interface IArmorBehavior {
     /*
@@ -24,7 +24,9 @@ public interface IArmorBehavior {
      * Used in renderItem to get the texture that will be drawn onto modular armor. Ignore if this behavior is not
      * intended to dynamically change a texture.
      */
-    default IIcon getModularArmorTexture() {return null;}
+    default IIcon getModularArmorTexture() {
+        return null;
+    }
 
     /**
      * Called every tick that this behavior's armor item is equipped.

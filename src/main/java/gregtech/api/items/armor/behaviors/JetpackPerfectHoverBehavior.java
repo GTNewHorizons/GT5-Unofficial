@@ -1,16 +1,16 @@
 package gregtech.api.items.armor.behaviors;
 
-import gregtech.api.items.armor.ArmorHelper;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
+import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.List;
 
-import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
+
+import org.jetbrains.annotations.NotNull;
+
+import gregtech.api.items.armor.ArmorHelper;
 
 public class JetpackPerfectHoverBehavior implements IArmorBehavior {
 

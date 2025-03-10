@@ -6,9 +6,6 @@ import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gtnewhorizon.gtnhlib.keybind.IKeyPressedListener;
-import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
-import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,13 +14,18 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.gtnewhorizon.gtnhlib.keybind.IKeyPressedListener;
+import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import gregtech.api.items.armor.behaviors.IArmorBehavior;
 
 public class MechArmorBase extends ItemArmor implements IKeyPressedListener {
 
@@ -59,7 +61,8 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener {
         // Set behaviors
         NBTTagCompound tag = getOrCreateNbtCompound(stack);
         tag.setInteger("core", 0);
-        tag.setString("frame", "None");
+        tag.setInteger("frame", 0);
+        tag.setTag("augments", new NBTTagList());
         return stack;
     }
 
@@ -99,7 +102,8 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener {
     @Override
     public void onKeyPressed(EntityPlayerMP player, SyncedKeybind keyPressed) {
         for (IArmorBehavior behavior : behaviors) {
-            if (behavior.getListenedKeys().contains(keyPressed)) {
+            if (behavior.getListenedKeys()
+                .contains(keyPressed)) {
                 behavior.onKeyPressed(player.getCurrentArmor(getEquipmentSlot()), player, keyPressed);
             }
         }

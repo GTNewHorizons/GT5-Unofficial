@@ -66,6 +66,7 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.registries.LHECoolantRegistry;
+import gregtech.api.registries.MechanicalArmorRegistry;
 import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.AssemblyLineServer;
 import gregtech.api.util.GTForestryCompat;
@@ -286,6 +287,7 @@ public class GTMod implements IGTMod {
         new LoaderGTItemData().run();
         new LoaderGTBlockFluid().run();
         new LoaderMetaTileEntities().run();
+        new MechanicalArmorRegistry().run();
 
         new LoaderCircuitBehaviors().run();
         new CoverBehaviorLoader().run();
