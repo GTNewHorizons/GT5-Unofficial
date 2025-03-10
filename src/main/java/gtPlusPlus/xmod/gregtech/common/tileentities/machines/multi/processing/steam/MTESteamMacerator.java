@@ -129,12 +129,18 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
 
     @Override
     protected ITexture getFrontOverlay() {
-        return TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR);
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR)
+            .extFacing()
+            .build();
     }
 
     @Override
     protected ITexture getFrontOverlayActive() {
-        return TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR_ACTIVE);
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR_ACTIVE)
+            .extFacing()
+            .build();
     }
 
     @Override
