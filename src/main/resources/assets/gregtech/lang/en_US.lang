@@ -2079,6 +2079,9 @@ GT5U.tooltip.fluid.stat.liquid=Liquid
 GT5U.tooltip.comb.ban_forestry=Forestry can't process it
 GT5U.tooltip.mega_apiary.only_producer=Will only be produced in mega Apiary
 
+GT5U.tooltip.electric.tier=Tier: %d
+GT5U.tooltip.electric.tier.s=Tier: %s
+
 # Achievements
 
 # 4/2/19
