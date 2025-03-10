@@ -929,15 +929,15 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         // If average output is greater than zero, calculate time to empty
         if (avgOutWireless.compareTo(BigInteger.ZERO) > 0) {
             BigInteger timeToEmptyTicks = wirelessStored.divide(avgOutWireless);
-            BigInteger timeToEmptySeconds = timeToEmptyTicks.divide(BigInteger.valueOf(20));  // Convert ticks to seconds if necessary
-    
-            // Format the time output
-            return "Wireless Time to Empty: " + formatTime(timeToEmptySeconds, false);
+            BigInteger timeToEmptySeconds = timeToEmptyTicks.divide(BigInteger.valueOf(20));
+            
+            long seconds = timeToEmptySeconds.longValueExact();
+            return "Wireless Time to Empty: " + formatTime(seconds, false);
         } else {
             return "Currently Filling Wireless";
         }
     }
-    
+
     private String getCapacityCache() {
         return capacity.compareTo(guiCapacityStoredReformatLimit) > 0 ? standardFormat.format(capacity)
             : numberFormat.format(capacity);
