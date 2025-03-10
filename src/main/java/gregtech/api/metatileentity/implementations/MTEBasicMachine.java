@@ -710,8 +710,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     protected void calculateCustomOverclock(GTRecipe recipe) {
         OverclockCalculator calculator = overclockDescriber.createCalculator(
             new OverclockCalculator().setRecipeEUt(recipe.mEUt)
-                .setDuration(recipe.mDuration)
-                .setOneTickDiscount(true),
+                .setDuration(recipe.mDuration),
             recipe);
         calculator.calculate();
         mEUt = (int) calculator.getConsumption();
@@ -725,7 +724,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(eut)
             .setEUt(V[mTier] * mAmperage)
             .setDuration(duration)
-            .setOneTickDiscount(true)
             .calculate();
         mEUt = (int) calculator.getConsumption();
         mMaxProgresstime = calculator.getDuration();
