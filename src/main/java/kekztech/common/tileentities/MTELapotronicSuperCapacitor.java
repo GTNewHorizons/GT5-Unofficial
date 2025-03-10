@@ -923,25 +923,21 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     private String getWirelessTimeTo() {
-        double avgInWireless = wirelessEnergyInputValues5m.avgLong();
-        double avgOutWireless = wirelessEnergyOutputValues5m.avgLong();
-        double wirelessCap = WirelessNetworkManager.getCapacity(global_energy_user_uuid);
-        double wirelessStored = WirelessNetworkManager.getStored(global_energy_user_uuid);
-
-        if (avgInWireless >= avgOutWireless) {
-            // Calculate time to full if charging
-            if (avgInWireless > 0) {
-                double timeToFullWireless = (wirelessCap - wirelessStored) / (avgInWireless - (avgOutWireless)) / 20;
-                return "Wireless Time to Full: " + formatTime(timeToFullWireless, true);
-            }
-            return "Wireless Time to Something: Infinity years";
+        BigInteger avgOutWireless = BigInteger.valueOf(wirelessEnergyOutputValues5m.avgLong()); 
+        BigInteger wirelessStored = new BigInteger(WirelessNetworkManager.getUserEU(global_energy_user_uuid).toString());
+        
+        // If average output is greater than zero, calculate time to empty
+        if (avgOutWireless.compareTo(BigInteger.ZERO) > 0) {
+            BigInteger timeToEmptyTicks = wirelessStored.divide(avgOutWireless);
+            BigInteger timeToEmptySeconds = timeToEmptyTicks.divide(BigInteger.valueOf(20));  // Convert ticks to seconds if necessary
+    
+            // Format the time output
+            return "Wireless Time to Empty: " + formatTime(timeToEmptySeconds, false);
         } else {
-            // Calculate time to empty if discharging
-            double timeToEmptyWireless = wirelessStored / ((avgOutWireless) - avgInWireless) / 20;
-            return "Wireless Time to Empty: " + formatTime(timeToEmptyWireless, false);
+            return "Currently Filling Wireless";
         }
     }
-
+    
     private String getCapacityCache() {
         return capacity.compareTo(guiCapacityStoredReformatLimit) > 0 ? standardFormat.format(capacity)
             : numberFormat.format(capacity);
