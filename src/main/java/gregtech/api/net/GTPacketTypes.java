@@ -37,7 +37,7 @@ public enum GTPacketTypes {
     EIC(27, new PacketEIC()),
     CREATE_TILE_ENTITY(28, new GTPacketCreateTE()),
     NODE_INFO(29, new GTPacketNodeInfo()),
-    DEBUG_COVER(30, new PacketDebugRedstoneCover())
+    DEBUG_COVER(31, new PacketDebugRedstoneCover())
     // merge conflict prevention comment, keep a trailing comma above
     ;
 
