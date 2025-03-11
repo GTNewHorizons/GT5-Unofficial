@@ -115,3 +115,13 @@ gui.kekztech_lapotronicenergyunit.wireless=Wireless mode
 gui.kekztech_lapotronicenergyunit.wireless_rebalance=Rebalance Wireless (One Time Use)
 gui.kekztech_lapotronicenergyunit.warning.header=Warning!
 gui.kekztech_lapotronicenergyunit.warning.text=Make sure to carefully read and understand the tooltip before activating wireless mode, it can potentially brick your base. This warning won't appear again.
+
+# -------- Tooltips
+tooltip.kekztech.crafting_component=Crafting component for KekzTech things
+tooltip.kekztech.lapotronic_energy_unit.capacity=Capacity: §c%s§7 EU
+tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer=Supports up to §c%s§7 EU/t of wireless transfer per %s§7 capacitor.
+tooltip.kekztech.lapotronic_energy_unit.capacity.none=Capacity: None
+tooltip.kekztech.tfft.capacity=Capacity: §9%s§7 L
+tooltip.kekztech.tfft.capacity.per_fluid=Per Fluid Capacity: §9%s§7 L
+tooltip.kekztech.tfft.power_draw=Power Draw: §9%d§7 EU/t
+tooltip.kekztech.wrong=REMINDER: KekzTech recipes are only tested to work in GTNH!\nPlaceholder item in case something went wrong\nIf this item shows up in GTNH, you may report it to:\nhttps://github.com/kekzdealer/KekzTech
