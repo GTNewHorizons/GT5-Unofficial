@@ -8,6 +8,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
@@ -21,7 +22,7 @@ public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
 
     @Override
     public List<String> format(RecipeDisplayInfo recipeInfo) {
-        int euToStart = recipeInfo.recipe.mSpecialValue;
+        long euToStart = recipeInfo.recipe.getMetadataOrDefault(GTRecipeConstants.FUSION_THRESHOLD, 0L);
         int voltage = recipeInfo.recipe.mEUt;
         int tier = getFusionTier(euToStart, voltage);
 
