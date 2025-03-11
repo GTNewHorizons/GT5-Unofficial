@@ -744,7 +744,19 @@ public class GregtechConduits {
 
         int eut = (int) (8 * vMulti);
 
-        // Add the Three Shaped Recipes First
+        // Add the Four Shaped Recipes First
+        RecipeUtils.addShapedRecipe(
+            pipePlate,
+            pipePlate,
+            pipePlate,
+            "craftingToolHardHammer",
+            null,
+            "craftingToolWrench",
+            pipePlate,
+            pipePlate,
+            pipePlate,
+            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Tiny" + output, 8));
+
         RecipeUtils.addShapedRecipe(
             pipePlate,
             "craftingToolWrench",
