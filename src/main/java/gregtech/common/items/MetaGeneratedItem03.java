@@ -418,9 +418,9 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
             .set(addItem(Circuit_Chip_ILC.ID, "Integrated Logic Circuit", "Integrated Circuit", o));
 
         ItemList.Circuit_Wafer_Ram
-            .set(addItem(Circuit_Wafer_Ram.ID, "Random Access Memory Chip (Wafer)", "Raw Circuit", o));
+            .set(addItem(Circuit_Wafer_Ram.ID, "Random Access Memory Chip (Wafer)", "Raw Circuit", "RAM"));
         ItemList.Circuit_Chip_Ram
-            .set(addItem(Circuit_Chip_Ram.ID, "Random Access Memory Chip", "Integrated Circuit", o));
+            .set(addItem(Circuit_Chip_Ram.ID, "Random Access Memory Chip", "Integrated Circuit", "RAM"));
 
         ItemList.Circuit_Wafer_NAND.set(addItem(Circuit_Wafer_NAND.ID, "NAND Memory Chip (Wafer)", "Raw Circuit", o));
         ItemList.Circuit_Chip_NAND.set(addItem(Circuit_Chip_NAND.ID, "NAND Memory Chip", "Integrated Circuit", o));
