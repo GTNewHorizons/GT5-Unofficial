@@ -5,10 +5,10 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import gregtech.api.util.GTRecipeConstants;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
