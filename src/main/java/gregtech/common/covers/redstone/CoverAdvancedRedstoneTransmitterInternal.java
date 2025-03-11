@@ -28,7 +28,7 @@ public class CoverAdvancedRedstoneTransmitterInternal
             else outputRedstone = 15;
         }
 
-        final CoverData key = getCoverKey(coverable, coverSide);
+        final CoverPosition key = getCoverKey(coverable, coverSide);
         setSignalAt(coverData.getUuid(), coverData.getFrequency(), key, outputRedstone);
         return coverData;
     }

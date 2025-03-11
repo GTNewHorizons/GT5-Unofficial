@@ -92,7 +92,7 @@ public class CoverWirelessMaintenanceDetector
             return coverData;
         }
         final byte signal = computeSignalBasedOnMaintenance(coverData, coverable);
-        final CoverData key = getCoverKey(coverable, coverSide);
+        final CoverPosition key = getCoverKey(coverable, coverSide);
         setSignalAt(coverData.getUuid(), coverData.getFrequency(), key, signal);
 
         if (coverData.physical) {

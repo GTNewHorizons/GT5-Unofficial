@@ -27,7 +27,7 @@ public class CoverAdvancedRedstoneTransmitterExternal
             if (outputRedstone > 0) outputRedstone = 0;
             else outputRedstone = 15;
         }
-        final CoverData key = getCoverKey(coverable, coverSide);
+        final CoverPosition key = getCoverKey(coverable, coverSide);
         setSignalAt(coverData.getUuid(), coverData.getFrequency(), key, outputRedstone);
 
         return coverData;
