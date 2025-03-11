@@ -9,17 +9,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.ISerializableObject;
-import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
-import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,6 +45,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.net.PacketDebugRedstoneCover;
+import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase.CoverPosition;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
@@ -68,7 +64,8 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
         setMaxStackSize(1);
     }
 
-    public Map<CoverAdvancedWirelessRedstoneBase.CoverPosition, String> getCoversOnFrequency(String uuid, int frequency) {
+    public Map<CoverAdvancedWirelessRedstoneBase.CoverPosition, String> getCoversOnFrequency(String uuid,
+        int frequency) {
         Map<Integer, Map<CoverPosition, String>> publicCovers = advWirelessLabels.getOrDefault(uuid, new HashMap<>());
         return publicCovers.getOrDefault(frequency, new HashMap<>());
     }
@@ -161,7 +158,10 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                                 int z = data.getInteger("z");
                                 int dim = data.getInteger("dim");
                                 int side = data.getInteger("side");
-                                CoverAdvancedWirelessRedstoneBase.CoverPosition coverPosition = new CoverAdvancedWirelessRedstoneBase.CoverPosition(new ChunkCoordinates(x, y, z), dim, side);
+                                CoverAdvancedWirelessRedstoneBase.CoverPosition coverPosition = new CoverAdvancedWirelessRedstoneBase.CoverPosition(
+                                    new ChunkCoordinates(x, y, z),
+                                    dim,
+                                    side);
                                 Map<Integer, Map<CoverPosition, String>> frequencies = advWirelessLabels
                                     .computeIfAbsent(owner, k -> new HashMap<>());
                                 Map<CoverAdvancedWirelessRedstoneBase.CoverPosition, String> covers = frequencies
@@ -365,8 +365,8 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
         return panel;
     }
 
-    public List<List<IWidget>> processAdvancedFrequencies(Map<Integer, Map<CoverPosition, Byte>> frequencyMap, String owner,
-                                                          Grid grid, PanelSyncManager guiSyncManager) {
+    public List<List<IWidget>> processAdvancedFrequencies(Map<Integer, Map<CoverPosition, Byte>> frequencyMap,
+        String owner, Grid grid, PanelSyncManager guiSyncManager) {
 
         String ownerString = owner.equals("Public") ? "Public"
             : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(owner));
@@ -382,8 +382,8 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                 coverMap.forEach((cover, useless) -> {
                     List<IWidget> row = new ArrayList<>();
 
-
                     row.add(new Row() {
+
                         @Override
                         public Flow setEnabledIf(Predicate<Flow> condition) {
                             return onUpdateListener(w -> {
@@ -422,7 +422,9 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                         .child(
                             new TextFieldWidget().sizeRel(0.2f, 0.5f)
                                 .value(SyncHandlers.string(() -> {
-                                    Map<CoverAdvancedWirelessRedstoneBase.CoverPosition, String> coversOnFrequency = getCoversOnFrequency(owner, freq);
+                                    Map<CoverAdvancedWirelessRedstoneBase.CoverPosition, String> coversOnFrequency = getCoversOnFrequency(
+                                        owner,
+                                        freq);
                                     return coversOnFrequency.getOrDefault(cover, "Description");
                                 }, label -> {
                                     if (!guiSyncManager.isClient()) {
