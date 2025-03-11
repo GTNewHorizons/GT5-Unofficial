@@ -293,8 +293,13 @@ public class GodforgeMath {
             return true;
         }
 
-        if (module instanceof MTEExoticModule && godforge.isUpgradeActive(QGPIU)) {
-            return true;
+        if (module instanceof MTEExoticModule) {
+            if (godforge.isUpgradeActive(QGPIU) && !((MTEExoticModule) module).isMagmatterModeOn()) {
+                return true;
+            }
+            if (godforge.isUpgradeActive(END) && ((MTEExoticModule) module).isMagmatterModeOn()) {
+                return true;
+            }
         }
 
         return module instanceof MTESmeltingModule;
