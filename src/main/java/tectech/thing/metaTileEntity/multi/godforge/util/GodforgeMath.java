@@ -293,11 +293,11 @@ public class GodforgeMath {
             return true;
         }
 
-        if (module instanceof MTEExoticModule) {
-            if (godforge.isUpgradeActive(QGPIU) && !((MTEExoticModule) module).isMagmatterModeOn()) {
+        if (module instanceof MTEExoticModule exoticizer) {
+            if (godforge.isUpgradeActive(QGPIU) && !exoticizer.isMagmatterModeOn()) {
                 return true;
             }
-            if (godforge.isUpgradeActive(END) && ((MTEExoticModule) module).isMagmatterModeOn()) {
+            if (godforge.isUpgradeActive(END) && exoticizer.isMagmatterModeOn()) {
                 return true;
             }
         }
