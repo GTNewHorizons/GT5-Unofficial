@@ -100,49 +100,6 @@ public class NetheriteRecipes {
             .eut(TierEU.RECIPE_IV)
             .addTo(chemicalBathRecipes);
 
-        if (ForbiddenMagic.isModLoaded()) {
-            // new ResearchItem( TODO add to coremod pr
-            // "HELLISHMETAL",
-            // "NEWHORIZONS",
-            // new AspectList().add(Aspect.getAspect("infernus"), 15).add(Aspect.getAspect("lucrum"), 12)
-            // .add(Aspect.getAspect("fames"), 6).add(Aspect.getAspect("ignis"), 3),
-            // -6,
-            // -7,
-            // 3,
-            // GTOreDictUnificator.get(OrePrefixes.ingot, Materials.HellishMetal, 1))
-            // .setConcealed().setRound().setPages(new ResearchPage("TConstruct.research_page.UNDYINGTOTEM.1"))
-            // .registerResearchItem();
-            // TCHelper.addResearchPage(
-            // "HELLISHMETAL",
-            // new ResearchPage(
-            // Objects.requireNonNull(
-            // TCHelper.findInfusionRecipe(
-            // GTOreDictUnificator.get(OrePrefixes.ingot, Materials.HellishMetal, 1)))));
-            // ThaumcraftApi.addWarpToResearch("HELLISHMETAL", 3);
-
-            ThaumcraftApi.addInfusionCraftingRecipe(
-                "HELLISHMETAL",
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.HellishMetal, 1),
-                1,
-                new AspectList().add(Aspect.getAspect("ignis"), 8),
-                MaterialsElements.getInstance().RHODIUM.getBlock(1),
-                new ItemStack[] { getModItem(ForbiddenMagic.ID, "NetherShard", 1, 0),
-                    GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Thaumium, 1),
-                    getModItem(ForbiddenMagic.ID, "NetherShard", 1, 0),
-                    GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Thaumium, 1), });
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    MaterialsElements.getInstance().RHODIUM.getIngot(1),
-                    getModItem(ForbiddenMagic.ID, "NetherShard", 8, 0),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.InfusedFire, 8))
-                .fluidInputs(Materials.Thaumium.getMolten(8 * 144))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.HellishMetal, 1))
-                .duration(60 * SECONDS)
-                .eut(TierEU.RECIPE_ZPM)
-                .addTo(electrolyzerRecipes);
-        }
-
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Brittle_Netherite_Scrap.get(1))
             .itemOutputs(ItemList.Netherite_Nanoparticles.get(1))
