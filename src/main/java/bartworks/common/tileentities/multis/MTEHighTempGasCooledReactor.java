@@ -26,6 +26,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -478,7 +479,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
             public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
                 if (this.tooltip.containsKey(this.getDamage(p_77624_1_)))
                     aList.add(this.tooltip.get(this.getDamage(p_77624_1_)));
-                aList.add("Material for High Temperature Gas-cooled Reactor");
+                aList.add(StatCollector.translateToLocal("tooltip.bw.high_temp_gas_cooled_reactor.material"));
                 super.addInformation(p_77624_1_, p_77624_2_, aList, p_77624_4_);
             }
         }
