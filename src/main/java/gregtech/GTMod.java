@@ -120,6 +120,7 @@ import gregtech.loaders.preload.LoaderCircuitBehaviors;
 import gregtech.loaders.preload.LoaderGTBlockFluid;
 import gregtech.loaders.preload.LoaderGTItemData;
 import gregtech.loaders.preload.LoaderGTOreDictionary;
+import gregtech.loaders.preload.LoaderMetaPipeEntities;
 import gregtech.loaders.preload.LoaderMetaTileEntities;
 import gregtech.loaders.preload.LoaderOreProcessing;
 import ic2.api.recipe.IRecipeInput;
@@ -286,6 +287,7 @@ public class GTMod implements IGTMod {
         new LoaderGTItemData().run();
         new LoaderGTBlockFluid().run();
         new LoaderMetaTileEntities().run();
+        new LoaderMetaPipeEntities().run();
 
         new LoaderCircuitBehaviors().run();
         new CoverBehaviorLoader().run();
