@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
@@ -192,12 +193,10 @@ public final class ItemParametrizerMemoryCard extends Item {
         if (tNBT == null) return;
         if (tNBT.hasKey("controller")) {
             aList.add(
-                "Copied from: " + EnumChatFormatting.RED
-                    + tNBT.getString("controller")
-                    + EnumChatFormatting.RESET
-                    + " at "
-                    + EnumChatFormatting.GREEN
-                    + tNBT.getString("coords"));
+                StatCollector.translateToLocalFormatted(
+                    "item.em.parametrizerMemoryCard.desc.copied_controller",
+                    EnumChatFormatting.RED + tNBT.getString("controller") + EnumChatFormatting.RESET,
+                    EnumChatFormatting.GREEN + tNBT.getString("coords")));
         }
         if (tNBT.hasKey("paramList", Constants.NBT.TAG_LIST)) {
             NBTTagList tagList = tNBT.getTagList("paramList", Constants.NBT.TAG_COMPOUND);
