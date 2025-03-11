@@ -2433,7 +2433,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
         List<ItemStack> ret = new ArrayList<>();
         for (final MTEHatch tBus : validMTEList(mOutputBusses)) {
-            if (!(tBus instanceof MTEHatchOutputBusME)) {
+            if (!(tBus instanceof MTEHatchOutputBusME meBus)) {
                 final IInventory tBusInv = tBus.getBaseMetaTileEntity();
                 for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
                     final ItemStack stackInSlot = tBus.getStackInSlot(i);
@@ -2449,6 +2449,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         ret.add(fakeItemStack);
                     } else {
                         ret.add(stackInSlot);
+                    }
+                }
+            } else {
+                if (meBus.isLocked() && meBus.canAcceptItem()) {
+                    for (ItemStack stack : meBus.getLockedItems()) {
+                        ItemStack fakeItemStack = stack.copy();
+                        fakeItemStack.stackSize = 65;
+                        ret.add(fakeItemStack);
                     }
                 }
             }
@@ -2488,7 +2496,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public boolean canDumpItemToME() {
         for (MTEHatch tHatch : validMTEList(mOutputBusses)) {
             if (tHatch instanceof MTEHatchOutputBusME) {
-                if ((((MTEHatchOutputBusME) tHatch).canAcceptItem())) {
+                if (((MTEHatchOutputBusME) tHatch).isLocked()) {
+                    return false;
+                }
+
+                if (((MTEHatchOutputBusME) tHatch).canAcceptItem()) {
                     return true;
                 }
             }
@@ -2500,7 +2512,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public boolean canDumpFluidToME() {
         for (IFluidStore tHatch : getFluidOutputSlots(new FluidStack[0])) {
             if (tHatch instanceof MTEHatchOutputME) {
-                if ((((MTEHatchOutputME) tHatch).canAcceptFluid())) {
+                if (((MTEHatchOutputME) tHatch).isFluidLocked()) {
+                    return false;
+                }
+
+                if (((MTEHatchOutputME) tHatch).canAcceptFluid()) {
                     return true;
                 }
             }
