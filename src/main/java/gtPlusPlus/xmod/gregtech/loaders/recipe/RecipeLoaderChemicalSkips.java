@@ -428,7 +428,7 @@ public class RecipeLoaderChemicalSkips {
             .fluidOutputs(new FluidStack(MaterialsElements.getInstance().NEPTUNIUM.getPlasma(), 288))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_UEV)
-            .metadata(FUSION_THRESHOLD, 1_000_000_000L)
+            .metadata(FUSION_THRESHOLD, 6_000_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
@@ -438,7 +438,7 @@ public class RecipeLoaderChemicalSkips {
             .fluidOutputs(new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 288))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_UEV)
-            .metadata(FUSION_THRESHOLD, 1_000_000_000L)
+            .metadata(FUSION_THRESHOLD, 6_000_000_000L)
             .addTo(fusionRecipes);
     }
 
