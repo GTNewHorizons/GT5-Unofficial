@@ -398,88 +398,131 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Circuit_Silicon_Ingot6
             .set(addItem(Circuit_Silicon_Ingot6.ID, "Optically Enriched Crystalline Boule", "Raw Circuit", o));
 
-        ItemList.Circuit_Silicon_Wafer.set(addItem(Circuit_Silicon_Wafer.ID, "Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Wafer2
-            .set(addItem(Circuit_Silicon_Wafer2.ID, "Phosphorus doped Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Silicon_Wafer
+            .set(addItem(Circuit_Silicon_Wafer.ID, "Wafer", "Raw Circuit", "waferPlain", "wafer"));
+        ItemList.Circuit_Silicon_Wafer2.set(
+            addItem(Circuit_Silicon_Wafer2.ID, "Phosphorus doped Wafer", "Raw Circuit", "waferPhosphorus", "wafer"));
         ItemList.Circuit_Silicon_Wafer3
-            .set(addItem(Circuit_Silicon_Wafer3.ID, "Naquadah doped Wafer", "Raw Circuit", o));
+            .set(addItem(Circuit_Silicon_Wafer3.ID, "Naquadah doped Wafer", "Raw Circuit", "waferNaquadah", "wafer"));
         ItemList.Circuit_Silicon_Wafer4
-            .set(addItem(Circuit_Silicon_Wafer4.ID, "Europium doped Wafer", "Raw Circuit", o));
+            .set(addItem(Circuit_Silicon_Wafer4.ID, "Europium doped Wafer", "Raw Circuit", "waferEuropium", "wafer"));
         ItemList.Circuit_Silicon_Wafer5
-            .set(addItem(Circuit_Silicon_Wafer5.ID, "Americium doped Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Wafer6
-            .set(addItem(Circuit_Silicon_Wafer6.ID, "Photonically Prepared Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Silicon_Wafer7
-            .set(addItem(Circuit_Silicon_Wafer7.ID, "Photonically Enhanced Wafer", "Raw Circuit", o));
+            .set(addItem(Circuit_Silicon_Wafer5.ID, "Americium doped Wafer", "Raw Circuit", "waferAmericium", "wafer"));
+        ItemList.Circuit_Silicon_Wafer6.set(
+            addItem(
+                Circuit_Silicon_Wafer6.ID,
+                "Photonically Prepared Wafer",
+                "Raw Circuit",
+                "waferPhotonicallyPrepared",
+                "wafer"));
+        ItemList.Circuit_Silicon_Wafer7.set(
+            addItem(
+                Circuit_Silicon_Wafer7.ID,
+                "Photonically Enhanced Wafer",
+                "Raw Circuit",
+                "waferPhotonicallyEnhanced",
+                "wafer"));
 
         ItemList.Circuit_Wafer_ILC
-            .set(addItem(Circuit_Wafer_ILC.ID, "Integrated Logic Circuit (Wafer)", "Raw Circuit", o));
+            .set(addItem(Circuit_Wafer_ILC.ID, "Integrated Logic Circuit (Wafer)", "Raw Circuit", "waferILC", "wafer"));
         ItemList.Circuit_Chip_ILC
-            .set(addItem(Circuit_Chip_ILC.ID, "Integrated Logic Circuit", "Integrated Circuit", o));
+            .set(addItem(Circuit_Chip_ILC.ID, "Integrated Logic Circuit", "Integrated Circuit", "chipILC", "chip"));
 
-        ItemList.Circuit_Wafer_Ram
-            .set(addItem(Circuit_Wafer_Ram.ID, "Random Access Memory Chip (Wafer)", "Raw Circuit", o));
+        ItemList.Circuit_Wafer_Ram.set(
+            addItem(Circuit_Wafer_Ram.ID, "Random Access Memory Chip (Wafer)", "Raw Circuit", "waferRAM", "wafer"));
         ItemList.Circuit_Chip_Ram
-            .set(addItem(Circuit_Chip_Ram.ID, "Random Access Memory Chip", "Integrated Circuit", o));
+            .set(addItem(Circuit_Chip_Ram.ID, "Random Access Memory Chip", "Integrated Circuit", "chipRAM", "chip"));
 
-        ItemList.Circuit_Wafer_NAND.set(addItem(Circuit_Wafer_NAND.ID, "NAND Memory Chip (Wafer)", "Raw Circuit", o));
-        ItemList.Circuit_Chip_NAND.set(addItem(Circuit_Chip_NAND.ID, "NAND Memory Chip", "Integrated Circuit", o));
+        ItemList.Circuit_Wafer_NAND
+            .set(addItem(Circuit_Wafer_NAND.ID, "NAND Memory Chip (Wafer)", "Raw Circuit", "waferNAND", "wafer"));
+        ItemList.Circuit_Chip_NAND
+            .set(addItem(Circuit_Chip_NAND.ID, "NAND Memory Chip", "Integrated Circuit", "chipNAND", "chip"));
 
-        ItemList.Circuit_Wafer_NOR.set(addItem(Circuit_Wafer_NOR.ID, "NOR Memory Chip (Wafer)", "Raw Circuit", o));
-        ItemList.Circuit_Chip_NOR.set(addItem(Circuit_Chip_NOR.ID, "NOR Memory Chip", "Integrated Circuit", o));
+        ItemList.Circuit_Wafer_NOR
+            .set(addItem(Circuit_Wafer_NOR.ID, "NOR Memory Chip (Wafer)", "Raw Circuit", "waferNOR", "wafer"));
+        ItemList.Circuit_Chip_NOR
+            .set(addItem(Circuit_Chip_NOR.ID, "NOR Memory Chip", "Integrated Circuit", "chipNOR", "chip"));
 
         ItemList.Circuit_Wafer_CPU
-            .set(addItem(Circuit_Wafer_CPU.ID, "Central Processing Unit (Wafer)", "Raw Circuit", o));
-        ItemList.Circuit_Chip_CPU.set(addItem(Circuit_Chip_CPU.ID, "Central Processing Unit", "Integrated Circuit", o));
+            .set(addItem(Circuit_Wafer_CPU.ID, "Central Processing Unit (Wafer)", "Raw Circuit", "waferCPU", "wafer"));
+        ItemList.Circuit_Chip_CPU
+            .set(addItem(Circuit_Chip_CPU.ID, "Central Processing Unit", "Integrated Circuit", "chipCPU", "chip"));
 
-        ItemList.Circuit_Wafer_SoC.set(addItem(Circuit_Wafer_SoC.ID, "SoC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_SoC.set(addItem(Circuit_Chip_SoC.ID, "SoC", "System on a Chip", o));
+        ItemList.Circuit_Wafer_SoC.set(addItem(Circuit_Wafer_SoC.ID, "SoC Wafer", "Raw Circuit", "waferSoC", "wafer"));
+        ItemList.Circuit_Chip_SoC.set(addItem(Circuit_Chip_SoC.ID, "SoC", "System on a Chip", "chipSoC", "chip"));
 
-        ItemList.Circuit_Wafer_SoC2.set(addItem(Circuit_Wafer_SoC2.ID, "ASoC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_SoC2.set(addItem(Circuit_Chip_SoC2.ID, "ASoC", "Advanced System on a Chip", o));
+        ItemList.Circuit_Wafer_SoC2
+            .set(addItem(Circuit_Wafer_SoC2.ID, "ASoC Wafer", "Raw Circuit", "waferASoC", "wafer"));
+        ItemList.Circuit_Chip_SoC2
+            .set(addItem(Circuit_Chip_SoC2.ID, "ASoC", "Advanced System on a Chip", "chipASoC", "chip"));
 
-        ItemList.Circuit_Wafer_PIC.set(addItem(Circuit_Wafer_PIC.ID, "PIC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_PIC.set(addItem(Circuit_Chip_PIC.ID, "Power IC", "Power Circuit", o));
+        ItemList.Circuit_Wafer_PIC.set(addItem(Circuit_Wafer_PIC.ID, "PIC Wafer", "Raw Circuit", "waferPIC", "wafer"));
+        ItemList.Circuit_Chip_PIC.set(addItem(Circuit_Chip_PIC.ID, "Power IC", "Power Circuit", "chipPIC", "chip"));
 
-        ItemList.Circuit_Wafer_HPIC.set(addItem(Circuit_Wafer_HPIC.ID, "HPIC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_HPIC.set(addItem(Circuit_Chip_HPIC.ID, "High Power IC", "High Power Circuit", o));
+        ItemList.Circuit_Wafer_HPIC
+            .set(addItem(Circuit_Wafer_HPIC.ID, "HPIC Wafer", "Raw Circuit", "waferHPIC", "wafer"));
+        ItemList.Circuit_Chip_HPIC
+            .set(addItem(Circuit_Chip_HPIC.ID, "High Power IC", "High Power Circuit", "chipHPIC", "chip"));
 
-        ItemList.Circuit_Wafer_NanoCPU.set(addItem(Circuit_Wafer_NanoCPU.ID, "NanoCPU Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_NanoCPU
-            .set(addItem(Circuit_Chip_NanoCPU.ID, "Nanocomponent Central Processing Unit", "Power Circuit", o));
+        ItemList.Circuit_Wafer_NanoCPU
+            .set(addItem(Circuit_Wafer_NanoCPU.ID, "NanoCPU Wafer", "Raw Circuit", "waferNanoCPU", "wafer"));
+        ItemList.Circuit_Chip_NanoCPU.set(
+            addItem(
+                Circuit_Chip_NanoCPU.ID,
+                "Nanocomponent Central Processing Unit",
+                "Power Circuit",
+                "chipNanoCPU",
+                "chip"));
 
-        ItemList.Circuit_Wafer_QuantumCPU.set(addItem(Circuit_Wafer_QuantumCPU.ID, "QBit Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Wafer_QuantumCPU
+            .set(addItem(Circuit_Wafer_QuantumCPU.ID, "QBit Wafer", "Raw Circuit", "waferQuantumCPU", "wafer"));
         ItemList.Circuit_Chip_QuantumCPU
-            .set(addItem(Circuit_Chip_QuantumCPU.ID, "QBit Processing Unit", "Quantum CPU", o));
+            .set(addItem(Circuit_Chip_QuantumCPU.ID, "QBit Processing Unit", "Quantum CPU", "chipQuantumCPU", "chip"));
 
-        ItemList.Circuit_Wafer_UHPIC.set(addItem(Circuit_Wafer_UHPIC.ID, "UHPIC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_UHPIC
-            .set(addItem(Circuit_Chip_UHPIC.ID, "Ultra High Power IC", "Ultra High Power Circuit", o));
+        ItemList.Circuit_Wafer_UHPIC
+            .set(addItem(Circuit_Wafer_UHPIC.ID, "UHPIC Wafer", "Raw Circuit", "waferUHPIC", "wafer"));
+        ItemList.Circuit_Chip_UHPIC.set(
+            addItem(Circuit_Chip_UHPIC.ID, "Ultra High Power IC", "Ultra High Power Circuit", "chipUHPIC", "chip"));
 
-        ItemList.Circuit_Wafer_Simple_SoC
-            .set(addItem(Circuit_Wafer_Simple_SoC.ID, "Simple SoC Wafer", "Raw Primitive Circuit", o));
+        ItemList.Circuit_Wafer_Simple_SoC.set(
+            addItem(
+                Circuit_Wafer_Simple_SoC.ID,
+                "Simple SoC Wafer",
+                "Raw Primitive Circuit",
+                "waferSimpleSoC",
+                "wafer"));
         ItemList.Circuit_Chip_Simple_SoC
-            .set(addItem(Circuit_Chip_Simple_SoC.ID, "Simple SoC", "Simple System on a Chip", o));
+            .set(addItem(Circuit_Chip_Simple_SoC.ID, "Simple SoC", "Simple System on a Chip", "chipSimpleSoC", "chip"));
 
-        ItemList.Circuit_Wafer_ULPIC.set(addItem(Circuit_Wafer_ULPIC.ID, "ULPIC Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Wafer_ULPIC
+            .set(addItem(Circuit_Wafer_ULPIC.ID, "ULPIC Wafer", "Raw Circuit", "waferULPIC", "wafer"));
         ItemList.Circuit_Chip_ULPIC
-            .set(addItem(Circuit_Chip_ULPIC.ID, "Ultra Low Power IC", "Ultra Low Power Circuit", o));
+            .set(addItem(Circuit_Chip_ULPIC.ID, "Ultra Low Power IC", "Ultra Low Power Circuit", "chipULPIC", "chip"));
 
-        ItemList.Circuit_Wafer_LPIC.set(addItem(Circuit_Wafer_LPIC.ID, "LPIC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_LPIC.set(addItem(Circuit_Chip_LPIC.ID, "Low Power IC", "Low Power Circuit", o));
+        ItemList.Circuit_Wafer_LPIC
+            .set(addItem(Circuit_Wafer_LPIC.ID, "LPIC Wafer", "Raw Circuit", "waferLPIC", "wafer"));
+        ItemList.Circuit_Chip_LPIC
+            .set(addItem(Circuit_Chip_LPIC.ID, "Low Power IC", "Low Power Circuit", "chipLPIC", "chip"));
 
-        ItemList.Circuit_Wafer_NPIC.set(addItem(Circuit_Wafer_NPIC.ID, "NPIC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_NPIC.set(addItem(Circuit_Chip_NPIC.ID, "Nano Power IC", "Nano Power Circuit", o));
+        ItemList.Circuit_Wafer_NPIC
+            .set(addItem(Circuit_Wafer_NPIC.ID, "NPIC Wafer", "Raw Circuit", "waferNPIC", "wafer"));
+        ItemList.Circuit_Chip_NPIC
+            .set(addItem(Circuit_Chip_NPIC.ID, "Nano Power IC", "Nano Power Circuit", "chipNPIC", "chip"));
 
-        ItemList.Circuit_Wafer_PPIC.set(addItem(Circuit_Wafer_PPIC.ID, "PPIC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_PPIC.set(addItem(Circuit_Chip_PPIC.ID, "Piko Power IC", "Piko Power Circuit", o));
+        ItemList.Circuit_Wafer_PPIC
+            .set(addItem(Circuit_Wafer_PPIC.ID, "PPIC Wafer", "Raw Circuit", "waferPPIC", "wafer"));
+        ItemList.Circuit_Chip_PPIC
+            .set(addItem(Circuit_Chip_PPIC.ID, "Piko Power IC", "Piko Power Circuit", "chipPPIC", "chip"));
 
-        ItemList.Circuit_Wafer_QPIC.set(addItem(Circuit_Wafer_QPIC.ID, "QPIC Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Chip_QPIC.set(addItem(Circuit_Chip_QPIC.ID, "Quantum Power IC", "Quantum Power Circuit", o));
+        ItemList.Circuit_Wafer_QPIC
+            .set(addItem(Circuit_Wafer_QPIC.ID, "QPIC Wafer", "Raw Circuit", "waferQPIC", "wafer"));
+        ItemList.Circuit_Chip_QPIC
+            .set(addItem(Circuit_Chip_QPIC.ID, "Quantum Power IC", "Quantum Power Circuit", "chipQPIC", "chip"));
 
-        ItemList.Circuit_Wafer_Bioware.set(addItem(Circuit_Wafer_Bioware.ID, "Living Bio Wafer", "Raw Circuit", o));
-        ItemList.Circuit_Parts_Chip_Bioware
-            .set(addItem(Circuit_Parts_Chip_Bioware.ID, "Living Bio Chip", "Needed for Circuits", o));
+        ItemList.Circuit_Wafer_Bioware
+            .set(addItem(Circuit_Wafer_Bioware.ID, "Living Bio Wafer", "Raw Circuit", "waferBioware", "wafer"));
+        ItemList.Circuit_Parts_Chip_Bioware.set(
+            addItem(Circuit_Parts_Chip_Bioware.ID, "Living Bio Chip", "Needed for Circuits", "chipBioware", "chip"));
         /*
          * Engraved Crystal Chip Engraved Lapotron Chip Crystal CPU SoCrystal stem cells (disassemble eggs)
          */
