@@ -66,7 +66,10 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer p_77624_2_, List<String> aList, boolean p_77624_4_) {
         try {
-            aList.add("Configuration == " + aStack.getItemDamage());
+            aList.add(
+                StatCollector.translateToLocalFormatted(
+                    "gtpp.tooltip.integrated_circuit.configuration",
+                    aStack.getItemDamage()));
             aList.add(
                 GTLanguageManager
                     .addStringLocalization(getUnlocalizedName() + ".tooltip.0", "Right click to reconfigure"));
