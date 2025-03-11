@@ -540,6 +540,7 @@ public class Loaders {
                 .of(magneticFluxCasing, 0);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][10] = TextureFactory
                 .of(gravityStabilizationCasing, 0);
+            // index 126 taken by GTNH-Lanthanides
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][127] = TextureFactory
                 .of(BlockTFFTStorageField.TFFTCasingIcon.INSTANCE);
         }
