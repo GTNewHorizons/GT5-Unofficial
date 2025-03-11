@@ -392,7 +392,7 @@ public class AdditionalRecipes {
             .fluidOutputs(WerkstoffLoader.Californium.getMolten(48))
             .duration(12 * SECONDS)
             .eut(49152)
-            .metadata(FUSION_THRESHOLD, 480_000_000)
+            .metadata(FUSION_THRESHOLD, 480_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
@@ -400,7 +400,7 @@ public class AdditionalRecipes {
             .fluidOutputs(WerkstoffLoader.Oganesson.getFluidOrGas(720))
             .duration(24 * SECONDS)
             .eut(49152)
-            .metadata(FUSION_THRESHOLD, 600_000_000)
+            .metadata(FUSION_THRESHOLD, 600_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
