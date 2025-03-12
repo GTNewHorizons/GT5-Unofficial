@@ -316,7 +316,7 @@ public class RecipesGregTech {
             .fluidOutputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(36))
             .duration(6 * MINUTES + 49 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_UHV)
-            .metadata(FUSION_THRESHOLD, 1_200_000_000)
+            .metadata(FUSION_THRESHOLD, 1_200_000_000L)
             .addTo(fusionRecipes);
 
         // Rhugnor
@@ -328,7 +328,7 @@ public class RecipesGregTech {
             .fluidOutputs(MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(144))
             .duration(25 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(FUSION_THRESHOLD, 2_000_000_000)
+            .metadata(FUSION_THRESHOLD, 2_000_000_000L)
             .addTo(fusionRecipes);
     }
 
