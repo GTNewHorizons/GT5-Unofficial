@@ -279,24 +279,24 @@ public class FusionReactorRecipes implements Runnable {
             .addTo(fusionRecipes); // FT3
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Lutetium.getMolten(288), Materials.Vanadium.getMolten(288))
-            .fluidOutputs(Materials.Plutonium241.getPlasma(288))
+            .fluidInputs(Materials.Lutetium.getMolten(576), Materials.Vanadium.getMolten(576))
+            .fluidOutputs(Materials.Plutonium241.getPlasma(576))
             .duration(4 * TICKS)
             .eut(TierEU.RECIPE_UEV / 2)
             .metadata(FUSION_THRESHOLD, 6_000_000_000L)
             .addTo(fusionRecipes); // FT5 because of UEV voltage
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Tellurium.getMolten(288), Materials.Zinc.getMolten(288))
-            .fluidOutputs(Materials.Lead.getPlasma(288))
+            .fluidInputs(Materials.Tellurium.getMolten(576), Materials.Zinc.getMolten(576))
+            .fluidOutputs(Materials.Lead.getPlasma(576))
             .duration(4 * TICKS)
             .eut(TierEU.RECIPE_UEV / 2)
             .metadata(FUSION_THRESHOLD, 6_000_000_000L)
             .addTo(fusionRecipes); // FT5 because of UEV voltage
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Osmium.getMolten(288), Materials.Silicon.getMolten(288))
-            .fluidOutputs(Materials.Thorium.getPlasma(288))
+            .fluidInputs(Materials.Osmium.getMolten(576), Materials.Silicon.getMolten(576))
+            .fluidOutputs(Materials.Thorium.getPlasma(576))
             .duration(4 * TICKS)
             .eut(TierEU.RECIPE_UEV / 2)
             .metadata(FUSION_THRESHOLD, 6_000_000_000L)

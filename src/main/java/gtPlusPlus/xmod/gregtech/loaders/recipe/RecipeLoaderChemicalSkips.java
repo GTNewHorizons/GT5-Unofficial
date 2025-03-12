@@ -423,9 +423,9 @@ public class RecipeLoaderChemicalSkips {
         // MK5 versions
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                new FluidStack(MaterialsElements.getInstance().XENON.getPlasma(), 288),
-                Materials.Yttrium.getMolten(288))
-            .fluidOutputs(new FluidStack(MaterialsElements.getInstance().NEPTUNIUM.getPlasma(), 288))
+                new FluidStack(MaterialsElements.getInstance().XENON.getPlasma(), 576),
+                Materials.Yttrium.getMolten(576))
+            .fluidOutputs(new FluidStack(MaterialsElements.getInstance().NEPTUNIUM.getPlasma(), 576))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_UEV)
             .metadata(FUSION_THRESHOLD, 6_000_000_000L)
@@ -433,9 +433,9 @@ public class RecipeLoaderChemicalSkips {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                new FluidStack(MaterialsElements.STANDALONE.FORCE.getPlasma(), 288),
-                Materials.Rubidium.getMolten(288))
-            .fluidOutputs(new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 288))
+                new FluidStack(MaterialsElements.STANDALONE.FORCE.getPlasma(), 576),
+                Materials.Rubidium.getMolten(576))
+            .fluidOutputs(new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 576))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_UEV)
             .metadata(FUSION_THRESHOLD, 6_000_000_000L)
