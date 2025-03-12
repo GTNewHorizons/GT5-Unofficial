@@ -1,7 +1,6 @@
 package gtPlusPlus.core.material;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.util.CustomGlyphs;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
@@ -29,12 +28,11 @@ public final class MaterialsAlloy {
         90, // Protons
         40, // Neutrons
         true, // Uses Blast furnace?
-        CustomGlyphs.AIR + CustomGlyphs.EARTH + CustomGlyphs.FIRE + CustomGlyphs.WATER,
         // Material Stacks with Percentage of required elements.
-        new MaterialStack(MaterialsElements.getInstance().AER, 5),
-        new MaterialStack(MaterialsElements.getInstance().IGNIS, 5),
-        new MaterialStack(MaterialsElements.getInstance().TERRA, 5),
-        new MaterialStack(MaterialsElements.getInstance().AQUA, 5));
+        new MaterialStack(MaterialsElements.getInstance().AER, 25),
+        new MaterialStack(MaterialsElements.getInstance().IGNIS, 25),
+        new MaterialStack(MaterialsElements.getInstance().TERRA, 25),
+        new MaterialStack(MaterialsElements.getInstance().AQUA, 25));
 
     public static final Material BLOODSTEEL = new Material(
         "Blood Steel", // Material Name
