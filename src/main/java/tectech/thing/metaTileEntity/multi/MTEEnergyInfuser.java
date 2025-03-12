@@ -6,6 +6,7 @@ import static gregtech.api.GregTechAPI.mEUtoRF;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -13,7 +14,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import cofh.api.energy.IEnergyContainerItem;
@@ -37,7 +39,7 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class MTEEnergyInfuser extends TTMultiblockBase implements IConstructable {
+public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConstructable {
 
     private static final int maxRepairedDamagePerOperation = 1000;
     private static final long usedEuPerDurability = 1000;
@@ -279,6 +281,12 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements IConstructable
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         structureBuild_EM("main", 1, 2, 0, stackSize, hintsOnly);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
+        if (mMachine) return -1;
+        return survivialBuildPiece("main", stackSize, 1, 2, 0, elementBudget, source, actor, false, true);
     }
 
     @Override
