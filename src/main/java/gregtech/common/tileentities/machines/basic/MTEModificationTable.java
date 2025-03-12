@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -21,10 +22,10 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.gui.modularui.GTUITextures;
@@ -110,16 +111,9 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
          */
     }
 
-    public boolean isAugmentListEmpty(ItemStack armorItem) {
-        if (armorItem.getItem() instanceof MechArmorBase) {
-            if (armorItem.getTagCompound()
-                .getTagList("augments", 9).tagList.isEmpty()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
+    /*
+     * returns: if successful or not
+     */
     public boolean setGridSlot(int targetSlot, ItemStack armor, ItemAugmentBase augment) {
         NBTTagList augments = armor.getTagCompound()
             .getTagList("augments", 11);
@@ -134,20 +128,44 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
         return false;
     }
 
+    public NBTTagList saveSlotsToNBT(MultiChildWidget parent, MechArmorBase armor) {
+        NBTTagList augments = armor.getStack()
+            .getTagCompound()
+            .getTagList("augments", 11);
+        NBTTagList newAugments = new NBTTagList();
+        List<Widget> slots = parent.getChildren();
+
+        for (int i = 0; i < slots.size(); i++) {
+            Widget ugh = slots.get(i);
+            SlotWidget slot = (SlotWidget) ugh;
+            if (!(ugh instanceof SlotWidget)) continue;
+            BaseSlot mcSlot = slot.getMcSlot();
+            if (mcSlot.getHasStack()) {
+                if (mcSlot.getStack().getItem() instanceof ItemAugmentBase aug) {
+                    if (!aug.isSimpleAugment()) continue;
+                    String currentAugmentInfo = serializeAugmentToString(aug, mcSlot.slotNumber);
+                    newAugments.appendTag(new NBTTagString(currentAugmentInfo));
+                }
+            }
+        }
+
+        return newAugments;
+    }
+
     // TODO figure out a better name for this method
-    public String serializeAugmentToString(ItemAugmentBase augment, int targetSlot) {
+    public String serializeAugmentToString(ItemAugmentBase augment, int slot) {
         if (!augment.isSimpleAugment()) return null;
         StringBuilder sb = new StringBuilder();
         sb.append("augId:");
         sb.append(augment.getId());
         sb.append("|");
         sb.append("index:");
-        sb.append(targetSlot);
+        sb.append(slot);
 
         return sb.toString();
     }
 
-    public Integer getIndexFromNBTTagString(NBTTagString tag) {
+    public static Integer getIndexFromAugmentNBT(NBTTagString tag) {
         // Obfuscated method simply gets the string from the tag object
         String raw = tag.func_150285_a_();
         if (!raw.startsWith("augID")) return null;
@@ -156,7 +174,7 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
         return Integer.valueOf(data[1].split(":")[1]);
     }
 
-    public ItemAugmentBase getAugmentFromNBTTagString(NBTTagString tag) {
+    public static ItemAugmentBase getAugmentFromAugmentNBT(NBTTagString tag) {
         // Obfuscated method simply gets the string from the tag object
         String raw = tag.func_150285_a_();
         if (!raw.startsWith("augID")) return null;
@@ -169,11 +187,64 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
         for (Object s : grid.tagList) {
             NBTTagString string = (NBTTagString) s;
             if (!(s instanceof NBTTagString)) return null;
-            if (getIndexFromNBTTagString(string) == targetSlot) {
+            if (getIndexFromAugmentNBT(string) == targetSlot) {
                 return false;
             }
         }
         return true;
+    }
+
+    // TODO remove reliance on using the existing MultiChildWidget and instead go from nbt
+    public boolean canPutAugment(ItemAugmentBase augment, int augmentIndex, String[] frameData,
+        MultiChildWidget slots) {
+        String[] size = augment.size;
+        for (int i = 0; i < size.length; i++) {
+            String augRow = size[i];
+            for (int j = 0; j < augRow.length(); j++) {
+                char augSlot = augRow.toCharArray()[j];
+                if (augSlot != '#') continue;
+
+                // Desired slot is not part of the frameData, so return false
+                if (frameData[i].toCharArray()[j] != '#') return false;
+                // Look over the slots to see if any other augment (or link) currently holds this spot
+                for (Widget a : slots.getChildren()) {
+                    SlotWidget slot = (SlotWidget) a;
+                    if (!(a instanceof SlotWidget)) continue;
+                    if (slot.getMcSlot()
+                        .getSlotIndex() == augmentIndex) {
+                        if (slot.getMcSlot()
+                            .getHasStack()) return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public int getTotalSlots(String[] frameData) {
+        int totalSlots = 0;
+        for (String row : frameData) {
+            for (char slot : row.toCharArray()) {
+                if (slot == '#') {
+                    totalSlots++;
+                }
+            }
+        }
+        return totalSlots;
+    }
+
+    // TODO figure out a better name for this method
+    public int getOtherIndex(String[] frameData, int index) {
+        int otherIndex = 0;
+        int temp = 0;
+        out: for (String row : frameData) {
+            for (char slot : row.toCharArray()) {
+                otherIndex++;
+                if (slot == '#') temp++;
+                if (temp == index) break out;
+            }
+        }
+        return otherIndex;
     }
 
     final static int MOD_WINDOW_ID = 250;
@@ -222,60 +293,53 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
             .addSyncedWindow(MOD_WINDOW_ID, player -> createEquipmentGrid(player, inputHandler.getStackInSlot(1)));
     }
 
+    // TODO handle NPE when you insert armor without frame data
     private ModularWindow createEquipmentGrid(final EntityPlayer player, ItemStack armorItem) {
-        ModularWindow.Builder builder = ModularWindow.builder(170, 85)
-            .setDraggable(false);
-        MultiChildWidget slots = new MultiChildWidget();
+        // TODO figure out how to not put up anything if these fail
+        if (armorItem == null) return null;
+        if (!(armorItem.getItem() instanceof MechArmorBase mechArmorBase)) return null;
 
-        if (armorItem == null) return builder.build();
-        if (!(armorItem.getItem() instanceof MechArmorBase)) return null;
-
-        NBTTagList grid = armorItem.getTagCompound()
+        NBTTagList data = armorItem.getTagCompound()
             .getTagList("augments", 11);
         String[] frameData = getMechanicalAugment(
             armorItem.getTagCompound()
                 .getInteger("frame")).size;
 
-        // Create an empty grid of SlotWidgets
-        for (int i = 0; i < frameData.length; i++) {
-            String row = frameData[i];
-            for (int j = 0; j < row.length(); j++) {
-                char slot = row.toCharArray()[j];
-                int slotIndex = ((i + 1) * (j + 1));
-                equipmentGridHandler.setSize((frameData.length * row.length()) + 1);
-                if (slot == '#') {
-                    slots.addChild(
-                        new SlotWidget(equipmentGridHandler, slotIndex)
-                            .setFilter(x -> x.getItem() instanceof ItemAugmentBase item && item.isSimpleAugment())
-                            .setPos((slots.getPos().x * j) + 5, (slots.getPos().y * i) + 2));
+        ModularWindow.Builder builder = ModularWindow
+            .builder((frameData[0].length() * 18) + 10, (frameData.length * 18) + 10);
+        builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
+        builder.setGuiTint(this.getGUIColorization());
+        builder.setDraggable(true);
 
-                }
+        equipmentGridHandler.setSize(getTotalSlots(frameData) + 1);
+
+        MultiChildWidget slots = createSlotWidgets(frameData);
+        populateSlotWidgets(data, slots, frameData);
+
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (!widget.isClient()) {
+                // remaking NBT every time is probably bad practice, but the other option involves looking through the
+                // whole thing anyway
+                armorItem.getTagCompound()
+                    .setTag("augments", saveSlotsToNBT(slots, mechArmorBase));
+                widget.getContext()
+                    .closeWindow(MOD_WINDOW_ID);
             }
-        }
-
-        // Fill our empty grid of SlotWidgets with the saved augments in NBT
-        for (Object a : grid.tagList) {
-            NBTTagString data = (NBTTagString) a;
-            if (!(a instanceof NBTTagString)) continue;
-
-            ItemAugmentBase augment = getAugmentFromNBTTagString(data);
-            int index = getIndexFromNBTTagString(data);
-            for (Widget s : slots.getChildren()) {
-                SlotWidget slot = (SlotWidget) s;
-                if (!(s instanceof SlotWidget)) continue;
-
-                if (slot.getMcSlot().slotNumber == index) {
-                    slot.getMcSlot()
-                        .putStack(new ItemStack(augment, index));
-                }
-            }
-        }
-
+        })
+            .setPos(5, slots.getPos().y - 10)
+            .setSize(16, 16)
+            .setBackground(() -> {
+                List<UITexture> tex = new ArrayList<>();
+                tex.add(GTUITextures.BUTTON_STANDARD);
+                tex.add(GTUITextures.OVERLAY_BUTTON_DISABLE);
+                return tex.toArray(new IDrawable[0]);
+            }));
+        // updateTextures(builder, slots);
         builder.widget(slots);
-        updateTextures(builder, slots);
         return builder.build();
     }
 
+    // TODO remake this method
     private void updateTextures(ModularWindow.Builder builder, MultiChildWidget slots) {
         for (int slot = 0; slot < equipmentGridHandler.getSlots(); slot++) {
             ItemStack item = equipmentGridHandler.getStackInSlot(slot);
@@ -293,23 +357,50 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
         return new Pos2d(x + 5, y + 2);
     }
 
-    private SlotGroup createSlotGrid(int length, int height, IDrawable... background) {
-        if (background.length == 0) {
-            background = new IDrawable[] { getGUITextureSet().getItemSlot() };
+    private MultiChildWidget createSlotWidgets(String[] frameData) {
+        MultiChildWidget parent = new MultiChildWidget();
+        int slotIndex = 0;
+        for (int i = 0; i < frameData.length; i++) {
+            String row = frameData[i];
+            for (int j = 0; j < row.length(); j++) {
+                char frameSlot = row.toCharArray()[j];
+                if (frameSlot == '#') {
+                    Widget slot = new SlotWidget(equipmentGridHandler, slotIndex).setPos((18 * j) + 5, (18 * i) + 5);
+                    parent.addChild(slot);
+                    slotIndex++;
+                }
+            }
         }
-        return (SlotGroup) SlotGroup.ofItemHandler(equipmentGridHandler, 4)
-            .startFromSlot(0)
-            .endAtSlot(15)
-            .background(background)
-            .applyForWidget(widget -> {
-                widget.setFilter(this::slotFilter);
-
-            })
-            .build()
-            .setPos(52, 7);
+        return parent;
     }
 
+    // TODO figure out if this works at all
+    // TODO it does not. fix it
+    private void populateSlotWidgets(NBTTagList dataList, MultiChildWidget slots, String[] frameData) {
+        for (int i = 0; i < dataList.tagCount(); i++) {
+            String data = dataList.getStringTagAt(i);
+            if (data.isEmpty()) continue;
+            ItemAugmentBase augment = getAugmentFromAugmentNBT(new NBTTagString(data));
+            int index = getIndexFromAugmentNBT(new NBTTagString(data));
+            if (slots.getChildren().get(index) instanceof SlotWidget slot) {
+                slot.getMcSlot().putStack(new ItemStack(augment, 1));
+            }
+        }
+    }
+
+    // // TODO my god this sucks
+    // private boolean slotFilter(ItemStack item, int augmentIndex, String[] frameData, SlotWidget[] slots) {
+    // // if (!(item.getItem() instanceof ItemAugmentBase aug)) return false;
+    // // if (!aug.isSimpleAugment()) return false;
+    // // return canPutAugment(aug, augmentIndex, frameData, slots);
+    // return false;
+    // }
+
+    // TODO my god this sucks
     private boolean slotFilter(ItemStack item) {
-        return item.getItem() instanceof ItemAugmentBase;
+        // if (!(item.getItem() instanceof ItemAugmentBase aug)) return false;
+        // if (!aug.isSimpleAugment()) return false;
+        // return canPutAugment(aug, augmentIndex, frameData, slots);
+        return false;
     }
 }

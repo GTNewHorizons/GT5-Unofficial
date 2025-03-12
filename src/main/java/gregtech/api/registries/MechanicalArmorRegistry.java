@@ -120,6 +120,7 @@ public class MechanicalArmorRegistry implements Runnable {
                 AUG_FIRE_IMMUNITY.ID));
         augments.put(AUG_FIRE_IMMUNITY.ID, (ItemAugmentBase) ItemList.Augment_FireImmunity.getItem());
 
+        // TODO: make the tooltip draw from the shape to show the shape in the tooltip
         ItemList.Armor_Frame_Titanium.set(
             new ItemAugmentFrame(
                 "augmentframetitanium",
@@ -127,7 +128,8 @@ public class MechanicalArmorRegistry implements Runnable {
                 "",
                 Collections.emptyList(),
                 FRAME_TITANIUM.ID,
-                new String[] { "####~~~~", "####~~~~", "####~~~~", "########", "########", "########" }));
+                new String[] { "##########", "##########", "##########", "##########", "##########", "##########",
+                    "##########", "##########", "##########" }));
         augments.put(FRAME_TITANIUM.ID, (ItemAugmentBase) ItemList.Armor_Frame_Titanium.getItem());
     }
 

@@ -16,7 +16,12 @@ public class ItemAugmentBase extends GTGenericItem {
 
     private final int id;
 
-    public String[] size = new String[] { "01", "11" };
+    /*
+     * ##
+     * #
+     * ##
+     */
+    public String[] size = new String[] { "##", "#~", "##" };
 
     public ItemAugmentBase(String aUnlocalized, String aEnglish, String aEnglishTooltip,
         Collection<IArmorBehavior> attachedBehaviors, Collection<IArmorBehavior> requiredBehaviors,
