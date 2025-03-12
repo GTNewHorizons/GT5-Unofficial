@@ -18,7 +18,6 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
@@ -152,10 +151,6 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
 
     @Override
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        ICoverable coverable = coveredTile.get();
-        if (coverable == null) {
-            return false;
-        }
         int amount = aPlayer.isSneaking() ? 128 : 8;
         if (GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ)[0] >= 0.5F) {
             coverData.overflowPoint += amount;
@@ -171,7 +166,6 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
             StatCollector.translateToLocalFormatted(
                 "GTPP.chat.text.cover_overflow_valve_overflow_point",
                 coverData.overflowPoint));
-        coverable.setCoverDataAtSide(coverSide, coverData);
         return true;
     }
     // GUI
