@@ -66,7 +66,6 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil 
         ItemList.Casing_Coil_Infinity.set(new ItemStack(this, 1, 11));
         ItemList.Casing_Coil_Hypogen.set(new ItemStack(this, 1, 12));
         ItemList.Casing_Coil_Eternal.set(new ItemStack(this, 1, 13));
-        ItemList.Casing_Shielded_Accelerator.set(new ItemStack(this, 1, 14));
     }
 
     @Override
@@ -92,7 +91,6 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil 
             case 11 -> Textures.BlockIcons.MACHINE_COIL_INFINITY.getIcon();
             case 12 -> Textures.BlockIcons.MACHINE_COIL_HYPOGEN.getIcon();
             case 13 -> Textures.BlockIcons.MACHINE_COIL_ETERNAL.getIcon();
-            case 14 -> Textures.BlockIcons.MACHINE_CASING_SHIELDED_ACCELERATOR.getIcon();
             default -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL.getIcon();
         };
     }
