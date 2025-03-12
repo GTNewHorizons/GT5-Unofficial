@@ -204,7 +204,7 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setSpeedBoost(100.0 / (100 + 5 * mLevel))
+                return super.createOverclockCalculator(recipe).setDurationModifier(100.0 / (100 + 5 * mLevel))
                     .setHeatOC(true)
                     .setRecipeHeat(0)
                     // Need to multiply by 2 because heat OC is done only once every 1800 and this one does it once

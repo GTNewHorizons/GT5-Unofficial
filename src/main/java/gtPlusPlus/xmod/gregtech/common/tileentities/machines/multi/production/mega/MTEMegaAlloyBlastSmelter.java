@@ -171,7 +171,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 calculateEnergyDiscount(coilLevel, recipe);
-                return super.createOverclockCalculator(recipe).setSpeedBoost(speedBonus)
+                return super.createOverclockCalculator(recipe).setDurationModifier(speedBonus)
                     .setEUtDiscount(energyDiscount);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
