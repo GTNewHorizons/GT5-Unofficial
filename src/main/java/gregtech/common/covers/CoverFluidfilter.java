@@ -24,7 +24,6 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -91,8 +90,7 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
 
     @Override
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        ICoverable coverable = coveredTile.get();
-        if (coverSide == ForgeDirection.UNKNOWN || coverable == null) return false;
+        if (coverSide == ForgeDirection.UNKNOWN) return false;
         if (((aX > 0.375D) && (aX < 0.625D)) || ((coverSide.offsetX != 0) && ((aY > 0.375D) && (aY < 0.625D)))
             || (coverSide.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) != 0 && aZ > 0.375D && aZ < 0.625D
             || (coverSide.offsetZ != 0)) {
@@ -103,7 +101,6 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
             if (tFluid != null) {
                 final int aFluid = tFluid.getFluidID();
                 coverData.mFluidID = aFluid;
-                coverable.setCoverDataAtSide(coverSide, coverData);
                 final FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aFluid), 1000);
                 GTUtility
                     .sendChatToPlayer(aPlayer, GTUtility.trans("047", "Filter Fluid: ") + sFluid.getLocalizedName());

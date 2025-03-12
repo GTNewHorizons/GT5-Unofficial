@@ -11,7 +11,6 @@ import net.minecraftforge.fluids.Fluid;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
@@ -96,7 +95,8 @@ public class CoverToggleVisual extends CoverBehavior {
             if (b == null) {
                 b = coverDataValue;
                 sConnectionStateForEntityMap.put(aKey, b);
-                trySetState(b == VALUE_ON ? VALUE_ON : VALUE_OFF);
+                // Try set cover state directly
+                coverData = new ISerializableObject.LegacyCoverData(b == VALUE_ON ? VALUE_ON : VALUE_OFF);
             }
         } catch (Throwable ignored) {
 
@@ -141,13 +141,6 @@ public class CoverToggleVisual extends CoverBehavior {
 
     public boolean getConnectionState() {
         return coverData.get() == VALUE_ON;
-    }
-
-    private void trySetState(int aState) {
-        // Try set cover state directly
-        if (coveredTile.get() instanceof IGregTechTileEntity gTileEntity) {
-            gTileEntity.setCoverDataAtSide(coverSide, new ISerializableObject.LegacyCoverData(aState));
-        }
     }
 
     public static boolean getConnectionState(ForgeDirection side, ICoverable aTile) {
