@@ -87,7 +87,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
     private static HashMap<Block, Integer> allowedAntennas = new HashMap<>(2);
 
-    private static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings5, 14);
+    private static final int CASING_INDEX = 1662;
 
     private int energyHatchTier;
 
@@ -598,7 +598,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         int aColorIndex, boolean active, boolean aRedstone) {
         // Placeholder
         if (side == facing) {
-            if (active) return new ITexture[] { casingTexturePages[1][14], TextureFactory.builder()
+            if (active) return new ITexture[] { casingTexturePages[12][126], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
                 .extFacing()
                 .build(),
@@ -607,7 +607,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[1][14], TextureFactory.builder()
+            return new ITexture[] { casingTexturePages[12][126], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_OIL_CRACKER)
                 .extFacing()
                 .build(),
@@ -617,7 +617,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                     .glow()
                     .build() };
         }
-        return new ITexture[] { casingTexturePages[1][14] };
+        return new ITexture[] { casingTexturePages[12][126] };
     }
 
     @Override

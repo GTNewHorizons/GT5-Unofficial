@@ -77,7 +77,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
     private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
-    private static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings5, 14);
+    private static final int CASING_INDEX = 1662;
 
     /*
      * g: Grate Machine Casing b: Borosilicate glass c: Shielded accelerator casing v: Vacuum k: Shielded glass d:

@@ -2469,8 +2469,8 @@ public class MTERecipeLoader implements Runnable {
         GTOreDictUnificator.addItemDataFromInputs(
             ItemList.Hull_ZPM.get(1L),
             ItemList.Casing_ZPM.get(1),
-            OrePrefixes.cableGt02.get(Materials.Naquadah),
-            OrePrefixes.cableGt02.get(Materials.Naquadah));
+            OrePrefixes.cableGt01.get(Materials.Naquadah),
+            OrePrefixes.cableGt01.get(Materials.Naquadah));
         GTOreDictUnificator.addItemDataFromInputs(
             ItemList.Hull_UV.get(1L),
             ItemList.Casing_UV.get(1),
