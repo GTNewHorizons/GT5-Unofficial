@@ -1813,7 +1813,7 @@ public class RecipeLoader2 {
             .fluidOutputs(GGMaterial.metastableOganesson.getMolten(288))
             .eut(TierEU.RECIPE_UEV)
             .duration(5 * SECONDS)
-            .metadata(FUSION_THRESHOLD, 1_000_000_000L)
+            .metadata(FUSION_THRESHOLD, 6_000_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
