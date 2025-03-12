@@ -3,17 +3,27 @@ package gtPlusPlus.core.fluids;
 import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import ic2.core.init.InternalName;
+import ic2.core.item.resources.ItemCell;
 
 public class GTPPFluids {
 
@@ -87,8 +97,17 @@ public class GTPPFluids {
     public static Fluid BurntLiFBeF2ZrF4U235Salt;
     public static Fluid ImpureMoltenSaltBase;
 
-    // Misc
+    // Misc Fluids
     public static Fluid GeneticMutagen;
+    public static Fluid Cryotheum;
+    public static Fluid Pyrotheum;
+    public static Fluid IndustrialStrengthHydrofluoricAcid;
+    public static Fluid HighQualitySulfurDioxide;
+    public static Fluid SulfurousAcid;
+    public static Fluid SulfuricApatiteMix;
+    public static Fluid IndustrialStrengthHydrogenChloride;
+    public static Fluid SulfuricLithiumMix;
+    public static Fluid LithiumHydroxide;
 
     // Custom Blood Support
     private static final List<FluidStack> bloodFluids = new ArrayList<>();
@@ -443,7 +462,128 @@ public class GTPPFluids {
             null,
             null);
 
+        Cryotheum = FluidUtils.addGtFluid(
+            "cryotheum",
+            "Gelid Cryotheum",
+            new short[] { 102, 178, 255, 0 },
+            4,
+            5,
+            null,
+            ItemUtils.getEmptyCell(),
+            1000);
+
+        Pyrotheum = FluidUtils.addGtFluid(
+            "pyrotheum",
+            "Blazing Pyrotheum",
+            new short[] { 255, 128, 0, 0 },
+            4,
+            4000,
+            null,
+            ItemUtils.getEmptyCell(),
+            1000);
+
+        IndustrialStrengthHydrofluoricAcid = FluidUtils.addGtFluid(
+            "hydrofluoricAcid",
+            "Industrial Strength Hydrofluoric Acid",
+            new short[] { 200, 200, 200, 0 },
+            1,
+            120,
+            null,
+            ItemUtils.getEmptyCell(),
+            1000,
+            false);
+        generateIC2FluidCell("HydrofluoricAcid");
+
+        HighQualitySulfurDioxide = FluidUtils.generateFluidNoPrefix(
+            "SulfurDioxide",
+            "High Quality Sulfur Dioxide",
+            263,
+            new short[] { 150, 200, 50, 0 });
+
+        SulfurousAcid = FluidUtils.addGtFluid(
+            "sulfurousAcid",
+            "Sulfurous Acid",
+            new short[] { 110, 220, 30, 0 },
+            4,
+            75,
+            null,
+            ItemUtils.getEmptyCell(),
+            1000,
+            false);
+        generateIC2FluidCell("SulfurousAcid");
+
+        SulfuricApatiteMix = FluidUtils.addGtFluid(
+            "sulfuricApatite",
+            "Sulfuric Apatite Mix",
+            new short[] { 0, 105, 105, 0 },
+            4,
+            500,
+            null,
+            ItemUtils.getEmptyCell(),
+            1000,
+            false);
+        generateIC2FluidCell("SulfuricApatite");
+
+        IndustrialStrengthHydrogenChloride = FluidUtils.addGtFluid(
+            "hydrogenChloride",
+            "Industrial Strength Hydrogen Chloride",
+            new short[] { 150, 240, 90, 0 },
+            4,
+            75,
+            null,
+            ItemUtils.getEmptyCell(),
+            1000,
+            false);
+        generateIC2FluidCell("HydrogenChloride");
+
+        SulfuricLithiumMix = FluidUtils.addGtFluid(
+            "sulfuricLithium",
+            "Sulfuric Lithium Mix",
+            new short[] { 0, 105, 105, 0 },
+            4,
+            280,
+            null,
+            ItemUtils.getEmptyCell(),
+            1000,
+            false);
+        generateIC2FluidCell("SulfuricLithium");
+
+        LithiumHydroxide = FluidUtils.addGtFluid(
+            "lithiumHydroxide",
+            "Lithium Hydroxide",
+            new short[] { 0, 105, 105, 0 },
+            4,
+            500,
+            null,
+            ItemUtils.getEmptyCell(),
+            1000,
+            false);
+        generateIC2FluidCell("LithiumHydroxide");
+
         handleBlood();
+    }
+
+    private static short cellID = 15;
+
+    private static ItemStack generateIC2FluidCell(final String s) {
+        InternalName yourName = EnumHelper.addEnum(InternalName.class, s, new Class[0], new Object[0]);
+        ItemCell item = (ItemCell) ItemList.Cell_Empty.getItem();
+
+        try {
+            Method addCell = ItemCell.class.getDeclaredMethod("addCell", int.class, InternalName.class, Block[].class);
+            addCell.setAccessible(true);
+            ItemStack temp = (ItemStack) addCell.invoke(item, cellID++, yourName, new Block[0]);
+
+            FluidContainerRegistry.registerFluidContainer(
+                FluidRegistry.getFluidStack(s.toLowerCase(), 1000),
+                temp.copy(),
+                ItemList.Cell_Empty.get(1));
+            OreDictionary.registerOre("cell" + s, temp.copy());
+            return temp;
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private static void handleBlood() {
