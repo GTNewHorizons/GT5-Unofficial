@@ -1,0 +1,453 @@
+{
+    "asset": {
+        "version": "2.0",
+        "generator": "Open Asset Import Library (assimp v5.4.0)"
+    },
+    "extensionsUsed": [
+        "KHR_materials_volume",
+        "FB_ngon_encoding"
+    ],
+    "accessors": [
+        {
+            "bufferView": 0,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 5145,
+            "type": "VEC3",
+            "max": [
+                124.0,
+                -1.5999979972839355,
+                124.0
+            ],
+            "min": [
+                -124.0,
+                -4.066705226898193,
+                -124.0
+            ]
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 5145,
+            "type": "VEC3",
+            "max": [
+                0.9999134540557861,
+                0.9877093434333801,
+                0.9986294507980347
+            ],
+            "min": [
+                -0.999913215637207,
+                -0.9917739033699036,
+                -0.9996617436408997
+            ]
+        },
+        {
+            "bufferView": 2,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 5145,
+            "type": "VEC2",
+            "max": [
+                0.9984750151634216,
+                0.9981129765510559
+            ],
+            "min": [
+                0.0029009999707341194,
+                -9.63082218170166
+            ]
+        },
+        {
+            "bufferView": 3,
+            "byteOffset": 0,
+            "componentType": 5125,
+            "count": 8724,
+            "type": "SCALAR",
+            "max": [
+                5144
+            ],
+            "min": [
+                0
+            ]
+        },
+        {
+            "bufferView": 4,
+            "byteOffset": 0,
+            "componentType": 5123,
+            "count": 5145,
+            "type": "VEC4",
+            "max": [
+                0,
+                0,
+                0,
+                0
+            ],
+            "min": [
+                0,
+                0,
+                0,
+                0
+            ]
+        },
+        {
+            "bufferView": 5,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 5145,
+            "type": "VEC4",
+            "max": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "min": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "bufferView": 6,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 1,
+            "type": "MAT4",
+            "max": [
+                3.1391647326017846e-7,
+                1.0,
+                0.0,
+                -0.0,
+                -1.0,
+                3.1391647326017846e-7,
+                -0.0,
+                0.0,
+                0.0,
+                -0.0,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0,
+                -0.0,
+                1.0
+            ],
+            "min": [
+                3.1391647326017846e-7,
+                1.0,
+                0.0,
+                -0.0,
+                -1.0,
+                3.1391647326017846e-7,
+                -0.0,
+                0.0,
+                0.0,
+                -0.0,
+                1.0,
+                -0.0,
+                -0.0,
+                0.0,
+                -0.0,
+                1.0
+            ]
+        },
+        {
+            "bufferView": 7,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 1,
+            "type": "SCALAR",
+            "max": [
+                0.0
+            ],
+            "min": [
+                0.0
+            ]
+        },
+        {
+            "bufferView": 8,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 1,
+            "type": "VEC3",
+            "max": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "min": [
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "bufferView": 9,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 1,
+            "type": "SCALAR",
+            "max": [
+                0.0
+            ],
+            "min": [
+                0.0
+            ]
+        },
+        {
+            "bufferView": 10,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 1,
+            "type": "VEC4",
+            "max": [
+                0.0,
+                0.0,
+                -0.7071066498756409,
+                0.70710688829422
+            ],
+            "min": [
+                0.0,
+                0.0,
+                -0.7071066498756409,
+                0.70710688829422
+            ]
+        },
+        {
+            "bufferView": 11,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 1,
+            "type": "SCALAR",
+            "max": [
+                0.0
+            ],
+            "min": [
+                0.0
+            ]
+        },
+        {
+            "bufferView": 12,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 1,
+            "type": "VEC3",
+            "max": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "min": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    ],
+    "animations": [
+        {
+            "name": "anim",
+            "channels": [
+                {
+                    "sampler": 0,
+                    "target": {
+                        "node": 1,
+                        "path": "translation"
+                    }
+                },
+                {
+                    "sampler": 1,
+                    "target": {
+                        "node": 1,
+                        "path": "rotation"
+                    }
+                },
+                {
+                    "sampler": 2,
+                    "target": {
+                        "node": 1,
+                        "path": "scale"
+                    }
+                }
+            ],
+            "samplers": [
+                {
+                    "input": 7,
+                    "interpolation": "LINEAR",
+                    "output": 8
+                },
+                {
+                    "input": 9,
+                    "interpolation": "LINEAR",
+                    "output": 10
+                },
+                {
+                    "input": 11,
+                    "interpolation": "LINEAR",
+                    "output": 12
+                }
+            ]
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 364292,
+            "uri": "ring_sg1.bin"
+        }
+    ],
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteOffset": 0,
+            "byteLength": 61740,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 61740,
+            "byteLength": 61740,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 123480,
+            "byteLength": 41160,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 164640,
+            "byteLength": 34896,
+            "target": 34963
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 199536,
+            "byteLength": 41160
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 281856,
+            "byteLength": 82320
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 364176,
+            "byteLength": 64
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 364240,
+            "byteLength": 4
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 364244,
+            "byteLength": 12
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 364256,
+            "byteLength": 4
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 364260,
+            "byteLength": 16
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 364276,
+            "byteLength": 4
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 364280,
+            "byteLength": 12
+        }
+    ],
+    "images": [
+        {
+            "uri": "textures/glyphs_sg1.png"
+        }
+    ],
+    "materials": [
+        {
+            "name": "Texture_0",
+            "pbrMetallicRoughness": {
+                "baseColorTexture": {
+                    "index": 0
+                },
+                "metallicFactor": 0.0
+            }
+        }
+    ],
+    "meshes": [
+        {
+            "primitives": [
+                {
+                    "mode": 4,
+                    "material": 0,
+                    "indices": 3,
+                    "attributes": {
+                        "POSITION": 0,
+                        "NORMAL": 1,
+                        "TEXCOORD_0": 2,
+                        "JOINTS_0": 4,
+                        "WEIGHTS_0": 5
+                    }
+                }
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "name": "<SMD_root>",
+            "children": [
+                1
+            ],
+            "mesh": 0,
+            "skin": 0
+        },
+        {
+            "name": "Ring",
+            "translation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                -0.7071066498756409,
+                0.70710688829422
+            ]
+        }
+    ],
+    "samplers": [
+        {}
+    ],
+    "scenes": [
+        {
+            "nodes": [
+                0
+            ]
+        }
+    ],
+    "skins": [
+        {
+            "name": "skin",
+            "joints": [
+                1
+            ],
+            "inverseBindMatrices": 6
+        }
+    ],
+    "textures": [
+        {
+            "source": 0,
+            "sampler": 0
+        }
+    ],
+    "scene": 0
+}

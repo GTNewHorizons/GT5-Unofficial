@@ -20,6 +20,8 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
+import gregtech.common.blocks.BlockStargateRenderer;
+import gregtech.common.tileentities.render.TileEntityStargateRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -560,6 +562,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sLaserRender = new BlockLaser();
         GregTechAPI.sWormholeRender = new BlockWormholeRender();
         GregTechAPI.sBlackholeRender = new BlockBlackholeRenderer();
+        GregTechAPI.sStargateRender = new BlockStargateRenderer();
 
         // meta ID order, DO NOT CHANGE ORDER
 
@@ -696,6 +699,8 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GTLog.out.println("GTMod: Registering the BlackholeRender.");
         GameRegistry.registerTileEntity(TileEntityBlackhole.class, "BlackholeRender");
+
+        GameRegistry.registerTileEntity(TileEntityStargateRenderer.class, "StargateRenderer");
 
         GTLog.out.println("GTMod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");
