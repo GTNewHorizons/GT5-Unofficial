@@ -92,7 +92,9 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                 .buildAndChain(onElementPass(MTEHIPCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 4))))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 9))
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings10, 10))
-        .addElement('F', activeCoils(ofCoil(MTEHIPCompressor::setCoilLevel, MTEHIPCompressor::getCoilLevel)))
+        .addElement(
+            'F',
+            withChannel("coil", activeCoils(ofCoil(MTEHIPCompressor::setCoilLevel, MTEHIPCompressor::getCoilLevel))))
         .addElement(
             'G',
             buildHatchAdder(MTEHIPCompressor.class).atLeast(InputBus, OutputBus, InputHatch)
@@ -276,8 +278,8 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             .addCasingInfoMin("Compressor Pipe Casing", 60, false)
             .addCasingInfoExactly("Coolant Duct", 12, false)
             .addCasingInfoExactly("Heating Duct", 12, false)
-            .addCasingInfoExactly("Any Glass", 22, false)
-            .addCasingInfoExactly("Coil", 30, true)
+            .addCasingInfoExactly("Glass", 22, false)
+            .addCasingInfoExactly("Heating Coil", 30, true)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GT5U.tooltip.structure.heat_sensor_hatch"),
                 "Any Electric Compressor Casing",
@@ -287,6 +289,8 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             .addOutputBus("Pipe Casings on Side", 2)
             .addEnergyHatch("Any Electric Compressor Casing", 1)
             .addMaintenanceHatch("Any Electric Compressor Casing", 1)
+            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage("coil", "Heating Coil Tier")
             .toolTipFinisher(AuthorFourIsTheNumber, Ollie);
         return tt;
     }
