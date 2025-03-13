@@ -1195,8 +1195,8 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
             .set(addItem(Relativistic_Heat_Capacitor.ID, "Relativistic Heat Capacitor", "Thermal Resonance?", o));
         ItemList.Phononic_Seed_Crystal
             .set(addItem(Phononic_Seed_Crystal.ID, "Phononic Seed Crystal", "Perfect Thermal Conductance", o));
-        ItemList.Harmonic_Compound
-            .set(addItem(Harmonic_Compound.ID, "Harmonic Compound", "Toxic violet with a red haze", o));
+        ItemList.Harmonic_Compound.set(
+            addItem(Harmonic_Compound.ID, "Harmonic Compound", "Toxic violet with a red haze", "ingotHotHarmonic"));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(
