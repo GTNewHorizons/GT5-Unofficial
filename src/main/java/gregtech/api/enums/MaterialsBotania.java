@@ -16,7 +16,7 @@ public class MaterialsBotania {
     // Botania materials.
     public static Materials Manasteel = new MaterialBuilder(201, TextureSet.SET_METALLIC, "Manasteel")
         .setName("Manasteel")
-        .setRGBA(0, 200, 255, 255)
+        .setRGBA(150, 219, 252, 255)
         .addDustItems()
         .addMetalItems()
         .addToolHeadItems()
@@ -32,7 +32,7 @@ public class MaterialsBotania {
         .constructMaterial();
     public static Materials Terrasteel = new MaterialBuilder(202, TextureSet.SET_METALLIC, "Terrasteel")
         .setName("Terrasteel")
-        .setRGBA(100, 255, 40, 255)
+        .setRGBA(76, 191, 38, 255)
         .addDustItems()
         .addMetalItems()
         .addToolHeadItems()
@@ -51,7 +51,7 @@ public class MaterialsBotania {
         .constructMaterial();
     public static Materials ElvenElementium = new MaterialBuilder(203, TextureSet.SET_METALLIC, "Elven Elementium")
         .setName("ElvenElementium")
-        .setRGBA(255, 45, 240, 255)
+        .setRGBA(219, 37, 205, 255)
         .addDustItems()
         .addMetalItems()
         .addToolHeadItems()
