@@ -104,13 +104,6 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
         return typeToken.isInstance(data);
     }
 
-    @Override
-    public void setCoverData(ISerializableObject aData) {
-        if (acceptsDataObject(aData)) {
-            coverData = forceCast(aData);
-        }
-    }
-
     private T forceCast(Object data) {
         try {
             return typeToken.cast(data);
@@ -145,9 +138,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
     }
 
     @Override
-    public ISerializableObject doCoverThings(byte aRedstone, long aTickTimer) {
-        return coverData;
-    }
+    public void doCoverThings(byte aRedstone, long aTickTimer) {}
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {}

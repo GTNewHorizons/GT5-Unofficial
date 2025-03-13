@@ -86,10 +86,10 @@ public class CoverWirelessMaintenanceDetector
     }
 
     @Override
-    public MaintenanceTransmitterData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         final byte signal = computeSignalBasedOnMaintenance(coverData, coverable);
         final long hash = hashCoverCoords(coverable, coverSide);
@@ -100,8 +100,6 @@ public class CoverWirelessMaintenanceDetector
         } else {
             coverable.setOutputRedstoneSignal(coverSide, (byte) 0);
         }
-
-        return coverData;
     }
 
     @Override

@@ -52,10 +52,10 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
     }
 
     @Override
-    public CoverItemFilter.ItemFilterData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         final TileEntity tTileEntity = coverable.getTileEntityAtSide(coverSide);
         final Object fromEntity = mExport ? coverable : tTileEntity;
@@ -77,8 +77,6 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
             (byte) 64,
             (byte) 1,
             64);
-
-        return coverData;
     }
 
     @Override

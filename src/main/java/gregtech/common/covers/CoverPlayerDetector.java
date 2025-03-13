@@ -31,23 +31,22 @@ public class CoverPlayerDetector extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
-
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         int coverDataValue = coverData.get();
         boolean playerDetected = false;
 
-        if (coverable instanceof IGregTechTileEntity) {
-            if (coverable.isUniversalEnergyStored(20)) {
-                coverable.decreaseStoredEnergyUnits(20, true);
+        if (coverable instanceof IGregTechTileEntity gtte) {
+            if (gtte.isUniversalEnergyStored(20)) {
+                gtte.decreaseStoredEnergyUnits(20, true);
                 range = 32;
             } else {
                 range = 8;
             }
-            placer = ((IGregTechTileEntity) coverable).getOwnerName();
+            placer = gtte.getOwnerName();
         }
         for (Object tObject : coverable.getWorld().playerEntities) {
             if ((tObject instanceof EntityPlayerMP tEntity)) {
@@ -77,7 +76,6 @@ public class CoverPlayerDetector extends CoverBehavior {
         }
 
         coverable.setOutputRedstoneSignal(coverSide, (byte) (playerDetected ? 15 : 0));
-        return LegacyCoverData.of(coverDataValue);
     }
 
     @Override

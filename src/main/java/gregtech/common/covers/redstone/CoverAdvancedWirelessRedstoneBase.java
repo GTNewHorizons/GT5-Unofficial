@@ -11,6 +11,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -102,7 +104,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
      * x hashed into first 20 bytes y hashed into second 20 bytes z hashed into fifth 10 bytes dim hashed into sixth 10
      * bytes side hashed into last 4 bytes
      */
-    public static long hashCoverCoords(ICoverable tile, ForgeDirection side) {
+    public static long hashCoverCoords(@NotNull ICoverable tile, @NotNull ForgeDirection side) {
         return (((((long) tile.getXCoord() << 20) + tile.getZCoord() << 10) + tile.getYCoord() << 10)
             + tile.getWorld().provider.dimensionId << 4) + side.ordinal();
     }

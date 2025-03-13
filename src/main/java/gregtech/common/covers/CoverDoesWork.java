@@ -33,10 +33,10 @@ public class CoverDoesWork extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         int coverDataValue = coverData.get();
         if ((coverable instanceof IMachineProgress mProgress)) {
@@ -61,7 +61,6 @@ public class CoverDoesWork extends CoverBehavior {
         } else {
             coverable.setOutputRedstoneSignal(coverSide, (byte) 0);
         }
-        return coverData;
     }
 
     @Override

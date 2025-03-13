@@ -58,10 +58,10 @@ public class CoverEnderFluidLink extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         int coverDataValue = coverData.get();
         if ((coverable instanceof IFluidHandler teTank)) {
@@ -85,7 +85,6 @@ public class CoverEnderFluidLink extends CoverBehavior {
                 }
             }
         }
-        return LegacyCoverData.of(coverDataValue);
     }
 
     private static UUID getOwner(Object te) {

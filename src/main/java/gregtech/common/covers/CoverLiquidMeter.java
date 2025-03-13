@@ -73,14 +73,12 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
     }
 
     @Override
-    public CoverLiquidMeter.LiquidMeterData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable != null) {
             byte signal = computeSignalBasedOnFluid(coverable, coverData.inverted, coverData.threshold);
             coverable.setOutputRedstoneSignal(coverSide, signal);
         }
-
-        return coverData;
     }
 
     @Override

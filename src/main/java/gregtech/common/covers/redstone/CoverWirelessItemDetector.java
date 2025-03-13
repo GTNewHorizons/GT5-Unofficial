@@ -45,10 +45,10 @@ public class CoverWirelessItemDetector
     }
 
     @Override
-    public ItemTransmitterData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         byte signal = CoverItemMeter.computeSignalBasedOnItems(
             coverable,
@@ -64,8 +64,6 @@ public class CoverWirelessItemDetector
         } else {
             coverable.setOutputRedstoneSignal(coverSide, (byte) 0);
         }
-
-        return coverData;
     }
 
     @Override

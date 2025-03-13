@@ -61,21 +61,17 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
     }
 
     @Override
-    public OverflowValveData doCoverThings(byte aInputRedstone, long aTimer) {
-        if (coverData.overflowPoint == 0 || coverData.voidingRate == 0) return coverData;
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
+        if (coverData.overflowPoint == 0 || coverData.voidingRate == 0) return;
 
         if (coveredTile.get() instanceof IGregTechTileEntity gregTE) {
             IMetaTileEntity tile = gregTE.getMetaTileEntity();
             if (tile instanceof MTEBasicTank fluidTank) {
                 fluidTank.setDrainableStack(doOverflowThing(fluidTank.getDrainableStack(), coverData));
-                return coverData;
             } else if (tile instanceof MTEFluidPipe fluidPipe && fluidPipe.isConnectedAtSide(coverSide)) {
                 doOverflowThings(fluidPipe.mFluids, coverData);
-                return coverData;
             }
         }
-
-        return coverData;
     }
 
     // Overrides methods

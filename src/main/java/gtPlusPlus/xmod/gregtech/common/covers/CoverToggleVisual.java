@@ -84,7 +84,7 @@ public class CoverToggleVisual extends CoverBehavior {
     }
 
     @Override
-    public ISerializableObject.LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         int coverDataValue = coverData.get();
         try {
             String aKey = generateUniqueKey(coverSide, coveredTile.get());
@@ -101,7 +101,7 @@ public class CoverToggleVisual extends CoverBehavior {
         } catch (Throwable ignored) {
 
         }
-        return ISerializableObject.LegacyCoverData.of(coverDataValue);
+        coverData.set(coverDataValue);
     }
 
     @Override

@@ -60,12 +60,8 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
     }
 
     @Override
-    public CoverMetricsTransmitter.MetricsTransmitterData doCoverThings(byte aInputRedstone, long aTimer) {
-        ICoverable coverable = coveredTile.get();
-        if (coverable == null) {
-            return coverData;
-        }
-        if (coverable instanceof final BaseMetaTileEntity baseMTE && baseMTE.isGivingInformation()) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
+        if (coveredTile.get() instanceof final BaseMetaTileEntity baseMTE && baseMTE.isGivingInformation()) {
             final List<String> payload;
 
             if (baseMTE.getMetaTileEntity() instanceof final IMetricsExporter metricsExporter) {
@@ -85,8 +81,6 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
                 )
             ));
         }
-
-        return coverData;
     }
 
     @Override
@@ -112,8 +106,7 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
         }
 
         cardStack.setTagCompound(tagCompound);
-        coverable.getCoverAtSide(coverSide)
-            .setCoverData(new MetricsTransmitterData(newFrequency));
+        coverData = new MetricsTransmitterData(newFrequency);
 
         final EntityItem cardEntity = new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, cardStack);
         cardEntity.delayBeforeCanPickup = 0;

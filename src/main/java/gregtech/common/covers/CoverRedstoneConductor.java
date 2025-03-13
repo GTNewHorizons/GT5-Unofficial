@@ -8,7 +8,6 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject.LegacyCoverData;
 
 @SuppressWarnings("unused") // Legacy from GT4. TODO: Consider re-enable registration
 public class CoverRedstoneConductor extends CoverBehavior {
@@ -22,10 +21,10 @@ public class CoverRedstoneConductor extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         int coverDataValue = coverData.get();
         if (coverDataValue == 0) {
@@ -35,7 +34,6 @@ public class CoverRedstoneConductor extends CoverBehavior {
                 coverSide,
                 coverable.getInternalInputRedstoneSignal(ForgeDirection.getOrientation((coverDataValue - 1))));
         }
-        return LegacyCoverData.of(coverDataValue);
     }
 
     @Override

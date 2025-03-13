@@ -45,20 +45,14 @@ public class CoverArm extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null || (((coverable instanceof IMachineProgress machine)) && (!machine.isAllowedToWork()))
             || !(coverable instanceof TileEntity tileEntity)) {
-            return coverData;
+            return;
         }
 
-        // Convert from ver. 5.09.33.50, check if 3 last bits are equal
         int coverDataValue = convert(coverData);
-        if ((coverDataValue >>> 29) == 0) {
-            coverDataValue = CONVERTED_BIT | (((coverDataValue + 1) & SLOT_ID_MASK) << 14) | EXPORT_MASK;
-        } else if ((coverDataValue >>> 29) == 7) {
-            coverDataValue = CONVERTED_BIT | Math.min(Math.abs(coverDataValue - 1), SLOT_ID_MASK);
-        }
 
         final TileEntity toTile;
         final TileEntity fromTile;
@@ -142,8 +136,6 @@ public class CoverArm extends CoverBehavior {
                 (byte) 64,
                 (byte) 1);
         }
-
-        return LegacyCoverData.of(coverDataValue);
     }
 
     @Override

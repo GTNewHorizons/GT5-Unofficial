@@ -181,7 +181,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final int tCoverTickRate = cover.getTickRate();
         if (tCoverTickRate > 0 && aTickTimer % tCoverTickRate == 0) {
             final byte tRedstone = cover.isRedstoneSensitive(aTickTimer) ? getInputRedstoneSignal(side) : 0;
-            cover.setCoverData(cover.doCoverThings(tRedstone, aTickTimer));
+            cover.doCoverThings(tRedstone, aTickTimer);
             return isStillValid();
         }
 

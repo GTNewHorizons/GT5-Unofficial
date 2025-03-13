@@ -17,10 +17,10 @@ public class CoverAdvancedRedstoneTransmitterInternal
     }
 
     @Override
-    public TransmitterData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         byte outputRedstone = coverable.getOutputRedstoneSignal(coverSide);
         if (coverData.isInvert()) {
@@ -30,7 +30,6 @@ public class CoverAdvancedRedstoneTransmitterInternal
 
         final long hash = hashCoverCoords(coverable, coverSide);
         setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, outputRedstone);
-        return coverData;
     }
 
     @Override
