@@ -39,6 +39,7 @@ import gregtech.api.items.ItemAugmentFrame;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.common.items.armor.MechArmorBase;
+import net.minecraftforge.common.util.Constants;
 
 public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidgets {
 
@@ -116,7 +117,7 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
      */
     public boolean setGridSlot(int targetSlot, ItemStack armor, ItemAugmentBase augment) {
         NBTTagList augments = armor.getTagCompound()
-            .getTagList("augments", 11);
+            .getTagList("augments", Constants.NBT.TAG_STRING);
         ItemAugmentBase frame = getMechanicalAugment(
             armor.getTagCompound()
                 .getInteger("frame"));
@@ -131,7 +132,7 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
     public NBTTagList saveSlotsToNBT(MultiChildWidget parent, MechArmorBase armor) {
         NBTTagList augments = armor.getStack()
             .getTagCompound()
-            .getTagList("augments", 11);
+            .getTagList("augments", Constants.NBT.TAG_STRING);
         NBTTagList newAugments = new NBTTagList();
         List<Widget> slots = parent.getChildren();
 
@@ -143,7 +144,7 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
             if (mcSlot.getHasStack()) {
                 if (mcSlot.getStack().getItem() instanceof ItemAugmentBase aug) {
                     if (!aug.isSimpleAugment()) continue;
-                    String currentAugmentInfo = serializeAugmentToString(aug, mcSlot.slotNumber);
+                    String currentAugmentInfo = serializeAugmentToString(aug, i);
                     newAugments.appendTag(new NBTTagString(currentAugmentInfo));
                 }
             }
@@ -168,7 +169,7 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
     public static Integer getIndexFromAugmentNBT(NBTTagString tag) {
         // Obfuscated method simply gets the string from the tag object
         String raw = tag.func_150285_a_();
-        if (!raw.startsWith("augID")) return null;
+        if (!raw.startsWith("augId")) return null;
 
         String[] data = raw.split("\\|");
         return Integer.valueOf(data[1].split(":")[1]);
@@ -177,7 +178,7 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
     public static ItemAugmentBase getAugmentFromAugmentNBT(NBTTagString tag) {
         // Obfuscated method simply gets the string from the tag object
         String raw = tag.func_150285_a_();
-        if (!raw.startsWith("augID")) return null;
+        if (!raw.startsWith("augId")) return null;
 
         String[] data = raw.split("\\|");
         return getMechanicalAugment(Integer.valueOf(data[0].split(":")[1]));
@@ -296,11 +297,12 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
     // TODO handle NPE when you insert armor without frame data
     private ModularWindow createEquipmentGrid(final EntityPlayer player, ItemStack armorItem) {
         // TODO figure out how to not put up anything if these fail
+        // Four: Suggest putting this validation before the method call
         if (armorItem == null) return null;
         if (!(armorItem.getItem() instanceof MechArmorBase mechArmorBase)) return null;
 
         NBTTagList data = armorItem.getTagCompound()
-            .getTagList("augments", 11);
+            .getTagList("augments", Constants.NBT.TAG_STRING);
         String[] frameData = getMechanicalAugment(
             armorItem.getTagCompound()
                 .getInteger("frame")).size;
