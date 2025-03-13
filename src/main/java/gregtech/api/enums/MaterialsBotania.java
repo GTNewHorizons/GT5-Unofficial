@@ -49,25 +49,27 @@ public class MaterialsBotania {
                 new TC_AspectStack(TCAspects.TERRA, 1),
                 new TC_AspectStack(TCAspects.PRAECANTATIO, 1)))
         .constructMaterial();
-    public static Materials ElvenElementium = new MaterialBuilder(203, new TextureSet("Manasteel", false), "Elven Elementium")
-        .setName("ElvenElementium")
-        .setRGBA(255, 45, 240, 255)
-        .addDustItems()
-        .addMetalItems()
-        .addToolHeadItems()
-        .addGearItems()
-        .setToolSpeed(20.0F)
-        .setDurability(32768)
-        .setToolQuality(7)
-        .setMeltingPoint(7200)
-        .setBlastFurnaceTemp(7200)
-        .setBlastFurnaceRequired(true)
-        .setAspects(
-            Arrays.asList(
-                new TC_AspectStack(TCAspects.METALLUM, 3),
-                new TC_AspectStack(TCAspects.PRAECANTATIO, 2),
-                new TC_AspectStack(TCAspects.AURAM, 1)))
-        .constructMaterial();
+    public static Materials ElvenElementium = new MaterialBuilder(
+        203,
+        new TextureSet("Manasteel", false),
+        "Elven Elementium").setName("ElvenElementium")
+            .setRGBA(255, 45, 240, 255)
+            .addDustItems()
+            .addMetalItems()
+            .addToolHeadItems()
+            .addGearItems()
+            .setToolSpeed(20.0F)
+            .setDurability(32768)
+            .setToolQuality(7)
+            .setMeltingPoint(7200)
+            .setBlastFurnaceTemp(7200)
+            .setBlastFurnaceRequired(true)
+            .setAspects(
+                Arrays.asList(
+                    new TC_AspectStack(TCAspects.METALLUM, 3),
+                    new TC_AspectStack(TCAspects.PRAECANTATIO, 2),
+                    new TC_AspectStack(TCAspects.AURAM, 1)))
+            .constructMaterial();
     public static Materials Livingrock = new MaterialBuilder(204, new TextureSet("Livingrock", true), "Livingrock")
         .setName("Livingrock")
         .addDustItems()
