@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
 
+import gregtech.common.config.Client;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
@@ -585,6 +586,8 @@ public class GTClient extends GTProxy implements Runnable {
     @Override
     public void onPreLoad() {
         super.onPreLoad();
+
+        SoundSystemConfig.setNumberNormalChannels(Client.preference.maxNumSounds);
 
         MinecraftForge.EVENT_BUS.register(new ExtraIcons());
         Minecraft.getMinecraft()
