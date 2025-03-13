@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
 
-import gregtech.common.config.Client;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
@@ -88,6 +87,7 @@ import gregtech.client.GTMouseEventHandler;
 import gregtech.client.SeekingOggCodec;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.config.Client;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionRenderer;
 import gregtech.common.render.BlackholeRenderer;
