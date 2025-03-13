@@ -48,13 +48,11 @@ public abstract class CoverAdvancedRedstoneTransmitterBase<T extends CoverAdvanc
     }
 
     @Override
-    public T onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         coverData.invert = !coverData.invert;
         GTUtility.sendChatToPlayer(
             aPlayer,
             coverData.invert ? GTUtility.trans("054", "Inverted") : GTUtility.trans("055", "Normal"));
-
-        return coverData;
     }
 
     @Override

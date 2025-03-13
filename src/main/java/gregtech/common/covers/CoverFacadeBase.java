@@ -52,7 +52,7 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
     }
 
     @Override
-    public FacadeData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         coverData.mFlags = ((coverData.mFlags + 1) & 15);
         GTUtility.sendChatToPlayer(
             aPlayer,
@@ -60,7 +60,6 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
                 + ((coverData.mFlags & 2) != 0 ? GTUtility.trans("129.1", "Energy ") : "")
                 + ((coverData.mFlags & 4) != 0 ? GTUtility.trans("130.1", "Fluids ") : "")
                 + ((coverData.mFlags & 8) != 0 ? GTUtility.trans("131.1", "Items ") : ""));
-        return coverData;
     }
 
     @Override

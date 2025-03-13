@@ -46,8 +46,7 @@ public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
     }
 
     @Override
-    public ISerializableObject.LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY,
-        float aZ) {
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int coverDataValue = coverData.get();
         if (((aX > 0.375D) && (aX < 0.625D)) || ((coverSide.offsetX == 0)
             || (((aY > 0.375D) && (aY < 0.625D)) || ((((aZ <= 0.375D) || (aZ >= 0.625D))))))) {
@@ -74,7 +73,7 @@ public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
             }
         }
         GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("081", "Frequency: ") + (coverDataValue & PUBLIC_MASK));
-        return ISerializableObject.LegacyCoverData.of(coverDataValue);
+        coverData.set(coverDataValue);
     }
 
     @Override

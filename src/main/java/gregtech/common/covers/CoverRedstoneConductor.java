@@ -39,11 +39,7 @@ public class CoverRedstoneConductor extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        ICoverable coverable = coveredTile.get();
-        if (coverable == null) {
-            return coverData;
-        }
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int coverDataValue = coverData.get();
         coverDataValue = (coverDataValue + (aPlayer.isSneaking() ? -1 : 1)) % 7;
         if (coverDataValue < 0) {
@@ -58,7 +54,7 @@ public class CoverRedstoneConductor extends CoverBehavior {
             case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("076", "Conducts from west Input"));
             case 6 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("077", "Conducts from east Input"));
         }
-        return LegacyCoverData.of(coverDataValue);
+        coverData.set(coverDataValue);
     }
 
     @Override

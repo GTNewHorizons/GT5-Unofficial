@@ -263,21 +263,18 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
     }
 
     @Override
-    public FluidStorageData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        ICoverable coverable = coveredTile.get();
-        if (coverable == null) {
-            return coverData;
-        }
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             coverData
                 .setSide(ForgeDirection.values()[(coverData.coverSide.ordinal() + 1) % ForgeDirection.values().length])
                 .setSlot(0);
             GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("SIDE", "Side: ") + coverData.coverSide.name());
-            return coverData;
+            return;
         }
-        final FluidTankInfo[] tanks = getValidFluidTankInfos(coverable, coverData.coverSide);
+        final FluidTankInfo[] tanks = getValidFluidTankInfos(coveredTile.get(), coverData.coverSide);
         if (tanks == null) {
-            return coverData.disable();
+            coverData.disable();
+            return;
         }
         assert 0 < tanks.length;
         if (coverData.slot < 0 || tanks.length <= coverData.slot) {
@@ -286,7 +283,6 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
             coverData.setSlot((coverData.slot + tanks.length + (aPlayer.isSneaking() ? -1 : 1)) % tanks.length);
         }
         GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("053", "Slot: ") + coverData.slot);
-        return coverData;
     }
 
     @Override

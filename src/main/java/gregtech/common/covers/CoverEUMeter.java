@@ -82,7 +82,7 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
     }
 
     @Override
-    public EUMeterData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int num = (coverData.getNum() + (aPlayer.isSneaking() ? -1 : 1) + EnergyType.values().length * 2)
             % (EnergyType.values().length * 2);
         switch (num) {
@@ -102,7 +102,6 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
                 .sendChatToPlayer(aPlayer, GTUtility.trans("042", "Inverted Electricity Storage(Including Batteries)"));
         }
         coverData.setNum(num);
-        return coverData;
     }
 
     // region Static Result Methods

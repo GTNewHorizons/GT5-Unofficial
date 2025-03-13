@@ -131,7 +131,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
     }
 
     @Override
-    public OverflowValveData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ)[0] >= 0.5F) {
             coverData.overflowPoint += (int) (maxOverflowPoint * (aPlayer.isSneaking() ? 0.1f : 0.01f));
         } else {
@@ -146,7 +146,6 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
             StatCollector.translateToLocalFormatted(
                 "GTPP.chat.text.cover_overflow_valve_overflow_point",
                 coverData.overflowPoint));
-        return coverData;
     }
 
     @Override

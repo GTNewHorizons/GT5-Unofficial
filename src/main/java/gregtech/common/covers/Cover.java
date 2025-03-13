@@ -330,7 +330,7 @@ public abstract class Cover {
      * <p/>
      * return the new Value of the Cover Variable
      */
-    public abstract ISerializableObject onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ);
+    public abstract void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ);
 
     public void onCoverJackhammer(EntityPlayer aPlayer) {
         adjustTickRateMultiplier(aPlayer.isSneaking());

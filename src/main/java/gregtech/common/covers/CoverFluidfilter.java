@@ -77,15 +77,13 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
     }
 
     @Override
-    public FluidFilterData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         coverData.mFilterMode = (coverData.mFilterMode + (aPlayer.isSneaking() ? -1 : 1)) % 8;
         if (coverData.mFilterMode < 0) {
             coverData.mFilterMode = 7;
         }
 
         GTUtility.sendChatToPlayer(aPlayer, getFilterMode(coverData.mFilterMode));
-
-        return coverData;
     }
 
     @Override

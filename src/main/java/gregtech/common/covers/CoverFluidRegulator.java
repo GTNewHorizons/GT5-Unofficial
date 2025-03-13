@@ -129,13 +129,12 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
     }
 
     @Override
-    public FluidRegulatorData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ)[0] >= 0.5F) {
             adjustSpeed(aPlayer, coverData, aPlayer.isSneaking() ? 256 : 16);
         } else {
             adjustSpeed(aPlayer, coverData, aPlayer.isSneaking() ? -256 : -16);
         }
-        return coverData;
     }
 
     protected boolean canTransferFluid(FluidStack fluid) {

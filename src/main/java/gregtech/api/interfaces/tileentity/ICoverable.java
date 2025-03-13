@@ -3,7 +3,6 @@ package gregtech.api.interfaces.tileentity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.Cover;
 
 public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer {
@@ -20,8 +19,6 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
      * Called by {@link #dropCover(ForgeDirection, ForgeDirection)}
      */
     ItemStack detachCover(ForgeDirection side);
-
-    void setCoverDataAtSide(ForgeDirection side, ISerializableObject aData);
 
     /**
      * Called when the cover is initially attached to a machine.

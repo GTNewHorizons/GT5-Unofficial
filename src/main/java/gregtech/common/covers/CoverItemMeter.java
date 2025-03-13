@@ -92,10 +92,10 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
     }
 
     @Override
-    public ItemMeterData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         if (aPlayer.isSneaking()) {
             if (coverData.inverted) {
@@ -113,8 +113,6 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
                 GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("053", "Slot: ") + GTUtility.trans("ALL", "All"));
             else GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("053", "Slot: ") + coverData.slot);
         }
-
-        return coverData;
     }
 
     @Override

@@ -147,7 +147,7 @@ public class CoverArm extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int step = 0;
         if (GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ)[0] >= 0.5F) {
             step += aPlayer.isSneaking() ? 256 : 16;
@@ -156,7 +156,7 @@ public class CoverArm extends CoverBehavior {
         }
         int newCoverData = getNewVar(convert(coverData), step);
         sendMessageToPlayer(aPlayer, newCoverData);
-        return LegacyCoverData.of(newCoverData);
+        coverData.set(newCoverData);
     }
 
     @Override
