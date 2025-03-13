@@ -225,7 +225,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     te -> te.topState != TopState.NotTop,
                     onElementPass(
                         te -> te.topState = TopState.Top,
-                        chainAllGlasses(0, (te, t) -> te.glassTier = t, te -> te.glassTier))),
+                        chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))),
                 onlyIf(
                     te -> te.topState != TopState.Top,
                     onElementPass(

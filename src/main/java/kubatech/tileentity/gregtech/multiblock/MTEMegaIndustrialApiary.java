@@ -181,7 +181,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                                 .replaceAll("F", " "))
                         .toArray(String[]::new))
                 .toArray(String[][]::new))
-        .addElement('A', chainAllGlasses(0, (te, t) -> te.glassTier = t, te -> te.glassTier))
+        .addElement('A', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('B', ofChain(ofBlockAnyMeta(Blocks.dirt, 0), ofBlock(Blocks.grass, 0)))
         .addElement(
             'G',
