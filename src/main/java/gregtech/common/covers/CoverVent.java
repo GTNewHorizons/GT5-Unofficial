@@ -15,7 +15,6 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject.LegacyCoverData;
 
 public class CoverVent extends CoverBehavior {
 
@@ -33,17 +32,18 @@ public class CoverVent extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
-        if (coverSide == ForgeDirection.UNKNOWN) return LegacyCoverData.of(0);
-        int ret = 0;
-        if (coverable instanceof IFluidHandler) {
-            ret = doCoolFluid(coverSide, coverable);
+        if (coverSide == ForgeDirection.UNKNOWN) {
+            coverData.set(0);
+            return;
+        }
+        if (coverable instanceof IFluidHandler fluidHandler) {
+            coverData.set(doCoolFluid(coverSide, coverable, fluidHandler));
         }
         if ((coverable instanceof IMachineProgress machine)) {
-            ret = doProgressEfficiency(coverSide, machine, coverID);
+            coverData.set(doProgressEfficiency(coverSide, machine, coverID));
         }
-        return LegacyCoverData.of(ret);
     }
 
     @Override
@@ -69,12 +69,11 @@ public class CoverVent extends CoverBehavior {
         return coverable.getProgress();
     }
 
-    protected int doCoolFluid(final ForgeDirection coverSide, final ICoverable coverable) {
+    protected int doCoolFluid(final ForgeDirection coverSide, final ICoverable coverable, IFluidHandler fluidHandler) {
         final int offsetX = coverable.getOffsetX(coverSide, 1);
         final int offsetY = coverable.getOffsetY(coverSide, 1);
         final int offsetZ = coverable.getOffsetZ(coverSide, 1);
         final World world = coverable.getWorld();
-        final IFluidHandler fluidHandler = (IFluidHandler) coverable;
         if (!fluidHandler.canDrain(ForgeDirection.UNKNOWN, IC2_HOT_COOLANT)) {
             return 0;
         }

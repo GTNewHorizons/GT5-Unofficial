@@ -36,25 +36,24 @@ public class CoverPump extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         int coverDataValue = coverData.get();
-        if ((coverDataValue % 6 > 1) && ((coverable instanceof IMachineProgress))) {
-            if (((IMachineProgress) coverable).isAllowedToWork() != coverDataValue % 6 < 4) {
-                return LegacyCoverData.of(coverDataValue);
+        if ((coverDataValue % 6 > 1) && ((coverable instanceof IMachineProgress machine))) {
+            if (machine.isAllowedToWork() != coverDataValue % 6 < 4) {
+                return;
             }
         }
 
         if (coverable instanceof IFluidHandler current) {
             final IFluidHandler toAccess = coverable.getITankContainerAtSide(coverSide);
-            if (toAccess == null) return LegacyCoverData.of(coverDataValue);
+            if (toAccess == null) return;
 
             transferFluid(current, toAccess, coverSide, coverDataValue % 2 == 0);
         }
-        return LegacyCoverData.of(coverDataValue);
     }
 
     protected void transferFluid(IFluidHandler current, IFluidHandler toAccess, ForgeDirection coverSide,

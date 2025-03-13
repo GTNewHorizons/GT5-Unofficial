@@ -76,10 +76,10 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
     }
 
     @Override
-    public ChestInventory doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         // migrate slots. mostly needed while in development. still can be useful if we ever resize the inventory in the
         // future
@@ -93,15 +93,13 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
                 }
             }
 
-            ChestInventory newData = initializeData();
-            int toCopy = Math.min(newData.items.getSlots(), coverData.items.getSlots());
+            coverData = initializeData();
+            int toCopy = Math.min(coverData.items.getSlots(), coverData.items.getSlots());
             for (int i = 0; i < toCopy; i++) {
-                newData.items.setStackInSlot(i, coverData.items.getStackInSlot(i));
+                coverData.items.setStackInSlot(i, coverData.items.getStackInSlot(i));
             }
-            return newData;
         }
         coverData.firstTick = false;
-        return coverData;
     }
 
     @Override

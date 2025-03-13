@@ -10,7 +10,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject.LegacyCoverData;
 
 public class CoverSolarPanel extends CoverBehavior {
 
@@ -26,22 +25,26 @@ public class CoverSolarPanel extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         int coverDataValue = coverData.get();
-        if (coverSide != ForgeDirection.UP) return LegacyCoverData.of(0);
+        if (coverSide != ForgeDirection.UP) {
+            coverData.set(0);
+            return;
+        }
         int coverState = coverDataValue & 0x3;
         int coverNum = coverDataValue >> 2;
         if (aTimer % 100L == 0L) {
             if (coverable.getWorld()
                 .isThundering()) {
-                return LegacyCoverData.of(
+                coverData.set(
                     coverable.getBiome().rainfall > 0.0F && coverable.getSkyAtSide(coverSide)
                         ? Math.min(20, coverNum) << 2
                         : coverNum << 2);
+                return;
             } else {
                 if (coverable.getWorld()
                     .isRaining() && coverable.getBiome().rainfall > 0.0F) { // really rains
@@ -51,7 +54,8 @@ public class CoverSolarPanel extends CoverBehavior {
                             .isDaytime()) {
                             coverState = 2;
                         } else {
-                            return LegacyCoverData.of(coverNum << 2);
+                            coverData.set(coverNum << 2);
+                            return;
                         }
                     }
                 } else { // not rains
@@ -71,7 +75,7 @@ public class CoverSolarPanel extends CoverBehavior {
                 1L);
         }
         if (aTimer % 28800L == 0L && coverNum < 100 && (coverNum > 10 || XSTR_INSTANCE.nextInt(3) == 2)) coverNum++;
-        return LegacyCoverData.of(coverState + (coverNum << 2));
+        coverData.set(coverState + (coverNum << 2));
     }
 
     @Override

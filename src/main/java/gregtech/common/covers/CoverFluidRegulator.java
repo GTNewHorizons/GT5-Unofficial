@@ -74,11 +74,11 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
     }
 
     @Override
-    public CoverFluidRegulator.FluidRegulatorData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null || coverData.speed == 0
             || !coverData.condition.isAllowedToWork(coverSide, coverID, coverable)) {
-            return coverData;
+            return;
         }
         if ((coverable instanceof IFluidHandler fluidHandler)) {
             final IFluidHandler tTank1;
@@ -99,7 +99,6 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
                 allowFluid = false;
             }
         }
-        return coverData;
     }
 
     private void adjustSpeed(EntityPlayer aPlayer, FluidRegulatorData coverData, int scale) {

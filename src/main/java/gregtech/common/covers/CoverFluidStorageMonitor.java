@@ -73,15 +73,16 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
     }
 
     @Override
-    public FluidStorageData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         final FluidTankInfo[] tanks = getValidFluidTankInfosForDisplay(coverable, coverData.coverSide);
         if (tanks == null) {
-            return coverData.disable()
+            coverData.disable()
                 .issueCoverUpdateIfNeeded(coverable, coverSide);
+            return;
         }
         assert 0 < tanks.length;
 
@@ -91,11 +92,12 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
 
         final FluidTankInfo tank = tanks[coverData.slot];
         if (tank == null) {
-            return coverData.setNullTank()
+            coverData.setNullTank()
                 .issueCoverUpdateIfNeeded(coverable, coverSide);
+            return;
         }
 
-        return coverData.setFluid(tank.fluid)
+        coverData.setFluid(tank.fluid)
             .setScale(getTankScale(tank))
             .issueCoverUpdateIfNeeded(coverable, coverSide);
     }

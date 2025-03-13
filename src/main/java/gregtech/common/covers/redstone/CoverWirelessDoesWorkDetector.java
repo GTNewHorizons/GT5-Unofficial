@@ -66,10 +66,10 @@ public class CoverWirelessDoesWorkDetector
     }
 
     @Override
-    public ActivityTransmitterData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         final byte signal = computeSignalBasedOnActivity(coverData, coverable);
         final long hash = hashCoverCoords(coverable, coverSide);
@@ -80,8 +80,6 @@ public class CoverWirelessDoesWorkDetector
         } else {
             coverable.setOutputRedstoneSignal(coverSide, (byte) 0);
         }
-
-        return coverData;
     }
 
     @Override

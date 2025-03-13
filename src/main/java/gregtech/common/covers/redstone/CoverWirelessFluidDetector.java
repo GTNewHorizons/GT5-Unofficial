@@ -42,10 +42,10 @@ public class CoverWirelessFluidDetector
     }
 
     @Override
-    public FluidTransmitterData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         final byte signal = CoverLiquidMeter
             .computeSignalBasedOnFluid(coverable, coverData.invert, coverData.threshold);
@@ -57,8 +57,6 @@ public class CoverWirelessFluidDetector
         } else {
             coverable.setOutputRedstoneSignal(coverSide, (byte) 0);
         }
-
-        return coverData;
     }
 
     @Override

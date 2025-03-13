@@ -8,7 +8,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverBehavior;
 import tectech.mechanics.tesla.ITeslaConnectable;
 import tectech.mechanics.tesla.TeslaCoverConnection;
@@ -20,20 +19,16 @@ public class CoverTeslaCoil extends CoverBehavior {
     }
 
     @Override
-    public ISerializableObject.LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
-        if (coverable == null) {
-            return coverData;
-        }
         // Only do stuff if we're on top and have power
-        if (coverSide == ForgeDirection.UP || coverable.getEUCapacity() > 0) {
+        if (coverable != null && coverSide == ForgeDirection.UP || coverable.getEUCapacity() > 0) {
             // Makes sure we're on the list
             ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetAdd(
                 new TeslaCoverConnection(
                     coverable.getIGregTechTileEntityOffset(0, 0, 0),
                     getTeslaReceptionCapability()));
         }
-        return coverData;
     }
 
     @Override

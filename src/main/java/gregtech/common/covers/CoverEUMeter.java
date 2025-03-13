@@ -42,11 +42,11 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
     }
 
     @Override
-    public CoverEUMeter.EUMeterData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         {
             ICoverable coverable = coveredTile.get();
             if (coverable == null) {
-                return coverData;
+                return;
             }
             final long stored = coverData.type.getTileEntityStoredEnergy(coverable);
             final long capacity = coverData.type.getTileEntityEnergyCapacity(coverable);
@@ -77,7 +77,6 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
             }
 
             coverable.setOutputRedstoneSignal(coverSide, redstoneSignal);
-            return coverData;
         }
     }
 

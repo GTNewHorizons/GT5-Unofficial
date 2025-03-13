@@ -4,7 +4,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.ISerializableObject.LegacyCoverData;
 
 public class CoverRedstoneTransmitterInternal extends CoverRedstoneWirelessBase {
 
@@ -17,13 +16,12 @@ public class CoverRedstoneTransmitterInternal extends CoverRedstoneWirelessBase 
     }
 
     @Override
-    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         GregTechAPI.sWirelessRedstone.put(coverData.get(), coverable.getOutputRedstoneSignal(coverSide));
-        return coverData;
     }
 
     @Override

@@ -77,7 +77,7 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
     }
 
     @Override
-    public CoverItemMeter.ItemMeterData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable != null) {
             byte signal = computeSignalBasedOnItems(
@@ -88,7 +88,6 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
                 coverSide.ordinal());
             coverable.setOutputRedstoneSignal(coverSide, signal);
         }
-        return coverData;
     }
 
     @Override

@@ -52,7 +52,7 @@ public class CoverControlsWork extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable instanceof IMachineProgress machine) {
             int coverDataValue = coverData.get();
@@ -91,7 +91,7 @@ public class CoverControlsWork extends CoverBehavior {
                             }
                         }
                         handledShutdown = true;
-                        return LegacyCoverData.of(State.DISABLED.ordinal());
+                        coverData.set(State.DISABLED.ordinal());
                     } else {
                         if ((aInputRedstone > 0) == (state == State.ENABLE_WITH_SIGNAL_SAFE)) {
                             if (!machine.isAllowedToWork()) {
@@ -105,7 +105,6 @@ public class CoverControlsWork extends CoverBehavior {
                 }
             }
         }
-        return coverData;
     }
 
     @Override

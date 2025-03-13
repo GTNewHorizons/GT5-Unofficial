@@ -40,15 +40,15 @@ public class CoverConveyor extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         int coverDataValue = coverData.get();
         if ((coverDataValue % 6 > 1) && ((coverable instanceof IMachineProgress machine))) {
             if (machine.isAllowedToWork() != coverDataValue % 6 < 4) {
-                return LegacyCoverData.of(coverDataValue);
+                return;
             }
         }
         final TileEntity tTileEntity = coverable.getTileEntityAtSide(coverSide);
@@ -69,8 +69,6 @@ public class CoverConveyor extends CoverBehavior {
             (byte) 64,
             (byte) 1,
             this.mMaxStacks);
-
-        return LegacyCoverData.of(coverDataValue);
     }
 
     @Override

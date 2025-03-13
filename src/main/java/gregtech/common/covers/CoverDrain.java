@@ -15,7 +15,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject.LegacyCoverData;
 
 public class CoverDrain extends CoverBehavior {
 
@@ -29,15 +28,15 @@ public class CoverDrain extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         int coverDataValue = coverData.get();
         if ((coverDataValue % 3 > 1) && ((coverable instanceof IMachineProgress))) {
             if (((IMachineProgress) coverable).isAllowedToWork()) {
-                return coverData;
+                return;
             }
         }
         if (coverSide != ForgeDirection.UNKNOWN) {
@@ -105,7 +104,6 @@ public class CoverDrain extends CoverBehavior {
                         0);
             }
         }
-        return LegacyCoverData.of(coverDataValue);
     }
 
     @Override

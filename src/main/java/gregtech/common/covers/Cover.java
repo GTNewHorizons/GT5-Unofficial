@@ -123,8 +123,6 @@ public abstract class Cover {
 
     public abstract boolean acceptsDataObject(Object data);
 
-    public abstract void setCoverData(ISerializableObject aData);
-
     /**
      * Get the special foreground cover texture associated with this cover. Return null if one should use the texture
      * passed to {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverFactory, CoverPlacer)} or its
@@ -197,7 +195,7 @@ public abstract class Cover {
     /**
      * Called by updateEntity inside the covered TileEntity.
      */
-    public abstract ISerializableObject doCoverThings(byte aRedstone, long aTickTimer);
+    public abstract void doCoverThings(byte aRedstone, long aTickTimer);
 
     /**
      * Called when Base TE being unloaded.

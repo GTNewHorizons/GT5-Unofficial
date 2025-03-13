@@ -11,7 +11,7 @@ public class CoverAdvancedRedstoneReceiverInternal extends CoverAdvancedRedstone
     }
 
     @Override
-    public ReceiverData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         if (coveredTile.get() instanceof IMachineProgress machine) {
             if (getRedstoneInput(aInputRedstone) > 0) {
                 machine.enableWorking();
@@ -19,8 +19,6 @@ public class CoverAdvancedRedstoneReceiverInternal extends CoverAdvancedRedstone
                 machine.disableWorking();
             }
         }
-
-        return coverData;
     }
 
     @Override

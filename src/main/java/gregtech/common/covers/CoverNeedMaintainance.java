@@ -37,10 +37,10 @@ public class CoverNeedMaintainance extends CoverBehavior {
     }
 
     @Override
-    public ISerializableObject.LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         int coverDataValue = coverData.get();
         boolean needsRepair = false;
@@ -78,7 +78,6 @@ public class CoverNeedMaintainance extends CoverBehavior {
 
         coverable.setOutputRedstoneSignal(coverSide, (byte) (needsRepair ? 0 : 15));
         coverable.setOutputRedstoneSignal(coverSide.getOpposite(), (byte) (needsRepair ? 0 : 15));
-        return ISerializableObject.LegacyCoverData.of(coverDataValue);
     }
 
     @Override
