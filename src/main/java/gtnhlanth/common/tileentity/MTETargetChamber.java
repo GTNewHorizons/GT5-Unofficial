@@ -65,8 +65,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     private final ArrayList<MTEBusInputFocus> mInputFocus = new ArrayList<>();
 
     private static final int CASING_INDEX_FRONT = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings3, 10); // Grate
-    private static final int CASING_INDEX_CENTRE = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings5, 14); // Shielded
-                                                                                                                    // Acc.
+    private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
     private RecipeTC lastRecipe;
 
     private float inputEnergy;
