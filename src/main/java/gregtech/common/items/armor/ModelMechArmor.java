@@ -13,11 +13,38 @@ public class ModelMechArmor extends ModelBiped
     ModelRenderer jettank1;
     ModelRenderer jetconnector1;
     ModelRenderer jetbooster1;
+    ModelRenderer core1;
+    ModelRenderer core2;
+    ModelRenderer core3;
 
-  public ModelMechArmor()
+  public ModelMechArmor(float s)
   {
-    textureWidth = 64;
-    textureHeight = 32;
+      super(s, 0, 64, 128);
+
+      core1 = new ModelRenderer(this, 32, 0);
+      core1.addBox(-2F, 3F, -3F, 4, 4, 1);
+      core1.setRotationPoint(0F, 0F, 0F);
+      core1.setTextureSize(64, 32);
+      core1.mirror = true;
+      setRotation(core1, 0F, 0F, 0F);
+      core1.showModel = false;
+
+      core2 = new ModelRenderer(this, 32, 5);
+      core2.addBox(-2F, 3F, -3F, 4, 4, 1);
+      core2.setRotationPoint(0F, 0F, 0F);
+      core2.setTextureSize(64, 32);
+      core2.mirror = true;
+      setRotation(core2, 0F, 0F, 0F);
+      core2.showModel = false;
+
+      core3 = new ModelRenderer(this, 32, 10);
+      core3.addBox(-2F, 3F, -3F, 4, 4, 1);
+      core3.setRotationPoint(0F, 0F, 0F);
+      core3.setTextureSize(64, 32);
+      core3.mirror = true;
+      setRotation(core3, 0F, 0F, 0F);
+      core3.showModel = false;
+
       jettank2 = new ModelRenderer(this, 52, 0);
       jettank2.addBox(-4F, 2F, 2F, 3, 5, 3);
       jettank2.setRotationPoint(0F, 0F, 0F);
@@ -60,27 +87,26 @@ public class ModelMechArmor extends ModelBiped
       jetbooster1.mirror = true;
       setRotation(jetbooster1, 0F, 0F, 0F);
 
-      this.bipedBody.addChild(jettank1);
+      bipedBody.addChild(jettank1);
 
-      this.jettank1.addChild(jettank2);
+      bipedBody.addChild(core1);
+      bipedBody.addChild(core2);
+      bipedBody.addChild(core3);
 
-      this.jettank1.addChild(jetbooster1);
-      this.jettank1.addChild(jetbooster2);
+      jettank1.addChild(jettank2);
 
-      this.jettank1.addChild(jetconnector1);
-      this.jettank1.addChild(jetconnector2);
-  }
+      jettank1.addChild(jetbooster1);
+      jettank1.addChild(jetbooster2);
 
-  public void changeAugmentRender(int augment, boolean show) {
-      switch (augment) {
-          case 0 -> jettank1.showModel = show;
-      }
+      jettank1.addChild(jetconnector1);
+      jettank1.addChild(jetconnector2);
   }
 
   public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
   {
-    super.render(entity, f, f1, f2, f3, f4, f5);
-    setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+      bipedHeadwear.showModel = false;
+      super.render(entity, f, f1, f2, f3, f4, f5);
+      setRotationAngles(f, f1, f2, f3, f4, f5, entity);
   }
 
   private void setRotation(ModelRenderer model, float x, float y, float z)

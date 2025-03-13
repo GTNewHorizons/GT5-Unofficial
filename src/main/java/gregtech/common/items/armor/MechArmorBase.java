@@ -3,12 +3,14 @@ package gregtech.common.items.armor;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.items.armor.ArmorHelper.GOGGLES_OF_REVEALING_KEY;
+import static gregtech.api.items.armor.ArmorHelper.JETPACK_KEY;
 import static gregtech.api.items.armor.ArmorHelper.VIS_DISCOUNT_KEY;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import forestry.api.apiculture.IArmorApiarist;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
 import ic2.core.IC2;
@@ -149,6 +151,12 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         coreIcon = aIconRegister.registerIcon(GregTech.getResourcePath("mech_armor/" + type, type + "_core"));
     }
 
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean requiresMultipleRenderPasses() {
+        return true;
+    }
+
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         NBTTagCompound tag = aStack.getTagCompound();
@@ -179,30 +187,34 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+        if (getCore(stack) == 0) {
+            if (slot == 2) return GregTech.getResourcePath("textures/items/mech_armor/texture_layer_skeleton2.png");
+            return GregTech.getResourcePath("textures/items/mech_armor/texture_layer_skeleton1.png");
+        }
         if (slot == 2) return GregTech.getResourcePath("textures/items/mech_armor/texture_layer2.png");
         return GregTech.getResourcePath("textures/items/mech_armor/texture_layer1.png");
     }
 
-    @SideOnly(Side.CLIENT)
-    public ModelBiped model;
-
     @Override
     @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
-        if (model == null) {
-            model = new ModelMechArmor();
-            //if (armorType == 0) model = new ModelMechArmor(true, false, false, false);
-            //else if (armorType == 1) model = new ModelMechArmor(false, true, false, false);
-            //else if (armorType == 2) model = new ModelMechArmor(false, false, true, false);
-            //else model = new ModelMechArmor(false, false, false, true);
-            this.model.bipedHead.showModel = (armorType == 0);
-            this.model.bipedHeadwear.showModel = (armorType == 0);
-            this.model.bipedBody.showModel = ((armorType == 1) || (armorType == 2));
-            this.model.bipedLeftArm.showModel = (armorType == 1);
-            this.model.bipedRightArm.showModel = (armorType == 1);
-            this.model.bipedLeftLeg.showModel = (armorType == 2 || armorType == 3);
-            this.model.bipedRightLeg.showModel = (armorType == 2 || armorType == 3);
-        }
+        ModelMechArmor model;
+            if (armorSlot == SLOT_LEGS) model = new ModelMechArmor(0.25F);
+            else model = new ModelMechArmor(0.5F);
+            model.bipedHead.showModel = (armorType == 0);
+            model.bipedHeadwear.showModel = (armorType == 0);
+            model.bipedBody.showModel = ((armorType == 1) || (armorType == 2));
+            model.bipedLeftArm.showModel = (armorType == 1);
+            model.bipedRightArm.showModel = (armorType == 1);
+            model.bipedLeftLeg.showModel = (armorType == 2 || armorType == 3);
+            model.bipedRightLeg.showModel = (armorType == 2 || armorType == 3);
+
+            model.jettank1.showModel = (itemStack.getTagCompound().hasKey(JETPACK_KEY));
+            switch (getCore(itemStack)) {
+                case 1 -> model.core1.showModel = true;
+                case 2 -> model.core2.showModel = true;
+                case 3 -> model.core3.showModel = true;
+            }
         return model;
     }
 
