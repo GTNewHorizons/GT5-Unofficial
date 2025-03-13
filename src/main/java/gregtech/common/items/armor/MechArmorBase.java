@@ -12,8 +12,10 @@ import java.util.List;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
 import ic2.core.IC2;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -21,11 +23,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import net.minecraftforge.common.ISpecialArmor;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.keybind.IKeyPressedListener;
@@ -40,7 +44,7 @@ import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.nodes.IRevealer;
 
-public class MechArmorBase extends ItemArmor implements IKeyPressedListener, IElectricItem, IGoggles, IRevealer, IVisDiscountGear {
+public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISpecialArmor, IElectricItem, IGoggles, IRevealer, IVisDiscountGear {
 
     protected IIcon coreIcon;
     protected IIcon frameIcon;
@@ -173,6 +177,35 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, IEl
         }
     }
 
+    @Override
+    public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+        if (slot == 2) return GregTech.getResourcePath("textures/items/mech_armor/texture_layer2.png");
+        return GregTech.getResourcePath("textures/items/mech_armor/texture_layer1.png");
+    }
+
+    @SideOnly(Side.CLIENT)
+    public ModelBiped model;
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
+        if (model == null) {
+            model = new ModelMechArmor();
+            //if (armorType == 0) model = new ModelMechArmor(true, false, false, false);
+            //else if (armorType == 1) model = new ModelMechArmor(false, true, false, false);
+            //else if (armorType == 2) model = new ModelMechArmor(false, false, true, false);
+            //else model = new ModelMechArmor(false, false, false, true);
+            this.model.bipedHead.showModel = (armorType == 0);
+            this.model.bipedHeadwear.showModel = (armorType == 0);
+            this.model.bipedBody.showModel = ((armorType == 1) || (armorType == 2));
+            this.model.bipedLeftArm.showModel = (armorType == 1);
+            this.model.bipedRightArm.showModel = (armorType == 1);
+            this.model.bipedLeftLeg.showModel = (armorType == 2 || armorType == 3);
+            this.model.bipedRightLeg.showModel = (armorType == 2 || armorType == 3);
+        }
+        return model;
+    }
+
     protected int getCore(ItemStack stack) {
         if (stack.getTagCompound().hasKey(MECH_CORE_KEY)) {
             return (stack.getTagCompound().getInteger(MECH_CORE_KEY));
@@ -185,9 +218,36 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, IEl
         return getCore(stack) != 0;
     }
 
+    @Override
     public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
         return false;
     }
+
+    protected float getProtectionShare() {
+        return switch (armorType) {
+            case 0, 3 -> 0.15F;
+            case 1 -> 0.40F;
+            case 2 -> 0.30F;
+            default -> 0;
+        };
+    }
+
+    // Special armor settings
+
+    @Override
+    public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
+        if (source.isUnblockable() || source.isDamageAbsolute() || source.isMagicDamage())
+            return new ArmorProperties(0, damageReduceAmount / 100D, 15);
+        return new ArmorProperties(0, damageReduceAmount / 24.5D, 1000);
+    }
+
+    @Override
+    public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
+        return (int) (getProtectionShare() * 20D);
+    }
+
+    @Override
+    public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {}
 
     // Thaumcraft compat
 
