@@ -340,7 +340,7 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
-        return SoundResource.IC2_MACHINES_MACERATOR_OP;
+        return SoundResource.GT_MACHINES_MACERATOR;
     }
 
 }

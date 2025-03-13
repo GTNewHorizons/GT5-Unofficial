@@ -369,7 +369,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_PUMP_OP;
+        return SoundResource.GT_MACHINES_PUMP;
     }
 
     @Override

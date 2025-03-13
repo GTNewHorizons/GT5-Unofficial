@@ -145,7 +145,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_INDUCTION_LOOP;
+        return SoundResource.GT_HUM;
     }
 
     @Override

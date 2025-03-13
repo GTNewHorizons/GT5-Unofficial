@@ -849,7 +849,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                         GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
                         GTUtility.sendSoundToPlayers(
                             worldObj,
-                            SoundResource.IC2_TOOLS_WRENCH,
+                            SoundResource.GT_TOOLS_WRENCH,
                             1.0F,
                             -1,
                             xCoord,
@@ -868,7 +868,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                             mMetaTileEntity.markDirty();
                             GTUtility.sendSoundToPlayers(
                                 worldObj,
-                                SoundResource.IC2_TOOLS_WRENCH,
+                                SoundResource.GT_TOOLS_SCREWDRIVER,
                                 1.0F,
                                 -1,
                                 xCoord,
@@ -882,7 +882,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                             mMetaTileEntity.markDirty();
                             GTUtility.sendSoundToPlayers(
                                 worldObj,
-                                SoundResource.IC2_TOOLS_WRENCH,
+                                SoundResource.GT_TOOLS_SCREWDRIVER,
                                 1.0F,
                                 -1,
                                 xCoord,
@@ -909,7 +909,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                                     : GTUtility.trans("087", "Disabled")));
                         GTUtility.sendSoundToPlayers(
                             worldObj,
-                            SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
+                            SoundResource.GT_TOOLS_SOFTHAMMER,
                             1.0F,
                             -1,
                             xCoord,
@@ -926,7 +926,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                         // logic handled internally
                         GTUtility.sendSoundToPlayers(
                             worldObj,
-                            SoundResource.IC2_TOOLS_WRENCH,
+                            SoundResource.GT_TOOLS_WIRECUTTER,
                             1.0F,
                             -1,
                             xCoord,
@@ -986,7 +986,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                             if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
                             GTUtility.sendSoundToPlayers(
                                 worldObj,
-                                SoundResource.IC2_TOOLS_WRENCH,
+                                SoundResource.GT_TOOLS_WRENCH,
                                 1.0F,
                                 -1,
                                 xCoord,

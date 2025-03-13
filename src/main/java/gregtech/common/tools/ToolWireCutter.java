@@ -57,7 +57,7 @@ public class ToolWireCutter extends GTTool {
 
     @Override
     public String getCraftingSound() {
-        return SoundResource.IC2_TOOLS_INSULATION_CUTTERS.toString();
+        return SoundResource.GT_TOOLS_WIRECUTTER.toString();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ToolWireCutter extends GTTool {
 
     @Override
     public String getMiningSound() {
-        return SoundResource.IC2_TOOLS_INSULATION_CUTTERS.toString();
+        return SoundResource.GT_TOOLS_WIRECUTTER.toString();
     }
 
     @Override

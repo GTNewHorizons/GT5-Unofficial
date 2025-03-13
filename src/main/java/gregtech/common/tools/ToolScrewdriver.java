@@ -83,7 +83,7 @@ public class ToolScrewdriver extends GTTool {
 
     @Override
     public String getCraftingSound() {
-        return SoundResource.IC2_TOOLS_WRENCH.toString();
+        return SoundResource.GT_TOOLS_SCREWDRIVER.toString();
     }
 
     @Override

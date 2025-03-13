@@ -739,7 +739,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_MINER_OP;
+        return SoundResource.GT_MACHINES_MINER;
     }
 
     @Override

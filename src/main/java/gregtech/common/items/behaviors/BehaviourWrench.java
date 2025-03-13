@@ -232,7 +232,7 @@ public class BehaviourWrench extends BehaviourNone {
             if (player.capabilities.isCreativeMode || item.canWrench(player, x, y, z)) {
                 if (operation.getAsBoolean()) {
                     item.doDamage(stack, damage);
-                    GTUtility.sendSoundToPlayers(world, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, x, y, z);
+                    GTUtility.sendSoundToPlayers(world, SoundResource.GT_TOOLS_WRENCH, 1.0F, -1.0F, x, y, z);
                     return true;
                 }
             }

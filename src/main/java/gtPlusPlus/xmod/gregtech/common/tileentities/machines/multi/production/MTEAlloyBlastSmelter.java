@@ -137,7 +137,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
 
     @Override
     protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_INDUCTION_LOOP;
+        return SoundResource.GT_MACHINES_FURNACE;
     }
 
     @Override

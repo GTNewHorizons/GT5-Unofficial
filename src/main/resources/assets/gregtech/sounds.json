@@ -200,7 +200,7 @@
           "license_name": "Attribution 3.0"
         }
       }
-     ]
+    ]
   },
   "machines.MTEPreciseAssembler": {
     "category": "block",
@@ -380,6 +380,174 @@
         "name": "MTEEyeOfHarmony",
         "stream": false
       }
+    ]
+  },
+  "hum": {
+    "category": "block",
+    "sounds": [
+      "gtceu/hum"
+    ]
+  },
+  "cooling": {
+    "category": "block",
+    "sounds": [
+      "gtceu/cooling"
+    ]
+  },
+  "boiling": {
+    "category": "block",
+    "sounds": [
+      "gtceu/boiling"
+    ]
+  },
+  "motor": {
+    "category": "block",
+    "sounds": [
+      "gtceu/motor"
+    ]
+  },
+  "cut": {
+    "category": "block",
+    "sounds": [
+      "gtceu/cut"
+    ]
+  },
+  "tools.wrench": {
+    "category": "player",
+    "sounds": [
+      "gtceu/wrench"
+    ]
+  },
+  "tools.softhammer": {
+    "category": "player",
+    "sounds": [
+      "gtceu/soft_hammer"
+    ]
+  },
+  "tools.wirecutter": {
+    "category": "player",
+    "sounds": [
+      "gtceu/wirecutter"
+    ]
+  },
+  "tools.plunger": {
+    "category": "player",
+    "sounds": [
+      "gtceu/plunger"
+    ]
+  },
+  "tools.saw": {
+    "category": "player",
+    "sounds": [
+      "gtceu/saw"
+    ]
+  },
+  "tools.chainsaw": {
+    "category": "player",
+    "sounds": [
+      "gtceu/chainsaw"
+    ]
+  },
+  "tools.screwdriver": {
+    "category": "player",
+    "sounds": [
+      "gtceu/screwdriver"
+    ]
+  },
+  "tools.file": {
+    "category": "player",
+    "sounds": [
+      "gtceu/file"
+    ]
+  },
+  "tools.mortar": {
+    "category": "player",
+    "sounds": [
+      "gtceu/mortar"
+    ]
+  },
+  "tools.drill": {
+    "category": "player",
+    "sounds": [
+      "gtceu/drill"
+    ]
+  },
+  "tools.spraycan": {
+    "category": "player",
+    "sounds": [
+      "gtceu/spray_can"
+    ]
+  },
+  "machines.Furnace": {
+    "category": "block",
+    "sounds": [
+      "gtceu/heating"
+    ]
+  },
+  "machines.Miner": {
+    "category": "block",
+    "sounds": [
+      "gtceu/miner"
+    ]
+  },
+  "machines.ForgeHammer": {
+    "category": "block",
+    "sounds": [
+      "gtceu/forge_hammer"
+    ]
+  },
+  "machines.Macerator": {
+    "category": "block",
+    "sounds": [
+      "gtceu/macerator"
+    ]
+  },
+  "machines.Mixer": {
+    "category": "block",
+    "sounds": [
+      "gtceu/mixer"
+    ]
+  },
+  "machines.Electrolyzer": {
+    "category": "block",
+    "sounds": [
+      "gtceu/electrolyzer"
+    ]
+  },
+  "machines.Chemical": {
+    "category": "block",
+    "sounds": [
+      "gtceu/chemical"
+    ]
+  },
+  "machines.Compressor": {
+    "category": "block",
+    "sounds": [
+      "gtceu/compressor"
+    ]
+  },
+  "machines.Combustion": {
+    "category": "block",
+    "sounds": [
+      "gtceu/combustion"
+    ]
+  },
+  "machines.Centrifuge": {
+    "category": "block",
+    "sounds": [
+      "gtceu/centrifuge"
+    ]
+  },
+  "machines.Bath": {
+    "category": "block",
+    "sounds": [
+      "gtceu/bath"
+    ]
+  },
+  "machines.Pump": {
+    "category": "block",
+    "sounds": [
+      "gtceu/pump"
     ]
   }
 }
