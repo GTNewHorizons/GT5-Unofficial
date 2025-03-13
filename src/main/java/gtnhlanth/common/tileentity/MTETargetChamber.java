@@ -254,11 +254,10 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         ArrayList<ItemStack> tItemsWithFocusItem = new ArrayList<>();
 
         if (tFocusItemArray != null) {
-            for (ItemStack focus : tFocusItemArray) {
-                tFocusItemZeroDamage = focus.copy();
-                tFocusItemZeroDamage.setItemDamage(0);
-                tItemsWithFocusItem.add(tFocusItemZeroDamage);
-            }
+            tFocusItemZeroDamage = tFocusItemArray.get(0)
+                .copy();
+            tFocusItemZeroDamage.setItemDamage(0);
+            tItemsWithFocusItem.add(tFocusItemArray.get(0));
         }
 
         tItemsWithFocusItem.addAll(tItems);
@@ -308,10 +307,8 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
         if (tRecipe.focusItem != null) {
             if (tFocusItemArray != null) {
-                for (ItemStack focus : tFocusItemArray) {
-                    if (focus != null && tRecipe.focusItem.getItem() != focus.getItem())
-                        return CheckRecipeResultRegistry.NO_RECIPE;
-                }
+                if (tFocusItemArray.get(0) != null && tRecipe.focusItem.getItem() != tFocusItemArray.get(0)
+                    .getItem()) return CheckRecipeResultRegistry.NO_RECIPE;
             }
         }
 
@@ -391,7 +388,6 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
                     stack.stackSize--;
                 } else {
                     stack.setItemDamage(stack.getItemDamage() + focusDurabilityDepletion);
-                    focusDurabilityDepletion = 0;
                     break;
                 }
             }
@@ -415,16 +411,13 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
     private ArrayList<ItemStack> getFocusItemStack() {
 
-        ArrayList<ItemStack> ret = new ArrayList<>();
-        for (MTEBusInputFocus hatch : this.mInputFocus) {
+        if (this.mInputFocus.isEmpty()) return null;
+        if (this.mInputFocus.get(0)
+            .getContentUsageSlots()
+            .isEmpty()) return null;
 
-            if (hatch.getContentUsageSlots()
-                .isEmpty()) return null;
-
-            ret = hatch.getContentUsageSlots();
-        }
-
-        return ret;
+        return this.mInputFocus.get(0)
+            .getContentUsageSlots();
     }
 
     @Override
