@@ -14,9 +14,9 @@ import gregtech.api.enums.TCAspects.TC_AspectStack;
 public class MaterialsBotania {
 
     // Botania materials.
-    public static Materials Manasteel = new MaterialBuilder(201, TextureSet.SET_METALLIC, "Manasteel")
+    public static Materials Manasteel = new MaterialBuilder(201, new TextureSet("Manasteel", false), "Manasteel")
         .setName("Manasteel")
-        .setRGBA(150, 219, 252, 255)
+        .setRGBA(56, 151, 213, 255)
         .addDustItems()
         .addMetalItems()
         .addToolHeadItems()
@@ -30,7 +30,7 @@ public class MaterialsBotania {
         .setAspects(
             Arrays.asList(new TC_AspectStack(TCAspects.METALLUM, 3), new TC_AspectStack(TCAspects.PRAECANTATIO, 1)))
         .constructMaterial();
-    public static Materials Terrasteel = new MaterialBuilder(202, TextureSet.SET_METALLIC, "Terrasteel")
+    public static Materials Terrasteel = new MaterialBuilder(202, new TextureSet("Manasteel", false), "Terrasteel")
         .setName("Terrasteel")
         .setRGBA(100, 255, 40, 255)
         .addDustItems()
@@ -49,9 +49,9 @@ public class MaterialsBotania {
                 new TC_AspectStack(TCAspects.TERRA, 1),
                 new TC_AspectStack(TCAspects.PRAECANTATIO, 1)))
         .constructMaterial();
-    public static Materials ElvenElementium = new MaterialBuilder(203, TextureSet.SET_METALLIC, "Elven Elementium")
+    public static Materials ElvenElementium = new MaterialBuilder(203, new TextureSet("Manasteel", false), "Elven Elementium")
         .setName("ElvenElementium")
-        .setRGBA(219, 37, 205, 255)
+        .setRGBA(255, 45, 240, 255)
         .addDustItems()
         .addMetalItems()
         .addToolHeadItems()
