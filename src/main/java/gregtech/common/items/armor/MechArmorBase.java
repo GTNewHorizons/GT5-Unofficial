@@ -9,6 +9,9 @@ import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 import java.util.ArrayList;
 import java.util.List;
 
+import ic2.api.item.IElectricItem;
+import ic2.api.item.IElectricItemManager;
+import ic2.core.IC2;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -37,7 +40,7 @@ import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.nodes.IRevealer;
 
-public class MechArmorBase extends ItemArmor implements IKeyPressedListener, IGoggles, IRevealer, IVisDiscountGear {
+public class MechArmorBase extends ItemArmor implements IKeyPressedListener, IElectricItem, IGoggles, IRevealer, IVisDiscountGear {
 
     protected IIcon coreIcon;
     protected IIcon frameIcon;
@@ -53,6 +56,9 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, IGo
     static final int SLOT_BOOTS = 0;
 
     protected String type;
+
+    public static final String MECH_FRAME_KEY = "frame";
+    public static final String MECH_CORE_KEY = "core";
 
     protected List<IArmorBehavior> behaviors = new ArrayList<>();
 
@@ -70,8 +76,8 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, IGo
 
         // Set behaviors
         NBTTagCompound tag = getOrCreateNbtCompound(stack);
-        tag.setInteger("core", 0);
-        tag.setString("frame", "None");
+        tag.setInteger(MECH_CORE_KEY, 0);
+        tag.setString(MECH_FRAME_KEY, "None");
         return stack;
     }
 
@@ -143,11 +149,11 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, IGo
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         NBTTagCompound tag = aStack.getTagCompound();
         if (tag != null) {
-            if (tag.hasKey("core")) {
-                aList.add("Installed Core: " + tag.getInteger("core"));
+            if (tag.hasKey(MECH_CORE_KEY)) {
+                aList.add("Installed Core: " + tag.getInteger(MECH_CORE_KEY));
             }
-            if (tag.hasKey("frame")) {
-                aList.add("Frame: " + tag.getString("frame"));
+            if (tag.hasKey(MECH_FRAME_KEY)) {
+                aList.add("Frame: " + tag.getString(MECH_FRAME_KEY));
             }
             // todo armor toughness tooltip
             for (IArmorBehavior behavior : behaviors) {
@@ -167,6 +173,24 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, IGo
         }
     }
 
+    protected int getCore(ItemStack stack) {
+        if (stack.getTagCompound().hasKey(MECH_CORE_KEY)) {
+            return (stack.getTagCompound().getInteger(MECH_CORE_KEY));
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean showDurabilityBar(ItemStack stack) {
+        return getCore(stack) != 0;
+    }
+
+    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
+        return false;
+    }
+
+    // Thaumcraft compat
+
     @Override
     public boolean showIngamePopups(ItemStack item, EntityLivingBase var2) {
         return (getOrCreateNbtCompound(item).getBoolean(GOGGLES_OF_REVEALING_KEY));
@@ -180,5 +204,37 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, IGo
     @Override
     public int getVisDiscount(ItemStack item, EntityPlayer var2, Aspect var3) {
         return (getOrCreateNbtCompound(item).getInteger(VIS_DISCOUNT_KEY));
+    }
+
+    // IC2 electric api
+
+    @Override
+    public boolean canProvideEnergy(ItemStack itemStack) {
+        return false;
+    }
+
+    @Override
+    public Item getChargedItem(ItemStack itemStack) {
+        return this;
+    }
+
+    @Override
+    public Item getEmptyItem(ItemStack itemStack) {
+        return this;
+    }
+
+    @Override
+    public double getMaxCharge(ItemStack itemStack) {
+        return 10000 * getCore(itemStack);
+    }
+
+    @Override
+    public int getTier(ItemStack itemStack) {
+        return 3;
+    }
+
+    @Override
+    public double getTransferLimit(ItemStack itemStack) {
+        return 1600;
     }
 }
