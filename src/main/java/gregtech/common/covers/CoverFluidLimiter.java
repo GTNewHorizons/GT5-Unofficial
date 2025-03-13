@@ -38,12 +38,11 @@ public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.Fluid
     }
 
     @Override
-    public FluidLimiterData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (coveredTile.get() instanceof IFluidHandler) {
-            adjustThreshold(coverData, !aPlayer.isSneaking());
+            adjustThreshold(!aPlayer.isSneaking());
             GTUtility.sendChatToPlayer(aPlayer, String.format("Threshold: %f", coverData.threshold));
         }
-        return coverData;
     }
 
     @Override
@@ -63,19 +62,19 @@ public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.Fluid
      * Helpers
      */
 
-    private void adjustThreshold(FluidLimiterData coverVariable, boolean way) {
+    private void adjustThreshold(boolean way) {
         if (way) {
-            if ((coverVariable.threshold + 0.05f) > 1F) {
-                coverVariable.threshold = 0F;
+            if ((coverData.threshold + 0.05f) > 1F) {
+                coverData.threshold = 0F;
                 return;
             }
-            coverVariable.threshold += 0.05F;
+            coverData.threshold += 0.05F;
         } else {
-            if ((Math.abs(coverVariable.threshold) - 0.05F) < 0F) {
-                coverVariable.threshold = 1F;
+            if ((Math.abs(coverData.threshold) - 0.05F) < 0F) {
+                coverData.threshold = 1F;
                 return;
             }
-            coverVariable.threshold -= 0.05F;
+            coverData.threshold -= 0.05F;
         }
     }
 

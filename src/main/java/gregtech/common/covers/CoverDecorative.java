@@ -5,7 +5,6 @@ import net.minecraftforge.fluids.Fluid;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject.LegacyCoverData;
 
 public class CoverDecorative extends CoverBehavior {
 
@@ -17,7 +16,7 @@ public class CoverDecorative extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int coverDataValue = coverData.get();
         coverDataValue = ((coverDataValue + 1) & 15);
         GTUtility.sendChatToPlayer(
@@ -26,7 +25,7 @@ public class CoverDecorative extends CoverBehavior {
                 + ((coverDataValue & 2) != 0 ? GTUtility.trans("129.1", "Energy ") : "")
                 + ((coverDataValue & 4) != 0 ? GTUtility.trans("130.1", "Fluids ") : "")
                 + ((coverDataValue & 8) != 0 ? GTUtility.trans("131.1", "Items ") : ""));
-        return LegacyCoverData.of(coverDataValue);
+        coverData.set(coverDataValue);
     }
 
     @Override

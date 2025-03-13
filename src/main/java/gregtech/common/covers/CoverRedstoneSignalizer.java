@@ -7,7 +7,6 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject.LegacyCoverData;
 
 @SuppressWarnings("unused") // TODO: Consider re-registering this
 public class CoverRedstoneSignalizer extends CoverBehavior {
@@ -21,7 +20,7 @@ public class CoverRedstoneSignalizer extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int coverDataValue = coverData.get();
         coverDataValue = (coverDataValue + 1) % 48;
         switch (coverDataValue / 16) {
@@ -32,7 +31,7 @@ public class CoverRedstoneSignalizer extends CoverBehavior {
                 aPlayer,
                 GTUtility.trans("080", "Inverted Conditional Signal = ") + (coverDataValue & 0xF));
         }
-        return LegacyCoverData.of(coverDataValue);
+        coverData.set(coverDataValue);
     }
 
     @Override

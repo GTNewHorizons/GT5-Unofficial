@@ -151,7 +151,7 @@ public class CoverControlsWork extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int newCoverData = (convert(coverData) + (aPlayer.isSneaking() ? -1 : 1)) % 5;
         if (newCoverData < 0) {
             newCoverData = 2;
@@ -172,7 +172,7 @@ public class CoverControlsWork extends CoverBehavior {
             GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("506", "Disable with Signal (Safe)"));
         }
         // TODO: Set lastPlayer
-        return LegacyCoverData.of(newCoverData);
+        coverData.set(newCoverData);
     }
 
     @Override

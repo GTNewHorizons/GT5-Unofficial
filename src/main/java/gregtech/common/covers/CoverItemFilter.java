@@ -95,13 +95,12 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
     }
 
     @Override
-    public ItemFilterData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         coverData.mWhitelist = !coverData.mWhitelist;
         GTUtility.sendChatToPlayer(
             aPlayer,
             coverData.mWhitelist ? GTUtility.trans("125.1", "Whitelist Mode")
                 : GTUtility.trans("124.1", "Blacklist Mode"));
-        return coverData;
     }
 
     @Override

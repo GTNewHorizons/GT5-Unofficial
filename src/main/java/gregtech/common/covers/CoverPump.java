@@ -70,11 +70,7 @@ public class CoverPump extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        ICoverable coverable = coveredTile.get();
-        if (coverable == null) {
-            return coverData;
-        }
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int coverDataValue = coverData.get();
         coverDataValue = (coverDataValue + (aPlayer.isSneaking() ? -1 : 1)) % 12;
         if (coverDataValue < 0) {
@@ -94,7 +90,7 @@ public class CoverPump extends CoverBehavior {
             case 10 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("016", "Export allow Input (invert cond)"));
             case 11 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("017", "Import allow Output (invert cond)"));
         }
-        return LegacyCoverData.of(coverDataValue);
+        coverData.set(coverDataValue);
     }
 
     @Override

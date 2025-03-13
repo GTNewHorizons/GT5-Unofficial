@@ -82,12 +82,7 @@ public class CoverNeedMaintainance extends CoverBehavior {
     }
 
     @Override
-    public ISerializableObject.LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY,
-        float aZ) {
-        ICoverable coverable = coveredTile.get();
-        if (coverable == null) {
-            return coverData;
-        }
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int coverDataValue = coverData.get();
         coverDataValue = (coverDataValue + (aPlayer.isSneaking() ? -1 : 1)) % 14;
         if (coverDataValue < 0) {
@@ -120,7 +115,7 @@ public class CoverNeedMaintainance extends CoverBehavior {
                 aPlayer,
                 GTUtility.trans("069", "Emit if rotor needs maintenance high accuracy mod(inverted)"));
         }
-        return ISerializableObject.LegacyCoverData.of(coverDataValue);
+        coverData.set(coverDataValue);
     }
 
     @Override

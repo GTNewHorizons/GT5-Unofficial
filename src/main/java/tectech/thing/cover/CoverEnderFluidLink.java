@@ -128,7 +128,7 @@ public class CoverEnderFluidLink extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int coverDataValue = coverData.get();
         int newCoverVariable = toggleBit(coverDataValue, IMPORT_EXPORT_MASK);
 
@@ -137,7 +137,7 @@ public class CoverEnderFluidLink extends CoverBehavior {
         } else {
             PlayerChatHelper.SendInfo(aPlayer, "Ender Filling Engaged!");
         }
-        return LegacyCoverData.of(newCoverVariable);
+        coverData.set(newCoverVariable);
     }
 
     @Override

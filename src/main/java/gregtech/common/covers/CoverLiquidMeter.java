@@ -84,7 +84,7 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
     }
 
     @Override
-    public LiquidMeterData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (coverData.inverted) {
             coverData.inverted = false;
             GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("055", "Normal"));
@@ -92,7 +92,6 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
             coverData.inverted = true;
             GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("054", "Inverted"));
         }
-        return coverData;
     }
 
     @Override

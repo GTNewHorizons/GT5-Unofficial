@@ -9,7 +9,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.util.GTUtility;
@@ -29,12 +28,7 @@ public class CoverShutter extends CoverBehavior {
     }
 
     @Override
-    public ISerializableObject.LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY,
-        float aZ) {
-        ICoverable coverable = coveredTile.get();
-        if (coverable == null) {
-            return coverData;
-        }
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int coverDataValue = coverData.get();
         coverDataValue = (coverDataValue + (aPlayer.isSneaking() ? -1 : 1)) % 4;
         if (coverDataValue < 0) {
@@ -46,10 +40,10 @@ public class CoverShutter extends CoverBehavior {
             case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("084", "Only Output allowed"));
             case 3 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("085", "Only Input allowed"));
         }
-        if (coverable instanceof BaseMetaPipeEntity bmpe) {
+        if (coveredTile.get() instanceof BaseMetaPipeEntity bmpe) {
             bmpe.reloadLocks();
         }
-        return ISerializableObject.LegacyCoverData.of(coverDataValue);
+        coverData.set(coverDataValue);
     }
 
     public boolean letsRedstoneGoIn() {

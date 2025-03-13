@@ -72,14 +72,12 @@ public class CoverTeslaCoil extends CoverBehavior {
     }
 
     @Override
-    public ISerializableObject.LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY,
-        float aZ) {
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         ICoverable coverable = coveredTile.get();
         // Shock a non-hazmat player if they dare stuff a screwdriver into one of these
         if (coverable != null && coverable.getStoredEU() > 0 && !GTUtility.isWearingFullElectroHazmat(aPlayer)) {
             aPlayer.attackEntityFrom(DMG_ELECTRIC, 20);
         }
-        return coverData;
     }
 
     @Override

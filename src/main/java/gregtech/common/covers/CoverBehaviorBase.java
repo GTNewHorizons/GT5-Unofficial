@@ -150,9 +150,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
     }
 
     @Override
-    public T onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        return coverData;
-    }
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {}
 
     // endregion
 
