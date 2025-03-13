@@ -32,7 +32,7 @@ public class MaterialsBotania {
         .constructMaterial();
     public static Materials Terrasteel = new MaterialBuilder(202, TextureSet.SET_METALLIC, "Terrasteel")
         .setName("Terrasteel")
-        .setRGBA(76, 191, 38, 255)
+        .setRGBA(100, 255, 40, 255)
         .addDustItems()
         .addMetalItems()
         .addToolHeadItems()
