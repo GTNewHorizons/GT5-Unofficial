@@ -10,12 +10,9 @@ import org.apache.commons.lang3.ArrayUtils;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
-import gregtech.api.objects.GTItemStack;
 import gtPlusPlus.core.lib.GTPPCore;
 
 public abstract class MTERedstoneBase extends MTETieredMachineBlock {
-
-    protected int mOpenerCount;
 
     public MTERedstoneBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
         String aDescription, ITexture... aTextures) {
@@ -33,12 +30,7 @@ public abstract class MTERedstoneBase extends MTETieredMachineBlock {
     }
 
     @Override
-    public final boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         return side != getBaseMetaTileEntity().getFrontFacing();
     }
 
@@ -66,18 +58,6 @@ public abstract class MTERedstoneBase extends MTETieredMachineBlock {
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
         return false;
-    }
-
-    @Override
-    public final void onOpenGUI() {
-        super.onOpenGUI();
-        mOpenerCount++;
-    }
-
-    @Override
-    public final void onCloseGUI() {
-        super.onCloseGUI();
-        mOpenerCount--;
     }
 
     public boolean hasRedstoneSignal() {

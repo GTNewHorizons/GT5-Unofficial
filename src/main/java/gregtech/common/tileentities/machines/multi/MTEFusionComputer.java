@@ -62,7 +62,6 @@ import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.overclockdescriber.FusionOverclockDescriber;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
@@ -71,6 +70,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -199,7 +199,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
     public abstract MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity);
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
 
         return side != getBaseMetaTileEntity().getFrontFacing();
     }
@@ -328,7 +328,8 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (!mRunningOnLoad && recipe.mSpecialValue > maxEUStore()) {
+                if (!mRunningOnLoad
+                    && recipe.getMetadataOrDefault(GTRecipeConstants.FUSION_THRESHOLD, 0L) > maxEUStore()) {
                     return CheckRecipeResultRegistry.insufficientStartupPower(recipe.mSpecialValue);
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;

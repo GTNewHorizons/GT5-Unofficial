@@ -146,18 +146,6 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
         return mTier;
     }
 
-    /**
-     * Sets texture with page and index, rather unusable, but kept FFS
-     *
-     * @param page  page of texure
-     * @param index index of texure
-     */
-    @Deprecated
-    public final void updateTexture(byte page, byte index) {
-        onValueUpdate(index);
-        onTexturePageUpdate(page);
-    }
-
     @Override
     public final void onValueUpdate(byte aValue) {
         actualTexture = (byte) (aValue & 0x7F);
@@ -227,16 +215,6 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
 
     @Override
     public boolean canTankBeEmptied() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysItemStack() {
-        return false;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
         return false;
     }
 

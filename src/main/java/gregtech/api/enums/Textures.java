@@ -1415,8 +1415,6 @@ public class Textures {
         MACHINE_CASING_PCB_TIER_3,
         INFINITY_COOLED_CASING,
 
-        MACHINE_CASING_SHIELDED_ACCELERATOR,
-
         LARGETURBINE_NEW1,
         LARGETURBINE_NEW2,
         LARGETURBINE_NEW3,
@@ -1779,11 +1777,6 @@ public class Textures {
             TextureFactory.of(OVERLAY_LOCKER_009), TextureFactory.of(OVERLAY_LOCKER_010),
             TextureFactory.of(OVERLAY_LOCKER_011), TextureFactory.of(OVERLAY_LOCKER_012),
             TextureFactory.of(OVERLAY_LOCKER_013), };
-        /**
-         * USE casingTexturePages[page] instead of CASING_BLOCKS since it is casingTexturePages[0]
-         */
-        @Deprecated
-        public static final ITexture[] CASING_BLOCKS = new ITexture[128]; // original variable still limited to 128
 
         public static ITexture[][] MACHINE_CASINGS = new ITexture[15][17];
         // spotless:off

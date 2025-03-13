@@ -10,10 +10,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
@@ -22,14 +24,11 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.CoverBehavior;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTUtil;
-import gregtech.api.util.ISerializableObject;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.GTClient;
+import gregtech.common.covers.Cover;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -38,7 +37,7 @@ import gregtech.common.covers.CoverInfo;
  * also not postload!) Implement the newMetaEntity-Method to return a new ready instance of your MetaTileEntity
  * <p/>
  * Call the Constructor like the following example inside the Load Phase, to register it. "new
- * GT_MetaTileEntity_E_Furnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
+ * MTEFurnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
  */
 public abstract class MetaPipeEntity extends CommonMetaTileEntity implements IConnectable {
 
@@ -62,7 +61,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
      *
      * <pre>
      *
-     * public GT_MetaTileEntity_EBench(int id, String name, String nameRegional) {
+     * public MTEBench(int id, String name, String nameRegional) {
      *     super(id, name, nameRegional);
      * }
      * </pre>
@@ -167,7 +166,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         if (difference > 1.05 && difference < 1.4) {
             side = ForgeDirection.EAST;
         }
-        boolean tCovered = side != ForgeDirection.UNKNOWN && mBaseMetaTileEntity.getCoverIDAtSide(side) > 0;
+        boolean tCovered = side != ForgeDirection.UNKNOWN && mBaseMetaTileEntity.hasCoverAtSide(side);
         if (isConnectedAtSide(side)) {
             tCovered = true;
         }
@@ -318,11 +317,11 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
         if (baseMetaTile == null || !baseMetaTile.isServerSide()) return 0;
 
-        final CoverInfo coverInfo = baseMetaTile.getCoverInfoAtSide(side);
+        final Cover cover = baseMetaTile.getCoverAtSide(side);
 
-        final boolean alwaysLookConnected = coverInfo.alwaysLookConnected();
-        final boolean letsIn = letsIn(coverInfo);
-        final boolean letsOut = letsOut(coverInfo);
+        final boolean alwaysLookConnected = cover.alwaysLookConnected();
+        final boolean letsIn = letsIn(cover);
+        final boolean letsOut = letsOut(cover);
 
         // Careful - tTileEntity might be null, and that's ok -- so handle it
         final TileEntity tTileEntity = baseMetaTile.getTileEntityAtSide(side);
@@ -393,31 +392,80 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         return (mConnections & sideDirection.flag) != 0;
     }
 
-    public boolean letsIn(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+        final float thickness = getThickNess();
+        // While holding tool, make it full block
+        final boolean shouldBeFullBlock = GTMod.instance.isClientSide() && (GTClient.hideValue & 0x2) != 0;
+        if (shouldBeFullBlock || thickness == 1) {
+            return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
+        }
+
+        // Otherwise, account for attached covers and connections
+
+        final float space = (1f - thickness) / 2;
+        float yStart = space;
+        float yEnd = 1f - space;
+        float zStart = space;
+        float zEnd = 1f - space;
+        float xStart = space;
+        float xEnd = 1f - space;
+        final BaseMetaPipeEntity baseTE = (BaseMetaPipeEntity) getBaseMetaTileEntity();
+
+        if (baseTE.hasCoverAtSide(ForgeDirection.DOWN)) {
+            yStart = zStart = xStart = 0;
+            zEnd = xEnd = 1;
+        }
+        if (baseTE.hasCoverAtSide(ForgeDirection.UP)) {
+            zStart = xStart = 0;
+            yEnd = zEnd = xEnd = 1;
+        }
+        if (baseTE.hasCoverAtSide(ForgeDirection.NORTH)) {
+            yStart = zStart = xStart = 0;
+            yEnd = xEnd = 1;
+        }
+        if (baseTE.hasCoverAtSide(ForgeDirection.SOUTH)) {
+            yStart = xStart = 0;
+            yEnd = zEnd = xEnd = 1;
+        }
+        if (baseTE.hasCoverAtSide(ForgeDirection.WEST)) {
+            yStart = zStart = xStart = 0;
+            yEnd = zEnd = 1;
+        }
+        if (baseTE.hasCoverAtSide(ForgeDirection.EAST)) {
+            yStart = zStart = 0;
+            yEnd = zEnd = xEnd = 1;
+        }
+
+        // this.mConnections isn't synced, but BaseMetaPipeEntity.mConnections is for some reason
+        final byte connections = baseTE.mConnections;
+        if ((connections & ForgeDirection.DOWN.flag) != 0) {
+            yStart = 0f;
+        }
+        if ((connections & ForgeDirection.UP.flag) != 0) {
+            yEnd = 1f;
+        }
+        if ((connections & ForgeDirection.NORTH.flag) != 0) {
+            zStart = 0f;
+        }
+        if ((connections & ForgeDirection.SOUTH.flag) != 0) {
+            zEnd = 1f;
+        }
+        if ((connections & ForgeDirection.WEST.flag) != 0) {
+            xStart = 0f;
+        }
+        if ((connections & ForgeDirection.EAST.flag) != 0) {
+            xEnd = 1f;
+        }
+
+        return AxisAlignedBB.getBoundingBox(x + xStart, y + yStart, z + zStart, x + xEnd, y + yEnd, z + zEnd);
+    }
+
+    public boolean letsIn(Cover cover) {
         return false;
     }
 
-    public boolean letsIn(CoverInfo coverInfo) {
-        return false;
-    }
-
-    public boolean letsOut(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return false;
-    }
-
-    public boolean letsOut(CoverInfo coverInfo) {
-        return false;
-    }
-
-    public boolean letsIn(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return false;
-    }
-
-    public boolean letsOut(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsOut(Cover cover) {
         return false;
     }
 

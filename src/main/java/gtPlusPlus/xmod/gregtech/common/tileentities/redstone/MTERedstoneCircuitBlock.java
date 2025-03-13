@@ -24,7 +24,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
 import gregtech.api.interfaces.ITexture;
@@ -37,7 +36,7 @@ import gregtech.api.util.CircuitryBehavior;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -138,7 +137,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -379,18 +378,13 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     }
 
     @Override
-    public CoverInfo getCover(ForgeDirection side) {
-        return getBaseMetaTileEntity().getCoverInfoAtSide(side);
-    }
-
-    @Override
-    public int getCoverID(ForgeDirection side) {
-        return getBaseMetaTileEntity().getCoverIDAtSide(side);
+    public Cover getCover(ForgeDirection side) {
+        return getBaseMetaTileEntity().getCoverAtSide(side);
     }
 
     @Override
     public ISerializableObject getCoverData(ForgeDirection side) {
-        return getBaseMetaTileEntity().getCoverInfoAtSide(side)
+        return getBaseMetaTileEntity().getCoverAtSide(side)
             .getCoverData();
     }
 

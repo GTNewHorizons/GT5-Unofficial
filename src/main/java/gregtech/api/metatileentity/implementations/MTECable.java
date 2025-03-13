@@ -2,11 +2,6 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
-import static net.minecraftforge.common.util.ForgeDirection.EAST;
-import static net.minecraftforge.common.util.ForgeDirection.NORTH;
-import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
-import static net.minecraftforge.common.util.ForgeDirection.UP;
-import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -41,21 +35,17 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.CoverBehavior;
-import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTGCCompat;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.GTClient;
 import gregtech.common.blocks.ItemMachines;
-import gregtech.common.covers.CoverInfo;
+import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverSolarPanel;
 import ic2.api.energy.EnergyNet;
 import ic2.api.energy.tile.IEnergyEmitter;
@@ -188,11 +178,6 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return false;
     }
@@ -220,16 +205,9 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     @Override
     public long injectEnergyUnits(ForgeDirection side, long voltage, long amperage) {
         if (!isConnectedAtSide(side) && side != ForgeDirection.UNKNOWN) return 0;
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
+        if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .letsEnergyIn()) return 0;
         return transferElectricity(side, voltage, amperage, (HashSet<TileEntity>) null);
-    }
-
-    @Override
-    @Deprecated
-    public long transferElectricity(ForgeDirection side, long aVoltage, long aAmperage,
-        ArrayList<TileEntity> aAlreadyPassedTileEntityList) {
-        return transferElectricity(side, aVoltage, aAmperage, new HashSet<>(aAlreadyPassedTileEntityList));
     }
 
     @Override
@@ -446,37 +424,13 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     }
 
     @Override
-    public boolean letsIn(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return coverBehavior.letsEnergyIn(side, aCoverID, aCoverVariable, aTileEntity);
+    public boolean letsIn(Cover cover) {
+        return cover.letsEnergyIn();
     }
 
     @Override
-    public boolean letsOut(CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return coverBehavior.letsEnergyOut(side, aCoverID, aCoverVariable, aTileEntity);
-    }
-
-    @Override
-    public boolean letsIn(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return coverBehavior.letsEnergyIn(side, aCoverID, aCoverVariable, aTileEntity);
-    }
-
-    @Override
-    public boolean letsOut(CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return coverBehavior.letsEnergyOut(side, aCoverID, aCoverVariable, aTileEntity);
-    }
-
-    @Override
-    public boolean letsIn(CoverInfo coverInfo) {
-        return coverInfo.letsEnergyIn();
-    }
-
-    @Override
-    public boolean letsOut(CoverInfo coverInfo) {
-        return coverInfo.letsEnergyOut();
+    public boolean letsOut(Cover cover) {
+        return cover.letsEnergyOut();
     }
 
     @Override
@@ -491,8 +445,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             return true;
 
         // Solar Panel Compat
-        if (baseMetaTile.getCoverInfoAtSide(side)
-            .getCoverBehavior() instanceof CoverSolarPanel) return true;
+        if (baseMetaTile.getCoverAtSide(side) instanceof CoverSolarPanel) return true;
 
         // ((tIsGregTechTileEntity && tIsTileEntityCable) && (tAlwaysLookConnected || tLetEnergyIn || tLetEnergyOut) )
         // --> Not needed
@@ -643,74 +596,6 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x2) != 0)
-            return AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
-        else return getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
-    }
-
-    private AxisAlignedBB getActualCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-        float tSpace = (1f - mThickNess) / 2;
-        float spaceDown = tSpace;
-        float spaceUp = 1f - tSpace;
-        float spaceNorth = tSpace;
-        float spaceSouth = 1f - tSpace;
-        float spaceWest = tSpace;
-        float spaceEast = 1f - tSpace;
-
-        if (getBaseMetaTileEntity().getCoverIDAtSide(DOWN) != 0) {
-            spaceDown = spaceNorth = spaceWest = 0;
-            spaceSouth = spaceEast = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(UP) != 0) {
-            spaceNorth = spaceWest = 0;
-            spaceUp = spaceSouth = spaceEast = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(NORTH) != 0) {
-            spaceDown = spaceNorth = spaceWest = 0;
-            spaceUp = spaceEast = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(SOUTH) != 0) {
-            spaceDown = spaceWest = 0;
-            spaceUp = spaceSouth = spaceEast = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(WEST) != 0) {
-            spaceDown = spaceNorth = spaceWest = 0;
-            spaceUp = spaceSouth = 1;
-        }
-        if (getBaseMetaTileEntity().getCoverIDAtSide(EAST) != 0) {
-            spaceDown = spaceNorth = 0;
-            spaceUp = spaceSouth = spaceEast = 1;
-        }
-
-        byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
-        if ((tConn & DOWN.flag) != 0) spaceDown = 0f;
-        if ((tConn & UP.flag) != 0) spaceUp = 1f;
-        if ((tConn & NORTH.flag) != 0) spaceNorth = 0f;
-        if ((tConn & SOUTH.flag) != 0) spaceSouth = 1f;
-        if ((tConn & WEST.flag) != 0) spaceWest = 0f;
-        if ((tConn & EAST.flag) != 0) spaceEast = 1f;
-
-        return AxisAlignedBB.getBoundingBox(
-            aX + spaceWest,
-            aY + spaceDown,
-            aZ + spaceNorth,
-            aX + spaceEast,
-            aY + spaceUp,
-            aZ + spaceSouth);
-    }
-
-    @Override
-    public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
-        List<AxisAlignedBB> outputAABB, Entity collider) {
-        super.addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
-        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x2) != 0) {
-            final AxisAlignedBB aabb = getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
-            if (inputAABB.intersectsWith(aabb)) outputAABB.add(aabb);
-        }
-    }
-
-    @Override
     public boolean shouldJoinIc2Enet() {
         if (!GTMod.gregtechproxy.ic2EnergySourceCompat) return false;
 
@@ -741,9 +626,9 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         if (pipe.getNode() != null) {
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 if (isConnectedAtSide(side)) {
-                    final CoverInfo coverInfo = pipe.getCoverInfoAtSide(side);
-                    if (!coverInfo.isValid()) continue;
-                    if (!letsIn(coverInfo) || !letsOut(coverInfo)) {
+                    final Cover cover = pipe.getCoverAtSide(side);
+                    if (!cover.isValid()) continue;
+                    if (!letsIn(cover) || !letsOut(cover)) {
                         pipe.addToLock(pipe, side);
                     } else {
                         pipe.removeFromLock(pipe, side);
@@ -754,10 +639,10 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             boolean dontAllow = false;
             for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 if (isConnectedAtSide(side)) {
-                    final CoverInfo coverInfo = pipe.getCoverInfoAtSide(side);
-                    if (!coverInfo.isValid()) continue;
+                    final Cover cover = pipe.getCoverAtSide(side);
+                    if (!cover.isValid()) continue;
 
-                    if (!letsIn(coverInfo) || !letsOut(coverInfo)) {
+                    if (!letsIn(cover) || !letsOut(cover)) {
                         dontAllow = true;
                     }
                 }

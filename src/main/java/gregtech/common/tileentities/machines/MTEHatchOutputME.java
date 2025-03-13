@@ -21,9 +21,14 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidContainerItem;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.glodblock.github.common.item.FCBaseItemCell;
 import com.glodblock.github.common.storage.IStorageFluidCell;
@@ -46,6 +51,7 @@ import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
 import appeng.core.stats.Stats;
+import appeng.items.contents.CellConfig;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
@@ -55,7 +61,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -80,6 +85,10 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     long lastInputTick = 0;
     long tickCounter = 0;
     boolean additionalConnection = false;
+    EntityPlayer lastClickedPlayer = null;
+    List<String> lockedFluids = new ArrayList<>();
+
+    boolean hadCell = false;
 
     public MTEHatchOutputME(int aID, String aName, String aNameRegional) {
         super(
@@ -89,7 +98,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             3,
             new String[] { "Fluid Output for Multiblocks", "Stores directly into ME",
                 "Can cache up to 128kL of fluids by default", "Change cache size by inserting a fluid storage cell",
-                "Change ME connection behavior by right-clicking with wire cutter" },
+                "Change ME connection behavior by right-clicking with wire cutter",
+                "Partition the inserted Storage Cell to filter accepted outputs" },
             1);
     }
 
@@ -125,11 +135,131 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
+        if (!lockedFluids.isEmpty()) {
+            boolean isOk = false;
+
+            for (String lockedFluid : lockedFluids) {
+                if (lockedFluid.equals(
+                    aFluid.getFluid()
+                        .getName())) {
+                    isOk = true;
+
+                    break;
+                }
+            }
+
+            if (!isOk) {
+                return 0;
+            }
+        }
+
         if (doFill) {
             return tryFillAE(aFluid);
         } else {
             if (aFluid == null) return 0;
             return aFluid.amount;
+        }
+    }
+
+    @Override
+    public boolean canStoreFluid(@NotNull FluidStack fluidStack) {
+        if (!isFluidLocked()) {
+            return true;
+        }
+
+        for (String lockedFluid : lockedFluids) {
+            if (lockedFluid.equals(
+                fluidStack.getFluid()
+                    .getName())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean isFluidLocked() {
+        return this.mMode == 10;
+    }
+
+    private void checkFluidLock() {
+        ItemStack upgradeItemStack = mInventory[0];
+
+        if ((hadCell && upgradeItemStack != null) || (!hadCell && upgradeItemStack == null)) {
+            return;
+        }
+
+        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof IStorageFluidCell) {
+            hadCell = true;
+
+            if (this.mMode == 0) {
+                CellConfig cfg = (CellConfig) ((FCBaseItemCell) upgradeItemStack.getItem())
+                    .getConfigInventory(upgradeItemStack);
+
+                if (!cfg.isEmpty()) {
+                    StringBuilder builder = new StringBuilder();
+
+                    boolean hadFilters = false;
+                    boolean isFirst = true;
+
+                    lockedFluids.clear();
+
+                    for (int i = 0; i < cfg.getSizeInventory(); i++) {
+                        ItemStack stack = cfg.getStackInSlot(i);
+
+                        if (stack == null) continue;
+
+                        FluidStack tFluid = FluidContainerRegistry.getFluidForFilledItem(stack);
+
+                        if (tFluid == null && stack.getItem() instanceof IFluidContainerItem)
+                            tFluid = ((IFluidContainerItem) stack.getItem()).getFluid(stack);
+
+                        if (tFluid != null) {
+                            hadFilters = true;
+
+                            lockedFluids.add(
+                                tFluid.getFluid()
+                                    .getName());
+
+                            if (isFirst) {
+                                builder.append(tFluid.getLocalizedName());
+
+                                isFirst = false;
+                            } else {
+                                builder.append(", ")
+                                    .append(tFluid.getLocalizedName());
+                            }
+                        }
+                    }
+
+                    if (hadFilters) {
+                        if (lastClickedPlayer != null) {
+                            GTUtility.sendChatToPlayer(
+                                lastClickedPlayer,
+                                StatCollector.translateToLocalFormatted("GT5U.hatch.fluid.filter.enable", builder));
+                        }
+
+                        this.mMode = 10;
+
+                        markDirty();
+                    }
+                }
+            }
+        } else {
+            hadCell = false;
+
+            if (this.mMode == 10) {
+                lockedFluids.clear();
+
+                this.mMode = 0;
+
+                markDirty();
+
+                GTUtility.sendChatToPlayer(
+                    lastClickedPlayer,
+                    StatCollector.translateToLocal("GT5U.hatch.fluid.filter.disable"));
+            }
         }
     }
 
@@ -166,6 +296,11 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
      */
     public boolean canFillFluid() {
         return canAcceptFluid() || lastInputTick == tickCounter;
+    }
+
+    @Override
+    public boolean isEmptyAndAcceptsAnyFluid() {
+        return mMode == 0;
     }
 
     /**
@@ -213,7 +348,10 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        lastClickedPlayer = aPlayer;
+
+        openGui(aPlayer);
+
         return true;
     }
 
@@ -229,8 +367,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        // Don't allow to lock fluid in me fluid hatch
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
+        if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .isGUIClickable()) return;
     }
 
@@ -313,6 +450,9 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             if (tickCounter > (lastOutputTick + 40)) flushCachedStack();
             if (tickCounter % 20 == 0) getBaseMetaTileEntity().setActive(isActive());
         }
+
+        checkFluidLock();
+
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
@@ -419,6 +559,17 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+
+        NBTTagList lockedFluidsTag = new NBTTagList();
+
+        for (String fluid : this.lockedFluids) {
+            NBTTagCompound fluidTag = new NBTTagCompound();
+            fluidTag.setString("fluid", fluid);
+            lockedFluidsTag.appendTag(fluidTag);
+        }
+
+        aNBT.setTag("lockedFluids", lockedFluidsTag);
+
         NBTTagList fluids = new NBTTagList();
         for (IAEFluidStack s : fluidCache) {
             if (s.getStackSize() == 0) continue;
@@ -433,12 +584,23 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         aNBT.setTag("cachedFluids", fluids);
         aNBT.setBoolean("additionalConnection", additionalConnection);
         aNBT.setLong("baseCapacity", baseCapacity);
+        aNBT.setBoolean("hadCell", hadCell);
         getProxy().writeToNBT(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+
+        NBTBase lockedFluidsTag = aNBT.getTag("lockedFluids");
+
+        if (lockedFluidsTag instanceof NBTTagList lockedFluidsList) {
+            for (int i = 0; i < lockedFluidsList.tagCount(); i++) {
+                NBTTagCompound fluidTag = lockedFluidsList.getCompoundTagAt(i);
+                this.lockedFluids.add(fluidTag.getString("fluid"));
+            }
+        }
+
         NBTBase t = aNBT.getTag("cachedFluids");
         if (t instanceof NBTTagList l) {
             for (int i = 0; i < l.tagCount(); ++i) {
@@ -459,6 +621,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         }
         additionalConnection = aNBT.getBoolean("additionalConnection");
         baseCapacity = aNBT.getLong("baseCapacity");
+        hadCell = aNBT.getBoolean("hadCell");
         getProxy().readFromNBT(aNBT);
     }
 

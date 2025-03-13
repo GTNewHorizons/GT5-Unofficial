@@ -61,7 +61,7 @@ import bartworks.common.configs.Configuration;
 import bartworks.common.items.ItemLabParts;
 import bartworks.common.loaders.FluidLoader;
 import bartworks.common.net.PacketBioVatRenderer;
-import bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
+import bartworks.common.tileentities.tiered.MTERadioHatch;
 import bartworks.util.BWUtil;
 import bartworks.util.BioCulture;
 import bartworks.util.Coords;
@@ -95,7 +95,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     private static final byte TIMERDIVIDER = 20;
 
     private final HashSet<EntityPlayerMP> playerMPHashSet = new HashSet<>();
-    private final ArrayList<GT_MetaTileEntity_RadioHatch> mRadHatches = new ArrayList<>();
+    private final ArrayList<MTERadioHatch> mRadHatches = new ArrayList<>();
     private int height = 1;
     private Fluid mFluid = FluidRegistry.LAVA;
     private BioCulture mCulture;
@@ -160,11 +160,14 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
             .beginStructureBlock(5, 4, 5, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Clean Stainless Steel Casings", 19, false)
-            .addOtherStructurePart("Glass", "Hollow two middle layers", 2)
+            .addOtherStructurePart(
+                StatCollector.translateToLocal("tooltip.bw.structure.glass"),
+                "Hollow two middle layers",
+                2)
             .addStructureInfo("The glass can be any glass, i.e. Tinkers Construct Clear Glass")
             .addStructureInfo("Some Recipes need more advanced Glass Types")
             .addMaintenanceHatch("Any casing", 1)
-            .addOtherStructurePart("Radio Hatch", "Any casing", 1)
+            .addOtherStructurePart(StatCollector.translateToLocal("tooltip.bw.structure.radio_hatch"), "Any casing", 1)
             .addInputBus("Any casing", 1)
             .addOutputBus("Any casing", 1)
             .addInputHatch("Any casing", 1)
@@ -308,11 +311,11 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
             return false;
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (!(aMetaTileEntity instanceof GT_MetaTileEntity_RadioHatch)) {
+        if (!(aMetaTileEntity instanceof MTERadioHatch radioHatch)) {
             return false;
         } else {
-            ((GT_MetaTileEntity_RadioHatch) aMetaTileEntity).updateTexture(CasingIndex);
-            return this.mRadHatches.add((GT_MetaTileEntity_RadioHatch) aMetaTileEntity);
+            radioHatch.updateTexture(CasingIndex);
+            return this.mRadHatches.add(radioHatch);
         }
     }
 

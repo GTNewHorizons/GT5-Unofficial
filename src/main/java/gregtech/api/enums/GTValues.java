@@ -9,8 +9,6 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RESET;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.animatedText;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
-import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -203,28 +201,6 @@ public class GTValues {
      * most of the time I don't know what kind of Data Type the "null" stands for
      */
     public static final FluidStack NF = null;
-
-    /**
-     * File Paths and Resource Paths
-     */
-    @Deprecated
-    public static final String TEX_DIR = "textures/";
-    @Deprecated
-    public static final String RES_PATH = GregTech.getResourcePath(TEX_DIR);
-    @Deprecated
-    public static final String RES_PATH_GUI = GregTech.getResourcePath("textures", "gui/");
-    @Deprecated
-    public static final String RES_PATH_ITEM = GregTech.getResourcePath();
-    @Deprecated
-    public static final String RES_PATH_BLOCK = GregTech.getResourcePath();
-    @Deprecated
-    public static final String RES_PATH_ENTITY = GregTech.getResourcePath("textures", "entity/");
-    @Deprecated
-    public static final String RES_PATH_ASPECTS = GregTech.getResourcePath("textures", "aspects/");
-    @Deprecated
-    public static final String RES_PATH_MODEL = GregTech.getResourcePath("textures", "models/");
-    @Deprecated
-    public static final String RES_PATH_IC2 = IndustrialCraft2.getResourcePath();
 
     /**
      * NBT String Keys

@@ -14,7 +14,6 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -94,11 +93,6 @@ public class MTETieredTank extends MTEBasicTank {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(final ForgeDirection facing) {
         return true;
     }
@@ -156,18 +150,8 @@ public class MTETieredTank extends MTEBasicTank {
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
-    }
-
-    @Override
-    public boolean displaysItemStack() {
-        return true;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
-        return false;
     }
 
     @Override

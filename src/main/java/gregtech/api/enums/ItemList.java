@@ -378,8 +378,6 @@ public enum ItemList implements IItemContainer {
     Circuit_Data,
     Circuit_Elite,
     Circuit_Master,
-    @Deprecated
-    Circuit_Ultimate,
     Circuit_Biowarecomputer,
     Circuit_Biowaresupercomputer,
 
@@ -2103,7 +2101,6 @@ public enum ItemList implements IItemContainer {
     TierdDrone2,
     Hatch_DroneDownLink,
     ElectronicsLump,
-    Casing_Shielded_Accelerator,
     WormholeGenerator,
     Hatch_pHSensor,
     Hatch_LensHousing,

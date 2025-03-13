@@ -12,7 +12,6 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.GTMod;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -52,11 +51,6 @@ public class MTEHatchSteamBusOutput extends MTEHatch {
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
@@ -78,7 +72,7 @@ public class MTEHatchSteamBusOutput extends MTEHatch {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 

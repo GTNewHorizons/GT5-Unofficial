@@ -70,8 +70,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch.ASSEMBLY_LINE_RESEARCH;
@@ -239,6 +239,16 @@ public class RecipesGregTech {
             .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 2),
+                GTUtility.getIntegratedCircuit(20))
+            .fluidInputs(FluidRegistry.getFluidStack("mobessence", 5000))
+            .fluidOutputs(new FluidStack(GTPPFluids.GeneticMutagen, 8000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
+
         int aLaureniumTier = MaterialsAlloy.LAURENIUM.vTier;
         // Adding Recipes for Casings
         GTValues.RA.stdBuilder()
@@ -306,7 +316,7 @@ public class RecipesGregTech {
             .fluidOutputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(36))
             .duration(6 * MINUTES + 49 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_UHV)
-            .metadata(FUSION_THRESHOLD, 1_200_000_000)
+            .metadata(FUSION_THRESHOLD, 1_200_000_000L)
             .addTo(fusionRecipes);
 
         // Rhugnor
@@ -318,7 +328,7 @@ public class RecipesGregTech {
             .fluidOutputs(MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(144))
             .duration(25 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(FUSION_THRESHOLD, 2_000_000_000)
+            .metadata(FUSION_THRESHOLD, 2_000_000_000L)
             .addTo(fusionRecipes);
     }
 
@@ -1578,9 +1588,7 @@ public class RecipesGregTech {
 
         // Na2CO3 + 2HNO3 = 2NaNO3 + CO2 + H2O
         RA.stdBuilder()
-            .itemInputs(
-                ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 6),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(Materials.SodiumCarbonate.getDust(6), GTUtility.getIntegratedCircuit(1))
             .itemOutputs(MaterialMisc.SODIUM_NITRATE.getDust(10))
             .fluidInputs(Materials.NitricAcid.getFluid(2000))
             .fluidOutputs(Materials.CarbonDioxide.getGas(1000))

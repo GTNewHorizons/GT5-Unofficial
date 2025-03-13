@@ -1350,6 +1350,15 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.CosmicNeutronium, 1L),
                 ItemList.Cell_Empty.get(1L));
 
+        GTFluidFactory.builder("molten.cosmicneutronium")
+            .withLocalizedName("Molten Cosmic Neutronium")
+            .withStateAndTemperature(MOLTEN, 9900)
+            .buildAndRegister()
+            .configureMaterials(Materials.CosmicNeutronium)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.CosmicNeutronium, 1L),
+                ItemList.Cell_Empty.get(1L));
+
         GTFluidFactory.builder("fieryblood")
             .withLocalizedName("Fiery Blood")
             .withStateAndTemperature(LIQUID, 6400)
@@ -2105,6 +2114,11 @@ public class LoaderGTBlockFluid implements Runnable {
             .set(OrePrefixes.nugget, Materials.Void, GTModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 7));
         GTOreDictUnificator
             .set(OrePrefixes.ingot, Materials.Void, GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 16));
+
+        // Special secondary oredict for Sodium Hydroxide
+        GTOreDictUnificator.registerOre("dustSodiumHydroxide", Materials.SodiumHydroxide.getDust(1));
+        GTOreDictUnificator.registerOre("dustSmallSodiumHydroxide", Materials.SodiumHydroxide.getDustSmall(1));
+        GTOreDictUnificator.registerOre("dustTinySodiumHydroxide", Materials.SodiumHydroxide.getDustTiny(1));
 
         GTOreDictUnificator.set(
             OrePrefixes.dust,

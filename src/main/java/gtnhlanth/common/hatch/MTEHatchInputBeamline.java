@@ -81,11 +81,6 @@ public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector<BeamLinePac
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public boolean canConnect(ForgeDirection side) {
         return isInputFacing(side);
     }

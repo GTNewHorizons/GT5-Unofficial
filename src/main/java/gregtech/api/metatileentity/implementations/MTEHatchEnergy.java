@@ -23,6 +23,12 @@ public class MTEHatchEnergy extends MTEHatch {
             new String[] { "Energy Injector for Multiblocks", "Accepts up to 2 Amps" });
     }
 
+    @SuppressWarnings("unused") // needed in an addon
+    public MTEHatchEnergy(int aID, String aName, String aNameRegional, int aTier, int aInventorySize,
+        String[] aDescriptionArray) {
+        super(aID, aName, aNameRegional, aTier, aInventorySize, aDescriptionArray);
+    }
+
     public MTEHatchEnergy(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
@@ -35,11 +41,6 @@ public class MTEHatchEnergy extends MTEHatch {
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
     }
 
     @Override

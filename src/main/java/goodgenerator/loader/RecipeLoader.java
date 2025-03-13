@@ -181,7 +181,7 @@ public class RecipeLoader {
             .fluidOutputs(GGMaterial.uraniumBasedLiquidFuelExcited.getFluidOrGas(10))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_IV)
-            .metadata(FUSION_THRESHOLD, 200000000)
+            .metadata(FUSION_THRESHOLD, 200000000L)
             .addTo(fusionRecipes);
 
         // Thorium Liquid Process Line
@@ -277,7 +277,7 @@ public class RecipeLoader {
             .fluidOutputs(GGMaterial.plutoniumBasedLiquidFuelExcited.getFluidOrGas(20))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LuV / 2)
-            .metadata(FUSION_THRESHOLD, 220000000)
+            .metadata(FUSION_THRESHOLD, 220000000L)
             .addTo(fusionRecipes);
 
         // Th-232
@@ -622,7 +622,7 @@ public class RecipeLoader {
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkI.getFluidOrGas(100))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
-            .metadata(FUSION_THRESHOLD, 320000000)
+            .metadata(FUSION_THRESHOLD, 320000000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
@@ -681,13 +681,12 @@ public class RecipeLoader {
             .metadata(RESEARCH_ITEM, ItemRefer.Radiation_Protection_Plate.get(1))
             .metadata(SCANNING, new Scanning(40 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
-                ItemRefer.Radiation_Protection_Plate.get(1),
+                ItemRefer.Radiation_Protection_Plate.get(2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.ElectrumFlux, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Trinium, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 4),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.VibrantAlloy, 4),
-                ItemRefer.Radiation_Protection_Plate.get(1))
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.VibrantAlloy, 4))
             .fluidInputs(new FluidStack(solderIndalloy, 1152))
             .itemOutputs(ItemRefer.Advanced_Radiation_Protection_Plate.get(1))
             .eut(TierEU.RECIPE_ZPM / 2)
@@ -703,10 +702,8 @@ public class RecipeLoader {
                 ItemRefer.Advanced_Radiation_Protection_Plate.get(6),
                 ItemList.Field_Generator_IV.get(2),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Naquadah, 16),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 32),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 32),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Manyullyn, 32),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Manyullyn, 32),
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NaquadahAlloy, 64),
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Manyullyn, 64),
                 GGMaterial.orundum.get(OrePrefixes.plate, 4))
             .fluidInputs(Materials.TungstenSteel.getMolten(1152), new FluidStack(solderIndalloy, 2304))
             .itemOutputs(ItemRefer.Naquadah_Fuel_Refinery_Casing.get(1))

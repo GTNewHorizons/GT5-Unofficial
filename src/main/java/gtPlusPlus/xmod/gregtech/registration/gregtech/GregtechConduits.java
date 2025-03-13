@@ -15,7 +15,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.metatileentity.implementations.MTEFluid;
+import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
@@ -26,94 +26,20 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTECable;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTEFluid;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTEFluidPipe;
 
 public class GregtechConduits {
 
     // 30000-30999
     private static final int BaseWireID = 30600;
     private static final int BasePipeID = 30700;
-    private static int BasePipeHexadecupleID = 30100;
 
     public static void run() {
         run1();
         run2();
-        run3();
-    }
-
-    private static void run3() {
-        generateFluidMultiPipes(
-            Materials.Copper,
-            MaterialUtils.getMaterialName(Materials.Copper),
-            "Copper",
-            BasePipeHexadecupleID++,
-            60,
-            1000);
-        generateFluidMultiPipes(
-            Materials.Bronze,
-            MaterialUtils.getMaterialName(Materials.Bronze),
-            "Bronze",
-            BasePipeHexadecupleID++,
-            120,
-            2000);
-        generateFluidMultiPipes(
-            Materials.Steel,
-            MaterialUtils.getMaterialName(Materials.Steel),
-            "Steel",
-            BasePipeHexadecupleID++,
-            240,
-            2500);
-        generateFluidMultiPipes(
-            Materials.StainlessSteel,
-            MaterialUtils.getMaterialName(Materials.StainlessSteel),
-            "Stainless Steel",
-            BasePipeHexadecupleID++,
-            360,
-            3000);
-        generateFluidMultiPipes(
-            Materials.Titanium,
-            MaterialUtils.getMaterialName(Materials.Titanium),
-            "Titanium",
-            BasePipeHexadecupleID++,
-            480,
-            5000);
-        generateFluidMultiPipes(
-            Materials.TungstenSteel,
-            MaterialUtils.getMaterialName(Materials.TungstenSteel),
-            "Tungsten Steel",
-            BasePipeHexadecupleID++,
-            600,
-            7500);
-        generateFluidMultiPipes(
-            Materials.Plastic,
-            MaterialUtils.getMaterialName(Materials.Plastic),
-            "Plastic",
-            BasePipeHexadecupleID++,
-            360,
-            350);
-
-        Materials aPTFE = Materials.get("Polytetrafluoroethylene");
-        generateFluidMultiPipes(aPTFE, MaterialUtils.getMaterialName(aPTFE), "PTFE", BasePipeHexadecupleID++, 480, 600);
-    }
-
-    private static void generateFluidMultiPipes(Materials aMaterial, String name, String displayName, int startID,
-        int transferRatePerSec, int heatCapacity) {
-        final int transferRatePerTick = transferRatePerSec / 20;
-        MTEFluid aPipe = new MTEFluid(
-            startID,
-            "GT_Pipe_" + name + "_Hexadecuple",
-            "Hexadecuple " + displayName + " Fluid Pipe",
-            1.0F,
-            aMaterial,
-            transferRatePerTick,
-            heatCapacity,
-            true,
-            16);
-        GTOreDictUnificator.registerOre("pipeHexadecuple" + aMaterial, aPipe.getStackForm(1L));
     }
 
     private static void run1() {
@@ -602,7 +528,7 @@ public class GregtechConduits {
         final long voltage = material.mMeltingPoint >= 2800 ? 64 : 16;
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeTiny.get(material),
-            new MTEFluid(
+            new MTEFluidPipe(
                 startID,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Tiny",
                 "Tiny " + material.mDefaultLocalName + " Fluid Pipe",
@@ -613,7 +539,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeSmall.get(material),
-            new MTEFluid(
+            new MTEFluidPipe(
                 startID + 1,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Small",
                 "Small " + material.mDefaultLocalName + " Fluid Pipe",
@@ -624,7 +550,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(material),
-            new MTEFluid(
+            new MTEFluidPipe(
                 startID + 2,
                 "GT_Pipe_" + material.mDefaultLocalName,
                 material.mDefaultLocalName + " Fluid Pipe",
@@ -635,7 +561,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeLarge.get(material),
-            new MTEFluid(
+            new MTEFluidPipe(
                 startID + 3,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Large",
                 "Large " + material.mDefaultLocalName + " Fluid Pipe",
@@ -646,7 +572,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeHuge.get(material),
-            new MTEFluid(
+            new MTEFluidPipe(
                 startID + 4,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Huge",
                 "Huge " + material.mDefaultLocalName + " Fluid Pipe",
@@ -662,7 +588,7 @@ public class GregtechConduits {
         final int transferRatePerTick = transferRatePerSec / 20;
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeTiny.get(material),
-            new GTPPMTEFluid(
+            new GTPPMTEFluidPipe(
                 startID,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Tiny",
                 "Tiny " + material.mDefaultLocalName + " Fluid Pipe",
@@ -673,7 +599,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeSmall.get(material),
-            new GTPPMTEFluid(
+            new GTPPMTEFluidPipe(
                 startID + 1,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Small",
                 "Small " + material.mDefaultLocalName + " Fluid Pipe",
@@ -684,7 +610,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(material),
-            new GTPPMTEFluid(
+            new GTPPMTEFluidPipe(
                 startID + 2,
                 "GT_Pipe_" + material.mDefaultLocalName,
                 material.mDefaultLocalName + " Fluid Pipe",
@@ -695,7 +621,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeLarge.get(material),
-            new GTPPMTEFluid(
+            new GTPPMTEFluidPipe(
                 startID + 3,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Large",
                 "Large " + material.mDefaultLocalName + " Fluid Pipe",
@@ -706,7 +632,7 @@ public class GregtechConduits {
                 isGasProof).getStackForm(1L));
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeHuge.get(material),
-            new GTPPMTEFluid(
+            new GTPPMTEFluidPipe(
                 startID + 4,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Huge",
                 "Huge " + material.mDefaultLocalName + " Fluid Pipe",
@@ -768,7 +694,19 @@ public class GregtechConduits {
 
         int eut = (int) (8 * vMulti);
 
-        // Add the Three Shaped Recipes First
+        // Add the Four Shaped Recipes First
+        RecipeUtils.addShapedRecipe(
+            pipePlate,
+            pipePlate,
+            pipePlate,
+            "craftingToolHardHammer",
+            null,
+            "craftingToolWrench",
+            pipePlate,
+            pipePlate,
+            pipePlate,
+            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Tiny" + output, 8));
+
         RecipeUtils.addShapedRecipe(
             pipePlate,
             "craftingToolWrench",
