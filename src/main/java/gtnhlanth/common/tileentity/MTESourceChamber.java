@@ -29,7 +29,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -59,7 +58,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
 
     private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
-    private static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings5, 14);
+    private static final int CASING_INDEX = 1662;
 
     private float outputEnergy;
     private int outputRate;
@@ -392,7 +391,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
 
         // Placeholder
         if (side == facing) {
-            if (active) return new ITexture[] { casingTexturePages[1][14], TextureFactory.builder()
+            if (active) return new ITexture[] { casingTexturePages[12][126], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
                 .extFacing()
                 .build(),
@@ -401,7 +400,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[1][14], TextureFactory.builder()
+            return new ITexture[] { casingTexturePages[12][126], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_OIL_CRACKER)
                 .extFacing()
                 .build(),
@@ -411,6 +410,6 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                     .glow()
                     .build() };
         }
-        return new ITexture[] { casingTexturePages[1][14] };
+        return new ITexture[] { casingTexturePages[12][126] };
     }
 }

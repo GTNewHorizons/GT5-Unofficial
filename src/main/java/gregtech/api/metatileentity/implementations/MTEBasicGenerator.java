@@ -12,7 +12,6 @@ import net.minecraftforge.fluids.IFluidHandler;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
@@ -76,7 +75,7 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -123,11 +122,6 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
     @Override
     public boolean isFacingValid(ForgeDirection side) {
         return true;
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
     }
 
     @Override
@@ -179,16 +173,6 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
     @Override
     public boolean canTankBeEmptied() {
         return getBaseMetaTileEntity().isAllowedToWork();
-    }
-
-    @Override
-    public boolean displaysItemStack() {
-        return true;
-    }
-
-    @Override
-    public boolean displaysStackSize() {
-        return false;
     }
 
     @Override

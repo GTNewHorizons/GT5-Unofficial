@@ -59,7 +59,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -84,8 +83,7 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
-public class GregtechMetaTileEntity_PowerSubStationController
-    extends GTPPMultiBlockBase<GregtechMetaTileEntity_PowerSubStationController> implements ISurvivalConstructable {
+public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> implements ISurvivalConstructable {
 
     private enum TopState {
         MayBeTop,
@@ -107,14 +105,13 @@ public class GregtechMetaTileEntity_PowerSubStationController
     private int mCasing;
     private final int[] cellCount = new int[6];
     private TopState topState = TopState.MayBeTop;
-    private static IStructureDefinition<GregtechMetaTileEntity_PowerSubStationController> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEPowerSubStation> STRUCTURE_DEFINITION = null;
 
-    public GregtechMetaTileEntity_PowerSubStationController(final int aID, final String aName,
-        final String aNameRegional) {
+    public MTEPowerSubStation(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GregtechMetaTileEntity_PowerSubStationController(final String aName) {
+    public MTEPowerSubStation(final String aName) {
         super(aName);
     }
 
@@ -149,9 +146,12 @@ public class GregtechMetaTileEntity_PowerSubStationController
         final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(24)),
-                TextureFactory.of(
-                    aActive ? Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE
-                        : Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER) };
+                TextureFactory.builder()
+                    .addIcon(
+                        aActive ? Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER_ACTIVE
+                            : Textures.BlockIcons.OVERLAY_FRONT_DISASSEMBLER)
+                    .extFacing()
+                    .build() };
         }
         if (side == this.getBaseMetaTileEntity()
             .getBackFacing()) {
@@ -165,7 +165,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         // if (mBatteryCapacity <= 0) return false;
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -231,9 +231,9 @@ public class GregtechMetaTileEntity_PowerSubStationController
     public static final int CELL_HEIGHT_MIN = 2;
 
     @Override
-    public IStructureDefinition<GregtechMetaTileEntity_PowerSubStationController> getStructureDefinition() {
+    public IStructureDefinition<MTEPowerSubStation> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GregtechMetaTileEntity_PowerSubStationController>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEPowerSubStation>builder()
                 .addShape(
                     mName + "bottom",
                     transpose(new String[][] { { "BB~BB", "BBBBB", "BBBBB", "BBBBB", "BBBBB" } }))
@@ -244,7 +244,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
                 .addShape(mName + "top", transpose(new String[][] { { "TTTTT", "TTTTT", "TTTTT", "TTTTT", "TTTTT" } }))
                 .addElement(
                     'C',
-                    buildHatchAdder(GregtechMetaTileEntity_PowerSubStationController.class)
+                    buildHatchAdder(MTEPowerSubStation.class)
                         .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
                         .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
                         .casingIndex(TAE.GTPP_INDEX(24))
@@ -252,7 +252,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
                 .addElement(
                     'B',
-                    buildHatchAdder(GregtechMetaTileEntity_PowerSubStationController.class)
+                    buildHatchAdder(MTEPowerSubStation.class)
                         .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
                         .disallowOnly(ForgeDirection.UP)
                         .casingIndex(TAE.GTPP_INDEX(24))
@@ -260,7 +260,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
                 .addElement(
                     'T',
-                    buildHatchAdder(GregtechMetaTileEntity_PowerSubStationController.class)
+                    buildHatchAdder(MTEPowerSubStation.class)
                         .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
                         .disallowOnly(ForgeDirection.DOWN)
                         .casingIndex(TAE.GTPP_INDEX(24))
@@ -276,7 +276,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
                                 onElementPass(
                                     x -> x.topState = TopState.Top,
                                     ofHatchAdderOptional(
-                                        GregtechMetaTileEntity_PowerSubStationController::addPowerSubStationList,
+                                        MTEPowerSubStation::addPowerSubStationList,
                                         TAE.GTPP_INDEX(24),
                                         1,
                                         ModBlocks.blockCasings2Misc,
@@ -528,7 +528,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTileEntity_PowerSubStationController(this.mName);
+        return new MTEPowerSubStation(this.mName);
     }
 
     // mTotalEnergyAdded

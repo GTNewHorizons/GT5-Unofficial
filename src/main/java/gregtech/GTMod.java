@@ -58,6 +58,10 @@ import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuis;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
@@ -116,6 +120,7 @@ import gregtech.loaders.preload.LoaderCircuitBehaviors;
 import gregtech.loaders.preload.LoaderGTBlockFluid;
 import gregtech.loaders.preload.LoaderGTItemData;
 import gregtech.loaders.preload.LoaderGTOreDictionary;
+import gregtech.loaders.preload.LoaderMetaPipeEntities;
 import gregtech.loaders.preload.LoaderMetaTileEntities;
 import gregtech.loaders.preload.LoaderOreProcessing;
 import ic2.api.recipe.IRecipeInput;
@@ -256,6 +261,12 @@ public class GTMod implements IGTMod {
 
         GTPreLoad.loadConfig();
 
+        // ModularUI
+        GTGuis.registerFactories();
+        GTGuiTextures.init();
+        GTGuiTheme.registerThemes();
+        GTWidgetThemes.register();
+
         new EnchantmentHazmat();
         new EnchantmentEnderDamage();
         new EnchantmentRadioactivity();
@@ -276,6 +287,7 @@ public class GTMod implements IGTMod {
         new LoaderGTItemData().run();
         new LoaderGTBlockFluid().run();
         new LoaderMetaTileEntities().run();
+        new LoaderMetaPipeEntities().run();
 
         new LoaderCircuitBehaviors().run();
         new CoverBehaviorLoader().run();

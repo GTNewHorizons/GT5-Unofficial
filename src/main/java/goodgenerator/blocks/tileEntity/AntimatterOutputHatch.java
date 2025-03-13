@@ -54,7 +54,7 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
+        if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .isGUIClickable()) return;
         mMode ^= 1;
         GTUtility.sendChatToPlayer(aPlayer, "Front face input " + (mMode == 1 ? "enabled" : "disabled"));

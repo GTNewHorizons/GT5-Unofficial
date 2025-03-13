@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.TAE;
 import gregtech.api.render.TextureFactory;
@@ -16,7 +17,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler2;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.GregtechMetaTileEntity_PowerSubStationController;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.MTEPowerSubStation;
 
 public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract {
 
@@ -50,10 +51,13 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
         @Override
         public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
             int meta = aStack.getItemDamage();
-            int tier = GregtechMetaTileEntity_PowerSubStationController.getCellTier(field_150939_a, meta);
+            int tier = MTEPowerSubStation.getCellTier(field_150939_a, meta);
             if (meta == 7 && tier > 0) {
-                long capacity = GregtechMetaTileEntity_PowerSubStationController.getCapacityFromCellTier(tier);
-                aList.add("Energy Storage: " + GTUtility.formatNumbers(capacity));
+                long capacity = MTEPowerSubStation.getCapacityFromCellTier(tier);
+                aList.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gtpp.tooltip.meta_casing.energy_storage",
+                        GTUtility.formatNumbers(capacity)));
             }
             super.addInformation(aStack, aPlayer, aList, aF3_H);
         }

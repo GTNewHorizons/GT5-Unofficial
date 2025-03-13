@@ -146,17 +146,15 @@ public class BaseItemComponent extends Item {
                     + "]");
             Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
             if (componentType == ComponentTypes.PLATE) {
-                CoverRegistry.registerCover(
+                CoverRegistry.registerDecorativeCover(
                     componentMaterial.getPlate(1),
                     TextureFactory
-                        .of(componentMaterial.getTextureSet().mTextures[71], componentMaterial.getRGBA(), false),
-                    null);
+                        .of(componentMaterial.getTextureSet().mTextures[71], componentMaterial.getRGBA(), false));
             } else if (componentType == ComponentTypes.PLATEDOUBLE) {
-                CoverRegistry.registerCover(
+                CoverRegistry.registerDecorativeCover(
                     componentMaterial.getPlateDouble(1),
                     TextureFactory
-                        .of(componentMaterial.getTextureSet().mTextures[72], componentMaterial.getRGBA(), false),
-                    null);
+                        .of(componentMaterial.getTextureSet().mTextures[72], componentMaterial.getRGBA(), false));
             }
             return true;
         } else {
@@ -252,12 +250,7 @@ public class BaseItemComponent extends Item {
                     if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT) {
                         if (this.unlocalName.toLowerCase()
                             .contains("hot")) {
-                            list.add(
-                                EnumChatFormatting.GRAY + "Warning: "
-                                    + EnumChatFormatting.RED
-                                    + "Very hot! "
-                                    + EnumChatFormatting.GRAY
-                                    + " Avoid direct handling..");
+                            list.add(StatCollector.translateToLocal("gtpp.tooltip.ignot.very_hot"));
                         }
                     }
                 } else {

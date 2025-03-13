@@ -79,7 +79,6 @@ import gregtech.GTMod;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.widgets.StructureErrorSyncer;
 import gregtech.api.interfaces.fluid.IFluidStore;
@@ -93,7 +92,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -106,7 +104,6 @@ import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
 import gregtech.api.util.OutputHatchWrapper;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -221,7 +218,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aCoverID) {
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         return side != getBaseMetaTileEntity().getFrontFacing();
     }
 
@@ -238,11 +235,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 mSingleRecipeCheck = null;
             }
         }
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
     }
 
     @Override
@@ -433,7 +425,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
             return true;
         }
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -1393,27 +1385,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         return rTier;
-    }
-
-    /**
-     * Calcualtes the overclockedness using long integers
-     *
-     * @param aEUt            - recipe EUt
-     * @param aDuration       - recipe Duration
-     * @param mAmperage       - should be 1 ?
-     * @param maxInputVoltage - Multiblock Max input voltage. Voltage is rounded up to higher tier voltage.
-     * @param perfectOC       - If the Multiblock OCs perfectly, i.e. the large Chemical Reactor
-     */
-    protected void calculateOverclockedNessMultiInternal(long aEUt, int aDuration, int mAmperage, long maxInputVoltage,
-        boolean perfectOC) {
-        byte tier = (byte) Math.max(0, GTUtility.getTier(maxInputVoltage));
-        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(aEUt)
-            .setEUt(V[tier] * mAmperage)
-            .setDuration(aDuration)
-            .setDurationDecreasePerOC(perfectOC ? 4.0 : 2.0)
-            .calculate();
-        mEUt = (int) calculator.getConsumption();
-        mMaxProgresstime = calculator.getDuration();
     }
 
     public boolean drainEnergyInput(long aEU) {
@@ -2462,7 +2433,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
         List<ItemStack> ret = new ArrayList<>();
         for (final MTEHatch tBus : validMTEList(mOutputBusses)) {
-            if (!(tBus instanceof MTEHatchOutputBusME)) {
+            if (!(tBus instanceof MTEHatchOutputBusME meBus)) {
                 final IInventory tBusInv = tBus.getBaseMetaTileEntity();
                 for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
                     final ItemStack stackInSlot = tBus.getStackInSlot(i);
@@ -2478,6 +2449,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         ret.add(fakeItemStack);
                     } else {
                         ret.add(stackInSlot);
+                    }
+                }
+            } else {
+                if (meBus.isLocked() && meBus.canAcceptItem()) {
+                    for (ItemStack stack : meBus.getLockedItems()) {
+                        ItemStack fakeItemStack = stack.copy();
+                        fakeItemStack.stackSize = 65;
+                        ret.add(fakeItemStack);
                     }
                 }
             }
@@ -2517,7 +2496,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public boolean canDumpItemToME() {
         for (MTEHatch tHatch : validMTEList(mOutputBusses)) {
             if (tHatch instanceof MTEHatchOutputBusME) {
-                if ((((MTEHatchOutputBusME) tHatch).canAcceptItem())) {
+                if (((MTEHatchOutputBusME) tHatch).isLocked()) {
+                    return false;
+                }
+
+                if (((MTEHatchOutputBusME) tHatch).canAcceptItem()) {
                     return true;
                 }
             }
@@ -2529,7 +2512,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public boolean canDumpFluidToME() {
         for (IFluidStore tHatch : getFluidOutputSlots(new FluidStack[0])) {
             if (tHatch instanceof MTEHatchOutputME) {
-                if ((((MTEHatchOutputME) tHatch).canAcceptFluid())) {
+                if (((MTEHatchOutputME) tHatch).isFluidLocked()) {
+                    return false;
+                }
+
+                if (((MTEHatchOutputME) tHatch).canAcceptFluid()) {
                     return true;
                 }
             }
@@ -2848,7 +2835,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     protected String generateCurrentRecipeInfoString() {
-        StringBuffer ret = new StringBuffer(EnumChatFormatting.WHITE + "Progress: ");
+        StringBuffer ret = new StringBuffer(StatCollector.translateToLocal("GT5U.gui.text.progress"));
+        ret.append(" ");
 
         numberFormat.setMinimumFractionDigits(2);
         numberFormat.setMaximumFractionDigits(2);
