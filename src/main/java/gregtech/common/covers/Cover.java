@@ -121,8 +121,6 @@ public abstract class Cover {
      */
     public void onCoverRemoval() {}
 
-    public abstract boolean acceptsDataObject(Object data);
-
     /**
      * Get the special foreground cover texture associated with this cover. Return null if one should use the texture
      * passed to {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverFactory, CoverPlacer)} or its

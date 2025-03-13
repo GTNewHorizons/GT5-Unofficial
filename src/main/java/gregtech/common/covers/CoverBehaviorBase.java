@@ -99,8 +99,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
         return ret;
     }
 
-    @Override
-    public boolean acceptsDataObject(Object data) {
+    private boolean acceptsDataObject(Object data) {
         return typeToken.isInstance(data);
     }
 
