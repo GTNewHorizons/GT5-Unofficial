@@ -681,10 +681,10 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsUEVplus.Mellion.getDust(1), GTUtility.getIntegratedCircuit(11))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, MaterialsUEVplus.Mellion, 1))
-            .fluidInputs(Materials.Radon.getGas(1000))
-            .duration(50 * SECONDS)
-            .eut((int) TierEU.RECIPE_UXV)
+            .itemOutputs(ItemList.Harmonic_Compound.get(2))
+            .fluidInputs(MaterialsUEVplus.Creon.getPlasma(144))
+            .duration(30 * SECONDS)
+            .eut((int) TierEU.RECIPE_UMV)
             .metadata(COIL_HEAT, 14000)
             .addTo(blastFurnaceRecipes);
     }
