@@ -42,6 +42,18 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
 
     private GTBlockOre[] ores;
 
+    // spotless:off
+    private static final StoneType[] LEGACY_STONES = {
+        StoneType.Stone,
+        StoneType.Netherrack,
+        StoneType.Endstone,
+        StoneType.BlackGranite,
+        StoneType.RedGranite,
+        StoneType.Marble,
+        StoneType.Basalt,
+    };
+    // spotless:on
+
     public void init() {
         // spotless:off
         GTBlockOre ores1 = new GTBlockOre(2, new StoneType[] {
@@ -102,36 +114,15 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
         });
 
         ores = new GTBlockOre[] { ores1, ores2, ores3, ores4, ores5, ores6 };
-
-        StoneType[] legacyStones = {
-            StoneType.Stone,
-            StoneType.Netherrack,
-            StoneType.Endstone,
-            StoneType.BlackGranite,
-            StoneType.RedGranite,
-            StoneType.Marble,
-            StoneType.Basalt,
-        };
         // spotless:on
 
         TileEntityReplacementManager.tileEntityTransformer("GT_TileEntity_Ores", (tag, world) -> {
             int meta = tag.getInteger("m");
             boolean natural = tag.getBoolean("n");
 
-            try (OreInfo<Materials> info = OreInfo.getNewInfo()) {
-                info.stoneType = GTUtility.getIndexSafe(legacyStones, (meta % 16000) / 1000);
-                info.material = GregTechAPI.sGeneratedMaterials[meta % 1000];
-                info.isSmall = meta >= 16000;
-                info.isNatural = natural;
+            ImmutableBlockMeta bm = transform(meta, natural);
 
-                if (!INSTANCE.supports(info)) {
-                    return new BlockInfo(Blocks.air, 0);
-                } else {
-                    ImmutableBlockMeta bm = INSTANCE.getBlock(info);
-
-                    return new BlockInfo(bm.getBlock(), bm.getBlockMeta());
-                }
-            }
+            return new BlockInfo(bm.getBlock(), bm.getBlockMeta());
         });
 
         ItemStackReplacementManager.addItemReplacement("gregtech:gt.blockores", (tag) -> {
@@ -139,6 +130,21 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
             tag.setInteger("id", itemId);
             return tag;
         });
+    }
+
+    public ImmutableBlockMeta transform(int meta, boolean natural) {
+        try (OreInfo<Materials> info = OreInfo.getNewInfo()) {
+            info.stoneType = GTUtility.getIndexSafe(LEGACY_STONES, (meta % 16000) / 1000);
+            info.material = GregTechAPI.sGeneratedMaterials[meta % 1000];
+            info.isSmall = meta >= 16000;
+            info.isNatural = natural;
+
+            if (!INSTANCE.supports(info)) {
+                return new BlockMeta(Blocks.air, 0);
+            } else {
+                return INSTANCE.getBlock(info);
+            }
+        }
     }
 
     public void registerOre(StoneType stoneType, GTBlockOre oreBlock) {

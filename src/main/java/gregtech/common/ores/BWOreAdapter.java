@@ -35,6 +35,8 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
 
     private final EnumMap<StoneType, Ores> ores = new EnumMap<>(StoneType.class);
 
+    private Ores stoneOres;
+
     private static class Ores {
 
         public BWMetaGeneratedOres big, bigNatural, small, smallNatural;
@@ -77,7 +79,6 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
     }
 
     public void init() {
-        Ores stoneOres;
         ores.put(StoneType.Stone, stoneOres = new Ores(StoneType.Stone, "01", "02"));
         ores.put(StoneType.Moon, new Ores(StoneType.Moon, "03", "04"));
 
@@ -85,19 +86,23 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
             int id = tag.getInteger("m");
             boolean natural = tag.getBoolean("n");
 
-            Block block = stoneOres.get(false, natural);
+            ImmutableBlockMeta bm = transform(id, natural, false);
 
-            return new BlockInfo(block, id);
+            return new BlockInfo(bm.getBlock(), bm.getBlockMeta());
         });
 
         TileEntityReplacementManager.tileEntityTransformer("bw.blockoresSmallTE", (tag, world) -> {
             int id = tag.getInteger("m");
             boolean natural = tag.getBoolean("n");
 
-            Block block = stoneOres.get(true, natural);
+            ImmutableBlockMeta bm = transform(id, natural, true);
 
-            return new BlockInfo(block, id);
+            return new BlockInfo(bm.getBlock(), bm.getBlockMeta());
         });
+    }
+
+    public ImmutableBlockMeta transform(int meta, boolean natural, boolean small) {
+        return new BlockMeta(stoneOres.get(small, natural), meta);
     }
 
     public void registerOredict() {
