@@ -377,7 +377,7 @@ public class VacuumFreezerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Harmonic_Compound.get(2))
-            .fluidInputs(GGMaterial.atomicSeparationCatalyst.getMolten(1296))
+            .fluidInputs(GGMaterial.atomicSeparationCatalyst.getMolten(144))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, MaterialsUEVplus.Mellion, 1L))
             .fluidOutputs(MaterialsUEVplus.Creon.getMolten(144))
             .duration(1 * SECONDS)

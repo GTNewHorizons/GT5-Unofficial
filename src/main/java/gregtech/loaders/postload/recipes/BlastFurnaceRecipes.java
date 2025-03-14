@@ -659,7 +659,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialsUEVplus.SixPhasedCopper.getNanite(1),
                 Materials.Dilithium.getDust(16),
                 GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(MaterialsUEVplus.Mellion.getMolten(128 * 144L))
+            .fluidInputs(MaterialsUEVplus.Mellion.getMolten(48 * 144L))
             .fluidOutputs(MaterialsUEVplus.PhononCrystalSolution.getFluid(1000))
             .duration(300 * SECONDS)
             .eut((int) TierEU.RECIPE_UIV)
@@ -672,7 +672,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialsUEVplus.Eternity.getDust(8),
                 GGMaterial.shirabon.get(OrePrefixes.dust, 8),
                 GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(MaterialsUEVplus.Mellion.getMolten(512 * 144L))
+            .fluidInputs(MaterialsUEVplus.PhononMedium.getFluid(10L))
             .fluidOutputs(MaterialsUEVplus.PhononCrystalSolution.getFluid(3000))
             .duration(200 * SECONDS)
             .eut((int) TierEU.RECIPE_UXV)
