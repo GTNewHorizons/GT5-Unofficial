@@ -180,6 +180,18 @@ public final class GTGuiTextures {
 
     // region slot overlay
 
+    public static final UITexture OVERLAY_SLOT_CANISTER_STANDARD = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/canister")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_CANISTER_STANDARD)
+        .build();
+    private static final SteamTextureRegisterer OVERLAY_SLOT_CANISTER_STEAM = SteamTextureRegisterer.builder()
+        .location("gui/overlay_slot/canister_%s")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_CANISTER_BRONZE, GTTextureIds.OVERLAY_SLOT_CANISTER_STEEL, null)
+        .build();
     public static final UITexture OVERLAY_SLOT_DATA_ORB = fullImageColorableGT("overlay_slot/data_orb");
     public static final UITexture OVERLAY_SLOT_DUST_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/dust")
@@ -227,6 +239,57 @@ public final class GTGuiTextures {
             GTTextureIds.OVERLAY_SLOT_FURNACE_STEEL,
             GTTextureIds.OVERLAY_SLOT_FURNACE_PRIMITIVE)
         .build();
+    public static final UITexture OVERLAY_SLOT_IN_STANDARD = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/in")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_IN_STANDARD)
+        .build();
+    private static final SteamTextureRegisterer OVERLAY_SLOT_IN_STEAM = SteamTextureRegisterer.builder()
+        .location("gui/overlay_slot/in_%s")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_IN_BRONZE, GTTextureIds.OVERLAY_SLOT_IN_STEEL, null)
+        .build();
+    public static final UITexture OVERLAY_SLOT_OUT_STANDARD = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/out")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_OUT_STANDARD)
+        .build();
+    private static final SteamTextureRegisterer OVERLAY_SLOT_OUT_STEAM = SteamTextureRegisterer.builder()
+        .location("gui/overlay_slot/out_%s")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_OUT_BRONZE, GTTextureIds.OVERLAY_SLOT_OUT_STEEL, null)
+        .build();
+    public static final UITexture OVERLAY_SLOT_COAL_STANDARD = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/coal")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_COAL_STANDARD)
+        .build();
+    private static final SteamTextureRegisterer OVERLAY_SLOT_COAL_STEAM = SteamTextureRegisterer.builder()
+        .location("gui/overlay_slot/coal_%s")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_COAL_BRONZE, GTTextureIds.OVERLAY_SLOT_COAL_STEEL, null)
+        .build();
+    public static final UITexture OVERLAY_SLOT_BLOCK_STANDARD = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/block")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_BLOCK_STANDARD)
+        .build();
+    private static final SteamTextureRegisterer OVERLAY_SLOT_BLOCK_STEAM = SteamTextureRegisterer.builder()
+        .location("gui/overlay_slot/block_%s")
+        .fullImage()
+        .canApplyTheme()
+        .name(
+            GTTextureIds.OVERLAY_SLOT_BLOCK_BRONZE,
+            GTTextureIds.OVERLAY_SLOT_BLOCK_STEEL,
+            GTTextureIds.OVERLAY_SLOT_BLOCK_PRIMITIVE)
+        .build();
 
     // endregion slot overlay
 
@@ -236,6 +299,23 @@ public final class GTGuiTextures {
     public static final UITexture PROGRESSBAR_ARROW_BRONZE = fullImageColorableGT("progressbar/arrow_bronze");
     public static final UITexture PROGRESSBAR_ARROW_STEEL = fullImageColorableGT("progressbar/arrow_steel");
     public static final UITexture PROGRESSBAR_ARROW_BBF = fullImageColorableGT("progressbar/arrow_bbf");
+    public static final UITexture PROGRESSBAR_BOILER_HEAT = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/boiler_heat")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_BOILER_HEAT)
+        .build();
+    public static final UITexture PROGRESSBAR_FUEL_STANDARD = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/fuel")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PROGRESSBAR_FUEL_STANDARD)
+        .build();
+    private static final SteamTextureRegisterer PROGRESSBAR_FUEL_STEAM = SteamTextureRegisterer.builder()
+        .location("gui/progressbar/fuel_%s")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PROGRESSBAR_FUEL_BRONZE, GTTextureIds.PROGRESSBAR_FUEL_STEEL, null)
+        .build();
 
     // endregion progressbar
 

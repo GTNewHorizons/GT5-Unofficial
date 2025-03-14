@@ -1,6 +1,6 @@
 package gregtech.api.modularui2;
 
-public class GTTextureIds {
+public final class GTTextureIds {
 
     public static final String BACKGROUND_STANDARD = "gregtech:bg_standard";
     public static final String BACKGROUND_BRONZE = "gregtech:bg_bronze";
@@ -40,10 +40,27 @@ public class GTTextureIds {
     public static final String SLOT_FLUID_STEEL = "gregtech:slot_fluid_steel";
     public static final String SLOT_FLUID_PRIMITIVE = "gregtech:slot_fluid_primitive";
 
+    public static final String OVERLAY_SLOT_BLOCK_STANDARD = "gregtech:overlay_slot_block_standard";
+    public static final String OVERLAY_SLOT_BLOCK_BRONZE = "gregtech:overlay_slot_block_bronze";
+    public static final String OVERLAY_SLOT_BLOCK_STEEL = "gregtech:overlay_slot_block_steel";
+    public static final String OVERLAY_SLOT_BLOCK_PRIMITIVE = "gregtech:overlay_slot_block_primitive";
+
+    public static final String OVERLAY_SLOT_CANISTER_STANDARD = "gregtech:overlay_slot_canister_standard";
+    public static final String OVERLAY_SLOT_CANISTER_BRONZE = "gregtech:overlay_slot_canister_bronze";
+    public static final String OVERLAY_SLOT_CANISTER_STEEL = "gregtech:overlay_slot_canister_steel";
+
+    public static final String OVERLAY_SLOT_COAL_STANDARD = "gregtech:overlay_slot_coal_standard";
+    public static final String OVERLAY_SLOT_COAL_BRONZE = "gregtech:overlay_slot_coal_bronze";
+    public static final String OVERLAY_SLOT_COAL_STEEL = "gregtech:overlay_slot_coal_steel";
+
     public static final String OVERLAY_SLOT_DUST_STANDARD = "gregtech:overlay_slot_dust_standard";
     public static final String OVERLAY_SLOT_DUST_BRONZE = "gregtech:overlay_slot_dust_bronze";
     public static final String OVERLAY_SLOT_DUST_STEEL = "gregtech:overlay_slot_dust_steel";
     public static final String OVERLAY_SLOT_DUST_PRIMITIVE = "gregtech:overlay_slot_dust_primitive";
+
+    public static final String OVERLAY_SLOT_IN_STANDARD = "gregtech:overlay_slot_in_standard";
+    public static final String OVERLAY_SLOT_IN_BRONZE = "gregtech:overlay_slot_in_bronze";
+    public static final String OVERLAY_SLOT_IN_STEEL = "gregtech:overlay_slot_in_steel";
 
     public static final String OVERLAY_SLOT_INGOT_STANDARD = "gregtech:overlay_slot_ingot_standard";
     public static final String OVERLAY_SLOT_INGOT_BRONZE = "gregtech:overlay_slot_ingot_bronze";
@@ -54,6 +71,16 @@ public class GTTextureIds {
     public static final String OVERLAY_SLOT_FURNACE_BRONZE = "gregtech:overlay_slot_furnace_bronze";
     public static final String OVERLAY_SLOT_FURNACE_STEEL = "gregtech:overlay_slot_furnace_steel";
     public static final String OVERLAY_SLOT_FURNACE_PRIMITIVE = "gregtech:overlay_slot_furnace_primitive";
+
+    public static final String OVERLAY_SLOT_OUT_STANDARD = "gregtech:overlay_slot_out_standard";
+    public static final String OVERLAY_SLOT_OUT_BRONZE = "gregtech:overlay_slot_out_bronze";
+    public static final String OVERLAY_SLOT_OUT_STEEL = "gregtech:overlay_slot_out_steel";
+
+    public static final String PROGRESSBAR_BOILER_HEAT = "gregtech:progressbar_boiler_heat";
+
+    public static final String PROGRESSBAR_FUEL_STANDARD = "gregtech:progressbar_fuel_standard";
+    public static final String PROGRESSBAR_FUEL_BRONZE = "gregtech:progressbar_fuel_bronze";
+    public static final String PROGRESSBAR_FUEL_STEEL = "gregtech:progressbar_fuel_steel";
 
     public static final String BUTTON_STANDARD = "gregtech:button_standard";
     public static final String BUTTON_STANDARD_PRESSED = "gregtech:button_standard_pressed";
