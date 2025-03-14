@@ -418,6 +418,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     // Air Intake hatch
     Hatch_Air_Intake,
     Hatch_Air_Intake_Extreme,
+    Hatch_Air_Intake_Atmospheric,
 
     // Reservoir Hatch
     Hatch_Reservoir,
