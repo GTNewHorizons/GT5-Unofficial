@@ -97,6 +97,7 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
             if (CommonValues.MOVE_AT == aTick % 20) {
                 if (q == null) {
                     getBaseMetaTileEntity().setActive(false);
+                    resetHistory();
                 } else {
                     getBaseMetaTileEntity().setActive(true);
                     moveAround(aBaseMetaTileEntity);
@@ -106,6 +107,10 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     }
 
     public abstract void moveAround(IGregTechTileEntity aBaseMetaTileEntity);
+
+    protected void resetHistory() {
+
+    }
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
