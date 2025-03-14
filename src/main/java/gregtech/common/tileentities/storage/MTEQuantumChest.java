@@ -65,7 +65,7 @@ public class MTEQuantumChest extends MTEDigitalChestBase {
     }
 
     @Override
-    protected int getItemCount() {
+    public int getItemCount() {
         return mItemCount;
     }
 
@@ -75,12 +75,12 @@ public class MTEQuantumChest extends MTEDigitalChestBase {
     }
 
     @Override
-    protected ItemStack getItemStack() {
+    public ItemStack getItemStack() {
         return mItemStack;
     }
 
     @Override
-    protected void setItemStack(ItemStack s) {
+    public void setItemStack(ItemStack s) {
         mItemStack = s;
     }
 
