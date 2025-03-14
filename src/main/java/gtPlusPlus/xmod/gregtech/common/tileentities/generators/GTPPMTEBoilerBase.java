@@ -29,13 +29,13 @@ import gregtech.common.tileentities.boilers.MTEBoiler;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 
-public class MTEBoilerBase extends MTEBoiler {
+public class GTPPMTEBoilerBase extends MTEBoiler {
 
     private static final int STEAM_PER_SECOND = 750;
     private final int steamPerSecond;
     private final int tier;
 
-    public MTEBoilerBase(int aID, String aNameRegional, int tier) {
+    public GTPPMTEBoilerBase(int aID, String aNameRegional, int tier) {
         super(
             aID,
             "electricboiler." + tier + ".tier.single",
@@ -45,7 +45,7 @@ public class MTEBoilerBase extends MTEBoiler {
         this.tier = tier;
     }
 
-    public MTEBoilerBase(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GTPPMTEBoilerBase(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         this.steamPerSecond = STEAM_PER_SECOND * aTier;
         this.tier = aTier;
@@ -234,7 +234,7 @@ public class MTEBoilerBase extends MTEBoiler {
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEBoilerBase(this.mName, tier, this.mDescriptionArray, this.mTextures);
+        return new GTPPMTEBoilerBase(this.mName, tier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
