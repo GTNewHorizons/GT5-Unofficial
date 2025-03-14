@@ -54,6 +54,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.api.util.GTUtility;
@@ -202,6 +203,10 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_DATA_STICKS;
 
         ArrayList<RecipeAssemblyLine> availableRecipes = new ArrayList<>();
+
+        if (AssemblyLineUtils.isItemDataStick(mInventory[1])) {
+            availableRecipes.addAll(AssemblyLineUtils.findALRecipeFromDataStick(mInventory[1]));
+        }
 
         for (MTEHatchDataAccess dataAccess : validMTEList(mDataAccessHatches)) {
             availableRecipes.addAll(dataAccess.getAssemblyLineRecipes());
