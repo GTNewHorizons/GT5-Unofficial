@@ -518,6 +518,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                                         stellarFuelAmount += stacksize;
                                     } else {
                                         gravitonShardsAvailable += stacksize;
+                                        gravitonShardsSpent -= stacksize;
                                     }
                                     inputBus.updateSlots();
                                 }
