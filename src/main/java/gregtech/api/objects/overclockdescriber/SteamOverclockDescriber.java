@@ -37,7 +37,7 @@ public class SteamOverclockDescriber extends OverclockDescriber {
     public OverclockCalculator createCalculator(OverclockCalculator template, GTRecipe recipe) {
         return OverclockCalculator.ofNoOverclock(recipe)
             .setEUtDiscount(euPerTickMultiplier)
-            .setSpeedBoost(durationMultiplier);
+            .setDurationModifier(durationMultiplier);
     }
 
     @Override
