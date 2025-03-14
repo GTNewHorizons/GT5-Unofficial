@@ -5,6 +5,7 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -136,15 +137,28 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (getBaseMetaTileEntity().isServerSide()) {
+        if (aBaseMetaTileEntity.isServerSide()) {
             if (aTimer % autoPullRefreshTime == 0 && autoPullItemList) {
                 refreshItemList();
             }
             if (aTimer % 20 == 0) {
-                getBaseMetaTileEntity().setActive(isActive());
+                aBaseMetaTileEntity.setActive(isActive());
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTimer);
+    }
+
+    protected boolean isAllowedToWork() {
+        IGregTechTileEntity igte = getBaseMetaTileEntity();
+
+        return igte != null && igte.isAllowedToWork();
+    }
+
+    @Override
+    public void onEnableWorking() {
+        if (expediteRecipeCheck) {
+            justHadNewItems = true;
+        }
     }
 
     @Override
@@ -433,7 +447,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     @Override
     public boolean justUpdated() {
-        if (expediteRecipeCheck) {
+        if (expediteRecipeCheck && isAllowedToWork()) {
             boolean ret = justHadNewItems;
             justHadNewItems = false;
             return ret;
@@ -456,22 +470,37 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     @Override
     public ItemStack getStackInSlot(int aIndex) {
         if (!processingRecipe) return super.getStackInSlot(aIndex);
+
         if (aIndex < 0 || aIndex > mInventory.length) return null;
-        if (aIndex >= SLOT_COUNT && aIndex < SLOT_COUNT * 2)
-            // Display slots
-            return null;
+
+        // Display slots
+        if (aIndex >= SLOT_COUNT && aIndex < SLOT_COUNT * 2) return null;
+
         if (aIndex == getCircuitSlot() || aIndex == getManualSlot()) return mInventory[aIndex];
+
         if (mInventory[aIndex] != null) {
+
             AENetworkProxy proxy = getProxy();
             if (proxy == null || !proxy.isActive()) {
                 return null;
             }
+
+            if (!isAllowedToWork()) {
+                this.shadowInventory[aIndex] = null;
+                this.savedStackSizes[aIndex] = 0;
+                super.setInventorySlotContents(aIndex + SLOT_COUNT, null);
+                return null;
+            }
+
             try {
                 IMEMonitor<IAEItemStack> sg = proxy.getStorage()
                     .getItemInventory();
+
                 IAEItemStack request = AEItemStack.create(mInventory[aIndex]);
                 request.setStackSize(Integer.MAX_VALUE);
+
                 IAEItemStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
+
                 if (result != null) {
                     this.shadowInventory[aIndex] = result.getItemStack();
                     this.savedStackSizes[aIndex] = this.shadowInventory[aIndex].stackSize;
@@ -597,6 +626,14 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
                     super.setInventorySlotContents(aIndex + SLOT_COUNT, null);
                     return null;
                 }
+
+                if (!isAllowedToWork()) {
+                    this.shadowInventory[aIndex] = null;
+                    this.savedStackSizes[aIndex] = 0;
+                    super.setInventorySlotContents(aIndex + SLOT_COUNT, null);
+                    return null;
+                }
+
                 try {
                     IMEMonitor<IAEItemStack> sg = proxy.getStorage()
                         .getItemInventory();
@@ -764,12 +801,23 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
             boolean isActive = isActive();
             boolean isPowered = isPowered();
             boolean isBooting = isBooting();
-            EnumChatFormatting color = (isActive && isPowered) ? EnumChatFormatting.GREEN : EnumChatFormatting.DARK_RED;
-            return color + WailaText.getPowerState(isActive, isPowered, isBooting);
+
+            String state = WailaText.getPowerState(isActive, isPowered, isBooting);
+
+            if (isActive && isPowered) {
+                return MessageFormat.format(
+                    "{0}{1}§f ({2})",
+                    EnumChatFormatting.GREEN,
+                    state,
+                    StatCollector
+                        .translateToLocal(isAllowedToWork() ? "GT5U.gui.text.enabled" : "GT5U.gui.text.disabled"));
+            } else {
+                return EnumChatFormatting.DARK_RED + state;
+            }
         })
             .setTextAlignment(Alignment.Center)
-            .setSize(90, 9)
-            .setPos(43, 84))
+            .setSize(130, 9)
+            .setPos(23, 84))
             .widget(
                 new SlotWidget(inventoryHandler, getManualSlot())
                     // ghost slots are prioritized over manual slot

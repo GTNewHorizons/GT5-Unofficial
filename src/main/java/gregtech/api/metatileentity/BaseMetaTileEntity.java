@@ -1040,6 +1040,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         if (!mWorks) mWorkUpdate = true;
         mWorks = true;
         setShutdownStatus(false);
+        if (hasValidMetaTileEntity()) {
+            mMetaTileEntity.onEnableWorking();
+        }
     }
 
     @Override
