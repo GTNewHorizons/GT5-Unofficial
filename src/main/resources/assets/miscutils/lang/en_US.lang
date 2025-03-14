@@ -3990,7 +3990,7 @@ gtpp.gui.config.asm.debug=Debug
 gtpp.gui.config.asm.general=General
 
 # item tooltips
-gtpp.tooltip.ignot.very_hot=§7Warning: §cVery hot! §7Avoid direct handling..
+gtpp.tooltip.ingot.very_hot=§7Warning: §cVery hot! §7Avoid direct handling..
 gtpp.tooltip.tickable.decay_seconds=%d§7 seconds until decay
 gtpp.tooltip.ion_particles.state_not_set=A %s Ion with an §eUnknown§7 charge state
 gtpp.tooltip.ion_particles.charge_positive=A %s Ion with a §aPositive§7 charge state of %d
