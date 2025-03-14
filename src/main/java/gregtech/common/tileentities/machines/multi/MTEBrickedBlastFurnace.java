@@ -579,9 +579,9 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
                     .matrix("I", "I", "I")
                     .key('I', index -> {
                         String textureThemeId = switch (index) {
-                            case 0 -> GTWidgetThemes.OVERLAY_SLOT_INGOT;
-                            case 1 -> GTWidgetThemes.OVERLAY_SLOT_DUST;
-                            case 2 -> GTWidgetThemes.OVERLAY_SLOT_FURNACE;
+                            case 0 -> GTWidgetThemes.OVERLAY_ITEM_SLOT_INGOT;
+                            case 1 -> GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST;
+                            case 2 -> GTWidgetThemes.OVERLAY_ITEM_SLOT_FURNACE;
                             default -> throw new IllegalStateException("Unexpected value: " + index);
                         };
                         return new ItemSlot().slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv"))
@@ -594,8 +594,8 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
                     .matrix("III")
                     .key('I', index -> {
                         String textureThemeId = switch (index) {
-                            case 0 -> GTWidgetThemes.OVERLAY_SLOT_INGOT;
-                            case 1, 2 -> GTWidgetThemes.OVERLAY_SLOT_DUST;
+                            case 0 -> GTWidgetThemes.OVERLAY_ITEM_SLOT_INGOT;
+                            case 1, 2 -> GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST;
                             default -> throw new IllegalStateException("Unexpected value: " + index);
                         };
                         return new ItemSlot()

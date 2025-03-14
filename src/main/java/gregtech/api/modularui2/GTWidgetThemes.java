@@ -38,13 +38,15 @@ public final class GTWidgetThemes {
     public static final String BACKGROUND_POPUP = "backgroundPopup";
     public static final String BACKGROUND_TITLE = "backgroundTitle";
 
-    public static final String OVERLAY_SLOT_DUST = "overlaySlotDust";
-    public static final String OVERLAY_SLOT_INGOT = "overlaySlotIngot";
-    public static final String OVERLAY_SLOT_FURNACE = "overlaySlotFurnace";
-    public static final String OVERLAY_SLOT_IN = "overlaySlotIn";
-    public static final String OVERLAY_SLOT_OUT = "overlaySlotOut";
-    public static final String OVERLAY_SLOT_COAL = "overlaySlotCoal";
-    public static final String OVERLAY_SLOT_BLOCK = "overlaySlotBlock";
+    public static final String OVERLAY_ITEM_SLOT_DUST = "overlayItemSlotDust";
+    public static final String OVERLAY_ITEM_SLOT_INGOT = "overlayItemSlotIngot";
+    public static final String OVERLAY_ITEM_SLOT_FURNACE = "overlayItemSlotFurnace";
+    public static final String OVERLAY_ITEM_SLOT_IN = "overlayItemSlotIn";
+    public static final String OVERLAY_ITEM_SLOT_OUT = "overlayItemSlotOut";
+    public static final String OVERLAY_ITEM_SLOT_COAL = "overlayItemSlotCoal";
+    public static final String OVERLAY_ITEM_SLOT_BLOCK = "overlayItemSlotBlock";
+
+    public static final String OVERLAY_FLUID_SLOT_IN = "overlayFluidSlotIn";
 
     public static final String PROGRESSBAR_BOILER_HEAT = "progressbarBoilerHeat";
     public static final String PROGRESSBAR_FUEL = "progressbarFuel";
@@ -66,13 +68,15 @@ public final class GTWidgetThemes {
         registerThemedTexture(BACKGROUND_POPUP);
         registerThemedTexture(BACKGROUND_TITLE);
 
-        registerThemedItemSlot(OVERLAY_SLOT_DUST);
-        registerThemedItemSlot(OVERLAY_SLOT_INGOT);
-        registerThemedItemSlot(OVERLAY_SLOT_FURNACE);
-        registerThemedItemSlot(OVERLAY_SLOT_IN);
-        registerThemedItemSlot(OVERLAY_SLOT_OUT);
-        registerThemedItemSlot(OVERLAY_SLOT_COAL);
-        registerThemedItemSlot(OVERLAY_SLOT_BLOCK);
+        registerThemedItemSlot(OVERLAY_ITEM_SLOT_DUST);
+        registerThemedItemSlot(OVERLAY_ITEM_SLOT_INGOT);
+        registerThemedItemSlot(OVERLAY_ITEM_SLOT_FURNACE);
+        registerThemedItemSlot(OVERLAY_ITEM_SLOT_IN);
+        registerThemedItemSlot(OVERLAY_ITEM_SLOT_OUT);
+        registerThemedItemSlot(OVERLAY_ITEM_SLOT_COAL);
+        registerThemedItemSlot(OVERLAY_ITEM_SLOT_BLOCK);
+
+        registerThemedFluidSlot(OVERLAY_FLUID_SLOT_IN);
 
         themeApi.registerWidgetTheme(
             PROGRESSBAR_BOILER_HEAT,
