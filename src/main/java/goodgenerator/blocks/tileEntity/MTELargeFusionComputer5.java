@@ -62,8 +62,8 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
             .addInfo("Startup < 160,000,000 EU: 320x Parallel")
             .addInfo("Startup < 320,000,000 EU: 256x Parallel")
             .addInfo("Startup < 640,000,000 EU: 192x Parallel")
-            .addInfo("Startup < 1,200,000,000 EU: 128x Parallel")
-            .addInfo("Startup >= 1,200,000,000 EU: 64x Parallel")
+            .addInfo("Startup < 5,120,000,000 EU: 128x Parallel")
+            .addInfo("Startup >= 5,120,000,000 EU: 64x Parallel")
             .addTecTechHatchInfo()
             .addCasingInfoMin("Fusion Machine Casing MK IV", 1664, false)
             .addCasingInfoMin("Compact Fusion Coil MK-II Finaltype", 560, false)
@@ -154,10 +154,10 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
 
     @Override
     public int extraPara(long startEnergy) {
-        if (startEnergy < 160000000) return 5;
-        if (startEnergy < 320000000) return 4;
-        if (startEnergy < 640000000) return 3;
-        if (startEnergy < 1200000000) return 2;
+        if (startEnergy < 160000000L) return 5;
+        if (startEnergy < 320000000L) return 4;
+        if (startEnergy < 640000000L) return 3;
+        if (startEnergy < 5120000000L) return 2;
         return 1;
     }
 
