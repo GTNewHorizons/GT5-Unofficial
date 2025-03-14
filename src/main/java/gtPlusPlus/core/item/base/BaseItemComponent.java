@@ -250,7 +250,7 @@ public class BaseItemComponent extends Item {
                     if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT) {
                         if (this.unlocalName.toLowerCase()
                             .contains("hot")) {
-                            list.add(StatCollector.translateToLocal("gtpp.tooltip.ignot.very_hot"));
+                            list.add(StatCollector.translateToLocal("gtpp.tooltip.ingot.very_hot"));
                         }
                     }
                 } else {
