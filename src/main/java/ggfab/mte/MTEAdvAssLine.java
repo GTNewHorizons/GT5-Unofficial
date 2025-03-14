@@ -238,9 +238,10 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         if (!checkPiece(STRUCTURE_PIECE_FIRST, 0, 1, 0)) return false;
         for (int i = 1; i < 16; i++) {
             if (!checkPiece(STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0)) return false;
-            if (!mOutputBusses.isEmpty())
+            if (!mOutputBusses.isEmpty()) {
                 return (!mEnergyHatches.isEmpty() || !mExoticEnergyHatches.isEmpty()) && mMaintenanceHatches.size() == 1
                     && mDataAccessHatches.size() <= 1;
+            }
         }
         return false;
     }
@@ -369,7 +370,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         // we need to check for active here.
         // if machine was turned off via soft mallet it will not call checkRecipe() on recipe end
         // in that case we don't have a current recipe, so this should be ignored
-        if (getBaseMetaTileEntity().isActive()) {
+        if (getBaseMetaTileEntity().isActive() && currentRecipe != null) {
             aNBT.setTag(TAG_KEY_CURRENT_RECIPE, AssemblyLineUtils.saveRecipe(currentRecipe));
             aNBT.setInteger(TAG_KEY_RECIPE_HASH, currentRecipe.getPersistentHash());
             aNBT.setIntArray(
@@ -695,6 +696,10 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_DATA_STICKS;
 
         ArrayList<RecipeAssemblyLine> availableRecipes = new ArrayList<>();
+
+        if (AssemblyLineUtils.isItemDataStick(mInventory[1])) {
+            availableRecipes.addAll(AssemblyLineUtils.findALRecipeFromDataStick(mInventory[1]));
+        }
 
         for (MTEHatchDataAccess dataAccess : validMTEList(mDataAccessHatches)) {
             availableRecipes.addAll(dataAccess.getAssemblyLineRecipes());
