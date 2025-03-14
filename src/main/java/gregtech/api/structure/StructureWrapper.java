@@ -36,7 +36,7 @@ import it.unimi.dsi.fastutil.chars.Char2ObjectArrayMap;
 /**
  * A wrapper that helps reduce structure check boilerplate.
  * This should only be created in the prototype MTE, then shared among the instance MTEs.
- * 
+ *
  * Definitions:
  * Prototype MTE: An MTE that does not exist in the world and whose main purpose is to make instance MTEs
  * Instance MTE: An MTE that exists in the world

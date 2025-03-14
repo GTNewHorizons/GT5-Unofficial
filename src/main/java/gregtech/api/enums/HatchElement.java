@@ -78,7 +78,7 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
             return t.mDynamoHatches.size();
         }
     },
-    ExoticEnergy("GT5U.MBTT.ExoticEnergyHatch", MTEMultiBlockBase::addExoticEnergyInputToMachineList) {
+    ExoticEnergy("GT5U.MBTT.MultiampEnergyHatch", MTEMultiBlockBase::addExoticEnergyInputToMachineList) {
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {

@@ -182,10 +182,12 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
                         addEnergyHatch(info, dots);
                         break;
                     case ExoticEnergy:
-                        addOtherStructurePart(gtHatch.getDisplayName(), info, dots);
+                        addOtherStructurePart(GTUtility.translate("GT5U.MBTT.MultiampEnergyHatch"), info, dots);
+                        addOtherStructurePart(GTUtility.translate("GT5U.MBTT.LaserTargetHatch"), info, dots);
                         hasMultiampHatches = true;
                         break;
                     case MultiAmpEnergy:
+                        addOtherStructurePart(GTUtility.translate("GT5U.MBTT.MultiampEnergyHatch"), info, dots);
                         break;
                     case InputBus:
                         addInputBus(info, dots);
@@ -209,12 +211,22 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
                         break;
                 }
             } else if (hatch instanceof TTMultiblockBase.HatchElement ttHatch) {
-                if (ttHatch == TTMultiblockBase.HatchElement.DynamoMulti
-                    || ttHatch == TTMultiblockBase.HatchElement.EnergyMulti) {
-                    hasMultiampHatches = true;
-                }
 
-                addOtherStructurePart(ttHatch.getDisplayName(), info, dots);
+                switch (ttHatch) {
+                    case EnergyMulti -> {
+                        addOtherStructurePart(GTUtility.translate("GT5U.MBTT.MultiampEnergyHatch"), info, dots);
+                        addOtherStructurePart(GTUtility.translate("GT5U.MBTT.LaserTargetHatch"), info, dots);
+                        hasMultiampHatches = true;
+                    }
+                    case DynamoMulti -> {
+                        addOtherStructurePart(GTUtility.translate("GT5U.MBTT.MultiampEnergyDynamo"), info, dots);
+                        addOtherStructurePart(GTUtility.translate("GT5U.MBTT.LaserSourceHatch"), info, dots);
+                        hasMultiampHatches = true;
+                    }
+                    default -> {
+                        addOtherStructurePart(ttHatch.getDisplayName(), info, dots);
+                    }
+                }
             }
         }
 
