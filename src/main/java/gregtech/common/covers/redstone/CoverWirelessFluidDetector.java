@@ -49,8 +49,8 @@ public class CoverWirelessFluidDetector
         }
         final byte signal = CoverLiquidMeter
             .computeSignalBasedOnFluid(coverable, coverData.invert, coverData.threshold);
-        final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, signal);
+        final CoverPosition key = getCoverKey(coverable, coverSide);
+        setSignalAt(coverData.getUuid(), coverData.getFrequency(), key, signal);
 
         if (coverData.physical) {
             coverable.setOutputRedstoneSignal(coverSide, signal);
@@ -151,7 +151,7 @@ public class CoverWirelessFluidDetector
 
         @Override
         protected int getGUIHeight() {
-            return 123;
+            return 141;
         }
 
         @Override
@@ -161,7 +161,7 @@ public class CoverWirelessFluidDetector
             builder
                 .widget(
                     new TextWidget(GTUtility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
+                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * 3))
                 .widget(TextWidget.dynamicString(() -> {
                     FluidTransmitterData coverData = getCoverData();
                     if (coverData != null) {
@@ -175,7 +175,7 @@ public class CoverWirelessFluidDetector
                     .setSynced(false)
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(startX + spaceX, 4 + startY + spaceY * 3)
+                    .setPos(startX + spaceX, 4 + startY + spaceY * 4)
                     .setSize(spaceX * 10, 12));
         }
 
@@ -192,7 +192,7 @@ public class CoverWirelessFluidDetector
                 widget -> widget.setBounds(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
                     .setScrollValues(1000, 144, 100000)
                     .setFocusOnGuiOpen(true)
-                    .setPos(1, 2 + spaceY * 2)
+                    .setPos(1, 2 + spaceY * 3)
                     .setSize(spaceX * 5 - 4, 12))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
@@ -203,7 +203,7 @@ public class CoverWirelessFluidDetector
                     },
                     widget -> widget
                         .addTooltip(StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.tooltip"))
-                        .setPos(0, 1 + spaceY * 3));
+                        .setPos(0, 1 + spaceY * 4));
         }
 
         private void setMaxCapacity() {
