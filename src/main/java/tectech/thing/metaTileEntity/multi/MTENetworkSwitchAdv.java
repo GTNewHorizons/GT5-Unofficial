@@ -292,16 +292,16 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
 
         tt.addMachineType("Network Switch With QoS")
             .addInfo("§b§lWater cooled!")
-            .addInfo(" ")
+            .addSeparator()
             .addInfo("Variable-length version of the standard Network Switch.")
-            .addInfo(" ")
+            .addSeparator()
             .addInfo("Consumes §b524,288§7 EU/t per middle slice while active.")
             .addInfo("Requires an additional §b128§7 EU/t for each unit of computation transferred.")
             .addInfo("Converts §b1L§7 of Coolant to Hot Coolant for every §b1000§7 units of computation transferred.")
-            .addInfo(" ")
+            .addSeparator()
             .addInfo("Computation output is configured by right clicking transmission connectors with a screwdriver.")
             .addInfo("Transmission connectors must be part of the structure for them to be configurable.")
-            .addInfo(" ");
+            .addSeparator();
 
         tt.beginStructureBlock();
         tt.addAllCasingInfo();
