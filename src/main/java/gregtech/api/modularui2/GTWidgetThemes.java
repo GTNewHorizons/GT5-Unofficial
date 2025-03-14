@@ -19,6 +19,7 @@ public final class GTWidgetThemes {
     public static final String BACKGROUND_COVER_TAB_NORMAL = "backgroundCoverTabNormal";
     public static final String BACKGROUND_COVER_TAB_HIGHLIGHT = "backgroundCoverTabHighlight";
     public static final String BACKGROUND_COVER_TAB_DISABLED = "backgroundCoverTabDisabled";
+    public static final String BACKGROUND_POPUP = "backgroundPopup";
     public static final String BACKGROUND_TITLE = "backgroundTitle";
 
     public static final String OVERLAY_SLOT_DUST = "overlaySlotDust";
@@ -38,6 +39,7 @@ public final class GTWidgetThemes {
         registerThemedTexture(BACKGROUND_COVER_TAB_NORMAL);
         registerThemedTexture(BACKGROUND_COVER_TAB_HIGHLIGHT);
         registerThemedTexture(BACKGROUND_COVER_TAB_DISABLED);
+        registerThemedTexture(BACKGROUND_POPUP);
         registerThemedTexture(BACKGROUND_TITLE);
 
         registerThemedItemSlot(OVERLAY_SLOT_DUST);

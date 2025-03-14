@@ -97,7 +97,17 @@ public final class GTGuiTextures {
         .imageSize(195, 136)
         .adaptable(4)
         .canApplyTheme()
-        .name(GTTextureIds.BACKGROUND_POPUP)
+        .name(GTTextureIds.BACKGROUND_POPUP_STANDARD)
+        .build();
+    private static final SteamTextureRegisterer BACKGROUND_POPUP_STEAM = SteamTextureRegisterer.builder()
+        .location("gui/background/popup_%s")
+        .imageSize(195, 136)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(
+            GTTextureIds.BACKGROUND_POPUP_BRONZE,
+            GTTextureIds.BACKGROUND_POPUP_STEEL,
+            GTTextureIds.BACKGROUND_POPUP_PRIMITIVE)
         .build();
 
     // endregion background
@@ -238,12 +248,29 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.BUTTON_STANDARD)
         .build();
+    private static final SteamTextureRegisterer BUTTON_STEAM = SteamTextureRegisterer.builder()
+        .location("gui/button/%s")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.BUTTON_BRONZE, GTTextureIds.BUTTON_STEEL, GTTextureIds.BUTTON_PRIMITIVE)
+        .build();
     public static final UITexture BUTTON_STANDARD_PRESSED = UITexture.builder()
         .location(GregTech.ID, "gui/button/standard_pressed")
         .imageSize(18, 18)
         .adaptable(1)
         .canApplyTheme()
         .name(GTTextureIds.BUTTON_STANDARD_PRESSED)
+        .build();
+    private static final SteamTextureRegisterer BUTTON_STEAM_PRESSED = SteamTextureRegisterer.builder()
+        .location("gui/button%s_pressed")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(
+            GTTextureIds.BUTTON_BRONZE_PRESSED,
+            GTTextureIds.BUTTON_STEEL_PRESSED,
+            GTTextureIds.BUTTON_PRIMITIVE_PRESSED)
         .build();
 
     // endregion button
