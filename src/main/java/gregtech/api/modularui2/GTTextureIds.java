@@ -7,19 +7,6 @@ public final class GTTextureIds {
     public static final String BACKGROUND_STEEL = "gregtech:bg_steel";
     public static final String BACKGROUND_PRIMITIVE = "gregtech:bg_primitive";
 
-    public static final String BACKGROUND_COVER_TAB_NORMAL_STANDARD = "gregtech:bg_cover_tab_normal_standard";
-    public static final String BACKGROUND_COVER_TAB_HIGHLIGHT_STANDARD = "gregtech:bg_cover_tab_highlight_standard";
-    public static final String BACKGROUND_COVER_TAB_DISABLED_STANDARD = "gregtech:bg_cover_tab_disabled_standard";
-    public static final String BACKGROUND_COVER_TAB_NORMAL_BRONZE = "gregtech:bg_cover_tab_normal_bronze";
-    public static final String BACKGROUND_COVER_TAB_HIGHLIGHT_BRONZE = "gregtech:bg_cover_tab_highlight_bronze";
-    public static final String BACKGROUND_COVER_TAB_DISABLED_BRONZE = "gregtech:bg_cover_tab_disabled_bronze";
-    public static final String BACKGROUND_COVER_TAB_NORMAL_STEEL = "gregtech:bg_cover_tab_normal_steel";
-    public static final String BACKGROUND_COVER_TAB_HIGHLIGHT_STEEL = "gregtech:bg_cover_tab_highlight_steel";
-    public static final String BACKGROUND_COVER_TAB_DISABLED_STEEL = "gregtech:bg_cover_tab_disabled_steel";
-    public static final String BACKGROUND_COVER_TAB_NORMAL_PRIMITIVE = "gregtech:bg_cover_tab_normal_primitive";
-    public static final String BACKGROUND_COVER_TAB_HIGHLIGHT_PRIMITIVE = "gregtech:bg_cover_tab_highlight_primitive";
-    public static final String BACKGROUND_COVER_TAB_DISABLED_PRIMITIVE = "gregtech:bg_cover_tab_disabled_primitive";
-
     public static final String BACKGROUND_POPUP_STANDARD = "gregtech:bg_popup_standard";
     public static final String BACKGROUND_POPUP_BRONZE = "gregtech:bg_popup_bronze";
     public static final String BACKGROUND_POPUP_STEEL = "gregtech:bg_popup_steel";
@@ -90,6 +77,19 @@ public final class GTTextureIds {
     public static final String BUTTON_STEEL_PRESSED = "gregtech:button_steel_pressed";
     public static final String BUTTON_PRIMITIVE = "gregtech:button_primitive";
     public static final String BUTTON_PRIMITIVE_PRESSED = "gregtech:button_primitive_pressed";
+
+    public static final String BUTTON_COVER_TAB_NORMAL_STANDARD = "gregtech:button_cover_tab_normal_standard";
+    public static final String BUTTON_COVER_TAB_HIGHLIGHT_STANDARD = "gregtech:button_cover_tab_highlight_standard";
+    public static final String BUTTON_COVER_TAB_DISABLED_STANDARD = "gregtech:button_cover_tab_disabled_standard";
+    public static final String BUTTON_COVER_TAB_NORMAL_BRONZE = "gregtech:button_cover_tab_normal_bronze";
+    public static final String BUTTON_COVER_TAB_HIGHLIGHT_BRONZE = "gregtech:button_cover_tab_highlight_bronze";
+    public static final String BUTTON_COVER_TAB_DISABLED_BRONZE = "gregtech:button_cover_tab_disabled_bronze";
+    public static final String BUTTON_COVER_TAB_NORMAL_STEEL = "gregtech:button_cover_tab_normal_steel";
+    public static final String BUTTON_COVER_TAB_HIGHLIGHT_STEEL = "gregtech:button_cover_tab_highlight_steel";
+    public static final String BUTTON_COVER_TAB_DISABLED_STEEL = "gregtech:button_cover_tab_disabled_steel";
+    public static final String BUTTON_COVER_TAB_NORMAL_PRIMITIVE = "gregtech:button_cover_tab_normal_primitive";
+    public static final String BUTTON_COVER_TAB_HIGHLIGHT_PRIMITIVE = "gregtech:button_cover_tab_highlight_primitive";
+    public static final String BUTTON_COVER_TAB_DISABLED_PRIMITIVE = "gregtech:button_cover_tab_disabled_primitive";
 
     public static final String PICTURE_GT_LOGO_STANDARD = "gregtech:picture_gt_logo_standard";
     public static final String PICTURE_GT_LOGO_GRAY = "gregtech:picture_gt_logo_gray";

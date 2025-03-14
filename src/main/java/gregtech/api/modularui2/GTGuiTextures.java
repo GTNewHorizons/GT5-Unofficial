@@ -46,51 +46,6 @@ public final class GTGuiTextures {
             GTTextureIds.BACKGROUND_TITLE_STEEL,
             GTTextureIds.BACKGROUND_TITLE_PRIMITIVE)
         .build();
-    public static final UITexture BACKGROUND_COVER_TAB_NORMAL_STANDARD = UITexture.builder()
-        .location(GregTech.ID, "gui/tab/cover_normal")
-        .fullImage()
-        .canApplyTheme()
-        .name(GTTextureIds.BACKGROUND_COVER_TAB_NORMAL_STANDARD)
-        .build();
-    public static final UITexture BACKGROUND_COVER_TAB_HIGHLIGHT_STANDARD = UITexture.builder()
-        .location(GregTech.ID, "gui/tab/cover_highlight")
-        .fullImage()
-        .canApplyTheme()
-        .name(GTTextureIds.BACKGROUND_COVER_TAB_HIGHLIGHT_STANDARD)
-        .build();
-    public static final UITexture BACKGROUND_COVER_TAB_DISABLED_STANDARD = UITexture.builder()
-        .location(GregTech.ID, "gui/tab/cover_disabled")
-        .fullImage()
-        .canApplyTheme()
-        .name(GTTextureIds.BACKGROUND_COVER_TAB_DISABLED_STANDARD)
-        .build();
-    private static final SteamTextureRegisterer BACKGROUND_COVER_TAB_NORMAL_STEAM = SteamTextureRegisterer.builder()
-        .location("gui/tab/cover_%s_normal")
-        .fullImage()
-        .canApplyTheme()
-        .name(
-            GTTextureIds.BACKGROUND_COVER_TAB_NORMAL_BRONZE,
-            GTTextureIds.BACKGROUND_COVER_TAB_NORMAL_STEEL,
-            GTTextureIds.BACKGROUND_COVER_TAB_NORMAL_PRIMITIVE)
-        .build();
-    private static final SteamTextureRegisterer BACKGROUND_COVER_TAB_HIGHLIGHT_STEAM = SteamTextureRegisterer.builder()
-        .location("gui/tab/cover_%s_highlight")
-        .fullImage()
-        .canApplyTheme()
-        .name(
-            GTTextureIds.BACKGROUND_COVER_TAB_HIGHLIGHT_BRONZE,
-            GTTextureIds.BACKGROUND_COVER_TAB_HIGHLIGHT_STEEL,
-            GTTextureIds.BACKGROUND_COVER_TAB_HIGHLIGHT_PRIMITIVE)
-        .build();
-    private static final SteamTextureRegisterer BACKGROUND_COVER_TAB_DISABLED_STEAM = SteamTextureRegisterer.builder()
-        .location("gui/tab/cover_%s_disabled")
-        .fullImage()
-        .canApplyTheme()
-        .name(
-            GTTextureIds.BACKGROUND_COVER_TAB_DISABLED_BRONZE,
-            GTTextureIds.BACKGROUND_COVER_TAB_DISABLED_STEEL,
-            GTTextureIds.BACKGROUND_COVER_TAB_DISABLED_PRIMITIVE)
-        .build();
 
     public static final UITexture BACKGROUND_POPUP_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/background/popup")
@@ -351,6 +306,51 @@ public final class GTGuiTextures {
             GTTextureIds.BUTTON_BRONZE_PRESSED,
             GTTextureIds.BUTTON_STEEL_PRESSED,
             GTTextureIds.BUTTON_PRIMITIVE_PRESSED)
+        .build();
+    public static final UITexture BUTTON_COVER_TAB_NORMAL_STANDARD = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/cover_normal")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.BUTTON_COVER_TAB_NORMAL_STANDARD)
+        .build();
+    public static final UITexture BUTTON_COVER_TAB_HIGHLIGHT_STANDARD = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/cover_highlight")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.BUTTON_COVER_TAB_HIGHLIGHT_STANDARD)
+        .build();
+    public static final UITexture BUTTON_COVER_TAB_DISABLED_STANDARD = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/cover_disabled")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.BUTTON_COVER_TAB_DISABLED_STANDARD)
+        .build();
+    private static final SteamTextureRegisterer BUTTON_COVER_TAB_NORMAL_STEAM = SteamTextureRegisterer.builder()
+        .location("gui/tab/cover_%s_normal")
+        .fullImage()
+        .canApplyTheme()
+        .name(
+            GTTextureIds.BUTTON_COVER_TAB_NORMAL_BRONZE,
+            GTTextureIds.BUTTON_COVER_TAB_NORMAL_STEEL,
+            GTTextureIds.BUTTON_COVER_TAB_NORMAL_PRIMITIVE)
+        .build();
+    private static final SteamTextureRegisterer BUTTON_COVER_TAB_HIGHLIGHT_STEAM = SteamTextureRegisterer.builder()
+        .location("gui/tab/cover_%s_highlight")
+        .fullImage()
+        .canApplyTheme()
+        .name(
+            GTTextureIds.BUTTON_COVER_TAB_HIGHLIGHT_BRONZE,
+            GTTextureIds.BUTTON_COVER_TAB_HIGHLIGHT_STEEL,
+            GTTextureIds.BUTTON_COVER_TAB_HIGHLIGHT_PRIMITIVE)
+        .build();
+    private static final SteamTextureRegisterer BUTTON_COVER_TAB_DISABLED_STEAM = SteamTextureRegisterer.builder()
+        .location("gui/tab/cover_%s_disabled")
+        .fullImage()
+        .canApplyTheme()
+        .name(
+            GTTextureIds.BUTTON_COVER_TAB_DISABLED_BRONZE,
+            GTTextureIds.BUTTON_COVER_TAB_DISABLED_STEEL,
+            GTTextureIds.BUTTON_COVER_TAB_DISABLED_PRIMITIVE)
         .build();
 
     // endregion button

@@ -16,7 +16,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
-import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
@@ -28,6 +27,7 @@ import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.item.GhostCircuitItemStackHandler;
 import gregtech.common.items.ItemIntegratedCircuit;
+import gregtech.common.modularui2.widget.CoverTabButton;
 import gregtech.common.modularui2.widget.GhostCircuitSlotWidget;
 
 // spotless:off
@@ -178,7 +178,7 @@ public final class GTBaseGuiBuilder {
     private IWidget createCoverTabs() {
         Flow column = Flow.column()
             .coverChildren()
-            .leftRel(0, 2, 1)
+            .leftRel(0f, 2, 1f)
             .top(1)
             .childPadding(2);
         for (int i = 0; i < 6; i++) {
@@ -186,17 +186,7 @@ public final class GTBaseGuiBuilder {
             String panelKey = "cover_panel_" + side.toString()
                 .toLowerCase();
             IPanelHandler panel = syncManager.panel(panelKey, coverPanelBuilder(panelKey, side), true);
-            column.child(new ButtonWidget<>().onMousePressed(mouseButton -> {
-                panel.openPanel();
-                return true;
-            })
-                .overlay(
-                    new ItemDrawable(ItemList.Electric_Pump_LV.get(1)).asIcon()
-                        .marginLeft(2)
-                        .marginTop(1))
-                // todo: change background
-                .widgetTheme(GTWidgetThemes.BACKGROUND_COVER_TAB_NORMAL)
-                .size(18, 20));
+            column.child(new CoverTabButton(mte.getBaseMetaTileEntity(), side, panel));
         }
         posGuiData.getNEISettings()
             .addNEIExclusionArea(column);
