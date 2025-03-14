@@ -717,6 +717,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     RadioactivityCatalyst,
     RareEarthGroupCatalyst,
     SimpleNaquadahCatalyst,
+    HellishForceCatalyst,
     AdvancedNaquadahCatalyst,
     RawIntelligenceCatalyst,
     UltimatePlasticCatalyst,
@@ -816,6 +817,10 @@ public enum GregtechItemList implements IGregtechItemContainer {
     TripleCompressedGlowstone,
     QuadrupleCompressedGlowstone,
     QuintupleCompressedGlowstone,
+
+    CompressedNetherrack,
+    DoubleCompressedNetherrack,
+    TripleCompressedNetherrack,
 
     // IC2 Rotors
     EnergeticAlloyRotor,

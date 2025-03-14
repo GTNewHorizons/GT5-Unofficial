@@ -164,6 +164,7 @@ import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystal;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystalSmallPart;
 import static gregtech.common.items.IDMetaItem03.HV_Coil;
 import static gregtech.common.items.IDMetaItem03.Heavy_Hellish_Mud;
+import static gregtech.common.items.IDMetaItem03.Hot_Netherite_Scrap;
 import static gregtech.common.items.IDMetaItem03.IV_Coil;
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_AUTOMATION;
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_Acceleration_1;
@@ -1206,6 +1207,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Netherite_Nanoparticles.set(addItem(Netherite_Nanoparticles.ID, "Netherite Nanoparticles", ""));
         ItemList.Intensely_Bonded_Netherite_Nanoparticles.set(
             addItem(Instensely_Bonded_Netherite_Nanoparticles.ID, "Instensely Bonded Netherite Nanoparticles", ""));
+        ItemList.Hot_Netherite_Scrap.set(addItem(Hot_Netherite_Scrap.ID, "Hot Netherite Scrap", "Activated?"));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
             addItem(

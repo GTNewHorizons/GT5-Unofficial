@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import static goodgenerator.loader.Loaders.advancedRadiationProtectionPlate;
+import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -275,6 +276,27 @@ public class RecipeLoaderChemicalSkips {
             .metadata(QFT_CATALYST, GregtechItemList.RareEarthGroupCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 2)
             .addTo(quantumForceTransformerRecipes);
+        if (EtFuturumRequiem.isModLoaded()) {
+            // Netherite
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTUtility
+                        .copyAmountUnsafe(64 * 16, GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 1)),
+                    getModItem(EtFuturumRequiem.ID, "ancient_debris", 4))
+                .fluidInputs(
+                    Materials.NetherAir.getFluid(64000),
+                    Materials.HellishMetal.getMolten(8 * 144),
+                    FluidUtils.getLava(256000))
+                .itemOutputs(
+                    getModItem(EtFuturumRequiem.ID, "netherite_scrap", 16),
+                    ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(64))
+                .fluidOutputs(Materials.NefariousOil.getFluid(64000))
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_UHV)
+                .metadata(QFT_CATALYST, GregtechItemList.HellishForceCatalyst.get(0))
+                .metadata(QFT_FOCUS_TIER, 2)
+                .addTo(quantumForceTransformerRecipes);
+        }
         // Stem Cells
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -539,6 +561,21 @@ public class RecipeLoaderChemicalSkips {
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
+        if (EtFuturumRequiem.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTUtility.getIntegratedCircuit(10),
+                    CI.getEmptyCatalyst(1),
+                    Materials.Netherite.getDust(64),
+                    Materials.InfusedGold.getDust(64),
+                    getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1),
+                    Materials.Neutronium.getNanite(1))
+                .itemOutputs(GregtechItemList.HellishForceCatalyst.get(1))
+                .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(9216))
+                .duration(60 * SECONDS)
+                .eut(TierEU.RECIPE_UEV)
+                .addTo(assemblerRecipes);
+        }
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(10),

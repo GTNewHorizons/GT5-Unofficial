@@ -2606,7 +2606,8 @@ public enum ItemList implements IItemContainer {
     Netherite_Scrap_Seed,
     Brittle_Netherite_Scrap,
     Netherite_Nanoparticles,
-    Intensely_Bonded_Netherite_Nanoparticles
+    Intensely_Bonded_Netherite_Nanoparticles,
+    Hot_Netherite_Scrap
 
     // semicolon after the comment to reduce merge conflicts
     ;

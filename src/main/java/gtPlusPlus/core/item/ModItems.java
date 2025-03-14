@@ -949,6 +949,8 @@ public final class ModItems {
             .registerOre("catalystSynchrotronCapable");
         GregtechItemList.AlgagenicGrowthPromoterCatalyst.set(new ItemStack(genericChemItem, 1, 33))
             .registerOre("catalystAlgagenicGrowthPromoter");
+        GregtechItemList.HellishForceCatalyst.set(new ItemStack(genericChemItem, 1, 34))
+            .registerOre("catalystHellishForce");
 
         // Milled Ore Processing
         GregtechItemList.MilledSphalerite
@@ -969,7 +971,7 @@ public final class ModItems {
         GregtechItemList.MilledMonazite.set(BaseItemMilledOre.generate(Materials.Monazite, (int) TierEU.RECIPE_ZPM));
         GregtechItemList.MilledNetherite.set(
             BaseItemMilledOre
-                .generate(Materials.Netherrack, (int) TierEU.RECIPE_IV, new ItemStack(Blocks.netherrack, 1024)));
+                .generate(Materials.Netherrack, (int) TierEU.RECIPE_IV, new ItemStack(Blocks.netherrack, 256)));
 
         // Baubles
         if (Baubles.isModLoaded()) {
