@@ -4,6 +4,8 @@ import static gregtech.api.enums.Mods.GregTech;
 
 import com.cleanroommc.modularui.drawable.UITexture;
 
+import gregtech.common.modularui2.util.SteamTextureRegisterer;
+
 /**
  * Holds all the references to GUI textures used within GregTech.
  */
@@ -20,28 +22,13 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.BACKGROUND_STANDARD)
         .build();
-    public static final UITexture BACKGROUND_BRONZE = UITexture.builder()
-        .location(GregTech.ID, "gui/background/bronze")
+    private static final SteamTextureRegisterer BACKGROUND_STEAM = SteamTextureRegisterer.builder()
+        .location("gui/background/%s")
         .imageSize(176, 166)
         .adaptable(4)
         .canApplyTheme()
-        .name(GTTextureIds.BACKGROUND_BRONZE)
+        .name(GTTextureIds.BACKGROUND_BRONZE, GTTextureIds.BACKGROUND_STEEL, GTTextureIds.BACKGROUND_PRIMITIVE)
         .build();
-    public static final UITexture BACKGROUND_STEEL = UITexture.builder()
-        .location(GregTech.ID, "gui/background/steel")
-        .imageSize(176, 166)
-        .adaptable(4)
-        .canApplyTheme()
-        .name(GTTextureIds.BACKGROUND_STEEL)
-        .build();
-    public static final UITexture BACKGROUND_PRIMITIVE = UITexture.builder()
-        .location(GregTech.ID, "gui/background/primitive")
-        .imageSize(176, 166)
-        .adaptable(4)
-        .canApplyTheme()
-        .name(GTTextureIds.BACKGROUND_PRIMITIVE)
-        .build();
-
     public static final UITexture BACKGROUND_TITLE_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/tab/title_dark")
         .imageSize(28, 28)
@@ -49,48 +36,63 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.BACKGROUND_TITLE_STANDARD)
         .build();
-    public static final UITexture BACKGROUND_TITLE_BRONZE = UITexture.builder()
-        .location(GregTech.ID, "gui/tab/title_dark_bronze")
+    private static final SteamTextureRegisterer BACKGROUND_TITLE_STEAM = SteamTextureRegisterer.builder()
+        .location("gui/tab/title_dark_%s")
         .imageSize(28, 28)
         .adaptable(4)
         .canApplyTheme()
-        .name(GTTextureIds.BACKGROUND_TITLE_BRONZE)
+        .name(
+            GTTextureIds.BACKGROUND_TITLE_BRONZE,
+            GTTextureIds.BACKGROUND_TITLE_STEEL,
+            GTTextureIds.BACKGROUND_TITLE_PRIMITIVE)
         .build();
-    public static final UITexture BACKGROUND_TITLE_STEEL = UITexture.builder()
-        .location(GregTech.ID, "gui/tab/title_dark_steel")
-        .imageSize(28, 28)
-        .adaptable(4)
-        .canApplyTheme()
-        .name(GTTextureIds.BACKGROUND_TITLE_STEEL)
-        .build();
-    public static final UITexture BACKGROUND_TITLE_PRIMITIVE = UITexture.builder()
-        .location(GregTech.ID, "gui/tab/title_dark_primitive")
-        .imageSize(28, 28)
-        .adaptable(4)
-        .canApplyTheme()
-        .name(GTTextureIds.BACKGROUND_TITLE_PRIMITIVE)
-        .build();
-
     public static final UITexture BACKGROUND_COVER_TAB_NORMAL_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/tab/cover_normal")
-        .imageSize(18, 20)
+        .fullImage()
         .canApplyTheme()
         .name(GTTextureIds.BACKGROUND_COVER_TAB_NORMAL_STANDARD)
         .build();
     public static final UITexture BACKGROUND_COVER_TAB_HIGHLIGHT_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/tab/cover_highlight")
-        .imageSize(18, 20)
+        .fullImage()
         .canApplyTheme()
         .name(GTTextureIds.BACKGROUND_COVER_TAB_HIGHLIGHT_STANDARD)
         .build();
     public static final UITexture BACKGROUND_COVER_TAB_DISABLED_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/tab/cover_disabled")
-        .imageSize(18, 20)
+        .fullImage()
         .canApplyTheme()
         .name(GTTextureIds.BACKGROUND_COVER_TAB_DISABLED_STANDARD)
         .build();
+    private static final SteamTextureRegisterer BACKGROUND_COVER_TAB_NORMAL_STEAM = SteamTextureRegisterer.builder()
+        .location("gui/tab/cover_%s_normal")
+        .fullImage()
+        .canApplyTheme()
+        .name(
+            GTTextureIds.BACKGROUND_COVER_TAB_NORMAL_BRONZE,
+            GTTextureIds.BACKGROUND_COVER_TAB_NORMAL_STEEL,
+            GTTextureIds.BACKGROUND_COVER_TAB_NORMAL_PRIMITIVE)
+        .build();
+    private static final SteamTextureRegisterer BACKGROUND_COVER_TAB_HIGHLIGHT_STEAM = SteamTextureRegisterer.builder()
+        .location("gui/tab/cover_%s_highlight")
+        .fullImage()
+        .canApplyTheme()
+        .name(
+            GTTextureIds.BACKGROUND_COVER_TAB_HIGHLIGHT_BRONZE,
+            GTTextureIds.BACKGROUND_COVER_TAB_HIGHLIGHT_STEEL,
+            GTTextureIds.BACKGROUND_COVER_TAB_HIGHLIGHT_PRIMITIVE)
+        .build();
+    private static final SteamTextureRegisterer BACKGROUND_COVER_TAB_DISABLED_STEAM = SteamTextureRegisterer.builder()
+        .location("gui/tab/cover_%s_disabled")
+        .fullImage()
+        .canApplyTheme()
+        .name(
+            GTTextureIds.BACKGROUND_COVER_TAB_DISABLED_BRONZE,
+            GTTextureIds.BACKGROUND_COVER_TAB_DISABLED_STEEL,
+            GTTextureIds.BACKGROUND_COVER_TAB_DISABLED_PRIMITIVE)
+        .build();
 
-    public static final UITexture BACKGROUND_POPUP = UITexture.builder()
+    public static final UITexture BACKGROUND_POPUP_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/background/popup")
         .imageSize(195, 136)
         .adaptable(4)
@@ -169,9 +171,63 @@ public final class GTGuiTextures {
     // region slot overlay
 
     public static final UITexture OVERLAY_SLOT_DATA_ORB = fullImageColorableGT("overlay_slot/data_orb");
+    public static final UITexture OVERLAY_SLOT_DUST_STANDARD = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/dust")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_DUST_STANDARD)
+        .build();
+    private static final SteamTextureRegisterer OVERLAY_SLOT_DUST_STEAM = SteamTextureRegisterer.builder()
+        .location("gui/overlay_slot/dust_%s")
+        .fullImage()
+        .canApplyTheme()
+        .name(
+            GTTextureIds.OVERLAY_SLOT_DUST_BRONZE,
+            GTTextureIds.OVERLAY_SLOT_DUST_STEEL,
+            GTTextureIds.OVERLAY_SLOT_DUST_PRIMITIVE)
+        .build();
+    public static final UITexture OVERLAY_SLOT_INGOT_STANDARD = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/ingot")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_INGOT_STANDARD)
+        .build();
+    private static final SteamTextureRegisterer OVERLAY_SLOT_INGOT_STEAM = SteamTextureRegisterer.builder()
+        .location("gui/overlay_slot/ingot_%s")
+        .fullImage()
+        .canApplyTheme()
+        .name(
+            GTTextureIds.OVERLAY_SLOT_INGOT_BRONZE,
+            GTTextureIds.OVERLAY_SLOT_INGOT_STEEL,
+            GTTextureIds.OVERLAY_SLOT_INGOT_PRIMITIVE)
+        .build();
     public static final UITexture OVERLAY_SLOT_INT_CIRCUIT = fullImageColorableGT("overlay_slot/int_circuit");
+    public static final UITexture OVERLAY_SLOT_FURNACE_STANDARD = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/furnace")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.OVERLAY_SLOT_FURNACE_STANDARD)
+        .build();
+    private static final SteamTextureRegisterer OVERLAY_SLOT_FURNACE_STEAM = SteamTextureRegisterer.builder()
+        .location("gui/overlay_slot/furnace_%s")
+        .fullImage()
+        .canApplyTheme()
+        .name(
+            GTTextureIds.OVERLAY_SLOT_FURNACE_BRONZE,
+            GTTextureIds.OVERLAY_SLOT_FURNACE_STEEL,
+            GTTextureIds.OVERLAY_SLOT_FURNACE_PRIMITIVE)
+        .build();
 
     // endregion slot overlay
+
+    // region progressbar
+
+    public static final UITexture PROGRESSBAR_ARROW_STANDARD = fullImageColorableGT("progressbar/arrow");
+    public static final UITexture PROGRESSBAR_ARROW_BRONZE = fullImageColorableGT("progressbar/arrow_bronze");
+    public static final UITexture PROGRESSBAR_ARROW_STEEL = fullImageColorableGT("progressbar/arrow_steel");
+    public static final UITexture PROGRESSBAR_ARROW_BBF = fullImageColorableGT("progressbar/arrow_bbf");
+
+    // endregion progressbar
 
     // region button
 
@@ -220,8 +276,21 @@ public final class GTGuiTextures {
 
     public static final UITexture PICTURE_GT_LOGO_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/picture/gt_logo_standard")
-        .imageSize(17, 17)
+        .fullImage()
         .name(GTTextureIds.PICTURE_GT_LOGO_STANDARD)
+        .build();
+    public static final UITexture PICTURE_GT_LOGO_GRAY = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/gt_logo_gray")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_GT_LOGO_GRAY)
+        .build();
+    private static final SteamTextureRegisterer PICTURE_GT_LOGO_STEAM = SteamTextureRegisterer.builder()
+        .location("gui/picture/gt_logo_%s")
+        .fullImage()
+        .name(
+            GTTextureIds.PICTURE_GT_LOGO_BRONZE,
+            GTTextureIds.PICTURE_GT_LOGO_STEEL,
+            GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
         .build();
 
     // endregion picture
