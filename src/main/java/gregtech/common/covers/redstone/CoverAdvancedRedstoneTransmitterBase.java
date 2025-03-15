@@ -19,6 +19,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.Cover;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
@@ -56,10 +57,10 @@ public abstract class CoverAdvancedRedstoneTransmitterBase<T extends CoverAdvanc
     }
 
     @Override
-    public void preDataChanged(int newCoverId, ISerializableObject newCoverVariable) {
-        if (newCoverVariable instanceof TransmitterData newTransmitterData
-            && (coverData.frequency != newTransmitterData.frequency
-                || !Objects.equals(coverData.uuid, newTransmitterData.uuid))) {
+    public void preDataChanged(Cover newCover) {
+        if (newCover instanceof CoverAdvancedRedstoneTransmitterBase<?>newTransmitterCover
+            && (coverData.frequency != newTransmitterCover.coverData.frequency
+                || !Objects.equals(coverData.uuid, newTransmitterCover.coverData.uuid))) {
             unregisterSignal();
         }
     }
