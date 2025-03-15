@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -46,7 +46,6 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
 public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
-    public static final Logger LOGGER = LogManager.getLogger("SNIFFER");
 
     private String freqFilter = "";
     private String ownerFilter = "";
@@ -84,7 +83,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
             .align(Alignment.Center);
 
         PagedWidget data = new PagedWidget();
-        data.sizeRel(1, 0.8f);
+        data.sizeRel(1, 0.7f);
         data.controller(controller);
 
         // Process regular wireless redstone frequencies
@@ -189,7 +188,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
         panel.child(
             new Column().margin(10)
                 .child(
-                    new Row().heightRel(0.1f)
+                    new Row().heightRel(0.1f).marginBottom(10)
                         .child(
                             new PageButton(0, controller).widthRel(0.5f)
                                 .align(Alignment.CenterLeft)
@@ -199,9 +198,9 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                 .align(Alignment.CenterRight)
                                 .overlay(IKey.dynamic(() -> "Advanced Wireless"))))
                 .child(
-                    new Row().heightRel(0.1f)
+                    new Row().heightRel(0.1f).marginBottom(10)
                         .child(
-                            new TextWidget("Filter frequency: ").widthRel(0.25f)
+                            new TextWidget("Frequency: ").widthRel(0.25f)
                                 .alignment(Alignment.Center))
                         .child(
                             new TextFieldWidget().sizeRel(0.25f, 0.5f)
@@ -213,7 +212,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                     }
                                 })))
                         .child(
-                            new TextWidget("Filter owner: ").widthRel(0.25f)
+                            new TextWidget("Owner: ").widthRel(0.25f)
                                 .alignment(Alignment.Center))
                         .child(
                             new TextFieldWidget().sizeRel(0.25f, 0.5f)
@@ -258,15 +257,10 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                             new TextWidget(cover.getInfo()).widthRel(0.25f)
                                 .alignment(Alignment.Center))
                         .child(
-                            new ButtonWidget<>().widthRel(0.11f)
-                                .marginLeft(5)
+                            new ButtonWidget<>().widthRel(0.1f)
+                                .marginLeft(2)
                                 .overlay(IKey.str("Locate"))
                                 .onMousePressed(mouseButton -> {
-                                    LOGGER.debug(
-                                        "Locating cover " + cover.getInfo()
-                                            + " For player "
-                                            + guiSyncManager.getPlayer()
-                                                .getDisplayName());
                                     GTValues.NW.sendToServer(
                                         new PacketDebugRedstoneCover(cover.dim, cover.x, cover.y, cover.z, false));
                                     listWidget.getPanel()
@@ -274,13 +268,10 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                     return true;
                                 }))
                         .child(
-                            new ButtonWidget<>().widthRel(0.11f)
+                            new ButtonWidget<>().widthRel(0.1f)
                                 .marginLeft(5)
-                                .overlay(IKey.str("Teleport"))
+                                .overlay(IKey.str("Teleport").asIcon())
                                 .onMousePressed(mouseButton -> {
-                                    LOGGER.debug(
-                                        "Teleporting player " + guiSyncManager.getPlayer()
-                                            .getDisplayName() + " to " + cover.getInfo());
                                     GTValues.NW.sendToServer(
                                         new PacketDebugRedstoneCover(cover.dim, cover.x, cover.y, cover.z, true));
                                     listWidget.getPanel()
