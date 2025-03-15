@@ -549,7 +549,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
      */
     @SuppressWarnings("deprecation")
     public void openGui(EntityPlayer player) {
-        if (GTGuis.GLOBAL_SWITCH_MUI2 && useMui2()) {
+        if ((GTGuis.GLOBAL_SWITCH_MUI2 && useMui2()) || forceUseMui2()) {
             if (!NetworkUtils.isClient(player)) {
                 MetaTileEntityGuiHandler.open(player, this);
             }
@@ -563,6 +563,14 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
      * MUI1.
      */
     protected boolean useMui2() {
+        return false;
+    }
+
+    /**
+     * Returning true means opening GUI with MUI2, regardless of {@link GTGuis#GLOBAL_SWITCH_MUI2}. Note that cover tabs
+     * are currently unfinished.
+     */
+    protected boolean forceUseMui2() {
         return false;
     }
 
