@@ -78,7 +78,11 @@ public abstract class Cover {
         return true;
     }
 
-    public abstract ISerializableObject getCoverData();
+    /**
+     * @deprecated Only left for use by GUIs until they migrate to using covers directly.
+     */
+    @Deprecated
+    protected abstract ISerializableObject getCoverData();
 
     /**
      * Called when the cover is initially attached to a machine.
@@ -209,7 +213,7 @@ public abstract class Cover {
     /**
      * Called before receiving data from network. Use {@link ICoverable#isClientSide()} to determine the side.
      */
-    public void preDataChanged(int newCoverId, ISerializableObject newCoverVariable) {}
+    public void preDataChanged(Cover newCover) {}
 
     /**
      * Called upon receiving data from network. Use {@link ICoverable#isClientSide()} to determine the side.

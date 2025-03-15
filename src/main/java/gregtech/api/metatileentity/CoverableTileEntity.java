@@ -52,7 +52,6 @@ import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.net.GTPacketRequestCoverData;
 import gregtech.api.net.GTPacketSendCoverData;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.GTClient;
 import gregtech.common.covers.Cover;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -416,8 +415,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final Cover oldCover = getCoverAtSide(side);
 
         if (!oldCover.isValid()) return;
-        ISerializableObject coverData = cover.getCoverData();
-        oldCover.preDataChanged(cover.getCoverID(), coverData);
+        oldCover.preDataChanged(cover);
         applyCover(cover, side);
 
         if (isClientSide()) {

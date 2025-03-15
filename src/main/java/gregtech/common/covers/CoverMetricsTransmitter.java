@@ -49,6 +49,10 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
         super(context, MetricsTransmitterData.class, coverTexture);
     }
 
+    public UUID getFrequency() {
+        return coverData.getFrequency();
+    }
+
     @Override
     protected MetricsTransmitterData initializeData() {
         return new CoverMetricsTransmitter.MetricsTransmitterData();
