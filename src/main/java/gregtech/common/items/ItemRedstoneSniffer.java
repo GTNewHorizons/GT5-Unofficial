@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -24,6 +25,7 @@ import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widget.WidgetTree;
@@ -48,6 +50,8 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
 
     private String freqFilter = "";
     private String ownerFilter = "";
+    private int lastPage = 0;
+    private boolean isOP = false;
 
     public ItemRedstoneSniffer(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);;
@@ -74,17 +78,37 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
 
     @Override
     public ModularPanel buildUI(GuiData guiData, PanelSyncManager guiSyncManager) {
-        PagedWidget.Controller controller = new PagedWidget.Controller();
+        PagedWidget.Controller controller = new PagedWidget.Controller() {
+
+            @Override
+            public void setPage(int page) {
+                super.setPage(page);
+                lastPage = page;
+            }
+        };
+
+        BooleanSyncValue playerIsOP = new BooleanSyncValue(() -> false, () -> {
+            EntityPlayerMP player = (EntityPlayerMP) guiData.getPlayer();
+            boolean result = player.mcServer.getConfigurationManager()
+                .func_152596_g(player.getGameProfile());
+            isOP = result;
+            return result;
+        });
 
         ModularPanel panel = ModularPanel.defaultPanel("redstone_sniffer");
         panel.flex()
             .sizeRel(0.5f, 0.75f)
             .align(Alignment.Center);
 
-        PagedWidget data = new PagedWidget();
+        PagedWidget data = new PagedWidget() {
+
+            @Override
+            public void afterInit() {
+                setPage(lastPage);
+            }
+        };
         data.sizeRel(1, 0.7f);
         data.controller(controller);
-
         // Process regular wireless redstone frequencies
         List<IWidget> regularList = new ArrayList<>();
         GregTechAPI.sWirelessRedstone.entrySet()
@@ -143,7 +167,8 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
             publicFreqs,
             "Public",
             advancedListWidget,
-            guiSyncManager));
+            guiSyncManager,
+            isOP));
 
         UUID leader = SpaceProjectManager.getLeader(
             guiData.getPlayer()
@@ -157,7 +182,8 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                             allFreqs.getOrDefault(uuid, new ConcurrentHashMap<>()),
                             uuid,
                             advancedListWidget,
-                            guiSyncManager)));
+                            guiSyncManager,
+                            isOP)));
                 }
             });
 
@@ -223,12 +249,11 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                     }
                                 }))))
                 .child(data));
-
         return panel;
     }
 
     public List<IWidget> processAdvancedFrequencies(Map<String, Map<CoverPosition, Byte>> frequencyMap, String owner,
-        ListWidget listWidget, PanelSyncManager guiSyncManager) {
+        ListWidget listWidget, PanelSyncManager guiSyncManager, boolean playerIsOP) {
 
         String ownerString = owner.equals("Public") ? "Public"
             : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(owner));
@@ -263,39 +288,47 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                             .child(
                                 new Row().widthRel(0.25f)
                                     .child(
-                                        new ButtonWidget<>().size(22, 22)
-                                            .align(Alignment.CenterLeft)
-                                            .overlay(UITexture.fullImage(GregTech.ID, "items/redstoneSnifferLocate"))
-                                            .tooltip(tooltip -> { tooltip.addLine(IKey.str("Locate")); })
-                                            .onMousePressed(mouseButton -> {
-                                                GTValues.NW.sendToServer(
-                                                    new PacketDebugRedstoneCover(
-                                                        cover.dim,
-                                                        cover.x,
-                                                        cover.y,
-                                                        cover.z,
-                                                        false));
-                                                listWidget.getPanel()
-                                                    .closeIfOpen(false);
-                                                return true;
-                                            }))
+                                        new Column().widthRel(playerIsOP ? 0.5f : 1)
+                                            .child(
+                                                new ButtonWidget<>().size(22, 22)
+                                                    .align(Alignment.Center)
+                                                    .overlay(
+                                                        UITexture.fullImage(GregTech.ID, "items/redstoneSnifferLocate"))
+                                                    .tooltip(tooltip -> { tooltip.addLine(IKey.str("Locate")); })
+                                                    .onMousePressed(mouseButton -> {
+                                                        GTValues.NW.sendToServer(
+                                                            new PacketDebugRedstoneCover(
+                                                                cover.dim,
+                                                                cover.x,
+                                                                cover.y,
+                                                                cover.z,
+                                                                false));
+                                                        listWidget.getPanel()
+                                                            .closeIfOpen(false);
+                                                        return true;
+                                                    })))
                                     .child(
-                                        new ButtonWidget<>().size(22, 22)
-                                            .align(Alignment.CenterRight)
-                                            .overlay(UITexture.fullImage(GregTech.ID, "items/redstoneSnifferTeleport"))
-                                            .tooltip(tooltip -> { tooltip.addLine(IKey.str("Teleport")); })
-                                            .onMousePressed(mouseButton -> {
-                                                GTValues.NW.sendToServer(
-                                                    new PacketDebugRedstoneCover(
-                                                        cover.dim,
-                                                        cover.x,
-                                                        cover.y,
-                                                        cover.z,
-                                                        true));
-                                                listWidget.getPanel()
-                                                    .closeIfOpen(false);
-                                                return true;
-                                            }))));
+                                        new Column().setEnabledIf(w -> playerIsOP)
+                                            .widthRel(0.5f)
+                                            .child(
+                                                new ButtonWidget<>().size(22, 22)
+                                                    .align(Alignment.Center)
+                                                    .overlay(
+                                                        UITexture
+                                                            .fullImage(GregTech.ID, "items/redstoneSnifferTeleport"))
+                                                    .tooltip(tooltip -> { tooltip.addLine(IKey.str("Teleport")); })
+                                                    .onMousePressed(mouseButton -> {
+                                                        GTValues.NW.sendToServer(
+                                                            new PacketDebugRedstoneCover(
+                                                                cover.dim,
+                                                                cover.x,
+                                                                cover.y,
+                                                                cover.z,
+                                                                true));
+                                                        listWidget.getPanel()
+                                                            .closeIfOpen(false);
+                                                        return true;
+                                                    })))));
                 });
 
             });
