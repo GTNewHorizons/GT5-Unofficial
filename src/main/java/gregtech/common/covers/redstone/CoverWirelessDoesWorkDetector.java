@@ -199,7 +199,7 @@ public class CoverWirelessDoesWorkDetector
             })
                 .setSynced(false)
                 .setDefaultColor(COLOR_TEXT_GRAY.get())
-                .setPos(startX + spaceX * 3, 4 + startY + spaceY * 3))
+                .setPos(startX + spaceX * 3, 4 + startY + spaceY * 2))
                 .widget(TextWidget.dynamicString(() -> {
                     ActivityTransmitterData coverData = getCoverData();
                     if (coverData != null) {
@@ -213,7 +213,7 @@ public class CoverWirelessDoesWorkDetector
                     .setSynced(false)
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(startX + spaceX, 4 + startY + spaceY * 4)
+                    .setPos(startX + spaceX, 4 + startY + spaceY * 3)
                     .setSize(spaceX * 10, 12));
         }
 
@@ -230,7 +230,7 @@ public class CoverWirelessDoesWorkDetector
                 },
                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_PROGRESS)
                     .addTooltip(GTUtility.trans("241", "Recipe progress"))
-                    .setPos(spaceX * 0, spaceY * 3))
+                    .setPos(spaceX * 0, spaceY * 2))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
                     coverData -> coverData.mode == ActivityMode.MACHINE_IDLE,
@@ -240,7 +240,7 @@ public class CoverWirelessDoesWorkDetector
                     },
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK)
                         .addTooltip(GTUtility.trans("242", "Machine idle"))
-                        .setPos(spaceX * 1, spaceY * 3))
+                        .setPos(spaceX * 1, spaceY * 2))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
                     coverData -> coverData.mode == ActivityMode.MACHINE_ENABLED,
@@ -250,7 +250,7 @@ public class CoverWirelessDoesWorkDetector
                     },
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
                         .addTooltip(GTUtility.trans("271", "Machine enabled"))
-                        .setPos(spaceX * 2, spaceY * 3))
+                        .setPos(spaceX * 2, spaceY * 2))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
                     coverData -> coverData.physical,
@@ -260,7 +260,7 @@ public class CoverWirelessDoesWorkDetector
                     },
                     widget -> widget
                         .addTooltip(StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.tooltip"))
-                        .setPos(0, 1 + spaceY * 4));
+                        .setPos(0, 1 + spaceY * 3));
         }
     }
 

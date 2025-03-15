@@ -287,10 +287,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
                 .widget(
                     new TextWidget(GTUtility.trans("602", "Use Private Frequency"))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * privateExtraColumn, 4 + startY + spaceY * getButtonRow()))
-                .widget(
-                    new TextWidget("Label").setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2));
+                        .setPos(startX + spaceX * privateExtraColumn, 4 + startY + spaceY * getButtonRow()));
         }
 
         protected void addUIForDataController(CoverDataControllerWidget<T> controller) {
