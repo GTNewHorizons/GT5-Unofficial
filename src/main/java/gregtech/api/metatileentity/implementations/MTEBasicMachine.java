@@ -676,6 +676,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                     mStuttering = true;
                 }
             }
+        } else {
+            doActivitySound(getActivitySoundLoop());
         }
         // Only using mNeedsSteamVenting right now and assigning it to 64 to space in the range for more single block
         // machine problems.
@@ -684,6 +686,12 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         // 64 | MTEBasicMachineBronze | mNeedsSteamVenting
         setErrorDisplayID((getErrorDisplayID() & ~127)); // | (mStuttering ? 1 :
                                                          // 0));
+    }
+
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        RecipeMap<?> map = getRecipeMap();
+        return map != null ? map.getSound() : null;
     }
 
     protected void doDisplayThings() {
@@ -805,6 +813,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         super.doSound(aIndex, aX, aY, aZ);
         if (aIndex == 8) GTUtility.doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
+        else if (aIndex == 8)
+            GTUtility.doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
     }
 
     public boolean doesAutoOutput() {

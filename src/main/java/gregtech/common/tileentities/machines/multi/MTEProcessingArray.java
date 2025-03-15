@@ -206,21 +206,9 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
     }
 
     @Override
-    protected void sendStartMultiBlockSoundLoop() {
-        SoundResource sound = ProcessingArrayManager
-            .getSoundResource(ProcessingArrayManager.getMachineName(getControllerSlot()));
-        if (sound != null) {
-            sendLoopStart((byte) sound.id);
-        }
-    }
-
-    @Override
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        super.startSoundLoop(aIndex, aX, aY, aZ);
-        SoundResource sound = SoundResource.get(aIndex < 0 ? aIndex + 256 : 0);
-        if (sound != null) {
-            GTUtility.doSoundAtClient(sound, getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
-        }
+    protected SoundResource getActivitySoundLoop() {
+        RecipeMap<?> map = fetchRecipeMap();
+        return map != null ? map.getSound() : null;
     }
 
     @Override

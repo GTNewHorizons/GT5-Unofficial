@@ -1,0 +1,1 @@
+Sound files from GTCEu - https://github.com/GregTechCEu/GregTech/tree/master/src/main/resources/assets/gregtech/sounds

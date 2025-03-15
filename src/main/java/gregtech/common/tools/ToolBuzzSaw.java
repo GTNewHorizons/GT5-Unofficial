@@ -36,17 +36,17 @@ public class ToolBuzzSaw extends ToolSaw {
 
     @Override
     public String getCraftingSound() {
-        return SoundResource.IC2_TOOLS_CHAINSAW_CHAINSAW_USE_ONE.toString();
+        return SoundResource.GT_TOOLS_CHAINSAW.toString();
     }
 
     @Override
     public String getEntityHitSound() {
-        return SoundResource.IC2_TOOLS_CHAINSAW_CHAINSAW_USE_TWO.toString();
+        return SoundResource.GT_TOOLS_CHAINSAW.toString();
     }
 
     @Override
     public String getMiningSound() {
-        return SoundResource.IC2_TOOLS_CHAINSAW_CHAINSAW_USE_ONE.toString();
+        return SoundResource.GT_TOOLS_CHAINSAW.toString();
     }
 
     @Override

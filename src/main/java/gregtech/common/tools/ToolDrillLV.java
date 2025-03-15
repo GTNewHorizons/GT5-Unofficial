@@ -61,22 +61,22 @@ public class ToolDrillLV extends GTTool {
 
     @Override
     public String getCraftingSound() {
-        return SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT.toString();
+        return SoundResource.GT_TOOLS_DRILL.toString();
     }
 
     @Override
     public String getEntityHitSound() {
-        return SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT.toString();
+        return SoundResource.GT_TOOLS_DRILL.toString();
     }
 
     @Override
     public String getBreakingSound() {
-        return SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT.toString();
+        return SoundResource.GT_TOOLS_DRILL.toString();
     }
 
     @Override
     public String getMiningSound() {
-        return SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT.toString();
+        return SoundResource.GT_TOOLS_DRILL.toString();
     }
 
     @Override

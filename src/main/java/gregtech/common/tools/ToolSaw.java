@@ -15,6 +15,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.world.BlockEvent;
 
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
@@ -64,7 +65,7 @@ public class ToolSaw extends GTTool {
 
     @Override
     public String getCraftingSound() {
-        return null;
+        return SoundResource.GT_TOOLS_SAW.toString();
     }
 
     @Override

@@ -771,14 +771,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     if (hasValidMetaTileEntity() && mTickTimer > 20)
                         mMetaTileEntity.doSound((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
                 }
-                case GregTechTileClientEvents.START_SOUND_LOOP -> {
-                    if (hasValidMetaTileEntity() && mTickTimer > 20)
-                        mMetaTileEntity.startSoundLoop((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
-                }
-                case GregTechTileClientEvents.STOP_SOUND_LOOP -> {
-                    if (hasValidMetaTileEntity() && mTickTimer > 20)
-                        mMetaTileEntity.stopSoundLoop((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
-                }
                 case GregTechTileClientEvents.CHANGE_LIGHT -> mLightValue = (byte) aValue;
             }
         }
@@ -1469,7 +1461,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                             GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
                             GTUtility.sendSoundToPlayers(
                                 worldObj,
-                                SoundResource.IC2_TOOLS_WRENCH,
+                                SoundResource.GT_TOOLS_WRENCH,
                                 1.0F,
                                 -1,
                                 xCoord,
@@ -1481,7 +1473,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                 GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
                                 GTUtility.sendSoundToPlayers(
                                     worldObj,
-                                    SoundResource.IC2_TOOLS_WRENCH,
+                                    SoundResource.GT_TOOLS_WRENCH,
                                     1.0F,
                                     -1,
                                     xCoord,
@@ -1500,7 +1492,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                             mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tCurrentItem);
                             GTUtility.sendSoundToPlayers(
                                 worldObj,
-                                SoundResource.IC2_TOOLS_WRENCH,
+                                SoundResource.GT_TOOLS_WRENCH,
                                 1.0F,
                                 -1,
                                 xCoord,
@@ -1551,7 +1543,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                             }
                             GTUtility.sendSoundToPlayers(
                                 worldObj,
-                                SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
+                                SoundResource.GT_TOOLS_SOFTHAMMER,
                                 1.0F,
                                 -1,
                                 xCoord,
@@ -1605,7 +1597,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                             // logic handled internally
                             GTUtility.sendSoundToPlayers(
                                 worldObj,
-                                SoundResource.IC2_TOOLS_WRENCH,
+                                SoundResource.GT_TOOLS_WRENCH,
                                 1.0F,
                                 -1,
                                 xCoord,
@@ -1631,7 +1623,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                 if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
                                 GTUtility.sendSoundToPlayers(
                                     worldObj,
-                                    SoundResource.IC2_TOOLS_WRENCH,
+                                    SoundResource.GT_TOOLS_WRENCH,
                                     1.0F,
                                     -1,
                                     xCoord,
@@ -1665,7 +1657,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                         effectiveSideCover.onCoverJackhammer(aPlayer);
                                         GTUtility.sendSoundToPlayers(
                                             worldObj,
-                                            SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT,
+                                            SoundResource.GT_TOOLS_DRILL,
                                             1.0F,
                                             1,
                                             xCoord,

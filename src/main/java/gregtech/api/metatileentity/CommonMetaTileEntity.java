@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -13,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -34,6 +36,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -45,6 +48,7 @@ import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.modularui2.MetaTileEntityGuiHandler;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
+import gregtech.client.GTSoundLoop;
 import gregtech.common.GTClient;
 import gregtech.common.covers.Cover;
 
@@ -75,6 +79,11 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
      * For debugging how many sounds get requested to be played in given time.
      */
     public long mSoundRequests = 0;
+
+    @SideOnly(Side.CLIENT)
+    protected GTSoundLoop activitySoundLoop;
+    protected static final byte INTERRUPT_SOUND_INDEX = 8;
+    protected static final byte PROCESS_START_SOUND_INDEX = 1;
 
     protected CommonMetaTileEntity(int id, String basicName, String regionalName, int invSlotCount) {
         if (GregTechAPI.sPostloadStarted || !GregTechAPI.sPreloadStarted)
@@ -185,31 +194,67 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     public void doSound(byte index, double x, double y, double z) {}
 
     @Override
-    public void startSoundLoop(byte index, double x, double y, double z) {}
-
-    @Override
-    public void stopSoundLoop(byte value, double x, double y, double z) {}
-
-    @Override
     public final void sendSound(byte aIndex) {
         if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.DO_SOUND, aIndex);
         }
     }
 
-    @Override
-    public final void sendLoopStart(byte aIndex) {
-        if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
-            getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.START_SOUND_LOOP, aIndex);
-        }
-        mSoundRequests++;
+    @SideOnly(Side.CLIENT)
+    protected void doActivitySound(SoundResource activitySound) {
+        doActivitySound(activitySound.resourceLocation);
     }
 
-    @Override
-    public final void sendLoopEnd(byte aIndex) {
-        if (!getBaseMetaTileEntity().hasMufflerUpgrade()) {
-            getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.STOP_SOUND_LOOP, aIndex);
+    @SideOnly(Side.CLIENT)
+    protected void doActivitySound(ResourceLocation activitySound) {
+        if (getBaseMetaTileEntity().hasMufflerUpgrade()) return;
+        if (getBaseMetaTileEntity().isActive() && activitySound != null) {
+            // sound not playing, start it
+            if (activitySoundLoop == null) {
+                if (getProcessStartSound() != null) {
+                    Minecraft.getMinecraft()
+                        .getSoundHandler()
+                        .playSound(
+                            new GTSoundLoop(
+                                getProcessStartSound().resourceLocation,
+                                getBaseMetaTileEntity(),
+                                false,
+                                true,
+                                false));
+                }
+                activitySoundLoop = new GTSoundLoop(activitySound, getBaseMetaTileEntity(), false, true);
+                Minecraft.getMinecraft()
+                    .getSoundHandler()
+                    .playSound(activitySoundLoop);
+            }
+        } else {
+            if (activitySoundLoop != null) {
+                activitySoundLoop = null;
+            }
         }
+    }
+
+    /**
+     * @return Time before the start process sound is played again
+     */
+    protected int getTimeBetweenProcessSounds() {
+        return 100;
+    }
+
+    /**
+     * @return Sound that will be played once, when the recipe check was valid
+     */
+    @SideOnly(Side.CLIENT)
+    protected SoundResource getProcessStartSound() {
+        return null;
+    }
+
+    /**
+     * @return Sound that will be looped for as long as the machine is doing a recipe
+     */
+    @SideOnly(Side.CLIENT)
+    protected SoundResource getActivitySoundLoop() {
+        return null;
     }
 
     @Override

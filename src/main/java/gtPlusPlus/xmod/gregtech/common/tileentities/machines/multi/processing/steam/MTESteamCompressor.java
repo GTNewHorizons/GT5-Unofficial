@@ -347,7 +347,7 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
-        return SoundResource.IC2_MACHINES_COMPRESSOR_OP;
+        return SoundResource.GT_MACHINES_COMPRESSOR;
     }
 
 }

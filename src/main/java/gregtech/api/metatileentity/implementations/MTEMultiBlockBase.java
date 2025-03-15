@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -73,8 +72,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.StructureError;
@@ -108,7 +105,6 @@ import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.client.GTSoundLoop;
 import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
@@ -179,8 +175,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public ArrayList<MTEHatchMaintenance> mMaintenanceHatches = new ArrayList<>();
     protected List<MTEHatch> mExoticEnergyHatches = new ArrayList<>();
     protected final ProcessingLogic processingLogic;
-    @SideOnly(Side.CLIENT)
-    protected GTSoundLoop activitySoundLoop;
 
     protected long mLastWorkingTick = 0, mTotalRunTime = 0;
     private static final int CHECK_INTERVAL = 100; // How often should we check for a new recipe on an idle machine?
@@ -194,9 +188,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * Private so that multis have to use the parameters (to make it easier to refactor if needed).
      */
     private NBTTagCompound structureErrorContext = new NBTTagCompound();
-
-    protected static final byte INTERRUPT_SOUND_INDEX = 8;
-    protected static final byte PROCESS_START_SOUND_INDEX = 1;
 
     public MTEMultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 2);
@@ -584,9 +575,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             boolean active = aBaseMetaTileEntity.isActive() && mPollution > 0;
             setMufflers(active);
         } else {
-            if (!aBaseMetaTileEntity.hasMufflerUpgrade()) {
-                doActivitySound(getActivitySoundLoop());
-            }
+            doActivitySound(getActivitySoundLoop());
         }
     }
 
@@ -635,9 +624,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         CheckRecipeResult result = checkProcessing();
         if (!CheckRecipeResultRegistry.isRegistered(result.getID())) {
             throw new RuntimeException(String.format("Result %s is not registered for registry", result.getID()));
-        }
-        if (result.wasSuccessful()) {
-            sendStartMultiBlockSoundLoop();
         }
         this.checkRecipeResult = result;
         endRecipeProcessing();
@@ -796,74 +782,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return pollutionPercent;
     }
 
-    protected void sendStartMultiBlockSoundLoop() {
-        if (getProcessStartSound() != null) {
-            sendLoopStart(PROCESS_START_SOUND_INDEX);
-        }
-    }
-
     @Override
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         super.doSound(aIndex, aX, aY, aZ);
         switch (aIndex) {
-            case PROCESS_START_SOUND_INDEX -> {
-                if (getProcessStartSound() != null)
-                    GTUtility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
-            }
+            // case PROCESS_START_SOUND_INDEX -> {
+            // if (getProcessStartSound() != null)
+            // GTUtility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
+            // }
             case INTERRUPT_SOUND_INDEX -> GTUtility
                 .doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
         }
-    }
-
-    @Override
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        super.startSoundLoop(aIndex, aX, aY, aZ);
-        if (aIndex == PROCESS_START_SOUND_INDEX) {
-            if (getProcessStartSound() != null)
-                GTUtility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    protected void doActivitySound(SoundResource activitySound) {
-        if (getBaseMetaTileEntity().isActive() && activitySound != null) {
-            if (activitySoundLoop == null) {
-                activitySoundLoop = new GTSoundLoop(
-                    activitySound.resourceLocation,
-                    getBaseMetaTileEntity(),
-                    false,
-                    true);
-                Minecraft.getMinecraft()
-                    .getSoundHandler()
-                    .playSound(activitySoundLoop);
-            }
-        } else {
-            if (activitySoundLoop != null) {
-                activitySoundLoop = null;
-            }
-        }
-    }
-
-    /**
-     * @return Time before the start process sound is played again
-     */
-    protected int getTimeBetweenProcessSounds() {
-        return 100;
-    }
-
-    /**
-     * @return Sound that will be played once, when the recipe check was valid
-     */
-    protected SoundResource getProcessStartSound() {
-        return null;
-    }
-
-    /**
-     * @return Sound that will be looped for as long as the machine is doing a recipe
-     */
-    @SideOnly(Side.CLIENT)
-    protected SoundResource getActivitySoundLoop() {
-        return null;
     }
 
     /**

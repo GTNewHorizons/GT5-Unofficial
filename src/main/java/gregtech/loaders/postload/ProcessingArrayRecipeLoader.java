@@ -11,12 +11,10 @@ public class ProcessingArrayRecipeLoader {
 
         // Alloy Smelter
         ProcessingArrayManager.addRecipeMapToPA("basicmachine.alloysmelter", RecipeMaps.alloySmelterRecipes);
-        ProcessingArrayManager
-            .addSoundResourceToPA("basicmachine.alloysmelter", SoundResource.IC2_MACHINES_INDUCTION_LOOP);
+        ProcessingArrayManager.addSoundResourceToPA("basicmachine.alloysmelter", SoundResource.GT_MACHINES_FURNACE);
         // Arc Furnace
         ProcessingArrayManager.addRecipeMapToPA("basicmachine.arcfurnace", RecipeMaps.arcFurnaceRecipes);
-        ProcessingArrayManager
-            .addSoundResourceToPA("basicmachine.arcfurnace", SoundResource.IC2_MACHINES_INDUCTION_LOOP);
+        ProcessingArrayManager.addSoundResourceToPA("basicmachine.arcfurnace", SoundResource.GT_HUM);
         // Assembler
         ProcessingArrayManager.addRecipeMapToPA("basicmachine.assembler", RecipeMaps.assemblerRecipes);
         ProcessingArrayManager.addSoundResourceToPA("basicmachine.assembler", SoundResource.NONE);
@@ -25,7 +23,7 @@ public class ProcessingArrayRecipeLoader {
         ProcessingArrayManager.addSoundResourceToPA("basicmachine.autoclave", SoundResource.NONE);
         // Bender
         ProcessingArrayManager.addRecipeMapToPA("basicmachine.bender", RecipeMaps.benderRecipes);
-        ProcessingArrayManager.addSoundResourceToPA("basicmachine.bender", SoundResource.IC2_MACHINES_COMPRESSOR_OP);
+        ProcessingArrayManager.addSoundResourceToPA("basicmachine.bender", SoundResource.GT_MACHINES_COMPRESSOR);
         // Boxinator
         ProcessingArrayManager.addRecipeMapToPA("basicmachine.boxinator", RecipeMaps.packagerRecipes);
         ProcessingArrayManager.addSoundResourceToPA("basicmachine.boxinator", SoundResource.NONE);
@@ -51,8 +49,7 @@ public class ProcessingArrayRecipeLoader {
         ProcessingArrayManager.addSoundResourceToPA("basicmachine.circuitassembler", SoundResource.NONE);
         // Compressor
         ProcessingArrayManager.addRecipeMapToPA("basicmachine.compressor", RecipeMaps.compressorRecipes);
-        ProcessingArrayManager
-            .addSoundResourceToPA("basicmachine.compressor", SoundResource.IC2_MACHINES_COMPRESSOR_OP);
+        ProcessingArrayManager.addSoundResourceToPA("basicmachine.compressor", SoundResource.GT_MACHINES_COMPRESSOR);
         // Cutting Machine
         ProcessingArrayManager.addRecipeMapToPA("basicmachine.cutter", RecipeMaps.cutterRecipes);
         ProcessingArrayManager.addSoundResourceToPA("basicmachine.cutter", SoundResource.NONE);
@@ -92,7 +89,7 @@ public class ProcessingArrayRecipeLoader {
         ProcessingArrayManager.addSoundResourceToPA("basicmachine.hammer", SoundResource.RANDOM_ANVIL_USE);
         // Forming Press
         ProcessingArrayManager.addRecipeMapToPA("basicmachine.press", RecipeMaps.formingPressRecipes);
-        ProcessingArrayManager.addSoundResourceToPA("basicmachine.press", SoundResource.IC2_MACHINES_COMPRESSOR_OP);
+        ProcessingArrayManager.addSoundResourceToPA("basicmachine.press", SoundResource.GT_MACHINES_COMPRESSOR);
         // Laser Engraver
         ProcessingArrayManager.addRecipeMapToPA("basicmachine.laserengraver", RecipeMaps.laserEngraverRecipes);
         ProcessingArrayManager
@@ -102,7 +99,7 @@ public class ProcessingArrayRecipeLoader {
         ProcessingArrayManager.addSoundResourceToPA("basicmachine.lathe", SoundResource.NONE);
         // Macerator
         ProcessingArrayManager.addRecipeMapToPA("basicmachine.macerator", RecipeMaps.maceratorRecipes);
-        ProcessingArrayManager.addSoundResourceToPA("basicmachine.macerator", SoundResource.IC2_MACHINES_MACERATOR_OP);
+        ProcessingArrayManager.addSoundResourceToPA("basicmachine.macerator", SoundResource.GT_MACHINES_MACERATOR);
         // Magnetic Separator
         ProcessingArrayManager
             .addRecipeMapToPA("basicmachine.electromagneticseparator", RecipeMaps.electroMagneticSeparatorRecipes);
@@ -123,15 +120,14 @@ public class ProcessingArrayRecipeLoader {
         ProcessingArrayManager.addSoundResourceToPA("basicmachine.orewasher", SoundResource.NONE);
         // Plasma Arc Furnace
         ProcessingArrayManager.addRecipeMapToPA("basicmachine.plasmaarcfurnace", RecipeMaps.plasmaArcFurnaceRecipes);
-        ProcessingArrayManager
-            .addSoundResourceToPA("basicmachine.plasmaarcfurnace", SoundResource.IC2_MACHINES_INDUCTION_LOOP);
+        ProcessingArrayManager.addSoundResourceToPA("basicmachine.plasmaarcfurnace", SoundResource.GT_HUM);
         // Polarizer
         ProcessingArrayManager.addRecipeMapToPA("basicmachine.polarizer", RecipeMaps.polarizerRecipes);
         ProcessingArrayManager
             .addSoundResourceToPA("basicmachine.polarizer", SoundResource.IC2_MACHINES_MAGNETIZER_LOOP);
         // Printer
         ProcessingArrayManager.addRecipeMapToPA("basicmachine.printer", RecipeMaps.printerRecipes);
-        ProcessingArrayManager.addSoundResourceToPA("basicmachine.printer", SoundResource.IC2_MACHINES_COMPRESSOR_OP);
+        ProcessingArrayManager.addSoundResourceToPA("basicmachine.printer", SoundResource.GT_MACHINES_COMPRESSOR);
         // Recycler
         ProcessingArrayManager.addRecipeMapToPA("basicmachine.recycler", RecipeMaps.recyclerRecipes);
         ProcessingArrayManager.addSoundResourceToPA("basicmachine.recycler", SoundResource.IC2_MACHINES_RECYCLER_OP);

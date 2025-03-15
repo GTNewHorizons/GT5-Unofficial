@@ -42,6 +42,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.objects.ItemData;
@@ -107,6 +108,7 @@ public final class RecipeMaps {
             }
         })
         .progressBar(GTUITextures.PROGRESSBAR_BATH, ProgressBar.Direction.CIRCULAR_CW)
+        .sound(SoundResource.GT_MACHINES_BATH)
         .build();
     public static final RecipeMap<RecipeMapBackend> thermalCentrifugeRecipes = RecipeMapBuilder
         .of("gt.recipe.thermalcentrifuge")
@@ -123,6 +125,7 @@ public final class RecipeMaps {
                 return GTUITextures.OVERLAY_SLOT_CRUSHED_ORE;
             }
         })
+        .sound(SoundResource.GT_MACHINES_THERMAL_CENTRIFUGE_LOOP)
         .build();
     public static final RecipeMap<RecipeMapBackend> compressorRecipes = RecipeMapBuilder.of("gt.recipe.compressor")
         .maxIO(1, 1, 1, 0)
@@ -141,6 +144,7 @@ public final class RecipeMaps {
                 .thenComparing(GTRecipe::compareTo))
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Compressor.get(1)))
+        .sound(SoundResource.GT_MACHINES_COMPRESSOR)
         .build();
     public static final RecipeMap<RecipeMapBackend> neutroniumCompressorRecipes = RecipeMapBuilder
         .of("gt.recipe.neutroniumcompressor")
@@ -154,6 +158,7 @@ public final class RecipeMaps {
             Comparator
                 .<GTRecipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0))
                 .thenComparing(GTRecipe::compareTo))
+        .sound(SoundResource.GT_MACHINES_COMPRESSOR)
         .build();
     public static final RecipeMap<RecipeMapBackend> extractorRecipes = RecipeMapBuilder.of("gt.recipe.extractor")
         .maxIO(1, 1, 0, 0)
@@ -168,6 +173,7 @@ public final class RecipeMaps {
         .progressBarSteam(GTUITextures.PROGRESSBAR_EXTRACT_STEAM)
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Extractor.get(1)))
+        .sound(SoundResource.GT_MACHINES_COMPRESSOR)
         .build();
     public static final RecipeMap<RecyclerBackend> recyclerRecipes = RecipeMapBuilder
         .of("ic.recipe.recycler", RecyclerBackend::new)
@@ -191,6 +197,7 @@ public final class RecipeMaps {
         .progressBarSteam(GTUITextures.PROGRESSBAR_ARROW_STEAM)
         .neiTransferRectId("smelting")
         .disableRegisterNEI()
+        .sound(SoundResource.GT_MACHINES_FURNACE)
         .build();
     public static final RecipeMap<MicrowaveBackend> microwaveRecipes = RecipeMapBuilder
         .of("gt.recipe.microwave", MicrowaveBackend::new)
@@ -226,6 +233,7 @@ public final class RecipeMaps {
             }
         })
         .progressBar(GTUITextures.PROGRESSBAR_MACERATE)
+        .sound(SoundResource.GT_FIRE)
         .build();
     public static final RecipeMap<RecipeMapBackend> quantumComputerFakeRecipes = RecipeMapBuilder
         .of("gt.recipe.quantumcomputer")
@@ -273,6 +281,7 @@ public final class RecipeMaps {
         .of("gt.recipe.plasmaarcfurnace")
         .maxIO(1, 9, 1, 1)
         .minInputs(1, 1)
+        .sound(SoundResource.GT_HUM)
         .build();
     /**
      * Usually, but not always, you should use {@link GTRecipeConstants#UniversalArcFurnace} instead.
@@ -281,6 +290,7 @@ public final class RecipeMaps {
         .maxIO(1, 9, 1, 0)
         .minInputs(1, 1)
         .amperage(3)
+        .sound(SoundResource.GT_HUM)
         .build();
     public static final RecipeMap<PrinterBackend> printerRecipes = RecipeMapBuilder
         .of("gt.recipe.printer", PrinterBackend::new)
@@ -303,6 +313,7 @@ public final class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> sifterRecipes = RecipeMapBuilder.of("gt.recipe.sifter")
         .maxIO(1, 9, 1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.DOWN)
+        .sound(SoundResource.GT_MACHINES_SIFTER_LOOP)
         .build();
     public static final RecipeMap<FormingPressBackend> formingPressRecipes = RecipeMapBuilder
         .of("gt.recipe.press", FormingPressBackend::new)
@@ -318,6 +329,7 @@ public final class RecipeMaps {
             return GTUITextures.OVERLAY_SLOT_PRESS_2;
         })
         .progressBar(GTUITextures.PROGRESSBAR_COMPRESS)
+        .sound(SoundResource.GT_MACHINES_COMPRESSOR)
         .build();
     public static final RecipeMap<RecipeMapBackend> laserEngraverRecipes = RecipeMapBuilder
         .of("gt.recipe.laserengraver")
@@ -340,6 +352,7 @@ public final class RecipeMaps {
         .minInputs(1, 0)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> !isFluid ? GTUITextures.OVERLAY_SLOT_DUST : null)
         .progressBar(GTUITextures.PROGRESSBAR_MIXER, ProgressBar.Direction.CIRCULAR_CW)
+        .sound(SoundResource.GT_MACHINES_MIXER)
         .build();
     public static final RecipeMap<RecipeMapBackend> autoclaveRecipes = RecipeMapBuilder.of("gt.recipe.autoclave")
         .maxIO(2, 4, 1, 1)
@@ -370,6 +383,7 @@ public final class RecipeMaps {
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
         .progressBar(GTUITextures.PROGRESSBAR_MAGNET)
+        .sound(SoundResource.GT_HUM)
         .build();
     public static final RecipeMap<RecipeMapBackend> maceratorRecipes = RecipeMapBuilder.of("gt.recipe.macerator")
         .maxIO(1, 4, 0, 0)
@@ -384,6 +398,7 @@ public final class RecipeMaps {
         .progressBarSteam(GTUITextures.PROGRESSBAR_MACERATE_STEAM)
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Macerator.get(1)))
+        .sound(SoundResource.GT_MACHINES_MACERATOR)
         .build();
     public static final RecipeMap<RecipeMapBackend> chemicalBathRecipes = RecipeMapBuilder.of("gt.recipe.chemicalbath")
         .maxIO(1, 3, 1, 1)
@@ -545,6 +560,7 @@ public final class RecipeMaps {
             }
         })
         .progressBar(GTUITextures.PROGRESSBAR_EXTRACT)
+        .sound(SoundResource.GT_MACHINES_CENTRIFUGE)
         .build();
     public static final RecipeMap<RecipeMapBackend> electrolyzerRecipes = RecipeMapBuilder.of("gt.recipe.electrolyzer")
         .maxIO(2, 6, 1, 1)
@@ -562,6 +578,7 @@ public final class RecipeMaps {
             }
         })
         .progressBar(GTUITextures.PROGRESSBAR_EXTRACT)
+        .sound(SoundResource.GT_MACHINES_ELECTROLYZER)
         .build();
     /**
      * Use {@link GTRecipeConstants#COIL_HEAT} as heat level.
@@ -570,6 +587,7 @@ public final class RecipeMaps {
         .maxIO(6, 6, 1, 1)
         .minInputs(1, 0)
         .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
+        .sound(SoundResource.GT_MACHINES_FURNACE)
         .build();
     /**
      * Use {@link GTRecipeConstants#COIL_HEAT} as heat level.
@@ -688,6 +706,7 @@ public final class RecipeMaps {
             }
             return coll.getAll();
         })
+        .sound(SoundResource.GT_MACHINES_FURNACE)
         .build();
     /**
      * Uses {@link GTRecipeConstants#ADDITIVE_AMOUNT} for TNT/ITNT/... amount. Value is truncated to [0, 64]
@@ -795,6 +814,7 @@ public final class RecipeMaps {
             }
         })
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
+        .sound(SoundResource.GT_MACHINES_CHEMICAL)
         .build();
     /**
      * Using {@code .addTo(multiblockChemicalReactorRecipes)} will cause the recipe to be added to
@@ -804,6 +824,7 @@ public final class RecipeMaps {
         .of("gt.recipe.largechemicalreactor")
         .maxIO(6, 6, 6, 6)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
+        .sound(SoundResource.GT_MACHINES_CHEMICAL)
         .frontend(LargeNEIFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> distillationTowerRecipes = RecipeMapBuilder
@@ -839,6 +860,7 @@ public final class RecipeMaps {
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_WIREMILL : null)
         .progressBar(GTUITextures.PROGRESSBAR_WIREMILL)
+        .sound(SoundResource.GT_MOTOR)
         .build();
     public static final RecipeMap<RecipeMapBackend> benderRecipes = RecipeMapBuilder.of("gt.recipe.metalbender")
         .maxIO(2, 1, 0, 0)
@@ -846,6 +868,7 @@ public final class RecipeMaps {
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_BENDER : null)
         .progressBar(GTUITextures.PROGRESSBAR_BENDING)
+        .sound(SoundResource.GT_MOTOR)
         .build();
     public static final RecipeMap<RecipeMapBackend> alloySmelterRecipes = RecipeMapBuilder.of("gt.recipe.alloysmelter")
         .maxIO(2, 1, 0, 0)
@@ -869,6 +892,7 @@ public final class RecipeMaps {
         })
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_AlloySmelter.get(1)))
+        .sound(SoundResource.GT_MACHINES_FURNACE)
         .build();
     public static final RecipeMap<AssemblerBackend> assemblerRecipes = RecipeMapBuilder
         .of("gt.recipe.assembler", AssemblerBackend::new)
@@ -877,6 +901,7 @@ public final class RecipeMaps {
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_CIRCUIT : null)
         .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLE)
+        .sound(SoundResource.GT_MACHINES_ASSEMBLER)
         .build();
     public static final RecipeMap<RecipeMapBackend> circuitAssemblerRecipes = RecipeMapBuilder
         .of("gt.recipe.circuitassembler")
@@ -885,6 +910,7 @@ public final class RecipeMaps {
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_CIRCUIT : null)
         .progressBar(GTUITextures.PROGRESSBAR_CIRCUIT_ASSEMBLER)
+        .sound(SoundResource.GT_MACHINES_ASSEMBLER)
         .unificateOutputNEI(!NEICustomDiagrams.isModLoaded())
         .build();
     public static final RecipeMap<RecipeMapBackend> cannerRecipes = RecipeMapBuilder.of("gt.recipe.canner")
@@ -915,6 +941,7 @@ public final class RecipeMaps {
         })
         .progressBar(GTUITextures.PROGRESSBAR_LATHE)
         .addSpecialTexture(98, 24, 5, 18, GTUITextures.PROGRESSBAR_LATHE_BASE)
+        .sound(SoundResource.GT_CUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> cutterRecipes = RecipeMapBuilder.of("gt.recipe.cuttingsaw")
         .maxIO(2, 4, 1, 0)
@@ -932,6 +959,7 @@ public final class RecipeMaps {
             return GTUITextures.OVERLAY_SLOT_BOX;
         })
         .progressBar(GTUITextures.PROGRESSBAR_CUT)
+        .sound(SoundResource.GT_CUT)
         .recipeEmitter(b -> {
             b.validateInputCount(1, 2)
                 .validateOutputCount(1, 4)
@@ -970,6 +998,7 @@ public final class RecipeMaps {
             return GTUITextures.OVERLAY_SLOT_SLICE_SHAPE;
         })
         .progressBar(GTUITextures.PROGRESSBAR_SLICE)
+        .sound(SoundResource.GT_CUT)
         .build();
     public static final RecipeMap<RecipeMapBackend> extruderRecipes = RecipeMapBuilder.of("gt.recipe.extruder")
         .maxIO(2, 1, 0, 0)
@@ -978,6 +1007,7 @@ public final class RecipeMaps {
             (index, isFluid, isOutput,
                 isSpecial) -> !isFluid && !isOutput && index != 0 ? GTUITextures.OVERLAY_SLOT_EXTRUDER_SHAPE : null)
         .progressBar(GTUITextures.PROGRESSBAR_EXTRUDE)
+        .sound(SoundResource.GT_MACHINES_COMPRESSOR)
         .build();
     public static final RecipeMap<RecipeMapBackend> hammerRecipes = RecipeMapBuilder.of("gt.recipe.hammer")
         .maxIO(2, 2, 2, 2)
@@ -992,6 +1022,7 @@ public final class RecipeMaps {
         .addSpecialTextureSteam(78, 42, 20, 6, GTUITextures.PROGRESSBAR_HAMMER_BASE_STEAM)
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Hammer.get(1)))
+        .sound(SoundResource.GT_MACHINES_FORGEHAMMER)
         .build();
     public static final RecipeMap<RecipeMapBackend> amplifierRecipes = RecipeMapBuilder.of("gt.recipe.uuamplifier")
         .maxIO(1, 0, 0, 1)
@@ -1006,6 +1037,7 @@ public final class RecipeMaps {
             return null;
         })
         .progressBar(GTUITextures.PROGRESSBAR_EXTRACT)
+        .sound(SoundResource.GT_HUM)
         .build();
     public static final RecipeMap<RecipeMapBackend> massFabFakeRecipes = RecipeMapBuilder.of("gt.recipe.massfab")
         .maxIO(1, 0, 1, 1)
@@ -1175,6 +1207,7 @@ public final class RecipeMaps {
         .minInputs(0, 1)
         .progressBar(GTUITextures.PROGRESSBAR_MIXER)
         .frontend(PurificationUnitPhAdjustmentFrontend::new)
+        .sound(SoundResource.GT_MACHINES_PURIFICATION_PH_LOOP)
         .build();
 
     public static final RecipeMap<RecipeMapBackend> purificationPlasmaHeatingRecipes = RecipeMapBuilder

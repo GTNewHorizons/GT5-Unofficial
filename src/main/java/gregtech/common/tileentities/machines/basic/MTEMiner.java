@@ -18,6 +18,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -263,6 +264,11 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
                 }
             }
         }
+    }
+
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_MINER;
     }
 
     /** Finds the ores in current drill Y level */
