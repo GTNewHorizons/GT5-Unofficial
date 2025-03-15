@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraftforge.common.util.Constants;
 
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
@@ -39,7 +40,6 @@ import gregtech.api.items.ItemAugmentFrame;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.common.items.armor.MechArmorBase;
-import net.minecraftforge.common.util.Constants;
 
 public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidgets {
 
@@ -142,7 +142,8 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
             if (!(ugh instanceof SlotWidget)) continue;
             BaseSlot mcSlot = slot.getMcSlot();
             if (mcSlot.getHasStack()) {
-                if (mcSlot.getStack().getItem() instanceof ItemAugmentBase aug) {
+                if (mcSlot.getStack()
+                    .getItem() instanceof ItemAugmentBase aug) {
                     if (!aug.isSimpleAugment()) continue;
                     String currentAugmentInfo = serializeAugmentToString(aug, i);
                     newAugments.appendTag(new NBTTagString(currentAugmentInfo));
@@ -190,33 +191,6 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
             if (!(s instanceof NBTTagString)) return null;
             if (getIndexFromAugmentNBT(string) == targetSlot) {
                 return false;
-            }
-        }
-        return true;
-    }
-
-    // TODO remove reliance on using the existing MultiChildWidget and instead go from nbt
-    public boolean canPutAugment(ItemAugmentBase augment, int augmentIndex, String[] frameData,
-        MultiChildWidget slots) {
-        String[] size = augment.size;
-        for (int i = 0; i < size.length; i++) {
-            String augRow = size[i];
-            for (int j = 0; j < augRow.length(); j++) {
-                char augSlot = augRow.toCharArray()[j];
-                if (augSlot != '#') continue;
-
-                // Desired slot is not part of the frameData, so return false
-                if (frameData[i].toCharArray()[j] != '#') return false;
-                // Look over the slots to see if any other augment (or link) currently holds this spot
-                for (Widget a : slots.getChildren()) {
-                    SlotWidget slot = (SlotWidget) a;
-                    if (!(a instanceof SlotWidget)) continue;
-                    if (slot.getMcSlot()
-                        .getSlotIndex() == augmentIndex) {
-                        if (slot.getMcSlot()
-                            .getHasStack()) return false;
-                    }
-                }
             }
         }
         return true;
@@ -276,30 +250,28 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
                     ret.add(GTUITextures.OVERLAY_BUTTON_CHECKMARK);
                     return ret.toArray(new IDrawable[0]);
                 }))
-            .widget(
-                new ButtonWidget().setOnClick(
-                    (clickData, widget) -> {
-                        if (!widget.isClient()) widget.getContext()
-                            .openSyncedWindow(MOD_WINDOW_ID);
-                    })
-                    .setPos(36, 20)
-                    .setSize(16, 16)
-                    .setBackground(() -> {
-                        List<UITexture> ret = new ArrayList<>();
-                        ret.add(GTUITextures.BUTTON_STANDARD);
-                        ret.add(GTUITextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM);
-                        return ret.toArray(new IDrawable[0]);
-                    }));
+            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                ItemStack armorItem = inputHandler.getStackInSlot(1);
+                if (armorItem == null || !(armorItem.getItem() instanceof MechArmorBase)) return;
+                if (!widget.isClient()) widget.getContext()
+                    .openSyncedWindow(MOD_WINDOW_ID);
+            })
+                .setPos(36, 20)
+                .setSize(16, 16)
+                .setBackground(() -> {
+                    List<UITexture> ret = new ArrayList<>();
+                    ret.add(GTUITextures.BUTTON_STANDARD);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM);
+                    return ret.toArray(new IDrawable[0]);
+                }));
         buildContext
             .addSyncedWindow(MOD_WINDOW_ID, player -> createEquipmentGrid(player, inputHandler.getStackInSlot(1)));
     }
 
     // TODO handle NPE when you insert armor without frame data
     private ModularWindow createEquipmentGrid(final EntityPlayer player, ItemStack armorItem) {
-        // TODO figure out how to not put up anything if these fail
-        // Four: Suggest putting this validation before the method call
-        if (armorItem == null) return null;
-        if (!(armorItem.getItem() instanceof MechArmorBase mechArmorBase)) return null;
+
+        MechArmorBase mechArmorBase = (MechArmorBase) armorItem.getItem();
 
         NBTTagList data = armorItem.getTagCompound()
             .getTagList("augments", Constants.NBT.TAG_STRING);
@@ -313,10 +285,17 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
         builder.setGuiTint(this.getGUIColorization());
         builder.setDraggable(true);
 
-        equipmentGridHandler.setSize(getTotalSlots(frameData) + 1);
+        int maxSlots = getTotalSlots(frameData);
+        equipmentGridHandler.setSize(maxSlots + 1);
 
         MultiChildWidget slots = createSlotWidgets(frameData);
-        populateSlotWidgets(data, slots, frameData);
+        for (int i = 0; i < slots.getChildren()
+            .size(); i++) {
+            final int tempI = i;
+            ((SlotWidget) slots.getChildren()
+                .get(i)).setFilter((ItemStack stack) -> canPutStack(stack, tempI, frameData, slots, maxSlots));
+        }
+        populateSlotWidgets(data, slots, builder);
 
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
             if (!widget.isClient()) {
@@ -336,27 +315,9 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
                 tex.add(GTUITextures.OVERLAY_BUTTON_DISABLE);
                 return tex.toArray(new IDrawable[0]);
             }));
-        // updateTextures(builder, slots);
+        // updateTextures(builder, slots, frameData);
         builder.widget(slots);
         return builder.build();
-    }
-
-    // TODO remake this method
-    private void updateTextures(ModularWindow.Builder builder, MultiChildWidget slots) {
-        for (int slot = 0; slot < equipmentGridHandler.getSlots(); slot++) {
-            ItemStack item = equipmentGridHandler.getStackInSlot(slot);
-            if (item != null) builder.widget(
-                new DrawableWidget().setDrawable(new ItemDrawable(item))
-                    .setSize(32, 32)
-                    .setPos(getSlotOffset(slots, slot)));
-        }
-    }
-
-    private Pos2d getSlotOffset(MultiChildWidget slots, int slot) {
-        int x = slots.getPos().x + ((slot % 4) * 16);
-        int y = slots.getPos().y + ((slot / 4) * 16);
-
-        return new Pos2d(x + 5, y + 2);
     }
 
     private MultiChildWidget createSlotWidgets(String[] frameData) {
@@ -367,7 +328,19 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
             for (int j = 0; j < row.length(); j++) {
                 char frameSlot = row.toCharArray()[j];
                 if (frameSlot == '#') {
-                    Widget slot = new SlotWidget(equipmentGridHandler, slotIndex).setPos((18 * j) + 5, (18 * i) + 5);
+                    Widget slot = new SlotWidget(new BaseSlot(equipmentGridHandler, slotIndex) {
+
+                        @Override
+                        public int getSlotStackLimit() {
+                            return 1;
+                        }
+
+                        @Override
+                        // TODO add some kind of checking
+                        public void onSlotChanged() {
+                            super.onSlotChanged();
+                        }
+                    }).setPos((18 * j) + 5, (18 * i) + 5);
                     parent.addChild(slot);
                     slotIndex++;
                 }
@@ -376,33 +349,85 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
         return parent;
     }
 
-    // TODO figure out if this works at all
-    // TODO it does not. fix it
-    private void populateSlotWidgets(NBTTagList dataList, MultiChildWidget slots, String[] frameData) {
+    private void populateSlotWidgets(NBTTagList dataList, MultiChildWidget slots, ModularWindow.Builder builder) {
         for (int i = 0; i < dataList.tagCount(); i++) {
             String data = dataList.getStringTagAt(i);
             if (data.isEmpty()) continue;
             ItemAugmentBase augment = getAugmentFromAugmentNBT(new NBTTagString(data));
             int index = getIndexFromAugmentNBT(new NBTTagString(data));
-            if (slots.getChildren().get(index) instanceof SlotWidget slot) {
-                slot.getMcSlot().putStack(new ItemStack(augment, 1));
+
+            if (slots.getChildren()
+                .get(index) instanceof SlotWidget slot) {
+                slot.getMcSlot()
+                    .putStack(new ItemStack(augment, 1));
+                // Create the texture overlay for "big" augment
+                builder.widget(
+                    new DrawableWidget().setDrawable(GTUITextures.OVERLAY_EQ_GRID_FIREIMMUNITY)
+                        .setPos(slot.getPos())
+                        .setSize(augment.size[0].length() * 18, augment.size.length * 18));
             }
         }
     }
 
-    // // TODO my god this sucks
-    // private boolean slotFilter(ItemStack item, int augmentIndex, String[] frameData, SlotWidget[] slots) {
-    // // if (!(item.getItem() instanceof ItemAugmentBase aug)) return false;
-    // // if (!aug.isSimpleAugment()) return false;
-    // // return canPutAugment(aug, augmentIndex, frameData, slots);
-    // return false;
-    // }
+    // TODO remake this method
+    private void updateTextures(ModularWindow.Builder builder, MultiChildWidget slots, String[] frameData) {
+        for (int slot = 0; slot < equipmentGridHandler.getSlots(); slot++) {
+            ItemStack item = equipmentGridHandler.getStackInSlot(slot);
+            if (item == null) return;
+            if (!(item.getItem() instanceof ItemAugmentBase augment)) return;
+            if (!augment.isSimpleAugment()) return;
+            for (int i = 0; i < augment.size.length; i++) {
+                String row = augment.size[i];
+                for (int j = 0; j < row.length(); j++) {
+                    builder.widget(
+                        new DrawableWidget().setDrawable(new ItemDrawable(item))
+                            .setSize(16, 16)
+                            .setPos(
+                                slots.getChildren()
+                                    .get(slot)
+                                    .getPos().x + (18 * (i * frameData[0].length())),
+                                slots.getChildren()
+                                    .get(slot)
+                                    .getPos().y + (18 * j)));
+                    // .setPos(getSlotOffset(slots, slot, frameData)));
+                }
+            }
+        }
+    }
 
-    // TODO my god this sucks
-    private boolean slotFilter(ItemStack item) {
-        // if (!(item.getItem() instanceof ItemAugmentBase aug)) return false;
-        // if (!aug.isSimpleAugment()) return false;
-        // return canPutAugment(aug, augmentIndex, frameData, slots);
-        return false;
+    private Pos2d getSlotOffset(MultiChildWidget slots, int slot, String[] frameData) {
+        int x = slots.getPos().x + ((slot % 4) * 16);
+        int y = slots.getPos().y + ((slot / 4) * 16);
+
+        return new Pos2d(x + 5, y + 2);
+    }
+
+    public boolean canPutStack(ItemStack stack, int augIndex, String[] frameData, MultiChildWidget parent,
+        int maxSlots) {
+        if (!(stack.getItem() instanceof ItemAugmentBase augment) || !augment.isSimpleAugment()) return false;
+        int totalAugIndex = getOtherIndex(frameData, augIndex);
+        List<Widget> slots = parent.getChildren();
+        String[] size = augment.size;
+
+        for (int i = 0; i < size.length; i++) {
+            String augRow = size[i];
+            for (int j = 0; j < augRow.length(); j++) {
+                char augSlot = augRow.toCharArray()[j];
+                if (augSlot != '#') continue;
+
+                char[] frameSlots = frameData[i].toCharArray();
+                if ((j + (totalAugIndex % frameSlots.length)) > maxSlots) return false;
+                // Desired slot is not a slot in the frameData
+                if (frameData[i].toCharArray()[j + (totalAugIndex % frameSlots.length)] != '#') return false;
+
+                // Look over the slots to see if any other augment (or link) currently holding this spot
+                // TODO rename this terrible variable name
+                int lookForIndex = augIndex + ((i * frameData[0].length()) + j);
+                if (lookForIndex > maxSlots) return false;
+                if (((SlotWidget) slots.get(augIndex + ((i * frameData[0].length()) + j))).getMcSlot()
+                    .getHasStack()) return false;
+            }
+        }
+        return true;
     }
 }

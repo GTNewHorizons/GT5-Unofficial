@@ -128,8 +128,8 @@ public class MechanicalArmorRegistry implements Runnable {
                 "",
                 Collections.emptyList(),
                 FRAME_TITANIUM.ID,
-                new String[] { "##########", "##########", "##########", "##########", "##########", "##########",
-                    "##########", "##########", "##########" }));
+                new String[] { "#~####~#~", "#~####~#~", "#~####~#~", "#~####~#~", "#########", "~#~##~###",
+                    "~#~##~###", "~#~##~###", "~#~##~#~~" }));
         augments.put(FRAME_TITANIUM.ID, (ItemAugmentBase) ItemList.Armor_Frame_Titanium.getItem());
     }
 

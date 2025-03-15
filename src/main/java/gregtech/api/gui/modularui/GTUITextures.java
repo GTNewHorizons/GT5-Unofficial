@@ -464,6 +464,10 @@ public class GTUITextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_STEAM = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_dehp_steam");
 
+    // Overlays for the Equipment Grid as part of Mechanical Armor
+    public static final UITexture OVERLAY_EQ_GRID_FIREIMMUNITY = UITexture
+        .fullImage(GregTech.ID, "gui/equipment_grid/grid_augment_fireimmunity");
+
     /**
      * Can adjust size as needed.
      */
