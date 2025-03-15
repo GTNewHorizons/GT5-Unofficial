@@ -78,7 +78,7 @@ public class CoverWirelessFluidDetector
         /** Whether the wireless detector cover also sets the tiles sided Redstone output */
         private boolean physical;
 
-        public FluidTransmitterData(int frequency, UUID uuid, boolean invert, int threshold, boolean physical) {
+        public FluidTransmitterData(String frequency, UUID uuid, boolean invert, int threshold, boolean physical) {
             super(frequency, uuid, invert);
             this.threshold = threshold;
             this.physical = physical;

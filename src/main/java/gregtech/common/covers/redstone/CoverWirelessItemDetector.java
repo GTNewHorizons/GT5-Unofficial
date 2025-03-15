@@ -91,7 +91,7 @@ public class CoverWirelessItemDetector
         /** Whether the wireless detector cover also sets the tiles sided Redstone output */
         private boolean physical;
 
-        public ItemTransmitterData(int frequency, UUID uuid, boolean invert, int threshold, int slot,
+        public ItemTransmitterData(String frequency, UUID uuid, boolean invert, int threshold, int slot,
             boolean physical) {
             super(frequency, uuid, invert);
             this.threshold = threshold;

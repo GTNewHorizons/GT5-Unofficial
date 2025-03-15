@@ -70,13 +70,13 @@ public abstract class CoverAdvancedRedstoneTransmitterBase<T extends CoverAdvanc
 
         protected boolean invert;
 
-        public TransmitterData(int frequency, UUID uuid, boolean invert) {
+        public TransmitterData(String frequency, UUID uuid, boolean invert) {
             super(frequency, uuid);
             this.invert = invert;
         }
 
         public TransmitterData() {
-            this(0, null, false);
+            this("", null, false);
         }
 
         public boolean isInvert() {

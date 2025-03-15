@@ -136,7 +136,7 @@ public class CoverWirelessMaintenanceDetector
         /** Whether the wireless detector cover also sets the tiles sided Redstone output */
         private boolean physical;
 
-        public MaintenanceTransmitterData(int frequency, UUID uuid, boolean invert, MaintenanceMode mode,
+        public MaintenanceTransmitterData(String frequency, UUID uuid, boolean invert, MaintenanceMode mode,
             boolean physical) {
             super(frequency, uuid, invert);
             this.mode = mode;

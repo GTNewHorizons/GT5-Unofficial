@@ -109,7 +109,7 @@ public class CoverWirelessDoesWorkDetector
         /** Whether the wireless detector cover also sets the tiles sided Redstone output */
         private boolean physical;
 
-        public ActivityTransmitterData(int frequency, UUID uuid, boolean invert, ActivityMode mode, boolean physical) {
+        public ActivityTransmitterData(String frequency, UUID uuid, boolean invert, ActivityMode mode, boolean physical) {
             super(frequency, uuid, invert);
             this.mode = mode;
             this.physical = physical;

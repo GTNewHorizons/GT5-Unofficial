@@ -1,5 +1,6 @@
 package gregtech.common.covers.redstone;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -40,8 +41,8 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
         super(context, typeToken, coverTexture);
     }
 
-    public static Byte getSignalAt(UUID uuid, int frequency, CoverAdvancedRedstoneReceiverBase.GateMode mode) {
-        Map<Integer, Map<CoverPosition, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone
+    public static Byte getSignalAt(UUID uuid, String frequency, CoverAdvancedRedstoneReceiverBase.GateMode mode) {
+        Map<String, Map<CoverPosition, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone
             .get(String.valueOf(uuid));
         if (frequencies == null) return 0;
 
@@ -88,18 +89,18 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
         }
     }
 
-    public static void removeSignalAt(UUID uuid, int frequency, CoverPosition key) {
-        Map<Integer, Map<CoverPosition, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone
+    public static void removeSignalAt(UUID uuid, String frequency, CoverPosition key) {
+        Map<String, Map<CoverPosition, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone
             .get(String.valueOf(uuid));
         if (frequencies == null) return;
-        frequencies.computeIfPresent(frequency, (freq, longByteMap) -> {
+        frequencies.computeIfPresent(String.valueOf(frequency), (freq, longByteMap) -> {
             longByteMap.remove(key);
             return longByteMap.isEmpty() ? null : longByteMap;
         });
     }
 
-    public static void setSignalAt(UUID uuid, int frequency, CoverPosition key, byte value) {
-        Map<Integer, Map<CoverPosition, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone
+    public static void setSignalAt(UUID uuid, String frequency, CoverPosition key, byte value) {
+        Map<String, Map<CoverPosition, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone
             .computeIfAbsent(String.valueOf(uuid), k -> new ConcurrentHashMap<>());
         Map<CoverPosition, Byte> signals = frequencies.computeIfAbsent(frequency, k -> new ConcurrentHashMap<>());
         signals.put(key, value);
@@ -158,7 +159,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
 
     public static class WirelessData implements ISerializableObject {
 
-        protected int frequency;
+        protected String frequency;
         protected String label = "";
 
         /**
@@ -166,13 +167,13 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
          **/
         protected UUID uuid;
 
-        public WirelessData(int frequency, UUID uuid, String label) {
+        public WirelessData(String frequency, UUID uuid, String label) {
             this.frequency = frequency;
             this.uuid = uuid;
             this.label = label;
         }
 
-        public WirelessData(int frequency, UUID uuid) {
+        public WirelessData(String frequency, UUID uuid) {
             this.frequency = frequency;
             this.uuid = uuid;
         }
@@ -185,7 +186,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
             return this.label;
         }
 
-        public int getFrequency() {
+        public String getFrequency() {
             return frequency;
         }
 
@@ -199,7 +200,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
         @Override
         public NBTBase saveDataToNBT() {
             NBTTagCompound tag = new NBTTagCompound();
-            tag.setInteger("frequency", frequency);
+            tag.setString("frequency", frequency);
             tag.setString("label", this.label);
             if (uuid != null) {
                 tag.setString("uuid", uuid.toString());
@@ -210,18 +211,19 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
 
         @Override
         public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeInt(frequency);
             aBuf.writeBoolean(uuid != null);
             if (uuid != null) {
                 aBuf.writeLong(uuid.getLeastSignificantBits());
                 aBuf.writeLong(uuid.getMostSignificantBits());
             }
+            aBuf.writeInt(frequency.length());
+            aBuf.writeBytes(frequency.getBytes());
         }
 
         @Override
         public void loadDataFromNBT(NBTBase aNBT) {
             NBTTagCompound tag = (NBTTagCompound) aNBT;
-            frequency = tag.getInteger("frequency");
+            frequency = tag.getString("frequency");
             this.label = tag.getString("label");
             if (tag.hasKey("uuid")) {
                 uuid = UUID.fromString(tag.getString("uuid"));
@@ -230,10 +232,15 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
 
         @Override
         public void readFromPacket(ByteArrayDataInput aBuf) {
-            frequency = aBuf.readInt();
             if (aBuf.readBoolean()) {
                 uuid = new UUID(aBuf.readLong(), aBuf.readLong());
             }
+            int length = aBuf.readInt();
+            StringBuilder freqBuilder = new StringBuilder();
+            for(int i = 0; i < length; i++){
+                freqBuilder.append(aBuf.readByte());
+            }
+            this.frequency = freqBuilder.toString();
         }
     }
 
@@ -286,24 +293,13 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
 
         protected void addUIForDataController(CoverDataControllerWidget<T> controller) {
             controller.addFollower(
-                new CoverDataFollowerNumericWidget<>(),
-                coverData -> (double) coverData.frequency,
-                (coverData, state) -> {
-                    coverData.frequency = state.intValue();
-                    return coverData;
-                },
-                widget -> widget.setScrollValues(1, 1000, 10)
-                    .setBounds(0, Integer.MAX_VALUE)
-                    .setPos(1, 2 + spaceY * getFrequencyRow())
-                    .setSize(spaceX * 5 - 4, 12))
-                .addFollower(
                     new CoverDataFollowerTextFieldWidget<>(),
-                    coverData -> coverData.label,
+                    coverData -> coverData.frequency,
                     (coverData, newLabel) -> {
-                        coverData.label = newLabel;
+                        coverData.frequency = newLabel;
                         return coverData;
                     },
-                    widget -> widget.setPos(1, 2 + spaceY * (getButtonRow() + 1))
+                    widget -> widget.setPos(1, 2 + spaceY * (getFrequencyRow()))
                         .setSize(spaceX * 5 - 4, 12))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofCheck(),
