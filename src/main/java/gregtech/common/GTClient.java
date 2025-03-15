@@ -87,6 +87,7 @@ import gregtech.client.GTMouseEventHandler;
 import gregtech.client.SeekingOggCodec;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.config.Client;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionRenderer;
 import gregtech.common.render.BlackholeRenderer;
@@ -585,6 +586,8 @@ public class GTClient extends GTProxy implements Runnable {
     @Override
     public void onPreLoad() {
         super.onPreLoad();
+
+        SoundSystemConfig.setNumberNormalChannels(Client.preference.maxNumSounds);
 
         MinecraftForge.EVENT_BUS.register(new ExtraIcons());
         Minecraft.getMinecraft()
