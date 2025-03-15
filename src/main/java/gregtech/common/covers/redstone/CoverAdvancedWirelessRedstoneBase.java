@@ -1,6 +1,5 @@
 package gregtech.common.covers.redstone;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -29,7 +28,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerTextFieldWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
@@ -217,7 +215,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
                 aBuf.writeLong(uuid.getMostSignificantBits());
             }
             aBuf.writeInt(frequency.length());
-            for(int i = 0; i < frequency.length(); i++){
+            for (int i = 0; i < frequency.length(); i++) {
                 aBuf.writeChar(frequency.charAt(i));
             }
         }
@@ -239,7 +237,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
             }
             int length = aBuf.readInt();
             StringBuilder freqBuilder = new StringBuilder();
-            for(int i = 0; i < length; i++){
+            for (int i = 0; i < length; i++) {
                 freqBuilder.append(aBuf.readChar());
             }
             this.frequency = freqBuilder.toString();
@@ -292,14 +290,14 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
 
         protected void addUIForDataController(CoverDataControllerWidget<T> controller) {
             controller.addFollower(
-                    new CoverDataFollowerTextFieldWidget<>(),
-                    coverData -> coverData.frequency,
-                    (coverData, newFrequency) -> {
-                        coverData.frequency = newFrequency.trim();
-                        return coverData;
-                    },
-                    widget -> widget.setPos(1, 2 + spaceY * (getFrequencyRow()))
-                        .setSize(spaceX * 5 - 4, 12))
+                new CoverDataFollowerTextFieldWidget<>(),
+                coverData -> coverData.frequency,
+                (coverData, newFrequency) -> {
+                    coverData.frequency = newFrequency.trim();
+                    return coverData;
+                },
+                widget -> widget.setPos(1, 2 + spaceY * (getFrequencyRow()))
+                    .setSize(spaceX * 5 - 4, 12))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofCheck(),
                     coverData -> coverData.uuid != null,
