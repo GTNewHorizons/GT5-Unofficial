@@ -13,7 +13,6 @@ import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
 import org.apache.logging.log4j.LogManager;
@@ -51,8 +50,6 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
     public static final Logger LOGGER = LogManager.getLogger("SNIFFER");
 
-    private static final Map<Integer, String> regularWirelessLabels = new HashMap<>();
-    private static final Map<String, Map<Integer, Map<CoverPosition, String>>> advWirelessLabels = new HashMap<>();
     private String uuid;
     private String freqFilter = "";
     private String ownerFilter = "";
@@ -60,11 +57,6 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
     public ItemSniffer(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);;
         setMaxStackSize(1);
-    }
-
-    public Map<CoverAdvancedWirelessRedstoneBase.CoverPosition, String> getCoversOnFrequency(String uuid, int frequency) {
-        Map<Integer, Map<CoverPosition, String>> publicCovers = advWirelessLabels.getOrDefault(uuid, new HashMap<>());
-        return publicCovers.getOrDefault(frequency, new HashMap<>());
     }
 
     @Override
@@ -78,95 +70,11 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
         if (!world.isRemote) {
             this.uuid = String.valueOf(player.getUniqueID());
             this.freqFilter = "";
-            loadFromNBT(stack.getTagCompound());
             GuiFactories.item()
                 .open(player);
 
         }
         return super.onItemRightClick(stack, world, player);
-    }
-
-    public static NBTTagCompound serializeRegularToNBT(NBTTagCompound base) {
-        NBTTagCompound regularWireless = new NBTTagCompound();
-        regularWirelessLabels
-            .forEach((frequency, label) -> { regularWireless.setString(String.valueOf(frequency), label); });
-        base.setTag("Regular", regularWireless);
-        return base;
-    }
-
-    public static <K, V> NBTTagCompound serializeAdvancedToNBT(NBTTagCompound base, Map<K, V> map) {
-        for (Map.Entry<K, V> entry : map.entrySet()) {
-            if (entry.getValue() instanceof Map mapEntry) {
-                base.setTag(
-                    entry.getKey()
-                        .toString(),
-                    serializeAdvancedToNBT(new NBTTagCompound(), mapEntry));
-            } else if (entry.getKey() instanceof CoverAdvancedWirelessRedstoneBase.CoverPosition data) {
-                NBTTagCompound coverTag = new NBTTagCompound();
-                coverTag.setInteger("x", data.x);
-                coverTag.setInteger("y", data.y);
-                coverTag.setInteger("z", data.z);
-                coverTag.setInteger("dim", data.dim);
-                coverTag.setInteger("side", data.side);
-                coverTag.setString("label", (String) entry.getValue());
-                base.setTag(String.valueOf(data.hashCode()), coverTag);
-            } else if (entry.getValue() instanceof String stringEntry) {
-                base.setString(
-                    entry.getKey()
-                        .toString(),
-                    stringEntry);
-            } else if (entry.getValue() instanceof Integer intEntry) {
-                base.setInteger(
-                    entry.getKey()
-                        .toString(),
-                    intEntry);
-            }
-        }
-        return base;
-    }
-
-    public void loadFromNBT(NBTTagCompound tag) {
-        if (tag == null || tag.hasNoTags()) return;
-        NBTTagCompound regular = tag.getCompoundTag("Regular");
-        if (!regular.hasNoTags()) {
-            regular.tagMap.keySet()
-                .forEach(
-                    frequency -> {
-                        regularWirelessLabels
-                            .put(Integer.valueOf((String) frequency), regular.getString(String.valueOf(frequency)));
-                    });
-        }
-        String[] owners = { "Public", this.uuid };
-        for (String owner : owners) {
-            if (tag.hasKey(owner)) {
-                NBTTagCompound frequencyMap = tag.getCompoundTag(owner);
-                if (frequencyMap.hasNoTags()) continue;
-
-                frequencyMap.tagMap.keySet()
-                    .forEach(frequency -> {
-                        NBTTagCompound coverMap = frequencyMap.getCompoundTag((String) frequency);
-                        if (coverMap.hasNoTags()) return;
-
-                        coverMap.tagMap.keySet()
-                            .forEach(cover -> {
-                                NBTTagCompound data = coverMap.getCompoundTag((String) cover);
-                                int x = data.getInteger("x");
-                                int y = data.getInteger("y");
-                                int z = data.getInteger("z");
-                                int dim = data.getInteger("dim");
-                                int side = data.getInteger("side");
-                                CoverAdvancedWirelessRedstoneBase.CoverPosition coverPosition = new CoverAdvancedWirelessRedstoneBase.CoverPosition(new ChunkCoordinates(x, y, z), dim, side);
-                                Map<Integer, Map<CoverPosition, String>> frequencies = advWirelessLabels
-                                    .computeIfAbsent(owner, k -> new HashMap<>());
-                                Map<CoverAdvancedWirelessRedstoneBase.CoverPosition, String> covers = frequencies
-                                    .computeIfAbsent(Integer.valueOf((String) frequency), k -> new HashMap<>());
-                                covers.put(coverPosition, data.getString("label"));
-                            });
-
-                    });
-
-            }
-        }
     }
 
     @Override
@@ -206,28 +114,11 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                     .sizeRel(1f, 0.2f)
                     .expanded()
                     .child(
-                        new TextWidget(String.valueOf(displayFreq)).widthRel(1.0f / 3.0f)
+                        new TextWidget(String.valueOf(displayFreq)).widthRel(0.5f)
                             .alignment(Alignment.Center))
                     .child(
-                        new TextWidget(isPrivate ? "Yes" : "No").widthRel(1.0f / 3.0f)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextFieldWidget().sizeRel(1.0f / 3.0f, 0.5f)
-                            .value(
-                                SyncHandlers
-                                    .string(() -> regularWirelessLabels.getOrDefault(freq, "Description"), label -> {
-                                        regularWirelessLabels.put(freq, label);
-                                        if (!guiSyncManager.isClient()) {
-                                            NBTTagCompound currentTag = guiSyncManager.getPlayer()
-                                                .getHeldItem()
-                                                .getTagCompound();
-                                            if (currentTag == null) currentTag = new NBTTagCompound();
-                                            NBTTagCompound tag = serializeRegularToNBT(currentTag);
-                                            guiSyncManager.getPlayer()
-                                                .getHeldItem()
-                                                .setTagCompound(tag);
-                                        }
-                                    }))));
+                        new TextWidget(isPrivate ? "Yes" : "No").widthRel(0.5f)
+                            .alignment(Alignment.Center)));
             });
 
 
@@ -239,22 +130,20 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
             new Column().child(
                 new Row().heightRel(0.1f)
                     .child(
-                        new TextWidget("Frequency").widthRel(1.0f / 3.0f)
+                        new TextWidget("Frequency").widthRel(0.5f)
                             .alignment(Alignment.Center))
                     .child(
-                        new TextWidget("Private").widthRel(1.0f / 3.0f)
+                        new TextWidget("Private").widthRel(0.5f)
                             .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget("Label").widthRel(1.0f / 3.0f)
-                            .alignment(Alignment.Center)))
+                )
                 .child(
                     new Row().heightRel(0.9f)
                         .child(regularListWidget)));
 
         // Process advanced wireless redstone frequencies
-        Map<Integer, Map<CoverAdvancedWirelessRedstoneBase.CoverPosition, Byte>> publicFreqs = GregTechAPI.sAdvancedWirelessRedstone
+        Map<String, Map<CoverAdvancedWirelessRedstoneBase.CoverPosition, Byte>> publicFreqs = GregTechAPI.sAdvancedWirelessRedstone
             .getOrDefault("null", new ConcurrentHashMap<>());
-        Map<String, Map<Integer, Map<CoverAdvancedWirelessRedstoneBase.CoverPosition, Byte>>> allFreqs = GregTechAPI.sAdvancedWirelessRedstone;
+        Map<String, Map<String, Map<CoverAdvancedWirelessRedstoneBase.CoverPosition, Byte>>> allFreqs = GregTechAPI.sAdvancedWirelessRedstone;
 
         ListWidget advancedListWidget = new ListWidget();
         advancedListWidget.sizeRel(1);
@@ -288,13 +177,10 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                         new TextWidget("Owner").widthRel(0.15f)
                             .alignment(Alignment.Center))
                     .child(
-                        new TextWidget("Frequency").widthRel(0.15f)
+                        new TextWidget("Frequency").widthRel(0.35f)
                             .alignment(Alignment.Center))
                     .child(
                         new TextWidget("Coords").widthRel(0.25f)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget("Label").widthRel(0.2f)
                             .alignment(Alignment.Center))
                     .child(
                         new TextWidget("Action").widthRel(0.25f)
@@ -345,8 +231,8 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
         return panel;
     }
 
-    public List<IWidget> processAdvancedFrequencies(Map<Integer, Map<CoverPosition, Byte>> frequencyMap, String owner,
-                                                          ListWidget listWidget, PanelSyncManager guiSyncManager) {
+    public List<IWidget> processAdvancedFrequencies(Map<String, Map<CoverPosition, Byte>> frequencyMap, String owner,
+                                                    ListWidget listWidget, PanelSyncManager guiSyncManager) {
 
         String ownerString = owner.equals("Public") ? "Public"
             : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(owner));
@@ -357,26 +243,13 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
             .stream()
             .sorted(Map.Entry.comparingByKey())
             .forEach(entry -> {
-                int freq = entry.getKey();
+                String freq = entry.getKey();
                 Map<CoverPosition, Byte> coverMap = entry.getValue();
                 coverMap.forEach((cover, useless) -> {
                     result.add(new Row()
-                        .setEnabledIf(w -> {
-                        try {
-                            if (this.ownerFilter.replaceAll(" ", "")
-                                .isEmpty() || this.ownerFilter.equals(ownerString)) {
-                                if (entry.getKey() == Integer.parseInt(this.freqFilter)) {
-                                    return true;
-                                }
-                            } else {
-                                return false;
-                            }
-
-                        } catch (NumberFormatException ignored) {
-                            return true;
-                        }
-                        return false;
-                    })
+                        .setEnabledIf(w -> (
+                            this.ownerFilter.isEmpty() || this.ownerFilter.equals(ownerString))
+                            && (entry.getKey().equals(this.freqFilter) || this.freqFilter.isEmpty()))
                         .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
                         .sizeRel(1f, 0.2f)
                         .expanded()
@@ -384,32 +257,11 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                             new TextWidget(ownerString).widthRel(0.15f)
                                 .alignment(Alignment.Center))
                         .child(
-                            new TextWidget(String.valueOf(freq)).widthRel(0.15f)
+                            new TextWidget(freq).widthRel(0.35f)
                                 .alignment(Alignment.Center))
                         .child(
                             new TextWidget(cover.getInfo()).widthRel(0.25f)
                                 .alignment(Alignment.Center))
-                        .child(
-                            new TextFieldWidget().sizeRel(0.2f, 0.5f)
-                                .value(SyncHandlers.string(() -> {
-                                    Map<CoverAdvancedWirelessRedstoneBase.CoverPosition, String> coversOnFrequency = getCoversOnFrequency(owner, freq);
-                                    return coversOnFrequency.getOrDefault(cover, "Description");
-                                }, label -> {
-                                    if (!guiSyncManager.isClient()) {
-                                        Map<Integer, Map<CoverAdvancedWirelessRedstoneBase.CoverPosition, String>> frequencies = advWirelessLabels
-                                            .computeIfAbsent(owner, k -> new HashMap<>());
-                                        Map<CoverPosition, String> covers = frequencies
-                                            .computeIfAbsent(freq, k -> new HashMap<>());
-                                        covers.put(cover, label);
-                                        NBTTagCompound tag = serializeAdvancedToNBT(
-                                            new NBTTagCompound(),
-                                            advWirelessLabels);
-                                        guiSyncManager.getPlayer()
-                                            .getHeldItem()
-                                            .setTagCompound(tag);
-                                    }
-
-                                })))
                         .child(
                             new ButtonWidget<>().widthRel(0.11f)
                                 .marginLeft(5)
