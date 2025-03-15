@@ -314,6 +314,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             .addInfo("All fluids are however consumed at start")
             .addInfo("Use voltage of worst energy hatch for overclocking")
             .addInfo("Performs normal overclock with given voltage")
+            .addInfo("Recipe tier limited by the Energy Hatch tier")
             .addTecTechHatchInfo()
             .addInfo("Performs laser overclock with extra amperage from multi-amp energy hatches")
             .addInfo("Each laser overclock reduces recipe time by 50%")
@@ -326,8 +327,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             .addStructureInfo("From Bottom to Top, Left to Right")
             .addStructureInfo(
                 "Layer 1 - Solid Steel Machine Casing, Input Bus (last can be Output Bus), Solid Steel Machine Casing")
-            .addStructureInfo(
-                "Layer 2 - Borosilicate Glass(any)/Warded Glass/Reinforced Glass, Assembly Line Casing, Reinforced Glass")
+            .addStructureInfo("Layer 2 - Glass, Assembly Line Casing, Glass")
             .addStructureInfo("Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
             .addStructureInfo("Layer 4 - Empty, Solid Steel Machine Casing, Empty")
             .addStructureInfo("Up to 16 repeating slices, each one allows for 1 more item in recipes")
@@ -341,6 +341,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"),
                 "Optional, next to controller",
                 2)
+            .addSubChannelUsage("glass", "Glass Tier")
             .toolTipFinisher();
         return tt;
     }
