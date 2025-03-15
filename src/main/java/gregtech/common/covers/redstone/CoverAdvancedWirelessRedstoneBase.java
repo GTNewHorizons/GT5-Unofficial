@@ -32,15 +32,15 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
 
     public CoverAdvancedWirelessRedstoneBase(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
-        this.frequency = 0;
+        this.frequency = "0";
         this.uuid = null;
     }
 
-    public int getFrequency() {
+    public String getFrequency() {
         return frequency;
     }
 
-    public CoverAdvancedWirelessRedstoneBase setFrequency(int frequency) {
+    public CoverAdvancedWirelessRedstoneBase setFrequency(String frequency) {
         this.frequency = frequency;
         return this;
     }
@@ -57,7 +57,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
     @Override
     protected void readDataFromNbt(NBTBase nbt) {
         NBTTagCompound tag = (NBTTagCompound) nbt;
-        frequency = tag.getInteger("frequency");
+        frequency = tag.getString("frequency");
         if (tag.hasKey("uuid")) {
             uuid = UUID.fromString(tag.getString("uuid"));
         }

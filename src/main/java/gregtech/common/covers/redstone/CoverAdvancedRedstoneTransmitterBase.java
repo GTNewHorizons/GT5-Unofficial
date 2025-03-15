@@ -37,7 +37,7 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
 
     @Override
     protected void readDataFromNbt(NBTBase nbt) {
-        int oldFrequency = frequency;
+        String oldFrequency = frequency;
         UUID oldUuid = uuid;
         super.readDataFromNbt(nbt);
         unregisterOldSignal(oldUuid, oldFrequency);
@@ -46,7 +46,7 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
         invert = tag.getBoolean("invert");
     }
 
-    private void unregisterOldSignal(UUID oldUuid, int oldFrequency) {
+    private void unregisterOldSignal(UUID oldUuid, String oldFrequency) {
         if (oldUuid != null && (!Objects.equals(uuid, oldUuid) || frequency != oldFrequency)) {
             unregisterSignal(oldUuid, oldFrequency);
         }
@@ -80,7 +80,7 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
         unregisterSignal(uuid, frequency);
     }
 
-    private void unregisterSignal(UUID oldUuid, int oldFrequency) {
+    private void unregisterSignal(UUID oldUuid, String oldFrequency) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) return;
         final long hash = hashCoverCoords(coverable, coverSide);
