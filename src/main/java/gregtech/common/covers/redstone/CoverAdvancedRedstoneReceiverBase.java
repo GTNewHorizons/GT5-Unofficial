@@ -154,12 +154,6 @@ public abstract class CoverAdvancedRedstoneReceiverBase
             return mode;
         }
 
-        // @Nonnull
-        // @Override
-        // public ISerializableObject copy() {
-        // return new ReceiverData(frequency, uuid, mode);
-        // }
-
         @Nonnull
         @Override
         public NBTBase saveDataToNBT() {
