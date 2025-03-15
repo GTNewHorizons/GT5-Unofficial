@@ -22,6 +22,7 @@ import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import codechicken.nei.recipe.HandlerInfo;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.SteamTexture;
@@ -58,6 +59,7 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     private final BasicUIPropertiesBuilder uiPropertiesBuilder;
     private final NEIRecipePropertiesBuilder neiPropertiesBuilder = NEIRecipeProperties.builder();
     private RecipeMapFrontend.FrontendCreator frontendCreator = RecipeMapFrontend::new;
+    private SoundResource sound;
 
     /**
      * Constructs builder object for {@link RecipeMap} with given backend logic. For custom frontend,
@@ -491,16 +493,23 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
         return this;
     }
 
+    public RecipeMapBuilder<B> sound(SoundResource sound) {
+        this.sound = sound;
+        return this;
+    }
+
     /**
      * Builds new recipemap.
      *
      * @return Recipemap object with backend type parameter, which is {@code RecipeMapFrontend} unless specified.
      */
     public RecipeMap<B> build() {
-        return new RecipeMap<>(
+        RecipeMap<B> map = new RecipeMap<>(
             unlocalizedName,
             backendCreator.create(backendPropertiesBuilder),
             frontendCreator.create(uiPropertiesBuilder, neiPropertiesBuilder));
+        map.setSound(this.sound);
+        return map;
     }
 
     private static <T> Function<? super T, ? extends T> withIdentityReturn(Consumer<T> func) {

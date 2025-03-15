@@ -32,6 +32,12 @@ public class GTSoundLoop extends MovingSound {
         volume = VOLUME_RAMP;
     }
 
+    public GTSoundLoop(ResourceLocation p_i45104_1_, IGregTechTileEntity base, boolean stopWhenActive,
+        boolean stopWhenInactive, boolean repeat) {
+        this(p_i45104_1_, base, stopWhenActive, stopWhenInactive);
+        this.repeat = repeat;
+    }
+
     @Override
     public void update() {
         if (donePlaying) {
@@ -51,8 +57,8 @@ public class GTSoundLoop extends MovingSound {
             || !world.checkChunksExist((int) xPosF, (int) yPosF, (int) zPosF, (int) xPosF, (int) yPosF, (int) zPosF);
         if (donePlaying) return;
         TileEntity tile = world.getTileEntity((int) xPosF, (int) yPosF, (int) zPosF);
-        if ((tile instanceof IGregTechTileEntity)) {
-            fadeMe |= ((IGregTechTileEntity) tile).isActive() ? whileActive : whileInactive;
+        if ((tile instanceof IGregTechTileEntity gt)) {
+            fadeMe |= gt.isActive() ? whileActive : whileInactive;
             return;
         }
 

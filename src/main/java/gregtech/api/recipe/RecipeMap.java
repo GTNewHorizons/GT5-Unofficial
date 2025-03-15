@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.Unmodifiable;
 
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.GTRecipe;
@@ -53,6 +54,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
     public final String unlocalizedName;
 
     private final RecipeCategory defaultRecipeCategory;
+    private SoundResource sound = null;
 
     /**
      * Use {@link RecipeMapBuilder} to instantiate.
@@ -223,6 +225,14 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
      */
     public FindRecipeQuery findRecipeQuery() {
         return new FindRecipeQuery(this);
+    }
+
+    public void setSound(SoundResource sound) {
+        this.sound = sound;
+    }
+
+    public SoundResource getSound() {
+        return this.sound;
     }
 
     @Override

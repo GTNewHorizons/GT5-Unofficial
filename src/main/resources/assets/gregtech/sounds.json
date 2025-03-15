@@ -549,5 +549,17 @@
     "sounds": [
       "gtceu/pump"
     ]
+  },
+  "machines.Assembler": {
+    "category": "block",
+    "sounds": [
+      "gtceu/assembler"
+    ]
+  },
+  "fire": {
+    "category": "block",
+    "sounds": [
+      "gtceu/fire"
+    ]
   }
 }

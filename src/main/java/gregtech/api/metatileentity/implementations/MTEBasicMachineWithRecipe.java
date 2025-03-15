@@ -3,7 +3,6 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.GTValues.W;
-import static gregtech.api.enums.GTValues.ticksBetweenSounds;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static net.minecraftforge.common.util.ForgeDirection.UP;
 
@@ -32,7 +31,6 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
@@ -740,28 +738,6 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
     @Override
     public int getCapacity() {
         return this.mTankCapacity;
-    }
-
-    @Override
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        super.startSoundLoop(aIndex, aX, aY, aZ);
-        if (aIndex == 1 && this.mSoundResourceLocation != null
-            && GTUtility.isStringValid(this.mSoundResourceLocation.getResourceDomain())
-            && GTUtility.isStringValid(this.mSoundResourceLocation.getResourcePath()))
-            GTUtility.doSoundAtClient(this.mSoundResourceLocation, 100, 1.0F, aX, aY, aZ);
-    }
-
-    @Override
-    public void startProcess() {
-        BaseMetaTileEntity myMetaTileEntity = ((BaseMetaTileEntity) this.getBaseMetaTileEntity());
-        // Added to throttle sounds. To reduce lag, this is on the server side so BlockUpdate packets aren't sent.
-        if (myMetaTileEntity.mTickTimer > (myMetaTileEntity.mLastSoundTick + ticksBetweenSounds)) {
-            if (this.mSoundResourceLocation != null
-                && GTUtility.isStringValid(this.mSoundResourceLocation.getResourceDomain())
-                && GTUtility.isStringValid(this.mSoundResourceLocation.getResourcePath())) this.sendLoopStart((byte) 1);
-            // Does not have overflow protection, but they are longs.
-            myMetaTileEntity.mLastSoundTick = myMetaTileEntity.mTickTimer;
-        }
     }
 
     @Override

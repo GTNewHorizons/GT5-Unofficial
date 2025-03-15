@@ -105,7 +105,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -574,10 +573,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 }
                 if (mEfficiency < 0) mEfficiency = 0;
                 endRecipeProcessing();
-            }
-
-            if (ticker % SOUND_LOOP_LENGTH == 0 && isRenderActive) {
-                sendLoopStart((byte) 1);
             }
         }
     }
@@ -3332,18 +3327,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     @Override
-    public void enableWorking() {
-        super.enableWorking();
-        sendLoopStart((byte) 1);
-    }
-
-    @Override
-    public void disableWorking() {
-        super.disableWorking();
-        sendLoopEnd((byte) 1);
-    }
-
-    @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
@@ -3352,14 +3335,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_GOD_FORGE_LOOP;
-    }
-
-    @Override
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        super.startSoundLoop(aIndex, aX, aY, aZ);
-        if (aIndex == 1) {
-            GTUtility.doSoundAtClient(SoundResource.GT_MACHINES_GOD_FORGE_LOOP, 22, 1.0F, aX, aY, aZ);
-        }
     }
 
 }

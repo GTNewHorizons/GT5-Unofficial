@@ -266,7 +266,6 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
                     this.lastNodeDistance = 0;
                     this.lastNodeColor = 0;
 
-                    this.sendLoopStart((byte) 20);
                     this.updateSlots();
                     return CheckRecipeResultRegistry.SUCCESSFUL;
                 }

@@ -284,24 +284,10 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      */
     void doSound(byte aIndex, double aX, double aY, double aZ);
 
-    void startSoundLoop(byte aIndex, double aX, double aY, double aZ);
-
-    void stopSoundLoop(byte aValue, double aX, double aY, double aZ);
-
     /**
      * Sends the Event for the Sound Triggers, only usable Server Side!
      */
     void sendSound(byte aIndex);
-
-    /**
-     * Sends the Event for the Sound Triggers, only usable Server Side!
-     */
-    void sendLoopStart(byte aIndex);
-
-    /**
-     * Sends the Event for the Sound Triggers, only usable Server Side!
-     */
-    void sendLoopEnd(byte aIndex);
 
     /**
      * Called when the Machine explodes. Override the Explosion code here.

@@ -51,6 +51,8 @@ import bartworks.common.loaders.RadioHatchMaterialLoader.RadioHatchMaterial;
 import bartworks.util.BWColorUtil;
 import bartworks.util.BWTooltipReference;
 import bartworks.util.MathUtils;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -82,6 +84,9 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
     private ItemStack lastUsedItem = null;
     private boolean lastFail = false;
     private RadioHatchMaterial radioHatchMaterial = null;
+
+    @SideOnly(Side.CLIENT)
+    private ResourceLocation soundResource;
 
     public MTERadioHatch(int aID, String aName, String aNameRegional, int aTier, boolean isDeprecated) {
         super(
@@ -172,7 +177,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
 
             if (myMetaTileEntity.mTickTimer > myMetaTileEntity.mLastSoundTick + ticksBetweenSounds
                 && this.sievert > 0) {
-                this.sendLoopStart((byte) 1);
+                // this.sendLoopStart((byte) 1);
                 myMetaTileEntity.mLastSoundTick = myMetaTileEntity.mTickTimer;
             }
 
@@ -237,6 +242,11 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
                     }
                 }
             }
+        } else {
+            if (soundResource == null) {
+                soundResource = new ResourceLocation(MainMod.MOD_ID, "hatch.RadOn");
+            }
+            doActivitySound(soundResource);
         }
     }
 
@@ -321,15 +331,6 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, IAddGr
         this.material = aNBT.getString("mMaterial");
         this.decayTime = aNBT.getLong("decay");
         super.loadNBTData(aNBT);
-    }
-
-    @Override
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        super.startSoundLoop(aIndex, aX, aY, aZ);
-        ResourceLocation rl = new ResourceLocation(MainMod.MOD_ID, "hatch.RadOn");
-        if (aIndex == 1) {
-            GTUtility.doSoundAtClient(rl, 10, 1.0F, aX, aY, aZ);
-        }
     }
 
     @Override

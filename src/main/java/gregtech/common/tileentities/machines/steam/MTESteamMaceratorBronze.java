@@ -23,7 +23,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.ParticleFX;
-import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -103,19 +102,6 @@ public class MTESteamMaceratorBronze extends MTEBasicMachineBronze {
         ItemStack aStack) {
         return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack)
             && RecipeMaps.maceratorRecipes.containsInput(GTUtility.copyAmount(64, aStack));
-    }
-
-    @Override
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        super.startSoundLoop(aIndex, aX, aY, aZ);
-        if (aIndex == 1) {
-            GTUtility.doSoundAtClient(SoundResource.GT_MACHINES_MACERATOR, 10, 1.0F, aX, aY, aZ);
-        }
-    }
-
-    @Override
-    public void startProcess() {
-        sendLoopStart((byte) 1);
     }
 
     @Override

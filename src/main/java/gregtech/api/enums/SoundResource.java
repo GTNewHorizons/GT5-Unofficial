@@ -1,8 +1,6 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.TecTech;
+import static gregtech.api.enums.Mods.*;
 
 import java.util.EnumSet;
 import java.util.Locale;
@@ -106,6 +104,7 @@ public enum SoundResource {
     GT_BOILING(302, GregTech.ID, "boiling"),
     GT_MOTOR(303, GregTech.ID, "motor"),
     GT_CUT(304, GregTech.ID, "cut"),
+    GT_FIRE(305, GregTech.ID, "fire"),
 
     GT_TOOLS_WRENCH(310, GregTech.ID, "tools.wrench"),
     GT_TOOLS_SOFTHAMMER(311, GregTech.ID, "tools.softhammer"),
@@ -129,6 +128,8 @@ public enum SoundResource {
     GT_MACHINES_COMPRESSOR(337, GregTech.ID, "machines.Compressor"),
     GT_MACHINES_CENTRIFUGE(338, GregTech.ID, "machines.Centrifuge"),
     GT_MACHINES_PUMP(339, GregTech.ID, "machines.Pump"),
+    GT_MACHINES_BATH(340, GregTech.ID, "machines.Bath"),
+    GT_MACHINES_ASSEMBLER(341, GregTech.ID, "machines.Assembler"),
 
     GUI_BUTTON_DOWN(-1, GregTech.ID, "gui.buttonDown"),
     GUI_BUTTON_UP(-1, GregTech.ID, "gui.buttonUp"),

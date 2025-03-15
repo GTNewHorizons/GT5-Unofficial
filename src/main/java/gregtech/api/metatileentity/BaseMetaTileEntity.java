@@ -771,14 +771,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     if (hasValidMetaTileEntity() && mTickTimer > 20)
                         mMetaTileEntity.doSound((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
                 }
-                case GregTechTileClientEvents.START_SOUND_LOOP -> {
-                    if (hasValidMetaTileEntity() && mTickTimer > 20)
-                        mMetaTileEntity.startSoundLoop((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
-                }
-                case GregTechTileClientEvents.STOP_SOUND_LOOP -> {
-                    if (hasValidMetaTileEntity() && mTickTimer > 20)
-                        mMetaTileEntity.stopSoundLoop((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
-                }
                 case GregTechTileClientEvents.CHANGE_LIGHT -> mLightValue = (byte) aValue;
             }
         }

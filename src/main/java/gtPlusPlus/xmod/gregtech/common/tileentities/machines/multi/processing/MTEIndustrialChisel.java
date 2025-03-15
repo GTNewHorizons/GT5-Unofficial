@@ -299,32 +299,31 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
     }
 
     @Override
-    protected void sendStartMultiBlockSoundLoop() {
-        sendLoopStart(PROCESS_START_SOUND_INDEX);
-    }
-
-    @Override
     public int getMaxParallelRecipes() {
         return (16 * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     private static ResourceLocation sChiselSound = null;
 
-    private static ResourceLocation getChiselSound() {
+    @Override
+    protected void doActivitySound(SoundResource activitySound) {
         if (sChiselSound == null) {
             sChiselSound = new ResourceLocation(Carving.chisel.getVariationSound(Blocks.stone, 0));
         }
-        return sChiselSound;
+        doActivitySound(sChiselSound);
     }
 
     @Override
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         switch (aIndex) {
-            case PROCESS_START_SOUND_INDEX -> GTUtility
-                .doSoundAtClient(getChiselSound(), getTimeBetweenProcessSounds(), 1.0F, 1.0F, aX, aY, aZ);
             case INTERRUPT_SOUND_INDEX -> GTUtility
                 .doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
         }
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     @Override

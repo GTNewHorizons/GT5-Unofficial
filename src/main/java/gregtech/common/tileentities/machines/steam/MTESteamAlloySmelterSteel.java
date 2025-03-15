@@ -17,7 +17,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_ALLOY_SME
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_ALLOY_SMELTER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_ALLOY_SMELTER_GLOW;
 
-import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -25,7 +24,6 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachineSteel;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 
 public class MTESteamAlloySmelterSteel extends MTEBasicMachineSteel {
 
@@ -50,19 +48,6 @@ public class MTESteamAlloySmelterSteel extends MTEBasicMachineSteel {
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.alloySmelterRecipes;
-    }
-
-    @Override
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        super.startSoundLoop(aIndex, aX, aY, aZ);
-        if (aIndex == 1) {
-            GTUtility.doSoundAtClient(SoundResource.GT_MACHINES_FURNACE, 10, 1.0F, aX, aY, aZ);
-        }
-    }
-
-    @Override
-    public void startProcess() {
-        sendLoopStart((byte) 1);
     }
 
     @Override

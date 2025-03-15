@@ -24,7 +24,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ParticleFX;
-import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -32,7 +31,6 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachineSteel;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 
 public class MTESteamForgeHammerSteel extends MTEBasicMachineSteel {
@@ -53,19 +51,6 @@ public class MTESteamForgeHammerSteel extends MTEBasicMachineSteel {
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.hammerRecipes;
-    }
-
-    @Override
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        super.startSoundLoop(aIndex, aX, aY, aZ);
-        if (aIndex == 1) {
-            GTUtility.doSoundAtClient(SoundResource.RANDOM_ANVIL_USE, 10, 1.0F, aX, aY, aZ);
-        }
-    }
-
-    @Override
-    public void startProcess() {
-        sendLoopStart((byte) 1);
     }
 
     @Override
