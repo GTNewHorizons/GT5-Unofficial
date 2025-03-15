@@ -8,7 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -213,16 +212,6 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
             } else {
                 return null;
             }
-        }
-
-        protected boolean setCoverData(T data) {
-            if (!isCoverValid()) return false;
-            ForgeDirection side = getUIBuildContext().getCoverSide();
-            ICoverable coverable = getUIBuildContext().getTile();
-            coverable.updateAttachedCover(
-                CoverRegistry.getRegistration(getUIBuildContext().getCoverID())
-                    .buildCover(side, coverable, data));
-            return true;
         }
 
         private boolean isCoverValid() {

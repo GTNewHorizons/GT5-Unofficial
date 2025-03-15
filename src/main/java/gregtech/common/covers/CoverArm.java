@@ -282,7 +282,7 @@ public class CoverArm extends CoverBehavior {
         protected void addUIWidgets(ModularWindow.Builder builder) {
             maxSlot = getMaxSlot();
             builder.widget(
-                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverArm.this::loadFromNbt)
+                new CoverDataControllerWidget<>(this::getCoverData, CoverArm.this::loadFromNbt, getUIBuildContext())
                     .addFollower(
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         coverData -> getFlagExport(convert(coverData)) > 0,

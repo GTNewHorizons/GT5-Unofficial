@@ -125,10 +125,10 @@ public class CoverShutter extends CoverBehavior {
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
-                        this::setCoverData,
                         CoverShutter.this::loadFromNbt,
                         (index, coverData) -> index == convert(coverData),
-                        (index, coverData) -> new ISerializableObject.LegacyCoverData(index))
+                        (index, coverData) -> new ISerializableObject.LegacyCoverData(index),
+                        getUIBuildContext())
                             .addToggleButton(
                                 0,
                                 CoverDataFollowerToggleButtonWidget.ofCheck(),

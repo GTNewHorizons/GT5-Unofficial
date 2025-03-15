@@ -142,8 +142,8 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
         protected void addUIWidgets(ModularWindow.Builder builder) {
             CoverDataControllerWidget<ChestInventory> w = new CoverDataControllerWidget<>(
                 this::getCoverData,
-                this::setCoverData,
-                CoverChest.this::loadFromNbt);
+                CoverChest.this::loadFromNbt,
+                getUIBuildContext());
             ChestInventory d = getCoverData();
             LimitingItemStackHandler h;
             if (d == null) {

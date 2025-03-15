@@ -174,8 +174,8 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
             builder.widget(
                 new CoverDataControllerWidget<>(
                     this::getCoverData,
-                    this::setCoverData,
-                    CoverItemFilter.this::loadFromNbt)
+                    CoverItemFilter.this::loadFromNbt,
+                    getUIBuildContext())
                         .addFollower(
                             new CoverDataFollowerToggleButtonWidget<>(),
                             coverData -> coverData.mWhitelist,

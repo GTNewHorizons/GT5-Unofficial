@@ -276,16 +276,17 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
             builder.widget(
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                     this::getCoverData,
-                    this::setCoverData,
                     CoverFacadeBase.this::loadFromNbt,
                     this::isEnabled,
                     (id, coverData) -> {
                         coverData.mFlags = getNewCoverVariable(id, coverData);
                         return coverData;
-                    }).addToggleButton(
-                        0,
-                        CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
-                        widget -> widget.setPos(spaceX * 0, spaceY * 0))
+                    },
+                    getUIBuildContext())
+                        .addToggleButton(
+                            0,
+                            CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
+                            widget -> widget.setPos(spaceX * 0, spaceY * 0))
                         .addToggleButton(
                             1,
                             CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),

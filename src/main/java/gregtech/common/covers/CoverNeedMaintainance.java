@@ -201,51 +201,51 @@ public class CoverNeedMaintainance extends CoverBehavior {
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
-                        this::setCoverData,
                         CoverNeedMaintainance.this::loadFromNbt,
                         (index, coverData) -> isEnabled(index, convert(coverData)),
                         (index, coverData) -> new ISerializableObject.LegacyCoverData(
-                            getNewCoverVariable(index, convert(coverData))))
-                                .addToggleButton(
-                                    0,
-                                    CoverDataFollowerToggleButtonWidget.ofCheck(),
-                                    widget -> widget.addTooltip(tooltipText[0])
-                                        .setPos(spaceX * 0, spaceY * 0))
-                                .addToggleButton(
-                                    1,
-                                    CoverDataFollowerToggleButtonWidget.ofCheck(),
-                                    widget -> widget.addTooltip(tooltipText[1])
-                                        .setPos(spaceX * 0, spaceY * 1))
-                                .addToggleButton(
-                                    2,
-                                    CoverDataFollowerToggleButtonWidget.ofCheck(),
-                                    widget -> widget.addTooltip(tooltipText[2])
-                                        .setPos(spaceX * 0, spaceY * 2))
-                                .addToggleButton(
-                                    3,
-                                    CoverDataFollowerToggleButtonWidget.ofCheck(),
-                                    widget -> widget.addTooltip(tooltipText[3])
-                                        .setPos(spaceX * 0, spaceY * 3))
-                                .addToggleButton(
-                                    4,
-                                    CoverDataFollowerToggleButtonWidget.ofCheck(),
-                                    widget -> widget.addTooltip(tooltipText[4])
-                                        .setPos(spaceX * 4 + 4, spaceY * 0))
-                                .addToggleButton(
-                                    5,
-                                    CoverDataFollowerToggleButtonWidget.ofCheck(),
-                                    widget -> widget.addTooltip(tooltipText[5])
-                                        .setPos(spaceX * 4 + 4, spaceY * 1))
-                                .addToggleButton(
-                                    6,
-                                    CoverDataFollowerToggleButtonWidget.ofCheck(),
-                                    widget -> widget.addTooltip(tooltipText[6])
-                                        .setPos(spaceX * 4 + 4, spaceY * 2))
-                                .addToggleButton(
-                                    7,
-                                    CoverDataFollowerToggleButtonWidget.ofRedstone(),
-                                    widget -> widget.setPos(spaceX * 4 + 4, spaceY * 3))
-                                .setPos(startX, startY))
+                            getNewCoverVariable(index, convert(coverData))),
+                        getUIBuildContext())
+                            .addToggleButton(
+                                0,
+                                CoverDataFollowerToggleButtonWidget.ofCheck(),
+                                widget -> widget.addTooltip(tooltipText[0])
+                                    .setPos(spaceX * 0, spaceY * 0))
+                            .addToggleButton(
+                                1,
+                                CoverDataFollowerToggleButtonWidget.ofCheck(),
+                                widget -> widget.addTooltip(tooltipText[1])
+                                    .setPos(spaceX * 0, spaceY * 1))
+                            .addToggleButton(
+                                2,
+                                CoverDataFollowerToggleButtonWidget.ofCheck(),
+                                widget -> widget.addTooltip(tooltipText[2])
+                                    .setPos(spaceX * 0, spaceY * 2))
+                            .addToggleButton(
+                                3,
+                                CoverDataFollowerToggleButtonWidget.ofCheck(),
+                                widget -> widget.addTooltip(tooltipText[3])
+                                    .setPos(spaceX * 0, spaceY * 3))
+                            .addToggleButton(
+                                4,
+                                CoverDataFollowerToggleButtonWidget.ofCheck(),
+                                widget -> widget.addTooltip(tooltipText[4])
+                                    .setPos(spaceX * 4 + 4, spaceY * 0))
+                            .addToggleButton(
+                                5,
+                                CoverDataFollowerToggleButtonWidget.ofCheck(),
+                                widget -> widget.addTooltip(tooltipText[5])
+                                    .setPos(spaceX * 4 + 4, spaceY * 1))
+                            .addToggleButton(
+                                6,
+                                CoverDataFollowerToggleButtonWidget.ofCheck(),
+                                widget -> widget.addTooltip(tooltipText[6])
+                                    .setPos(spaceX * 4 + 4, spaceY * 2))
+                            .addToggleButton(
+                                7,
+                                CoverDataFollowerToggleButtonWidget.ofRedstone(),
+                                widget -> widget.setPos(spaceX * 4 + 4, spaceY * 3))
+                            .setPos(startX, startY))
                 .widget(
                     new TextWidget(buttonText[0]).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))

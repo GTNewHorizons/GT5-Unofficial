@@ -172,8 +172,8 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
             builder.widget(
                 new CoverDataControllerWidget<>(
                     this::getCoverData,
-                    this::setCoverData,
-                    CoverLiquidMeter.this::loadFromNbt)
+                    CoverLiquidMeter.this::loadFromNbt,
+                    getUIBuildContext())
                         .addFollower(
                             CoverDataFollowerToggleButtonWidget.ofRedstone(),
                             coverData -> coverData.inverted,

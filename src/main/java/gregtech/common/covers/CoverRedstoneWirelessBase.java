@@ -151,8 +151,8 @@ public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
                 .widget(
                     new CoverDataControllerWidget<>(
                         this::getCoverData,
-                        this::setCoverData,
-                        CoverRedstoneWirelessBase.this::loadFromNbt)
+                        CoverRedstoneWirelessBase.this::loadFromNbt,
+                        getUIBuildContext())
 
                             .addFollower(
                                 new CoverDataFollowerNumericWidget<>(),

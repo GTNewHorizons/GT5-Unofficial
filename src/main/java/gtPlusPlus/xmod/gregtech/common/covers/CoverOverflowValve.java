@@ -215,8 +215,8 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                 .widget(
                     new CoverDataControllerWidget<>(
                         this::getCoverData,
-                        this::setCoverData,
-                        CoverOverflowValve.this::loadFromNbt).addFollower(
+                        CoverOverflowValve.this::loadFromNbt,
+                        getUIBuildContext()).addFollower(
                             new CoverDataFollowerNumericWidget<>(),
                             coverData -> (double) coverData.overflowPoint,
                             (coverData, state) -> {
@@ -239,8 +239,8 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                 .widget(
                     new CoverDataControllerWidget<>(
                         this::getCoverData,
-                        this::setCoverData,
-                        CoverOverflowValve.this::loadFromNbt).addFollower(
+                        CoverOverflowValve.this::loadFromNbt,
+                        getUIBuildContext()).addFollower(
                             new CoverDataFollowerNumericWidget<>(),
                             coverData -> (double) coverData.voidingRate,
                             (coverData, state) -> {
@@ -255,10 +255,10 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
-                        this::setCoverData,
                         CoverOverflowValve.this::loadFromNbt,
                         this::getClickable,
-                        this::updateData)
+                        this::updateData,
+                        getUIBuildContext())
                             .addToggleButton(
                                 0,
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),

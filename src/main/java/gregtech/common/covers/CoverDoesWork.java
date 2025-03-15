@@ -161,10 +161,10 @@ public class CoverDoesWork extends CoverBehavior {
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
-                        this::setCoverData,
                         CoverDoesWork.this::loadFromNbt,
                         (id, coverData) -> isEnabled(id, convert(coverData)),
-                        (id, coverData) -> new LegacyCoverData(getNewCoverVariable(id, convert(coverData))))
+                        (id, coverData) -> new LegacyCoverData(getNewCoverVariable(id, convert(coverData))),
+                        getUIBuildContext())
                             .addToggleButton(
                                 0,
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),

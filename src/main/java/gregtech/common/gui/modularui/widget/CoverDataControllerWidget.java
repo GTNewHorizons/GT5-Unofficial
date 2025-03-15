@@ -8,13 +8,17 @@ import java.util.function.Supplier;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.covers.CoverRegistry;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.ICoverDataFollowerWidget;
+import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.ISerializableObject;
 
 public class CoverDataControllerWidget<T extends ISerializableObject>
@@ -23,20 +27,36 @@ public class CoverDataControllerWidget<T extends ISerializableObject>
 
     protected final Function<NBTBase, T> nbtParser;
     private final Supplier<T> dataGetter;
-    private final Function<T, Boolean> dataSetter;
+    private final CoverUIBuildContext coverUiContext;
     protected T lastData;
     private boolean needsUpdate;
 
     /**
-     * @param dataGetter () -> cover data this widget handles
-     * @param dataSetter data to set -> if setting cover data is successful
-     * @param nbtParser  cover this widget handles data update
+     * @param dataGetter     () -> cover data this widget handles
+     * @param nbtParser      cover this widget handles data update
+     * @param coverUiContext identifies and locates the cover we're interacting with
      */
-    public CoverDataControllerWidget(Supplier<T> dataGetter, Function<T, Boolean> dataSetter,
-        Function<NBTBase, T> nbtParser) {
+    public CoverDataControllerWidget(Supplier<T> dataGetter, Function<NBTBase, T> nbtParser,
+        CoverUIBuildContext coverUiContext) {
         this.dataGetter = dataGetter;
-        this.dataSetter = dataSetter;
         this.nbtParser = nbtParser;
+        this.coverUiContext = coverUiContext;
+    }
+
+    protected boolean updateCoverInWorld(T data) {
+        if (!isCoverValid()) return false;
+        ForgeDirection side = coverUiContext.getCoverSide();
+        ICoverable coverable = coverUiContext.getTile();
+        coverable.updateAttachedCover(
+            CoverRegistry.getRegistration(coverUiContext.getCoverID())
+                .buildCover(side, coverable, data));
+        return true;
+    }
+
+    private boolean isCoverValid() {
+        ICoverable tile = coverUiContext.getTile();
+        return !tile.isDead() && tile.getCoverAtSide(coverUiContext.getCoverSide())
+            .isValid();
     }
 
     public <U, W extends Widget & ICoverDataFollowerWidget<T, U>> CoverDataControllerWidget<T> addFollower(W widget,
@@ -45,7 +65,7 @@ public class CoverDataControllerWidget<T extends ISerializableObject>
         widget.setStateSetter(state -> {
             T newData = dataUpdater.apply(getLastData(), state);
             lastData = newData;
-            dataSetter.apply(getLastData());
+            updateCoverInWorld(getLastData());
             syncDataToServer(newData);
         });
         applyForWidget.accept(widget);
@@ -106,7 +126,7 @@ public class CoverDataControllerWidget<T extends ISerializableObject>
     public void readOnClient(int id, PacketBuffer buf) throws IOException {
         if (id == 0) {
             lastData = readFromPacket(buf);
-            dataSetter.apply(getLastData());
+            updateCoverInWorld(getLastData());
             updateChildren();
         }
     }
@@ -115,7 +135,7 @@ public class CoverDataControllerWidget<T extends ISerializableObject>
     public void readOnServer(int id, PacketBuffer buf) throws IOException {
         if (id == 0) {
             lastData = readFromPacket(buf);
-            if (dataSetter.apply(getLastData())) {
+            if (updateCoverInWorld(getLastData())) {
                 markForUpdate();
             } else {
                 getWindow().closeWindow();
@@ -167,15 +187,15 @@ public class CoverDataControllerWidget<T extends ISerializableObject>
 
         /**
          * @param coverDataGetter   () -> cover data this widget handles
-         * @param coverDataSetter   data to set -> if setting cover data is successful
          * @param nbtParser         method that can read cover data from NBT
          * @param dataToStateGetter (index of button, given cover data) -> button state
          * @param dataUpdater       (index of button, current cover data) -> new cover data
+         * @param coverUiContext    identifies and locates the cover we're interacting with
          */
         public CoverDataIndexedControllerWidget_ToggleButtons(Supplier<T> coverDataGetter,
-            Function<T, Boolean> coverDataSetter, Function<NBTBase, T> nbtParser,
-            BiFunction<Integer, T, Boolean> dataToStateGetter, BiFunction<Integer, T, T> dataUpdater) {
-            super(coverDataGetter, coverDataSetter, nbtParser);
+            Function<NBTBase, T> nbtParser, BiFunction<Integer, T, Boolean> dataToStateGetter,
+            BiFunction<Integer, T, T> dataUpdater, CoverUIBuildContext coverUiContext) {
+            super(coverDataGetter, nbtParser, coverUiContext);
             this.dataToStateGetter = dataToStateGetter;
             this.dataUpdater = dataUpdater;
         }

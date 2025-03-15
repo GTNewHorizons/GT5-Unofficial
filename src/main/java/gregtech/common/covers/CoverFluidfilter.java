@@ -200,18 +200,19 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
             builder.widget(
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                     this::getCoverData,
-                    this::setCoverData,
                     CoverFluidfilter.this::loadFromNbt,
                     (id, coverData) -> !getClickable(id, coverData),
                     (id, coverData) -> {
                         coverData.mFilterMode = getNewFilterMode(id, coverData);
                         return coverData;
-                    }).addToggleButton(
-                        0,
-                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                        widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                            .addTooltip(GTUtility.trans("232", "Filter Input"))
-                            .setPos(spaceX * 0, spaceY * 0))
+                    },
+                    getUIBuildContext())
+                        .addToggleButton(
+                            0,
+                            CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                            widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
+                                .addTooltip(GTUtility.trans("232", "Filter Input"))
+                                .setPos(spaceX * 0, spaceY * 0))
                         .addToggleButton(
                             1,
                             CoverDataFollowerToggleButtonWidget.ofDisableable(),

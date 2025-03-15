@@ -181,7 +181,7 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
             final CoverDataFollowerNumericWidget<EUMeterData> numericWidget = new CoverDataFollowerNumericWidget<>();
 
             builder.widget(
-                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverEUMeter.this::loadFromNbt)
+                new CoverDataControllerWidget<>(this::getCoverData, CoverEUMeter.this::loadFromNbt, getUIBuildContext())
                     .addFollower(
                         new CoverDataFollowerCycleButtonWidget<>(),
                         coverData -> coverData.type.ordinal(),

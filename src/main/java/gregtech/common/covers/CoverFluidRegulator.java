@@ -227,8 +227,8 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
             builder.widget(
                 new CoverDataControllerWidget<>(
                     this::getCoverData,
-                    this::setCoverData,
-                    CoverFluidRegulator.this::loadFromNbt)
+                    CoverFluidRegulator.this::loadFromNbt,
+                    getUIBuildContext())
                         .addFollower(
                             CoverDataFollowerToggleButtonWidget.ofDisableable(),
                             coverData -> coverData.speed >= 0,

@@ -209,10 +209,10 @@ public class CoverEnderFluidLink extends CoverBehavior {
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::getCoverData,
-                        this::setCoverData,
                         CoverEnderFluidLink.this::loadFromNbt,
                         (id, coverData) -> !getClickable(id, convert(coverData)),
-                        (id, coverData) -> new LegacyCoverData(getNewCoverVariable(id, convert(coverData))))
+                        (id, coverData) -> new LegacyCoverData(getNewCoverVariable(id, convert(coverData))),
+                        getUIBuildContext())
                             .addToggleButton(
                                 PUBLIC_BUTTON_ID,
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),

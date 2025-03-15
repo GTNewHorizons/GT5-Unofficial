@@ -166,8 +166,8 @@ public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.Fluid
             builder.widget(
                 new CoverDataControllerWidget<>(
                     this::getCoverData,
-                    this::setCoverData,
-                    CoverFluidLimiter.this::loadFromNbt).addFollower(
+                    CoverFluidLimiter.this::loadFromNbt,
+                    getUIBuildContext()).addFollower(
                         new CoverDataFollowerNumericWidget<>(),
                         coverData -> (double) Math.round(coverData.threshold * 100),
                         (coverData, val) -> {

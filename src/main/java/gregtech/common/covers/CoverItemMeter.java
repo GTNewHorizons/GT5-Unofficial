@@ -211,8 +211,8 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
             builder.widget(
                 new CoverDataControllerWidget<>(
                     this::getCoverData,
-                    this::setCoverData,
-                    CoverItemMeter.this::loadFromNbt)
+                    CoverItemMeter.this::loadFromNbt,
+                    getUIBuildContext())
                         .addFollower(
                             CoverDataFollowerToggleButtonWidget.ofRedstone(),
                             coverData -> coverData.inverted,
