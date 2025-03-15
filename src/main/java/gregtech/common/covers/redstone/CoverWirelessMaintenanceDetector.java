@@ -25,6 +25,7 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverNeedMaintainance;
+import gregtech.common.covers.CoverPosition;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;

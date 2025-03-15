@@ -3,6 +3,7 @@ package gregtech.common.covers.redstone;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.common.covers.CoverPosition;
 
 public class CoverAdvancedRedstoneTransmitterExternal
     extends CoverAdvancedRedstoneTransmitterBase<CoverAdvancedRedstoneTransmitterBase.TransmitterData> {

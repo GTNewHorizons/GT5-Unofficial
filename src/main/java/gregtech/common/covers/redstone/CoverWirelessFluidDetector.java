@@ -24,6 +24,7 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverLiquidMeter;
+import gregtech.common.covers.CoverPosition;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;

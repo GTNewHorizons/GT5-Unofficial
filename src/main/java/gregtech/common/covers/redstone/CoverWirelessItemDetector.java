@@ -25,6 +25,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverItemMeter;
+import gregtech.common.covers.CoverPosition;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
