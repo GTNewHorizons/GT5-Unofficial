@@ -28,6 +28,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -36,7 +38,6 @@ import bartworks.API.recipe.BWNBTDependantCraftingRecipe;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BWUtil;
-import bartworks.util.Pair;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -201,11 +202,11 @@ public class CircuitImprintLoader {
 
     private static final List<Pair<ItemStack, ItemStack>> circuitPartsToReplace = Collections.unmodifiableList(
         Arrays.asList(
-            new Pair<>(ItemList.Circuit_Parts_Resistor.get(1), ItemList.Circuit_Parts_ResistorSMD.get(1)),
-            new Pair<>(ItemList.Circuit_Parts_Diode.get(1), ItemList.Circuit_Parts_DiodeSMD.get(1)),
-            new Pair<>(ItemList.Circuit_Parts_Transistor.get(1), ItemList.Circuit_Parts_TransistorSMD.get(1)),
-            new Pair<>(ItemList.Circuit_Parts_Capacitor.get(1), ItemList.Circuit_Parts_CapacitorSMD.get(1)),
-            new Pair<>(ItemList.Circuit_Parts_Coil.get(1), ItemList.Circuit_Parts_InductorSMD.get(1))));
+            Pair.of(ItemList.Circuit_Parts_Resistor.get(1), ItemList.Circuit_Parts_ResistorSMD.get(1)),
+            Pair.of(ItemList.Circuit_Parts_Diode.get(1), ItemList.Circuit_Parts_DiodeSMD.get(1)),
+            Pair.of(ItemList.Circuit_Parts_Transistor.get(1), ItemList.Circuit_Parts_TransistorSMD.get(1)),
+            Pair.of(ItemList.Circuit_Parts_Capacitor.get(1), ItemList.Circuit_Parts_CapacitorSMD.get(1)),
+            Pair.of(ItemList.Circuit_Parts_Coil.get(1), ItemList.Circuit_Parts_InductorSMD.get(1))));
 
     private static ItemStack replaceCircuitParts(ItemStack stack) {
         for (Pair<ItemStack, ItemStack> pair : circuitPartsToReplace) {

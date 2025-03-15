@@ -19,11 +19,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.google.common.collect.ArrayListMultimap;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
-import bartworks.util.Pair;
 import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.Materials;
@@ -69,7 +70,7 @@ public final class BWAtmosphereManager {
     }
 
     public static void addGasToWorld(int worldID, ISubTagContainer gas, int amount) {
-        Pair<ISubTagContainer, Integer> toadd = new Pair<>(gas, amount);
+        Pair<ISubTagContainer, Integer> toadd = Pair.of(gas, amount);
         BWAtmosphereManager.gasConcentration.put(worldID, toadd);
     }
 
