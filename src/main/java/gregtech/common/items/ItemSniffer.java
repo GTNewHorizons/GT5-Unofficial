@@ -7,19 +7,15 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Predicate;
 
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.ISerializableObject;
+import com.cleanroommc.modularui.widgets.ListWidget;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
-import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,8 +37,6 @@ import com.cleanroommc.modularui.widgets.PageButton;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
-import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
@@ -189,7 +183,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
         data.controller(controller);
 
         // Process regular wireless redstone frequencies
-        List<List<IWidget>> regularMatrix = new ArrayList<>();
+        List<IWidget> regularList = new ArrayList<>();
         GregTechAPI.sWirelessRedstone.entrySet()
             .stream()
             .sorted(Map.Entry.comparingByKey())
@@ -197,17 +191,8 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                 int freq = entry.getKey();
                 boolean isPrivate = freq > 65535;
                 int displayFreq = isPrivate ? freq - 65536 : freq;
-                List<IWidget> row = new ArrayList<>();
-                row.add(new Row() {
-
-                    @Override
-                    public Flow setEnabledIf(Predicate<Flow> condition) {
-                        return onUpdateListener(w -> {
-                            setEnabled(condition.test(w));
-                            heightRel(isEnabled() ? 0.2f : 0);
-                        }, true);
-                    }
-                }.setEnabledIf(w -> {
+                regularList.add(new Row()
+                    .setEnabledIf(w -> {
                     try {
                         if (displayFreq == Integer.parseInt(this.freqFilter)) {
                             return true;
@@ -243,15 +228,12 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                                                 .setTagCompound(tag);
                                         }
                                     }))));
-                regularMatrix.add(row);
             });
 
-        Grid regularGrid = new Grid().minColWidth(0)
-            .minRowHeight(0)
-            .scrollable()
-            .matrix(regularMatrix);
-        regularGrid.getScrollArea()
-            .setScrollDataX(null);
+
+        ListWidget regularListWidget = new ListWidget<>();
+        regularListWidget.sizeRel(1);
+        regularList.forEach(regularListWidget::child);
 
         data.addPage(
             new Column().child(
@@ -267,39 +249,37 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                             .alignment(Alignment.Center)))
                 .child(
                     new Row().heightRel(0.9f)
-                        .child(regularGrid.sizeRel(1, 1f))));
+                        .child(regularListWidget)));
 
         // Process advanced wireless redstone frequencies
         Map<Integer, Map<CoverAdvancedWirelessRedstoneBase.CoverPosition, Byte>> publicFreqs = GregTechAPI.sAdvancedWirelessRedstone
             .getOrDefault("null", new ConcurrentHashMap<>());
         Map<String, Map<Integer, Map<CoverAdvancedWirelessRedstoneBase.CoverPosition, Byte>>> allFreqs = GregTechAPI.sAdvancedWirelessRedstone;
 
-        Grid advGrid = new Grid().minColWidth(0)
-            .minRowHeight(0)
-            .scrollable();
-        advGrid.getScrollArea()
-            .setScrollDataX(null);
-
-        List<List<IWidget>> advancedMatrix = (processAdvancedFrequencies(
+        ListWidget advancedListWidget = new ListWidget();
+        advancedListWidget.sizeRel(1);
+        List<IWidget> advancedList = (processAdvancedFrequencies(
             publicFreqs,
             "Public",
-            advGrid,
+            advancedListWidget,
             guiSyncManager));
+
         UUID leader = SpaceProjectManager.getLeader(UUID.fromString(this.uuid));
         GregTechAPI.sAdvancedWirelessRedstone.keySet()
             .forEach(uuid -> {
                 if (!uuid.equals("null") && SpaceProjectManager.getLeader(UUID.fromString(uuid))
                     .equals(leader)) {
-                    advancedMatrix.addAll(
+                    advancedList.addAll(
                         (processAdvancedFrequencies(
                             allFreqs.getOrDefault(uuid, new ConcurrentHashMap<>()),
                             uuid,
-                            advGrid,
+                            advancedListWidget,
                             guiSyncManager)));
                 }
             });
 
-        advGrid.matrix(advancedMatrix);
+        advancedList.forEach(advancedListWidget::child);
+
 
         data.addPage(
             new Column().child(
@@ -321,7 +301,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                             .alignment(Alignment.Center)))
                 .child(
                     new Row().heightRel(0.9f)
-                        .child(advGrid.sizeRel(1f))));
+                        .child(advancedListWidget)));
 
         panel.child(
             new Column().margin(10)
@@ -345,8 +325,8 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                                 .value(SyncHandlers.string(() -> this.freqFilter, filter -> {
                                     this.freqFilter = filter;
                                     if (NetworkUtils.isClient()) {
-                                        WidgetTree.resize(regularGrid);
-                                        WidgetTree.resize(advGrid);
+                                        WidgetTree.resize(regularListWidget); //The scroll area doesn't update automatically
+                                        WidgetTree.resize(advancedListWidget);
                                     }
                                 })))
                         .child(
@@ -357,7 +337,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                                 .value(SyncHandlers.string(() -> this.ownerFilter, ownerFilter -> {
                                     this.ownerFilter = ownerFilter;
                                     if (NetworkUtils.isClient()) {
-                                        WidgetTree.resize(advGrid);
+                                        WidgetTree.resize(advancedListWidget);
                                     }
                                 }))))
                 .child(data));
@@ -365,14 +345,14 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
         return panel;
     }
 
-    public List<List<IWidget>> processAdvancedFrequencies(Map<Integer, Map<CoverPosition, Byte>> frequencyMap, String owner,
-                                                          Grid grid, PanelSyncManager guiSyncManager) {
+    public List<IWidget> processAdvancedFrequencies(Map<Integer, Map<CoverPosition, Byte>> frequencyMap, String owner,
+                                                          ListWidget listWidget, PanelSyncManager guiSyncManager) {
 
         String ownerString = owner.equals("Public") ? "Public"
             : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(owner));
         AtomicInteger size = new AtomicInteger();
         frequencyMap.forEach((k, v) -> size.addAndGet(v.size()));
-        List<List<IWidget>> result = new ArrayList<>();
+        List<IWidget> result = new ArrayList<>();
         frequencyMap.entrySet()
             .stream()
             .sorted(Map.Entry.comparingByKey())
@@ -380,18 +360,8 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                 int freq = entry.getKey();
                 Map<CoverPosition, Byte> coverMap = entry.getValue();
                 coverMap.forEach((cover, useless) -> {
-                    List<IWidget> row = new ArrayList<>();
-
-
-                    row.add(new Row() {
-                        @Override
-                        public Flow setEnabledIf(Predicate<Flow> condition) {
-                            return onUpdateListener(w -> {
-                                setEnabled(condition.test(w));
-                                heightRel(isEnabled() ? 0.2f : 0);
-                            }, true);
-                        }
-                    }.setEnabledIf(w -> {
+                    result.add(new Row()
+                        .setEnabledIf(w -> {
                         try {
                             if (this.ownerFilter.replaceAll(" ", "")
                                 .isEmpty() || this.ownerFilter.equals(ownerString)) {
@@ -452,7 +422,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                                                 .getDisplayName());
                                     GTValues.NW.sendToServer(
                                         new PacketDebugRedstoneCover(cover.dim, cover.x, cover.y, cover.z, false));
-                                    grid.getPanel()
+                                    listWidget.getPanel()
                                         .closeIfOpen(false);
                                     return true;
                                 }))
@@ -466,11 +436,10 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                                             .getDisplayName() + " to " + cover.getInfo());
                                     GTValues.NW.sendToServer(
                                         new PacketDebugRedstoneCover(cover.dim, cover.x, cover.y, cover.z, true));
-                                    grid.getPanel()
+                                    listWidget.getPanel()
                                         .closeIfOpen(false);
                                     return true;
                                 })));
-                    result.add(row);
                 });
 
             });
