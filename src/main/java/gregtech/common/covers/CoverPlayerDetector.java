@@ -156,13 +156,21 @@ public class CoverPlayerDetector extends CoverBehavior {
             super(buildContext);
         }
 
+        @Override
+        protected CoverPlayerDetector adaptCover(Cover cover) {
+            if (cover instanceof CoverPlayerDetector adapterCover) {
+                return adapterCover;
+            }
+            return null;
+        }
+
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        this::getCoverData,
+                        this::adaptCover,
                         CoverPlayerDetector.this::loadFromNbt,
                         (index, coverData) -> index == convert(coverData),
                         (index, coverData) -> new LegacyCoverData(index),

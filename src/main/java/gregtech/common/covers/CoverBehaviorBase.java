@@ -123,8 +123,11 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
         byteBuf.writeInt(tickRateAddition);
     }
 
-    @Override
-    public ISerializableObject getCoverData() {
+    /**
+     * @deprecated Only left for use by GUIs until they migrate to using covers directly.
+     */
+    @Deprecated
+    public @NotNull T getCoverData() {
         return coverData;
     }
 
@@ -205,13 +208,17 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
         @Nullable
         protected T getCoverData() {
             if (isCoverValid()) {
-                return forceCast(
+                CoverBehaviorBase<T> typedCover = adaptCover(
                     getUIBuildContext().getTile()
-                        .getCoverAtSide(getUIBuildContext().getCoverSide())
-                        .getCoverData());
+                        .getCoverAtSide(getUIBuildContext().getCoverSide()));
+                return typedCover == null ? null : typedCover.getCoverData();
             } else {
                 return null;
             }
+        }
+
+        protected CoverBehaviorBase<T> adaptCover(Cover cover) {
+            return null;
         }
 
         private boolean isCoverValid() {

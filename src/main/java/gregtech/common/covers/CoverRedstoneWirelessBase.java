@@ -144,13 +144,21 @@ public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
             return 250;
         }
 
+        @Override
+        protected CoverRedstoneWirelessBase adaptCover(Cover cover) {
+            if (cover instanceof CoverRedstoneWirelessBase adapterCover) {
+                return adapterCover;
+            }
+            return null;
+        }
+
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder
                 .widget(
                     new CoverDataControllerWidget<>(
-                        this::getCoverData,
+                        this::adaptCover,
                         CoverRedstoneWirelessBase.this::loadFromNbt,
                         getUIBuildContext())
 

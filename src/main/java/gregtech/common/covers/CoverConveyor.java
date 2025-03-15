@@ -173,12 +173,20 @@ public class CoverConveyor extends CoverBehavior {
             super(buildContext);
         }
 
+        @Override
+        protected CoverConveyor adaptCover(Cover cover) {
+            if (cover instanceof CoverConveyor adapterCover) {
+                return adapterCover;
+            }
+            return null;
+        }
+
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder.widget(
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                    this::getCoverData,
+                    this::adaptCover,
                     CoverConveyor.this::loadFromNbt,
                     (id, coverData) -> !getClickable(id, convert(coverData)),
                     (id, coverData) -> new LegacyCoverData(getNewCoverVariable(id, convert(coverData))),

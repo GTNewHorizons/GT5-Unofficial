@@ -24,6 +24,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
@@ -242,11 +243,19 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
         }
 
         @Override
+        protected CoverAdvancedWirelessRedstoneBase adaptCover(Cover cover) {
+            if (cover instanceof CoverAdvancedWirelessRedstoneBase adapterCover) {
+                return adapterCover;
+            }
+            return null;
+        }
+
+        @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             final int privateExtraColumn = isShiftPrivateLeft() ? 1 : 5;
 
             CoverDataControllerWidget<T> dataController = new CoverDataControllerWidget<>(
-                this::getCoverData,
+                this::adaptCover,
                 CoverAdvancedWirelessRedstoneBase.this::loadFromNbt,
                 getUIBuildContext());
             dataController.setPos(startX, startY);

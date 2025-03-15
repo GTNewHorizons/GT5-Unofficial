@@ -277,12 +277,20 @@ public class CoverArm extends CoverBehavior {
             super(buildContext);
         }
 
+        @Override
+        protected CoverArm adaptCover(Cover cover) {
+            if (cover instanceof CoverArm adapterCover) {
+                return adapterCover;
+            }
+            return null;
+        }
+
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             maxSlot = getMaxSlot();
             builder.widget(
-                new CoverDataControllerWidget<>(this::getCoverData, CoverArm.this::loadFromNbt, getUIBuildContext())
+                new CoverDataControllerWidget<>(this::adaptCover, CoverArm.this::loadFromNbt, getUIBuildContext())
                     .addFollower(
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         coverData -> getFlagExport(convert(coverData)) > 0,

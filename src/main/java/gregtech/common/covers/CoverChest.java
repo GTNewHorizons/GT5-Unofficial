@@ -139,9 +139,17 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
         }
 
         @Override
+        protected CoverChest adaptCover(Cover cover) {
+            if (cover instanceof CoverChest adapterCover) {
+                return adapterCover;
+            }
+            return null;
+        }
+
+        @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             CoverDataControllerWidget<ChestInventory> w = new CoverDataControllerWidget<>(
-                this::getCoverData,
+                this::adaptCover,
                 CoverChest.this::loadFromNbt,
                 getUIBuildContext());
             ChestInventory d = getCoverData();

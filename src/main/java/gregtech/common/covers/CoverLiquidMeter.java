@@ -161,6 +161,14 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
             super(buildContext);
         }
 
+        @Override
+        protected CoverLiquidMeter adaptCover(Cover cover) {
+            if (cover instanceof CoverLiquidMeter adapterCover) {
+                return adapterCover;
+            }
+            return null;
+        }
+
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
@@ -171,7 +179,7 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
 
             builder.widget(
                 new CoverDataControllerWidget<>(
-                    this::getCoverData,
+                    this::adaptCover,
                     CoverLiquidMeter.this::loadFromNbt,
                     getUIBuildContext())
                         .addFollower(

@@ -202,13 +202,21 @@ public class CoverControlsWork extends CoverBehavior {
             super(buildContext);
         }
 
+        @Override
+        protected CoverControlsWork adaptCover(Cover cover) {
+            if (cover instanceof CoverControlsWork adapterCover) {
+                return adapterCover;
+            }
+            return null;
+        }
+
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        this::getCoverData,
+                        this::adaptCover,
                         CoverControlsWork.this::loadFromNbt,
                         (id, coverData) -> !getClickable(id, convert(coverData)),
                         (id, coverData) -> new LegacyCoverData(getNewCoverVariable(id, convert(coverData))),
@@ -231,7 +239,7 @@ public class CoverControlsWork extends CoverBehavior {
                             .setPos(startX, startY))
                 .widget(
                     new CoverDataControllerWidget<>(
-                        this::getCoverData,
+                        this::adaptCover,
                         CoverControlsWork.this::loadFromNbt,
                         getUIBuildContext()).addFollower(
                             CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),

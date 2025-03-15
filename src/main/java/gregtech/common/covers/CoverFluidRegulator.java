@@ -219,6 +219,14 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
             super(buildContext);
         }
 
+        @Override
+        protected CoverFluidRegulator adaptCover(Cover cover) {
+            if (cover instanceof CoverFluidRegulator adapterCover) {
+                return adapterCover;
+            }
+            return null;
+        }
+
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
@@ -226,7 +234,7 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
 
             builder.widget(
                 new CoverDataControllerWidget<>(
-                    this::getCoverData,
+                    this::adaptCover,
                     CoverFluidRegulator.this::loadFromNbt,
                     getUIBuildContext())
                         .addFollower(

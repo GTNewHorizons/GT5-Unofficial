@@ -164,6 +164,14 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
             super(buildContext);
         }
 
+        @Override
+        protected CoverItemFilter adaptCover(Cover cover) {
+            if (cover instanceof CoverItemFilter adapterCover) {
+                return adapterCover;
+            }
+            return null;
+        }
+
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
@@ -173,7 +181,7 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
             }
             builder.widget(
                 new CoverDataControllerWidget<>(
-                    this::getCoverData,
+                    this::adaptCover,
                     CoverItemFilter.this::loadFromNbt,
                     getUIBuildContext())
                         .addFollower(

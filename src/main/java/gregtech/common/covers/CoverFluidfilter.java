@@ -194,12 +194,20 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
             super(buildContext);
         }
 
+        @Override
+        protected CoverFluidfilter adaptCover(Cover cover) {
+            if (cover instanceof CoverFluidfilter adapterCover) {
+                return adapterCover;
+            }
+            return null;
+        }
+
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder.widget(
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                    this::getCoverData,
+                    this::adaptCover,
                     CoverFluidfilter.this::loadFromNbt,
                     (id, coverData) -> !getClickable(id, coverData),
                     (id, coverData) -> {

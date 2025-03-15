@@ -270,12 +270,20 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
             super(buildContext);
         }
 
+        @Override
+        protected CoverFacadeBase adaptCover(Cover cover) {
+            if (cover instanceof CoverFacadeBase adapterCover) {
+                return adapterCover;
+            }
+            return null;
+        }
+
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder.widget(
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                    this::getCoverData,
+                    this::adaptCover,
                     CoverFacadeBase.this::loadFromNbt,
                     this::isEnabled,
                     (id, coverData) -> {

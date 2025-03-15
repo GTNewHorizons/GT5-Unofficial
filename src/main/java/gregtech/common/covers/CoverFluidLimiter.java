@@ -162,10 +162,18 @@ public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.Fluid
         }
 
         @Override
+        protected CoverFluidLimiter adaptCover(Cover cover) {
+            if (cover instanceof CoverFluidLimiter adapterCover) {
+                return adapterCover;
+            }
+            return null;
+        }
+
+        @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder.widget(
                 new CoverDataControllerWidget<>(
-                    this::getCoverData,
+                    this::adaptCover,
                     CoverFluidLimiter.this::loadFromNbt,
                     getUIBuildContext()).addFollower(
                         new CoverDataFollowerNumericWidget<>(),

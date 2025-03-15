@@ -29,7 +29,6 @@ import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
 
 public abstract class Cover {
@@ -77,12 +76,6 @@ public abstract class Cover {
     public boolean allowsTickRateAddition() {
         return true;
     }
-
-    /**
-     * @deprecated Only left for use by GUIs until they migrate to using covers directly.
-     */
-    @Deprecated
-    protected abstract ISerializableObject getCoverData();
 
     /**
      * Called when the cover is initially attached to a machine.

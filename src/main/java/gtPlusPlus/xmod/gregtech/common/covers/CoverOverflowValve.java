@@ -23,6 +23,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
@@ -202,6 +203,14 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
         }
 
         @Override
+        protected CoverOverflowValve adaptCover(Cover cover) {
+            if (cover instanceof CoverOverflowValve adapterCover) {
+                return adapterCover;
+            }
+            return null;
+        }
+
+        @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder
                 .widget(
@@ -214,7 +223,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                         .setPos(xOP + width + 3, yOP + 11))
                 .widget(
                     new CoverDataControllerWidget<>(
-                        this::getCoverData,
+                        this::adaptCover,
                         CoverOverflowValve.this::loadFromNbt,
                         getUIBuildContext()).addFollower(
                             new CoverDataFollowerNumericWidget<>(),
@@ -238,7 +247,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                         .setPos(xVR + width + 3, yVR + 11))
                 .widget(
                     new CoverDataControllerWidget<>(
-                        this::getCoverData,
+                        this::adaptCover,
                         CoverOverflowValve.this::loadFromNbt,
                         getUIBuildContext()).addFollower(
                             new CoverDataFollowerNumericWidget<>(),
@@ -254,7 +263,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                                 .setSize(width, height)))
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        this::getCoverData,
+                        this::adaptCover,
                         CoverOverflowValve.this::loadFromNbt,
                         this::getClickable,
                         this::updateData,

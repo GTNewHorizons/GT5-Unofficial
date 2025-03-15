@@ -172,6 +172,14 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
             super(buildContext);
         }
 
+        @Override
+        protected CoverEUMeter adaptCover(Cover cover) {
+            if (cover instanceof CoverEUMeter adapterCover) {
+                return adapterCover;
+            }
+            return null;
+        }
+
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
@@ -181,7 +189,7 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
             final CoverDataFollowerNumericWidget<EUMeterData> numericWidget = new CoverDataFollowerNumericWidget<>();
 
             builder.widget(
-                new CoverDataControllerWidget<>(this::getCoverData, CoverEUMeter.this::loadFromNbt, getUIBuildContext())
+                new CoverDataControllerWidget<>(this::adaptCover, CoverEUMeter.this::loadFromNbt, getUIBuildContext())
                     .addFollower(
                         new CoverDataFollowerCycleButtonWidget<>(),
                         coverData -> coverData.type.ordinal(),

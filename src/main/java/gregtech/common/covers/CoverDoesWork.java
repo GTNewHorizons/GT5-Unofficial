@@ -154,13 +154,21 @@ public class CoverDoesWork extends CoverBehavior {
             super(buildContext);
         }
 
+        @Override
+        protected CoverDoesWork adaptCover(Cover cover) {
+            if (cover instanceof CoverDoesWork adapterCover) {
+                return adapterCover;
+            }
+            return null;
+        }
+
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        this::getCoverData,
+                        this::adaptCover,
                         CoverDoesWork.this::loadFromNbt,
                         (id, coverData) -> isEnabled(id, convert(coverData)),
                         (id, coverData) -> new LegacyCoverData(getNewCoverVariable(id, convert(coverData))),

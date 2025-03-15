@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.network.PacketBuffer;
@@ -20,27 +21,44 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.ICoverDataFollowerWidget;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.Cover;
+import gregtech.common.covers.CoverBehaviorBase;
 
 public class CoverDataControllerWidget<T extends ISerializableObject>
     extends com.gtnewhorizons.modularui.common.widget.MultiChildWidget
     implements com.gtnewhorizons.modularui.api.widget.ISyncedWidget {
 
+    private final Function<Cover, CoverBehaviorBase<T>> coverAdapter;
     protected final Function<NBTBase, T> nbtParser;
-    private final Supplier<T> dataGetter;
     private final CoverUIBuildContext coverUiContext;
     protected T lastData;
     private boolean needsUpdate;
 
     /**
-     * @param dataGetter     () -> cover data this widget handles
+     * @param coverAdapter   ascertains the class of a cover so we can access its data
      * @param nbtParser      cover this widget handles data update
      * @param coverUiContext identifies and locates the cover we're interacting with
      */
-    public CoverDataControllerWidget(Supplier<T> dataGetter, Function<NBTBase, T> nbtParser,
+    public CoverDataControllerWidget(Function<Cover, CoverBehaviorBase<T>> coverAdapter, Function<NBTBase, T> nbtParser,
         CoverUIBuildContext coverUiContext) {
-        this.dataGetter = dataGetter;
+        this.coverAdapter = coverAdapter;
         this.nbtParser = nbtParser;
         this.coverUiContext = coverUiContext;
+    }
+
+    /**
+     * Can return null when cover data is invalid e.g. tile is broken or cover is removed
+     */
+    @Nullable
+    protected T getCoverData() {
+        if (isCoverValid()) {
+            CoverBehaviorBase<T> typedCover = this.coverAdapter.apply(
+                coverUiContext.getTile()
+                    .getCoverAtSide(coverUiContext.getCoverSide()));
+            return typedCover == null ? null : typedCover.getCoverData();
+        } else {
+            return null;
+        }
     }
 
     protected boolean updateCoverInWorld(T data) {
@@ -92,7 +110,7 @@ public class CoverDataControllerWidget<T extends ISerializableObject>
     @Override
     public void onPostInit() {
         // client _should_ have received initial cover data from `GT_UIInfos#openCoverUI`
-        lastData = dataGetter.get();
+        lastData = getCoverData();
         if (NetworkUtils.isClient()) {
             updateChildren(true);
         }
@@ -100,7 +118,7 @@ public class CoverDataControllerWidget<T extends ISerializableObject>
 
     @Override
     public void detectAndSendChanges(boolean init) {
-        T actualValue = dataGetter.get();
+        T actualValue = getCoverData();
         if (actualValue == null) {
             // data is in invalid state e.g. tile is broken, cover is removed
             getWindow().tryClose();
@@ -186,16 +204,16 @@ public class CoverDataControllerWidget<T extends ISerializableObject>
         private final BiFunction<Integer, T, T> dataUpdater;
 
         /**
-         * @param coverDataGetter   () -> cover data this widget handles
+         * @param coverAdapter      ascertains the class of a cover so we can access its data
          * @param nbtParser         method that can read cover data from NBT
          * @param dataToStateGetter (index of button, given cover data) -> button state
          * @param dataUpdater       (index of button, current cover data) -> new cover data
          * @param coverUiContext    identifies and locates the cover we're interacting with
          */
-        public CoverDataIndexedControllerWidget_ToggleButtons(Supplier<T> coverDataGetter,
+        public CoverDataIndexedControllerWidget_ToggleButtons(Function<Cover, CoverBehaviorBase<T>> coverAdapter,
             Function<NBTBase, T> nbtParser, BiFunction<Integer, T, Boolean> dataToStateGetter,
             BiFunction<Integer, T, T> dataUpdater, CoverUIBuildContext coverUiContext) {
-            super(coverDataGetter, nbtParser, coverUiContext);
+            super(coverAdapter, nbtParser, coverUiContext);
             this.dataToStateGetter = dataToStateGetter;
             this.dataUpdater = dataUpdater;
         }

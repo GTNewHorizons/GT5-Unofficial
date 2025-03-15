@@ -201,6 +201,14 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
         }
 
         @Override
+        protected CoverItemMeter adaptCover(Cover cover) {
+            if (cover instanceof CoverItemMeter adapterCover) {
+                return adapterCover;
+            }
+            return null;
+        }
+
+        @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             final String INVERTED = GTUtility.trans("INVERTED", "Inverted");
             final String NORMAL = GTUtility.trans("NORMAL", "Normal");
@@ -209,46 +217,43 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
             setMaxThreshold();
 
             builder.widget(
-                new CoverDataControllerWidget<>(
-                    this::getCoverData,
-                    CoverItemMeter.this::loadFromNbt,
-                    getUIBuildContext())
-                        .addFollower(
-                            CoverDataFollowerToggleButtonWidget.ofRedstone(),
-                            coverData -> coverData.inverted,
-                            (coverData, state) -> {
-                                coverData.inverted = state;
-                                return coverData;
-                            },
-                            widget -> widget.addTooltip(0, NORMAL)
-                                .addTooltip(1, INVERTED)
-                                .setPos(0, 0))
-                        .addFollower(
-                            new CoverDataFollowerNumericWidget<>(),
-                            coverData -> (double) coverData.threshold,
-                            (coverData, state) -> {
-                                coverData.threshold = state.intValue();
-                                return coverData;
-                            },
-                            widget -> widget.setBounds(0, maxThreshold)
-                                .setScrollValues(1, 64, 1000)
-                                .setFocusOnGuiOpen(true)
-                                .setPos(0, 2 + spaceY)
-                                .setSize(spaceX * 4 + 5, 12))
-                        .addFollower(
-                            new CoverDataFollowerNumericWidget<>(),
-                            coverData -> (double) coverData.slot,
-                            (coverData, state) -> {
-                                coverData.slot = state.intValue();
-                                return coverData;
-                            },
-                            widget -> widget.setBounds(-1, maxSlot)
-                                .setDefaultValue(-1)
-                                .setScrollValues(1, 100, 10)
-                                .setNumberFormat(numberFormatAll)
-                                .setPos(0, 2 + spaceY * 2)
-                                .setSize(spaceX * 3 + 1, 12))
-                        .setPos(startX, startY))
+                new CoverDataControllerWidget<>(this::adaptCover, CoverItemMeter.this::loadFromNbt, getUIBuildContext())
+                    .addFollower(
+                        CoverDataFollowerToggleButtonWidget.ofRedstone(),
+                        coverData -> coverData.inverted,
+                        (coverData, state) -> {
+                            coverData.inverted = state;
+                            return coverData;
+                        },
+                        widget -> widget.addTooltip(0, NORMAL)
+                            .addTooltip(1, INVERTED)
+                            .setPos(0, 0))
+                    .addFollower(
+                        new CoverDataFollowerNumericWidget<>(),
+                        coverData -> (double) coverData.threshold,
+                        (coverData, state) -> {
+                            coverData.threshold = state.intValue();
+                            return coverData;
+                        },
+                        widget -> widget.setBounds(0, maxThreshold)
+                            .setScrollValues(1, 64, 1000)
+                            .setFocusOnGuiOpen(true)
+                            .setPos(0, 2 + spaceY)
+                            .setSize(spaceX * 4 + 5, 12))
+                    .addFollower(
+                        new CoverDataFollowerNumericWidget<>(),
+                        coverData -> (double) coverData.slot,
+                        (coverData, state) -> {
+                            coverData.slot = state.intValue();
+                            return coverData;
+                        },
+                        widget -> widget.setBounds(-1, maxSlot)
+                            .setDefaultValue(-1)
+                            .setScrollValues(1, 100, 10)
+                            .setNumberFormat(numberFormatAll)
+                            .setPos(0, 2 + spaceY * 2)
+                            .setSize(spaceX * 3 + 1, 12))
+                    .setPos(startX, startY))
                 .widget(
                     new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
                         .setPos(startX + spaceX * 3 + 8, startY + spaceY * 2))

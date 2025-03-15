@@ -180,6 +180,14 @@ public class CoverNeedMaintainance extends CoverBehavior {
             super(buildContext);
         }
 
+        @Override
+        protected CoverNeedMaintainance adaptCover(Cover cover) {
+            if (cover instanceof CoverNeedMaintainance adapterCover) {
+                return adapterCover;
+            }
+            return null;
+        }
+
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
@@ -200,7 +208,7 @@ public class CoverNeedMaintainance extends CoverBehavior {
             builder
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        this::getCoverData,
+                        this::adaptCover,
                         CoverNeedMaintainance.this::loadFromNbt,
                         (index, coverData) -> isEnabled(index, convert(coverData)),
                         (index, coverData) -> new ISerializableObject.LegacyCoverData(
