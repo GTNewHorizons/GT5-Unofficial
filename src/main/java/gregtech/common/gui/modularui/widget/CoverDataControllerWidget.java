@@ -12,12 +12,20 @@ import net.minecraft.network.PacketBuffer;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
-import gregtech.api.gui.modularui.IDataFollowerWidget;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.gui.modularui.ICoverDataFollowerWidget;
 import gregtech.api.util.ISerializableObject;
 
-public class CoverDataControllerWidget<T extends ISerializableObject> extends DataControllerWidget<T> {
+public class CoverDataControllerWidget<T extends ISerializableObject>
+    extends com.gtnewhorizons.modularui.common.widget.MultiChildWidget
+    implements com.gtnewhorizons.modularui.api.widget.ISyncedWidget {
 
     protected final Function<NBTBase, T> nbtParser;
+    private final Supplier<T> dataGetter;
+    private final Function<T, Boolean> dataSetter;
+    protected T lastData;
+    private boolean needsUpdate;
 
     /**
      * @param dataGetter () -> cover data this widget handles
@@ -26,18 +34,25 @@ public class CoverDataControllerWidget<T extends ISerializableObject> extends Da
      */
     public CoverDataControllerWidget(Supplier<T> dataGetter, Function<T, Boolean> dataSetter,
         Function<NBTBase, T> nbtParser) {
-        super(dataGetter, dataSetter);
+        this.dataGetter = dataGetter;
+        this.dataSetter = dataSetter;
         this.nbtParser = nbtParser;
     }
 
-    @Override
-    public <U, W extends Widget & IDataFollowerWidget<T, U>> CoverDataControllerWidget<T> addFollower(W widget,
+    public <U, W extends Widget & ICoverDataFollowerWidget<T, U>> CoverDataControllerWidget<T> addFollower(W widget,
         Function<T, U> dataToStateGetter, BiFunction<T, U, T> dataUpdater, Consumer<W> applyForWidget) {
-        super.addFollower(widget, dataToStateGetter, dataUpdater, applyForWidget);
+        widget.setDataToStateGetter(dataToStateGetter);
+        widget.setStateSetter(state -> {
+            T newData = dataUpdater.apply(getLastData(), state);
+            lastData = newData;
+            dataSetter.apply(getLastData());
+            syncDataToServer(newData);
+        });
+        applyForWidget.accept(widget);
+        addChild(widget);
         return this;
     }
 
-    @Override
     protected void writeToPacket(PacketBuffer buffer, T data) {
         try {
             NetworkUtils.writeNBTBase(buffer, data.saveDataToNBT());
@@ -46,9 +61,99 @@ public class CoverDataControllerWidget<T extends ISerializableObject> extends Da
         }
     }
 
-    @Override
     protected T readFromPacket(PacketBuffer buffer) throws IOException {
         return nbtParser.apply(NetworkUtils.readNBTBase(buffer));
+    }
+
+    protected T getLastData() {
+        return lastData;
+    }
+
+    @Override
+    public void onPostInit() {
+        // client _should_ have received initial cover data from `GT_UIInfos#openCoverUI`
+        lastData = dataGetter.get();
+        if (NetworkUtils.isClient()) {
+            updateChildren(true);
+        }
+    }
+
+    @Override
+    public void detectAndSendChanges(boolean init) {
+        T actualValue = dataGetter.get();
+        if (actualValue == null) {
+            // data is in invalid state e.g. tile is broken, cover is removed
+            getWindow().tryClose();
+            return;
+        }
+        if (init || !actualValue.equals(getLastData())) {
+            // init sync or someone else edited data
+            lastData = actualValue;
+            syncDataToClient(actualValue);
+        }
+    }
+
+    protected void syncDataToClient(T data) {
+        syncToClient(0, buffer -> writeToPacket(buffer, data));
+    }
+
+    protected void syncDataToServer(T data) {
+        syncToServer(0, buffer -> writeToPacket(buffer, data));
+        updateChildren();
+    }
+
+    @Override
+    public void readOnClient(int id, PacketBuffer buf) throws IOException {
+        if (id == 0) {
+            lastData = readFromPacket(buf);
+            dataSetter.apply(getLastData());
+            updateChildren();
+        }
+    }
+
+    @Override
+    public void readOnServer(int id, PacketBuffer buf) throws IOException {
+        if (id == 0) {
+            lastData = readFromPacket(buf);
+            if (dataSetter.apply(getLastData())) {
+                markForUpdate();
+            } else {
+                getWindow().closeWindow();
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @SideOnly(Side.CLIENT)
+    protected void updateChildren(boolean postInit) {
+        for (Widget child : getChildren()) {
+            if (child instanceof ICoverDataFollowerWidget) {
+                ((ICoverDataFollowerWidget<T, ?>) child).updateState(getLastData());
+                if (postInit) {
+                    ((ICoverDataFollowerWidget<T, ?>) child).onPostInit();
+                }
+            }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected void updateChildren() {
+        updateChildren(false);
+    }
+
+    @Override
+    public void markForUpdate() {
+        needsUpdate = true;
+    }
+
+    @Override
+    public void unMarkForUpdate() {
+        needsUpdate = false;
+    }
+
+    @Override
+    public boolean isMarkedForUpdate() {
+        return needsUpdate;
     }
 
     /**

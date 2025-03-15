@@ -8,11 +8,11 @@ import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.gui.modularui.IDataFollowerWidget;
+import gregtech.api.gui.modularui.ICoverDataFollowerWidget;
 import gregtech.api.util.ISerializableObject;
 
 public class CoverDataFollowerNumericWidget<T extends ISerializableObject> extends NumericWidget
-    implements IDataFollowerWidget<T, Double> {
+    implements ICoverDataFollowerWidget<T, Double> {
 
     private Function<T, Double> dataToStateGetter;
 
