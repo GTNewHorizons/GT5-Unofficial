@@ -217,7 +217,9 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
                 aBuf.writeLong(uuid.getMostSignificantBits());
             }
             aBuf.writeInt(frequency.length());
-            aBuf.writeBytes(frequency.getBytes());
+            for(int i = 0; i < frequency.length(); i++){
+                aBuf.writeChar(frequency.charAt(i));
+            }
         }
 
         @Override
@@ -238,7 +240,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
             int length = aBuf.readInt();
             StringBuilder freqBuilder = new StringBuilder();
             for(int i = 0; i < length; i++){
-                freqBuilder.append(aBuf.readByte());
+                freqBuilder.append(aBuf.readChar());
             }
             this.frequency = freqBuilder.toString();
         }
