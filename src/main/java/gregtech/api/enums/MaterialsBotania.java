@@ -85,7 +85,7 @@ public class MaterialsBotania {
         .constructMaterial();
     public static Materials GaiaSpirit = new Materials(
         205,
-        TextureSet.SET_METALLIC.withBlockTextures("GaiaSpirit"),
+        new TextureSet("GaiaSpirit", true),
         32.0F,
         850000,
         12,
@@ -145,15 +145,15 @@ public class MaterialsBotania {
         .constructMaterial();
     public static Materials ManaDiamond = new Materials(
         208,
-        TextureSet.SET_DIAMOND,
+        new TextureSet("ManaDiamond", true),
         16.0F,
         2560,
         8,
         1 | 4,
-        38,
-        237,
-        224,
         255,
+        255,
+        255,
+        0,
         "ManaDiamond",
         "Mana Diamond",
         -1,
@@ -172,15 +172,15 @@ public class MaterialsBotania {
             new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 4)));
     public static Materials BotaniaDragonstone = new Materials(
         209,
-        TextureSet.SET_DIAMOND,
+        new TextureSet("Dragonstone", true),
         24.0F,
         3840,
         12,
         1 | 4,
-        242,
-        44,
-        239,
         255,
+        255,
+        255,
+        0,
         "BotaniaDragonstone",
         "Dragonstone",
         -1,
