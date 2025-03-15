@@ -12,7 +12,6 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import org.apache.logging.log4j.LogManager;
@@ -50,7 +49,6 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
     public static final Logger LOGGER = LogManager.getLogger("SNIFFER");
 
-    private String uuid;
     private String freqFilter = "";
     private String ownerFilter = "";
 
@@ -68,7 +66,6 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 
         if (!world.isRemote) {
-            this.uuid = String.valueOf(player.getUniqueID());
             this.freqFilter = "";
             GuiFactories.item()
                 .open(player);
@@ -153,7 +150,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
             advancedListWidget,
             guiSyncManager));
 
-        UUID leader = SpaceProjectManager.getLeader(UUID.fromString(this.uuid));
+        UUID leader = SpaceProjectManager.getLeader(guiData.getPlayer().getUniqueID());
         GregTechAPI.sAdvancedWirelessRedstone.keySet()
             .forEach(uuid -> {
                 if (!uuid.equals("null") && SpaceProjectManager.getLeader(UUID.fromString(uuid))
