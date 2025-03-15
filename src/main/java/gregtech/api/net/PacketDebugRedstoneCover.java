@@ -63,23 +63,18 @@ public class PacketDebugRedstoneCover extends GTPacket {
         System.out.printf("Processing teleport request to %d, %d, %d, dimension %d\n", x, y, z, this.dim);
         ServerConfigurationManager manager = player.mcServer.getConfigurationManager();
         if (this.teleportPlayer) {
-            if (manager.func_152596_g(player.getGameProfile())) { // Check if player can /tp
-                if (player.dimension != this.dim) {
-                    manager.transferPlayerToDimension(player, this.dim);
-                }
-                player.playerNetServerHandler.setPlayerLocation(x, y + 1, z, player.cameraYaw, player.cameraPitch); // try
-                                                                                                                    // not
-                                                                                                                    // to
-                                                                                                                    // tp
-                                                                                                                    // the
-                                                                                                                    // player
-                                                                                                                    // into
-                                                                                                                    // the
-                                                                                                                    // hull
-            } else {
-                player.addChatMessage(new ChatComponentText("Can't teleport because you don't have permission!"));
-                return;
+            if (player.dimension != this.dim) {
+                manager.transferPlayerToDimension(player, this.dim);
             }
+            player.playerNetServerHandler.setPlayerLocation(x, y + 1, z, player.cameraYaw, player.cameraPitch); // try
+                                                                                                                // not
+                                                                                                                // to
+                                                                                                                // tp
+                                                                                                                // the
+                                                                                                                // player
+                                                                                                                // into
+                                                                                                                // the
+                                                                                                                // hull
         }
         ArrayList<DimensionalCoord> list = new ArrayList<>();
         list.add(new DimensionalCoord(x, y, z, this.dim));
