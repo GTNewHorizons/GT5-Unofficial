@@ -60,7 +60,6 @@ public class PacketDebugRedstoneCover extends GTPacket {
         int x = this.coords[0];
         int y = this.coords[1];
         int z = this.coords[2];
-        System.out.printf("Processing teleport request to %d, %d, %d, dimension %d\n", x, y, z, this.dim);
         ServerConfigurationManager manager = player.mcServer.getConfigurationManager();
         if (this.teleportPlayer) {
             if (player.dimension != this.dim) {
