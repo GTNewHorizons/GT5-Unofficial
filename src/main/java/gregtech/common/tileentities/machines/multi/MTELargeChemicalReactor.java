@@ -14,6 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.function.Consumer;
@@ -80,7 +81,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
                 .casingIndex(CASING_INDEX)
                 .dot(1)
                 .buildAndChain(
-                    CoilStructureElement.INSTANCE,
+                    activeCoils(CoilStructureElement.INSTANCE),
                     onElementPass(MTELargeChemicalReactor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 0))))
         .build();
 
