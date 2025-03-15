@@ -247,6 +247,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         case "Copper" -> recipeBuilder.metadata(FUEL_VALUE, 219_340)
                             .metadata(FUEL_TYPE, 4)
                             .addTo(GTRecipeConstants.Fuel);
+                        case "Creon" -> {}
                         case "Deuterium" -> recipeBuilder.metadata(FUEL_VALUE, 40_960)
                             .metadata(FUEL_TYPE, 4)
                             .addTo(GTRecipeConstants.Fuel);
