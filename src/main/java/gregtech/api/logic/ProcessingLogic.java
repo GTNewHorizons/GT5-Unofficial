@@ -496,7 +496,7 @@ public class ProcessingLogic {
             .setAmperage(availableAmperage)
             .setEUt(availableVoltage)
             .setDuration(recipe.mDuration)
-            .setSpeedBoost(speedBoost)
+            .setDurationModifier(speedBoost)
             .setEUtDiscount(euModifier)
             .setAmperageOC(amperageOC)
             .setDurationDecreasePerOC(overClockTimeReduction)

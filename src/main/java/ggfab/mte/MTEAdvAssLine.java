@@ -750,8 +750,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
 
                 calculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
                     .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
-                    .setEutIncreasePerOCSupplier(
-                        overclock -> 4 + LASER_OVERCLOCK_PENALTY_FACTOR * Math.max(overclock - normalOverclockCount, 0))
+                    .setLaserOC(true)
                     .setParallel(originalMaxParallel)
                     .setEUt(inputEUt / recipe.mInputs.length);
             } else {

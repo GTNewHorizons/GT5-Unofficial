@@ -407,7 +407,9 @@ public class ParallelHelper {
                 .setEUtDiscount(eutModifier);
         }
 
-        final int tRecipeEUt = (int) Math.ceil(recipe.mEUt * eutModifier);
+        double heatDiscountMultiplier = calculator.calculateHeatDiscountMultiplier();
+
+        final int tRecipeEUt = (int) Math.ceil(recipe.mEUt * eutModifier * heatDiscountMultiplier);
         if (availableEUt < tRecipeEUt) {
             result = CheckRecipeResultRegistry.insufficientPower(tRecipeEUt);
             return;
