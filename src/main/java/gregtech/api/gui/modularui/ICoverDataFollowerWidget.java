@@ -8,24 +8,25 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.gui.modularui.widget.DataControllerWidget;
+import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 
 /**
  * Widget whose state is controlled by specific data. Data can be anything, e.g. {@link ISerializableObject} or machine
  * recipe mode. <br>
- * No widgets implementing this interface should not sync; Instead, {@link DataControllerWidget} will sync data, either
+ * No widgets implementing this interface should not sync; Instead, {@link CoverDataControllerWidget} will sync data,
+ * either
  * when this widget triggers update on client or data update is detected on server.
  *
  * @param <T> Data type stored in the parent widget
  * @param <U> State type stored in this widget
- * @see DataControllerWidget
+ * @see CoverDataControllerWidget
  */
 @SuppressWarnings("UnusedReturnValue")
-public interface IDataFollowerWidget<T, U> {
+public interface ICoverDataFollowerWidget<T, U> {
 
     /**
      * Sets function to get widget state from provided data. This function will be called when client receives data from
-     * server and {@link DataControllerWidget} updates all children, including this widget.
+     * server and {@link CoverDataControllerWidget} updates all children, including this widget.
      */
     Widget setDataToStateGetter(Function<T, U> dataToStateGetter);
 
@@ -36,7 +37,7 @@ public interface IDataFollowerWidget<T, U> {
     Widget setStateSetter(Consumer<U> setter);
 
     /**
-     * Updates state of this widget with provided data. On server {@link DataControllerWidget} won't propagate data
+     * Updates state of this widget with provided data. On server {@link CoverDataControllerWidget} won't propagate data
      * update to this widget, so this method is client-only.
      */
     @SideOnly(Side.CLIENT)

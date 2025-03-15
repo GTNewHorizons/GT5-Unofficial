@@ -11,11 +11,11 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
-import gregtech.api.gui.modularui.IDataFollowerWidget;
+import gregtech.api.gui.modularui.ICoverDataFollowerWidget;
 import gregtech.api.util.ISerializableObject;
 
 public class CoverDataFollowerSlotWidget<T extends ISerializableObject> extends SlotWidget
-    implements IDataFollowerWidget<T, ItemStack> {
+    implements ICoverDataFollowerWidget<T, ItemStack> {
 
     private Function<T, ItemStack> dataToStateGetter;
     private Consumer<ItemStack> dataSetter;

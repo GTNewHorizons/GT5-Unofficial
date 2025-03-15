@@ -6,11 +6,11 @@ import java.util.function.Function;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.gui.modularui.IDataFollowerWidget;
+import gregtech.api.gui.modularui.ICoverDataFollowerWidget;
 import gregtech.api.util.ISerializableObject;
 
 public class CoverDataFollowerToggleButtonWidget<T extends ISerializableObject> extends CoverCycleButtonWidget
-    implements IDataFollowerWidget<T, Boolean> {
+    implements ICoverDataFollowerWidget<T, Boolean> {
 
     private Function<T, Boolean> dataToStateGetter;
 
