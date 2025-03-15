@@ -2,13 +2,22 @@ package tectech.thing.metaTileEntity.hatch;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GTUtility;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.util.CommonValues;
@@ -19,6 +28,8 @@ import tectech.util.CommonValues;
 public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> {
 
     private boolean delDelay = true;
+
+    private long history;
 
     public MTEHatchDataInput(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -72,13 +83,21 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
 
     public void setContents(QuantumDataPacket qIn) {
         if (qIn == null) {
+            if (this.q != null) {
+                history = q.getContent();
+            } else {
+                history = 0;
+            }
+
             this.q = null;
         } else {
             if (qIn.getContent() > 0) {
                 this.q = qIn;
                 delDelay = true;
+                history = q.getContent();
             } else {
                 this.q = null;
+                history = 0;
             }
         }
     }
@@ -90,5 +109,22 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
         } else {
             setContents(null);
         }
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setLong("computation", history);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+
+        NBTTagCompound tag = accessor.getNBTData();
+        currenttip.add(
+            translate("tt.keyphrase.Computation_Receiving", GTUtility.formatNumbers(tag.getInteger("computation"))));
     }
 }
