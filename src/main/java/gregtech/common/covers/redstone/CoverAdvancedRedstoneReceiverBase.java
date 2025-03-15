@@ -17,6 +17,7 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
@@ -152,6 +153,12 @@ public abstract class CoverAdvancedRedstoneReceiverBase
 
         public GateMode getGateMode() {
             return mode;
+        }
+
+        @Nonnull
+        @Override
+        public ISerializableObject copy() {
+            return new ReceiverData(frequency, uuid, mode);
         }
 
         @Nonnull
