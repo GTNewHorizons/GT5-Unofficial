@@ -39,6 +39,14 @@ public class RecipeLoaderGTNH {
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
+            .fluidInputs(MaterialsElements.getInstance().CURIUM.getFluidStack(144), Materials.Helium.getPlasma(144))
+            .fluidOutputs(MaterialsElements.getInstance().CALIFORNIUM.getFluidStack(144))
+            .duration(1 * SECONDS + 12 * TICKS)
+            .eut(196608)
+            .metadata(FUSION_THRESHOLD, 750_000_000L)
+            .addTo(fusionRecipes);
+
+        GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Plutonium241.getMolten(144), Materials.Calcium.getPlasma(144))
             .fluidOutputs(Materials.Flerovium.getMolten(144))
             .duration(8 * SECONDS)
