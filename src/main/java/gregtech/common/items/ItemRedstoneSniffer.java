@@ -42,8 +42,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.net.PacketDebugRedstoneCover;
-import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
-import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase.CoverPosition;
+import gregtech.common.covers.CoverPosition;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
 public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
@@ -157,17 +156,13 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                         .child(regularListWidget)));
 
         // Process advanced wireless redstone frequencies
-        Map<String, Map<CoverAdvancedWirelessRedstoneBase.CoverPosition, Byte>> publicFreqs = GregTechAPI.sAdvancedWirelessRedstone
+        Map<String, Map<CoverPosition, Byte>> publicFreqs = GregTechAPI.sAdvancedWirelessRedstone
             .getOrDefault("null", new ConcurrentHashMap<>());
-        Map<String, Map<String, Map<CoverAdvancedWirelessRedstoneBase.CoverPosition, Byte>>> allFreqs = GregTechAPI.sAdvancedWirelessRedstone;
+        Map<String, Map<String, Map<CoverPosition, Byte>>> allFreqs = GregTechAPI.sAdvancedWirelessRedstone;
 
         ListWidget advancedListWidget = new ListWidget();
         advancedListWidget.sizeRel(1);
-        List<IWidget> advancedList = (processAdvancedFrequencies(
-            publicFreqs,
-            "Public",
-            advancedListWidget,
-            isOP));
+        List<IWidget> advancedList = (processAdvancedFrequencies(publicFreqs, "Public", advancedListWidget, isOP));
 
         UUID leader = SpaceProjectManager.getLeader(
             guiData.getPlayer()
