@@ -167,7 +167,6 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
             publicFreqs,
             "Public",
             advancedListWidget,
-            guiSyncManager,
             isOP));
 
         UUID leader = SpaceProjectManager.getLeader(
@@ -182,7 +181,6 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                             allFreqs.getOrDefault(uuid, new ConcurrentHashMap<>()),
                             uuid,
                             advancedListWidget,
-                            guiSyncManager,
                             isOP)));
                 }
             });
@@ -253,7 +251,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
     }
 
     public List<IWidget> processAdvancedFrequencies(Map<String, Map<CoverPosition, Byte>> frequencyMap, String owner,
-        ListWidget listWidget, PanelSyncManager guiSyncManager, boolean playerIsOP) {
+        ListWidget listWidget, boolean playerIsOP) {
 
         String ownerString = owner.equals("Public") ? "Public"
             : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(owner));
