@@ -294,8 +294,8 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
             controller.addFollower(
                     new CoverDataFollowerTextFieldWidget<>(),
                     coverData -> coverData.frequency,
-                    (coverData, newLabel) -> {
-                        coverData.frequency = newLabel;
+                    (coverData, newFrequency) -> {
+                        coverData.frequency = newFrequency.trim();
                         return coverData;
                     },
                     widget -> widget.setPos(1, 2 + spaceY * (getFrequencyRow()))
