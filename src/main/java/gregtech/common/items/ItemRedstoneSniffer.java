@@ -1,5 +1,7 @@
 package gregtech.common.items;
 
+import static gregtech.api.enums.Mods.GregTech;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -7,23 +9,15 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import appeng.core.localization.GuiText;
-import com.cleanroommc.modularui.ModularUI;
-import com.cleanroommc.modularui.drawable.GuiTextures;
-import com.cleanroommc.modularui.drawable.UITexture;
-import com.cleanroommc.modularui.screen.RichTooltip;
-import com.cleanroommc.modularui.widgets.ListWidget;
-import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-
-import org.apache.logging.log4j.LogManager;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.Rectangle;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.factory.GuiFactories;
 import com.cleanroommc.modularui.network.NetworkUtils;
@@ -34,6 +28,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.PageButton;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
@@ -45,13 +40,11 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.net.PacketDebugRedstoneCover;
+import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase.CoverPosition;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
-import static gregtech.api.enums.Mods.GregTech;
-
 public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
-
 
     private String freqFilter = "";
     private String ownerFilter = "";
@@ -101,8 +94,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                 int freq = entry.getKey();
                 boolean isPrivate = freq > 65535;
                 int displayFreq = isPrivate ? freq - 65536 : freq;
-                regularList.add(new Row()
-                    .setEnabledIf(w -> {
+                regularList.add(new Row().setEnabledIf(w -> {
                     try {
                         if (displayFreq == Integer.parseInt(this.freqFilter)) {
                             return true;
@@ -123,7 +115,6 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                             .alignment(Alignment.Center)));
             });
 
-
         ListWidget regularListWidget = new ListWidget<>();
         regularListWidget.sizeRel(1);
         regularList.forEach(regularListWidget::child);
@@ -136,8 +127,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                             .alignment(Alignment.Center))
                     .child(
                         new TextWidget("Private").widthRel(0.5f)
-                            .alignment(Alignment.Center))
-                )
+                            .alignment(Alignment.Center)))
                 .child(
                     new Row().heightRel(0.9f)
                         .child(regularListWidget)));
@@ -155,7 +145,9 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
             advancedListWidget,
             guiSyncManager));
 
-        UUID leader = SpaceProjectManager.getLeader(guiData.getPlayer().getUniqueID());
+        UUID leader = SpaceProjectManager.getLeader(
+            guiData.getPlayer()
+                .getUniqueID());
         GregTechAPI.sAdvancedWirelessRedstone.keySet()
             .forEach(uuid -> {
                 if (!uuid.equals("null") && SpaceProjectManager.getLeader(UUID.fromString(uuid))
@@ -170,7 +162,6 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
             });
 
         advancedList.forEach(advancedListWidget::child);
-
 
         data.addPage(
             new Column().child(
@@ -194,7 +185,8 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
         panel.child(
             new Column().margin(10)
                 .child(
-                    new Row().heightRel(0.1f).marginBottom(10)
+                    new Row().heightRel(0.1f)
+                        .marginBottom(10)
                         .child(
                             new PageButton(0, controller).widthRel(0.5f)
                                 .align(Alignment.CenterLeft)
@@ -204,7 +196,8 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                 .align(Alignment.CenterRight)
                                 .overlay(IKey.dynamic(() -> "Advanced Wireless"))))
                 .child(
-                    new Row().heightRel(0.1f).marginBottom(10)
+                    new Row().heightRel(0.1f)
+                        .marginBottom(10)
                         .child(
                             new TextWidget("Frequency: ").widthRel(0.25f)
                                 .alignment(Alignment.Center))
@@ -213,7 +206,8 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                 .value(SyncHandlers.string(() -> this.freqFilter, filter -> {
                                     this.freqFilter = filter;
                                     if (NetworkUtils.isClient()) {
-                                        WidgetTree.resize(regularListWidget); //The scroll area doesn't update automatically
+                                        WidgetTree.resize(regularListWidget); // The scroll area doesn't update
+                                                                              // automatically
                                         WidgetTree.resize(advancedListWidget);
                                     }
                                 })))
@@ -234,7 +228,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
     }
 
     public List<IWidget> processAdvancedFrequencies(Map<String, Map<CoverPosition, Byte>> frequencyMap, String owner,
-                                                    ListWidget listWidget, PanelSyncManager guiSyncManager) {
+        ListWidget listWidget, PanelSyncManager guiSyncManager) {
 
         String ownerString = owner.equals("Public") ? "Public"
             : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(owner));
@@ -248,53 +242,60 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                 String freq = entry.getKey();
                 Map<CoverPosition, Byte> coverMap = entry.getValue();
                 coverMap.forEach((cover, useless) -> {
-                    result.add(new Row()
-                        .setEnabledIf(w -> (this.ownerFilter.isEmpty() || this.ownerFilter.equals(ownerString)) && entry.getKey().contains(this.freqFilter))
-                        .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
-                        .sizeRel(1f, 0.3f)
-                        .expanded()
-                        .child(
-                            new TextWidget(ownerString).widthRel(0.15f)
-                                .alignment(Alignment.Center))
-                        .child(
-                            new TextWidget(freq).widthRel(0.35f)
-                                .alignment(Alignment.Center))
-                        .child(
-                            new TextWidget(cover.getInfo()).widthRel(0.25f)
-                                .alignment(Alignment.Center))
-                            .child(new Row()
-                                .widthRel(0.25f)
-                                .child(
-                                    new ButtonWidget<>().size(22,22)
-                                        .align(Alignment.CenterLeft)
-                                        .overlay(UITexture.fullImage(GregTech.ID, "items/redstoneSnifferLocate"))
-                                        .tooltip(tooltip->{
-                                            tooltip.addLine(IKey.str("Locate"));
-                                        })
-                                        .onMousePressed(mouseButton -> {
-                                            GTValues.NW.sendToServer(
-                                                new PacketDebugRedstoneCover(cover.dim, cover.x, cover.y, cover.z, false));
-                                            listWidget.getPanel()
-                                                .closeIfOpen(false);
-                                            return true;
-                                        })
-                                )
-                                .child(
-                                    new ButtonWidget<>().size(22,22)
-                                        .align(Alignment.CenterRight)
-                                        .overlay(UITexture.fullImage(GregTech.ID, "items/redstoneSnifferTeleport"))
-                                        .tooltip(tooltip->{
-                                            tooltip.addLine(IKey.str("Teleport"));
-                                        })
-                                        .onMousePressed(mouseButton -> {
-                                            GTValues.NW.sendToServer(
-                                                new PacketDebugRedstoneCover(cover.dim, cover.x, cover.y, cover.z, true));
-                                            listWidget.getPanel()
-                                                .closeIfOpen(false);
-                                            return true;
-                                        })
-                                )
-                            ));
+                    result.add(
+                        new Row()
+                            .setEnabledIf(
+                                w -> (this.ownerFilter.isEmpty() || this.ownerFilter.equals(ownerString))
+                                    && entry.getKey()
+                                        .contains(this.freqFilter))
+                            .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
+                            .sizeRel(1f, 0.3f)
+                            .expanded()
+                            .child(
+                                new TextWidget(ownerString).widthRel(0.15f)
+                                    .alignment(Alignment.Center))
+                            .child(
+                                new TextWidget(freq).widthRel(0.35f)
+                                    .alignment(Alignment.Center))
+                            .child(
+                                new TextWidget(cover.getInfo()).widthRel(0.25f)
+                                    .alignment(Alignment.Center))
+                            .child(
+                                new Row().widthRel(0.25f)
+                                    .child(
+                                        new ButtonWidget<>().size(22, 22)
+                                            .align(Alignment.CenterLeft)
+                                            .overlay(UITexture.fullImage(GregTech.ID, "items/redstoneSnifferLocate"))
+                                            .tooltip(tooltip -> { tooltip.addLine(IKey.str("Locate")); })
+                                            .onMousePressed(mouseButton -> {
+                                                GTValues.NW.sendToServer(
+                                                    new PacketDebugRedstoneCover(
+                                                        cover.dim,
+                                                        cover.x,
+                                                        cover.y,
+                                                        cover.z,
+                                                        false));
+                                                listWidget.getPanel()
+                                                    .closeIfOpen(false);
+                                                return true;
+                                            }))
+                                    .child(
+                                        new ButtonWidget<>().size(22, 22)
+                                            .align(Alignment.CenterRight)
+                                            .overlay(UITexture.fullImage(GregTech.ID, "items/redstoneSnifferTeleport"))
+                                            .tooltip(tooltip -> { tooltip.addLine(IKey.str("Teleport")); })
+                                            .onMousePressed(mouseButton -> {
+                                                GTValues.NW.sendToServer(
+                                                    new PacketDebugRedstoneCover(
+                                                        cover.dim,
+                                                        cover.x,
+                                                        cover.y,
+                                                        cover.z,
+                                                        true));
+                                                listWidget.getPanel()
+                                                    .closeIfOpen(false);
+                                                return true;
+                                            }))));
                 });
 
             });
