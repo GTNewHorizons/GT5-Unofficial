@@ -28,8 +28,9 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import bartworks.common.configs.Configuration;
-import bartworks.util.Pair;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -52,7 +53,7 @@ public abstract class MapGenRuins extends WorldGenerator {
     protected void setFloorBlocks(int[] metas, Block... blocks) {
         this.ToBuildWith[0] = new Pair[metas.length];
         for (int i = 0; i < metas.length; i++) {
-            this.ToBuildWith[0][i] = new Pair<>(blocks[i % blocks.length], metas[i]);
+            this.ToBuildWith[0][i] = Pair.of(blocks[i % blocks.length], metas[i]);
         }
     }
 
@@ -60,7 +61,7 @@ public abstract class MapGenRuins extends WorldGenerator {
     protected void setWallBlocks(int[] metas, Block... blocks) {
         this.ToBuildWith[1] = new Pair[metas.length];
         for (int i = 0; i < metas.length; i++) {
-            this.ToBuildWith[1][i] = new Pair<>(blocks[i % blocks.length], metas[i]);
+            this.ToBuildWith[1][i] = Pair.of(blocks[i % blocks.length], metas[i]);
         }
     }
 
@@ -68,7 +69,7 @@ public abstract class MapGenRuins extends WorldGenerator {
     protected void setRoofBlocks(int[] metas, Block... blocks) {
         this.ToBuildWith[2] = new Pair[metas.length];
         for (int i = 0; i < metas.length; i++) {
-            this.ToBuildWith[2][i] = new Pair<>(blocks[i % blocks.length], metas[i]);
+            this.ToBuildWith[2][i] = Pair.of(blocks[i % blocks.length], metas[i]);
         }
     }
 
@@ -76,7 +77,7 @@ public abstract class MapGenRuins extends WorldGenerator {
     protected void setMiscBlocks(int[] metas, Block... blocks) {
         this.ToBuildWith[3] = new Pair[metas.length];
         for (int i = 0; i < metas.length; i++) {
-            this.ToBuildWith[3][i] = new Pair<>(blocks[i % blocks.length], metas[i]);
+            this.ToBuildWith[3][i] = Pair.of(blocks[i % blocks.length], metas[i]);
         }
     }
 
@@ -273,7 +274,7 @@ public abstract class MapGenRuins extends WorldGenerator {
                                             z + dz,
                                             rand,
                                             25,
-                                            new Pair<>(Blocks.stained_glass_pane, colored));
+                                            Pair.of(Blocks.stained_glass_pane, colored));
                                     }
                                 } else {
                                     this.setRandomBlockWAirChance(
@@ -283,7 +284,7 @@ public abstract class MapGenRuins extends WorldGenerator {
                                         z + dz,
                                         rand,
                                         25,
-                                        new Pair<>(Blocks.glass_pane, 0));
+                                        Pair.of(Blocks.glass_pane, 0));
                                 }
                             }
 

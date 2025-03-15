@@ -17,10 +17,11 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 
 import java.util.Objects;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
-import bartworks.util.Pair;
 import bartworks.util.log.DebugLog;
 import bwcrossmod.thaumcraft.util.ThaumcraftHandler;
 import gregtech.api.enums.OrePrefixes;
@@ -50,7 +51,7 @@ public class AspectLoader implements IWerkstoffRunnable {
                 } else if (enabledOrePrefixes.mMaterialAmount >= 0L
                     && Objects.nonNull(WerkstoffLoader.items.get(enabledOrePrefixes)))
                     ThaumcraftHandler.AspectAdder
-                        .addAspectViaBW(werkstoff.get(enabledOrePrefixes), new Pair<>(TCAspects.PERDITIO.mAspect, 1));
+                        .addAspectViaBW(werkstoff.get(enabledOrePrefixes), Pair.of(TCAspects.PERDITIO.mAspect, 1));
             }
         }
     }
