@@ -7,7 +7,11 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import appeng.core.localization.GuiText;
+import com.cleanroommc.modularui.ModularUI;
 import com.cleanroommc.modularui.drawable.GuiTextures;
+import com.cleanroommc.modularui.drawable.UITexture;
+import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,6 +47,8 @@ import gregtech.api.items.GTGenericItem;
 import gregtech.api.net.PacketDebugRedstoneCover;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase.CoverPosition;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+
+import static gregtech.api.enums.Mods.GregTech;
 
 public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
@@ -107,7 +113,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                     return false;
                 })
                     .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
-                    .sizeRel(1f, 0.2f)
+                    .sizeRel(1f, 0.3f)
                     .expanded()
                     .child(
                         new TextWidget(String.valueOf(displayFreq)).widthRel(0.5f)
@@ -245,7 +251,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                     result.add(new Row()
                         .setEnabledIf(w -> (this.ownerFilter.isEmpty() || this.ownerFilter.equals(ownerString)) && entry.getKey().contains(this.freqFilter))
                         .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
-                        .sizeRel(1f, 0.2f)
+                        .sizeRel(1f, 0.3f)
                         .expanded()
                         .child(
                             new TextWidget(ownerString).widthRel(0.15f)
@@ -256,28 +262,39 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                         .child(
                             new TextWidget(cover.getInfo()).widthRel(0.25f)
                                 .alignment(Alignment.Center))
-                        .child(
-                            new ButtonWidget<>().widthRel(0.1f)
-                                .marginLeft(2)
-                                .overlay(IKey.str("Locate"))
-                                .onMousePressed(mouseButton -> {
-                                    GTValues.NW.sendToServer(
-                                        new PacketDebugRedstoneCover(cover.dim, cover.x, cover.y, cover.z, false));
-                                    listWidget.getPanel()
-                                        .closeIfOpen(false);
-                                    return true;
-                                }))
-                        .child(
-                            new ButtonWidget<>().widthRel(0.1f)
-                                .marginLeft(5)
-                                .overlay(IKey.str("Teleport").asIcon())
-                                .onMousePressed(mouseButton -> {
-                                    GTValues.NW.sendToServer(
-                                        new PacketDebugRedstoneCover(cover.dim, cover.x, cover.y, cover.z, true));
-                                    listWidget.getPanel()
-                                        .closeIfOpen(false);
-                                    return true;
-                                })));
+                            .child(new Row()
+                                .widthRel(0.25f)
+                                .child(
+                                    new ButtonWidget<>().size(22,22)
+                                        .align(Alignment.CenterLeft)
+                                        .overlay(UITexture.fullImage(GregTech.ID, "items/redstoneSnifferLocate"))
+                                        .tooltip(tooltip->{
+                                            tooltip.addLine(IKey.str("Locate"));
+                                        })
+                                        .onMousePressed(mouseButton -> {
+                                            GTValues.NW.sendToServer(
+                                                new PacketDebugRedstoneCover(cover.dim, cover.x, cover.y, cover.z, false));
+                                            listWidget.getPanel()
+                                                .closeIfOpen(false);
+                                            return true;
+                                        })
+                                )
+                                .child(
+                                    new ButtonWidget<>().size(22,22)
+                                        .align(Alignment.CenterRight)
+                                        .overlay(UITexture.fullImage(GregTech.ID, "items/redstoneSnifferTeleport"))
+                                        .tooltip(tooltip->{
+                                            tooltip.addLine(IKey.str("Teleport"));
+                                        })
+                                        .onMousePressed(mouseButton -> {
+                                            GTValues.NW.sendToServer(
+                                                new PacketDebugRedstoneCover(cover.dim, cover.x, cover.y, cover.z, true));
+                                            listWidget.getPanel()
+                                                .closeIfOpen(false);
+                                            return true;
+                                        })
+                                )
+                            ));
                 });
 
             });
