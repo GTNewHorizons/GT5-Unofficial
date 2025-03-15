@@ -90,44 +90,4 @@ public class CoverDataControllerWidget<T extends ISerializableObject> extends Da
             return this;
         }
     }
-
-    /**
-     * Uses int index to determine cycle button behaviors.
-     */
-    public static class CoverDataIndexedControllerWidget_CycleButtons<T extends ISerializableObject>
-        extends CoverDataControllerWidget<T> {
-
-        private final BiFunction<Integer, T, Integer> dataToStateGetter;
-        private final BiFunction<Integer, T, T> dataUpdater;
-
-        /**
-         * @param coverDataGetter   () -> cover data this widget handles
-         * @param coverDataSetter   data to set -> if setting cover data is successful
-         * @param nbtParser         cover this widget handles data update
-         * @param dataToStateGetter (index of button, given cover data) -> button state
-         * @param dataUpdater       (index of button, current cover data) -> new cover data
-         */
-        public CoverDataIndexedControllerWidget_CycleButtons(Supplier<T> coverDataGetter,
-            Function<T, Boolean> coverDataSetter, Function<NBTBase, T> nbtParser,
-            BiFunction<Integer, T, Integer> dataToStateGetter, BiFunction<Integer, T, T> dataUpdater) {
-            super(coverDataGetter, coverDataSetter, nbtParser);
-            this.dataToStateGetter = dataToStateGetter;
-            this.dataUpdater = dataUpdater;
-        }
-
-        /**
-         * @param index          index of widget to add
-         * @param widget         widget to add
-         * @param applyForWidget methods to call for the widget to add
-         */
-        public <W extends CoverDataFollowerCycleButtonWidget<T>> CoverDataIndexedControllerWidget_CycleButtons<T> addCycleButton(
-            int index, W widget, Consumer<CoverDataFollowerCycleButtonWidget<T>> applyForWidget) {
-            addFollower(
-                widget,
-                data -> dataToStateGetter.apply(index, data),
-                (data, state) -> dataUpdater.apply(index, data),
-                applyForWidget);
-            return this;
-        }
-    }
 }
