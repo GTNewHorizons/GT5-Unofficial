@@ -1,7 +1,6 @@
 package gregtech.common.items;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -45,14 +44,14 @@ import gregtech.api.net.PacketDebugRedstoneCover;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase.CoverPosition;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
-public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
+public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
     public static final Logger LOGGER = LogManager.getLogger("SNIFFER");
 
     private String freqFilter = "";
     private String ownerFilter = "";
 
-    public ItemSniffer(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
+    public ItemRedstoneSniffer(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);;
         setMaxStackSize(1);
     }
@@ -67,6 +66,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
         if (!world.isRemote) {
             this.freqFilter = "";
+            this.ownerFilter = "";
             GuiFactories.item()
                 .open(player);
 
@@ -244,9 +244,7 @@ public class ItemSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
                 Map<CoverPosition, Byte> coverMap = entry.getValue();
                 coverMap.forEach((cover, useless) -> {
                     result.add(new Row()
-                        .setEnabledIf(w -> (
-                            this.ownerFilter.isEmpty() || this.ownerFilter.equals(ownerString))
-                            && (entry.getKey().equals(this.freqFilter) || this.freqFilter.isEmpty()))
+                        .setEnabledIf(w -> (this.ownerFilter.isEmpty() || this.ownerFilter.equals(ownerString)) && entry.getKey().contains(this.freqFilter))
                         .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
                         .sizeRel(1f, 0.2f)
                         .expanded()
