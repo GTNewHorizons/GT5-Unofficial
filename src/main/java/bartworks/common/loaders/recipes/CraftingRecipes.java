@@ -562,7 +562,7 @@ public class CraftingRecipes implements Runnable {
             8,
             true);
         GTModHandler.addCraftingRecipe(
-            ItemList.Item_Sniffer.get(1L),
+            ItemList.Item_Redstone_Sniffer.get(1L),
             0,
             new Object[] { " M ", "STS", "RPW", 'M', ItemList.Cover_Screen.get(1L), 'S',
                 OrePrefixes.screw.get(Materials.Titanium), 'T', GregtechItemList.TransmissionComponent_EV.get(1), 'R',
