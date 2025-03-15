@@ -24,6 +24,7 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverLiquidMeter;
+import gregtech.common.covers.CoverPosition;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
@@ -49,8 +50,8 @@ public class CoverWirelessFluidDetector
         }
         final byte signal = CoverLiquidMeter
             .computeSignalBasedOnFluid(coverable, coverData.invert, coverData.threshold);
-        final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, signal);
+        final CoverPosition key = getCoverKey(coverable, coverSide);
+        setSignalAt(coverData.getUuid(), coverData.getFrequency(), key, signal);
 
         if (coverData.physical) {
             coverable.setOutputRedstoneSignal(coverSide, signal);
@@ -78,7 +79,7 @@ public class CoverWirelessFluidDetector
         /** Whether the wireless detector cover also sets the tiles sided Redstone output */
         private boolean physical;
 
-        public FluidTransmitterData(int frequency, UUID uuid, boolean invert, int threshold, boolean physical) {
+        public FluidTransmitterData(String frequency, UUID uuid, boolean invert, int threshold, boolean physical) {
             super(frequency, uuid, invert);
             this.threshold = threshold;
             this.physical = physical;
@@ -151,7 +152,7 @@ public class CoverWirelessFluidDetector
 
         @Override
         protected int getGUIHeight() {
-            return 123;
+            return 141;
         }
 
         @Override

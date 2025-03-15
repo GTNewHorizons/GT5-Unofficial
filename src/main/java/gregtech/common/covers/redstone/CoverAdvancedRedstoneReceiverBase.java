@@ -142,13 +142,13 @@ public abstract class CoverAdvancedRedstoneReceiverBase
 
         private GateMode mode;
 
-        public ReceiverData(int frequency, UUID uuid, GateMode mode) {
+        public ReceiverData(String frequency, UUID uuid, GateMode mode) {
             super(frequency, uuid);
             this.mode = mode;
         }
 
         public ReceiverData() {
-            this(0, null, GateMode.AND);
+            this("", null, GateMode.AND);
         }
 
         public GateMode getGateMode() {

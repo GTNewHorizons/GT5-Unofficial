@@ -21,6 +21,7 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.CoverPosition;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
@@ -72,8 +73,11 @@ public class CoverWirelessDoesWorkDetector
             return coverData;
         }
         final byte signal = computeSignalBasedOnActivity(coverData, coverable);
-        final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, signal);
+        final CoverPosition key = new CoverPosition(
+            coverable.getCoords(),
+            coverable.getWorld().provider.dimensionId,
+            coverSide.ordinal());
+        setSignalAt(coverData.getUuid(), coverData.getFrequency(), key, signal);
 
         if (coverData.physical) {
             coverable.setOutputRedstoneSignal(coverSide, signal);
@@ -106,7 +110,8 @@ public class CoverWirelessDoesWorkDetector
         /** Whether the wireless detector cover also sets the tiles sided Redstone output */
         private boolean physical;
 
-        public ActivityTransmitterData(int frequency, UUID uuid, boolean invert, ActivityMode mode, boolean physical) {
+        public ActivityTransmitterData(String frequency, UUID uuid, boolean invert, ActivityMode mode,
+            boolean physical) {
             super(frequency, uuid, invert);
             this.mode = mode;
             this.physical = physical;
@@ -175,7 +180,7 @@ public class CoverWirelessDoesWorkDetector
 
         @Override
         protected int getGUIHeight() {
-            return 123;
+            return 141;
         }
 
         @Override

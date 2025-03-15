@@ -25,6 +25,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverItemMeter;
+import gregtech.common.covers.CoverPosition;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
@@ -56,8 +57,8 @@ public class CoverWirelessItemDetector
             coverData.threshold,
             coverData.slot,
             coverSide.ordinal());
-        final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, signal);
+        final CoverPosition key = getCoverKey(coverable, coverSide);
+        setSignalAt(coverData.getUuid(), coverData.getFrequency(), key, signal);
 
         if (coverData.physical) {
             coverable.setOutputRedstoneSignal(coverSide, signal);
@@ -91,7 +92,7 @@ public class CoverWirelessItemDetector
         /** Whether the wireless detector cover also sets the tiles sided Redstone output */
         private boolean physical;
 
-        public ItemTransmitterData(int frequency, UUID uuid, boolean invert, int threshold, int slot,
+        public ItemTransmitterData(String frequency, UUID uuid, boolean invert, int threshold, int slot,
             boolean physical) {
             super(frequency, uuid, invert);
             this.threshold = threshold;
@@ -187,7 +188,7 @@ public class CoverWirelessItemDetector
 
         @Override
         protected int getGUIHeight() {
-            return 143;
+            return 161;
         }
 
         @Override

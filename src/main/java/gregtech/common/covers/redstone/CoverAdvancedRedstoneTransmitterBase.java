@@ -19,6 +19,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.CoverPosition;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
@@ -33,8 +34,8 @@ public abstract class CoverAdvancedRedstoneTransmitterBase<T extends CoverAdvanc
     private void unregisterSignal() {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) return;
-        final long hash = hashCoverCoords(coverable, coverSide);
-        removeSignalAt(coverData.uuid, coverData.frequency, hash);
+        final CoverPosition key = getCoverKey(coverable, coverSide);
+        removeSignalAt(coverData.uuid, coverData.frequency, key);
     }
 
     @Override
@@ -70,13 +71,13 @@ public abstract class CoverAdvancedRedstoneTransmitterBase<T extends CoverAdvanc
 
         protected boolean invert;
 
-        public TransmitterData(int frequency, UUID uuid, boolean invert) {
+        public TransmitterData(String frequency, UUID uuid, boolean invert) {
             super(frequency, uuid);
             this.invert = invert;
         }
 
         public TransmitterData() {
-            this(0, null, false);
+            this("", null, false);
         }
 
         public boolean isInvert() {
