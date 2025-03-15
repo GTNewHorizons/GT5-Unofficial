@@ -12,7 +12,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
@@ -118,24 +117,15 @@ public class CoverShutter extends CoverBehavior {
             super(buildContext);
         }
 
-        @Override
-        protected CoverShutter adaptCover(Cover cover) {
-            if (cover instanceof CoverShutter adapterCover) {
-                return adapterCover;
-            }
-            return null;
-        }
-
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        this::adaptCover,
-                        CoverShutter.this::loadFromNbt,
-                        (index, coverData) -> index == convert(coverData),
-                        (index, coverData) -> new ISerializableObject.LegacyCoverData(index),
+                        CoverBehavior::adaptCover,
+                        (index, coverData) -> index == coverData.getVariable(),
+                        (index, coverData) -> coverData.setVariable(index),
                         getUIBuildContext())
                             .addToggleButton(
                                 0,

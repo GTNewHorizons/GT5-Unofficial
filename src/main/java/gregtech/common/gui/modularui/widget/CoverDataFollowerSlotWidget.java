@@ -12,9 +12,9 @@ import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.gui.modularui.ICoverDataFollowerWidget;
-import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.Cover;
 
-public class CoverDataFollowerSlotWidget<T extends ISerializableObject> extends SlotWidget
+public class CoverDataFollowerSlotWidget<T extends Cover> extends SlotWidget
     implements ICoverDataFollowerWidget<T, ItemStack> {
 
     private Function<T, ItemStack> dataToStateGetter;

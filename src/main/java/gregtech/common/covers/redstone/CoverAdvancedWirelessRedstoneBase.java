@@ -24,7 +24,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
-import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
@@ -34,8 +33,26 @@ import io.netty.buffer.ByteBuf;
 public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedWirelessRedstoneBase.WirelessData>
     extends CoverBehaviorBase<T> {
 
-    public CoverAdvancedWirelessRedstoneBase(CoverContext context, Class<T> typeToken, ITexture coverTexture) {
-        super(context, typeToken, coverTexture);
+    public CoverAdvancedWirelessRedstoneBase(CoverContext context, ITexture coverTexture) {
+        super(context, coverTexture);
+    }
+
+    public int getFrequency() {
+        return coverData.frequency;
+    }
+
+    public CoverAdvancedWirelessRedstoneBase<T> setFrequency(int frequency) {
+        this.coverData.frequency = frequency;
+        return this;
+    }
+
+    public UUID getUuid() {
+        return coverData.uuid;
+    }
+
+    public CoverAdvancedWirelessRedstoneBase<T> setUuid(UUID uuid) {
+        this.coverData.uuid = uuid;
+        return this;
     }
 
     public static Byte getSignalAt(UUID uuid, int frequency, CoverAdvancedRedstoneReceiverBase.GateMode mode) {
@@ -226,7 +243,8 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
         return true;
     }
 
-    protected abstract class AdvancedWirelessRedstoneBaseUIFactory extends UIFactory {
+    protected abstract class AdvancedWirelessRedstoneBaseUIFactory<C extends CoverAdvancedWirelessRedstoneBase<T>>
+        extends UIFactory {
 
         protected static final int startX = 10;
         protected static final int startY = 25;
@@ -242,22 +260,13 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
             return 250;
         }
 
-        @Override
-        protected CoverAdvancedWirelessRedstoneBase adaptCover(Cover cover) {
-            if (cover instanceof CoverAdvancedWirelessRedstoneBase adapterCover) {
-                return adapterCover;
-            }
-            return null;
-        }
+        protected abstract @NotNull CoverDataControllerWidget<C> getDataController();
 
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             final int privateExtraColumn = isShiftPrivateLeft() ? 1 : 5;
 
-            CoverDataControllerWidget<T> dataController = new CoverDataControllerWidget<>(
-                this::adaptCover,
-                CoverAdvancedWirelessRedstoneBase.this::loadFromNbt,
-                getUIBuildContext());
+            CoverDataControllerWidget<C> dataController = getDataController();
             dataController.setPos(startX, startY);
             addUIForDataController(dataController);
 
@@ -271,12 +280,12 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
                         .setPos(startX + spaceX * privateExtraColumn, 4 + startY + spaceY * getButtonRow()));
         }
 
-        protected void addUIForDataController(CoverDataControllerWidget<T> controller) {
+        protected void addUIForDataController(CoverDataControllerWidget<C> controller) {
             controller.addFollower(
                 new CoverDataFollowerNumericWidget<>(),
-                coverData -> (double) coverData.frequency,
+                coverData -> (double) coverData.getFrequency(),
                 (coverData, state) -> {
-                    coverData.frequency = state.intValue();
+                    coverData.setFrequency(state.intValue());
                     return coverData;
                 },
                 widget -> widget.setScrollValues(1, 1000, 10)
@@ -285,13 +294,14 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
                     .setSize(spaceX * 5 - 4, 12))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofCheck(),
-                    coverData -> coverData.uuid != null,
+                    coverData -> coverData.getUuid() != null,
                     (coverData, state) -> {
                         if (state) {
-                            coverData.uuid = getUIBuildContext().getPlayer()
-                                .getUniqueID();
+                            coverData.setUuid(
+                                getUIBuildContext().getPlayer()
+                                    .getUniqueID());
                         } else {
-                            coverData.uuid = null;
+                            coverData.setUuid(null);
                         }
                         return coverData;
                     },

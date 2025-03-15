@@ -11,7 +11,6 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
@@ -144,41 +143,29 @@ public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
             return 250;
         }
 
-        @Override
-        protected CoverRedstoneWirelessBase adaptCover(Cover cover) {
-            if (cover instanceof CoverRedstoneWirelessBase adapterCover) {
-                return adapterCover;
-            }
-            return null;
-        }
-
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder
                 .widget(
-                    new CoverDataControllerWidget<>(
-                        this::adaptCover,
-                        CoverRedstoneWirelessBase.this::loadFromNbt,
-                        getUIBuildContext())
-
-                            .addFollower(
-                                new CoverDataFollowerNumericWidget<>(),
-                                coverData -> (double) getFlagFrequency(convert(coverData)),
-                                (coverData, state) -> new ISerializableObject.LegacyCoverData(
-                                    state.intValue() | getFlagCheckbox(convert(coverData))),
-                                widget -> widget.setBounds(0, MAX_CHANNEL)
-                                    .setScrollValues(1, 1000, 10)
-                                    .setFocusOnGuiOpen(true)
-                                    .setPos(spaceX * 0, spaceY * 0 + 2)
-                                    .setSize(spaceX * 4 - 3, 12))
-                            .addFollower(
-                                CoverDataFollowerToggleButtonWidget.ofCheck(),
-                                coverData -> getFlagCheckbox(convert(coverData)) > 0,
-                                (coverData, state) -> new ISerializableObject.LegacyCoverData(
-                                    getFlagFrequency(convert(coverData)) | (state ? CHECKBOX_MASK : 0)),
-                                widget -> widget.setPos(spaceX * 0, spaceY * 2))
-                            .setPos(startX, startY))
+                    new CoverDataControllerWidget<>(CoverBehavior::adaptCover, getUIBuildContext())
+                        .addFollower(
+                            new CoverDataFollowerNumericWidget<>(),
+                            coverData -> (double) getFlagFrequency(coverData.getVariable()),
+                            (coverData, state) -> coverData
+                                .setVariable(state.intValue() | getFlagCheckbox(coverData.getVariable())),
+                            widget -> widget.setBounds(0, MAX_CHANNEL)
+                                .setScrollValues(1, 1000, 10)
+                                .setFocusOnGuiOpen(true)
+                                .setPos(spaceX * 0, spaceY * 0 + 2)
+                                .setSize(spaceX * 4 - 3, 12))
+                        .addFollower(
+                            CoverDataFollowerToggleButtonWidget.ofCheck(),
+                            coverData -> getFlagCheckbox(coverData.getVariable()) > 0,
+                            (coverData, state) -> coverData
+                                .setVariable(getFlagFrequency(coverData.getVariable()) | (state ? CHECKBOX_MASK : 0)),
+                            widget -> widget.setPos(spaceX * 0, spaceY * 2))
+                        .setPos(startX, startY))
                 .widget(
                     new TextWidget(GTUtility.trans("246", "Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0))

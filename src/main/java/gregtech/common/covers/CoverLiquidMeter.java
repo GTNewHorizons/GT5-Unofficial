@@ -37,7 +37,25 @@ import io.netty.buffer.ByteBuf;
 public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidMeterData> {
 
     public CoverLiquidMeter(CoverContext context, ITexture coverTexture) {
-        super(context, LiquidMeterData.class, coverTexture);
+        super(context, coverTexture);
+    }
+
+    public boolean isInverted() {
+        return this.coverData.inverted;
+    }
+
+    public CoverLiquidMeter setInverted(boolean inverted) {
+        this.coverData.inverted = inverted;
+        return this;
+    }
+
+    public int getThreshold() {
+        return this.coverData.threshold;
+    }
+
+    public CoverLiquidMeter setThresdhold(int threshold) {
+        this.coverData.threshold = threshold;
+        return this;
     }
 
     @Override
@@ -177,28 +195,20 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
 
             setMaxCapacity();
 
-            builder.widget(
-                new CoverDataControllerWidget<>(
-                    this::adaptCover,
-                    CoverLiquidMeter.this::loadFromNbt,
-                    getUIBuildContext())
+            builder
+                .widget(
+                    new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext())
                         .addFollower(
                             CoverDataFollowerToggleButtonWidget.ofRedstone(),
-                            coverData -> coverData.inverted,
-                            (coverData, state) -> {
-                                coverData.inverted = state;
-                                return coverData;
-                            },
+                            CoverLiquidMeter::isInverted,
+                            CoverLiquidMeter::setInverted,
                             widget -> widget.addTooltip(0, NORMAL)
                                 .addTooltip(1, INVERTED)
                                 .setPos(spaceX * 0, spaceY * 0))
                         .addFollower(
                             new CoverDataFollowerNumericWidget<>(),
-                            coverData -> (double) coverData.threshold,
-                            (coverData, state) -> {
-                                coverData.threshold = state.intValue();
-                                return coverData;
-                            },
+                            coverData -> (double) coverData.getThreshold(),
+                            (coverData, state) -> coverData.setThresdhold(state.intValue()),
                             widget -> widget.setBounds(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
                                 .setScrollValues(1000, 144, 100000)
                                 .setFocusOnGuiOpen(true)

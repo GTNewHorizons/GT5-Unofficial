@@ -27,8 +27,17 @@ import io.netty.buffer.ByteBuf;
 public abstract class CoverAdvancedRedstoneTransmitterBase<T extends CoverAdvancedRedstoneTransmitterBase.TransmitterData>
     extends CoverAdvancedWirelessRedstoneBase<T> {
 
-    public CoverAdvancedRedstoneTransmitterBase(CoverContext context, Class<T> typeToken, ITexture coverTexture) {
-        super(context, typeToken, coverTexture);
+    public CoverAdvancedRedstoneTransmitterBase(CoverContext context, ITexture coverTexture) {
+        super(context, coverTexture);
+    }
+
+    public boolean isInverted() {
+        return this.coverData.invert;
+    }
+
+    public CoverAdvancedRedstoneTransmitterBase<T> setInverted(boolean inverted) {
+        this.coverData.invert = inverted;
+        return this;
     }
 
     private void unregisterSignal() {
@@ -120,12 +129,8 @@ public abstract class CoverAdvancedRedstoneTransmitterBase<T extends CoverAdvanc
 
     // GUI stuff
 
-    @Override
-    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
-        return new AdvancedRedstoneTransmitterBaseUIFactory(buildContext).createWindow();
-    }
-
-    protected class AdvancedRedstoneTransmitterBaseUIFactory extends AdvancedWirelessRedstoneBaseUIFactory {
+    protected abstract class AdvancedRedstoneTransmitterBaseUIFactory<C extends CoverAdvancedRedstoneTransmitterBase<T>>
+        extends AdvancedWirelessRedstoneBaseUIFactory<C> {
 
         public AdvancedRedstoneTransmitterBaseUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
@@ -164,13 +169,13 @@ public abstract class CoverAdvancedRedstoneTransmitterBase<T extends CoverAdvanc
         }
 
         @Override
-        protected void addUIForDataController(CoverDataControllerWidget<T> controller) {
+        protected void addUIForDataController(CoverDataControllerWidget<C> controller) {
             super.addUIForDataController(controller);
             controller.addFollower(
                 CoverDataFollowerToggleButtonWidget.ofRedstone(),
-                coverData -> coverData.invert,
+                CoverAdvancedRedstoneTransmitterBase::isInverted,
                 (coverData, state) -> {
-                    coverData.invert = state;
+                    coverData.setInverted(state);
                     return coverData;
                 },
                 widget -> widget.addTooltip(0, GTUtility.trans("NORMAL", "Normal"))

@@ -12,9 +12,9 @@ import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.ICoverDataFollowerWidget;
-import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.Cover;
 
-public class CoverDataFollowerTextFieldWidget<T extends ISerializableObject> extends TextFieldWidget
+public class CoverDataFollowerTextFieldWidget<T extends Cover> extends TextFieldWidget
     implements ICoverDataFollowerWidget<T, String> {
 
     private Function<T, String> dataToStateGetter;

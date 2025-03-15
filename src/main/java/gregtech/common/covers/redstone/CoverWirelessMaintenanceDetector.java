@@ -9,6 +9,8 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -24,6 +26,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverNeedMaintainance;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
@@ -33,7 +36,25 @@ public class CoverWirelessMaintenanceDetector
     extends CoverAdvancedRedstoneTransmitterBase<CoverWirelessMaintenanceDetector.MaintenanceTransmitterData> {
 
     public CoverWirelessMaintenanceDetector(CoverContext context, ITexture coverTexture) {
-        super(context, MaintenanceTransmitterData.class, coverTexture);
+        super(context, coverTexture);
+    }
+
+    public MaintenanceMode getMode() {
+        return coverData.mode;
+    }
+
+    public CoverWirelessMaintenanceDetector setMode(MaintenanceMode mode) {
+        this.coverData.mode = mode;
+        return this;
+    }
+
+    public boolean isPhysical() {
+        return coverData.physical;
+    }
+
+    public CoverWirelessMaintenanceDetector setPhysical(boolean physical) {
+        this.coverData.physical = physical;
+        return this;
     }
 
     @Override
@@ -201,7 +222,8 @@ public class CoverWirelessMaintenanceDetector
         return new WirelessMaintenanceDetectorUIFactory(buildContext).createWindow();
     }
 
-    private class WirelessMaintenanceDetectorUIFactory extends AdvancedRedstoneTransmitterBaseUIFactory {
+    private class WirelessMaintenanceDetectorUIFactory
+        extends AdvancedRedstoneTransmitterBaseUIFactory<CoverWirelessMaintenanceDetector> {
 
         public WirelessMaintenanceDetectorUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
@@ -210,6 +232,19 @@ public class CoverWirelessMaintenanceDetector
         @Override
         protected int getGUIHeight() {
             return 175;
+        }
+
+        @Override
+        protected CoverWirelessMaintenanceDetector adaptCover(Cover cover) {
+            if (cover instanceof CoverWirelessMaintenanceDetector adaptedCover) {
+                return adaptedCover;
+            }
+            return null;
+        }
+
+        @Override
+        protected @NotNull CoverDataControllerWidget<CoverWirelessMaintenanceDetector> getDataController() {
+            return new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext());
         }
 
         @Override
@@ -238,27 +273,21 @@ public class CoverWirelessMaintenanceDetector
         }
 
         @Override
-        protected void addUIForDataController(CoverDataControllerWidget<MaintenanceTransmitterData> controller) {
+        protected void addUIForDataController(CoverDataControllerWidget<CoverWirelessMaintenanceDetector> controller) {
             super.addUIForDataController(controller);
             for (int i = 0; i < 8; i++) {
                 final int index = i;
                 controller.addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                    coverData -> coverData.mode == MaintenanceMode.values()[index],
-                    (coverData, state) -> {
-                        coverData.mode = MaintenanceMode.values()[index];
-                        return coverData;
-                    },
+                    coverData -> coverData.getMode() == MaintenanceMode.values()[index],
+                    (coverData, state) -> coverData.setMode(MaintenanceMode.values()[index]),
                     widget -> widget.setToggleTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK, GTUITextures.TRANSPARENT)
                         .setPos(spaceX * (index % 2 == 0 ? 0 : 6), spaceY * (2 + index / 2)));
             }
             controller.addFollower(
                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                coverData -> coverData.physical,
-                (coverData, state) -> {
-                    coverData.physical = state;
-                    return coverData;
-                },
+                CoverWirelessMaintenanceDetector::isPhysical,
+                CoverWirelessMaintenanceDetector::setPhysical,
                 widget -> widget
                     .addTooltip(StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.tooltip"))
                     .setPos(0, 1 + spaceY * 6));

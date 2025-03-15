@@ -21,8 +21,6 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject.LegacyCoverData;
-import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverBehavior;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
@@ -178,14 +176,6 @@ public class CoverEnderFluidLink extends CoverBehavior {
         }
 
         @Override
-        protected CoverEnderFluidLink adaptCover(Cover cover) {
-            if (cover instanceof CoverEnderFluidLink adapterCover) {
-                return adapterCover;
-            }
-            return null;
-        }
-
-        @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             TextFieldWidget frequencyField = new TextFieldWidget();
             builder.widget(frequencyField.setGetter(() -> {
@@ -217,10 +207,9 @@ public class CoverEnderFluidLink extends CoverBehavior {
                 .setSize(SPACE_X * 5 - 8, 12))
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        this::adaptCover,
-                        CoverEnderFluidLink.this::loadFromNbt,
-                        (id, coverData) -> !getClickable(id, convert(coverData)),
-                        (id, coverData) -> new LegacyCoverData(getNewCoverVariable(id, convert(coverData))),
+                        CoverBehavior::adaptCover,
+                        (id, coverData) -> !getClickable(id, coverData.getVariable()),
+                        (id, coverData) -> coverData.setVariable(getNewCoverVariable(id, coverData.getVariable())),
                         getUIBuildContext())
                             .addToggleButton(
                                 PUBLIC_BUTTON_ID,

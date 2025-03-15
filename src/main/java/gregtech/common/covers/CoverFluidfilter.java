@@ -14,6 +14,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -44,7 +46,25 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
     private final int ANY_INPUT_INVERT_OUTPUT = 7; // 111
 
     public CoverFluidfilter(CoverContext context, ITexture coverTexture) {
-        super(context, FluidFilterData.class, coverTexture);
+        super(context, coverTexture);
+    }
+
+    public int getFluidId() {
+        return coverData.mFluidID;
+    }
+
+    public CoverFluidfilter setFluidId(int fluidId) {
+        this.coverData.mFluidID = fluidId;
+        return this;
+    }
+
+    public int getFilterMode() {
+        return coverData.mFilterMode;
+    }
+
+    public CoverFluidfilter setFilterMode(int filterMode) {
+        this.coverData.mFilterMode = filterMode;
+        return this;
     }
 
     @Override
@@ -195,6 +215,11 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
         }
 
         @Override
+        protected @Nullable CoverFluidfilter getCover() {
+            return adaptCover(super.getCover());
+        }
+
+        @Override
         protected CoverFluidfilter adaptCover(Cover cover) {
             if (cover instanceof CoverFluidfilter adapterCover) {
                 return adapterCover;
@@ -208,10 +233,9 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
             builder.widget(
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                     this::adaptCover,
-                    CoverFluidfilter.this::loadFromNbt,
-                    (id, coverData) -> !getClickable(id, coverData),
+                    (id, coverData) -> !getClickable(id, coverData.getFilterMode()),
                     (id, coverData) -> {
-                        coverData.mFilterMode = getNewFilterMode(id, coverData);
+                        coverData.setFilterMode(getNewFilterMode(id, coverData.getFilterMode()));
                         return coverData;
                     },
                     getUIBuildContext())
@@ -251,30 +275,34 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
                             widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLACKLIST)
                                 .addTooltip(GTUtility.trans("237", "Blacklist Fluid"))
                                 .setPos(spaceX * 1, spaceY * 1))
-                        .addFollower(new CoverDataFollowerSlotWidget<FluidFilterData>(new ItemStackHandler(), 0, true) {
+                        .addFollower(
+                            new CoverDataFollowerSlotWidget<CoverFluidfilter>(new ItemStackHandler(), 0, true) {
 
-                            @Override
-                            protected void putClickedStack(ItemStack stack, int mouseButton) {
-                                if (stack != null && GTUtility.getFluidFromContainerOrFluidDisplay(stack) == null)
-                                    return;
-                                super.putClickedStack(
-                                    GTUtility.getFluidDisplayStack(
-                                        GTUtility.getFluidFromContainerOrFluidDisplay(stack),
-                                        false),
-                                    mouseButton);
-                            }
-                        }, this::getFluidDisplayItem, (coverData, stack) -> {
-                            if (stack == null) {
-                                coverData.mFluidID = -1;
-                            } else {
-                                FluidStack fluid = GTUtility.getFluidFromDisplayStack(stack);
-                                if (fluid != null && fluid.getFluid() != null) {
-                                    coverData.mFluidID = fluid.getFluid()
-                                        .getID();
+                                @Override
+                                protected void putClickedStack(ItemStack stack, int mouseButton) {
+                                    if (stack != null && GTUtility.getFluidFromContainerOrFluidDisplay(stack) == null)
+                                        return;
+                                    super.putClickedStack(
+                                        GTUtility.getFluidDisplayStack(
+                                            GTUtility.getFluidFromContainerOrFluidDisplay(stack),
+                                            false),
+                                        mouseButton);
                                 }
-                            }
-                            return coverData;
-                        },
+                            },
+                            this::getFluidDisplayItem,
+                            (coverData, stack) -> {
+                                if (stack == null) {
+                                    coverData.setFluidId(-1);
+                                } else {
+                                    FluidStack fluid = GTUtility.getFluidFromDisplayStack(stack);
+                                    if (fluid != null && fluid.getFluid() != null) {
+                                        coverData.setFluidId(
+                                            fluid.getFluid()
+                                                .getID());
+                                    }
+                                }
+                                return coverData;
+                            },
                             widget -> widget.setBackground(ModularUITextures.FLUID_SLOT)
                                 .setPos(0, spaceY * 3 + 2))
                         .setPos(startX, startY))
@@ -289,7 +317,7 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
                         .setPos(startX + spaceX * 2, 3 + startY + spaceY * 2))
                 .widget(TextWidget.dynamicString(() -> {
                     if (getCoverData() != null) {
-                        ItemStack fluidDisplay = getFluidDisplayItem(getCoverData());
+                        ItemStack fluidDisplay = getFluidDisplayItem(getCover());
                         if (fluidDisplay != null) {
                             return fluidDisplay.getDisplayName();
                         }
@@ -301,29 +329,30 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
                     .setPos(startX + spaceX + 3, 4 + startY + spaceY * 3));
         }
 
-        private int getNewFilterMode(int id, FluidFilterData coverVariable) {
+        private int getNewFilterMode(int id, int filterMode) {
             return switch (id) {
-                case 0 -> (coverVariable.mFilterMode & 0x3);
-                case 1 -> (coverVariable.mFilterMode | 0x4);
-                case 2 -> (coverVariable.mFilterMode & 0x5);
-                case 3 -> (coverVariable.mFilterMode | 0x2);
-                case 4 -> (coverVariable.mFilterMode & 0x6);
-                case 5 -> (coverVariable.mFilterMode | 0x1);
-                default -> coverVariable.mFilterMode;
+                case 0 -> (filterMode & 0x3);
+                case 1 -> (filterMode | 0x4);
+                case 2 -> (filterMode & 0x5);
+                case 3 -> (filterMode | 0x2);
+                case 4 -> (filterMode & 0x6);
+                case 5 -> (filterMode | 0x1);
+                default -> filterMode;
             };
         }
 
-        private boolean getClickable(int id, FluidFilterData coverVariable) {
+        private boolean getClickable(int id, int filterMode) {
             return switch (id) {
-                case 0, 1 -> (coverVariable.mFilterMode >> 2 & 0x1) != (id & 0x1);
-                case 2, 3 -> (coverVariable.mFilterMode >> 1 & 0x1) != (id & 0x1);
-                case 4, 5 -> (coverVariable.mFilterMode & 0x1) != (id & 0x1);
+                case 0, 1 -> (filterMode >> 2 & 0x1) != (id & 0x1);
+                case 2, 3 -> (filterMode >> 1 & 0x1) != (id & 0x1);
+                case 4, 5 -> (filterMode & 0x1) != (id & 0x1);
                 default -> false;
             };
         }
 
-        private ItemStack getFluidDisplayItem(FluidFilterData coverData) {
-            Fluid fluid = FluidRegistry.getFluid(coverData.mFluidID);
+        private ItemStack getFluidDisplayItem(CoverFluidfilter coverData) {
+            if (coverData == null) return null;
+            Fluid fluid = FluidRegistry.getFluid(coverData.getFluidId());
             return GTUtility.getFluidDisplayStack(fluid);
         }
     }

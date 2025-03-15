@@ -4,12 +4,12 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import gregtech.api.gui.modularui.ICoverDataFollowerWidget;
-import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.Cover;
 
 /**
  * Determines button state with cover data.
  */
-public class CoverDataFollowerCycleButtonWidget<T extends ISerializableObject> extends CoverCycleButtonWidget
+public class CoverDataFollowerCycleButtonWidget<T extends Cover> extends CoverCycleButtonWidget
     implements ICoverDataFollowerWidget<T, Integer> {
 
     private Function<T, Integer> dataToStateGetter;

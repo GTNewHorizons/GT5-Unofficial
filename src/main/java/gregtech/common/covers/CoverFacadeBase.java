@@ -37,7 +37,16 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
      * This is the Dummy, if there is a generic Cover without behavior
      */
     public CoverFacadeBase(CoverContext context) {
-        super(context, FacadeData.class, null);
+        super(context, null);
+    }
+
+    public int getFlags() {
+        return this.coverData.mFlags;
+    }
+
+    public CoverFacadeBase setFlags(int flags) {
+        this.coverData.mFlags = flags;
+        return this;
     }
 
     @Override
@@ -281,33 +290,30 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
-            builder.widget(
-                new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                    this::adaptCover,
-                    CoverFacadeBase.this::loadFromNbt,
-                    this::isEnabled,
-                    (id, coverData) -> {
-                        coverData.mFlags = getNewCoverVariable(id, coverData);
-                        return coverData;
-                    },
-                    getUIBuildContext())
-                        .addToggleButton(
-                            0,
-                            CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
-                            widget -> widget.setPos(spaceX * 0, spaceY * 0))
-                        .addToggleButton(
-                            1,
-                            CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
-                            widget -> widget.setPos(spaceX * 0, spaceY * 1))
-                        .addToggleButton(
-                            2,
-                            CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
-                            widget -> widget.setPos(spaceX * 0, spaceY * 2))
-                        .addToggleButton(
-                            3,
-                            CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
-                            widget -> widget.setPos(spaceX * 0, spaceY * 3))
-                        .setPos(startX, startY))
+            builder
+                .widget(
+                    new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
+                        this::adaptCover,
+                        this::isEnabled,
+                        (id, coverData) -> coverData.setFlags(getNewCoverVariable(id, coverData.getFlags())),
+                        getUIBuildContext())
+                            .addToggleButton(
+                                0,
+                                CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
+                                widget -> widget.setPos(spaceX * 0, spaceY * 0))
+                            .addToggleButton(
+                                1,
+                                CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
+                                widget -> widget.setPos(spaceX * 0, spaceY * 1))
+                            .addToggleButton(
+                                2,
+                                CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
+                                widget -> widget.setPos(spaceX * 0, spaceY * 2))
+                            .addToggleButton(
+                                3,
+                                CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
+                                widget -> widget.setPos(spaceX * 0, spaceY * 3))
+                            .setPos(startX, startY))
                 .widget(
                     new ItemDrawable(() -> getCoverData() != null ? getCoverData().mStack : null).asWidget()
                         .setPos(5, 5)
@@ -334,22 +340,22 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
         @Override
         protected void addTitleToUI(ModularWindow.Builder builder) {}
 
-        private int getNewCoverVariable(int id, FacadeData coverVariable) {
+        private int getNewCoverVariable(int id, int flags) {
             return switch (id) {
-                case 0 -> coverVariable.mFlags ^ 0x1;
-                case 1 -> coverVariable.mFlags ^ 0x2;
-                case 2 -> coverVariable.mFlags ^ 0x4;
-                case 3 -> coverVariable.mFlags ^ 0x8;
-                default -> coverVariable.mFlags;
+                case 0 -> flags ^ 0x1;
+                case 1 -> flags ^ 0x2;
+                case 2 -> flags ^ 0x4;
+                case 3 -> flags ^ 0x8;
+                default -> flags;
             };
         }
 
-        private boolean isEnabled(int id, FacadeData coverVariable) {
+        private boolean isEnabled(int id, CoverFacadeBase coverVariable) {
             return switch (id) {
-                case 0 -> (coverVariable.mFlags & 0x1) > 0;
-                case 1 -> (coverVariable.mFlags & 0x2) > 0;
-                case 2 -> (coverVariable.mFlags & 0x4) > 0;
-                case 3 -> (coverVariable.mFlags & 0x8) > 0;
+                case 0 -> (coverVariable.getFlags() & 0x1) > 0;
+                case 1 -> (coverVariable.getFlags() & 0x2) > 0;
+                case 2 -> (coverVariable.getFlags() & 0x4) > 0;
+                case 3 -> (coverVariable.getFlags() & 0x8) > 0;
                 default -> false;
             };
         }

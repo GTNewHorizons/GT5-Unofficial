@@ -175,19 +175,11 @@ public class CoverPump extends CoverBehavior {
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        private CoverDataFollowerToggleButtonWidget<LegacyCoverData> mBlockWidget = null;
-        private CoverDataFollowerToggleButtonWidget<LegacyCoverData> mAllowWidget = null;
+        private CoverDataFollowerToggleButtonWidget<CoverBehavior> mBlockWidget = null;
+        private CoverDataFollowerToggleButtonWidget<CoverBehavior> mAllowWidget = null;
 
         public PumpUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
-        }
-
-        @Override
-        protected CoverPump adaptCover(Cover cover) {
-            if (cover instanceof CoverPump adapterCover) {
-                return adapterCover;
-            }
-            return null;
         }
 
         @SuppressWarnings("PointlessArithmeticExpression")
@@ -195,10 +187,9 @@ public class CoverPump extends CoverBehavior {
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder.widget(
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                    this::adaptCover,
-                    CoverPump.this::loadFromNbt,
-                    (id, coverData) -> !getClickable(id, convert(coverData)),
-                    (id, coverData) -> new LegacyCoverData(getNewCoverVariable(id, convert(coverData))),
+                    CoverBehavior::adaptCover,
+                    (id, coverData) -> !getClickable(id, coverData.getVariable()),
+                    (id, coverData) -> coverData.setVariable(getNewCoverVariable(id, coverData.getVariable())),
                     getUIBuildContext())
                         .addToggleButton(
                             0,

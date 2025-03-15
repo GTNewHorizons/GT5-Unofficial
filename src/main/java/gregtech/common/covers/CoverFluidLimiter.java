@@ -29,7 +29,16 @@ import io.netty.buffer.ByteBuf;
 public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.FluidLimiterData> {
 
     public CoverFluidLimiter(CoverContext context, ITexture coverTexture) {
-        super(context, FluidLimiterData.class, coverTexture);
+        super(context, coverTexture);
+    }
+
+    public float getThreshold() {
+        return this.coverData.threshold;
+    }
+
+    public CoverFluidLimiter setThreshold(float threshold) {
+        this.coverData.threshold = threshold;
+        return this;
     }
 
     @Override
@@ -171,17 +180,12 @@ public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.Fluid
 
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
-            builder.widget(
-                new CoverDataControllerWidget<>(
-                    this::adaptCover,
-                    CoverFluidLimiter.this::loadFromNbt,
-                    getUIBuildContext()).addFollower(
+            builder
+                .widget(
+                    new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext()).addFollower(
                         new CoverDataFollowerNumericWidget<>(),
-                        coverData -> (double) Math.round(coverData.threshold * 100),
-                        (coverData, val) -> {
-                            coverData.threshold = val.floatValue() / 100;
-                            return coverData;
-                        },
+                        coverData -> (double) Math.round(coverData.getThreshold() * 100),
+                        (coverData, val) -> coverData.setThreshold(val.floatValue() / 100),
                         widget -> widget.setBounds(0, 100)
                             .setFocusOnGuiOpen(true)
                             .setPos(startX, startY + spaceY * 2 - 24)

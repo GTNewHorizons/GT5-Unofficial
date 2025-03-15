@@ -10,11 +10,20 @@ import gregtech.api.util.ISerializableObject;
 public abstract class CoverBehavior extends CoverBehaviorBase<ISerializableObject.LegacyCoverData> {
 
     protected CoverBehavior(CoverContext context) {
-        super(context, ISerializableObject.LegacyCoverData.class, null);
+        super(context, null);
     }
 
     protected CoverBehavior(CoverContext context, ITexture coverTexture) {
-        super(context, ISerializableObject.LegacyCoverData.class, coverTexture);
+        super(context, coverTexture);
+    }
+
+    public int getVariable() {
+        return convert(coverData);
+    }
+
+    public CoverBehavior setVariable(int newValue) {
+        this.coverData.set(newValue);
+        return this;
     }
 
     protected static int convert(ISerializableObject.LegacyCoverData data) {
@@ -31,4 +40,10 @@ public abstract class CoverBehavior extends CoverBehaviorBase<ISerializableObjec
         return true;
     }
 
+    public static CoverBehavior adaptCover(Cover cover) {
+        if (cover instanceof CoverBehavior adapterCover) {
+            return adapterCover;
+        }
+        return null;
+    }
 }

@@ -36,7 +36,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
     private final int maxOverflowPoint;
 
     public CoverOverflowValve(CoverContext context, int maxOverflowPoint) {
-        super(context, OverflowValveData.class, null);
+        super(context, null);
         this.maxOverflowPoint = maxOverflowPoint;
         Object initializer = context.getCoverData();
         if (initializer == null || initializer instanceof ItemStack) {
@@ -44,6 +44,42 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
             // since this relies on an instance field.
             coverData = initializeData();
         }
+    }
+
+    public int getOverflowPoint() {
+        return coverData.overflowPoint;
+    }
+
+    public CoverOverflowValve setOverflowPoint(int overflowPoint) {
+        this.coverData.overflowPoint = overflowPoint;
+        return this;
+    }
+
+    public int getVoidingRate() {
+        return coverData.voidingRate;
+    }
+
+    public CoverOverflowValve setVoidingRate(int voidingRate) {
+        this.coverData.voidingRate = voidingRate;
+        return this;
+    }
+
+    public boolean canFluidInput() {
+        return coverData.canFluidInput;
+    }
+
+    public CoverOverflowValve setCanFluidInput(boolean canFluidInput) {
+        this.coverData.canFluidInput = canFluidInput;
+        return this;
+    }
+
+    public boolean canFluidOutput() {
+        return coverData.canFluidOutput;
+    }
+
+    public CoverOverflowValve setCanFluidOutput(boolean canFluidOutput) {
+        this.coverData.canFluidOutput = canFluidOutput;
+        return this;
     }
 
     @Override
@@ -222,21 +258,15 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(xOP + width + 3, yOP + 11))
                 .widget(
-                    new CoverDataControllerWidget<>(
-                        this::adaptCover,
-                        CoverOverflowValve.this::loadFromNbt,
-                        getUIBuildContext()).addFollower(
-                            new CoverDataFollowerNumericWidget<>(),
-                            coverData -> (double) coverData.overflowPoint,
-                            (coverData, state) -> {
-                                coverData.overflowPoint = state.intValue();
-                                return coverData;
-                            },
-                            widget -> widget.setBounds(minOverflowPoint, maxOverflowPoint)
-                                .setScrollValues(1000, 144, 100000)
-                                .setFocusOnGuiOpen(true)
-                                .setPos(xOP, yOP + 10)
-                                .setSize(width, height)))
+                    new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext()).addFollower(
+                        new CoverDataFollowerNumericWidget<>(),
+                        coverData -> (double) coverData.getOverflowPoint(),
+                        (coverData, state) -> coverData.setOverflowPoint(state.intValue()),
+                        widget -> widget.setBounds(minOverflowPoint, maxOverflowPoint)
+                            .setScrollValues(1000, 144, 100000)
+                            .setFocusOnGuiOpen(true)
+                            .setPos(xOP, yOP + 10)
+                            .setSize(width, height)))
                 .widget(
                     new TextWidget(StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_voiding_rate"))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
@@ -246,25 +276,18 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(xVR + width + 3, yVR + 11))
                 .widget(
-                    new CoverDataControllerWidget<>(
-                        this::adaptCover,
-                        CoverOverflowValve.this::loadFromNbt,
-                        getUIBuildContext()).addFollower(
-                            new CoverDataFollowerNumericWidget<>(),
-                            coverData -> (double) coverData.voidingRate,
-                            (coverData, state) -> {
-                                coverData.voidingRate = state.intValue();
-                                return coverData;
-                            },
-                            widget -> widget.setBounds(minOverflowPoint, maxOverflowPoint)
-                                .setScrollValues(1000, 144, 100000)
-                                .setFocusOnGuiOpen(true)
-                                .setPos(xVR, yVR + 10)
-                                .setSize(width, height)))
+                    new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext()).addFollower(
+                        new CoverDataFollowerNumericWidget<>(),
+                        coverData -> (double) coverData.getVoidingRate(),
+                        (coverData, state) -> coverData.setVoidingRate(state.intValue()),
+                        widget -> widget.setBounds(minOverflowPoint, maxOverflowPoint)
+                            .setScrollValues(1000, 144, 100000)
+                            .setFocusOnGuiOpen(true)
+                            .setPos(xVR, yVR + 10)
+                            .setSize(width, height)))
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                         this::adaptCover,
-                        CoverOverflowValve.this::loadFromNbt,
                         this::getClickable,
                         this::updateData,
                         getUIBuildContext())
@@ -302,32 +325,32 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                                     .setPos(xFO + 18, yFO)));
         }
 
-        private boolean getClickable(int id, OverflowValveData coverData) {
+        private boolean getClickable(int id, CoverOverflowValve coverData) {
             return switch (id) {
-                case 0 -> coverData.canFluidInput;
-                case 1 -> !coverData.canFluidInput;
-                case 2 -> coverData.canFluidOutput;
-                case 3 -> !coverData.canFluidOutput;
+                case 0 -> coverData.canFluidInput();
+                case 1 -> !coverData.canFluidInput();
+                case 2 -> coverData.canFluidOutput();
+                case 3 -> !coverData.canFluidOutput();
                 default -> throw new IllegalStateException("Wrong button id: " + id);
             };
         }
 
-        private OverflowValveData updateData(int id, OverflowValveData coverData) {
+        private CoverOverflowValve updateData(int id, CoverOverflowValve coverData) {
             return switch (id) {
                 case 0 -> {
-                    coverData.canFluidInput = true;
+                    coverData.setCanFluidInput(true);
                     yield coverData;
                 }
                 case 1 -> {
-                    coverData.canFluidInput = false;
+                    coverData.setCanFluidInput(false);
                     yield coverData;
                 }
                 case 2 -> {
-                    coverData.canFluidOutput = true;
+                    coverData.setCanFluidOutput(true);
                     yield coverData;
                 }
                 case 3 -> {
-                    coverData.canFluidOutput = false;
+                    coverData.setCanFluidOutput(false);
                     yield coverData;
                 }
                 default -> throw new IllegalStateException("Wrong button id: " + id);

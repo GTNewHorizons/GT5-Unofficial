@@ -38,8 +38,26 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
     private final boolean mExport;
 
     public CoverItemFilter(CoverContext context, boolean isExport, ITexture coverTexture) {
-        super(context, ItemFilterData.class, coverTexture);
+        super(context, coverTexture);
         this.mExport = isExport;
+    }
+
+    public boolean isWhitelist() {
+        return coverData.mWhitelist;
+    }
+
+    public CoverItemFilter setWhitelist(boolean whitelist) {
+        this.coverData.mWhitelist = whitelist;
+        return this;
+    }
+
+    public ItemStack getFilter() {
+        return coverData.mFilter;
+    }
+
+    public CoverItemFilter setFilter(ItemStack filter) {
+        this.coverData.mFilter = filter;
+        return this;
     }
 
     @Override
@@ -179,18 +197,13 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
             if (getCoverData() != null) {
                 filterInvHandler.setStackInSlot(0, setStackSize1(getCoverData().mFilter));
             }
-            builder.widget(
-                new CoverDataControllerWidget<>(
-                    this::adaptCover,
-                    CoverItemFilter.this::loadFromNbt,
-                    getUIBuildContext())
+            builder
+                .widget(
+                    new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext())
                         .addFollower(
                             new CoverDataFollowerToggleButtonWidget<>(),
-                            coverData -> coverData.mWhitelist,
-                            (coverData, state) -> {
-                                coverData.mWhitelist = state;
-                                return coverData;
-                            },
+                            CoverItemFilter::isWhitelist,
+                            CoverItemFilter::setWhitelist,
                             widget -> widget
                                 .setToggleTexture(
                                     GTUITextures.OVERLAY_BUTTON_BLACKLIST,
@@ -200,11 +213,8 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
                                 .setPos(spaceX * 0, spaceY * 0))
                         .addFollower(
                             new CoverDataFollowerSlotWidget<>(filterInvHandler, 0, true),
-                            coverData -> setStackSize1(coverData.mFilter),
-                            (coverData, stack) -> {
-                                coverData.mFilter = setStackSize1(stack);
-                                return coverData;
-                            },
+                            coverData -> setStackSize1(coverData.getFilter()),
+                            (coverData, stack) -> coverData.setFilter(setStackSize1(stack)),
                             widget -> widget.setBackground(GTUITextures.SLOT_DARK_GRAY)
                                 .setPos(spaceX * 0, spaceY * 2))
                         .setPos(startX, startY))

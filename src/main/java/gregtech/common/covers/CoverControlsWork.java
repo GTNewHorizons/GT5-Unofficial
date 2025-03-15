@@ -17,7 +17,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject.LegacyCoverData;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
@@ -202,24 +201,15 @@ public class CoverControlsWork extends CoverBehavior {
             super(buildContext);
         }
 
-        @Override
-        protected CoverControlsWork adaptCover(Cover cover) {
-            if (cover instanceof CoverControlsWork adapterCover) {
-                return adapterCover;
-            }
-            return null;
-        }
-
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        this::adaptCover,
-                        CoverControlsWork.this::loadFromNbt,
-                        (id, coverData) -> !getClickable(id, convert(coverData)),
-                        (id, coverData) -> new LegacyCoverData(getNewCoverVariable(id, convert(coverData))),
+                        CoverBehavior::adaptCover,
+                        (id, coverData) -> !getClickable(id, coverData.getVariable()),
+                        (id, coverData) -> coverData.setVariable(getNewCoverVariable(id, coverData.getVariable())),
                         getUIBuildContext())
                             .addToggleButton(
                                 0,
@@ -238,15 +228,14 @@ public class CoverControlsWork extends CoverBehavior {
                                     .setPos(spaceX * 0, spaceY * 2))
                             .setPos(startX, startY))
                 .widget(
-                    new CoverDataControllerWidget<>(
-                        this::adaptCover,
-                        CoverControlsWork.this::loadFromNbt,
-                        getUIBuildContext()).addFollower(
+                    new CoverDataControllerWidget<>(CoverBehavior::adaptCover, getUIBuildContext())
+                        .addFollower(
                             CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
-                            coverData -> convert(coverData) > 2,
-                            (coverData, state) -> new LegacyCoverData(adjustCoverVariable(state, convert(coverData))),
+                            coverData -> coverData.getVariable() > 2,
+                            (coverData, state) -> coverData
+                                .setVariable(adjustCoverVariable(state, coverData.getVariable())),
                             widget -> widget.setPos(spaceX * 0, spaceY * 3))
-                            .setPos(startX, startY))
+                        .setPos(startX, startY))
                 .widget(
                     new TextWidget(GTUtility.trans("243", "Enable with Redstone"))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())

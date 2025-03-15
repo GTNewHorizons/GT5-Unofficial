@@ -13,7 +13,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject.LegacyCoverData;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
@@ -156,24 +155,15 @@ public class CoverPlayerDetector extends CoverBehavior {
             super(buildContext);
         }
 
-        @Override
-        protected CoverPlayerDetector adaptCover(Cover cover) {
-            if (cover instanceof CoverPlayerDetector adapterCover) {
-                return adapterCover;
-            }
-            return null;
-        }
-
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        this::adaptCover,
-                        CoverPlayerDetector.this::loadFromNbt,
-                        (index, coverData) -> index == convert(coverData),
-                        (index, coverData) -> new LegacyCoverData(index),
+                        CoverBehavior::adaptCover,
+                        (index, coverData) -> index == coverData.getVariable(),
+                        (index, coverData) -> coverData.setVariable(index),
                         getUIBuildContext())
                             .addToggleButton(
                                 0,

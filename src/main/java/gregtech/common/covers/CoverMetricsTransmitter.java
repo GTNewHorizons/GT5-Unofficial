@@ -46,7 +46,7 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
     public static final String CARD_STATE_KEY = "card_state";
 
     public CoverMetricsTransmitter(CoverContext context, ITexture coverTexture) {
-        super(context, MetricsTransmitterData.class, coverTexture);
+        super(context, coverTexture);
     }
 
     public UUID getFrequency() {

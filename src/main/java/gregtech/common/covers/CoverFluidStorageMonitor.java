@@ -64,7 +64,7 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
         OVERLAY_FLUID_STORAGE_MONITOR13, OVERLAY_FLUID_STORAGE_MONITOR14, };
 
     public CoverFluidStorageMonitor(CoverContext context) {
-        super(context, FluidStorageData.class, null);
+        super(context, null);
     }
 
     @Override

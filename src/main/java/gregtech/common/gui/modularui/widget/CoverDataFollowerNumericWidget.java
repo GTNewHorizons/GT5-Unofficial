@@ -9,9 +9,9 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.ICoverDataFollowerWidget;
-import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.Cover;
 
-public class CoverDataFollowerNumericWidget<T extends ISerializableObject> extends NumericWidget
+public class CoverDataFollowerNumericWidget<T extends Cover> extends NumericWidget
     implements ICoverDataFollowerWidget<T, Double> {
 
     private Function<T, Double> dataToStateGetter;

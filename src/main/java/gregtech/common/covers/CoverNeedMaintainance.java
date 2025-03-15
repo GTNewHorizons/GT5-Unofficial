@@ -16,7 +16,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
@@ -180,14 +179,6 @@ public class CoverNeedMaintainance extends CoverBehavior {
             super(buildContext);
         }
 
-        @Override
-        protected CoverNeedMaintainance adaptCover(Cover cover) {
-            if (cover instanceof CoverNeedMaintainance adapterCover) {
-                return adapterCover;
-            }
-            return null;
-        }
-
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
@@ -208,11 +199,10 @@ public class CoverNeedMaintainance extends CoverBehavior {
             builder
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        this::adaptCover,
-                        CoverNeedMaintainance.this::loadFromNbt,
-                        (index, coverData) -> isEnabled(index, convert(coverData)),
-                        (index, coverData) -> new ISerializableObject.LegacyCoverData(
-                            getNewCoverVariable(index, convert(coverData))),
+                        CoverBehavior::adaptCover,
+                        (index, coverData) -> isEnabled(index, coverData.getVariable()),
+                        (index, coverData) -> coverData
+                            .setVariable(getNewCoverVariable(index, coverData.getVariable())),
                         getUIBuildContext())
                             .addToggleButton(
                                 0,

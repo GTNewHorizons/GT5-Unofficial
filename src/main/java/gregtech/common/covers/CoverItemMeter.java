@@ -40,7 +40,34 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
     private static final int INVERT_BIT = 0x40000000;
 
     public CoverItemMeter(CoverContext context, ITexture coverTexture) {
-        super(context, ItemMeterData.class, coverTexture);
+        super(context, coverTexture);
+    }
+
+    public int getSlot() {
+        return this.coverData.slot;
+    }
+
+    public CoverItemMeter setSlot(int slot) {
+        this.coverData.slot = slot;
+        return this;
+    }
+
+    public boolean isInverted() {
+        return this.coverData.inverted;
+    }
+
+    public CoverItemMeter setInverted(boolean inverted) {
+        this.coverData.inverted = inverted;
+        return this;
+    }
+
+    public int getThreshold() {
+        return this.coverData.threshold;
+    }
+
+    public CoverItemMeter setThresdhold(int threshold) {
+        this.coverData.threshold = threshold;
+        return this;
     }
 
     @Override
@@ -217,24 +244,18 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
             setMaxThreshold();
 
             builder.widget(
-                new CoverDataControllerWidget<>(this::adaptCover, CoverItemMeter.this::loadFromNbt, getUIBuildContext())
+                new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext())
                     .addFollower(
                         CoverDataFollowerToggleButtonWidget.ofRedstone(),
-                        coverData -> coverData.inverted,
-                        (coverData, state) -> {
-                            coverData.inverted = state;
-                            return coverData;
-                        },
+                        CoverItemMeter::isInverted,
+                        CoverItemMeter::setInverted,
                         widget -> widget.addTooltip(0, NORMAL)
                             .addTooltip(1, INVERTED)
                             .setPos(0, 0))
                     .addFollower(
                         new CoverDataFollowerNumericWidget<>(),
-                        coverData -> (double) coverData.threshold,
-                        (coverData, state) -> {
-                            coverData.threshold = state.intValue();
-                            return coverData;
-                        },
+                        coverData -> (double) coverData.getThreshold(),
+                        (coverData, state) -> coverData.setThresdhold(state.intValue()),
                         widget -> widget.setBounds(0, maxThreshold)
                             .setScrollValues(1, 64, 1000)
                             .setFocusOnGuiOpen(true)
@@ -242,9 +263,9 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
                             .setSize(spaceX * 4 + 5, 12))
                     .addFollower(
                         new CoverDataFollowerNumericWidget<>(),
-                        coverData -> (double) coverData.slot,
+                        coverData -> (double) coverData.getSlot(),
                         (coverData, state) -> {
-                            coverData.slot = state.intValue();
+                            coverData.setSlot(state.intValue());
                             return coverData;
                         },
                         widget -> widget.setBounds(-1, maxSlot)

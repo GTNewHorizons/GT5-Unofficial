@@ -1,14 +1,21 @@
 package gregtech.common.covers.redstone;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+
 import gregtech.api.covers.CoverContext;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.common.covers.Cover;
+import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 
 public class CoverAdvancedRedstoneTransmitterInternal
     extends CoverAdvancedRedstoneTransmitterBase<CoverAdvancedRedstoneTransmitterBase.TransmitterData> {
 
     public CoverAdvancedRedstoneTransmitterInternal(CoverContext context, ITexture coverTexture) {
-        super(context, TransmitterData.class, coverTexture);
+        super(context, coverTexture);
     }
 
     @Override
@@ -40,5 +47,31 @@ public class CoverAdvancedRedstoneTransmitterInternal
     @Override
     public boolean manipulatesSidedRedstoneOutput() {
         return true;
+    }
+
+    @Override
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
+        return new CoverAdvancedRedstoneTransmitterInternalUIFactory(buildContext).createWindow();
+    }
+
+    protected class CoverAdvancedRedstoneTransmitterInternalUIFactory
+        extends AdvancedRedstoneTransmitterBaseUIFactory<CoverAdvancedRedstoneTransmitterInternal> {
+
+        public CoverAdvancedRedstoneTransmitterInternalUIFactory(CoverUIBuildContext buildContext) {
+            super(buildContext);
+        }
+
+        @Override
+        protected @NotNull CoverDataControllerWidget<CoverAdvancedRedstoneTransmitterInternal> getDataController() {
+            return new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext());
+        }
+
+        @Override
+        protected CoverAdvancedRedstoneTransmitterInternal adaptCover(Cover cover) {
+            if (cover instanceof CoverAdvancedRedstoneTransmitterInternal adapterCover) {
+                return adapterCover;
+            }
+            return null;
+        }
     }
 }

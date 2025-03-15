@@ -12,6 +12,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -23,6 +25,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverLiquidMeter;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
@@ -33,7 +36,25 @@ public class CoverWirelessFluidDetector
     extends CoverAdvancedRedstoneTransmitterBase<CoverWirelessFluidDetector.FluidTransmitterData> {
 
     public CoverWirelessFluidDetector(CoverContext context, ITexture coverTexture) {
-        super(context, FluidTransmitterData.class, coverTexture);
+        super(context, coverTexture);
+    }
+
+    public int getThreshold() {
+        return coverData.threshold;
+    }
+
+    public CoverWirelessFluidDetector setThreshold(int threshold) {
+        this.coverData.threshold = threshold;
+        return this;
+    }
+
+    public boolean isPhysical() {
+        return coverData.physical;
+    }
+
+    public CoverWirelessFluidDetector setPhysical(boolean physical) {
+        this.coverData.physical = physical;
+        return this;
     }
 
     @Override
@@ -139,7 +160,8 @@ public class CoverWirelessFluidDetector
         return new WirelessFluidDetectorUIFactory(buildContext).createWindow();
     }
 
-    private class WirelessFluidDetectorUIFactory extends AdvancedRedstoneTransmitterBaseUIFactory {
+    private class WirelessFluidDetectorUIFactory
+        extends AdvancedRedstoneTransmitterBaseUIFactory<CoverWirelessFluidDetector> {
 
         private int maxCapacity;
 
@@ -150,6 +172,19 @@ public class CoverWirelessFluidDetector
         @Override
         protected int getGUIHeight() {
             return 123;
+        }
+
+        @Override
+        protected CoverWirelessFluidDetector adaptCover(Cover cover) {
+            if (cover instanceof CoverWirelessFluidDetector adaptedCover) {
+                return adaptedCover;
+            }
+            return null;
+        }
+
+        @Override
+        protected @NotNull CoverDataControllerWidget<CoverWirelessFluidDetector> getDataController() {
+            return new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext());
         }
 
         @Override
@@ -178,27 +213,22 @@ public class CoverWirelessFluidDetector
         }
 
         @Override
-        protected void addUIForDataController(CoverDataControllerWidget<FluidTransmitterData> controller) {
+        protected void addUIForDataController(CoverDataControllerWidget<CoverWirelessFluidDetector> controller) {
             super.addUIForDataController(controller);
-            controller.addFollower(
-                new CoverDataFollowerNumericWidget<>(),
-                coverData -> (double) coverData.threshold,
-                (coverData, state) -> {
-                    coverData.threshold = state.intValue();
-                    return coverData;
-                },
-                widget -> widget.setBounds(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
-                    .setScrollValues(1000, 144, 100000)
-                    .setFocusOnGuiOpen(true)
-                    .setPos(1, 2 + spaceY * 2)
-                    .setSize(spaceX * 5 - 4, 12))
+            controller
+                .addFollower(
+                    new CoverDataFollowerNumericWidget<>(),
+                    coverData -> (double) coverData.getThreshold(),
+                    (coverData, state) -> coverData.setThreshold(state.intValue()),
+                    widget -> widget.setBounds(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
+                        .setScrollValues(1000, 144, 100000)
+                        .setFocusOnGuiOpen(true)
+                        .setPos(1, 2 + spaceY * 2)
+                        .setSize(spaceX * 5 - 4, 12))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                    coverData -> coverData.physical,
-                    (coverData, state) -> {
-                        coverData.physical = state;
-                        return coverData;
-                    },
+                    CoverWirelessFluidDetector::isPhysical,
+                    CoverWirelessFluidDetector::setPhysical,
                     widget -> widget
                         .addTooltip(StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.tooltip"))
                         .setPos(0, 1 + spaceY * 3));

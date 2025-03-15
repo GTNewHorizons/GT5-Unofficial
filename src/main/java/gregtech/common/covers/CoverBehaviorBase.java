@@ -41,12 +41,10 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
 
     protected @NotNull T coverData;
 
-    private final Class<T> typeToken;
     private final ITexture coverFGTexture;
 
-    public CoverBehaviorBase(@NotNull CoverContext context, @NotNull Class<T> typeToken, ITexture coverFGTexture) {
+    public CoverBehaviorBase(@NotNull CoverContext context, ITexture coverFGTexture) {
         super(context);
-        this.typeToken = typeToken;
         this.coverData = initializeData(context.getCoverData());
         this.coverFGTexture = coverFGTexture;
         // Calling after data was initialized since overrides may depend on data.
@@ -60,8 +58,6 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
             return loadFromNbt(nbt.getTag(NBT_DATA));
         } else if (coverData instanceof ByteArrayDataInput byteData) {
             return loadFromPacket(byteData);
-        } else if (acceptsDataObject(coverData)) {
-            return forceCast(coverData);
         }
         return initializeData();
     }
@@ -96,18 +92,6 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
         final T ret = initializeData();
         ret.readFromPacket(byteData);
         return ret;
-    }
-
-    private boolean acceptsDataObject(Object data) {
-        return typeToken.isInstance(data);
-    }
-
-    private T forceCast(Object data) {
-        try {
-            return typeToken.cast(data);
-        } catch (Exception e) {
-            throw new RuntimeException("Casting data in " + this.getClass() + ", data " + data, e);
-        }
     }
 
     @Override
@@ -212,6 +196,20 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
                     getUIBuildContext().getTile()
                         .getCoverAtSide(getUIBuildContext().getCoverSide()));
                 return typedCover == null ? null : typedCover.getCoverData();
+            } else {
+                return null;
+            }
+        }
+
+        /**
+         * Can return null when cover data is invalid e.g. tile is broken or cover is removed
+         */
+        @Nullable
+        protected CoverBehaviorBase<T> getCover() {
+            if (isCoverValid()) {
+                return adaptCover(
+                    getUIBuildContext().getTile()
+                        .getCoverAtSide(getUIBuildContext().getCoverSide()));
             } else {
                 return null;
             }

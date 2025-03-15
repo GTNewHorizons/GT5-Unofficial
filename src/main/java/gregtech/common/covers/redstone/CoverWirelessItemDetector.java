@@ -11,6 +11,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -24,6 +26,7 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverItemMeter;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
@@ -36,7 +39,34 @@ public class CoverWirelessItemDetector
     extends CoverAdvancedRedstoneTransmitterBase<CoverWirelessItemDetector.ItemTransmitterData> {
 
     public CoverWirelessItemDetector(CoverContext context, ITexture coverTexture) {
-        super(context, ItemTransmitterData.class, coverTexture);
+        super(context, coverTexture);
+    }
+
+    public int getSlot() {
+        return this.coverData.slot;
+    }
+
+    public CoverWirelessItemDetector setSlot(int slot) {
+        this.coverData.slot = slot;
+        return this;
+    }
+
+    public int getThreshold() {
+        return this.coverData.threshold;
+    }
+
+    public CoverWirelessItemDetector setThresdhold(int threshold) {
+        this.coverData.threshold = threshold;
+        return this;
+    }
+
+    public boolean isPhysical() {
+        return coverData.physical;
+    }
+
+    public CoverWirelessItemDetector setPhysical(boolean physical) {
+        this.coverData.physical = physical;
+        return this;
     }
 
     @Override
@@ -160,7 +190,8 @@ public class CoverWirelessItemDetector
         return new WirelessItemDetectorUIFactory(buildContext).createWindow();
     }
 
-    private class WirelessItemDetectorUIFactory extends AdvancedRedstoneTransmitterBaseUIFactory {
+    private class WirelessItemDetectorUIFactory
+        extends AdvancedRedstoneTransmitterBaseUIFactory<CoverWirelessItemDetector> {
 
         private int maxSlot;
         private int maxThreshold;
@@ -186,6 +217,19 @@ public class CoverWirelessItemDetector
         @Override
         protected int getGUIHeight() {
             return 143;
+        }
+
+        @Override
+        protected CoverWirelessItemDetector adaptCover(Cover cover) {
+            if (cover instanceof CoverWirelessItemDetector adaptedCover) {
+                return adaptedCover;
+            }
+            return null;
+        }
+
+        @Override
+        protected @NotNull CoverDataControllerWidget<CoverWirelessItemDetector> getDataController() {
+            return new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext());
         }
 
         @Override
@@ -220,27 +264,22 @@ public class CoverWirelessItemDetector
         }
 
         @Override
-        protected void addUIForDataController(CoverDataControllerWidget<ItemTransmitterData> controller) {
+        protected void addUIForDataController(CoverDataControllerWidget<CoverWirelessItemDetector> controller) {
             super.addUIForDataController(controller);
-            controller.addFollower(
-                new CoverDataFollowerNumericWidget<>(),
-                coverData -> (double) coverData.threshold,
-                (coverData, state) -> {
-                    coverData.threshold = state.intValue();
-                    return coverData;
-                },
-                widget -> widget.setBounds(0, maxThreshold)
-                    .setScrollValues(1, 64, 1000)
-                    .setFocusOnGuiOpen(true)
-                    .setPos(1, 2 + spaceY * 2)
-                    .setSize(spaceX * 5 - 4, 12))
+            controller
                 .addFollower(
                     new CoverDataFollowerNumericWidget<>(),
-                    coverData -> (double) coverData.slot,
-                    (coverData, state) -> {
-                        coverData.slot = state.intValue();
-                        return coverData;
-                    },
+                    coverData -> (double) coverData.getThreshold(),
+                    (coverData, state) -> coverData.setThresdhold(state.intValue()),
+                    widget -> widget.setBounds(0, maxThreshold)
+                        .setScrollValues(1, 64, 1000)
+                        .setFocusOnGuiOpen(true)
+                        .setPos(1, 2 + spaceY * 2)
+                        .setSize(spaceX * 5 - 4, 12))
+                .addFollower(
+                    new CoverDataFollowerNumericWidget<>(),
+                    coverData -> (double) coverData.getSlot(),
+                    (coverData, state) -> coverData.setSlot(state.intValue()),
                     widget -> widget.setBounds(-1, maxSlot)
                         .setDefaultValue(-1)
                         .setScrollValues(1, 100, 10)
@@ -249,11 +288,8 @@ public class CoverWirelessItemDetector
                         .setSize(spaceX * 4 - 8, 12))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                    coverData -> coverData.physical,
-                    (coverData, state) -> {
-                        coverData.physical = state;
-                        return coverData;
-                    },
+                    CoverWirelessItemDetector::isPhysical,
+                    CoverWirelessItemDetector::setPhysical,
                     widget -> widget
                         .addTooltip(StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.tooltip"))
                         .setPos(0, 2 + spaceY * 4));

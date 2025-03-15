@@ -8,6 +8,8 @@ import javax.annotation.Nonnull;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -18,6 +20,7 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.Cover;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
@@ -26,7 +29,16 @@ public abstract class CoverAdvancedRedstoneReceiverBase
     extends CoverAdvancedWirelessRedstoneBase<CoverAdvancedRedstoneReceiverBase.ReceiverData> {
 
     public CoverAdvancedRedstoneReceiverBase(CoverContext context, ITexture coverTexture) {
-        super(context, ReceiverData.class, coverTexture);
+        super(context, coverTexture);
+    }
+
+    public GateMode getMode() {
+        return coverData.mode;
+    }
+
+    public CoverAdvancedRedstoneReceiverBase setMode(GateMode mode) {
+        this.coverData.mode = mode;
+        return this;
     }
 
     @Override
@@ -40,7 +52,8 @@ public abstract class CoverAdvancedRedstoneReceiverBase
         return new AdvancedRedstoneReceiverBaseUIFactory(buildContext).createWindow();
     }
 
-    private class AdvancedRedstoneReceiverBaseUIFactory extends AdvancedWirelessRedstoneBaseUIFactory {
+    private class AdvancedRedstoneReceiverBaseUIFactory
+        extends AdvancedWirelessRedstoneBaseUIFactory<CoverAdvancedRedstoneReceiverBase> {
 
         public AdvancedRedstoneReceiverBaseUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
@@ -62,6 +75,19 @@ public abstract class CoverAdvancedRedstoneReceiverBase
         }
 
         @Override
+        protected CoverAdvancedRedstoneReceiverBase adaptCover(Cover cover) {
+            if (cover instanceof CoverAdvancedRedstoneReceiverBase adaptedCover) {
+                return adaptedCover;
+            }
+            return null;
+        }
+
+        @Override
+        protected @NotNull CoverDataControllerWidget<CoverAdvancedRedstoneReceiverBase> getDataController() {
+            return new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext());
+        }
+
+        @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             super.addUIWidgets(builder);
             builder.widget(
@@ -71,55 +97,41 @@ public abstract class CoverAdvancedRedstoneReceiverBase
 
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
-        protected void addUIForDataController(CoverDataControllerWidget<ReceiverData> controller) {
+        protected void addUIForDataController(CoverDataControllerWidget<CoverAdvancedRedstoneReceiverBase> controller) {
             super.addUIForDataController(controller);
-            controller.addFollower(
-                CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                coverData -> coverData.mode == GateMode.AND,
-                (coverData, state) -> {
-                    coverData.mode = GateMode.AND;
-                    return coverData;
-                },
-                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_GATE_AND)
-                    .addTooltip(GTUtility.trans("331", "AND Gate"))
-                    .setPos(spaceX * 0, spaceY * 2))
+            controller
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                    coverData -> coverData.mode == GateMode.NAND,
-                    (coverData, state) -> {
-                        coverData.mode = GateMode.NAND;
-                        return coverData;
-                    },
+                    coverData -> coverData.getMode() == GateMode.AND,
+                    (coverData, state) -> coverData.setMode(GateMode.AND),
+                    widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_GATE_AND)
+                        .addTooltip(GTUtility.trans("331", "AND Gate"))
+                        .setPos(spaceX * 0, spaceY * 2))
+                .addFollower(
+                    CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                    coverData -> coverData.getMode() == GateMode.NAND,
+                    (coverData, state) -> coverData.setMode(GateMode.NAND),
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_GATE_NAND)
                         .addTooltip(GTUtility.trans("332", "NAND Gate"))
                         .setPos(spaceX * 1, spaceY * 2))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                    coverData -> coverData.mode == GateMode.OR,
-                    (coverData, state) -> {
-                        coverData.mode = GateMode.OR;
-                        return coverData;
-                    },
+                    coverData -> coverData.getMode() == GateMode.OR,
+                    (coverData, state) -> coverData.setMode(GateMode.OR),
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_GATE_OR)
                         .addTooltip(GTUtility.trans("333", "OR Gate"))
                         .setPos(spaceX * 2, spaceY * 2))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                    coverData -> coverData.mode == GateMode.NOR,
-                    (coverData, state) -> {
-                        coverData.mode = GateMode.NOR;
-                        return coverData;
-                    },
+                    coverData -> coverData.getMode() == GateMode.NOR,
+                    (coverData, state) -> coverData.setMode(GateMode.NOR),
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_GATE_NOR)
                         .addTooltip(GTUtility.trans("334", "NOR Gate"))
                         .setPos(spaceX * 3, spaceY * 2))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                    coverData -> coverData.mode == GateMode.SINGLE_SOURCE,
-                    (coverData, state) -> {
-                        coverData.mode = GateMode.SINGLE_SOURCE;
-                        return coverData;
-                    },
+                    coverData -> coverData.getMode() == GateMode.SINGLE_SOURCE,
+                    (coverData, state) -> coverData.setMode(GateMode.SINGLE_SOURCE),
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_ANALOG)
                         .addTooltips(
                             Arrays.asList(

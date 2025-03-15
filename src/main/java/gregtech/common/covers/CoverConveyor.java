@@ -166,8 +166,8 @@ public class CoverConveyor extends CoverBehavior {
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        private CoverDataFollowerToggleButtonWidget<LegacyCoverData> mBlockWidget = null;
-        private CoverDataFollowerToggleButtonWidget<LegacyCoverData> mAllowWidget = null;
+        private CoverDataFollowerToggleButtonWidget<CoverBehavior> mBlockWidget = null;
+        private CoverDataFollowerToggleButtonWidget<CoverBehavior> mAllowWidget = null;
 
         public ConveyorUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
@@ -186,10 +186,9 @@ public class CoverConveyor extends CoverBehavior {
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder.widget(
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                    this::adaptCover,
-                    CoverConveyor.this::loadFromNbt,
-                    (id, coverData) -> !getClickable(id, convert(coverData)),
-                    (id, coverData) -> new LegacyCoverData(getNewCoverVariable(id, convert(coverData))),
+                    CoverBehavior::adaptCover,
+                    (id, coverData) -> !getClickable(id, coverData.getVariable()),
+                    (id, coverData) -> coverData.setVariable(getNewCoverVariable(id, coverData.getVariable())),
                     getUIBuildContext())
                         .addToggleButton(
                             0,

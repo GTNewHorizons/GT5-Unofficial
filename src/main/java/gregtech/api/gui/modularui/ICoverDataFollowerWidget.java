@@ -7,11 +7,11 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.ISerializableObject;
+import gregtech.common.covers.Cover;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 
 /**
- * Widget whose state is controlled by specific data. Data can be anything, e.g. {@link ISerializableObject} or machine
+ * Widget whose state is controlled by specific data. Data can be anything, e.g. {@link Cover} or machine
  * recipe mode. <br>
  * No widgets implementing this interface should not sync; Instead, {@link CoverDataControllerWidget} will sync data,
  * either

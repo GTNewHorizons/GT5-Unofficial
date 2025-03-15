@@ -19,7 +19,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject.LegacyCoverData;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
@@ -52,7 +51,7 @@ public class CoverArm extends CoverBehavior {
             return;
         }
 
-        int coverDataValue = convert(coverData);
+        int coverDataValue = getVariable();
 
         final TileEntity toTile;
         final TileEntity fromTile;
@@ -146,7 +145,7 @@ public class CoverArm extends CoverBehavior {
         } else {
             step -= aPlayer.isSneaking() ? 256 : 16;
         }
-        int newCoverData = getNewVar(convert(coverData), step);
+        int newCoverData = getNewVar(getVariable(), step);
         sendMessageToPlayer(aPlayer, newCoverData);
         coverData.set(newCoverData);
     }
@@ -154,7 +153,7 @@ public class CoverArm extends CoverBehavior {
     @Override
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int step = (GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ)[0] >= 0.5F) ? 1 : -1;
-        int tCoverVariable = getNewVar(convert(coverData), step);
+        int tCoverVariable = getNewVar(getVariable(), step);
         sendMessageToPlayer(aPlayer, tCoverVariable);
         coverData.set(tCoverVariable);
         return true;
@@ -277,41 +276,32 @@ public class CoverArm extends CoverBehavior {
             super(buildContext);
         }
 
-        @Override
-        protected CoverArm adaptCover(Cover cover) {
-            if (cover instanceof CoverArm adapterCover) {
-                return adapterCover;
-            }
-            return null;
-        }
-
         @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             maxSlot = getMaxSlot();
             builder.widget(
-                new CoverDataControllerWidget<>(this::adaptCover, CoverArm.this::loadFromNbt, getUIBuildContext())
+                new CoverDataControllerWidget<>(CoverBehavior::adaptCover, getUIBuildContext()).addFollower(
+                    CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                    cover -> getFlagExport(cover.getVariable()) > 0,
+                    (cover, state) -> {
+                        if (state) {
+                            return cover.setVariable(cover.getVariable() | EXPORT_MASK | CONVERTED_BIT);
+                        } else {
+                            return cover.setVariable(cover.getVariable() & ~EXPORT_MASK | CONVERTED_BIT);
+                        }
+                    },
+                    widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
+                        .addTooltip(GTUtility.trans("006", "Export"))
+                        .setPos(spaceX * 0, spaceY * 0))
                     .addFollower(
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                        coverData -> getFlagExport(convert(coverData)) > 0,
-                        (coverData, state) -> {
+                        cover -> getFlagExport(cover.getVariable()) == 0,
+                        (cover, state) -> {
                             if (state) {
-                                return new LegacyCoverData(convert(coverData) | EXPORT_MASK | CONVERTED_BIT);
+                                return cover.setVariable(cover.getVariable() & ~EXPORT_MASK | CONVERTED_BIT);
                             } else {
-                                return new LegacyCoverData(convert(coverData) & ~EXPORT_MASK | CONVERTED_BIT);
-                            }
-                        },
-                        widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                            .addTooltip(GTUtility.trans("006", "Export"))
-                            .setPos(spaceX * 0, spaceY * 0))
-                    .addFollower(
-                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                        coverData -> getFlagExport(convert(coverData)) == 0,
-                        (coverData, state) -> {
-                            if (state) {
-                                return new LegacyCoverData(convert(coverData) & ~EXPORT_MASK | CONVERTED_BIT);
-                            } else {
-                                return new LegacyCoverData(convert(coverData) | EXPORT_MASK | CONVERTED_BIT);
+                                return cover.setVariable(cover.getVariable() | EXPORT_MASK | CONVERTED_BIT);
                             }
                         },
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
@@ -319,10 +309,10 @@ public class CoverArm extends CoverBehavior {
                             .setPos(spaceX * 1, spaceY * 0))
                     .addFollower(
                         new CoverDataFollowerNumericWidget<>(),
-                        coverData -> (double) (getFlagInternalSlot(convert(coverData)) - 1),
-                        (coverData, state) -> {
-                            final int coverVariable = convert(coverData);
-                            return new LegacyCoverData(
+                        cover -> (double) (getFlagInternalSlot(cover.getVariable()) - 1),
+                        (cover, state) -> {
+                            final int coverVariable = cover.getVariable();
+                            return cover.setVariable(
                                 getFlagExport(coverVariable) | ((state.intValue() + 1) & SLOT_ID_MASK)
                                     | (getFlagAdjacentSlot(coverVariable) << 14)
                                     | CONVERTED_BIT);
@@ -335,10 +325,10 @@ public class CoverArm extends CoverBehavior {
                             .setSize(spaceX * 2 + 5, 12))
                     .addFollower(
                         new CoverDataFollowerNumericWidget<>(),
-                        coverData -> (double) (getFlagAdjacentSlot(convert(coverData)) - 1),
-                        (coverData, state) -> {
-                            final int coverVariable = convert(coverData);
-                            return new LegacyCoverData(
+                        cover -> (double) (getFlagAdjacentSlot(cover.getVariable()) - 1),
+                        (cover, state) -> {
+                            final int coverVariable = cover.getVariable();
+                            return cover.setVariable(
                                 getFlagExport(coverVariable) | getFlagInternalSlot(coverVariable)
                                     | (((state.intValue() + 1) & SLOT_ID_MASK) << 14)
                                     | CONVERTED_BIT);

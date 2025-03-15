@@ -32,7 +32,7 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
     private final int stackSizeLimit = 1;
 
     public CoverChest(CoverContext context, int slots, ITexture coverTexture) {
-        super(context, ChestInventory.class, coverTexture);
+        super(context, coverTexture);
         if (slots <= 0) throw new IllegalArgumentException("slots must be greater than 0");
         this.slots = slots;
         Object initializer = context.getCoverData();
@@ -148,9 +148,8 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
 
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
-            CoverDataControllerWidget<ChestInventory> w = new CoverDataControllerWidget<>(
+            CoverDataControllerWidget<CoverChest> w = new CoverDataControllerWidget<>(
                 this::adaptCover,
-                CoverChest.this::loadFromNbt,
                 getUIBuildContext());
             ChestInventory d = getCoverData();
             LimitingItemStackHandler h;

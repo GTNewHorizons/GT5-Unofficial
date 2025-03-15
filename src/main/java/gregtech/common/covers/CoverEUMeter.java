@@ -33,7 +33,34 @@ import io.netty.buffer.ByteBuf;
 public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
 
     public CoverEUMeter(CoverContext context, ITexture coverTexture) {
-        super(context, EUMeterData.class, coverTexture);
+        super(context, coverTexture);
+    }
+
+    public EnergyType getType() {
+        return this.coverData.type;
+    }
+
+    public CoverEUMeter setType(EnergyType type) {
+        this.coverData.type = type;
+        return this;
+    }
+
+    public boolean isInverted() {
+        return this.coverData.inverted;
+    }
+
+    public CoverEUMeter setInverted(boolean inverted) {
+        this.coverData.inverted = inverted;
+        return this;
+    }
+
+    public long getThreshold() {
+        return this.coverData.threshold;
+    }
+
+    public CoverEUMeter setThresdhold(long threshold) {
+        this.coverData.threshold = threshold;
+        return this;
     }
 
     @Override
@@ -186,42 +213,38 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
             final String INVERTED = GTUtility.trans("INVERTED", "Inverted");
             final String NORMAL = GTUtility.trans("NORMAL", "Normal");
 
-            final CoverDataFollowerNumericWidget<EUMeterData> numericWidget = new CoverDataFollowerNumericWidget<>();
+            final CoverDataFollowerNumericWidget<CoverEUMeter> numericWidget = new CoverDataFollowerNumericWidget<>();
 
-            builder.widget(
-                new CoverDataControllerWidget<>(this::adaptCover, CoverEUMeter.this::loadFromNbt, getUIBuildContext())
-                    .addFollower(
-                        new CoverDataFollowerCycleButtonWidget<>(),
-                        coverData -> coverData.type.ordinal(),
-                        (coverData, state) -> {
-                            coverData.type = EnergyType.getEnergyType(state);
-                            return coverData;
-                        },
-                        widget -> widget.setLength(EnergyType.values().length)
-                            .addTooltip(
-                                state -> EnergyType.getEnergyType(state)
-                                    .getTooltip())
-                            .setStaticTexture(GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                            .setPos(spaceX * 0, spaceY * 0))
-                    .addFollower(
-                        CoverDataFollowerToggleButtonWidget.ofRedstone(),
-                        coverData -> coverData.inverted,
-                        (coverData, state) -> {
-                            coverData.inverted = state;
-                            return coverData;
-                        },
-                        widget -> widget.addTooltip(0, NORMAL)
-                            .addTooltip(1, INVERTED)
-                            .setPos(spaceX * 0, spaceY * 1))
-                    .addFollower(numericWidget, coverData -> (double) coverData.threshold, (coverData, state) -> {
-                        coverData.threshold = state.longValue();
-                        return coverData;
-                    },
-                        widget -> widget.setScrollValues(1000, 100, 100000)
-                            .setFocusOnGuiOpen(true)
-                            .setPos(spaceX * 0, spaceY * 2 + 2)
-                            .setSize(spaceX * 8, 12))
-                    .setPos(startX, startY))
+            builder
+                .widget(
+                    new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext())
+                        .addFollower(
+                            new CoverDataFollowerCycleButtonWidget<>(),
+                            coverData -> coverData.getType()
+                                .ordinal(),
+                            (coverData, state) -> coverData.setType(EnergyType.getEnergyType(state)),
+                            widget -> widget.setLength(EnergyType.values().length)
+                                .addTooltip(
+                                    state -> EnergyType.getEnergyType(state)
+                                        .getTooltip())
+                                .setStaticTexture(GTUITextures.OVERLAY_BUTTON_CYCLIC)
+                                .setPos(spaceX * 0, spaceY * 0))
+                        .addFollower(
+                            CoverDataFollowerToggleButtonWidget.ofRedstone(),
+                            CoverEUMeter::isInverted,
+                            CoverEUMeter::setInverted,
+                            widget -> widget.addTooltip(0, NORMAL)
+                                .addTooltip(1, INVERTED)
+                                .setPos(spaceX * 0, spaceY * 1))
+                        .addFollower(
+                            numericWidget,
+                            coverData -> (double) coverData.getThreshold(),
+                            (coverData, state) -> coverData.setThresdhold(state.longValue()),
+                            widget -> widget.setScrollValues(1000, 100, 100000)
+                                .setFocusOnGuiOpen(true)
+                                .setPos(spaceX * 0, spaceY * 2 + 2)
+                                .setSize(spaceX * 8, 12))
+                        .setPos(startX, startY))
                 .widget(
                     new TextWidget()
                         .setStringSupplier(() -> getCoverData() != null ? getCoverData().type.getTitle() : "")
