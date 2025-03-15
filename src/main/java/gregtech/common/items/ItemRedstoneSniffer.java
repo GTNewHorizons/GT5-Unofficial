@@ -283,13 +283,13 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                     .child(
                                         new Column().widthRel(playerIsOP ? 0.5f : 1)
                                             .child(
-                                                new ButtonWidget<>().size(23, 23)
+                                                new ButtonWidget<>().size(25, 25)
                                                     .align(Alignment.Center)
                                                     .overlay(
                                                         UITexture.fullImage(GregTech.ID, "items/redstoneSnifferLocate")
                                                             .asIcon()
                                                             .size(19, 19)
-                                                            .margin(2))
+                                                            .margin(3))
                                                     .tooltip(tooltip -> { tooltip.addLine(IKey.str("Locate")); })
                                                     .onMousePressed(mouseButton -> {
                                                         GTValues.NW.sendToServer(
@@ -307,14 +307,14 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                         new Column().setEnabledIf(w -> playerIsOP)
                                             .widthRel(0.5f)
                                             .child(
-                                                new ButtonWidget<>().size(23, 23)
+                                                new ButtonWidget<>().size(25, 25)
                                                     .align(Alignment.Center)
                                                     .overlay(
                                                         UITexture
                                                             .fullImage(GregTech.ID, "items/redstoneSnifferTeleport")
                                                             .asIcon()
                                                             .size(19, 19)
-                                                            .margin(2))
+                                                            .margin(3))
                                                     .tooltip(tooltip -> { tooltip.addLine(IKey.str("Teleport")); })
                                                     .onMousePressed(mouseButton -> {
                                                         GTValues.NW.sendToServer(
