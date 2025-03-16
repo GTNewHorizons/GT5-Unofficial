@@ -1785,6 +1785,7 @@ public enum ItemList implements IItemContainer {
     OreDrill4,
     PyrolyseOven,
     OilCracker,
+    SolarFactory,
     NanoForge,
     Crop_Drop_UUMBerry,
     Crop_Drop_UUABerry,
@@ -2586,6 +2587,7 @@ public enum ItemList implements IItemContainer {
     Thermal_Superconductor,
     Relativistic_Heat_Capacitor,
     Phononic_Seed_Crystal,
+    Harmonic_Compound,
     ResearchCompleter,
     SpaceElevatorController, // Populated in GTNH-Intergalactic
     Spray_Color_Infinite,

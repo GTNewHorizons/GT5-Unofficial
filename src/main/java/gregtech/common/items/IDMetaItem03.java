@@ -239,8 +239,7 @@ public enum IDMetaItem03 {
     Thermal_Superconductor(759),
     Relativistic_Heat_Capacitor(760),
     Phononic_Seed_Crystal(761),
-
-    ;
+    Harmonic_Compound(762);
 
     public final int ID;
 
