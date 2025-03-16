@@ -1,9 +1,7 @@
 package tectech.thing.metaTileEntity.multi;
 
+import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti;
@@ -18,9 +16,6 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -35,7 +30,6 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.StructureError;
 import gregtech.api.interfaces.ITexture;
@@ -72,8 +66,6 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
 
     private static final int MAX_LENGTH = 16;
 
-    private static Fluid COOLANT, HOT_COOLANT;
-
     protected final StructureWrapper<MTENetworkSwitchAdv> structure;
     protected final StructureWrapperInstanceInfo<MTENetworkSwitchAdv> structureInstanceInfo;
 
@@ -87,11 +79,6 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         structureInstanceInfo = null;
 
         structure.loadStructure();
-
-        GregTechAPI.sAfterGTLoad.add(() -> {
-            COOLANT = FluidRegistry.getFluid("ic2coolant");
-            HOT_COOLANT = FluidRegistry.getFluid("ic2hotcoolant");
-        });
     }
 
     public MTENetworkSwitchAdv(MTENetworkSwitchAdv prototype) {
@@ -127,9 +114,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     @Override
     public IStructureDefinition<MTENetworkSwitchAdv> compile(String[][] definition) {
         structure.addCasing('A', Casings.ComputerCasing)
-            .withUnlimitedHatches(
-                1,
-                Arrays.asList(Energy, Maintenance, EnergyMulti, DynamoMulti, InputHatch, OutputHatch));
+            .withUnlimitedHatches(1, Arrays.asList(Energy, EnergyMulti, Dynamo, DynamoMulti, OutputData));
         structure.addCasing('B', Casings.AdvancedComputerCasing);
         structure.addCasing('C', Casings.AdvancedComputerCasing)
             .withUnlimitedHatches(2, Arrays.asList(InputData, OutputData));
@@ -291,13 +276,9 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         MultiblockTooltipBuilder2<MTENetworkSwitchAdv> tt = new MultiblockTooltipBuilder2<>(structure);
 
         tt.addMachineType("Network Switch With QoS")
-            .addInfo("§b§lWater cooled!")
-            .addSeparator()
             .addInfo("Variable-length version of the standard Network Switch.")
             .addSeparator()
             .addInfo("Consumes §b524,288§7 EU/t per middle slice while active.")
-            .addInfo("Requires an additional §b128§7 EU/t for each unit of computation transferred.")
-            .addInfo("Converts §b1L§7 of Coolant to Hot Coolant for every §b1000§7 units of computation transferred.")
             .addSeparator()
             .addInfo("Computation output is configured by right clicking transmission connectors with a screwdriver.")
             .addInfo("Transmission connectors must be part of the structure for them to be configurable.")
@@ -311,6 +292,17 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         tt.toolTipFinisher();
 
         return tt;
+    }
+
+    @Override
+    public boolean shouldCheckMaintenance() {
+        return false;
+    }
+
+    @Override
+    protected boolean checkComputationTimeout() {
+        // disable computation checks (badly named method)
+        return true;
     }
 
     @Override
@@ -351,21 +343,9 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
             return SimpleCheckRecipeResult.ofFailure("no_routing");
         }
 
-        long coolant = GTUtility.ceilDiv(pendingComputation, 1000);
-
-        lEUt = length * -524_288L + pendingComputation * -128;
+        lEUt = length * -524_288L;
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
-
-        for (long x = 0; x < coolant; x += Integer.MAX_VALUE) {
-            int amount = (int) Math.min(Integer.MAX_VALUE, coolant - x);
-
-            if (!depleteInput(new FluidStack(COOLANT, amount))) {
-                return SimpleCheckRecipeResult.ofFailure("no_coolant");
-            }
-
-            addOutput(new FluidStack(HOT_COOLANT, amount));
-        }
 
         return SimpleCheckRecipeResult.ofSuccess("routing");
     }
