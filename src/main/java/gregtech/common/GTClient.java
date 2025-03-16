@@ -87,6 +87,7 @@ import gregtech.client.GTMouseEventHandler;
 import gregtech.client.SeekingOggCodec;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.config.Client;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionRenderer;
 import gregtech.common.render.BlackholeRenderer;
@@ -95,6 +96,7 @@ import gregtech.common.render.FlaskRenderer;
 import gregtech.common.render.FluidDisplayStackRenderer;
 import gregtech.common.render.GTCapeRenderer;
 import gregtech.common.render.GTRendererBlock;
+import gregtech.common.render.GTRendererCasing;
 import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
 import gregtech.common.render.WormholeRenderer;
@@ -587,6 +589,8 @@ public class GTClient extends GTProxy implements Runnable {
     public void onPreLoad() {
         super.onPreLoad();
 
+        SoundSystemConfig.setNumberNormalChannels(Client.preference.maxNumSounds);
+
         MinecraftForge.EVENT_BUS.register(new ExtraIcons());
         Minecraft.getMinecraft()
             .getResourcePackRepository().rprMetadataSerializer
@@ -627,6 +631,7 @@ public class GTClient extends GTProxy implements Runnable {
     public void onLoad() {
         super.onLoad();
         GTRendererBlock.register();
+        GTRendererCasing.register();
         new DroneRender();
         new LaserRenderer();
         new WormholeRenderer();

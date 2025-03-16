@@ -268,7 +268,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setSpeedBoost(mode == 0 ? 1 : 0.5);
+                return super.createOverclockCalculator(recipe).setDurationModifier(mode == 0 ? 1 : 0.5);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
@@ -475,13 +475,23 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         int t = Math.max(getCasingTier(), -1);
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + t),
-                TextureFactory.of(textureFontOn), TextureFactory.builder()
+                TextureFactory.builder()
+                    .addIcon(textureFontOn)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(textureFontOn_Glow)
+                    .extFacing()
                     .glow()
                     .build() };
             else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + t),
-                TextureFactory.of(textureFontOff), TextureFactory.builder()
+                TextureFactory.builder()
+                    .addIcon(textureFontOff)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(textureFontOff_Glow)
+                    .extFacing()
                     .glow()
                     .build() };
         } else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + t) };

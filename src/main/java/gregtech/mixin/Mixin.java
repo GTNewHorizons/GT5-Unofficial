@@ -51,12 +51,18 @@ public enum Mixin {
     VanillaAccessors(new Builder("Adds various accessors")
         .addMixinClasses(
             "minecraft.accessors.BlockStemMixin",
+            "minecraft.accessors.ChunkCacheMixin",
             "minecraft.accessors.VanillaShapedRecipeMixin",
             "minecraft.accessors.VanillaShapelessRecipeMixin",
             "minecraft.accessors.ForgeShapedRecipeMixin",
             "minecraft.accessors.ForgeShapelessRecipeMixin",
             "minecraft.accessors.PotionMixin",
             "minecraft.accessors.EntityPlayerMPMixin")
+        .addTargetedMod(VANILLA)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.EARLY)
+        .setSide(Side.BOTH)),
+    ItemMixinCoverFix(new Builder("Allow cover items to bypass sneak checks").addMixinClasses("minecraft.ItemMixin")
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)
         .setPhase(Phase.EARLY)

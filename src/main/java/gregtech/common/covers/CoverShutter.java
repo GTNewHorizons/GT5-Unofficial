@@ -53,62 +53,47 @@ public class CoverShutter extends CoverBehavior {
     }
 
     public boolean letsRedstoneGoIn() {
-        int coverDataValue = coverData.get();
-        return coverDataValue >= 2 ? coverDataValue == 3
-            : !(coveredTile instanceof IMachineProgress)
-                || (((IMachineProgress) coveredTile).isAllowedToWork() == (coverDataValue % 2 == 0));
+        return shouldAllow(3);
     }
 
     public boolean letsRedstoneGoOut() {
-        int coverDataValue = coverData.get();
-        return coverDataValue >= 2 ? coverDataValue == 2
-            : !(coveredTile instanceof IMachineProgress)
-                || (((IMachineProgress) coveredTile).isAllowedToWork() == (coverDataValue % 2 == 0));
+        return shouldAllow(2);
     }
 
     @Override
     public boolean letsEnergyIn() {
-        int coverDataValue = coverData.get();
-        return coverDataValue >= 2 ? coverDataValue == 3
-            : !(coveredTile instanceof IMachineProgress)
-                || (((IMachineProgress) coveredTile).isAllowedToWork() == (coverDataValue % 2 == 0));
+        return shouldAllow(3);
     }
 
     @Override
     public boolean letsEnergyOut() {
-        int coverDataValue = coverData.get();
-        return coverDataValue >= 2 ? coverDataValue == 2
-            : !(coveredTile instanceof IMachineProgress)
-                || ((IMachineProgress) coveredTile).isAllowedToWork() == (coverDataValue % 2 == 0);
+        return shouldAllow(2);
     }
 
     @Override
     public boolean letsFluidIn(Fluid aFluid) {
-        int coverDataValue = coverData.get();
-        return coverDataValue >= 2 ? coverDataValue == 3
-            : !(coveredTile instanceof IMachineProgress)
-                || ((IMachineProgress) coveredTile).isAllowedToWork() == (coverDataValue % 2 == 0);
+        return shouldAllow(3);
     }
 
     public boolean letsFluidOut(Fluid fluid) {
-        int coverDataValue = coverData.get();
-        return coverDataValue >= 2 ? coverDataValue == 2
-            : !(coveredTile instanceof IMachineProgress)
-                || ((IMachineProgress) coveredTile).isAllowedToWork() == (coverDataValue % 2 == 0);
+        return shouldAllow(2);
     }
 
     public boolean letsItemsIn(int slot) {
-        int coverDataValue = coverData.get();
-        return coverDataValue >= 2 ? coverDataValue == 3
-            : !(coveredTile instanceof IMachineProgress)
-                || ((IMachineProgress) coveredTile).isAllowedToWork() == (coverDataValue % 2 == 0);
+        return shouldAllow(3);
     }
 
     public boolean letsItemsOut(int slot) {
+        return shouldAllow(2);
+    }
+
+    private boolean shouldAllow(int shutterMode) {
         int coverDataValue = coverData.get();
-        return coverDataValue >= 2 ? coverDataValue == 2
-            : !(coveredTile instanceof IMachineProgress)
-                || ((IMachineProgress) coveredTile).isAllowedToWork() == (coverDataValue % 2 == 0);
+        if (coverDataValue >= 2) {
+            return coverDataValue == shutterMode;
+        }
+        return !(coveredTile.get() instanceof IMachineProgress machine)
+            || machine.isAllowedToWork() == (coverDataValue % 2 == 0);
     }
 
     @Override

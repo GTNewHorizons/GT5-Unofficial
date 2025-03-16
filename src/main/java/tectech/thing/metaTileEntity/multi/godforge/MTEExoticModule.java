@@ -735,8 +735,7 @@ public class MTEExoticModule extends MTEBaseModule {
             .setBackground(
                 () -> new IDrawable[] { TecTechUITextures.BUTTON_CELESTIAL_32x32,
                     new ItemDrawable(
-                        isMagmatterCapable && isMagmatterModeOn()
-                            ? GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.MagMatter, 1)
+                        isMagmatterModeOn() ? GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.MagMatter, 1)
                             : CustomItemList.Godforge_FakeItemQGP.get(1))
 
                 })
@@ -781,15 +780,6 @@ public class MTEExoticModule extends MTEBaseModule {
 
     private void setMagmatterMode(boolean enabled) {
         magmatterMode = enabled;
-    }
-
-    @Override
-    public void setMagmatterCapable(boolean isCapable) {
-        if (!isCapable && isMagmatterCapable) {
-            // only set when it previously was capable
-            setMagmatterMode(false);
-        }
-        super.setMagmatterCapable(isCapable);
     }
 
     @Override

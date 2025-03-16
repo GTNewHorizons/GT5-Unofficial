@@ -342,6 +342,7 @@ gt.recipe.largechemicalreactor=Large Chemical Reactor
 gt.recipe.distillationtower=Distillation Tower
 gt.recipe.craker=Oil Cracker
 gt.recipe.pyro=Pyrolyse Oven
+gt.recipe.solarfactory=Solar Factory
 gt.recipe.dieselgeneratorfuel=Combustion Generator Fuels
 gt.recipe.extremedieselgeneratorfuel=Extreme Diesel Engine Fuel
 gt.recipe.gasturbinefuel=Gas Turbine Fuel
@@ -648,6 +649,7 @@ GT5U.gui.button.max_parallel=Always use maximum
 GT5U.gui.text.rangedvalue=Range: %s-%s
 GT5U.gui.text.lockedvalue=Locked: %s
 GT5U.gui.text.success=§aProcessing recipe
+GT5U.gui.text.progress=§fProgress:
 GT5U.gui.text.generating=§aGenerating power
 GT5U.gui.text.no_recipe=§7No valid recipe found
 GT5U.gui.text.item_output_full=§7Not enough item output space
@@ -731,6 +733,9 @@ GT5U.gui.text.heat_sensor=Heat threshold
 GT5U.gui.text.no_maintenance=Missing Maintenance Hatch
 GT5U.gui.text.no_muffler=Missing Muffler Hatch
 GT5U.gui.text.pulse_mode=Pulse Mode
+GT5U.gui.text.no_wafer=No wafer was found
+GT5U.gui.text.low_wafer_tier=Found wafer is too low tier for the recipe
+GT5U.gui.text.not_enough_wafer=Found wafer but recipe requires more than given
 GT5U.gui.text.static_mode=Static Mode
 GT5U.gui.text.unneeded_muffler=Does not accept Muffler Hatches
 GT5U.gui.missing_casings=Too few casings: needs %s but has %s
@@ -739,6 +744,8 @@ GT5U.gui.too_many_hatches=Too many %ses (max %s)
 GT5U.gui.text.power_panel=Power Control Panel
 GT5U.gui.text.too_uncertain=Too Uncertain.
 GT5U.gui.text.invalid_parameters=Invalid Parameters.
+GT5U.gui.text.enabled=§aEnabled§f
+GT5U.gui.text.disabled=§cDisabled§f
 
 
 GT5U.gui.config.client=Client
@@ -849,6 +856,10 @@ GT5U.hatch.infiniteCacheFluid.true=ME Output hatch will infinitely cache fluid, 
 GT5U.hatch.infiniteCacheFluid.false=ME Output hatch will stop accepting fluid when offline for more than 2 seconds
 GT5U.hatch.additionalConnection.true=ME channels connect to any side
 GT5U.hatch.additionalConnection.false=ME channels connect to front side only
+GT5U.hatch.fluid.filter.enable=Fluid output filter set to: %s
+GT5U.hatch.item.filter.enable=Item output filter set to: %s
+GT5U.hatch.fluid.filter.disable=Fluid output filtering disabled
+GT5U.hatch.item.filter.disable=Item output filtering disabled
 
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
@@ -2096,6 +2107,9 @@ GT5U.tooltip.fluid.stat.liquid=Liquid
 
 GT5U.tooltip.comb.ban_forestry=Forestry can't process it
 GT5U.tooltip.mega_apiary.only_producer=Will only be produced in mega Apiary
+
+GT5U.tooltip.electric.tier=Tier: %d
+GT5U.tooltip.electric.tier.s=Tier: %s
 
 # Achievements
 

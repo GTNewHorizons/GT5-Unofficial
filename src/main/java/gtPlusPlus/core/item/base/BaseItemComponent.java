@@ -250,12 +250,7 @@ public class BaseItemComponent extends Item {
                     if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT) {
                         if (this.unlocalName.toLowerCase()
                             .contains("hot")) {
-                            list.add(
-                                EnumChatFormatting.GRAY + "Warning: "
-                                    + EnumChatFormatting.RED
-                                    + "Very hot! "
-                                    + EnumChatFormatting.GRAY
-                                    + " Avoid direct handling..");
+                            list.add(StatCollector.translateToLocal("gtpp.tooltip.ingot.very_hot"));
                         }
                     }
                 } else {
