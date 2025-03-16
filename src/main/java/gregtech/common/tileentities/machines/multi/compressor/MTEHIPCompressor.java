@@ -92,7 +92,9 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                 .buildAndChain(onElementPass(MTEHIPCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 4))))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 9))
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings10, 10))
-        .addElement('F', withChannel("coil", activeCoils(ofCoil(MTEHIPCompressor::setCoilLevel, MTEHIPCompressor::getCoilLevel))))
+        .addElement(
+            'F',
+            withChannel("coil", activeCoils(ofCoil(MTEHIPCompressor::setCoilLevel, MTEHIPCompressor::getCoilLevel))))
         .addElement(
             'G',
             buildHatchAdder(MTEHIPCompressor.class).atLeast(InputBus, OutputBus, InputHatch)
