@@ -398,7 +398,7 @@ public class ProcessingLogic {
      * At this point, inputs have been already consumed.
      */
     @Nonnull
-    private CheckRecipeResult applyRecipe(@Nonnull GTRecipe recipe, @Nonnull ParallelHelper helper,
+    protected CheckRecipeResult applyRecipe(@Nonnull GTRecipe recipe, @Nonnull ParallelHelper helper,
         @Nonnull OverclockCalculator calculator, @Nonnull CheckRecipeResult result) {
         if (recipe.mCanBeBuffered) {
             lastRecipe = recipe;
@@ -496,7 +496,7 @@ public class ProcessingLogic {
             .setAmperage(availableAmperage)
             .setEUt(availableVoltage)
             .setDuration(recipe.mDuration)
-            .setSpeedBoost(speedBoost)
+            .setDurationModifier(speedBoost)
             .setEUtDiscount(euModifier)
             .setAmperageOC(amperageOC)
             .setDurationDecreasePerOC(overClockTimeReduction)

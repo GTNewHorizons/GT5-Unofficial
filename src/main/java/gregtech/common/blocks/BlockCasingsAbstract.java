@@ -31,6 +31,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.common.render.GTRendererCasing;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 
@@ -55,6 +56,11 @@ public abstract class BlockCasingsAbstract extends GTGenericBlock
         for (int i = 0; i < aMaxMeta; i++) {
             Textures.BlockIcons.setCasingTextureForId(getTextureIndex(i), TextureFactory.of(this, i));
         }
+    }
+
+    @Override
+    public int getRenderType() {
+        return GTRendererCasing.mRenderID;
     }
 
     @Override
