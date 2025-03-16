@@ -1244,8 +1244,8 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Netherite_Scrap_Seed.set(addItem(Netherite_Scrap_Seed.ID, "Netherite Scrap Seed", ""));
         ItemList.Brittle_Netherite_Scrap.set(addItem(Brittle_Netherite_Scrap.ID, "Brittle Netherite Scrap", ""));
         ItemList.Netherite_Nanoparticles.set(addItem(Netherite_Nanoparticles.ID, "Netherite Nanoparticles", ""));
-        ItemList.Intensely_Bonded_Netherite_Nanoparticles.set(
-            addItem(Instensely_Bonded_Netherite_Nanoparticles.ID, "Intensely Bonded Netherite Nanoparticles", ""));
+        ItemList.Intensely_Bonded_Netherite_Nanoparticles
+            .set(addItem(Instensely_Bonded_Netherite_Nanoparticles.ID, "Intensely Bonded Netherite Nanoparticles", ""));
         ItemList.Hot_Netherite_Scrap.set(addItem(Hot_Netherite_Scrap.ID, "Hot Netherite Scrap", "Activated?"));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
