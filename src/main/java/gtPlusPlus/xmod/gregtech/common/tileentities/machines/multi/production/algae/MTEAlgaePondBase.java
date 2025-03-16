@@ -296,7 +296,8 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                         }
                     }
                     tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-                    if (tBlock == Blocks.water || tBlock == Blocks.flowing_water) {
+                    if (tBlock == Blocks.water || tBlock == Blocks.flowing_water
+                        || tBlock == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)) {
                         ++tAmount;
                         // Logger.INFO("Found Water");
                     }
@@ -316,7 +317,6 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
     private boolean isNotStaticWater(Block block, int meta) {
         return block == Blocks.air || block == Blocks.flowing_water
-            || block == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)
             || (cofhWater != null && cofhWater.isAssignableFrom(block.getClass()) && meta != 0);
     }
 
