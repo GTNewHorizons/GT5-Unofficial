@@ -156,12 +156,18 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
 
     @Override
     protected ITexture getFrontOverlay() {
-        return TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_STEAM_CENTRIFUGE);
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_CENTRIFUGE)
+            .extFacing()
+            .build();
     }
 
     @Override
     protected ITexture getFrontOverlayActive() {
-        return TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE);
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE)
+            .extFacing()
+            .build();
     }
 
     @Override
@@ -308,7 +314,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
                     .setEUtDiscount(1.25 * tierMachine)
-                    .setSpeedBoost(1.6 / tierMachine);
+                    .setDurationModifier(1.6 / tierMachine);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }

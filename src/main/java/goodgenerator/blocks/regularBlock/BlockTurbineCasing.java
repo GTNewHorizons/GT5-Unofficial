@@ -1,17 +1,11 @@
 package goodgenerator.blocks.regularBlock;
 
-import net.minecraft.block.Block;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import goodgenerator.client.render.BlockRenderHandler;
 import goodgenerator.main.GoodGenerator;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.render.TextureFactory;
+import gregtech.common.render.GTRendererCasing;
 
-public class BlockTurbineCasing extends BlockCasing implements ITextureBlock {
+public class BlockTurbineCasing extends BlockCasing {
 
     public IIconContainer base;
 
@@ -21,21 +15,7 @@ public class BlockTurbineCasing extends BlockCasing implements ITextureBlock {
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, ForgeDirection side, IBlockAccess aWorld, int xCoord, int yCoord,
-        int zCoord) {
-        return getTexture(aBlock, side);
-    }
-
-    @Override
-    public ITexture[] getTexture(Block aBlock, int aMeta, ForgeDirection side) {
-        return new ITexture[] { TextureFactory.of(base) };
-    }
-
-    @Override
     public int getRenderType() {
-        if (BlockRenderHandler.INSTANCE == null) {
-            return super.getRenderType();
-        }
-        return BlockRenderHandler.INSTANCE.mRenderID;
+        return GTRendererCasing.mRenderID;
     }
 }

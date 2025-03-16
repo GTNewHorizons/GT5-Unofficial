@@ -347,6 +347,7 @@ gt.recipe.largechemicalreactor=Large Chemical Reactor
 gt.recipe.distillationtower=Distillation Tower
 gt.recipe.craker=Oil Cracker
 gt.recipe.pyro=Pyrolyse Oven
+gt.recipe.solarfactory=Solar Factory
 gt.recipe.dieselgeneratorfuel=Combustion Generator Fuels
 gt.recipe.extremedieselgeneratorfuel=Extreme Diesel Engine Fuel
 gt.recipe.gasturbinefuel=Gas Turbine Fuel
@@ -737,6 +738,9 @@ GT5U.gui.text.heat_sensor=Heat threshold
 GT5U.gui.text.no_maintenance=Missing Maintenance Hatch
 GT5U.gui.text.no_muffler=Missing Muffler Hatch
 GT5U.gui.text.pulse_mode=Pulse Mode
+GT5U.gui.text.no_wafer=No wafer was found
+GT5U.gui.text.low_wafer_tier=Found wafer is too low tier for the recipe
+GT5U.gui.text.not_enough_wafer=Found wafer but recipe requires more than given
 GT5U.gui.text.static_mode=Static Mode
 GT5U.gui.text.unneeded_muffler=Does not accept Muffler Hatches
 GT5U.gui.missing_casings=Too few casings: need %s but have %s
@@ -746,6 +750,8 @@ GT5U.gui.too_many_hatches=Too many %ses (max %s)
 GT5U.gui.text.power_panel=Power Control Panel
 GT5U.gui.text.too_uncertain=Too Uncertain.
 GT5U.gui.text.invalid_parameters=Invalid Parameters.
+GT5U.gui.text.enabled=§aEnabled§f
+GT5U.gui.text.disabled=§cDisabled§f
 
 
 GT5U.gui.config.client=Client

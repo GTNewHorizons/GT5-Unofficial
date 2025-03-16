@@ -173,7 +173,8 @@ public class NaniteChain {
             .itemOutputs(MaterialsUEVplus.SixPhasedCopper.getNanite(8))
             .fluidInputs(
                 Materials.UUMatter.getFluid(500_000),
-                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(50_000))
+                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(50_000),
+                MaterialsUEVplus.Creon.getMolten(512 * 144))
             .metadata(NANO_FORGE_TIER, 3)
             .duration(100 * SECONDS)
             .eut(2_000_000_000)

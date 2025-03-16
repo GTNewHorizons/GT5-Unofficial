@@ -2644,34 +2644,6 @@ public class GTUtility {
                 + metaFromBlock);
     }
 
-    /**
-     * Converts a Number to a String
-     */
-    public static String parseNumberToString(int aNumber) {
-        boolean temp = true, negative = false;
-
-        if (aNumber < 0) {
-            aNumber *= -1;
-            negative = true;
-        }
-
-        StringBuilder tStringB = new StringBuilder();
-        for (int i = 1000000000; i > 0; i /= 10) {
-            int tDigit = (aNumber / i) % 10;
-            if (temp && tDigit != 0) temp = false;
-            if (!temp) {
-                tStringB.append(tDigit);
-                if (i != 1) for (int j = i; j > 0; j /= 1000) if (j == 1) tStringB.append(",");
-            }
-        }
-
-        String tString = tStringB.toString();
-
-        if (tString.equals(E)) tString = "0";
-
-        return negative ? "-" + tString : tString;
-    }
-
     public static NBTTagCompound getNBTContainingBoolean(NBTTagCompound aNBT, Object aTag, boolean aValue) {
         if (aNBT == null) aNBT = new NBTTagCompound();
         aNBT.setBoolean(aTag.toString(), aValue);

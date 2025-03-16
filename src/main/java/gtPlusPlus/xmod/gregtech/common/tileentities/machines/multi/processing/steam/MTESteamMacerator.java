@@ -129,12 +129,18 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
 
     @Override
     protected ITexture getFrontOverlay() {
-        return TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR);
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR)
+            .extFacing()
+            .build();
     }
 
     @Override
     protected ITexture getFrontOverlayActive() {
-        return TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR_ACTIVE);
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR_ACTIVE)
+            .extFacing()
+            .build();
     }
 
     @Override
@@ -254,7 +260,7 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
                     .setEUtDiscount(1.25 * tierMachine)
-                    .setSpeedBoost(1.6 / tierMachine);
+                    .setDurationModifier(1.6 / tierMachine);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }

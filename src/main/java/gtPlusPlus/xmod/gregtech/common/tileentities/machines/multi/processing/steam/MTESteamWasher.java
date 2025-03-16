@@ -164,12 +164,18 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
 
     @Override
     protected ITexture getFrontOverlay() {
-        return TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_STEAM_WASHER);
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_WASHER)
+            .extFacing()
+            .build();
     }
 
     @Override
     protected ITexture getFrontOverlayActive() {
-        return TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_STEAM_WASHER_ACTIVE);
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_WASHER_ACTIVE)
+            .extFacing()
+            .build();
     }
 
     @Override
@@ -331,7 +337,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
                     .setEUtDiscount(1.25 * tierMachine)
-                    .setSpeedBoost(1.6 / tierMachine);
+                    .setDurationModifier(1.6 / tierMachine);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
