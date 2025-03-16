@@ -735,6 +735,8 @@ GT5U.gui.too_many_hatches=Too many %ses (max %s)
 GT5U.gui.text.power_panel=Power Control Panel
 GT5U.gui.text.too_uncertain=Too Uncertain.
 GT5U.gui.text.invalid_parameters=Invalid Parameters.
+GT5U.gui.text.enabled=§aEnabled§f
+GT5U.gui.text.disabled=§cDisabled§f
 
 
 GT5U.gui.config.client=Client
