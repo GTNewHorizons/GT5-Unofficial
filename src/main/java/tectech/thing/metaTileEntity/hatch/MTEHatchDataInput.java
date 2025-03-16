@@ -83,23 +83,22 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
 
     public void setContents(QuantumDataPacket qIn) {
         if (qIn == null) {
-            if (this.q != null) {
-                history = q.getContent();
-            } else {
-                history = 0;
-            }
-
             this.q = null;
         } else {
             if (qIn.getContent() > 0) {
                 this.q = qIn;
                 delDelay = true;
-                history = q.getContent();
             } else {
                 this.q = null;
-                history = 0;
             }
+
+            history = q == null ? 0 : q.getContent();
         }
+    }
+
+    @Override
+    protected void resetHistory() {
+        history = 0;
     }
 
     @Override
@@ -124,7 +123,7 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
         super.getWailaBody(itemStack, currenttip, accessor, config);
 
         NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(
-            translate("tt.keyphrase.Computation_Receiving", GTUtility.formatNumbers(tag.getInteger("computation"))));
+        currenttip
+            .add(translate("tt.keyphrase.Computation_Receiving", GTUtility.formatNumbers(tag.getLong("computation"))));
     }
 }
