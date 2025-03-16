@@ -154,12 +154,18 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
 
     @Override
     protected ITexture getFrontOverlay() {
-        return TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_STEAM_FORGE_HAMMER);
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_FORGE_HAMMER)
+            .extFacing()
+            .build();
     }
 
     @Override
     protected ITexture getFrontOverlayActive() {
-        return TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_STEAM_FORGE_HAMMER_ACTIVE);
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_FORGE_HAMMER_ACTIVE)
+            .extFacing()
+            .build();
     }
 
     @Override
@@ -306,7 +312,7 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
                     .setEUtDiscount(1.25 * tierMachine)
-                    .setSpeedBoost(1.6 / tierMachine);
+                    .setDurationModifier(1.6 / tierMachine);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
