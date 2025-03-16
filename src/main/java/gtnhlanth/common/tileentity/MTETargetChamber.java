@@ -247,23 +247,22 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         inputFocus = 0;
 
         ArrayList<ItemStack> tItems = this.getStoredInputs();
-        ItemStack tFocusItem = this.getFocusItemStack();
+        ArrayList<ItemStack> tFocusItemArray = this.getFocusItemStack();
 
-        ItemStack tFocusItemZeroDamage = null;
-
-        if (tFocusItem != null) {
-
-            tFocusItemZeroDamage = tFocusItem.copy();
-            tFocusItemZeroDamage.setItemDamage(0);
-        }
+        ItemStack tFocusItemZeroDamage;
 
         ArrayList<ItemStack> tItemsWithFocusItem = new ArrayList<>();
-        tItemsWithFocusItem.add(tFocusItemZeroDamage);
+
+        if (tFocusItemArray != null) {
+            tFocusItemZeroDamage = tFocusItemArray.get(0)
+                .copy();
+            tFocusItemZeroDamage.setItemDamage(0);
+            tItemsWithFocusItem.add(tFocusItemArray.get(0));
+        }
+
         tItemsWithFocusItem.addAll(tItems);
 
         long tVoltageActual = GTValues.VP[(int) this.getInputVoltageTier()];
-
-        ItemStack[] tItemsArray = tItems.toArray(new ItemStack[0]);
 
         ItemStack[] tItemsWithFocusItemArray = tItemsWithFocusItem.toArray(new ItemStack[0]);
 
@@ -278,9 +277,12 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
                 int particle = recipeTc.particleId;
 
-                return (particle == inputInfo.getParticleId()
-                    && !(inputInfo.getEnergy() < recipeTc.minEnergy || inputInfo.getEnergy() > recipeTc.maxEnergy));
+                if (inputInfo != null) {
+                    return (particle == inputInfo.getParticleId()
+                        && !(inputInfo.getEnergy() < recipeTc.minEnergy || inputInfo.getEnergy() > recipeTc.maxEnergy));
+                }
 
+                return false;
             })
             .cachedRecipe(this.lastRecipe)
             .find();
@@ -304,10 +306,13 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         if (inputParticle != tRecipe.particleId) return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (tRecipe.focusItem != null) {
-            if (tRecipe.focusItem.getItem() != tFocusItem.getItem()) return CheckRecipeResultRegistry.NO_RECIPE;
+            if (tFocusItemArray != null) {
+                if (tFocusItemArray.get(0) != null && tRecipe.focusItem.getItem() != tFocusItemArray.get(0)
+                    .getItem()) return CheckRecipeResultRegistry.NO_RECIPE;
+            }
         }
 
-        int focusDurabilityDepletion = 1;
+        int focusDurabilityDepletion;
 
         float progressTime = tRecipe.amount / inputRate * 5 * TickTime.SECOND;
 
@@ -318,14 +323,24 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             batchAmount = (int) Math.round(1.0 / progressTime);
 
             if (tRecipe.focusItem != null) {
-                int maskLimit = tFocusItem.getMaxDamage() - tFocusItem.getItemDamage() + 1;
+                int maskLimit = 0;
+                if (tFocusItemArray != null) {
+                    for (ItemStack focus : tFocusItemArray) {
+                        maskLimit += focus.getMaxDamage() - focus.getItemDamage() + 1;
+                    }
+                }
 
                 if (batchAmount > maskLimit) batchAmount = maskLimit; // Limited by mask durability first, if it's
                                                                       // present in recipe. Assume mask is present in
-                                                                      // machine from above condition
+                progressTime = 1; // machine from above condition
+
+                if (batchAmount < maskLimit) {
+                    int ratio = Math.min(maskLimit / batchAmount, 128);
+                    batchAmount *= ratio;
+                    progressTime = ratio;
+                }
             }
 
-            progressTime = 1;
         }
 
         this.mMaxProgresstime = (int) progressTime; // 5
@@ -340,9 +355,6 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
         double maxParallel = tRecipe
             .maxParallelCalculatedByInputs(batchAmount, new FluidStack[] {}, tItemsWithFocusItemArray);
-
-        if (maxParallel < 1) // Insufficient items
-            return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
 
@@ -368,10 +380,18 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
         this.mOutputItems = itemOutputArray;
 
-        if (tRecipe.focusItem != null) // Recipe actually uses the mask, can also assume machine mask item is nonnull
-                                       // due to above conditions
-            mInputFocus.get(0)
-                .depleteFocusDurability(focusDurabilityDepletion);
+        if (tFocusItemArray != null) {
+            for (ItemStack stack : tFocusItemArray) {
+
+                if (focusDurabilityDepletion + stack.getItemDamage() > stack.getMaxDamage()) {
+                    focusDurabilityDepletion -= stack.getMaxDamage() - stack.getItemDamage();
+                    stack.stackSize--;
+                } else {
+                    stack.setItemDamage(stack.getItemDamage() + focusDurabilityDepletion);
+                    break;
+                }
+            }
+        }
 
         this.updateSlots();
 
@@ -389,19 +409,15 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         return null;
     }
 
-    private ItemStack getFocusItemStack() {
+    private ArrayList<ItemStack> getFocusItemStack() {
 
-        for (MTEBusInputFocus hatch : this.mInputFocus) {
+        if (this.mInputFocus.isEmpty()) return null;
+        if (this.mInputFocus.get(0)
+            .getContentUsageSlots()
+            .isEmpty()) return null;
 
-            if (hatch.getContentUsageSlots()
-                .isEmpty()) return null;
-
-            return hatch.getContentUsageSlots()
-                .get(0);
-        }
-
-        return null;
-
+        return this.mInputFocus.get(0)
+            .getContentUsageSlots();
     }
 
     @Override
