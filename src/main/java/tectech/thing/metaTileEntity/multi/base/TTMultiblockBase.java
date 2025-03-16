@@ -59,6 +59,8 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -938,7 +940,26 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             eCertainStatus = uncertainty.update(eCertainMode);
         }
         eAvailableData = getAvailableData_EM();
-        parametersStatusesWrite_EM(busy);
+
+        if (!GTValues.DEVENV) {
+            parametersStatusesWrite_EM(busy);
+        } else {
+            try {
+                parametersStatusesWrite_EM(busy);
+            } catch (NoSuchMethodError e) {
+                GTMod.GT_FML_LOGGER.info("Caught exception that was probably thrown because of a hotswap", e);
+
+                Arrays.fill(parametrization.groups, null);
+                parametrization.parameterInArrayList.clear();
+                parametrization.parameterOutArrayList.clear();
+                Arrays.fill(parametrization.eParamsInStatus, LedStatus.STATUS_UNUSED);
+                Arrays.fill(parametrization.eParamsOutStatus, LedStatus.STATUS_UNUSED);
+
+                parametersInstantiation_EM();
+
+                parametersStatusesWrite_EM(busy);
+            }
+        }
     }
 
     @Deprecated
@@ -1533,15 +1554,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             EUuse = -EUuse;
         }
         if (EUuse > getEUVar() || // not enough power
-            (EUtTierVoltage == 0 ? EUuse > getMaxInputEnergy() : (EUtTierVoltage > maxEUinputMax) || // TIER IS
-                                                                                                     // BASED ON
-                                                                                                     // BEST HATCH!
-                                                                                                     // not total
-                                                                                                     // EUtEffective
-                                                                                                     // input
-                (EUtTierVoltage * Amperes - 1) / maxEUinputMin + 1 > eMaxAmpereFlow)) { // EUuse==0? --> (EUuse
-                                                                                        // - 1) / maxEUinputMin
-                                                                                        // + 1 = 1! //if
+        // TIER IS BASED ON BEST HATCH! not total EUtEffective input
+            (EUtTierVoltage == 0 ? EUuse > getMaxInputEnergy() : (EUtTierVoltage > maxEUinputMax) ||
+            // EUuse==0? --> (EUuse - 1) / maxEUinputMin + 1 = 1!
+                (EUtTierVoltage * Amperes - 1) / maxEUinputMin + 1 > eMaxAmpereFlow)) {
             // not too much A
             if (ConfigHandler.debug.DEBUG_MODE) {
                 TecTech.LOGGER.debug("L1 " + EUuse + ' ' + getEUVar() + ' ' + (EUuse > getEUVar()));
@@ -2101,35 +2117,37 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     public enum HatchElement implements IHatchElement<TTMultiblockBase> {
 
-        Uncertainty(TTMultiblockBase::addUncertainToMachineList, MTEHatchUncertainty.class) {
+        Uncertainty("GT5U.MBTT.Uncertainty", TTMultiblockBase::addUncertainToMachineList, MTEHatchUncertainty.class) {
 
             @Override
             public long count(TTMultiblockBase t) {
                 return t.eUncertainHatches.size();
             }
         },
-        EnergyMulti(TTMultiblockBase::addEnergyInputToMachineList, MTEHatchEnergyMulti.class) {
+        EnergyMulti("GT5U.MBTT.ExoticEnergyHatch", TTMultiblockBase::addEnergyInputToMachineList,
+            MTEHatchEnergyMulti.class) {
 
             @Override
             public long count(TTMultiblockBase t) {
                 return t.eEnergyMulti.size();
             }
         },
-        DynamoMulti(TTMultiblockBase::addDynamoToMachineList, MTEHatchDynamoMulti.class) {
+        DynamoMulti("GT5U.MBTT.ExoticEnergyDynamo", TTMultiblockBase::addDynamoToMachineList,
+            MTEHatchDynamoMulti.class) {
 
             @Override
             public long count(TTMultiblockBase t) {
                 return t.eDynamoMulti.size();
             }
         },
-        InputData(TTMultiblockBase::addDataInputToMachineList, MTEHatchDataInput.class) {
+        InputData("GT5U.MBTT.InputData", TTMultiblockBase::addDataInputToMachineList, MTEHatchDataInput.class) {
 
             @Override
             public long count(TTMultiblockBase t) {
                 return t.eInputData.size();
             }
         },
-        OutputData(TTMultiblockBase::addDataOutputToMachineList, MTEHatchDataOutput.class) {
+        OutputData("GT5U.MBTT.OutputData", TTMultiblockBase::addDataOutputToMachineList, MTEHatchDataOutput.class) {
 
             @Override
             public long count(TTMultiblockBase t) {
@@ -2137,11 +2155,14 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
         },;
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<TTMultiblockBase> adder;
 
         @SafeVarargs
-        HatchElement(IGTHatchAdder<TTMultiblockBase> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        HatchElement(String name, IGTHatchAdder<TTMultiblockBase> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -2149,6 +2170,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
             return mteClasses;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return GTUtility.translate(name);
         }
 
         public IGTHatchAdder<? super TTMultiblockBase> adder() {
