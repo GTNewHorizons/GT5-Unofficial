@@ -19,11 +19,15 @@ public abstract class ItemCasingsAbstract extends ItemBlock {
     protected final String mBlastProofTooltip = GTLanguageManager
         .addStringLocalization("gt.blastprooftooltip", "This Block is Blast Proof");
 
+    public final BlockCasingsAbstract blockCasings;
+
     public ItemCasingsAbstract(Block block) {
         super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
         setCreativeTab(GregTechAPI.TAB_GREGTECH_MATERIALS);
+
+        this.blockCasings = (BlockCasingsAbstract) block;
     }
 
     @Override
@@ -41,5 +45,6 @@ public abstract class ItemCasingsAbstract extends ItemBlock {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
         aList.add(this.mNoMobsToolTip);
         aList.add(this.mNoTileEntityToolTip);
+        blockCasings.addInformation(aStack, aPlayer, aList, aF3_H);
     }
 }
