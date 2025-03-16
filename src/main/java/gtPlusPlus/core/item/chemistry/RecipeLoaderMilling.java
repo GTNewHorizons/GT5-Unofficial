@@ -390,7 +390,6 @@ public class RecipeLoaderMilling {
         // Netherrack
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GregtechItemList.PotassiumEthylXanthate.get(32),
                 GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64),
                 GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64),
                 GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64),
