@@ -10,6 +10,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -375,12 +376,12 @@ public class VacuumFreezerRecipes implements Runnable {
         this.addProtoHalkonitePartRecipe(OrePrefixes.plateSuperdense, 1);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, MaterialsUEVplus.Mellion, 9L))
-            .fluidInputs(MaterialsUEVplus.Creon.getPlasma(1296L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, MaterialsUEVplus.Mellion, 9L))
-            .fluidOutputs(MaterialsUEVplus.Creon.getMolten(1296L))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_UMV)
+            .itemInputs(ItemList.Harmonic_Compound.get(2))
+            .fluidInputs(GGMaterial.atomicSeparationCatalyst.getMolten(144))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, MaterialsUEVplus.Mellion, 1L))
+            .fluidOutputs(MaterialsUEVplus.Creon.getMolten(144))
+            .duration(1 * SECONDS)
+            .eut(TierEU.RECIPE_UIV)
             .addTo(vacuumFreezerRecipes);
     }
 
