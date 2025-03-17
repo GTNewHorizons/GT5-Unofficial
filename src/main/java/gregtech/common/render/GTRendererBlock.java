@@ -53,6 +53,7 @@ import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.XSTR;
+import gregtech.api.render.RenderOverlay;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockMachines;
@@ -77,6 +78,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     }
 
     private final ITexture[][] textureArray = new ITexture[6][];
+    private final ITexture[] overlayHolder = new ITexture[1];
 
     public boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
         RenderBlocks aRenderer) {
@@ -118,12 +120,46 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
         aRenderer.setRenderBoundsFromBlock(aBlock);
 
-        renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_DOWN], true);
-        renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_UP], true);
-        renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_NORTH], true);
-        renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_SOUTH], true);
-        renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_WEST], true);
-        renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_EAST], true);
+        ITexture[] overlays = RenderOverlay.get(aWorld, aX, aY, aZ);
+        if (overlays != null) {
+            renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_DOWN], true);
+            if (overlays[SIDE_DOWN] != null) {
+                overlayHolder[0] = overlays[SIDE_DOWN];
+                renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, overlayHolder, true);
+            }
+            renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_UP], true);
+            if (overlays[SIDE_UP] != null) {
+                overlayHolder[0] = overlays[SIDE_UP];
+                renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, overlayHolder, true);
+            }
+            renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_NORTH], true);
+            if (overlays[SIDE_NORTH] != null) {
+                overlayHolder[0] = overlays[SIDE_NORTH];
+                renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, overlayHolder, true);
+            }
+            renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_SOUTH], true);
+            if (overlays[SIDE_SOUTH] != null) {
+                overlayHolder[0] = overlays[SIDE_SOUTH];
+                renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, overlayHolder, true);
+            }
+            renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_WEST], true);
+            if (overlays[SIDE_WEST] != null) {
+                overlayHolder[0] = overlays[SIDE_WEST];
+                renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, overlayHolder, true);
+            }
+            renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_EAST], true);
+            if (overlays[SIDE_EAST] != null) {
+                overlayHolder[0] = overlays[SIDE_EAST];
+                renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, overlayHolder, true);
+            }
+        } else {
+            renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_DOWN], true);
+            renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_UP], true);
+            renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_NORTH], true);
+            renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_SOUTH], true);
+            renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_WEST], true);
+            renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_EAST], true);
+        }
         return true;
     }
 

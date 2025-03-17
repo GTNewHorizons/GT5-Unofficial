@@ -17,6 +17,7 @@ public enum Mods implements IMod {
     AdvancedSolarPanel(Names.ADVANCED_SOLAR_PANEL),
     AdventureBackpack(Names.ADVENTURE_BACKPACK),
     AkashicTome(Names.AKASHIC_TOME),
+    Angelica(Names.ANGELICA),
     AppleCore(Names.APPLE_CORE),
     AppliedEnergistics2(Names.APPLIED_ENERGISTICS2),
     ArchitectureCraft(Names.ARCHITECTURE_CRAFT),
@@ -204,6 +205,7 @@ public enum Mods implements IMod {
         public static final String ADVANCED_SOLAR_PANEL = "AdvancedSolarPanel";
         public static final String ADVENTURE_BACKPACK = "adventurebackpack";
         public static final String AKASHIC_TOME = "akashictome";
+        public static final String ANGELICA = "angelica";
         public static final String APPLE_CORE = "AppleCore";
         public static final String APPLIED_ENERGISTICS2 = "appliedenergistics2";
         public static final String ARCHITECTURE_CRAFT = "ArchitectureCraft";
