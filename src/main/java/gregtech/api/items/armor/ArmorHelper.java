@@ -4,6 +4,8 @@ public class ArmorHelper {
 
     public static final String NIGHT_VISION_KEY = "NightVision";
     public static final String CREATIVE_FLIGHT_KEY = "Flight";
+    public static final String INERTIA_CANCELING_KEY = "InertiaCanceling";
+    public static final String OMNI_MOVEMENT_KEY = "OmniMovement";
     public static final String JETPACK_KEY = "Jetpack";
     public static final String JETPACK_HOVER_KEY = "JetpackHover";
     public static final String JETPACK_PERFECT_HOVER_KEY = "JetpackPerfectHover";

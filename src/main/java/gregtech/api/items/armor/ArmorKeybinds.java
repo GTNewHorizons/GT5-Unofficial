@@ -16,6 +16,10 @@ public class ArmorKeybinds {
         .createConfigurable("gregtech.toggle_jetpack", "key.categories.gameplay", Keyboard.KEY_F);
     public static final SyncedKeybind GOGGLES_OF_REVEALING_KEYBIND = SyncedKeybind
         .createConfigurable("gregtech.toggle_goggles_of_revealing", "key.categories.gameplay", Keyboard.KEY_T);
+    public static final SyncedKeybind INERTIA_CANCELING_KEYBIND = SyncedKeybind
+        .createConfigurable("gregtech.toggle_inertiacanceling", "key.categories.gameplay", Keyboard.KEY_T);
+    public static final SyncedKeybind OMNI_MOVEMENT_KEYBIND = SyncedKeybind
+        .createConfigurable("gregtech.toggle_omnimovement", "key.categories.gameplay", Keyboard.KEY_T);
 
     public static final SyncedKeybind VANILLA_JUMP = SyncedKeybind
         .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindJump);

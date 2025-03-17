@@ -818,6 +818,12 @@ GT5U.armor.message.jetpackhover.disabled=Jetpack Hover Mode Off
 GT5U.armor.message.jetpackperfecthover=Jetpack Stabilization Installed
 GT5U.armor.message.fireimmunity=Fire Immunity Installed
 GT5U.armor.message.stepassist=Step Assist Installed
+GT5U.armor.message.inertiacanceling=Inertia Canceling Installed
+GT5U.armor.message.inertiacanceling.enabled=Inertia Canceling On
+GT5U.armor.message.inertiacanceling.disabled=Inertia Canceling Off
+GT5U.armor.message.omnispeed=Omni Movement Installed
+GT5U.armor.message.inertiacanceling.enabled=Omni Movement On
+GT5U.armor.message.inertiacanceling.disabled=Omni Movement Off
 
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak middle-click to unlock.

@@ -2620,6 +2620,8 @@ public enum ItemList implements IItemContainer {
     Augment_FireImmunity,
     Augment_StepAssist,
     Augment_GogglesOfRevealing,
+    Augment_InertiaCanceling,
+    Augment_OmniMovement,
 
     // semicolon after the comment to reduce merge conflicts
     ;
