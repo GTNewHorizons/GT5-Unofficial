@@ -359,7 +359,7 @@ public class DEFCRecipes {
             .itemOutputs(GTModHandler.getModItem(DraconicEvolution.ID, "chaosShard", 9, 0))
             .eut(TierEU.RECIPE_UHV)
             .duration(2800)
-            .metadata(DEFC_CASING_TIER, 4)
+            .metadata(DEFC_CASING_TIER, 5)
             .addTo(fusionCraftingRecipes);
 
         if (Witchery.isModLoaded()) {
