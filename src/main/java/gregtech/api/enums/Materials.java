@@ -978,6 +978,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials RadoxGas;
     public static Materials RadoxPolymer;
 
+    public static Materials NetherAir;
+    public static Materials NetherSemiFluid;
+    public static Materials NefariousGas;
+    public static Materials NefariousOil;
+    public static Materials PoorNetherWaste;
+    public static Materials RichNetherWaste;
+    public static Materials HellishMetal;
+    public static Materials Netherite;
+    public static Materials ActivatedNetherite;
 
     // spotless:on
 
@@ -2030,15 +2039,23 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             .addTo(Magnetite, VanadiumMagnetite, BasalticMineralSand, GraniticMineralSand);
 
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        SubTag.NO_RECYCLING.addTo(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.HotProtoHalkonite);
+        SubTag.NO_RECYCLING.addTo(MaterialsUEVplus.HotProtoHalkonite);
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.ProtoHalkonite);
+        SubTag.NO_RECYCLING.addTo(MaterialsUEVplus.ProtoHalkonite);
         MaterialsUEVplus.HotProtoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
         MaterialsUEVplus.ProtoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
 
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.HotExoHalkonite);
         SubTag.NO_RECIPES.addTo(MaterialsUEVplus.ExoHalkonite);
+        SubTag.NO_RECYCLING.addTo(MaterialsUEVplus.HotExoHalkonite);
+        SubTag.NO_RECYCLING.addTo(MaterialsUEVplus.ExoHalkonite);
         MaterialsUEVplus.HotExoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
         MaterialsUEVplus.ExoHalkonite.remove(SubTag.SMELTING_TO_FLUID);
+
+        SubTag.NO_RECIPES.addTo(Materials.Netherite);
+        Materials.Netherite.remove(SubTag.SMELTING_TO_FLUID);
 
         SubTag.ELECTROMAGNETIC_SEPERATION_IRON.addTo(
             YellowLimonite,
