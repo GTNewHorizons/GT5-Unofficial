@@ -196,7 +196,7 @@ public enum IDMetaItem03 {
     Netherite_Scrap_Seed(243),
     Brittle_Netherite_Scrap(244),
     Netherite_Nanoparticles(245),
-    Instensely_Bonded_Netherite_Nanoparticles(246),
+    Intensely_Bonded_Netherite_Nanoparticles(246),
     Hot_Netherite_Scrap(247),
     Circuit_Silicon_Ingot6(721),
     Circuit_Silicon_Wafer6(722),

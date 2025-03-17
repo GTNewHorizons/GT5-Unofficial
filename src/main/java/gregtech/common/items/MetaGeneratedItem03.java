@@ -199,7 +199,7 @@ import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_STABIL
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_TERRITORY;
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_UNLIGHT;
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_WINTER;
-import static gregtech.common.items.IDMetaItem03.Instensely_Bonded_Netherite_Nanoparticles;
+import static gregtech.common.items.IDMetaItem03.Intensely_Bonded_Netherite_Nanoparticles;
 import static gregtech.common.items.IDMetaItem03.KevlarFiber;
 import static gregtech.common.items.IDMetaItem03.LV_Coil;
 import static gregtech.common.items.IDMetaItem03.LuV_Coil;
@@ -1245,7 +1245,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Brittle_Netherite_Scrap.set(addItem(Brittle_Netherite_Scrap.ID, "Brittle Netherite Scrap", ""));
         ItemList.Netherite_Nanoparticles.set(addItem(Netherite_Nanoparticles.ID, "Netherite Nanoparticles", ""));
         ItemList.Intensely_Bonded_Netherite_Nanoparticles
-            .set(addItem(Instensely_Bonded_Netherite_Nanoparticles.ID, "Intensely Bonded Netherite Nanoparticles", ""));
+            .set(addItem(Intensely_Bonded_Netherite_Nanoparticles.ID, "Intensely Bonded Netherite Nanoparticles", ""));
         ItemList.Hot_Netherite_Scrap.set(addItem(Hot_Netherite_Scrap.ID, "Hot Netherite Scrap", "Activated?"));
 
         ItemList.White_Dwarf_Shape_Extruder_Plate.set(
