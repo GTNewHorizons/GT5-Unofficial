@@ -2,8 +2,13 @@ package gregtech.api.items;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 public class ItemAugmentBase extends GTGenericItem {
 
@@ -50,6 +55,16 @@ public class ItemAugmentBase extends GTGenericItem {
         this.requiredBehaviors = Collections.emptyList();
         this.incompatibleBehaviors = Collections.emptyList();
         this.visDiscount = visDiscount;
+    }
+
+    @Override
+    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
+        if (visDiscount > 0) {
+            aList.add(
+                EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount")
+                    + ": " + visDiscount + "%");
+        }
+        super.addAdditionalToolTips(aList, aStack, aPlayer);
     }
 
     public Collection<IArmorBehavior> getAttachedBehaviors() {

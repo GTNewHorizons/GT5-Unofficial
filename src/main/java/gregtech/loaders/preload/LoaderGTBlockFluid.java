@@ -230,46 +230,46 @@ public class LoaderGTBlockFluid implements Runnable {
         ItemList.Augment_NightVision.set(
             new ItemAugmentBase(
                 "augmentnightvision",
-                "Augment: Night Vision",
-                "blah",
+                "Augment: Optical Brightness Adjuster",
+                "Allows user to see clearly at night and in the dark",
                 Collections.singletonList(NightVisionBehavior.INSTANCE)));
         ItemList.Augment_CreativeFlight.set(
             new ItemAugmentBase(
                 "augmentcreativeflight",
-                "Augment: Gravity Manipulation Module",
-                "blah",
+                "Augment: Gravitational Control Module",
+                "Allows user to fly",
                 Collections.singletonList(CreativeFlightBehavior.INSTANCE)));
         ItemList.Augment_Jetpack.set(
             new ItemAugmentBase(
                 "augmentjetpack",
-                "Augment: Jetpack",
-                "blah",
+                "Augment: Electric Jetpack",
+                "Allows user to jet upwards and hover in midair",
                 Collections.singletonList(JetpackBehavior.INSTANCE)));
         ItemList.Augment_Jetpack.set(
             new ItemAugmentBase(
                 "augmentjetpackperfecthover",
-                "Augment: Jetpack Perfect Hover",
-                "blah",
+                "Augment: Adaptive Jetpack Stabilizers",
+                "Prevents user from slowly descending while in hover mode",
                 Collections.singletonList(JetpackPerfectHoverBehavior.INSTANCE),
                 Collections.singletonList(JetpackBehavior.INSTANCE),
                 Collections.emptyList()));
         ItemList.Augment_FireImmunity.set(
             new ItemAugmentBase(
                 "augmentfireimmunity",
-                "Augment: Fire Immunity",
-                "blah",
+                "Augment: Heat Dispersion System",
+                "Renders user entirely immune to fire and lava",
                 Collections.singletonList(FireImmunityBehavior.INSTANCE)));
         ItemList.Augment_StepAssist.set(
             new ItemAugmentBase(
                 "augmentstepassist",
-                "Augment: Step Assist",
-                "blah",
+                "Augment: Elevation Calibrators",
+                "Allows user to walk up a single block effortlessly",
                 Collections.singletonList(StepAssistBehavior.INSTANCE)));
         ItemList.Augment_GogglesOfRevealing.set(
             new ItemAugmentBase(
                 "augmentgogglesofrevealing",
-                "Augment: Goggles Of Revealing",
-                "blah",
+                "Augment: Integrated Revealing Lens",
+                "Allows user to see elements of the arcane, such as aura nodes",
                 Collections.singletonList(GogglesOfRevealingBehavior.INSTANCE),
                 7));
 
