@@ -269,7 +269,7 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(GTValues.V[tTier] * (mLastRecipeMap != null ? mLastRecipeMap.getAmperage() : 1));
-        logic.setAvailableAmperage(getMaxParallel());
+        logic.setAvailableAmperage(getMaxParallelRecipes());
         logic.setAmperageOC(false);
     }
 
@@ -287,7 +287,8 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
         }
     }
 
-    private int getMaxParallel() {
+    @Override
+    public int getMaxParallelRecipes() {
         if (getControllerSlot() == null) {
             return 0;
         }
@@ -477,7 +478,7 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
                 + " x",
             StatCollector.translateToLocal("GT5U.PA.parallel") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(getMaxParallel())
+                + GTUtility.formatNumbers(getMaxParallelRecipes())
                 + EnumChatFormatting.RESET };
     }
 
