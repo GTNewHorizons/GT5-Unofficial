@@ -2025,6 +2025,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             + "If*";
         MaterialsUEVplus.HotProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
         MaterialsUEVplus.ProtoHalkonite.mChemicalFormula = MaterialsUEVplus.MoltenProtoHalkoniteBase.mChemicalFormula;
+        Materials.HellishMetal.mChemicalFormula = "RhMa";
+        Materials.Netherite.mChemicalFormula = "NhAuMa*";
     }
 
     private static void initSubTags() {
