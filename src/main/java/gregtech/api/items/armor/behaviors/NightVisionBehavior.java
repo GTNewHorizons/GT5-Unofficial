@@ -51,9 +51,9 @@ public class NightVisionBehavior implements IArmorBehavior {
         if (wasEnabled) {
             player.removePotionEffect(Potion.nightVision.id);
             PlayerUtils
-                .messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.nightvision.disabled"));
+                .messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", getBehaviorName()));
         } else {
-            PlayerUtils.messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.nightvision.enabled"));
+            PlayerUtils.messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", getBehaviorName()));
         }
     }
 
@@ -81,17 +81,11 @@ public class NightVisionBehavior implements IArmorBehavior {
 
     @Override
     public void addBehaviorNBT(@NotNull ItemStack stack, @NotNull NBTTagCompound tag) {
-        tag.setBoolean(ArmorHelper.NIGHT_VISION_KEY, false);
+        tag.setBoolean(ArmorHelper.NIGHT_VISION_KEY, true);
     }
 
     @Override
-    public void addInformation(@NotNull ItemStack stack, @NotNull List<String> tooltip) {
-        NBTTagCompound tag = getOrCreateNbtCompound(stack);
-        if (!tag.hasKey(ArmorHelper.NIGHT_VISION_KEY)) return;
-        if (tag.getBoolean(ArmorHelper.NIGHT_VISION_KEY)) {
-            tooltip.add(StatCollector.translateToLocal("GT5U.armor.message.nightvision.enabled"));
-        } else {
-            tooltip.add(StatCollector.translateToLocal("GT5U.armor.message.nightvision.disabled"));
-        }
+    public String getBehaviorName() {
+        return StatCollector.translateToLocal("GT5U.armor.behavior.nightvision");
     }
 }

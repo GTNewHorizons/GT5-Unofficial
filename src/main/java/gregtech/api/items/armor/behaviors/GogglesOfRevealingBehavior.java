@@ -34,12 +34,11 @@ public class GogglesOfRevealingBehavior implements IArmorBehavior {
         tag.setBoolean(ArmorHelper.GOGGLES_OF_REVEALING_KEY, !wasEnabled);
 
         if (wasEnabled) {
-            PlayerUtils.messagePlayer(
-                player,
-                StatCollector.translateToLocal("GT5U.armor.message.gogglesofrevealing.disabled"));
+            PlayerUtils
+                .messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", getBehaviorName()));
         } else {
             PlayerUtils
-                .messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.gogglesofrevealing.enabled"));
+                .messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", getBehaviorName()));
         }
     }
 
@@ -54,13 +53,12 @@ public class GogglesOfRevealingBehavior implements IArmorBehavior {
     }
 
     @Override
-    public void addInformation(@NotNull ItemStack stack, @NotNull List<String> tooltip) {
-        NBTTagCompound tag = getOrCreateNbtCompound(stack);
-        if (!tag.hasKey(ArmorHelper.GOGGLES_OF_REVEALING_KEY)) return;
-        if (tag.getBoolean(ArmorHelper.GOGGLES_OF_REVEALING_KEY)) {
-            tooltip.add(StatCollector.translateToLocal("GT5U.armor.message.gogglesofrevealing.enabled"));
-        } else {
-            tooltip.add(StatCollector.translateToLocal("GT5U.armor.message.gogglesofrevealing.disabled"));
-        }
+    public String getMainNBTTag() {
+        return ArmorHelper.GOGGLES_OF_REVEALING_KEY;
+    }
+
+    @Override
+    public String getBehaviorName() {
+        return StatCollector.translateToLocal("GT5U.armor.behavior.gogglesofrevealing");
     }
 }

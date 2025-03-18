@@ -27,8 +27,7 @@ public class JetpackPerfectHoverBehavior implements IArmorBehavior {
     }
 
     @Override
-    public void addInformation(@NotNull ItemStack stack, @NotNull List<String> tooltip) {
-        if (!getOrCreateNbtCompound(stack).hasKey(ArmorHelper.JETPACK_PERFECT_HOVER_KEY)) return;
-        tooltip.add(StatCollector.translateToLocal("GT5U.armor.message.jetpackperfecthover"));
+    public String getBehaviorName() {
+        return StatCollector.translateToLocal("GT5U.armor.behavior.jetpackperfecthover");
     }
 }

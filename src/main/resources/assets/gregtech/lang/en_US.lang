@@ -805,25 +805,20 @@ GT5U.item.pipe.swap=Pipe Swapped:
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
-GT5U.armor.message.nightvision.enabled=Night Vision Enabled
-GT5U.armor.message.nightvision.disabled=Night Vision Disabled
-GT5U.armor.message.gogglesofrevealing.enabled=Thaumic Sight Enabled
-GT5U.armor.message.gogglesofrevealing.disabled=Thaumic Sight Disabled
-GT5U.armor.message.creativeflight=Gravity Manipulation Installed
-GT5U.armor.message.jetpack=Jetpack Installed
-GT5U.armor.message.jetpack.enabled=Jetpack On
-GT5U.armor.message.jetpack.disabled=Jetpack Off
-GT5U.armor.message.jetpackhover.enabled=Jetpack Hover Mode On
-GT5U.armor.message.jetpackhover.disabled=Jetpack Hover Mode Off
-GT5U.armor.message.jetpackperfecthover=Jetpack Stabilization Installed
-GT5U.armor.message.fireimmunity=Fire Immunity Installed
-GT5U.armor.message.stepassist=Step Assist Installed
-GT5U.armor.message.inertiacanceling=Inertia Canceling Installed
-GT5U.armor.message.inertiacanceling.enabled=Inertia Canceling On
-GT5U.armor.message.inertiacanceling.disabled=Inertia Canceling Off
-GT5U.armor.message.omnimovement=Omni Movement Installed
-GT5U.armor.message.omnimovement.enabled=Omni Movement On
-GT5U.armor.message.omnimovement.disabled=Omni Movement Off
+GT5U.armor.behavior.nightvision=Night Vision
+GT5U.armor.behavior.gogglesofrevealing=Thaumic Sight
+GT5U.armor.behavior.creativeflight=Gravity Manipulation
+GT5U.armor.behavior.jetpack=Jetpack
+GT5U.armor.behavior.jetpackhover=Jetpack Hover Mode
+GT5U.armor.behavior.jetpackperfecthover=Jetpack Stabilization
+GT5U.armor.behavior.fireimmunity=Fire Immunity
+GT5U.armor.behavior.stepassist=Step Assist
+GT5U.armor.behavior.inertiacanceling=Inertia Canceling
+GT5U.armor.behavior.omnimovement=Omni Movement
+
+GT5U.armor.message.enabled=%s Enabled
+GT5U.armor.message.disabled=%s Disabled
+GT5U.armor.message.installed=%s Installed
 
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak middle-click to unlock.

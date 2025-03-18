@@ -9,11 +9,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+
+import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 public interface IArmorBehavior {
     /*
@@ -42,7 +45,10 @@ public interface IArmorBehavior {
     default void onArmorEquip(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {}
 
     /** Add to this behavior's armor item tooltip. */
-    default void addInformation(@NotNull ItemStack stack, @NotNull List<String> tooltip) {}
+    default void addInformation(@NotNull ItemStack stack, @NotNull List<String> tooltip) {
+        if (!getOrCreateNbtCompound(stack).hasKey(getMainNBTTag())) return;
+        tooltip.add(StatCollector.translateToLocalFormatted("GT5U.armor.message.installed", getBehaviorName()));
+    }
 
     default void onKeyPressed(@NotNull ItemStack stack, @NotNull EntityPlayer player, SyncedKeybind keyPressed) {}
 
@@ -51,6 +57,8 @@ public interface IArmorBehavior {
     default String getMainNBTTag() {
         return "";
     }
+
+    default String getBehaviorName() {return "";}
 
     default Set<SyncedKeybind> getListenedKeys() {
         return Collections.emptySet();

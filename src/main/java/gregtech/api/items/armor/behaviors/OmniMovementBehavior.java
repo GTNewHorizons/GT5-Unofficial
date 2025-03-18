@@ -44,10 +44,10 @@ public class OmniMovementBehavior implements IArmorBehavior {
 
         if (wasEnabled) {
             PlayerUtils
-                .messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.omnimovement.disabled"));
+                .messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", getBehaviorName()));
         } else {
             PlayerUtils
-                .messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.omnimovement.enabled"));
+                .messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", getBehaviorName()));
         }
     }
 
@@ -66,8 +66,7 @@ public class OmniMovementBehavior implements IArmorBehavior {
     }
 
     @Override
-    public void addInformation(@NotNull ItemStack stack, @NotNull List<String> tooltip) {
-        if (!getOrCreateNbtCompound(stack).hasKey(ArmorHelper.OMNI_MOVEMENT_KEY)) return;
-        tooltip.add(StatCollector.translateToLocal("GT5U.armor.message.omnimovement"));
+    public String getBehaviorName() {
+        return StatCollector.translateToLocal("GT5U.armor.behavior.omnimovement");
     }
 }

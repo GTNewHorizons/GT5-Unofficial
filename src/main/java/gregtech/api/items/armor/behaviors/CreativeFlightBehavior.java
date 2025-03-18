@@ -61,9 +61,7 @@ public class CreativeFlightBehavior implements IArmorBehavior {
     }
 
     @Override
-    public void addInformation(@NotNull ItemStack stack, @NotNull List<String> tooltip) {
-        NBTTagCompound tag = getOrCreateNbtCompound(stack);
-        if (tag.hasKey(ArmorHelper.CREATIVE_FLIGHT_KEY))
-            tooltip.add(StatCollector.translateToLocal("GT5U.armor.message.creativeflight"));
+    public String getBehaviorName() {
+        return StatCollector.translateToLocal("GT5U.armor.behavior.creativeflight");
     }
 }

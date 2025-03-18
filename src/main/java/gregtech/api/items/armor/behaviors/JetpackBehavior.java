@@ -50,10 +50,10 @@ public class JetpackBehavior implements IArmorBehavior {
 
             if (wasHover) {
                 PlayerUtils
-                    .messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.jetpackhover.disabled"));
+                    .messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", StatCollector.translateToLocal("GT5U.armor.behavior.jetpackhover")));
             } else {
                 PlayerUtils
-                    .messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.jetpackhover.enabled"));
+                    .messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", StatCollector.translateToLocal("GT5U.armor.behavior.jetpackhover")));
             }
         } else if (keyPressed == ArmorKeybinds.JETPACK_KEYBIND) {
             boolean wasActive = tag.getBoolean(ArmorHelper.JETPACK_KEY);
@@ -61,9 +61,9 @@ public class JetpackBehavior implements IArmorBehavior {
 
             if (wasActive) {
                 PlayerUtils
-                    .messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.jetpack.disabled"));
+                    .messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", getBehaviorName()));
             } else {
-                PlayerUtils.messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.jetpack.enabled"));
+                PlayerUtils.messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", getBehaviorName()));
             }
         }
     }
@@ -76,13 +76,6 @@ public class JetpackBehavior implements IArmorBehavior {
     @Override
     public void addBehaviorNBT(@NotNull ItemStack stack, @NotNull NBTTagCompound tag) {
         tag.setBoolean(ArmorHelper.JETPACK_KEY, false);
-    }
-
-    @Override
-    public void addInformation(@NotNull ItemStack stack, @NotNull List<String> tooltip) {
-        NBTTagCompound tag = getOrCreateNbtCompound(stack);
-        if (tag.hasKey(ArmorHelper.JETPACK_KEY))
-            tooltip.add(StatCollector.translateToLocal("GT5U.armor.message.jetpack"));
     }
 
     @Override
@@ -155,5 +148,10 @@ public class JetpackBehavior implements IArmorBehavior {
                 // spawnParticle(player.getEntityWorld(), player, jetpackStats.getParticle());
             }
         }
+    }
+
+    @Override
+    public String getBehaviorName() {
+        return StatCollector.translateToLocal("GT5U.armor.behavior.jetpack");
     }
 }

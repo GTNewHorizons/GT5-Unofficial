@@ -44,10 +44,10 @@ public class InertiaCancelingBehavior implements IArmorBehavior {
 
         if (wasEnabled) {
             PlayerUtils
-                .messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.inertiacanceling.disabled"));
+                .messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.behavior.disabled", getBehaviorName()));
         } else {
             PlayerUtils
-                .messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.inertiacanceling.enabled"));
+                .messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.behavior.enabled", getBehaviorName()));
         }
     }
 
@@ -69,8 +69,7 @@ public class InertiaCancelingBehavior implements IArmorBehavior {
     }
 
     @Override
-    public void addInformation(@NotNull ItemStack stack, @NotNull List<String> tooltip) {
-        if (!getOrCreateNbtCompound(stack).hasKey(ArmorHelper.INERTIA_CANCELING_KEY)) return;
-        tooltip.add(StatCollector.translateToLocal("GT5U.armor.message.inertiacanceling"));
+    public String getBehaviorName() {
+        return StatCollector.translateToLocal("GT5U.armor.behavior.inertiacanceling");
     }
 }

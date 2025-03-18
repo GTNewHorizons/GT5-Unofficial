@@ -29,9 +29,7 @@ public class StepAssistBehavior implements IArmorBehavior {
     }
 
     @Override
-    public void addInformation(@NotNull ItemStack stack, @NotNull List<String> tooltip) {
-        NBTTagCompound tag = getOrCreateNbtCompound(stack);
-        if (tag.hasKey(ArmorHelper.STEP_ASSIST_KEY))
-            tooltip.add(StatCollector.translateToLocal("GT5U.armor.message.stepassist"));
+    public String getBehaviorName() {
+        return StatCollector.translateToLocal("GT5U.armor.behavior.stepassist");
     }
 }
