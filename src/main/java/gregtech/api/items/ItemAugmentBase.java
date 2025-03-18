@@ -4,11 +4,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+
+import gregtech.api.items.armor.behaviors.IArmorBehavior;
 
 public class ItemAugmentBase extends GTGenericItem {
 
@@ -62,7 +63,9 @@ public class ItemAugmentBase extends GTGenericItem {
         if (visDiscount > 0) {
             aList.add(
                 EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount")
-                    + ": " + visDiscount + "%");
+                    + ": "
+                    + visDiscount
+                    + "%");
         }
         super.addAdditionalToolTips(aList, aStack, aPlayer);
     }

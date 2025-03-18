@@ -21,7 +21,6 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import java.util.Collections;
 import java.util.Locale;
 
-import gregtech.api.items.armor.behaviors.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -51,6 +50,7 @@ import gregtech.api.items.ItemAugmentCore;
 import gregtech.api.items.ItemBreederCell;
 import gregtech.api.items.ItemCoolantCellIC;
 import gregtech.api.items.ItemRadioactiveCellIC;
+import gregtech.api.items.armor.behaviors.*;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GTLog;

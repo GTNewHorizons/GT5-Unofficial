@@ -1,22 +1,24 @@
 package gregtech.api.items.armor.behaviors;
 
-import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
-import gregtech.api.items.armor.ArmorHelper;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
+import static gregtech.api.items.armor.ArmorKeybinds.OMNI_MOVEMENT_KEYBIND;
+import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import static gregtech.api.items.armor.ArmorKeybinds.INERTIA_CANCELING_KEYBIND;
-import static gregtech.api.items.armor.ArmorKeybinds.OMNI_MOVEMENT_KEYBIND;
-import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+
+import gregtech.api.items.armor.ArmorHelper;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class OmniMovementBehavior implements IArmorBehavior {
 
@@ -44,7 +46,8 @@ public class OmniMovementBehavior implements IArmorBehavior {
             PlayerUtils
                 .messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.omnimovement.disabled"));
         } else {
-            PlayerUtils.messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.omnimovement.enabled"));
+            PlayerUtils
+                .messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.omnimovement.enabled"));
         }
     }
 

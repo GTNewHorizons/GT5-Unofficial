@@ -1,21 +1,24 @@
 package gregtech.api.items.armor.behaviors;
 
-import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
-import gregtech.api.items.armor.ArmorHelper;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
+import static gregtech.api.items.armor.ArmorKeybinds.INERTIA_CANCELING_KEYBIND;
+import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import static gregtech.api.items.armor.ArmorKeybinds.INERTIA_CANCELING_KEYBIND;
-import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+
+import gregtech.api.items.armor.ArmorHelper;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class InertiaCancelingBehavior implements IArmorBehavior {
 
@@ -43,7 +46,8 @@ public class InertiaCancelingBehavior implements IArmorBehavior {
             PlayerUtils
                 .messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.inertiacanceling.disabled"));
         } else {
-            PlayerUtils.messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.inertiacanceling.enabled"));
+            PlayerUtils
+                .messagePlayer(player, StatCollector.translateToLocal("GT5U.armor.message.inertiacanceling.enabled"));
         }
     }
 
@@ -54,7 +58,7 @@ public class InertiaCancelingBehavior implements IArmorBehavior {
 
     @Override
     public void onArmorTick(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
-        if (world.isRemote) return;
+        if (!world.isRemote) return;
         NBTTagCompound tag = getOrCreateNbtCompound(stack);
         if (tag.getBoolean(ArmorHelper.INERTIA_CANCELING_KEY)) {
             if (player.moveForward == 0 && player.moveStrafing == 0 && player.capabilities.isFlying) {

@@ -10,10 +10,6 @@ import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 import java.util.ArrayList;
 import java.util.List;
 
-import forestry.api.apiculture.IArmorApiarist;
-import ic2.api.item.IElectricItem;
-import ic2.api.item.IElectricItemManager;
-import ic2.core.IC2;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -30,8 +26,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-
 import net.minecraftforge.common.ISpecialArmor;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.keybind.IKeyPressedListener;
@@ -41,12 +37,14 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
+import ic2.api.item.IElectricItem;
 import thaumcraft.api.IGoggles;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.nodes.IRevealer;
 
-public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISpecialArmor, IElectricItem, IGoggles, IRevealer, IVisDiscountGear {
+public class MechArmorBase extends ItemArmor
+    implements IKeyPressedListener, ISpecialArmor, IElectricItem, IGoggles, IRevealer, IVisDiscountGear {
 
     protected IIcon coreIcon;
     protected IIcon frameIcon;
@@ -199,28 +197,31 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
         ModelMechArmor model;
-            if (armorSlot == SLOT_LEGS) model = new ModelMechArmor(0.25F);
-            else model = new ModelMechArmor(0.5F);
-            model.bipedHead.showModel = (armorType == 0);
-            model.bipedHeadwear.showModel = (armorType == 0);
-            model.bipedBody.showModel = ((armorType == 1) || (armorType == 2));
-            model.bipedLeftArm.showModel = (armorType == 1);
-            model.bipedRightArm.showModel = (armorType == 1);
-            model.bipedLeftLeg.showModel = (armorType == 2 || armorType == 3);
-            model.bipedRightLeg.showModel = (armorType == 2 || armorType == 3);
+        if (armorSlot == SLOT_LEGS) model = new ModelMechArmor(0.25F);
+        else model = new ModelMechArmor(0.5F);
+        model.bipedHead.showModel = (armorType == 0);
+        model.bipedHeadwear.showModel = (armorType == 0);
+        model.bipedBody.showModel = ((armorType == 1) || (armorType == 2));
+        model.bipedLeftArm.showModel = (armorType == 1);
+        model.bipedRightArm.showModel = (armorType == 1);
+        model.bipedLeftLeg.showModel = (armorType == 2 || armorType == 3);
+        model.bipedRightLeg.showModel = (armorType == 2 || armorType == 3);
 
-            model.jettank1.showModel = (itemStack.getTagCompound().hasKey(JETPACK_KEY));
-            switch (getCore(itemStack)) {
-                case 1 -> model.core1.showModel = true;
-                case 2 -> model.core2.showModel = true;
-                case 3 -> model.core3.showModel = true;
-            }
+        model.jettank1.showModel = (itemStack.getTagCompound()
+            .hasKey(JETPACK_KEY));
+        switch (getCore(itemStack)) {
+            case 1 -> model.core1.showModel = true;
+            case 2 -> model.core2.showModel = true;
+            case 3 -> model.core3.showModel = true;
+        }
         return model;
     }
 
     protected int getCore(ItemStack stack) {
-        if (stack.getTagCompound().hasKey(MECH_CORE_KEY)) {
-            return (stack.getTagCompound().getInteger(MECH_CORE_KEY));
+        if (stack.getTagCompound()
+            .hasKey(MECH_CORE_KEY)) {
+            return (stack.getTagCompound()
+                .getInteger(MECH_CORE_KEY));
         }
         return 0;
     }
@@ -247,7 +248,8 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     // Special armor settings
 
     @Override
-    public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
+    public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage,
+        int slot) {
         if (source.isUnblockable() || source.isDamageAbsolute() || source.isMagicDamage())
             return new ArmorProperties(0, damageReduceAmount / 100D, 15);
         return new ArmorProperties(0, damageReduceAmount / 24.5D, 1000);
