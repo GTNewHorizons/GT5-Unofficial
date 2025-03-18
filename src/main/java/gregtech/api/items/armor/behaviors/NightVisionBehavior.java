@@ -64,15 +64,15 @@ public class NightVisionBehavior implements IArmorBehavior {
         return Collections.singleton(NIGHT_VISION_KEYBIND);
     }
 
-    // TODO: we should have our own electric item wrapper
     @Override
     public void onArmorTick(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
         if (world.isRemote) return;
         NBTTagCompound tag = getOrCreateNbtCompound(stack);
         if (tag.getBoolean(ArmorHelper.NIGHT_VISION_KEY)) {
-            // ElectricItem.manager.discharge(stack, 5, 1, true, true, false);
-            player.removePotionEffect(Potion.blindness.id);
-            player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 999999, 0, true));
+            if (ArmorHelper.drainArmor(stack, 2)) {
+                player.removePotionEffect(Potion.blindness.id);
+                player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 999999, 0, true));
+            } else player.removePotionEffect(Potion.nightVision.id);
         }
     }
 

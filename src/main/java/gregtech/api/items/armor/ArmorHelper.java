@@ -1,5 +1,10 @@
 package gregtech.api.items.armor;
 
+import net.minecraft.item.ItemStack;
+
+import ic2.api.item.ElectricItem;
+import ic2.api.item.IElectricItem;
+
 public class ArmorHelper {
 
     public static final String NIGHT_VISION_KEY = "NightVision";
@@ -14,6 +19,11 @@ public class ArmorHelper {
     public static final String GOGGLES_OF_REVEALING_KEY = "GogglesOfRevealing";
 
     public static final String VIS_DISCOUNT_KEY = "VisDiscount";
+
+    public static boolean drainArmor(ItemStack stack, double amount) {
+        return (stack.getItem() instanceof IElectricItem
+            && ElectricItem.manager.discharge(stack, amount, Integer.MAX_VALUE, true, false, false) > 0);
+    }
 
     public enum ArmorType {
 

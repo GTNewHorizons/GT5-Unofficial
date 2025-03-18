@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.items.armor.ArmorHelper.GOGGLES_OF_REVEALING_KEY;
 import static gregtech.api.items.armor.ArmorHelper.JETPACK_KEY;
 import static gregtech.api.items.armor.ArmorHelper.VIS_DISCOUNT_KEY;
+import static gregtech.api.items.armor.ArmorHelper.drainArmor;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.ArrayList;
@@ -261,7 +262,9 @@ public class MechArmorBase extends ItemArmor
     }
 
     @Override
-    public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {}
+    public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
+        drainArmor(stack, damage * 100);
+    }
 
     // Thaumcraft compat
 

@@ -92,16 +92,6 @@ public class JetpackBehavior implements IArmorBehavior {
     }
 
     /*
-     * protected boolean drainFuel(@NotNull ItemStack stack, int amount, boolean simulate) {
-     * IElectricItem electricItem = getElectricItem(stack);
-     * if (electricItem != null) {
-     * return electricItem.discharge(amount, Integer.MAX_VALUE, true, false, simulate) >= amount;
-     * }
-     * return false;
-     * };
-     */
-
-    /*
      * Called every tick, performs flying if the correct keys are pressed.
      * Logic from SimplyJetpacks2:
      * https://github.com/Tomson124/SimplyJetpacks2/blob/1.12/src/main/java/tonius/simplyjetpacks/item/ItemJetpack.java
@@ -113,14 +103,7 @@ public class JetpackBehavior implements IArmorBehavior {
         boolean descendKeyDown = ArmorKeybinds.VANILLA_SNEAK.isKeyDown(player);
 
         if (flyKeyDown || hover && !player.onGround) {
-            if (!player.isInWater()) {// && drainFuel(stack, getFuelPerUse(), true)) {
-                /*
-                 * drainFuel(stack,
-                 * (int) (player.isSprinting() ?
-                 * Math.round(getFuelPerUse() * jetpackStats.getSprintEnergyModifier()) : getFuelPerUse()),
-                 * false);
-                 */
-
+            if (!player.isInWater() && ArmorHelper.drainArmor(stack, 20)) {
                 if (flyKeyDown) {
                     if (!hover) {
                         player.motionY = Math.min(player.motionY + currentAccel, currentSpeedVertical);

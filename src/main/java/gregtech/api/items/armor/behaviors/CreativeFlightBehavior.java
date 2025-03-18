@@ -21,11 +21,13 @@ public class CreativeFlightBehavior implements IArmorBehavior {
     // TODO: we should have our own electric item wrapper
     @Override
     public void onArmorTick(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
-        if (world.isRemote) return;
+        if (!world.isRemote) return;
         NBTTagCompound tag = getOrCreateNbtCompound(stack);
         if (tag.getBoolean(ArmorHelper.CREATIVE_FLIGHT_KEY) && player.capabilities.isFlying) {
-            // TODO: discharge while flying
-            // ElectricItem.manager.discharge(stack, 5, 1, true, true, false);
+            if (!ArmorHelper.drainArmor(stack, 75)) {
+                player.capabilities.isFlying = false;
+                player.sendPlayerAbilities();
+            }
         }
     }
 
