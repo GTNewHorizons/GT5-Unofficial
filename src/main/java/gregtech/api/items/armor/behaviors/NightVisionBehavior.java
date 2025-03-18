@@ -5,7 +5,6 @@ import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 import static gregtech.loaders.ExtraIcons.nightVisionAugment;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,10 +49,13 @@ public class NightVisionBehavior implements IArmorBehavior {
 
         if (wasEnabled) {
             player.removePotionEffect(Potion.nightVision.id);
-            PlayerUtils
-                .messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", getBehaviorName()));
+            PlayerUtils.messagePlayer(
+                player,
+                StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", getBehaviorName()));
         } else {
-            PlayerUtils.messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", getBehaviorName()));
+            PlayerUtils.messagePlayer(
+                player,
+                StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", getBehaviorName()));
         }
     }
 

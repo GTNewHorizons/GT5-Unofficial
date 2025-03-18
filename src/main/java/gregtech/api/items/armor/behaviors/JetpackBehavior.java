@@ -2,7 +2,6 @@ package gregtech.api.items.armor.behaviors;
 
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
-import java.util.List;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,21 +48,30 @@ public class JetpackBehavior implements IArmorBehavior {
             tag.setBoolean(ArmorHelper.JETPACK_HOVER_KEY, !wasHover);
 
             if (wasHover) {
-                PlayerUtils
-                    .messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", StatCollector.translateToLocal("GT5U.armor.behavior.jetpackhover")));
+                PlayerUtils.messagePlayer(
+                    player,
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.armor.message.disabled",
+                        StatCollector.translateToLocal("GT5U.armor.behavior.jetpackhover")));
             } else {
-                PlayerUtils
-                    .messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", StatCollector.translateToLocal("GT5U.armor.behavior.jetpackhover")));
+                PlayerUtils.messagePlayer(
+                    player,
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.armor.message.enabled",
+                        StatCollector.translateToLocal("GT5U.armor.behavior.jetpackhover")));
             }
         } else if (keyPressed == ArmorKeybinds.JETPACK_KEYBIND) {
             boolean wasActive = tag.getBoolean(ArmorHelper.JETPACK_KEY);
             tag.setBoolean(ArmorHelper.JETPACK_KEY, !wasActive);
 
             if (wasActive) {
-                PlayerUtils
-                    .messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", getBehaviorName()));
+                PlayerUtils.messagePlayer(
+                    player,
+                    StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", getBehaviorName()));
             } else {
-                PlayerUtils.messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", getBehaviorName()));
+                PlayerUtils.messagePlayer(
+                    player,
+                    StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", getBehaviorName()));
             }
         }
     }

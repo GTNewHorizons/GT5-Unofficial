@@ -1,9 +1,5 @@
 package gregtech.api.items.armor.behaviors;
 
-import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
-
-import java.util.List;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;

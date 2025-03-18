@@ -4,7 +4,6 @@ import static gregtech.api.items.armor.ArmorKeybinds.INERTIA_CANCELING_KEYBIND;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,11 +42,13 @@ public class InertiaCancelingBehavior implements IArmorBehavior {
         tag.setBoolean(ArmorHelper.INERTIA_CANCELING_KEY, !wasEnabled);
 
         if (wasEnabled) {
-            PlayerUtils
-                .messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.behavior.disabled", getBehaviorName()));
+            PlayerUtils.messagePlayer(
+                player,
+                StatCollector.translateToLocalFormatted("GT5U.armor.behavior.disabled", getBehaviorName()));
         } else {
-            PlayerUtils
-                .messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.behavior.enabled", getBehaviorName()));
+            PlayerUtils.messagePlayer(
+                player,
+                StatCollector.translateToLocalFormatted("GT5U.armor.behavior.enabled", getBehaviorName()));
         }
     }
 

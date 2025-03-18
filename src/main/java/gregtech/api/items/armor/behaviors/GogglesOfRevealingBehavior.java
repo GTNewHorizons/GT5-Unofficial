@@ -4,7 +4,6 @@ import static gregtech.api.items.armor.ArmorKeybinds.GOGGLES_OF_REVEALING_KEYBIN
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,11 +33,13 @@ public class GogglesOfRevealingBehavior implements IArmorBehavior {
         tag.setBoolean(ArmorHelper.GOGGLES_OF_REVEALING_KEY, !wasEnabled);
 
         if (wasEnabled) {
-            PlayerUtils
-                .messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", getBehaviorName()));
+            PlayerUtils.messagePlayer(
+                player,
+                StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", getBehaviorName()));
         } else {
-            PlayerUtils
-                .messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", getBehaviorName()));
+            PlayerUtils.messagePlayer(
+                player,
+                StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", getBehaviorName()));
         }
     }
 

@@ -60,6 +60,18 @@ public class ItemAugmentBase extends GTGenericItem {
 
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
+        if (!attachedBehaviors.isEmpty()) {
+            aList.add(EnumChatFormatting.GREEN + "Adds Effect: ");
+            for (IArmorBehavior behavior : attachedBehaviors) aList.add("-" + behavior.getBehaviorName());
+        }
+        if (!requiredBehaviors.isEmpty()) {
+            aList.add(EnumChatFormatting.AQUA + "Requires Effect: ");
+            for (IArmorBehavior behavior : requiredBehaviors) aList.add("-" + behavior.getBehaviorName());
+        }
+        if (!incompatibleBehaviors.isEmpty()) {
+            aList.add(EnumChatFormatting.RED + "Incompatible With: ");
+            for (IArmorBehavior behavior : incompatibleBehaviors) aList.add("-" + behavior.getBehaviorName());
+        }
         if (visDiscount > 0) {
             aList.add(
                 EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount")

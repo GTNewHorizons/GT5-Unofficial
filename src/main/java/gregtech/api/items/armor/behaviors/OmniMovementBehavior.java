@@ -4,7 +4,6 @@ import static gregtech.api.items.armor.ArmorKeybinds.OMNI_MOVEMENT_KEYBIND;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,11 +42,13 @@ public class OmniMovementBehavior implements IArmorBehavior {
         tag.setBoolean(ArmorHelper.OMNI_MOVEMENT_KEY, !wasEnabled);
 
         if (wasEnabled) {
-            PlayerUtils
-                .messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", getBehaviorName()));
+            PlayerUtils.messagePlayer(
+                player,
+                StatCollector.translateToLocalFormatted("GT5U.armor.message.disabled", getBehaviorName()));
         } else {
-            PlayerUtils
-                .messagePlayer(player, StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", getBehaviorName()));
+            PlayerUtils.messagePlayer(
+                player,
+                StatCollector.translateToLocalFormatted("GT5U.armor.message.enabled", getBehaviorName()));
         }
     }
 

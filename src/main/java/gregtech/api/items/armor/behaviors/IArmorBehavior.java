@@ -1,5 +1,7 @@
 package gregtech.api.items.armor.behaviors;
 
+import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -15,8 +17,6 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
-
-import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 public interface IArmorBehavior {
     /*
@@ -58,7 +58,9 @@ public interface IArmorBehavior {
         return "";
     }
 
-    default String getBehaviorName() {return "";}
+    default String getBehaviorName() {
+        return "";
+    }
 
     default Set<SyncedKeybind> getListenedKeys() {
         return Collections.emptySet();
