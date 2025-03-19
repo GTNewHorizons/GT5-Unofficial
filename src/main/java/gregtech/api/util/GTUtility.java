@@ -12,6 +12,7 @@ import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.W;
 import static gregtech.api.enums.Materials.FLUID_MAP;
 import static gregtech.api.enums.Mods.Translocator;
+import static gregtech.api.items.armor.ArmorHelper.HAZMAT_PROTECTION_KEY;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
@@ -2691,7 +2692,12 @@ public class GTUtility {
         Map<Integer, Integer> tEnchantments = EnchantmentHelper.getEnchantments(aStack);
         Integer tLevel = tEnchantments.get(EnchantmentHazmat.INSTANCE.effectId);
 
-        return tLevel != null && tLevel >= 1;
+        if (tLevel != null && tLevel >= 1) return true;
+        NBTTagCompound tag = aStack.getTagCompound();
+        if (tag != null) {
+            return tag.hasKey(HAZMAT_PROTECTION_KEY);
+        }
+        return false;
     }
 
     public static float getHeatDamageFromItem(ItemStack aStack) {

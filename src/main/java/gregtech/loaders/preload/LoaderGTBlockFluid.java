@@ -274,6 +274,12 @@ public class LoaderGTBlockFluid implements Runnable {
                 Collections.singletonList(InertiaCancelingBehavior.INSTANCE),
                 Collections.singletonList(CreativeFlightBehavior.INSTANCE),
                 Collections.emptyList()));
+        ItemList.Augment_Hazmat.set(
+            new ItemAugmentBase(
+                "augmenthazmat",
+                "Augment: Protective Lining",
+                "Grants the user hazmat protection. Must be applied to all four armor pieces",
+                Collections.singletonList(HazmatBehavior.INSTANCE)));
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1

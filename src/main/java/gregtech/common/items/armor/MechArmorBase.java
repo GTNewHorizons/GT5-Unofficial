@@ -3,6 +3,7 @@ package gregtech.common.items.armor;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.items.armor.ArmorHelper.GOGGLES_OF_REVEALING_KEY;
+import static gregtech.api.items.armor.ArmorHelper.HAZMAT_PROTECTION_KEY;
 import static gregtech.api.items.armor.ArmorHelper.JETPACK_KEY;
 import static gregtech.api.items.armor.ArmorHelper.VIS_DISCOUNT_KEY;
 import static gregtech.api.items.armor.ArmorHelper.drainArmor;
@@ -11,6 +12,8 @@ import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.items.armor.behaviors.HazmatBehavior;
+import gregtech.api.items.armor.behaviors.NightVisionBehavior;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -69,6 +72,7 @@ public class MechArmorBase extends ItemArmor
 
     public MechArmorBase(int slot) {
         super(ArmorMaterial.IRON, 2, slot);
+        behaviors.add(HazmatBehavior.INSTANCE);
     }
 
     @Override
