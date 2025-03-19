@@ -1,19 +1,12 @@
 package gregtech.api.items.armor.behaviors;
 
-import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
-import gregtech.api.items.armor.ArmorHelper;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.Set;
-
-import static gregtech.api.items.armor.ArmorKeybinds.GOGGLES_OF_REVEALING_KEYBIND;
-import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
+import gregtech.api.items.armor.ArmorHelper;
 
 public class HazmatBehavior implements IArmorBehavior {
 
@@ -21,6 +14,7 @@ public class HazmatBehavior implements IArmorBehavior {
 
     protected HazmatBehavior() {/**/}
 
+    // This tag will treat the armor as if it has the Hazmat Protection Enchantment
     @Override
     public void addBehaviorNBT(@NotNull ItemStack stack, @NotNull NBTTagCompound tag) {
         tag.setBoolean(ArmorHelper.HAZMAT_PROTECTION_KEY, true);
