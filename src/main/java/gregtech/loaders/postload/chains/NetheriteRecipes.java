@@ -116,8 +116,10 @@ public class NetheriteRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(EtFuturumRequiem.ID, "ancient_debris", 1, missing))
-            .itemOutputs(getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1, missing))
-            .outputChances(5000)
+            .itemOutputs(
+                getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1, missing),
+                getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1, missing))
+            .outputChances(10000, 2500)
             .duration(27 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(hammerRecipes);
