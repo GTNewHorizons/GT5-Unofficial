@@ -2622,7 +2622,9 @@ public enum ItemList implements IItemContainer {
     Augment_GogglesOfRevealing,
     Augment_InertiaCanceling,
     Augment_OmniMovement,
-    Augment_Hazmat
+    Augment_Hazmat,
+    Augment_Apiarist,
+    Augment_SwimSpeed
 
     // semicolon after the comment to reduce merge conflicts
     ;

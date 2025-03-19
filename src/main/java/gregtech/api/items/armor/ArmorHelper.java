@@ -19,6 +19,7 @@ public class ArmorHelper {
     public static final String GOGGLES_OF_REVEALING_KEY = "GogglesOfRevealing";
     public static final String HAZMAT_PROTECTION_KEY = "HazmatProtection";
     public static final String APIARIST_KEY = "Apiarist";
+    public static final String SWIM_SPEED_KEY = "SwimSpeed";
 
     public static final String VIS_DISCOUNT_KEY = "VisDiscount";
 

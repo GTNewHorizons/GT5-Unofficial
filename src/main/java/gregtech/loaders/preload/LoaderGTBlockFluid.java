@@ -232,14 +232,18 @@ public class LoaderGTBlockFluid implements Runnable {
                 "augmentcreativeflight",
                 "Augment: Gravitational Control Module",
                 "Allows user to fly",
-                Collections.singletonList(CreativeFlightBehavior.INSTANCE)));
+                Collections.singletonList(CreativeFlightBehavior.INSTANCE),
+                Collections.emptyList(),
+                Collections.singletonList(JetpackBehavior.INSTANCE)));
         ItemList.Augment_Jetpack.set(
             new ItemAugmentBase(
                 "augmentjetpack",
                 "Augment: Electric Jetpack",
                 "Allows user to jet upwards and hover in midair",
-                Collections.singletonList(JetpackBehavior.INSTANCE)));
-        ItemList.Augment_Jetpack.set(
+                Collections.singletonList(JetpackBehavior.INSTANCE),
+                Collections.emptyList(),
+                Collections.singletonList(CreativeFlightBehavior.INSTANCE)));
+        ItemList.Augment_Jetpack_PerfectHover.set(
             new ItemAugmentBase(
                 "augmentjetpackperfecthover",
                 "Augment: Adaptive Jetpack Stabilizers",
@@ -280,12 +284,18 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Augment: Protective Lining",
                 "Grants the user hazmat protection. Must be applied to all four armor pieces",
                 Collections.singletonList(HazmatBehavior.INSTANCE)));
-        ItemList.Augment_Hazmat.set(
+        ItemList.Augment_Apiarist.set(
             new ItemAugmentBase(
                 "augmentapiarist",
                 "Augment: Bee Pacifier",
                 "Prevents negative bee effects, as if user were wearing Apiarist's armor",
                 Collections.singletonList(ApiaristBehavior.INSTANCE)));
+        ItemList.Augment_SwimSpeed.set(
+            new ItemAugmentBase(
+                "augmentswimspeed",
+                "Augment: Aquatic Jets",
+                "Improves the user's speed in water",
+                Collections.singletonList(SwimSpeedBehavior.INSTANCE)));
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1

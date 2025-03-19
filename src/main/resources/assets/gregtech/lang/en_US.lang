@@ -817,6 +817,7 @@ GT5U.armor.behavior.inertiacanceling=Inertia Canceling
 GT5U.armor.behavior.omnimovement=Omni Movement
 GT5U.armor.behavior.hazmat=Hazmat Armor
 GT5U.armor.behavior.apiarist=Apiarist Protection
+GT5U.armor.behavior.swimspeed=Enhanced Swimming
 
 GT5U.armor.message.enabled=%s Enabled
 GT5U.armor.message.disabled=%s Disabled
