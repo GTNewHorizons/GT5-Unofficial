@@ -135,9 +135,10 @@ public class DrillingLogicDelegate {
             return;
         }
 
-        // Inspect block above the drill tip - if it's not pipe, don't refund pipe to the user to prevent duping.
+        // Inspect block above the drill tip - if it's not pipe or the miner, don't refund pipe to the user to prevent
+        // duping.
         targetBlock = aBaseMetaTileEntity.getBlockOffset(0, tipDepth + 1, 0);
-        if (targetBlock == MINING_PIPE_BLOCK || targetBlock == MINING_PIPE_TIP_BLOCK) {
+        if (targetBlock == MINING_PIPE_BLOCK || targetBlock == MINING_PIPE_TIP_BLOCK || tipDepth == -1) {
             // Return the pipe back to the machine (inputs allowed for this case!)
             owner.pushOutputs(MINING_PIPE_STACK, 1, false, true);
         }
