@@ -242,8 +242,8 @@ public class NetheriteRecipes {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(getModItem(EtFuturumRequiem.ID, "netherite_block", 4, missing))
-            .itemOutputs(getModItem(EtFuturumRequiem.ID, "netherite_stairs", 3, missing))
+            .itemInputs(getModItem(EtFuturumRequiem.ID, "netherite_block", 3, missing))
+            .itemOutputs(getModItem(EtFuturumRequiem.ID, "netherite_stairs", 4, missing))
             .duration(1 * HOURS)
             .eut(TierEU.RECIPE_IV)
             .addTo(cutterRecipes);
