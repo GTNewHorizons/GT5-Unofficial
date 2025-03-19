@@ -302,6 +302,12 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Augment: Shock Absorbers",
                 "Protects the user from knockback effects",
                 Collections.singletonList(KnockbackResistBehavior.INSTANCE)));
+        ItemList.Augment_SpeedBoost.set(
+            new ItemAugmentBase(
+                "augmentspeedboost",
+                "Augment: Sprint Boosters",
+                "Allows the user to move faster",
+                Collections.singletonList(SpeedBoostBehavior.MECH_ARMOR_INSTANCE)));
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1
