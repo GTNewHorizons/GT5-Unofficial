@@ -2,6 +2,7 @@ package gregtech.common.items.armor;
 
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.items.armor.ArmorHelper.APIARIST_KEY;
 import static gregtech.api.items.armor.ArmorHelper.GOGGLES_OF_REVEALING_KEY;
 import static gregtech.api.items.armor.ArmorHelper.JETPACK_KEY;
 import static gregtech.api.items.armor.ArmorHelper.VIS_DISCOUNT_KEY;
@@ -35,8 +36,11 @@ import com.gtnewhorizon.gtnhlib.keybind.IKeyPressedListener;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import forestry.api.apiculture.IArmorApiarist;
+import gregtech.api.enums.Mods;
 import gregtech.api.items.armor.behaviors.HazmatBehavior;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import ic2.api.item.IElectricItem;
@@ -45,8 +49,14 @@ import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.nodes.IRevealer;
 
-public class MechArmorBase extends ItemArmor
-    implements IKeyPressedListener, ISpecialArmor, IElectricItem, IGoggles, IRevealer, IVisDiscountGear {
+@Optional.InterfaceList(
+    value = { @Optional.Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = Mods.Names.FORESTRY),
+        @Optional.Interface(iface = "thaumcraft.api.IVisDiscountGear", modid = Mods.Names.THAUMCRAFT),
+        @Optional.Interface(iface = "thaumcraft.api.IGoggles", modid = Mods.Names.THAUMCRAFT),
+        @Optional.Interface(iface = "thaumcraft.api.nodes.IRevealer", modid = Mods.Names.THAUMCRAFT), })
+
+public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISpecialArmor, IElectricItem, IGoggles,
+    IRevealer, IVisDiscountGear, IArmorApiarist {
 
     protected IIcon coreIcon;
     protected IIcon frameIcon;
@@ -283,6 +293,17 @@ public class MechArmorBase extends ItemArmor
     @Override
     public int getVisDiscount(ItemStack item, EntityPlayer var2, Aspect var3) {
         return (getOrCreateNbtCompound(item).getInteger(VIS_DISCOUNT_KEY));
+    }
+
+    // Forestry apiarist compat
+    @Override
+    public boolean protectEntity(EntityLivingBase entity, ItemStack armor, String cause, boolean doProtect) {
+        return (getOrCreateNbtCompound(armor).getBoolean(APIARIST_KEY));
+    }
+
+    @Override
+    public boolean protectPlayer(EntityPlayer player, ItemStack armor, String cause, boolean doProtect) {
+        return (getOrCreateNbtCompound(armor).getBoolean(APIARIST_KEY));
     }
 
     // IC2 electric api
