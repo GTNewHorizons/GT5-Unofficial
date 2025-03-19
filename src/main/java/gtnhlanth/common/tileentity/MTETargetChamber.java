@@ -257,7 +257,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             tFocusItemZeroDamage = tFocusItemArray.get(0)
                 .copy();
             tFocusItemZeroDamage.setItemDamage(0);
-            tItemsWithFocusItem.add(tFocusItemArray.get(0));
+            tItemsWithFocusItem.add(tFocusItemZeroDamage);
         }
 
         tItemsWithFocusItem.addAll(tItems);
