@@ -288,7 +288,7 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugmentBase(
                 "augmentapiarist",
                 "Augment: Bee Pacifier",
-                "Prevents negative bee effects, as if user were wearing Apiarist's armor",
+                "Prevents negative bee effects, as if the user were wearing Apiarist's armor",
                 Collections.singletonList(ApiaristBehavior.INSTANCE)));
         ItemList.Augment_SwimSpeed.set(
             new ItemAugmentBase(
@@ -296,6 +296,12 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Augment: Aquatic Jets",
                 "Improves the user's speed in water",
                 Collections.singletonList(SwimSpeedBehavior.INSTANCE)));
+        ItemList.Augment_KnockbackResistance.set(
+            new ItemAugmentBase(
+                "augmentknockbackresistance",
+                "Augment: Shock Absorbers",
+                "Protects the user from knockback effects",
+                Collections.singletonList(KnockbackResistBehavior.INSTANCE)));
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1

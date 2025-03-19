@@ -80,25 +80,6 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
             .forEach(behavior -> behavior.addBehaviorNBT(armorItem, tag));
 
         if (--modItem.stackSize == 0) inputHandler.setStackInSlot(0, null);
-
-        /*
-         * else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1))) {
-         * tag.setString("frame", "Copper");
-         * tag.setShort("frameR", Materials.Copper.mRGBa[0]);
-         * tag.setShort("frameG", Materials.Copper.mRGBa[1]);
-         * tag.setShort("frameB", Materials.Copper.mRGBa[2]);
-         * } else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1))) {
-         * tag.setString("frame", "Iron");
-         * tag.setShort("frameR", Materials.Iron.mRGBa[0]);
-         * tag.setShort("frameG", Materials.Iron.mRGBa[1]);
-         * tag.setShort("frameB", Materials.Iron.mRGBa[2]);
-         * } else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1))) {
-         * tag.setString("frame", "Gold");
-         * tag.setShort("frameR", Materials.Gold.mRGBa[0]);
-         * tag.setShort("frameG", Materials.Gold.mRGBa[1]);
-         * tag.setShort("frameB", Materials.Gold.mRGBa[2]);
-         * }
-         */
     }
 
     @Override
