@@ -10,6 +10,7 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.centrifugeNonCellRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
 
 import net.minecraft.init.Blocks;
@@ -41,7 +42,7 @@ public class NetheriteRecipes {
                 Materials.SulfurTrioxide.getGas(2100))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(centrifugeRecipes);
+            .addTo(centrifugeNonCellRecipes);
 
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.NetherAir.getFluid(1000))
