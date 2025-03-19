@@ -360,22 +360,18 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
             // Screwdriver
             for (int id : OreDictionary.getOreIDs(potentialStack)) {
                 if (id == screwdriverOreId) {
-                    if (potentialStack.getItem().equals(One_Use_craftingToolScrewdriver.getItem())) {
-                        potentialStack.stackSize -= 1;
-                        if (potentialStack.stackSize <= 0) {
+                    if (doDamage) {
+                        if (potentialStack.getItem()
+                            .equals(One_Use_craftingToolScrewdriver.getItem())) {
+                            potentialStack.stackSize -= 1;
+                        } else {
+                            potentialStack = potentialStack.getItem()
+                                .getContainerItem(potentialStack);
+                        }
+                        if (potentialStack != null && potentialStack.stackSize <= 0) {
                             mainInventory[i] = null;
                         } else {
                             mainInventory[i] = potentialStack;
-                        }
-                    } else {
-                        if (doDamage) {
-                            potentialStack = potentialStack.getItem()
-                                .getContainerItem(potentialStack);
-                            if (potentialStack != null && potentialStack.stackSize <= 0) {
-                                mainInventory[i] = null;
-                            } else {
-                                mainInventory[i] = potentialStack;
-                            }
                         }
                     }
                     return potentialStack;
