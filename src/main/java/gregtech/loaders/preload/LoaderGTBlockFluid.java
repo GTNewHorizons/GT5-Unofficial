@@ -306,7 +306,7 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugmentBase(
                 "augmentspeedboost",
                 "Augment: Sprint Boosters",
-                "Allows the user to move faster",
+                "Allows the user to move faster. Can be applied multiple times",
                 Collections.singletonList(SpeedBoostBehavior.MECH_ARMOR_INSTANCE)));
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));

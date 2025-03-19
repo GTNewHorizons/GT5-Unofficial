@@ -20,6 +20,10 @@ public class ArmorKeybinds {
         .createConfigurable("gregtech.toggle_inertiacanceling", "key.categories.gameplay", Keyboard.KEY_T);
     public static final SyncedKeybind OMNI_MOVEMENT_KEYBIND = SyncedKeybind
         .createConfigurable("gregtech.toggle_omnimovement", "key.categories.gameplay", Keyboard.KEY_T);
+    public static final SyncedKeybind SPEED_INCREASE_KEYBIND = SyncedKeybind
+        .createConfigurable("gregtech.speed_increase", "key.categories.gameplay", Keyboard.KEY_EQUALS);
+    public static final SyncedKeybind SPEED_DECREASE_KEYBIND = SyncedKeybind
+        .createConfigurable("gregtech.speed_decrease", "key.categories.gameplay", Keyboard.KEY_MINUS);
 
     public static final SyncedKeybind VANILLA_JUMP = SyncedKeybind
         .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindJump);

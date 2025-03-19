@@ -85,6 +85,13 @@ public interface IArmorBehavior {
         return "";
     }
 
+    /**
+     * Return whether this behavior is designed to be applied multiple times
+     */
+    default boolean isStackable() {
+        return false;
+    }
+
     /** Get the equipment slot for this behavior's armor item. Provided since the method call is somewhat obscure. */
     default int getEquipmentSlot(@NotNull ItemStack stack) {
         return EntityLiving.getArmorPosition(stack);
