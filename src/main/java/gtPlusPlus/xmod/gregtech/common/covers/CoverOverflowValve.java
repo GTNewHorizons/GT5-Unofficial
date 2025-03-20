@@ -38,7 +38,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
     public CoverOverflowValve(CoverContext context, int maxOverflowPoint) {
         super(context, null);
         this.maxOverflowPoint = maxOverflowPoint;
-        Object initializer = context.getCoverData();
+        Object initializer = context.getCoverInitializer();
         if (initializer == null || initializer instanceof ItemStack) {
             // Re-initialization required until we merge covers and their data objects,
             // since this relies on an instance field.

@@ -35,7 +35,7 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
         super(context, coverTexture);
         if (slots <= 0) throw new IllegalArgumentException("slots must be greater than 0");
         this.slots = slots;
-        Object initializer = context.getCoverData();
+        Object initializer = context.getCoverInitializer();
         if (initializer == null || initializer instanceof ItemStack) {
             // Re-initialization required until we merge covers and their data objects,
             // since this relies on an instance field.

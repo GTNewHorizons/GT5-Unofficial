@@ -45,10 +45,10 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
 
     public CoverBehaviorBase(@NotNull CoverContext context, ITexture coverFGTexture) {
         super(context);
-        this.coverData = initializeData(context.getCoverData());
+        this.coverData = initializeData(context.getCoverInitializer());
         this.coverFGTexture = coverFGTexture;
         // Calling after data was initialized since overrides may depend on data.
-        setTickRateAddition(initializeTickRateAddition(context.getCoverData()));
+        setTickRateAddition(initializeTickRateAddition(context.getCoverInitializer()));
     }
 
     private T initializeData(Object coverData) {
