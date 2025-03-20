@@ -82,21 +82,22 @@ public class ItemAugmentBase extends GTGenericItem {
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         if (!validArmors.isEmpty()) {
-            aList.add(EnumChatFormatting.WHITE + "Applicable To: ");
+            aList.add(EnumChatFormatting.WHITE + StatCollector.translateToLocal("GT5U.armor.tooltip.applicable"));
             for (MechArmorBase armor : validArmors)
                 aList.add("-" + StatCollector.translateToLocal(armor.getUnlocalizedName() + ".name"));
         }
         if (!attachedBehaviors.isEmpty()) {
-            aList.add(EnumChatFormatting.GREEN + "Adds Effect: ");
-            for (IArmorBehavior behavior : attachedBehaviors)
-                aList.add("-" + behavior.getBehaviorName() + (behavior.isStackable() ? " (Stackable)" : ""));
+            aList.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.armor.tooltip.effects"));
+            for (IArmorBehavior behavior : attachedBehaviors) aList.add(
+                "-" + behavior.getBehaviorName()
+                    + (behavior.isStackable() ? StatCollector.translateToLocal("GT5U.armor.tooltip.stackable") : ""));
         }
         if (!requiredBehaviors.isEmpty()) {
-            aList.add(EnumChatFormatting.AQUA + "Requires Effect: ");
+            aList.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.armor.tooltip.requires"));
             for (IArmorBehavior behavior : requiredBehaviors) aList.add("-" + behavior.getBehaviorName());
         }
         if (!incompatibleBehaviors.isEmpty()) {
-            aList.add(EnumChatFormatting.RED + "Incompatible With: ");
+            aList.add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.armor.tooltip.incompatible"));
             for (IArmorBehavior behavior : incompatibleBehaviors) aList.add("-" + behavior.getBehaviorName());
         }
         if (visDiscount > 0) {

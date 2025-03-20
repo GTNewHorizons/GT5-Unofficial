@@ -828,6 +828,12 @@ GT5U.armor.message.enabled=%s Enabled
 GT5U.armor.message.disabled=%s Disabled
 GT5U.armor.message.installed=%s Installed
 
+GT5U.armor.tooltip.applicable=Applicable To:
+GT5U.armor.tooltip.effects=Adds Effect:
+GT5U.armor.tooltip.requires=Requires Effect:
+GT5U.armor.tooltip.incompatible=Incompatible With:
+GT5U.armor.tooltip.stackable= (Stackable)
+
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak middle-click to unlock.
 gt.behaviour.paintspray.infinite.gui.solvent=Solvent
