@@ -19,16 +19,12 @@ public abstract class CoverBehavior extends CoverBehaviorBase<ISerializableObjec
     }
 
     public int getVariable() {
-        return convert(coverData);
+        return coverData.get();
     }
 
     public CoverBehavior setVariable(int newValue) {
         this.coverData.set(newValue);
         return this;
-    }
-
-    protected static int convert(ISerializableObject.LegacyCoverData data) {
-        return data == null ? 0 : data.get();
     }
 
     @Override

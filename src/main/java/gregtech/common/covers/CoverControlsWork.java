@@ -150,7 +150,7 @@ public class CoverControlsWork extends CoverBehavior {
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int newCoverData = (convert(coverData) + (aPlayer.isSneaking() ? -1 : 1)) % 5;
+        int newCoverData = (getVariable() + (aPlayer.isSneaking() ? -1 : 1)) % 5;
         if (newCoverData < 0) {
             newCoverData = 2;
         }
