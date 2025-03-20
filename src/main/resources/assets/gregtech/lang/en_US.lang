@@ -822,6 +822,7 @@ GT5U.armor.behavior.knockbackresistance=Knockback Resistance
 GT5U.armor.behavior.speedboost=Speed Boost
 GT5U.armor.behavior.jumpboost=Jump Boost
 GT5U.armor.behavior.fallprotection=Fall Protection
+GT5U.armor.behavior.spacesuit=Space Suit
 
 GT5U.armor.message.enabled=%s Enabled
 GT5U.armor.message.disabled=%s Disabled

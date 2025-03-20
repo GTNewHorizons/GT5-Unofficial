@@ -320,6 +320,12 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Augment: Landing Gear",
                 "Converts the user's fall damage into EU usage",
                 Collections.singletonList(FallProtectionBehavior.INSTANCE)));
+        ItemList.Augment_SpaceSuit.set(
+            new ItemAugmentBase(
+                "augmentspacesuit",
+                "Augment: Astronaut's Equipment",
+                "Adds Spacesuit capability. Must be applied to all four armor pieces",
+                Collections.singletonList(SpaceSuitBehavior.INSTANCE)));
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1

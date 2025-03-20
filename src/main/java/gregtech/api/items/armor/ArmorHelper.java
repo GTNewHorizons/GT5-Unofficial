@@ -25,6 +25,7 @@ public class ArmorHelper {
     public static final String SPEED_BOOST_CURRENT_KEY = "CurrentSpeedBoost";
     public static final String JUMP_BOOST_KEY = "JumpBoost";
     public static final String FALL_PROTECTION_KEY = "FallProtection";
+    public static final String FORCE_SPACE_SUIT_NBT_KEY = "ForceValidSpaceSuit";
 
     public static final String VIS_DISCOUNT_KEY = "VisDiscount";
 

@@ -43,6 +43,7 @@ import forestry.api.apiculture.IArmorApiarist;
 import gregtech.api.enums.Mods;
 import gregtech.api.items.armor.behaviors.HazmatBehavior;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
+import gregtech.api.items.armor.behaviors.SpaceSuitBehavior;
 import ic2.api.item.IElectricItem;
 import thaumcraft.api.IGoggles;
 import thaumcraft.api.IVisDiscountGear;
@@ -81,6 +82,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     public MechArmorBase(int slot) {
         super(ArmorMaterial.IRON, 2, slot);
         behaviors.add(HazmatBehavior.INSTANCE);
+        behaviors.add(SpaceSuitBehavior.INSTANCE);
     }
 
     @Override
