@@ -24,6 +24,7 @@ public class ArmorHelper {
     public static final String SPEED_BOOST_MAX_KEY = "MaxSpeedBoost";
     public static final String SPEED_BOOST_CURRENT_KEY = "CurrentSpeedBoost";
     public static final String JUMP_BOOST_KEY = "JumpBoost";
+    public static final String FALL_PROTECTION_KEY = "FallProtection";
 
     public static final String VIS_DISCOUNT_KEY = "VisDiscount";
 
@@ -37,17 +38,9 @@ public class ArmorHelper {
         return (ElectricItem.manager.discharge(stack, amount, Integer.MAX_VALUE, true, false, false) > 0);
     }
 
-    public enum ArmorType {
+    static final int HELMET_SLOT_ID = 3;
+    static final int CHESTPLATE_SLOT_ID = 2;
+    static final int LEGGINGS_SLOT_ID = 1;
+    static final int BOOTS_SLOT_ID = 0;
 
-        HELMET(1),
-        CHESTPLATE(2),
-        LEGGINGS(3),
-        BOOTS(4);
-
-        public final int id;
-
-        ArmorType(int id) {
-            this.id = id;
-        }
-    }
 }

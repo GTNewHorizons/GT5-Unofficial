@@ -314,6 +314,12 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Augment: Pneumatic Jump Assist",
                 "Allows the user to jump higher",
                 Collections.singletonList(JumpBoostBehavior.MECH_ARMOR_INSTANCE)));
+        ItemList.Augment_FallProtection.set(
+            new ItemAugmentBase(
+                "augmentfallprotection",
+                "Augment: Landing Gear",
+                "Converts the user's fall damage into EU usage",
+                Collections.singletonList(FallProtectionBehavior.INSTANCE)));
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1

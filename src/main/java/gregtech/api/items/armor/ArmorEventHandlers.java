@@ -1,18 +1,23 @@
 package gregtech.api.items.armor;
 
+import static gregtech.api.items.armor.ArmorHelper.BOOTS_SLOT_ID;
+import static gregtech.api.items.armor.ArmorHelper.FALL_PROTECTION_KEY;
 import static gregtech.api.items.armor.ArmorHelper.JUMP_BOOST_KEY;
 import static gregtech.api.items.armor.ArmorHelper.drainArmor;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 
 import com.gtnewhorizon.gtnhlib.client.event.LivingEquipmentChangeEvent;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -102,7 +107,7 @@ public class ArmorEventHandlers {
     @SubscribeEvent
     public void onPlayerJump(LivingEvent.LivingJumpEvent event) {
         if (event.entityLiving instanceof EntityPlayer player) {
-            ItemStack boots = player.getCurrentArmor(0);
+            ItemStack boots = player.getCurrentArmor(BOOTS_SLOT_ID);
 
             if (boots == null) return;
             NBTTagCompound tag = boots.getTagCompound();
@@ -114,6 +119,26 @@ public class ArmorEventHandlers {
                 player.motionY += jumpboost;
                 player.fallDistance = player.fallDistance - (jumpboost * 10);
                 drainArmor(boots, 50);
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public void onLivingFall(LivingFallEvent event) {
+        if (event.entityLiving instanceof EntityPlayerMP player) {
+
+            if (player.fallDistance < 3.2f) {
+                return;
+            }
+            ItemStack boots = player.getCurrentArmor(BOOTS_SLOT_ID);
+            if (boots == null) return;
+            NBTTagCompound tag = boots.getTagCompound();
+
+            if (tag == null) return;
+            if (tag.getBoolean(FALL_PROTECTION_KEY)
+                && ArmorHelper.drainArmor(boots, 500 * (player.fallDistance - 1.2f))) {
+                player.fallDistance = 0;
+                event.setCanceled(true);
             }
         }
     }

@@ -2,7 +2,6 @@ package gregtech.api.items.armor.behaviors;
 
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
-import java.util.List;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
