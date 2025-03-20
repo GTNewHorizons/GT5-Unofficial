@@ -57,6 +57,12 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
         }
 
         // Verify behaviors meet requirements
+
+        // Check augment is available for this armor
+        if (!augment.getValidArmors()
+            .contains(armor)) return;
+
+        // Check armor against required and incompatible lists
         for (IArmorBehavior requiredBehavior : augment.getRequiredBehaviors()) {
             if (!tag.hasKey(requiredBehavior.getMainNBTTag())) return;
         }

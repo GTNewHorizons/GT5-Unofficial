@@ -3,6 +3,7 @@ package gregtech.api.items;
 import java.util.Collection;
 
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
+import gregtech.common.items.armor.MechArmorLoader;
 
 public class ItemAugmentCore extends ItemAugmentBase {
 
@@ -10,7 +11,7 @@ public class ItemAugmentCore extends ItemAugmentBase {
 
     public ItemAugmentCore(String aUnlocalized, String aEnglish, String aEnglishTooltip,
         Collection<IArmorBehavior> behaviors, int coreid) {
-        super(aUnlocalized, aEnglish, aEnglishTooltip, behaviors);
+        super(aUnlocalized, aEnglish, aEnglishTooltip, MechArmorLoader.AllMechArmor, behaviors);
         this.coreid = coreid;
     }
 
