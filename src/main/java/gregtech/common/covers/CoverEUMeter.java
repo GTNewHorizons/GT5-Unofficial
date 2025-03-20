@@ -264,7 +264,7 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
                     CoverEUMeter cover = getCover();
                     return cover != null ? cover.getType()
                         .getTileEntityEnergyCapacity(getUIBuildContext().getTile()) : Long.MAX_VALUE;
-                }, value -> numericWidget.setMaxValue(value)));
+                }, numericWidget::setMaxValue));
         }
     }
 

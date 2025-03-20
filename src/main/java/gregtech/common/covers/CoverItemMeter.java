@@ -243,38 +243,36 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
             setMaxSlot();
             setMaxThreshold();
 
-            builder.widget(
-                new CoverDataControllerWidget<>(this::getCover, getUIBuildContext())
-                    .addFollower(
-                        CoverDataFollowerToggleButtonWidget.ofRedstone(),
-                        CoverItemMeter::isInverted,
-                        CoverItemMeter::setInverted,
-                        widget -> widget.addTooltip(0, NORMAL)
-                            .addTooltip(1, INVERTED)
-                            .setPos(0, 0))
-                    .addFollower(
-                        new CoverDataFollowerNumericWidget<>(),
-                        coverData -> (double) coverData.getThreshold(),
-                        (coverData, state) -> coverData.setThresdhold(state.intValue()),
-                        widget -> widget.setBounds(0, maxThreshold)
-                            .setScrollValues(1, 64, 1000)
-                            .setFocusOnGuiOpen(true)
-                            .setPos(0, 2 + spaceY)
-                            .setSize(spaceX * 4 + 5, 12))
-                    .addFollower(
-                        new CoverDataFollowerNumericWidget<>(),
-                        coverData -> (double) coverData.getSlot(),
-                        (coverData, state) -> {
-                            coverData.setSlot(state.intValue());
-                            return coverData;
-                        },
-                        widget -> widget.setBounds(-1, maxSlot)
-                            .setDefaultValue(-1)
-                            .setScrollValues(1, 100, 10)
-                            .setNumberFormat(numberFormatAll)
-                            .setPos(0, 2 + spaceY * 2)
-                            .setSize(spaceX * 3 + 1, 12))
-                    .setPos(startX, startY))
+            builder
+                .widget(
+                    new CoverDataControllerWidget<>(this::getCover, getUIBuildContext())
+                        .addFollower(
+                            CoverDataFollowerToggleButtonWidget.ofRedstone(),
+                            CoverItemMeter::isInverted,
+                            CoverItemMeter::setInverted,
+                            widget -> widget.addTooltip(0, NORMAL)
+                                .addTooltip(1, INVERTED)
+                                .setPos(0, 0))
+                        .addFollower(
+                            new CoverDataFollowerNumericWidget<>(),
+                            coverData -> (double) coverData.getThreshold(),
+                            (coverData, state) -> coverData.setThresdhold(state.intValue()),
+                            widget -> widget.setBounds(0, maxThreshold)
+                                .setScrollValues(1, 64, 1000)
+                                .setFocusOnGuiOpen(true)
+                                .setPos(0, 2 + spaceY)
+                                .setSize(spaceX * 4 + 5, 12))
+                        .addFollower(
+                            new CoverDataFollowerNumericWidget<>(),
+                            coverData -> (double) coverData.getSlot(),
+                            (coverData, state) -> coverData.setSlot(state.intValue()),
+                            widget -> widget.setBounds(-1, maxSlot)
+                                .setDefaultValue(-1)
+                                .setScrollValues(1, 100, 10)
+                                .setNumberFormat(numberFormatAll)
+                                .setPos(0, 2 + spaceY * 2)
+                                .setSize(spaceX * 3 + 1, 12))
+                        .setPos(startX, startY))
                 .widget(
                     new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
                         .setPos(startX + spaceX * 3 + 8, startY + spaceY * 2))

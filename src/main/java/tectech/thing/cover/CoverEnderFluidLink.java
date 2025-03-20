@@ -39,8 +39,8 @@ public class CoverEnderFluidLink extends CoverBehavior {
     }
 
     private void transferFluid(IFluidHandler source, ForgeDirection coverSide, IFluidHandler target,
-        ForgeDirection tSide, int amount) {
-        FluidStack fluidStack = source.drain(coverSide, amount, false);
+        ForgeDirection tSide) {
+        FluidStack fluidStack = source.drain(coverSide, CoverEnderFluidLink.L_PER_TICK, false);
 
         if (fluidStack != null) {
             int fluidTransferred = target.fill(tSide, fluidStack, true);
@@ -78,9 +78,9 @@ public class CoverEnderFluidLink extends CoverBehavior {
                 IFluidHandler enderTank = EnderWorldSavedData.getEnderFluidContainer(tag);
 
                 if (testBit(coverDataValue, IMPORT_EXPORT_MASK)) {
-                    transferFluid(enderTank, ForgeDirection.UNKNOWN, teTank, coverSide, L_PER_TICK);
+                    transferFluid(enderTank, ForgeDirection.UNKNOWN, teTank, coverSide);
                 } else {
-                    transferFluid(teTank, coverSide, enderTank, ForgeDirection.UNKNOWN, L_PER_TICK);
+                    transferFluid(teTank, coverSide, enderTank, ForgeDirection.UNKNOWN);
                 }
             }
         }
@@ -108,11 +108,6 @@ public class CoverEnderFluidLink extends CoverBehavior {
         if (coveredTile.get() instanceof IFluidHandler fluidHandlerSelf) {
             EnderWorldSavedData.unbindTank(fluidHandlerSelf);
         }
-    }
-
-    @Override
-    public String getDescription() {
-        return "";
     }
 
     @Override

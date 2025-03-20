@@ -282,40 +282,28 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
                     .addFollower(
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         coverData -> coverData.getCondition() == Conditional.Always,
-                        (coverData, state) -> {
-                            coverData.setCondition(Conditional.Always);
-                            return coverData;
-                        },
+                        (coverData, state) -> coverData.setCondition(Conditional.Always),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_CHECKMARK)
                             .addTooltip(GTUtility.trans("224", "Always On"))
                             .setPos(spaceX * 0, spaceY * 1))
                     .addFollower(
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         coverData -> coverData.getCondition() == Conditional.Conditional,
-                        (coverData, state) -> {
-                            coverData.setCondition(Conditional.Conditional);
-                            return coverData;
-                        },
+                        (coverData, state) -> coverData.setCondition(Conditional.Conditional),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_USE_PROCESSING_STATE)
                             .addTooltip(GTUtility.trans("343", "Use Machine Processing State"))
                             .setPos(spaceX * 1, spaceY * 1))
                     .addFollower(
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         coverData -> coverData.getCondition() == Conditional.Inverted,
-                        (coverData, state) -> {
-                            coverData.setCondition(Conditional.Inverted);
-                            return coverData;
-                        },
+                        (coverData, state) -> coverData.setCondition(Conditional.Inverted),
                         widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_USE_INVERTED_PROCESSING_STATE)
                             .addTooltip(GTUtility.trans("343.1", "Use Inverted Machine Processing State"))
                             .setPos(spaceX * 2, spaceY * 1))
                     .addFollower(
                         new CoverDataFollowerNumericWidget<>(),
                         coverData -> (double) coverData.getSpeed(),
-                        (coverData, state) -> {
-                            coverData.setSpeed(state.intValue());
-                            return coverData;
-                        },
+                        (coverData, state) -> coverData.setSpeed(state.intValue()),
                         widget -> widget.setBounds(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY)
                             .setValidator(val -> {
                                 CoverFluidRegulator cover = getCover();
@@ -339,10 +327,7 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
                     .addFollower(
                         new CoverDataFollowerNumericWidget<>(),
                         coverData -> (double) coverData.getTickRateForUi(),
-                        (coverData, state) -> {
-                            coverData.setTickRateForUi(state.intValue());
-                            return coverData;
-                        },
+                        (coverData, state) -> coverData.setTickRateForUi(state.intValue()),
                         widget -> widget.setBounds(0, TICK_RATE_MAX)
                             .setValidator(val -> {
                                 CoverFluidRegulator cover = getCover();
@@ -353,8 +338,7 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
                                     val = (long) TICK_RATE_MAX;
                                     warn.set(true);
                                 } else if (Math.abs(speed) > transferRate * val) {
-                                    val = (long) Math
-                                        .min(TICK_RATE_MAX, (Math.abs(speed) + transferRate - 1) / transferRate);
+                                    val = Math.min(TICK_RATE_MAX, (Math.abs(speed) + transferRate - 1) / transferRate);
                                     warn.set(true);
                                 } else if (val < TICK_RATE_MIN) {
                                     val = 1L;

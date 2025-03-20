@@ -227,10 +227,7 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
                     this::getCover,
                     (id, coverData) -> !getClickable(id, coverData.getFilterMode()),
-                    (id, coverData) -> {
-                        coverData.setFilterMode(getNewFilterMode(id, coverData.getFilterMode()));
-                        return coverData;
-                    },
+                    (id, coverData) -> coverData.setFilterMode(getNewFilterMode(id, coverData.getFilterMode())),
                     getUIBuildContext())
                         .addToggleButton(
                             0,
