@@ -238,8 +238,8 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
 
         @Override
         public void writeToByteBuf(ByteBuf aBuf) {
-            ByteBufUtils.writeItemStack(aBuf, mStack);
             aBuf.writeByte(mFlags);
+            ByteBufUtils.writeItemStack(aBuf, mStack);
         }
 
         @Override
@@ -251,8 +251,8 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
 
         @Override
         public void readFromPacket(ByteArrayDataInput aBuf) {
-            mStack = ISerializableObject.readItemStackFromGreggyByteBuf(aBuf);
             mFlags = aBuf.readByte();
+            mStack = ISerializableObject.readItemStackFromGreggyByteBuf(aBuf);
         }
     }
 
