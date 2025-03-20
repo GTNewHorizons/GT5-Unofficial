@@ -3,6 +3,7 @@ package gregtech.common.items.armor;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.items.armor.ArmorHelper.APIARIST_KEY;
+import static gregtech.api.items.armor.ArmorHelper.FORCE_FIELD_KEY;
 import static gregtech.api.items.armor.ArmorHelper.GOGGLES_OF_REVEALING_KEY;
 import static gregtech.api.items.armor.ArmorHelper.JETPACK_KEY;
 import static gregtech.api.items.armor.ArmorHelper.VIS_DISCOUNT_KEY;
@@ -266,14 +267,18 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     @Override
     public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage,
         int slot) {
-        if (source.isUnblockable() || source.isDamageAbsolute() || source.isMagicDamage())
+        if (source.isUnblockable()) return new ArmorProperties(0, damageReduceAmount / 100D, 15);
+        if (armor.getTagCompound()
+            .getBoolean(FORCE_FIELD_KEY) && drainArmor(armor, 100000 * damage))
+            return new ArmorProperties(0, 100, Integer.MAX_VALUE);
+        if (source.isDamageAbsolute() || source.isMagicDamage())
             return new ArmorProperties(0, damageReduceAmount / 100D, 15);
         return new ArmorProperties(0, damageReduceAmount / 24.5D, 1000);
     }
 
     @Override
     public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-        return (int) (getProtectionShare() * 20D);
+        return (int) (damageReduceAmount);
     }
 
     @Override

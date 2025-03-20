@@ -24,6 +24,8 @@ public class ArmorKeybinds {
         .createConfigurable("gregtech.speed_increase", "key.categories.gameplay", Keyboard.KEY_EQUALS);
     public static final SyncedKeybind SPEED_DECREASE_KEYBIND = SyncedKeybind
         .createConfigurable("gregtech.speed_decrease", "key.categories.gameplay", Keyboard.KEY_MINUS);
+    public static final SyncedKeybind FORCE_FIELD_KEYBIND = SyncedKeybind
+        .createConfigurable("gregtech.force_field", "key.categories.gameplay", Keyboard.KEY_K);
 
     public static final SyncedKeybind VANILLA_JUMP = SyncedKeybind
         .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindJump);

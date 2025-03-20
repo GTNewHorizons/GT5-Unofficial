@@ -349,6 +349,13 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Adds Spacesuit capability. Must be applied to all four armor pieces",
                 MechArmorLoader.AllMechArmor,
                 Collections.singletonList(SpaceSuitBehavior.INSTANCE)));
+        ItemList.Augment_ForceField.set(
+            new ItemAugmentBase(
+                "augmentforcefield",
+                "Augment: Energy Grid Defense",
+                "Allows user to deploy a powerful forcefield which\nwill block any damage for huge amounts of eu",
+                Collections.singletonList(MechArmorLoader.MechArmorChestplate),
+                Collections.singletonList(ForceFieldBehavior.INSTANCE)));
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1

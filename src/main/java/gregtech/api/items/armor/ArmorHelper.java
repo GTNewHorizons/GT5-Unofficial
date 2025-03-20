@@ -27,6 +27,7 @@ public class ArmorHelper {
     public static final String FALL_PROTECTION_KEY = "FallProtection";
     public static final String FORCE_SPACE_SUIT_NBT_KEY = "ForceValidSpaceSuit";
     public static final String INFINITE_ENERGY_KEY = "InfiniteEnergy";
+    public static final String FORCE_FIELD_KEY = "ForceField";
 
     public static final String VIS_DISCOUNT_KEY = "VisDiscount";
 
