@@ -10,11 +10,13 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.centrifugeNonCellRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
+import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -33,6 +35,16 @@ public class NetheriteRecipes {
     public static void run() {
 
         GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.NetherAir.getFluid(10000))
+            .fluidOutputs(
+                Materials.NitrogenDioxide.getGas(1400),
+                Materials.SulfurDioxide.getGas(3800),
+                Materials.SulfurTrioxide.getGas(2100))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(centrifugeNonCellRecipes);
+
+        GTValues.RA.stdBuilder()
             .fluidInputs(Materials.NetherAir.getFluid(1000))
             .fluidOutputs(Materials.NetherSemiFluid.getFluid(100))
             .duration(10 * SECONDS)
@@ -45,10 +57,11 @@ public class NetheriteRecipes {
             .fluidOutputs(
                 Materials.NefariousGas.getFluid(4000),
                 FluidUtils.getFluidStack("fluid.coalgas", 16000),
-                FluidUtils.getFluidStack("fluid.anthracene", 7000),
-                Materials.SulfurTrioxide.getGas(21000),
-                Materials.SulfurDioxide.getGas(38000),
-                Materials.NitrogenDioxide.getGas(14000))
+                FluidUtils.getFluidStack("fluid.anthracene", 70000),
+                Materials.SulfurTrioxide.getGas(210000),
+                Materials.SulfurDioxide.getGas(380000),
+                Materials.NitrogenDioxide.getGas(140000),
+                WerkstoffLoader.Neon.getFluidOrGas(36000))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(distillationTowerRecipes);
@@ -103,8 +116,10 @@ public class NetheriteRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(EtFuturumRequiem.ID, "ancient_debris", 1, missing))
-            .itemOutputs(getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1, missing))
-            .outputChances(5000)
+            .itemOutputs(
+                getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1, missing),
+                getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1, missing))
+            .outputChances(10000, 2500)
             .duration(27 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(hammerRecipes);
@@ -230,8 +245,8 @@ public class NetheriteRecipes {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(getModItem(EtFuturumRequiem.ID, "netherite_block", 4, missing))
-            .itemOutputs(getModItem(EtFuturumRequiem.ID, "netherite_stairs", 3, missing))
+            .itemInputs(getModItem(EtFuturumRequiem.ID, "netherite_block", 3, missing))
+            .itemOutputs(getModItem(EtFuturumRequiem.ID, "netherite_stairs", 4, missing))
             .duration(1 * HOURS)
             .eut(TierEU.RECIPE_IV)
             .addTo(cutterRecipes);
