@@ -18,7 +18,6 @@ public class CreativeFlightBehavior implements IArmorBehavior {
 
     protected CreativeFlightBehavior() {/**/}
 
-    // TODO: we should have our own electric item wrapper
     @Override
     public void onArmorTick(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
         if (!world.isRemote) return;

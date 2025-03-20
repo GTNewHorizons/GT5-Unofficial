@@ -92,13 +92,4 @@ public class SpeedBoostBehavior implements IArmorBehavior {
     public String getBehaviorName() {
         return StatCollector.translateToLocal("GT5U.armor.behavior.speedboost");
     }
-
-    @Override
-    public void addInformation(@NotNull ItemStack stack, @NotNull List<String> tooltip) {
-        if (!getOrCreateNbtCompound(stack).hasKey(getMainNBTTag())) return;
-        tooltip.add(
-            StatCollector.translateToLocalFormatted("GT5U.armor.message.installed", getBehaviorName()) + "("
-                + getOrCreateNbtCompound(stack).getFloat(getMainNBTTag())
-                + ")");
-    }
 }

@@ -29,7 +29,6 @@ public class JetpackBehavior implements IArmorBehavior {
         jetpackStats = stats;
     }
 
-    // TODO: we should have our own electric item wrapper
     @Override
     public void onArmorTick(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
         NBTTagCompound tag = getOrCreateNbtCompound(stack);
