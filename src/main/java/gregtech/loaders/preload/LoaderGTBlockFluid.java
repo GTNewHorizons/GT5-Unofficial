@@ -356,6 +356,15 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Allows user to deploy a powerful forcefield which\nwill block any damage for huge amounts of eu",
                 Collections.singletonList(MechArmorLoader.MechArmorChestplate),
                 Collections.singletonList(ForceFieldBehavior.INSTANCE)));
+        ItemList.Augment_OmniMovement.set(
+            new ItemAugmentBase(
+                "augmentomnimovement",
+                "Augment: Rotational Movement Adjusters",
+                "Allows user to walk at increased speed in all directions",
+                Collections.singletonList(MechArmorLoader.MechArmorBoots),
+                Collections.singletonList(OmniMovementBehavior.INSTANCE),
+                Collections.singletonList(SpeedBoostBehavior.MECH_ARMOR_INSTANCE),
+                Collections.emptyList()));
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1

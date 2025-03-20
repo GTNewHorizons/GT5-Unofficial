@@ -2631,7 +2631,7 @@ public enum ItemList implements IItemContainer {
     Augment_JumpBoost,
     Augment_FallProtection,
     Augment_SpaceSuit,
-    Augment_ForceField
+    Augment_ForceField,
 
     // semicolon after the comment to reduce merge conflicts
     ;

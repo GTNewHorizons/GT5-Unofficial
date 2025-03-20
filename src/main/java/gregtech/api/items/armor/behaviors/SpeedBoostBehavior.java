@@ -69,9 +69,23 @@ public class SpeedBoostBehavior implements IArmorBehavior {
         NBTTagCompound tag = getOrCreateNbtCompound(stack);
         float speed = tag.getFloat(ArmorHelper.SPEED_BOOST_CURRENT_KEY) * tag.getFloat(ArmorHelper.SPEED_BOOST_MAX_KEY);
         if (speed > 0F) {
-            if ((player.onGround || player.capabilities.isFlying) && player.moveForward > 0F && !player.isInWater()) {
+            if ((player.onGround || player.capabilities.isFlying) && !player.isInWater()
+                && (player.moveForward != 0 || player.moveStrafing != 0)) {
                 if (ArmorHelper.drainArmor(stack, 1)) {
-                    player.moveFlying(0F, 1F, speed);
+                    if (player.moveForward > 0F) {
+                        player.moveFlying(0F, 1F, speed);
+                    }
+                    if (tag.getBoolean(ArmorHelper.OMNI_MOVEMENT_KEY)) {
+                        if (player.moveForward < 0F) {
+                            player.moveFlying(0F, -1F, speed);
+                        }
+                        if (player.moveStrafing > 0F) {
+                            player.moveFlying(1F, 0F, speed);
+                        }
+                        if (player.moveStrafing < 0F) {
+                            player.moveFlying(-1F, 0F, speed);
+                        }
+                    }
                 }
             }
         }

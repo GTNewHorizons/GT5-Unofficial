@@ -10,7 +10,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -55,15 +54,6 @@ public class OmniMovementBehavior implements IArmorBehavior {
     @Override
     public Set<SyncedKeybind> getListenedKeys() {
         return Collections.singleton(OMNI_MOVEMENT_KEYBIND);
-    }
-
-    @Override
-    public void onArmorTick(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
-        if (world.isRemote) return;
-        NBTTagCompound tag = getOrCreateNbtCompound(stack);
-        if (tag.getBoolean(ArmorHelper.OMNI_MOVEMENT_KEY)) {
-
-        }
     }
 
     @Override
