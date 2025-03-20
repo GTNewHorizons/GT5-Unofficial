@@ -27,9 +27,14 @@ public class ArmorHelper {
 
     public static final String VIS_DISCOUNT_KEY = "VisDiscount";
 
+    /**
+     * Try to use EU from an item. Returns whether use was successful.
+     * Note: If the item is not an electric item, this will always return true!
+     * It assumes that if you add a behavior to a non-electric item, you want that behavior to always succeed.
+     */
     public static boolean drainArmor(ItemStack stack, double amount) {
-        return (stack.getItem() instanceof IElectricItem
-            && ElectricItem.manager.discharge(stack, amount, Integer.MAX_VALUE, true, false, false) > 0);
+        if (!(stack.getItem() instanceof IElectricItem)) return true;
+        return (ElectricItem.manager.discharge(stack, amount, Integer.MAX_VALUE, true, false, false) > 0);
     }
 
     public enum ArmorType {

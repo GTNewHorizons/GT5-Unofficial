@@ -1,6 +1,7 @@
 package gregtech.api.items.armor;
 
 import static gregtech.api.items.armor.ArmorHelper.JUMP_BOOST_KEY;
+import static gregtech.api.items.armor.ArmorHelper.drainArmor;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import net.minecraft.client.entity.EntityOtherPlayerMP;
@@ -105,10 +106,15 @@ public class ArmorEventHandlers {
 
             if (boots == null) return;
             NBTTagCompound tag = boots.getTagCompound();
+
             if (tag == null) return;
+
             float jumpboost = tag.getFloat(JUMP_BOOST_KEY);
-            player.motionY += jumpboost;
-            player.fallDistance = player.fallDistance - (jumpboost * 10);
+            if (jumpboost != 0) {
+                player.motionY += jumpboost;
+                player.fallDistance = player.fallDistance - (jumpboost * 10);
+                drainArmor(boots, 50);
+            }
         }
     }
 }
