@@ -26,6 +26,7 @@ public class ArmorHelper {
     public static final String JUMP_BOOST_KEY = "JumpBoost";
     public static final String FALL_PROTECTION_KEY = "FallProtection";
     public static final String FORCE_SPACE_SUIT_NBT_KEY = "ForceValidSpaceSuit";
+    public static final String INFINITE_ENERGY_KEY = "InfiniteEnergy";
 
     public static final String VIS_DISCOUNT_KEY = "VisDiscount";
 
@@ -36,6 +37,8 @@ public class ArmorHelper {
      */
     public static boolean drainArmor(ItemStack stack, double amount) {
         if (!(stack.getItem() instanceof IElectricItem)) return true;
+        if (stack.hasTagCompound() && stack.getTagCompound()
+            .getBoolean(INFINITE_ENERGY_KEY)) return true;
         return (ElectricItem.manager.discharge(stack, amount, Integer.MAX_VALUE, true, false, false) > 0);
     }
 

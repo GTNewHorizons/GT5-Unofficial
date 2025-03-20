@@ -221,6 +221,13 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Supreme core for Mechanical Armor",
                 Collections.emptyList(),
                 3));
+        ItemList.Armor_Core_T4.set(
+            new ItemAugmentCore(
+                "armorcore4",
+                "Armor Core (Prismatic)",
+                "Perfected core for Mechanical Armor",
+                Collections.singletonList(InfiniteEnergyBehavior.INSTANCE),
+                4));
         ItemList.Augment_NightVision.set(
             new ItemAugmentBase(
                 "augmentnightvision",

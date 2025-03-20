@@ -2613,6 +2613,7 @@ public enum ItemList implements IItemContainer {
     Armor_Core_T1,
     Armor_Core_T2,
     Armor_Core_T3,
+    Armor_Core_T4,
     Augment_NightVision,
     Augment_CreativeFlight,
     Augment_Jetpack,

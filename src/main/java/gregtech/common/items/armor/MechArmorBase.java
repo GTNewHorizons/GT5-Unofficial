@@ -227,7 +227,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         switch (getCore(itemStack)) {
             case 1 -> model.core1.showModel = true;
             case 2 -> model.core2.showModel = true;
-            case 3 -> model.core3.showModel = true;
+            case 3, 4 -> model.core3.showModel = true;
         }
         return model;
     }
@@ -243,7 +243,8 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
 
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
-        return getCore(stack) != 0;
+        int core = getCore(stack);
+        return core != 0 && core != 4;
     }
 
     @Override

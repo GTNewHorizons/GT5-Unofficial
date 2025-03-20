@@ -2,6 +2,7 @@ package gregtech.common.render.items;
 
 import static gregtech.api.enums.Dyes.dyeGreen;
 import static gregtech.api.enums.Dyes.dyeLightBlue;
+import static gregtech.api.enums.Dyes.dyeMagenta;
 import static gregtech.api.enums.Dyes.dyeRed;
 import static gregtech.api.enums.Dyes.dyeWhite;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
@@ -85,6 +86,7 @@ public class MechanicalArmorRenderer implements IItemRenderer {
                 case 1 -> modulation = dyeGreen.getRGBA();
                 case 2 -> modulation = dyeLightBlue.getRGBA();
                 case 3 -> modulation = dyeRed.getRGBA();
+                case 4 -> modulation = dyeMagenta.getRGBA();
             }
             GL11.glColor4f(modulation[0] / 255.0F, modulation[1] / 255.0F, modulation[2] / 255.0F, 1);
             GTRenderUtil.renderItem(type, coreLayer);
