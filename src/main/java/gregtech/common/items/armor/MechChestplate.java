@@ -3,6 +3,7 @@ package gregtech.common.items.armor;
 import gregtech.api.items.armor.behaviors.CreativeFlightBehavior;
 import gregtech.api.items.armor.behaviors.InertiaCancelingBehavior;
 import gregtech.api.items.armor.behaviors.JetpackBehavior;
+import gregtech.api.items.armor.behaviors.JetpackPerfectHoverBehavior;
 
 public class MechChestplate extends MechArmorBase {
 
@@ -10,8 +11,9 @@ public class MechChestplate extends MechArmorBase {
         super(REGISTER_CHEST);
         type = "chestplate";
         behaviors.add(CreativeFlightBehavior.INSTANCE);
-        behaviors.add(JetpackBehavior.INSTANCE);
         behaviors.add(InertiaCancelingBehavior.INSTANCE);
+        behaviors.add(JetpackBehavior.INSTANCE);
+        behaviors.add(JetpackPerfectHoverBehavior.INSTANCE);
     }
 
     @Override
