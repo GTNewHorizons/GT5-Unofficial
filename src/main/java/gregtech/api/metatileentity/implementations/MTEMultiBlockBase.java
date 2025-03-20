@@ -721,8 +721,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         markDirty();
                     }
                 }
-                if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
             }
+            if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
         }
     }
 
