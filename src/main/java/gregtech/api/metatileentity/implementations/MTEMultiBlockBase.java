@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -2855,11 +2856,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             double processPerTick = (double) amount / mMaxProgresstime * 20;
             ret.append(" (");
             if (processPerTick > 1) {
-                numberFormat.format(Math.round(processPerTick * 10) / 10.0, ret);
-                ret.append("/s)");
+                ret.append(EnumChatFormatting.GRAY);
+                ret.append(formatNumbers(Math.round(processPerTick * 10) / 10.0));
+                ret.append("/s");
+                ret.append(EnumChatFormatting.WHITE);
+                ret.append(")");
+
             } else {
-                numberFormat.format(Math.round(1 / processPerTick * 10) / 10.0, ret);
-                ret.append("s/ea)");
+                ret.append(EnumChatFormatting.GRAY);
+                ret.append(formatNumbers(Math.round(1 / processPerTick * 10) / 10.0));
+                ret.append("s/ea");
+                ret.append(EnumChatFormatting.WHITE);
+                ret.append(")");
             }
         };
 
@@ -2872,7 +2880,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 if (item == null || item.stackSize <= 0) continue;
                 nameToAmount.merge(item.getDisplayName(), (long) item.stackSize, Long::sum);
             }
-            for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
+            HashMap<String, Long> sortedMap = nameToAmount.entrySet()
+                .stream()
+                .sorted(
+                    Map.Entry.<String, Long>comparingByValue()
+                        .reversed())
+                .collect(
+                    Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue,
+                        LinkedHashMap::new));
+            for (Map.Entry<String, Long> entry : sortedMap.entrySet()) {
                 if (lines >= MAX_LINES) {
                     ret.append("...");
                     return ret.toString();
@@ -2881,9 +2900,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 ret.append(EnumChatFormatting.AQUA)
                     .append(entry.getKey())
                     .append(EnumChatFormatting.WHITE)
+                    .append(
+                        entry.getKey()
+                            .length()
+                            + entry.getValue()
+                                .toString()
+                                .length()
+                            + 5 > 30 ? "\n" : "")
                     .append(" x ")
                     .append(EnumChatFormatting.GOLD);
-                numberFormat.format(entry.getValue(), ret);
+                Long number = entry.getValue();
+                ret.append(formatNumbers(number));
                 ret.append(EnumChatFormatting.WHITE);
                 appendRate.accept(entry.getValue());
                 ret.append('\n');
@@ -2895,7 +2922,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 if (fluid == null || fluid.amount <= 0) continue;
                 nameToAmount.merge(fluid.getLocalizedName(), (long) fluid.amount, Long::sum);
             }
-            for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
+            HashMap<String, Long> sortedMap = nameToAmount.entrySet()
+                .stream()
+                .sorted(
+                    Map.Entry.<String, Long>comparingByValue()
+                        .reversed())
+                .collect(
+                    Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue,
+                        LinkedHashMap::new));
+            for (Map.Entry<String, Long> entry : sortedMap.entrySet()) {
                 if (lines >= MAX_LINES) {
                     ret.append("...");
                     return ret.toString();
@@ -2904,13 +2942,21 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 ret.append(EnumChatFormatting.AQUA)
                     .append(entry.getKey())
                     .append(EnumChatFormatting.WHITE)
+                    .append(
+                        entry.getKey()
+                            .length()
+                            + entry.getValue()
+                                .toString()
+                                .length()
+                            + 5 > 30 ? "\n" : "")
                     .append(" x ")
                     .append(EnumChatFormatting.GOLD);
-                numberFormat.format(entry.getValue(), ret);
+                Long number = entry.getValue();
+                ret.append(formatNumbers(number));
                 ret.append("L")
                     .append(EnumChatFormatting.WHITE);
                 appendRate.accept(entry.getValue());
-                ret.append('\n');
+                ret.append("\n");
             }
         }
         return ret.toString();
