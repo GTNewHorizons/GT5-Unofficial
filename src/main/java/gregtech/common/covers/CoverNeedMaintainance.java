@@ -168,7 +168,7 @@ public class CoverNeedMaintainance extends CoverBehavior {
         return new NeedMaintainanceUIFactory(buildContext).createWindow();
     }
 
-    private class NeedMaintainanceUIFactory extends UIFactory {
+    private static class NeedMaintainanceUIFactory extends CoverBehaviorUIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;
@@ -199,7 +199,7 @@ public class CoverNeedMaintainance extends CoverBehavior {
             builder
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        CoverBehavior::adaptCover,
+                        this::getCover,
                         (index, coverData) -> isEnabled(index, coverData.getVariable()),
                         (index, coverData) -> coverData
                             .setVariable(getNewCoverVariable(index, coverData.getVariable())),
@@ -267,7 +267,8 @@ public class CoverNeedMaintainance extends CoverBehavior {
                         .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 2))
                 .widget(
                     TextWidget
-                        .dynamicString(() -> isEnabled(7, convert(getCoverData())) ? buttonText[7] : buttonText[8])
+                        .dynamicString(
+                            getCoverString(c -> isEnabled(7, c.getVariable()) ? buttonText[7] : buttonText[8]))
                         .setSynced(false)
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 3));

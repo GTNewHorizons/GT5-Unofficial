@@ -160,7 +160,7 @@ public class CoverEnderFluidLink extends CoverBehavior {
         return null;
     }
 
-    private class EnderFluidLinkUIFactory extends UIFactory {
+    private static class EnderFluidLinkUIFactory extends CoverBehaviorUIFactory {
 
         private static final int START_X = 10;
         private static final int START_Y = 25;
@@ -191,7 +191,8 @@ public class CoverEnderFluidLink extends CoverBehavior {
                     if (!frequencyField.isClient() && getUIBuildContext().getTile() instanceof IFluidHandler tank) {
                         UUID uuid = null;
 
-                        if (testBit(convert(getCoverData()), PUBLIC_PRIVATE_MASK)) {
+                        CoverBehavior cover = getCover();
+                        if (cover != null && testBit(cover.getVariable(), PUBLIC_PRIVATE_MASK)) {
                             uuid = getUUID();
                             if (!uuid.equals(getOwner(tank))) return;
                         }
@@ -207,7 +208,7 @@ public class CoverEnderFluidLink extends CoverBehavior {
                 .setSize(SPACE_X * 5 - 8, 12))
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        CoverBehavior::adaptCover,
+                        this::getCover,
                         (id, coverData) -> !getClickable(id, coverData.getVariable()),
                         (id, coverData) -> coverData.setVariable(getNewCoverVariable(id, coverData.getVariable())),
                         getUIBuildContext())

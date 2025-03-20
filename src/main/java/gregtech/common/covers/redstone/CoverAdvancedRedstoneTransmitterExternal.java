@@ -54,7 +54,7 @@ public class CoverAdvancedRedstoneTransmitterExternal
         return new CoverAdvancedRedstoneTransmitterExternalUIFactory(buildContext).createWindow();
     }
 
-    protected class CoverAdvancedRedstoneTransmitterExternalUIFactory
+    protected static class CoverAdvancedRedstoneTransmitterExternalUIFactory
         extends AdvancedRedstoneTransmitterBaseUIFactory<CoverAdvancedRedstoneTransmitterExternal> {
 
         public CoverAdvancedRedstoneTransmitterExternalUIFactory(CoverUIBuildContext buildContext) {
@@ -63,7 +63,7 @@ public class CoverAdvancedRedstoneTransmitterExternal
 
         @Override
         protected @NotNull CoverDataControllerWidget<CoverAdvancedRedstoneTransmitterExternal> getDataController() {
-            return new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext());
+            return new CoverDataControllerWidget<>(this::getCover, getUIBuildContext());
         }
 
         @Override

@@ -129,7 +129,7 @@ public abstract class CoverAdvancedRedstoneTransmitterBase<T extends CoverAdvanc
 
     // GUI stuff
 
-    protected abstract class AdvancedRedstoneTransmitterBaseUIFactory<C extends CoverAdvancedRedstoneTransmitterBase<T>>
+    protected static abstract class AdvancedRedstoneTransmitterBaseUIFactory<C extends CoverAdvancedRedstoneTransmitterBase<?>>
         extends AdvancedWirelessRedstoneBaseUIFactory<C> {
 
         public AdvancedRedstoneTransmitterBaseUIFactory(CoverUIBuildContext buildContext) {
@@ -154,18 +154,15 @@ public abstract class CoverAdvancedRedstoneTransmitterBase<T extends CoverAdvanc
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             super.addUIWidgets(builder);
-            builder.widget(TextWidget.dynamicString(() -> {
-                T coverData = getCoverData();
-                if (coverData != null) {
-                    return getCoverData().invert ? GTUtility.trans("INVERTED", "Inverted")
-                        : GTUtility.trans("NORMAL", "Normal");
-                } else {
-                    return "";
-                }
-            })
-                .setSynced(false)
-                .setDefaultColor(COLOR_TEXT_GRAY.get())
-                .setPos(startX + spaceX * 10, 4 + startY + spaceY * getButtonRow()));
+            builder.widget(
+                TextWidget
+                    .dynamicString(
+                        getCoverString(
+                            c -> c.isInverted() ? GTUtility.trans("INVERTED", "Inverted")
+                                : GTUtility.trans("NORMAL", "Normal")))
+                    .setSynced(false)
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(startX + spaceX * 10, 4 + startY + spaceY * getButtonRow()));
         }
 
         @Override

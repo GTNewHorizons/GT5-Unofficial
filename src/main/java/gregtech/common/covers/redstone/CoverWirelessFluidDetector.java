@@ -160,7 +160,7 @@ public class CoverWirelessFluidDetector
         return new WirelessFluidDetectorUIFactory(buildContext).createWindow();
     }
 
-    private class WirelessFluidDetectorUIFactory
+    private static class WirelessFluidDetectorUIFactory
         extends AdvancedRedstoneTransmitterBaseUIFactory<CoverWirelessFluidDetector> {
 
         private int maxCapacity;
@@ -184,7 +184,7 @@ public class CoverWirelessFluidDetector
 
         @Override
         protected @NotNull CoverDataControllerWidget<CoverWirelessFluidDetector> getDataController() {
-            return new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext());
+            return new CoverDataControllerWidget<>(this::getCover, getUIBuildContext());
         }
 
         @Override
@@ -195,21 +195,18 @@ public class CoverWirelessFluidDetector
                 .widget(
                     new TextWidget(GTUtility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
-                .widget(TextWidget.dynamicString(() -> {
-                    FluidTransmitterData coverData = getCoverData();
-                    if (coverData != null) {
-                        return getCoverData().physical
-                            ? StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.1")
-                            : StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.0");
-                    } else {
-                        return "";
-                    }
-                })
-                    .setSynced(false)
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(startX + spaceX, 4 + startY + spaceY * 3)
-                    .setSize(spaceX * 10, 12));
+                .widget(
+                    TextWidget
+                        .dynamicString(
+                            getCoverString(
+                                c -> c.isPhysical()
+                                    ? StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.1")
+                                    : StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.0")))
+                        .setSynced(false)
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setTextAlignment(Alignment.CenterLeft)
+                        .setPos(startX + spaceX, 4 + startY + spaceY * 3)
+                        .setSize(spaceX * 10, 12));
         }
 
         @Override

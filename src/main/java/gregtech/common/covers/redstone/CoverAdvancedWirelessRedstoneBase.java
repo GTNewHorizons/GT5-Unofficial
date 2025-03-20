@@ -243,8 +243,8 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
         return true;
     }
 
-    protected abstract class AdvancedWirelessRedstoneBaseUIFactory<C extends CoverAdvancedWirelessRedstoneBase<T>>
-        extends UIFactory {
+    protected static abstract class AdvancedWirelessRedstoneBaseUIFactory<C extends CoverAdvancedWirelessRedstoneBase<?>>
+        extends UIFactory<C> {
 
         protected static final int startX = 10;
         protected static final int startY = 25;

@@ -186,7 +186,7 @@ public class CoverWirelessDoesWorkDetector
         return new WirelessActivityDetectorUIFactory(buildContext).createWindow();
     }
 
-    private class WirelessActivityDetectorUIFactory
+    private static class WirelessActivityDetectorUIFactory
         extends AdvancedRedstoneTransmitterBaseUIFactory<CoverWirelessDoesWorkDetector> {
 
         public WirelessActivityDetectorUIFactory(CoverUIBuildContext buildContext) {
@@ -207,7 +207,7 @@ public class CoverWirelessDoesWorkDetector
         }
 
         protected @NotNull CoverDataControllerWidget<CoverWirelessDoesWorkDetector> getDataController() {
-            return new CoverDataControllerWidget<>(this::adaptCover, this.getUIBuildContext());
+            return new CoverDataControllerWidget<>(this::getCover, this.getUIBuildContext());
         }
 
         @Override
@@ -215,7 +215,7 @@ public class CoverWirelessDoesWorkDetector
             super.addUIWidgets(builder);
             builder.widget(TextWidget.dynamicString(() -> {
 
-                ActivityMode mode = getCoverData().mode;
+                ActivityMode mode = getCover().getMode();
 
                 if (mode == ActivityMode.MACHINE_ENABLED) {
                     return GTUtility.trans("271", "Machine enabled");
@@ -229,21 +229,18 @@ public class CoverWirelessDoesWorkDetector
                 .setSynced(false)
                 .setDefaultColor(COLOR_TEXT_GRAY.get())
                 .setPos(startX + spaceX * 3, 4 + startY + spaceY * 2))
-                .widget(TextWidget.dynamicString(() -> {
-                    ActivityTransmitterData coverData = getCoverData();
-                    if (coverData != null) {
-                        return getCoverData().physical
-                            ? StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.1")
-                            : StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.0");
-                    } else {
-                        return "";
-                    }
-                })
-                    .setSynced(false)
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(startX + spaceX, 4 + startY + spaceY * 3)
-                    .setSize(spaceX * 10, 12));
+                .widget(
+                    TextWidget
+                        .dynamicString(
+                            getCoverString(
+                                c -> c.isPhysical()
+                                    ? StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.1")
+                                    : StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.0")))
+                        .setSynced(false)
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setTextAlignment(Alignment.CenterLeft)
+                        .setPos(startX + spaceX, 4 + startY + spaceY * 3)
+                        .setSize(spaceX * 10, 12));
         }
 
         @Override

@@ -171,7 +171,7 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
         return new ItemFilterUIFactory(buildContext).createWindow();
     }
 
-    private class ItemFilterUIFactory extends UIFactory {
+    private static class ItemFilterUIFactory extends UIFactory<CoverItemFilter> {
 
         private static final int startX = 10;
         private static final int startY = 25;
@@ -194,12 +194,13 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             ItemStackHandler filterInvHandler = new ItemStackHandler(1);
-            if (getCoverData() != null) {
-                filterInvHandler.setStackInSlot(0, setStackSize1(getCoverData().mFilter));
+            CoverItemFilter cover = getCover();
+            if (cover != null) {
+                filterInvHandler.setStackInSlot(0, setStackSize1(cover.getFilter()));
             }
             builder
                 .widget(
-                    new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext())
+                    new CoverDataControllerWidget<>(this::getCover, getUIBuildContext())
                         .addFollower(
                             new CoverDataFollowerToggleButtonWidget<>(),
                             CoverItemFilter::isWhitelist,

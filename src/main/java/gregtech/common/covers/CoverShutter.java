@@ -106,7 +106,7 @@ public class CoverShutter extends CoverBehavior {
         return new ShutterUIFactory(buildContext).createWindow();
     }
 
-    private class ShutterUIFactory extends UIFactory {
+    private static class ShutterUIFactory extends CoverBehaviorUIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;
@@ -123,7 +123,7 @@ public class CoverShutter extends CoverBehavior {
             builder
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        CoverBehavior::adaptCover,
+                        this::getCover,
                         (index, coverData) -> index == coverData.getVariable(),
                         (index, coverData) -> coverData.setVariable(index),
                         getUIBuildContext())

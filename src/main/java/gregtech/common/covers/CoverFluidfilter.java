@@ -14,8 +14,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -203,7 +201,7 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
         return new FluidFilterUIFactory(buildContext).createWindow();
     }
 
-    private class FluidFilterUIFactory extends UIFactory {
+    private static class FluidFilterUIFactory extends UIFactory<CoverFluidfilter> {
 
         private static final int startX = 10;
         private static final int startY = 25;
@@ -212,11 +210,6 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
 
         public FluidFilterUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
-        }
-
-        @Override
-        protected @Nullable CoverFluidfilter getCover() {
-            return adaptCover(super.getCover());
         }
 
         @Override
@@ -232,7 +225,7 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder.widget(
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                    this::adaptCover,
+                    this::getCover,
                     (id, coverData) -> !getClickable(id, coverData.getFilterMode()),
                     (id, coverData) -> {
                         coverData.setFilterMode(getNewFilterMode(id, coverData.getFilterMode()));
@@ -316,8 +309,9 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
                     new TextWidget(GTUtility.trans("240", "Block Flow")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 2, 3 + startY + spaceY * 2))
                 .widget(TextWidget.dynamicString(() -> {
-                    if (getCoverData() != null) {
-                        ItemStack fluidDisplay = getFluidDisplayItem(getCover());
+                    CoverFluidfilter cover = getCover();
+                    if (cover != null) {
+                        ItemStack fluidDisplay = getFluidDisplayItem(cover);
                         if (fluidDisplay != null) {
                             return fluidDisplay.getDisplayName();
                         }

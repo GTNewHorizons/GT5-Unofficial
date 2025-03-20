@@ -40,6 +40,10 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
         super(context, null);
     }
 
+    private ItemStack getStack() {
+        return this.coverData.mStack;
+    }
+
     public int getFlags() {
         return this.coverData.mFlags;
     }
@@ -268,7 +272,7 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
         return new FacadeBaseUIFactory(buildContext).createWindow();
     }
 
-    private class FacadeBaseUIFactory extends UIFactory {
+    private static class FacadeBaseUIFactory extends UIFactory<CoverFacadeBase> {
 
         private static final int startX = 10;
         private static final int startY = 25;
@@ -293,7 +297,7 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
             builder
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        this::adaptCover,
+                        this::getCover,
                         this::isEnabled,
                         (id, coverData) -> coverData.setFlags(getNewCoverVariable(id, coverData.getFlags())),
                         getUIBuildContext())
@@ -314,15 +318,20 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
                                 CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
                                 widget -> widget.setPos(spaceX * 0, spaceY * 3))
                             .setPos(startX, startY))
-                .widget(
-                    new ItemDrawable(() -> getCoverData() != null ? getCoverData().mStack : null).asWidget()
-                        .setPos(5, 5)
-                        .setSize(16, 16))
-                .widget(
-                    TextWidget.dynamicString(() -> getCoverData() != null ? getCoverData().mStack.getDisplayName() : "")
-                        .setSynced(false)
-                        .setDefaultColor(COLOR_TITLE.get())
-                        .setPos(25, 9))
+                .widget(new ItemDrawable(() -> {
+                    CoverFacadeBase cover = getCover();
+                    return cover != null ? cover.getStack() : null;
+                }).asWidget()
+                    .setPos(5, 5)
+                    .setSize(16, 16))
+                .widget(TextWidget.dynamicString(() -> {
+                    CoverFacadeBase cover = getCover();
+                    return cover != null ? cover.getStack()
+                        .getDisplayName() : "";
+                })
+                    .setSynced(false)
+                    .setDefaultColor(COLOR_TITLE.get())
+                    .setPos(25, 9))
                 .widget(
                     new TextWidget(GTUtility.trans("128", "Redstone")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 0))

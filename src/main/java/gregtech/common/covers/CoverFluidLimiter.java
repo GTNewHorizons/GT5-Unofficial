@@ -159,7 +159,7 @@ public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.Fluid
         return new FluidLimiterUIFactory(buildContext).createWindow();
     }
 
-    private class FluidLimiterUIFactory extends UIFactory {
+    private static class FluidLimiterUIFactory extends UIFactory<CoverFluidLimiter> {
 
         private static final int startX = 10;
         private static final int startY = 25;
@@ -182,7 +182,7 @@ public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.Fluid
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder
                 .widget(
-                    new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext()).addFollower(
+                    new CoverDataControllerWidget<>(this::getCover, getUIBuildContext()).addFollower(
                         new CoverDataFollowerNumericWidget<>(),
                         coverData -> (double) Math.round(coverData.getThreshold() * 100),
                         (coverData, val) -> coverData.setThreshold(val.floatValue() / 100),

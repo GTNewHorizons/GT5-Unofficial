@@ -248,7 +248,7 @@ public class CoverArm extends CoverBehavior {
         return new ArmUIFactory(buildContext).createWindow();
     }
 
-    private class ArmUIFactory extends UIFactory {
+    private static class ArmUIFactory extends CoverBehaviorUIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;
@@ -281,7 +281,7 @@ public class CoverArm extends CoverBehavior {
         protected void addUIWidgets(ModularWindow.Builder builder) {
             maxSlot = getMaxSlot();
             builder.widget(
-                new CoverDataControllerWidget<>(CoverBehavior::adaptCover, getUIBuildContext()).addFollower(
+                new CoverDataControllerWidget<>(this::getCover, getUIBuildContext()).addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
                     cover -> getFlagExport(cover.getVariable()) > 0,
                     (cover, state) -> {
@@ -358,8 +358,9 @@ public class CoverArm extends CoverBehavior {
                 .widget(
                     new TextWidget()
                         .setStringSupplier(
-                            () -> (convert(getCoverData()) & EXPORT_MASK) > 0 ? GTUtility.trans("006", "Export")
-                                : GTUtility.trans("007", "Import"))
+                            getCoverString(
+                                c -> (c.getVariable() & EXPORT_MASK) > 0 ? GTUtility.trans("006", "Export")
+                                    : GTUtility.trans("007", "Import")))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 3, 4 + startY + spaceY * 0))
                 .widget(

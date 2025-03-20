@@ -142,7 +142,7 @@ public class CoverDoesWork extends CoverBehavior {
         return (coverVariable & flag) == flag;
     }
 
-    private class DoesWorkUIFactory extends UIFactory {
+    private static class DoesWorkUIFactory extends CoverBehaviorUIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;
@@ -159,7 +159,7 @@ public class CoverDoesWork extends CoverBehavior {
             builder
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        CoverBehavior::adaptCover,
+                        this::getCover,
                         (id, coverData) -> isEnabled(id, coverData.getVariable()),
                         (id, coverData) -> coverData.setVariable(getNewCoverVariable(id, coverData.getVariable())),
                         getUIBuildContext())
@@ -183,8 +183,8 @@ public class CoverDoesWork extends CoverBehavior {
                                 CoverDataFollowerToggleButtonWidget.ofRedstone(),
                                 widget -> widget.setPos(spaceX * 0, spaceY * 1))
                             .setPos(startX, startY))
-                .widget(TextWidget.dynamicString(() -> {
-                    int coverVariable = convert(getCoverData());
+                .widget(TextWidget.dynamicString(getCoverString(c -> {
+                    int coverVariable = c.getVariable();
 
                     if (isFlagSet(coverVariable, FLAG_ENABLED)) {
                         return GTUtility.trans("271", "Machine enabled");
@@ -194,16 +194,16 @@ public class CoverDoesWork extends CoverBehavior {
                         return GTUtility.trans("241", "Recipe progress");
                     }
 
-                })
+                }))
                     .setSynced(false)
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 3, 4 + startY + spaceY * 0))
                 .widget(
                     TextWidget
                         .dynamicString(
-                            () -> isFlagSet(convert(getCoverData()), FLAG_INVERTED)
-                                ? GTUtility.trans("INVERTED", "Inverted")
-                                : GTUtility.trans("NORMAL", "Normal"))
+                            getCoverString(
+                                c -> isFlagSet(c.getVariable(), FLAG_INVERTED) ? GTUtility.trans("INVERTED", "Inverted")
+                                    : GTUtility.trans("NORMAL", "Normal")))
                         .setSynced(false)
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 3, 4 + startY + spaceY * 1));

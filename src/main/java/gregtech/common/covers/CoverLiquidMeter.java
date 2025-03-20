@@ -167,7 +167,7 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
         return new LiquidMeterUIFactory(buildContext).createWindow();
     }
 
-    private class LiquidMeterUIFactory extends UIFactory {
+    private static class LiquidMeterUIFactory extends UIFactory<CoverLiquidMeter> {
 
         private static final int startX = 10;
         private static final int startY = 25;
@@ -197,7 +197,7 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
 
             builder
                 .widget(
-                    new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext())
+                    new CoverDataControllerWidget<>(this::getCover, getUIBuildContext())
                         .addFollower(
                             CoverDataFollowerToggleButtonWidget.ofRedstone(),
                             CoverLiquidMeter::isInverted,
@@ -216,9 +216,7 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
                                 .setSize(spaceX * 4 + 5, 12))
                         .setPos(startX, startY))
                 .widget(
-                    new TextWidget()
-                        .setStringSupplier(
-                            () -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
+                    new TextWidget().setStringSupplier(getCoverString(c -> c.isInverted() ? INVERTED : NORMAL))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
                 .widget(

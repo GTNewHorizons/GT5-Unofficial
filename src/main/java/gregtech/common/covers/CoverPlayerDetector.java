@@ -144,7 +144,7 @@ public class CoverPlayerDetector extends CoverBehavior {
         return new PlayerDetectorUIFactory(buildContext).createWindow();
     }
 
-    private class PlayerDetectorUIFactory extends UIFactory {
+    private static class PlayerDetectorUIFactory extends CoverBehaviorUIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;
@@ -161,7 +161,7 @@ public class CoverPlayerDetector extends CoverBehavior {
             builder
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        CoverBehavior::adaptCover,
+                        this::getCover,
                         (index, coverData) -> index == coverData.getVariable(),
                         (index, coverData) -> coverData.setVariable(index),
                         getUIBuildContext())

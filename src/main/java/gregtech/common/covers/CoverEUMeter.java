@@ -188,7 +188,7 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
         return new EUMeterUIFactory(buildContext).createWindow();
     }
 
-    private class EUMeterUIFactory extends UIFactory {
+    private static class EUMeterUIFactory extends UIFactory<CoverEUMeter> {
 
         private static final int startX = 10;
         private static final int startY = 25;
@@ -217,7 +217,7 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
 
             builder
                 .widget(
-                    new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext())
+                    new CoverDataControllerWidget<>(this::getCover, getUIBuildContext())
                         .addFollower(
                             new CoverDataFollowerCycleButtonWidget<>(),
                             coverData -> coverData.getType()
@@ -246,26 +246,25 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
                                 .setSize(spaceX * 8, 12))
                         .setPos(startX, startY))
                 .widget(
-                    new TextWidget()
-                        .setStringSupplier(() -> getCoverData() != null ? getCoverData().type.getTitle() : "")
+                    new TextWidget().setStringSupplier(
+                        getCoverString(
+                            c -> c.getType()
+                                .getTitle()))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX, 4 + startY))
                 .widget(
-                    new TextWidget()
-                        .setStringSupplier(
-                            () -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
+                    new TextWidget().setStringSupplier(getCoverString(c -> c.isInverted() ? INVERTED : NORMAL))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX, 4 + startY + spaceY))
                 .widget(
                     new TextWidget(GTUtility.trans("222.1", "Energy threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX, startY + spaceY * 3 + 4))
 
-                .widget(
-                    new FakeSyncWidget.LongSyncer(
-                        () -> getCoverData() != null
-                            ? getCoverData().type.getTileEntityEnergyCapacity(getUIBuildContext().getTile())
-                            : Long.MAX_VALUE,
-                        value -> numericWidget.setMaxValue(value)));
+                .widget(new FakeSyncWidget.LongSyncer(() -> {
+                    CoverEUMeter cover = getCover();
+                    return cover != null ? cover.getType()
+                        .getTileEntityEnergyCapacity(getUIBuildContext().getTile()) : Long.MAX_VALUE;
+                }, value -> numericWidget.setMaxValue(value)));
         }
     }
 

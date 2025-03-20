@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
@@ -26,17 +27,17 @@ public class CoverDataControllerWidget<T extends Cover>
     extends com.gtnewhorizons.modularui.common.widget.MultiChildWidget
     implements com.gtnewhorizons.modularui.api.widget.ISyncedWidget {
 
-    private final Function<Cover, T> coverAdapter;
+    private final Supplier<T> coverSupplier;
     private final CoverUIBuildContext coverUiContext;
     protected T lastData;
     private boolean needsUpdate;
 
     /**
-     * @param coverAdapter   ascertains the class of a cover so we can access its data
+     * @param coverSupplier  retrieves the cover from the world
      * @param coverUiContext identifies and locates the cover we're interacting with
      */
-    public CoverDataControllerWidget(Function<Cover, T> coverAdapter, CoverUIBuildContext coverUiContext) {
-        this.coverAdapter = coverAdapter;
+    public CoverDataControllerWidget(Supplier<T> coverSupplier, CoverUIBuildContext coverUiContext) {
+        this.coverSupplier = coverSupplier;
         this.coverUiContext = coverUiContext;
     }
 
@@ -46,15 +47,13 @@ public class CoverDataControllerWidget<T extends Cover>
     @Nullable
     protected T getCover() {
         if (isCoverValid()) {
-            return this.coverAdapter.apply(
-                coverUiContext.getTile()
-                    .getCoverAtSide(coverUiContext.getCoverSide()));
+            return this.coverSupplier.get();
         } else {
             return null;
         }
     }
 
-    protected boolean updateCoverInWorld(T cover) {
+    protected boolean updateCoverInWorld(Cover cover) {
         if (!isCoverValid()) return false;
         ICoverable coverable = coverUiContext.getTile();
         coverable.updateAttachedCover(cover);
@@ -91,14 +90,14 @@ public class CoverDataControllerWidget<T extends Cover>
         }
     }
 
-    protected T readFromPacket(PacketBuffer buffer) throws IOException {
+    protected Cover readFromPacket(PacketBuffer buffer) throws IOException {
         NBTBase nbt = NetworkUtils.readNBTBase(buffer);
         Cover cover = null;
         if (nbt instanceof NBTTagCompound tag) {
             cover = CoverRegistry.getRegistrationFromNbt(tag)
                 .buildCover(coverUiContext.getCoverSide(), coverUiContext.getTile(), tag);
         }
-        return coverAdapter.apply(cover);
+        return cover;
     }
 
     protected T getLastData() {
@@ -141,8 +140,8 @@ public class CoverDataControllerWidget<T extends Cover>
     @Override
     public void readOnClient(int id, PacketBuffer buf) throws IOException {
         if (id == 0) {
-            lastData = readFromPacket(buf);
-            updateCoverInWorld(getLastData());
+            updateCoverInWorld(readFromPacket(buf));
+            lastData = getCover();
             updateChildren();
         }
     }
@@ -150,8 +149,9 @@ public class CoverDataControllerWidget<T extends Cover>
     @Override
     public void readOnServer(int id, PacketBuffer buf) throws IOException {
         if (id == 0) {
-            lastData = readFromPacket(buf);
-            if (updateCoverInWorld(getLastData())) {
+            boolean coverIsValid = updateCoverInWorld(readFromPacket(buf));
+            lastData = getCover();
+            if (coverIsValid) {
                 markForUpdate();
             } else {
                 getWindow().closeWindow();
@@ -202,15 +202,15 @@ public class CoverDataControllerWidget<T extends Cover>
         private final BiFunction<Integer, T, T> dataUpdater;
 
         /**
-         * @param coverAdapter      ascertains the class of a cover so we can access its data
+         * @param coverSupplier     retrieves the cover from the world
          * @param dataToStateGetter (index of button, given cover data) -> button state
          * @param dataUpdater       (index of button, current cover data) -> new cover data
          * @param coverUiContext    identifies and locates the cover we're interacting with
          */
-        public CoverDataIndexedControllerWidget_ToggleButtons(Function<Cover, T> coverAdapter,
+        public CoverDataIndexedControllerWidget_ToggleButtons(Supplier<T> coverSupplier,
             BiFunction<Integer, T, Boolean> dataToStateGetter, BiFunction<Integer, T, T> dataUpdater,
             CoverUIBuildContext coverUiContext) {
-            super(coverAdapter, coverUiContext);
+            super(coverSupplier, coverUiContext);
             this.dataToStateGetter = dataToStateGetter;
             this.dataUpdater = dataUpdater;
         }

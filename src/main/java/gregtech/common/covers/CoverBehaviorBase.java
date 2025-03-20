@@ -1,5 +1,9 @@
 package gregtech.common.covers;
 
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
@@ -107,14 +111,6 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
         byteBuf.writeInt(tickRateAddition);
     }
 
-    /**
-     * @deprecated Only left for use by GUIs until they migrate to using covers directly.
-     */
-    @Deprecated
-    public @NotNull T getCoverData() {
-        return coverData;
-    }
-
     // region facade
 
     @Override
@@ -134,14 +130,14 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
 
     @Override
     protected ModularWindow createWindow(CoverUIBuildContext buildContext) {
-        return new UIFactory(buildContext).createWindow();
+        return new UIFactory<>(buildContext).createWindow();
     }
 
     /**
      * Creates {@link ModularWindow} for this cover. This is separated from base class, as attaching the same covers in
      * different sides of the same tile needs different UI with different context.
      */
-    protected class UIFactory {
+    protected static class UIFactory<C extends Cover> {
 
         private final CoverUIBuildContext uiBuildContext;
 
@@ -187,25 +183,10 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
         }
 
         /**
-         * Can return null when cover data is invalid e.g. tile is broken or cover is removed
+         * Can return null when the cover is invalid e.g. tile is broken or cover is removed
          */
-        @Nullable
-        protected T getCoverData() {
-            if (isCoverValid()) {
-                CoverBehaviorBase<T> typedCover = adaptCover(
-                    getUIBuildContext().getTile()
-                        .getCoverAtSide(getUIBuildContext().getCoverSide()));
-                return typedCover == null ? null : typedCover.getCoverData();
-            } else {
-                return null;
-            }
-        }
 
-        /**
-         * Can return null when cover data is invalid e.g. tile is broken or cover is removed
-         */
-        @Nullable
-        protected CoverBehaviorBase<T> getCover() {
+        protected @Nullable C getCover() {
             if (isCoverValid()) {
                 return adaptCover(
                     getUIBuildContext().getTile()
@@ -215,8 +196,27 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
             }
         }
 
-        protected CoverBehaviorBase<T> adaptCover(Cover cover) {
+        protected @Nullable C adaptCover(Cover cover) {
             return null;
+        }
+
+        protected @NotNull Supplier<String> getCoverString(Function<C, String> toString) {
+            return () -> {
+                C cover = getCover();
+                if (cover == null) return "";
+                return toString.apply(cover);
+            };
+        }
+
+        protected boolean coverMatches(Predicate<C> predicate) {
+            C cover = getCover();
+            if (cover == null) return false;
+            return predicate.test(cover);
+        }
+
+        protected void ifCoverValid(Consumer<C> coverConsumer) {
+            Optional.ofNullable(getCover())
+                .ifPresent(coverConsumer);
         }
 
         private boolean isCoverValid() {

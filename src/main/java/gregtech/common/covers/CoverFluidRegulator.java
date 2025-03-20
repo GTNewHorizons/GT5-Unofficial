@@ -63,6 +63,10 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
         this.mTransferRate = aTransferRate;
     }
 
+    public int getTransferRate() {
+        return mTransferRate;
+    }
+
     public int getTickRateForUi() {
         return coverData.tickRate;
     }
@@ -229,7 +233,7 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
         return new FluidRegulatorUIFactory(buildContext).createWindow();
     }
 
-    private class FluidRegulatorUIFactory extends UIFactory {
+    private static class FluidRegulatorUIFactory extends UIFactory<CoverFluidRegulator> {
 
         private static final int startX = 10;
         private static final int startY = 25;
@@ -260,7 +264,7 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
             AtomicBoolean warn = new AtomicBoolean(false);
 
             builder.widget(
-                new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext())
+                new CoverDataControllerWidget<>(this::getCover, getUIBuildContext())
                     .addFollower(
                         CoverDataFollowerToggleButtonWidget.ofDisableable(),
                         coverData -> coverData.getSpeed() >= 0,
@@ -314,8 +318,9 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
                         },
                         widget -> widget.setBounds(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY)
                             .setValidator(val -> {
-                                final int tickRate = getCoverData() != null ? getCoverData().tickRate : 0;
-                                final long maxFlow = (long) mTransferRate
+                                CoverFluidRegulator cover = getCover();
+                                final int tickRate = cover != null ? cover.getTickRateForUi() : 0;
+                                final long maxFlow = (cover != null ? (long) cover.getTransferRate() : 0)
                                     * GTUtility.clamp(tickRate, TICK_RATE_MIN, TICK_RATE_MAX);
                                 warn.set(false);
                                 if (val > maxFlow) {
@@ -340,14 +345,16 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
                         },
                         widget -> widget.setBounds(0, TICK_RATE_MAX)
                             .setValidator(val -> {
-                                final int speed = getCoverData() != null ? getCoverData().speed : 0;
+                                CoverFluidRegulator cover = getCover();
+                                final int speed = cover != null ? cover.getSpeed() : 0;
+                                final long transferRate = cover != null ? (long) cover.getTransferRate() : 0;
                                 warn.set(false);
                                 if (val > TICK_RATE_MAX) {
                                     val = (long) TICK_RATE_MAX;
                                     warn.set(true);
-                                } else if (Math.abs(speed) > mTransferRate * val) {
+                                } else if (Math.abs(speed) > transferRate * val) {
                                     val = (long) Math
-                                        .min(TICK_RATE_MAX, (Math.abs(speed) + mTransferRate - 1) / mTransferRate);
+                                        .min(TICK_RATE_MAX, (Math.abs(speed) + transferRate - 1) / transferRate);
                                     warn.set(true);
                                 } else if (val < TICK_RATE_MIN) {
                                     val = 1L;
@@ -370,12 +377,12 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
                     new TextWidget(GTUtility.trans("209", " ticks")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 7, 4 + startY + spaceY * 2))
                 .widget(new TextWidget().setTextSupplier(() -> {
-                    FluidRegulatorData coverVariable = getCoverData();
-                    if (coverVariable == null) return new Text("");
+                    CoverFluidRegulator cover = getCover();
+                    if (cover == null) return new Text("");
+                    int tickRate = cover.getTickRateForUi();
                     return new Text(
                         GTUtility.trans("210.1", "Average:") + " "
-                            + numberFormat.format(
-                                coverVariable.tickRate == 0 ? 0 : coverVariable.speed * 20d / coverVariable.tickRate)
+                            + numberFormat.format(tickRate == 0 ? 0 : cover.getSpeed() * 20d / tickRate)
                             + " "
                             + GTUtility.trans("210.2", "L/sec"))
                                 .color(warn.get() ? COLOR_TEXT_WARN.get() : COLOR_TEXT_GRAY.get());

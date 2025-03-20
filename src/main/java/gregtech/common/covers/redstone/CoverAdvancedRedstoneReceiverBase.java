@@ -52,7 +52,7 @@ public abstract class CoverAdvancedRedstoneReceiverBase
         return new AdvancedRedstoneReceiverBaseUIFactory(buildContext).createWindow();
     }
 
-    private class AdvancedRedstoneReceiverBaseUIFactory
+    private static class AdvancedRedstoneReceiverBaseUIFactory
         extends AdvancedWirelessRedstoneBaseUIFactory<CoverAdvancedRedstoneReceiverBase> {
 
         public AdvancedRedstoneReceiverBaseUIFactory(CoverUIBuildContext buildContext) {
@@ -84,7 +84,7 @@ public abstract class CoverAdvancedRedstoneReceiverBase
 
         @Override
         protected @NotNull CoverDataControllerWidget<CoverAdvancedRedstoneReceiverBase> getDataController() {
-            return new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext());
+            return new CoverDataControllerWidget<>(this::getCover, getUIBuildContext());
         }
 
         @Override

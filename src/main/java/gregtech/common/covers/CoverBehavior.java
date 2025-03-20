@@ -1,6 +1,7 @@
 package gregtech.common.covers;
 
 import gregtech.api.covers.CoverContext;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.ISerializableObject;
 
@@ -40,10 +41,17 @@ public abstract class CoverBehavior extends CoverBehaviorBase<ISerializableObjec
         return true;
     }
 
-    public static CoverBehavior adaptCover(Cover cover) {
-        if (cover instanceof CoverBehavior adapterCover) {
-            return adapterCover;
+    protected static abstract class CoverBehaviorUIFactory extends UIFactory<CoverBehavior> {
+
+        protected CoverBehaviorUIFactory(CoverUIBuildContext buildContext) {
+            super(buildContext);
         }
-        return null;
+
+        public CoverBehavior adaptCover(Cover cover) {
+            if (cover instanceof CoverBehavior adapterCover) {
+                return adapterCover;
+            }
+            return null;
+        }
     }
 }

@@ -11,6 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Size;
@@ -41,6 +42,14 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
             // since this relies on an instance field.
             coverData = initializeData();
         }
+    }
+
+    public int getSlotCount() {
+        return slots;
+    }
+
+    public IItemHandlerModifiable getItems() {
+        return this.coverData.items;
     }
 
     @Override
@@ -107,7 +116,7 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
         return new ChestUIFactory(buildContext).createWindow();
     }
 
-    public class ChestUIFactory extends UIFactory {
+    public static class ChestUIFactory extends UIFactory<CoverChest> {
 
         private static final int spaceX = 18;
         private static final int spaceY = 18;
@@ -118,7 +127,12 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
 
         @Override
         protected int getGUIHeight() {
-            int height = slots / 3 * 18 + 8;
+            CoverChest cover = getCover();
+            int slotCount = 0;
+            if (cover != null) {
+                slotCount = cover.getSlotCount();
+            }
+            int height = slotCount / 3 * 18 + 8;
             if (!getUIBuildContext().isAnotherWindow()) {
                 // player inv is 4 row
                 return height + 4 * 18 + 14;
@@ -149,15 +163,15 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             CoverDataControllerWidget<CoverChest> w = new CoverDataControllerWidget<>(
-                this::adaptCover,
+                this::getCover,
                 getUIBuildContext());
-            ChestInventory d = getCoverData();
-            LimitingItemStackHandler h;
-            if (d == null) {
+            CoverChest cover = getCover();
+            IItemHandlerModifiable h;
+            if (cover == null) {
                 // ???
                 return;
             }
-            h = d.items;
+            h = cover.getItems();
             SlotGroup slotGroup = SlotGroup.ofItemHandler(h, 3)
                 .build();
             if (getUIBuildContext().isAnotherWindow()) {

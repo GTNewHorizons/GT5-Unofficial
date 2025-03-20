@@ -190,7 +190,7 @@ public class CoverWirelessItemDetector
         return new WirelessItemDetectorUIFactory(buildContext).createWindow();
     }
 
-    private class WirelessItemDetectorUIFactory
+    private static class WirelessItemDetectorUIFactory
         extends AdvancedRedstoneTransmitterBaseUIFactory<CoverWirelessItemDetector> {
 
         private int maxSlot;
@@ -229,7 +229,7 @@ public class CoverWirelessItemDetector
 
         @Override
         protected @NotNull CoverDataControllerWidget<CoverWirelessItemDetector> getDataController() {
-            return new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext());
+            return new CoverDataControllerWidget<>(this::getCover, getUIBuildContext());
         }
 
         @Override
@@ -246,21 +246,18 @@ public class CoverWirelessItemDetector
                 .widget(
                     new TextWidget(GTUtility.trans("254", "Detect Slot #")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 5, 4 + startY + spaceY * 3))
-                .widget(TextWidget.dynamicString(() -> {
-                    ItemTransmitterData coverData = getCoverData();
-                    if (coverData != null) {
-                        return getCoverData().physical
-                            ? StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.1")
-                            : StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.0");
-                    } else {
-                        return "";
-                    }
-                })
-                    .setSynced(false)
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(startX + spaceX, 5 + startY + spaceY * 4)
-                    .setSize(spaceX * 10, 12));
+                .widget(
+                    TextWidget
+                        .dynamicString(
+                            getCoverString(
+                                c -> c.isPhysical()
+                                    ? StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.1")
+                                    : StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.0")))
+                        .setSynced(false)
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setTextAlignment(Alignment.CenterLeft)
+                        .setPos(startX + spaceX, 5 + startY + spaceY * 4)
+                        .setSize(spaceX * 10, 12));
         }
 
         @Override
@@ -317,12 +314,12 @@ public class CoverWirelessItemDetector
 
         private ItemStack getTargetItem() {
             final ICoverable tile = getUIBuildContext().getTile();
-            final ItemTransmitterData coverVariable = getCoverData();
-            if (coverVariable != null && coverVariable.slot >= 0
+            final CoverWirelessItemDetector cover = getCover();
+            if (cover != null && cover.getSlot() >= 0
                 && tile instanceof TileEntity
                 && !tile.isDead()
-                && tile.getSizeInventory() >= coverVariable.slot) {
-                return tile.getStackInSlot(coverVariable.slot);
+                && tile.getSizeInventory() >= cover.getSlot()) {
+                return tile.getStackInSlot(cover.getSlot());
             } else {
                 return null;
             }

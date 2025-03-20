@@ -127,7 +127,7 @@ public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
         return new RedstoneWirelessBaseUIFactory(buildContext).createWindow();
     }
 
-    private class RedstoneWirelessBaseUIFactory extends UIFactory {
+    private static class RedstoneWirelessBaseUIFactory extends CoverBehaviorUIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;
@@ -148,7 +148,7 @@ public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder
                 .widget(
-                    new CoverDataControllerWidget<>(CoverBehavior::adaptCover, getUIBuildContext())
+                    new CoverDataControllerWidget<>(this::getCover, getUIBuildContext())
                         .addFollower(
                             new CoverDataFollowerNumericWidget<>(),
                             coverData -> (double) getFlagFrequency(coverData.getVariable()),

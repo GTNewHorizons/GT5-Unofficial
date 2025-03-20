@@ -190,7 +190,7 @@ public class CoverControlsWork extends CoverBehavior {
         return new ControlsWorkUIFactory(buildContext).createWindow();
     }
 
-    private class ControlsWorkUIFactory extends UIFactory {
+    private static class ControlsWorkUIFactory extends CoverBehaviorUIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;
@@ -207,7 +207,7 @@ public class CoverControlsWork extends CoverBehavior {
             builder
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        CoverBehavior::adaptCover,
+                        this::getCover,
                         (id, coverData) -> !getClickable(id, coverData.getVariable()),
                         (id, coverData) -> coverData.setVariable(getNewCoverVariable(id, coverData.getVariable())),
                         getUIBuildContext())
@@ -228,7 +228,7 @@ public class CoverControlsWork extends CoverBehavior {
                                     .setPos(spaceX * 0, spaceY * 2))
                             .setPos(startX, startY))
                 .widget(
-                    new CoverDataControllerWidget<>(CoverBehavior::adaptCover, getUIBuildContext())
+                    new CoverDataControllerWidget<>(this::getCover, getUIBuildContext())
                         .addFollower(
                             CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
                             coverData -> coverData.getVariable() > 2,

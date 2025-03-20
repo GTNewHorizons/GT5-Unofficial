@@ -46,6 +46,14 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
         }
     }
 
+    public int getMinOverflowPoint() {
+        return minOverflowPoint;
+    }
+
+    public int getMaxOverflowPoint() {
+        return maxOverflowPoint;
+    }
+
     public int getOverflowPoint() {
         return coverData.overflowPoint;
     }
@@ -212,7 +220,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
         return new OverflowUIFactory(buildContext).createWindow();
     }
 
-    private final class OverflowUIFactory extends UIFactory {
+    private static final class OverflowUIFactory extends UIFactory<CoverOverflowValve> {
 
         // width and height of text input for "Overflow Point" and "Voiding Rate"
         private static final int width = 71;
@@ -258,15 +266,16 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(xOP + width + 3, yOP + 11))
                 .widget(
-                    new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext()).addFollower(
+                    new CoverDataControllerWidget<>(this::getCover, getUIBuildContext()).addFollower(
                         new CoverDataFollowerNumericWidget<>(),
                         coverData -> (double) coverData.getOverflowPoint(),
                         (coverData, state) -> coverData.setOverflowPoint(state.intValue()),
-                        widget -> widget.setBounds(minOverflowPoint, maxOverflowPoint)
-                            .setScrollValues(1000, 144, 100000)
-                            .setFocusOnGuiOpen(true)
-                            .setPos(xOP, yOP + 10)
-                            .setSize(width, height)))
+                        widget -> ifCoverValid(
+                            c -> widget.setBounds(c.getMinOverflowPoint(), c.getMaxOverflowPoint())
+                                .setScrollValues(1000, 144, 100000)
+                                .setFocusOnGuiOpen(true)
+                                .setPos(xOP, yOP + 10)
+                                .setSize(width, height))))
                 .widget(
                     new TextWidget(StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_voiding_rate"))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
@@ -276,18 +285,19 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(xVR + width + 3, yVR + 11))
                 .widget(
-                    new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext()).addFollower(
+                    new CoverDataControllerWidget<>(this::getCover, getUIBuildContext()).addFollower(
                         new CoverDataFollowerNumericWidget<>(),
                         coverData -> (double) coverData.getVoidingRate(),
                         (coverData, state) -> coverData.setVoidingRate(state.intValue()),
-                        widget -> widget.setBounds(minOverflowPoint, maxOverflowPoint)
-                            .setScrollValues(1000, 144, 100000)
-                            .setFocusOnGuiOpen(true)
-                            .setPos(xVR, yVR + 10)
-                            .setSize(width, height)))
+                        widget -> ifCoverValid(
+                            c -> widget.setBounds(c.getMinOverflowPoint(), c.getMaxOverflowPoint())
+                                .setScrollValues(1000, 144, 100000)
+                                .setFocusOnGuiOpen(true)
+                                .setPos(xVR, yVR + 10)
+                                .setSize(width, height))))
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        this::adaptCover,
+                        this::getCover,
                         this::getClickable,
                         this::updateData,
                         getUIBuildContext())

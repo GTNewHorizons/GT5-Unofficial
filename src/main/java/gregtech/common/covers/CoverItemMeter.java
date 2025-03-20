@@ -198,7 +198,7 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
         return new ItemMeterUIFactory(buildContext).createWindow();
     }
 
-    private class ItemMeterUIFactory extends UIFactory {
+    private static class ItemMeterUIFactory extends UIFactory<CoverItemMeter> {
 
         private static final int startX = 10;
         private static final int startY = 25;
@@ -244,7 +244,7 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
             setMaxThreshold();
 
             builder.widget(
-                new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext())
+                new CoverDataControllerWidget<>(this::getCover, getUIBuildContext())
                     .addFollower(
                         CoverDataFollowerToggleButtonWidget.ofRedstone(),
                         CoverItemMeter::isInverted,
@@ -279,9 +279,7 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
                     new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
                         .setPos(startX + spaceX * 3 + 8, startY + spaceY * 2))
                 .widget(
-                    new TextWidget()
-                        .setStringSupplier(
-                            () -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
+                    new TextWidget().setStringSupplier(getCoverString(c -> c.isInverted() ? INVERTED : NORMAL))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX, 4 + startY))
                 .widget(
@@ -313,14 +311,14 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
         }
 
         private ItemStack getTargetItem() {
-            ItemMeterData coverVariable = getCoverData();
-            if (coverVariable == null || coverVariable.slot < 0) {
+            CoverItemMeter cover = getCover();
+            if (cover == null || cover.getSlot() < 0) {
                 return null;
             }
             ICoverable tile = getUIBuildContext().getTile();
             if (tile instanceof TileEntity && !tile.isDead()) {
-                if (tile.getSizeInventory() >= coverVariable.slot) {
-                    return tile.getStackInSlot(coverVariable.slot);
+                if (tile.getSizeInventory() >= cover.getSlot()) {
+                    return tile.getStackInSlot(cover.getSlot());
                 }
             }
             return null;

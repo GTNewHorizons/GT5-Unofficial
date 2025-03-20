@@ -222,7 +222,7 @@ public class CoverWirelessMaintenanceDetector
         return new WirelessMaintenanceDetectorUIFactory(buildContext).createWindow();
     }
 
-    private class WirelessMaintenanceDetectorUIFactory
+    private static class WirelessMaintenanceDetectorUIFactory
         extends AdvancedRedstoneTransmitterBaseUIFactory<CoverWirelessMaintenanceDetector> {
 
         public WirelessMaintenanceDetectorUIFactory(CoverUIBuildContext buildContext) {
@@ -244,7 +244,7 @@ public class CoverWirelessMaintenanceDetector
 
         @Override
         protected @NotNull CoverDataControllerWidget<CoverWirelessMaintenanceDetector> getDataController() {
-            return new CoverDataControllerWidget<>(this::adaptCover, getUIBuildContext());
+            return new CoverDataControllerWidget<>(this::getCover, getUIBuildContext());
         }
 
         @Override
@@ -255,21 +255,17 @@ public class CoverWirelessMaintenanceDetector
                     new TextWidget(extraTexts[i]).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * (i % 2 == 0 ? 1 : 7), 4 + startY + spaceY * (2 + i / 2)));
             }
-            builder.widget(TextWidget.dynamicString(() -> {
-                MaintenanceTransmitterData coverData = getCoverData();
-                if (coverData != null) {
-                    return getCoverData().physical
-                        ? StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.1")
-                        : StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.0");
-                } else {
-                    return "";
-                }
-            })
-                .setSynced(false)
-                .setDefaultColor(COLOR_TEXT_GRAY.get())
-                .setTextAlignment(Alignment.CenterLeft)
-                .setPos(startX + spaceX, 4 + startY + spaceY * 6)
-                .setSize(spaceX * 10, 12));
+            builder.widget(
+                TextWidget
+                    .dynamicString(
+                        getCoverString(
+                            c -> c.isPhysical() ? StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.1")
+                                : StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.0")))
+                    .setSynced(false)
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(startX + spaceX, 4 + startY + spaceY * 6)
+                    .setSize(spaceX * 10, 12));
         }
 
         @Override

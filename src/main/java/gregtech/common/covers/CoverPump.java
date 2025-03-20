@@ -18,7 +18,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject.LegacyCoverData;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
@@ -168,7 +167,7 @@ public class CoverPump extends CoverBehavior {
         return new PumpUIFactory(buildContext).createWindow();
     }
 
-    private class PumpUIFactory extends UIFactory {
+    private static class PumpUIFactory extends CoverBehaviorUIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;
@@ -187,7 +186,7 @@ public class CoverPump extends CoverBehavior {
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder.widget(
                 new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                    CoverBehavior::adaptCover,
+                    this::getCover,
                     (id, coverData) -> !getClickable(id, coverData.getVariable()),
                     (id, coverData) -> coverData.setVariable(getNewCoverVariable(id, coverData.getVariable())),
                     getUIBuildContext())
@@ -223,16 +222,15 @@ public class CoverPump extends CoverBehavior {
                                 .setPos(spaceX * 2, spaceY * 1))
                         .addToggleButton(5, CoverDataFollowerToggleButtonWidget.ofDisableable(), widget -> {
                             mAllowWidget = widget;
-                            widget.setTextureGetter(i -> {
-                                LegacyCoverData coverData = getCoverData();
-                                return coverData == null || convert(coverData) % 2 == 0
-                                    ? GTUITextures.OVERLAY_BUTTON_ALLOW_INPUT
-                                    : GTUITextures.OVERLAY_BUTTON_ALLOW_OUTPUT;
-                            })
+                            widget
+                                .setTextureGetter(
+                                    i -> coverMatches(PumpUIFactory::isExportModeSelected)
+                                        ? GTUITextures.OVERLAY_BUTTON_ALLOW_INPUT
+                                        : GTUITextures.OVERLAY_BUTTON_ALLOW_OUTPUT)
                                 .dynamicTooltip(() -> {
-                                    LegacyCoverData coverData = getCoverData();
+                                    CoverBehavior cover = getCover();
                                     return Collections.singletonList(
-                                        coverData == null || convert(coverData) % 2 == 0
+                                        cover == null || cover.getVariable() % 2 == 0
                                             ? GTUtility.trans("314", "Allow Input")
                                             : GTUtility.trans("312", "Allow Output"));
                                 })
@@ -240,19 +238,16 @@ public class CoverPump extends CoverBehavior {
                         })
                         .addToggleButton(6, CoverDataFollowerToggleButtonWidget.ofDisableable(), widget -> {
                             mBlockWidget = widget;
-                            widget.setTextureGetter(i -> {
-                                LegacyCoverData coverData = getCoverData();
-                                return coverData == null || convert(coverData) % 2 == 0
-                                    ? GTUITextures.OVERLAY_BUTTON_BLOCK_INPUT
-                                    : GTUITextures.OVERLAY_BUTTON_BLOCK_OUTPUT;
-                            })
-                                .dynamicTooltip(() -> {
-                                    LegacyCoverData coverData = getCoverData();
-                                    return Collections.singletonList(
-                                        coverData == null || convert(coverData) % 2 == 0
+                            widget
+                                .setTextureGetter(
+                                    i -> coverMatches(PumpUIFactory::isExportModeSelected)
+                                        ? GTUITextures.OVERLAY_BUTTON_BLOCK_INPUT
+                                        : GTUITextures.OVERLAY_BUTTON_BLOCK_OUTPUT)
+                                .dynamicTooltip(
+                                    () -> Collections.singletonList(
+                                        coverMatches(PumpUIFactory::isExportModeSelected)
                                             ? GTUtility.trans("313", "Block Input")
-                                            : GTUtility.trans("311", "Block Output"));
-                                })
+                                            : GTUtility.trans("311", "Block Output")))
                                 .setPos(spaceX * 1, spaceY * 2);
                         })
                         .setPos(startX, startY))
@@ -262,14 +257,19 @@ public class CoverPump extends CoverBehavior {
                 .widget(
                     new TextWidget(GTUtility.trans("230", "Conditional")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(3 + startX + spaceX * 3, 4 + startY + spaceY * 1))
-                .widget(TextWidget.dynamicString(() -> {
-                    LegacyCoverData coverData = getCoverData();
-                    return coverData == null || convert(coverData) % 2 == 0 ? GTUtility.trans("344", "Input Blocking")
-                        : GTUtility.trans("344.1", "Output Blocking");
-                })
-                    .setSynced(false)
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(3 + startX + spaceX * 3, 4 + startY + spaceY * 2));
+                .widget(
+                    TextWidget
+                        .dynamicString(
+                            () -> coverMatches(PumpUIFactory::isExportModeSelected)
+                                ? GTUtility.trans("344", "Input Blocking")
+                                : GTUtility.trans("344.1", "Output Blocking"))
+                        .setSynced(false)
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(3 + startX + spaceX * 3, 4 + startY + spaceY * 2));
+        }
+
+        private static boolean isExportModeSelected(CoverBehavior cover) {
+            return cover.getVariable() % 2 == 0;
         }
 
         private int getNewCoverVariable(int id, int coverVariable) {
