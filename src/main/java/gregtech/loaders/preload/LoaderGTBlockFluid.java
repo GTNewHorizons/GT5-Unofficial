@@ -353,7 +353,7 @@ public class LoaderGTBlockFluid implements Runnable {
             new ItemAugmentBase(
                 "augmentforcefield",
                 "Augment: Energy Grid Defense",
-                "Allows user to deploy a powerful forcefield which\nwill block any damage for huge amounts of eu",
+                "Allows user to deploy a powerful forcefield which /n will block any damage for huge amounts of eu",
                 Collections.singletonList(MechArmorLoader.MechArmorChestplate),
                 Collections.singletonList(ForceFieldBehavior.INSTANCE)));
         ItemList.Augment_OmniMovement.set(
@@ -365,6 +365,13 @@ public class LoaderGTBlockFluid implements Runnable {
                 Collections.singletonList(OmniMovementBehavior.INSTANCE),
                 Collections.singletonList(SpeedBoostBehavior.MECH_ARMOR_INSTANCE),
                 Collections.emptyList()));
+        ItemList.Augment_WaterBreathing.set(
+            new ItemAugmentBase(
+                "augmentwaterbreathing",
+                "Augment: Rebreather",
+                "Restore's the user's air if they run out underwater",
+                Collections.singletonList(MechArmorLoader.MechArmorHelmet),
+                Collections.singletonList(WaterBreathingBehavior.INSTANCE)));
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1

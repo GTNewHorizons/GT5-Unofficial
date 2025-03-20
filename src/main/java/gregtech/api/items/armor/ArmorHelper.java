@@ -28,6 +28,7 @@ public class ArmorHelper {
     public static final String FORCE_SPACE_SUIT_NBT_KEY = "ForceValidSpaceSuit";
     public static final String INFINITE_ENERGY_KEY = "InfiniteEnergy";
     public static final String FORCE_FIELD_KEY = "ForceField";
+    public static final String WATER_BREATHING_KEY = "WaterBreathing";
 
     public static final String VIS_DISCOUNT_KEY = "VisDiscount";
 
