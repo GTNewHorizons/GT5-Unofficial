@@ -3,6 +3,8 @@ package gregtech.api.interfaces.tileentity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.common.covers.Cover;
 
 public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer {
@@ -29,6 +31,7 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
 
     boolean hasCoverAtSide(ForgeDirection side);
 
+    @NotNull
     Cover getCoverAtSide(ForgeDirection side);
 
     ItemStack getCoverItemAtSide(ForgeDirection side);
