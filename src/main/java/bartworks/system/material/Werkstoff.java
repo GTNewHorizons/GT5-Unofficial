@@ -30,6 +30,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -49,20 +50,26 @@ import gregtech.api.enums.FluidState;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IColorModulationContainer;
+import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import it.unimi.dsi.fastutil.shorts.Short2ObjectLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
 import thaumcraft.api.aspects.Aspect;
 
-public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
+public class Werkstoff implements IColorModulationContainer, ISubTagContainer, IOreMaterial {
 
     public static final LinkedHashSet<Werkstoff> werkstoffHashSet = new LinkedHashSet<>();
-    public static final LinkedHashMap<Short, Werkstoff> werkstoffHashMap = new LinkedHashMap<>();
+    public static final Short2ObjectMap<Werkstoff> werkstoffHashMap = new Short2ObjectLinkedOpenHashMap<>();
     public static final LinkedHashMap<String, Werkstoff> werkstoffNameHashMap = new LinkedHashMap<>();
+    public static final LinkedHashMap<String, Werkstoff> werkstoffVarNameHashMap = new LinkedHashMap<>();
 
     public static final Map<String, String> modNameOverrides = new HashMap<>() {
 
@@ -83,7 +90,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         .disable();
     public static Werkstoff default_null_Werkstoff;
 
-    private final HashSet<String> ADDITIONAL_OREDICT = new HashSet<>();
+    private final HashSet<String> additionalOredict = new HashSet<>();
     private final List<ISubTagContainer> mOreByProducts = new ArrayList<>();
     private final LinkedHashSet<Pair<ISubTagContainer, Integer>> CONTENTS = new LinkedHashSet<>();
     private final HashSet<SubTag> SUBTAGS = new HashSet<>();
@@ -378,6 +385,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         Werkstoff.werkstoffHashSet.add(this);
         Werkstoff.werkstoffHashMap.put(this.mID, this);
         Werkstoff.werkstoffNameHashMap.put(this.defaultName, this);
+        Werkstoff.werkstoffVarNameHashMap.put(this.getVarName(), this);
 
         this.owner = this.getMaterialOwner();
     }
@@ -391,12 +399,12 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     public Werkstoff addAdditionalOreDict(String s) {
-        this.ADDITIONAL_OREDICT.add(s);
+        this.additionalOredict.add(s);
         return this;
     }
 
-    public HashSet<String> getADDITIONAL_OREDICT() {
-        return this.ADDITIONAL_OREDICT;
+    public Set<String> getAdditionalOredict() {
+        return this.additionalOredict;
     }
 
     public void setTCAspects(Pair<Object, Integer>... pAspectsArr) {
@@ -499,6 +507,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         return this.defaultName;
     }
 
+    @Override
     public String getLocalizedName() {
         return GTLanguageManager.addStringLocalization(
             String.format("bw.werkstoff.%05d.name", this.mID),
@@ -529,6 +538,21 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         return this.mID;
     }
 
+    @Override
+    public int getId() {
+        return mID;
+    }
+
+    @Override
+    public List<IStoneType> getValidStones() {
+        return StoneType.STONE_ONLY;
+    }
+
+    @Override
+    public String getInternalName() {
+        return getVarName();
+    }
+
     public short getMixCircuit() {
         return this.getGenerationFeatures().mixCircuit;
     }
@@ -548,6 +572,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     @Override
     public short[] getRGBA() {
         return new short[] { (short) (this.rgb[0] + 128), (short) (this.rgb[1] + 128), (short) (this.rgb[2] + 128), 0 };
+    }
+
+    @Override
+    public TextureSet getTextureSet() {
+        return texSet;
     }
 
     @Override

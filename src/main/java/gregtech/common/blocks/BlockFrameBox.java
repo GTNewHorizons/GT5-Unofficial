@@ -29,6 +29,7 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -42,7 +43,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.common.render.GTRendererBlock;
 
-public class BlockFrameBox extends BlockContainer {
+public class BlockFrameBox extends BlockContainer implements IBlockWithTextures {
 
     protected final String mUnlocalizedName;
 
@@ -52,6 +53,9 @@ public class BlockFrameBox extends BlockContainer {
     // We need to keep around a temporary TE to preserve this TE after breaking the block, so we can
     // properly call getDrops() on it
     private static final ThreadLocal<IGregTechTileEntity> mTemporaryTileEntity = new ThreadLocal<>();
+
+    // Texture[meta][side][layer]
+    private ITexture[][][] textures = new ITexture[1000][][];
 
     public BlockFrameBox() {
         super(new MaterialMachines());
@@ -69,6 +73,12 @@ public class BlockFrameBox extends BlockContainer {
                     GTLanguageManager.i18nPlaceholder ? getLocalizedNameFormat(material) : getLocalizedName(material));
                 GTLanguageManager
                     .addStringLocalization(getUnlocalizedName() + "." + meta + DOT_TOOLTIP, material.getToolTip());
+
+                ITexture[] texture = { TextureFactory.of(
+                    material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex],
+                    Dyes.getModulation(-1, material.mRGBa)) };
+
+                textures[meta] = new ITexture[][] { texture, texture, texture, texture, texture, texture };
             }
         }
     }
@@ -444,12 +454,9 @@ public class BlockFrameBox extends BlockContainer {
         return material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex].getIcon();
     }
 
-    public ITexture[] getTexture(int meta) {
-        Materials material = getMaterial(meta);
-        if (material == null) return null;
-        return new ITexture[] { TextureFactory.of(
-            material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex],
-            Dyes.getModulation(-1, material.mRGBa)) };
+    @Override
+    public ITexture[][] getTextures(int meta) {
+        return meta < 0 || meta >= 1000 ? null : textures[meta];
     }
 
     @Override

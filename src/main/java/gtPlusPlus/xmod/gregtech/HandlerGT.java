@@ -1,8 +1,5 @@
 package gtPlusPlus.xmod.gregtech;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTConfig;
@@ -20,12 +17,10 @@ import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderMolecularTransformer;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderTreeFarm;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechAdvancedBoilers;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
-import toxiceverglades.gen.WorldGenEverglades;
 
 public class HandlerGT {
 
     public static GTConfig mMaterialProperties = null;
-    public static final List<WorldGenEverglades> sWorldgenListEverglades = new ArrayList<>();
     public static MetaGeneratedTool sMetaGeneratedToolInstance;
 
     public static void preInit() {

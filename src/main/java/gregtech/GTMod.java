@@ -54,6 +54,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.internal.IGTMod;
@@ -395,6 +396,7 @@ public class GTMod implements IGTMod {
         new CropLoader().run();
         new GTWorldgenloader().run();
         new CoverLoader().run();
+        StoneType.init();
 
         GTRecipeRegistrator.registerUsagesForMaterials(
             null,
