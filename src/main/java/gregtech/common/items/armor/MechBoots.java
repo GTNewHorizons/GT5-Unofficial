@@ -1,5 +1,6 @@
 package gregtech.common.items.armor;
 
+import gregtech.api.items.armor.behaviors.JumpBoostBehavior;
 import gregtech.api.items.armor.behaviors.KnockbackResistBehavior;
 import gregtech.api.items.armor.behaviors.SpeedBoostBehavior;
 import gregtech.api.items.armor.behaviors.StepAssistBehavior;
@@ -14,6 +15,7 @@ public class MechBoots extends MechArmorBase {
         behaviors.add(SwimSpeedBehavior.INSTANCE);
         behaviors.add(KnockbackResistBehavior.INSTANCE);
         behaviors.add(SpeedBoostBehavior.MECH_ARMOR_INSTANCE);
+        behaviors.add(JumpBoostBehavior.MECH_ARMOR_INSTANCE);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package gregtech.api.items.armor;
 
+import static gregtech.api.items.armor.ArmorHelper.JUMP_BOOST_KEY;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import net.minecraft.client.entity.EntityOtherPlayerMP;
@@ -7,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.event.entity.living.LivingEvent;
 
 import com.gtnewhorizon.gtnhlib.client.event.LivingEquipmentChangeEvent;
 
@@ -93,6 +95,20 @@ public class ArmorEventHandlers {
         }
         if (player.stepHeight == MAGIC_STEP_HEIGHT) {
             player.stepHeight = 0.6f;
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerJump(LivingEvent.LivingJumpEvent event) {
+        if (event.entityLiving instanceof EntityPlayer player) {
+            ItemStack boots = player.getCurrentArmor(0);
+
+            if (boots == null) return;
+            NBTTagCompound tag = boots.getTagCompound();
+            if (tag == null) return;
+            float jumpboost = tag.getFloat(JUMP_BOOST_KEY);
+            player.motionY += jumpboost;
+            player.fallDistance = player.fallDistance - (jumpboost * 10);
         }
     }
 }

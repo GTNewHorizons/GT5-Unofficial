@@ -308,6 +308,12 @@ public class LoaderGTBlockFluid implements Runnable {
                 "Augment: Sprint Boosters",
                 "Allows the user to move faster. Can be applied multiple times",
                 Collections.singletonList(SpeedBoostBehavior.MECH_ARMOR_INSTANCE)));
+        ItemList.Augment_JumpBoost.set(
+            new ItemAugmentBase(
+                "augmentjumpboost",
+                "Augment: Pneumatic Jump Assist",
+                "Allows the user to jump higher",
+                Collections.singletonList(JumpBoostBehavior.MECH_ARMOR_INSTANCE)));
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1

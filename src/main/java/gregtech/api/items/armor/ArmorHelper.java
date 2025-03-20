@@ -23,6 +23,7 @@ public class ArmorHelper {
     public static final String KNOCKBACK_RESISTANCE_KEY = "KnockbackResistance";
     public static final String SPEED_BOOST_MAX_KEY = "MaxSpeedBoost";
     public static final String SPEED_BOOST_CURRENT_KEY = "CurrentSpeedBoost";
+    public static final String JUMP_BOOST_KEY = "JumpBoost";
 
     public static final String VIS_DISCOUNT_KEY = "VisDiscount";
 
