@@ -312,6 +312,11 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     /** Determine which drones and items are in the correct buses */
     protected ItemStack[] validInputs() {
         ArrayList<ItemStack> validatedInputs = new ArrayList<>();
+        // Accept item from controller if it's a drone
+        ItemStack controllerSlot = this.getControllerSlot();
+        if (controllerSlot != null && controllerSlot.getItem() instanceof ItemMiningDrones) {
+            validatedInputs.add(controllerSlot);
+        }
         Map<GTUtility.ItemId, ItemStack> inputsFromME = new HashMap<>();
         for (MTEHatchInputBus inputBus : validMTEList(mInputBusses)) {
             IGregTechTileEntity tileEntity = inputBus.getBaseMetaTileEntity();
