@@ -843,8 +843,8 @@ public class WerkstoffLoader {
         48,
         TextureSet.SET_FLUID,
         // No Byproducts
-        new Pair<>(Materials.HydrochloricAcid, 3),
-        new Pair<>(Materials.NitricAcid, 1));
+        Pair.of(Materials.HydrochloricAcid, 3),
+        Pair.of(Materials.NitricAcid, 1));
 
     public static final Werkstoff PTResidue = new Werkstoff(
         new short[] { 0x64, 0x63, 0x2E },
