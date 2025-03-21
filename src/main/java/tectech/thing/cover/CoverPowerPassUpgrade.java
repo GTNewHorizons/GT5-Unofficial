@@ -2,13 +2,24 @@ package tectech.thing.cover;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.covers.CoverContext;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.common.covers.CoverLegacyData;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
 public class CoverPowerPassUpgrade extends CoverLegacyData {
+
+    public static boolean isCoverPlaceable(ForgeDirection side, ItemStack coverItem, ICoverable coverable) {
+        IMetaTileEntity iGregTechTileEntityOffset = coverable.getIGregTechTileEntityOffset(0, 0, 0)
+            .getMetaTileEntity();
+        if (iGregTechTileEntityOffset instanceof TTMultiblockBase multi) {
+            return !multi.ePowerPassCover;
+        }
+        return false;
+    }
 
     public CoverPowerPassUpgrade(CoverContext context) {
         super(context);

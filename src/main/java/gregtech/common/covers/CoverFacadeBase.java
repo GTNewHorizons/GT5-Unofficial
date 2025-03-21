@@ -1,5 +1,7 @@
 package gregtech.common.covers;
 
+import java.util.function.Function;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -17,6 +19,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.covers.CoverContext;
+import gregtech.api.covers.CoverPlacementPredicate;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
@@ -30,6 +33,33 @@ import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
 public abstract class CoverFacadeBase extends Cover {
+
+    public static CoverPlacementPredicate isCoverPlaceable(Function<ItemStack, Block> getTargetBlock,
+        Function<ItemStack, Integer> getTargetmeta) {
+        return (ForgeDirection side, ItemStack coverItem, ICoverable coverable) -> {
+            // blocks that are not rendered in pass 0 are now accepted but rendered awkwardly
+            // to render it correctly require changing GT_Block_Machine to render in both pass, which is not really a
+            // good
+            // idea...
+            final Block targetBlock = getTargetBlock.apply(coverItem);
+            if (targetBlock == null) return false;
+            // we allow one single type of facade on the same block for now
+            // otherwise it's not clear which block this block should impersonate
+            // this restriction can be lifted later by specifying a certain facade as dominate one as an extension to
+            // this
+            // class
+            for (final ForgeDirection iSide : ForgeDirection.VALID_DIRECTIONS) {
+                if (iSide == side) continue;
+                final Cover cover = coverable.getCoverAtSide(iSide);
+                if (!cover.isValid()) continue;
+                final Block facadeBlock = cover.getFacadeBlock();
+                if (facadeBlock == null) continue;
+                if (facadeBlock != targetBlock) return false;
+                if (cover.getFacadeMeta() != getTargetmeta.apply(coverItem)) return false;
+            }
+            return true;
+        };
+    }
 
     ItemStack mStack;
     int mFlags;

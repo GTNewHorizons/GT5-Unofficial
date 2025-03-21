@@ -4,6 +4,8 @@ import java.lang.ref.WeakReference;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -21,6 +23,15 @@ import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
 public class CoverControlsWork extends CoverLegacyData {
+
+    public static boolean isCoverPlaceable(ForgeDirection side, ItemStack coverItem, ICoverable coverable) {
+        for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
+            if (coverable.getCoverAtSide(tSide) instanceof CoverControlsWork) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     private enum State {
         ENABLE_WITH_SIGNAL,

@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -22,6 +23,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.common.events.MetricsCoverDataEvent;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
@@ -36,6 +38,10 @@ import io.netty.buffer.ByteBuf;
  * method, it will resort to {@link BaseMetaTileEntity#getInfoData()} instead.
  */
 public class CoverMetricsTransmitter extends Cover {
+
+    public static boolean isCoverPlaceable(ForgeDirection side, ItemStack coverItem, ICoverable coverable) {
+        return coverable instanceof final IGregTechDeviceInformation device && device.isGivingInformation();
+    }
 
     @SuppressWarnings("SpellCheckingInspection")
     public static final String FREQUENCY_MSB_KEY = "gt.metricscover.freq_msb";

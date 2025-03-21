@@ -476,6 +476,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
@@ -504,7 +505,6 @@ import gregtech.common.config.Other;
 import gregtech.common.covers.CoverArm;
 import gregtech.common.covers.CoverChest;
 import gregtech.common.covers.CoverControlsWork;
-import gregtech.common.covers.CoverControlsWorkPlacer;
 import gregtech.common.covers.CoverConveyor;
 import gregtech.common.covers.CoverCrafting;
 import gregtech.common.covers.CoverDoesWork;
@@ -3833,7 +3833,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             ItemList.Cover_Controller.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_CONTROLLER)),
             context -> new CoverControlsWork(context, TextureFactory.of(OVERLAY_CONTROLLER)),
-            new CoverControlsWorkPlacer());
+            CoverPlacer.builder()
+                .onlyPlaceIf(CoverControlsWork::isCoverPlaceable)
+                .build());
 
         CoverRegistry.registerCover(
             ItemList.Cover_Chest_Basic.get(1L),
