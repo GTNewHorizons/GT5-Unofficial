@@ -37,14 +37,13 @@ public class CoverDoesWork extends CoverBehavior {
         if (coverable == null) {
             return;
         }
-        int coverDataValue = coverData.get();
         if ((coverable instanceof IMachineProgress mProgress)) {
-            boolean inverted = isFlagSet(coverDataValue, FLAG_INVERTED);
+            boolean inverted = isFlagSet(this.coverData, FLAG_INVERTED);
             int signal = 0;
 
-            if (isFlagSet(coverDataValue, FLAG_ENABLED)) {
+            if (isFlagSet(this.coverData, FLAG_ENABLED)) {
                 signal = inverted == mProgress.isAllowedToWork() ? 0 : 15;
-            } else if (isFlagSet(coverDataValue, FLAG_PROGRESS)) {
+            } else if (isFlagSet(this.coverData, FLAG_PROGRESS)) {
                 signal = inverted == (mProgress.getMaxProgress() == 0) ? 0 : 15;
             } else {
                 int tScale = mProgress.getMaxProgress() / 15;
@@ -64,12 +63,11 @@ public class CoverDoesWork extends CoverBehavior {
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int coverDataValue = coverData.get();
-        coverDataValue = (coverDataValue + (aPlayer.isSneaking() ? -1 : 1)) % 6;
-        if (coverDataValue < 0) {
-            coverDataValue = 5;
+        this.coverData = (this.coverData + (aPlayer.isSneaking() ? -1 : 1)) % 6;
+        if (this.coverData < 0) {
+            this.coverData = 5;
         }
-        switch (coverDataValue) {
+        switch (this.coverData) {
             case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("018", "Normal"));
             // Progress scaled
             case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("019", "Inverted"));
@@ -83,7 +81,6 @@ public class CoverDoesWork extends CoverBehavior {
             case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("029", "Machine Disabled"));
             // Disabled
         }
-        coverData.set(coverDataValue);
     }
 
     @Override

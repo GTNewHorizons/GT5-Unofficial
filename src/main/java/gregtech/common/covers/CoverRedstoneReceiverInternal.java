@@ -21,8 +21,7 @@ public class CoverRedstoneReceiverInternal extends CoverRedstoneWirelessBase {
 
     @Override
     public byte getRedstoneInput(byte aInputRedstone) {
-        return GregTechAPI.sWirelessRedstone.get(coverData.get()) == null ? 0
-            : GregTechAPI.sWirelessRedstone.get(coverData.get());
+        return GregTechAPI.sWirelessRedstone.get(coverData) == null ? 0 : GregTechAPI.sWirelessRedstone.get(coverData);
     }
 
 }

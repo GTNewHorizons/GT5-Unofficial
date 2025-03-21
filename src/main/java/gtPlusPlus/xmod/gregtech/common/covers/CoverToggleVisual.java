@@ -13,7 +13,6 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverBehavior;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
@@ -85,23 +84,21 @@ public class CoverToggleVisual extends CoverBehavior {
 
     @Override
     public void doCoverThings(byte aInputRedstone, long aTimer) {
-        int coverDataValue = coverData.get();
         try {
             String aKey = generateUniqueKey(coverSide, coveredTile.get());
             Integer b = sConnectionStateForEntityMap.get(aKey);
-            if (b != null && coverDataValue != b) {
-                coverDataValue = b;
+            if (b != null && this.coverData != b) {
+                this.coverData = b;
             }
             if (b == null) {
-                b = coverDataValue;
+                b = this.coverData;
                 sConnectionStateForEntityMap.put(aKey, b);
                 // Try set cover state directly
-                coverData = new ISerializableObject.LegacyCoverData(b == VALUE_ON ? VALUE_ON : VALUE_OFF);
+                this.coverData = b == VALUE_ON ? VALUE_ON : VALUE_OFF;
             }
         } catch (Throwable ignored) {
 
         }
-        coverData.set(coverDataValue);
     }
 
     @Override
@@ -140,7 +137,7 @@ public class CoverToggleVisual extends CoverBehavior {
     }
 
     public boolean getConnectionState() {
-        return coverData.get() == VALUE_ON;
+        return coverData == VALUE_ON;
     }
 
     public static boolean getConnectionState(ForgeDirection side, ICoverable aTile) {

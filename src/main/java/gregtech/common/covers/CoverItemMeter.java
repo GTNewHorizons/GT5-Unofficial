@@ -2,14 +2,14 @@ package gregtech.common.covers;
 
 import java.text.FieldPosition;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.Fluid;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
@@ -23,7 +23,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
@@ -32,47 +31,86 @@ import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import io.netty.buffer.ByteBuf;
 
-public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterData> {
+public class CoverItemMeter extends CoverBehaviorBase {
 
     // Legacy data format
     private static final int SLOT_MASK = 0x3FFFFFFF; // 0 = all, 1 = 0 ...
     private static final int CONVERTED_BIT = 0x80000000;
     private static final int INVERT_BIT = 0x40000000;
 
+    private boolean inverted;
+    /** The special value {@code -1} means all slots. */
+    private int slot;
+    /** The special value {@code 0} means threshold check is disabled. */
+    private int threshold;
+
     public CoverItemMeter(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
     }
 
     public int getSlot() {
-        return this.coverData.slot;
+        return this.slot;
     }
 
     public CoverItemMeter setSlot(int slot) {
-        this.coverData.slot = slot;
+        this.slot = slot;
         return this;
     }
 
     public boolean isInverted() {
-        return this.coverData.inverted;
+        return this.inverted;
     }
 
     public CoverItemMeter setInverted(boolean inverted) {
-        this.coverData.inverted = inverted;
+        this.inverted = inverted;
         return this;
     }
 
     public int getThreshold() {
-        return this.coverData.threshold;
+        return this.threshold;
     }
 
     public CoverItemMeter setThresdhold(int threshold) {
-        this.coverData.threshold = threshold;
+        this.threshold = threshold;
         return this;
     }
 
     @Override
-    protected ItemMeterData initializeData() {
-        return new CoverItemMeter.ItemMeterData();
+    protected void initializeData() {
+        inverted = false;
+        slot = -1;
+        threshold = 0;
+    }
+
+    @Override
+    protected void loadFromNbt(NBTBase nbt) {
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        inverted = tag.getBoolean("invert");
+        slot = tag.getInteger("slot");
+        threshold = tag.getInteger("threshold");
+    }
+
+    @Override
+    protected void readFromPacket(ByteArrayDataInput byteData) {
+        inverted = byteData.readBoolean();
+        slot = byteData.readInt();
+        threshold = byteData.readInt();
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("invert", inverted);
+        tag.setInteger("slot", slot);
+        tag.setInteger("threshold", threshold);
+        return tag;
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeBoolean(inverted);
+        byteBuf.writeInt(slot);
+        byteBuf.writeInt(threshold);
     }
 
     public static byte computeSignalBasedOnItems(ICoverable tileEntity, boolean inverted, int threshold, int slot,
@@ -107,12 +145,7 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
     public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable != null) {
-            byte signal = computeSignalBasedOnItems(
-                coverable,
-                coverData.inverted,
-                coverData.threshold,
-                coverData.slot,
-                coverSide.ordinal());
+            byte signal = computeSignalBasedOnItems(coverable, inverted, threshold, slot, coverSide.ordinal());
             coverable.setOutputRedstoneSignal(coverSide, signal);
         }
     }
@@ -124,20 +157,20 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
             return;
         }
         if (aPlayer.isSneaking()) {
-            if (coverData.inverted) {
-                coverData.inverted = false;
+            if (inverted) {
+                inverted = false;
                 GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("055", "Normal"));
             } else {
-                coverData.inverted = true;
+                inverted = true;
                 GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("054", "Inverted"));
             }
         } else {
-            coverData.slot++;
-            if (coverData.slot > coverable.getSizeInventory()) coverData.slot = -1;
+            slot++;
+            if (slot > coverable.getSizeInventory()) slot = -1;
 
-            if (coverData.slot == -1)
+            if (slot == -1)
                 GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("053", "Slot: ") + GTUtility.trans("ALL", "All"));
-            else GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("053", "Slot: ") + coverData.slot);
+            else GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("053", "Slot: ") + slot);
         }
     }
 
@@ -320,65 +353,6 @@ public class CoverItemMeter extends CoverBehaviorBase<CoverItemMeter.ItemMeterDa
                 }
             }
             return null;
-        }
-    }
-
-    public static class ItemMeterData implements ISerializableObject {
-
-        private boolean inverted;
-        /** The special value {@code -1} means all slots. */
-        private int slot;
-        /** The special value {@code 0} means threshold check is disabled. */
-        private int threshold;
-
-        public ItemMeterData() {
-            inverted = false;
-            slot = -1;
-            threshold = 0;
-        }
-
-        public ItemMeterData(boolean inverted, int slot, int threshold) {
-            this.inverted = inverted;
-            this.slot = slot;
-            this.threshold = threshold;
-        }
-
-        @Nonnull
-        @Override
-        public ISerializableObject copy() {
-            return new ItemMeterData(inverted, slot, threshold);
-        }
-
-        @Nonnull
-        @Override
-        public NBTBase saveDataToNBT() {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setBoolean("invert", inverted);
-            tag.setInteger("slot", slot);
-            tag.setInteger("threshold", threshold);
-            return tag;
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeBoolean(inverted);
-            aBuf.writeInt(slot);
-            aBuf.writeInt(threshold);
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            NBTTagCompound tag = (NBTTagCompound) aNBT;
-            inverted = tag.getBoolean("invert");
-            slot = tag.getInteger("slot");
-            threshold = tag.getInteger("threshold");
-        }
-
-        @Override
-        public void readFromPacket(ByteArrayDataInput aBuf) {
-            inverted = aBuf.readBoolean();
-            slot = aBuf.readInt();
-            threshold = aBuf.readInt();
         }
     }
 }

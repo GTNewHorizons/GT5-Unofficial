@@ -4,8 +4,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -23,36 +21,85 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
-public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedWirelessRedstoneBase.WirelessData>
-    extends CoverBehaviorBase<T> {
+public abstract class CoverAdvancedWirelessRedstoneBase extends CoverBehaviorBase {
+
+    protected int frequency;
+
+    /**
+     * If UUID is set to null, the cover frequency is public, rather than private
+     **/
+    protected UUID uuid;
 
     public CoverAdvancedWirelessRedstoneBase(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
     }
 
     public int getFrequency() {
-        return coverData.frequency;
+        return frequency;
     }
 
-    public CoverAdvancedWirelessRedstoneBase<T> setFrequency(int frequency) {
-        this.coverData.frequency = frequency;
+    public CoverAdvancedWirelessRedstoneBase setFrequency(int frequency) {
+        this.frequency = frequency;
         return this;
     }
 
     public UUID getUuid() {
-        return coverData.uuid;
+        return uuid;
     }
 
-    public CoverAdvancedWirelessRedstoneBase<T> setUuid(UUID uuid) {
-        this.coverData.uuid = uuid;
+    public CoverAdvancedWirelessRedstoneBase setUuid(UUID uuid) {
+        this.uuid = uuid;
         return this;
+    }
+
+    @Override
+    protected void initializeData() {
+        this.frequency = 0;
+        this.uuid = null;
+    }
+
+    @Override
+    protected void loadFromNbt(NBTBase nbt) {
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        frequency = tag.getInteger("frequency");
+        if (tag.hasKey("uuid")) {
+            uuid = UUID.fromString(tag.getString("uuid"));
+        }
+    }
+
+    @Override
+    protected void readFromPacket(ByteArrayDataInput byteData) {
+        frequency = byteData.readInt();
+        if (byteData.readBoolean()) {
+            uuid = new UUID(byteData.readLong(), byteData.readLong());
+        }
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("frequency", frequency);
+        if (uuid != null) {
+            tag.setString("uuid", uuid.toString());
+        }
+
+        return tag;
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeInt(frequency);
+        byteBuf.writeBoolean(uuid != null);
+        if (uuid != null) {
+            byteBuf.writeLong(uuid.getLeastSignificantBits());
+            byteBuf.writeLong(uuid.getMostSignificantBits());
+        }
     }
 
     public static Byte getSignalAt(UUID uuid, int frequency, CoverAdvancedRedstoneReceiverBase.GateMode mode) {
@@ -159,9 +206,9 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
 
     @Override
     public String getDescription() {
-        return GTUtility.trans("081", "Frequency: ") + coverData.frequency
+        return GTUtility.trans("081", "Frequency: ") + frequency
             + ", Transmission: "
-            + (coverData.uuid == null ? "Public" : "Private");
+            + (uuid == null ? "Public" : "Private");
     }
 
     @Override
@@ -174,68 +221,6 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
         return 5;
     }
 
-    public abstract static class WirelessData implements ISerializableObject {
-
-        protected int frequency;
-
-        /**
-         * If UUID is set to null, the cover frequency is public, rather than private
-         **/
-        protected UUID uuid;
-
-        public WirelessData(int frequency, UUID uuid) {
-            this.frequency = frequency;
-            this.uuid = uuid;
-        }
-
-        public UUID getUuid() {
-            return uuid;
-        }
-
-        public int getFrequency() {
-            return frequency;
-        }
-
-        @Nonnull
-        @Override
-        public NBTBase saveDataToNBT() {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setInteger("frequency", frequency);
-            if (uuid != null) {
-                tag.setString("uuid", uuid.toString());
-            }
-
-            return tag;
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeInt(frequency);
-            aBuf.writeBoolean(uuid != null);
-            if (uuid != null) {
-                aBuf.writeLong(uuid.getLeastSignificantBits());
-                aBuf.writeLong(uuid.getMostSignificantBits());
-            }
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            NBTTagCompound tag = (NBTTagCompound) aNBT;
-            frequency = tag.getInteger("frequency");
-            if (tag.hasKey("uuid")) {
-                uuid = UUID.fromString(tag.getString("uuid"));
-            }
-        }
-
-        @Override
-        public void readFromPacket(ByteArrayDataInput aBuf) {
-            frequency = aBuf.readInt();
-            if (aBuf.readBoolean()) {
-                uuid = new UUID(aBuf.readLong(), aBuf.readLong());
-            }
-        }
-    }
-
     // GUI stuff
 
     @Override
@@ -243,7 +228,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase<T extends CoverAdvancedW
         return true;
     }
 
-    protected static abstract class AdvancedWirelessRedstoneBaseUIFactory<C extends CoverAdvancedWirelessRedstoneBase<?>>
+    protected static abstract class AdvancedWirelessRedstoneBaseUIFactory<C extends CoverAdvancedWirelessRedstoneBase>
         extends UIFactory<C> {
 
         protected static final int startX = 10;

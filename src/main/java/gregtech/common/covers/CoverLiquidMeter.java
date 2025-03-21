@@ -2,8 +2,6 @@ package gregtech.common.covers;
 
 import java.util.Arrays;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,6 +10,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -23,7 +23,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
@@ -34,33 +33,67 @@ import io.netty.buffer.ByteBuf;
  * TODO: Implement overlay rendering only with
  * {@link CoverBehaviorBase#getOverlayTexture()}
  */
-public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidMeterData> {
+public class CoverLiquidMeter extends CoverBehaviorBase {
+
+    private boolean inverted;
+    /**
+     * The special value {@code 0} means threshold check is disabled.
+     */
+    private int threshold;
 
     public CoverLiquidMeter(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
     }
 
     public boolean isInverted() {
-        return this.coverData.inverted;
+        return this.inverted;
     }
 
     public CoverLiquidMeter setInverted(boolean inverted) {
-        this.coverData.inverted = inverted;
+        this.inverted = inverted;
         return this;
     }
 
     public int getThreshold() {
-        return this.coverData.threshold;
+        return this.threshold;
     }
 
     public CoverLiquidMeter setThresdhold(int threshold) {
-        this.coverData.threshold = threshold;
+        this.threshold = threshold;
         return this;
     }
 
     @Override
-    protected LiquidMeterData initializeData() {
-        return new LiquidMeterData();
+    protected void initializeData() {
+        inverted = false;
+        threshold = 0;
+    }
+
+    @Override
+    protected void loadFromNbt(NBTBase nbt) {
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        inverted = tag.getBoolean("invert");
+        threshold = tag.getInteger("threshold");
+    }
+
+    @Override
+    protected void readFromPacket(ByteArrayDataInput byteData) {
+        inverted = byteData.readBoolean();
+        threshold = byteData.readInt();
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("invert", inverted);
+        tag.setInteger("threshold", threshold);
+        return tag;
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeBoolean(inverted);
+        byteBuf.writeInt(threshold);
     }
 
     public static byte computeSignalBasedOnFluid(ICoverable tileEntity, boolean inverted, int threshold) {
@@ -94,18 +127,18 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
     public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable != null) {
-            byte signal = computeSignalBasedOnFluid(coverable, coverData.inverted, coverData.threshold);
+            byte signal = computeSignalBasedOnFluid(coverable, inverted, threshold);
             coverable.setOutputRedstoneSignal(coverSide, signal);
         }
     }
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (coverData.inverted) {
-            coverData.inverted = false;
+        if (inverted) {
+            inverted = false;
             GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("055", "Normal"));
         } else {
-            coverData.inverted = true;
+            inverted = true;
             GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("054", "Inverted"));
         }
     }
@@ -234,59 +267,6 @@ public class CoverLiquidMeter extends CoverBehaviorBase<CoverLiquidMeter.LiquidM
             } else {
                 maxCapacity = -1;
             }
-        }
-    }
-
-    public static class LiquidMeterData implements ISerializableObject {
-
-        private boolean inverted;
-        /**
-         * The special value {@code 0} means threshold check is disabled.
-         */
-        private int threshold;
-
-        public LiquidMeterData() {
-            inverted = false;
-            threshold = 0;
-        }
-
-        public LiquidMeterData(boolean inverted, int threshold) {
-            this.inverted = inverted;
-            this.threshold = threshold;
-        }
-
-        @Nonnull
-        @Override
-        public ISerializableObject copy() {
-            return new LiquidMeterData(inverted, threshold);
-        }
-
-        @Nonnull
-        @Override
-        public NBTBase saveDataToNBT() {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setBoolean("invert", inverted);
-            tag.setInteger("threshold", threshold);
-            return tag;
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeBoolean(inverted);
-            aBuf.writeInt(threshold);
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            NBTTagCompound tag = (NBTTagCompound) aNBT;
-            inverted = tag.getBoolean("invert");
-            threshold = tag.getInteger("threshold");
-        }
-
-        @Override
-        public void readFromPacket(ByteArrayDataInput aBuf) {
-            inverted = aBuf.readBoolean();
-            threshold = aBuf.readInt();
         }
     }
 }

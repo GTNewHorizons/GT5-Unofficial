@@ -11,16 +11,10 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.common.covers.Cover;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 
-public class CoverAdvancedRedstoneTransmitterInternal
-    extends CoverAdvancedRedstoneTransmitterBase<CoverAdvancedRedstoneTransmitterBase.TransmitterData> {
+public class CoverAdvancedRedstoneTransmitterInternal extends CoverAdvancedRedstoneTransmitterBase {
 
     public CoverAdvancedRedstoneTransmitterInternal(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
-    }
-
-    @Override
-    protected TransmitterData initializeData() {
-        return new CoverAdvancedRedstoneTransmitterBase.TransmitterData();
     }
 
     @Override
@@ -30,13 +24,13 @@ public class CoverAdvancedRedstoneTransmitterInternal
             return;
         }
         byte outputRedstone = coverable.getOutputRedstoneSignal(coverSide);
-        if (coverData.isInvert()) {
+        if (isInverted()) {
             if (outputRedstone > 0) outputRedstone = 0;
             else outputRedstone = 15;
         }
 
         final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, outputRedstone);
+        setSignalAt(getUuid(), getFrequency(), hash, outputRedstone);
     }
 
     @Override

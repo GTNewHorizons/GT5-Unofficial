@@ -33,15 +33,14 @@ public class CoverDrain extends CoverBehavior {
         if (coverable == null) {
             return;
         }
-        int coverDataValue = coverData.get();
-        if ((coverDataValue % 3 > 1) && ((coverable instanceof IMachineProgress))) {
+        if ((this.coverData % 3 > 1) && ((coverable instanceof IMachineProgress))) {
             if (((IMachineProgress) coverable).isAllowedToWork()) {
                 return;
             }
         }
         if (coverSide != ForgeDirection.UNKNOWN) {
             final Block tBlock = coverable.getBlockAtSide(coverSide);
-            if ((coverDataValue < 3) && ((coverable instanceof IFluidHandler))) {
+            if ((this.coverData < 3) && ((coverable instanceof IFluidHandler))) {
                 if ((coverSide == ForgeDirection.UP) && (coverable.getWorld()
                     .isRaining())
                     && (coverable.getWorld()
@@ -89,7 +88,7 @@ public class CoverDrain extends CoverBehavior {
                     }
                 }
             }
-            if ((coverDataValue >= 3) && (tBlock != null)
+            if ((this.coverData >= 3) && (tBlock != null)
                 && ((tBlock == Blocks.lava) || (tBlock == Blocks.flowing_lava)
                     || (tBlock == Blocks.water)
                     || (tBlock == Blocks.flowing_water)
@@ -108,12 +107,11 @@ public class CoverDrain extends CoverBehavior {
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int coverDataValue = coverData.get();
-        coverDataValue = (coverDataValue + (aPlayer.isSneaking() ? -1 : 1)) % 6;
-        if (coverDataValue < 0) {
-            coverDataValue = 5;
+        this.coverData = (this.coverData + (aPlayer.isSneaking() ? -1 : 1)) % 6;
+        if (this.coverData < 0) {
+            this.coverData = 5;
         }
-        switch (coverDataValue) {
+        switch (this.coverData) {
             case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("022", "Import"));
             case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("023", "Import (conditional)"));
             case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("024", "Import (invert cond)"));
@@ -121,13 +119,11 @@ public class CoverDrain extends CoverBehavior {
             case 4 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("026", "Keep Liquids Away (conditional)"));
             case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("027", "Keep Liquids Away (invert cond)"));
         }
-        coverData.set(coverDataValue);
     }
 
     @Override
     public boolean letsFluidIn(Fluid aFluid) {
-        return (coveredTile.get() instanceof IMachineProgress machine && machine.isAllowedToWork())
-            == (coverData.get() < 2);
+        return (coveredTile.get() instanceof IMachineProgress machine && machine.isAllowedToWork()) == (coverData < 2);
     }
 
     @Override
@@ -137,6 +133,6 @@ public class CoverDrain extends CoverBehavior {
 
     @Override
     public int getMinimumTickRate() {
-        return coverData.get() < 3 ? 50 : 1;
+        return coverData < 3 ? 50 : 1;
     }
 }

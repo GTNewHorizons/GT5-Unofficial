@@ -28,16 +28,15 @@ public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
 
     @Override
     public void onCoverRemoval() {
-        GregTechAPI.sWirelessRedstone.put(coverData.get(), (byte) 0);
+        GregTechAPI.sWirelessRedstone.put(coverData, (byte) 0);
     }
 
     @Override
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (((aX > 0.375D) && (aX < 0.625D)) || ((coverSide.offsetX != 0) && ((aY > 0.375D) && (aY < 0.625D)))) {
-            GregTechAPI.sWirelessRedstone.put(coverData.get(), (byte) 0);
-            coverData.set(
-                (coverData.get() & (PRIVATE_MASK | CHECKBOX_MASK))
-                    | (((Integer) GTUtility.stackToInt(aPlayer.inventory.getCurrentItem())).hashCode() & PUBLIC_MASK));
+            GregTechAPI.sWirelessRedstone.put(coverData, (byte) 0);
+            coverData = (coverData & (PRIVATE_MASK | CHECKBOX_MASK))
+                | (((Integer) GTUtility.stackToInt(aPlayer.inventory.getCurrentItem())).hashCode() & PUBLIC_MASK);
             GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("081", "Frequency: ") + coverData);
             return true;
         }
@@ -46,10 +45,9 @@ public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int coverDataValue = coverData.get();
         if (((aX > 0.375D) && (aX < 0.625D)) || ((coverSide.offsetX == 0)
             || (((aY > 0.375D) && (aY < 0.625D)) || ((((aZ <= 0.375D) || (aZ >= 0.625D))))))) {
-            GregTechAPI.sWirelessRedstone.put(coverDataValue, (byte) 0);
+            GregTechAPI.sWirelessRedstone.put(this.coverData, (byte) 0);
             final float[] tCoords = GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ);
 
             final short tAdjustVal = switch ((byte) ((byte) (int) (tCoords[0] * 2.0F)
@@ -61,18 +59,17 @@ public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
                 default -> 0;
             };
 
-            final int tPublicChannel = (coverDataValue & PUBLIC_MASK) + tAdjustVal;
+            final int tPublicChannel = (this.coverData & PUBLIC_MASK) + tAdjustVal;
 
             if (tPublicChannel < 0) {
-                coverDataValue = coverDataValue & ~PUBLIC_MASK;
+                this.coverData = this.coverData & ~PUBLIC_MASK;
             } else if (tPublicChannel > MAX_CHANNEL) {
-                coverDataValue = (coverDataValue & (PRIVATE_MASK | CHECKBOX_MASK)) | MAX_CHANNEL;
+                this.coverData = (this.coverData & (PRIVATE_MASK | CHECKBOX_MASK)) | MAX_CHANNEL;
             } else {
-                coverDataValue = (coverDataValue & (PRIVATE_MASK | CHECKBOX_MASK)) | tPublicChannel;
+                this.coverData = (this.coverData & (PRIVATE_MASK | CHECKBOX_MASK)) | tPublicChannel;
             }
         }
-        GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("081", "Frequency: ") + (coverDataValue & PUBLIC_MASK));
-        coverData.set(coverDataValue);
+        GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("081", "Frequency: ") + (this.coverData & PUBLIC_MASK));
     }
 
     @Override
@@ -107,7 +104,7 @@ public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
 
     @Override
     public String getDescription() {
-        return GTUtility.trans("081", "Frequency: ") + coverData.get();
+        return GTUtility.trans("081", "Frequency: ") + coverData;
     }
 
     @Override

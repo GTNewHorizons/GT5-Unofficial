@@ -5,8 +5,6 @@ import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -14,6 +12,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -33,9 +33,11 @@ import gregtech.common.gui.modularui.widget.CoverDataFollowerSlotWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
-public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilterData> {
+public class CoverItemFilter extends CoverBehaviorBase {
 
     private final boolean mExport;
+    private boolean mWhitelist;
+    private ItemStack mFilter;
 
     public CoverItemFilter(CoverContext context, boolean isExport, ITexture coverTexture) {
         super(context, coverTexture);
@@ -43,26 +45,56 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
     }
 
     public boolean isWhitelist() {
-        return coverData.mWhitelist;
+        return mWhitelist;
     }
 
     public CoverItemFilter setWhitelist(boolean whitelist) {
-        this.coverData.mWhitelist = whitelist;
+        this.mWhitelist = whitelist;
         return this;
     }
 
     public ItemStack getFilter() {
-        return coverData.mFilter;
+        return mFilter;
     }
 
     public CoverItemFilter setFilter(ItemStack filter) {
-        this.coverData.mFilter = filter;
+        this.mFilter = filter;
         return this;
     }
 
     @Override
-    protected ItemFilterData initializeData() {
-        return new CoverItemFilter.ItemFilterData();
+    protected void initializeData() {
+        mWhitelist = false;
+        mFilter = null;
+    }
+
+    @Override
+    protected void loadFromNbt(NBTBase nbt) {
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        mWhitelist = tag.getBoolean("mWhitelist");
+        if (tag.hasKey("mFilter", Constants.NBT.TAG_COMPOUND))
+            mFilter = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("mFilter"));
+        else mFilter = null;
+    }
+
+    @Override
+    protected void readFromPacket(ByteArrayDataInput byteData) {
+        mWhitelist = byteData.readBoolean();
+        mFilter = ISerializableObject.readItemStackFromGreggyByteBuf(byteData);
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("mWhitelist", mWhitelist);
+        if (mFilter != null) tag.setTag("mFilter", mFilter.writeToNBT(new NBTTagCompound()));
+        return tag;
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeBoolean(mWhitelist);
+        ByteBufUtils.writeItemStack(byteBuf, mFilter);
     }
 
     public boolean isRedstoneSensitive() {
@@ -81,7 +113,7 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
         final ForgeDirection fromSide = !mExport ? coverSide.getOpposite() : coverSide;
         final ForgeDirection toSide = mExport ? coverSide.getOpposite() : coverSide;
 
-        final List<ItemStack> filter = Collections.singletonList(coverData.mFilter);
+        final List<ItemStack> filter = Collections.singletonList(mFilter);
 
         moveMultipleItemStacks(
             fromEntity,
@@ -89,7 +121,7 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
             fromSide,
             toSide,
             filter,
-            coverData.mWhitelist,
+            mWhitelist,
             (byte) 64,
             (byte) 1,
             (byte) 64,
@@ -101,10 +133,10 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         final ItemStack tStack = aPlayer.inventory.getCurrentItem();
         if (tStack != null) {
-            coverData.mFilter = tStack;
+            mFilter = tStack;
             GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("299", "Item Filter: ") + tStack.getDisplayName());
         } else {
-            coverData.mFilter = null;
+            mFilter = null;
             GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("300", "Filter Cleared!"));
         }
         return true;
@@ -112,11 +144,10 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        coverData.mWhitelist = !coverData.mWhitelist;
+        mWhitelist = !mWhitelist;
         GTUtility.sendChatToPlayer(
             aPlayer,
-            coverData.mWhitelist ? GTUtility.trans("125.1", "Whitelist Mode")
-                : GTUtility.trans("124.1", "Blacklist Mode"));
+            mWhitelist ? GTUtility.trans("125.1", "Whitelist Mode") : GTUtility.trans("124.1", "Blacklist Mode"));
     }
 
     @Override
@@ -232,55 +263,6 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
                 stack.stackSize = 1;
             }
             return stack;
-        }
-    }
-
-    public static class ItemFilterData implements ISerializableObject {
-
-        private boolean mWhitelist;
-        private ItemStack mFilter;
-
-        public ItemFilterData() {}
-
-        public ItemFilterData(boolean mWhitelist, ItemStack mFilter) {
-            this.mWhitelist = mWhitelist;
-            this.mFilter = mFilter;
-        }
-
-        @Nonnull
-        @Override
-        public ISerializableObject copy() {
-            return new ItemFilterData(mWhitelist, mFilter);
-        }
-
-        @Nonnull
-        @Override
-        public NBTBase saveDataToNBT() {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setBoolean("mWhitelist", mWhitelist);
-            if (mFilter != null) tag.setTag("mFilter", mFilter.writeToNBT(new NBTTagCompound()));
-            return tag;
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeBoolean(mWhitelist);
-            ByteBufUtils.writeItemStack(aBuf, mFilter);
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            NBTTagCompound tag = (NBTTagCompound) aNBT;
-            mWhitelist = tag.getBoolean("mWhitelist");
-            if (tag.hasKey("mFilter", Constants.NBT.TAG_COMPOUND))
-                mFilter = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("mFilter"));
-            else mFilter = null;
-        }
-
-        @Override
-        public void readFromPacket(ByteArrayDataInput aBuf) {
-            mWhitelist = aBuf.readBoolean();
-            mFilter = ISerializableObject.readItemStackFromGreggyByteBuf(aBuf);
         }
     }
 }

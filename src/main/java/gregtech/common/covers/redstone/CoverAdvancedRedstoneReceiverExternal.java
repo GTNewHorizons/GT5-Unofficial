@@ -13,12 +13,10 @@ public class CoverAdvancedRedstoneReceiverExternal extends CoverAdvancedRedstone
     @Override
     public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
-        if (coverable != null) {
+        if (coverable == null) {
             return;
         }
-        coverable.setOutputRedstoneSignal(
-            coverSide,
-            getSignalAt(coverData.getUuid(), coverData.getFrequency(), coverData.getGateMode()));
+        coverable.setOutputRedstoneSignal(coverSide, getSignalAt(getUuid(), getFrequency(), getGateMode()));
     }
 
     @Override

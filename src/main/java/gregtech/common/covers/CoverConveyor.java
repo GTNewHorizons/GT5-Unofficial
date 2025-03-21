@@ -44,17 +44,16 @@ public class CoverConveyor extends CoverBehavior {
         if (coverable == null) {
             return;
         }
-        int coverDataValue = coverData.get();
-        if ((coverDataValue % 6 > 1) && ((coverable instanceof IMachineProgress machine))) {
-            if (machine.isAllowedToWork() != coverDataValue % 6 < 4) {
+        if ((this.coverData % 6 > 1) && ((coverable instanceof IMachineProgress machine))) {
+            if (machine.isAllowedToWork() != this.coverData % 6 < 4) {
                 return;
             }
         }
         final TileEntity tTileEntity = coverable.getTileEntityAtSide(coverSide);
-        final Object fromEntity = coverDataValue % 2 == 0 ? coverable : tTileEntity;
-        final Object toEntity = coverDataValue % 2 != 0 ? coverable : tTileEntity;
-        final ForgeDirection fromSide = coverDataValue % 2 != 0 ? coverSide.getOpposite() : coverSide;
-        final ForgeDirection toSide = coverDataValue % 2 == 0 ? coverSide.getOpposite() : coverSide;
+        final Object fromEntity = this.coverData % 2 == 0 ? coverable : tTileEntity;
+        final Object toEntity = this.coverData % 2 != 0 ? coverable : tTileEntity;
+        final ForgeDirection fromSide = this.coverData % 2 != 0 ? coverSide.getOpposite() : coverSide;
+        final ForgeDirection toSide = this.coverData % 2 == 0 ? coverSide.getOpposite() : coverSide;
 
         moveMultipleItemStacks(
             fromEntity,
@@ -72,12 +71,11 @@ public class CoverConveyor extends CoverBehavior {
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int coverDataValue = coverData.get();
-        coverDataValue = (coverDataValue + (aPlayer.isSneaking() ? -1 : 1)) % 12;
-        if (coverDataValue < 0) {
-            coverDataValue = 11;
+        coverData = (coverData + (aPlayer.isSneaking() ? -1 : 1)) % 12;
+        if (coverData < 0) {
+            coverData = 11;
         }
-        switch (coverDataValue) {
+        switch (coverData) {
             case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("006", "Export"));
             case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("007", "Import"));
             case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("008", "Export (conditional)"));
@@ -91,7 +89,6 @@ public class CoverConveyor extends CoverBehavior {
             case 10 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("016", "Export allow Input (invert cond)"));
             case 11 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("017", "Import allow Output (invert cond)"));
         }
-        coverData.set(coverDataValue);
     }
 
     @Override
@@ -126,14 +123,12 @@ public class CoverConveyor extends CoverBehavior {
 
     @Override
     public boolean letsItemsIn(int aSlot) {
-        int coverDataValue = coverData.get();
-        return (coverDataValue >= 6) || (coverDataValue % 2 != 0);
+        return (this.coverData >= 6) || (this.coverData % 2 != 0);
     }
 
     @Override
     public boolean letsItemsOut(int aSlot) {
-        int coverDataValue = coverData.get();
-        return (coverDataValue >= 6) || (coverDataValue % 2 == 0);
+        return (this.coverData >= 6) || (this.coverData % 2 == 0);
     }
 
     @Override

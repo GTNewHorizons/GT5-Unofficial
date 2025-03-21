@@ -26,24 +26,22 @@ public class CoverRedstoneConductor extends CoverBehavior {
         if (coverable == null) {
             return;
         }
-        int coverDataValue = coverData.get();
-        if (coverDataValue == 0) {
+        if (this.coverData == 0) {
             coverable.setOutputRedstoneSignal(coverSide, coverable.getStrongestRedstone());
-        } else if (coverDataValue < 7) {
+        } else if (this.coverData < 7) {
             coverable.setOutputRedstoneSignal(
                 coverSide,
-                coverable.getInternalInputRedstoneSignal(ForgeDirection.getOrientation((coverDataValue - 1))));
+                coverable.getInternalInputRedstoneSignal(ForgeDirection.getOrientation((this.coverData - 1))));
         }
     }
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int coverDataValue = coverData.get();
-        coverDataValue = (coverDataValue + (aPlayer.isSneaking() ? -1 : 1)) % 7;
-        if (coverDataValue < 0) {
-            coverDataValue = 6;
+        this.coverData = (this.coverData + (aPlayer.isSneaking() ? -1 : 1)) % 7;
+        if (this.coverData < 0) {
+            this.coverData = 6;
         }
-        switch (coverDataValue) {
+        switch (this.coverData) {
             case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("071", "Conducts strongest Input"));
             case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("072", "Conducts from bottom Input"));
             case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("073", "Conducts from top Input"));
@@ -52,7 +50,6 @@ public class CoverRedstoneConductor extends CoverBehavior {
             case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("076", "Conducts from west Input"));
             case 6 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("077", "Conducts from east Input"));
         }
-        coverData.set(coverDataValue);
     }
 
     @Override

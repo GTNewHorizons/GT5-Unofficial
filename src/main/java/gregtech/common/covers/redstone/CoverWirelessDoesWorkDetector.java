@@ -1,9 +1,5 @@
 package gregtech.common.covers.redstone;
 
-import java.util.UUID;
-
-import javax.annotation.Nonnull;
-
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -22,49 +18,89 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.Cover;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
-public class CoverWirelessDoesWorkDetector
-    extends CoverAdvancedRedstoneTransmitterBase<CoverWirelessDoesWorkDetector.ActivityTransmitterData> {
+public class CoverWirelessDoesWorkDetector extends CoverAdvancedRedstoneTransmitterBase {
+
+    private ActivityMode mode;
+    /** Whether the wireless detector cover also sets the tiles sided Redstone output */
+    private boolean physical;
 
     public CoverWirelessDoesWorkDetector(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
     }
 
     public ActivityMode getMode() {
-        return coverData.mode;
+        return mode;
     }
 
     public CoverWirelessDoesWorkDetector setMode(ActivityMode mode) {
-        this.coverData.mode = mode;
+        this.mode = mode;
         return this;
     }
 
     public boolean isPhysical() {
-        return coverData.physical;
+        return physical;
     }
 
     public CoverWirelessDoesWorkDetector setPhysical(boolean physical) {
-        this.coverData.physical = physical;
+        this.physical = physical;
         return this;
     }
 
     @Override
-    protected ActivityTransmitterData initializeData() {
-        return new CoverWirelessDoesWorkDetector.ActivityTransmitterData();
+    protected void initializeData() {
+        super.initializeData();
+        this.mode = ActivityMode.MACHINE_IDLE;
+        this.physical = true;
     }
 
-    private static byte computeSignalBasedOnActivity(ActivityTransmitterData coverVariable, ICoverable tileEntity) {
+    @Override
+    protected void loadFromNbt(NBTBase nbt) {
+        super.loadFromNbt(nbt);
+
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        mode = ActivityMode.values()[tag.getInteger("mode")];
+        if (tag.hasKey("physical")) {
+            physical = tag.getBoolean("physical");
+        } else {
+            physical = false;
+        }
+    }
+
+    @Override
+    protected void readFromPacket(ByteArrayDataInput byteData) {
+        super.readFromPacket(byteData);
+        mode = ActivityMode.values()[byteData.readInt()];
+        physical = byteData.readBoolean();
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = (NBTTagCompound) super.saveDataToNbt();
+        tag.setInteger("mode", mode.ordinal());
+        tag.setBoolean("physical", physical);
+
+        return tag;
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        super.writeToByteBuf(byteBuf);
+        byteBuf.writeInt(mode.ordinal());
+        byteBuf.writeBoolean(physical);
+    }
+
+    private byte computeSignalBasedOnActivity(ICoverable tileEntity) {
 
         if (tileEntity instanceof IMachineProgress mProgress) {
-            boolean inverted = coverVariable.invert;
+            boolean inverted = invert;
             int signal = 0;
 
-            switch (coverVariable.mode) {
+            switch (mode) {
                 case MACHINE_ENABLED -> signal = inverted == mProgress.isAllowedToWork() ? 0 : 15;
                 case MACHINE_IDLE -> signal = inverted == (mProgress.getMaxProgress() == 0) ? 0 : 15;
                 case RECIPE_PROGRESS -> {
@@ -92,11 +128,11 @@ public class CoverWirelessDoesWorkDetector
         if (coverable == null) {
             return;
         }
-        final byte signal = computeSignalBasedOnActivity(coverData, coverable);
+        final byte signal = computeSignalBasedOnActivity(coverable);
         final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, signal);
+        setSignalAt(getUuid(), getFrequency(), hash, signal);
 
-        if (coverData.physical) {
+        if (physical) {
             coverable.setOutputRedstoneSignal(coverSide, signal);
         } else {
             coverable.setOutputRedstoneSignal(coverSide, (byte) 0);
@@ -117,68 +153,6 @@ public class CoverWirelessDoesWorkDetector
         RECIPE_PROGRESS,
         MACHINE_IDLE,
         MACHINE_ENABLED,
-    }
-
-    public static class ActivityTransmitterData extends CoverAdvancedRedstoneTransmitterBase.TransmitterData {
-
-        private ActivityMode mode;
-        /** Whether the wireless detector cover also sets the tiles sided Redstone output */
-        private boolean physical;
-
-        public ActivityTransmitterData(int frequency, UUID uuid, boolean invert, ActivityMode mode, boolean physical) {
-            super(frequency, uuid, invert);
-            this.mode = mode;
-            this.physical = physical;
-        }
-
-        public ActivityTransmitterData() {
-            super();
-            this.mode = ActivityMode.MACHINE_IDLE;
-            this.physical = true;
-        }
-
-        @Nonnull
-        @Override
-        public ISerializableObject copy() {
-            return new ActivityTransmitterData(frequency, uuid, invert, mode, physical);
-        }
-
-        @Nonnull
-        @Override
-        public NBTBase saveDataToNBT() {
-            NBTTagCompound tag = (NBTTagCompound) super.saveDataToNBT();
-            tag.setInteger("mode", mode.ordinal());
-            tag.setBoolean("physical", physical);
-
-            return tag;
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            super.writeToByteBuf(aBuf);
-            aBuf.writeInt(mode.ordinal());
-            aBuf.writeBoolean(physical);
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            super.loadDataFromNBT(aNBT);
-
-            NBTTagCompound tag = (NBTTagCompound) aNBT;
-            mode = ActivityMode.values()[tag.getInteger("mode")];
-            if (tag.hasKey("physical")) {
-                physical = tag.getBoolean("physical");
-            } else {
-                physical = false;
-            }
-        }
-
-        @Override
-        public void readFromPacket(ByteArrayDataInput aBuf) {
-            super.readFromPacket(aBuf);
-            mode = ActivityMode.values()[aBuf.readInt()];
-            physical = aBuf.readBoolean();
-        }
     }
 
     @Override

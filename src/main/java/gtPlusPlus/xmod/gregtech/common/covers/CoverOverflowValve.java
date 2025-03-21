@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.covers;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -22,7 +21,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverBehaviorBase;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -30,20 +28,18 @@ import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
-public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.OverflowValveData> {
+public class CoverOverflowValve extends CoverBehaviorBase {
 
     private final int minOverflowPoint = 0;
     private final int maxOverflowPoint;
+    private int overflowPoint;
+    private int voidingRate;
+    private boolean canFluidInput;
+    private boolean canFluidOutput;
 
     public CoverOverflowValve(CoverContext context, int maxOverflowPoint) {
         super(context, null);
         this.maxOverflowPoint = maxOverflowPoint;
-        Object initializer = context.getCoverInitializer();
-        if (initializer == null || initializer instanceof ItemStack) {
-            // Re-initialization required until we merge covers and their data objects,
-            // since this relies on an instance field.
-            coverData = initializeData();
-        }
     }
 
     public int getMinOverflowPoint() {
@@ -55,66 +51,107 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
     }
 
     public int getOverflowPoint() {
-        return coverData.overflowPoint;
+        return overflowPoint;
     }
 
     public CoverOverflowValve setOverflowPoint(int overflowPoint) {
-        this.coverData.overflowPoint = overflowPoint;
+        this.overflowPoint = overflowPoint;
         return this;
     }
 
     public int getVoidingRate() {
-        return coverData.voidingRate;
+        return voidingRate;
     }
 
     public CoverOverflowValve setVoidingRate(int voidingRate) {
-        this.coverData.voidingRate = voidingRate;
+        this.voidingRate = voidingRate;
         return this;
     }
 
     public boolean canFluidInput() {
-        return coverData.canFluidInput;
+        return canFluidInput;
     }
 
     public CoverOverflowValve setCanFluidInput(boolean canFluidInput) {
-        this.coverData.canFluidInput = canFluidInput;
+        this.canFluidInput = canFluidInput;
         return this;
     }
 
     public boolean canFluidOutput() {
-        return coverData.canFluidOutput;
+        return canFluidOutput;
     }
 
     public CoverOverflowValve setCanFluidOutput(boolean canFluidOutput) {
-        this.coverData.canFluidOutput = canFluidOutput;
+        this.canFluidOutput = canFluidOutput;
         return this;
     }
 
     @Override
-    protected OverflowValveData initializeData() {
-        return new CoverOverflowValve.OverflowValveData(maxOverflowPoint, maxOverflowPoint / 10, true, true);
+    protected void initializeData() {
+        overflowPoint = maxOverflowPoint;
+        voidingRate = maxOverflowPoint / 10;
+        canFluidInput = true;
+        canFluidOutput = true;
     }
 
-    private FluidStack doOverflowThing(FluidStack fluid, OverflowValveData coverData) {
-        if (fluid != null && fluid.amount > coverData.overflowPoint)
-            fluid.amount = Math.max(fluid.amount - coverData.voidingRate, coverData.overflowPoint);
+    @Override
+    protected void loadFromNbt(NBTBase nbt) {
+        if (nbt instanceof NBTTagCompound tag) {
+            overflowPoint = tag.getInteger("overflowPoint");
+            voidingRate = tag.getInteger("voidingRate");
+            canFluidInput = tag.getBoolean("canFluidInput");
+            canFluidOutput = tag.getBoolean("canFluidOutput");
+        } else {
+            initializeData();
+        }
+    }
+
+    @Override
+    protected void readFromPacket(ByteArrayDataInput byteData) {
+        overflowPoint = byteData.readInt();
+        voidingRate = byteData.readInt();
+        canFluidInput = byteData.readBoolean();
+        canFluidOutput = byteData.readBoolean();
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("overflowPoint", overflowPoint);
+        tag.setInteger("voidingRate", voidingRate);
+        tag.setBoolean("canFluidInput", canFluidInput);
+        tag.setBoolean("canFluidOutput", canFluidOutput);
+        return tag;
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeInt(overflowPoint)
+            .writeInt(voidingRate)
+            .writeBoolean(canFluidInput)
+            .writeBoolean(canFluidOutput);
+    }
+
+    private FluidStack doOverflowThing(FluidStack fluid) {
+        if (fluid != null && fluid.amount > overflowPoint)
+            fluid.amount = Math.max(fluid.amount - voidingRate, overflowPoint);
         return fluid;
     }
 
-    private void doOverflowThings(FluidStack[] fluids, OverflowValveData coverData) {
-        for (FluidStack fluid : fluids) doOverflowThing(fluid, coverData);
+    private void doOverflowThings(FluidStack[] fluids) {
+        for (FluidStack fluid : fluids) doOverflowThing(fluid);
     }
 
     @Override
     public void doCoverThings(byte aInputRedstone, long aTimer) {
-        if (coverData.overflowPoint == 0 || coverData.voidingRate == 0) return;
+        if (overflowPoint == 0 || voidingRate == 0) return;
 
         if (coveredTile.get() instanceof IGregTechTileEntity gregTE) {
             IMetaTileEntity tile = gregTE.getMetaTileEntity();
             if (tile instanceof MTEBasicTank fluidTank) {
-                fluidTank.setDrainableStack(doOverflowThing(fluidTank.getDrainableStack(), coverData));
+                fluidTank.setDrainableStack(doOverflowThing(fluidTank.getDrainableStack()));
             } else if (tile instanceof MTEFluidPipe fluidPipe && fluidPipe.isConnectedAtSide(coverSide)) {
-                doOverflowThings(fluidPipe.mFluids, coverData);
+                doOverflowThings(fluidPipe.mFluids);
             }
         }
     }
@@ -143,12 +180,12 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
 
     @Override
     public boolean letsFluidOut(Fluid aFluid) {
-        return coverData.canFluidOutput;
+        return canFluidOutput;
     }
 
     @Override
     public boolean letsFluidIn(Fluid aFluid) {
-        return coverData.canFluidInput;
+        return canFluidInput;
     }
 
     @Override
@@ -174,38 +211,36 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ)[0] >= 0.5F) {
-            coverData.overflowPoint += (int) (maxOverflowPoint * (aPlayer.isSneaking() ? 0.1f : 0.01f));
+            overflowPoint += (int) (maxOverflowPoint * (aPlayer.isSneaking() ? 0.1f : 0.01f));
         } else {
-            coverData.overflowPoint -= (int) (maxOverflowPoint * (aPlayer.isSneaking() ? 0.1f : 0.01f));
+            overflowPoint -= (int) (maxOverflowPoint * (aPlayer.isSneaking() ? 0.1f : 0.01f));
         }
 
-        if (coverData.overflowPoint > maxOverflowPoint) coverData.overflowPoint = minOverflowPoint;
-        if (coverData.overflowPoint <= minOverflowPoint) coverData.overflowPoint = maxOverflowPoint;
+        if (overflowPoint > maxOverflowPoint) overflowPoint = minOverflowPoint;
+        if (overflowPoint <= minOverflowPoint) overflowPoint = maxOverflowPoint;
 
         GTUtility.sendChatToPlayer(
             aPlayer,
-            StatCollector.translateToLocalFormatted(
-                "GTPP.chat.text.cover_overflow_valve_overflow_point",
-                coverData.overflowPoint));
+            StatCollector
+                .translateToLocalFormatted("GTPP.chat.text.cover_overflow_valve_overflow_point", overflowPoint));
     }
 
     @Override
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int amount = aPlayer.isSneaking() ? 128 : 8;
         if (GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ)[0] >= 0.5F) {
-            coverData.overflowPoint += amount;
+            overflowPoint += amount;
         } else {
-            coverData.overflowPoint -= amount;
+            overflowPoint -= amount;
         }
 
-        if (coverData.overflowPoint > maxOverflowPoint) coverData.overflowPoint = minOverflowPoint;
-        if (coverData.overflowPoint <= minOverflowPoint) coverData.overflowPoint = maxOverflowPoint;
+        if (overflowPoint > maxOverflowPoint) overflowPoint = minOverflowPoint;
+        if (overflowPoint <= minOverflowPoint) overflowPoint = maxOverflowPoint;
 
         GTUtility.sendChatToPlayer(
             aPlayer,
-            StatCollector.translateToLocalFormatted(
-                "GTPP.chat.text.cover_overflow_valve_overflow_point",
-                coverData.overflowPoint));
+            StatCollector
+                .translateToLocalFormatted("GTPP.chat.text.cover_overflow_valve_overflow_point", overflowPoint));
         return true;
     }
     // GUI
@@ -365,64 +400,6 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                 }
                 default -> throw new IllegalStateException("Wrong button id: " + id);
             };
-        }
-    }
-
-    public static class OverflowValveData implements ISerializableObject {
-
-        private int overflowPoint;
-        private int voidingRate;
-        private boolean canFluidInput;
-        private boolean canFluidOutput;
-
-        public OverflowValveData(int overflowPoint, int voidingRate, boolean canFluidInput, boolean canFluidOutput) {
-            this.overflowPoint = overflowPoint;
-            this.voidingRate = voidingRate;
-            this.canFluidInput = canFluidInput;
-            this.canFluidOutput = canFluidOutput;
-        }
-
-        @Override
-        @NotNull
-        public ISerializableObject copy() {
-            return new OverflowValveData(overflowPoint, voidingRate, canFluidInput, canFluidOutput);
-        }
-
-        @Override
-        @NotNull
-        public NBTBase saveDataToNBT() {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setInteger("overflowPoint", overflowPoint);
-            tag.setInteger("voidingRate", voidingRate);
-            tag.setBoolean("canFluidInput", canFluidInput);
-            tag.setBoolean("canFluidOutput", canFluidOutput);
-            return tag;
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeInt(overflowPoint)
-                .writeInt(voidingRate)
-                .writeBoolean(canFluidInput)
-                .writeBoolean(canFluidOutput);
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            if (aNBT instanceof NBTTagCompound tag) {
-                overflowPoint = tag.getInteger("overflowPoint");
-                voidingRate = tag.getInteger("voidingRate");
-                canFluidInput = tag.getBoolean("canFluidInput");
-                canFluidOutput = tag.getBoolean("canFluidOutput");
-            }
-        }
-
-        @Override
-        public void readFromPacket(ByteArrayDataInput aBuf) {
-            overflowPoint = aBuf.readInt();
-            voidingRate = aBuf.readInt();
-            canFluidInput = aBuf.readBoolean();
-            canFluidOutput = aBuf.readBoolean();
         }
     }
 }

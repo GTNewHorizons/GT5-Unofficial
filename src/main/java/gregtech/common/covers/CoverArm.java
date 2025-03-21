@@ -51,23 +51,21 @@ public class CoverArm extends CoverBehavior {
             return;
         }
 
-        int coverDataValue = getVariable();
-
         final TileEntity toTile;
         final TileEntity fromTile;
         final int toSlot;
         final int fromSlot;
 
-        if ((coverDataValue & EXPORT_MASK) > 0) {
+        if ((this.coverData & EXPORT_MASK) > 0) {
             fromTile = tileEntity;
             toTile = coverable.getTileEntityAtSide(coverSide);
-            fromSlot = coverDataValue & SLOT_ID_MASK;
-            toSlot = (coverDataValue >> 14) & SLOT_ID_MASK;
+            fromSlot = this.coverData & SLOT_ID_MASK;
+            toSlot = (this.coverData >> 14) & SLOT_ID_MASK;
         } else {
             fromTile = coverable.getTileEntityAtSide(coverSide);
             toTile = tileEntity;
-            fromSlot = (coverDataValue >> 14) & SLOT_ID_MASK;
-            toSlot = coverDataValue & SLOT_ID_MASK;
+            fromSlot = (this.coverData >> 14) & SLOT_ID_MASK;
+            toSlot = this.coverData & SLOT_ID_MASK;
         }
 
         if (fromSlot > 0 && toSlot > 0) {
@@ -85,7 +83,7 @@ public class CoverArm extends CoverBehavior {
                     (byte) 1);
         } else if (toSlot > 0) {
             final ForgeDirection toSide;
-            if ((coverDataValue & EXPORT_MASK) > 0) toSide = coverSide;
+            if ((this.coverData & EXPORT_MASK) > 0) toSide = coverSide;
             else toSide = coverSide.getOpposite();
             GTUtility.moveOneItemStackIntoSlot(
                 fromTile,
@@ -100,7 +98,7 @@ public class CoverArm extends CoverBehavior {
                 (byte) 1);
         } else if (fromSlot > 0) {
             final ForgeDirection toSide;
-            if ((coverDataValue & EXPORT_MASK) > 0) toSide = coverSide;
+            if ((this.coverData & EXPORT_MASK) > 0) toSide = coverSide;
             else toSide = coverSide.getOpposite();
             if (fromTile instanceof IInventory fromInventory) GTUtility.moveFromSlotToSide(
                 fromInventory,
@@ -116,7 +114,7 @@ public class CoverArm extends CoverBehavior {
         } else {
             final ForgeDirection fromSide;
             final ForgeDirection toSide;
-            if ((coverDataValue & EXPORT_MASK) > 0) {
+            if ((this.coverData & EXPORT_MASK) > 0) {
                 fromSide = coverSide;
                 toSide = coverSide.getOpposite();
             } else {
@@ -147,7 +145,7 @@ public class CoverArm extends CoverBehavior {
         }
         int newCoverData = getNewVar(getVariable(), step);
         sendMessageToPlayer(aPlayer, newCoverData);
-        coverData.set(newCoverData);
+        coverData = newCoverData;
     }
 
     @Override
@@ -155,7 +153,7 @@ public class CoverArm extends CoverBehavior {
         int step = (GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ)[0] >= 0.5F) ? 1 : -1;
         int tCoverVariable = getNewVar(getVariable(), step);
         sendMessageToPlayer(aPlayer, tCoverVariable);
-        coverData.set(tCoverVariable);
+        coverData = tCoverVariable;
         return true;
     }
 

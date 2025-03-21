@@ -40,9 +40,8 @@ public class CoverPump extends CoverBehavior {
         if (coverable == null) {
             return;
         }
-        int coverDataValue = coverData.get();
-        if ((coverDataValue % 6 > 1) && ((coverable instanceof IMachineProgress machine))) {
-            if (machine.isAllowedToWork() != coverDataValue % 6 < 4) {
+        if ((this.coverData % 6 > 1) && ((coverable instanceof IMachineProgress machine))) {
+            if (machine.isAllowedToWork() != this.coverData % 6 < 4) {
                 return;
             }
         }
@@ -51,7 +50,7 @@ public class CoverPump extends CoverBehavior {
             final IFluidHandler toAccess = coverable.getITankContainerAtSide(coverSide);
             if (toAccess == null) return;
 
-            transferFluid(current, toAccess, coverSide, coverDataValue % 2 == 0);
+            transferFluid(current, toAccess, coverSide, this.coverData % 2 == 0);
         }
     }
 
@@ -69,12 +68,11 @@ public class CoverPump extends CoverBehavior {
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int coverDataValue = coverData.get();
-        coverDataValue = (coverDataValue + (aPlayer.isSneaking() ? -1 : 1)) % 12;
-        if (coverDataValue < 0) {
-            coverDataValue = 11;
+        coverData = (coverData + (aPlayer.isSneaking() ? -1 : 1)) % 12;
+        if (coverData < 0) {
+            coverData = 11;
         }
-        switch (coverDataValue) {
+        switch (coverData) {
             case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("006", "Export"));
             case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("007", "Import"));
             case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("008", "Export (conditional)"));
@@ -88,7 +86,6 @@ public class CoverPump extends CoverBehavior {
             case 10 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("016", "Export allow Input (invert cond)"));
             case 11 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("017", "Import allow Output (invert cond)"));
         }
-        coverData.set(coverDataValue);
     }
 
     @Override
@@ -124,25 +121,23 @@ public class CoverPump extends CoverBehavior {
     @Override
     public boolean letsFluidIn(Fluid aFluid) {
         ICoverable coverable = coveredTile.get();
-        int coverDataValue = coverData.get();
-        if ((coverDataValue > 1) && ((coverable instanceof IMachineProgress))) {
-            if (((IMachineProgress) coverable).isAllowedToWork() != coverDataValue % 6 < 4) {
+        if ((this.coverData > 1) && ((coverable instanceof IMachineProgress))) {
+            if (((IMachineProgress) coverable).isAllowedToWork() != this.coverData % 6 < 4) {
                 return false;
             }
         }
-        return (coverDataValue >= 6) || (coverDataValue % 2 != 0);
+        return (this.coverData >= 6) || (this.coverData % 2 != 0);
     }
 
     @Override
     public boolean letsFluidOut(Fluid aFluid) {
         ICoverable coverable = coveredTile.get();
-        int coverDataValue = coverData.get();
-        if ((coverDataValue > 1) && ((coverable instanceof IMachineProgress))) {
-            if (((IMachineProgress) coverable).isAllowedToWork() != coverDataValue % 6 < 4) {
+        if ((this.coverData > 1) && ((coverable instanceof IMachineProgress))) {
+            if (((IMachineProgress) coverable).isAllowedToWork() != this.coverData % 6 < 4) {
                 return false;
             }
         }
-        return (coverDataValue >= 6) || (coverDataValue % 2 == 0);
+        return (this.coverData >= 6) || (this.coverData % 2 == 0);
     }
 
     @Override

@@ -23,7 +23,7 @@ public class CoverAdvancedRedstoneReceiverInternal extends CoverAdvancedRedstone
 
     @Override
     public byte getRedstoneInput(byte aInputRedstone) {
-        return getSignalAt(coverData.getUuid(), coverData.getFrequency(), coverData.getGateMode());
+        return getSignalAt(getUuid(), getFrequency(), getGateMode());
     }
 
     @Override

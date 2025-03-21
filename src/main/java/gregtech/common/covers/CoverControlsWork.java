@@ -54,8 +54,7 @@ public class CoverControlsWork extends CoverBehavior {
     public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable instanceof IMachineProgress machine) {
-            int coverDataValue = coverData.get();
-            State state = coverDataValue < State.values().length ? State.values()[coverDataValue] : State.DISABLED;
+            State state = this.coverData < State.values().length ? State.values()[this.coverData] : State.DISABLED;
             switch (state) {
                 case ENABLE_WITH_SIGNAL, DISABLE_WITH_SIGNAL -> {
                     if ((aInputRedstone > 0) == (state == State.ENABLE_WITH_SIGNAL)) {
@@ -90,7 +89,7 @@ public class CoverControlsWork extends CoverBehavior {
                             }
                         }
                         handledShutdown = true;
-                        coverData.set(State.DISABLED.ordinal());
+                        coverData = State.DISABLED.ordinal();
                     } else {
                         if ((aInputRedstone > 0) == (state == State.ENABLE_WITH_SIGNAL_SAFE)) {
                             if (!machine.isAllowedToWork()) {
@@ -108,7 +107,7 @@ public class CoverControlsWork extends CoverBehavior {
 
     @Override
     public boolean isRedstoneSensitive(long aTimer) {
-        return coverData.get() != 2; // always off, so no redstone needed either
+        return coverData != 2; // always off, so no redstone needed either
     }
 
     @Override
@@ -150,7 +149,7 @@ public class CoverControlsWork extends CoverBehavior {
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int newCoverData = (getVariable() + (aPlayer.isSneaking() ? -1 : 1)) % 5;
+        int newCoverData = (coverData + (aPlayer.isSneaking() ? -1 : 1)) % 5;
         if (newCoverData < 0) {
             newCoverData = 2;
         }
@@ -170,7 +169,7 @@ public class CoverControlsWork extends CoverBehavior {
             GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("506", "Disable with Signal (Safe)"));
         }
         // TODO: Set lastPlayer
-        coverData.set(newCoverData);
+        coverData = newCoverData;
     }
 
     @Override

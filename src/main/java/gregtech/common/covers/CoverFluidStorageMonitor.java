@@ -36,6 +36,8 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.io.ByteArrayDataInput;
 
 import gregtech.api.covers.CoverContext;
@@ -46,7 +48,6 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import io.netty.buffer.ByteBuf;
 
@@ -54,7 +55,7 @@ import io.netty.buffer.ByteBuf;
  * TODO: Implement overlay rendering only with
  * {@link CoverBehaviorBase#getOverlayTexture()}
  */
-public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorageMonitor.FluidStorageData> {
+public class CoverFluidStorageMonitor extends CoverBehaviorBase {
 
     private static final IIconContainer[] icons = new IIconContainer[] { OVERLAY_FLUID_STORAGE_MONITOR0,
         OVERLAY_FLUID_STORAGE_MONITOR1, OVERLAY_FLUID_STORAGE_MONITOR2, OVERLAY_FLUID_STORAGE_MONITOR3,
@@ -63,13 +64,122 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
         OVERLAY_FLUID_STORAGE_MONITOR10, OVERLAY_FLUID_STORAGE_MONITOR11, OVERLAY_FLUID_STORAGE_MONITOR12,
         OVERLAY_FLUID_STORAGE_MONITOR13, OVERLAY_FLUID_STORAGE_MONITOR14, };
 
+    private ForgeDirection fluidLookupSide;
+    private int slot;
+    private Fluid fluid;
+    private int scale;
+    private boolean dirty;
+
     public CoverFluidStorageMonitor(CoverContext context) {
         super(context, null);
     }
 
+    public CoverFluidStorageMonitor setSide(ForgeDirection coverSide) {
+        this.fluidLookupSide = coverSide;
+        return this;
+    }
+
+    /**
+     * @param slot 0-based index of the tank, -1 for no correct FluidTankInfo[] for the current coverSide.
+     */
+    public CoverFluidStorageMonitor setSlot(int slot) {
+        if (this.slot != slot) {
+            if (this.slot == -1 || slot == -1) {
+                this.dirty = true;
+            }
+            this.slot = slot;
+        }
+        return this;
+    }
+
+    /**
+     * Means there is no correct FluidTankInfo[] for the current coverSide.
+     */
+    public CoverFluidStorageMonitor disable() {
+        setSlot(-1);
+        return this;
+    }
+
+    public CoverFluidStorageMonitor setFluid(@Nullable Fluid fluid) {
+        if (!Util.areFluidsEqual(this.fluid, fluid)) {
+            this.fluid = fluid;
+            this.dirty = true;
+        }
+        return this;
+    }
+
+    public CoverFluidStorageMonitor setFluid(@Nullable FluidStack fluidStack) {
+        final Fluid fluid = fluidStack == null ? null : fluidStack.getFluid();
+        return setFluid(fluid);
+    }
+
+    public CoverFluidStorageMonitor setScale(int scale) {
+        if (this.scale != scale) {
+            this.scale = scale;
+            this.dirty = true;
+        }
+        return this;
+    }
+
+    public CoverFluidStorageMonitor setNullTank() {
+        return this.setFluid((Fluid) null)
+            .setScale(0);
+    }
+
+    public CoverFluidStorageMonitor issueCoverUpdateIfNeeded(ICoverable tileEntity, ForgeDirection coverSide) {
+        if (this.dirty) {
+            tileEntity.issueCoverUpdate(coverSide);
+            this.dirty = false;
+        }
+        return this;
+    }
+
     @Override
-    protected FluidStorageData initializeData() {
-        return new FluidStorageData();
+    protected void initializeData() {
+        this.fluidLookupSide = ForgeDirection.UNKNOWN;
+        this.slot = 0;
+        this.fluid = null;
+        this.scale = 0;
+        this.dirty = false;
+    }
+
+    @Override
+    protected void loadFromNbt(NBTBase nbt) {
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        fluidLookupSide = ForgeDirection.getOrientation(tag.getByte("coverSide"));
+        slot = tag.getInteger("slot");
+        fluid = Util.getFluid(tag.getString("fluidName"));
+        scale = tag.getInteger("scale");
+        dirty = tag.getBoolean("dirty");
+    }
+
+    @Override
+    protected void readFromPacket(ByteArrayDataInput byteData) {
+        this.fluidLookupSide = ForgeDirection.getOrientation(byteData.readByte());
+        this.slot = byteData.readInt();
+        this.fluid = Util.getFluid(byteData.readInt());
+        this.scale = byteData.readInt();
+        this.dirty = byteData.readBoolean();
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setByte("coverSide", (byte) fluidLookupSide.ordinal());
+        tag.setInteger("slot", slot);
+        tag.setString("fluidName", Util.getFluidName(fluid));
+        tag.setInteger("scale", scale);
+        tag.setBoolean("dirty", dirty);
+        return tag;
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeByte(fluidLookupSide.ordinal());
+        byteBuf.writeInt(slot);
+        byteBuf.writeInt(Util.getFluidID(fluid));
+        byteBuf.writeInt(scale);
+        byteBuf.writeBoolean(dirty);
     }
 
     @Override
@@ -78,27 +188,24 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
         if (coverable == null) {
             return;
         }
-        final FluidTankInfo[] tanks = getValidFluidTankInfosForDisplay(coverable, coverData.coverSide);
+        final FluidTankInfo[] tanks = getValidFluidTankInfosForDisplay(coverable, fluidLookupSide);
         if (tanks == null) {
-            coverData.disable()
-                .issueCoverUpdateIfNeeded(coverable, coverSide);
+            disable().issueCoverUpdateIfNeeded(coverable, coverSide);
             return;
         }
         assert 0 < tanks.length;
 
-        if (coverData.slot < 0 || tanks.length <= coverData.slot) {
-            coverData.setSlot(0);
+        if (slot < 0 || tanks.length <= slot) {
+            setSlot(0);
         }
 
-        final FluidTankInfo tank = tanks[coverData.slot];
+        final FluidTankInfo tank = tanks[slot];
         if (tank == null) {
-            coverData.setNullTank()
-                .issueCoverUpdateIfNeeded(coverable, coverSide);
+            setNullTank().issueCoverUpdateIfNeeded(coverable, coverSide);
             return;
         }
 
-        coverData.setFluid(tank.fluid)
-            .setScale(getTankScale(tank))
+        setFluid(tank.fluid).setScale(getTankScale(tank))
             .issueCoverUpdateIfNeeded(coverable, coverSide);
     }
 
@@ -109,14 +216,14 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
 
     @Override
     public ITexture getSpecialFaceTexture() {
-        if (coverData.slot == -1 || coverData.fluid == null || coverData.scale == 0) {
+        if (slot == -1 || fluid == null || scale == 0) {
             return TextureFactory.of(OVERLAY_FLUID_STORAGE_MONITOR0);
         }
         final IIconContainer fluidIcon = new IIconContainer() {
 
             @Override
             public IIcon getIcon() {
-                return coverData.fluid.getStillIcon();
+                return fluid.getStillIcon();
             }
 
             @Override
@@ -130,12 +237,12 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
             }
         };
 
-        final short[] fluidRGBA = colorToRGBA(coverData.fluid.getColor());
+        final short[] fluidRGBA = colorToRGBA(fluid.getColor());
         final ITextureBuilder fluidTextureBuilder = TextureFactory.builder()
             .addIcon(fluidIcon)
             .setRGBA(fluidRGBA);
-        if (coverData.fluid.getLuminosity() > 0) fluidTextureBuilder.glow();
-        return TextureFactory.of(fluidTextureBuilder.build(), TextureFactory.of(icons[coverData.scale]));
+        if (fluid.getLuminosity() > 0) fluidTextureBuilder.glow();
+        return TextureFactory.of(fluidTextureBuilder.build(), TextureFactory.of(icons[scale]));
     }
 
     @Override
@@ -148,14 +255,14 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
         if (aPlayer.isSneaking() || heldItem == null) {
             return false;
         }
-        final FluidTankInfo[] tanks = getValidFluidTankInfos(coverable, coverData.coverSide);
+        final FluidTankInfo[] tanks = getValidFluidTankInfos(coverable, fluidLookupSide);
         if (tanks == null) {
             return false;
         }
-        if (coverData.slot < 0 || tanks.length <= coverData.slot) {
+        if (slot < 0 || tanks.length <= slot) {
             return false;
         }
-        final FluidTankInfo tank = tanks[coverData.slot];
+        final FluidTankInfo tank = tanks[slot];
         if (tank == null) {
             return false;
         }
@@ -167,12 +274,12 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
         }
 
         ItemStack result;
-        result = fillToTank(heldItemSizedOne, tankHandler, coverData.coverSide);
+        result = fillToTank(heldItemSizedOne, tankHandler, fluidLookupSide);
         if (result != null) {
             replaceHeldItemStack(aPlayer, heldItem, result);
             return true;
         }
-        result = fillToContainer(heldItemSizedOne, tank, tankHandler, coverData.coverSide);
+        result = fillToContainer(heldItemSizedOne, tank, tankHandler, fluidLookupSide);
         if (result != null) {
             replaceHeldItemStack(aPlayer, heldItem, result);
             return true;
@@ -267,24 +374,23 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
-            coverData
-                .setSide(ForgeDirection.values()[(coverData.coverSide.ordinal() + 1) % ForgeDirection.values().length])
+            setSide(ForgeDirection.values()[(fluidLookupSide.ordinal() + 1) % ForgeDirection.values().length])
                 .setSlot(0);
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("SIDE", "Side: ") + coverData.coverSide.name());
+            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("SIDE", "Side: ") + fluidLookupSide.name());
             return;
         }
-        final FluidTankInfo[] tanks = getValidFluidTankInfos(coveredTile.get(), coverData.coverSide);
+        final FluidTankInfo[] tanks = getValidFluidTankInfos(coveredTile.get(), fluidLookupSide);
         if (tanks == null) {
-            coverData.disable();
+            disable();
             return;
         }
         assert 0 < tanks.length;
-        if (coverData.slot < 0 || tanks.length <= coverData.slot) {
-            coverData.setSlot(0);
+        if (slot < 0 || tanks.length <= slot) {
+            setSlot(0);
         } else {
-            coverData.setSlot((coverData.slot + tanks.length + (aPlayer.isSneaking() ? -1 : 1)) % tanks.length);
+            setSlot((slot + tanks.length + (aPlayer.isSneaking() ? -1 : 1)) % tanks.length);
         }
-        GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("053", "Slot: ") + coverData.slot);
+        GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("053", "Slot: ") + slot);
     }
 
     @Override
@@ -339,136 +445,6 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase<CoverFluidStorag
     protected short[] colorToRGBA(int color) {
         return new short[] { (short) (color >> 16 & 0xFF), (short) (color >> 8 & 0xFF), (short) (color & 0xFF),
             (short) (0xFF) };
-    }
-
-    public static class FluidStorageData implements ISerializableObject {
-
-        private ForgeDirection coverSide;
-        private int slot;
-        private Fluid fluid;
-        private int scale;
-        private boolean dirty;
-
-        public FluidStorageData() {
-            this(ForgeDirection.UNKNOWN, 0, null, 0, false);
-        }
-
-        public FluidStorageData(ForgeDirection coverSide, int slot, Fluid fluid, int scale, boolean dirty) {
-            this.coverSide = coverSide;
-            this.slot = slot;
-            this.fluid = fluid;
-            this.scale = scale;
-            this.dirty = dirty;
-        }
-
-        public FluidStorageData setSide(ForgeDirection coverSide) {
-            this.coverSide = coverSide;
-            return this;
-        }
-
-        /**
-         * @param slot 0-based index of the tank, -1 for no correct FluidTankInfo[] for the current coverSide.
-         */
-        public FluidStorageData setSlot(int slot) {
-            if (this.slot != slot) {
-                if (this.slot == -1 || slot == -1) {
-                    this.dirty = true;
-                }
-                this.slot = slot;
-            }
-            return this;
-        }
-
-        /**
-         * Means there is no correct FluidTankInfo[] for the current coverSide.
-         */
-        public FluidStorageData disable() {
-            setSlot(-1);
-            return this;
-        }
-
-        public FluidStorageData setFluid(@Nullable Fluid fluid) {
-            if (!Util.areFluidsEqual(this.fluid, fluid)) {
-                this.fluid = fluid;
-                this.dirty = true;
-            }
-            return this;
-        }
-
-        public FluidStorageData setFluid(@Nullable FluidStack fluidStack) {
-            final Fluid fluid = fluidStack == null ? null : fluidStack.getFluid();
-            return setFluid(fluid);
-        }
-
-        public FluidStorageData setScale(int scale) {
-            if (this.scale != scale) {
-                this.scale = scale;
-                this.dirty = true;
-            }
-            return this;
-        }
-
-        public FluidStorageData setNullTank() {
-            return this.setFluid((Fluid) null)
-                .setScale(0);
-        }
-
-        public FluidStorageData issueCoverUpdateIfNeeded(ICoverable tileEntity, ForgeDirection coverSide) {
-            if (this.dirty) {
-                tileEntity.issueCoverUpdate(coverSide);
-                this.dirty = false;
-            }
-            return this;
-        }
-
-        // region ISerializableObject
-        @Nonnull
-        @Override
-        public ISerializableObject copy() {
-            return new FluidStorageData(coverSide, slot, fluid, scale, dirty);
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            NBTTagCompound tag = (NBTTagCompound) aNBT;
-            coverSide = ForgeDirection.getOrientation(tag.getByte("coverSide"));
-            slot = tag.getInteger("slot");
-            fluid = Util.getFluid(tag.getString("fluidName"));
-            scale = tag.getInteger("scale");
-            dirty = tag.getBoolean("dirty");
-        }
-
-        @Nonnull
-        @Override
-        public NBTBase saveDataToNBT() {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setByte("coverSide", (byte) coverSide.ordinal());
-            tag.setInteger("slot", slot);
-            tag.setString("fluidName", Util.getFluidName(fluid));
-            tag.setInteger("scale", scale);
-            tag.setBoolean("dirty", dirty);
-            return tag;
-        }
-
-        @Override
-        public void readFromPacket(ByteArrayDataInput aBuf) {
-            this.coverSide = ForgeDirection.getOrientation(aBuf.readByte());
-            this.slot = aBuf.readInt();
-            this.fluid = Util.getFluid(aBuf.readInt());
-            this.scale = aBuf.readInt();
-            this.dirty = aBuf.readBoolean();
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeByte(coverSide.ordinal());
-            aBuf.writeInt(slot);
-            aBuf.writeInt(Util.getFluidID(fluid));
-            aBuf.writeInt(scale);
-            aBuf.writeBoolean(dirty);
-        }
-        // endregion
-
     }
 
     protected static class Util {

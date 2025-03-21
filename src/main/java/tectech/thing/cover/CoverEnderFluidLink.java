@@ -48,12 +48,12 @@ public class CoverEnderFluidLink extends CoverBehavior {
         }
     }
 
-    private static boolean testBit(int coverDataValue, int bitMask) {
-        return (coverDataValue & bitMask) != 0;
+    private static boolean testBit(int coverData, int bitMask) {
+        return (coverData & bitMask) != 0;
     }
 
-    private static int toggleBit(int coverDataValue, int bitMask) {
-        return (coverDataValue ^ bitMask);
+    private static int toggleBit(int coverData, int bitMask) {
+        return (coverData ^ bitMask);
     }
 
     @Override
@@ -62,12 +62,11 @@ public class CoverEnderFluidLink extends CoverBehavior {
         if (coverable == null) {
             return;
         }
-        int coverDataValue = coverData.get();
         if ((coverable instanceof IFluidHandler teTank)) {
             EnderLinkTag tag = EnderWorldSavedData.getEnderLinkTag(teTank);
 
             if (tag != null) {
-                boolean shouldBePrivate = testBit(coverDataValue, PUBLIC_PRIVATE_MASK);
+                boolean shouldBePrivate = testBit(this.coverData, PUBLIC_PRIVATE_MASK);
                 boolean isPrivate = tag.getUUID() != null;
 
                 if (shouldBePrivate != isPrivate) {
@@ -77,7 +76,7 @@ public class CoverEnderFluidLink extends CoverBehavior {
 
                 IFluidHandler enderTank = EnderWorldSavedData.getEnderFluidContainer(tag);
 
-                if (testBit(coverDataValue, IMPORT_EXPORT_MASK)) {
+                if (testBit(this.coverData, IMPORT_EXPORT_MASK)) {
                     transferFluid(enderTank, ForgeDirection.UNKNOWN, teTank, coverSide);
                 } else {
                     transferFluid(teTank, coverSide, enderTank, ForgeDirection.UNKNOWN);
@@ -122,15 +121,13 @@ public class CoverEnderFluidLink extends CoverBehavior {
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int coverDataValue = coverData.get();
-        int newCoverVariable = toggleBit(coverDataValue, IMPORT_EXPORT_MASK);
+        this.coverData = toggleBit(this.coverData, IMPORT_EXPORT_MASK);
 
-        if (testBit(coverDataValue, IMPORT_EXPORT_MASK)) {
+        if (testBit(this.coverData, IMPORT_EXPORT_MASK)) {
             PlayerChatHelper.SendInfo(aPlayer, "Ender Suction Engaged!"); // TODO Translation support
         } else {
             PlayerChatHelper.SendInfo(aPlayer, "Ender Filling Engaged!");
         }
-        coverData.set(newCoverVariable);
     }
 
     @Override

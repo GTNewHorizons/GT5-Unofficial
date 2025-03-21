@@ -17,54 +17,52 @@ public class CoverDecorative extends CoverBehavior {
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int coverDataValue = coverData.get();
-        coverDataValue = ((coverDataValue + 1) & 15);
+        this.coverData = ((this.coverData + 1) & 15);
         GTUtility.sendChatToPlayer(
             aPlayer,
-            ((coverDataValue & 1) != 0 ? GTUtility.trans("128.1", "Redstone ") : "")
-                + ((coverDataValue & 2) != 0 ? GTUtility.trans("129.1", "Energy ") : "")
-                + ((coverDataValue & 4) != 0 ? GTUtility.trans("130.1", "Fluids ") : "")
-                + ((coverDataValue & 8) != 0 ? GTUtility.trans("131.1", "Items ") : ""));
-        coverData.set(coverDataValue);
+            ((this.coverData & 1) != 0 ? GTUtility.trans("128.1", "Redstone ") : "")
+                + ((this.coverData & 2) != 0 ? GTUtility.trans("129.1", "Energy ") : "")
+                + ((this.coverData & 4) != 0 ? GTUtility.trans("130.1", "Fluids ") : "")
+                + ((this.coverData & 8) != 0 ? GTUtility.trans("131.1", "Items ") : ""));
     }
 
     @Override
     public boolean letsRedstoneGoIn() {
-        return (coverData.get() & 1) != 0;
+        return (coverData & 1) != 0;
     }
 
     @Override
     public boolean letsRedstoneGoOut() {
-        return (coverData.get() & 1) != 0;
+        return (coverData & 1) != 0;
     }
 
     @Override
     public boolean letsEnergyIn() {
-        return (coverData.get() & 2) != 0;
+        return (coverData & 2) != 0;
     }
 
     @Override
     public boolean letsEnergyOut() {
-        return (coverData.get() & 2) != 0;
+        return (coverData & 2) != 0;
     }
 
     @Override
     public boolean letsFluidIn(Fluid aFluid) {
-        return (coverData.get() & 4) != 0;
+        return (coverData & 4) != 0;
     }
 
     @Override
     public boolean letsFluidOut(Fluid aFluid) {
-        return (coverData.get() & 4) != 0;
+        return (coverData & 4) != 0;
     }
 
     @Override
     public boolean letsItemsIn(int aSlot) {
-        return (coverData.get() & 8) != 0;
+        return (coverData & 8) != 0;
     }
 
     @Override
     public boolean letsItemsOut(int aSlot) {
-        return (coverData.get() & 8) != 0;
+        return (coverData & 8) != 0;
     }
 }

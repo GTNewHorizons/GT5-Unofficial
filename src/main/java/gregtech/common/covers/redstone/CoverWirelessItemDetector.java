@@ -1,9 +1,6 @@
 package gregtech.common.covers.redstone;
 
 import java.text.FieldPosition;
-import java.util.UUID;
-
-import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -25,7 +22,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverItemMeter;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -35,43 +31,97 @@ import gregtech.common.gui.modularui.widget.ItemWatcherSlotWidget;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import io.netty.buffer.ByteBuf;
 
-public class CoverWirelessItemDetector
-    extends CoverAdvancedRedstoneTransmitterBase<CoverWirelessItemDetector.ItemTransmitterData> {
+public class CoverWirelessItemDetector extends CoverAdvancedRedstoneTransmitterBase {
+
+    /**
+     * The special value {@code -1} means all slots.
+     */
+    private int slot;
+    /**
+     * The special value {@code 0} means threshold check is disabled.
+     */
+    private int threshold;
+    /** Whether the wireless detector cover also sets the tiles sided Redstone output */
+    private boolean physical;
 
     public CoverWirelessItemDetector(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
     }
 
     public int getSlot() {
-        return this.coverData.slot;
+        return this.slot;
     }
 
     public CoverWirelessItemDetector setSlot(int slot) {
-        this.coverData.slot = slot;
+        this.slot = slot;
         return this;
     }
 
     public int getThreshold() {
-        return this.coverData.threshold;
+        return this.threshold;
     }
 
     public CoverWirelessItemDetector setThresdhold(int threshold) {
-        this.coverData.threshold = threshold;
+        this.threshold = threshold;
         return this;
     }
 
     public boolean isPhysical() {
-        return coverData.physical;
+        return physical;
     }
 
     public CoverWirelessItemDetector setPhysical(boolean physical) {
-        this.coverData.physical = physical;
+        this.physical = physical;
         return this;
     }
 
     @Override
-    protected ItemTransmitterData initializeData() {
-        return new CoverWirelessItemDetector.ItemTransmitterData();
+    protected void initializeData() {
+        super.initializeData();
+        this.threshold = 0;
+        this.slot = -1;
+        this.physical = true;
+    }
+
+    @Override
+    protected void loadFromNbt(NBTBase nbt) {
+        super.loadFromNbt(nbt);
+
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        threshold = tag.getInteger("threshold");
+        slot = tag.getInteger("slot");
+
+        if (tag.hasKey("physical")) {
+            physical = tag.getBoolean("physical");
+        } else {
+            physical = false;
+        }
+    }
+
+    @Override
+    protected void readFromPacket(ByteArrayDataInput byteData) {
+        super.readFromPacket(byteData);
+        threshold = byteData.readInt();
+        slot = byteData.readInt();
+        physical = byteData.readBoolean();
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = (NBTTagCompound) super.saveDataToNbt();
+        tag.setInteger("threshold", threshold);
+        tag.setInteger("slot", slot);
+        tag.setBoolean("physical", physical);
+
+        return tag;
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        super.writeToByteBuf(byteBuf);
+        byteBuf.writeInt(threshold);
+        byteBuf.writeInt(slot);
+        byteBuf.writeBoolean(physical);
     }
 
     @Override
@@ -80,16 +130,11 @@ public class CoverWirelessItemDetector
         if (coverable == null) {
             return;
         }
-        byte signal = CoverItemMeter.computeSignalBasedOnItems(
-            coverable,
-            coverData.invert,
-            coverData.threshold,
-            coverData.slot,
-            coverSide.ordinal());
+        byte signal = CoverItemMeter.computeSignalBasedOnItems(coverable, invert, threshold, slot, coverSide.ordinal());
         final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, signal);
+        setSignalAt(getUuid(), getFrequency(), hash, signal);
 
-        if (coverData.physical) {
+        if (physical) {
             coverable.setOutputRedstoneSignal(coverSide, signal);
         } else {
             coverable.setOutputRedstoneSignal(coverSide, (byte) 0);
@@ -104,83 +149,6 @@ public class CoverWirelessItemDetector
     @Override
     public boolean manipulatesSidedRedstoneOutput() {
         return true;
-    }
-
-    public static class ItemTransmitterData extends CoverAdvancedRedstoneTransmitterBase.TransmitterData {
-
-        /**
-         * The special value {@code -1} means all slots.
-         */
-        private int slot;
-        /**
-         * The special value {@code 0} means threshold check is disabled.
-         */
-        private int threshold;
-        /** Whether the wireless detector cover also sets the tiles sided Redstone output */
-        private boolean physical;
-
-        public ItemTransmitterData(int frequency, UUID uuid, boolean invert, int threshold, int slot,
-            boolean physical) {
-            super(frequency, uuid, invert);
-            this.threshold = threshold;
-            this.slot = slot;
-            this.physical = physical;
-        }
-
-        public ItemTransmitterData() {
-            super();
-            this.threshold = 0;
-            this.slot = -1;
-            this.physical = true;
-        }
-
-        @Nonnull
-        @Override
-        public ISerializableObject copy() {
-            return new ItemTransmitterData(frequency, uuid, invert, threshold, slot, physical);
-        }
-
-        @Nonnull
-        @Override
-        public NBTBase saveDataToNBT() {
-            NBTTagCompound tag = (NBTTagCompound) super.saveDataToNBT();
-            tag.setInteger("threshold", threshold);
-            tag.setInteger("slot", slot);
-            tag.setBoolean("physical", physical);
-
-            return tag;
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            super.writeToByteBuf(aBuf);
-            aBuf.writeInt(threshold);
-            aBuf.writeInt(slot);
-            aBuf.writeBoolean(physical);
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            super.loadDataFromNBT(aNBT);
-
-            NBTTagCompound tag = (NBTTagCompound) aNBT;
-            threshold = tag.getInteger("threshold");
-            slot = tag.getInteger("slot");
-
-            if (tag.hasKey("physical")) {
-                physical = tag.getBoolean("physical");
-            } else {
-                physical = false;
-            }
-        }
-
-        @Override
-        public void readFromPacket(ByteArrayDataInput aBuf) {
-            super.readFromPacket(aBuf);
-            threshold = aBuf.readInt();
-            slot = aBuf.readInt();
-            physical = aBuf.readBoolean();
-        }
     }
 
     // GUI stuff

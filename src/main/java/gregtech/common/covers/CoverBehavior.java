@@ -1,14 +1,23 @@
 package gregtech.common.covers;
 
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagInt;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.io.ByteArrayDataInput;
+
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.util.ISerializableObject;
+import io.netty.buffer.ByteBuf;
 
 /**
  * For Covers with a special behavior. Has fixed storage format of 4 byte. Not very convenient...
  */
-public abstract class CoverBehavior extends CoverBehaviorBase<ISerializableObject.LegacyCoverData> {
+public class CoverBehavior extends CoverBehaviorBase {
+
+    protected int coverData;
 
     protected CoverBehavior(CoverContext context) {
         super(context, null);
@@ -19,17 +28,35 @@ public abstract class CoverBehavior extends CoverBehaviorBase<ISerializableObjec
     }
 
     public int getVariable() {
-        return coverData.get();
+        return coverData;
     }
 
     public CoverBehavior setVariable(int newValue) {
-        this.coverData.set(newValue);
+        this.coverData = newValue;
         return this;
     }
 
     @Override
-    public final ISerializableObject.LegacyCoverData initializeData() {
-        return new ISerializableObject.LegacyCoverData();
+    public final void initializeData() {}
+
+    @Override
+    protected void loadFromNbt(NBTBase nbt) {
+        this.coverData = nbt instanceof NBTTagInt ? ((NBTTagInt) nbt).func_150287_d() : 0;
+    }
+
+    @Override
+    protected void readFromPacket(ByteArrayDataInput byteData) {
+        coverData = byteData.readInt();
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        return new NBTTagInt(this.coverData);
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeInt(coverData);
     }
 
     @Override

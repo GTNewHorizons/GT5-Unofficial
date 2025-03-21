@@ -21,7 +21,7 @@ public class CoverRedstoneTransmitterInternal extends CoverRedstoneWirelessBase 
         if (coverable == null) {
             return;
         }
-        GregTechAPI.sWirelessRedstone.put(coverData.get(), coverable.getOutputRedstoneSignal(coverSide));
+        GregTechAPI.sWirelessRedstone.put(coverData, coverable.getOutputRedstoneSignal(coverSide));
     }
 
     @Override

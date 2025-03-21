@@ -35,7 +35,6 @@ public class CoverPlayerDetector extends CoverBehavior {
         if (coverable == null) {
             return;
         }
-        int coverDataValue = coverData.get();
         boolean playerDetected = false;
 
         if (coverable instanceof IGregTechTileEntity gtte) {
@@ -56,17 +55,17 @@ public class CoverPlayerDetector extends CoverBehavior {
                         coverable.getYCoord() + 0.5D,
                         coverable.getZCoord() + 0.5D));
                 if (dist < range) {
-                    if (coverDataValue == 0) {
+                    if (this.coverData == 0) {
                         playerDetected = true;
                         break;
                     }
                     if (tEntity.getDisplayName()
                         .equalsIgnoreCase(placer)) {
-                        if (coverDataValue == 1) {
+                        if (this.coverData == 1) {
                             playerDetected = true;
                             break;
                         }
-                    } else if (coverDataValue == 2) {
+                    } else if (this.coverData == 2) {
                         playerDetected = true;
                         break;
                     }
@@ -79,17 +78,15 @@ public class CoverPlayerDetector extends CoverBehavior {
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int coverDataValue = coverData.get();
-        coverDataValue = (coverDataValue + (aPlayer.isSneaking() ? -1 : 1)) % 3;
-        if (coverDataValue < 0) {
-            coverDataValue = 2;
+        this.coverData = (this.coverData + (aPlayer.isSneaking() ? -1 : 1)) % 3;
+        if (this.coverData < 0) {
+            this.coverData = 2;
         }
-        switch (coverDataValue) {
+        switch (this.coverData) {
             case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("068.1", "Emit if any Player is close"));
             case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("069.1", "Emit if other Player is close"));
             case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("070", "Emit if you are close"));
         }
-        coverData.set(coverDataValue);
     }
 
     @Override

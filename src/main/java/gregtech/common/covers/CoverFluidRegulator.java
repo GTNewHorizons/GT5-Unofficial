@@ -2,8 +2,6 @@ package gregtech.common.covers;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,6 +9,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
@@ -25,7 +25,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
@@ -47,7 +46,7 @@ import io.netty.buffer.ByteBuf;
  * speed is negative. This way, `0` means 1tick interval, while `-1` means 1 tick interval as well, preserving the
  * legacy behavior.
  */
-public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.FluidRegulatorData> {
+public class CoverFluidRegulator extends CoverBehaviorBase {
 
     private static final int SPEED_LENGTH = 20;
     private static final int TICK_RATE_LENGTH = Integer.SIZE - SPEED_LENGTH - 1;
@@ -57,6 +56,9 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
 
     public final int mTransferRate;
     private boolean allowFluid = false;
+    private int tickRate;
+    private int speed;
+    private Conditional condition;
 
     public CoverFluidRegulator(CoverContext context, int aTransferRate, ITexture coverTexture) {
         super(context, coverTexture);
@@ -68,54 +70,86 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
     }
 
     public int getTickRateForUi() {
-        return coverData.tickRate;
+        return tickRate;
     }
 
     public CoverFluidRegulator setTickRateForUi(int tickRate) {
-        this.coverData.tickRate = tickRate;
+        this.tickRate = tickRate;
         return this;
     }
 
     public int getSpeed() {
-        return coverData.speed;
+        return speed;
     }
 
     public CoverFluidRegulator setSpeed(int speed) {
-        this.coverData.speed = speed;
+        this.speed = speed;
         return this;
     }
 
     public Conditional getCondition() {
-        return coverData.condition;
+        return condition;
     }
 
     public CoverFluidRegulator setCondition(Conditional condition) {
-        this.coverData.condition = condition;
+        this.condition = condition;
         return this;
     }
 
     @Override
-    protected FluidRegulatorData initializeData() {
-        return new CoverFluidRegulator.FluidRegulatorData();
+    protected void initializeData() {
+        this.tickRate = TICK_RATE_MIN;
+        this.speed = 0;
+        this.condition = Conditional.Always;
+    }
+
+    @Override
+    protected void loadFromNbt(NBTBase nbt) {
+        if (!(nbt instanceof NBTTagCompound tag)) return; // not very good...
+        speed = tag.getInteger("mSpeed");
+        tickRate = tag.getInteger("mTickRate");
+        condition = Conditional.VALUES[tag.getByte("mCondition")];
+    }
+
+    @Override
+    protected void readFromPacket(ByteArrayDataInput byteData) {
+        this.tickRate = byteData.readInt();
+        this.speed = byteData.readInt();
+        this.condition = Conditional.VALUES[byteData.readUnsignedByte()];
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("mSpeed", speed);
+        tag.setInteger("mTickRate", tickRate);
+        tag.setByte("mCondition", (byte) condition.ordinal());
+        return tag;
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeInt(tickRate)
+            .writeInt(speed)
+            .writeByte(condition.ordinal());
     }
 
     @Override
     public boolean isRedstoneSensitive(long aTimer) {
-        return coverData.condition.isRedstoneSensitive();
+        return condition.isRedstoneSensitive();
     }
 
     @Override
     public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
-        if (coverable == null || coverData.speed == 0
-            || !coverData.condition.isAllowedToWork(coverSide, coverID, coverable)) {
+        if (coverable == null || speed == 0 || !condition.isAllowedToWork(coverSide, coverID, coverable)) {
             return;
         }
         if ((coverable instanceof IFluidHandler fluidHandler)) {
             final IFluidHandler tTank1;
             final IFluidHandler tTank2;
             final ForgeDirection directionFrom;
-            if (coverData.speed > 0) {
+            if (speed > 0) {
                 tTank2 = coverable.getITankContainerAtSide(coverSide);
                 tTank1 = fluidHandler;
                 directionFrom = coverSide;
@@ -126,16 +160,16 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
             }
             if (tTank1 != null && tTank2 != null) {
                 allowFluid = true;
-                GTUtility.moveFluid(tTank1, tTank2, directionFrom, Math.abs(coverData.speed), this::canTransferFluid);
+                GTUtility.moveFluid(tTank1, tTank2, directionFrom, Math.abs(speed), this::canTransferFluid);
                 allowFluid = false;
             }
         }
     }
 
-    private void adjustSpeed(EntityPlayer aPlayer, FluidRegulatorData coverData, int scale) {
-        int tSpeed = coverData.speed;
+    private void adjustSpeed(EntityPlayer aPlayer, int scale) {
+        int tSpeed = speed;
         tSpeed += scale;
-        int tTickRate = coverData.tickRate;
+        int tTickRate = tickRate;
         if (Math.abs(tSpeed) > mTransferRate * tTickRate) {
             tSpeed = mTransferRate * tTickRate * (tSpeed > 0 ? 1 : -1);
             GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("316", "Pump speed limit reached!"));
@@ -161,9 +195,9 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ)[0] >= 0.5F) {
-            adjustSpeed(aPlayer, coverData, aPlayer.isSneaking() ? 256 : 16);
+            adjustSpeed(aPlayer, aPlayer.isSneaking() ? 256 : 16);
         } else {
-            adjustSpeed(aPlayer, coverData, aPlayer.isSneaking() ? -256 : -16);
+            adjustSpeed(aPlayer, aPlayer.isSneaking() ? -256 : -16);
         }
     }
 
@@ -218,7 +252,7 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
 
     @Override
     public int getMinimumTickRate() {
-        return coverData.tickRate;
+        return tickRate;
     }
 
     // GUI stuff
@@ -415,100 +449,6 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
 
         boolean isRedstoneSensitive() {
             return redstoneSensitive;
-        }
-    }
-
-    public static class FluidRegulatorData implements ISerializableObject {
-
-        private int tickRate;
-        private int speed;
-        private Conditional condition;
-
-        private static int getSpeed(int coverData) {
-            // positive or 0 -> interval bits need to be set to zero
-            // negative -> interval bits need to be set to one
-            return coverData >= 0 ? coverData & ~TICK_RATE_BITMASK : coverData | TICK_RATE_BITMASK;
-        }
-
-        private static int getTickRate(int coverData) {
-            // range: TICK_RATE_MIN ~ TICK_RATE_MAX
-            return ((Math.abs(coverData) & TICK_RATE_BITMASK) >>> SPEED_LENGTH) + TICK_RATE_MIN;
-        }
-
-        public FluidRegulatorData() {
-            this(0);
-        }
-
-        public FluidRegulatorData(int legacy) {
-            this(getTickRate(legacy), getSpeed(legacy), Conditional.Always);
-        }
-
-        public FluidRegulatorData(int tickRate, int speed, Conditional condition) {
-            this.tickRate = tickRate;
-            this.speed = speed;
-            this.condition = condition;
-        }
-
-        @Nonnull
-        @Override
-        public ISerializableObject copy() {
-            return new FluidRegulatorData(tickRate, speed, condition);
-        }
-
-        @Nonnull
-        @Override
-        public NBTBase saveDataToNBT() {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setInteger("mSpeed", speed);
-            tag.setInteger("mTickRate", tickRate);
-            tag.setByte("mCondition", (byte) condition.ordinal());
-            return tag;
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeInt(tickRate)
-                .writeInt(speed)
-                .writeByte(condition.ordinal());
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            if (!(aNBT instanceof NBTTagCompound tag)) return; // not very good...
-            speed = tag.getInteger("mSpeed");
-            tickRate = tag.getInteger("mTickRate");
-            condition = Conditional.VALUES[tag.getByte("mCondition")];
-        }
-
-        @Override
-        public void readFromPacket(ByteArrayDataInput aBuf) {
-            this.tickRate = aBuf.readInt();
-            this.speed = aBuf.readInt();
-            this.condition = Conditional.VALUES[aBuf.readUnsignedByte()];
-        }
-
-        protected int getTickRate() {
-            return tickRate;
-        }
-
-        public void setTickRate(int tickRate) {
-            this.tickRate = tickRate;
-        }
-
-        public int getSpeed() {
-            return speed;
-        }
-
-        public void setSpeed(int speed) {
-            this.speed = speed;
-        }
-
-        public Conditional getCondition() {
-            return condition;
-        }
-
-        public void setCondition(Conditional condition) {
-            this.condition = condition;
         }
     }
 }

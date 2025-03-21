@@ -36,10 +36,10 @@ public class CoverEnergyWireless extends CoverBehavior {
 
     @Override
     public void doCoverThings(byte aInputRedstone, long aTimer) {
-        if (coverData.get() == 0 || aTimer % ticks_between_energy_addition == 0) {
+        if (coverData == 0 || aTimer % ticks_between_energy_addition == 0) {
             tryFetchingEnergy(coveredTile.get());
         }
-        coverData.set(1);
+        coverData = 1;
     }
 
     private static UUID getOwner(Object te) {

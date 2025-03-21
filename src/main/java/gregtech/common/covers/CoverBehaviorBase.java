@@ -6,6 +6,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,7 +31,6 @@ import gregtech.api.gui.widgets.CoverTickRateButton;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -38,32 +38,31 @@ import io.netty.buffer.ByteBuf;
  *
  * @author glease
  */
-public abstract class CoverBehaviorBase<T extends ISerializableObject> extends Cover {
+public abstract class CoverBehaviorBase extends Cover {
 
     private static final String NBT_DATA = "d";
     private static final String NBT_TICK_RATE_ADDITION = "tra";
-
-    protected @NotNull T coverData;
 
     private final ITexture coverFGTexture;
 
     public CoverBehaviorBase(@NotNull CoverContext context, ITexture coverFGTexture) {
         super(context);
-        this.coverData = initializeData(context.getCoverInitializer());
+        initializeData(context.getCoverInitializer());
         this.coverFGTexture = coverFGTexture;
         // Calling after data was initialized since overrides may depend on data.
         setTickRateAddition(initializeTickRateAddition(context.getCoverInitializer()));
     }
 
-    private T initializeData(Object coverData) {
+    private void initializeData(Object coverData) {
         if (coverData instanceof ItemStack coverStack) {
-            return loadFromItemStack(coverStack);
+            loadFromItemStack(coverStack);
         } else if (coverData instanceof NBTTagCompound nbt && nbt.hasKey(NBT_DATA)) {
-            return loadFromNbt(nbt.getTag(NBT_DATA));
+            loadFromNbt(nbt.getTag(NBT_DATA));
         } else if (coverData instanceof ByteArrayDataInput byteData) {
-            return loadFromPacket(byteData);
+            readFromPacket(byteData);
+        } else {
+            initializeData();
         }
-        return initializeData();
     }
 
     private int initializeTickRateAddition(Object coverData) {
@@ -80,36 +79,32 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> extends C
         return getDefaultTickRate() - this.getMinimumTickRate();
     }
 
-    protected abstract T initializeData();
+    protected abstract void initializeData();
 
-    protected T loadFromItemStack(ItemStack cover) {
-        return initializeData();
+    protected void loadFromItemStack(@NotNull ItemStack cover) {
+        initializeData();
     }
 
-    protected T loadFromNbt(NBTBase nbt) {
-        final T ret = initializeData();
-        ret.loadDataFromNBT(nbt);
-        return ret;
-    }
+    protected abstract void loadFromNbt(NBTBase nbt);
 
-    protected T loadFromPacket(ByteArrayDataInput byteData) {
-        final T ret = initializeData();
-        ret.readFromPacket(byteData);
-        return ret;
-    }
+    protected abstract void readFromPacket(ByteArrayDataInput byteData);
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-        nbt.setTag(NBT_DATA, coverData.saveDataToNBT());
+        nbt.setTag(NBT_DATA, saveDataToNbt());
         nbt.setInteger(NBT_TICK_RATE_ADDITION, tickRateAddition);
         return nbt;
     }
 
+    protected abstract @Nonnull NBTBase saveDataToNbt();
+
     @Override
     public void writeToByteBuf(ByteBuf byteBuf) {
-        coverData.writeToByteBuf(byteBuf);
+        writeDataToByteBuf(byteBuf);
         byteBuf.writeInt(tickRateAddition);
     }
+
+    protected abstract void writeDataToByteBuf(ByteBuf byteBuf);
 
     // region facade
 

@@ -2,12 +2,12 @@ package gregtech.common.covers;
 
 import java.util.function.Function;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -23,49 +23,99 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerCycleButtonWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
-public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
+public class CoverEUMeter extends CoverBehaviorBase {
+
+    private EnergyType type;
+    private boolean inverted;
+    /**
+     * The special value {@code 0} means threshold check is disabled.
+     */
+    private long threshold;
 
     public CoverEUMeter(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
     }
 
     public EnergyType getType() {
-        return this.coverData.type;
+        return this.type;
     }
 
     public CoverEUMeter setType(EnergyType type) {
-        this.coverData.type = type;
+        this.type = type;
         return this;
     }
 
     public boolean isInverted() {
-        return this.coverData.inverted;
+        return this.inverted;
     }
 
     public CoverEUMeter setInverted(boolean inverted) {
-        this.coverData.inverted = inverted;
+        this.inverted = inverted;
         return this;
     }
 
     public long getThreshold() {
-        return this.coverData.threshold;
+        return this.threshold;
     }
 
     public CoverEUMeter setThresdhold(long threshold) {
-        this.coverData.threshold = threshold;
+        this.threshold = threshold;
         return this;
     }
 
+    public int getNum() {
+        return type.ordinal() * 2 + (inverted ? 1 : 0);
+    }
+
+    public void setNum(int num) {
+        type = EnergyType.getEnergyType(num / 2);
+        inverted = num % 2 == 1;
+    }
+
     @Override
-    protected EUMeterData initializeData() {
-        return new CoverEUMeter.EUMeterData();
+    protected void initializeData() {
+        type = EnergyType.UNIVERSAL_STORAGE;
+        inverted = false;
+        threshold = 0;
+    }
+
+    @Override
+    protected void loadFromNbt(NBTBase nbt) {
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        int typeOrdinal = tag.getInteger("typeOrdinal");
+        type = EnergyType.getEnergyType(typeOrdinal);
+        inverted = tag.getBoolean("inverted");
+        threshold = tag.getLong("threshold");
+    }
+
+    @Override
+    protected void readFromPacket(ByteArrayDataInput byteData) {
+        int typeOrdinal = byteData.readInt();
+        type = EnergyType.getEnergyType(typeOrdinal);
+        inverted = byteData.readBoolean();
+        threshold = byteData.readLong();
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("typeOrdinal", type.ordinal());
+        tag.setBoolean("inverted", inverted);
+        tag.setLong("threshold", threshold);
+        return tag;
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeInt(type.ordinal());
+        byteBuf.writeBoolean(inverted);
+        byteBuf.writeLong(threshold);
     }
 
     @Override
@@ -75,8 +125,8 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
             if (coverable == null) {
                 return;
             }
-            final long stored = coverData.type.getTileEntityStoredEnergy(coverable);
-            final long capacity = coverData.type.getTileEntityEnergyCapacity(coverable);
+            final long stored = type.getTileEntityStoredEnergy(coverable);
+            final long capacity = type.getTileEntityEnergyCapacity(coverable);
 
             byte redstoneSignal;
 
@@ -91,14 +141,14 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
                 redstoneSignal = (byte) (1 + (14 * stored) / capacity);
             }
 
-            if (coverData.inverted) {
+            if (inverted) {
                 redstoneSignal = (byte) (15 - redstoneSignal);
             }
 
-            if (coverData.threshold > 0) {
-                if (coverData.inverted && stored >= coverData.threshold) {
+            if (threshold > 0) {
+                if (inverted && stored >= threshold) {
                     redstoneSignal = 0;
-                } else if (!coverData.inverted && stored < coverData.threshold) {
+                } else if (!inverted && stored < threshold) {
                     redstoneSignal = 0;
                 }
             }
@@ -109,7 +159,7 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int num = (coverData.getNum() + (aPlayer.isSneaking() ? -1 : 1) + EnergyType.values().length * 2)
+        int num = (getNum() + (aPlayer.isSneaking() ? -1 : 1) + EnergyType.values().length * 2)
             % (EnergyType.values().length * 2);
         switch (num) {
             case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("031", "Normal Universal Storage"));
@@ -127,7 +177,7 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
             case 11 -> GTUtility
                 .sendChatToPlayer(aPlayer, GTUtility.trans("042", "Inverted Electricity Storage(Including Batteries)"));
         }
-        coverData.setNum(num);
+        setNum(num);
     }
 
     // region Static Result Methods
@@ -269,77 +319,6 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
     }
 
     // endregion
-
-    public static class EUMeterData implements ISerializableObject {
-
-        private EnergyType type;
-        private boolean inverted;
-        /**
-         * The special value {@code 0} means threshold check is disabled.
-         */
-        private long threshold;
-
-        public EUMeterData() {
-            type = EnergyType.UNIVERSAL_STORAGE;
-            inverted = false;
-            threshold = 0;
-        }
-
-        public EUMeterData(EnergyType type, boolean inverted, long threshold) {
-            this.type = type;
-            this.inverted = inverted;
-            this.threshold = threshold;
-        }
-
-        public int getNum() {
-            return type.ordinal() * 2 + (inverted ? 1 : 0);
-        }
-
-        public void setNum(int num) {
-            type = EnergyType.getEnergyType(num / 2);
-            inverted = num % 2 == 1;
-        }
-
-        @Nonnull
-        @Override
-        public ISerializableObject copy() {
-            return new EUMeterData(type, inverted, threshold);
-        }
-
-        @Nonnull
-        @Override
-        public NBTBase saveDataToNBT() {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setInteger("typeOrdinal", type.ordinal());
-            tag.setBoolean("inverted", inverted);
-            tag.setLong("threshold", threshold);
-            return tag;
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeInt(type.ordinal());
-            aBuf.writeBoolean(inverted);
-            aBuf.writeLong(threshold);
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            NBTTagCompound tag = (NBTTagCompound) aNBT;
-            int typeOrdinal = tag.getInteger("typeOrdinal");
-            type = EnergyType.getEnergyType(typeOrdinal);
-            inverted = tag.getBoolean("inverted");
-            threshold = tag.getLong("threshold");
-        }
-
-        @Override
-        public void readFromPacket(ByteArrayDataInput aBuf) {
-            int typeOrdinal = aBuf.readInt();
-            type = EnergyType.getEnergyType(typeOrdinal);
-            inverted = aBuf.readBoolean();
-            threshold = aBuf.readLong();
-        }
-    }
 
     public enum EnergyType {
 

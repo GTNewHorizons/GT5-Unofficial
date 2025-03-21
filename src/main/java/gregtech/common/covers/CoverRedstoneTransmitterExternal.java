@@ -12,7 +12,7 @@ public class CoverRedstoneTransmitterExternal extends CoverRedstoneWirelessBase 
 
     @Override
     public void doCoverThings(byte aInputRedstone, long aTimer) {
-        GregTechAPI.sWirelessRedstone.put(coverData.get(), aInputRedstone);
+        GregTechAPI.sWirelessRedstone.put(coverData, aInputRedstone);
     }
 
     @Override

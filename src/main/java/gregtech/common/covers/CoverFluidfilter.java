@@ -2,8 +2,6 @@ package gregtech.common.covers;
 
 import static gregtech.api.enums.GTValues.E;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -13,6 +11,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
@@ -25,13 +25,12 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerSlotWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
-public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFilterData> {
+public class CoverFluidfilter extends CoverBehaviorBase {
 
     // Uses the lower 3 bits of the cover variable, so we have 8 options to work with (0-7)
     private final int FILTER_INPUT_DENY_OUTPUT = 0; // 000
@@ -43,41 +42,78 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
     private final int ANY_INPUT_FILTER_OUTPUT = 6; // 110
     private final int ANY_INPUT_INVERT_OUTPUT = 7; // 111
 
+    private int mFluidID;
+    private int mFilterMode;
+
     public CoverFluidfilter(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
     }
 
     public int getFluidId() {
-        return coverData.mFluidID;
+        return mFluidID;
     }
 
     public CoverFluidfilter setFluidId(int fluidId) {
-        this.coverData.mFluidID = fluidId;
+        this.mFluidID = fluidId;
         return this;
     }
 
     public int getFilterMode() {
-        return coverData.mFilterMode;
+        return mFilterMode;
     }
 
     public CoverFluidfilter setFilterMode(int filterMode) {
-        this.coverData.mFilterMode = filterMode;
+        this.mFilterMode = filterMode;
         return this;
     }
 
     @Override
-    protected FluidFilterData initializeData() {
-        return new CoverFluidfilter.FluidFilterData(-1, 0);
+    protected void initializeData() {
+        this.mFluidID = -1;
+        this.mFilterMode = 0;
+    }
+
+    @Override
+    protected void loadFromNbt(NBTBase nbt) {
+        if (nbt instanceof NBTTagCompound tNBT) {
+            mFilterMode = tNBT.getInteger("mFilterMode");
+            if (tNBT.hasKey("mFluid", NBT.TAG_STRING)) mFluidID = FluidRegistry.getFluidID(tNBT.getString("mFluid"));
+            else mFluidID = -1;
+        } else {
+            initializeData();
+        }
+    }
+
+    @Override
+    protected void readFromPacket(ByteArrayDataInput byteData) {
+        mFilterMode = byteData.readByte();
+        mFluidID = byteData.readInt();
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tNBT = new NBTTagCompound();
+        tNBT.setInteger("mFilterMode", mFilterMode);
+        if (mFluidID >= 0) tNBT.setString(
+            "mFluid",
+            FluidRegistry.getFluid(mFluidID)
+                .getName());
+        return tNBT;
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeByte(mFilterMode)
+            .writeInt(mFluidID);
     }
 
     @Override
     public String getDescription() {
-        final Fluid fluid = FluidRegistry.getFluid(coverData.mFluidID);
+        final Fluid fluid = FluidRegistry.getFluid(mFluidID);
         if (fluid == null) return E;
 
         final FluidStack sFluid = new FluidStack(fluid, 1000);
-        return (String
-            .format("Filtering Fluid: %s - %s", sFluid.getLocalizedName(), getFilterMode(coverData.mFilterMode)));
+        return (String.format("Filtering Fluid: %s - %s", sFluid.getLocalizedName(), getFilterMode(mFilterMode)));
     }
 
     public String getFilterMode(int aFilterMode) {
@@ -96,12 +132,12 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        coverData.mFilterMode = (coverData.mFilterMode + (aPlayer.isSneaking() ? -1 : 1)) % 8;
-        if (coverData.mFilterMode < 0) {
-            coverData.mFilterMode = 7;
+        mFilterMode = (mFilterMode + (aPlayer.isSneaking() ? -1 : 1)) % 8;
+        if (mFilterMode < 0) {
+            mFilterMode = 7;
         }
 
-        GTUtility.sendChatToPlayer(aPlayer, getFilterMode(coverData.mFilterMode));
+        GTUtility.sendChatToPlayer(aPlayer, getFilterMode(mFilterMode));
     }
 
     @Override
@@ -116,7 +152,7 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
             final FluidStack tFluid = GTUtility.getFluidForFilledItem(tStack, true);
             if (tFluid != null) {
                 final int aFluid = tFluid.getFluidID();
-                coverData.mFluidID = aFluid;
+                mFluidID = aFluid;
                 final FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aFluid), 1000);
                 GTUtility
                     .sendChatToPlayer(aPlayer, GTUtility.trans("047", "Filter Fluid: ") + sFluid.getLocalizedName());
@@ -160,8 +196,8 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
     public boolean letsFluidIn(Fluid aFluid) {
         if (aFluid == null) return true;
 
-        int aFilterMode = coverData.mFilterMode;
-        int aFilterFluid = coverData.mFluidID;
+        int aFilterMode = mFilterMode;
+        int aFilterFluid = mFluidID;
 
         if (aFilterMode == DENY_INPUT_FILTER_OUTPUT || aFilterMode == DENY_INPUT_INVERT_OUTPUT) return false;
         else if (aFilterMode == ANY_INPUT_FILTER_OUTPUT || aFilterMode == ANY_INPUT_INVERT_OUTPUT) return true;
@@ -174,8 +210,8 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
     public boolean letsFluidOut(Fluid aFluid) {
         if (aFluid == null) return true;
 
-        int aFilterMode = coverData.mFilterMode;
-        int aFilterFluid = coverData.mFluidID;
+        int aFilterMode = mFilterMode;
+        int aFilterFluid = mFluidID;
 
         if (aFilterMode == FILTER_INPUT_DENY_OUTPUT || aFilterMode == INVERT_INPUT_DENY_OUTPUT) return false;
         else if (aFilterMode == FILTER_INPUT_ANY_OUTPUT || aFilterMode == INVERT_INPUT_ANY_OUTPUT) return true;
@@ -345,57 +381,6 @@ public class CoverFluidfilter extends CoverBehaviorBase<CoverFluidfilter.FluidFi
             if (coverData == null) return null;
             Fluid fluid = FluidRegistry.getFluid(coverData.getFluidId());
             return GTUtility.getFluidDisplayStack(fluid);
-        }
-    }
-
-    public static class FluidFilterData implements ISerializableObject {
-
-        private int mFluidID;
-        private int mFilterMode;
-
-        public FluidFilterData(int mFluidID, int mFilterMode) {
-            this.mFluidID = mFluidID;
-            this.mFilterMode = mFilterMode;
-        }
-
-        @Override
-        @Nonnull
-        public ISerializableObject copy() {
-            return new FluidFilterData(mFluidID, mFilterMode);
-        }
-
-        @Override
-        @Nonnull
-        public NBTBase saveDataToNBT() {
-            NBTTagCompound tNBT = new NBTTagCompound();
-            tNBT.setInteger("mFilterMode", mFilterMode);
-            if (mFluidID >= 0) tNBT.setString(
-                "mFluid",
-                FluidRegistry.getFluid(mFluidID)
-                    .getName());
-            return tNBT;
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeByte(mFilterMode)
-                .writeInt(mFluidID);
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            if (aNBT instanceof NBTTagCompound tNBT) {
-                mFilterMode = tNBT.getInteger("mFilterMode");
-                if (tNBT.hasKey("mFluid", NBT.TAG_STRING))
-                    mFluidID = FluidRegistry.getFluidID(tNBT.getString("mFluid"));
-                else mFluidID = -1;
-            }
-        }
-
-        @Override
-        public void readFromPacket(ByteArrayDataInput aBuf) {
-            mFilterMode = aBuf.readByte();
-            mFluidID = aBuf.readInt();
         }
     }
 }

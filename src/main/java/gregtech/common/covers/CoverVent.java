@@ -35,14 +35,14 @@ public class CoverVent extends CoverBehavior {
     public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverSide == ForgeDirection.UNKNOWN) {
-            coverData.set(0);
+            coverData = 0;
             return;
         }
         if (coverable instanceof IFluidHandler fluidHandler) {
-            coverData.set(doCoolFluid(coverSide, coverable, fluidHandler));
+            coverData = doCoolFluid(coverSide, coverable, fluidHandler);
         }
         if ((coverable instanceof IMachineProgress machine)) {
-            coverData.set(doProgressEfficiency(coverSide, machine, coverID));
+            coverData = doProgressEfficiency(coverSide, machine, coverID);
         }
     }
 

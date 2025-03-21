@@ -41,7 +41,6 @@ public class CoverNeedMaintainance extends CoverBehavior {
         if (coverable == null) {
             return;
         }
-        int coverDataValue = coverData.get();
         boolean needsRepair = false;
         if (coverable instanceof IGregTechTileEntity tTileEntity) {
             final IMetaTileEntity mTileEntity = tTileEntity.getMetaTileEntity();
@@ -49,7 +48,7 @@ public class CoverNeedMaintainance extends CoverBehavior {
                 final int ideal = multi.getIdealStatus();
                 final int real = multi.getRepairStatus();
                 final ItemStack tRotor = multi.getRealInventory()[1];
-                final int coverVar = coverDataValue >>> 1;
+                final int coverVar = this.coverData >>> 1;
                 if (coverVar < 5) {
                     if (ideal - real > coverVar) needsRepair = true;
                 } else if (coverVar == 5 || coverVar == 6) {
@@ -71,7 +70,7 @@ public class CoverNeedMaintainance extends CoverBehavior {
                 }
             }
         }
-        if (coverDataValue % 2 == 0) {
+        if (this.coverData % 2 == 0) {
             needsRepair = !needsRepair;
         }
 
@@ -81,12 +80,11 @@ public class CoverNeedMaintainance extends CoverBehavior {
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int coverDataValue = coverData.get();
-        coverDataValue = (coverDataValue + (aPlayer.isSneaking() ? -1 : 1)) % 14;
-        if (coverDataValue < 0) {
-            coverDataValue = 13;
+        this.coverData = (this.coverData + (aPlayer.isSneaking() ? -1 : 1)) % 14;
+        if (this.coverData < 0) {
+            this.coverData = 13;
         }
-        switch (coverDataValue) {
+        switch (this.coverData) {
             case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("056", "Emit if 1 Maintenance Needed"));
             case 1 -> GTUtility
                 .sendChatToPlayer(aPlayer, GTUtility.trans("057", "Emit if 1 Maintenance Needed(inverted)"));
@@ -113,7 +111,6 @@ public class CoverNeedMaintainance extends CoverBehavior {
                 aPlayer,
                 GTUtility.trans("069", "Emit if rotor needs maintenance high accuracy mod(inverted)"));
         }
-        coverData.set(coverDataValue);
     }
 
     @Override

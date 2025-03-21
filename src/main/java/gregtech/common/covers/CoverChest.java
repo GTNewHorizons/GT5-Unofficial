@@ -27,21 +27,17 @@ import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import io.netty.buffer.ByteBuf;
 
-public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
+public class CoverChest extends CoverBehaviorBase {
 
     private final int slots;
     private final int stackSizeLimit = 1;
+    private LimitingItemStackHandler items;
+    private boolean firstTick;
 
     public CoverChest(CoverContext context, int slots, ITexture coverTexture) {
         super(context, coverTexture);
         if (slots <= 0) throw new IllegalArgumentException("slots must be greater than 0");
         this.slots = slots;
-        Object initializer = context.getCoverInitializer();
-        if (initializer == null || initializer instanceof ItemStack) {
-            // Re-initialization required until we merge covers and their data objects,
-            // since this relies on an instance field.
-            coverData = initializeData();
-        }
     }
 
     public int getSlotCount() {
@@ -49,12 +45,34 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
     }
 
     public IItemHandlerModifiable getItems() {
-        return this.coverData.items;
+        return this.items;
     }
 
     @Override
-    public CoverChest.ChestInventory initializeData() {
-        return new CoverChest.ChestInventory(slots, stackSizeLimit);
+    public void initializeData() {
+        this.items = new LimitingItemStackHandler(slots, stackSizeLimit);
+    }
+
+    @Override
+    protected void loadFromNbt(NBTBase nbt) {
+        if (!(nbt instanceof NBTTagCompound)) return;
+        items.deserializeNBT((NBTTagCompound) nbt);
+        firstTick = true;
+    }
+
+    @Override
+    protected void readFromPacket(ByteArrayDataInput byteData) {
+        items.deserializeNBT(ISerializableObject.readCompoundTagFromGreggyByteBuf(byteData));
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        return items.serializeNBT();
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        ByteBufUtils.writeTag(byteBuf, items.serializeNBT());
     }
 
     @Override
@@ -76,12 +94,23 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
     public void onCoverRemoval() {
         ICoverable iCoverable = coveredTile.get();
         if (iCoverable == null || iCoverable.getWorld().isRemote) return;
-        coverData.dropAll(iCoverable, coverSide);
+        dropAll(iCoverable, coverSide);
+    }
+
+    private void dropAll(ICoverable coverable, ForgeDirection direction) {
+        for (int i = 0; i < items.getSlots(); i++) {
+            ItemStack tItem = items.getStackInSlot(i);
+            if (tItem == null) {
+                continue;
+            }
+            dropItem(coverable, direction, tItem);
+            items.setStackInSlot(i, null);
+        }
     }
 
     @Override
     public int getMinimumTickRate() {
-        return coverData.firstTick ? 1 : 0;
+        return firstTick ? 1 : 0;
     }
 
     @Override
@@ -92,23 +121,23 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
         }
         // migrate slots. mostly needed while in development. still can be useful if we ever resize the inventory in the
         // future
-        if (coverData.items.getSlots() != slots) {
-            if (coverData.items.getSlots() > slots) {
-                for (int i = slots; i < coverData.items.getSlots(); i++) {
-                    ItemStack item = coverData.items.getStackInSlot(i);
+        if (items.getSlots() != slots) {
+            if (items.getSlots() > slots) {
+                for (int i = slots; i < items.getSlots(); i++) {
+                    ItemStack item = items.getStackInSlot(i);
                     if (item != null) {
                         dropItem(coverable, coverSide, item);
                     }
                 }
             }
 
-            coverData = initializeData();
-            int toCopy = Math.min(coverData.items.getSlots(), coverData.items.getSlots());
+            initializeData();
+            int toCopy = Math.min(items.getSlots(), items.getSlots());
             for (int i = 0; i < toCopy; i++) {
-                coverData.items.setStackInSlot(i, coverData.items.getStackInSlot(i));
+                items.setStackInSlot(i, items.getStackInSlot(i));
             }
         }
-        coverData.firstTick = false;
+        firstTick = false;
     }
 
     @Override
@@ -205,60 +234,6 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
         @Override
         public int getSlotLimit(int slot) {
             return slotLimit;
-        }
-    }
-
-    public static class ChestInventory implements ISerializableObject {
-
-        final LimitingItemStackHandler items;
-        boolean firstTick;
-
-        public ChestInventory(int slots, int stackSize) {
-            items = new LimitingItemStackHandler(slots, stackSize);
-        }
-
-        @Override
-        public void readFromPacket(ByteArrayDataInput aBuf) {
-            items.deserializeNBT(ISerializableObject.readCompoundTagFromGreggyByteBuf(aBuf));
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            ByteBufUtils.writeTag(aBuf, items.serializeNBT());
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            if (!(aNBT instanceof NBTTagCompound)) return;
-            items.deserializeNBT((NBTTagCompound) aNBT);
-            firstTick = true;
-        }
-
-        @NotNull
-        @Override
-        public NBTBase saveDataToNBT() {
-            return items.serializeNBT();
-        }
-
-        @NotNull
-        @Override
-        public ISerializableObject copy() {
-            ChestInventory copy = new ChestInventory(items.getSlots(), items.getSlotLimit(0));
-            for (int i = 0; i < items.getSlots(); i++) {
-                copy.items.setStackInSlot(i, items.getStackInSlot(i));
-            }
-            return copy;
-        }
-
-        public void dropAll(ICoverable coverable, ForgeDirection direction) {
-            for (int i = 0; i < items.getSlots(); i++) {
-                ItemStack tItem = items.getStackInSlot(i);
-                if (tItem == null) {
-                    continue;
-                }
-                dropItem(coverable, direction, tItem);
-                items.setStackInSlot(i, null);
-            }
         }
     }
 

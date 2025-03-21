@@ -1,9 +1,6 @@
 package gregtech.common.covers.redstone;
 
 import java.util.Arrays;
-import java.util.UUID;
-
-import javax.annotation.Nonnull;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,7 +21,6 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverLiquidMeter;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -32,34 +28,76 @@ import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
-public class CoverWirelessFluidDetector
-    extends CoverAdvancedRedstoneTransmitterBase<CoverWirelessFluidDetector.FluidTransmitterData> {
+public class CoverWirelessFluidDetector extends CoverAdvancedRedstoneTransmitterBase {
+
+    /** The special value {@code 0} means threshold check is disabled. */
+    private int threshold;
+    /** Whether the wireless detector cover also sets the tiles sided Redstone output */
+    private boolean physical;
 
     public CoverWirelessFluidDetector(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
     }
 
     public int getThreshold() {
-        return coverData.threshold;
+        return threshold;
     }
 
     public CoverWirelessFluidDetector setThreshold(int threshold) {
-        this.coverData.threshold = threshold;
+        this.threshold = threshold;
         return this;
     }
 
     public boolean isPhysical() {
-        return coverData.physical;
+        return physical;
     }
 
     public CoverWirelessFluidDetector setPhysical(boolean physical) {
-        this.coverData.physical = physical;
+        this.physical = physical;
         return this;
     }
 
     @Override
-    protected FluidTransmitterData initializeData() {
-        return new CoverWirelessFluidDetector.FluidTransmitterData();
+    protected void initializeData() {
+        super.initializeData();
+        this.threshold = 0;
+        this.physical = true;
+    }
+
+    @Override
+    protected void loadFromNbt(NBTBase nbt) {
+        super.loadFromNbt(nbt);
+
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        threshold = tag.getInteger("threshold");
+        if (tag.hasKey("physical")) {
+            physical = tag.getBoolean("physical");
+        } else {
+            physical = false;
+        }
+    }
+
+    @Override
+    protected void readFromPacket(ByteArrayDataInput byteData) {
+        super.readFromPacket(byteData);
+        threshold = byteData.readInt();
+        physical = byteData.readBoolean();
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = (NBTTagCompound) super.saveDataToNbt();
+        tag.setInteger("threshold", threshold);
+        tag.setBoolean("physical", physical);
+
+        return tag;
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        super.writeToByteBuf(byteBuf);
+        byteBuf.writeInt(threshold);
+        byteBuf.writeBoolean(physical);
     }
 
     @Override
@@ -68,12 +106,11 @@ public class CoverWirelessFluidDetector
         if (coverable == null) {
             return;
         }
-        final byte signal = CoverLiquidMeter
-            .computeSignalBasedOnFluid(coverable, coverData.invert, coverData.threshold);
+        final byte signal = CoverLiquidMeter.computeSignalBasedOnFluid(coverable, invert, threshold);
         final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, signal);
+        setSignalAt(getUuid(), getFrequency(), hash, signal);
 
-        if (coverData.physical) {
+        if (physical) {
             coverable.setOutputRedstoneSignal(coverSide, signal);
         } else {
             coverable.setOutputRedstoneSignal(coverSide, (byte) 0);
@@ -88,69 +125,6 @@ public class CoverWirelessFluidDetector
     @Override
     public boolean manipulatesSidedRedstoneOutput() {
         return true;
-    }
-
-    public static class FluidTransmitterData extends CoverAdvancedRedstoneTransmitterBase.TransmitterData {
-
-        /** The special value {@code 0} means threshold check is disabled. */
-        private int threshold;
-        /** Whether the wireless detector cover also sets the tiles sided Redstone output */
-        private boolean physical;
-
-        public FluidTransmitterData(int frequency, UUID uuid, boolean invert, int threshold, boolean physical) {
-            super(frequency, uuid, invert);
-            this.threshold = threshold;
-            this.physical = physical;
-        }
-
-        public FluidTransmitterData() {
-            super();
-            this.threshold = 0;
-            this.physical = true;
-        }
-
-        @Nonnull
-        @Override
-        public ISerializableObject copy() {
-            return new FluidTransmitterData(frequency, uuid, invert, threshold, physical);
-        }
-
-        @Nonnull
-        @Override
-        public NBTBase saveDataToNBT() {
-            NBTTagCompound tag = (NBTTagCompound) super.saveDataToNBT();
-            tag.setInteger("threshold", threshold);
-            tag.setBoolean("physical", physical);
-
-            return tag;
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            super.writeToByteBuf(aBuf);
-            aBuf.writeInt(threshold);
-            aBuf.writeBoolean(physical);
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            super.loadDataFromNBT(aNBT);
-
-            NBTTagCompound tag = (NBTTagCompound) aNBT;
-            threshold = tag.getInteger("threshold");
-            if (tag.hasKey("physical")) {
-                physical = tag.getBoolean("physical");
-            } else {
-                physical = false;
-            }
-        }
-
-        @Override
-        public void readFromPacket(ByteArrayDataInput aBuf) {
-            super.readFromPacket(aBuf);
-            threshold = aBuf.readInt();
-            physical = aBuf.readBoolean();
-        }
     }
 
     // GUI stuff

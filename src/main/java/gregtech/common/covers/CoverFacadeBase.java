@@ -1,9 +1,5 @@
 package gregtech.common.covers;
 
-import java.util.Objects;
-
-import javax.annotation.Nonnull;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -11,6 +7,8 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
@@ -31,7 +29,10 @@ import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
-public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.FacadeData> {
+public abstract class CoverFacadeBase extends CoverBehaviorBase {
+
+    ItemStack mStack;
+    int mFlags;
 
     /**
      * This is the Dummy, if there is a generic Cover without behavior
@@ -41,78 +42,106 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
     }
 
     private ItemStack getStack() {
-        return this.coverData.mStack;
+        return this.mStack;
     }
 
     public int getFlags() {
-        return this.coverData.mFlags;
+        return this.mFlags;
     }
 
     public CoverFacadeBase setFlags(int flags) {
-        this.coverData.mFlags = flags;
+        this.mFlags = flags;
         return this;
     }
 
     @Override
-    protected FacadeData initializeData() {
-        return new CoverFacadeBase.FacadeData();
+    protected void initializeData() {
+        mStack = null;
+        mFlags = 0;
     }
 
     @Override
-    public FacadeData loadFromItemStack(ItemStack cover) {
-        if (Objects.isNull(cover)) return initializeData();
-        return new CoverFacadeBase.FacadeData(GTUtility.copyAmount(1, cover), 0);
+    public void loadFromItemStack(@NotNull ItemStack cover) {
+        mStack = GTUtility.copyAmount(1, cover);
+        mFlags = 0;
+    }
+
+    @Override
+    protected void loadFromNbt(NBTBase nbt) {
+        final NBTTagCompound tag = (NBTTagCompound) nbt;
+        mStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("mStack"));
+        mFlags = tag.getByte("mFlags");
+    }
+
+    @Override
+    protected void readFromPacket(ByteArrayDataInput byteData) {
+        mFlags = byteData.readByte();
+        mStack = ISerializableObject.readItemStackFromGreggyByteBuf(byteData);
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        final NBTTagCompound tag = new NBTTagCompound();
+        if (mStack != null) tag.setTag("mStack", mStack.writeToNBT(new NBTTagCompound()));
+        tag.setByte("mFlags", (byte) mFlags);
+        return tag;
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeByte(mFlags);
+        ByteBufUtils.writeItemStack(byteBuf, mStack);
     }
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        coverData.mFlags = ((coverData.mFlags + 1) & 15);
+        mFlags = ((mFlags + 1) & 15);
         GTUtility.sendChatToPlayer(
             aPlayer,
-            ((coverData.mFlags & 1) != 0 ? GTUtility.trans("128.1", "Redstone ") : "")
-                + ((coverData.mFlags & 2) != 0 ? GTUtility.trans("129.1", "Energy ") : "")
-                + ((coverData.mFlags & 4) != 0 ? GTUtility.trans("130.1", "Fluids ") : "")
-                + ((coverData.mFlags & 8) != 0 ? GTUtility.trans("131.1", "Items ") : ""));
+            ((mFlags & 1) != 0 ? GTUtility.trans("128.1", "Redstone ") : "")
+                + ((mFlags & 2) != 0 ? GTUtility.trans("129.1", "Energy ") : "")
+                + ((mFlags & 4) != 0 ? GTUtility.trans("130.1", "Fluids ") : "")
+                + ((mFlags & 8) != 0 ? GTUtility.trans("131.1", "Items ") : ""));
     }
 
     @Override
     public boolean letsRedstoneGoIn() {
-        return (coverData.mFlags & 1) != 0;
+        return (mFlags & 1) != 0;
     }
 
     @Override
     public boolean letsRedstoneGoOut() {
-        return (coverData.mFlags & 1) != 0;
+        return (mFlags & 1) != 0;
     }
 
     @Override
     public boolean letsEnergyIn() {
-        return (coverData.mFlags & 2) != 0;
+        return (mFlags & 2) != 0;
     }
 
     @Override
     public boolean letsEnergyOut() {
-        return (coverData.mFlags & 2) != 0;
+        return (mFlags & 2) != 0;
     }
 
     @Override
     public boolean letsFluidIn(Fluid fluid) {
-        return (coverData.mFlags & 4) != 0;
+        return (mFlags & 4) != 0;
     }
 
     @Override
     public boolean letsFluidOut(Fluid fluid) {
-        return (coverData.mFlags & 4) != 0;
+        return (mFlags & 4) != 0;
     }
 
     @Override
     public boolean letsItemsIn(int slot) {
-        return (coverData.mFlags & 8) != 0;
+        return (mFlags & 8) != 0;
     }
 
     @Override
     public boolean letsItemsOut(int slot) {
-        return (coverData.mFlags & 8) != 0;
+        return (mFlags & 8) != 0;
     }
 
     @Override
@@ -129,7 +158,7 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
 
     @Override
     public ItemStack asItemStack() {
-        return coverData.mStack;
+        return mStack;
     }
 
     @Override
@@ -139,13 +168,13 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
 
     @Override
     public ITexture getSpecialFaceTexture() {
-        if (GTUtility.isStackInvalid(coverData.mStack)) return Textures.BlockIcons.ERROR_RENDERING[0];
-        Block block = getTargetBlock(coverData.mStack);
+        if (GTUtility.isStackInvalid(mStack)) return Textures.BlockIcons.ERROR_RENDERING[0];
+        Block block = getTargetBlock(mStack);
         if (block == null) return Textures.BlockIcons.ERROR_RENDERING[0];
         // TODO: change this when *someone* made the block render in both pass
         if (block.getRenderBlockPass() != 0) return Textures.BlockIcons.ERROR_RENDERING[0];
         return TextureFactory.builder()
-            .setFromBlock(block, getTargetMeta(coverData.mStack))
+            .setFromBlock(block, getTargetMeta(mStack))
             .useWorldCoord()
             .setFromSide(coverSide)
             .build();
@@ -153,14 +182,14 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
 
     @Override
     public Block getFacadeBlock() {
-        if (GTUtility.isStackInvalid(coverData.mStack)) return null;
-        return getTargetBlock(coverData.mStack);
+        if (GTUtility.isStackInvalid(mStack)) return null;
+        return getTargetBlock(mStack);
     }
 
     @Override
     public int getFacadeMeta() {
-        if (GTUtility.isStackInvalid(coverData.mStack)) return 0;
-        return getTargetMeta(coverData.mStack);
+        if (GTUtility.isStackInvalid(mStack)) return 0;
+        return getTargetMeta(mStack);
     }
 
     protected abstract Block getTargetBlock(ItemStack aFacadeStack);
@@ -180,8 +209,8 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
                 coverable.getXCoord(),
                 coverable.getYCoord(),
                 coverable.getZCoord(),
-                getTargetBlock(coverData.mStack),
-                getTargetMeta(coverData.mStack));
+                getTargetBlock(mStack),
+                getTargetMeta(mStack));
     }
 
     @Override
@@ -193,15 +222,15 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
                 // since we do not allow multiple type of facade per block, this check would be enough.
                 if (coverable.getCoverAtSide(iSide) instanceof CoverFacadeBase) return;
             }
-            if (coverData.mStack != null)
+            if (mStack != null)
                 // mStack == null -> cover removed before data reach client
                 GTRenderingWorld.getInstance()
                     .unregister(
                         coverable.getXCoord(),
                         coverable.getYCoord(),
                         coverable.getZCoord(),
-                        getTargetBlock(coverData.mStack),
-                        getTargetMeta(coverData.mStack));
+                        getTargetBlock(mStack),
+                        getTargetMeta(mStack));
         }
     }
 
@@ -211,53 +240,6 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
         ICoverable coverable = coveredTile.get();
         if (coverable != null) coverable.issueCoverUpdate(coverSide);
         return false;
-    }
-
-    public static class FacadeData implements ISerializableObject {
-
-        ItemStack mStack;
-        int mFlags;
-
-        public FacadeData() {}
-
-        public FacadeData(ItemStack mStack, int mFlags) {
-            this.mStack = mStack;
-            this.mFlags = mFlags;
-        }
-
-        @Nonnull
-        @Override
-        public ISerializableObject copy() {
-            return new FacadeData(mStack, mFlags);
-        }
-
-        @Nonnull
-        @Override
-        public NBTBase saveDataToNBT() {
-            final NBTTagCompound tag = new NBTTagCompound();
-            if (mStack != null) tag.setTag("mStack", mStack.writeToNBT(new NBTTagCompound()));
-            tag.setByte("mFlags", (byte) mFlags);
-            return tag;
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeByte(mFlags);
-            ByteBufUtils.writeItemStack(aBuf, mStack);
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            final NBTTagCompound tag = (NBTTagCompound) aNBT;
-            mStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("mStack"));
-            mFlags = tag.getByte("mFlags");
-        }
-
-        @Override
-        public void readFromPacket(ByteArrayDataInput aBuf) {
-            mFlags = aBuf.readByte();
-            mStack = ISerializableObject.readItemStackFromGreggyByteBuf(aBuf);
-        }
     }
 
     // GUI stuff
