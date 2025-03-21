@@ -25,6 +25,7 @@ public class CoverBehavior extends CoverBehaviorBase {
 
     protected CoverBehavior(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
+        initializeData(context.getCoverInitializer());
     }
 
     public int getVariable() {

@@ -47,6 +47,7 @@ public class CoverFluidfilter extends CoverBehaviorBase {
 
     public CoverFluidfilter(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
+        initializeData(context.getCoverInitializer());
     }
 
     public int getFluidId() {

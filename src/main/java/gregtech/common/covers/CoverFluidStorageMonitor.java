@@ -72,6 +72,7 @@ public class CoverFluidStorageMonitor extends CoverBehaviorBase {
 
     public CoverFluidStorageMonitor(CoverContext context) {
         super(context, null);
+        initializeData(context.getCoverInitializer());
     }
 
     public CoverFluidStorageMonitor setSide(ForgeDirection coverSide) {

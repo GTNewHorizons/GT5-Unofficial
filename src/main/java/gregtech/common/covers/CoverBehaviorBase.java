@@ -47,13 +47,11 @@ public abstract class CoverBehaviorBase extends Cover {
 
     public CoverBehaviorBase(@NotNull CoverContext context, ITexture coverFGTexture) {
         super(context);
-        initializeData(context.getCoverInitializer());
         this.coverFGTexture = coverFGTexture;
-        // Calling after data was initialized since overrides may depend on data.
         setTickRateAddition(initializeTickRateAddition(context.getCoverInitializer()));
     }
 
-    private void initializeData(Object coverData) {
+    protected void initializeData(Object coverData) {
         if (coverData instanceof ItemStack coverStack) {
             loadFromItemStack(coverStack);
         } else if (coverData instanceof NBTTagCompound nbt && nbt.hasKey(NBT_DATA)) {
@@ -91,8 +89,8 @@ public abstract class CoverBehaviorBase extends Cover {
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-        nbt.setTag(NBT_DATA, saveDataToNbt());
         nbt.setInteger(NBT_TICK_RATE_ADDITION, tickRateAddition);
+        nbt.setTag(NBT_DATA, saveDataToNbt());
         return nbt;
     }
 
@@ -100,8 +98,8 @@ public abstract class CoverBehaviorBase extends Cover {
 
     @Override
     public void writeToByteBuf(ByteBuf byteBuf) {
-        writeDataToByteBuf(byteBuf);
         byteBuf.writeInt(tickRateAddition);
+        writeDataToByteBuf(byteBuf);
     }
 
     protected abstract void writeDataToByteBuf(ByteBuf byteBuf);

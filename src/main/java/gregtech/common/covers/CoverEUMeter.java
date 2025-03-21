@@ -40,6 +40,7 @@ public class CoverEUMeter extends CoverBehaviorBase {
 
     public CoverEUMeter(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
+        initializeData(context.getCoverInitializer());
     }
 
     public EnergyType getType() {

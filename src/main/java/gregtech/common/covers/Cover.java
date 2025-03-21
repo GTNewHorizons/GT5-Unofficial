@@ -346,7 +346,7 @@ public abstract class Cover {
         setTickRateAddition(tickRateAddition - (getTickRate() % stepAmount));
     }
 
-    protected void setTickRateAddition(int newValue) {
+    protected final void setTickRateAddition(int newValue) {
         tickRateAddition = Math.min(MAX_TICK_RATE_ADDITION, Math.max(0, newValue));
     }
 

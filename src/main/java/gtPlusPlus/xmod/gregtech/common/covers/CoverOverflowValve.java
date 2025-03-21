@@ -40,6 +40,7 @@ public class CoverOverflowValve extends CoverBehaviorBase {
     public CoverOverflowValve(CoverContext context, int maxOverflowPoint) {
         super(context, null);
         this.maxOverflowPoint = maxOverflowPoint;
+        initializeData(context.getCoverInitializer());
     }
 
     public int getMinOverflowPoint() {

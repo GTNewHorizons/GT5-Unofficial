@@ -42,6 +42,7 @@ public class CoverItemFilter extends CoverBehaviorBase {
     public CoverItemFilter(CoverContext context, boolean isExport, ITexture coverTexture) {
         super(context, coverTexture);
         this.mExport = isExport;
+        initializeData(context.getCoverInitializer());
     }
 
     public boolean isWhitelist() {

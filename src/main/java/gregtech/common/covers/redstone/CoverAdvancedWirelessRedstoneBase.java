@@ -38,6 +38,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends CoverBehaviorBas
 
     public CoverAdvancedWirelessRedstoneBase(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
+        initializeData(context.getCoverInitializer());
     }
 
     public int getFrequency() {

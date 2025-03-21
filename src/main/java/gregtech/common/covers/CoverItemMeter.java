@@ -46,6 +46,7 @@ public class CoverItemMeter extends CoverBehaviorBase {
 
     public CoverItemMeter(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
+        initializeData(context.getCoverInitializer());
     }
 
     public int getSlot() {

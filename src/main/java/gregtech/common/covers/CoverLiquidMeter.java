@@ -43,6 +43,7 @@ public class CoverLiquidMeter extends CoverBehaviorBase {
 
     public CoverLiquidMeter(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
+        initializeData(context.getCoverInitializer());
     }
 
     public boolean isInverted() {

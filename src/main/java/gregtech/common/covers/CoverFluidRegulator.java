@@ -63,6 +63,7 @@ public class CoverFluidRegulator extends CoverBehaviorBase {
     public CoverFluidRegulator(CoverContext context, int aTransferRate, ITexture coverTexture) {
         super(context, coverTexture);
         this.mTransferRate = aTransferRate;
+        initializeData(context.getCoverInitializer());
     }
 
     public int getTransferRate() {

@@ -31,6 +31,7 @@ public class CoverFluidLimiter extends CoverBehaviorBase {
 
     public CoverFluidLimiter(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
+        initializeData(context.getCoverInitializer());
     }
 
     public float getThreshold() {

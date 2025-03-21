@@ -39,6 +39,7 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase {
      */
     public CoverFacadeBase(CoverContext context) {
         super(context, null);
+        initializeData(context.getCoverInitializer());
     }
 
     private ItemStack getStack() {
