@@ -30,7 +30,7 @@ import gregtech.common.gui.modularui.widget.CoverDataFollowerSlotWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
-public class CoverFluidfilter extends CoverBehaviorBase {
+public class CoverFluidfilter extends Cover {
 
     // Uses the lower 3 bits of the cover variable, so we have 8 options to work with (0-7)
     private final int FILTER_INPUT_DENY_OUTPUT = 0; // 000
@@ -238,7 +238,7 @@ public class CoverFluidfilter extends CoverBehaviorBase {
         return new FluidFilterUIFactory(buildContext).createWindow();
     }
 
-    private static class FluidFilterUIFactory extends UIFactory<CoverFluidfilter> {
+    private static class FluidFilterUIFactory extends CoverUiFactory<CoverFluidfilter> {
 
         private static final int startX = 10;
         private static final int startY = 25;

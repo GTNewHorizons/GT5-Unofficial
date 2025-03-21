@@ -27,7 +27,7 @@ import gregtech.api.util.GTByteBuffer;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import io.netty.buffer.ByteBuf;
 
-public class CoverChest extends CoverBehaviorBase {
+public class CoverChest extends Cover {
 
     private final int slots;
     private final int stackSizeLimit = 1;
@@ -147,7 +147,7 @@ public class CoverChest extends CoverBehaviorBase {
         return new ChestUIFactory(buildContext).createWindow();
     }
 
-    public static class ChestUIFactory extends UIFactory<CoverChest> {
+    public static class ChestUIFactory extends CoverUiFactory<CoverChest> {
 
         private static final int spaceX = 18;
         private static final int spaceY = 18;

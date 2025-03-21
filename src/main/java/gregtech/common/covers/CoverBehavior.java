@@ -15,7 +15,7 @@ import io.netty.buffer.ByteBuf;
 /**
  * For Covers with a special behavior. Has fixed storage format of 4 byte. Not very convenient...
  */
-public class CoverBehavior extends CoverBehaviorBase {
+public class CoverBehavior extends Cover {
 
     protected int coverData;
 
@@ -65,7 +65,7 @@ public class CoverBehavior extends CoverBehaviorBase {
         return true;
     }
 
-    protected static abstract class CoverBehaviorUIFactory extends UIFactory<CoverBehavior> {
+    protected static abstract class CoverBehaviorUIFactory extends CoverUiFactory<CoverBehavior> {
 
         protected CoverBehaviorUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);

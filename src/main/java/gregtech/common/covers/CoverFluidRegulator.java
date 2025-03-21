@@ -46,7 +46,7 @@ import io.netty.buffer.ByteBuf;
  * speed is negative. This way, `0` means 1tick interval, while `-1` means 1 tick interval as well, preserving the
  * legacy behavior.
  */
-public class CoverFluidRegulator extends CoverBehaviorBase {
+public class CoverFluidRegulator extends Cover {
 
     private static final int SPEED_LENGTH = 20;
     private static final int TICK_RATE_LENGTH = Integer.SIZE - SPEED_LENGTH - 1;
@@ -268,7 +268,7 @@ public class CoverFluidRegulator extends CoverBehaviorBase {
         return new FluidRegulatorUIFactory(buildContext).createWindow();
     }
 
-    private static class FluidRegulatorUIFactory extends UIFactory<CoverFluidRegulator> {
+    private static class FluidRegulatorUIFactory extends CoverUiFactory<CoverFluidRegulator> {
 
         private static final int startX = 10;
         private static final int startY = 25;

@@ -35,7 +35,7 @@ import io.netty.buffer.ByteBuf;
  * This cover will retrieve information, preferentially, using {@link IMetricsExporter#reportMetrics()}. Absent this
  * method, it will resort to {@link BaseMetaTileEntity#getInfoData()} instead.
  */
-public class CoverMetricsTransmitter extends CoverBehaviorBase {
+public class CoverMetricsTransmitter extends Cover {
 
     @SuppressWarnings("SpellCheckingInspection")
     public static final String FREQUENCY_MSB_KEY = "gt.metricscover.freq_msb";

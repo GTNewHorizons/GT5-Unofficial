@@ -25,7 +25,7 @@ import io.netty.buffer.ByteBuf;
 /***
  * @author TrainerSnow#5086
  */
-public class CoverFluidLimiter extends CoverBehaviorBase {
+public class CoverFluidLimiter extends Cover {
 
     private float threshold;
 
@@ -141,7 +141,7 @@ public class CoverFluidLimiter extends CoverBehaviorBase {
         return new FluidLimiterUIFactory(buildContext).createWindow();
     }
 
-    private static class FluidLimiterUIFactory extends UIFactory<CoverFluidLimiter> {
+    private static class FluidLimiterUIFactory extends CoverUiFactory<CoverFluidLimiter> {
 
         private static final int startX = 10;
         private static final int startY = 25;

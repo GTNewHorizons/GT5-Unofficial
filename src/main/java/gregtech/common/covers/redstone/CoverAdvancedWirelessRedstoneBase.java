@@ -21,13 +21,14 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.CoverBehaviorBase;
+import gregtech.common.covers.Cover;
+import gregtech.common.covers.CoverUiFactory;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
-public abstract class CoverAdvancedWirelessRedstoneBase extends CoverBehaviorBase {
+public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
 
     protected int frequency;
 
@@ -230,7 +231,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends CoverBehaviorBas
     }
 
     protected static abstract class AdvancedWirelessRedstoneBaseUIFactory<C extends CoverAdvancedWirelessRedstoneBase>
-        extends UIFactory<C> {
+        extends CoverUiFactory<C> {
 
         protected static final int startX = 10;
         protected static final int startY = 25;

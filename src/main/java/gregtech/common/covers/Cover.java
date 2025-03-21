@@ -3,10 +3,13 @@ package gregtech.common.covers;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -15,6 +18,7 @@ import net.minecraftforge.fluids.Fluid;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
@@ -29,33 +33,102 @@ import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
+import gregtech.common.text.ClientTickRateFormatter;
 import io.netty.buffer.ByteBuf;
 
+/**
+ * For Covers with a special behavior.
+ *
+ * @author glease
+ */
 public abstract class Cover {
 
     // One minute
     public static final int MAX_TICK_RATE_ADDITION = 1200;
-
+    private static final String NBT_DATA = "d";
+    private static final String NBT_TICK_RATE_ADDITION = "tra";
     protected final ForgeDirection coverSide;
     protected final int coverID;
     protected final WeakReference<ICoverable> coveredTile;
 
+    private final ITexture coverFGTexture;
     protected boolean needsUpdate = false;
     protected int tickRateAddition = 0;
 
-    public Cover(CoverContext context) {
-        coverSide = context.getSide();
-        coverID = context.getCoverId();
-        coveredTile = new WeakReference<>(context.getCoverable());
+    public Cover(@NotNull CoverContext context, ITexture coverFGTexture) {
+        this.coverSide = context.getSide();
+        this.coverID = context.getCoverId();
+        this.coveredTile = new WeakReference<>(context.getCoverable());
+        this.coverFGTexture = coverFGTexture;
+        setTickRateAddition(initializeTickRateAddition(context.getCoverInitializer()));
     }
+
+    protected void initializeData(Object coverData) {
+        if (coverData instanceof ItemStack coverStack) {
+            loadFromItemStack(coverStack);
+        } else if (coverData instanceof NBTTagCompound nbt && nbt.hasKey(NBT_DATA)) {
+            loadFromNbt(nbt.getTag(NBT_DATA));
+        } else if (coverData instanceof ByteArrayDataInput byteData) {
+            readFromPacket(byteData);
+        } else {
+            initializeData();
+        }
+    }
+
+    private int initializeTickRateAddition(Object coverData) {
+        if (coverData instanceof NBTTagCompound nbt && nbt.hasKey(NBT_TICK_RATE_ADDITION)) {
+            return nbt.getInteger(NBT_TICK_RATE_ADDITION);
+        } else if (coverData instanceof ByteArrayDataInput byteData) {
+            return byteData.readInt();
+        }
+        return getDefaultTickRateAddition();
+    }
+
+    private int getDefaultTickRateAddition() {
+        if (!allowsTickRateAddition()) return 0;
+        return getDefaultTickRate() - this.getMinimumTickRate();
+    }
+
+    protected abstract void initializeData();
+
+    protected void loadFromItemStack(@NotNull ItemStack cover) {
+        initializeData();
+    }
+
+    protected abstract void loadFromNbt(NBTBase nbt);
+
+    protected abstract void readFromPacket(ByteArrayDataInput byteData);
+
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        nbt.setInteger(NBT_TICK_RATE_ADDITION, tickRateAddition);
+        nbt.setTag(NBT_DATA, saveDataToNbt());
+        return nbt;
+    }
+
+    protected abstract @Nonnull NBTBase saveDataToNbt();
+
+    public void writeToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeInt(tickRateAddition);
+        writeDataToByteBuf(byteBuf);
+    }
+
+    protected abstract void writeDataToByteBuf(ByteBuf byteBuf);
+
+    // region facade
+
+    public ITexture getOverlayTexture() {
+        return coverFGTexture;
+    }
+
+    public void doCoverThings(byte aRedstone, long aTickTimer) {}
+
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {}
+
+    // endregion
 
     public boolean isValid() {
         return coverID != 0 && coverSide != ForgeDirection.UNKNOWN;
     }
-
-    public abstract NBTTagCompound writeToNBT(NBTTagCompound aNBT);
-
-    public abstract void writeToByteBuf(ByteBuf aOut);
 
     /**
      * This cover id should only be used to get the {@link CoverRegistration} from the {@link CoverRegistry}, or to
@@ -119,15 +192,6 @@ public abstract class Cover {
     public void onCoverRemoval() {}
 
     /**
-     * Get the special foreground cover texture associated with this cover. Return null if one should use the texture
-     * passed to {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverFactory, CoverPlacer)} or its
-     * overloads.
-     * <br>
-     * This texture will be overlaid on top of the block's base texture for that face.
-     */
-    public abstract ITexture getOverlayTexture();
-
-    /**
      * Get the special cover texture associated with this cover. Return null if one should use the texture passed to
      * {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverFactory, CoverPlacer)} or its overloads.
      * <br>
@@ -188,11 +252,6 @@ public abstract class Cover {
     }
 
     /**
-     * Called by updateEntity inside the covered TileEntity.
-     */
-    public abstract void doCoverThings(byte aRedstone, long aTickTimer);
-
-    /**
      * Called when Base TE being unloaded.
      */
     public void onCoverUnload() {}
@@ -220,6 +279,26 @@ public abstract class Cover {
         return "";
     }
 
+    // region UI stuff
+
+    protected ModularWindow createWindow(CoverUIBuildContext buildContext) {
+        return new CoverUiFactory<>(buildContext).createWindow();
+    }
+
+    public ModularUIContainer createCoverContainer(EntityPlayer player) {
+        ICoverable tile = this.coveredTile.get();
+        if (tile == null) return null;
+        final CoverUIBuildContext buildContext = new CoverUIBuildContext(
+            player,
+            this.coverID,
+            this.coverSide,
+            tile,
+            false);
+        final ModularWindow window = this.createWindow(buildContext);
+        if (window == null) return null;
+        return new ModularUIContainer(new ModularUIContext(buildContext, tile::markDirty), window);
+    }
+
     public ModularWindow createCoverWindow(EntityPlayer player) {
         final CoverUIBuildContext buildContext = new CoverUIBuildContext(
             player,
@@ -229,8 +308,6 @@ public abstract class Cover {
             true);
         return createWindow(buildContext);
     }
-
-    protected abstract ModularWindow createWindow(CoverUIBuildContext buildContext);
 
     /**
      * If it lets you rightclick the Machine normally
@@ -243,6 +320,8 @@ public abstract class Cover {
     public boolean hasCoverGUI() {
         return false;
     }
+
+    // endregion
 
     /**
      * If it lets Energy into the Block
@@ -318,13 +397,6 @@ public abstract class Cover {
         return false;
     }
 
-    /**
-     * Called when someone rightclicks this Cover with a Screwdriver. Doesn't call @onCoverRightclick in this Case.
-     * <p/>
-     * return the new Value of the Cover Variable
-     */
-    public abstract void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ);
-
     public void onCoverJackhammer(EntityPlayer aPlayer) {
         adjustTickRateMultiplier(aPlayer.isSneaking());
 
@@ -356,7 +428,7 @@ public abstract class Cover {
      * @return An instance of tick rate components
      */
     @NotNull
-    public Cover.ClientTickRateFormatter getCurrentTickRateFormatted() {
+    public ClientTickRateFormatter getCurrentTickRateFormatted() {
         return new ClientTickRateFormatter(getTickRate());
     }
 
@@ -407,48 +479,5 @@ public abstract class Cover {
         return true;
     }
 
-    public static final class ClientTickRateFormatter {
-
-        /** A translation key for the type of time units being used (e.g.: "tick", "seconds".) */
-        private final String unitI18NKey;
-        /** A number representing a quantity of time. */
-        private final int tickRate;
-
-        /**
-         * Converts a given tick rate into a human-friendly format.
-         *
-         * @param tickRate The rate at which something ticks, in ticks per operation.
-         */
-        public ClientTickRateFormatter(final int tickRate) {
-            if (tickRate < 20) {
-                this.unitI18NKey = tickRate == 1 ? "gt.time.tick.singular" : "gt.time.tick.plural";
-                this.tickRate = tickRate;
-            } else {
-                this.unitI18NKey = tickRate == 20 ? "gt.time.second.singular" : "gt.time.second.plural";
-                this.tickRate = tickRate / 20;
-            }
-        }
-
-        public String toString() {
-            return StatCollector.translateToLocalFormatted(
-                "gt.cover.info.format.tick_rate",
-                tickRate,
-                StatCollector.translateToLocal(unitI18NKey));
-        }
-    }
-
-    public ModularUIContainer createCoverContainer(EntityPlayer player) {
-        ICoverable tile = this.coveredTile.get();
-        if (tile == null) return null;
-        final CoverUIBuildContext buildContext = new CoverUIBuildContext(
-            player,
-            this.coverID,
-            this.coverSide,
-            tile,
-            false);
-        final ModularWindow window = this.createWindow(buildContext);
-        if (window == null) return null;
-        return new ModularUIContainer(new ModularUIContext(buildContext, tile::markDirty), window);
-    }
-
+    // endregion
 }

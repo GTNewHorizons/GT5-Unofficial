@@ -29,7 +29,7 @@ import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
-public class CoverEUMeter extends CoverBehaviorBase {
+public class CoverEUMeter extends Cover {
 
     private EnergyType type;
     private boolean inverted;
@@ -239,7 +239,7 @@ public class CoverEUMeter extends CoverBehaviorBase {
         return new EUMeterUIFactory(buildContext).createWindow();
     }
 
-    private static class EUMeterUIFactory extends UIFactory<CoverEUMeter> {
+    private static class EUMeterUIFactory extends CoverUiFactory<CoverEUMeter> {
 
         private static final int startX = 10;
         private static final int startY = 25;

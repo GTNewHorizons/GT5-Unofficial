@@ -22,13 +22,13 @@ import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
-import gregtech.common.covers.CoverBehaviorBase;
+import gregtech.common.covers.CoverUiFactory;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
-public class CoverOverflowValve extends CoverBehaviorBase {
+public class CoverOverflowValve extends Cover {
 
     private final int minOverflowPoint = 0;
     private final int maxOverflowPoint;
@@ -256,7 +256,7 @@ public class CoverOverflowValve extends CoverBehaviorBase {
         return new OverflowUIFactory(buildContext).createWindow();
     }
 
-    private static final class OverflowUIFactory extends UIFactory<CoverOverflowValve> {
+    private static final class OverflowUIFactory extends CoverUiFactory<CoverOverflowValve> {
 
         // width and height of text input for "Overflow Point" and "Voiding Rate"
         private static final int width = 71;

@@ -31,7 +31,7 @@ import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import io.netty.buffer.ByteBuf;
 
-public class CoverItemMeter extends CoverBehaviorBase {
+public class CoverItemMeter extends Cover {
 
     // Legacy data format
     private static final int SLOT_MASK = 0x3FFFFFFF; // 0 = all, 1 = 0 ...
@@ -232,7 +232,7 @@ public class CoverItemMeter extends CoverBehaviorBase {
         return new ItemMeterUIFactory(buildContext).createWindow();
     }
 
-    private static class ItemMeterUIFactory extends UIFactory<CoverItemMeter> {
+    private static class ItemMeterUIFactory extends CoverUiFactory<CoverItemMeter> {
 
         private static final int startX = 10;
         private static final int startY = 25;

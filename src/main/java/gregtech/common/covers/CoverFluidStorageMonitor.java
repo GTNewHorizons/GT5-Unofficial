@@ -53,9 +53,9 @@ import io.netty.buffer.ByteBuf;
 
 /**
  * TODO: Implement overlay rendering only with
- * {@link CoverBehaviorBase#getOverlayTexture()}
+ * {@link Cover#getOverlayTexture()}
  */
-public class CoverFluidStorageMonitor extends CoverBehaviorBase {
+public class CoverFluidStorageMonitor extends Cover {
 
     private static final IIconContainer[] icons = new IIconContainer[] { OVERLAY_FLUID_STORAGE_MONITOR0,
         OVERLAY_FLUID_STORAGE_MONITOR1, OVERLAY_FLUID_STORAGE_MONITOR2, OVERLAY_FLUID_STORAGE_MONITOR3,

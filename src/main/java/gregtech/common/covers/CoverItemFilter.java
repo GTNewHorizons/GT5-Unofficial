@@ -33,7 +33,7 @@ import gregtech.common.gui.modularui.widget.CoverDataFollowerSlotWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
-public class CoverItemFilter extends CoverBehaviorBase {
+public class CoverItemFilter extends Cover {
 
     private final boolean mExport;
     private boolean mWhitelist;
@@ -203,7 +203,7 @@ public class CoverItemFilter extends CoverBehaviorBase {
         return new ItemFilterUIFactory(buildContext).createWindow();
     }
 
-    private static class ItemFilterUIFactory extends UIFactory<CoverItemFilter> {
+    private static class ItemFilterUIFactory extends CoverUiFactory<CoverItemFilter> {
 
         private static final int startX = 10;
         private static final int startY = 25;

@@ -29,7 +29,7 @@ import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
-public abstract class CoverFacadeBase extends CoverBehaviorBase {
+public abstract class CoverFacadeBase extends Cover {
 
     ItemStack mStack;
     int mFlags;
@@ -255,7 +255,7 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase {
         return new FacadeBaseUIFactory(buildContext).createWindow();
     }
 
-    private static class FacadeBaseUIFactory extends UIFactory<CoverFacadeBase> {
+    private static class FacadeBaseUIFactory extends CoverUiFactory<CoverFacadeBase> {
 
         private static final int startX = 10;
         private static final int startY = 25;

@@ -31,9 +31,9 @@ import io.netty.buffer.ByteBuf;
 
 /**
  * TODO: Implement overlay rendering only with
- * {@link CoverBehaviorBase#getOverlayTexture()}
+ * {@link Cover#getOverlayTexture()}
  */
-public class CoverLiquidMeter extends CoverBehaviorBase {
+public class CoverLiquidMeter extends Cover {
 
     private boolean inverted;
     /**
@@ -201,7 +201,7 @@ public class CoverLiquidMeter extends CoverBehaviorBase {
         return new LiquidMeterUIFactory(buildContext).createWindow();
     }
 
-    private static class LiquidMeterUIFactory extends UIFactory<CoverLiquidMeter> {
+    private static class LiquidMeterUIFactory extends CoverUiFactory<CoverLiquidMeter> {
 
         private static final int startX = 10;
         private static final int startY = 25;
