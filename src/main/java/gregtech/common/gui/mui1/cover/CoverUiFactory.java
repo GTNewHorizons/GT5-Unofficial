@@ -1,4 +1,4 @@
-package gregtech.common.covers;
+package gregtech.common.gui.mui1.cover;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -24,6 +24,7 @@ import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.gui.widgets.CoverTickRateButton;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.Cover;
 
 /**
  * Creates {@link ModularWindow} for this cover. This is separated from base
@@ -34,7 +35,7 @@ public class CoverUiFactory<C> {
 
     private final CoverUIBuildContext uiBuildContext;
 
-    protected CoverUiFactory(CoverUIBuildContext buildContext) {
+    public CoverUiFactory(CoverUIBuildContext buildContext) {
         this.uiBuildContext = buildContext;
     }
 

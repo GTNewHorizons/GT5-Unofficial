@@ -4,23 +4,20 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
+import gregtech.common.gui.mui1.cover.RedstoneWirelessBaseUIFactory;
 
 public abstract class CoverRedstoneWirelessBase extends CoverLegacyData {
 
-    private static final int MAX_CHANNEL = 65535;
+    public static final int MAX_CHANNEL = 65535;
     private static final int PRIVATE_MASK = 0xFFFE0000;
-    private static final int PUBLIC_MASK = 0x0000FFFF;
-    private static final int CHECKBOX_MASK = 0x00010000;
+    public static final int PUBLIC_MASK = 0x0000FFFF;
+    public static final int CHECKBOX_MASK = 0x00010000;
 
     public CoverRedstoneWirelessBase(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
@@ -124,60 +121,4 @@ public abstract class CoverRedstoneWirelessBase extends CoverLegacyData {
         return new RedstoneWirelessBaseUIFactory(buildContext).createWindow();
     }
 
-    private static class RedstoneWirelessBaseUIFactory extends CoverLegacyDataUIFactory {
-
-        private static final int startX = 10;
-        private static final int startY = 25;
-        private static final int spaceX = 18;
-        private static final int spaceY = 18;
-
-        public RedstoneWirelessBaseUIFactory(CoverUIBuildContext buildContext) {
-            super(buildContext);
-        }
-
-        @Override
-        protected int getGUIWidth() {
-            return 250;
-        }
-
-        @SuppressWarnings("PointlessArithmeticExpression")
-        @Override
-        protected void addUIWidgets(ModularWindow.Builder builder) {
-            builder
-                .widget(
-                    new CoverDataControllerWidget<>(this::getCover, getUIBuildContext())
-                        .addFollower(
-                            new CoverDataFollowerNumericWidget<>(),
-                            coverData -> (double) getFlagFrequency(coverData.getVariable()),
-                            (coverData, state) -> coverData
-                                .setVariable(state.intValue() | getFlagCheckbox(coverData.getVariable())),
-                            widget -> widget.setBounds(0, MAX_CHANNEL)
-                                .setScrollValues(1, 1000, 10)
-                                .setFocusOnGuiOpen(true)
-                                .setPos(spaceX * 0, spaceY * 0 + 2)
-                                .setSize(spaceX * 4 - 3, 12))
-                        .addFollower(
-                            CoverDataFollowerToggleButtonWidget.ofCheck(),
-                            coverData -> getFlagCheckbox(coverData.getVariable()) > 0,
-                            (coverData, state) -> coverData
-                                .setVariable(getFlagFrequency(coverData.getVariable()) | (state ? CHECKBOX_MASK : 0)),
-                            widget -> widget.setPos(spaceX * 0, spaceY * 2))
-                        .setPos(startX, startY))
-                .widget(
-                    new TextWidget(GTUtility.trans("246", "Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0))
-                .widget(
-                    new TextWidget(GTUtility.trans("602", "Use Private Frequency"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 1, startY + spaceY * 2 + 4));
-        }
-
-        private int getFlagFrequency(int coverVariable) {
-            return coverVariable & PUBLIC_MASK;
-        }
-
-        private int getFlagCheckbox(int coverVariable) {
-            return coverVariable & CHECKBOX_MASK;
-        }
-    }
 }

@@ -1,15 +1,12 @@
 package gregtech.common.covers.redstone;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.common.covers.Cover;
-import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
+import gregtech.common.gui.mui1.cover.CoverAdvancedRedstoneTransmitterExternalUIFactory;
 
 public class CoverAdvancedRedstoneTransmitterExternal extends CoverAdvancedRedstoneTransmitterBase {
 
@@ -46,27 +43,6 @@ public class CoverAdvancedRedstoneTransmitterExternal extends CoverAdvancedRedst
     @Override
     public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new CoverAdvancedRedstoneTransmitterExternalUIFactory(buildContext).createWindow();
-    }
-
-    protected static class CoverAdvancedRedstoneTransmitterExternalUIFactory
-        extends AdvancedRedstoneTransmitterBaseUIFactory<CoverAdvancedRedstoneTransmitterExternal> {
-
-        public CoverAdvancedRedstoneTransmitterExternalUIFactory(CoverUIBuildContext buildContext) {
-            super(buildContext);
-        }
-
-        @Override
-        protected @NotNull CoverDataControllerWidget<CoverAdvancedRedstoneTransmitterExternal> getDataController() {
-            return new CoverDataControllerWidget<>(this::getCover, getUIBuildContext());
-        }
-
-        @Override
-        protected CoverAdvancedRedstoneTransmitterExternal adaptCover(Cover cover) {
-            if (cover instanceof CoverAdvancedRedstoneTransmitterExternal adapterCover) {
-                return adapterCover;
-            }
-            return null;
-        }
     }
 
 }

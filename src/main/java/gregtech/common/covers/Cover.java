@@ -33,6 +33,7 @@ import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.mui1.cover.CoverUiFactory;
 import gregtech.common.text.ClientTickRateFormatter;
 import io.netty.buffer.ByteBuf;
 
@@ -439,7 +440,7 @@ public class Cover {
      * <p/>
      * 0 = No Ticks! Yes, 0 is Default, you have to override this
      */
-    protected int getMinimumTickRate() {
+    public int getMinimumTickRate() {
         return 0;
     }
 

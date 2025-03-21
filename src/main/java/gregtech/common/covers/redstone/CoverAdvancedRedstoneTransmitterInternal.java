@@ -1,15 +1,12 @@
 package gregtech.common.covers.redstone;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.common.covers.Cover;
-import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
+import gregtech.common.gui.mui1.cover.CoverAdvancedRedstoneTransmitterInternalUIFactory;
 
 public class CoverAdvancedRedstoneTransmitterInternal extends CoverAdvancedRedstoneTransmitterBase {
 
@@ -48,24 +45,4 @@ public class CoverAdvancedRedstoneTransmitterInternal extends CoverAdvancedRedst
         return new CoverAdvancedRedstoneTransmitterInternalUIFactory(buildContext).createWindow();
     }
 
-    protected static class CoverAdvancedRedstoneTransmitterInternalUIFactory
-        extends AdvancedRedstoneTransmitterBaseUIFactory<CoverAdvancedRedstoneTransmitterInternal> {
-
-        public CoverAdvancedRedstoneTransmitterInternalUIFactory(CoverUIBuildContext buildContext) {
-            super(buildContext);
-        }
-
-        @Override
-        protected @NotNull CoverDataControllerWidget<CoverAdvancedRedstoneTransmitterInternal> getDataController() {
-            return new CoverDataControllerWidget<>(this::getCover, getUIBuildContext());
-        }
-
-        @Override
-        protected CoverAdvancedRedstoneTransmitterInternal adaptCover(Cover cover) {
-            if (cover instanceof CoverAdvancedRedstoneTransmitterInternal adapterCover) {
-                return adapterCover;
-            }
-            return null;
-        }
-    }
 }

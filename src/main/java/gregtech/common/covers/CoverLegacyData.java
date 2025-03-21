@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import com.google.common.io.ByteArrayDataInput;
 
 import gregtech.api.covers.CoverContext;
-import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import io.netty.buffer.ByteBuf;
 
@@ -70,17 +69,4 @@ public class CoverLegacyData extends Cover {
         return true;
     }
 
-    protected static abstract class CoverLegacyDataUIFactory extends CoverUiFactory<CoverLegacyData> {
-
-        protected CoverLegacyDataUIFactory(CoverUIBuildContext buildContext) {
-            super(buildContext);
-        }
-
-        public CoverLegacyData adaptCover(Cover cover) {
-            if (cover instanceof CoverLegacyData adapterCover) {
-                return adapterCover;
-            }
-            return null;
-        }
-    }
 }
