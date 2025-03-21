@@ -304,6 +304,11 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
+    public boolean pushOutputInventory() {
+        return false;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         checkItemLock();
 
@@ -312,6 +317,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             if (tickCounter > (lastOutputTick + 40)) flushCachedStack();
             if (tickCounter % 20 == 0) getBaseMetaTileEntity().setActive(isActive());
         }
+        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     @Override
