@@ -30,29 +30,10 @@ import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
-/**
- * Cover variable
- *
- * <pre>
- * 1111 1111 1111 1111 1111 1111 1111 1111
- *  |- interval-| |- flow rate 2 compl. -|
- * ^ export?
- * </pre>
- *
- * Concat export and flow rate 2 compl. together to get actual flow rate. A positive actual flow rate is export, and
- * vice versa.
- * <p>
- * Interval is an unsigned 11 bit integer minus 1, so the range is 1~2048. The stored bits will be flipped bitwise if
- * speed is negative. This way, `0` means 1tick interval, while `-1` means 1 tick interval as well, preserving the
- * legacy behavior.
- */
 public class CoverFluidRegulator extends Cover {
 
-    private static final int SPEED_LENGTH = 20;
-    private static final int TICK_RATE_LENGTH = Integer.SIZE - SPEED_LENGTH - 1;
     private static final int TICK_RATE_MIN = 1;
-    private static final int TICK_RATE_MAX = (-1 >>> (Integer.SIZE - TICK_RATE_LENGTH)) + TICK_RATE_MIN;
-    private static final int TICK_RATE_BITMASK = (TICK_RATE_MAX - TICK_RATE_MIN) << SPEED_LENGTH;
+    private static final int TICK_RATE_MAX = 2048;
 
     public final int mTransferRate;
     private boolean allowFluid = false;
