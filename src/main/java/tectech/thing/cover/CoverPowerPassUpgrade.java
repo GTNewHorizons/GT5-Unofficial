@@ -7,10 +7,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.common.covers.CoverLegacyData;
+import gregtech.common.covers.Cover;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class CoverPowerPassUpgrade extends CoverLegacyData {
+public class CoverPowerPassUpgrade extends Cover {
 
     public static boolean isCoverPlaceable(ForgeDirection side, ItemStack coverItem, ICoverable coverable) {
         IMetaTileEntity iGregTechTileEntityOffset = coverable.getIGregTechTileEntityOffset(0, 0, 0)
@@ -22,7 +22,7 @@ public class CoverPowerPassUpgrade extends CoverLegacyData {
     }
 
     public CoverPowerPassUpgrade(CoverContext context) {
-        super(context);
+        super(context, null);
     }
 
     @Override

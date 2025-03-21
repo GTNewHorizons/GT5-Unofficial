@@ -525,7 +525,6 @@ import gregtech.common.covers.CoverRedstoneReceiverExternal;
 import gregtech.common.covers.CoverRedstoneReceiverInternal;
 import gregtech.common.covers.CoverRedstoneTransmitterExternal;
 import gregtech.common.covers.CoverRedstoneTransmitterInternal;
-import gregtech.common.covers.CoverScreen;
 import gregtech.common.covers.CoverShutter;
 import gregtech.common.covers.CoverSolarPanel;
 import gregtech.common.covers.CoverSteamRegulator;
@@ -3878,10 +3877,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             TextureFactory.of(OVERLAY_FLUID_STORAGE_MONITOR0),
             CoverFluidStorageMonitor::new);
 
-        CoverRegistry.registerCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Cover_Screen.get(1L),
-            TextureFactory.of(MACHINE_CASINGS[2][0], screenCoverTexture),
-            context -> new CoverScreen(context, screenCoverTexture));
+            TextureFactory.of(MACHINE_CASINGS[2][0], screenCoverTexture));
         CoverRegistry.registerCover(
             ItemList.Cover_Crafting.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_CRAFTING)),

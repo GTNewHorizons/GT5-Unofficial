@@ -41,7 +41,7 @@ import io.netty.buffer.ByteBuf;
  *
  * @author glease
  */
-public abstract class Cover {
+public class Cover {
 
     // One minute
     public static final int MAX_TICK_RATE_ADDITION = 1200;
@@ -89,15 +89,15 @@ public abstract class Cover {
         return getDefaultTickRate() - this.getMinimumTickRate();
     }
 
-    protected abstract void initializeData();
+    protected void initializeData() {}
 
     protected void loadFromItemStack(@NotNull ItemStack cover) {
         initializeData();
     }
 
-    protected abstract void loadFromNbt(NBTBase nbt);
+    protected void loadFromNbt(NBTBase nbt) {}
 
-    protected abstract void readFromPacket(ByteArrayDataInput byteData);
+    protected void readFromPacket(ByteArrayDataInput byteData) {}
 
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         nbt.setInteger(NBT_TICK_RATE_ADDITION, tickRateAddition);
@@ -105,14 +105,16 @@ public abstract class Cover {
         return nbt;
     }
 
-    protected abstract @Nonnull NBTBase saveDataToNbt();
+    protected @Nonnull NBTBase saveDataToNbt() {
+        return new NBTTagCompound();
+    }
 
     public void writeToByteBuf(ByteBuf byteBuf) {
         byteBuf.writeInt(tickRateAddition);
         writeDataToByteBuf(byteBuf);
     }
 
-    protected abstract void writeDataToByteBuf(ByteBuf byteBuf);
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {}
 
     // region facade
 
