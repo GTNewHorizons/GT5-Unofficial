@@ -10,6 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.FakePlayer;
 
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -130,9 +132,13 @@ public class DrillingLogicDelegate {
         }
 
         // Inspect target block - it should be a pipe tip, else something went wrong.
-        Block targetBlock = aBaseMetaTileEntity.getBlockOffset(0, tipDepth, 0);
-        if (targetBlock != MINING_PIPE_TIP_BLOCK && targetBlock != MINING_PIPE_BLOCK) {
+        if (!isMiningPipe(aBaseMetaTileEntity, tipDepth)) {
             return;
+        }
+
+        if (isMiningPipe(aBaseMetaTileEntity, tipDepth + 1) || isLastPipeSegment()) {
+            // Return the pipe back to the machine (inputs allowed for this case!)
+            owner.pushOutputs(MINING_PIPE_STACK, 1, false, true);
         }
 
         // Retract the pipe/tip
@@ -150,10 +156,16 @@ public class DrillingLogicDelegate {
         aBaseMetaTileEntity.getWorld()
             .setBlock(xCoord, actualDrillY, zCoord, Blocks.air, 0, /* send to client without neighbour updates */ 2);
 
-        // Return the pipe back to the machine (inputs allowed for this case!)
-        owner.pushOutputs(MINING_PIPE_STACK, 1, false, true);
-
         tipDepth++;
+    }
+
+    private boolean isLastPipeSegment() {
+        return tipDepth == -1;
+    }
+
+    private boolean isMiningPipe(@NotNull IGregTechTileEntity aBaseMetaTileEntity, int yOffset) {
+        Block pipeToRemove = aBaseMetaTileEntity.getBlockOffset(0, yOffset, 0);
+        return pipeToRemove == MINING_PIPE_BLOCK || pipeToRemove == MINING_PIPE_TIP_BLOCK;
     }
 
     /** Minings the block if it is possible. */
