@@ -167,39 +167,37 @@ public class CoverFluidRegulator extends Cover {
         }
     }
 
-    private void adjustSpeed(EntityPlayer aPlayer, int scale) {
-        int tSpeed = speed;
-        tSpeed += scale;
-        int tTickRate = tickRate;
-        if (Math.abs(tSpeed) > mTransferRate * tTickRate) {
-            tSpeed = mTransferRate * tTickRate * (tSpeed > 0 ? 1 : -1);
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("316", "Pump speed limit reached!"));
+    private String getScredriverClickChat() {
+        if (Math.abs(speed) > mTransferRate * tickRate) {
+            speed = mTransferRate * tickRate * (speed > 0 ? 1 : -1);
+            return GTUtility.trans("316", "Pump speed limit reached!");
         }
-        if (tTickRate == 1) {
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                GTUtility.trans("048", "Pump speed: ") + tSpeed
-                    + GTUtility.trans("049", "L/tick ")
-                    + tSpeed * 20
-                    + GTUtility.trans("050", "L/sec"));
-        } else {
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                String.format(
-                    GTUtility.trans("207", "Pump speed: %dL every %d ticks, %.2f L/sec on average"),
-                    tSpeed,
-                    tTickRate,
-                    tSpeed * 20d / tTickRate));
+        if (tickRate == 1) {
+            return GTUtility.trans("048", "Pump speed: ") + speed
+                + GTUtility.trans("049", "L/tick ")
+                + speed * 20
+                + GTUtility.trans("050", "L/sec");
         }
+        return String.format(
+            GTUtility.trans("207", "Pump speed: %dL every %d ticks, %.2f L/sec on average"),
+            speed,
+            tickRate,
+            speed * 20d / tickRate);
     }
 
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ)[0] >= 0.5F) {
-            adjustSpeed(aPlayer, aPlayer.isSneaking() ? 256 : 16);
+        int step = aPlayer.isSneaking() ? 256 : 16;
+        if (faceClickedOnRightSide(aX, aY, aZ)) {
+            speed += step;
         } else {
-            adjustSpeed(aPlayer, aPlayer.isSneaking() ? -256 : -16);
+            speed -= step;
         }
+        GTUtility.sendChatToPlayer(aPlayer, getScredriverClickChat());
+    }
+
+    private boolean faceClickedOnRightSide(float aX, float aY, float aZ) {
+        return GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ)[0] >= 0.5F;
     }
 
     protected boolean canTransferFluid(FluidStack fluid) {
