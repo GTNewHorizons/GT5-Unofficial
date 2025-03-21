@@ -10,7 +10,7 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
 
 @SuppressWarnings("unused") // Legacy from GT4. TODO: Consider re-enable registration
-public class CoverRedstoneConductor extends CoverBehavior {
+public class CoverRedstoneConductor extends CoverLegacyData {
 
     CoverRedstoneConductor(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);

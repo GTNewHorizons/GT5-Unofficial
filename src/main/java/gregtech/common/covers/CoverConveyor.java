@@ -22,7 +22,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
-public class CoverConveyor extends CoverBehavior {
+public class CoverConveyor extends CoverLegacyData {
 
     public final int mTickRate;
     private final int mMaxStacks;
@@ -160,8 +160,8 @@ public class CoverConveyor extends CoverBehavior {
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        private CoverDataFollowerToggleButtonWidget<CoverBehavior> mBlockWidget = null;
-        private CoverDataFollowerToggleButtonWidget<CoverBehavior> mAllowWidget = null;
+        private CoverDataFollowerToggleButtonWidget<CoverLegacyData> mBlockWidget = null;
+        private CoverDataFollowerToggleButtonWidget<CoverLegacyData> mAllowWidget = null;
 
         public ConveyorUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
@@ -252,7 +252,7 @@ public class CoverConveyor extends CoverBehavior {
                         .setPos(3 + startX + spaceX * 3, 4 + startY + spaceY * 2));
         }
 
-        private static boolean isExportModeSelected(CoverBehavior cover) {
+        private static boolean isExportModeSelected(CoverLegacyData cover) {
             return cover.getVariable() % 2 == 0;
         }
 

@@ -15,7 +15,7 @@ import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
-public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
+public abstract class CoverRedstoneWirelessBase extends CoverLegacyData {
 
     private static final int MAX_CHANNEL = 65535;
     private static final int PRIVATE_MASK = 0xFFFE0000;

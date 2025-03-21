@@ -16,7 +16,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
-public class CoverDoesWork extends CoverBehavior {
+public class CoverDoesWork extends CoverLegacyData {
 
     private static final int FLAG_INVERTED = 0x1;
     private static final int FLAG_PROGRESS = 0x2;

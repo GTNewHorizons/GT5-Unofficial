@@ -19,7 +19,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
-public class CoverNeedMaintainance extends CoverBehavior {
+public class CoverNeedMaintainance extends CoverLegacyData {
 
     public CoverNeedMaintainance(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);

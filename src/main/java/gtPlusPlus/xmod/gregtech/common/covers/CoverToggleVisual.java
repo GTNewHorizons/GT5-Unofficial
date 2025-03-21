@@ -13,13 +13,13 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.CoverBehavior;
+import gregtech.common.covers.CoverLegacyData;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 // TODO: Figure out what anything in this class is even supposed to do.
-public class CoverToggleVisual extends CoverBehavior {
+public class CoverToggleVisual extends CoverLegacyData {
 
     private static final Map<String, Integer> sConnectionStateForEntityMap = new ConcurrentHashMap<>();
     private static final Map<String, String> sPrefixMap = new ConcurrentHashMap<>();

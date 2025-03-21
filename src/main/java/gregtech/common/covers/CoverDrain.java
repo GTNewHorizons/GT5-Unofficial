@@ -16,7 +16,7 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
 
-public class CoverDrain extends CoverBehavior {
+public class CoverDrain extends CoverLegacyData {
 
     public CoverDrain(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);

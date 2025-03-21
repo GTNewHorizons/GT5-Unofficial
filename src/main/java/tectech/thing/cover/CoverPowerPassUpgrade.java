@@ -5,10 +5,10 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.common.covers.CoverBehavior;
+import gregtech.common.covers.CoverLegacyData;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class CoverPowerPassUpgrade extends CoverBehavior {
+public class CoverPowerPassUpgrade extends CoverLegacyData {
 
     public CoverPowerPassUpgrade(CoverContext context) {
         super(context);

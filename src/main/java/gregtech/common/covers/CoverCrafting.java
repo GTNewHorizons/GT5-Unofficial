@@ -9,7 +9,7 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 
-public class CoverCrafting extends CoverBehavior {
+public class CoverCrafting extends CoverLegacyData {
 
     public CoverCrafting(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);

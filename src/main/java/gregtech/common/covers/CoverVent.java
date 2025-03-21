@@ -16,7 +16,7 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
 
-public class CoverVent extends CoverBehavior {
+public class CoverVent extends CoverLegacyData {
 
     private final int mEfficiency;
     private final Fluid IC2_HOT_COOLANT = FluidRegistry.getFluid("ic2hotcoolant");

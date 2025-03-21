@@ -13,17 +13,22 @@ import gregtech.api.interfaces.ITexture;
 import io.netty.buffer.ByteBuf;
 
 /**
- * For Covers with a special behavior. Has fixed storage format of 4 byte. Not very convenient...
+ * For legacy covers using an int to store all their data, typically as a bit field. Has fixed storage format of 4 byte.
+ * Not very convenient...
+ * 
+ * @deprecated deprecated for new Cover implementations. Covers implementing this should be updated on an opportunistic
+ *             basis
  */
-public class CoverBehavior extends Cover {
+@Deprecated
+public class CoverLegacyData extends Cover {
 
     protected int coverData;
 
-    protected CoverBehavior(CoverContext context) {
+    protected CoverLegacyData(CoverContext context) {
         super(context, null);
     }
 
-    protected CoverBehavior(CoverContext context, ITexture coverTexture) {
+    protected CoverLegacyData(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
         initializeData(context.getCoverInitializer());
     }
@@ -32,7 +37,7 @@ public class CoverBehavior extends Cover {
         return coverData;
     }
 
-    public CoverBehavior setVariable(int newValue) {
+    public CoverLegacyData setVariable(int newValue) {
         this.coverData = newValue;
         return this;
     }
@@ -65,14 +70,14 @@ public class CoverBehavior extends Cover {
         return true;
     }
 
-    protected static abstract class CoverBehaviorUIFactory extends CoverUiFactory<CoverBehavior> {
+    protected static abstract class CoverBehaviorUIFactory extends CoverUiFactory<CoverLegacyData> {
 
         protected CoverBehaviorUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 
-        public CoverBehavior adaptCover(Cover cover) {
-            if (cover instanceof CoverBehavior adapterCover) {
+        public CoverLegacyData adaptCover(Cover cover) {
+            if (cover instanceof CoverLegacyData adapterCover) {
                 return adapterCover;
             }
             return null;

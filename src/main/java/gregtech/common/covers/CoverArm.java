@@ -23,7 +23,7 @@ import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
-public class CoverArm extends CoverBehavior {
+public class CoverArm extends CoverLegacyData {
 
     public final int mTickRate;
     // msb converted, 2nd : direction (1=export)

@@ -6,7 +6,7 @@ import net.minecraftforge.fluids.Fluid;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.util.GTUtility;
 
-public class CoverDecorative extends CoverBehavior {
+public class CoverDecorative extends CoverLegacyData {
 
     /**
      * This is the Dummy, if there is a generic Cover without behavior

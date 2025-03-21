@@ -9,7 +9,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 
-public class CoverNone extends CoverBehavior {
+public class CoverNone extends CoverLegacyData {
 
     /**
      * This is the Dummy, if there is no Cover

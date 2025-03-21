@@ -9,7 +9,7 @@ import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
 
 @SuppressWarnings("unused") // TODO: Consider re-registering this
-public class CoverRedstoneSignalizer extends CoverBehavior {
+public class CoverRedstoneSignalizer extends CoverLegacyData {
 
     CoverRedstoneSignalizer(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);

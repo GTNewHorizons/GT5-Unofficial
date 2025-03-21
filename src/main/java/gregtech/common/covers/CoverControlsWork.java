@@ -20,7 +20,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
-public class CoverControlsWork extends CoverBehavior {
+public class CoverControlsWork extends CoverLegacyData {
 
     private enum State {
         ENABLE_WITH_SIGNAL,

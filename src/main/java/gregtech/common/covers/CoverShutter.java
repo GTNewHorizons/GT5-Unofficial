@@ -15,7 +15,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
-public class CoverShutter extends CoverBehavior {
+public class CoverShutter extends CoverLegacyData {
 
     public CoverShutter(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);

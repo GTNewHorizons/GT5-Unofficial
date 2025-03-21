@@ -11,7 +11,7 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
 
-public class CoverSolarPanel extends CoverBehavior {
+public class CoverSolarPanel extends CoverLegacyData {
 
     private final int mVoltage;
 

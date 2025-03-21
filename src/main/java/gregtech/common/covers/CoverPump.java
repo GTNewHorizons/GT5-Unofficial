@@ -21,7 +21,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
-public class CoverPump extends CoverBehavior {
+public class CoverPump extends CoverLegacyData {
 
     public final int mTransferRate;
 
@@ -169,8 +169,8 @@ public class CoverPump extends CoverBehavior {
         private static final int spaceX = 18;
         private static final int spaceY = 18;
 
-        private CoverDataFollowerToggleButtonWidget<CoverBehavior> mBlockWidget = null;
-        private CoverDataFollowerToggleButtonWidget<CoverBehavior> mAllowWidget = null;
+        private CoverDataFollowerToggleButtonWidget<CoverLegacyData> mBlockWidget = null;
+        private CoverDataFollowerToggleButtonWidget<CoverLegacyData> mAllowWidget = null;
 
         public PumpUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
@@ -223,7 +223,7 @@ public class CoverPump extends CoverBehavior {
                                         ? GTUITextures.OVERLAY_BUTTON_ALLOW_INPUT
                                         : GTUITextures.OVERLAY_BUTTON_ALLOW_OUTPUT)
                                 .dynamicTooltip(() -> {
-                                    CoverBehavior cover = getCover();
+                                    CoverLegacyData cover = getCover();
                                     return Collections.singletonList(
                                         cover == null || cover.getVariable() % 2 == 0
                                             ? GTUtility.trans("314", "Allow Input")
@@ -263,7 +263,7 @@ public class CoverPump extends CoverBehavior {
                         .setPos(3 + startX + spaceX * 3, 4 + startY + spaceY * 2));
         }
 
-        private static boolean isExportModeSelected(CoverBehavior cover) {
+        private static boolean isExportModeSelected(CoverLegacyData cover) {
             return cover.getVariable() % 2 == 0;
         }
 

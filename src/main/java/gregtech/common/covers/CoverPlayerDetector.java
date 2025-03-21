@@ -16,7 +16,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
-public class CoverPlayerDetector extends CoverBehavior {
+public class CoverPlayerDetector extends CoverLegacyData {
 
     private String placer = "";
     private int range = 8;

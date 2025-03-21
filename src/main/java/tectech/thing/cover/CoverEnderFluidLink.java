@@ -21,14 +21,14 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.CoverBehavior;
+import gregtech.common.covers.CoverLegacyData;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import tectech.mechanics.enderStorage.EnderLinkTag;
 import tectech.mechanics.enderStorage.EnderWorldSavedData;
 
-public class CoverEnderFluidLink extends CoverBehavior {
+public class CoverEnderFluidLink extends CoverLegacyData {
 
     private static final int L_PER_TICK = 8000;
     private static final int IMPORT_EXPORT_MASK = 0b0001;
@@ -183,7 +183,7 @@ public class CoverEnderFluidLink extends CoverBehavior {
                     if (!frequencyField.isClient() && getUIBuildContext().getTile() instanceof IFluidHandler tank) {
                         UUID uuid = null;
 
-                        CoverBehavior cover = getCover();
+                        CoverLegacyData cover = getCover();
                         if (cover != null && testBit(cover.getVariable(), PUBLIC_PRIVATE_MASK)) {
                             uuid = getUUID();
                             if (!uuid.equals(getOwner(tank))) return;

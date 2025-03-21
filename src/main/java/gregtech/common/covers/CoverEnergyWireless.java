@@ -10,7 +10,7 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 
-public class CoverEnergyWireless extends CoverBehavior {
+public class CoverEnergyWireless extends CoverLegacyData {
 
     private final long transferred_energy_per_operation;
 

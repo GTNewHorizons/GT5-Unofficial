@@ -8,11 +8,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.CoverBehavior;
+import gregtech.common.covers.CoverLegacyData;
 import tectech.mechanics.tesla.ITeslaConnectable;
 import tectech.mechanics.tesla.TeslaCoverConnection;
 
-public class CoverTeslaCoil extends CoverBehavior {
+public class CoverTeslaCoil extends CoverLegacyData {
 
     public CoverTeslaCoil(CoverContext context) {
         super(context);
