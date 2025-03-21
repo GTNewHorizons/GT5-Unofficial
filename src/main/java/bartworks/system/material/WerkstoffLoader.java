@@ -845,7 +845,6 @@ public class WerkstoffLoader {
         // No Byproducts
         Pair.of(Materials.HydrochloricAcid, 3),
         Pair.of(Materials.NitricAcid, 1));
-
     public static final Werkstoff PTResidue = new Werkstoff(
         new short[] { 0x64, 0x63, 0x2E },
         "Platinum Residue",
