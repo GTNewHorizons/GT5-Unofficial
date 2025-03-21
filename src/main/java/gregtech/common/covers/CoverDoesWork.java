@@ -139,7 +139,7 @@ public class CoverDoesWork extends CoverLegacyData {
         return (coverVariable & flag) == flag;
     }
 
-    private static class DoesWorkUIFactory extends CoverBehaviorUIFactory {
+    private static class DoesWorkUIFactory extends CoverLegacyDataUIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;

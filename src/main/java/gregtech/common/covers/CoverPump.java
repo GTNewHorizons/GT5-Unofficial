@@ -162,7 +162,7 @@ public class CoverPump extends CoverLegacyData {
         return new PumpUIFactory(buildContext).createWindow();
     }
 
-    private static class PumpUIFactory extends CoverBehaviorUIFactory {
+    private static class PumpUIFactory extends CoverLegacyDataUIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;

@@ -200,7 +200,7 @@ public class CoverControlsWork extends CoverLegacyData {
         return new ControlsWorkUIFactory(buildContext).createWindow();
     }
 
-    private static class ControlsWorkUIFactory extends CoverBehaviorUIFactory {
+    private static class ControlsWorkUIFactory extends CoverLegacyDataUIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;

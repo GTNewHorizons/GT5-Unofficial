@@ -141,7 +141,7 @@ public class CoverPlayerDetector extends CoverLegacyData {
         return new PlayerDetectorUIFactory(buildContext).createWindow();
     }
 
-    private static class PlayerDetectorUIFactory extends CoverBehaviorUIFactory {
+    private static class PlayerDetectorUIFactory extends CoverLegacyDataUIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;

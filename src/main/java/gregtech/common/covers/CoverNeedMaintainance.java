@@ -165,7 +165,7 @@ public class CoverNeedMaintainance extends CoverLegacyData {
         return new NeedMaintainanceUIFactory(buildContext).createWindow();
     }
 
-    private static class NeedMaintainanceUIFactory extends CoverBehaviorUIFactory {
+    private static class NeedMaintainanceUIFactory extends CoverLegacyDataUIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;

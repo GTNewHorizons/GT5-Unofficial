@@ -15,7 +15,7 @@ import io.netty.buffer.ByteBuf;
 /**
  * For legacy covers using an int to store all their data, typically as a bit field. Has fixed storage format of 4 byte.
  * Not very convenient...
- * 
+ *
  * @deprecated deprecated for new Cover implementations. Covers implementing this should be updated on an opportunistic
  *             basis
  */
@@ -70,9 +70,9 @@ public class CoverLegacyData extends Cover {
         return true;
     }
 
-    protected static abstract class CoverBehaviorUIFactory extends CoverUiFactory<CoverLegacyData> {
+    protected static abstract class CoverLegacyDataUIFactory extends CoverUiFactory<CoverLegacyData> {
 
-        protected CoverBehaviorUIFactory(CoverUIBuildContext buildContext) {
+        protected CoverLegacyDataUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
         }
 

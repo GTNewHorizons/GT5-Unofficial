@@ -152,7 +152,7 @@ public class CoverEnderFluidLink extends CoverLegacyData {
         return null;
     }
 
-    private static class EnderFluidLinkUIFactory extends CoverBehaviorUIFactory {
+    private static class EnderFluidLinkUIFactory extends CoverLegacyDataUIFactory {
 
         private static final int START_X = 10;
         private static final int START_Y = 25;

@@ -124,7 +124,7 @@ public abstract class CoverRedstoneWirelessBase extends CoverLegacyData {
         return new RedstoneWirelessBaseUIFactory(buildContext).createWindow();
     }
 
-    private static class RedstoneWirelessBaseUIFactory extends CoverBehaviorUIFactory {
+    private static class RedstoneWirelessBaseUIFactory extends CoverLegacyDataUIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;

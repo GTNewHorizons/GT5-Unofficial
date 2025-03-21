@@ -153,7 +153,7 @@ public class CoverConveyor extends CoverLegacyData {
         return new ConveyorUIFactory(buildContext).createWindow();
     }
 
-    private static class ConveyorUIFactory extends CoverBehaviorUIFactory {
+    private static class ConveyorUIFactory extends CoverLegacyDataUIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;

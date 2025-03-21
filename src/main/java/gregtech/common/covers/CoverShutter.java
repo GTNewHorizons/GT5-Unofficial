@@ -103,7 +103,7 @@ public class CoverShutter extends CoverLegacyData {
         return new ShutterUIFactory(buildContext).createWindow();
     }
 
-    private static class ShutterUIFactory extends CoverBehaviorUIFactory {
+    private static class ShutterUIFactory extends CoverLegacyDataUIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;

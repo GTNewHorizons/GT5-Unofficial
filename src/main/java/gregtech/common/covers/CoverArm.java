@@ -246,7 +246,7 @@ public class CoverArm extends CoverLegacyData {
         return new ArmUIFactory(buildContext).createWindow();
     }
 
-    private static class ArmUIFactory extends CoverBehaviorUIFactory {
+    private static class ArmUIFactory extends CoverLegacyDataUIFactory {
 
         private static final int startX = 10;
         private static final int startY = 25;
