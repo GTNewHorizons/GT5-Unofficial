@@ -3,9 +3,10 @@ package goodgenerator.items;
 import static bartworks.util.BWUtil.subscriptNumbers;
 import static gregtech.api.enums.Materials.*;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
-import bartworks.util.Pair;
 import goodgenerator.util.CharExchanger;
 import gregtech.api.enums.TextureSet;
 
@@ -25,8 +26,8 @@ public class GGMaterial implements Runnable {
             .onlyDust(),
         OffsetID,
         TextureSet.SET_DULL,
-        new Pair<>(Graphite, 3),
-        new Pair<>(Uranium, 1));
+        Pair.of(Graphite, 3),
+        Pair.of(Uranium, 1));
 
     public static final Werkstoff uraniumBasedLiquidFuel = new Werkstoff(
         new short[] { 0x00, 0xff, 0x00 },
@@ -71,10 +72,10 @@ public class GGMaterial implements Runnable {
             .onlyDust(),
         OffsetID + 4,
         TextureSet.SET_DULL,
-        new Pair<>(Thorium, 11),
-        new Pair<>(WerkstoffLoader.Thorium232, 1),
-        new Pair<>(Uranium235, 1),
-        new Pair<>(Carbon, 3));
+        Pair.of(Thorium, 11),
+        Pair.of(WerkstoffLoader.Thorium232, 1),
+        Pair.of(Uranium235, 1),
+        Pair.of(Carbon, 3));
 
     public static final Werkstoff thoriumBasedLiquidFuel = new Werkstoff(
         new short[] { 0x50, 0x32, 0x66 },
@@ -119,10 +120,10 @@ public class GGMaterial implements Runnable {
             .onlyDust(),
         OffsetID + 8,
         TextureSet.SET_SHINY,
-        new Pair<>(Plutonium, 10),
-        new Pair<>(Oxygen, 12),
-        new Pair<>(Uranium, 2),
-        new Pair<>(Carbon, 8));
+        Pair.of(Plutonium, 10),
+        Pair.of(Oxygen, 12),
+        Pair.of(Uranium, 2),
+        Pair.of(Carbon, 8));
 
     public static final Werkstoff plutoniumBasedLiquidFuel = new Werkstoff(
         new short[] { 0xef, 0x15, 0x15 },
@@ -166,9 +167,9 @@ public class GGMaterial implements Runnable {
             .addCells(),
         OffsetID + 12,
         TextureSet.SET_FLUID,
-        new Pair<>(Hydrogen, 2),
-        new Pair<>(Carbon, 2),
-        new Pair<>(Oxygen, 4));
+        Pair.of(Hydrogen, 2),
+        Pair.of(Carbon, 2),
+        Pair.of(Oxygen, 4));
 
     public static final Werkstoff vanadiumPentoxide = new Werkstoff(
         new short[] { 0xde, 0x8d, 0x12 },
@@ -178,8 +179,8 @@ public class GGMaterial implements Runnable {
             .onlyDust(),
         OffsetID + 13,
         TextureSet.SET_SHINY,
-        new Pair<>(Vanadium, 2),
-        new Pair<>(Oxygen, 5));
+        Pair.of(Vanadium, 2),
+        Pair.of(Oxygen, 5));
 
     public static final Werkstoff thoriumNitrate = new Werkstoff(
         new short[] { 0xba, 0xe8, 0x26 },
@@ -256,8 +257,8 @@ public class GGMaterial implements Runnable {
             .addCells(),
         OffsetID + 20,
         TextureSet.SET_FLUID,
-        new Pair<>(WerkstoffLoader.Thorium232, 1),
-        new Pair<>(Fluorine, 4));
+        Pair.of(WerkstoffLoader.Thorium232, 1),
+        Pair.of(Fluorine, 4));
 
     // Orundum
     public static final Werkstoff orundum = new Werkstoff(
@@ -289,9 +290,9 @@ public class GGMaterial implements Runnable {
             .addMetalCraftingSolidifierRecipes(),
         OffsetID + 21,
         TextureSet.SET_SHINY,
-        new Pair<>(GGMaterial.orundum, 2),
-        new Pair<>(Plutonium, 1),
-        new Pair<>(Naquadah, 2));
+        Pair.of(GGMaterial.orundum, 2),
+        Pair.of(Plutonium, 1),
+        Pair.of(Naquadah, 2));
 
     // Naquadah Fuel Rework
     public static final Werkstoff extremelyUnstableNaquadah = new Werkstoff(
@@ -379,9 +380,9 @@ public class GGMaterial implements Runnable {
             .addCells(),
         OffsetID + 28,
         TextureSet.SET_FLUID,
-        new Pair<>(Carbon, 4),
-        new Pair<>(Hydrogen, 10),
-        new Pair<>(Oxygen, 1));
+        Pair.of(Carbon, 4),
+        Pair.of(Hydrogen, 10),
+        Pair.of(Oxygen, 1));
 
     public static final Werkstoff antimonyTrichloride = new Werkstoff(
         new short[] { 0x0f, 0xdc, 0x34 },
@@ -628,8 +629,8 @@ public class GGMaterial implements Runnable {
             .onlyDust(),
         OffsetID + 51,
         TextureSet.SET_SHINY,
-        new Pair<>(Zinc, 1),
-        new Pair<>(Chlorine, 2));
+        Pair.of(Zinc, 1),
+        Pair.of(Chlorine, 2));
 
     public static final Werkstoff zincThoriumAlloy = new Werkstoff(
         new short[] { 0x12, 0x34, 0x56 },
@@ -644,8 +645,8 @@ public class GGMaterial implements Runnable {
             .addMetalCraftingSolidifierRecipes(),
         OffsetID + 52,
         TextureSet.SET_SHINY,
-        new Pair<>(Zinc, 1),
-        new Pair<>(Thorium, 1));
+        Pair.of(Zinc, 1),
+        Pair.of(Thorium, 1));
 
     // Naquadah Rework Materials
     public static final Werkstoff naquadahEarth = new Werkstoff(
@@ -668,8 +669,8 @@ public class GGMaterial implements Runnable {
             .onlyDust(),
         OffsetID + 54,
         TextureSet.SET_METALLIC,
-        new Pair<>(Titanium, 1),
-        new Pair<>(Fluorine, 3));
+        Pair.of(Titanium, 1),
+        Pair.of(Fluorine, 3));
 
     public static final Werkstoff lowQualityNaquadahEmulsion = new Werkstoff(
         new short[] { 0x4c, 0x4c, 0x4c },
@@ -692,9 +693,9 @@ public class GGMaterial implements Runnable {
             .onlyDust(),
         OffsetID + 56,
         TextureSet.SET_DULL,
-        new Pair<>(Gallium, 1),
-        new Pair<>(Oxygen, 3),
-        new Pair<>(Hydrogen, 3));
+        Pair.of(Gallium, 1),
+        Pair.of(Oxygen, 3),
+        Pair.of(Hydrogen, 3));
 
     public static final Werkstoff lowQualityNaquadahSolution = new Werkstoff(
         new short[] { 0x71, 0x62, 0x62 },
@@ -717,9 +718,9 @@ public class GGMaterial implements Runnable {
             .addCells(),
         OffsetID + 58,
         TextureSet.SET_FLUID,
-        new Pair<>(Carbon, 8),
-        new Pair<>(Oxygen, 1),
-        new Pair<>(Hydrogen, 18));
+        Pair.of(Carbon, 8),
+        Pair.of(Oxygen, 1),
+        Pair.of(Hydrogen, 18));
 
     public static final Werkstoff P507 = new Werkstoff(
         new short[] { 0x29, 0xc2, 0x2a },
@@ -731,10 +732,10 @@ public class GGMaterial implements Runnable {
             .addCells(),
         OffsetID + 59,
         TextureSet.SET_FLUID,
-        new Pair<>(Carbon, 16),
-        new Pair<>(Phosphorus, 1),
-        new Pair<>(Oxygen, 3),
-        new Pair<>(Hydrogen, 35));
+        Pair.of(Carbon, 16),
+        Pair.of(Phosphorus, 1),
+        Pair.of(Oxygen, 3),
+        Pair.of(Hydrogen, 35));
 
     public static final Werkstoff naquadahAdamantiumSolution = new Werkstoff(
         new short[] { 0x3d, 0x38, 0x38 },
@@ -768,8 +769,8 @@ public class GGMaterial implements Runnable {
             .onlyDust(),
         OffsetID + 62,
         TextureSet.SET_METALLIC,
-        new Pair<>(Naquadah, 1),
-        new Pair<>(Oxygen, 2));
+        Pair.of(Naquadah, 1),
+        Pair.of(Oxygen, 2));
 
     public static final Werkstoff fluorineRichWasteLiquid = new Werkstoff(
         new short[] { 0x13, 0x68, 0x62 },
@@ -801,8 +802,8 @@ public class GGMaterial implements Runnable {
             .onlyDust(),
         OffsetID + 65,
         TextureSet.SET_DULL,
-        new Pair<>(Adamantium, 2),
-        new Pair<>(Oxygen, 3));
+        Pair.of(Adamantium, 2),
+        Pair.of(Oxygen, 3));
 
     public static final Werkstoff enrichedNaquadahEarth = new Werkstoff(
         new short[] { 0x82, 0x68, 0x68 },
@@ -824,9 +825,9 @@ public class GGMaterial implements Runnable {
             .onlyDust(),
         OffsetID + 67,
         TextureSet.SET_METALLIC,
-        new Pair<>(Trinium, 1),
-        new Pair<>(Sulfur, 1),
-        new Pair<>(Oxygen, 4));
+        Pair.of(Trinium, 1),
+        Pair.of(Sulfur, 1),
+        Pair.of(Oxygen, 4));
 
     public static final Werkstoff enrichedNaquadahRichSolution = new Werkstoff(
         new short[] { 0x52, 0x39, 0x39 },
@@ -861,9 +862,9 @@ public class GGMaterial implements Runnable {
             .onlyDust(),
         OffsetID + 70,
         TextureSet.SET_DULL,
-        new Pair<>(NaquadahEnriched, 1),
-        new Pair<>(Sulfur, 2),
-        new Pair<>(Oxygen, 8));
+        Pair.of(NaquadahEnriched, 1),
+        Pair.of(Sulfur, 2),
+        Pair.of(Oxygen, 8));
 
     public static final Werkstoff naquadriaEarth = new Werkstoff(
         new short[] { 0x4d, 0x4d, 0x55 },
@@ -887,9 +888,9 @@ public class GGMaterial implements Runnable {
             .onlyDust(),
         OffsetID + 72,
         TextureSet.SET_DULL,
-        new Pair<>(Indium, 1),
-        new Pair<>(Phosphorus, 1),
-        new Pair<>(Oxygen, 4));
+        Pair.of(Indium, 1),
+        Pair.of(Phosphorus, 1),
+        Pair.of(Oxygen, 4));
 
     public static final Werkstoff lowQualityNaquadriaPhosphate = new Werkstoff(
         new short[] { 0x4d, 0x4d, 0x55 },
@@ -951,9 +952,9 @@ public class GGMaterial implements Runnable {
             .onlyDust(),
         OffsetID + 77,
         TextureSet.SET_METALLIC,
-        new Pair<>(Naquadria, 1),
-        new Pair<>(Sulfur, 2),
-        new Pair<>(Oxygen, 8));
+        Pair.of(Naquadria, 1),
+        Pair.of(Sulfur, 2),
+        Pair.of(Oxygen, 8));
 
     public static final Werkstoff naquadahGoo = new Werkstoff(
         new short[] { 0x4c, 0x4c, 0x4c },
@@ -1007,10 +1008,10 @@ public class GGMaterial implements Runnable {
             .addMixerRecipes((short) 4),
         OffsetID + 81,
         TextureSet.SET_METALLIC,
-        new Pair<>(WerkstoffLoader.Zirconium, 34),
-        new Pair<>(Tin, 5),
-        new Pair<>(Iron, 2),
-        new Pair<>(Chrome, 1));
+        Pair.of(WerkstoffLoader.Zirconium, 34),
+        Pair.of(Tin, 5),
+        Pair.of(Iron, 2),
+        Pair.of(Chrome, 1));
 
     public static final Werkstoff zircaloy2 = new Werkstoff(
         new short[] { 0xa4, 0x8f, 0x8b },
@@ -1029,11 +1030,11 @@ public class GGMaterial implements Runnable {
             .addMixerRecipes((short) 2),
         OffsetID + 82,
         TextureSet.SET_METALLIC,
-        new Pair<>(WerkstoffLoader.Zirconium, 34),
-        new Pair<>(Tin, 4),
-        new Pair<>(Iron, 1),
-        new Pair<>(Chrome, 1),
-        new Pair<>(Nickel, 1));
+        Pair.of(WerkstoffLoader.Zirconium, 34),
+        Pair.of(Tin, 4),
+        Pair.of(Iron, 1),
+        Pair.of(Chrome, 1),
+        Pair.of(Nickel, 1));
 
     public static final Werkstoff incoloy903 = new Werkstoff(
         new short[] { 0xa4, 0x8f, 0x8b },
@@ -1053,12 +1054,12 @@ public class GGMaterial implements Runnable {
             .addMixerRecipes((short) 6),
         OffsetID + 83,
         TextureSet.SET_METALLIC,
-        new Pair<>(Iron, 12),
-        new Pair<>(Nickel, 10),
-        new Pair<>(Cobalt, 8),
-        new Pair<>(Titanium, 4),
-        new Pair<>(Molybdenum, 2),
-        new Pair<>(Aluminium, 1));
+        Pair.of(Iron, 12),
+        Pair.of(Nickel, 10),
+        Pair.of(Cobalt, 8),
+        Pair.of(Titanium, 4),
+        Pair.of(Molybdenum, 2),
+        Pair.of(Aluminium, 1));
 
     public static final Werkstoff adamantiumAlloy = new Werkstoff(
         new short[] { 0xa0, 0xa0, 0xa0 },
@@ -1081,9 +1082,9 @@ public class GGMaterial implements Runnable {
             .addMixerRecipes((short) 3),
         OffsetID + 84,
         TextureSet.SET_SHINY,
-        new Pair<>(Adamantium, 5),
-        new Pair<>(Naquadah, 2),
-        new Pair<>(Lanthanum, 3));
+        Pair.of(Adamantium, 5),
+        Pair.of(Naquadah, 2),
+        Pair.of(Lanthanum, 3));
 
     public static final Werkstoff ethanolGasoline = new Werkstoff(
         new short[] { 0xe4, 0xc6, 0x61 },
@@ -1207,13 +1208,13 @@ public class GGMaterial implements Runnable {
             .addMixerRecipes((short) 7),
         OffsetID + 95,
         TextureSet.SET_SHINY,
-        new Pair<>(Niobium, 2),
-        new Pair<>(Chrome, 9),
-        new Pair<>(Aluminium, 5),
-        new Pair<>(Titanium, 2),
-        new Pair<>(Cobalt, 10),
-        new Pair<>(Tungsten, 13),
-        new Pair<>(Nickel, 18));
+        Pair.of(Niobium, 2),
+        Pair.of(Chrome, 9),
+        Pair.of(Aluminium, 5),
+        Pair.of(Titanium, 2),
+        Pair.of(Cobalt, 10),
+        Pair.of(Tungsten, 13),
+        Pair.of(Nickel, 18));
 
     public static final Werkstoff marCeM200 = new Werkstoff(
         new short[] { 0x38, 0x30, 0x30 },
@@ -1236,8 +1237,8 @@ public class GGMaterial implements Runnable {
             .addMetalCraftingSolidifierRecipes(),
         OffsetID + 96,
         TextureSet.SET_METALLIC,
-        new Pair<>(marM200, 18),
-        new Pair<>(Cerium, 1));
+        Pair.of(marM200, 18),
+        Pair.of(Cerium, 1));
 
     public static final Werkstoff lithiumChloride = new Werkstoff(
         new short[] { 0xb7, 0xe2, 0xce },
@@ -1250,8 +1251,8 @@ public class GGMaterial implements Runnable {
             .enforceUnification(),
         OffsetID + 97,
         TextureSet.SET_DULL,
-        new Pair<>(Lithium, 1),
-        new Pair<>(Chlorine, 1));
+        Pair.of(Lithium, 1),
+        Pair.of(Chlorine, 1));
 
     public static final Werkstoff signalium = new Werkstoff(
         new short[] { 0xd4, 0x40, 0x00 },
@@ -1267,9 +1268,9 @@ public class GGMaterial implements Runnable {
             .addMetalCraftingSolidifierRecipes(),
         OffsetID + 98,
         TextureSet.SET_SHINY,
-        new Pair<>(AnnealedCopper, 4),
-        new Pair<>(Ardite, 2),
-        new Pair<>(RedAlloy, 2));
+        Pair.of(AnnealedCopper, 4),
+        Pair.of(Ardite, 2),
+        Pair.of(RedAlloy, 2));
 
     public static final Werkstoff lumiinessence = new Werkstoff(
         new short[] { 0xe8, 0xf2, 0x24 },
@@ -1295,9 +1296,9 @@ public class GGMaterial implements Runnable {
             .addMetalCraftingSolidifierRecipes(),
         OffsetID + 100,
         TextureSet.SET_SHINY,
-        new Pair<>(TinAlloy, 4),
-        new Pair<>(SterlingSilver, 2),
-        new Pair<>(lumiinessence, 2));
+        Pair.of(TinAlloy, 4),
+        Pair.of(SterlingSilver, 2),
+        Pair.of(lumiinessence, 2));
 
     public static final Werkstoff artheriumSn = new Werkstoff(
         new short[] { 0x60, 0x36, 0xf7 },
@@ -1315,12 +1316,12 @@ public class GGMaterial implements Runnable {
             .addMixerRecipes((short) 6),
         OffsetID + 101,
         TextureSet.SET_SHINY,
-        new Pair<>(adamantiumAlloy, 12),
-        new Pair<>(orundum, 9),
-        new Pair<>(Tin, 8),
-        new Pair<>(Arsenic, 7),
-        new Pair<>(Caesium, 4),
-        new Pair<>(Osmiridium, 3));
+        Pair.of(adamantiumAlloy, 12),
+        Pair.of(orundum, 9),
+        Pair.of(Tin, 8),
+        Pair.of(Arsenic, 7),
+        Pair.of(Caesium, 4),
+        Pair.of(Osmiridium, 3));
 
     public static final Werkstoff titaniumBetaC = new Werkstoff(
         new short[] { 0xc7, 0x2f, 0xcc },
@@ -1338,11 +1339,11 @@ public class GGMaterial implements Runnable {
             .addMixerRecipes((short) 5),
         OffsetID + 102,
         TextureSet.SET_METALLIC,
-        new Pair<>(Titanium, 5),
-        new Pair<>(Molybdenum, 5),
-        new Pair<>(Vanadium, 2),
-        new Pair<>(Chrome, 3),
-        new Pair<>(Aluminium, 1));
+        Pair.of(Titanium, 5),
+        Pair.of(Molybdenum, 5),
+        Pair.of(Vanadium, 2),
+        Pair.of(Chrome, 3),
+        Pair.of(Aluminium, 1));
 
     public static final Werkstoff dalisenite = new Werkstoff(
         new short[] { 0xb0, 0xb8, 0x12 },
@@ -1359,12 +1360,12 @@ public class GGMaterial implements Runnable {
             .addMixerRecipes((short) 6),
         OffsetID + 103,
         TextureSet.SET_SHINY,
-        new Pair<>(titaniumBetaC, 14),
-        new Pair<>(Tungsten, 10),
-        new Pair<>(NiobiumTitanium, 9),
-        new Pair<>(WerkstoffLoader.LuVTierMaterial, 8),
-        new Pair<>(Quantium, 7),
-        new Pair<>(Erbium, 3));
+        Pair.of(titaniumBetaC, 14),
+        Pair.of(Tungsten, 10),
+        Pair.of(NiobiumTitanium, 9),
+        Pair.of(WerkstoffLoader.LuVTierMaterial, 8),
+        Pair.of(Quantium, 7),
+        Pair.of(Erbium, 3));
 
     public static final Werkstoff hikarium = new Werkstoff(
         new short[] { 0xff, 0xd6, 0xfb },
@@ -1382,9 +1383,9 @@ public class GGMaterial implements Runnable {
             .addMixerRecipes((short) 3),
         OffsetID + 104,
         TextureSet.SET_SHINY,
-        new Pair<>(lumiium, 18),
-        new Pair<>(Silver, 8),
-        new Pair<>(Sunnarium, 4));
+        Pair.of(lumiium, 18),
+        Pair.of(Silver, 8),
+        Pair.of(Sunnarium, 4));
 
     public static final Werkstoff tairitsu = new Werkstoff(
         new short[] { 0x36, 0x36, 0x36 },
@@ -1402,12 +1403,12 @@ public class GGMaterial implements Runnable {
             .addMixerRecipes((short) 6),
         OffsetID + 105,
         TextureSet.SET_SHINY,
-        new Pair<>(Tungsten, 8),
-        new Pair<>(Naquadria, 7),
-        new Pair<>(Bedrockium, 4),
-        new Pair<>(Carbon, 4),
-        new Pair<>(Vanadium, 3),
-        new Pair<>(BlackPlutonium, 1));
+        Pair.of(Tungsten, 8),
+        Pair.of(Naquadria, 7),
+        Pair.of(Bedrockium, 4),
+        Pair.of(Carbon, 4),
+        Pair.of(Vanadium, 3),
+        Pair.of(BlackPlutonium, 1));
 
     public static final Werkstoff antimonyPentafluorideSolution = new Werkstoff(
         new short[] { 0x16, 0xd5, 0xe2 },
@@ -1430,9 +1431,9 @@ public class GGMaterial implements Runnable {
             .onlyDust(),
         OffsetID + 107,
         TextureSet.SET_DULL,
-        new Pair<>(Magnesium, 1),
-        new Pair<>(Sulfur, 1),
-        new Pair<>(Oxygen, 4));
+        Pair.of(Magnesium, 1),
+        Pair.of(Sulfur, 1),
+        Pair.of(Oxygen, 4));
 
     public static final Werkstoff preciousMetalAlloy = new Werkstoff(
         new short[] { 0x9d, 0x90, 0xc6 },
@@ -1452,12 +1453,12 @@ public class GGMaterial implements Runnable {
             .addMixerRecipes((short) 6),
         OffsetID + 108,
         TextureSet.SET_SHINY,
-        new Pair<>(WerkstoffLoader.Ruthenium, 1),
-        new Pair<>(WerkstoffLoader.Rhodium, 1),
-        new Pair<>(Palladium, 1),
-        new Pair<>(Platinum, 1),
-        new Pair<>(Osmium, 1),
-        new Pair<>(Iridium, 1));
+        Pair.of(WerkstoffLoader.Ruthenium, 1),
+        Pair.of(WerkstoffLoader.Rhodium, 1),
+        Pair.of(Palladium, 1),
+        Pair.of(Platinum, 1),
+        Pair.of(Osmium, 1),
+        Pair.of(Iridium, 1));
 
     public static final Werkstoff enrichedNaquadahAlloy = new Werkstoff(
         new short[] { 0x16, 0x07, 0x40 },
@@ -1478,10 +1479,10 @@ public class GGMaterial implements Runnable {
             .addMixerRecipes((short) 4),
         OffsetID + 109,
         TextureSet.SET_METALLIC,
-        new Pair<>(NaquadahEnriched, 8),
-        new Pair<>(Tritanium, 5),
-        new Pair<>(WerkstoffLoader.Californium, 3),
-        new Pair<>(BlackPlutonium, 2));
+        Pair.of(NaquadahEnriched, 8),
+        Pair.of(Tritanium, 5),
+        Pair.of(WerkstoffLoader.Californium, 3),
+        Pair.of(BlackPlutonium, 2));
 
     public static final Werkstoff metastableOganesson = new Werkstoff(
         new short[] { 0x14, 0x39, 0x7f },
@@ -1535,7 +1536,7 @@ public class GGMaterial implements Runnable {
             .onlyDust(),
         OffsetID + 112,
         TextureSet.SET_METALLIC,
-        new Pair<>(Naquadah, 1));
+        Pair.of(Naquadah, 1));
 
     public static final Werkstoff inertEnrichedNaquadah = new Werkstoff(
         new short[] { 0x61, 0x44, 0x44 },
@@ -1546,7 +1547,7 @@ public class GGMaterial implements Runnable {
             .onlyDust(),
         OffsetID + 113,
         TextureSet.SET_METALLIC,
-        new Pair<>(NaquadahEnriched, 1));
+        Pair.of(NaquadahEnriched, 1));
 
     public static final Werkstoff inertNaquadria = new Werkstoff(
         new short[] { 0x00, 0x00, 0x00 },
@@ -1557,7 +1558,7 @@ public class GGMaterial implements Runnable {
             .onlyDust(),
         OffsetID + 114,
         TextureSet.SET_METALLIC,
-        new Pair<>(Naquadria, 1));
+        Pair.of(Naquadria, 1));
 
     @Override
     public void run() {}
