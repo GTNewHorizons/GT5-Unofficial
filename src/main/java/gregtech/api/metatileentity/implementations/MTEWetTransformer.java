@@ -2,7 +2,11 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GTValues.V;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -10,8 +14,11 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class MTEWetTransformer extends MTETransformer {
+
+    private boolean mHalfMode = false;
 
     public MTEWetTransformer(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
         super(aID, aName, aNameRegional, aTier, aDescription);
@@ -63,6 +70,7 @@ public class MTEWetTransformer extends MTETransformer {
         return ArrayUtils.addAll(
             mDescriptionArray,
             "Accepts 16A and outputs 64A",
+            "Toggle 2A/8A half-mode with Screwdriver",
             EnumChatFormatting.BLUE + "Tec"
                 + EnumChatFormatting.DARK_BLUE
                 + "Tech"
@@ -82,11 +90,40 @@ public class MTEWetTransformer extends MTETransformer {
 
     @Override
     public long maxAmperesOut() {
+        if (mHalfMode) {
+            return getBaseMetaTileEntity().isAllowedToWork() ? 32 : 8;
+        }
         return getBaseMetaTileEntity().isAllowedToWork() ? 64 : 16;
     }
 
     @Override
     public long maxAmperesIn() {
+        if (mHalfMode) {
+            return getBaseMetaTileEntity().isAllowedToWork() ? 8 : 32;
+        }
         return getBaseMetaTileEntity().isAllowedToWork() ? 16 : 64;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("mHalfMode", mHalfMode);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        mHalfMode = aNBT.getBoolean("mHalfMode");
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        this.mHalfMode = !mHalfMode;
+        if (this.mHalfMode) {
+            PlayerUtils.messagePlayer(aPlayer, "Transformer is now running at 8A:32A in/out Ratio.");
+        } else {
+            PlayerUtils.messagePlayer(aPlayer, "Transformer is now running at 16A:64A in/out Ratio.");
+        }
     }
 }
