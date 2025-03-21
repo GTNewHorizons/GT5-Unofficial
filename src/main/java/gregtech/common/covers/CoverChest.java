@@ -23,7 +23,7 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.ISerializableObject;
+import gregtech.api.util.GTByteBuffer;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import io.netty.buffer.ByteBuf;
 
@@ -62,7 +62,7 @@ public class CoverChest extends CoverBehaviorBase {
 
     @Override
     protected void readFromPacket(ByteArrayDataInput byteData) {
-        items.deserializeNBT(ISerializableObject.readCompoundTagFromGreggyByteBuf(byteData));
+        items.deserializeNBT(GTByteBuffer.readCompoundTagFromGreggyByteBuf(byteData));
     }
 
     @Override

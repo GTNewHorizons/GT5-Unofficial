@@ -22,9 +22,9 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTByteBuffer;
 import gregtech.api.util.GTRenderingWorld;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
@@ -76,7 +76,7 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase {
     @Override
     protected void readFromPacket(ByteArrayDataInput byteData) {
         mFlags = byteData.readByte();
-        mStack = ISerializableObject.readItemStackFromGreggyByteBuf(byteData);
+        mStack = GTByteBuffer.readItemStackFromGreggyByteBuf(byteData);
     }
 
     @Override

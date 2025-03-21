@@ -26,8 +26,8 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.util.GTByteBuffer;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerSlotWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
@@ -80,7 +80,7 @@ public class CoverItemFilter extends CoverBehaviorBase {
     @Override
     protected void readFromPacket(ByteArrayDataInput byteData) {
         mWhitelist = byteData.readBoolean();
-        mFilter = ISerializableObject.readItemStackFromGreggyByteBuf(byteData);
+        mFilter = GTByteBuffer.readItemStackFromGreggyByteBuf(byteData);
     }
 
     @Override
