@@ -61,19 +61,19 @@ public class PollutionConfig {
     @Config.RequiresMcRestart
     public static int pollutionImplosionCompressorPerSecond;
     @Config.Comment("Controls the pollution released per second by the large bronze boiler.")
-    @Config.DefaultInt(1_000)
+    @Config.DefaultInt(200)
     @Config.RequiresMcRestart
     public static int pollutionLargeBronzeBoilerPerSecond;
     @Config.Comment("Controls the pollution released per second by the large steel boiler.")
-    @Config.DefaultInt(2_000)
+    @Config.DefaultInt(400)
     @Config.RequiresMcRestart
     public static int pollutionLargeSteelBoilerPerSecond;
     @Config.Comment("Controls the pollution released per second by the large titanium boiler.")
-    @Config.DefaultInt(3_000)
+    @Config.DefaultInt(800)
     @Config.RequiresMcRestart
     public static int pollutionLargeTitaniumBoilerPerSecond;
     @Config.Comment("Controls the pollution released per second by the large tungstensteel boiler.")
-    @Config.DefaultInt(4_000)
+    @Config.DefaultInt(1_600)
     @Config.RequiresMcRestart
     public static int pollutionLargeTungstenSteelBoilerPerSecond;
     @Config.Comment("Controls the pollution reduction obtained with each increment of the circuit when throttling large boilers.")
