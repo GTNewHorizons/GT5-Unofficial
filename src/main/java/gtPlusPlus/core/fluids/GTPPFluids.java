@@ -50,6 +50,7 @@ public class GTPPFluids {
     public static Fluid AlmandineFlotationFroth;
     public static Fluid PyropeFlotationFroth;
     public static Fluid MonaziteFlotationFroth;
+    public static Fluid NetherrackFlotationFroth;
 
     public static Fluid PineOil;
 
@@ -253,6 +254,14 @@ public class GTPPFluids {
             "Monazite Froth",
             32 + 175,
             new short[] { aMonaziteFrothRGB[0], aMonaziteFrothRGB[1], aMonaziteFrothRGB[2], 100 },
+            true);
+
+        short[] aNetherrackFrothRGB = Materials.Netherrack.mRGBa;
+        NetherrackFlotationFroth = FluidUtils.generateFluidNoPrefix(
+            "froth.Netherrackflotation",
+            "Netherrack Froth",
+            32 + 175,
+            new short[] { aNetherrackFrothRGB[0], aNetherrackFrothRGB[1], aNetherrackFrothRGB[2], 100 },
             true);
 
         PineOil = FluidUtils
