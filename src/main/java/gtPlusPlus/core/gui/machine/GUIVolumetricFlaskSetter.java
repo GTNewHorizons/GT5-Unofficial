@@ -84,7 +84,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
             106,
             14,
             this);
-        mText.setMaxStringLength(5);
+        mText.setMaxStringLength(10);
         mText.setEnableBackgroundDrawing(true);
         mText.setText("0");
         mText.setFocused(true);
