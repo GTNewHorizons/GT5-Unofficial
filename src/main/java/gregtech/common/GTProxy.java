@@ -564,10 +564,10 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public int mPollutionLargeCombustionEnginePerSecond = 480;
     public int mPollutionExtremeCombustionEnginePerSecond = 3840;
     public int mPollutionImplosionCompressorPerSecond = 10000;
-    public int mPollutionLargeBronzeBoilerPerSecond = 1000;
-    public int mPollutionLargeSteelBoilerPerSecond = 2000;
-    public int mPollutionLargeTitaniumBoilerPerSecond = 3000;
-    public int mPollutionLargeTungstenSteelBoilerPerSecond = 4000;
+    public int mPollutionLargeBronzeBoilerPerSecond = 200;
+    public int mPollutionLargeSteelBoilerPerSecond = 400;
+    public int mPollutionLargeTitaniumBoilerPerSecond = 800;
+    public int mPollutionLargeTungstenSteelBoilerPerSecond = 1600;
     public double mPollutionReleasedByThrottle = 1.0 / 24.0; // divided by 24 because 24 circuit conf
     public int mPollutionLargeGasTurbinePerSecond = 300;
     public int mPollutionMultiSmelterPerSecond = 400;
