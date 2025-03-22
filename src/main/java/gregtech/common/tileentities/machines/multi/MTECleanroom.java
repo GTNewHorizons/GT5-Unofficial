@@ -1,12 +1,12 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static bartworks.API.GlassTier.getGlassTier;
 import static gregtech.api.enums.GTValues.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.BLOCK_PLASCRETE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_GLOW;
+import static gregtech.api.util.GlassTier.getGlassTier;
 
 import java.util.ArrayList;
 import java.util.Collections;

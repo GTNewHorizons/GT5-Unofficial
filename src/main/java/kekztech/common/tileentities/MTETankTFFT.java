@@ -1,8 +1,6 @@
 package kekztech.common.tileentities;
 
-import static bartworks.util.BWUtil.ofGlassTieredMixed;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUnlocalizedName;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -11,6 +9,7 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -46,6 +45,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.fluid.GTFluidTank;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
@@ -207,6 +207,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     private static final int MIN_CASING_AMOUNT = 20;
     private static final int MAX_LAYER_AMOUNT = 13;
     private static final int DEFAULT_LAYER_AMOUNT = 3;
+    private int glassTier = -2;
 
     private static final String STRUCTURE_PIECE_TOP = "top";
     private static final String STRUCTURE_PIECE_MID = "mid";
@@ -262,14 +263,8 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                 .atLeast(InputHatch.or(TFFTMultiHatch.INSTANCE), OutputHatch.or(TFFTMultiHatch.INSTANCE))
                 .casingIndex(CASING_TEXTURE_ID_2)
                 .dot(3)
-                .buildAndChain(
-                    ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false),
-                    ofGlassTieredMixed((byte) 4, (byte) 127, 3)))
-        .addElement(
-            'g',
-            ofChain(
-                ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false),
-                ofGlassTieredMixed((byte) 4, (byte) 127, 4)))
+                .buildAndChain(chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier)))
+        .addElement('g', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('f', ofChain(TFFTStorageFieldElement.INSTANCE))
         .build();
 
@@ -355,9 +350,9 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             .beginVariableStructureBlock(5, 5, 5, 15, 5, 5, false)
             .addController("Top Center")
             .addCasingInfoMin("T.F.F.T Casing", MIN_CASING_AMOUNT, false)
-            .addOtherStructurePart("Storage Field Blocks (Tier I-X)", "Inner 3xhx3 solid pillar")
+            .addCasingInfoRange("Storage Field Blocks", 7, 117, true)
             .addStructureInfo("Energy hatch is not required when running cost is 0")
-            .addOtherStructurePart("EV+ Tier Glass/Warded Glass/Reinforced Glass", "Outer 5xhx5 glass shell")
+            .addCasingInfoRange("Glass (EV+)", 48, 208, false)
             .addMaintenanceHatch("Any top or bottom casing")
             .addEnergyHatch("Any top or bottom casing")
             .addInputHatch("Instead of any casing or glass, has to touch storage field block")
@@ -367,8 +362,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                 "Multi I/O Hatches",
                 "Instead of any casing or glass, has to touch storage field block")
             .addStructureInfo("Use MIOH with conduits or fluid storage buses to see all fluids at once.")
-            .addSubChannelUsage("field", "Maximum Field Tier")
-            .addSubChannelUsage("height", "Height of structure")
+            .addSubChannelUsage("glass", "Glass Tier")
             .toolTipFinisher();
         return tt;
     }
@@ -416,6 +410,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         this.capacityPerFluid = 0L;
         this.casingAmount = 0;
         this.runningCost = 0;
+        this.glassTier = -2;
 
         if (!checkPiece(STRUCTURE_PIECE_TOP, 2, 2, 0)) return false;
 
@@ -425,8 +420,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         if (!checkPiece(STRUCTURE_PIECE_BOTTOM, 2, 2, -layer)) return false;
         if (casingAmount >= MIN_CASING_AMOUNT
             && (tfftHatch != null || (!mInputHatches.isEmpty() && !mOutputHatches.isEmpty()))
-            && mInputHatches.size() + mOutputHatches.size() <= MAX_DISTINCT_FLUIDS * 2
-            && mMaintenanceHatches.size() == 1) {
+            && mInputHatches.size() + mOutputHatches.size() <= MAX_DISTINCT_FLUIDS * 2) {
             BigInteger tempCap = BigInteger.ZERO;
             for (int i = 0; i < this.FIELDS.length; i++) {
                 tempCap = tempCap.add(
@@ -442,7 +436,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                 return true;
             }
 
-            return !mEnergyHatches.isEmpty();
+            return !mEnergyHatches.isEmpty() && this.glassTier >= VoltageIndex.EV;
         }
         return false;
     }

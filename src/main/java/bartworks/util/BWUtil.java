@@ -44,7 +44,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
 import bartworks.API.BioVatLogicAdder;
 import bartworks.API.BorosilicateGlass;
-import bartworks.API.GlassTier;
 import bartworks.MainMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
@@ -57,6 +56,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GlassTier;
 
 public class BWUtil {
 
@@ -261,6 +261,7 @@ public class BWUtil {
         return ret;
     }
 
+    @Deprecated
     public static <T> IStructureElement<T> ofGlassTiered(byte mintier, byte maxtier, byte notset,
         BiConsumer<T, Byte> setter, Function<T, Byte> getter, int aDots) {
         return new IStructureElement<>() {
@@ -314,6 +315,7 @@ public class BWUtil {
         };
     }
 
+    @Deprecated
     public static <T> IStructureElement<T> ofGlassTieredMixed(byte mintier, byte maxtier, int aDots) {
         return new IStructureElement<>() {
 

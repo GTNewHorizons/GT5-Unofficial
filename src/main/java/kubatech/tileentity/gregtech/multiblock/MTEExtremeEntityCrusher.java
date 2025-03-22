@@ -36,8 +36,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.*;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -97,7 +96,6 @@ import WayofTime.alchemicalWizardry.api.soulNetwork.SoulNetworkHandler;
 import WayofTime.alchemicalWizardry.api.tile.IBloodAltar;
 import WayofTime.alchemicalWizardry.common.rituals.RitualEffectWellOfSuffering;
 import WayofTime.alchemicalWizardry.common.tileEntity.TEMasterStone;
-import bartworks.API.BorosilicateGlass;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -109,6 +107,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -191,7 +190,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 .casingIndex(CASING_INDEX)
                 .dot(1)
                 .buildAndChain(onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings2, 0))))
-        .addElement('g', BorosilicateGlass.ofBoroGlass((byte) 0, (t, v) -> t.mGlassTier = v, t -> t.mGlassTier))
+        .addElement('g', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('f', ofFrame(Materials.Steel))
         .addElement(
             's',
@@ -203,7 +202,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     private TileEntity tileAltar = null;
     private boolean isInRitualMode = false;
     private int mCasing = 0;
-    private byte mGlassTier = 0;
+    private int glassTier = -2;
     private boolean mAnimationEnabled = true;
     private boolean mIsProducingInfernalDrops = true;
     private boolean voidAllDamagedAndEnchantedItems = false;
@@ -217,7 +216,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         super.saveNBTData(aNBT);
         aNBT.setBoolean("isInRitualMode", isInRitualMode);
         aNBT.setBoolean("mAnimationEnabled", mAnimationEnabled);
-        aNBT.setByte("mGlassTier", mGlassTier);
         aNBT.setBoolean("mIsProducingInfernalDrops", mIsProducingInfernalDrops);
         aNBT.setBoolean("voidAllDamagedAndEnchantedItems", voidAllDamagedAndEnchantedItems);
         if (weaponCache.getStackInSlot(0) != null) aNBT.setTag(
@@ -231,7 +229,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         super.loadNBTData(aNBT);
         isInRitualMode = aNBT.getBoolean("isInRitualMode");
         mAnimationEnabled = !aNBT.hasKey("mAnimationEnabled") || aNBT.getBoolean("mAnimationEnabled");
-        mGlassTier = aNBT.getByte("mGlassTier");
         mIsProducingInfernalDrops = !aNBT.hasKey("mIsProducingInfernalDrops")
             || aNBT.getBoolean("mIsProducingInfernalDrops");
         voidAllDamagedAndEnchantedItems = aNBT.getBoolean("voidAllDamagedAndEnchantedItems");
@@ -280,17 +277,18 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 "When in ritual mode and the Well Of Suffering ritual is built directly centered on top of the machine,")
             .addInfo("the mobs will start to buffer and die very slowly by the ritual.")
             .addInfo("You can disable mob animation with a soldering iron.")
+            .addGlassEnergyLimitInfo(VoltageIndex.UV)
             .beginStructureBlock(5, 7, 5, true)
             .addController("Front Bottom Center")
             .addCasingInfoMin("Solid Steel Machine Casing", 35, false)
-            .addOtherStructurePart("Tiered (HV+) Glass", "Side walls without edges or corners")
-            .addStructureInfo("The glass tier limits the Energy Hatch tier")
-            .addOtherStructurePart("Steel Frame Box", "All vertical edges without corners")
-            .addOtherStructurePart("Diamond spikes", "Inside second layer")
+            .addCasingInfoExactly("Glass", 60, false)
+            .addCasingInfoExactly("Steel Frame Box", 20, false)
+            .addCasingInfoExactly("Diamond Spike", 9, false)
             .addOutputBus("Any bottom casing", 1)
             .addOutputHatch("Any bottom casing", 1)
             .addEnergyHatch("Any bottom casing", 1)
             .addMaintenanceHatch("Any bottom casing", 1)
+            .addSubChannelUsage("glass", "Glass Tier")
             .toolTipFinisher(GTValues.AuthorKuba);
         return tt;
     }
@@ -636,11 +634,12 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mGlassTier = 0;
+        glassTier = -2;
         mCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0)) return false;
-        if (mCasing < 35 || mMaintenanceHatches.size() != 1 || mEnergyHatches.isEmpty()) return false;
-        if (mGlassTier < 8) for (MTEHatchEnergy hatch : mEnergyHatches) if (hatch.mTier > mGlassTier) return false;
+        if (mCasing < 35 || mEnergyHatches.isEmpty()) return false;
+        if (glassTier < VoltageIndex.UV)
+            for (MTEHatchEnergy hatch : mEnergyHatches) if (hatch.mTier > glassTier) return false;
         if (isInRitualMode) connectToRitual();
         return true;
     }

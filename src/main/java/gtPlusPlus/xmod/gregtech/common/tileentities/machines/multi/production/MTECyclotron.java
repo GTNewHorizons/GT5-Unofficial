@@ -7,7 +7,6 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -15,7 +14,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -48,7 +46,7 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
     private int mCasing;
     private static IStructureDefinition<MTECyclotron> STRUCTURE_DEFINITION = null;
 
-    public MTECyclotron(int aID, String aName, String aNameRegional, int tier) {
+    public MTECyclotron(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
@@ -61,10 +59,6 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
         return "Particle Accelerator";
     }
 
-    public int tier() {
-        return 5;
-    }
-
     @Override
     public long maxEUStore() {
         return 1800000000L;
@@ -73,11 +67,6 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
     @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new MTECyclotron(this.mName);
-    }
-
-    @Override
-    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
-        return side != getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -113,7 +102,7 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
                 .addElement(
                     'h',
                     buildHatchAdder(MTECyclotron.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
                         .casingIndex(44)
                         .dot(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
@@ -143,7 +132,7 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        return checkPiece(mName, 7, 1, 12) && mCasing >= 40 && checkHatch();
+        return checkPiece(mName, 7, 1, 12) && mCasing >= 40;
     }
 
     public Block getCasingBlock() {
@@ -175,7 +164,6 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
             .addInfo("Consists of the same layout as a Fusion Reactor")
             .addInfo("Any external casing can be a hatch/bus, unlike Fusion")
             .addInfo("Cyclotron Machine Casings around Cyclotron Coil Blocks")
-            .addInfo("All Hatches must be IV or better")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addCasingInfoMin("Cyclotron Machine Casings", 40, false)
             .addCasingInfoMin("Cyclotron Coil", 32, false)
@@ -185,7 +173,6 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
             .addOutputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -232,11 +219,6 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return GTPPRecipeMaps.cyclotronRecipes;
     }
@@ -270,11 +252,6 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
                 return result;
             }
         };
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
     }
 
     @Override
@@ -315,28 +292,13 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
     }
 
     @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public String[] getExtraInfoData() {
-        String tier = tier() == 5 ? "I" : "II";
-        float plasmaOut = 0;
         int powerRequired = 0;
         if (this.mLastRecipe != null) {
             powerRequired = this.mLastRecipe.mEUt;
-            if (this.mLastRecipe.getFluidOutput(0) != null) {
-                plasmaOut = (float) this.mLastRecipe.getFluidOutput(0).amount / (float) this.mLastRecipe.mDuration;
-            }
         }
 
-        return new String[] { "COMET - Compact Cyclotron MK " + tier, "EU Required: " + powerRequired + "EU/t",
+        return new String[] { "COMET - Compact Cyclotron MK I", "EU Required: " + powerRequired + "EU/t",
             "Stored EU: " + this.getEUVar() + " / " + maxEUStore() };
     }
 

@@ -231,7 +231,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             return false;
         }
 
-        if (mOutputBusses.isEmpty() || mOutputHatches.isEmpty()) {
+        if (this.mCraftingTier == -1 || this.mFocusingTier == -1) {
             return false;
         }
 
@@ -574,11 +574,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public int getMaxEfficiency(final ItemStack aStack) {
         return 10000;
-    }
-
-    @Override
-    public int getPollutionPerSecond(final ItemStack aStack) {
-        return 0;
     }
 
     @Override

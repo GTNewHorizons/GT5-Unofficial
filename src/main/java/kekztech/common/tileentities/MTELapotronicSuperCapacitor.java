@@ -6,11 +6,9 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onlyIf;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.filterByMTEClass;
+import static gregtech.api.util.GTStructureUtility.*;
 import static java.lang.Math.min;
 import static kekztech.util.Util.toPercentageFrom;
 import static kekztech.util.Util.toStandardForm;
@@ -70,10 +68,10 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
-import bartworks.API.BorosilicateGlass;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -219,12 +217,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     .casingIndex(CASING_TEXTURE_ID)
                     .dot(1)
                     .buildAndChain(onElementPass(te -> te.casingAmount++, ofBlock(LSC_PART, CASING_META))))
-        .addElement(
-            'g',
-            withChannel(
-                "glass",
-                BorosilicateGlass
-                    .ofBoroGlass((byte) GLASS_TIER_UNSET, (te, t) -> te.glassTier = t, te -> te.glassTier)))
+        .addElement('g', chainAllGlasses(GLASS_TIER_UNSET, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(
             'c',
             ofChain(
@@ -232,12 +225,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     te -> te.topState != TopState.NotTop,
                     onElementPass(
                         te -> te.topState = TopState.Top,
-                        withChannel(
-                            "glass",
-                            BorosilicateGlass.ofBoroGlass(
-                                (byte) GLASS_TIER_UNSET,
-                                (te, t) -> te.glassTier = t,
-                                te -> te.glassTier)))),
+                        chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))),
                 onlyIf(
                     te -> te.topState != TopState.Top,
                     onElementPass(
@@ -330,7 +318,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private long outputLastTick = 0;
     private int repairStatusCache = 0;
 
-    private byte glassTier = -1;
+    private int glassTier = -2;
     private int casingAmount = 0;
     private TopState topState = TopState.MayBeTop;
 
@@ -450,16 +438,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .addSeparator()
             .addInfo("Glass shell has to be Tier - 3 of the highest capacitor tier.")
             .addTecTechHatchInfo()
-            .addInfo(
-                GTValues.TIER_COLORS[8] + GTValues.VN[8]
-                    + EnumChatFormatting.GRAY
-                    + "-tier glass required for "
-                    + EnumChatFormatting.BLUE
-                    + "Tec"
-                    + EnumChatFormatting.DARK_BLUE
-                    + "Tech"
-                    + EnumChatFormatting.GRAY
-                    + " Laser Hatches.")
+            .addGlassTecTechInfo(VoltageIndex.UV)
             .addInfo("Add more or better capacitors to increase capacity.")
             .addSeparator()
             .addInfo("Wireless mode can be enabled by right clicking with a screwdriver.")
@@ -524,7 +503,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 "Center 3x(1-47)x3 above base (9-423 blocks)")
             .addStructureInfo(
                 "You can also use the Empty Capacitor to save materials if you use it for less than half the blocks")
-            .addOtherStructurePart("Borosilicate Glass (any)", "41-777x, Encase capacitor pillar")
+            .addCasingInfoRange("Glass", 41, 777, true)
             .addEnergyHatch("Any casing")
             .addDynamoHatch("Any casing")
             .addOtherStructurePart(
@@ -534,7 +513,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     + EnumChatFormatting.GRAY
                     + "-tier glass")
             .addStructureInfo("You can have several I/O Hatches")
-            .addSubChannelUsage("glass", "Borosilicate Glass Tier")
+            .addSubChannelUsage("glass", "Glass Tier")
             .addSubChannelUsage("capacitor", "Maximum Capacitor Tier")
             .addSubChannelUsage("height", "Height of structure")
             .addMaintenanceHatch("Any casing")
