@@ -1,9 +1,11 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static gregtech.api.enums.MetaTileEntityIDs.ChiselBus_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.ChiselBus_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.ChiselBus_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Air_Intake;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Air_Intake_Atmospheric;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Air_Intake_Extreme;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Cryotheum;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Pyrotheum;
@@ -43,11 +45,13 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Output_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Output_ZPM;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.METHatchAirIntake;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntakeAtmosphere;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntakeExtreme;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchChiselBus;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchMufflerAdvanced;
@@ -112,6 +116,13 @@ public class GregtechCustomHatches {
                 "hatch.air.intake.tier.01",
                 "Extreme Air Intake Hatch",
                 7).getStackForm(1L));
+        GregtechItemList.Hatch_Air_Intake_Atmospheric.set(
+            new MTEHatchAirIntakeAtmosphere(
+                Hatch_Air_Intake_Atmospheric.ID,
+                "hatch.air.intake.tier.02",
+                "Atmospheric Intake Hatch",
+                9).getStackForm(1L));
+        addItemTooltip(GregtechItemList.Hatch_Air_Intake_Atmospheric.get(1), GTValues.AuthorNoc);
 
         // Multiblock Reservoir Hatch
         GregtechItemList.Hatch_Reservoir.set(
