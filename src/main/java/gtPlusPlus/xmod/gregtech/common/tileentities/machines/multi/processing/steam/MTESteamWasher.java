@@ -337,7 +337,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
                     .setEUtDiscount(1.25 * tierMachine)
-                    .setSpeedBoost(1.6 / tierMachine);
+                    .setDurationModifier(1.6 / tierMachine);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
@@ -417,7 +417,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
-        tag.setInteger("parallel", getMaxParallelRecipes());
+        tag.setInteger("parallel", getTrueParallel());
         tag.setInteger("mode", machineMode);
     }
 

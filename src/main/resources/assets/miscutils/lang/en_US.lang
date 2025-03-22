@@ -3990,7 +3990,7 @@ gtpp.gui.config.asm.debug=Debug
 gtpp.gui.config.asm.general=General
 
 # item tooltips
-gtpp.tooltip.ignot.very_hot=§7Warning: §cVery hot! §7Avoid direct handling..
+gtpp.tooltip.ingot.very_hot=§7Warning: §cVery hot! §7Avoid direct handling..
 gtpp.tooltip.tickable.decay_seconds=%d§7 seconds until decay
 gtpp.tooltip.ion_particles.state_not_set=A %s Ion with an §eUnknown§7 charge state
 gtpp.tooltip.ion_particles.charge_positive=A %s Ion with a §aPositive§7 charge state of %d
@@ -4024,3 +4024,10 @@ gtpp.tooltip.dark_world.polluted_dirt=Maybe you can do something with this?.
 gtpp.tooltip.dark_world.polluted_dirt.1=This smells worse than a bean fart...
 gtpp.tooltip.alkalus_disk.0=Shines the way, towards the far away Everglades.
 gtpp.tooltip.alkalus_disk.1=This item produces such a temperature, that you'd hate to use it incorrectly.
+gtpp.tooltip.tool.durability=Durability:
+gtpp.tooltip.tool.turbine_efficiency=Turbine Efficiency:
+gtpp.tooltip.tool.optimal_steam_flow=Optimal Steam Flow: §d%f§7L/sec
+gtpp.tooltip.tool.optimal_gas_flow=Optimal Gas flow(EU burnvalue per tick):
+gtpp.tooltip.tool.optimal_plasma_flow=Optimal Plasma flow(Plasma energyvalue per tick):
+gtpp.tooltip.tool.attack_damage=Attack Damage:
+gtpp.tooltip.tool.mining_speed=Mining Speed:

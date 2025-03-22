@@ -44,6 +44,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IAllSidedTexturedTileEntity;
@@ -52,6 +53,7 @@ import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.XSTR;
+import gregtech.api.render.RenderOverlay;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.BlockOresAbstract;
@@ -77,6 +79,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
     }
 
     private final ITexture[][] textureArray = new ITexture[6][];
+    private final ITexture[] overlayHolder = new ITexture[1];
 
     public boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
         RenderBlocks aRenderer) {
@@ -118,12 +121,46 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
         aRenderer.setRenderBoundsFromBlock(aBlock);
 
-        renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_DOWN], true);
-        renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_UP], true);
-        renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_NORTH], true);
-        renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_SOUTH], true);
-        renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_WEST], true);
-        renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_EAST], true);
+        ITexture[] overlays = RenderOverlay.get(aWorld, aX, aY, aZ);
+        if (overlays != null) {
+            renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_DOWN], true);
+            if (overlays[SIDE_DOWN] != null) {
+                overlayHolder[0] = overlays[SIDE_DOWN];
+                renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, overlayHolder, true);
+            }
+            renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_UP], true);
+            if (overlays[SIDE_UP] != null) {
+                overlayHolder[0] = overlays[SIDE_UP];
+                renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, overlayHolder, true);
+            }
+            renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_NORTH], true);
+            if (overlays[SIDE_NORTH] != null) {
+                overlayHolder[0] = overlays[SIDE_NORTH];
+                renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, overlayHolder, true);
+            }
+            renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_SOUTH], true);
+            if (overlays[SIDE_SOUTH] != null) {
+                overlayHolder[0] = overlays[SIDE_SOUTH];
+                renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, overlayHolder, true);
+            }
+            renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_WEST], true);
+            if (overlays[SIDE_WEST] != null) {
+                overlayHolder[0] = overlays[SIDE_WEST];
+                renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, overlayHolder, true);
+            }
+            renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_EAST], true);
+            if (overlays[SIDE_EAST] != null) {
+                overlayHolder[0] = overlays[SIDE_EAST];
+                renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, overlayHolder, true);
+            }
+        } else {
+            renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_DOWN], true);
+            renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_UP], true);
+            renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_NORTH], true);
+            renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_SOUTH], true);
+            renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_WEST], true);
+            renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, aTextures[SIDE_EAST], true);
+        }
         return true;
     }
 
@@ -576,13 +613,27 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
                 aBlock.setBlockBoundsForItemRender();
                 aRenderer.setRenderBoundsFromBlock(aBlock);
                 // spotless:off
-                renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-                renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-                renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-                renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-                renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-                renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
+            // spotless:on
+            } else if (aBlock instanceof IBlockWithTextures texturedBlock) {
+                ITexture[][] texture = texturedBlock.getTextures(aMeta);
+                if (texture != null) {
+                    // spotless:off
+                aBlock.setBlockBoundsForItemRender();
+                aRenderer.setRenderBoundsFromBlock(aBlock);
+                renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.DOWN.ordinal()], true);
+                renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.UP.ordinal()], true);
+                renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.NORTH.ordinal()], true);
+                renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.SOUTH.ordinal()], true);
+                renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.WEST.ordinal()], true);
+                renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, texture[ForgeDirection.EAST.ordinal()], true);
                 // spotless:on
+                }
             }
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
 
@@ -742,6 +793,14 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
             textureArray[4] = texture;
             textureArray[5] = texture;
             renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, textureArray);
+            return true;
+        }
+
+        if (aBlock instanceof IBlockWithTextures texturedBlock) {
+            int meta = aWorld.getBlockMetadata(aX, aY, aZ);
+            ITexture[][] texture = texturedBlock.getTextures(meta);
+            if (texture == null) return false;
+            renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer, texture);
             return true;
         }
 
