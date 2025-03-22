@@ -105,7 +105,7 @@ dependencies {
     // For testing forestry integration (iApiary, combs, tree growth simulator)
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.10.5:dev")
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:neiaddons:1.16.0:dev')
-    // runtimeOnlyNonPublishable('com.github.GTNewHorizons:MagicBees:2.9.1-GTNH:dev')
+    // runtimeOnlyNonPublishable('com.github.GTNewHorizons:MagicBees:2.9.2-GTNH:dev')
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.5.4:dev')
 
     testImplementation(platform('org.junit:junit-bom:5.9.2'))
