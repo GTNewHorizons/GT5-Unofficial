@@ -25,6 +25,7 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverNeedMaintainance;
+import gregtech.common.covers.CoverPosition;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
@@ -92,8 +93,8 @@ public class CoverWirelessMaintenanceDetector
             return coverData;
         }
         final byte signal = computeSignalBasedOnMaintenance(coverData, coverable);
-        final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, signal);
+        final CoverPosition key = getCoverKey(coverable, coverSide);
+        setSignalAt(coverData.getUuid(), coverData.getFrequency(), key, signal);
 
         if (coverData.physical) {
             coverable.setOutputRedstoneSignal(coverSide, signal);
@@ -136,7 +137,7 @@ public class CoverWirelessMaintenanceDetector
         /** Whether the wireless detector cover also sets the tiles sided Redstone output */
         private boolean physical;
 
-        public MaintenanceTransmitterData(int frequency, UUID uuid, boolean invert, MaintenanceMode mode,
+        public MaintenanceTransmitterData(String frequency, UUID uuid, boolean invert, MaintenanceMode mode,
             boolean physical) {
             super(frequency, uuid, invert);
             this.mode = mode;
@@ -211,7 +212,7 @@ public class CoverWirelessMaintenanceDetector
 
         @Override
         protected int getGUIHeight() {
-            return 175;
+            return 193;
         }
 
         @Override
