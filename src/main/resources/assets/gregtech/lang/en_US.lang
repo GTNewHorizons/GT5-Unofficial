@@ -2107,6 +2107,16 @@ GT5U.tooltip.electric.tier=Tier: %d
 GT5U.tooltip.electric.tier.s=Tier: %s
 
 gt.coilheattooltip=Base Heating Capacity =
+GT5U.tootlip.tool.turbine.steam=Steam
+GT5U.tootlip.tool.turbine.loose=Loose
+GT5U.tootlip.tool.turbine.super=Supercritical and Superheated EU values are 2x
+GT5U.tootlip.tool.turbine.gas=Gas
+GT5U.tootlip.tool.turbine.plasma=Plasma
+GT5U.tooltip.tool.heat=Heat: %d K
+
+GT5U.tooltip.volumetric_flask.empty=Empty
+GT5U.tooltip.volumetric_flask.set_volume=Rightclick on air to set volume (only while empty)
+
 gt.coilunittooltip= Kelvin
 
 # Achievements
