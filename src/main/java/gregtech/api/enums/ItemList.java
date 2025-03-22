@@ -2605,6 +2605,35 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_AirFilterT2,
     Machine_Multi_AirFilterT3,
 
+    Mechanical_Helmet,
+    Mechanical_Chestplate,
+    Mechanical_Leggings,
+    Mechanical_Boots,
+    ModificationTable,
+    Armor_Core_T1,
+    Armor_Core_T2,
+    Armor_Core_T3,
+    Armor_Core_T4,
+    Augment_NightVision,
+    Augment_CreativeFlight,
+    Augment_Jetpack,
+    Augment_Jetpack_PerfectHover,
+    Augment_FireImmunity,
+    Augment_StepAssist,
+    Augment_GogglesOfRevealing,
+    Augment_InertiaCanceling,
+    Augment_OmniMovement,
+    Augment_Hazmat,
+    Augment_Apiarist,
+    Augment_SwimSpeed,
+    Augment_KnockbackResistance,
+    Augment_SpeedBoost,
+    Augment_JumpBoost,
+    Augment_FallProtection,
+    Augment_SpaceSuit,
+    Augment_ForceField,
+    Augment_WaterBreathing
+
     // semicolon after the comment to reduce merge conflicts
     ;
 
