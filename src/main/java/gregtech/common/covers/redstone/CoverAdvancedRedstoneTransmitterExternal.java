@@ -3,6 +3,7 @@ package gregtech.common.covers.redstone;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.common.covers.CoverPosition;
 
 public class CoverAdvancedRedstoneTransmitterExternal
     extends CoverAdvancedRedstoneTransmitterBase<CoverAdvancedRedstoneTransmitterBase.TransmitterData> {
@@ -27,9 +28,8 @@ public class CoverAdvancedRedstoneTransmitterExternal
             if (outputRedstone > 0) outputRedstone = 0;
             else outputRedstone = 15;
         }
-
-        final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(coverData.getUuid(), coverData.getFrequency(), hash, outputRedstone);
+        final CoverPosition key = getCoverKey(coverable, coverSide);
+        setSignalAt(coverData.getUuid(), coverData.getFrequency(), key, outputRedstone);
 
         return coverData;
     }
