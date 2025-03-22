@@ -18,6 +18,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
+import java.util.Collections;
 import java.util.Locale;
 
 import net.minecraft.init.Blocks;
@@ -44,9 +45,12 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.items.BlockLongDistancePipe;
 import gregtech.api.items.GTGenericItem;
+import gregtech.api.items.ItemAugmentBase;
+import gregtech.api.items.ItemAugmentCore;
 import gregtech.api.items.ItemBreederCell;
 import gregtech.api.items.ItemCoolantCellIC;
 import gregtech.api.items.ItemRadioactiveCellIC;
+import gregtech.api.items.armor.behaviors.*;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GTLog;
@@ -96,6 +100,7 @@ import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.items.armor.MechArmorLoader;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gregtech.common.tileentities.render.TileEntityDrone;
 import gregtech.common.tileentities.render.TileEntityLaser;
@@ -171,6 +176,7 @@ public class LoaderGTBlockFluid implements Runnable {
         new MetaGeneratedTool01();
         new ItemFluidDisplay();
         new ItemWirelessHeadphones();
+        MechArmorLoader.run();
 
         // Tiered recipe materials actually appear to be set in MTEBasicMachineWithRecipe, making these
         // unused
@@ -194,6 +200,178 @@ public class LoaderGTBlockFluid implements Runnable {
                     "GregTech Advanced Sensor Card",
                     "Nuclear Control not installed"));
         }
+        ItemList.Armor_Core_T1.set(
+            new ItemAugmentCore(
+                "armorcore1",
+                "Armor Core (Nano)",
+                "Basic core for Mechanical Armor",
+                Collections.emptyList(),
+                1));
+        ItemList.Armor_Core_T2.set(
+            new ItemAugmentCore(
+                "armorcore2",
+                "Armor Core (Quantum)",
+                "Advanced core for Mechanical Armor",
+                Collections.emptyList(),
+                2));
+        ItemList.Armor_Core_T3.set(
+            new ItemAugmentCore(
+                "armorcore3",
+                "Armor Core (Living)",
+                "Supreme core for Mechanical Armor",
+                Collections.emptyList(),
+                3));
+        ItemList.Armor_Core_T4.set(
+            new ItemAugmentCore(
+                "armorcore4",
+                "Armor Core (Prismatic)",
+                "Perfected core for Mechanical Armor",
+                Collections.singletonList(InfiniteEnergyBehavior.INSTANCE),
+                4));
+        ItemList.Augment_NightVision.set(
+            new ItemAugmentBase(
+                "augmentnightvision",
+                "Augment: Optical Brightness Adjuster",
+                "Allows user to see clearly at night and in the dark",
+                Collections.singletonList(MechArmorLoader.MechArmorHelmet),
+                Collections.singletonList(NightVisionBehavior.INSTANCE)));
+        ItemList.Augment_CreativeFlight.set(
+            new ItemAugmentBase(
+                "augmentcreativeflight",
+                "Augment: Gravitational Control Module",
+                "Allows user to fly",
+                Collections.singletonList(MechArmorLoader.MechArmorChestplate),
+                Collections.singletonList(CreativeFlightBehavior.INSTANCE),
+                Collections.emptyList(),
+                Collections.singletonList(JetpackBehavior.INSTANCE)));
+        ItemList.Augment_Jetpack.set(
+            new ItemAugmentBase(
+                "augmentjetpack",
+                "Augment: Electric Jetpack",
+                "Allows user to jet upwards and hover in midair",
+                Collections.singletonList(MechArmorLoader.MechArmorChestplate),
+                Collections.singletonList(JetpackBehavior.INSTANCE),
+                Collections.emptyList(),
+                Collections.singletonList(CreativeFlightBehavior.INSTANCE)));
+        ItemList.Augment_Jetpack_PerfectHover.set(
+            new ItemAugmentBase(
+                "augmentjetpackperfecthover",
+                "Augment: Adaptive Jetpack Stabilizers",
+                "Prevents user from slowly descending while in hover mode",
+                Collections.singletonList(MechArmorLoader.MechArmorChestplate),
+                Collections.singletonList(JetpackPerfectHoverBehavior.INSTANCE),
+                Collections.singletonList(JetpackBehavior.INSTANCE),
+                Collections.emptyList()));
+        ItemList.Augment_FireImmunity.set(
+            new ItemAugmentBase(
+                "augmentfireimmunity",
+                "Augment: Heat Dispersion System",
+                "Renders user entirely immune to fire and lava",
+                Collections.singletonList(MechArmorLoader.MechArmorLeggings),
+                Collections.singletonList(FireImmunityBehavior.INSTANCE)));
+        ItemList.Augment_StepAssist.set(
+            new ItemAugmentBase(
+                "augmentstepassist",
+                "Augment: Elevation Calibrators",
+                "Allows user to walk up a single block effortlessly",
+                Collections.singletonList(MechArmorLoader.MechArmorBoots),
+                Collections.singletonList(StepAssistBehavior.INSTANCE)));
+        ItemList.Augment_GogglesOfRevealing.set(
+            new ItemAugmentBase(
+                "augmentgogglesofrevealing",
+                "Augment: Integrated Revealing Lens",
+                "Allows user to see elements of the arcane, such as aura nodes",
+                Collections.singletonList(MechArmorLoader.MechArmorHelmet),
+                Collections.singletonList(GogglesOfRevealingBehavior.INSTANCE),
+                7));
+        ItemList.Augment_InertiaCanceling.set(
+            new ItemAugmentBase(
+                "augmentinertiacanceling",
+                "Augment: Inertial Dampeners",
+                "Prevents momentum from acting on the user while flying",
+                Collections.singletonList(MechArmorLoader.MechArmorChestplate),
+                Collections.singletonList(InertiaCancelingBehavior.INSTANCE),
+                Collections.singletonList(CreativeFlightBehavior.INSTANCE),
+                Collections.emptyList()));
+        ItemList.Augment_Hazmat.set(
+            new ItemAugmentBase(
+                "augmenthazmat",
+                "Augment: Protective Lining",
+                "Grants the user hazmat protection. Must be applied to all four armor pieces",
+                MechArmorLoader.AllMechArmor,
+                Collections.singletonList(HazmatBehavior.INSTANCE)));
+        ItemList.Augment_Apiarist.set(
+            new ItemAugmentBase(
+                "augmentapiarist",
+                "Augment: Bee Pacifier",
+                "Prevents negative bee effects, as if the user were wearing Apiarist's armor",
+                Collections.singletonList(MechArmorLoader.MechArmorLeggings),
+                Collections.singletonList(ApiaristBehavior.INSTANCE)));
+        ItemList.Augment_SwimSpeed.set(
+            new ItemAugmentBase(
+                "augmentswimspeed",
+                "Augment: Aquatic Jets",
+                "Improves the user's speed in water",
+                Collections.singletonList(MechArmorLoader.MechArmorBoots),
+                Collections.singletonList(SwimSpeedBehavior.INSTANCE)));
+        ItemList.Augment_KnockbackResistance.set(
+            new ItemAugmentBase(
+                "augmentknockbackresistance",
+                "Augment: Shock Absorbers",
+                "Protects the user from knockback effects",
+                Collections.singletonList(MechArmorLoader.MechArmorLeggings),
+                Collections.singletonList(KnockbackResistBehavior.INSTANCE)));
+        ItemList.Augment_SpeedBoost.set(
+            new ItemAugmentBase(
+                "augmentspeedboost",
+                "Augment: Sprint Boosters",
+                "Allows the user to move faster. Can be applied multiple times",
+                Collections.singletonList(MechArmorLoader.MechArmorBoots),
+                Collections.singletonList(SpeedBoostBehavior.MECH_ARMOR_INSTANCE)));
+        ItemList.Augment_JumpBoost.set(
+            new ItemAugmentBase(
+                "augmentjumpboost",
+                "Augment: Pneumatic Jump Assist",
+                "Allows the user to jump higher",
+                Collections.singletonList(MechArmorLoader.MechArmorBoots),
+                Collections.singletonList(JumpBoostBehavior.MECH_ARMOR_INSTANCE)));
+        ItemList.Augment_FallProtection.set(
+            new ItemAugmentBase(
+                "augmentfallprotection",
+                "Augment: Landing Gear",
+                "Converts the user's fall damage into EU usage",
+                Collections.singletonList(MechArmorLoader.MechArmorBoots),
+                Collections.singletonList(FallProtectionBehavior.INSTANCE)));
+        ItemList.Augment_SpaceSuit.set(
+            new ItemAugmentBase(
+                "augmentspacesuit",
+                "Augment: Astronaut's Equipment",
+                "Adds Spacesuit capability. Must be applied to all four armor pieces",
+                MechArmorLoader.AllMechArmor,
+                Collections.singletonList(SpaceSuitBehavior.INSTANCE)));
+        ItemList.Augment_ForceField.set(
+            new ItemAugmentBase(
+                "augmentforcefield",
+                "Augment: Energy Grid Defense",
+                "Allows user to deploy a powerful forcefield which /n will block any damage for huge amounts of eu",
+                Collections.singletonList(MechArmorLoader.MechArmorChestplate),
+                Collections.singletonList(ForceFieldBehavior.INSTANCE)));
+        ItemList.Augment_OmniMovement.set(
+            new ItemAugmentBase(
+                "augmentomnimovement",
+                "Augment: Rotational Movement Adjusters",
+                "Allows user to walk at increased speed in all directions",
+                Collections.singletonList(MechArmorLoader.MechArmorBoots),
+                Collections.singletonList(OmniMovementBehavior.INSTANCE),
+                Collections.singletonList(SpeedBoostBehavior.MECH_ARMOR_INSTANCE),
+                Collections.emptyList()));
+        ItemList.Augment_WaterBreathing.set(
+            new ItemAugmentBase(
+                "augmentwaterbreathing",
+                "Augment: Rebreather",
+                "Restore's the user's air if they run out underwater",
+                Collections.singletonList(MechArmorLoader.MechArmorHelmet),
+                Collections.singletonList(WaterBreathingBehavior.INSTANCE)));
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1
