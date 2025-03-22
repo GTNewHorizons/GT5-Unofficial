@@ -16,24 +16,34 @@ import static gregtech.api.enums.HeatingCoilLevel.UV;
 import static gregtech.api.enums.HeatingCoilLevel.UXV;
 import static gregtech.api.enums.HeatingCoilLevel.ZPM;
 
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.List;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.Nullable;
+
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.IHeatingCoil;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.common.config.Client;
+import gregtech.common.render.GTRendererBlock;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
  * 16 subtypes at most.
  */
-public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil {
+public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil, IBlockWithTextures {
+
+    public static final int ACTIVE_OFFSET = 16;
 
     public BlockCasings5() {
         super(ItemCasings5.class, "gt.blockcasings5", MaterialCasings.INSTANCE, 16);
@@ -69,36 +79,116 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil 
     }
 
     @Override
-    public int getTextureIndex(int aMeta) {
-        return (1 << 7) | aMeta;
+    public int damageDropped(int metadata) {
+        return super.damageDropped(metadata) % ACTIVE_OFFSET;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int ordinalSide, int aMeta) {
-        return switch (aMeta) {
-            case 0 -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL.getIcon();
-            case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL.getIcon();
-            case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME.getIcon();
-            case 3 -> Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL.getIcon();
-            case 4 -> Textures.BlockIcons.MACHINE_COIL_HSSG.getIcon();
-            case 5 -> Textures.BlockIcons.MACHINE_COIL_NAQUADAH.getIcon();
-            case 6 -> Textures.BlockIcons.MACHINE_COIL_NAQUADAHALLOY.getIcon();
-            case 7 -> Textures.BlockIcons.MACHINE_COIL_ELECTRUMFLUX.getIcon();
-            case 8 -> Textures.BlockIcons.MACHINE_COIL_AWAKENEDDRACONIUM.getIcon();
-            case 9 -> Textures.BlockIcons.MACHINE_COIL_HSSS.getIcon();
-            case 10 -> Textures.BlockIcons.MACHINE_COIL_TRINIUM.getIcon();
-            case 11 -> Textures.BlockIcons.MACHINE_COIL_INFINITY.getIcon();
-            case 12 -> Textures.BlockIcons.MACHINE_COIL_HYPOGEN.getIcon();
-            case 13 -> Textures.BlockIcons.MACHINE_COIL_ETERNAL.getIcon();
-            default -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL.getIcon();
-        };
+    public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
+        return super.getDamageValue(aWorld, aX, aY, aZ) % ACTIVE_OFFSET;
+    }
+
+    @Override
+    public int getTextureIndex(int aMeta) {
+        return (1 << 7) | (aMeta % ACTIVE_OFFSET);
+    }
+
+    @Override
+    public @Nullable ITexture[][] getTextures(int metadata) {
+        List<ITexture> textures = new ArrayList<>();
+
+        if (Client.render.useOldCoils) {
+            IIconContainer icon = switch (metadata % ACTIVE_OFFSET) {
+                case 0 -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL;
+                case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL;
+                case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME;
+                case 3 -> Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL;
+                case 4 -> Textures.BlockIcons.MACHINE_COIL_HSSG;
+                case 5 -> Textures.BlockIcons.MACHINE_COIL_NAQUADAH;
+                case 6 -> Textures.BlockIcons.MACHINE_COIL_NAQUADAHALLOY;
+                case 7 -> Textures.BlockIcons.MACHINE_COIL_ELECTRUMFLUX;
+                case 8 -> Textures.BlockIcons.MACHINE_COIL_AWAKENEDDRACONIUM;
+                case 9 -> Textures.BlockIcons.MACHINE_COIL_HSSS;
+                case 10 -> Textures.BlockIcons.MACHINE_COIL_TRINIUM;
+                case 11 -> Textures.BlockIcons.MACHINE_COIL_INFINITY;
+                case 12 -> Textures.BlockIcons.MACHINE_COIL_HYPOGEN;
+                case 13 -> Textures.BlockIcons.MACHINE_COIL_ETERNAL;
+                default -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL;
+            };
+
+            textures.add(TextureFactory.of(icon));
+        } else {
+            IIconContainer background = switch (metadata % ACTIVE_OFFSET) {
+                case 0 -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_BACKGROUND;
+                case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL_BACKGROUND;
+                case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME_BACKGROUND;
+                case 3 -> Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL_BACKGROUND;
+                case 4 -> Textures.BlockIcons.MACHINE_COIL_HSSG_BACKGROUND;
+                case 5 -> Textures.BlockIcons.MACHINE_COIL_NAQUADAH_BACKGROUND;
+                case 6 -> Textures.BlockIcons.MACHINE_COIL_NAQUADAHALLOY_BACKGROUND;
+                case 7 -> Textures.BlockIcons.MACHINE_COIL_ELECTRUMFLUX_BACKGROUND;
+                case 8 -> Textures.BlockIcons.MACHINE_COIL_AWAKENEDDRACONIUM_BACKGROUND;
+                case 9 -> Textures.BlockIcons.MACHINE_COIL_HSSS_BACKGROUND;
+                case 10 -> Textures.BlockIcons.MACHINE_COIL_TRINIUM_BACKGROUND;
+                case 11 -> Textures.BlockIcons.MACHINE_COIL_INFINITY_BACKGROUND;
+                case 12 -> Textures.BlockIcons.MACHINE_COIL_HYPOGEN_BACKGROUND;
+                case 13 -> Textures.BlockIcons.MACHINE_COIL_ETERNAL_BACKGROUND;
+                default -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_BACKGROUND;
+            };
+
+            textures.add(
+                TextureFactory.builder()
+                    .addIcon(background)
+                    .material(Blocks.stone)
+                    .build());
+
+            if (metadata >= ACTIVE_OFFSET) {
+                IIconContainer foreground = switch (metadata % ACTIVE_OFFSET) {
+                    case 0 -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_FOREGROUND;
+                    case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL_FOREGROUND;
+                    case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME_FOREGROUND;
+                    case 3 -> Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL_FOREGROUND;
+                    case 4 -> Textures.BlockIcons.MACHINE_COIL_HSSG_FOREGROUND;
+                    case 5 -> Textures.BlockIcons.MACHINE_COIL_NAQUADAH_FOREGROUND;
+                    case 6 -> Textures.BlockIcons.MACHINE_COIL_NAQUADAHALLOY_FOREGROUND;
+                    case 7 -> Textures.BlockIcons.MACHINE_COIL_ELECTRUMFLUX_FOREGROUND;
+                    case 8 -> Textures.BlockIcons.MACHINE_COIL_AWAKENEDDRACONIUM_FOREGROUND;
+                    case 9 -> Textures.BlockIcons.MACHINE_COIL_HSSS_FOREGROUND;
+                    case 10 -> Textures.BlockIcons.MACHINE_COIL_TRINIUM_FOREGROUND;
+                    case 11 -> Textures.BlockIcons.MACHINE_COIL_INFINITY_FOREGROUND;
+                    case 12 -> Textures.BlockIcons.MACHINE_COIL_HYPOGEN_FOREGROUND;
+                    case 13 -> Textures.BlockIcons.MACHINE_COIL_ETERNAL_FOREGROUND;
+                    default -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_FOREGROUND;
+                };
+
+                textures.add(
+                    TextureFactory.builder()
+                        .addIcon(foreground)
+                        .glow()
+                        .material(Blocks.glowstone)
+                        .build());
+            }
+        }
+
+        ITexture[] layers = textures.toArray(new ITexture[0]);
+
+        return new ITexture[][] { layers, layers, layers, layers, layers, layers };
+    }
+
+    @Override
+    public int getRenderType() {
+        return GTRendererBlock.mRenderID;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
     }
 
     /*--------------- COIL CHECK IMPL. ------------*/
 
     public static HeatingCoilLevel getCoilHeatFromDamage(int meta) {
-        return switch (meta) {
+        return switch (meta % ACTIVE_OFFSET) {
             case 0 -> LV;
             case 1 -> MV;
             case 2 -> HV;
@@ -139,21 +229,6 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil 
 
     @Override
     public HeatingCoilLevel getCoilHeat(int meta) {
-        getOnCoilCheck().accept(this);
-        return getCoilHeatFromDamage(meta);
-    }
-
-    /*--------------- CALLBACK ------------*/
-
-    private Consumer<IHeatingCoil> callback = coil -> {};
-
-    @Override
-    public void setOnCoilCheck(Consumer<IHeatingCoil> callback) {
-        this.callback = callback;
-    }
-
-    @Override
-    public Consumer<IHeatingCoil> getOnCoilCheck() {
-        return this.callback;
+        return getCoilHeatFromDamage(meta % ACTIVE_OFFSET);
     }
 }
