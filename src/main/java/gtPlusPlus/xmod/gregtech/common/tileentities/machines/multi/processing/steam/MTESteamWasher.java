@@ -417,7 +417,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
-        tag.setInteger("parallel", getMaxParallelRecipes());
+        tag.setInteger("parallel", getTrueParallel());
         tag.setInteger("mode", machineMode);
     }
 
