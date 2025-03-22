@@ -456,7 +456,8 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     EnumChatFormatting.GRAY + transItem("006", "Fuel | Optimal Flow > EU/t Produced | Efficiency"));
                 aList.add(
                     tOffset + 4,
-                    EnumChatFormatting.WHITE + "  Steam "
+                    EnumChatFormatting.WHITE
+                        + String.format("  %s ", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.steam"))
                         + EnumChatFormatting.GRAY
                         + " | "
                         + String.format(
@@ -473,7 +474,8 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                                 + EnumChatFormatting.GRAY));
                 aList.add(
                     tOffset + 5,
-                    EnumChatFormatting.WHITE + "  Loose "
+                    EnumChatFormatting.WHITE
+                        + String.format("  %s ", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.loose"))
                         + EnumChatFormatting.GRAY
                         + " | "
                         + String.format(
@@ -490,10 +492,12 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                                 + EnumChatFormatting.GRAY));
                 aList.add(
                     tOffset + 6,
-                    EnumChatFormatting.DARK_GRAY + "  Supercritical and Superheated EU values are 2x");
+                    EnumChatFormatting.DARK_GRAY
+                        + String.format("  %s", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.super")));
                 aList.add(
                     tOffset + 7,
-                    EnumChatFormatting.AQUA + "  Gas "
+                    EnumChatFormatting.AQUA
+                        + String.format("  %s ", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.gas"))
                         + EnumChatFormatting.GRAY
                         + " | "
                         + String.format(
@@ -510,7 +514,8 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                                 + EnumChatFormatting.GRAY));
                 aList.add(
                     tOffset + 8,
-                    EnumChatFormatting.AQUA + "  Loose "
+                    EnumChatFormatting.AQUA
+                        + String.format("  %s ", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.loose"))
                         + EnumChatFormatting.GRAY
                         + " | "
                         + String.format(
@@ -527,7 +532,8 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                                 + EnumChatFormatting.GRAY));
                 aList.add(
                     tOffset + 9,
-                    EnumChatFormatting.LIGHT_PURPLE + "  Plasma"
+                    EnumChatFormatting.LIGHT_PURPLE
+                        + String.format("  %s", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.plasma"))
                         + EnumChatFormatting.GRAY
                         + " | "
                         + String.format(
@@ -544,7 +550,8 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                                 + EnumChatFormatting.GRAY));
                 aList.add(
                     tOffset + 10,
-                    EnumChatFormatting.LIGHT_PURPLE + "  Loose"
+                    EnumChatFormatting.LIGHT_PURPLE
+                        + String.format("  %s", StatCollector.translateToLocal("GT5U.tootlip.tool.turbine.loose"))
                         + EnumChatFormatting.GRAY
                         + " | "
                         + String.format(
@@ -611,9 +618,9 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
                         aList.add(
                             tOffset + 3,
-                            EnumChatFormatting.RED + "Heat: "
-                                + aNBT.getInteger("Heat")
-                                + " K"
+                            EnumChatFormatting.RED
+                                + StatCollector
+                                    .translateToLocalFormatted("GT5U.tooltip.tool.heat", aNBT.getInteger("Heat"))
                                 + EnumChatFormatting.GRAY);
                     }
                 }
