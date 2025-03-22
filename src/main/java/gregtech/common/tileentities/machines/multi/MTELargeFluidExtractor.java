@@ -11,6 +11,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
+import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
@@ -102,9 +103,10 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             'h',
             withChannel(
                 "coil",
-                ofCoil(
-                    MTELargeFluidExtractor::setCoilLevel,
-                    MTELargeFluidExtractor::getCoilLevel))
+                activeCoils(
+                    ofCoil(
+                        MTELargeFluidExtractor::setCoilLevel,
+                        MTELargeFluidExtractor::getCoilLevel)))
         )
         .addElement(
             's',

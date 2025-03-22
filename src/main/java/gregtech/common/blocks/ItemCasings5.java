@@ -25,6 +25,11 @@ public class ItemCasings5 extends ItemCasingsAbstract {
     protected static final String mCoilUnitTooltip = StatCollector.translateToLocal("gt.coilunittooltip");
 
     @Override
+    public String getUnlocalizedName(ItemStack aStack) {
+        return this.field_150939_a.getUnlocalizedName() + "." + this.field_150939_a.damageDropped(getDamage(aStack));
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);

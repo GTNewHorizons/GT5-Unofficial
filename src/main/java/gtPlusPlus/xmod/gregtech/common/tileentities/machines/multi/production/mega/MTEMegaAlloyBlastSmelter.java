@@ -118,7 +118,8 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                 ofChain(
                     onElementPass(
                         te -> te.hasNormalCoils = false,
-                        ofCoil(MTEMegaAlloyBlastSmelter::setCoilLevel, MTEMegaAlloyBlastSmelter::getCoilLevel)),
+                        activeCoils(
+                            ofCoil(MTEMegaAlloyBlastSmelter::setCoilLevel, MTEMegaAlloyBlastSmelter::getCoilLevel))),
                     onElementPass(te -> te.hasNormalCoils = true, ofBlock(ModBlocks.blockCasingsMisc, 14)))))
 
         .addElement(
