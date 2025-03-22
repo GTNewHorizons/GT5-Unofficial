@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -800,6 +801,17 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addStructureHint(String nameKey, int... dots) {
         for (int dot : dots) hBlocks.put(dot, StatCollector.translateToLocal(nameKey));
+        return this;
+    }
+
+    /**
+     * Useful for maintaining the flow when you need to run an arbitrary operation on the builder.
+     * 
+     * @param fn The operation.
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder pipe(Consumer<MultiblockTooltipBuilder> fn) {
+        fn.accept(this);
         return this;
     }
 
