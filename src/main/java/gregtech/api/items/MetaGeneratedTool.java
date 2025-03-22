@@ -847,7 +847,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     public boolean canLink(EntityPlayer aPlayer, ItemStack aStack, EntityMinecart cart) {
         if (!isItemStackUsable(aStack)) return false;
         IToolStats tStats = getToolStats(aStack);
-        return tStats != null && tStats.isCrowbar();
+        return tStats != null && tStats.isCrowbar() && aPlayer.isSneaking();
     }
 
     @Override
@@ -860,7 +860,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     public boolean canBoost(EntityPlayer aPlayer, ItemStack aStack, EntityMinecart cart) {
         if (!isItemStackUsable(aStack)) return false;
         IToolStats tStats = getToolStats(aStack);
-        return tStats != null && tStats.isCrowbar();
+        return tStats != null && tStats.isCrowbar() && !aPlayer.isSneaking();
     }
 
     @Override

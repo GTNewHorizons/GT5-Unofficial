@@ -314,7 +314,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
                     .setEUtDiscount(1.25 * tierMachine)
-                    .setSpeedBoost(1.6 / tierMachine);
+                    .setDurationModifier(1.6 / tierMachine);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
@@ -390,7 +390,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
-        tag.setInteger("parallel", getMaxParallelRecipes());
+        tag.setInteger("parallel", getTrueParallel());
     }
 
     @Override
