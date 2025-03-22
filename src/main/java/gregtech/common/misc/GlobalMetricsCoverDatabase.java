@@ -310,11 +310,9 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
                 .mapToObj(tagList::getCompoundTagAt)
                 .map(
                     nbt -> CoverRegistry.getRegistrationFromNbt(nbt)
-                        .buildCover(ForgeDirection.UNKNOWN, null, nbt)
-                        .getCoverData())
-                .filter(
-                    serializableObject -> serializableObject instanceof CoverMetricsTransmitter.MetricsTransmitterData)
-                .map(data -> ((CoverMetricsTransmitter.MetricsTransmitterData) data).getFrequency());
+                        .buildCover(ForgeDirection.UNKNOWN, null, nbt))
+                .filter(cover -> cover instanceof CoverMetricsTransmitter)
+                .map(cover -> ((CoverMetricsTransmitter) cover).getFrequency());
         }
         return Stream.empty();
     }

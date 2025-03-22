@@ -5,7 +5,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fluids.Fluid;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
@@ -13,11 +12,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject.LegacyCoverData;
-import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
+import gregtech.common.gui.mui1.cover.PlayerDetectorUIFactory;
 
-public class CoverPlayerDetector extends CoverBehavior {
+public class CoverPlayerDetector extends CoverLegacyData {
 
     private String placer = "";
     private int range = 8;
@@ -31,23 +28,21 @@ public class CoverPlayerDetector extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
-
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
-        int coverDataValue = coverData.get();
         boolean playerDetected = false;
 
-        if (coverable instanceof IGregTechTileEntity) {
-            if (coverable.isUniversalEnergyStored(20)) {
-                coverable.decreaseStoredEnergyUnits(20, true);
+        if (coverable instanceof IGregTechTileEntity gtte) {
+            if (gtte.isUniversalEnergyStored(20)) {
+                gtte.decreaseStoredEnergyUnits(20, true);
                 range = 32;
             } else {
                 range = 8;
             }
-            placer = ((IGregTechTileEntity) coverable).getOwnerName();
+            placer = gtte.getOwnerName();
         }
         for (Object tObject : coverable.getWorld().playerEntities) {
             if ((tObject instanceof EntityPlayerMP tEntity)) {
@@ -58,17 +53,17 @@ public class CoverPlayerDetector extends CoverBehavior {
                         coverable.getYCoord() + 0.5D,
                         coverable.getZCoord() + 0.5D));
                 if (dist < range) {
-                    if (coverDataValue == 0) {
+                    if (this.coverData == 0) {
                         playerDetected = true;
                         break;
                     }
                     if (tEntity.getDisplayName()
                         .equalsIgnoreCase(placer)) {
-                        if (coverDataValue == 1) {
+                        if (this.coverData == 1) {
                             playerDetected = true;
                             break;
                         }
-                    } else if (coverDataValue == 2) {
+                    } else if (this.coverData == 2) {
                         playerDetected = true;
                         break;
                     }
@@ -77,27 +72,19 @@ public class CoverPlayerDetector extends CoverBehavior {
         }
 
         coverable.setOutputRedstoneSignal(coverSide, (byte) (playerDetected ? 15 : 0));
-        return LegacyCoverData.of(coverDataValue);
     }
 
     @Override
-    public LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-
-        ICoverable coverable = coveredTile.get();
-        if (coverable == null) {
-            return coverData;
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        this.coverData = (this.coverData + (aPlayer.isSneaking() ? -1 : 1)) % 3;
+        if (this.coverData < 0) {
+            this.coverData = 2;
         }
-        int coverDataValue = coverData.get();
-        coverDataValue = (coverDataValue + (aPlayer.isSneaking() ? -1 : 1)) % 3;
-        if (coverDataValue < 0) {
-            coverDataValue = 2;
-        }
-        switch (coverDataValue) {
+        switch (this.coverData) {
             case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("068.1", "Emit if any Player is close"));
             case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("069.1", "Emit if other Player is close"));
             case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("070", "Emit if you are close"));
         }
-        return LegacyCoverData.of(coverDataValue);
     }
 
     @Override
@@ -152,53 +139,4 @@ public class CoverPlayerDetector extends CoverBehavior {
         return new PlayerDetectorUIFactory(buildContext).createWindow();
     }
 
-    private class PlayerDetectorUIFactory extends UIFactory {
-
-        private static final int startX = 10;
-        private static final int startY = 25;
-        private static final int spaceX = 18;
-        private static final int spaceY = 18;
-
-        public PlayerDetectorUIFactory(CoverUIBuildContext buildContext) {
-            super(buildContext);
-        }
-
-        @SuppressWarnings("PointlessArithmeticExpression")
-        @Override
-        protected void addUIWidgets(ModularWindow.Builder builder) {
-            builder
-                .widget(
-                    new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        this::getCoverData,
-                        this::setCoverData,
-                        CoverPlayerDetector.this::loadFromNbt,
-                        (index, coverData) -> index == convert(coverData),
-                        (index, coverData) -> new LegacyCoverData(index))
-                            .addToggleButton(
-                                0,
-                                CoverDataFollowerToggleButtonWidget.ofCheck(),
-                                widget -> widget.addTooltip(GTUtility.trans("068.1", "Emit if any Player is close"))
-                                    .setPos(spaceX * 0, spaceY * 0))
-                            .addToggleButton(
-                                1,
-                                CoverDataFollowerToggleButtonWidget.ofCheck(),
-                                widget -> widget.addTooltip(GTUtility.trans("069.1", "Emit if other Player is close"))
-                                    .setPos(spaceX * 0, spaceY * 1))
-                            .addToggleButton(
-                                2,
-                                CoverDataFollowerToggleButtonWidget.ofCheck(),
-                                widget -> widget.addTooltip(GTUtility.trans("070", "Emit if you are close"))
-                                    .setPos(spaceX * 0, spaceY * 2))
-                            .setPos(startX, startY))
-                .widget(
-                    new TextWidget(GTUtility.trans("319", "Any player")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
-                .widget(
-                    new TextWidget(GTUtility.trans("320", "Other players")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 1, 4 + startY + spaceY * 1))
-                .widget(
-                    new TextWidget(GTUtility.trans("321", "Only owner")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 1, 4 + startY + spaceY * 2));
-        }
-    }
 }
