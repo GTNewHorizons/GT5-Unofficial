@@ -332,6 +332,15 @@ public class RecipesGregTech {
             .eut(TierEU.RECIPE_UV)
             .metadata(FUSION_THRESHOLD, 2_000_000_000L)
             .addTo(fusionRecipes);
+
+        // Rhugnor Mk5
+        RA.stdBuilder()
+            .fluidInputs(MaterialsUEVplus.QuarkGluonPlasma.getFluid(72), MaterialsAlloy.QUANTUM.getFluidStack(576))
+            .fluidOutputs(MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(576))
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_UEV)
+            .metadata(FUSION_THRESHOLD, 2_000_000_000L)
+            .addTo(fusionRecipes);
     }
 
     private static void assemblyLineRecipes() {
