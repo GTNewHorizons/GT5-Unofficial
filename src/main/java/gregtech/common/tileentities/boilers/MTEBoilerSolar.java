@@ -22,6 +22,8 @@ import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
@@ -275,12 +277,27 @@ public class MTEBoilerSolar extends MTEBoiler {
     }
 
     @Override
-    protected Widget createFuelSlot() {
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.BRONZE;
+    }
+
+    @Override
+    protected boolean doesAddFuelSlot() {
+        return false;
+    }
+
+    @Override
+    protected boolean doesAddAshSlot() {
+        return false;
+    }
+
+    @Override
+    protected Widget createFuelSlotMui1() {
         return null;
     }
 
     @Override
-    protected SlotWidget createAshSlot() {
+    protected SlotWidget createAshSlotMui1() {
         return null;
     }
 
