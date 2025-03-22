@@ -1,37 +1,34 @@
 package gregtech.common.covers.redstone;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+
 import gregtech.api.covers.CoverContext;
+import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.common.covers.CoverPosition;
+import gregtech.common.gui.mui1.cover.CoverAdvancedRedstoneTransmitterInternalUIFactory;
 
-public class CoverAdvancedRedstoneTransmitterInternal
-    extends CoverAdvancedRedstoneTransmitterBase<CoverAdvancedRedstoneTransmitterBase.TransmitterData> {
+public class CoverAdvancedRedstoneTransmitterInternal extends CoverAdvancedRedstoneTransmitterBase {
 
     public CoverAdvancedRedstoneTransmitterInternal(CoverContext context, ITexture coverTexture) {
-        super(context, TransmitterData.class, coverTexture);
+        super(context, coverTexture);
     }
 
     @Override
-    protected TransmitterData initializeData() {
-        return new CoverAdvancedRedstoneTransmitterBase.TransmitterData();
-    }
-
-    @Override
-    public TransmitterData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         byte outputRedstone = coverable.getOutputRedstoneSignal(coverSide);
-        if (coverData.isInvert()) {
+        if (isInverted()) {
             if (outputRedstone > 0) outputRedstone = 0;
             else outputRedstone = 15;
         }
 
         final CoverPosition key = getCoverKey(coverable, coverSide);
-        setSignalAt(coverData.getUuid(), coverData.getFrequency(), key, outputRedstone);
-        return coverData;
+        setSignalAt(getUuid(), getFrequency(), key, outputRedstone);
     }
 
     @Override
@@ -43,4 +40,10 @@ public class CoverAdvancedRedstoneTransmitterInternal
     public boolean manipulatesSidedRedstoneOutput() {
         return true;
     }
+
+    @Override
+    public ModularWindow createWindow(CoverUIBuildContext buildContext) {
+        return new CoverAdvancedRedstoneTransmitterInternalUIFactory(buildContext).createWindow();
+    }
+
 }

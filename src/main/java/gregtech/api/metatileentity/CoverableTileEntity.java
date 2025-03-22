@@ -52,7 +52,6 @@ import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.net.GTPacketRequestCoverData;
 import gregtech.api.net.GTPacketSendCoverData;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.GTClient;
 import gregtech.common.covers.Cover;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -181,7 +180,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final int tCoverTickRate = cover.getTickRate();
         if (tCoverTickRate > 0 && aTickTimer % tCoverTickRate == 0) {
             final byte tRedstone = cover.isRedstoneSensitive(aTickTimer) ? getInputRedstoneSignal(side) : 0;
-            cover.setCoverData(cover.doCoverThings(tRedstone, aTickTimer));
+            cover.doCoverThings(tRedstone, aTickTimer);
             return isStillValid();
         }
 
@@ -248,12 +247,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     @Override
-    public void setCoverDataAtSide(ForgeDirection side, ISerializableObject aData) {
-        final Cover cover = getCoverAtSide(side);
-        if (cover.isValid() && cover.acceptsDataObject(aData)) cover.setCoverData(aData);
-    }
-
-    @Override
     public ItemStack getCoverItemAtSide(ForgeDirection side) {
         return getCoverAtSide(side).asItemStack();
     }
@@ -278,7 +271,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     @Override
-    public final Cover getCoverAtSide(ForgeDirection side) {
+    public final @NotNull Cover getCoverAtSide(ForgeDirection side) {
         final int ordinalSide = side.ordinal();
         if (side != ForgeDirection.UNKNOWN) {
             Cover cover = covers[ordinalSide];
@@ -422,8 +415,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final Cover oldCover = getCoverAtSide(side);
 
         if (!oldCover.isValid()) return;
-        ISerializableObject coverData = cover.getCoverData();
-        oldCover.preDataChanged(cover.getCoverID(), coverData);
+        oldCover.preDataChanged(cover);
         applyCover(cover, side);
 
         if (isClientSide()) {

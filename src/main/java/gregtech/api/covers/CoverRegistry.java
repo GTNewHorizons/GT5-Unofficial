@@ -19,10 +19,17 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverDecorative;
 import gregtech.common.covers.CoverNone;
-import gregtech.common.covers.CoverPlacerInterceptsRightClick;
-import gregtech.common.covers.PrimitiveCoverPlacer;
 
 public class CoverRegistry {
+
+    private static final CoverPlacer DEFAULT_COVER_PLACER = CoverPlacer.builder()
+        .build();
+    public static final CoverPlacer PRIMITIVE_COVER_PLACER = CoverPlacer.builder()
+        .allowOnPrimitiveBlock()
+        .build();
+    public static final CoverPlacer INTERCEPTS_RIGHT_CLICK_COVER_PLACER = CoverPlacer.builder()
+        .blocksCoverableGuiOpening()
+        .build();
 
     /**
      * The Icon List for Covers
@@ -35,11 +42,8 @@ public class CoverRegistry {
     private static final CoverRegistration coverNone = new CoverRegistration(
         null,
         CoverNone::new,
-        new PrimitiveCoverPlacer());
+        PRIMITIVE_COVER_PLACER);
     public static final Cover NO_COVER = coverNone.buildCover(ForgeDirection.UNKNOWN, null);
-    private static final CoverPlacer DEFAULT_COVER_PLACER = new CoverPlacerBase();
-    public static final CoverPlacer PRIMITIVE_COVER_PLACER = new PrimitiveCoverPlacer();
-    public static final CoverPlacer INTERCEPTS_RIGHT_CLICK_COVER_PLACER = new CoverPlacerInterceptsRightClick();
 
     private static GUIColorOverride colorOverride;
     private static final String guiTexturePath = "gregtech:textures/gui/GuiCover.png";
@@ -59,7 +63,7 @@ public class CoverRegistry {
     }
 
     public static void registerCover(@NotNull ItemStack stack, ITexture cover, @NotNull CoverFactory constructor,
-        @NotNull CoverPlacer factory) {
+        CoverPlacer factory) {
         if (!coverTextures.containsKey(new GTItemStack(stack))) {
             coverTextures.put(
                 new GTItemStack(stack),
@@ -85,12 +89,10 @@ public class CoverRegistry {
         return getRegistration(GTUtility.intToStack(coverId));
     }
 
-    @NotNull
     public static CoverPlacer getCoverPlacer(ItemStack stack) {
         return getRegistration(stack).getCoverPlacer();
     }
 
-    @NotNull
     public static CoverPlacer getCoverPlacer(int coverId) {
         return getCoverPlacer(GTUtility.intToStack(coverId));
     }
