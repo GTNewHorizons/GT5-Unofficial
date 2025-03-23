@@ -1844,17 +1844,13 @@ public class RecipesGregTech {
                 .contains("hydrogen")) {
                 continue;
             }
-            FluidStack aPlasma2 = FluidUtils.getFluidStack("plasma." + y.toLowerCase(), 1000);
-            Materials aTestMat = MaterialUtils.getMaterial(y);
-            FluidStack aPlasma3 = aTestMat != null ? aTestMat.getPlasma(1000) : aPlasma2;
+            FluidStack plasmaFromName = FluidUtils.getFluidStack("plasma." + y.toLowerCase(), 1000);
+
+            Materials particleMaterial = MaterialUtils.getMaterial(y);
+            FluidStack recipePlasma = particleMaterial != null ? particleMaterial.getPlasma(1000) : plasmaFromName;
 
             // Ionize Plasma
-            if ((aPlasma2 != null && !aPlasma2.isFluidEqual(aPlasma_NULL))
-                || (aPlasma3 != null && !aPlasma3.isFluidEqual(aPlasma_NULL))) {
-                FluidStack recipePlasma = aPlasma2;
-                if (recipePlasma == null) {
-                    recipePlasma = aPlasma3;
-                }
+            if (recipePlasma != null && !recipePlasma.isFluidEqual(aPlasma_NULL)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.getIntegratedCircuit(1 + (tenCountA - 1)))
                     .itemOutputs(
