@@ -320,9 +320,6 @@ public class PollutionConfig {
     public static int pollutionPerSecondMultiABS;
     @Config.Comment("pollution rate in gibbl/s for the Cyclotron")
     @Config.DefaultInt(200)
-    public static int pollutionPerSecondMultiCyclotron;
-    @Config.Comment("pollution rate in gibbl/s for the Zuhai - fishing port")
-    @Config.DefaultInt(20)
     public static int pollutionPerSecondMultiIndustrialFishingPond;
     // pollutionPerSecondMultiLargeRocketEngine;
     @Config.Comment("pollution rate in gibbl/s for the Large semifluid burner")
