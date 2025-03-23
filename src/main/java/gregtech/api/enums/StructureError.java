@@ -7,7 +7,6 @@ package gregtech.api.enums;
 public enum StructureError {
     MISSING_MAINTENANCE,
     MISSING_MUFFLER,
-    MISSING_WATER,
     UNNEEDED_MUFFLER,
     TOO_FEW_CASINGS,
     MISSING_CRYO_HATCH,

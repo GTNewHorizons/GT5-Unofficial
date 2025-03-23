@@ -21,6 +21,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -38,6 +40,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ReflectionUtil;
@@ -164,10 +169,6 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
             errors.add(StructureError.TOO_FEW_CASINGS);
             context.setInteger("casings", mCasing);
         }
-
-        if (!checkForWater()) {
-            errors.add(StructureError.MISSING_WATER);
-        }
     }
 
     @Override
@@ -178,10 +179,6 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
         if (errors.contains(StructureError.TOO_FEW_CASINGS)) {
             lines.add(
                 StatCollector.translateToLocalFormatted("GT5U.gui.missing_casings", 64, context.getInteger("casings")));
-        }
-
-        if (errors.contains(StructureError.MISSING_WATER)) {
-            lines.add(StatCollector.translateToLocal("GT5U.gui.text.no_water"));
         }
     }
 
@@ -222,7 +219,14 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {}.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic() {
+
+            @Override
+            protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                if (!checkForWater()) return SimpleCheckRecipeResult.ofFailure("no_water");
+                return super.validateRecipe(recipe);
+            }
+        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
