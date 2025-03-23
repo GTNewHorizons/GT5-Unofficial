@@ -166,7 +166,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
                     	},
                     	{
-                    		"  ccc   ccccccccccccccccc           ",
+                    		"  ccc  cccccccccccccccccc           ",
                     		" ckkkccc-----------------cc         ",
                     		"ck---kc-------------------cc        ",
                     		"ck---kc--------------------c        ",
@@ -374,8 +374,8 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
                     	},
                     	{
-                    		"     ccccc             ccccc        ",
-                    		"    c-----cc         cc-----c       ",
+                    		"     ccccc             cccccc       ",
+                    		"    c-----cc         cc------c      ",
                     		"   c-------cc       cc-------cc     ",
                     		"   c-------cc       cc-------cc     ",
                     		"   c-------cc       cc-------cc     ",
@@ -390,7 +390,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                     		"    c--------ccccccc--------cccc    ",
                     		"    c--------ccccccc--------cccc    ",
                     		"    cc-----cccc   cccc------cc      ",
-                    		"      ccccc           cccccc        "
+                    		"      ccccc           ccccccc       "
 
                     	},
                     	{
@@ -400,7 +400,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                     		"    c---------kdkdk--------ccccccccc",
                     		"    c---------kdkdk--------ccccccccc",
                     		"     cc-------ccccc--------cccc     ",
-                    		"       ccccccc     cccccccc         "
+                    		"       ccccccc     cccccccccc       "
 
                     	},
                     	{
@@ -409,8 +409,8 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                     		"     cc---------------------------cg",
                     		"     c----------------------------cg",
                     		"     cc---------------------------cg",
-                    		"       c-------------------ccccccccc",
-                    		"        ccccccccccccccccccc         "
+                    		"      cc-------------------ccccccccc",
+                    		"        cccccccccccccccccccc        "
 
                     	},
                     	{
@@ -419,8 +419,8 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                     		"       c--------------------------cg",
                     		"      cc---------------------------b",
                     		"       c--------------------------cg",
-                    		"        c-----------------cccccccccc",
-                    		"         ccccccccccccccccc          "
+                    		"       cc-----------------cccccccccc",
+                    		"         ccccccccccccccccccc        "
 
                     	},
                     	{
@@ -430,7 +430,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                     		"        cc------------------------cg",
                     		"        cc------------------------cg",
                     		"         ccc-------------ccccccccccc",
-                    		"            ccccccccccccc           "
+                    		"            ccccccccccccccc         "
 
                     	},
                     	{
