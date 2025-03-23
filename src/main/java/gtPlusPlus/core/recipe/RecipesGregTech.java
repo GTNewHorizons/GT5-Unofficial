@@ -1844,13 +1844,17 @@ public class RecipesGregTech {
                 .contains("hydrogen")) {
                 continue;
             }
-            FluidStack aPlasma2 = FluidUtils.getFluidStack("plasma." + y.toLowerCase(), 2);
+            FluidStack aPlasma2 = FluidUtils.getFluidStack("plasma." + y.toLowerCase(), 1000);
             Materials aTestMat = MaterialUtils.getMaterial(y);
-            FluidStack aPlasma3 = aTestMat != null ? aTestMat.getPlasma(2) : aPlasma2;
+            FluidStack aPlasma3 = aTestMat != null ? aTestMat.getPlasma(1000) : aPlasma2;
 
             // Ionize Plasma
             if ((aPlasma2 != null && !aPlasma2.isFluidEqual(aPlasma_NULL))
                 || (aPlasma3 != null && !aPlasma3.isFluidEqual(aPlasma_NULL))) {
+                FluidStack recipePlasma = aPlasma2;
+                if (recipePlasma == null) {
+                    recipePlasma = aPlasma3;
+                }
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.getIntegratedCircuit(1 + (tenCountA - 1)))
                     .itemOutputs(
@@ -1864,6 +1868,7 @@ public class RecipesGregTech {
                         Particle.getIon(y, 2),
                         Particle.getIon(y, -1))
                     .outputChances(275, 250, 225, 275, 250, 225, 275, 250, 275)
+                    .fluidInputs(recipePlasma)
                     .duration(20 * SECONDS * (IonCount++) * tenCountA)
                     .eut(TierEU.RECIPE_ZPM)
                     .addTo(cyclotronRecipes);
