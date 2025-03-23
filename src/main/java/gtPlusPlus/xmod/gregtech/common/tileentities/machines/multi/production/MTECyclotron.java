@@ -33,7 +33,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.IonParticles;
@@ -288,7 +287,7 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return PollutionConfig.pollutionPerSecondMultiCyclotron;
+        return 0;
     }
 
     @Override
