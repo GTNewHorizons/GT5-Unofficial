@@ -299,8 +299,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         } else {
             tTime = 0;
         }
-        final boolean aSideServer = isServerSide();
-        final boolean aSideClient = isClientSide();
+        final boolean isServerSide = isServerSide();
 
         try {
             if (hasValidMetaTileEntity()) {
@@ -308,7 +307,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     oX = xCoord;
                     oY = yCoord;
                     oZ = zCoord;
-                    if (aSideServer) {
+                    if (isServerSide) {
                         checkDropCover();
                     } else {
                         requestCoverDataIfNeeded();
@@ -320,7 +319,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                         return;
                     }
                 }
-                if (aSideClient) {
+                if (isClientSide()) {
                     if (mColor != oColor) {
                         mMetaTileEntity.onColorChangeClient(oColor = mColor);
                         issueTextureUpdate();
@@ -348,13 +347,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                         mNeedsUpdate = false;
                     }
                 }
-                if (aSideServer && mTickTimer > 10) {
+                if (isServerSide && mTickTimer > 10) {
                     if (!doCoverThings()) {
                         mRunningThroughTick = false;
                         return;
                     }
                 }
-                if (aSideServer) {
+                if (isServerSide) {
                     if (++mAverageEUInputIndex >= mAverageEUInput.length) mAverageEUInputIndex = 0;
                     if (++mAverageEUOutputIndex >= mAverageEUOutput.length) mAverageEUOutputIndex = 0;
 
@@ -368,7 +367,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     mRunningThroughTick = false;
                     return;
                 }
-                if (aSideServer) {
+                if (isServerSide) {
                     if (mRedstone != oRedstone || mTickTimer == 10) {
                         oRedstone = mRedstone;
                         issueBlockUpdate();
@@ -508,7 +507,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                         return;
                     }
                 }
-                if (aSideServer) {
+                if (isServerSide) {
                     if (mMetaTileEntity.dechargerSlotCount() > 0 && getStoredEU() < getEUCapacity()) {
                         for (int i = mMetaTileEntity.dechargerSlotStartIndex(),
                             k = mMetaTileEntity.dechargerSlotCount() + i; i < k; i++) {
@@ -534,7 +533,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                         }
                     }
                 }
-                if (aSideServer) {
+                if (isServerSide) {
                     if (mMetaTileEntity.rechargerSlotCount() > 0 && getStoredEU() > 0) {
                         for (int i = mMetaTileEntity.rechargerSlotStartIndex(),
                             k = mMetaTileEntity.rechargerSlotCount() + i; i < k; i++) {
@@ -558,7 +557,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     mRunningThroughTick = false;
                     return;
                 }
-                if (aSideServer) {
+                if (isServerSide) {
                     if (mTickTimer > 20 && cableUpdateDelay == 0) {
                         generatePowerNodes();
                     }
@@ -625,7 +624,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             }
         }
 
-        if (aSideServer && hasTimeStatisticsStarted && hasValidMetaTileEntity()) {
+        if (isServerSide && hasTimeStatisticsStarted && hasValidMetaTileEntity()) {
             tTime = System.nanoTime() - tTime;
             mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length;
             mTimeStatistics[mTimeStatisticsIndex] = (int) tTime;

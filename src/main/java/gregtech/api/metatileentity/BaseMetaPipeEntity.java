@@ -179,13 +179,14 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         } else {
             tTime = 0;
         }
+        boolean isServerSide = isServerSide();
         try {
             if (hasValidMetaTileEntity()) {
                 if (mTickTimer++ == 0) {
                     oX = xCoord;
                     oY = yCoord;
                     oZ = zCoord;
-                    if (isServerSide()) checkDropCover();
+                    if (isServerSide) checkDropCover();
                     else {
                         requestCoverDataIfNeeded();
                     }
@@ -205,7 +206,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                         mNeedsUpdate = false;
                     }
                 }
-                if (isServerSide() && mTickTimer > 10) {
+                if (isServerSide && mTickTimer > 10) {
                     if (!doCoverThings()) return;
 
                     final byte oldConnections = mConnections;
@@ -222,7 +223,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 }
                 mMetaTileEntity.onPreTick(this, mTickTimer);
                 if (!hasValidMetaTileEntity()) return;
-                if (isServerSide()) {
+                if (isServerSide) {
                     if (mTickTimer == 10) {
                         issueBlockUpdate();
                         joinEnet();
@@ -240,7 +241,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 mMetaTileEntity.onPostTick(this, mTickTimer);
                 if (!hasValidMetaTileEntity()) return;
 
-                if (isServerSide()) {
+                if (isServerSide) {
                     if (mTickTimer % 10 == 0) {
                         sendClientData();
                     }
@@ -270,7 +271,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             e.printStackTrace(GTLog.err);
         }
 
-        if (isServerSide() && hasTimeStatisticsStarted && hasValidMetaTileEntity()) {
+        if (isServerSide && hasTimeStatisticsStarted && hasValidMetaTileEntity()) {
             tTime = System.nanoTime() - tTime;
             mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length;
             mTimeStatistics[mTimeStatisticsIndex] = (int) tTime;
