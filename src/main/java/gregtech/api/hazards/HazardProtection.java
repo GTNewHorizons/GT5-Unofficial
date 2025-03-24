@@ -50,24 +50,12 @@ public class HazardProtection {
 
     public static boolean protectsAgainstHazard(ItemStack tStack, Hazard hazard) {
         GTHashSet list = switch (hazard) {
-            case BIOLOGICAL: {
-                yield GregTechAPI.sBioHazmatList;
-            }
-            case FROST: {
-                yield GregTechAPI.sFrostHazmatList;
-            }
-            case HEAT: {
-                yield GregTechAPI.sHeatHazmatList;
-            }
-            case RADIOLOGICAL: {
-                yield GregTechAPI.sRadioHazmatList;
-            }
-            case ELECTRICAL: {
-                yield GregTechAPI.sElectroHazmatList;
-            }
-            case GAS: {
-                yield GregTechAPI.sGasHazmatList;
-            }
+            case BIOLOGICAL -> GregTechAPI.sBioHazmatList;
+            case FROST -> GregTechAPI.sFrostHazmatList;
+            case HEAT -> GregTechAPI.sHeatHazmatList;
+            case RADIOLOGICAL -> GregTechAPI.sRadioHazmatList;
+            case ELECTRICAL -> GregTechAPI.sElectroHazmatList;
+            case GAS -> GregTechAPI.sGasHazmatList;
         };
         return GTUtility.isStackInList(tStack, list) || hasHazmatEnchant(tStack)
             || (tStack.getItem() instanceof IHazardProtector
