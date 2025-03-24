@@ -2678,9 +2678,9 @@ public class GTUtility {
                 yield GregTechAPI.sGasHazmatList;
             }
         };
-        return isStackInList(tStack, list)
-        || hasHazmatEnchant(tStack)
-        || (tStack.getItem() instanceof IHazardProtector && ((IHazardProtector) tStack.getItem()).protectsAgainst(tStack, hazard));
+        return isStackInList(tStack, list) || hasHazmatEnchant(tStack)
+            || (tStack.getItem() instanceof IHazardProtector
+                && ((IHazardProtector) tStack.getItem()).protectsAgainst(tStack, hazard));
     }
 
     public static boolean isProtectedInSlot(EntityLivingBase aEntity, Collection<GTItemStack> list, byte slot) {
