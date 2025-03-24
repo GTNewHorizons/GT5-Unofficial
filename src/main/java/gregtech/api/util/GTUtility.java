@@ -2682,12 +2682,7 @@ public class GTUtility {
             || (tStack.getItem() instanceof IHazardProtector
                 && ((IHazardProtector) tStack.getItem()).protectsAgainst(tStack, hazard));
     }
-
-    public static boolean isProtectedInSlot(EntityLivingBase aEntity, Collection<GTItemStack> list, byte slot) {
-        ItemStack tStack = aEntity.getEquipmentInSlot(slot);
-        return isStackInList(tStack, list) || hasHazmatEnchant(tStack);
-    }
-
+    
     public static boolean hasHazmatEnchant(ItemStack aStack) {
         if (aStack == null) return false;
         Map<Integer, Integer> tEnchantments = EnchantmentHelper.getEnchantments(aStack);
