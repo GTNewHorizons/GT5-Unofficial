@@ -38,11 +38,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import ic2.core.IC2Potion;
 
 public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMaterial {
@@ -190,12 +190,12 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
         if (w == null || w.getStats() == null) return;
 
         if (w.getStats()
-            .isToxic() && !GTUtility.isWearingFullBioHazmat(bPlayer)) {
+            .isToxic() && !HazmatProtection.isWearingFullBioHazmat(bPlayer)) {
             bPlayer.addPotionEffect(new PotionEffect(Potion.poison.getId(), 80, 4));
         }
 
         if (w.getStats()
-            .isRadioactive() && !GTUtility.isWearingFullRadioHazmat(bPlayer)) {
+            .isRadioactive() && !HazmatProtection.isWearingFullRadioHazmat(bPlayer)) {
             bPlayer.addPotionEffect(new PotionEffect(IC2Potion.radiation.id, 80, 4));
         }
     }
