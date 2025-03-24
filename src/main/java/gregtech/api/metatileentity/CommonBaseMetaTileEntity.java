@@ -2,6 +2,8 @@ package gregtech.api.metatileentity;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -31,6 +33,12 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
 
     protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mSendClientData = false, mInventoryChanged = false;
 
+    // Profiling
+    private final int[] mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
+    private boolean hasTimeStatisticsStarted;
+    private int mTimeStatisticsIndex = 0;
+    private int mLagWarningCount = 0;
+
     protected boolean createNewMetatileEntity(short aID) {
         if (aID <= 0 || aID >= GregTechAPI.METATILEENTITIES.length || GregTechAPI.METATILEENTITIES[aID] == null) {
             GTLog.err.println("MetaID " + aID + " not loadable => locking TileEntity!");
@@ -43,6 +51,45 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
             return true;
         }
         return false;
+    }
+
+    protected abstract void updateEntityProfiled();
+
+    @Override
+    public final void updateEntity() {
+        super.updateEntity();
+
+        long tTime;
+        if (hasTimeStatisticsStarted) {
+            tTime = System.nanoTime();
+        } else {
+            tTime = 0;
+        }
+
+        updateEntityProfiled();
+
+        if (isServerSide() && hasTimeStatisticsStarted && hasValidMetaTileEntity()) {
+            tTime = System.nanoTime() - tTime;
+            mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length;
+            mTimeStatistics[mTimeStatisticsIndex] = (int) tTime;
+            if (tTime > 0 && tTime > (GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING * 1_000_000L)
+                && mTickTimer > 1000
+                && getMetaTileEntity().doTickProfilingMessageDuringThisTick()
+                && mLagWarningCount++ < 10)
+                GT_FML_LOGGER.warn(
+                    "WARNING: Possible Lag Source at [" + xCoord
+                        + ", "
+                        + yCoord
+                        + ", "
+                        + zCoord
+                        + "] in Dimension "
+                        + worldObj.provider.dimensionId
+                        + " with "
+                        + tTime
+                        + " ns caused by an instance of "
+                        + getMetaTileEntity().getClass());
+        }
+
     }
 
     protected void saveMetaTileNBT(NBTTagCompound aNBT) {
@@ -116,6 +163,56 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     public void markDirty() {
         super.markDirty();
         mInventoryChanged = true;
+    }
+
+    @Override
+    public void startTimeStatistics() {
+        hasTimeStatisticsStarted = true;
+    }
+
+    protected void addProfilingInformation(List<String> tList) {
+        if (hasTimeStatisticsStarted) {
+            double tAverageTime = 0;
+            double tWorstTime = 0;
+            int amountOfZero = 0;
+            for (int tTime : mTimeStatistics) {
+                tAverageTime += tTime;
+                if (tTime > tWorstTime) {
+                    tWorstTime = tTime;
+                }
+                if (tTime == 0) {
+                    amountOfZero += 1;
+                }
+                // Uncomment this line to print out tick-by-tick times.
+                // tList.add("tTime " + tTime);
+            }
+            // tick time zero means it has not been updated yet
+            int samples = mTimeStatistics.length - amountOfZero;
+            if (samples > 0) {
+                tList.add(
+                    "Average CPU load of ~" + GTUtility.formatNumbers(tAverageTime / samples)
+                        + "ns over "
+                        + GTUtility.formatNumbers(samples)
+                        + " ticks with worst time of "
+                        + GTUtility.formatNumbers(tWorstTime)
+                        + "ns.");
+            }
+        } else {
+            startTimeStatistics();
+            tList.add("Just started tick time statistics.");
+        }
+        if (mLagWarningCount > 0) {
+            tList.add(
+                "Caused " + (mLagWarningCount >= 10 ? "more than 10" : mLagWarningCount)
+                    + " Lag Spike Warnings (anything taking longer than "
+                    + GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING
+                    + "ms) on the Server.");
+        }
+    }
+
+    @Override
+    public int[] getTimeStatistics() {
+        return mTimeStatistics;
     }
 
     @Override
