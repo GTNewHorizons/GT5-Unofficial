@@ -2621,9 +2621,7 @@ public class GTUtility {
 
     public static boolean isWearingFullFrostHazmat(EntityLivingBase aEntity) {
         for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sFrostHazmatList) && !hasHazmatEnchant(tStack)) {
+            if (!isProtectedInSlot(aEntity, GregTechAPI.sFrostHazmatList, i)) {
                 return false;
             }
         }
@@ -2632,21 +2630,16 @@ public class GTUtility {
 
     public static boolean isWearingFullHeatHazmat(EntityLivingBase aEntity) {
         for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sHeatHazmatList) && !hasHazmatEnchant(tStack)) {
+            if (!isProtectedInSlot(aEntity, GregTechAPI.sHeatHazmatList, i)) {
                 return false;
             }
         }
-
         return true;
     }
 
     public static boolean isWearingFullBioHazmat(EntityLivingBase aEntity) {
         for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sBioHazmatList) && !hasHazmatEnchant(tStack)) {
+            if (!isProtectedInSlot(aEntity, GregTechAPI.sBioHazmatList, i)) {
                 return false;
             }
         }
@@ -2655,9 +2648,7 @@ public class GTUtility {
 
     public static boolean isWearingFullRadioHazmat(EntityLivingBase aEntity) {
         for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sRadioHazmatList) && !hasHazmatEnchant(tStack)) {
+            if (!isProtectedInSlot(aEntity, GregTechAPI.sRadioHazmatList, i)) {
                 return false;
             }
         }
@@ -2666,9 +2657,7 @@ public class GTUtility {
 
     public static boolean isWearingFullElectroHazmat(EntityLivingBase aEntity) {
         for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sElectroHazmatList) && !hasHazmatEnchant(tStack)) {
+            if (!isProtectedInSlot(aEntity, GregTechAPI.sElectroHazmatList, i)) {
                 return false;
             }
         }
@@ -2677,13 +2666,16 @@ public class GTUtility {
 
     public static boolean isWearingFullGasHazmat(EntityLivingBase aEntity) {
         for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
-
-            if (!isStackInList(tStack, GregTechAPI.sGasHazmatList) && !hasHazmatEnchant(tStack)) {
+            if (!isProtectedInSlot(aEntity, GregTechAPI.sGasHazmatList, i)) {
                 return false;
             }
         }
         return true;
+    }
+
+    public static boolean isProtectedInSlot(EntityLivingBase aEntity, Collection<GTItemStack> list, byte slot) {
+        ItemStack tStack = aEntity.getEquipmentInSlot(slot);
+        return isStackInList(tStack, list) || hasHazmatEnchant(tStack);
     }
 
     public static boolean hasHazmatEnchant(ItemStack aStack) {
