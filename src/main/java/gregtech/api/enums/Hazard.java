@@ -5,7 +5,7 @@ package gregtech.api.enums;
  * Other mods may add their own Hazmat/protective gear that interacts with the
  * relevant checks in GregTech
  */
-public enum Hazards {
+public enum Hazard {
     BIOLOGICAL,
     FROST,
     HEAT,

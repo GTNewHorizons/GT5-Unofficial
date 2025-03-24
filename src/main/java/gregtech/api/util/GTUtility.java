@@ -140,7 +140,7 @@ import gregtech.api.damagesources.GTDamageSources.DamageSourceHotItem;
 import gregtech.api.enchants.EnchantmentHazmat;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Hazards;
+import gregtech.api.enums.Hazard;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -2623,30 +2623,30 @@ public class GTUtility {
     }
 
     public static boolean isWearingFullFrostHazmat(EntityLivingBase aEntity) {
-        return isWearingFullHazmatAgainst(aEntity, Hazards.FROST);
+        return isWearingFullHazmatAgainst(aEntity, Hazard.FROST);
     }
 
     public static boolean isWearingFullHeatHazmat(EntityLivingBase aEntity) {
-        return isWearingFullHazmatAgainst(aEntity, Hazards.HEAT);
+        return isWearingFullHazmatAgainst(aEntity, Hazard.HEAT);
     }
 
     public static boolean isWearingFullBioHazmat(EntityLivingBase aEntity) {
-        return isWearingFullHazmatAgainst(aEntity, Hazards.BIOLOGICAL);
+        return isWearingFullHazmatAgainst(aEntity, Hazard.BIOLOGICAL);
     }
 
     public static boolean isWearingFullRadioHazmat(EntityLivingBase aEntity) {
-        return isWearingFullHazmatAgainst(aEntity, Hazards.RADIOLOGICAL);
+        return isWearingFullHazmatAgainst(aEntity, Hazard.RADIOLOGICAL);
     }
 
     public static boolean isWearingFullElectroHazmat(EntityLivingBase aEntity) {
-        return isWearingFullHazmatAgainst(aEntity, Hazards.ELECTRICAL);
+        return isWearingFullHazmatAgainst(aEntity, Hazard.ELECTRICAL);
     }
 
     public static boolean isWearingFullGasHazmat(EntityLivingBase aEntity) {
-        return isWearingFullHazmatAgainst(aEntity, Hazards.GAS);
+        return isWearingFullHazmatAgainst(aEntity, Hazard.GAS);
     }
 
-    public static boolean isWearingFullHazmatAgainst(EntityLivingBase aEntity, Hazards hazard) {
+    public static boolean isWearingFullHazmatAgainst(EntityLivingBase aEntity, Hazard hazard) {
         for (byte i = 1; i < 5; i++) {
             ItemStack tStack = aEntity.getEquipmentInSlot(i);
 
@@ -2657,7 +2657,7 @@ public class GTUtility {
         return true;
     }
 
-    public static boolean protectsAgainstHazard(ItemStack tStack, Hazards hazard) {
+    public static boolean protectsAgainstHazard(ItemStack tStack, Hazard hazard) {
         GTHashSet list = switch (hazard) {
             case BIOLOGICAL: {
                 yield GregTechAPI.sBioHazmatList;
