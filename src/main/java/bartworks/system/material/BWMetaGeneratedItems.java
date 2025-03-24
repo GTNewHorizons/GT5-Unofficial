@@ -190,12 +190,12 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
         if (w == null || w.getStats() == null) return;
 
         if (w.getStats()
-            .isToxic() && !HazmatProtection.isWearingFullBioHazmat(bPlayer)) {
+            .isToxic() && !HazardProtection.isWearingFullBioHazmat(bPlayer)) {
             bPlayer.addPotionEffect(new PotionEffect(Potion.poison.getId(), 80, 4));
         }
 
         if (w.getStats()
-            .isRadioactive() && !HazmatProtection.isWearingFullRadioHazmat(bPlayer)) {
+            .isRadioactive() && !HazardProtection.isWearingFullRadioHazmat(bPlayer)) {
             bPlayer.addPotionEffect(new PotionEffect(IC2Potion.radiation.id, 80, 4));
         }
     }
