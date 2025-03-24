@@ -13,42 +13,42 @@ import gregtech.api.util.GTUtility;
 
 public class HazardProtection {
 
-    public static boolean isWearingFullFrostHazmat(EntityLivingBase aEntity) {
-        return isWearingFullHazmatAgainst(aEntity, Hazard.FROST);
+    public static boolean isWearingFullFrostHazmat(EntityLivingBase entity) {
+        return isWearingFullHazmatAgainst(entity, Hazard.FROST);
     }
 
-    public static boolean isWearingFullHeatHazmat(EntityLivingBase aEntity) {
-        return isWearingFullHazmatAgainst(aEntity, Hazard.HEAT);
+    public static boolean isWearingFullHeatHazmat(EntityLivingBase entity) {
+        return isWearingFullHazmatAgainst(entity, Hazard.HEAT);
     }
 
-    public static boolean isWearingFullBioHazmat(EntityLivingBase aEntity) {
-        return isWearingFullHazmatAgainst(aEntity, Hazard.BIOLOGICAL);
+    public static boolean isWearingFullBioHazmat(EntityLivingBase entity) {
+        return isWearingFullHazmatAgainst(entity, Hazard.BIOLOGICAL);
     }
 
-    public static boolean isWearingFullRadioHazmat(EntityLivingBase aEntity) {
-        return isWearingFullHazmatAgainst(aEntity, Hazard.RADIOLOGICAL);
+    public static boolean isWearingFullRadioHazmat(EntityLivingBase entity) {
+        return isWearingFullHazmatAgainst(entity, Hazard.RADIOLOGICAL);
     }
 
-    public static boolean isWearingFullElectroHazmat(EntityLivingBase aEntity) {
-        return isWearingFullHazmatAgainst(aEntity, Hazard.ELECTRICAL);
+    public static boolean isWearingFullElectroHazmat(EntityLivingBase entity) {
+        return isWearingFullHazmatAgainst(entity, Hazard.ELECTRICAL);
     }
 
-    public static boolean isWearingFullGasHazmat(EntityLivingBase aEntity) {
-        return isWearingFullHazmatAgainst(aEntity, Hazard.GAS);
+    public static boolean isWearingFullGasHazmat(EntityLivingBase entity) {
+        return isWearingFullHazmatAgainst(entity, Hazard.GAS);
     }
 
-    public static boolean isWearingFullHazmatAgainst(EntityLivingBase aEntity, Hazard hazard) {
+    public static boolean isWearingFullHazmatAgainst(EntityLivingBase entity, Hazard hazard) {
         for (byte i = 1; i < 5; i++) {
-            ItemStack tStack = aEntity.getEquipmentInSlot(i);
+            ItemStack stack = entity.getEquipmentInSlot(i);
 
-            if (!protectsAgainstHazard(tStack, hazard)) {
+            if (!protectsAgainstHazard(stack, hazard)) {
                 return false;
             }
         }
         return true;
     }
 
-    public static boolean protectsAgainstHazard(ItemStack tStack, Hazard hazard) {
+    public static boolean protectsAgainstHazard(ItemStack stack, Hazard hazard) {
         GTHashSet list = switch (hazard) {
             case BIOLOGICAL -> GregTechAPI.sBioHazmatList;
             case FROST -> GregTechAPI.sFrostHazmatList;
@@ -57,25 +57,25 @@ public class HazardProtection {
             case ELECTRICAL -> GregTechAPI.sElectroHazmatList;
             case GAS -> GregTechAPI.sGasHazmatList;
         };
-        return GTUtility.isStackInList(tStack, list) || hasHazmatEnchant(tStack)
-            || (tStack.getItem() instanceof IHazardProtector
-                && ((IHazardProtector) tStack.getItem()).protectsAgainst(tStack, hazard));
+        return GTUtility.isStackInList(stack, list) || hasHazmatEnchant(stack)
+            || (stack.getItem() instanceof IHazardProtector hazardProtector
+                && hazardProtector.protectsAgainst(stack, hazard));
     }
 
-    public static boolean providesFullHazmatProtection(ItemStack aStack) {
+    public static boolean providesFullHazmatProtection(ItemStack stack) {
         for (Hazard hazard : Hazard.values()) {
-            if (!protectsAgainstHazard(aStack, hazard)) {
+            if (!protectsAgainstHazard(stack, hazard)) {
                 return false;
             }
         }
         return true;
     }
 
-    public static boolean hasHazmatEnchant(ItemStack aStack) {
-        if (aStack == null) return false;
-        Map<Integer, Integer> tEnchantments = EnchantmentHelper.getEnchantments(aStack);
-        Integer tLevel = tEnchantments.get(EnchantmentHazmat.INSTANCE.effectId);
+    public static boolean hasHazmatEnchant(ItemStack stack) {
+        if (stack == null) return false;
+        Map<Integer, Integer> tEnchantments = EnchantmentHelper.getEnchantments(stack);
+        Integer level = tEnchantments.get(EnchantmentHazmat.INSTANCE.effectId);
 
-        return tLevel != null && tLevel >= 1;
+        return level != null && level >= 1;
     }
 }
