@@ -140,6 +140,7 @@ import gregtech.api.damagesources.GTDamageSources.DamageSourceHotItem;
 import gregtech.api.enchants.EnchantmentHazmat;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Hazards;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -152,6 +153,7 @@ import gregtech.api.events.BlockScanningEvent;
 import gregtech.api.interfaces.IBlockContainer;
 import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.IHasIndexedTexture;
+import gregtech.api.interfaces.IHazardProtector;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -167,6 +169,7 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.net.GTPacketSound;
 import gregtech.api.objects.CollectorUtils;
+import gregtech.api.objects.GTHashSet;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
@@ -2620,57 +2623,64 @@ public class GTUtility {
     }
 
     public static boolean isWearingFullFrostHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            if (!isProtectedInSlot(aEntity, GregTechAPI.sFrostHazmatList, i)) {
-                return false;
-            }
-        }
-        return true;
+        return isWearingFullHazmatAgainst(aEntity, Hazards.FROST);
     }
 
     public static boolean isWearingFullHeatHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            if (!isProtectedInSlot(aEntity, GregTechAPI.sHeatHazmatList, i)) {
-                return false;
-            }
-        }
-        return true;
+        return isWearingFullHazmatAgainst(aEntity, Hazards.HEAT);
     }
 
     public static boolean isWearingFullBioHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            if (!isProtectedInSlot(aEntity, GregTechAPI.sBioHazmatList, i)) {
-                return false;
-            }
-        }
-        return true;
+        return isWearingFullHazmatAgainst(aEntity, Hazards.BIOLOGICAL);
     }
 
     public static boolean isWearingFullRadioHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            if (!isProtectedInSlot(aEntity, GregTechAPI.sRadioHazmatList, i)) {
-                return false;
-            }
-        }
-        return true;
+        return isWearingFullHazmatAgainst(aEntity, Hazards.RADIOLOGICAL);
     }
 
     public static boolean isWearingFullElectroHazmat(EntityLivingBase aEntity) {
+        return isWearingFullHazmatAgainst(aEntity, Hazards.ELECTRICAL);
+    }
+
+    public static boolean isWearingFullGasHazmat(EntityLivingBase aEntity) {
+        return isWearingFullHazmatAgainst(aEntity, Hazards.GAS);
+    }
+
+    public static boolean isWearingFullHazmatAgainst(EntityLivingBase aEntity, Hazards hazard) {
         for (byte i = 1; i < 5; i++) {
-            if (!isProtectedInSlot(aEntity, GregTechAPI.sElectroHazmatList, i)) {
+            ItemStack tStack = aEntity.getEquipmentInSlot(i);
+
+            if (!protectsAgainstHazard(tStack, hazard)) {
                 return false;
             }
         }
         return true;
     }
 
-    public static boolean isWearingFullGasHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) {
-            if (!isProtectedInSlot(aEntity, GregTechAPI.sGasHazmatList, i)) {
-                return false;
+    public static boolean protectsAgainstHazard(ItemStack tStack, Hazards hazard) {
+        GTHashSet list = switch (hazard) {
+            case BIOLOGICAL: {
+                yield GregTechAPI.sBioHazmatList;
             }
-        }
-        return true;
+            case FROST: {
+                yield GregTechAPI.sFrostHazmatList;
+            }
+            case HEAT: {
+                yield GregTechAPI.sHeatHazmatList;
+            }
+            case RADIOLOGICAL: {
+                yield GregTechAPI.sRadioHazmatList;
+            }
+            case ELECTRICAL: {
+                yield GregTechAPI.sElectroHazmatList;
+            }
+            case GAS: {
+                yield GregTechAPI.sGasHazmatList;
+            }
+        };
+        return isStackInList(tStack, list)
+        || hasHazmatEnchant(tStack)
+        || (tStack.getItem() instanceof IHazardProtector && ((IHazardProtector) tStack.getItem()).protectsAgainst(tStack, hazard));
     }
 
     public static boolean isProtectedInSlot(EntityLivingBase aEntity, Collection<GTItemStack> list, byte slot) {
