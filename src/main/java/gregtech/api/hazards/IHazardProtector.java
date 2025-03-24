@@ -1,8 +1,6 @@
-package gregtech.api.interfaces;
+package gregtech.api.hazards;
 
 import net.minecraft.item.ItemStack;
-
-import gregtech.api.enums.Hazard;
 
 public interface IHazardProtector {
 

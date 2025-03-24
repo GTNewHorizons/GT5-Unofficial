@@ -1,4 +1,4 @@
-package gregtech.api.enums;
+package gregtech.api.hazards;
 
 /**
  * Categories that can be checked for "Hazmat suit" type checks.
