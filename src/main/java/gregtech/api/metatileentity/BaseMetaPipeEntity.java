@@ -352,14 +352,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                     if (aValue > 16 || aValue < 0) aValue = 0;
                     mColor = (byte) aValue;
                 }
-                case GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT -> {
-                    mSidedRedstone[0] = (byte) ((aValue & 1) == 1 ? 15 : 0);
-                    mSidedRedstone[1] = (byte) ((aValue & 2) == 2 ? 15 : 0);
-                    mSidedRedstone[2] = (byte) ((aValue & 4) == 4 ? 15 : 0);
-                    mSidedRedstone[3] = (byte) ((aValue & 8) == 8 ? 15 : 0);
-                    mSidedRedstone[4] = (byte) ((aValue & 16) == 16 ? 15 : 0);
-                    mSidedRedstone[5] = (byte) ((aValue & 32) == 32 ? 15 : 0);
-                }
+                case GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT -> setRedstoneOutput(aValue);
                 case GregTechTileClientEvents.DO_SOUND -> {
                     if (hasValidMetaTileEntity() && mTickTimer > 20)
                         mMetaTileEntity.doSound((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
