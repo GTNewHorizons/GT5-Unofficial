@@ -15,6 +15,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -97,6 +98,10 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
                 GTMod.logStackTrace(e);
             }
         }
+    }
+
+    protected void sendSoundToPlayers(SoundResource sound, float soundStrength, int soundModulation) {
+        GTUtility.sendSoundToPlayers(worldObj, sound, soundStrength, soundModulation, xCoord, yCoord, zCoord);
     }
 
     /**

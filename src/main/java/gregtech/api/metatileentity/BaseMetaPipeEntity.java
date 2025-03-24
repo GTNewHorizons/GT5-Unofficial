@@ -847,14 +847,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                     if (mMetaTileEntity.onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                         mMetaTileEntity.markDirty();
                         GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
-                        GTUtility.sendSoundToPlayers(
-                            worldObj,
-                            SoundResource.IC2_TOOLS_WRENCH,
-                            1.0F,
-                            -1,
-                            xCoord,
-                            yCoord,
-                            zCoord);
+                        sendSoundToPlayers(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1);
                     }
                     return true;
                 }
@@ -866,28 +859,14 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                                 getCoverAtSide(wrenchingSide).onCoverScrewdriverClick(aPlayer, 0.5F, 0.5F, 0.5F));
                             mMetaTileEntity.onScrewdriverRightClick(wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem);
                             mMetaTileEntity.markDirty();
-                            GTUtility.sendSoundToPlayers(
-                                worldObj,
-                                SoundResource.IC2_TOOLS_WRENCH,
-                                1.0F,
-                                -1,
-                                xCoord,
-                                yCoord,
-                                zCoord);
+                            sendSoundToPlayers(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1);
                         }
                     } else {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                             setCoverDataAtSide(side, getCoverAtSide(side).onCoverScrewdriverClick(aPlayer, aX, aY, aZ));
                             mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tCurrentItem);
                             mMetaTileEntity.markDirty();
-                            GTUtility.sendSoundToPlayers(
-                                worldObj,
-                                SoundResource.IC2_TOOLS_WRENCH,
-                                1.0F,
-                                -1,
-                                xCoord,
-                                yCoord,
-                                zCoord);
+                            sendSoundToPlayers(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1);
                         }
                     }
                     return true;
@@ -907,14 +886,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                             GTUtility.trans("090", "Machine Processing: ")
                                 + (isAllowedToWork() ? GTUtility.trans("088", "Enabled")
                                     : GTUtility.trans("087", "Disabled")));
-                        GTUtility.sendSoundToPlayers(
-                            worldObj,
-                            SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
-                            1.0F,
-                            -1,
-                            xCoord,
-                            yCoord,
-                            zCoord);
+                        sendSoundToPlayers(SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1);
                     }
                     return true;
                 }
@@ -924,14 +896,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                         .onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                         mMetaTileEntity.markDirty();
                         // logic handled internally
-                        GTUtility.sendSoundToPlayers(
-                            worldObj,
-                            SoundResource.IC2_TOOLS_WRENCH,
-                            1.0F,
-                            -1,
-                            xCoord,
-                            yCoord,
-                            zCoord);
+                        sendSoundToPlayers(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1);
                     }
                     doEnetUpdate();
                     return true;
@@ -942,14 +907,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                         .onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                         mMetaTileEntity.markDirty();
                         // logic handled internally
-                        GTUtility.sendSoundToPlayers(
-                            worldObj,
-                            SoundResource.IC2_TOOLS_BATTERY_USE,
-                            1.0F,
-                            -1,
-                            xCoord,
-                            yCoord,
-                            zCoord);
+                        sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 1.0F, -1);
                     } else if (GTModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
                         mMetaTileEntity.markDirty();
                         mStrongRedstone ^= wrenchingSide.flag;
@@ -959,14 +917,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                                 + GTUtility.trans("092", " set to: ")
                                 + ((mStrongRedstone & wrenchingSide.flag) != 0 ? GTUtility.trans("093", "Strong")
                                     : GTUtility.trans("094", "Weak")));
-                        GTUtility.sendSoundToPlayers(
-                            worldObj,
-                            SoundResource.IC2_TOOLS_BATTERY_USE,
-                            3.0F,
-                            -1,
-                            xCoord,
-                            yCoord,
-                            zCoord);
+                        sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 3.0F, -1);
                         issueBlockUpdate();
                     }
                     doEnetUpdate();
@@ -984,14 +935,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
                             mMetaTileEntity.markDirty();
                             if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
-                            GTUtility.sendSoundToPlayers(
-                                worldObj,
-                                SoundResource.IC2_TOOLS_WRENCH,
-                                1.0F,
-                                -1,
-                                xCoord,
-                                yCoord,
-                                zCoord);
+                            sendSoundToPlayers(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1);
                             sendClientData();
                         }
                         return true;
@@ -999,14 +943,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 } else {
                     if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)) {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                            GTUtility.sendSoundToPlayers(
-                                worldObj,
-                                SoundResource.RANDOM_BREAK,
-                                1.0F,
-                                -1,
-                                xCoord,
-                                yCoord,
-                                zCoord);
+                            sendSoundToPlayers(SoundResource.RANDOM_BREAK, 1.0F, -1);
                             dropCover(effectiveSide, side);
                             mMetaTileEntity.markDirty();
                         }
