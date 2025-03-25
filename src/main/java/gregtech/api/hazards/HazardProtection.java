@@ -1,5 +1,6 @@
 package gregtech.api.hazards;
 
+import java.util.Collection;
 import java.util.Map;
 
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -11,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentHazmat;
-import gregtech.api.objects.GTHashSet;
+import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTUtility;
 
 public class HazardProtection {
@@ -52,8 +53,14 @@ public class HazardProtection {
     }
 
     public static boolean protectsAgainstHazard(@Nullable ItemStack stack, @NotNull Hazard hazard) {
-        if (stack == null) return false;
-        GTHashSet list = switch (hazard) {
+        return stack != null
+            && (GTUtility.isStackInList(stack, getHazardProtectionEquipmentList(hazard)) || hasHazmatEnchant(stack)
+                || (stack.getItem() instanceof IHazardProtector hazardProtector
+                    && hazardProtector.protectsAgainst(stack, hazard)));
+    }
+
+    private static @NotNull Collection<GTItemStack> getHazardProtectionEquipmentList(@NotNull Hazard hazard) {
+        return switch (hazard) {
             case BIOLOGICAL -> GregTechAPI.sBioHazmatList;
             case FROST -> GregTechAPI.sFrostHazmatList;
             case HEAT -> GregTechAPI.sHeatHazmatList;
@@ -61,9 +68,6 @@ public class HazardProtection {
             case ELECTRICAL -> GregTechAPI.sElectroHazmatList;
             case GAS -> GregTechAPI.sGasHazmatList;
         };
-        return GTUtility.isStackInList(stack, list) || hasHazmatEnchant(stack)
-            || (stack.getItem() instanceof IHazardProtector hazardProtector
-                && hazardProtector.protectsAgainst(stack, hazard));
     }
 
     public static boolean providesFullHazmatProtection(@Nullable ItemStack stack) {
