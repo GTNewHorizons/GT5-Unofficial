@@ -782,9 +782,21 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + "L "
                     + stack.getLocalizedName());
         }
-        info.add(generateInfoStringForBit(0, controlSignal.getBit(3) && isBit3Satisfied().satisfied ? new ControlBitStatus(null, true) : isBit0Satisfied()));
-        info.add(generateInfoStringForBit(1, controlSignal.getBit(3) && isBit3Satisfied().satisfied ? new ControlBitStatus(null, true) : isBit1Satisfied()));
-        info.add(generateInfoStringForBit(2, controlSignal.getBit(3) && isBit3Satisfied().satisfied ? new ControlBitStatus(null, true) : isBit2Satisfied()));
+        info.add(
+            generateInfoStringForBit(
+                0,
+                controlSignal.getBit(3) && isBit3Satisfied().satisfied ? new ControlBitStatus(null, true)
+                    : isBit0Satisfied()));
+        info.add(
+            generateInfoStringForBit(
+                1,
+                controlSignal.getBit(3) && isBit3Satisfied().satisfied ? new ControlBitStatus(null, true)
+                    : isBit1Satisfied()));
+        info.add(
+            generateInfoStringForBit(
+                2,
+                controlSignal.getBit(3) && isBit3Satisfied().satisfied ? new ControlBitStatus(null, true)
+                    : isBit2Satisfied()));
         info.add(generateInfoStringForBit(3, isBit3Satisfied()));
         return info.toArray(new String[] {});
     }
