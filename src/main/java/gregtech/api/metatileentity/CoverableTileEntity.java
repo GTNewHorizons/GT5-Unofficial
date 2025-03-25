@@ -315,6 +315,15 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         }
     }
 
+    protected void setRedstoneOutput(int packedRedstoneValue) {
+        mSidedRedstone[0] = (byte) ((packedRedstoneValue & 1) == 1 ? 15 : 0);
+        mSidedRedstone[1] = (byte) ((packedRedstoneValue & 2) == 2 ? 15 : 0);
+        mSidedRedstone[2] = (byte) ((packedRedstoneValue & 4) == 4 ? 15 : 0);
+        mSidedRedstone[3] = (byte) ((packedRedstoneValue & 8) == 8 ? 15 : 0);
+        mSidedRedstone[4] = (byte) ((packedRedstoneValue & 16) == 16 ? 15 : 0);
+        mSidedRedstone[5] = (byte) ((packedRedstoneValue & 32) == 32 ? 15 : 0);
+    }
+
     @Override
     public void setOutputRedstoneSignal(ForgeDirection side, byte strength) {
         final byte cappedStrength = (byte) Math.min(Math.max(0, strength), 15);
