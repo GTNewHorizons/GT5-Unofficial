@@ -136,7 +136,6 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.GTUODimensionList;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
@@ -2684,14 +2683,9 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
 
     @SubscribeEvent
     public void onItemTooltip(ItemTooltipEvent event) {
-        if (event.itemStack != null) {
-            ItemStack aStackTemp = event.itemStack;
-            GTItemStack aStack = new GTItemStack(aStackTemp);
-            if (HazardProtection.providesFullHazmatProtection(aStackTemp)) {
-                event.toolTip.add(
-                    EnumChatFormatting.LIGHT_PURPLE
-                        + StatCollector.translateToLocal("GT5U.providesfullhazmatprotection"));
-            }
+        if (HazardProtection.providesFullHazmatProtection(event.itemStack)) {
+            event.toolTip.add(
+                EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal("GT5U.providesfullhazmatprotection"));
         }
     }
 
