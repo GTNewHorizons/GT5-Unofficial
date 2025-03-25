@@ -6,8 +6,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.covers.CoverContext;
+import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import tectech.mechanics.tesla.ITeslaConnectable;
 import tectech.mechanics.tesla.TeslaCoverConnection;
@@ -70,7 +70,7 @@ public class CoverTeslaCoil extends Cover {
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         ICoverable coverable = coveredTile.get();
         // Shock a non-hazmat player if they dare stuff a screwdriver into one of these
-        if (coverable != null && coverable.getStoredEU() > 0 && !GTUtility.isWearingFullElectroHazmat(aPlayer)) {
+        if (coverable != null && coverable.getStoredEU() > 0 && !HazardProtection.isWearingFullElectroHazmat(aPlayer)) {
             aPlayer.attackEntityFrom(DMG_ELECTRIC, 20);
         }
     }

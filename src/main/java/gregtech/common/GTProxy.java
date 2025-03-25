@@ -126,6 +126,7 @@ import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.fluid.GTFluidFactory;
+import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IBlockOnWalkOver;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.IToolStats;
@@ -2681,25 +2682,12 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         GregTechAPI.sElectroHazmatList.add(item);
     }
 
-    public static boolean providesProtection(ItemStack aStack) {
-
-        if (GTUtility.hasHazmatEnchant(aStack)) return true;
-
-        boolean isGas = GTUtility.isStackInList(aStack, GregTechAPI.sGasHazmatList);
-        boolean isBio = GTUtility.isStackInList(aStack, GregTechAPI.sBioHazmatList);
-        boolean isFrost = GTUtility.isStackInList(aStack, GregTechAPI.sFrostHazmatList);
-        boolean isHeat = GTUtility.isStackInList(aStack, GregTechAPI.sHeatHazmatList);
-        boolean isRadio = GTUtility.isStackInList(aStack, GregTechAPI.sRadioHazmatList);
-        boolean isElectro = GTUtility.isStackInList(aStack, GregTechAPI.sElectroHazmatList);
-        return isGas && isBio && isFrost && isHeat && isRadio && isElectro;
-    }
-
     @SubscribeEvent
     public void onItemTooltip(ItemTooltipEvent event) {
         if (event.itemStack != null) {
             ItemStack aStackTemp = event.itemStack;
             GTItemStack aStack = new GTItemStack(aStackTemp);
-            if (providesProtection(aStackTemp)) {
+            if (HazardProtection.providesFullHazmatProtection(aStackTemp)) {
                 event.toolTip.add(
                     EnumChatFormatting.LIGHT_PURPLE
                         + StatCollector.translateToLocal("GT5U.providesfullhazmatprotection"));
