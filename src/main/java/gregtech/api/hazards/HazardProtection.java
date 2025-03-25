@@ -49,6 +49,7 @@ public class HazardProtection {
     }
 
     public static boolean protectsAgainstHazard(ItemStack stack, Hazard hazard) {
+        if (stack == null) return false;
         GTHashSet list = switch (hazard) {
             case BIOLOGICAL -> GregTechAPI.sBioHazmatList;
             case FROST -> GregTechAPI.sFrostHazmatList;
@@ -63,6 +64,7 @@ public class HazardProtection {
     }
 
     public static boolean providesFullHazmatProtection(ItemStack stack) {
+        if (stack == null) return false;
         for (Hazard hazard : Hazard.values()) {
             if (!protectsAgainstHazard(stack, hazard)) {
                 return false;
