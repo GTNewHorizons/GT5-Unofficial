@@ -253,7 +253,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         if (!checkPiece(STRUCTURE_PIECE_BODY, 3, 4, -1) && !checkPiece(STRUCTURE_PIECE_BODY_ALT, 3, 4, -1))
             return false;
-        return pipeTier > 0 && !mEnergyHatches.isEmpty() && mCasingAmount >= 42;
+        return this.mMaintenanceHatches.size() == 1 &&  pipeTier > 0 && !mEnergyHatches.isEmpty() && mCasingAmount >= 42;
     }
 
     @Override

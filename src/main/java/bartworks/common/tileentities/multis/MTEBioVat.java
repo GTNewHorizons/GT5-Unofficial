@@ -322,7 +322,10 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
 
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 2, 3, 0)) return false;
 
-        return this.mCasing >= 19 && this.mRadHatches.size() <= 1 && !this.mEnergyHatches.isEmpty();
+        return this.mCasing >= 19
+            && this.mRadHatches.size() <= 1
+            && !this.mEnergyHatches.isEmpty()
+            && this.mMaintenanceHatches.size() == 1;
     }
 
     @Override
