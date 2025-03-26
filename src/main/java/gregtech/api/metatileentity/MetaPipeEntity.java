@@ -432,7 +432,8 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
     private boolean boundingBoxShouldBeFullBlock() {
         // While holding tool, make it full block.
-        return GTMod.instance.isClientSide() && (GTClient.hideValue & 0x2) != 0 || getCollisionThickness() == 1;
+        return (GTMod.instance.isClientSide() && GTClient.shouldForceFullBlockBoundingBoxes())
+            || getCollisionThickness() == 1;
     }
 
     /**
