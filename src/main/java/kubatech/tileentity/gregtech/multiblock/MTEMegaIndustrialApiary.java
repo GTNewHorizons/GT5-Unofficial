@@ -44,8 +44,10 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -56,6 +58,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -63,6 +66,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.tuple.Triple;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
@@ -899,22 +903,35 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .append(String.format("%,.1f", (double) mProgresstime / mMaxProgresstime * 100))
             .append("%)\n");
 
-        for (Map.Entry<ItemStack, Double> drop : GUIDropProgress.entrySet()) {
+        LinkedHashMap<ItemStack, Double> sortedMap = GUIDropProgress.entrySet().stream()
+            .sorted(Comparator.comparingInt(
+                (Map.Entry<ItemStack, Double> entry) ->
+                    Arrays.stream(mOutputItems)
+                        .filter(s -> s.isItemEqual(entry.getKey()))
+                        .mapToInt(i -> i.stackSize)
+                        .sum()
+            ).reversed())
+            .collect(Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue,
+                (e1, e2) -> e1,
+                LinkedHashMap::new
+            ));
+
+
+        for (Map.Entry<ItemStack, Double> drop : sortedMap.entrySet()) {
             int outputSize = Arrays.stream(mOutputItems)
                 .filter(s -> s.isItemEqual(drop.getKey()))
                 .mapToInt(i -> i.stackSize)
                 .sum();
-            ret.append(EnumChatFormatting.AQUA)
-                .append(
-                    drop.getKey()
-                        .getDisplayName())
-                .append(EnumChatFormatting.WHITE)
-                .append(": ");
-            if (outputSize == 0) {
-                ret.append(String.format("%.2f", drop.getValue() * 100))
-                    .append("%\n");
-            } else {
-                ret.append(EnumChatFormatting.GOLD)
+            if (outputSize != 0) {
+                ret.append(EnumChatFormatting.AQUA)
+                    .append(
+                        drop.getKey()
+                            .getDisplayName())
+                    .append(EnumChatFormatting.WHITE)
+                    .append(": ")
+                    .append(EnumChatFormatting.GOLD)
                     .append(
                         String.format(
                             "x%d %s(+%.2f/sec)\n",
@@ -923,7 +940,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                             (double) outputSize / (mMaxProgresstime / 20)));
             }
         }
-
         return ret.toString();
     }
 

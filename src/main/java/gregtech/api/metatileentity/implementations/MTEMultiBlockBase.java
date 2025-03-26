@@ -24,13 +24,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.LongConsumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import codechicken.nei.NEIClientUtils;
+import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -2835,8 +2839,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     protected final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
+    protected void generateCurrentRecipeScreenElements(DynamicPositionedColumn screenElements) {
+        String[] buffer = generateCurrentRecipeInfoString().split("\n");
+            for (String line : buffer) {
+                screenElements.widget(TextWidget.dynamicString(() -> line)
+                    .setSynced(false)
+                    .setTextAlignment(Alignment.CenterLeft));
+            }
+    }
+
     protected String generateCurrentRecipeInfoString() {
         StringBuffer ret = new StringBuffer(StatCollector.translateToLocal("GT5U.gui.text.progress"));
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
         ret.append(" ");
 
         numberFormat.setMinimumFractionDigits(2);
@@ -2897,21 +2911,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     return ret.toString();
                 }
                 lines++;
-                ret.append(EnumChatFormatting.AQUA)
-                    .append(entry.getKey())
-                    .append(EnumChatFormatting.WHITE)
-                    .append(
-                        entry.getKey()
-                            .length()
-                            + entry.getValue()
-                                .toString()
-                                .length()
-                            + 5 > 30 ? "\n" : "")
-                    .append(" x ")
-                    .append(EnumChatFormatting.GOLD);
-                Long number = entry.getValue();
-                ret.append(formatNumbers(number));
-                ret.append(EnumChatFormatting.WHITE);
+                Long itemCount = entry.getValue();
+                String itemName = entry.getKey();
+                String itemCropName = NEIClientUtils.cropText(fontRenderer, itemName, 100);
+                String itemFullName = EnumChatFormatting.AQUA
+                    + itemCropName
+                    + EnumChatFormatting.WHITE
+                    + " X "
+                    + EnumChatFormatting.GOLD
+                    + formatNumbers(itemCount)
+                    + EnumChatFormatting.WHITE;
+                ret.append(itemFullName);
                 appendRate.accept(entry.getValue());
                 ret.append('\n');
             }
@@ -3121,13 +3131,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (showRecipeTextInGUI()) {
             // Display current recipe
             screenElements.widget(
-                TextWidget.dynamicString(this::generateCurrentRecipeInfoString)
-                    .setSynced(false)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(
-                        widget -> (mOutputFluids != null && mOutputFluids.length > 0)
-                            || (mOutputItems != null && mOutputItems.length > 0)))
-                .widget(
                     new FakeSyncWidget.ListSyncer<>(
                         () -> mOutputFluids != null ? Arrays.stream(mOutputFluids)
                             .map(fluidStack -> {
@@ -3152,6 +3155,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         NetworkUtils::readItemStack))
                 .widget(new FakeSyncWidget.IntegerSyncer(() -> mProgresstime, val -> mProgresstime = val))
                 .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> mMaxProgresstime = val));
+            generateCurrentRecipeScreenElements(screenElements);
+
         }
 
         screenElements.widget(
