@@ -50,7 +50,6 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
     private String freqFilter = "";
     private String ownerFilter = "";
     private int lastPage = 0;
-    private boolean isOP = false;
 
     public ItemRedstoneSniffer(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);;
@@ -77,6 +76,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
 
     @Override
     public ModularPanel buildUI(GuiData guiData, PanelSyncManager guiSyncManager) {
+
         PagedWidget.Controller controller = new PagedWidget.Controller() {
 
             @Override
@@ -85,14 +85,14 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                 lastPage = page;
             }
         };
-
         BooleanSyncValue playerIsOP = new BooleanSyncValue(() -> false, () -> {
             EntityPlayerMP player = (EntityPlayerMP) guiData.getPlayer();
-            boolean result = player.mcServer.getConfigurationManager()
+            return player.mcServer.getConfigurationManager()
                 .func_152596_g(player.getGameProfile());
-            isOP = result;
-            return result;
         });
+        guiSyncManager.syncValue("playerisop", 0, playerIsOP);
+        System.out.println(((BooleanSyncValue) guiSyncManager.getSyncHandler("playerisop:0")).getValue());
+
 
         ModularPanel panel = ModularPanel.defaultPanel("redstone_sniffer");
         panel.flex()
@@ -162,7 +162,11 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
 
         ListWidget advancedListWidget = new ListWidget();
         advancedListWidget.sizeRel(1);
-        List<IWidget> advancedList = (processAdvancedFrequencies(publicFreqs, "Public", advancedListWidget, isOP));
+        List<IWidget> advancedList = (processAdvancedFrequencies(
+            publicFreqs,
+            "Public",
+            advancedListWidget,
+            guiSyncManager));
 
         UUID leader = SpaceProjectManager.getLeader(
             guiData.getPlayer()
@@ -176,7 +180,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                             allFreqs.getOrDefault(uuid, new ConcurrentHashMap<>()),
                             uuid,
                             advancedListWidget,
-                            isOP)));
+                            guiSyncManager)));
                 }
             });
 
@@ -246,8 +250,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
     }
 
     public List<IWidget> processAdvancedFrequencies(Map<String, Map<CoverPosition, Byte>> frequencyMap, String owner,
-        ListWidget listWidget, boolean playerIsOP) {
-
+        ListWidget listWidget, PanelSyncManager guiSyncManager) {
         String ownerString = owner.equals("Public") ? "Public"
             : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(owner));
         AtomicInteger size = new AtomicInteger();
@@ -281,7 +284,8 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                             .child(
                                 new Row().widthRel(0.25f)
                                     .child(
-                                        new Column().widthRel(playerIsOP ? 0.5f : 1)
+                                        new Column()
+                                            .widthRel(0.5f)
                                             .child(
                                                 new ButtonWidget<>().size(25, 25)
                                                     .align(Alignment.Center)
@@ -304,7 +308,10 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                                         return true;
                                                     })))
                                     .child(
-                                        new Column().setEnabledIf(w -> playerIsOP)
+                                        new Column()
+                                            .setEnabledIf(
+                                                w -> ((BooleanSyncValue) guiSyncManager.getSyncHandler("playerisop:0"))
+                                                    .getBoolValue())
                                             .widthRel(0.5f)
                                             .child(
                                                 new ButtonWidget<>().size(25, 25)
