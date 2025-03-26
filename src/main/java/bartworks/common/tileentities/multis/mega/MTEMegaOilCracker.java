@@ -158,7 +158,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
             .addController("Front bottom")
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 197, false)
             .addCasingInfoExactly("Coil", 92, true)
-            .addCasingInfoExactly("Any Glass", 196, true)
+            .addCasingInfoExactly("Any Tiered Glass", 196, true)
             .addEnergyHatch("Hint block", 1)
             .addMaintenanceHatch("Hint block", 1)
             .addInputHatch("Hint block", 2, 3)

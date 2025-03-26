@@ -361,7 +361,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .beginStructureBlock(9, 5, 5, true)
             .addController("Front bottom")
             .addCasingInfoExactly("Machine Casing", 21, true)
-            .addCasingInfoExactly("Glass (EV+)", 42, false)
+            .addCasingInfoExactly("Any Tiered Glass (EV+)", 42, false)
             .addCasingInfoRange("Precise Electronic Unit Casing", 42, 86, true)
             .addInputHatch("Any Casing")
             .addInputBus("Any Casing")

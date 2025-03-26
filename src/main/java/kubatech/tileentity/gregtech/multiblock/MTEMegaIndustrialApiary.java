@@ -327,7 +327,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .beginStructureBlock(15, 17, 15, false)
             .addController("Front Bottom Center")
             .addCasingInfoMin("Bronze Plated Bricks", 190, false)
-            .addCasingInfoExactly("Any Glass", 121, false)
+            .addCasingInfoExactly("Any Tiered Glass", 121, false)
             .addStructureInfo("The glass tier limits the Energy Input tier")
             .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
             .addOtherStructurePart(

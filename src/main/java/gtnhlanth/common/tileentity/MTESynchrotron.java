@@ -546,7 +546,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             .addCasingInfoExactly("Superconducting Coil Block", 90, false)
             .addCasingInfoExactly("Niobium Cavity Casing", 64, false)
             .addCasingInfoExactly(LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), 28, false)
-            .addCasingInfoExactly("Glass (LuV+)", 16, false)
+            .addCasingInfoExactly("Any Tiered Glass (LuV+)", 16, false)
             .addCasingInfoExactly("Antenna Casing (must match)", 4, true)
             .addOtherStructurePart("Beamline Input Hatch", addDotText(1))
             .addOtherStructurePart("Beamline Output Hatch", addDotText(2))

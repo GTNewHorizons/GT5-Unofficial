@@ -204,7 +204,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             .addCasingInfoRange("Solidifier Radiator", 13, 73, false)
             .addCasingInfoRange("Heat Proof Machine Casing", 4, 16, false)
             .addCasingInfoRange("Clean Stainless Steel Machine Casing", 4, 16, false)
-            .addCasingInfoRange("Any Glass", 14, 117, true)
+            .addCasingInfoRange("Any Tiered Glass", 14, 117, true)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)

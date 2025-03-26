@@ -204,7 +204,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addCasingInfoRange("Superconducting Coil Block", 56, 312, false)
             .addCasingInfoRange(LanthItemList.ELECTRODE_CASING.getLocalizedName(), 156, 732, false)
             .addCasingInfoExactly("Grate Machine Casing", 47, false)
-            .addCasingInfoExactly("Glass (LuV+)", 48, false)
+            .addCasingInfoExactly("Any Tiered Glass (LuV+)", 48, false)
             .addEnergyHatch(addDotText(1))
             .addMaintenanceHatch(addDotText(1))
             .addInputHatch(addDotText(2))

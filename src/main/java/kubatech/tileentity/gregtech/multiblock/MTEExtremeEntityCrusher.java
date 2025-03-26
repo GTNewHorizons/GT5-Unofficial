@@ -280,7 +280,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .beginStructureBlock(5, 7, 5, true)
             .addController("Front Bottom Center")
             .addCasingInfoMin("Solid Steel Machine Casing", 35, false)
-            .addCasingInfoExactly("Any Glass", 60, false)
+            .addCasingInfoExactly("Any Tiered Glass", 60, false)
             .addCasingInfoExactly("Steel Frame Box", 20, false)
             .addCasingInfoExactly("Diamond Spike", 9, false)
             .addOutputBus("Any bottom casing", 1)

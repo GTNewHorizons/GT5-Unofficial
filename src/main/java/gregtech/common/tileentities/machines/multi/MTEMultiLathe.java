@@ -200,7 +200,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
             .addController("Front Center")
             .addCasingInfoMin("Solid Steel Machine Casing", 42, false)
             .addCasingInfoExactly("Grate Machine Casing", 9, false)
-            .addCasingInfoExactly("Any Glass", 32, false)
+            .addCasingInfoExactly("Any Tiered Glass", 32, false)
             .addInputBus("Any Solid Steel Casing", 1)
             .addOutputBus("Any Solid Steel Casing", 1)
             .addEnergyHatch("Any Solid Steel Casing", 1)

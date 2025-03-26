@@ -311,7 +311,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         tt.beginStructureBlock(5, 6, 5, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Clean Stainless Steel Casings", 70, false)
-            .addCasingInfoExactly("Any Glass", 32, true)
+            .addCasingInfoExactly("Any Tiered Glass", 32, true)
             .addStructureInfo("The dirt is from RandomThings, must be tilled")
             .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
             .addStructureInfo("Purple lamps are from ProjectRedIllumination. They can be powered and/or inverted")
