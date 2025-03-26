@@ -61,7 +61,7 @@ public class PacketDebugRedstoneCover extends GTPacket {
         int y = this.coords[1];
         int z = this.coords[2];
         ServerConfigurationManager manager = player.mcServer.getConfigurationManager();
-        if (this.teleportPlayer) {
+        if (this.teleportPlayer && manager.func_152596_g(player.getGameProfile())) { // Check if player is allowed to tp
             if (player.dimension != this.dim) {
                 manager.transferPlayerToDimension(player, this.dim);
             }
