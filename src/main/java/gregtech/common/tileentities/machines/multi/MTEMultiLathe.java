@@ -118,7 +118,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
         .addElement(
             'F',
             withChannel(
-                "item pipe",
+                "item_pipe",
                 ofBlocksTiered(
                     MTEMultiLathe::getTierFromMeta,
                     ImmutableList.of(
@@ -200,7 +200,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
             .addController("Front Center")
             .addCasingInfoMin("Solid Steel Machine Casing", 42, false)
             .addCasingInfoExactly("Grate Machine Casing", 9, false)
-            .addCasingInfoExactly("Glass", 32, false)
+            .addCasingInfoExactly("Any Glass", 32, false)
             .addInputBus("Any Solid Steel Casing", 1)
             .addOutputBus("Any Solid Steel Casing", 1)
             .addEnergyHatch("Any Solid Steel Casing", 1)
@@ -210,7 +210,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
                 "Center of the glass",
                 4)
             .addSubChannelUsage("glass", "Glass Tier")
-            .addSubChannelUsage("item pipe", "Item Pipe Casings")
+            .addSubChannelUsage("item_pipe", "Item Pipe Casings")
             .toolTipFinisher(AuthorVolence);
         return tt;
     }

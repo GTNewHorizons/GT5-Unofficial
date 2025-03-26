@@ -407,7 +407,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
             .beginVariableStructureBlock(5, 5, 1, 15, 5, 5, false)
             .addController("Front of the second layer")
             .addCasingInfoExactly("Steel Frame Box", 16, false)
-            .addCasingInfoRange("Glass", 16, 240, true)
+            .addCasingInfoRange("Any Glass", 16, 240, true)
             .addCasingInfoRange("Fluid Cell Block", 9, 135, true)
             .addCasingInfoRange("YOTTank Casing", 25, 43, false)
             .addInputHatch("Hint block with dot 1")

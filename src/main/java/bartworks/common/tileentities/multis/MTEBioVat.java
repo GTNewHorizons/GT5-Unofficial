@@ -158,7 +158,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                 StatCollector.translateToLocal("tooltip.bw.structure.glass"),
                 "Hollow two middle layers",
                 2)
-            .addCasingInfoExactly("Glass", 32, true)
+            .addCasingInfoExactly("Any Glass", 32, true)
             .addStructureInfo("Some Recipes need more advanced Glass Types")
             .addMaintenanceHatch("Any casing", 1)
             .addOtherStructurePart(StatCollector.translateToLocal("tooltip.bw.structure.radio_hatch"), "Any casing", 1)

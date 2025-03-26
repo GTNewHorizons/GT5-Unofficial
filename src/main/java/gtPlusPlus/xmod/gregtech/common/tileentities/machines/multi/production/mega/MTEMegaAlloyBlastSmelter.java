@@ -309,7 +309,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             .addCasingInfoExactly("Blast Smelter Casing Block", 218, false)
             .addCasingInfoExactly("Blast Smelter Heat Containment Coil", 56, false)
             .addCasingInfoExactly("Coil", 360, true)
-            .addCasingInfoExactly("Glass", 339, true)
+            .addCasingInfoExactly("Any Glass", 339, true)
             .addMaintenanceHatch("Around the controller", 2)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GTPP.tooltip.structure.many_bus_hatch"),

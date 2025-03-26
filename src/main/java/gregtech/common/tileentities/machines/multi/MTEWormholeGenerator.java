@@ -1006,7 +1006,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addCasingInfoExactly("Europium Reinforced Radiation Proof Machine Casing", 4, false)
             .addCasingInfoExactly("Fusion Coil Block", 3 * 4 + 5 * 2, false)
             .addCasingInfoRange("High Power Casing", 8 * 6 + 1, 8 * 6 + 1 + 4, false)
-            .addCasingInfoExactly("Glass", 9 * 4, true)
+            .addCasingInfoExactly("Any Glass", 9 * 4, true)
             .addMaintenanceHatch("§61§r (dot 1)")
             .addInputBus("§61§r (dot 1)")
             .addDynamoHatch("§60§r - §64§r (laser only, dot 2)")

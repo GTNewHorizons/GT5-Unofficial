@@ -126,7 +126,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                 .addElement(
                     'C',
                     withChannel(
-                        "unit casing",
+                        "unit_casing",
                         HatchElementBuilder.<MTEPreciseAssembler>builder()
                             .atLeast(
                                 InputBus,
@@ -159,7 +159,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                 .addElement(
                     'M',
                     withChannel(
-                        "machine casing",
+                        "machine_casing",
                         StructureUtility.ofBlocksTiered(
                             (block, meta) -> (block == GregTechAPI.sBlockCasings1 && meta >= 0 && meta <= 9) ? meta
                                 : -2,
@@ -373,8 +373,8 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addMufflerHatch("Any Casing")
             .addMaintenanceHatch("Any Casing")
             .addSubChannelUsage("glass", "Glass Tier")
-            .addSubChannelUsage("unit casing", "Precise Electronic Unit Casing Tier")
-            .addSubChannelUsage("machine casing", "Machine Casing Tier")
+            .addSubChannelUsage("unit_casing", "Precise Electronic Unit Casing Tier")
+            .addSubChannelUsage("machine_casing", "Machine Casing Tier")
             .toolTipFinisher();
         return tt;
     }

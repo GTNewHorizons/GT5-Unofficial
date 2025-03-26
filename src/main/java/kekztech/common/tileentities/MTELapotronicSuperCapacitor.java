@@ -503,7 +503,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 "Center 3x(1-47)x3 above base (9-423 blocks)")
             .addStructureInfo(
                 "You can also use the Empty Capacitor to save materials if you use it for less than half the blocks")
-            .addCasingInfoRange("Glass", 41, 777, true)
+            .addCasingInfoRange("Any Glass", 41, 777, true)
             .addEnergyHatch("Any casing")
             .addDynamoHatch("Any casing")
             .addOtherStructurePart(

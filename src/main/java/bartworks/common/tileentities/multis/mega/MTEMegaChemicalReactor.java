@@ -79,7 +79,7 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
             .addCasingInfoMin("Chemically Inert Machine Casing", 46, false)
             .addCasingInfoExactly("Fusion Coil Block", 7, false)
             .addCasingInfoExactly("PTFE Pipe Casing", 28, false)
-            .addCasingInfoExactly("Glass", 64, true)
+            .addCasingInfoExactly("Any Glass", 64, true)
             .addEnergyHatch("Hint block ", 3)
             .addMaintenanceHatch("Hint block ", 2)
             .addInputHatch("Hint block ", 1)

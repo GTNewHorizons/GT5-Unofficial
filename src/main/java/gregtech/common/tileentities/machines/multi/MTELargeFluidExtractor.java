@@ -291,7 +291,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             .beginStructureBlock(5, 9, 5, false)
             .addController("Front Center (Bottom Layer)")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", BASE_CASING_COUNT - MAX_HATCHES_ALLOWED, false)
-            .addCasingInfoExactly("Glass", 9 * 4, true)
+            .addCasingInfoExactly("Any Glass", 9 * 4, true)
             .addCasingInfoExactly("Solenoid Superconducting Coil", 7, true)
             .addCasingInfoExactly("Heating Coils", 8 * 3, true)
             .addCasingInfoExactly("Black Steel Frame Box", 3 * 8, false)
