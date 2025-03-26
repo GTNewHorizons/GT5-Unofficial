@@ -106,7 +106,18 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     /**
      * For Pipe Rendering
      */
-    public abstract float getThickNess();
+    public float getThickness() {
+        // If we are holding a soldering iron, minimize the rendered thickness of the pipe.
+        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x1) != 0) return 0.0625F;
+        return getCollisionThickness();
+    }
+
+    /**
+     * For Bounding Box collision checks
+     * The bounding box is unaffected in case a soldering iron is held and the render thickness of the pipe is
+     * minimized.
+     */
+    public abstract float getCollisionThickness();
 
     /**
      * For Pipe Rendering
@@ -421,14 +432,14 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
     private boolean boundingBoxShouldBeFullBlock() {
         // While holding tool, make it full block.
-        return GTMod.instance.isClientSide() && (GTClient.hideValue & 0x2) != 0 || getThickNess() == 1;
+        return GTMod.instance.isClientSide() && (GTClient.hideValue & 0x2) != 0 || getCollisionThickness() == 1;
     }
 
     /**
      * Gets the bounding box that corresponds to the rendered pipe.
      */
     private @NotNull AxisAlignedBB getPhysicalCollisionBoundingBox(int x, int y, int z) {
-        final float space = (1f - getThickNess()) / 2;
+        final float space = (1f - getCollisionThickness()) / 2;
         float yStart = space;
         float yEnd = 1f - space;
         float zStart = space;

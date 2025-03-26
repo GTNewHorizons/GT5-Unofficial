@@ -26,7 +26,7 @@ public class MTEPipeBlockData extends MTEPipeData {
     }
 
     @Override
-    public float getThickNess() {
+    public float getThickness() {
         return 1f;
     }
 
