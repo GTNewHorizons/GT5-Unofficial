@@ -21,6 +21,6 @@ public class ItemCasings11 extends ItemCasingsAbstract {
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         aList.add(
             StatCollector
-                .translateToLocalFormatted("GT5U.tooltip.channelvalue", aStack.getItemDamage() + 1, "item pipe"));
+                .translateToLocalFormatted("GT5U.tooltip.channelvalue", aStack.getItemDamage() + 1, "item_pipe"));
     }
 }

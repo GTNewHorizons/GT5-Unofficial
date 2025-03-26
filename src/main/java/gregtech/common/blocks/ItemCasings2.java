@@ -22,10 +22,10 @@ public class ItemCasings2 extends ItemCasingsAbstract {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
         switch (getDamage(aStack)) {
             case 8 -> aList.add(this.mBlastProofTooltip);
-            case 12 -> aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", 1, "fluid pipe"));
-            case 13 -> aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", 2, "fluid pipe"));
-            case 14 -> aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", 3, "fluid pipe"));
-            case 15 -> aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", 4, "fluid pipe"));
+            case 12 -> aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", 1, "pipe"));
+            case 13 -> aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", 2, "pipe"));
+            case 14 -> aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", 3, "pipe"));
+            case 15 -> aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", 4, "pipe"));
         }
     }
 }
