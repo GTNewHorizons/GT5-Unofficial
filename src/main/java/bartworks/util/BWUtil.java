@@ -278,7 +278,7 @@ public class BWUtil {
                 Block block = world.getBlock(x, y, z);
                 int meta = world.getBlockMetadata(x, y, z);
 
-                int glassTier = GlassTier.getGlassTier(block, meta);
+                int glassTier = GlassTier.getGlassBlockTier(block, meta);
 
                 // If it is not a glass, the tier will be 0.
                 if (glassTier == 0 || glassTier == notset || glassTier < mintier || glassTier > maxtier) return false;
@@ -293,7 +293,7 @@ public class BWUtil {
                 Block block = world.getBlock(x, y, z);
                 int meta = world.getBlockMetadata(x, y, z);
 
-                int glassTier = GlassTier.getGlassTier(block, meta);
+                int glassTier = GlassTier.getGlassBlockTier(block, meta);
 
                 // If it is not a glass, the tier will be 0.
                 return glassTier != 0 && glassTier != notset && glassTier >= mintier && glassTier <= maxtier;
@@ -330,7 +330,7 @@ public class BWUtil {
                 if (world.isAirBlock(x, y, z)) return false;
                 Block block = world.getBlock(x, y, z);
                 int meta = world.getBlockMetadata(x, y, z);
-                int glassTier = GlassTier.getGlassTier(block, meta);
+                int glassTier = GlassTier.getGlassBlockTier(block, meta);
 
                 if (glassTier == 0) return false; // Not a glass.
                 return glassTier >= mintier && glassTier <= maxtier;

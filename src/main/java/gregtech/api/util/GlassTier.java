@@ -78,7 +78,7 @@ public class GlassTier {
         }
     }
 
-    public static int getGlassTier(Block block, int meta) {
+    public static int getGlassBlockTier(Block block, int meta) {
         return glassToTierAndIndex.getOrDefault(Pair.of(block, meta), Pair.of(0, 0))
             .getLeft();
     }
@@ -93,7 +93,7 @@ public class GlassTier {
             int ctr = 1; // For channel index, starts at 1
             for (Pair<Block, Integer> glass : mainGlass) {
                 glassList.add(glass);
-                glassToTierAndIndex.put(glass, Pair.of(getGlassTier(glass.getLeft(), glass.getRight()), ctr++));
+                glassToTierAndIndex.put(glass, Pair.of(getGlassBlockTier(glass.getLeft(), glass.getRight()), ctr++));
             }
             for (Map.Entry<Pair<Integer, Integer>, Pair<Block, Integer>> entry : tierToGlass.entrySet()) {
                 if (entry.getKey()
@@ -216,7 +216,7 @@ public class GlassTier {
             final Block block = Block.getBlockFromItem(event.itemStack.getItem());
             final int meta = event.itemStack.getItemDamage();
 
-            int tier = getGlassTier(block, meta);
+            int tier = getGlassBlockTier(block, meta);
             int channelIdx = getGlassChannelValue(block, meta);
 
             if (tier == 0) return;

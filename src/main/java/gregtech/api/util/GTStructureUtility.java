@@ -735,7 +735,16 @@ public class GTStructureUtility {
     }
 
     public static <T> IStructureElement<T> chainAllGlasses() {
-        return chainAllGlasses(0, (te, t) -> {}, te -> 0);
+        return chainAllGlasses(-2, (te, t) -> {
+            if (te instanceof MTEMultiBlockBase) {
+                ((MTEMultiBlockBase) te).setGlassTier(t);
+            }
+        }, te -> {
+            if (te instanceof MTEMultiBlockBase) {
+                return ((MTEMultiBlockBase) te).getGlassTier();
+            }
+            return -2;
+        });
     }
 
     /** support all Bart, Botania, Ic2, Thaumcraft glasses for multiblock structure **/
@@ -743,7 +752,7 @@ public class GTStructureUtility {
         Function<T, Integer> getter) {
         return withChannel(
             "glass",
-            lazy(t -> ofBlocksTiered(GlassTier::getGlassTier, GlassTier.getGlassList(), notSet, setter, getter)));
+            lazy(t -> ofBlocksTiered(GlassTier::getGlassBlockTier, GlassTier.getGlassList(), notSet, setter, getter)));
     }
 
     /**
