@@ -880,11 +880,7 @@ public class GTClient extends GTProxy implements Runnable {
                 hideThings = newHideValue;
                 changeDetected = 5;
             }
-            final boolean newForceFullBlockBoundingBoxes = shouldHeldItemForceFullBlockBoundingBoxes();
-            if (newForceFullBlockBoundingBoxes != forceFullBlockBoundingBoxes) {
-                forceFullBlockBoundingBoxes = newForceFullBlockBoundingBoxes;
-                changeDetected = 5;
-            }
+            forceFullBlockBoundingBoxes = shouldHeldItemForceFullBlockBoundingBoxes();
             mAnimationTick++;
             if (mAnimationTick % 50L == 0L) {
                 mAnimationDirection = !mAnimationDirection;
