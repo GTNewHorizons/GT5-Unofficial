@@ -31,6 +31,11 @@ public class MTEPipeBlockData extends MTEPipeData {
     }
 
     @Override
+    public float getCollisionThickness() {
+        return 1f;
+    }
+
+    @Override
     public float getExplosionResistance(ForgeDirection side) {
         return 1000.0f;
     }
