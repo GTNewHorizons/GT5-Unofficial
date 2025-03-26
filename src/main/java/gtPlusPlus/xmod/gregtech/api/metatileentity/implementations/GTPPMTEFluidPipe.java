@@ -60,7 +60,7 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
         int aColorIndex, boolean aConnected, boolean aRedstone) {
-        float tThickNess = getThickNess();
+        float tThickNess = getThickness();
         if (mDisableInput == 0)
             return new ITexture[] { aConnected ? getBaseTexture(tThickNess, mPipeAmount, aColorIndex)
                 : TextureFactory.of(
