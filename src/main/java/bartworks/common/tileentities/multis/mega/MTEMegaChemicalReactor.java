@@ -71,7 +71,7 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
             .addParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addGlassEnergyLimitInfo()
             .addTecTechHatchInfo()
-            .addGlassTecTechInfo(VoltageIndex.UV)
+            .addMinGlassForLaser(VoltageIndex.UV)
             .beginStructureBlock(5, 5, 9, false)
             .addController("Front center")
             .addCasingInfoMin("Chemically Inert Machine Casing", 46, false)

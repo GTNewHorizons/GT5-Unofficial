@@ -564,7 +564,7 @@ public class MultiblockTooltipBuilder {
      * @param t Tier of glass that unlocks all energy hatches
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addGlassTecTechInfo(int t) {
+    public MultiblockTooltipBuilder addMinGlassForLaser(int t) {
         iLines.add(
             GTValues.TIER_COLORS[t] + GTValues.VN[t]
                 + EnumChatFormatting.GRAY
