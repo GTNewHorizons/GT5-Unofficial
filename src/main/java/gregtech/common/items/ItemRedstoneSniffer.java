@@ -290,7 +290,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                                 new ButtonWidget<>().size(25, 25)
                                                     .align(Alignment.Center)
                                                     .overlay(
-                                                        UITexture.fullImage(GregTech.ID, "items/redstoneSnifferLocate")
+                                                        UITexture.fullImage(GregTech.ID, "gui/overlay_button/redstoneSnifferLocate")
                                                             .asIcon()
                                                             .size(19, 19)
                                                             .margin(3))
@@ -318,7 +318,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                                     .align(Alignment.Center)
                                                     .overlay(
                                                         UITexture
-                                                            .fullImage(GregTech.ID, "items/redstoneSnifferTeleport")
+                                                            .fullImage(GregTech.ID, "gui/overlay_button/redstoneSnifferTeleport")
                                                             .asIcon()
                                                             .size(19, 19)
                                                             .margin(3))
