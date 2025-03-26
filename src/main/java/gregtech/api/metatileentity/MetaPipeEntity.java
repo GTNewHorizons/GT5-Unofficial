@@ -108,7 +108,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
      */
     public float getThickness() {
         // If we are holding a soldering iron, minimize the rendered thickness of the pipe.
-        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x1) != 0) return 0.0625F;
+        if (GTMod.instance.isClientSide() && GTClient.shouldHideThings()) return 0.0625F;
         return getCollisionThickness();
     }
 
