@@ -49,8 +49,6 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
 public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
-    private String freqFilter = "";
-    private String ownerFilter = "";
     private int lastPage = 0;
 
     public ItemRedstoneSniffer(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
