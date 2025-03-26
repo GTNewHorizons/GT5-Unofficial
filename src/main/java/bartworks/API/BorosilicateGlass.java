@@ -28,13 +28,6 @@ import cpw.mods.fml.common.LoaderState;
 
 /**
  * @deprecated use gregtech.api.util.GlassTier
- * API for bartworks borosilicate glass.
- * <p>
- * You might have noticed this API does not expose any Block instance, but only IStructureElements. This is in case we
- * add more glass blocks later, and we run out of meta id for only one block.
- * <p>
- * IStructureElements returned from this class <b>SHOULD NOT</b> have its methods called before post init, or else you
- * might end up with wrong autoplace hints.
  */
 @Deprecated
 public class BorosilicateGlass {
