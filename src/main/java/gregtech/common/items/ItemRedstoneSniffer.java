@@ -67,8 +67,6 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 
         if (!world.isRemote) {
-            this.freqFilter = "";
-            this.ownerFilter = "";
             GuiFactories.item()
                 .open(player);
 
@@ -88,9 +86,31 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                 lastPage = page;
             }
         };
+        ListWidget regularListWidget = new ListWidget<>();
+        regularListWidget.sizeRel(1);
+        ListWidget advancedListWidget = new ListWidget();
+        advancedListWidget.sizeRel(1);
 
-
-
+        guiSyncManager.syncValue("playerisop", new BooleanSyncValue(() -> false, () -> {
+            EntityPlayerMP player = (EntityPlayerMP) guiData.getPlayer();
+            return player.mcServer.getConfigurationManager()
+                .func_152596_g(player.getGameProfile());
+        }));
+        StringSyncValue freqFilterSyncer = new StringSyncValue(freqFilter::get, freqFilter::set);
+        freqFilterSyncer.setChangeListener(() -> {
+            if (NetworkUtils.isClient()){
+                WidgetTree.resize(regularListWidget);
+                WidgetTree.resize(advancedListWidget);
+            }
+        });
+        guiSyncManager.syncValue("freqfilter", freqFilterSyncer);
+        StringSyncValue ownerFilterSyncer = new StringSyncValue(ownerFilter::get, ownerFilter::set);
+        ownerFilterSyncer.setChangeListener(() -> {
+            if (NetworkUtils.isClient()){
+                WidgetTree.resize(advancedListWidget);
+            }
+        });
+        guiSyncManager.syncValue("ownerfilter", ownerFilterSyncer);
         ModularPanel panel = ModularPanel.defaultPanel("redstone_sniffer");
         panel.flex()
             .sizeRel(0.5f, 0.75f)
@@ -116,7 +136,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                 int displayFreq = isPrivate ? freq - 65536 : freq;
                 regularList.add(new Row().setEnabledIf(w -> {
                     try {
-                        if (displayFreq == Integer.parseInt(this.freqFilter)) {
+                        if (displayFreq == Integer.parseInt(((StringSyncValue) guiSyncManager.getSyncHandler("freqfilter:0")).getStringValue())) {
                             return true;
                         }
                     } catch (NumberFormatException ignored) {
@@ -135,8 +155,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                             .alignment(Alignment.Center)));
             });
 
-        ListWidget regularListWidget = new ListWidget<>();
-        regularListWidget.sizeRel(1);
+
         regularList.forEach(regularListWidget::child);
 
         data.addPage(
@@ -157,8 +176,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
             .getOrDefault("null", new ConcurrentHashMap<>());
         Map<String, Map<String, Map<CoverPosition, Byte>>> allFreqs = GregTechAPI.sAdvancedWirelessRedstone;
 
-        ListWidget advancedListWidget = new ListWidget();
-        advancedListWidget.sizeRel(1);
+
         List<IWidget> advancedList = (processAdvancedFrequencies(
             publicFreqs,
             "Public",
@@ -203,24 +221,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                         .child(advancedListWidget)));
 
 
-        guiSyncManager.syncValue("playerisop", new BooleanSyncValue(() -> false, () -> {
-            EntityPlayerMP player = (EntityPlayerMP) guiData.getPlayer();
-            return player.mcServer.getConfigurationManager()
-                .func_152596_g(player.getGameProfile());
-        }));
-        guiSyncManager.syncValue("freqfilter", new StringSyncValue(freqFilter::get, (filter) -> {
-            freqFilter.set(filter);
-            if (NetworkUtils.isClient()){
-                WidgetTree.resize(regularListWidget);
-                WidgetTree.resize(advancedListWidget);
-            }
-        }));
-        guiSyncManager.syncValue("ownerfilter", new StringSyncValue(ownerFilter::get, (filter) -> {
-            ownerFilter.set(filter);
-            if (NetworkUtils.isClient()){
-                WidgetTree.resize(advancedListWidget);
-            }
-        }));
+
         panel.child(
             new Column().margin(10)
                 .child(
@@ -242,24 +243,16 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                 .alignment(Alignment.Center))
                         .child(
                             new TextFieldWidget().sizeRel(0.25f, 0.5f)
-                                .value(SyncHandlers.string(() -> this.freqFilter, filter -> {
-                                    this.freqFilter = filter;
-                                    if (NetworkUtils.isClient()) {
-                                        WidgetTree.resize(regularListWidget); // The scroll area doesn't update
-                                                                              // automatically
-                                        WidgetTree.resize(advancedListWidget);
-                                    }
+                                .value(SyncHandlers.string(() -> ((StringSyncValue) guiSyncManager.getSyncHandler("freqfilter:0")).getStringValue(), filter -> {
+                                    ((StringSyncValue) guiSyncManager.getSyncHandler("freqfilter:0")).setStringValue(filter);
                                 })))
                         .child(
                             new TextWidget("Owner: ").widthRel(0.25f)
                                 .alignment(Alignment.Center))
                         .child(
                             new TextFieldWidget().sizeRel(0.25f, 0.5f)
-                                .value(SyncHandlers.string(() -> this.ownerFilter, filter -> {
-                                    this.ownerFilter = filter;
-                                    if (NetworkUtils.isClient()) {
-                                        WidgetTree.resize(advancedListWidget);
-                                    }
+                                .value(SyncHandlers.string(() -> ((StringSyncValue) guiSyncManager.getSyncHandler("ownerfilter:0")).getStringValue(), filter -> {
+                                    ((StringSyncValue) guiSyncManager.getSyncHandler("ownerfilter:0")).setStringValue(filter);
                                 }))))
                 .child(data));
         return panel;
@@ -282,9 +275,9 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                     result.add(
                         new Row()
                             .setEnabledIf(
-                                w -> (this.ownerFilter.isEmpty() || this.ownerFilter.equals(ownerString))
+                                w -> (((StringSyncValue) guiSyncManager.getSyncHandler("ownerfilter:0")).getStringValue().isEmpty() || ((StringSyncValue) guiSyncManager.getSyncHandler("ownerfilter:0")).getStringValue().equals(ownerString))
                                     && entry.getKey()
-                                        .contains(this.freqFilter))
+                                        .contains(((StringSyncValue) guiSyncManager.getSyncHandler("freqfilter:0")).getStringValue()))
                             .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
                             .sizeRel(1f, 0.3f)
                             .expanded()
