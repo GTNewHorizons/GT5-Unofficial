@@ -27,6 +27,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.LoaderState;
 
 /**
+ * @deprecated use gregtech.api.util.GlassTier
  * API for bartworks borosilicate glass.
  * <p>
  * You might have noticed this API does not expose any Block instance, but only IStructureElements. This is in case we
@@ -118,7 +119,6 @@ public class BorosilicateGlass {
      * <p>
      * Can only be called at INIT stage.
      */
-    @Deprecated
     public static void registerGlass(Block block, int meta, byte tier) {
         if (Loader.instance()
             .hasReachedState(LoaderState.POSTINITIALIZATION)) throw new IllegalStateException("register too late!");

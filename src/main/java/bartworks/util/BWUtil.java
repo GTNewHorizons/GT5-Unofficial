@@ -261,6 +261,9 @@ public class BWUtil {
         return ret;
     }
 
+    /**
+     * @deprecated use gregtech.api.util.GTStructureUtility.chainAllGlasses
+     */
     @Deprecated
     public static <T> IStructureElement<T> ofGlassTiered(byte mintier, byte maxtier, byte notset,
         BiConsumer<T, Byte> setter, Function<T, Byte> getter, int aDots) {
