@@ -207,7 +207,6 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     private static final int MIN_CASING_AMOUNT = 20;
     private static final int MAX_LAYER_AMOUNT = 13;
     private static final int DEFAULT_LAYER_AMOUNT = 3;
-    private int glassTier = -2;
 
     private static final String STRUCTURE_PIECE_TOP = "top";
     private static final String STRUCTURE_PIECE_MID = "mid";
@@ -263,8 +262,8 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                 .atLeast(InputHatch.or(TFFTMultiHatch.INSTANCE), OutputHatch.or(TFFTMultiHatch.INSTANCE))
                 .casingIndex(CASING_TEXTURE_ID_2)
                 .dot(3)
-                .buildAndChain(chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier)))
-        .addElement('g', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
+                .buildAndChain(chainAllGlasses()))
+        .addElement('g', chainAllGlasses())
         .addElement('f', ofChain(TFFTStorageFieldElement.INSTANCE))
         .build();
 
@@ -410,7 +409,6 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         this.capacityPerFluid = 0L;
         this.casingAmount = 0;
         this.runningCost = 0;
-        this.glassTier = -2;
 
         if (!checkPiece(STRUCTURE_PIECE_TOP, 2, 2, 0)) return false;
 

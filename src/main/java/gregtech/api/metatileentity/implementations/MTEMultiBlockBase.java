@@ -196,7 +196,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected long mLastWorkingTick = 0, mTotalRunTime = 0;
     private static final int CHECK_INTERVAL = 100; // How often should we check for a new recipe on an idle machine?
     private final int randomTickOffset = (int) (Math.random() * CHECK_INTERVAL + 1);
-    private int glassTier = -2;
+    protected int glassTier = -1;
 
     /** A list of unparameterized structure errors. */
     private EnumSet<StructureError> structureErrors = EnumSet.noneOf(StructureError.class);
@@ -499,7 +499,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         // Only trigger an update if forced (from onPostTick, generally), or if the structure has changed
         if ((mStructureChanged || aForceReset)) {
             clearHatches();
-            setGlassTier(-2);
+            setGlassTier(-1);
 
             mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
 

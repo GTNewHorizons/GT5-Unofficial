@@ -138,7 +138,6 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     private static final String[] HATCH_NAMES = { "Top", "Bottom", "Left", "Right", "Back", "Front" };
     private static final boolean[] HATCH_MASK = { true, true, true, true, false, false };
 
-    private int glassTier = -2;
     private boolean mStructureBadGlassTier = false;
 
     private final MTEHatchEnergyMulti[] mSendHatches = new MTEHatchEnergyMulti[MAX_HATCHES];
@@ -226,7 +225,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 .dot(1)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
-        .addElement('A', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
+        .addElement('A', chainAllGlasses())
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings8, 5)) // Europium Reinforced Radiation Proof Machine Casing
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings4, 7)) // Fusion Coil Block
         .addElement('F', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 4))) // Molecular Casing
@@ -329,7 +328,6 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         Arrays.fill(mSendHatches, null);
         Arrays.fill(mReceiveHatches, null);
-        glassTier = -2;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0)) return false;
 

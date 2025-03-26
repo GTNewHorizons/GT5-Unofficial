@@ -77,13 +77,13 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
                     Pair.of(GregTechAPI.sBlockCasings11, 5),
                     Pair.of(GregTechAPI.sBlockCasings11, 6),
                     Pair.of(GregTechAPI.sBlockCasings11, 7)),
-                -2,
+                -1,
                 MTEIndustrialExtractor::setItemPipeTier,
                 MTEIndustrialExtractor::getItemPipeTier))
         .addElement('A', chainAllGlasses())
         .build();
 
-    private int itemPipeTier = 0;
+    private int itemPipeTier = -1;
 
     private static Integer getItemPipeTierFromMeta(Block block, Integer metaID) {
         if (block != GregTechAPI.sBlockCasings11) return -1;
@@ -202,7 +202,7 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
-        itemPipeTier = -2;
+        itemPipeTier = -1;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) return false;
         if (itemPipeTier == -1) return false;

@@ -50,8 +50,7 @@ import gregtech.api.util.OverclockCalculator;
 public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEComponentAssemblyLine>
     implements ISurvivalConstructable {
 
-    private int casingTier = -2;
-    private int glassTier = -2;
+    private int casingTier = -1;
     private double speedBonus;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEComponentAssemblyLine> STRUCTURE_DEFINITION = StructureDefinition
@@ -125,7 +124,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
                     "A  HHH  A", "A       A", "MHHHHHHHM" },
                 { "         ", "         ", " HHHHHHH ", "HH     HH", "H       H", "H       H", "H       H",
                     "H       H", "H  KKK  H", "HHHHHHHHH" } })
-        .addElement('A', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
+        .addElement('A', chainAllGlasses())
         .addElement('H', ofBlock(GregTechAPI.sBlockCasings8, 7))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 5))
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 9))
@@ -139,7 +138,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
                 IntStream.range(0, 14)
                     .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
                     .collect(Collectors.toList()),
-                -2,
+                -1,
                 MTEComponentAssemblyLine::setCasingTier,
                 MTEComponentAssemblyLine::getCasingTier))
         .addElement(
@@ -338,8 +337,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.casingTier = -2;
-        this.glassTier = -2;
+        this.casingTier = -1;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0)) {
             return false;
         }

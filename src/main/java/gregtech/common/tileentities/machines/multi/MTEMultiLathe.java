@@ -73,7 +73,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     private static final String STRUCTURE_PIECE_BODY = "body";
     private static final String STRUCTURE_PIECE_BODY_ALT = "body_alt";
 
-    protected int pipeTier = 0;
+    protected int pipeTier = -1;
 
     // get tier from block meta
     private static Integer getTierFromMeta(Block block, Integer metaID) {
@@ -130,7 +130,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
                         Pair.of(GregTechAPI.sBlockCasings11, 5),
                         Pair.of(GregTechAPI.sBlockCasings11, 6),
                         Pair.of(GregTechAPI.sBlockCasings11, 7)),
-                    -2,
+                    -1,
                     MTEMultiLathe::setPipeTier,
                     MTEMultiLathe::getPipeTier)))
         .build();
@@ -246,7 +246,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        pipeTier = -2;
+        pipeTier = -1;
         mEnergyHatches.clear();
         mCasingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) return false;

@@ -735,7 +735,7 @@ public class GTStructureUtility {
     }
 
     public static <T> IStructureElement<T> chainAllGlasses() {
-        return chainAllGlasses(-2, (te, t) -> {
+        return chainAllGlasses(-1, (te, t) -> {
             if (te instanceof MTEMultiBlockBase) {
                 ((MTEMultiBlockBase) te).setGlassTier(t);
             }
@@ -743,7 +743,7 @@ public class GTStructureUtility {
             if (te instanceof MTEMultiBlockBase) {
                 return ((MTEMultiBlockBase) te).getGlassTier();
             }
-            return -2;
+            return -1;
         });
     }
 
