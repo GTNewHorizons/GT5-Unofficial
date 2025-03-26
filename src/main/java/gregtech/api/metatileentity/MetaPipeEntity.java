@@ -3,8 +3,10 @@ package gregtech.api.metatileentity;
 import static gregtech.api.enums.GTValues.GT;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -14,6 +16,8 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -393,17 +397,38 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     }
 
     @Override
+    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB inputAABB,
+        List<AxisAlignedBB> outputAABB, Entity collider) {
+        if (boundingBoxShouldBeFullBlock()) {
+            AxisAlignedBB fullSizeBoundingBox = AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
+            if (inputAABB.intersectsWith(fullSizeBoundingBox)) outputAABB.add(fullSizeBoundingBox);
+        }
+        // Even if we're holding a tool, we still want to check for collisions with the regular size
+        // of the pipe in case the player is currently in contact with it.
+        AxisAlignedBB physicalBoundingBox = getPhysicalCollisionBoundingBox(x, y, z);
+        if (inputAABB.intersectsWith(physicalBoundingBox)) outputAABB.add(physicalBoundingBox);
+    }
+
+    @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-        final float thickness = getThickNess();
-        // While holding tool, make it full block
-        final boolean shouldBeFullBlock = GTMod.instance.isClientSide() && (GTClient.hideValue & 0x2) != 0;
-        if (shouldBeFullBlock || thickness == 1) {
+        // This is all we need to return when drawing the interaction box around the pipe.
+        if (boundingBoxShouldBeFullBlock()) {
             return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
         }
-
         // Otherwise, account for attached covers and connections
+        return getPhysicalCollisionBoundingBox(x, y, z);
+    }
 
-        final float space = (1f - thickness) / 2;
+    private boolean boundingBoxShouldBeFullBlock() {
+        // While holding tool, make it full block.
+        return GTMod.instance.isClientSide() && (GTClient.hideValue & 0x2) != 0 || getThickNess() == 1;
+    }
+
+    /**
+     * Gets the bounding box that corresponds to the rendered pipe.
+     */
+    private @NotNull AxisAlignedBB getPhysicalCollisionBoundingBox(int x, int y, int z) {
+        final float space = (1f - getThickNess()) / 2;
         float yStart = space;
         float yEnd = 1f - space;
         float zStart = space;
