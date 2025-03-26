@@ -8,7 +8,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -76,7 +78,8 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
 
     @Override
     public ModularPanel buildUI(GuiData guiData, PanelSyncManager guiSyncManager) {
-
+        AtomicReference<String> freqFilter = new AtomicReference<>("");
+        AtomicReference<String> ownerFilter = new AtomicReference<>("");
         PagedWidget.Controller controller = new PagedWidget.Controller() {
 
             @Override
@@ -85,13 +88,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                 lastPage = page;
             }
         };
-        BooleanSyncValue playerIsOP = new BooleanSyncValue(() -> false, () -> {
-            EntityPlayerMP player = (EntityPlayerMP) guiData.getPlayer();
-            return player.mcServer.getConfigurationManager()
-                .func_152596_g(player.getGameProfile());
-        });
-        guiSyncManager.syncValue("playerisop", 0, playerIsOP);
-        System.out.println(((BooleanSyncValue) guiSyncManager.getSyncHandler("playerisop:0")).getValue());
+
 
 
         ModularPanel panel = ModularPanel.defaultPanel("redstone_sniffer");
@@ -205,6 +202,25 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                     new Row().heightRel(0.9f)
                         .child(advancedListWidget)));
 
+
+        guiSyncManager.syncValue("playerisop", new BooleanSyncValue(() -> false, () -> {
+            EntityPlayerMP player = (EntityPlayerMP) guiData.getPlayer();
+            return player.mcServer.getConfigurationManager()
+                .func_152596_g(player.getGameProfile());
+        }));
+        guiSyncManager.syncValue("freqfilter", new StringSyncValue(freqFilter::get, (filter) -> {
+            freqFilter.set(filter);
+            if (NetworkUtils.isClient()){
+                WidgetTree.resize(regularListWidget);
+                WidgetTree.resize(advancedListWidget);
+            }
+        }));
+        guiSyncManager.syncValue("ownerfilter", new StringSyncValue(ownerFilter::get, (filter) -> {
+            ownerFilter.set(filter);
+            if (NetworkUtils.isClient()){
+                WidgetTree.resize(advancedListWidget);
+            }
+        }));
         panel.child(
             new Column().margin(10)
                 .child(
@@ -239,8 +255,8 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                 .alignment(Alignment.Center))
                         .child(
                             new TextFieldWidget().sizeRel(0.25f, 0.5f)
-                                .value(SyncHandlers.string(() -> this.ownerFilter, ownerFilter -> {
-                                    this.ownerFilter = ownerFilter;
+                                .value(SyncHandlers.string(() -> this.ownerFilter, filter -> {
+                                    this.ownerFilter = filter;
                                     if (NetworkUtils.isClient()) {
                                         WidgetTree.resize(advancedListWidget);
                                     }
