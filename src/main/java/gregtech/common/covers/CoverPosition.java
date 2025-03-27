@@ -7,17 +7,19 @@ import net.minecraft.util.ChunkCoordinates;
 public class CoverPosition {
 
     public final int x, y, z;
+    public final String dimName;
     public final int dim;
     public final int side;
     private final int hash;
 
-    public CoverPosition(ChunkCoordinates coords, int dim, int side) {
+    public CoverPosition(ChunkCoordinates coords, String dimName, int dim, int side) {
         this.x = coords.posX;
         this.y = coords.posY;
         this.z = coords.posZ;
+        this.dimName = dimName;
         this.dim = dim;
         this.side = side;
-        this.hash = Objects.hash(x, y, z, dim, side);
+        this.hash = Objects.hash(x, y, z, dimName, side);
     }
 
     @Override
@@ -27,7 +29,7 @@ public class CoverPosition {
         CoverPosition that = (CoverPosition) o;
         return this.x == that.x && this.y == that.y
             && this.z == that.z
-            && this.dim == that.dim
+            && Objects.equals(this.dimName, that.dimName)
             && this.side == that.side;
     }
 
@@ -36,7 +38,7 @@ public class CoverPosition {
         return this.hash;
     }
 
-    public String getInfo() {
-        return String.format("%d, %d, %d DIM: %d", x, y, z, dim);
+    public String getDimName() {
+        return this.dimName;
     }
 }
