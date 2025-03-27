@@ -9,10 +9,12 @@ import net.minecraftforge.common.util.Constants;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 
+import gregtech.api.casing.ICasingGroup;
 import gregtech.api.enums.StructureError;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTUtility;
 import it.unimi.dsi.fastutil.chars.Char2IntArrayMap;
+import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
 
 /**
  * An object that stores specifics about an instance multi (casing counts mainly).
@@ -24,12 +26,15 @@ public class StructureWrapperInstanceInfo<MTE extends MTEMultiBlockBase & IAlign
 
     public Char2IntArrayMap actualCasingCounts = new Char2IntArrayMap();
 
+    public final Reference2IntOpenHashMap<ICasingGroup> casingTiers = new Reference2IntOpenHashMap<>();
+
     public StructureWrapperInstanceInfo(StructureWrapper<MTE> structure) {
         this.structure = structure;
     }
 
-    public void clearCounts() {
+    public void clearHatches() {
         actualCasingCounts.clear();
+        casingTiers.clear();
     }
 
     /**
@@ -83,5 +88,15 @@ public class StructureWrapperInstanceInfo<MTE extends MTEMultiBlockBase & IAlign
     @Override
     public void onCasingEncountered(char casing) {
         actualCasingCounts.put(casing, actualCasingCounts.get(casing) + 1);
+    }
+
+    @Override
+    public int getCasingTier(ICasingGroup casing, int unset) {
+        return casingTiers.getOrDefault(casing, unset);
+    }
+
+    @Override
+    public void setCasingTier(ICasingGroup casing, int tier) {
+        casingTiers.put(casing, tier);
     }
 }

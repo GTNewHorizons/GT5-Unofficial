@@ -8,13 +8,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Supplier;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
+import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -23,12 +24,12 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import gregtech.GTMod;
 import gregtech.api.casing.ICasing;
+import gregtech.api.casing.ICasingGroup;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.HatchElementBuilder;
-import gregtech.api.util.MultiblockTooltipBuilder;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.chars.Char2IntArrayMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectArrayMap;
@@ -225,8 +226,8 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
             hintsOnly);
     }
 
-    public void survivalConstruct(MTE instance, ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
-        survivalConstruct(instance, trigger, elementBudget, env, STRUCTURE_SHAPE_MAIN, null);
+    public int survivalConstruct(MTE instance, ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
+        return survivalConstruct(instance, trigger, elementBudget, env, STRUCTURE_SHAPE_MAIN, null);
     }
 
     /**
@@ -284,12 +285,20 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
         CasingInfo<MTE> casing = casings.get(c);
 
         if (casing.elementOverride != null) {
-            return casing.elementOverride.get();
+            IStructureElement<MTE> element = casing.elementOverride.apply(casing.tierGroup);
+
+            if (casing.elementWrapper != null) {
+                element = casing.elementWrapper.apply(element);
+            }
+
+            return element;
         } else if (casing.maxHatches != 0) {
+            Objects.requireNonNull(casing.casing, "CasingInfo.casing cannot be null");
+
             IStructureElement<MTE> element = onElementPass(
                 instance -> instance.getStructureInstance()
                     .onCasingEncountered(c),
-                casing.casing.asElement());
+                casing.casing.asElement(() -> casing.tierGroup));
 
             element = HatchElementBuilder.<MTE>builder()
                 .atLeast(casing.hatches)
@@ -301,9 +310,19 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
                 element = withChannel(casing.channel, element);
             }
 
+            if (casing.elementWrapper != null) {
+                element = casing.elementWrapper.apply(element);
+            }
+
             return element;
         } else {
-            return casing.casing.asElement();
+            IStructureElement<MTE> element = casing.casing.asElement(() -> casing.tierGroup);
+
+            if (casing.elementWrapper != null) {
+                element = casing.elementWrapper.apply(element);
+            }
+
+            return element;
         }
     }
 
@@ -349,6 +368,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
         CasingInfo<MTE> casingInfo = new CasingInfo<>();
 
         casingInfo.casing = casing;
+        casingInfo.tierGroup = ICasingGroup.ofCasing(casing);
 
         casings.put(c, casingInfo);
 
@@ -379,27 +399,11 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
         return getStructureBuilder(Arrays.asList(Pair.of(StructureWrapper.STRUCTURE_SHAPE_MAIN, definition))).build();
     }
 
-    public void addCasingInfoExact(MultiblockTooltipBuilder tt, ICasing casing) {
-        tt.addCasingInfoExactly(casing.getLocalizedName(), getCasingMax(casing), false);
-    }
-
-    public void addCasingInfoRange(MultiblockTooltipBuilder tt, ICasing casing) {
-        tt.addCasingInfoRange(casing.getLocalizedName(), getCasingMin(casing), getCasingMax(casing), false);
-    }
-
-    public void addCasingInfoAuto(MultiblockTooltipBuilder tt, ICasing casing) {
-        if (getCasingMax(casing) != getCasingMin(casing)) {
-            addCasingInfoRange(tt, casing);
-        } else {
-            addCasingInfoExact(tt, casing);
-        }
-    }
-
     /**
-     * Should be called in {@link MTEMultiBlockBase#getDescription()} so that blockrenderer will show the proper
-     * tooltips for hatches in its gui.
+     * Should be called in {@link IConstructable#getStructureDescription(ItemStack)} so that blockrenderer will show the
+     * proper tooltips for hatches in its gui.
      */
-    public List<String> getDescription(ItemStack trigger) {
+    public List<String> getStructureDescription(ItemStack trigger) {
         ArrayList<String> desc = new ArrayList<>();
 
         // unlocalized and hardcoded because for some insane reason, blockrenderer parses this text to show its hatch
@@ -419,6 +423,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
         return desc;
     }
 
+    @SuppressWarnings("FieldCanBeLocal")
     public class CasingBuilder {
 
         private final char c;
@@ -458,13 +463,25 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
         }
 
         public CasingBuilder withElement(IStructureElement<MTE> element) {
-            casingInfo.elementOverride = () -> element;
+            casingInfo.elementOverride = ignored -> element;
 
             return this;
         }
 
-        public CasingBuilder withElement(Supplier<IStructureElement<MTE>> element) {
+        public CasingBuilder withElement(Function<ICasingGroup, IStructureElement<MTE>> element) {
             casingInfo.elementOverride = element;
+
+            return this;
+        }
+
+        public CasingBuilder wrapElement(Function<IStructureElement<MTE>, IStructureElement<MTE>> wrapper) {
+            casingInfo.elementWrapper = wrapper;
+
+            return this;
+        }
+
+        public CasingBuilder withTierGroup(ICasingGroup group) {
+            casingInfo.tierGroup = group;
 
             return this;
         }
