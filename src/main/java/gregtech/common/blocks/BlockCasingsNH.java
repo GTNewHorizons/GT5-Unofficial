@@ -1,6 +1,5 @@
 package gregtech.common.blocks;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
@@ -9,40 +8,25 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GTLanguageManager;
 
 public class BlockCasingsNH extends BlockCasingsAbstract {
 
     public BlockCasingsNH() {
-        super(ItemCasingsNH.class, "gt.blockcasingsNH", MaterialCasings.INSTANCE, 16);
+        super(ItemCasings.class, "gt.blockcasingsNH", MaterialCasings.INSTANCE, 16);
 
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Air Filter Turbine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Air Filter Vent Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Pyrolyse Oven Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Advanced Air Filter Turbine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Advanced Air Filter Vent Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Super Air Filter Turbine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Super Air Filter Vent Casing");
+        register(0, ItemList.Casing_AirFilter_Turbine_T1, "Air Filter Turbine Casing");
+        register(1, ItemList.Casing_AirFilter_Vent_T1, "Air Filter Vent Casing");
+        register(2, ItemList.Casing_Pyrolyse, "Pyrolyse Oven Casing");
+        register(3, ItemList.Casing_AirFilter_Turbine_T2, "Advanced Air Filter Turbine Casing");
+        register(4, ItemList.Casing_AirFilter_Vent_T2, "Advanced Air Filter Vent Casing");
+        register(5, ItemList.Casing_AirFilter_Turbine_T3, "Super Air Filter Turbine Casing");
+        register(6, ItemList.Casing_AirFilter_Vent_T3, "Super Air Filter Vent Casing");
 
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "UEV Machine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "UIV Machine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "UMV Machine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "UXV Machine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "MAX Machine Casing");
-
-        ItemList.Casing_AirFilter_Turbine_T1.set(new ItemStack(this, 1, 0));
-        ItemList.Casing_AirFilter_Vent_T1.set(new ItemStack(this, 1, 1));
-        ItemList.Casing_Pyrolyse.set(new ItemStack(this, 1, 2));
-        ItemList.Casing_AirFilter_Turbine_T2.set(new ItemStack(this, 1, 3));
-        ItemList.Casing_AirFilter_Vent_T2.set(new ItemStack(this, 1, 4));
-        ItemList.Casing_AirFilter_Turbine_T3.set(new ItemStack(this, 1, 5));
-        ItemList.Casing_AirFilter_Vent_T3.set(new ItemStack(this, 1, 6));
-
-        ItemList.Casing_UEV.set(new ItemStack(this, 1, 10));
-        ItemList.Casing_UIV.set(new ItemStack(this, 1, 11));
-        ItemList.Casing_UMV.set(new ItemStack(this, 1, 12));
-        ItemList.Casing_UXV.set(new ItemStack(this, 1, 13));
-        ItemList.Casing_MAXV.set(new ItemStack(this, 1, 14));
+        register(10, ItemList.Casing_UEV, "UEV Machine Casing");
+        register(11, ItemList.Casing_UIV, "UIV Machine Casing");
+        register(12, ItemList.Casing_UMV, "UMV Machine Casing");
+        register(13, ItemList.Casing_UXV, "UXV Machine Casing");
+        register(14, ItemList.Casing_MAXV, "MAX Machine Casing");
     }
 
     @Override
