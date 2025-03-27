@@ -20,6 +20,7 @@ import net.minecraft.stats.AchievementList;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 
@@ -296,7 +297,8 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
                 || name.equals("gt.metatool.01.176")) {
                 aList.add(
                     tOffset + 0,
-                    EnumChatFormatting.WHITE + "Durability: "
+                    EnumChatFormatting.WHITE + StatCollector.translateToLocal("gtpp.tooltip.tool.durability")
+                        + " "
                         + EnumChatFormatting.GREEN
                         + (tMaxDamage - getToolDamage(aStack))
                         + " / "
@@ -311,22 +313,22 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,
-                    EnumChatFormatting.WHITE + "Turbine Efficency: "
+                    EnumChatFormatting.WHITE + StatCollector.translateToLocal("gtpp.tooltip.tool.turbine_efficiency")
+                        + " "
                         + EnumChatFormatting.BLUE
                         + (50.0F + (10.0F * this.getToolCombatDamage(aStack)))
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 3,
-                    EnumChatFormatting.WHITE + "Optimal Steam flow: "
-                        + EnumChatFormatting.LIGHT_PURPLE
-                        + Math.max(
+                    EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                        "gtpp.tooltip.tool.optimal_steam_flow",
+                        Math.max(
                             Float.MIN_NORMAL,
-                            tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 1000)
-                        + EnumChatFormatting.GRAY
-                        + "L/sec");
+                            tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 1000)));
                 aList.add(
                     tOffset + 3,
-                    EnumChatFormatting.WHITE + "Optimal Gas flow(EU burnvalue per tick): "
+                    EnumChatFormatting.WHITE + StatCollector.translateToLocal("gtpp.tooltip.tool.optimal_gas_flow")
+                        + " "
                         + EnumChatFormatting.LIGHT_PURPLE
                         + Math.max(
                             Float.MIN_NORMAL,
@@ -335,7 +337,8 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
                         + "EU/t");
                 aList.add(
                     tOffset + 3,
-                    EnumChatFormatting.WHITE + "Optimal Plasma flow(Plasma energyvalue per tick): "
+                    EnumChatFormatting.WHITE + StatCollector.translateToLocal("gtpp.tooltip.tool.optimal_plasma_flow")
+                        + " "
                         + EnumChatFormatting.LIGHT_PURPLE
                         + Math.max(
                             Float.MIN_NORMAL,
@@ -346,7 +349,8 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
             } else {
                 aList.add(
                     tOffset + 0,
-                    EnumChatFormatting.WHITE + "Durability: "
+                    EnumChatFormatting.WHITE + StatCollector.translateToLocal("gtpp.tooltip.tool.durability")
+                        + " "
                         + EnumChatFormatting.GREEN
                         + (tMaxDamage - getToolDamage(aStack))
                         + " / "
@@ -361,13 +365,15 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,
-                    EnumChatFormatting.WHITE + "Attack Damage: "
+                    EnumChatFormatting.WHITE + StatCollector.translateToLocal("gtpp.tooltip.tool.attack_damage")
+                        + " "
                         + EnumChatFormatting.BLUE
                         + this.getToolCombatDamage(aStack)
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 3,
-                    EnumChatFormatting.WHITE + "Mining Speed: "
+                    EnumChatFormatting.WHITE + StatCollector.translateToLocal("gtpp.tooltip.tool.mining_speed")
+                        + " "
                         + EnumChatFormatting.LIGHT_PURPLE
                         + Math
                             .max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed)
@@ -395,9 +401,9 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
 
                         aList.add(
                             tOffset + 3,
-                            EnumChatFormatting.RED + "Heat: "
-                                + aNBT.getInteger("Heat")
-                                + " K"
+                            EnumChatFormatting.RED
+                                + StatCollector
+                                    .translateToLocalFormatted("GT5U.tooltip.tool.heat", aNBT.getInteger("Heat"))
                                 + EnumChatFormatting.GRAY);
                     }
                 }
