@@ -219,7 +219,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
 
         this.length = 0;
 
-        structureInstanceInfo.clearCounts();
+        structureInstanceInfo.clearHatches();
     }
 
     @Override
@@ -258,17 +258,6 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         super.localizeStructureErrors(errors, context, lines);
 
         structureInstanceInfo.localizeStructureErrors(errors, context, lines);
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack trigger) {
-        ArrayList<String> desc = new ArrayList<>();
-
-        desc.add(translate("tt.keyphrase.Hint_Details"));
-
-        desc.addAll(structure.getDescription(trigger));
-
-        return desc.toArray(new String[0]);
     }
 
     @Override
