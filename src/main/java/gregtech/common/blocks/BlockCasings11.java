@@ -1,9 +1,5 @@
 package gregtech.common.blocks;
 
-import java.util.function.Supplier;
-
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
@@ -18,7 +14,7 @@ import gregtech.api.enums.Textures;
 public class BlockCasings11 extends BlockCasingsAbstract {
 
     public BlockCasings11() {
-        super(ItemCasings11.class, "gt.blockcasings11", MaterialCasings.INSTANCE, 16);
+        super(ItemCasings.class, "gt.blockcasings11", MaterialCasings.INSTANCE, 16);
 
         register(0, ItemList.Casing_Item_Pipe_Tin, "Tin Item Pipe Casing", tierTooltip(1));
         register(1, ItemList.Casing_Item_Pipe_Brass, "Brass Item Pipe Casing", tierTooltip(2));
@@ -28,10 +24,6 @@ public class BlockCasings11 extends BlockCasingsAbstract {
         register(5, ItemList.Casing_Item_Pipe_Quantium, "Quantium Item Pipe Casing", tierTooltip(6));
         register(6, ItemList.Casing_Item_Pipe_Fluxed_Electrum, "Fluxed Electrum Item Pipe Casing", tierTooltip(7));
         register(7, ItemList.Casing_Item_Pipe_Black_Plutonium, "Black Plutonium Item Pipe Casing", tierTooltip(8));
-    }
-
-    private static Supplier<String> tierTooltip(int tier) {
-        return () -> I18n.format("gt.casing.tiertooltip", EnumChatFormatting.YELLOW.toString() + tier);
     }
 
     @Override

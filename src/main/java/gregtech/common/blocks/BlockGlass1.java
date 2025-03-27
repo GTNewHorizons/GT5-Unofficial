@@ -1,5 +1,7 @@
 package gregtech.common.blocks;
 
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.translatedText;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.Facing;
@@ -20,14 +22,18 @@ import gregtech.api.enums.Textures;
 public class BlockGlass1 extends BlockCasingsAbstract {
 
     public BlockGlass1() {
-        super(ItemGlass1.class, "gt.blockglass1", Material.glass, 4);
+        super(ItemCasings.class, "gt.blockglass1", Material.glass, 4);
         this.opaque = false;
 
-        register(0, ItemList.GlassPHResistant, "Chemical Grade Glass");
+        register(0, ItemList.GlassPHResistant, "Chemical Grade Glass", translatedText("gt.casing.chemical-resistant"));
         register(1, ItemList.GlassUVResistant, "Electron-Permeable Neutronium Coated Glass");
         register(2, ItemList.GlassOmniPurposeInfinityFused, "Omni-Purpose Infinity Fused Glass");
         register(3, ItemList.GlassQuarkContainment, "Non-Photonic Matter Exclusion Glass");
-        register(4, ItemList.Hawking_Glass, "Hawking Radiation Realignment Focus");
+        register(
+            4,
+            ItemList.Hawking_Glass,
+            "Hawking Radiation Realignment Focus",
+            translatedText("gt.casing.hawking-focus"));
     }
 
     @Override

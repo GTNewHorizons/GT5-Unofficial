@@ -1,6 +1,7 @@
 package gregtech.common.blocks;
 
-import java.util.Arrays;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.translatedText;
+
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -10,7 +11,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
@@ -23,17 +23,17 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.common.render.GTRendererCasing;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectList;
 
 /**
  * The base class for casings. Casings are the blocks that are mainly used to build multiblocks.
@@ -41,12 +41,14 @@ import it.unimi.dsi.fastutil.objects.ObjectList;
 public abstract class BlockCasingsAbstract extends GTGenericBlock
     implements gregtech.api.interfaces.IHasIndexedTexture {
 
-    private final ObjectList<Supplier<String>> mTooltips = new ObjectArrayList<>();
+    public static final Supplier<String> NO_MOB_SPAWNING = translatedText("gt.casing.no-mob-spawning");
+    public static final Supplier<String> NOT_TILE_ENTITY = translatedText("gt.casing.not-tile-entity");
+    public static final Supplier<String> BLAST_PROOF = translatedText("gt.casing.blast-proof");
 
     public BlockCasingsAbstract(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial) {
         super(aItemClass, aName, aMaterial);
         setStepSound(soundTypeMetal);
-        setCreativeTab(GregTechAPI.TAB_GREGTECH);
+        setCreativeTab(GregTechAPI.TAG_GREGTECH_CASINGS);
         GregTechAPI.registerMachineBlock(this, -1);
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + 32767 + ".name", "Any Sub Block of this");
     }
@@ -159,42 +161,38 @@ public abstract class BlockCasingsAbstract extends GTGenericBlock
         return Textures.BlockIcons.ERROR_TEXTURE_INDEX;
     }
 
+    @Override
+    public int colorMultiplier(IBlockAccess aWorld, int aX, int aY, int aZ) {
+        return gregtech.api.enums.Dyes.MACHINE_METAL.toInt();
+    }
+
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advancedTooltips) {
-        int meta = stack.getItemDamage();
-
-        if (meta < 0 || meta >= mTooltips.size()) return;
-
-        Supplier<String> tt = mTooltips.get(meta);
-
-        if (tt == null) return;
-
-        tooltip.addAll(
-            Arrays.asList(
-                tt.get()
-                    .split("\n")));
+        // add whatever dynamic info you need in the subclass
     }
 
-    protected void register(int meta, @Nullable ItemList handle, @Nonnull String defaultLocalName) {
-        register(meta, handle, defaultLocalName, (Supplier<String>) null);
+    protected void register(int meta, @Nullable IItemContainer container, @Nonnull String defaultLocalName) {
+        register(meta, container, defaultLocalName, (Supplier<String>) null);
     }
 
-    protected void register(int meta, @Nullable ItemList handle, @Nonnull String defaultLocalName,
-        @Nonnull String tooltipLangKey) {
-        register(meta, handle, defaultLocalName, () -> I18n.format(tooltipLangKey));
-    }
+    @SafeVarargs
+    protected final void register(int meta, @Nullable IItemContainer container, @Nonnull String defaultLocalName,
+        @Nullable Supplier<String>... tooltips) {
+        ItemStack stack = new ItemStack(this, 1, meta);
 
-    protected void register(int meta, @Nullable ItemList handle, @Nonnull String defaultLocalName,
-        @Nullable Supplier<String> tooltip) {
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + meta + ".name", defaultLocalName);
 
-        if (handle != null) {
-            handle.set(new ItemStack(this, 1, meta));
+        if (container != null) {
+            container.set(stack.copy());
         }
 
-        if (tooltip != null) {
-            if (mTooltips.size() < meta + 1) mTooltips.size(meta + 1);
-
-            mTooltips.set(meta, tooltip);
+        if (tooltips != null) {
+            for (Supplier<String> tooltip : tooltips) {
+                AnimatedTooltipHandler.addItemTooltip(stack, tooltip);
+            }
         }
+    }
+
+    public static Supplier<String> tierTooltip(int tier) {
+        return translatedText("gt.casing.tier", Integer.toString(tier));
     }
 }
