@@ -382,7 +382,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         if (tFocusItemArray != null) {
             for (ItemStack stack : tFocusItemArray) {
 
-                if (focusDurabilityDepletion + stack.getItemDamage() >= stack.getMaxDamage()+ 1) {
+                if (focusDurabilityDepletion + stack.getItemDamage() >= stack.getMaxDamage() + 1) {
                     focusDurabilityDepletion -= stack.getMaxDamage() + 1 - stack.getItemDamage();
                     stack.stackSize--;
                 } else {
