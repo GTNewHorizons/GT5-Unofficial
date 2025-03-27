@@ -10,7 +10,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -29,6 +28,7 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
@@ -96,7 +96,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
         }));
         StringSyncValue freqFilterSyncer = new StringSyncValue(freqFilter::get, freqFilter::set);
         freqFilterSyncer.setChangeListener(() -> {
-            if (NetworkUtils.isClient()){
+            if (NetworkUtils.isClient()) {
                 WidgetTree.resize(regularListWidget);
                 WidgetTree.resize(advancedListWidget);
             }
@@ -104,7 +104,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
         guiSyncManager.syncValue("freqfilter", freqFilterSyncer);
         StringSyncValue ownerFilterSyncer = new StringSyncValue(ownerFilter::get, ownerFilter::set);
         ownerFilterSyncer.setChangeListener(() -> {
-            if (NetworkUtils.isClient()){
+            if (NetworkUtils.isClient()) {
                 WidgetTree.resize(advancedListWidget);
             }
         });
@@ -134,7 +134,8 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                 int displayFreq = isPrivate ? freq - 65536 : freq;
                 regularList.add(new Row().setEnabledIf(w -> {
                     try {
-                        if (displayFreq == Integer.parseInt(((StringSyncValue) guiSyncManager.getSyncHandler("freqfilter:0")).getStringValue())) {
+                        if (displayFreq == Integer.parseInt(
+                            ((StringSyncValue) guiSyncManager.getSyncHandler("freqfilter:0")).getStringValue())) {
                             return true;
                         }
                     } catch (NumberFormatException ignored) {
@@ -152,7 +153,6 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                         new TextWidget(isPrivate ? "Yes" : "No").widthRel(0.5f)
                             .alignment(Alignment.Center)));
             });
-
 
         regularList.forEach(regularListWidget::child);
 
@@ -173,7 +173,6 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
         Map<String, Map<CoverPosition, Byte>> publicFreqs = GregTechAPI.sAdvancedWirelessRedstone
             .getOrDefault("null", new ConcurrentHashMap<>());
         Map<String, Map<String, Map<CoverPosition, Byte>>> allFreqs = GregTechAPI.sAdvancedWirelessRedstone;
-
 
         List<IWidget> advancedList = (processAdvancedFrequencies(
             publicFreqs,
@@ -209,7 +208,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                         new TextWidget("Frequency").widthRel(0.35f)
                             .alignment(Alignment.Center))
                     .child(
-                        new TextWidget("Coords").widthRel(0.25f)
+                        new TextWidget("Dimension").widthRel(0.25f)
                             .alignment(Alignment.Center))
                     .child(
                         new TextWidget("Action").widthRel(0.25f)
@@ -217,8 +216,6 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                 .child(
                     new Row().heightRel(0.9f)
                         .child(advancedListWidget)));
-
-
 
         panel.child(
             new Column().margin(10)
@@ -241,17 +238,27 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                 .alignment(Alignment.Center))
                         .child(
                             new TextFieldWidget().sizeRel(0.25f, 0.5f)
-                                .value(SyncHandlers.string(() -> ((StringSyncValue) guiSyncManager.getSyncHandler("freqfilter:0")).getStringValue(), filter -> {
-                                    ((StringSyncValue) guiSyncManager.getSyncHandler("freqfilter:0")).setStringValue(filter);
-                                })))
+                                .value(
+                                    SyncHandlers.string(
+                                        () -> ((StringSyncValue) guiSyncManager.getSyncHandler("freqfilter:0"))
+                                            .getStringValue(),
+                                        filter -> {
+                                            ((StringSyncValue) guiSyncManager.getSyncHandler("freqfilter:0"))
+                                                .setStringValue(filter);
+                                        })))
                         .child(
                             new TextWidget("Owner: ").widthRel(0.25f)
                                 .alignment(Alignment.Center))
                         .child(
                             new TextFieldWidget().sizeRel(0.25f, 0.5f)
-                                .value(SyncHandlers.string(() -> ((StringSyncValue) guiSyncManager.getSyncHandler("ownerfilter:0")).getStringValue(), filter -> {
-                                    ((StringSyncValue) guiSyncManager.getSyncHandler("ownerfilter:0")).setStringValue(filter);
-                                }))))
+                                .value(
+                                    SyncHandlers.string(
+                                        () -> ((StringSyncValue) guiSyncManager.getSyncHandler("ownerfilter:0"))
+                                            .getStringValue(),
+                                        filter -> {
+                                            ((StringSyncValue) guiSyncManager.getSyncHandler("ownerfilter:0"))
+                                                .setStringValue(filter);
+                                        }))))
                 .child(data));
         return panel;
     }
@@ -271,11 +278,15 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                 Map<CoverPosition, Byte> coverMap = entry.getValue();
                 coverMap.forEach((cover, useless) -> {
                     result.add(
-                        new Row()
-                            .setEnabledIf(
-                                w -> (((StringSyncValue) guiSyncManager.getSyncHandler("ownerfilter:0")).getStringValue().isEmpty() || ((StringSyncValue) guiSyncManager.getSyncHandler("ownerfilter:0")).getStringValue().equals(ownerString))
-                                    && entry.getKey()
-                                        .contains(((StringSyncValue) guiSyncManager.getSyncHandler("freqfilter:0")).getStringValue()))
+                        new Row().setEnabledIf(
+                            w -> (((StringSyncValue) guiSyncManager.getSyncHandler("ownerfilter:0")).getStringValue()
+                                .isEmpty()
+                                || ((StringSyncValue) guiSyncManager.getSyncHandler("ownerfilter:0")).getStringValue()
+                                    .equals(ownerString))
+                                && entry.getKey()
+                                    .contains(
+                                        ((StringSyncValue) guiSyncManager.getSyncHandler("freqfilter:0"))
+                                            .getStringValue()))
                             .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
                             .sizeRel(1f, 0.3f)
                             .expanded()
@@ -286,18 +297,20 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                 new TextWidget(freq).widthRel(0.35f)
                                     .alignment(Alignment.Center))
                             .child(
-                                new TextWidget(cover.getInfo()).widthRel(0.25f)
+                                new TextWidget(cover.getDimName()).widthRel(0.25f)
                                     .alignment(Alignment.Center))
                             .child(
                                 new Row().widthRel(0.25f)
                                     .child(
-                                        new Column()
-                                            .widthRel(0.5f)
+                                        new Column().widthRel(0.5f)
                                             .child(
                                                 new ButtonWidget<>().size(25, 25)
                                                     .align(Alignment.Center)
                                                     .overlay(
-                                                        UITexture.fullImage(GregTech.ID, "gui/overlay_button/redstoneSnifferLocate")
+                                                        UITexture
+                                                            .fullImage(
+                                                                GregTech.ID,
+                                                                "gui/overlay_button/redstoneSnifferLocate")
                                                             .asIcon()
                                                             .size(19, 19)
                                                             .margin(3))
@@ -325,7 +338,9 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                                     .align(Alignment.Center)
                                                     .overlay(
                                                         UITexture
-                                                            .fullImage(GregTech.ID, "gui/overlay_button/redstoneSnifferTeleport")
+                                                            .fullImage(
+                                                                GregTech.ID,
+                                                                "gui/overlay_button/redstoneSnifferTeleport")
                                                             .asIcon()
                                                             .size(19, 19)
                                                             .margin(3))
