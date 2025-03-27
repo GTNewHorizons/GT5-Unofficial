@@ -389,12 +389,12 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         this.addFluidOutputs(new FluidStack[] { fluidOutputStack });
 
-        outputAfterRecipe();
+        outputPacketAfterRecipe();
 
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    private void outputAfterRecipe() {
+    private void outputPacketAfterRecipe() {
 
         if (!mOutputBeamline.isEmpty()) {
 
