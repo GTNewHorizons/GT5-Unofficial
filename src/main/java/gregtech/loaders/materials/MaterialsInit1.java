@@ -1129,6 +1129,36 @@ public class MaterialsInit1 {
             .setColor(Dyes._NULL)
             .constructMaterial();
 
+        Materials.GravelSluice = new MaterialBuilder(214,  TextureSet.SET_FLUID, "Gravel Sluice")
+            .addFluid()
+            .addCell()
+            .setRGBA(91, 91, 91, 0)
+            .setTransparent(true)
+            .setName("gravelsluice")
+            .setColor(Dyes._NULL)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+
+        Materials.SandSluice = new MaterialBuilder(215,  TextureSet.SET_FLUID, "Sand Sluice")
+            .addFluid()
+            .addCell()
+            .setRGBA(248, 255, 130, 0)
+            .setTransparent(true)
+            .setName("sandsluice")
+            .setColor(Dyes._NULL)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+
+        Materials.ObsidianSluice = new MaterialBuilder(216,  TextureSet.SET_FLUID, "Obsidian Sluice")
+            .addFluid()
+            .addCell()
+            .setRGBA(53, 40, 61, 0)
+            .setTransparent(true)
+            .setName("obsidiansluice")
+            .setColor(Dyes._NULL)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+
         // spotless:on
     }
 }

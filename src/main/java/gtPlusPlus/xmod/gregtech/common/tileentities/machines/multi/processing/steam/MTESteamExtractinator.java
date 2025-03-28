@@ -238,12 +238,12 @@ public class MTESteamExtractinator extends MTESteamMultiBase<MTESteamExtractinat
 
     @Override
     public int getMaxParallelRecipes() {
-        return 8;
+        return 4;
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.steamConformerRecipes;
+        return RecipeMaps.steamExtractinatorRecipes;
     }
 
     @Override
@@ -278,42 +278,13 @@ public class MTESteamExtractinator extends MTESteamMultiBase<MTESteamExtractinat
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Uses pressure inside it's pipes to conform metals into desired shapes more efficiently")
-            .addInfo("Processes up to 8 recipes at once")
-            .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
+            .addInfo("Vaporizes impurities in different soil slurries to generate usable materials")
+            .addInfo("Processes up to 4 recipes at once")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
-                    + "To proceed elevating your pressure, a method of dominating the materials around you is key.")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "And maybe brute force is the way! Who needs precision when a big hammer can do the work?")
+                    + "From Steam to rocks, the power of the pressure may bring you infinite wealth!.")
             .beginStructureBlock(3, 3, 3, false)
-            .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Steam Input Hatch "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " Any casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "18x" + EnumChatFormatting.GRAY + " Brass Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "3x" + EnumChatFormatting.GRAY + " Glass")
-            .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(EnumChatFormatting.GOLD + "14-77x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
-            .addStructureInfo(EnumChatFormatting.GOLD + "13x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Bronze Gear Box Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "16x" + EnumChatFormatting.GRAY + " Block of Iron")
-            .addStructureInfo(EnumChatFormatting.GOLD + "3x" + EnumChatFormatting.GRAY + " Block of Steel")
-            .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "14-77x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "13x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Steel Gear Box Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "19x" + EnumChatFormatting.GRAY + " Block of Steel")
             .toolTipFinisher();
         return tt;
     }
