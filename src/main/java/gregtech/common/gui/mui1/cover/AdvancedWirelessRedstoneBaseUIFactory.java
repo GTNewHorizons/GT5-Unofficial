@@ -1,6 +1,5 @@
 package gregtech.common.gui.mui1.cover;
 
-import gregtech.common.gui.modularui.widget.CoverDataFollowerTextFieldWidget;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -10,7 +9,7 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollowerTextFieldWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
 public abstract class AdvancedWirelessRedstoneBaseUIFactory<C extends CoverAdvancedWirelessRedstoneBase>
@@ -52,13 +51,12 @@ public abstract class AdvancedWirelessRedstoneBaseUIFactory<C extends CoverAdvan
     protected void addUIForDataController(CoverDataControllerWidget<C> controller) {
         controller.addFollower(
             new CoverDataFollowerTextFieldWidget<>(),
-                CoverAdvancedWirelessRedstoneBase::getFrequency,
+            CoverAdvancedWirelessRedstoneBase::getFrequency,
             (coverData, state) -> {
                 coverData.setFrequency(state);
                 return coverData;
             },
-            widget -> widget
-                .setPos(1, 2 + spaceY * getFrequencyRow())
+            widget -> widget.setPos(1, 2 + spaceY * getFrequencyRow())
                 .setSize(spaceX * 5 - 4, 12))
             .addFollower(
                 CoverDataFollowerToggleButtonWidget.ofCheck(),
