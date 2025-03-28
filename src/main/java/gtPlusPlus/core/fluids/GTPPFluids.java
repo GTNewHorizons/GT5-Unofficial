@@ -492,7 +492,7 @@ public class GTPPFluids {
             ItemUtils.getEmptyCell(),
             1000,
             false);
-        generateIC2FluidCell("HydrofluoricAcid");
+        generateIC2FluidCell(15, "HydrofluoricAcid");
 
         HighQualitySulfurDioxide = FluidUtils.generateFluidNoPrefix(
             "SulfurDioxide",
@@ -510,7 +510,7 @@ public class GTPPFluids {
             ItemUtils.getEmptyCell(),
             1000,
             false);
-        generateIC2FluidCell("SulfurousAcid");
+        generateIC2FluidCell(16, "SulfurousAcid");
 
         SulfuricApatiteMix = FluidUtils.addGtFluid(
             "sulfuricApatite",
@@ -522,7 +522,7 @@ public class GTPPFluids {
             ItemUtils.getEmptyCell(),
             1000,
             false);
-        generateIC2FluidCell("SulfuricApatite");
+        generateIC2FluidCell(17, "SulfuricApatite");
 
         IndustrialStrengthHydrogenChloride = FluidUtils.addGtFluid(
             "hydrogenChloride",
@@ -534,7 +534,7 @@ public class GTPPFluids {
             ItemUtils.getEmptyCell(),
             1000,
             false);
-        generateIC2FluidCell("HydrogenChloride");
+        generateIC2FluidCell(18, "HydrogenChloride");
 
         SulfuricLithiumMix = FluidUtils.addGtFluid(
             "sulfuricLithium",
@@ -546,7 +546,7 @@ public class GTPPFluids {
             ItemUtils.getEmptyCell(),
             1000,
             false);
-        generateIC2FluidCell("SulfuricLithium");
+        generateIC2FluidCell(19, "SulfuricLithium");
 
         LithiumHydroxide = FluidUtils.addGtFluid(
             "lithiumHydroxide",
@@ -558,21 +558,19 @@ public class GTPPFluids {
             ItemUtils.getEmptyCell(),
             1000,
             false);
-        generateIC2FluidCell("LithiumHydroxide");
+        generateIC2FluidCell(20, "LithiumHydroxide");
 
         handleBlood();
     }
 
-    private static short cellID = 15;
-
-    private static ItemStack generateIC2FluidCell(final String s) {
+    private static ItemStack generateIC2FluidCell(final int cellID, final String s) {
         InternalName yourName = EnumHelper.addEnum(InternalName.class, s, new Class[0], new Object[0]);
         ItemCell item = (ItemCell) ItemList.Cell_Empty.getItem();
 
         try {
             Method addCell = ItemCell.class.getDeclaredMethod("addCell", int.class, InternalName.class, Block[].class);
             addCell.setAccessible(true);
-            ItemStack temp = (ItemStack) addCell.invoke(item, cellID++, yourName, new Block[0]);
+            ItemStack temp = (ItemStack) addCell.invoke(item, cellID, yourName, new Block[0]);
 
             FluidContainerRegistry.registerFluidContainer(
                 FluidRegistry.getFluidStack(s.toLowerCase(), 1000),
