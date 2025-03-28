@@ -25,12 +25,17 @@ public class ArmorHelper {
     public static final String SPEED_BOOST_CURRENT_KEY = "CurrentSpeedBoost";
     public static final String JUMP_BOOST_KEY = "JumpBoost";
     public static final String FALL_PROTECTION_KEY = "FallProtection";
-    public static final String FORCE_SPACE_SUIT_NBT_KEY = "ForceValidSpaceSuit";
     public static final String INFINITE_ENERGY_KEY = "InfiniteEnergy";
     public static final String FORCE_FIELD_KEY = "ForceField";
     public static final String WATER_BREATHING_KEY = "WaterBreathing";
 
     public static final String VIS_DISCOUNT_KEY = "VisDiscount";
+
+    // This is a magic key synchronized with an identical one in GalaxySpace. When GS runs checks for spacesuits, it
+    // will also check against this key.
+
+    // TODO: If the hazmat api is finished, remove this hack and use the hazmat system!
+    public static final String FORCE_SPACE_SUIT_NBT_KEY = "ForceValidSpaceSuit";
 
     /**
      * Try to use EU from an item. Returns whether use was successful.
