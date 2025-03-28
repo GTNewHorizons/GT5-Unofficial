@@ -1,46 +1,42 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.api.enums.GTValues.AuthorSteamIsTheNumber;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_ALLOY_SMELTER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_ALLOY_SMELTER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_ALLOY_SMELTER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_EXTRACTOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_EXTRACTOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_EXTRACTOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_EXTRACTOR_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_ALLOY_SMELTER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_ALLOY_SMELTER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW;
+import static gregtech.api.recipe.RecipeMaps.steamWoodcutterRecipes;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
+import javax.annotation.Nonnull;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEBetterSteamMultiBase;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class MTESteamWoodcutter extends MTEBetterSteamMultiBase<MTESteamWoodcutter> implements ISurvivalConstructable {
 
@@ -64,67 +60,33 @@ public class MTESteamWoodcutter extends MTEBetterSteamMultiBase<MTESteamWoodcutt
         return StructureDefinition.<MTESteamWoodcutter>builder()
             .addShape(
                 STRUCTURE_PIECE_MAIN,
-                (new String[][]{{
-                        "  BBB  ",
-                        "       ",
-                        "       ",
-                        "       ",
-                        "       ",
-                        "       ",
-                        "  B~B  "
-                    },{
-                        " BBBBB ",
-                        "  AAA  ",
-                        "  AAA  ",
-                        "  AAA  ",
-                        "  AAA  ",
-                        "  AAA  ",
-                        " BBBBB "
-                    },{
-                        "BBBBBBB",
-                        " A~~~A ",
-                        " A~~~A ",
-                        " A~~~A ",
-                        " A~~~A ",
-                        " A~~~A ",
-                        "BBCCCBB"
-                    },{
-                        "BBBBBBB",
-                        " A~~~A ",
-                        " A~~~A ",
-                        " A~~~A ",
-                        " A~~~A ",
-                        " A~~~A ",
-                        "BBCCCBB"
-                    },{
-                        "BBBBBBB",
-                        " A~~~A ",
-                        " A~~~A ",
-                        " A~~~A ",
-                        " A~~~A ",
-                        " A~~~A ",
-                        "BBCCCBB"
-                    },{
-                        " BBBBB ",
-                        "  AAA  ",
-                        "  AAA  ",
-                        "  AAA  ",
-                        "  AAA  ",
-                        "  AAA  ",
-                        " BBBBB "
-                    },{
-                        "  BBB  ",
-                        "       ",
-                        "       ",
-                        "       ",
-                        "       ",
-                        "       ",
-                        "  BBB  "
-                    }}))
+                (new String[][] { { "  BBB  ", "       ", "       ", "       ", "       ", "       ", "  B~B  " },
+                    { " BBBBB ", "  AAA  ", "  AAA  ", "  AAA  ", "  AAA  ", "  AAA  ", " BBBBB " },
+                    { "BBBBBBB", " A~~~A ", " A~~~A ", " A~~~A ", " A~~~A ", " A~~~A ", "BBCCCBB" },
+                    { "BBBBBBB", " A~~~A ", " A~~~A ", " A~~~A ", " A~~~A ", " A~~~A ", "BBCCCBB" },
+                    { "BBBBBBB", " A~~~A ", " A~~~A ", " A~~~A ", " A~~~A ", " A~~~A ", "BBCCCBB" },
+                    { " BBBBB ", "  AAA  ", "  AAA  ", "  AAA  ", "  AAA  ", "  AAA  ", " BBBBB " },
+                    { "  BBB  ", "       ", "       ", "       ", "       ", "       ", "  BBB  " } }))
             .addElement('A', chainAllGlasses())
-            .addElement('B', ofBlock(GregTechAPI.sBlockCasings1, 10))
+            .addElement(
+                'B',
+                ofChain(
+                    buildSteamInput(MTESteamWoodcutter.class).casingIndex(10)
+                        .dot(1)
+                        .build(),
+                    buildHatchAdder(MTESteamWoodcutter.class)
+                        .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
+                        .casingIndex(10)
+                        .dot(1)
+                        .buildAndChain(),
+                    ofBlock(GregTechAPI.sBlockCasings1, 10)))
             .addElement('C', ofBlock(Blocks.dirt, 0))
             .build();
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return steamWoodcutterRecipes;
     }
 
     @Override
@@ -136,6 +98,21 @@ public class MTESteamWoodcutter extends MTEBetterSteamMultiBase<MTESteamWoodcutt
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 6, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+
+            @Nonnull
+            @Override
+            protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
+                if (availableVoltage < recipe.mEUt) {
+                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                }
+                return CheckRecipeResultRegistry.SUCCESSFUL;
+            }
+        };
     }
 
     @Override
@@ -151,7 +128,8 @@ public class MTESteamWoodcutter extends MTEBetterSteamMultiBase<MTESteamWoodcutt
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing, int aColorIndex, boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+        int aColorIndex, boolean aActive, boolean aRedstone) {
         ITexture[] rTexture;
         if (side == facing) {
             if (aActive) {

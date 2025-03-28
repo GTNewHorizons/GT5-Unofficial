@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
+import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.formatNumbers;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -58,6 +59,7 @@ public abstract class MTEBetterSteamMultiBase<T extends MTEBetterSteamMultiBase<
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(V[1]);
         // We need to trick the GT_ParallelHelper we have enough amps for all recipe parallels.
         logic.setAvailableAmperage(getMaxParallelRecipes());
         logic.setAmperageOC(false);
