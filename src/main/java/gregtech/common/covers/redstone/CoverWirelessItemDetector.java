@@ -1,5 +1,6 @@
 package gregtech.common.covers.redstone;
 
+import gregtech.common.covers.CoverPosition;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -111,8 +112,8 @@ public class CoverWirelessItemDetector extends CoverAdvancedRedstoneTransmitterB
             return;
         }
         byte signal = CoverItemMeter.computeSignalBasedOnItems(coverable, invert, threshold, slot, coverSide.ordinal());
-        final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(getUuid(), getFrequency(), hash, signal);
+        final CoverPosition key = getCoverKey(coverable, coverSide);
+        setSignalAt(getUuid(), getFrequency(), key, signal);
 
         if (physical) {
             coverable.setOutputRedstoneSignal(coverSide, signal);

@@ -3,6 +3,7 @@ package gregtech.common.covers.redstone;
 import java.util.Objects;
 import java.util.UUID;
 
+import gregtech.common.covers.CoverPosition;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -83,8 +84,8 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
     private void unregisterSignal(UUID oldUuid, int oldFrequency) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) return;
-        final long hash = hashCoverCoords(coverable, coverSide);
-        removeSignalAt(oldUuid, oldFrequency, hash);
+        final CoverPosition key = getCoverKey(coverable, coverSide);
+        removeSignalAt(uuid, frequency, key);
     }
 
     @Override
@@ -103,5 +104,15 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
         GTUtility
             .sendChatToPlayer(aPlayer, invert ? GTUtility.trans("054", "Inverted") : GTUtility.trans("055", "Normal"));
     }
+
+    @Override
+    public void preDataChanged(Cover newCover) {
+        if (newCover instanceof CoverAdvancedRedstoneTransmitterBase newTransmitterCover
+            && (frequency != newTransmitterCover.frequency || !Objects.equals(uuid, newTransmitterCover.uuid))) {
+            unregisterSignal();
+        }
+    }
+
+    // GUI stuff
 
 }
