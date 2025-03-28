@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import gregtech.common.covers.CoverPosition;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -23,7 +24,7 @@ import io.netty.buffer.ByteBuf;
 
 public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
 
-    protected int frequency;
+    protected String frequency;
 
     /**
      * If UUID is set to null, the cover frequency is public, rather than private
@@ -64,17 +65,22 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
     }
 
     @Override
-    public void readDataFromPacket(ByteArrayDataInput byteData) {
-        frequency = byteData.readInt();
+    protected void readFromPacket(ByteArrayDataInput byteData) {
         if (byteData.readBoolean()) {
             uuid = new UUID(byteData.readLong(), byteData.readLong());
         }
+        int length = byteData.readInt();
+        StringBuilder freqBuilder = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            freqBuilder.append(byteData.readChar());
+        }
+        this.frequency = freqBuilder.toString();
     }
 
     @Override
     protected @NotNull NBTBase saveDataToNbt() {
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("frequency", frequency);
+        tag.setString("frequency", frequency);
         if (uuid != null) {
             tag.setString("uuid", uuid.toString());
         }
@@ -84,19 +90,22 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
 
     @Override
     protected void writeDataToByteBuf(ByteBuf byteBuf) {
-        byteBuf.writeInt(frequency);
         byteBuf.writeBoolean(uuid != null);
         if (uuid != null) {
             byteBuf.writeLong(uuid.getLeastSignificantBits());
             byteBuf.writeLong(uuid.getMostSignificantBits());
         }
+        byteBuf.writeInt(frequency.length());
+        for (int i = 0; i < frequency.length(); i++) {
+        byteBuf.writeChar(frequency.charAt(i));
+        }
     }
 
-    public static Byte getSignalAt(UUID uuid, int frequency, CoverAdvancedRedstoneReceiverBase.GateMode mode) {
-        Map<Integer, Map<Long, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
+    public static Byte getSignalAt(UUID uuid, String frequency, CoverAdvancedRedstoneReceiverBase.GateMode mode) {
+        Map<String, Map<CoverPosition, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
         if (frequencies == null) return 0;
 
-        Map<Long, Byte> signals = frequencies.get(frequency);
+        Map<CoverPosition, Byte> signals = frequencies.get(frequency);
         if (signals == null) signals = new ConcurrentHashMap<>();
 
         switch (mode) {
@@ -139,29 +148,28 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
         }
     }
 
-    public static void removeSignalAt(UUID uuid, int frequency, long hash) {
-        Map<Integer, Map<Long, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
+    public static void removeSignalAt(UUID uuid, String frequency, CoverPosition key) {
+        Map<String, Map<CoverPosition, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
         if (frequencies == null) return;
-        frequencies.computeIfPresent(frequency, (freq, longByteMap) -> {
-            longByteMap.remove(hash);
-            return longByteMap.isEmpty() ? null : longByteMap;
+        frequencies.computeIfPresent(frequency, (freq, coverPositionByteMap) -> {
+            coverPositionByteMap.remove(key);
+            return coverPositionByteMap.isEmpty() ? null : coverPositionByteMap;
         });
     }
 
-    public static void setSignalAt(UUID uuid, int frequency, long hash, byte value) {
-        Map<Integer, Map<Long, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone
+    public static void setSignalAt(UUID uuid, String frequency, CoverPosition key, byte value) {
+        Map<String, Map<CoverPosition, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone
             .computeIfAbsent(String.valueOf(uuid), k -> new ConcurrentHashMap<>());
-        Map<Long, Byte> signals = frequencies.computeIfAbsent(frequency, k -> new ConcurrentHashMap<>());
-        signals.put(hash, value);
+        Map<CoverPosition, Byte> signals = frequencies.computeIfAbsent(frequency, k -> new ConcurrentHashMap<>());
+        signals.put(key, value);
     }
 
-    /**
-     * x hashed into first 20 bytes y hashed into second 20 bytes z hashed into fifth 10 bytes dim hashed into sixth 10
-     * bytes side hashed into last 4 bytes
-     */
-    public static long hashCoverCoords(@NotNull ICoverable tile, @NotNull ForgeDirection side) {
-        return (((((long) tile.getXCoord() << 20) + tile.getZCoord() << 10) + tile.getYCoord() << 10)
-            + tile.getWorld().provider.dimensionId << 4) + side.ordinal();
+    public static CoverPosition getCoverKey(@NotNull ICoverable tile, ForgeDirection side) {
+        return new CoverPosition(
+            tile.getCoords(),
+            tile.getWorld().provider.getDimensionName(),
+            tile.getWorld().provider.dimensionId,
+            side.ordinal());
     }
 
     @Override
