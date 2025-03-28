@@ -51,6 +51,7 @@ import gregtech.loaders.postload.recipes.RecipeRemover;
 import gregtech.loaders.postload.recipes.SifterRecipes;
 import gregtech.loaders.postload.recipes.SlicerRecipes;
 import gregtech.loaders.postload.recipes.SmelterRecipes;
+import gregtech.loaders.postload.recipes.SteamCarpenterRecipes;
 import gregtech.loaders.postload.recipes.SteamConformerRecipes;
 import gregtech.loaders.postload.recipes.SteamGateAssemblerRecipes;
 import gregtech.loaders.postload.recipes.ThaumcraftRecipes;
@@ -121,6 +122,7 @@ public class MachineRecipeLoader implements Runnable {
         new WiremillRecipes().run();
         new TranscendentPlasmaMixerRecipes().run();
         new SteamConformerRecipes().run();
+        new SteamCarpenterRecipes().run();
 
         BauxiteRefineChain.run();
         NaniteChain.run();
