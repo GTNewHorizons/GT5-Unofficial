@@ -6,19 +6,19 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 
-public class GTPPMTEBoilerMV extends GTPPMTEBoilerBase {
+public class MTEAdvancedBoilerMV extends MTEAdvancedBoilerBase {
 
-    public GTPPMTEBoilerMV(int aID, String aNameRegional, int aBoilerTier) {
+    public MTEAdvancedBoilerMV(int aID, String aNameRegional, int aBoilerTier) {
         super(aID, aNameRegional, aBoilerTier);
     }
 
-    public GTPPMTEBoilerMV(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public MTEAdvancedBoilerMV(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GTPPMTEBoilerMV(this.mName, 2, this.mDescriptionArray, this.mTextures);
+        return new MTEAdvancedBoilerMV(this.mName, 2, this.mDescriptionArray, this.mTextures);
     }
 
     @Override

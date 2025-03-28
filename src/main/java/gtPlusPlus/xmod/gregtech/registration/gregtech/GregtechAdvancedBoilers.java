@@ -16,9 +16,9 @@ import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GTPPMTEBoilerHV;
-import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GTPPMTEBoilerLV;
-import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GTPPMTEBoilerMV;
+import gtPlusPlus.xmod.gregtech.common.tileentities.generators.MTEAdvancedBoilerHV;
+import gtPlusPlus.xmod.gregtech.common.tileentities.generators.MTEAdvancedBoilerLV;
+import gtPlusPlus.xmod.gregtech.common.tileentities.generators.MTEAdvancedBoilerMV;
 
 public class GregtechAdvancedBoilers {
 
@@ -30,11 +30,11 @@ public class GregtechAdvancedBoilers {
     private static void run1() {
         // Boilers
         GregtechItemList.Boiler_Advanced_LV
-            .set(new GTPPMTEBoilerLV(Boiler_Advanced_LV.ID, "Advanced Boiler [LV]", 1).getStackForm(1L));
+            .set(new MTEAdvancedBoilerLV(Boiler_Advanced_LV.ID, "Advanced Boiler [LV]", 1).getStackForm(1L));
         GregtechItemList.Boiler_Advanced_MV
-            .set(new GTPPMTEBoilerMV(Boiler_Advanced_MV.ID, "Advanced Boiler [MV]", 2).getStackForm(1L));
+            .set(new MTEAdvancedBoilerMV(Boiler_Advanced_MV.ID, "Advanced Boiler [MV]", 2).getStackForm(1L));
         GregtechItemList.Boiler_Advanced_HV
-            .set(new GTPPMTEBoilerHV(Boiler_Advanced_HV.ID, "Advanced Boiler [HV]", 3).getStackForm(1L));
+            .set(new MTEAdvancedBoilerHV(Boiler_Advanced_HV.ID, "Advanced Boiler [HV]", 3).getStackForm(1L));
     }
 
     public static void addRecipes() {
