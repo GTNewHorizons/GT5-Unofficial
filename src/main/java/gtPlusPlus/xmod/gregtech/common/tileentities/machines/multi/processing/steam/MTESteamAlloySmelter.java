@@ -133,12 +133,12 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
 
     @Override
     protected ITexture getFrontOverlay() {
-        return TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_STEAM_ALLOY_SMELTER);
+        return TextureFactory.of(Textures.BlockIcons.OVERLAY_STEAM_ALLOY_SMELTER_MULTI);
     }
 
     @Override
     protected ITexture getFrontOverlayActive() {
-        return TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_STEAM_ALLOY_SMELTER_ACTIVE);
+        return TextureFactory.of(Textures.BlockIcons.OVERLAY_STEAM_ALLOY_SMELTER_MULTI);
     }
 
     @Override

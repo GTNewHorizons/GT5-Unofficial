@@ -3,10 +3,8 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.s
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.api.enums.GTValues.AuthorSteamIsTheNumber;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CARPENTER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CARPENTER_ACTIVE;
 import static gregtech.api.recipe.RecipeMaps.steamCarpenterRecipes;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -111,26 +109,16 @@ public class MTESteamCarpenter extends MTEBetterSteamMultiBase<MTESteamCarpenter
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE)
+                        .addIcon(OVERLAY_CARPENTER_ACTIVE)
                         .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
                         .build() };
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR)
+                        .addIcon(OVERLAY_CARPENTER)
                         .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW)
-                        .extFacing()
-                        .glow()
                         .build() };
             }
         } else {
