@@ -5,10 +5,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.AuthorSteamIsTheNumber;
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_STEAMHOLE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_STEAMHOLE_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_STEAMHOLE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_STEAMHOLE_GLOW;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -41,6 +41,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEBetterSteamMultiBase;
 
@@ -107,12 +108,13 @@ public class MTESteamMegaCompressor extends MTEBetterSteamMultiBase<MTESteamMega
         .addElement(
             'B',
             ofChain(
-                buildSteamInput(MTESteamMegaCompressor.class).casingIndex(10)
+                buildSteamInput(MTESteamMegaCompressor.class)
+                    .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
                     .dot(1)
                     .build(),
                 buildHatchAdder(MTESteamMegaCompressor.class)
                     .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
-                    .casingIndex(10)
+                    .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
                     .dot(1)
                     .buildAndChain(),
                 ofBlock(GregTechAPI.sBlockCasings2, 0)))
@@ -170,11 +172,11 @@ public class MTESteamMegaCompressor extends MTEBetterSteamMultiBase<MTESteamMega
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE)
+                        .addIcon(OVERLAY_MULTI_STEAMHOLE_ACTIVE)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_MULTI_STEAMHOLE_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -183,11 +185,11 @@ public class MTESteamMegaCompressor extends MTEBetterSteamMultiBase<MTESteamMega
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR)
+                        .addIcon(OVERLAY_MULTI_STEAMHOLE)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW)
+                        .addIcon(OVERLAY_MULTI_STEAMHOLE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
