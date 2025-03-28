@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
+import goodgenerator.loader.Loaders;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -34,6 +35,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.VoltageIndex;
+import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.block.BlockQuantumGlass;
 
 import javax.annotation.Nullable;
@@ -53,10 +55,12 @@ public class GlassTier {
     private static final List<Pair<Block, Integer>> glassList = new ArrayList<>();
 
     /**
+     * Register a glass as a tiered glass.
      * @param modname              The modid owning the block
      * @param unlocalisedBlockName The name of the block itself
      * @param meta                 The meta of the block
-     * @param tier                 the glasses Tier = Voltage tier (MIN 3)
+     * @param tier                 The glasses Tier = Voltage tier (MIN 3)
+     * @param subtier              Where the glass falls within a tier (must be unique, increasing 0,1,2...)
      */
     public static void addCustomGlass(String modname, String unlocalisedBlockName, int meta, int tier, int subtier) {
         Block block = findBlock(modname, unlocalisedBlockName);
@@ -133,18 +137,12 @@ public class GlassTier {
 
             // --- HV ---
             addCustomGlass(ItemRegistry.bw_realglas, 0, 3, 0);
-            // Stained boro glass
-            for (int i = 0; i < 6; ++i) {
-                addCustomGlass(ItemRegistry.bw_realglas, i + 6, 3, i + 1);
-            }
             if (EnderIO.isModLoaded()) {
-                for (int i = 0; i < 6; ++i) {
-                    addCustomGlass(EnderIO.ID, "blockFusedQuartz", i, 3, i + 7);;
-                }
+                addCustomGlass(EnderIO.ID, "blockFusedQuartz", 1, 3, 1);
             }
             if (Thaumcraft.isModLoaded()) {
                 // Warded glass
-                addCustomGlass(Thaumcraft.ID, "blockCosmeticOpaque", 2, 3, 13);
+                addCustomGlass(Thaumcraft.ID, "blockCosmeticOpaque", 2, 3, 2);
             }
 
             // --- EV ---
@@ -195,6 +193,8 @@ public class GlassTier {
 
             // --- UMV ---
             addCustomGlass(ItemRegistry.bw_realglas2, 0, 12, 0);
+            addCustomGlass(BlockGodforgeGlass.INSTANCE, 0, 12, 1);
+            addCustomGlass(Loaders.antimatterContainmentCasing, 0, 12, 2);
         }
 
         private static void registerGlassOreDicts() {
