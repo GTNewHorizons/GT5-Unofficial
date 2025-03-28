@@ -745,7 +745,7 @@ public class GTStructureUtility {
         Function<T, Integer> getter) {
         return withChannel(
             "glass",
-            lazy(t -> ofBlocksTiered(GlassTier::getGlassTier, GlassTier.getGlassList(), notSet, setter, getter)));
+            lazy(t -> ofBlocksTiered(GlassTier::getGlassBlockTier, GlassTier.getGlassList(), notSet, setter, getter)));
     }
 
     /**

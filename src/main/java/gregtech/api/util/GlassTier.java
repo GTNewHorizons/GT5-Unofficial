@@ -36,6 +36,8 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.VoltageIndex;
 import tectech.thing.block.BlockQuantumGlass;
 
+import javax.annotation.Nullable;
+
 public class GlassTier {
 
     private static final Comparator<Pair<Integer, Integer>> tierComparator = Comparator
@@ -78,13 +80,21 @@ public class GlassTier {
         }
     }
 
-    public static int getGlassTier(Block block, int meta) {
-        return glassToTierAndIndex.getOrDefault(Pair.of(block, meta), Pair.of(0, 0))
+    /**
+     * Gets the tier of the glass represented by the block:meta passed.
+     * If passed non-glass or glass without a tier, returns null.
+     * @param block
+     * @param meta
+     * @return Integer glass tier or null
+     */
+    @Nullable
+    public static Integer getGlassBlockTier(Block block, int meta) {
+        return glassToTierAndIndex.getOrDefault(Pair.of(block, meta), Pair.of(null, 0))
             .getLeft();
     }
 
     public static int getGlassChannelValue(Block block, int meta) {
-        return glassToTierAndIndex.getOrDefault(Pair.of(block, meta), Pair.of(0, 0))
+        return glassToTierAndIndex.getOrDefault(Pair.of(block, meta), Pair.of(null, 0))
             .getRight();
     }
 
@@ -93,7 +103,7 @@ public class GlassTier {
             int ctr = 1; // For channel index, starts at 1
             for (Pair<Block, Integer> glass : mainGlass) {
                 glassList.add(glass);
-                glassToTierAndIndex.put(glass, Pair.of(getGlassTier(glass.getLeft(), glass.getRight()), ctr++));
+                glassToTierAndIndex.put(glass, Pair.of(getGlassBlockTier(glass.getLeft(), glass.getRight()), ctr++));
             }
             for (Map.Entry<Pair<Integer, Integer>, Pair<Block, Integer>> entry : tierToGlass.entrySet()) {
                 if (entry.getKey()
@@ -216,14 +226,13 @@ public class GlassTier {
             final Block block = Block.getBlockFromItem(event.itemStack.getItem());
             final int meta = event.itemStack.getItemDamage();
 
-            int tier = getGlassTier(block, meta);
+            Integer tier = getGlassBlockTier(block, meta);
+            if (tier == null) return;
             int channelIdx = getGlassChannelValue(block, meta);
-
-            if (tier == 0) return;
 
             event.toolTip.add(
                 StatCollector.translateToLocal("tooltip.glass_tier.0.name") + " "
-                    + getColoredTierNameFromTier((byte) tier));
+                    + getColoredTierNameFromTier(tier.byteValue()));
             event.toolTip
                 .add(StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", channelIdx, "glass"));
 
