@@ -50,13 +50,14 @@ public class GlassTier {
     // For default tier ordering, so the primary (borosilicate) glasses come before the variants
     private static final int minTier = VoltageIndex.HV;
     private static final int maxTier = VoltageIndex.UMV;
+    private static final Pair<Integer, Integer> defaultGlassTier = Pair.of(null, 0);
     private static final List<Pair<Block, Integer>> mainGlass = new ArrayList<>(
         Collections.nCopies(maxTier + 1 - minTier, null));
     private static final List<Pair<Block, Integer>> glassList = new ArrayList<>();
 
     /**
      * Register a glass as a tiered glass.
-     * 
+     *
      * @param modname              The modid owning the block
      * @param unlocalisedBlockName The name of the block itself
      * @param meta                 The meta of the block
@@ -88,19 +89,19 @@ public class GlassTier {
     /**
      * Gets the tier of the glass represented by the block:meta passed.
      * If passed non-glass or glass without a tier, returns null.
-     * 
+     *
      * @param block
      * @param meta
      * @return Integer glass tier or null
      */
     @Nullable
     public static Integer getGlassBlockTier(Block block, int meta) {
-        return glassToTierAndIndex.getOrDefault(Pair.of(block, meta), Pair.of(null, 0))
+        return glassToTierAndIndex.getOrDefault(Pair.of(block, meta), defaultGlassTier)
             .getLeft();
     }
 
     public static int getGlassChannelValue(Block block, int meta) {
-        return glassToTierAndIndex.getOrDefault(Pair.of(block, meta), Pair.of(null, 0))
+        return glassToTierAndIndex.getOrDefault(Pair.of(block, meta), defaultGlassTier)
             .getRight();
     }
 
