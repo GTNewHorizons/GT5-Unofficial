@@ -16,6 +16,8 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.Cover;
+import gregtech.common.covers.CoverPosition;
 import io.netty.buffer.ByteBuf;
 
 public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvancedWirelessRedstoneBase {
@@ -55,7 +57,7 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
 
     @Override
     public void readDataFromPacket(ByteArrayDataInput byteData) {
-        int oldFrequency = frequency;
+        String oldFrequency = frequency;
         UUID oldUuid = uuid;
         super.readDataFromPacket(byteData);
         unregisterOldSignal(oldUuid, oldFrequency);

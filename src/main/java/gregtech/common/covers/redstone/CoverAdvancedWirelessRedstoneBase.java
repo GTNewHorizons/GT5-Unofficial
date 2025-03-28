@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import gregtech.common.covers.CoverPosition;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -20,6 +19,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
+import gregtech.common.covers.CoverPosition;
 import io.netty.buffer.ByteBuf;
 
 public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
@@ -97,12 +97,13 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
         }
         byteBuf.writeInt(frequency.length());
         for (int i = 0; i < frequency.length(); i++) {
-        byteBuf.writeChar(frequency.charAt(i));
+            byteBuf.writeChar(frequency.charAt(i));
         }
     }
 
     public static Byte getSignalAt(UUID uuid, String frequency, CoverAdvancedRedstoneReceiverBase.GateMode mode) {
-        Map<String, Map<CoverPosition, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
+        Map<String, Map<CoverPosition, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone
+            .get(String.valueOf(uuid));
         if (frequencies == null) return 0;
 
         Map<CoverPosition, Byte> signals = frequencies.get(frequency);
@@ -149,7 +150,8 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
     }
 
     public static void removeSignalAt(UUID uuid, String frequency, CoverPosition key) {
-        Map<String, Map<CoverPosition, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone.get(String.valueOf(uuid));
+        Map<String, Map<CoverPosition, Byte>> frequencies = GregTechAPI.sAdvancedWirelessRedstone
+            .get(String.valueOf(uuid));
         if (frequencies == null) return;
         frequencies.computeIfPresent(frequency, (freq, coverPositionByteMap) -> {
             coverPositionByteMap.remove(key);
