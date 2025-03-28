@@ -110,7 +110,7 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
     @Override
     public void preDataChanged(Cover newCover) {
         if (newCover instanceof CoverAdvancedRedstoneTransmitterBase newTransmitterCover
-            && (frequency != newTransmitterCover.frequency || !Objects.equals(uuid, newTransmitterCover.uuid))) {
+            && (!Objects.equals(frequency, newTransmitterCover.frequency) || !Objects.equals(uuid, newTransmitterCover.uuid))) {
             unregisterSignal();
         }
     }
