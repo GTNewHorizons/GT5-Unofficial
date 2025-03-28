@@ -237,9 +237,9 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         return MTEElectricImplosionCompressor::getTierOfBlock;
     }
 
-    private static int getTierOfBlock(Block block, int meta) {
+    private static Integer getTierOfBlock(Block block, int meta) {
         if (block == null) {
-            return -1;
+            return null;
         }
         if (block == GregTechAPI.sBlockMetal5 && meta == 2) {
             return 1; // Neutronium
@@ -255,7 +255,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                 default -> -1;
             };
         }
-        return -1;
+        return null;
     }
 
     private void setBlockTier(int tier) {

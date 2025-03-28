@@ -23,6 +23,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAS
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 
 import java.util.Arrays;
@@ -41,15 +42,14 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import bartworks.API.BorosilicateGlass;
 import bartworks.common.configs.Configuration;
 import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -86,12 +86,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
             withChannel(
                 "coil",
                 activeCoils(ofCoil(MTEMegaBlastFurnace::setCoilLevel, MTEMegaBlastFurnace::getCoilLevel))))
-        .addElement(
-            'g',
-            withChannel(
-                "glass",
-                BorosilicateGlass
-                    .ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier)))
+        .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(
             'b',
             buildHatchAdder(MTEMegaBlastFurnace.class)
@@ -141,7 +136,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
 
     private HeatingCoilLevel mCoilLevel;
     private int mHeatingCapacity;
-    private byte glassTier;
+    private int glassTier = -1;
     private final static int polPtick = PollutionConfig.basePollutionMBFSecond / 20
         * Configuration.Multiblocks.megaMachinesMax;
 
@@ -169,22 +164,14 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
             .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency).")
             .addInfo("Additionally gives +100K for every tier past MV")
             .addTecTechHatchInfo()
-            .addInfo(
-                GTValues.TIER_COLORS[8] + GTValues.VN[8]
-                    + EnumChatFormatting.GRAY
-                    + "-tier glass required for "
-                    + EnumChatFormatting.BLUE
-                    + "Tec"
-                    + EnumChatFormatting.DARK_BLUE
-                    + "Tech"
-                    + EnumChatFormatting.GRAY
-                    + " Laser Hatches.")
+            .addGlassEnergyLimitInfo()
+            .addMinGlassForLaser(VoltageIndex.UV)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 20, 15, true)
             .addController("3rd layer center")
             .addCasingInfoRange("Heat Proof Machine Casing", 0, 447, false)
-            .addOtherStructurePart("864x Heating Coils", "Inner 13x18x13 (Hollow)")
-            .addOtherStructurePart("1007x Borosilicate Glass", "Outer 15x18x15")
+            .addCasingInfoExactly("Heating Coils", 864, true)
+            .addCasingInfoExactly("Any Tiered Glass", 1007, true)
             .addStructureInfo("The glass tier limits the Energy Input tier")
             .addEnergyHatch("Any bottom layer casing")
             .addMaintenanceHatch("Any bottom layer casing")
@@ -194,6 +181,8 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
             .addOutputBus("Any bottom layer casing")
             .addOutputHatch("Any Heat Proof Machine Casing")
             .addStructureHint("This Mega Multiblock is too big to have its structure hologram displayed fully.")
+            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage("coil", "Heating Coils Tier")
             .toolTipFinisher();
         return tt;
     }
@@ -201,7 +190,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.glassTier = aNBT.getByte("glasTier");
+        this.glassTier = aNBT.getInteger("glasTier");
         if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
             this.inputSeparation = aNBT.getBoolean("isBussesSeparate");
         }
@@ -258,7 +247,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setByte("glasTier", this.glassTier);
+        aNBT.setInteger("glasTier", this.glassTier);
     }
 
     @Override
@@ -316,7 +305,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        this.glassTier = 0;
+        this.glassTier = -1;
         this.setCoilLevel(HeatingCoilLevel.None);
         return this.survivialBuildPiece("main", stackSize, 7, 17, 0, realBudget, env, false, true);
     }
@@ -332,14 +321,14 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         this.mHeatingCapacity = 0;
-        this.glassTier = 0;
+        this.glassTier = -1;
 
         this.setCoilLevel(HeatingCoilLevel.None);
 
         if (!this.checkPiece("main", 7, 17, 0) || this.getCoilLevel() == HeatingCoilLevel.None
             || this.mMaintenanceHatches.size() != 1) return false;
 
-        if (this.glassTier < 8) {
+        if (this.glassTier < VoltageIndex.UV) {
             for (MTEHatch hatch : this.mExoticEnergyHatches) {
                 if (hatch.getConnectionType() == MTEHatch.ConnectionType.LASER) {
                     return false;

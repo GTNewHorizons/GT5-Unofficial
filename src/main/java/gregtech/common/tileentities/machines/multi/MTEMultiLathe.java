@@ -4,6 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GTValues.AuthorVolence;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -72,12 +73,12 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     private static final String STRUCTURE_PIECE_BODY = "body";
     private static final String STRUCTURE_PIECE_BODY_ALT = "body_alt";
 
-    protected int pipeTier = 0;
+    protected int pipeTier = -1;
 
     // get tier from block meta
     private static Integer getTierFromMeta(Block block, Integer metaID) {
-        if (block != GregTechAPI.sBlockCasings11) return -1;
-        if (metaID < 0 || metaID > 7) return -1;
+        if (block != GregTechAPI.sBlockCasings11) return null;
+        if (metaID < 0 || metaID > 7) return null;
         return metaID + 1;
     }
 
@@ -116,20 +117,22 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
         .addElement('C', chainAllGlasses()) // Glass
         .addElement(
             'F',
-            ofBlocksTiered(
-                MTEMultiLathe::getTierFromMeta,
-                ImmutableList.of(
-                    Pair.of(GregTechAPI.sBlockCasings11, 0),
-                    Pair.of(GregTechAPI.sBlockCasings11, 1),
-                    Pair.of(GregTechAPI.sBlockCasings11, 2),
-                    Pair.of(GregTechAPI.sBlockCasings11, 3),
-                    Pair.of(GregTechAPI.sBlockCasings11, 4),
-                    Pair.of(GregTechAPI.sBlockCasings11, 5),
-                    Pair.of(GregTechAPI.sBlockCasings11, 6),
-                    Pair.of(GregTechAPI.sBlockCasings11, 7)),
-                -2,
-                MTEMultiLathe::setPipeTier,
-                MTEMultiLathe::getPipeTier))
+            withChannel(
+                "item_pipe",
+                ofBlocksTiered(
+                    MTEMultiLathe::getTierFromMeta,
+                    ImmutableList.of(
+                        Pair.of(GregTechAPI.sBlockCasings11, 0),
+                        Pair.of(GregTechAPI.sBlockCasings11, 1),
+                        Pair.of(GregTechAPI.sBlockCasings11, 2),
+                        Pair.of(GregTechAPI.sBlockCasings11, 3),
+                        Pair.of(GregTechAPI.sBlockCasings11, 4),
+                        Pair.of(GregTechAPI.sBlockCasings11, 5),
+                        Pair.of(GregTechAPI.sBlockCasings11, 6),
+                        Pair.of(GregTechAPI.sBlockCasings11, 7)),
+                    -1,
+                    MTEMultiLathe::setPipeTier,
+                    MTEMultiLathe::getPipeTier)))
         .build();
 
     @Override
@@ -197,7 +200,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
             .addController("Front Center")
             .addCasingInfoMin("Solid Steel Machine Casing", 42, false)
             .addCasingInfoExactly("Grate Machine Casing", 9, false)
-            .addCasingInfoExactly("Any Glass", 32, false)
+            .addCasingInfoExactly("Any Tiered Glass", 32, false)
             .addInputBus("Any Solid Steel Casing", 1)
             .addOutputBus("Any Solid Steel Casing", 1)
             .addEnergyHatch("Any Solid Steel Casing", 1)
@@ -206,6 +209,8 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
                 StatCollector.translateToLocal("GT5U.tooltip.structure.four_item_pipe_casings"),
                 "Center of the glass",
                 4)
+            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage("item_pipe", "Item Pipe Casings")
             .toolTipFinisher(AuthorVolence);
         return tt;
     }
@@ -241,7 +246,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        pipeTier = -2;
+        pipeTier = -1;
         mEnergyHatches.clear();
         mCasingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) return false;
