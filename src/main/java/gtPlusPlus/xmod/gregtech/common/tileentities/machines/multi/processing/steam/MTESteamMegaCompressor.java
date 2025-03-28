@@ -14,11 +14,14 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import gtPlusPlus.core.util.minecraft.FluidUtils;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -44,6 +47,8 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEBetterSteamMultiBase;
+
+import java.util.ArrayList;
 
 public class MTESteamMegaCompressor extends MTEBetterSteamMultiBase<MTESteamMegaCompressor>
     implements ISurvivalConstructable {
@@ -160,6 +165,28 @@ public class MTESteamMegaCompressor extends MTEBetterSteamMultiBase<MTESteamMega
             .beginStructureBlock(3, 3, 3, false)
             .toolTipFinisher();
         return tt;
+    }
+
+    FluidStack scSteam = FluidRegistry.getFluidStack("supercriticalsteam", 1);
+
+    @Override
+    public ArrayList<FluidStack> getAllSteamStacks() {
+        ArrayList<FluidStack> aFluids = new ArrayList<>();
+        for (FluidStack aFluid : this.getStoredFluids()) {
+            if (aFluid.isFluidEqual(scSteam)) {
+                aFluids.add(aFluid);
+            }
+        }
+        return aFluids;
+    }
+
+    @Override
+    public boolean tryConsumeSteam(int aAmount) {
+        if (getTotalSteamStored() <= 0) {
+            return false;
+        } else {
+            return this.depleteInput(FluidRegistry.getFluidStack("supercriticalsteam", aAmount));
+        }
     }
 
     @Override
