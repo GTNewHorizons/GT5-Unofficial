@@ -594,6 +594,51 @@ public class GTValues {
 
     public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
 
+    public static final Supplier<String> SteamgateCredits = chain(
+        text(EnumChatFormatting.WHITE + "Created By:\n"),
+        getAuthorSerenibyssLetter("S", 30, 3, LIGHT_PURPLE, 11, WHITE, 25, AQUA),
+        getAuthorSerenibyssLetter("t", 30, 12, AQUA, 18, LIGHT_PURPLE, 29, WHITE),
+        getAuthorSerenibyssLetter("e", 30, 0, WHITE, 10, LIGHT_PURPLE, 20, AQUA),
+        getAuthorSerenibyssLetter("a", 30, 9, LIGHT_PURPLE, 17, AQUA, 22, WHITE),
+        getAuthorSerenibyssLetter("m", 30, 6, WHITE, 14, AQUA, 27, LIGHT_PURPLE),
+        getAuthorSerenibyssLetter("i", 30, 1, AQUA, 15, WHITE, 21, LIGHT_PURPLE),
+        getAuthorSerenibyssLetter("b", 30, 13, WHITE, 19, LIGHT_PURPLE, 23, WHITE),
+        getAuthorSerenibyssLetter("y", 30, 2, AQUA, 8, LIGHT_PURPLE, 24, WHITE),
+        getAuthorSerenibyssLetter("s", 30, 5, AQUA, 16, WHITE, 26, LIGHT_PURPLE),
+        getAuthorSerenibyssLetter("s", 30, 4, LIGHT_PURPLE, 7, WHITE, 28, AQUA),
+        text("\n"),
+        animatedText(
+            "Brass",
+            0,
+            500,
+            GOLD + BOLD,
+            DARK_GREEN + BOLD,
+            GOLD + BOLD,
+            DARK_GREEN + BOLD,
+            DARK_GREEN + OBFUSCATED + BOLD),
+        animatedText(
+            "Noccles",
+            0,
+            500,
+            DARK_GREEN + BOLD,
+            GOLD + BOLD,
+            DARK_GREEN + BOLD,
+            GOLD + BOLD,
+            DARK_GREEN + OBFUSCATED + BOLD),
+        text(
+            "\n" + EnumChatFormatting.LIGHT_PURPLE
+                + EnumChatFormatting.ITALIC
+                + "Steam"
+                + EnumChatFormatting.WHITE
+                + EnumChatFormatting.ITALIC
+                + "Is"
+                + EnumChatFormatting.LIGHT_PURPLE
+                + EnumChatFormatting.ITALIC
+                + "The"
+                + EnumChatFormatting.WHITE
+                + EnumChatFormatting.ITALIC
+                + "Number"));
+
     public static final Supplier<String> AuthorSteamibyss = chain(
         text("Author: "),
         getAuthorSerenibyssLetter("S", 30, 3, LIGHT_PURPLE, 11, WHITE, 25, AQUA),

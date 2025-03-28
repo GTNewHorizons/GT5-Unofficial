@@ -95,6 +95,7 @@ public class GregtechSteamMultis {
         GregtechItemList.Controller_Steamgate.set(
             new MTESteamgate(Controller_Steamgate.ID, "gtpp.multimachine.steamgate", "Steamgate Base Block")
                 .getStackForm(1));
+        addItemTooltip(GregtechItemList.Controller_Steamgate.get(1), GTValues.SteamgateCredits);
         GregtechItemList.Controller_SteamBlastFurnace.set(
             new MTESteamBlastFurnace(
                 Controller_SteamBlastFurnace.ID,

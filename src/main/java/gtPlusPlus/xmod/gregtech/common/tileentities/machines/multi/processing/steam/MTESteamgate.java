@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.s
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTValues.AuthorSteamIsTheNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_STEAMGATE_CONTROLLER;
 
 import net.minecraft.item.ItemStack;
@@ -90,8 +89,6 @@ public class MTESteamgate extends MTEEnhancedMultiBlockBase<MTESteamgate> implem
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addInfo(EnumChatFormatting.AQUA + "" + EnumChatFormatting.ITALIC + "Impossible machine.")
-            .addInfo("Created by: ")
-            .addInfo(AuthorSteamIsTheNumber)
             .beginStructureBlock(3, 3, 3, false)
             .toolTipFinisher();
         return tt;
