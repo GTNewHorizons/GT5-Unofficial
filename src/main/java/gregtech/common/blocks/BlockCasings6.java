@@ -1,14 +1,11 @@
 package gregtech.common.blocks;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GTLanguageManager;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
@@ -17,39 +14,23 @@ import gregtech.api.util.GTLanguageManager;
 public class BlockCasings6 extends BlockCasingsAbstract {
 
     public BlockCasings6() {
-        super(ItemCasings6.class, "gt.blockcasings6", MaterialCasings.INSTANCE, 16);
+        super(ItemCasings.class, "gt.blockcasings6", MaterialCasings.INSTANCE, 16);
 
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Hermetic Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Hermetic Casing I");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Hermetic Casing II");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Hermetic Casing III");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Hermetic Casing IV");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Hermetic Casing V");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Hermetic Casing VI");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Hermetic Casing VII");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Hermetic Casing VIII");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Hermetic Casing IX");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Hermetic Casing X");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Hermetic Casing XI");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Hermetic Casing XII");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Hermetic Casing XIII");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Hermetic Casing XIV");
-
-        ItemList.Casing_Tank_0.set(new ItemStack(this, 1, 0));
-        ItemList.Casing_Tank_1.set(new ItemStack(this, 1, 1));
-        ItemList.Casing_Tank_2.set(new ItemStack(this, 1, 2));
-        ItemList.Casing_Tank_3.set(new ItemStack(this, 1, 3));
-        ItemList.Casing_Tank_4.set(new ItemStack(this, 1, 4));
-        ItemList.Casing_Tank_5.set(new ItemStack(this, 1, 5));
-        ItemList.Casing_Tank_6.set(new ItemStack(this, 1, 6));
-        ItemList.Casing_Tank_7.set(new ItemStack(this, 1, 7));
-        ItemList.Casing_Tank_8.set(new ItemStack(this, 1, 8));
-        ItemList.Casing_Tank_9.set(new ItemStack(this, 1, 9));
-        ItemList.Casing_Tank_10.set(new ItemStack(this, 1, 10));
-        ItemList.Casing_Tank_11.set(new ItemStack(this, 1, 11));
-        ItemList.Casing_Tank_12.set(new ItemStack(this, 1, 12));
-        ItemList.Casing_Tank_13.set(new ItemStack(this, 1, 13));
-        ItemList.Casing_Tank_14.set(new ItemStack(this, 1, 14));
+        register(0, ItemList.Casing_Tank_0, "Hermetic Casing");
+        register(1, ItemList.Casing_Tank_1, "Hermetic Casing I");
+        register(2, ItemList.Casing_Tank_2, "Hermetic Casing II");
+        register(3, ItemList.Casing_Tank_3, "Hermetic Casing III");
+        register(4, ItemList.Casing_Tank_4, "Hermetic Casing IV");
+        register(5, ItemList.Casing_Tank_5, "Hermetic Casing V");
+        register(6, ItemList.Casing_Tank_6, "Hermetic Casing VI");
+        register(7, ItemList.Casing_Tank_7, "Hermetic Casing VII");
+        register(8, ItemList.Casing_Tank_8, "Hermetic Casing VIII");
+        register(9, ItemList.Casing_Tank_9, "Hermetic Casing IX");
+        register(10, ItemList.Casing_Tank_10, "Hermetic Casing X");
+        register(11, ItemList.Casing_Tank_11, "Hermetic Casing XI");
+        register(12, ItemList.Casing_Tank_12, "Hermetic Casing XII");
+        register(13, ItemList.Casing_Tank_13, "Hermetic Casing XIII");
+        register(14, ItemList.Casing_Tank_14, "Hermetic Casing XIV");
     }
 
     @Override
@@ -83,12 +64,5 @@ public class BlockCasings6 extends BlockCasingsAbstract {
             case 14 -> Textures.BlockIcons.MACHINE_CASING_TANK_14.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_TANK_0.getIcon();
         };
-    }
-
-    @Override
-    public int colorMultiplier(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[0] << 16
-            | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[1] << 8
-            | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[2];
     }
 }

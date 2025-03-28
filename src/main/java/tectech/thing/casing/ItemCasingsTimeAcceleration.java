@@ -10,16 +10,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.util.GTLanguageManager;
-import gregtech.common.blocks.ItemCasingsAbstract;
+import gregtech.common.blocks.ItemCasings;
 
-public class ItemCasingsTimeAcceleration extends ItemCasingsAbstract {
+public class ItemCasingsTimeAcceleration extends ItemCasings {
 
     public ItemCasingsTimeAcceleration(Block par1) {
         super(par1);
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> tooltip, boolean aF3_H) {
         switch (aStack.getItemDamage()) {
             case 0:
             case 1:
@@ -30,17 +30,17 @@ public class ItemCasingsTimeAcceleration extends ItemCasingsAbstract {
             case 6:
             case 7:
             case 8:
-                aList.add(
+                tooltip.add(
                     EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
                         + GTLanguageManager
                             .addStringLocalization("EOH.TimeDilation.Standard.Tooltip", "Time dilation in a box."));
                 break;
             default:
-                aList.add(
+                tooltip.add(
                     EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD
                         + GTLanguageManager
                             .addStringLocalization("EOH.TimeDilation.Error.Tooltip", "Error, report to GTNH team"));
         }
-        aList.add(AuthorColen);
+        tooltip.add(AuthorColen);
     }
 }

@@ -3,7 +3,6 @@ package gregtech.common.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -12,7 +11,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
@@ -21,7 +19,8 @@ import gregtech.api.util.GTLanguageManager;
 public class BlockCasings2 extends BlockCasingsAbstract {
 
     public BlockCasings2() {
-        super(ItemCasings2.class, "gt.blockcasings2", MaterialCasings.INSTANCE, 96);
+        super(ItemCasings.class, "gt.blockcasings2", MaterialCasings.INSTANCE, 16);
+
         // Special handler for Pyrolyse Oven Casing on hatches...
         Textures.BlockIcons.casingTexturePages[0][22] = TextureFactory.of(
             Block.getBlockFromItem(
@@ -31,38 +30,22 @@ public class BlockCasings2 extends BlockCasingsAbstract {
             ForgeDirection.UNKNOWN,
             Dyes.MACHINE_METAL.mRGBa);
 
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Solid Steel Machine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Frost Proof Machine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Bronze Gear Box Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Steel Gear Box Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Titanium Gear Box Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Assembly Line Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Processor Machine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Data Drive Machine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Containment Field Machine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Assembler Machine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Pump Machine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Motor Machine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Bronze Pipe Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Steel Pipe Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Titanium Pipe Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Tungstensteel Pipe Casing");
-        ItemList.Casing_SolidSteel.set(new ItemStack(this, 1, 0));
-        ItemList.Casing_FrostProof.set(new ItemStack(this, 1, 1));
-        ItemList.Casing_Gearbox_Bronze.set(new ItemStack(this, 1, 2));
-        ItemList.Casing_Gearbox_Steel.set(new ItemStack(this, 1, 3));
-        ItemList.Casing_Gearbox_Titanium.set(new ItemStack(this, 1, 4));
-        ItemList.Casing_Gearbox_TungstenSteel.set(new ItemStack(this, 1, 5));
-        ItemList.Casing_Processor.set(new ItemStack(this, 1, 6));
-        ItemList.Casing_DataDrive.set(new ItemStack(this, 1, 7));
-        ItemList.Casing_ContainmentField.set(new ItemStack(this, 1, 8));
-        ItemList.Casing_Assembler.set(new ItemStack(this, 1, 9));
-        ItemList.Casing_Pump.set(new ItemStack(this, 1, 10));
-        ItemList.Casing_Motor.set(new ItemStack(this, 1, 11));
-        ItemList.Casing_Pipe_Bronze.set(new ItemStack(this, 1, 12));
-        ItemList.Casing_Pipe_Steel.set(new ItemStack(this, 1, 13));
-        ItemList.Casing_Pipe_Titanium.set(new ItemStack(this, 1, 14));
-        ItemList.Casing_Pipe_TungstenSteel.set(new ItemStack(this, 1, 15));
+        register(0, ItemList.Casing_SolidSteel, "Solid Steel Machine Casing");
+        register(1, ItemList.Casing_FrostProof, "Frost Proof Machine Casing");
+        register(2, ItemList.Casing_Gearbox_Bronze, "Bronze Gear Box Casing");
+        register(3, ItemList.Casing_Gearbox_Steel, "Steel Gear Box Casing");
+        register(4, ItemList.Casing_Gearbox_Titanium, "Titanium Gear Box Casing");
+        register(5, ItemList.Casing_Gearbox_TungstenSteel, "Assembly Line Casing");
+        register(6, ItemList.Casing_Processor, "Processor Machine Casing");
+        register(7, ItemList.Casing_DataDrive, "Data Drive Machine Casing");
+        register(8, ItemList.Casing_ContainmentField, "Containment Field Machine Casing", BLAST_PROOF);
+        register(9, ItemList.Casing_Assembler, "Assembler Machine Casing");
+        register(10, ItemList.Casing_Pump, "Pump Machine Casing");
+        register(11, ItemList.Casing_Motor, "Motor Machine Casing");
+        register(12, ItemList.Casing_Pipe_Bronze, "Bronze Pipe Casing", tierTooltip(1));
+        register(13, ItemList.Casing_Pipe_Steel, "Steel Pipe Casing", tierTooltip(2));
+        register(14, ItemList.Casing_Pipe_Titanium, "Titanium Pipe Casing", tierTooltip(3));
+        register(15, ItemList.Casing_Pipe_TungstenSteel, "Tungstensteel Pipe Casing", tierTooltip(4));
     }
 
     @Override
@@ -96,7 +79,10 @@ public class BlockCasings2 extends BlockCasingsAbstract {
     @Override
     public float getExplosionResistance(Entity aTNT, World aWorld, int aX, int aY, int aZ, double eX, double eY,
         double eZ) {
-        return aWorld.getBlockMetadata(aX, aY, aZ) == 8 ? Blocks.bedrock.getExplosionResistance(aTNT)
-            : super.getExplosionResistance(aTNT, aWorld, aX, aY, aZ, eX, eY, eZ);
+        if (aWorld.getBlockMetadata(aX, aY, aZ) == 8) {
+            return Blocks.bedrock.getExplosionResistance(aTNT);
+        }
+
+        return super.getExplosionResistance(aTNT, aWorld, aX, aY, aZ, eX, eY, eZ);
     }
 }
