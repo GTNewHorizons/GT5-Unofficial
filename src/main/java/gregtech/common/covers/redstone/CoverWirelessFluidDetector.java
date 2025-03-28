@@ -1,6 +1,5 @@
 package gregtech.common.covers.redstone;
 
-import gregtech.common.covers.CoverPosition;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -14,6 +13,7 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.common.covers.CoverLiquidMeter;
+import gregtech.common.covers.CoverPosition;
 import gregtech.common.gui.mui1.cover.WirelessFluidDetectorUIFactory;
 import io.netty.buffer.ByteBuf;
 
