@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -11,6 +12,8 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.recipe.RecipeMaps.steamWoodcutterRecipes;
+import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static gregtech.common.items.IDMetaTool01.BRANCHCUTTER;
@@ -55,6 +58,7 @@ import forestry.api.arboriculture.TreeManager;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.TAE;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -696,6 +700,16 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
         if (leaves != null) map.put(Mode.LEAVES, leaves);
         if (fruit != null) map.put(Mode.FRUIT, fruit);
         treeProductsMap.put(key, map);
+
+        // Hijacking this for steam update. Yes this is gross, no I don't care, it's april fools baybee
+
+        if (log == null) return;
+        RA.stdBuilder()
+            .itemInputs(new ItemStack(saplingIn.getItem(), 0, saplingIn.getItemDamage()))
+            .itemOutputs(new ItemStack(log.getItem(), 8, log.getItemDamage()))
+            .duration(2 * MINUTES)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(steamWoodcutterRecipes);
 
         if (!addFakeRecipeToNEI(saplingIn, log, saplingOut, leaves, fruit)) {
             Logger.INFO("Registering NEI fake recipe for " + key + " failed!");
