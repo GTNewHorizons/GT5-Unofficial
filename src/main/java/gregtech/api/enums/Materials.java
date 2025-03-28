@@ -724,6 +724,13 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials YttriumBariumCuprate;
 
     /**
+     * Steam April Fools materials
+     */
+    public static Materials Stronze;
+    public static Materials Breel;
+    public static Materials CompressedSteam;
+
+    /**
      * Second Degree Compounds
      */
     public static Materials WoodSealed;
