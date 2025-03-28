@@ -53,7 +53,9 @@ public class AlloySmelterRecipes implements Runnable {
         { new MaterialStack(Materials.Silver, 1L), new MaterialStack(Materials.Electrotine, 4L),
             new MaterialStack(Materials.BlueAlloy, 1L) },
         { new MaterialStack(Materials.Boron, 1L), new MaterialStack(Materials.Glass, 7L),
-            new MaterialStack(Materials.BorosilicateGlass, 8L) } };
+            new MaterialStack(Materials.BorosilicateGlass, 8L) },
+        { new MaterialStack(Materials.Steel, 2L), new MaterialStack(Materials.Bronze, 1L),
+            new MaterialStack(Materials.Stronze, 3L) } };
 
     @Override
     public void run() {
