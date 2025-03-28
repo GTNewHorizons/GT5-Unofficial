@@ -10,9 +10,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
@@ -49,12 +51,13 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
 public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 
-    private int lastPage = 0;
+
 
     public ItemRedstoneSniffer(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);;
         setMaxStackSize(1);
     }
+
 
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
@@ -71,17 +74,29 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
         }
         return super.onItemRightClick(stack, world, player);
     }
-
     @Override
     public ModularPanel buildUI(GuiData guiData, PanelSyncManager guiSyncManager) {
         AtomicReference<String> freqFilter = new AtomicReference<>("");
         AtomicReference<String> ownerFilter = new AtomicReference<>("");
+        AtomicInteger lastPage = new AtomicInteger(0);
+        if(guiData.getMainHandItem().getTagCompound() != null && guiData.getMainHandItem().getTagCompound().hasKey("last_page")){
+            lastPage.set(guiData.getMainHandItem().getTagCompound().getInteger("last_page"));
+        }
+        IntSyncValue pageSyncer = new IntSyncValue(lastPage::get, (page) -> {
+            lastPage.set(page);
+            if(guiData.getMainHandItem().getTagCompound() == null) guiData.getMainHandItem().setTagCompound(new NBTTagCompound());
+            NBTTagCompound tag = guiData.getMainHandItem().getTagCompound();
+            tag.setInteger("last_page",page);
+        });
+        guiSyncManager.syncValue("lastpage", pageSyncer);
+
         PagedWidget.Controller controller = new PagedWidget.Controller() {
 
             @Override
             public void setPage(int page) {
                 super.setPage(page);
-                lastPage = page;
+                ((IntSyncValue) guiSyncManager.getSyncHandler("lastpage:0")).setValue(page);
+                System.out.println(String.format("set page to %d", page));
             }
         };
         ListWidget regularListWidget = new ListWidget<>();
@@ -118,7 +133,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
 
             @Override
             public void afterInit() {
-                setPage(lastPage);
+                setPage(lastPage.get());
             }
         };
         data.sizeRel(1, 0.7f);
