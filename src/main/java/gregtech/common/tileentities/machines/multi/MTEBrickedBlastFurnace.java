@@ -23,6 +23,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.input.Keyboard;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ItemSlot;
+import com.cleanroommc.modularui.widgets.SlotGroupWidget;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -53,6 +60,11 @@ import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.modularui2.GTGuis;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -61,6 +73,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
+import gregtech.common.modularui2.widget.GTProgressWidget;
 import gregtech.common.pollution.Pollution;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -544,6 +557,61 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
             tag.setInteger("mProgressTime", this.getProgresstime());
             tag.setInteger("mMaxProgressTime", this.maxProgresstime());
         }
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.PRIMITIVE;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+        syncManager.registerSlotGroup("item_inv", 0);
+        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
+            .build()
+            .child(
+                SlotGroupWidget.builder()
+                    .matrix("I", "I", "I")
+                    .key('I', index -> {
+                        String textureThemeId = switch (index) {
+                            case 0 -> GTWidgetThemes.OVERLAY_ITEM_SLOT_INGOT;
+                            case 1 -> GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST;
+                            case 2 -> GTWidgetThemes.OVERLAY_ITEM_SLOT_FURNACE;
+                            default -> throw new IllegalStateException("Unexpected value: " + index);
+                        };
+                        return new ItemSlot().slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv"))
+                            .widgetTheme(textureThemeId);
+                    })
+                    .build()
+                    .pos(33, 15))
+            .child(
+                SlotGroupWidget.builder()
+                    .matrix("III")
+                    .key('I', index -> {
+                        String textureThemeId = switch (index) {
+                            case 0 -> GTWidgetThemes.OVERLAY_ITEM_SLOT_INGOT;
+                            case 1, 2 -> GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST;
+                            default -> throw new IllegalStateException("Unexpected value: " + index);
+                        };
+                        return new ItemSlot()
+                            .slot(
+                                new ModularSlot(inventoryHandler, index + 3).accessibility(false, true)
+                                    .slotGroup("item_inv"))
+                            .widgetTheme(textureThemeId);
+                    })
+                    .build()
+                    .pos(85, 24))
+            .child(
+                new GTProgressWidget().neiTransferRect(getRecipeMap())
+                    .value(new DoubleSyncValue(() -> (double) mProgresstime / mMaxProgresstime))
+                    .texture(GTGuiTextures.PROGRESSBAR_ARROW_BBF, 20)
+                    .pos(58, 24)
+                    .size(20, 18));
     }
 
     @Override
