@@ -1890,6 +1890,14 @@ public enum ItemList implements IItemContainer {
     Steamgate_Frame,
     Steamgate_Core_Crystal,
 
+    Steamgate_Ring_Block,
+    Steamgate_Chevron_Block,
+    Vibration_Safe_Casing,
+    Extractinator_Casing,
+    Iron_Wood_Casing,
+    Bronze_Wood_Casing,
+    Steel_Wood_Casing,
+
     Circuit_Board_Coated,
     Circuit_Board_Coated_Basic,
     Circuit_Board_Phenolic,

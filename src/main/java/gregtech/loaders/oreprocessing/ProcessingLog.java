@@ -136,6 +136,16 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                     ItemStack tPlanks = GTUtility.copyOrNull(tStack);
                     if (tPlanks != null) {
                         tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
+
+                        GTValues.RA.stdBuilder()
+                            .itemInputs(new ItemStack(aStack.getItem(), 1, i))
+                            .itemOutputs(
+                                GTUtility.copyOrNull(tPlanks),
+                                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+                            .duration(10 * SECONDS)
+                            .eut(8)
+                            .addTo(steamCarpenterRecipes);
+
                         GTValues.RA.stdBuilder()
                             .itemInputs(new ItemStack(aStack.getItem(), 1, i))
                             .itemOutputs(
@@ -193,6 +203,16 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                 ItemStack tPlanks = GTUtility.copyOrNull(tStack);
                 if (tPlanks != null) {
                     tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
+
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(GTUtility.copyAmount(1, aStack))
+                        .itemOutputs(
+                            GTUtility.copyOrNull(tPlanks),
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+                        .duration(10 * SECONDS)
+                        .eut(8)
+                        .addTo(steamCarpenterRecipes);
+
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))
                         .itemOutputs(

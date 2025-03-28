@@ -165,7 +165,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> steamCarpenterRecipes = RecipeMapBuilder
         .of("gt.recipe.steamcarpenter")
-        .maxIO(2, 1, 0, 0)
+        .maxIO(2, 2, 0, 0)
         .progressBarSteam(GTUITextures.PROGRESSBAR_ARROW_STEAM)
         .neiHandlerInfo((builder -> builder.setDisplayStack((GregtechItemList.Controller_SteamCarpenter.get(1)))))
         .build();
