@@ -2,6 +2,7 @@ package gregtech.common.covers.redstone;
 
 import java.util.Objects;
 
+import gregtech.common.covers.CoverPosition;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -71,8 +72,8 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
     private void unregisterSignal() {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) return;
-        final long hash = hashCoverCoords(coverable, coverSide);
-        removeSignalAt(uuid, frequency, hash);
+        final CoverPosition key = getCoverKey(coverable, coverSide);
+        removeSignalAt(uuid, frequency, key);
     }
 
     @Override
