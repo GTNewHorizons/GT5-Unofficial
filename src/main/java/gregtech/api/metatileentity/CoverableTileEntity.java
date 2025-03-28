@@ -206,7 +206,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     public final ITexture getCoverTexture(ForgeDirection side) {
         final Cover cover = getCoverAtSide(side);
         if (!cover.isValid()) return null;
-        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x1) != 0) {
+        if (GTMod.instance.isClientSide() && GTClient.shouldHideThings()) {
             return Textures.BlockIcons.HIDDEN_TEXTURE[0]; // See through
         }
         final ITexture coverTexture = this instanceof BaseMetaPipeEntity ? cover.getSpecialFaceTexture()
