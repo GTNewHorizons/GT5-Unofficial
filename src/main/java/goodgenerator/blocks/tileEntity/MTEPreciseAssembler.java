@@ -335,8 +335,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                 reUpdate(CASING_INDEX + casingTier);
             }
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-            return casingAmount >= 42
-                && mMaintenanceHatches.size() == 1
+            return casingAmount >= 42 && mMaintenanceHatches.size() == 1
                 && glassTier >= VoltageIndex.EV
                 && !mMufflerHatches.isEmpty();
         }

@@ -18,7 +18,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-import goodgenerator.loader.Loaders;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -33,12 +34,11 @@ import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.VoltageIndex;
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.block.BlockQuantumGlass;
-
-import javax.annotation.Nullable;
 
 public class GlassTier {
 
@@ -56,6 +56,7 @@ public class GlassTier {
 
     /**
      * Register a glass as a tiered glass.
+     * 
      * @param modname              The modid owning the block
      * @param unlocalisedBlockName The name of the block itself
      * @param meta                 The meta of the block
@@ -87,6 +88,7 @@ public class GlassTier {
     /**
      * Gets the tier of the glass represented by the block:meta passed.
      * If passed non-glass or glass without a tier, returns null.
+     * 
      * @param block
      * @param meta
      * @return Integer glass tier or null
