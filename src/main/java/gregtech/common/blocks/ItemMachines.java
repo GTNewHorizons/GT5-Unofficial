@@ -229,16 +229,16 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         if (aDamage >= 0 && aDamage < GregTechAPI.METATILEENTITIES.length
             && GregTechAPI.METATILEENTITIES[aDamage] != null) {
             Materials aMaterial = null;
-            if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEItemPipe) {
-                aMaterial = ((MTEItemPipe) GregTechAPI.METATILEENTITIES[aDamage]).mMaterial;
-            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof GTPPMTEFluidPipe) {
-                aName = ((GTPPMTEFluidPipe) GregTechAPI.METATILEENTITIES[aDamage]).pipeStats.defaultLocalName;
-            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEFluidPipe) {
-                aMaterial = ((MTEFluidPipe) GregTechAPI.METATILEENTITIES[aDamage]).mMaterial;
-            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTECable) {
-                aMaterial = ((MTECable) GregTechAPI.METATILEENTITIES[aDamage]).mMaterial;
-            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEFrame) {
-                aMaterial = ((MTEFrame) GregTechAPI.METATILEENTITIES[aDamage]).mMaterial;
+            if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEItemPipe itemPipe) {
+                aMaterial = itemPipe.mMaterial;
+            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof GTPPMTEFluidPipe gtppFluidPipe) {
+                aName = gtppFluidPipe.pipeStats.getLocalizedNameForItem(aName);
+            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEFluidPipe fluidPipe) {
+                aMaterial = fluidPipe.mMaterial;
+            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTECable cable) {
+                aMaterial = cable.mMaterial;
+            } else if (GregTechAPI.METATILEENTITIES[aDamage] instanceof MTEFrame frame) {
+                aMaterial = frame.mMaterial;
             }
             if (aMaterial != null) {
                 aName = aMaterial.getLocalizedNameForItem(aName);

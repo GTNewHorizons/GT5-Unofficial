@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.*;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTUtility.formatStringSafe;
 
 import java.util.ArrayList;
 
@@ -58,6 +59,13 @@ public class GregtechConduits {
             this.iconSet = iconSet;
             this.defaultLocalName = localName;
             this.rgba = new short[] { (short) r, (short) g, (short) b, (short) a };
+        }
+
+        public String getLocalizedNameForItem(String aFormat) {
+            return formatStringSafe(
+                aFormat.replace("%s", "%temp")
+                    .replace("%material", "%s"),
+                this.defaultLocalName).replace("%temp", "%s");
         }
     }
 
