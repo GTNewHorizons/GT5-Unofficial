@@ -181,6 +181,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private static final String STRUCTURE_PIECE_LAYER = "slice";
     private static final String STRUCTURE_PIECE_TOP = "top";
     private static final String STRUCTURE_PIECE_MID = "mid";
+    private static final int GLASS_TIER_UNSET = -2;
 
     private static final Block LSC_PART = Blocks.lscLapotronicEnergyUnit;
     private static final Item LSC_PART_ITEM = Item.getItemFromBlock(LSC_PART);
@@ -218,13 +219,15 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     .casingIndex(CASING_TEXTURE_ID)
                     .dot(1)
                     .buildAndChain(onElementPass(te -> te.casingAmount++, ofBlock(LSC_PART, CASING_META))))
-        .addElement('g', chainAllGlasses())
+        .addElement('g', chainAllGlasses(GLASS_TIER_UNSET, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(
             'c',
             ofChain(
                 onlyIf(
                     te -> te.topState != TopState.NotTop,
-                    onElementPass(te -> te.topState = TopState.Top, chainAllGlasses())),
+                    onElementPass(
+                        te -> te.topState = TopState.Top,
+                        chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))),
                 onlyIf(
                     te -> te.topState != TopState.Top,
                     onElementPass(
@@ -317,6 +320,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private long outputLastTick = 0;
     private int repairStatusCache = 0;
 
+    private int glassTier = -2;
     private int casingAmount = 0;
     private TopState topState = TopState.MayBeTop;
 
@@ -574,6 +578,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
         mMaxEUIn = 0;
         mMaxEUOut = 0;
+
+        glassTier = GLASS_TIER_UNSET;
         casingAmount = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_BASE, 2, 1, 0)) return false;

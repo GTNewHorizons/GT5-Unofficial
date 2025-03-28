@@ -133,6 +133,7 @@ import kubatech.client.effect.MegaApiaryBeesRenderer;
 public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaIndustrialApiary>
     implements ISurvivalConstructable {
 
+    private int glassTier = -2;
     private int mCasing = 0;
     private int mMaxSlots = 0;
     private int mPrimaryMode = 0;
@@ -180,7 +181,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                                 .replaceAll("F", " "))
                         .toArray(String[]::new))
                 .toArray(String[][]::new))
-        .addElement('A', chainAllGlasses())
+        .addElement('A', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('B', ofChain(ofBlockAnyMeta(Blocks.dirt, 0), ofBlock(Blocks.grass, 0)))
         .addElement(
             'G',
@@ -577,6 +578,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        glassTier = -2;
         mCasing = 0;
         if (isCacheDirty) {
             flowersCache.clear();

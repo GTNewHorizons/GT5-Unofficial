@@ -84,8 +84,8 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    protected int itemPipeTier = -1;
-    protected int fluidPipeTier = -1;
+    protected int itemPipeTier = 0;
+    protected int fluidPipeTier = 0;
 
     private static Integer getItemPipeTierFromMeta(Block block, Integer metaID) {
         if (block != GregTechAPI.sBlockCasings11) return -1;
@@ -168,7 +168,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
                         Pair.of(GregTechAPI.sBlockCasings2, 13),
                         Pair.of(GregTechAPI.sBlockCasings2, 14),
                         Pair.of(GregTechAPI.sBlockCasings2, 15)),
-                    -1,
+                    -2,
                     MTEMultiAutoclave::setFluidPipeTier,
                     MTEMultiAutoclave::getFluidPipeTier)))
         .addElement(
@@ -186,7 +186,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
                         Pair.of(GregTechAPI.sBlockCasings11, 5),
                         Pair.of(GregTechAPI.sBlockCasings11, 6),
                         Pair.of(GregTechAPI.sBlockCasings11, 7)),
-                    -1,
+                    -2,
                     MTEMultiAutoclave::setItemPipeTier,
                     MTEMultiAutoclave::getItemPipeTier)))
         .addElement(
@@ -237,8 +237,8 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        fluidPipeTier = -1;
-        itemPipeTier = -1;
+        fluidPipeTier = -2;
+        itemPipeTier = -2;
         mCasingAmount = 0;
         mEnergyHatches.clear();
         setCoilLevel(HeatingCoilLevel.None);

@@ -94,6 +94,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
      */
     public FluidStack mLockedFluid = null;
     protected boolean isFluidLocked = false;
+    protected int glassTier = -2;
     protected int maxCell;
     protected final String YOTTANK_BOTTOM = mName + "buttom";
     protected final String YOTTANK_MID = mName + "mid";
@@ -262,6 +263,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mStorage = BigInteger.ZERO;
+        glassTier = -2;
         maxCell = 0;
         if (!structureCheck_EM(YOTTANK_BOTTOM, 2, 0, 0)) return false;
         int cnt = 0;
@@ -297,7 +299,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
                         new String[][] { { "FFFFF", "F   F", "F   F", "F   F", "FFFFF" },
                             { "CCCCC", "CIIIC", "CIIIC", "CIIIC", "CCCCC" } }))
                 .addElement('C', ofBlock(Loaders.yottaFluidTankCasing, 0))
-                .addElement('G', chainAllGlasses())
+                .addElement('G', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement('R', ofChain(cells(10)))
                 .addElement('F', ofFrame(Materials.Steel))
                 .addElement(

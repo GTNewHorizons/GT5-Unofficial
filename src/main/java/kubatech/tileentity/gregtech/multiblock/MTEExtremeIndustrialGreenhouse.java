@@ -183,6 +183,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     /**
      * The tier of the glass on the EIG.
      */
+    private int glassTier = -2;
     /**
      * The Amount of Weed-EX used per cycle.
      */
@@ -234,7 +235,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     ofBlock(Block.getBlockFromName("ProjRed|Illumination:projectred.illumination.lamp"), 10),
                     ofBlock(Block.getBlockFromName("ProjRed|Illumination:projectred.illumination.lamp"), 26))
                 : ofChain(ofBlock(Blocks.redstone_lamp, 0), ofBlock(Blocks.lit_redstone_lamp, 0)))
-        .addElement('g', chainAllGlasses())
+        .addElement('g', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(
             'd',
             ofBlock(
@@ -254,6 +255,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         mCasing = 0;
+        glassTier = -2;
         if (debug) glassTier = 8;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 5, 0)) return false;

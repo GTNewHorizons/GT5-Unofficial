@@ -102,6 +102,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     private BioCulture mCulture;
     private ItemStack mStack;
     private boolean needsVisualUpdate = true;
+    private int glassTier = -2;
     private int mSievert;
     private int mNeededSievert;
     private int mCasing = 0;
@@ -137,7 +138,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                 ofHatchAdder(MTEBioVat::addEnergyInputToMachineList, CASING_INDEX, 1),
                 onElementPass(e -> e.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1))))
         .addElement('a', ofChain(isAir(), ofBlockAnyMeta(FluidLoader.bioFluidBlock)))
-        .addElement('g', chainAllGlasses())
+        .addElement('g', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .build();
 
     @Override
@@ -316,6 +317,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
         this.mRadHatches.clear();
+        this.glassTier = -2;
         this.mCasing = 0;
 
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 2, 3, 0)) return false;

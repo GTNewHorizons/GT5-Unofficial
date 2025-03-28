@@ -60,6 +60,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
 
     private static final int MAX_PARALLELS = 256;
     private HeatingCoilLevel coilLevel;
+    private int glassTier = -2;
     private double speedBonus = 1;
     private double energyDiscount = 1;
     private boolean hasNormalCoils;
@@ -139,7 +140,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                 .buildAndChain(ofBlock(ModBlocks.blockCasingsMisc, 15)))
         .addElement('D', ofBlock(ModBlocks.blockCasingsMisc, 15))
         .addElement('C', ofBlock(ModBlocks.blockCasingsMisc, 14))
-        .addElement('A', chainAllGlasses())
+        .addElement('A', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('F', Muffler.newAny(TAE.GTPP_INDEX(15), 3))
         .build();
 
@@ -198,6 +199,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        glassTier = -2;
         coilLevel = HeatingCoilLevel.None;
         if (!checkPiece("main", 5, 16, 0)) return false;
         if (hasNormalCoils) coilLevel = HeatingCoilLevel.None;
