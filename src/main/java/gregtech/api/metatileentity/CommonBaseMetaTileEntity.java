@@ -66,7 +66,18 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
             tTime = 0;
         }
 
-        updateEntityProfiled();
+        try {
+            updateEntityProfiled();
+        } catch (Throwable e) {
+            e.printStackTrace();
+            e.printStackTrace(GTLog.err);
+            try {
+                onTickFail();
+            } catch (Throwable ex) {
+                ex.printStackTrace();
+                ex.printStackTrace(GTLog.err);
+            }
+        }
 
         if (isServerSide() && hasTimeStatisticsStarted && hasValidMetaTileEntity()) {
             tTime = System.nanoTime() - tTime;
@@ -91,6 +102,8 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
         }
 
     }
+
+    protected abstract void onTickFail();
 
     protected void saveMetaTileNBT(NBTTagCompound aNBT) {
         try {

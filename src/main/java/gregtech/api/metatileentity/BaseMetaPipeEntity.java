@@ -257,6 +257,11 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         mWorkUpdate = mInventoryChanged = false;
     }
 
+    @Override
+    protected void onTickFail() {
+        mMetaTileEntity.onTickFail(this, mTickTimer);
+    }
+
     private void sendClientData() {
         if (mSendClientData) {
             if (mMetaTileEntity instanceof ITemporaryTE) {
