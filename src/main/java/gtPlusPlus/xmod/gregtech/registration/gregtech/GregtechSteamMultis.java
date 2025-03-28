@@ -11,6 +11,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamExtruder;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamForgeHammer;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamGateAssembler;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMaceratorMulti;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMegaCompressor;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMegaMaceratorMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMixerMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamRockBreaker;
@@ -35,6 +36,7 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.st
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamForgeHammer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamGateAssembler;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMacerator;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMegaCompressor;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMegaMacerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMixer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamRockBreaker;
@@ -122,6 +124,11 @@ public class GregtechSteamMultis {
                 Controller_SteamWoodcutter.ID,
                 "gtpp.multimachine.steam.woodcutter",
                 "Steam Woodcutter").getStackForm(1));
+        GregtechItemList.Controller_MegaSteamCompressor.set(
+            new MTESteamMegaCompressor(
+                Controller_SteamMegaCompressor.ID,
+                "gtpp.multimachine.steam.megacompressor",
+                "Steam Supercompressor").getStackForm(1));
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(
             new MTEHatchSteamBusInput(Hatch_Input_Bus_Steam.ID, "hatch.input_bus.tier.steam", "Input Bus (Steam)", 0)

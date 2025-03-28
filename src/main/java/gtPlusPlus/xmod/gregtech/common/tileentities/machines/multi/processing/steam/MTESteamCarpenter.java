@@ -1,12 +1,14 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.api.enums.GTValues.AuthorSteamIsTheNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW;
 import static gregtech.api.recipe.RecipeMaps.steamCarpenterRecipes;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import net.minecraft.item.ItemStack;
@@ -53,7 +55,18 @@ public class MTESteamCarpenter extends MTEBetterSteamMultiBase<MTESteamCarpenter
             .addShape(
                 STRUCTURE_PIECE_MAIN,
                 (new String[][] { { "A A", "   ", "A~A" }, { "ABA", "C C", "AAA" }, { " A ", " C ", " A " } }))
-            .addElement('A', ofBlock(GregTechAPI.sBlockCasings1, 10))
+            .addElement(
+                'A',
+                ofChain(
+                    buildSteamInput(MTESteamCarpenter.class).casingIndex(10)
+                        .dot(1)
+                        .build(),
+                    buildHatchAdder(MTESteamCarpenter.class)
+                        .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
+                        .casingIndex(10)
+                        .dot(1)
+                        .buildAndChain(),
+                    ofBlock(GregTechAPI.sBlockCasings1, 10)))
             .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 2))
             .addElement('C', ofFrame(Materials.Wood))
             .build();

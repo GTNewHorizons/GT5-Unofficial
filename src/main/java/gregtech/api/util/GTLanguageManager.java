@@ -553,7 +553,7 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_505", "Enable with Signal (Safe)");
         addStringLocalization("Interaction_DESCRIPTION_Index_506", "Disable with Signal (Safe)");
         addStringLocalization("Interaction_DESCRIPTION_Index_507", "Safe Mode");
-        addStringLocalization("Interaction_DESCRIPTION_Index_508", "Requires Stabilized Black Hole");
+        addStringLocalization("Interaction_DESCRIPTION_Index_508", "Requires Steam Supercompression");
         addStringLocalization("Interaction_DESCRIPTION_Index_509", "Requires HIP Unit");
         addStringLocalization("Interaction_DESCRIPTION_Index_510", "Multi Tier required: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_602", "Use Private Frequency");
