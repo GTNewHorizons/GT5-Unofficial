@@ -86,8 +86,8 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
     private int itemPipeTier = -1;
 
     private static Integer getItemPipeTierFromMeta(Block block, Integer metaID) {
-        if (block != GregTechAPI.sBlockCasings11) return -1;
-        if (metaID < 0 || metaID > 7) return -1;
+        if (block != GregTechAPI.sBlockCasings11) return null;
+        if (metaID < 0 || metaID > 7) return null;
         return metaID + 1;
     }
 
@@ -205,7 +205,6 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
         itemPipeTier = -1;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) return false;
-        if (itemPipeTier == -1) return false;
         return mCasingAmount >= 45;
     }
 

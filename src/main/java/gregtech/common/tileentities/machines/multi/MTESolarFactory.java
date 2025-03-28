@@ -172,8 +172,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             withChannel(
                 "unit casing",
                 ofBlocksTiered(
-                    (block, meta) -> block == Loaders.preciseUnitCasing ? meta : -2,
-                    // ^ if block is preciseUnitCasing return meta, otherwise return -2 & fail checkMachine
+                    (block, meta) -> block == Loaders.preciseUnitCasing ? meta : null,
                     ImmutableList.of(
                         Pair.of(Loaders.preciseUnitCasing, 0),
                         Pair.of(Loaders.preciseUnitCasing, 1),

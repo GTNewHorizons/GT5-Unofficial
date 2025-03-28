@@ -135,7 +135,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         .addElement(
             'B',
             ofBlocksTiered(
-                (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
+                (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : null,
                 IntStream.range(0, 14)
                     .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
                     .collect(Collectors.toList()),
@@ -344,7 +344,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             return false;
         }
 
-        return this.casingTier > -1 && this.glassTier >= VoltageIndex.UV;
+        return this.glassTier >= VoltageIndex.UV;
     }
 
     @Override

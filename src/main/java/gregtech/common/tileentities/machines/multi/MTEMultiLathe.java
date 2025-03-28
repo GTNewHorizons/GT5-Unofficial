@@ -77,8 +77,8 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
 
     // get tier from block meta
     private static Integer getTierFromMeta(Block block, Integer metaID) {
-        if (block != GregTechAPI.sBlockCasings11) return -1;
-        if (metaID < 0 || metaID > 7) return -1;
+        if (block != GregTechAPI.sBlockCasings11) return null;
+        if (metaID < 0 || metaID > 7) return null;
         return metaID + 1;
     }
 

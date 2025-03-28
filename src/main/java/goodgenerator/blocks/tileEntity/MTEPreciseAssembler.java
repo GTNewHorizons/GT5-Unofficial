@@ -144,7 +144,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                                     x -> x.casingAmount++,
                                     StructureUtility.ofBlocksTiered(
                                         (block, meta) -> block == Loaders.impreciseUnitCasing ? -1
-                                            : block == Loaders.preciseUnitCasing ? meta : -2,
+                                            : block == Loaders.preciseUnitCasing ? meta : null,
                                         ImmutableList.of(
                                             Pair.of(Loaders.impreciseUnitCasing, 0),
                                             Pair.of(Loaders.preciseUnitCasing, 0),
@@ -162,7 +162,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                         "machine_casing",
                         StructureUtility.ofBlocksTiered(
                             (block, meta) -> (block == GregTechAPI.sBlockCasings1 && meta >= 0 && meta <= 9) ? meta
-                                : -2,
+                                : null,
                             IntStream.range(0, 10)
                                 .mapToObj(
                                     meta -> org.apache.commons.lang3.tuple.Pair.of(GregTechAPI.sBlockCasings1, meta))
@@ -335,8 +335,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                 reUpdate(CASING_INDEX + casingTier);
             }
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-            return casingAmount >= 42 && machineTier >= 0
-                && casingTier >= -1
+            return casingAmount >= 42
                 && mMaintenanceHatches.size() == 1
                 && glassTier >= VoltageIndex.EV
                 && !mMufflerHatches.isEmpty();

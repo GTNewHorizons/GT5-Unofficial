@@ -462,7 +462,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy.or(ExoticEnergy), 4)).adder(MTESynchrotron::addEnergyInputToMachineList).dot(6).casingIndex(CASING_INDEX).build())
                 .addElement('n', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
                 .addElement('a', withChannel("antenna", StructureUtility.ofBlocksTiered(
-                		(Block block, int meta) -> (block == LanthItemList.ANTENNA_CASING_T1 ? 1 : block == LanthItemList.ANTENNA_CASING_T2 ? 2 : -1),
+                		(Block block, int meta) -> (block == LanthItemList.ANTENNA_CASING_T1 ? 1 : block == LanthItemList.ANTENNA_CASING_T2 ? 2 : null),
                 		ImmutableList.of(
                 				Pair.of(LanthItemList.ANTENNA_CASING_T1, 0),
                 				Pair.of(LanthItemList.ANTENNA_CASING_T2, 0)),
