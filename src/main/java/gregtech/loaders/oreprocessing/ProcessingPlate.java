@@ -385,16 +385,30 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         GTModHandler.removeRecipeByOutputDelayed(aStack);
 
         if (!aNoSmashing || aMaterial.contains(SubTag.STRETCHY)) {
-            int compression_tier = (aMaterial.processingMaterialTierEU >= TierEU.RECIPE_UEV
-                || aMaterial.contains(SubTag.BLACK_HOLE)) ? 2 : 1;
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 64))
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
-                .duration(Math.max(aMaterialMass * 32L, 1L))
-                .eut(calculateRecipeEU(aMaterial, 96))
-                .metadata(COMPRESSION_TIER, compression_tier)
+                .duration(30 * SECONDS)
+                .eut(512)
+                // Always require "black hole"
+                .metadata(COMPRESSION_TIER, 2)
                 .addTo(compressorRecipes);
         }
+
+        // Normal gt code
+        /*
+         * if (!aNoSmashing || aMaterial.contains(SubTag.STRETCHY)) {
+         * int compression_tier = (aMaterial.processingMaterialTierEU >= TierEU.RECIPE_UEV
+         * || aMaterial.contains(SubTag.BLACK_HOLE)) ? 2 : 1;
+         * GTValues.RA.stdBuilder()
+         * .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 64))
+         * .itemOutputs(GTUtility.copyAmount(1, aStack))
+         * .duration(Math.max(aMaterialMass * 32L, 1L))
+         * .eut(calculateRecipeEU(aMaterial, 96))
+         * .metadata(COMPRESSION_TIER, compression_tier)
+         * .addTo(compressorRecipes);
+         * }
+         */
     }
 
     private void registerItemCasing(final OrePrefixes aPrefix, final Materials aMaterial, final ItemStack aStack,
