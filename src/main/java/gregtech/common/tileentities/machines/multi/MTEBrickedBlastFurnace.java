@@ -469,7 +469,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return !GTUtility.areStacksEqual(aStack, this.mInventory[0]);
+        return aIndex < INPUT_SLOTS && !GTUtility.areStacksEqual(aStack, this.mInventory[0]);
     }
 
     @Override
