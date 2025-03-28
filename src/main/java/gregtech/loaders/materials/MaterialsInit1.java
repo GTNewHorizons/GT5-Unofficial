@@ -1076,6 +1076,16 @@ public class MaterialsInit1 {
             .constructMaterial()
             .setHasCorrespondingFluid(true);
 
+        Materials.GemSluice = new MaterialBuilder(217,  TextureSet.SET_FLUID, "Gem Sluice")
+            .addFluid()
+            .addCell()
+            .setRGBA(120, 153, 113, 0)
+            .setTransparent(true)
+            .setName("gemsluice")
+            .setColor(Dyes._NULL)
+            .constructMaterial()
+            .setHasCorrespondingFluid(true);
+
         // spotless:on
     }
 }

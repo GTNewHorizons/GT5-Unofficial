@@ -986,6 +986,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials GravelSluice;
     public static Materials SandSluice;
     public static Materials ObsidianSluice;
+    public static Materials GemSluice;
 
 
     // spotless:on
