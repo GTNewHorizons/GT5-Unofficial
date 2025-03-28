@@ -983,6 +983,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials RadoxCracked;
     public static Materials RadoxGas;
     public static Materials RadoxPolymer;
+    public static Materials GravelSluice;
+    public static Materials SandSluice;
+    public static Materials ObsidianSluice;
 
 
     // spotless:on
