@@ -737,7 +737,7 @@ public class GTStructureUtility {
     }
 
     public static <T> IStructureElement<T> chainAllGlasses() {
-        return chainAllGlasses(0, (te, t) -> {}, te -> 0);
+        return chainAllGlasses(-1, (te, t) -> {}, te -> -1);
     }
 
     /** support all Bart, Botania, Ic2, Thaumcraft glasses for multiblock structure **/

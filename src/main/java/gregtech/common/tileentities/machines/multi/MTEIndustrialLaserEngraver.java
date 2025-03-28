@@ -81,7 +81,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
                 .buildAndChain(
                     onElementPass(MTEIndustrialLaserEngraver::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 1))))
         .addElement('f', ofFrame(Materials.TungstenSteel))
-        .addElement('g', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
+        .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('r', ofBlock(GregTechAPI.sLaserRender, 0))
         .addElement(
             's',
@@ -93,7 +93,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         .build();
 
     protected TileEntityLaser renderer;
-    private int glassTier = -2;
+    private int glassTier = -1;
     private MTEHatchDynamoTunnel laserSource = null;
     private int laserAmps = 0;
     private int laserTier = 0;
@@ -295,7 +295,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
-        glassTier = -2;
+        glassTier = -1;
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) return false;

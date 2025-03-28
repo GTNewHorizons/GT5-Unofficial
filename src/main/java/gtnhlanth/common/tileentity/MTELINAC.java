@@ -68,7 +68,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     protected static final String STRUCTURE_PIECE_LAYER = "layer";
     protected static final String STRUCTURE_PIECE_END = "end";
 
-    private int glassTier = -2;
+    private int glassTier = -1;
 
     private boolean onEndInnerLayer = false;
 
@@ -113,7 +113,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                     { "ccccccc", "cbbbbbc", "cbbbbbc", "cbbobbc", "cbbbbbc", "cbbbbbc", "ccccccc" } })
             .addElement('c', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
             .addElement('g', ofBlock(GregTechAPI.sBlockCasings3, 10)) // Grate Machine Casing
-            .addElement('b', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
+            .addElement('b', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
             .addElement(
                 'i',
                 buildHatchAdder(MTELINAC.class).hatchClass(MTEHatchInputBeamline.class)
@@ -571,7 +571,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         this.outputParticle = 0;
         this.outputFocus = 0;
 
-        this.glassTier = -2;
+        this.glassTier = -1;
 
         this.onEndInnerLayer = false;
 

@@ -80,7 +80,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     private static final int PARALLELS_PER_WIDTH = 3;
     private static final double DECAY_RATE = 0.025;
 
-    private int glassTier = -2;
+    private int glassTier = -1;
     protected int width;
     private int casingAmount;
     private float speedup = 1;
@@ -112,7 +112,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                     { "AAAAAAA", "       ", "       ", "       ", "AAAAAAA" },
                     { "CCCBCCC", "       ", "F F F F", "       ", "CCCCCCC" },
                     { "BBB~BBB", "BBBBBBB", "BBBBBBB", "BBBBBBB", "BBBBBBB" } })))
-        .addElement('A', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
+        .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(
             'B',
             buildHatchAdder(MTEMultiSolidifier.class).atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy)
@@ -260,7 +260,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         width = 0;
         casingAmount = 0;
-        glassTier = -2;
+        glassTier = -1;
 
         if (checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) {
             while (width < (6)) {

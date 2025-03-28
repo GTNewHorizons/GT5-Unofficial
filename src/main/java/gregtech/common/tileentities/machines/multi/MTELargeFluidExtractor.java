@@ -98,7 +98,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
                         MTELargeFluidExtractor::onCasingAdded,
                         ofBlock(GregTechAPI.sBlockCasings4, 0))) // Robust Tungstensteel Machine Casing
         )
-        .addElement('g', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
+        .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(
             'h',
             withChannel(
@@ -123,7 +123,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
         .build();
     // spotless:on
 
-    private int glassTier = -2;
+    private int glassTier = -1;
     @Nullable
     private HeatingCoilLevel mCoilLevel = null;
     @Nullable
@@ -151,7 +151,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
         mCasingAmount = 0;
         mStructureBadGlassTier = false;
         mStructureBadCasingCount = false;
-        glassTier = -2;
+        glassTier = -1;
         mCoilLevel = null;
         mSolenoidLevel = null;
     }

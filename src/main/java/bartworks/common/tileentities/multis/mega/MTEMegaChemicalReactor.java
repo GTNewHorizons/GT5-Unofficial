@@ -54,7 +54,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalReactor>
     implements ISurvivalConstructable {
 
-    private int glassTier = -2;
+    private int glassTier = -1;
 
     public MTEMegaChemicalReactor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -189,7 +189,7 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.glassTier = -2;
+        this.glassTier = -1;
 
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 0) || this.mMaintenanceHatches.size() != 1) return false;
 
@@ -241,7 +241,7 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
                 .dot(3)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 0))
         .addElement('c', ofChain(ofBlock(GregTechAPI.sBlockCasings4, 7), ofBlock(GregTechAPI.sBlockCasings5, 13)))
-        .addElement('g', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
+        .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .build();
 
     @Override

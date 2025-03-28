@@ -95,7 +95,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
     private int antennaeTier;
 
-    private int glassTier = -2;
+    private int glassTier = -1;
 
     /*
      * c: Shielded accelerator casing v: Vacuum k: Superconducting coil d: Coolant Delivery casing
@@ -473,7 +473,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                         .dot(1).adder(MTESynchrotron::addBeamlineInputHatch).build())
                 .addElement('b', buildHatchAdder(MTESynchrotron.class).hatchClass(MTEHatchOutputBeamline.class).casingIndex(CASING_INDEX)
                         .dot(2).adder(MTESynchrotron::addBeamlineOutputHatch).build())
-                .addElement('g', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
+                .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement('j',
                 		buildHatchAdder(MTESynchrotron.class).atLeast(Maintenance).dot(3).casingIndex(CASING_INDEX)
                 		.buildAndChain(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
@@ -1092,7 +1092,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
         this.antennaeTier = -2;
 
-        this.glassTier = -2;
+        this.glassTier = -1;
 
         this.outputEnergy = 0;
         this.outputRate = 0;

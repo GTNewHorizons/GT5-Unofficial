@@ -106,7 +106,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     private int length;
     private int mode;
-    private int glassTier = -2;
+    private int glassTier = -1;
     private String imprintedItemName;
     private ItemStack imprintedStack;
 
@@ -130,7 +130,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 .casingIndex(CASING_INDEX)
                 .dot(1)
                 .buildAndChain(GregTechAPI.sBlockCasings3, 10))
-        .addElement('g', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
+        .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('l', ofBlock(GregTechAPI.sBlockCasings2, 5)) // assembly line casings
         .addElement(
             'b',
@@ -483,7 +483,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.glassTier = -2;
+        this.glassTier = -1;
         if (!this.checkPiece(STRUCTURE_PIECE_FIRST, 0, 0, 0)) {
             return false;
         }

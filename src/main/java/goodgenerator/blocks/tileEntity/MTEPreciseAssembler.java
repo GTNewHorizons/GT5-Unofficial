@@ -101,7 +101,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     protected int mode;
     protected int energyHatchTier;
     private static final int CASING_INDEX = 1541;
-    private int glassTier = -2;
+    private int glassTier = -1;
 
     public MTEPreciseAssembler(String name) {
         super(name);
@@ -155,7 +155,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                                         MTEPreciseAssembler::setCasingTier,
                                         MTEPreciseAssembler::getCasingTier)))))
                 .addElement('F', ofFrame(Materials.TungstenSteel))
-                .addElement('G', chainAllGlasses(-2, (te, t) -> te.glassTier = t, te -> te.glassTier))
+                .addElement('G', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement(
                     'M',
                     withChannel(
@@ -327,7 +327,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         this.machineTier = -1;
         this.casingAmount = 0;
         this.casingTier = -3;
-        this.glassTier = -2;
+        this.glassTier = -1;
         this.energyHatchTier = 0;
         if (checkPiece(mName, 4, 4, 0)) {
             energyHatchTier = checkEnergyHatchTier();

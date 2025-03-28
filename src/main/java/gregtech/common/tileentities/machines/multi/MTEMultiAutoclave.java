@@ -168,7 +168,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
                         Pair.of(GregTechAPI.sBlockCasings2, 13),
                         Pair.of(GregTechAPI.sBlockCasings2, 14),
                         Pair.of(GregTechAPI.sBlockCasings2, 15)),
-                    -2,
+                    -1,
                     MTEMultiAutoclave::setFluidPipeTier,
                     MTEMultiAutoclave::getFluidPipeTier)))
         .addElement(
@@ -186,7 +186,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
                         Pair.of(GregTechAPI.sBlockCasings11, 5),
                         Pair.of(GregTechAPI.sBlockCasings11, 6),
                         Pair.of(GregTechAPI.sBlockCasings11, 7)),
-                    -2,
+                    -1,
                     MTEMultiAutoclave::setItemPipeTier,
                     MTEMultiAutoclave::getItemPipeTier)))
         .addElement(
@@ -237,8 +237,8 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        fluidPipeTier = -2;
-        itemPipeTier = -2;
+        fluidPipeTier = -1;
+        itemPipeTier = -1;
         mCasingAmount = 0;
         mEnergyHatches.clear();
         setCoilLevel(HeatingCoilLevel.None);
