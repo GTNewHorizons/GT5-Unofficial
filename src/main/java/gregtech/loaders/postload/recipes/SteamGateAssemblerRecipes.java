@@ -249,7 +249,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
                 superdenseSteel, breelPlate, breelPlate, breelPlate, breelPlate, breelPlate, breelPlate, breelPlate, superdenseSteel,
                 superdenseBronze, stronzePlate, stronzePlate, stronzePlate, stronzePlate, stronzePlate, stronzePlate, stronzePlate, superdenseBronze,
                 superdenseSteel, breelPlate, breelPlate, breelPlate, breelPlate, breelPlate, breelPlate, breelPlate, superdenseSteel,
-                stronzePipe, stronzePipe, stronzePipe, stronzePipe, steamPump, stronzePipe, stronzePipe, stronzePipe, stronzePipe,
+                stronzePipe, stronzePipe, stronzePipe, stronzePipe, steamRegulator, stronzePipe, stronzePipe, stronzePipe, stronzePipe,
                 superdenseSteel, breelPlate, breelPlate, breelPlate, breelPlate, breelPlate, breelPlate, breelPlate, superdenseSteel,
                 superdenseBronze, stronzePlate, stronzePlate, stronzePlate, stronzePlate, stronzePlate, stronzePlate, stronzePlate, superdenseBronze,
                 superdenseSteel, breelPlate, breelPlate, breelPlate, breelPlate, breelPlate, breelPlate, breelPlate, superdenseSteel,
