@@ -12,17 +12,16 @@ import net.minecraft.world.IBlockAccess;
 import com.google.common.io.ByteArrayDataInput;
 
 import appeng.api.util.DimensionalCoord;
-import appeng.client.render.BlockPosHighlighter;
 import io.netty.buffer.ByteBuf;
 
-public class PacketDebugRedstoneCover extends GTPacket {
+public class PacketTeleportToCover extends GTPacket {
 
     private int dim;
     private int[] coords;
     private boolean teleportPlayer;
     private EntityPlayerMP player;
 
-    public PacketDebugRedstoneCover() {}
+    public PacketTeleportToCover() {}
 
     @Override
     public byte getPacketID() {
@@ -40,7 +39,7 @@ public class PacketDebugRedstoneCover extends GTPacket {
 
     @Override
     public GTPacket decode(ByteArrayDataInput buf) {
-        return new PacketDebugRedstoneCover(
+        return new PacketTeleportToCover(
             buf.readInt(),
             buf.readInt(),
             buf.readInt(),
@@ -87,17 +86,13 @@ public class PacketDebugRedstoneCover extends GTPacket {
         float pitch = (float) Math.toDegrees(Math.atan2(-deltaY, distanceXZ));
         if (this.dim == player.dimension) {
             player.playerNetServerHandler.setPlayerLocation(player.posX, player.posY, player.posZ, yaw, pitch);
-            String foundMsg = String
-                .format("Highlighting cover at %d,%d,%d", this.coords[0], this.coords[1], this.coords[2]);
-            BlockPosHighlighter
-                .highlightBlocks(player, list, foundMsg, "Cannot highlight because you're not in the same dimension!");
         } else {
             player.addChatMessage(new ChatComponentText("Cannot highlight because you're not in the same dimension!"));
         }
 
     }
 
-    public PacketDebugRedstoneCover(int dim, int x, int y, int z, boolean teleportPlayer) {
+    public PacketTeleportToCover(int dim, int x, int y, int z, boolean teleportPlayer) {
         this.dim = dim;
         this.coords = new int[] { x, y, z };
         this.teleportPlayer = teleportPlayer;
