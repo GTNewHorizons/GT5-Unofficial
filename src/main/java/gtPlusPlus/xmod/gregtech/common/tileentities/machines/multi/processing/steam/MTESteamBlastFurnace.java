@@ -172,7 +172,14 @@ public class MTESteamBlastFurnace extends MTEBetterSteamMultiBase<MTESteamBlastF
             .addInfo("Steam: " + EnumChatFormatting.WHITE + "1L = 1s")
             .addInfo("Superheated Steam: " + EnumChatFormatting.WHITE + "1L = 10s")
             .addInfo("Supercritical Steam: " + EnumChatFormatting.WHITE + "1L = 100s")
-            .addInfo(EnumChatFormatting.AQUA + "" + EnumChatFormatting.ITALIC + ":wowzer:")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "Blast furnaces are far too slow to create all of the steel you require.")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "Using breel and stronze to efficiently channel steam should help!")
             .addInfo("Author: " + AuthorSteamIsTheNumber)
             .toolTipFinisher();
         return tt;
