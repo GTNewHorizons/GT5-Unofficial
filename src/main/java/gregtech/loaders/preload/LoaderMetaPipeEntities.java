@@ -766,6 +766,18 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .heatCapacity(Integer.MAX_VALUE)
             .build();
         FluidPipeBuilder.builder()
+            .material(Materials.Stronze)
+            .startId(5320)
+            .baseCapacity(15000)
+            .heatCapacity(10000)
+            .build();
+        FluidPipeBuilder.builder()
+            .material(Materials.CompressedSteam)
+            .startId(5330)
+            .baseCapacity(250000)
+            .heatCapacity(10000)
+            .build();
+        FluidPipeBuilder.builder()
             .material(Materials.RadoxPolymer)
             .startId(5760)
             .baseCapacity(5000)
@@ -843,6 +855,11 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .material(Materials.Quantium)
             .startId(5730)
             .invSlotsForHugePipe(512)
+            .build();
+        ItemPipeBuilder.builder()
+            .material(Materials.Breel)
+            .startId(5740)
+            .invSlotsForHugePipe(128)
             .build();
     }
 

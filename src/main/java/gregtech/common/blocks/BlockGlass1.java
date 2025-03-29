@@ -35,7 +35,7 @@ public class BlockGlass1 extends BlockCasingsAbstract {
             ItemList.Hawking_Glass,
             "Hawking Radiation Realignment Focus",
             translatedText("gt.casing.hawking-focus"));
-        register(5, GregtechItemList.Extractinator_sieve_mesh, "Concentrating Sieve Mesh");
+        register(5, ItemList.Extractinator_Sieve_Mesh, "Concentrating Sieve Mesh");
     }
 
     @Override

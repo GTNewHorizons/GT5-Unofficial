@@ -54,6 +54,7 @@ import gregtech.loaders.postload.recipes.RecipeRemover;
 import gregtech.loaders.postload.recipes.SifterRecipes;
 import gregtech.loaders.postload.recipes.SlicerRecipes;
 import gregtech.loaders.postload.recipes.SmelterRecipes;
+import gregtech.loaders.postload.recipes.SteamCarpenterRecipes;
 import gregtech.loaders.postload.recipes.SteamConformerRecipes;
 import gregtech.loaders.postload.recipes.SteamExtractinatorRecipes;
 import gregtech.loaders.postload.recipes.SteamGateAssemblerRecipes;

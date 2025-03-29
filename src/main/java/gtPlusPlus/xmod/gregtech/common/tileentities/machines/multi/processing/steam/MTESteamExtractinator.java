@@ -264,7 +264,7 @@ public class MTESteamExtractinator extends MTESteamMultiBase<MTESteamExtractinat
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setSpeedBoost((1f));
+                    .setDurationModifier((1f));
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
