@@ -32,6 +32,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.loaders.postload.PCBFactoryMaterialLoader;
 import gregtech.loaders.postload.ProcessingArrayRecipeLoader;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
 
 public class MTERecipeLoader implements Runnable {
@@ -2268,6 +2269,47 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "ASA", "AFA", "APA", 'S', GTModHandler.getModItem(BuildCraftFactory.ID, "tankBlock", 1L, 0),
                 'F', ItemList.Hull_ULV.get(1L), 'A', OrePrefixes.plate.get(Materials.Rubber), 'P',
                 OrePrefixes.gear.get(Materials.Rubber) });
+        GTModHandler.addCraftingRecipe(
+            ItemList.Hatch_Input_LV.get(1L),
+            bits,
+            new Object[] { "ASA", "AFA", "APA", 'S', OrePrefixes.pipeLarge.get(Materials.Stronze), 'F',
+                ItemList.Hatch_Input_ULV.get(1L), 'A', OrePrefixes.plate.get(Materials.Stronze), 'P',
+                OrePrefixes.gear.get(Materials.Stronze) });
+        GTModHandler.addCraftingRecipe(
+            ItemList.Hatch_Input_MV.get(1L),
+            bits,
+            new Object[] { "ASA", "AFA", "APA", 'S', OrePrefixes.pipeLarge.get(Materials.CompressedSteam), 'F',
+                ItemList.Hatch_Input_LV.get(1L), 'A', OrePrefixes.plate.get(Materials.CompressedSteam), 'P',
+                OrePrefixes.gear.get(Materials.CompressedSteam) });
+
+        GTModHandler.addCraftingRecipe(
+            GregtechItemList.Hatch_Input_Bus_SteamMK2.get(1L),
+            bits,
+            new Object[] { "ASA", "AFA", "APA", 'S', OrePrefixes.pipeLarge.get(Materials.Breel), 'F',
+                GregtechItemList.Hatch_Input_Bus_Steam.get(1L), 'A', OrePrefixes.plate.get(Materials.Breel), 'P',
+                OrePrefixes.gear.get(Materials.Breel) });
+        GTModHandler.addCraftingRecipe(
+            GregtechItemList.Hatch_Output_Bus_SteamMK2.get(1L),
+            bits,
+            new Object[] { "ASA", "AFA", "APA", 'S', OrePrefixes.pipeLarge.get(Materials.Breel), 'F',
+                GregtechItemList.Hatch_Output_Bus_Steam.get(1L), 'A', OrePrefixes.plate.get(Materials.Breel), 'P',
+                OrePrefixes.gear.get(Materials.Breel) });
+
+        GTModHandler.addCraftingRecipe(
+            GregtechItemList.Hatch_Input_Bus_SteamMK3.get(1L),
+            bits,
+            new Object[] { "ASA", "AFA", "APA", 'S', OrePrefixes.pipeLarge.get(Materials.CompressedSteam), 'F',
+                GregtechItemList.Hatch_Input_Bus_SteamMK2.get(1L), 'A',
+                OrePrefixes.plate.get(Materials.CompressedSteam), 'P',
+                OrePrefixes.gear.get(Materials.CompressedSteam) });
+        GTModHandler.addCraftingRecipe(
+            GregtechItemList.Hatch_Output_Bus_SteamMK3.get(1L),
+            bits,
+            new Object[] { "ASA", "AFA", "APA", 'S', OrePrefixes.pipeLarge.get(Materials.CompressedSteam), 'F',
+                GregtechItemList.Hatch_Output_Bus_SteamMK2.get(1L), 'A',
+                OrePrefixes.plate.get(Materials.CompressedSteam), 'P',
+                OrePrefixes.gear.get(Materials.CompressedSteam) });
+
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_Firebox_Steel.get(1L),
             bits,
