@@ -567,6 +567,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
+            // Destroy all cursed "electric" multiblocks
+            if (explodesImmediately()) explodeMultiblock();
             // Time Counter
             mTotalRunTime++;
             if (mEfficiency < 0) mEfficiency = 0;
@@ -2949,6 +2951,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
         }
         return ret.toString();
+    }
+
+    protected boolean explodesImmediately() {
+        return true;
     }
 
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
