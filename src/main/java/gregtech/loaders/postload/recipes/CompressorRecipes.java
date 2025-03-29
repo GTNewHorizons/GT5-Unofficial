@@ -29,6 +29,13 @@ public class CompressorRecipes implements Runnable {
     public void run() {
 
         GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 4))
+            .itemOutputs(GTOreDictUnificator.get(new ItemStack(Blocks.netherrack, 3)))
+            .duration(5 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+
+        GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Mixed_Metal_Ingot.get(1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Advanced, 1L))
             .duration(15 * SECONDS)

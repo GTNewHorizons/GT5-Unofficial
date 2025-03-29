@@ -216,6 +216,9 @@ tile.blockCompressedObsidian.7.name=Double Compressed Glowstone (81)
 tile.blockCompressedObsidian.8.name=Triple Compressed Glowstone (729)
 tile.blockCompressedObsidian.9.name=Quadruple Compressed Glowstone (6561)
 tile.blockCompressedObsidian.10.name=Quintuple Compressed Glowstone (59049)
+tile.blockCompressedObsidian.11.name=Compressed Netherrack
+tile.blockCompressedObsidian.12.name=Double Compressed Netherrack
+tile.blockCompressedObsidian.13.name=Triple Compressed Netherrack
 tile.blockNet.name=Net
 gtplusplus.blockcasings.2.name=Machine Casing
 gtplusplus.blockcasings.3.name=Machine Casing
@@ -3920,6 +3923,7 @@ item.itemGearPraseodymium.name=Praseodymium Gear
 item.itemCellPraseodymium.name=Praseodymium Cell
 item.milledMonazite.name=Milled Monazite
 item.FrothMonaziteflotation.name=Monazite Flotation Froth Cell
+item.milledNetherrack.name=Milled Netherrack
 
 # Added 18/12/21
 item.BasicGenericChemItem.13.name=Formaldehyde Catalyst
@@ -3975,6 +3979,9 @@ item.BasicGenericChemItem.32.name=Synchrotron-Capable Catalyst
 
 # Added 19/09/23
 item.BasicGenericChemItem.33.name=Algagenic Growth Promoter Catalyst
+
+# Added 13/03/25
+item.BasicGenericChemItem.34.name=Hellish Force Catalyst
 
 # config gui
 gtpp.gui.config.general=General
