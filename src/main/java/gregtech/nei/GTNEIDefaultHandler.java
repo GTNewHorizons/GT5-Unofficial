@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
@@ -451,8 +452,8 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
     private void drawDescription(CachedDefaultRecipe cachedRecipe) {
         GTRecipe recipe = cachedRecipe.mRecipe;
         if (overclockDescriber == null) {
-            // By default, assume generic LV EU with no overclocks
-            overclockDescriber = new EUNoOverclockDescriber((byte) 1, uiProperties.amperage);
+            // everything steampilled
+            overclockDescriber = new SteamOverclockDescriber(SteamVariant.BRONZE, 1, 1);
         }
 
         OverclockCalculator calculator = overclockDescriber.createCalculator(
