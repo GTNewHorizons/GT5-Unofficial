@@ -13,6 +13,7 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
+import gregtech.common.covers.CoverPosition;
 import gregtech.common.gui.mui1.cover.WirelessActivityDetectorUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -122,8 +123,8 @@ public class CoverWirelessDoesWorkDetector extends CoverAdvancedRedstoneTransmit
             return;
         }
         final byte signal = computeSignalBasedOnActivity(coverable);
-        final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(getUuid(), getFrequency(), hash, signal);
+        final CoverPosition key = getCoverKey(coverable, coverSide);
+        setSignalAt(getUuid(), getFrequency(), key, signal);
 
         if (physical) {
             coverable.setOutputRedstoneSignal(coverSide, signal);

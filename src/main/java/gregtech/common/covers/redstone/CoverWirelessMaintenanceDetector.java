@@ -18,6 +18,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.common.covers.CoverNeedMaintainance;
+import gregtech.common.covers.CoverPosition;
 import gregtech.common.gui.mui1.cover.WirelessMaintenanceDetectorUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -142,8 +143,8 @@ public class CoverWirelessMaintenanceDetector extends CoverAdvancedRedstoneTrans
             return;
         }
         final byte signal = computeSignalBasedOnMaintenance(coverable);
-        final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(getUuid(), getFrequency(), hash, signal);
+        final CoverPosition key = getCoverKey(coverable, coverSide);
+        setSignalAt(getUuid(), getFrequency(), key, signal);
 
         if (physical) {
             coverable.setOutputRedstoneSignal(coverSide, signal);

@@ -15,6 +15,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
+import gregtech.common.covers.CoverPosition;
 import io.netty.buffer.ByteBuf;
 
 public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvancedWirelessRedstoneBase {
@@ -71,8 +72,8 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
     private void unregisterSignal() {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) return;
-        final long hash = hashCoverCoords(coverable, coverSide);
-        removeSignalAt(uuid, frequency, hash);
+        final CoverPosition key = getCoverKey(coverable, coverSide);
+        removeSignalAt(uuid, frequency, key);
     }
 
     @Override
@@ -95,7 +96,8 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
     @Override
     public void preDataChanged(Cover newCover) {
         if (newCover instanceof CoverAdvancedRedstoneTransmitterBase newTransmitterCover
-            && (frequency != newTransmitterCover.frequency || !Objects.equals(uuid, newTransmitterCover.uuid))) {
+            && (!Objects.equals(frequency, newTransmitterCover.frequency)
+                || !Objects.equals(uuid, newTransmitterCover.uuid))) {
             unregisterSignal();
         }
     }
