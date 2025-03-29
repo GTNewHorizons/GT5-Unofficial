@@ -194,10 +194,10 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
             new Column().child(
                 new Row().heightRel(0.1f)
                     .child(
-                        new TextWidget("Frequency").widthRel(0.5f)
+                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.5f)
                             .alignment(Alignment.Center))
                     .child(
-                        new TextWidget("Private").widthRel(0.5f)
+                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.owner")).widthRel(0.5f)
                             .alignment(Alignment.Center)))
                 .child(
                     new Row().heightRel(0.9f)
@@ -238,16 +238,16 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
             new Column().child(
                 new Row().heightRel(0.1f)
                     .child(
-                        new TextWidget("Owner").widthRel(0.15f)
+                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.owner")).widthRel(0.15f)
                             .alignment(Alignment.Center))
                     .child(
-                        new TextWidget("Frequency").widthRel(0.35f)
+                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.35f)
                             .alignment(Alignment.Center))
                     .child(
-                        new TextWidget("Dimension").widthRel(0.25f)
+                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.dimension")).widthRel(0.25f)
                             .alignment(Alignment.Center))
                     .child(
-                        new TextWidget("Action").widthRel(0.25f)
+                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.action")).widthRel(0.25f)
                             .alignment(Alignment.Center)))
                 .child(
                     new Row().heightRel(0.9f)
@@ -261,16 +261,16 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                         .child(
                             new PageButton(0, controller).widthRel(0.5f)
                                 .align(Alignment.CenterLeft)
-                                .overlay(IKey.dynamic(() -> "Regular Wireless")))
+                                .overlay(IKey.lang("gt.item.redstone_sniffer.regular_wireless")))
                         .child(
                             new PageButton(1, controller).widthRel(0.5f)
                                 .align(Alignment.CenterRight)
-                                .overlay(IKey.dynamic(() -> "Advanced Wireless"))))
+                                .overlay(IKey.lang("gt.item.redstone_sniffer.advanced_wireless"))))
                 .child(
                     new Row().heightRel(0.1f)
                         .marginBottom(10)
                         .child(
-                            new TextWidget("Frequency: ").widthRel(0.25f)
+                            new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.25f)
                                 .alignment(Alignment.Center))
                         .child(
                             new TextFieldWidget().sizeRel(0.25f, 0.5f)
@@ -283,7 +283,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                                 .setStringValue(filter);
                                         })))
                         .child(
-                            new TextWidget("Owner: ").widthRel(0.25f)
+                            new TextWidget(IKey.lang("gt.item.redstone_sniffer.owner")).widthRel(0.25f)
                                 .alignment(Alignment.Center))
                         .child(
                             new TextFieldWidget().sizeRel(0.25f, 0.5f)
@@ -338,7 +338,10 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                                     .asIcon()
                                                     .size(19, 19)
                                                     .margin(3))
-                                            .tooltip(tooltip -> { tooltip.addLine(IKey.str("Locate")); })
+                                            .tooltip(
+                                                tooltip -> {
+                                                    tooltip.addLine(IKey.lang("gt.item.redstone_sniffer.locate"));
+                                                })
                                             .onMousePressed(mouseButton -> {
                                                 GTValues.NW.sendToServer(
                                                     new PacketTeleportToCover(
@@ -380,7 +383,10 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                                     .asIcon()
                                                     .size(19, 19)
                                                     .margin(3))
-                                            .tooltip(tooltip -> { tooltip.addLine(IKey.str("Teleport")); })
+                                            .tooltip(
+                                                tooltip -> {
+                                                    tooltip.addLine(IKey.lang("gt.item.redstone_sniffer.teleport"));
+                                                })
                                             .onMousePressed(mouseButton -> {
                                                 GTValues.NW.sendToServer(
                                                     new PacketTeleportToCover(
