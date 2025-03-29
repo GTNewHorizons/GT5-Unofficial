@@ -687,6 +687,12 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public int tooltipFinisherStyle = 1;
 
     /**
+     * Enables scrolling up while hovering the ghost circuit of a machine UI to increment the circuit number instead of
+     * decrement
+     */
+    public boolean invertCircuitScrollDirection = false;
+
+    /**
      * Whether to show seconds or ticks on NEI
      */
     public boolean mNEIRecipeSecondMode = true;
