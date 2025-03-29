@@ -19,6 +19,7 @@ import com.cleanroommc.modularui.utils.serialization.IByteBufSerializer;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import gregtech.api.net.PacketTeleportToCover;
+import gregtech.common.covers.Cover;
 import gregtech.common.gui.modularui.syncvalue.GenericMapSyncHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -157,37 +158,36 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
         data.sizeRel(1, 0.7f);
         data.controller(controller);
         // Process regular wireless redstone frequencies
-        List<IWidget> regularList = new ArrayList<>();
-        GregTechAPI.sWirelessRedstone.entrySet()
-            .stream()
-            .sorted(Map.Entry.comparingByKey())
-            .forEach(entry -> {
-                int freq = entry.getKey();
-                boolean isPrivate = freq > 65535;
-                int displayFreq = isPrivate ? freq - 65536 : freq;
-                regularList.add(new Row().setEnabledIf(w -> {
-                    try {
-                        if (displayFreq == Integer.parseInt(
-                            ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue())) {
-                            return true;
-                        }
-                    } catch (NumberFormatException ignored) {
-                        return true;
-                    }
-                    return false;
-                })
+        GenericListSyncHandler<SnifferEntry> regularMapSyncer = new GenericListSyncHandler<>(
+            () -> {
+                List<SnifferEntry> result = new ArrayList<>();
+                GregTechAPI.sWirelessRedstone.forEach((frequency, ignored) -> {
+                    boolean isPrivate = frequency > 65535;
+                    int displayFreq = isPrivate ? frequency - 65536 : frequency;
+                    result.add(new SnifferEntry(String.valueOf(frequency), isPrivate));
+                });
+                return result;
+            }, new SnifferEntryAdapter()
+        );
+        regularMapSyncer.setChangeListener(() -> {
+            List<SnifferEntry> entries = regularMapSyncer.getValue();
+            List<IWidget> regularList = new ArrayList<>();
+            entries.forEach(entry -> {
+                regularList.add(new Row().setEnabledIf(w -> entry.freq.equals(((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue()))
                     .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
                     .sizeRel(1f, 0.3f)
                     .expanded()
                     .child(
-                        new TextWidget(String.valueOf(displayFreq)).widthRel(0.5f)
+                        new TextWidget(entry.freq).widthRel(0.5f)
                             .alignment(Alignment.Center))
                     .child(
-                        new TextWidget(isPrivate ? "Yes" : "No").widthRel(0.5f)
+                        new TextWidget(entry.isPrivate ? "Yes" : "No").widthRel(0.5f)
                             .alignment(Alignment.Center)));
             });
-
-        regularList.forEach(regularListWidget::child);
+            regularList.forEach(regularListWidget::child);
+            WidgetTree.resize(regularListWidget);
+        });
+        guiSyncManager.syncValue("regular_map",regularMapSyncer);
 
         data.addPage(
             new Column().child(
@@ -203,69 +203,12 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                         .child(regularListWidget)));
 
         // Process advanced wireless redstone frequencies
-        Map<String, Map<String, Map<CoverPosition, Byte>>> allFreqs = ((GenericMapSyncHandler) guiSyncManager.getSyncHandler("adv_map:0")).getValue();
-        System.out.println(allFreqs);
-        System.out.println(GregTechAPI.sAdvancedWirelessRedstone);
-        Map<String, Map<CoverPosition, Byte>> publicFreqs = allFreqs
-            .getOrDefault("null", new ConcurrentHashMap<>());
-
-//        List<IWidget> advancedList = (processAdvancedFrequencies(
-//            publicFreqs,
-//            "Public",
-//            advancedListWidget,
-//            guiSyncManager));
-//
-//        UUID leader = SpaceProjectManager.getLeader(
-//            guiData.getPlayer()
-//                .getUniqueID());
-//        allFreqs.keySet()
-//            .forEach(uuid -> {
-//                if (!uuid.equals("null") && SpaceProjectManager.getLeader(UUID.fromString(uuid))
-//                    .equals(leader)) {
-//                    advancedList.addAll(
-//                        (processAdvancedFrequencies(
-//                            allFreqs.getOrDefault(uuid, new ConcurrentHashMap<>()),
-//                            uuid,
-//                            advancedListWidget,
-//                            guiSyncManager)));
-//                }
-//            });
-//
-//        advancedList.forEach(advancedListWidget::child);
-        bla.setChangeListener(() -> {
-            List<IWidget> advancedList = (processAdvancedFrequencies(
-                bla.getValue().getOrDefault("null", new ConcurrentHashMap<>()),
-                "Public",
-                advancedListWidget,
-                guiSyncManager));
-
-            UUID leader = SpaceProjectManager.getLeader(
-                guiData.getPlayer()
-                    .getUniqueID());
-            bla.getValue().keySet()
-                .forEach(uuid -> {
-                    if (!uuid.equals("null") && SpaceProjectManager.getLeader(UUID.fromString(uuid))
-                        .equals(leader)) {
-                        advancedList.addAll(
-                            (processAdvancedFrequencies(
-                                bla.getValue().getOrDefault(uuid, new ConcurrentHashMap<>()),
-                                uuid,
-                                advancedListWidget,
-                                guiSyncManager)));
-                    }
-                });
-
-            advancedList.forEach(advancedListWidget::child);
-            System.out.println("Value changed");
-            System.out.println(advancedListWidget.getChildren());
-            WidgetTree.resize(advancedListWidget);
-        });
-        GenericListSyncHandler<SnifferEntry> blabla = new GenericListSyncHandler<>(
+        GenericListSyncHandler<SnifferEntry> advancedMapSyncer = new GenericListSyncHandler<>(
             () -> {
                 List<SnifferEntry> result = new ArrayList<>();
                 GregTechAPI.sAdvancedWirelessRedstone.forEach((uuid, coverMap) -> {
                     if(canSeeCovers(guiData, uuid)){
-                        String owner = uuid.equals("null") ? "null" : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(uuid));
+                        String owner = uuid.equals("null") ? "Public" : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(uuid));
                         coverMap.forEach((frequency, covers) -> {
                             covers.forEach((coverPosition, ignored) -> {
                                 result.add(new SnifferEntry(owner, frequency, coverPosition));
@@ -276,34 +219,21 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                 return result;
             }, new SnifferEntryAdapter()
         );
-        blabla.setChangeListener(() -> {
+        advancedMapSyncer.setChangeListener(() -> {
+            List<SnifferEntry> entries = new ArrayList<>(advancedMapSyncer.getValue());
+            entries.sort((a,b) -> {
+                if(a.owner.equals("Public")) return 1;
+                return a.owner.compareTo(b.owner);
+            });
             List<IWidget> advancedList = (processAdvancedFrequencies(
-                bla.getValue().getOrDefault("null", new ConcurrentHashMap<>()),
-                "Public",
+                entries,
                 advancedListWidget,
                 guiSyncManager));
 
-            UUID leader = SpaceProjectManager.getLeader(
-                guiData.getPlayer()
-                    .getUniqueID());
-            bla.getValue().keySet()
-                .forEach(uuid -> {
-                    if (!uuid.equals("null") && SpaceProjectManager.getLeader(UUID.fromString(uuid))
-                        .equals(leader)) {
-                        advancedList.addAll(
-                            (processAdvancedFrequencies(
-                                bla.getValue().getOrDefault(uuid, new ConcurrentHashMap<>()),
-                                uuid,
-                                advancedListWidget,
-                                guiSyncManager)));
-                    }
-                });
-
             advancedList.forEach(advancedListWidget::child);
-            System.out.println("Value changed");
-            System.out.println(advancedListWidget.getChildren());
             WidgetTree.resize(advancedListWidget);
         });
+        guiSyncManager.syncValue("adv_map", advancedMapSyncer);
         data.addPage(
             new Column().child(
                 new Row().heightRel(0.1f)
@@ -369,114 +299,104 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
         return panel;
     }
 
-    public List<IWidget> processAdvancedFrequencies(Map<String, Map<CoverPosition, Byte>> frequencyMap, String owner,
+    public List<IWidget> processAdvancedFrequencies(List<SnifferEntry> entryList,
         ListWidget listWidget, PanelSyncManager guiSyncManager) {
-        String ownerString = owner.equals("Public") ? "Public"
-            : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(owner));
-        AtomicInteger size = new AtomicInteger();
-        frequencyMap.forEach((k, v) -> size.addAndGet(v.size()));
         List<IWidget> result = new ArrayList<>();
-        frequencyMap.entrySet()
-            .stream()
-            .sorted(Map.Entry.comparingByKey())
+        entryList
             .forEach(entry -> {
-                String freq = entry.getKey();
-                Map<CoverPosition, Byte> coverMap = entry.getValue();
-                coverMap.forEach((cover, useless) -> {
-                    result.add(
-                        new Row().setEnabledIf(
-                            w -> (((StringSyncValue) guiSyncManager.getSyncHandler("owner_filter:0")).getStringValue()
-                                .isEmpty()
-                                || ((StringSyncValue) guiSyncManager.getSyncHandler("owner_filter:0")).getStringValue()
-                                    .equals(ownerString))
-                                && entry.getKey()
-                                    .contains(
-                                        ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0"))
-                                            .getStringValue()))
-                            .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
-                            .sizeRel(1f, 0.3f)
-                            .expanded()
-                            .child(
-                                new TextWidget(ownerString).widthRel(0.15f)
-                                    .alignment(Alignment.Center))
-                            .child(
-                                new TextWidget(freq).widthRel(0.35f)
-                                    .alignment(Alignment.Center))
-                            .child(
-                                new TextWidget(cover.getDimName()).widthRel(0.25f)
-                                    .alignment(Alignment.Center))
-                            .child(
-                                new Row().widthRel(0.25f)
-                                    .child(
-                                        new Column().widthRel(0.5f)
-                                            .child(
-                                                new ButtonWidget<>().size(25, 25)
-                                                    .align(Alignment.Center)
-                                                    .overlay(
-                                                        UITexture
-                                                            .fullImage(
-                                                                GregTech.ID,
-                                                                "gui/overlay_button/redstoneSnifferLocate")
-                                                            .asIcon()
-                                                            .size(19, 19)
-                                                            .margin(3))
-                                                    .tooltip(tooltip -> { tooltip.addLine(IKey.str("Locate")); })
-                                                    .onMousePressed(mouseButton -> {
-                                                        GTValues.NW.sendToServer(
-                                                            new PacketTeleportToCover(
-                                                                cover.dim,
-                                                                cover.x,
-                                                                cover.y,
-                                                                cover.z,
-                                                                false));
-                                                        ArrayList<DimensionalCoord> list = new ArrayList<>();
-                                                        list.add(new DimensionalCoord(cover.x, cover.y, cover.z, cover.dim));
-                                                        String foundMsg = String
-                                                            .format("Highlighting cover at %d,%d,%d", cover.x, cover.y, cover.z);
-                                                        BlockPosHighlighter
-                                                            .highlightBlocks(guiSyncManager.getPlayer(), list, foundMsg, "Cannot highlight because you're not in the same dimension!");
-                                                        listWidget.getPanel()
-                                                            .closeIfOpen(false);
-                                                        return true;
-                                                    })))
-                                    .child(
-                                        new Column()
-                                            .setEnabledIf(
-                                                w -> ((BooleanSyncValue) guiSyncManager.getSyncHandler("player_is_op:0"))
-                                                    .getBoolValue())
-                                            .widthRel(0.5f)
-                                            .child(
-                                                new ButtonWidget<>().size(25, 25)
-                                                    .align(Alignment.Center)
-                                                    .overlay(
-                                                        UITexture
-                                                            .fullImage(
-                                                                GregTech.ID,
-                                                                "gui/overlay_button/redstoneSnifferTeleport")
-                                                            .asIcon()
-                                                            .size(19, 19)
-                                                            .margin(3))
-                                                    .tooltip(tooltip -> { tooltip.addLine(IKey.str("Teleport")); })
-                                                    .onMousePressed(mouseButton -> {
-                                                        GTValues.NW.sendToServer(
-                                                            new PacketTeleportToCover(
-                                                                cover.dim,
-                                                                cover.x,
-                                                                cover.y,
-                                                                cover.z,
-                                                                true));
-                                                        ArrayList<DimensionalCoord> list = new ArrayList<>();
-                                                        list.add(new DimensionalCoord(cover.x, cover.y, cover.z, cover.dim));
-                                                        String foundMsg = String
-                                                            .format("Highlighting cover at %d,%d,%d", cover.x, cover.y, cover.z);
-                                                        BlockPosHighlighter
-                                                            .highlightBlocks(guiSyncManager.getPlayer(), list, foundMsg, "Cannot highlight because you're not in the same dimension!");
-                                                        listWidget.getPanel()
-                                                            .closeIfOpen(false);
-                                                        return true;
-                                                    })))));
-                });
-
+                CoverPosition cover = entry.coverPosition;
+                result.add(
+                    new Row().setEnabledIf(
+                        w -> (((StringSyncValue) guiSyncManager.getSyncHandler("owner_filter:0")).getStringValue()
+                            .isEmpty()
+                            || ((StringSyncValue) guiSyncManager.getSyncHandler("owner_filter:0")).getStringValue()
+                                .equals(entry.owner))
+                            && entry.freq
+                                .contains(
+                                    ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0"))
+                                        .getStringValue()))
+                        .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
+                        .sizeRel(1f, 0.3f)
+                        .expanded()
+                        .child(
+                            new TextWidget(entry.owner).widthRel(0.15f)
+                                .alignment(Alignment.Center))
+                        .child(
+                            new TextWidget(entry.freq).widthRel(0.35f)
+                                .alignment(Alignment.Center))
+                        .child(
+                            new TextWidget(cover.getDimName()).widthRel(0.25f)
+                                .alignment(Alignment.Center))
+                        .child(
+                            new Row().widthRel(0.25f)
+                                .child(
+                                    new Column().widthRel(0.5f)
+                                        .child(
+                                            new ButtonWidget<>().size(25, 25)
+                                                .align(Alignment.Center)
+                                                .overlay(
+                                                    UITexture
+                                                        .fullImage(
+                                                            GregTech.ID,
+                                                            "gui/overlay_button/redstoneSnifferLocate")
+                                                        .asIcon()
+                                                        .size(19, 19)
+                                                        .margin(3))
+                                                .tooltip(tooltip -> { tooltip.addLine(IKey.str("Locate")); })
+                                                .onMousePressed(mouseButton -> {
+                                                    GTValues.NW.sendToServer(
+                                                        new PacketTeleportToCover(
+                                                            cover.dim,
+                                                            cover.x,
+                                                            cover.y,
+                                                            cover.z,
+                                                            false));
+                                                    ArrayList<DimensionalCoord> list = new ArrayList<>();
+                                                    list.add(new DimensionalCoord(cover.x, cover.y, cover.z, cover.dim));
+                                                    String foundMsg = String
+                                                        .format("Highlighting cover at %d,%d,%d", cover.x, cover.y, cover.z);
+                                                    BlockPosHighlighter
+                                                        .highlightBlocks(guiSyncManager.getPlayer(), list, foundMsg, "Cannot highlight because you're not in the same dimension!");
+                                                    listWidget.getPanel()
+                                                        .closeIfOpen(false);
+                                                    return true;
+                                                })))
+                                .child(
+                                    new Column()
+                                        .setEnabledIf(
+                                            w -> ((BooleanSyncValue) guiSyncManager.getSyncHandler("player_is_op:0"))
+                                                .getBoolValue())
+                                        .widthRel(0.5f)
+                                        .child(
+                                            new ButtonWidget<>().size(25, 25)
+                                                .align(Alignment.Center)
+                                                .overlay(
+                                                    UITexture
+                                                        .fullImage(
+                                                            GregTech.ID,
+                                                            "gui/overlay_button/redstoneSnifferTeleport")
+                                                        .asIcon()
+                                                        .size(19, 19)
+                                                        .margin(3))
+                                                .tooltip(tooltip -> { tooltip.addLine(IKey.str("Teleport")); })
+                                                .onMousePressed(mouseButton -> {
+                                                    GTValues.NW.sendToServer(
+                                                        new PacketTeleportToCover(
+                                                            cover.dim,
+                                                            cover.x,
+                                                            cover.y,
+                                                            cover.z,
+                                                            true));
+                                                    ArrayList<DimensionalCoord> list = new ArrayList<>();
+                                                    list.add(new DimensionalCoord(cover.x, cover.y, cover.z, cover.dim));
+                                                    String foundMsg = String
+                                                        .format("Highlighting cover at %d,%d,%d", cover.x, cover.y, cover.z);
+                                                    BlockPosHighlighter
+                                                        .highlightBlocks(guiSyncManager.getPlayer(), list, foundMsg, "Cannot highlight because you're not in the same dimension!");
+                                                    listWidget.getPanel()
+                                                        .closeIfOpen(false);
+                                                    return true;
+                                                })))));
             });
         return result;
     }
@@ -491,12 +411,24 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
     public class SnifferEntry{
         private final String owner;
         private final String freq;
+        private boolean isPrivate;
         private final CoverPosition coverPosition;
 
         public SnifferEntry(String owner, String freq, CoverPosition coverPosition) {
             this.owner = owner;
             this.freq = freq;
+            this.isPrivate = false;
             this.coverPosition = coverPosition;
+        }
+        public SnifferEntry(String freq, boolean isPrivate) {
+            this.owner = "";
+            this.freq = freq;
+            try{
+                this.isPrivate = Integer.parseInt(freq) > 65535;
+            } catch (NumberFormatException ignored){
+                this.isPrivate = false; //only used for regular frequencies
+            }
+            this.coverPosition = null;
         }
     }
     public class SnifferEntryAdapter implements IByteBufAdapter<SnifferEntry> {
@@ -504,7 +436,6 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
         public SnifferEntry deserialize(PacketBuffer buffer) throws IOException {
             String owner = buffer.readStringFromBuffer(buffer.readInt());
             String freq = buffer.readStringFromBuffer(buffer.readInt());
-
             int x,y,z,dim,side;
             x = buffer.readInt();
             y = buffer.readInt();
