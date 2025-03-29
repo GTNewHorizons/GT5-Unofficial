@@ -59,10 +59,6 @@ public class AssemblerRecipes implements Runnable {
         this.withGalacticraftMars();
         this.withRailcraft();
         this.withGTNHLanthAndGTPP();
-        this.loadInputBusesRecipes();
-        this.loadInputHatchesRecipes();
-        this.loadOutputBusesRecipes();
-        this.loadOutputHatchesRecipes();
         this.withIC2NuclearControl();
 
         {
