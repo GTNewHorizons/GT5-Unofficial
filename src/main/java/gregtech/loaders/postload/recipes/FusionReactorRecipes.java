@@ -26,7 +26,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Iridium.getMolten(16))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LuV)
-            .metadata(FUSION_THRESHOLD, 300000000L)
+            .metadata(FUSION_THRESHOLD, 300_000_000L)
             .addTo(fusionRecipes); // FT1+ - utility
 
         GTValues.RA.stdBuilder()
@@ -34,7 +34,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Helium.getPlasma(125))
             .duration(16 * TICKS)
             .eut(4096)
-            .metadata(FUSION_THRESHOLD, 40000000L)
+            .metadata(FUSION_THRESHOLD, 40_000_000L)
             .addTo(fusionRecipes); // FT1 Cheap - farmable
 
         GTValues.RA.stdBuilder()
@@ -42,7 +42,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Helium.getPlasma(125))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_EV)
-            .metadata(FUSION_THRESHOLD, 60000000L)
+            .metadata(FUSION_THRESHOLD, 60_000_000L)
             .addTo(fusionRecipes); // FT1 Expensive //
 
         GTValues.RA.stdBuilder()
@@ -50,7 +50,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Sulfur.getPlasma(144))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(10240)
-            .metadata(FUSION_THRESHOLD, 240000000L)
+            .metadata(FUSION_THRESHOLD, 240_000_000L)
             .addTo(fusionRecipes); // FT1+ Cheap
 
         GTValues.RA.stdBuilder()
@@ -58,7 +58,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Nitrogen.getPlasma(125))
             .duration(16 * TICKS)
             .eut(16384)
-            .metadata(FUSION_THRESHOLD, 180000000L)
+            .metadata(FUSION_THRESHOLD, 180_000_000L)
             .addTo(fusionRecipes); // FT1+ Expensive //
 
         GTValues.RA.stdBuilder()
@@ -66,7 +66,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Iron.getPlasma(144))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_IV)
-            .metadata(FUSION_THRESHOLD, 360000000L)
+            .metadata(FUSION_THRESHOLD, 360_000_000L)
             .addTo(fusionRecipes); // FT1++ Cheap //
 
         GTValues.RA.stdBuilder()
@@ -74,7 +74,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Nickel.getPlasma(144))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LuV)
-            .metadata(FUSION_THRESHOLD, 480000000L)
+            .metadata(FUSION_THRESHOLD, 480_000_000L)
             .addTo(fusionRecipes); // FT1++ Expensive //
 
         GTValues.RA.stdBuilder()
@@ -82,7 +82,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Platinum.getMolten(16))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_LuV)
-            .metadata(FUSION_THRESHOLD, 150000000L)
+            .metadata(FUSION_THRESHOLD, 150_000_000L)
             .addTo(fusionRecipes); // FT1 - utility
 
         GTValues.RA.stdBuilder()
@@ -90,7 +90,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Europium.getMolten(16))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(24576)
-            .metadata(FUSION_THRESHOLD, 150000000L)
+            .metadata(FUSION_THRESHOLD, 150_000_000L)
             .addTo(fusionRecipes); // FT1 - utility
 
         GTValues.RA.stdBuilder()
@@ -98,7 +98,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Americium.getMolten(16))
             .duration(4 * SECONDS + 16 * TICKS)
             .eut(49152)
-            .metadata(FUSION_THRESHOLD, 200000000L)
+            .metadata(FUSION_THRESHOLD, 200_000_000L)
             .addTo(fusionRecipes); // FT2 - utility
 
         GTValues.RA.stdBuilder()
@@ -106,7 +106,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Naquadah.getMolten(16))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LuV)
-            .metadata(FUSION_THRESHOLD, 300000000L)
+            .metadata(FUSION_THRESHOLD, 300_000_000L)
             .addTo(fusionRecipes); // FT1+ - utility
 
         GTValues.RA.stdBuilder()
@@ -114,7 +114,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Neutronium.getMolten(144))
             .duration(12 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
-            .metadata(FUSION_THRESHOLD, 600000000L)
+            .metadata(FUSION_THRESHOLD, 600_000_000L)
             .addTo(fusionRecipes); // FT3 - utility
 
         GTValues.RA.stdBuilder()
@@ -122,7 +122,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Sunnarium.getMolten(16))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_IV)
-            .metadata(FUSION_THRESHOLD, 40000000L)
+            .metadata(FUSION_THRESHOLD, 40_000_000L)
             .addTo(fusionRecipes); // Mark 1 Expensive
                                    // //
 
@@ -131,7 +131,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Osmium.getMolten(16))
             .duration(12 * SECONDS + 16 * TICKS)
             .eut(24578)
-            .metadata(FUSION_THRESHOLD, 150000000L)
+            .metadata(FUSION_THRESHOLD, 150_000_000L)
             .addTo(fusionRecipes); // FT1 - utility
 
         GTValues.RA.stdBuilder()
@@ -139,7 +139,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Iron.getMolten(16))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_IV)
-            .metadata(FUSION_THRESHOLD, 120000000L)
+            .metadata(FUSION_THRESHOLD, 120_000_000L)
             .addTo(fusionRecipes); // FT1 - utility
 
         GTValues.RA.stdBuilder()
@@ -147,7 +147,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Calcium.getPlasma(16))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_IV)
-            .metadata(FUSION_THRESHOLD, 120000000L)
+            .metadata(FUSION_THRESHOLD, 120_000_000L)
             .addTo(fusionRecipes); //
 
         GTValues.RA.stdBuilder()
@@ -155,7 +155,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Uranium.getMolten(16))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(49152)
-            .metadata(FUSION_THRESHOLD, 240000000L)
+            .metadata(FUSION_THRESHOLD, 240_000_000L)
             .addTo(fusionRecipes); // FT2 - utility
 
         GTValues.RA.stdBuilder()
@@ -163,7 +163,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Uranium.getMolten(16))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(49152)
-            .metadata(FUSION_THRESHOLD, 240000000L)
+            .metadata(FUSION_THRESHOLD, 240_000_000L)
             .addTo(fusionRecipes); // FT2 - utility
 
         GTValues.RA.stdBuilder()
@@ -171,7 +171,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Plutonium.getMolten(16))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(49152)
-            .metadata(FUSION_THRESHOLD, 480000000L)
+            .metadata(FUSION_THRESHOLD, 480_000_000L)
             .addTo(fusionRecipes); // FT2+ - utility
 
         GTValues.RA.stdBuilder()
@@ -179,7 +179,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Chrome.getMolten(16))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(24576)
-            .metadata(FUSION_THRESHOLD, 140000000L)
+            .metadata(FUSION_THRESHOLD, 140_000_000L)
             .addTo(fusionRecipes); // FT1 - utility
 
         GTValues.RA.stdBuilder()
@@ -187,7 +187,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Duranium.getMolten(16))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16384)
-            .metadata(FUSION_THRESHOLD, 140000000L)
+            .metadata(FUSION_THRESHOLD, 140_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
@@ -195,7 +195,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Tritanium.getMolten(16))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LuV)
-            .metadata(FUSION_THRESHOLD, 200000000L)
+            .metadata(FUSION_THRESHOLD, 200_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
@@ -203,7 +203,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Tungsten.getMolten(16))
             .duration(16 * TICKS)
             .eut(24576)
-            .metadata(FUSION_THRESHOLD, 200000000L)
+            .metadata(FUSION_THRESHOLD, 200_000_000L)
             .addTo(fusionRecipes); //
 
         GTValues.RA.stdBuilder()
@@ -211,7 +211,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Indium.getMolten(16))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(24576)
-            .metadata(FUSION_THRESHOLD, 380000000L)
+            .metadata(FUSION_THRESHOLD, 380_000_000L)
             .addTo(fusionRecipes); //
 
         GTValues.RA.stdBuilder()
@@ -219,7 +219,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Zinc.getPlasma(72))
             .duration(16 * TICKS)
             .eut(49152)
-            .metadata(FUSION_THRESHOLD, 180000000L)
+            .metadata(FUSION_THRESHOLD, 180_000_000L)
             .addTo(fusionRecipes); // FT2 - farmable
 
         GTValues.RA.stdBuilder()
@@ -227,7 +227,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Niobium.getPlasma(144))
             .duration(16 * TICKS)
             .eut(49152)
-            .metadata(FUSION_THRESHOLD, 200000000L)
+            .metadata(FUSION_THRESHOLD, 200_000_000L)
             .addTo(fusionRecipes); // FT2 - utility
 
         GTValues.RA.stdBuilder()
@@ -235,7 +235,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Silver.getPlasma(144))
             .duration(16 * TICKS)
             .eut(49152)
-            .metadata(FUSION_THRESHOLD, 350000000L)
+            .metadata(FUSION_THRESHOLD, 350_000_000L)
             .addTo(fusionRecipes); // FT2+
 
         GTValues.RA.stdBuilder()
@@ -243,7 +243,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Tin.getPlasma(288))
             .duration(16 * TICKS)
             .eut(49152)
-            .metadata(FUSION_THRESHOLD, 280000000L)
+            .metadata(FUSION_THRESHOLD, 280_000_000L)
             .addTo(fusionRecipes); // FT2
 
         GTValues.RA.stdBuilder()
@@ -251,7 +251,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Bismuth.getPlasma(144))
             .duration(16 * TICKS)
             .eut(98304)
-            .metadata(FUSION_THRESHOLD, 350000000L)
+            .metadata(FUSION_THRESHOLD, 350_000_000L)
             .addTo(fusionRecipes); // FT3 - farmable
 
         GTValues.RA.stdBuilder()
@@ -259,7 +259,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Radon.getPlasma(144))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(98304)
-            .metadata(FUSION_THRESHOLD, 450000000L)
+            .metadata(FUSION_THRESHOLD, 450_000_000L)
             .addTo(fusionRecipes); // FT3 - utility
 
         GTValues.RA.stdBuilder()
@@ -267,7 +267,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Americium.getPlasma(144))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(98304)
-            .metadata(FUSION_THRESHOLD, 500000000L)
+            .metadata(FUSION_THRESHOLD, 500_000_000L)
             .addTo(fusionRecipes); // FT3
 
         GTValues.RA.stdBuilder()
@@ -275,31 +275,31 @@ public class FusionReactorRecipes implements Runnable {
             .fluidOutputs(Materials.Rubidium.getMolten(144))
             .duration(1 * SECONDS + 4 * TICKS)
             .eut(98304)
-            .metadata(FUSION_THRESHOLD, 500000000L)
+            .metadata(FUSION_THRESHOLD, 500_000_000L)
             .addTo(fusionRecipes); // FT3
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Lutetium.getMolten(288), Materials.Vanadium.getMolten(288))
-            .fluidOutputs(Materials.Plutonium241.getPlasma(288))
+            .fluidInputs(Materials.Lutetium.getMolten(576), Materials.Vanadium.getMolten(576))
+            .fluidOutputs(Materials.Plutonium241.getPlasma(576))
             .duration(4 * TICKS)
             .eut(TierEU.RECIPE_UEV / 2)
-            .metadata(FUSION_THRESHOLD, 1_000_000_000L)
+            .metadata(FUSION_THRESHOLD, 6_000_000_000L)
             .addTo(fusionRecipes); // FT5 because of UEV voltage
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Tellurium.getMolten(288), Materials.Zinc.getMolten(288))
-            .fluidOutputs(Materials.Lead.getPlasma(288))
+            .fluidInputs(Materials.Tellurium.getMolten(576), Materials.Zinc.getMolten(576))
+            .fluidOutputs(Materials.Lead.getPlasma(576))
             .duration(4 * TICKS)
             .eut(TierEU.RECIPE_UEV / 2)
-            .metadata(FUSION_THRESHOLD, 1_000_000_000L)
+            .metadata(FUSION_THRESHOLD, 6_000_000_000L)
             .addTo(fusionRecipes); // FT5 because of UEV voltage
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Osmium.getMolten(288), Materials.Silicon.getMolten(288))
-            .fluidOutputs(Materials.Thorium.getPlasma(288))
+            .fluidInputs(Materials.Osmium.getMolten(576), Materials.Silicon.getMolten(576))
+            .fluidOutputs(Materials.Thorium.getPlasma(576))
             .duration(4 * TICKS)
             .eut(TierEU.RECIPE_UEV / 2)
-            .metadata(FUSION_THRESHOLD, 1_000_000_000L)
+            .metadata(FUSION_THRESHOLD, 6_000_000_000L)
             .addTo(fusionRecipes); // FT5 because of UEV voltage
     }
 }
