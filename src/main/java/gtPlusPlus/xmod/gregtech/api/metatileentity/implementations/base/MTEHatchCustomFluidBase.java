@@ -3,9 +3,11 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_STEAM_IN_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -19,17 +21,15 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class MTEHatchCustomFluidBase extends MTEHatch {
 
-    public final Fluid mLockedFluid;
+    public final Set<Fluid> mLockedFluids;
     public final int mFluidCapacity;
     protected FluidStack mLockedStack = null;
     protected String mTempMod = null;
 
-    public MTEHatchCustomFluidBase(Fluid aFluid, int aAmount, final int aID, final String aName,
+    public MTEHatchCustomFluidBase(Set<Fluid> aFluids, int aAmount, final int aID, final String aName,
         final String aNameRegional, int aTier) {
         super(
             aID,
@@ -38,14 +38,14 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
             aTier,
             3,
             new String[] { "Fluid Input for Multiblocks", "Capacity: " + GTUtility.formatNumbers(aAmount) + "L" });
-        this.mLockedFluid = aFluid;
+        this.mLockedFluids = aFluids;
         this.mFluidCapacity = aAmount;
     }
 
-    public MTEHatchCustomFluidBase(Fluid aFluid, int aAmount, final String aName, final int aTier,
+    public MTEHatchCustomFluidBase(Set<Fluid> aFluids, int aAmount, final String aName, final int aTier,
         final String[] aDescription, final ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
-        this.mLockedFluid = aFluid;
+        this.mLockedFluids = aFluids;
         this.mFluidCapacity = aAmount;
     }
 
@@ -53,7 +53,7 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
         final ForgeDirection side, final ItemStack aStack) {
         if (side == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0) {
             FluidStack fs = GTUtility.getFluidForFilledItem(aStack, true);
-            return fs != null && fs.getFluid() == this.mLockedFluid;
+            return fs != null && mLockedFluids.contains(fs.getFluid());
         }
         return false;
     }
@@ -129,54 +129,36 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
 
     @Override
     public String[] getDescription() {
-        if (mLockedStack == null) {
-            mLockedStack = FluidUtils.getFluidStack(mLockedFluid, 1);
-        }
-        int aFluidTemp = 0;
-        boolean isSteam = false;
-        if (mLockedFluid != null) {
-            aFluidTemp = mLockedFluid.getTemperature();
-            mTempMod = mLockedFluid.getName();
-        }
-        if (mTempMod.equalsIgnoreCase("steam")) {
-            isSteam = true;
+        if (mLockedFluids == null) return new String[] { "INVALID HATCH. ASSIGN LOCKED FLUIDS" };
+
+        ArrayList<String> desc = new ArrayList<>();
+        desc.add("Fluid Input for Multiblocks");
+        desc.add("Capacity: " + getCapacity() + "L");
+        desc.add("Accepts Fluids: ");
+
+        for (Fluid allowed : mLockedFluids) {
+            desc.add("-" + (allowed.getLocalizedName(new FluidStack(allowed, 1))));
         }
 
-        EnumChatFormatting aColour = EnumChatFormatting.BLUE;
-        if (aFluidTemp <= -3000) {
-            aColour = EnumChatFormatting.DARK_PURPLE;
-        } else if (aFluidTemp >= -2999 && aFluidTemp <= -500) {
-            aColour = EnumChatFormatting.DARK_BLUE;
-        } else if (aFluidTemp >= -499 && aFluidTemp <= -50) {
-            aColour = EnumChatFormatting.BLUE;
-        } else if (aFluidTemp >= 30 && aFluidTemp <= 300) {
-            aColour = EnumChatFormatting.AQUA;
-        } else if (aFluidTemp >= 301 && aFluidTemp <= 800) {
-            aColour = EnumChatFormatting.YELLOW;
-        } else if (aFluidTemp >= 801 && aFluidTemp <= 1500) {
-            aColour = EnumChatFormatting.GOLD;
-        } else if (aFluidTemp >= 1501) {
-            aColour = EnumChatFormatting.RED;
-        }
-        String aFluidName = "Accepted Fluid: " + aColour
-            + (mLockedStack != null ? mLockedStack.getLocalizedName() : "Empty")
-            + EnumChatFormatting.RESET;
-        return new String[] { "Fluid Input for " + (isSteam ? "Steam " : "") + "Multiblocks",
-            "Capacity: " + getCapacity() + "L", aFluidName, GTPPCore.GT_Tooltip.get() };
+        return desc.toArray(new String[] {});
     }
 
     @Override
     public boolean isFluidInputAllowed(final FluidStack aFluid) {
-        return this.mLockedFluid.getName()
-            .equals(
-                aFluid.getFluid()
-                    .getName());
+        for (Fluid allowed : mLockedFluids) {
+            if (allowed.getName()
+                .equals(
+                    aFluid.getFluid()
+                        .getName()))
+                return true;
+        }
+        return false;
     }
 
     @Override
     public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
         return new MTEHatchCustomFluidBase(
-            this.mLockedFluid,
+            this.mLockedFluids,
             this.mFluidCapacity,
             this.mName,
             this.mTier,
@@ -186,6 +168,6 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
 
     @Override
     protected FluidSlotWidget createFluidSlot() {
-        return super.createFluidSlot().setFilter(f -> f == mLockedFluid);
+        return super.createFluidSlot().setFilter(mLockedFluids::contains);
     }
 }

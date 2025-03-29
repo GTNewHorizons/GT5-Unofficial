@@ -15,6 +15,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
+import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
@@ -55,8 +56,11 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase {
 
     public MTESteamPipelessHatch(int aID, String aName, String aNameRegional, int aTier) {
         super(
-            FluidUtils.getSteam(1)
-                .getFluid(),
+            ImmutableSet.of(
+                FluidUtils.getSteam(1)
+                    .getFluid(),
+                FluidUtils.getSuperHeatedSteam(1)
+                    .getFluid()),
             aTier == 0 ? 64_000 * (int) ticks_between_energy_addition : Integer.MAX_VALUE,
             aID,
             aName,
@@ -66,8 +70,11 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase {
 
     public MTESteamPipelessHatch(String aName, int aTier, ITexture[][][] aTexture) {
         super(
-            FluidUtils.getSteam(1)
-                .getFluid(),
+            ImmutableSet.of(
+                FluidUtils.getSteam(1)
+                    .getFluid(),
+                FluidUtils.getSuperHeatedSteam(1)
+                    .getFluid()),
             aTier == 0 ? 64_000 * (int) ticks_between_energy_addition : Integer.MAX_VALUE,
             aName,
             aTier,
