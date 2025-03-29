@@ -208,6 +208,7 @@ public enum IDMetaItem03 {
     Hydraulic_Vapor_Generator(255),
     Hydraulic_Emitter_Steam(256),
     Hydraulic_Sensor_Steam(257),
+    Steamgate_Dialing_Device(258),
     Circuit_Silicon_Ingot6(721),
     Circuit_Silicon_Wafer6(722),
     Circuit_Silicon_Wafer7(723),

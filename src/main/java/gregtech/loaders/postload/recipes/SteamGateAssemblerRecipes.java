@@ -49,6 +49,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
         ItemStack superdenseSteam = GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.CompressedSteam, 1);
         // Pipes
         ItemStack stronzePipe = GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Stronze, 1);
+        ItemStack stronzePipeH = GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Stronze, 1);
         ItemStack breelPipeL = GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Breel, 1);
         // Plates
         ItemStack stronzePlate = GTOreDictUnificator.get(OrePrefixes.plate, Materials.Stronze, 1);
@@ -270,6 +271,22 @@ public class SteamGateAssemblerRecipes implements Runnable {
                 steelWood, gateIris, null, null, breelGear, null, null, gateIris, steelWood,
                 bronzeWood, steelWood, gateIris, gateIris, gateIris, gateIris, gateIris, steelWood, bronzeWood)
             .itemOutputs(gateIrisUpgrade)
+            .duration(20 * SECONDS)
+            .eut((int) TierEU.RECIPE_LV)
+            .addTo(steamGateAssemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                stronzePipeH, breelPlate, breelPlate, breelPlate, stronzePipeH, breelPlate, breelPlate, breelPlate, stronzePipeH,
+                breelPlate, stronzePipeH, breelPlate, breelPlate, stronzePipeH, breelPlate, breelPlate, stronzePipeH, breelPlate,
+                breelPlate, breelPlate, stronzePipeH, gateFrame, stronzePipeH, gateFrame, stronzePipeH, breelPlate, breelPlate,
+                breelPlate, breelPlate, gateFrame, stronzePipeH, stronzePipeH, stronzePipeH, gateFrame, breelPlate, breelPlate,
+                stronzePipeH, stronzePipeH, stronzePipeH, stronzePipeH, pipelessHatch, stronzePipeH, stronzePipeH, stronzePipeH, stronzePipeH,
+                breelPlate, breelPlate, gateFrame, stronzePipeH, stronzePipeH, stronzePipeH, gateFrame, breelPlate, breelPlate,
+                breelPlate, breelPlate, stronzePipeH, gateFrame, stronzePipeH, gateFrame, stronzePipeH, breelPlate, breelPlate,
+                breelPlate, stronzePipeH, breelPlate, breelPlate, stronzePipeH, breelPlate, breelPlate, stronzePipeH, breelPlate,
+                stronzePipeH, breelPlate, breelPlate, breelPlate, stronzePipeH, breelPlate, breelPlate, breelPlate, stronzePipeH)
+            .itemOutputs(ItemList.Steamgate_Dialing_Device.get(1))
             .duration(20 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(steamGateAssemblerRecipes);
