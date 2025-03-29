@@ -1,15 +1,15 @@
-package gregtech.common.tileentities.machines.multi;
+package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.BlockCactusCharcoal;
 import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.BlockCactusCoke;
@@ -50,13 +50,16 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -64,10 +67,30 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings1;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEBetterSteamMultiBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTECactusWonder extends MTEExtendedPowerMultiBlockBase<MTECactusWonder> implements ISurvivalConstructable {
+public class MTESteamCactusWonder extends MTEBetterSteamMultiBase<MTESteamCactusWonder>
+    implements ISurvivalConstructable {
+
+    public MTESteamCactusWonder(String aName) {
+        super(aName);
+    }
+
+    public MTESteamCactusWonder(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
+        return new MTESteamCactusWonder(this.mName);
+    }
+
+    @Override
+    public String getMachineType() {
+        return "Temple of Cacti Blessings";
+    }
 
     private int currentSteam;
     private ItemStack currentOffer;
@@ -108,73 +131,69 @@ public class MTECactusWonder extends MTEExtendedPowerMultiBlockBase<MTECactusWon
                 "         " },
             { "  CCCCC  ", " CFCCCFC ", "CFCCCCCFC", "CCCCCCCCC", "CCCCCCCCC", "CCCCCCCCC", "CFCCCCCFC", " CFCCCFC ",
                 "  CCCCC  " } });
-    private static final IStructureDefinition<MTECactusWonder> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTECactusWonder>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addShape(
-            STRUCTURE_PIECE_MAIN_SURVIVAL,
-            Arrays.stream(structure)
-                .map(
-                    sa -> Arrays.stream(sa)
-                        .map(s -> s.replaceAll("E", " "))
-                        .toArray(String[]::new))
-                .toArray(String[][]::new))
-        .addElement(
-            'A',
-            buildHatchAdder(MTECactusWonder.class).atLeast(InputBus, OutputHatch)
-                .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
-                .dot(1)
-                .buildAndChain(onElementPass(MTECactusWonder::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings1, 10))))
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 12))
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings3, 13))
-        .addElement('D', ofFrame(Materials.Breel))
-        .addElement('E', ofBlock(Blocks.cactus, 0))
-        .addElement('F', ofBlock(Blocks.sand, 0))
-        .build();
 
-    public MTECactusWonder(final int aID, final String aName, final String aNameRegional) {
-        super(aID, aName, aNameRegional);
+    public IStructureDefinition<MTESteamCactusWonder> getStructureDefinition() {
+        return StructureDefinition.<MTESteamCactusWonder>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, structure)
+            .addShape(
+                STRUCTURE_PIECE_MAIN_SURVIVAL,
+                Arrays.stream(structure)
+                    .map(
+                        sa -> Arrays.stream(sa)
+                            .map(s -> s.replaceAll("E", " "))
+                            .toArray(String[]::new))
+                    .toArray(String[][]::new))
+            .addElement('A', chainAllGlasses())
+            .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 12))
+            .addElement(
+                'C',
+                ofChain(
+                    buildHatchAdder(MTESteamCactusWonder.class).atLeast(SteamHatchElement.InputBus_Steam, OutputHatch)
+                        .casingIndex(10)
+                        .dot(1)
+                        .buildAndChain(),
+                    ofBlock(GregTechAPI.sBlockCasings3, 13)))
+            .addElement('D', ofFrame(Materials.Breel))
+            .addElement('E', ofBlock(Blocks.cactus, 0))
+            .addElement('F', ofBlock(Blocks.sand, 0))
+            .build();
     }
 
-    public MTECactusWonder(String aName) {
-        super(aName);
+    private static final int HORIZONTAL_OFF_SET = 4;
+    private static final int VERTICAL_OFF_SET = 8;
+    private static final int DEPTH_OFF_SET = 2;
+
+    private int mCounCasing = 0;
+
+    private void onCasingAdded() {
+        mCounCasing++;
     }
 
-    @Override
-    protected boolean explodesImmediately() {
-        return false;
+    protected void updateHatchTexture() {
+        for (MTEHatch h : mSteamInputs) h.updateTexture(getCasingTextureID());
+        for (MTEHatch h : mSteamOutputs) h.updateTexture(getCasingTextureID());
+        for (MTEHatch h : mSteamInputFluids) h.updateTexture(getCasingTextureID());
     }
 
-    @Override
-    public IStructureDefinition<MTECactusWonder> getStructureDefinition() {
-        return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTECactusWonder(this.mName);
+    private int getCasingTextureID() {
+        return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+        int aColorIndex, boolean aActive, boolean aRedstone) {
         ITexture[] rTexture;
-        if (side == aFacing) {
+        if (side == facing) {
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_ACTIVE)
+                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -183,11 +202,11 @@ public class MTECactusWonder extends MTEExtendedPowerMultiBlockBase<MTECactusWon
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR)
+                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_GLOW)
+                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -200,39 +219,28 @@ public class MTECactusWonder extends MTEExtendedPowerMultiBlockBase<MTECactusWon
     }
 
     @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Temple of Cacti Blessing")
-            .addInfo("Burns Cactus Coke and Charcoal for increasingly efficient amounts of steam.")
-            .addInfo("Every second the cactus wonder will consume all offers stored")
-            .addInfo("The god of cacti will save their value and return it as steam blessings to her faithful zealots.")
-            .addInfo("Can only take one type of offer at once.")
-            .addInfo(EnumChatFormatting.AQUA + "" + EnumChatFormatting.ITALIC + "Cactus")
-            .toolTipFinisher();
-        return tt;
-    }
-
-    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 4, 8, 2);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN_SURVIVAL, stackSize, 4, 8, 2, elementBudget, env, false, true);
-    }
-
-    private int mCasingAmount;
-
-    private void onCasingAdded() {
-        mCasingAmount++;
+        return survivialBuildPiece(
+            STRUCTURE_PIECE_MAIN_SURVIVAL,
+            stackSize,
+            HORIZONTAL_OFF_SET,
+            VERTICAL_OFF_SET,
+            DEPTH_OFF_SET,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 8, 2)) return false;
-        return mCasingAmount >= 15;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        return mCounCasing >= 15;
     }
 
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -299,6 +307,24 @@ public class MTECactusWonder extends MTEExtendedPowerMultiBlockBase<MTECactusWon
     }
 
     @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.cactusWonderFakeRecipes;
+    }
+
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        tt.addMachineType("Temple of Cacti Blessing")
+            .addInfo("Burns Cactus Coke and Charcoal for increasingly efficient amounts of steam.")
+            .addInfo("Every second the cactus wonder will consume all offers stored")
+            .addInfo("The god of cacti will save their value and return it as steam blessings to her faithful zealots.")
+            .addInfo("Can only take one type of offer at once.")
+            .addInfo(EnumChatFormatting.AQUA + "" + EnumChatFormatting.ITALIC + "Cactus")
+            .toolTipFinisher();
+        return tt;
+    }
+
+    @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
@@ -312,52 +338,23 @@ public class MTECactusWonder extends MTEExtendedPowerMultiBlockBase<MTECactusWon
     }
 
     @Override
-    public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.cactusWonderFakeRecipes;
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setLong("fuel", fueledAmount);
+        aNBT.setInteger("steam", currentSteam);
     }
 
     @Override
-    public int getRecipeCatalystPriority() {
-        return -10;
+    public void loadNBTData(final NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        fueledAmount = aNBT.getLong("fuel");
+        currentSteam = aNBT.getInteger("steam");
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.IC2_MACHINES_MACERATOR_OP;
     }
 
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean supportsVoidProtection() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsBatchMode() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
-    public boolean getDefaultHasMaintenanceChecks() {
-        return false;
-    }
 }

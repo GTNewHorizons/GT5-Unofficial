@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_CactusWonder;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_InfernalCokeOven;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamAlloySmelterMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamBlastFurnace;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamCarpenter;
@@ -27,13 +28,13 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Bus_SteamMK2;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Bus_SteamMK3;
 
 import gregtech.api.enums.GTValues;
-import gregtech.common.tileentities.machines.multi.MTECactusWonder;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamAlloySmelter;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamBlastFurnace;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCactusWonder;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCarpenter;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCentrifuge;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCompressor;
@@ -41,6 +42,7 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.st
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamExtruder;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamForgeHammer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamGateAssembler;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamInfernalCokeOven;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMacerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMegaCompressor;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMegaMacerator;
@@ -137,9 +139,17 @@ public class GregtechSteamMultis {
                 "gtpp.multimachine.steam.megacompressor",
                 "Steam Supercompressor").getStackForm(1));
         GregtechItemList.Controller_CactusWonder.set(
-            new MTECactusWonder(Controller_CactusWonder.ID, "gtpp.multimachine.steam.cactuswonder", "Cactus Wonder")
-                .getStackForm(1));
+            new MTESteamCactusWonder(
+                Controller_CactusWonder.ID,
+                "gtpp.multimachine.steam.cactuswonder",
+                "Cactus Wonder").getStackForm(1));
         addItemTooltip(GregtechItemList.Controller_CactusWonder.get(1), GTValues.AuthorNoc);
+        GregtechItemList.Controller_InfernalCokeOven.set(
+            new MTESteamInfernalCokeOven(
+                Controller_InfernalCokeOven.ID,
+                "gtpp.multimachine.steam.infernalcokeoven",
+                "Infernal Coke Oven").getStackForm(1));
+        addItemTooltip(GregtechItemList.Controller_InfernalCokeOven.get(1), GTValues.AuthorNoc);
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(
             new MTEHatchSteamBusInput(Hatch_Input_Bus_Steam.ID, "hatch.input_bus.tier.steam", "Simple Input Bus", 0)
