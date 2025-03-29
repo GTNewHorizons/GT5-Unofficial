@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.mega;
 
-import static bartworks.util.BWTooltipReference.TT;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -15,6 +14,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
 
@@ -32,11 +32,11 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import bartworks.API.BorosilicateGlass;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -60,7 +60,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
 
     private static final int MAX_PARALLELS = 256;
     private HeatingCoilLevel coilLevel;
-    private byte glassTier = -1;
+    private int glassTier = -1;
     private double speedBonus = 1;
     private double energyDiscount = 1;
     private boolean hasNormalCoils;
@@ -140,11 +140,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                 .buildAndChain(ofBlock(ModBlocks.blockCasingsMisc, 15)))
         .addElement('D', ofBlock(ModBlocks.blockCasingsMisc, 15))
         .addElement('C', ofBlock(ModBlocks.blockCasingsMisc, 14))
-        .addElement(
-            'A',
-            withChannel(
-                "glass",
-                BorosilicateGlass.ofBoroGlass((byte) -1, (te, t) -> te.glassTier = t, te -> te.glassTier)))
+        .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('F', Muffler.newAny(TAE.GTPP_INDEX(15), 3))
         .build();
 
@@ -207,9 +203,8 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         coilLevel = HeatingCoilLevel.None;
         if (!checkPiece("main", 5, 16, 0)) return false;
         if (hasNormalCoils) coilLevel = HeatingCoilLevel.None;
-        if (mMaintenanceHatches.size() != 1) return false;
         if (mMufflerHatches.size() != 1) return false;
-        if (this.glassTier < 10 && !getExoticAndNormalEnergyHatchList().isEmpty()) {
+        if (this.glassTier < VoltageIndex.UEV && !getExoticAndNormalEnergyHatchList().isEmpty()) {
             for (MTEHatch hatchEnergy : getExoticAndNormalEnergyHatchList()) {
                 if (this.glassTier < hatchEnergy.mTier) {
                     return false;
@@ -217,7 +212,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             }
         }
         // Disallow lasers if the glass is below UV tier
-        if (glassTier < 8) {
+        if (glassTier < VoltageIndex.UV) {
             for (MTEHatch hatchEnergy : getExoticEnergyHatches()) {
                 if (hatchEnergy.getConnectionType() == MTEHatch.ConnectionType.LASER) {
                     return false;
@@ -304,9 +299,9 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                     + "Can also use normal ABS coils in their place instead, if you don't like the bonuses :)"
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY)
-            .addInfo("The glass limits the tier of the energy hatch. UEV glass unlocks all tiers.")
+            .addGlassEnergyLimitInfo(VoltageIndex.UEV)
             .addTecTechHatchInfo()
-            .addInfo("UV glass required for " + TT + " laser hatches.")
+            .addMinGlassForLaser(VoltageIndex.UV)
             .addInfo(
                 EnumChatFormatting.ITALIC + "\"all it does is make metals hot\""
                     + EnumChatFormatting.RESET
@@ -317,13 +312,14 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             .addCasingInfoExactly("Blast Smelter Casing Block", 218, false)
             .addCasingInfoExactly("Blast Smelter Heat Containment Coil", 56, false)
             .addCasingInfoExactly("Coil", 360, true)
-            .addCasingInfoExactly("Borosilicate Glass", 339, true)
+            .addCasingInfoExactly("Any Tiered Glass", 339, true)
             .addMaintenanceHatch("Around the controller", 2)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GTPP.tooltip.structure.many_bus_hatch"),
                 "Bottom Casing",
                 1)
             .addMufflerHatch("1 in the center of the top layer", 3)
+            .addSubChannelUsage("glass", "Glass Tier")
             .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
         return tt;
     }
@@ -477,16 +473,9 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.glassTier = aNBT.getByte("glassTier");
         if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
             inputSeparation = aNBT.getBoolean("separateBusses");
         }
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setByte("glassTier", glassTier);
-        super.saveNBTData(aNBT);
     }
 
     @Override

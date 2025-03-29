@@ -331,7 +331,11 @@ public class GregTechAPI {
     public static boolean isMachineBlock(Block aBlock, int aMeta) {
         if (aBlock != null) {
             Integer id = sMachineIDs.get(aBlock);
-            return id != null && (id & B[aMeta]) != 0;
+            if (id != null) {
+                if (id == -1) // for all-meta registrations, also with meta > 32
+                    return true;
+                return (id & B[aMeta]) != 0;
+            }
         }
         return false;
     }

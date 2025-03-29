@@ -106,13 +106,13 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
 
     private int tierSimpleBlock = -1;
 
-    public static int getTierSimpleBlock(Block block, int meta) {
+    public static Integer getTierSimpleBlock(Block block, int meta) {
         if (block == Blocks.iron_block && meta == 0) return 1;
         if (block == GregTechAPI.sBlockMetal6 && meta == 13) return 2;
-        return 0;
+        return null;
     }
 
-    public int getTierMachineCasing(Block block, int meta) {
+    public Integer getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
             tCountCasing++;
             return 1;
@@ -121,13 +121,13 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
             tCountCasing++;
             return 2;
         }
-        return 0;
+        return null;
     }
 
-    public static int getTierPipeCasing(Block block, int meta) {
+    public static Integer getTierPipeCasing(Block block, int meta) {
         if (block == sBlockCasings2 && 12 == meta) return 1;
         if (block == sBlockCasings2 && 13 == meta) return 2;
-        return 0;
+        return null;
     }
 
     protected void updateHatchTexture() {
@@ -251,7 +251,6 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
         tierSimpleBlock = -1;
         tCountCasing = 0;
         if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierPipeCasing < 0 && tierMachineCasing < 0 && tierSimpleBlock < 0) return false;
         if (tierPipeCasing == 1 && tierMachineCasing == 1
             && tierSimpleBlock == 1
             && tCountCasing >= 35

@@ -192,7 +192,7 @@ public abstract class BlockCasingsAbstract extends GTGenericBlock
         }
     }
 
-    public static Supplier<String> tierTooltip(int tier) {
-        return translatedText("gt.casing.tier", Integer.toString(tier));
+    public static Supplier<String> channelTooltip(String channel, int value) {
+        return translatedText("GT5U.tooltip.channelvalue", Integer.toString(value), channel);
     }
 }

@@ -519,11 +519,14 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
 
         IIconContainer[] tTextures = getBaseMetaTileEntity().isActive() ? TURBINE_NEW_ACTIVE : TURBINE_NEW;
 
+        int[] xyz = new int[3];
+        ExtendedFacing ext = getExtendedFacing();
+        ext.getWorldOffset(new int[] { 0, -3, 1 }, xyz);
         GTUtilityClient.setTurbineOverlay(
             tile.getWorld(),
-            tile.getXCoord(),
-            tile.getYCoord(),
-            tile.getZCoord(),
+            xyz[0] + tile.getXCoord(),
+            xyz[1] + tile.getYCoord(),
+            xyz[2] + tile.getZCoord(),
             getExtendedFacing(),
             tTextures,
             overlayTickets);

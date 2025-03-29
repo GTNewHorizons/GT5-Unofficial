@@ -3,13 +3,13 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -49,7 +49,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import appeng.api.AEApi;
-import bartworks.API.BorosilicateGlass;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -127,7 +126,6 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     public static double RENDER_MAX_RADIUS = 2.999 / Math.sqrt(3);
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final byte GLASS_TIER_UNSET = -2;
 
     private static final int TT_CASING_INDEX = BlockGTCasingsTT.textureOffset;
 
@@ -140,7 +138,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     private static final String[] HATCH_NAMES = { "Top", "Bottom", "Left", "Right", "Back", "Front" };
     private static final boolean[] HATCH_MASK = { true, true, true, true, false, false };
 
-    private byte mGlassTier = -2;
+    private int glassTier = -1;
     private boolean mStructureBadGlassTier = false;
 
     private final MTEHatchEnergyMulti[] mSendHatches = new MTEHatchEnergyMulti[MAX_HATCHES];
@@ -228,12 +226,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 .dot(1)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
-        .addElement(
-            'A',
-            withChannel(
-                "glass",
-                BorosilicateGlass.ofBoroGlass(GLASS_TIER_UNSET, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-        )
+        .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings8, 5)) // Europium Reinforced Radiation Proof Machine Casing
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings4, 7)) // Fusion Coil Block
         .addElement('F', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 4))) // Molecular Casing
@@ -336,6 +329,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         Arrays.fill(mSendHatches, null);
         Arrays.fill(mReceiveHatches, null);
+        glassTier = -1;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0)) return false;
 
@@ -346,7 +340,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 continue;
             }
 
-            if (energyHatch.getTierForStructure() > mGlassTier) {
+            if (energyHatch.getTierForStructure() > glassTier) {
                 mStructureBadGlassTier = true;
                 break;
             }
@@ -1004,6 +998,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addInfo("Each laser target must have a laser source on the §oother§7 controller, on the §oopposite§7 side.")
             .addInfo("Consumes an AE2 Singularity from an input bus each time the wormhole is kick-started.")
             .addInfo("Right click the controller with a screwdriver to disable overclocking.")
+            .addGlassEnergyLimitInfo()
             .addTecTechHatchInfo()
             .beginStructureBlock(7, 9, 7, false)
             .addController("Front center")
@@ -1011,13 +1006,12 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addCasingInfoExactly("Europium Reinforced Radiation Proof Machine Casing", 4, false)
             .addCasingInfoExactly("Fusion Coil Block", 3 * 4 + 5 * 2, false)
             .addCasingInfoRange("High Power Casing", 8 * 6 + 1, 8 * 6 + 1 + 4, false)
-            .addCasingInfoExactly("Borosilicate Glass (any)", 9 * 4, true)
+            .addCasingInfoExactly("Any Tiered Glass", 9 * 4, true)
             .addMaintenanceHatch("§61§r (dot 1)")
             .addInputBus("§61§r (dot 1)")
             .addDynamoHatch("§60§r - §64§r (laser only, dot 2)")
             .addEnergyHatch("§60§r - §64§r (laser only, dot 2)")
-            .addStructureInfo("§rThe glass tier limits the hatch tier.")
-            .addSubChannelUsage("glass", "Borosilicate Glass Tier")
+            .addSubChannelUsage("glass", "Glass Tier")
             .toolTipFinisher(GTValues.AuthorPineapple + EnumChatFormatting.GRAY + ", Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade");
         // spotless:on
 
