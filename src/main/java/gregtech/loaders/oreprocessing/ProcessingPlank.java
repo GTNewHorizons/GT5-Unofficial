@@ -49,6 +49,12 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 .duration(2 * SECONDS)
                 .eut(8)
                 .addTo(steamCarpenterRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(1, aStack))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 2L))
+                .duration(2 * SECONDS)
+                .eut(8)
+                .addTo(steamCarpenterRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(8, aStack), GTUtility.getIntegratedCircuit(8))
