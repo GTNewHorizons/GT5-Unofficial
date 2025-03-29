@@ -94,7 +94,6 @@ public class MTESteamCarpenter extends MTEBetterSteamMultiBase<MTESteamCarpenter
                 EnumChatFormatting.AQUA + "" + EnumChatFormatting.ITALIC + "Cuts wood efficiently into many forms.")
             .addInfo("Created by: ")
             .addInfo(AuthorSteamIsTheNumber)
-            .beginStructureBlock(3, 3, 3, false)
             .toolTipFinisher();
         return tt;
     }

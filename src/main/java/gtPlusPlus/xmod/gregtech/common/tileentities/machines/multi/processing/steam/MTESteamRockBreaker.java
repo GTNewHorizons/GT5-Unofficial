@@ -321,24 +321,6 @@ public class MTESteamRockBreaker extends MTESteamMultiBase<MTESteamRockBreaker> 
             .addInfo("Only consumes steam at 62.5% of the L/s normally required")
             .addInfo("Processes up to 8 recipes at once")
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-            .beginStructureBlock(3, 3, 3, false)
-            .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Steam Input Hatch "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " Any casing")
-            .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(EnumChatFormatting.GOLD + "14-25x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
-            .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "14-25x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
             .toolTipFinisher();
         return tt;
     }

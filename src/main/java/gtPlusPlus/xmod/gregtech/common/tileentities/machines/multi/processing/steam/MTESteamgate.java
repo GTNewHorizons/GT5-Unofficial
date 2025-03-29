@@ -103,7 +103,6 @@ public class MTESteamgate extends MTEEnhancedMultiBlockBase<MTESteamgate> implem
             .addInfo("Must be linked to another steamgate with a Steamgate Dialing Device.")
             .addInfo("Left click to save steamgate data. Right click to link to another steamgate.")
             .addInfo("Right click a linked steamgate to teleport.")
-            .beginStructureBlock(3, 3, 3, false)
             .toolTipFinisher();
         return tt;
     }
