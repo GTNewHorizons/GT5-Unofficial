@@ -2,6 +2,8 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Textures.BlockIcons.ITEM_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
+import static gregtech.api.util.GTUtility.areStacksEqual;
+import static gregtech.api.util.GTUtility.isStackInvalid;
 import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +30,6 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;
 
 public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemLockable, IDataCopyable {
@@ -171,46 +172,51 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
         return DATA_STICK_DATA_TYPE;
     }
 
+    public boolean storePartial(ItemStack aStack) {
+        return storePartial(aStack, false);
+    }
+
     /**
      * Attempt to store as many items as possible into the internal inventory of this output bus. If you need atomicity
      * you should use {@link gregtech.api.interfaces.tileentity.IHasInventory#addStackToSlot(int, ItemStack)}
      *
-     * @param aStack Assume valid. Will be mutated. Take over the ownership. Caller should not retain a reference to
-     *               this stack if the call returns true.
+     * @param stack    The stack to insert. Will be modified by this method (will contain whatever items could not be
+     *                 inserted; stackSize will be 0 when everything was inserted).
+     * @param simulate When true this bus will not be modified.
      * @return true if stack is fully accepted. false is stack is partially accepted or nothing is accepted
      */
-    public boolean storeAll(ItemStack aStack) {
+    public boolean storePartial(ItemStack stack, boolean simulate) {
         markDirty();
 
-        if (lockedItem != null && !lockedItem.isItemEqual(aStack)) {
-            return false;
+        if (lockedItem != null && !lockedItem.isItemEqual(stack)) return false;
+
+        int invLength = mInventory.length;
+
+        for (int i = 0; i < invLength && stack.stackSize > 0; i++) {
+            @Nullable
+            ItemStack slot = mInventory[i];
+
+            // the slot has an item and the stacks can't be merged; ignore it
+            if (!isStackInvalid(slot) && !areStacksEqual(slot, stack)) continue;
+
+            int inSlot = slot == null ? 0 : slot.stackSize;
+
+            int toInsert = Math
+                .min(Math.min(getInventoryStackLimit(), stack.getMaxStackSize() - inSlot), stack.stackSize);
+
+            if (toInsert == 0) continue;
+
+            if (!simulate) {
+                // if the slot is invalid create an empty stack in it
+                if (isStackInvalid(slot)) mInventory[i] = slot = stack.splitStack(0);
+
+                slot.stackSize += toInsert;
+            }
+
+            stack.stackSize -= toInsert;
         }
 
-        for (int i = 0, mInventoryLength = mInventory.length; i < mInventoryLength && aStack.stackSize > 0; i++) {
-            ItemStack tSlot = mInventory[i];
-            if (GTUtility.isStackInvalid(tSlot)) {
-                int tRealStackLimit = Math.min(getInventoryStackLimit(), aStack.getMaxStackSize());
-                if (aStack.stackSize <= tRealStackLimit) {
-                    mInventory[i] = aStack;
-                    return true;
-                }
-                mInventory[i] = aStack.splitStack(tRealStackLimit);
-            } else {
-                int tRealStackLimit = Math.min(getInventoryStackLimit(), tSlot.getMaxStackSize());
-                if (tSlot.stackSize < tRealStackLimit && tSlot.isItemEqual(aStack)
-                    && ItemStack.areItemStackTagsEqual(tSlot, aStack)) {
-                    if (aStack.stackSize + tSlot.stackSize <= tRealStackLimit) {
-                        mInventory[i].stackSize += aStack.stackSize;
-                        return true;
-                    } else {
-                        // more to serve
-                        aStack.stackSize -= tRealStackLimit - tSlot.stackSize;
-                        mInventory[i].stackSize = tRealStackLimit;
-                    }
-                }
-            }
-        }
-        return false;
+        return stack.stackSize == 0;
     }
 
     /**
