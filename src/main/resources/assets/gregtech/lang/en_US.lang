@@ -224,7 +224,15 @@ GT5U.coil.MAX=Eternal
 
 GT5U.MS.multismelting=Multi smelting
 
-gt.casing.tiertooltip=Casing Tier: %s
+gt.casing.no-mob-spawning=Mobs cannot Spawn on this Block
+gt.casing.not-tile-entity=This is NOT a TileEntity!
+gt.casing.blast-proof=This Block is Blast Proof
+gt.casing.heat-capacity=Base Heating Capacity = %s Kelvin
+gt.casing.tier=Casing Tier: §e%s§r
+
+gt.casing.chemical-resistant=Able to resist the most extreme chemical conditions.
+gt.casing.hawking-focus=Controls the outward flow of Hawking Radiation to stabilize a black hole.
+gt.casings.advanced-filter=Less than five 0.1μm particles per m^3
 
 # Machine types
 gt.recipe.alloysmelter=Alloy Smelter
