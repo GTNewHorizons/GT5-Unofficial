@@ -10620,11 +10620,13 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerOutputHatch() {
         ItemList.Hatch_Output_ULV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_ULV.ID, "hatch.output.tier.00", "Output Hatch (ULV)", 0).getStackForm(1L));
+            new MTEHatchOutput(OUTPUT_HATCH_ULV.ID, "hatch.output.tier.00", "Simple Output Hatch", 0).getStackForm(1L));
         ItemList.Hatch_Output_LV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_LV.ID, "hatch.output.tier.01", "Output Hatch (LV)", 1).getStackForm(1L));
+            new MTEHatchOutput(OUTPUT_HATCH_LV.ID, "hatch.output.tier.01", "Stronze-Reinforced Output Hatch", 1)
+                .getStackForm(1L));
         ItemList.Hatch_Output_MV.set(
-            new MTEHatchOutput(OUTPUT_HATCH_MV.ID, "hatch.output.tier.02", "Output Hatch (MV)", 2).getStackForm(1L));
+            new MTEHatchOutput(OUTPUT_HATCH_MV.ID, "hatch.output.tier.02", "Steam-Attuned Output Hatch", 2)
+                .getStackForm(1L));
         ItemList.Hatch_Output_HV.set(
             new MTEHatchOutput(OUTPUT_HATCH_HV.ID, "hatch.output.tier.03", "Output Hatch (HV)", 3).getStackForm(1L));
         ItemList.Hatch_Output_EV.set(

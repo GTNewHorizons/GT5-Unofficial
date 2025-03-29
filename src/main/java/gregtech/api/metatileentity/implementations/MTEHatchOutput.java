@@ -53,10 +53,23 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
             aTier,
             4,
             new String[] { "Fluid Output for Multiblocks",
-                "Capacity: " + GTUtility.formatNumbers(8000L * (1L << aTier)) + "L",
+                "Capacity: " + GTUtility.formatNumbers(getTankSize(aTier)) + "L",
+                aTier == 0 ? "Does not automatically export fluid"
+                    : EnumChatFormatting.BOLD + "DOES"
+                        + EnumChatFormatting.RESET
+                        + EnumChatFormatting.GRAY
+                        + " automatically export fluid",
                 "Right click with screwdriver to restrict output",
                 "Can be restricted to put out Items and/or Steam/No Steam/1 specific Fluid",
                 "Restricted Output Hatches are given priority for Multiblock Fluid output" });
+    }
+
+    private static int getTankSize(int aTier) {
+        return switch (aTier) {
+            case 0 -> 16000;
+            case 1 -> 128000;
+            default -> 1024000;
+        };
     }
 
     public MTEHatchOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -113,7 +126,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     }
 
     protected boolean supportsFluidPushing() {
-        return true;
+        return mTier > 0;
     }
 
     @Override
@@ -197,7 +210,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
 
     @Override
     public int getCapacity() {
-        return 8000 * (1 << mTier);
+        return getTankSize(mTier);
     }
 
     @Override

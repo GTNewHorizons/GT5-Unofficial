@@ -2,9 +2,12 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Textures.BlockIcons.ITEM_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
+import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -28,7 +31,12 @@ public class MTEHatchSteamBusOutput extends MTEHatch {
             aNameRegional,
             aTier,
             getSlots(aTier),
-            new String[] { "Item Output for Steam Multiblocks", "Does not automatically export items",
+            new String[] { "Item Output for Steam Multiblocks",
+                aTier == 0 ? "Does not automatically export items"
+                    : EnumChatFormatting.BOLD + "DOES"
+                        + EnumChatFormatting.RESET
+                        + EnumChatFormatting.GRAY
+                        + " automatically export items",
                 "Capacity: " + getSlots(aTier + 1) + " stacks", "Does not work with non-steam multiblocks",
                 GTPPCore.GT_Tooltip.get() });
     }
@@ -82,6 +90,37 @@ public class MTEHatchSteamBusOutput extends MTEHatch {
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
+    }
+
+    public boolean canPush() {
+        return mTier > 0;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork()
+            && (aTick & 0x7) == 0
+            && canPush()) {
+            final IInventory tTileEntity = aBaseMetaTileEntity
+                .getIInventoryAtSide(aBaseMetaTileEntity.getFrontFacing());
+            if (tTileEntity != null) {
+                moveMultipleItemStacks(
+                    aBaseMetaTileEntity,
+                    tTileEntity,
+                    aBaseMetaTileEntity.getFrontFacing(),
+                    aBaseMetaTileEntity.getBackFacing(),
+                    null,
+                    false,
+                    (byte) 64,
+                    (byte) 1,
+                    (byte) 64,
+                    (byte) 1,
+                    mInventory.length);
+                for (int i = 0; i < mInventory.length; i++)
+                    if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
+            }
+        }
     }
 
     @Override
