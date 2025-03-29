@@ -127,6 +127,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private final LongData energyInputValues5m = energyInputValues1h.view(5 * 60 * 20);
     private final LongData energyOutputValues5m = energyOutputValues1h.view(5 * 60 * 20);
 
+    private final LongRunningAverage wirelessEnergyInputValues1h = new LongRunningAverage(3600 * 20);
+    private final LongRunningAverage wirelessEnergyOutputValues1h = new LongRunningAverage(3600 * 20);
+
+    private final LongData wirelessEnergyInputValues5m = wirelessEnergyInputValues1h.view(5 * 60 * 20);
+    private final LongData wirelessEnergyOutputValues5m = wirelessEnergyOutputValues1h.view(5 * 60 * 20);
+
     private final long max_passive_drain_eu_per_tick_per_uhv_cap = 1_000_000;
     private final long max_passive_drain_eu_per_tick_per_uev_cap = 100_000_000;
     private final long max_passive_drain_eu_per_tick_per_uiv_cap = (long) Math.pow(10, 10);
@@ -897,6 +903,24 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         }
     }
 
+    private String getWirelessTimeTo() {
+        BigInteger avgOutWireless = BigInteger.valueOf(wirelessEnergyOutputValues5m.avgLong());
+        BigInteger wirelessStored = new BigInteger(
+            WirelessNetworkManager.getUserEU(global_energy_user_uuid)
+                .toString());
+
+        // If average output is greater than zero, calculate time to empty
+        if (avgOutWireless.compareTo(BigInteger.ZERO) > 0) {
+            BigInteger timeToEmptyTicks = wirelessStored.divide(avgOutWireless);
+            BigInteger timeToEmptySeconds = timeToEmptyTicks.divide(BigInteger.valueOf(20));
+
+            long seconds = timeToEmptySeconds.longValueExact();
+            return "Wireless Time to Empty: " + formatTime(seconds, false);
+        } else {
+            return "Currently Filling Wireless";
+        }
+    }
+
     private String getCapacityCache() {
         return capacity.compareTo(guiCapacityStoredReformatLimit) > 0 ? standardFormat.format(capacity)
             : numberFormat.format(capacity);
@@ -947,6 +971,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         ll.add("Avg EU OUT: " + nf.format(energyOutputValues1h.avgLong()) + " (last 1 hour)");
 
         ll.add(getTimeTo());
+        ll.add(getWirelessTimeTo());
 
         ll.add(
             "Maintenance Status: " + ((super.getRepairStatus() == super.getIdealStatus())
@@ -983,6 +1008,9 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             "Total wireless EU: " + EnumChatFormatting.RED
                 + toStandardForm(WirelessNetworkManager.getUserEU(global_energy_user_uuid))
                 + " EU");
+
+        ll.add("Avg Wireless EU IN (5 mins): " + nf.format(wirelessEnergyInputValues5m.avgLong()) + " EU/t");
+        ll.add("Avg Wireless EU OUT (5 mins): " + nf.format(wirelessEnergyOutputValues5m.avgLong()) + " EU/t");
 
         final String[] a = new String[ll.size()];
         return ll.toArray(a);
