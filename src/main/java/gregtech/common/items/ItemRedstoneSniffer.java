@@ -342,12 +342,12 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
             result.add(
                 new Row()
                     .setEnabledIf(
-                        w -> (((StringSyncValue) guiSyncManager.getSyncHandler("owner_filter:0")).getStringValue()
+                        w -> ((((StringSyncValue) guiSyncManager.getSyncHandler("owner_filter:0")).getStringValue()
                             .isEmpty()
-                            || ((StringSyncValue) guiSyncManager.getSyncHandler("owner_filter:0")).getStringValue()
-                                .equals(entry.owner))
+                            || entry.owner.contains(
+                                ((StringSyncValue) guiSyncManager.getSyncHandler("owner_filter:0")).getStringValue()))
                             && entry.freq.contains(
-                                ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue()))
+                                ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue())))
                     .sizeRel(1f, 0.1f * scale)
                     .background(
                         (bgStripe.get() % 2 == 0) ? new Rectangle().setColor(stripe1)
