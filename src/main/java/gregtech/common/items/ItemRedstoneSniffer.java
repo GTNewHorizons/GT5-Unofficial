@@ -435,18 +435,6 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                                         cover.y,
                                                         cover.z,
                                                         true));
-                                                ArrayList<DimensionalCoord> list = new ArrayList<>();
-                                                list.add(new DimensionalCoord(cover.x, cover.y, cover.z, cover.dim));
-                                                String foundMsg = String.format(
-                                                    "Highlighting cover at %d,%d,%d",
-                                                    cover.x,
-                                                    cover.y,
-                                                    cover.z);
-                                                BlockPosHighlighter.highlightBlocks(
-                                                    guiSyncManager.getPlayer(),
-                                                    list,
-                                                    foundMsg,
-                                                    "Cannot highlight because you're not in the same dimension!");
                                                 listWidget.getPanel()
                                                     .closeIfOpen(false);
                                                 return true;
