@@ -645,7 +645,8 @@ public class GTValues {
                 + "The"
                 + EnumChatFormatting.WHITE
                 + EnumChatFormatting.ITALIC
-                + "Number"));
+                + "Number\n"),
+        animatedText("PipeBluez", 1, 100, WHITE, WHITE, WHITE, WHITE, AQUA, DARK_AQUA, BLUE, DARK_BLUE, DARK_BLUE));
 
     public static final Supplier<String> AuthorSteamibyss = chain(
         text("Author: "),

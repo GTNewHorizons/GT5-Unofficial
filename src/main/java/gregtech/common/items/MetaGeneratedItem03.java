@@ -234,6 +234,7 @@ import static gregtech.common.items.IDMetaItem03.Spinneret;
 import static gregtech.common.items.IDMetaItem03.Steamgate_Chevron;
 import static gregtech.common.items.IDMetaItem03.Steamgate_Chevron_Upgrade;
 import static gregtech.common.items.IDMetaItem03.Steamgate_Core_Crystal;
+import static gregtech.common.items.IDMetaItem03.Steamgate_Dialing_Device;
 import static gregtech.common.items.IDMetaItem03.Steamgate_Frame;
 import static gregtech.common.items.IDMetaItem03.Steamgate_Iris_Blade;
 import static gregtech.common.items.IDMetaItem03.Steamgate_Iris_Upgrade;
@@ -334,6 +335,9 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Hydraulic_Vapor_Generator.set(addItem(Hydraulic_Vapor_Generator.ID, "Hydraulic Vapor Generator", ""));
         ItemList.Hydraulic_Emitter_Steam.set(addItem(Hydraulic_Emitter_Steam.ID, "Hydraulic Steam Jet Spewer", ""));
         ItemList.Hydraulic_Sensor_Steam.set(addItem(Hydraulic_Sensor_Steam.ID, "Hydraulic Steam Receiver", ""));
+
+        ItemList.Steamgate_Dialing_Device.set(
+            addItem(Steamgate_Dialing_Device.ID, "Steamgate Dialing Device", "Links steamgates for teleportation."));
 
         /*
          * circuit boards tier 1-7: coated circuit board / wood plate + resin Plastic Circuit Board / Plastic + Copper

@@ -396,6 +396,7 @@ public enum ItemList implements IItemContainer {
     Hydraulic_Vapor_Generator,
     Hydraulic_Emitter_Steam,
     Hydraulic_Sensor_Steam,
+    Steamgate_Dialing_Device,
 
     Electric_Motor_LV,
     Electric_Motor_MV,
