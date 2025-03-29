@@ -1,11 +1,15 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.AuthorSteamIsTheNumber;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_GATE_ASSEMBLER;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -20,10 +24,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
+import gregtech.common.blocks.BlockCasings1;
+import gregtech.common.blocks.BlockCasings2;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEBetterSteamMultiBase;
 
-public class MTESteamGateAssembler extends MTESteamMultiBase<MTESteamGateAssembler> implements ISurvivalConstructable {
+public class MTESteamGateAssembler extends MTEBetterSteamMultiBase<MTESteamGateAssembler>
+    implements ISurvivalConstructable {
 
     public MTESteamGateAssembler(String aName) {
         super(aName);
@@ -50,51 +58,13 @@ public class MTESteamGateAssembler extends MTESteamMultiBase<MTESteamGateAssembl
                     + EnumChatFormatting.ITALIC
                     + "What would drive someone to create such a device? What purpose could this possibly serve?")
             .addInfo("Author: " + AuthorSteamIsTheNumber)
-            .beginStructureBlock(3, 3, 3, false)
-            .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Steam Input Hatch "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " Any casing")
-            .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(EnumChatFormatting.GOLD + "14-25x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
-            .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "14-25x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
             .toolTipFinisher();
         return tt;
     }
 
     @Override
-    protected ITexture getFrontOverlay() {
-        return TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_STEAM_GATE_ASSEMBLER);
-    }
-
-    @Override
-    protected ITexture getFrontOverlayActive() {
-        return TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_STEAM_GATE_ASSEMBLER);
-    }
-
-    @Override
-    public int getTierRecipes() {
-        return 0;
-    }
-
-    @Override
     public String getMachineType() {
         return "Boundless Creation Engine";
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 0;
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -108,6 +78,30 @@ public class MTESteamGateAssembler extends MTESteamMultiBase<MTESteamGateAssembl
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 10, 11, 10, elementBudget, env, false, true);
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+        int aColorIndex, boolean aActive, boolean aRedstone) {
+        ITexture[] rTexture;
+        if (side == facing) {
+            rTexture = new ITexture[] {
+                Textures.BlockIcons
+                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_STEAM_GATE_ASSEMBLER)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_STEAM_GATE_ASSEMBLER)
+                    .extFacing()
+                    .glow()
+                    .build() };
+        } else {
+            rTexture = new ITexture[] { Textures.BlockIcons
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)) };
+        }
+        return rTexture;
     }
 
     // spotless:off
@@ -137,8 +131,28 @@ public class MTESteamGateAssembler extends MTESteamMultiBase<MTESteamGateAssembl
                 {"                     ","  F               E  "," FFF             EEE ","  F               E  ","                     ","                     ","                     ","         B B         ","        D E D        ","       B     B       ","        E   E        ","       B     B       ","        D E D        ","         B B         ","                     ","                     ","                     ","  E               F  "," EEE             FFF ","  E               F  ","                     "},
                 {" BDB             ACA ","BBBBB           AAAAA","DBBBD           CAAAC","BBBBB           AAAAA"," BDB             ACA "," EFE             EFE "," EFE             EFE "," EFE     BBB     EFE "," EFE    BBBBB    EFE "," EFEEEEBBBBBBBEEEEFE "," EFFFFFBBBBBBBFFFFFE "," EFEEEEBBBBBBBEEEEFE "," EFE    BBBBB    EFE "," EFE     BBB     EFE "," EFE     EFE     EFE "," EFE     EFE     EFE "," ACA     EFE     BDB ","AAAAAEEEEEFEEEEEBBBBB","CAAACFFFFFFFFFFFDBBBD","AAAAAEEEEEEEEEEEBBBBB"," ACA             BDB "}
             })))
-        .addElement('A', ofBlock(GregTechAPI.sBlockCasings1, 10))
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 0))
+        .addElement('A', ofChain(
+            buildSteamInput(MTESteamGateAssembler.class)
+                .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
+                .dot(1)
+                .build(),
+            buildHatchAdder(MTESteamGateAssembler.class)
+                .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
+                .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
+                .dot(1)
+                .buildAndChain(),
+            ofBlock(GregTechAPI.sBlockCasings1, 10)))
+        .addElement('B', ofChain(
+            buildSteamInput(MTESteamGateAssembler.class)
+                .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                .dot(1)
+                .build(),
+            buildHatchAdder(MTESteamGateAssembler.class)
+                .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
+                .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                .dot(1)
+                .buildAndChain(),
+            ofBlock(GregTechAPI.sBlockCasings2, 0)))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 2))
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 3))
         .addElement('E', ofBlock(GregTechAPI.sBlockCasings2, 12))

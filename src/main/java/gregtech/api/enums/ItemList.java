@@ -1055,6 +1055,8 @@ public enum ItemList implements IItemContainer {
     Cover_Wireless_Energy_MAX,
 
     Hatch_Input_ULV,
+    Hatch_Input_ULV2,
+    Hatch_Input_ULV3,
     Hatch_Input_LV,
     Hatch_Input_MV,
     Hatch_Input_HV,

@@ -466,6 +466,10 @@ public enum GregtechItemList implements IGregtechItemContainer {
     // Steam Multi Buses
     Hatch_Input_Bus_Steam,
     Hatch_Output_Bus_Steam,
+    Hatch_Input_Bus_SteamMK2,
+    Hatch_Output_Bus_SteamMK2,
+    Hatch_Input_Bus_SteamMK3,
+    Hatch_Output_Bus_SteamMK3,
 
     // Elemental Duplicator Data Orb Bus
     Hatch_Input_Elemental_Duplicator,

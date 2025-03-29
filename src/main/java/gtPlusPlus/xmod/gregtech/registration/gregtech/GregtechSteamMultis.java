@@ -19,7 +19,11 @@ import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamWasherMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamWoodcutter;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_Steamgate;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Bus_Steam;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Bus_SteamMK2;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Bus_SteamMK3;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Bus_Steam;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Bus_SteamMK2;
+import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Bus_SteamMK3;
 
 import gregtech.api.enums.GTValues;
 import gtPlusPlus.api.objects.Logger;
@@ -132,13 +136,34 @@ public class GregtechSteamMultis {
                 "Steam Supercompressor").getStackForm(1));
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(
-            new MTEHatchSteamBusInput(Hatch_Input_Bus_Steam.ID, "hatch.input_bus.tier.steam", "Input Bus (Steam)", 0)
+            new MTEHatchSteamBusInput(Hatch_Input_Bus_Steam.ID, "hatch.input_bus.tier.steam", "Simple Input Bus", 0)
                 .getStackForm(1L));
+        GregtechItemList.Hatch_Input_Bus_SteamMK2.set(
+            new MTEHatchSteamBusInput(
+                Hatch_Input_Bus_SteamMK2.ID,
+                "hatch.input_bus.tier.steammk2",
+                "Breel-Reinforced Input Bus",
+                1).getStackForm(1L));
+        GregtechItemList.Hatch_Input_Bus_SteamMK3.set(
+            new MTEHatchSteamBusInput(
+                Hatch_Input_Bus_SteamMK3.ID,
+                "hatch.input_bus.tier.steammk3",
+                "Steam-Attuned Input Bus",
+                2).getStackForm(1L));
         GregtechItemList.Hatch_Output_Bus_Steam.set(
+            new MTEHatchSteamBusOutput(Hatch_Output_Bus_Steam.ID, "hatch.output_bus.tier.steam", "Simple Output Bus", 0)
+                .getStackForm(1L));
+        GregtechItemList.Hatch_Output_Bus_SteamMK2.set(
             new MTEHatchSteamBusOutput(
-                Hatch_Output_Bus_Steam.ID,
-                "hatch.output_bus.tier.steam",
-                "Output Bus (Steam)",
-                0).getStackForm(1L));
+                Hatch_Output_Bus_SteamMK2.ID,
+                "hatch.output_bus.tier.steammk2",
+                "Breel-Reinforced Output Bus",
+                1).getStackForm(1L));
+        GregtechItemList.Hatch_Output_Bus_SteamMK3.set(
+            new MTEHatchSteamBusOutput(
+                Hatch_Output_Bus_SteamMK3.ID,
+                "hatch.output_bus.tier.steammk3",
+                "Steam-Attuned Output Bus",
+                2).getStackForm(1L));
     }
 }

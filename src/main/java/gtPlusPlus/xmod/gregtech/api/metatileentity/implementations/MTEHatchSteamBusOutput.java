@@ -27,13 +27,14 @@ public class MTEHatchSteamBusOutput extends MTEHatch {
             aName,
             aNameRegional,
             aTier,
-            4,
+            getSlots(aTier),
             new String[] { "Item Output for Steam Multiblocks", "Does not automatically export items",
-                "Capacity: 4 stacks", "Does not work with non-steam multiblocks", GTPPCore.GT_Tooltip.get() });
+                "Capacity: " + getSlots(aTier + 1) + " stacks", "Does not work with non-steam multiblocks",
+                GTPPCore.GT_Tooltip.get() });
     }
 
     public MTEHatchSteamBusOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 4, aDescription, aTextures);
+        super(aName, aTier, getSlots(aTier + 1), aDescription, aTextures);
     }
 
     @Override
@@ -52,11 +53,6 @@ public class MTEHatchSteamBusOutput extends MTEHatch {
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
 
@@ -192,6 +188,11 @@ public class MTEHatchSteamBusOutput extends MTEHatch {
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        getBaseMetaTileEntity().add2by2Slots(builder);
+        switch (mTier) {
+            case 0 -> getBaseMetaTileEntity().add2by2Slots(builder);
+            case 1 -> getBaseMetaTileEntity().add3by3Slots(builder);
+            case 2 -> getBaseMetaTileEntity().add4by4Slots(builder);
+            default -> getBaseMetaTileEntity().add1by1Slot(builder);
+        }
     }
 }

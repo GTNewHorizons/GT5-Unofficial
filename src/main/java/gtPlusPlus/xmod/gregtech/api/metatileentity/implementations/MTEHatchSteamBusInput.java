@@ -15,15 +15,25 @@ public class MTEHatchSteamBusInput extends MTEHatchInputBus {
     public RecipeMap<?> mRecipeMap = null;
 
     public MTEHatchSteamBusInput(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, getSlots() + 1);
+        super(aID, aName, aNameRegional, aTier, getSlots(aTier) + 1);
     }
 
     public MTEHatchSteamBusInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, getSlots() + 1, aDescription, aTextures);
+        super(aName, aTier, getSlots(aTier) + 1, aDescription, aTextures);
     }
 
-    public static int getSlots() {
-        return 4;
+    public static int getSlots(int tier) {
+        switch (tier) {
+            case 1 -> {
+                return 4;
+            }
+            case 2 -> {
+                return 9;
+            }
+            default -> {
+                return 16;
+            }
+        }
     }
 
     @Override
@@ -40,7 +50,7 @@ public class MTEHatchSteamBusInput extends MTEHatchInputBus {
 
     @Override
     public int getCircuitSlot() {
-        return getSlots();
+        return getSlots(mTier);
     }
 
     @Override
