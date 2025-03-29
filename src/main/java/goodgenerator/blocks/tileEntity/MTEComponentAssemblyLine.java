@@ -3,6 +3,7 @@ package goodgenerator.blocks.tileEntity;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -30,6 +31,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -48,7 +50,8 @@ import gregtech.api.util.OverclockCalculator;
 public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEComponentAssemblyLine>
     implements ISurvivalConstructable {
 
-    private int casingTier;
+    private int casingTier = -1;
+    private int glassTier = -1;
     private double speedBonus;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEComponentAssemblyLine> STRUCTURE_DEFINITION = StructureDefinition
@@ -122,14 +125,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
                     "A  HHH  A", "A       A", "MHHHHHHHM" },
                 { "         ", "         ", " HHHHHHH ", "HH     HH", "H       H", "H       H", "H       H",
                     "H       H", "H  KKK  H", "HHHHHHHHH" } })
-        .addElement(
-            'A',
-            ofChain(
-                ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 5),
-                ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 13),
-                ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 14),
-                ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 15),
-                ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks2", 0)))
+        .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('H', ofBlock(GregTechAPI.sBlockCasings8, 7))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 5))
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 9))
@@ -139,13 +135,13 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         .addElement(
             'B',
             ofBlocksTiered(
-                (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
+                (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : null,
                 IntStream.range(0, 14)
                     .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
                     .collect(Collectors.toList()),
-                -2,
-                (t, meta) -> t.casingTier = meta,
-                t -> t.casingTier))
+                -1,
+                MTEComponentAssemblyLine::setCasingTier,
+                MTEComponentAssemblyLine::getCasingTier))
         .addElement(
             'J',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
@@ -223,13 +219,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
                     + "limits the recipes the machine can perform. See the NEI pages for details.")
             .addInfo("Using casings above the required recipe tier provides a speed bonus:")
             .addInfo(EnumChatFormatting.YELLOW + "Halves recipe time per tier above recipe")
-            .addInfo(
-                "Supports " + EnumChatFormatting.BLUE
-                    + "Tec"
-                    + EnumChatFormatting.DARK_BLUE
-                    + "Tech"
-                    + EnumChatFormatting.GRAY
-                    + " laser and multi-amp hatches!")
+            .addTecTechHatchInfo()
             .addInfo("Supports overclocking beyond MAX!")
             .addInfo(EnumChatFormatting.ITALIC + "Much more efficient than other competing brands!")
             .addTecTechHatchInfo()
@@ -237,7 +227,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             .addController("Mid of the eighth layer")
             .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 644, false)
             .addCasingInfoExactly("Advanced Filter Casing", 124, false)
-            .addCasingInfoExactly("Borosilicate Glass (UV+)", 280, false)
+            .addCasingInfoExactly("Any Tiered Glass (UV+)", 280, false)
             .addCasingInfoExactly("Assembler Machine Casing", 30, false)
             .addCasingInfoExactly("Component Assembly Line Casing", 43, true)
             .addCasingInfoExactly("PBI Pipe Casing", 126, false)
@@ -248,6 +238,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             .addEnergyHatch("Second-top layer", 3)
             .addMaintenanceHatch("Around the controller", 4)
             .addInputHatch("Bottom left and right corners", 5)
+            .addSubChannelUsage("glass", "Glass Tier")
             .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
         return tt;
     }
@@ -337,10 +328,23 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 2, 0, realBudget, env, false, true);
     }
 
+    private void setCasingTier(int tier) {
+        this.casingTier = tier;
+    }
+
+    private int getCasingTier() {
+        return this.casingTier;
+    }
+
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        casingTier = -2;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0);
+        this.casingTier = -1;
+        this.glassTier = -1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0)) {
+            return false;
+        }
+
+        return this.glassTier >= VoltageIndex.UV;
     }
 
     @Override

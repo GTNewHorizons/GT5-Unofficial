@@ -160,8 +160,12 @@ GT5U.MBTT.Air=Mandatory Air
 GT5U.MBTT.Structure.Complex=Structure is too complex!
 GT5U.MBTT.Structure.SeeStructure1=To see the structure, use a
 GT5U.MBTT.Structure.SeeStructure2=Hologram Projector on the Controller!
+GT5U.MBTT.Structure.MinGlassForLaser=-tier glass required for §9Tec§1Tech§7 Laser Hatches.
+GT5U.MBTT.Structure.GlassEnergyLimit=Energy Hatch limited by Glass tier
+GT5U.MBTT.Structure.GlassEnergyLimitTier=-tier Glass unlocks all.
 
 GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
+GT5U.tooltip.channelvalue=Use value §6%d§r§7 for sub channel §6%s
 
 GT5U.cracker.io_side=Input/Output Hatches must be on opposite sides!
 
@@ -2091,6 +2095,9 @@ GT5U.tooltip.mega_apiary.only_producer=Will only be produced in mega Apiary
 
 GT5U.tooltip.electric.tier=Tier: %d
 GT5U.tooltip.electric.tier.s=Tier: %s
+
+gt.coilheattooltip=Base Heating Capacity =
+gt.coilunittooltip= Kelvin
 
 GT5U.tootlip.tool.turbine.steam=Steam
 GT5U.tootlip.tool.turbine.loose=Loose
