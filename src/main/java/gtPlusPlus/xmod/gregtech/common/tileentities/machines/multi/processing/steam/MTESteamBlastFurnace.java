@@ -2,10 +2,10 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.s
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static gregtech.api.GregTechAPI.sBlockCasings1;
+import static gregtech.api.GregTechAPI.sBlockCasingsSteam;
 import static gregtech.api.enums.GTValues.AuthorSteamIsTheNumber;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BBF_INACTIVE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
@@ -29,6 +29,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.blocks.BlockCasingsSteam;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEBetterSteamMultiBase;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
@@ -228,16 +229,16 @@ public class MTESteamBlastFurnace extends MTEBetterSteamMultiBase<MTESteamBlastF
                     buildHatchAdder(MTESteamBlastFurnace.class).adder(MTEBetterSteamMultiBase::addToMachineList)
                         .hatchIds(31040, 15511)
                         .shouldReject(t -> !t.mSteamInputFluids.isEmpty())
-                        .casingIndex(10)
+                        .casingIndex(((BlockCasingsSteam) GregTechAPI.sBlockCasingsSteam).getTextureIndex(8))
                         .dot(1)
                         .build(),
                     buildHatchAdder(MTESteamBlastFurnace.class)
                         .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
-                        .casingIndex(10)
+                        .casingIndex(((BlockCasingsSteam) GregTechAPI.sBlockCasingsSteam).getTextureIndex(8))
                         .dot(1)
                         .buildAndChain(),
-                    ofBlock(sBlockCasings1, 10)))
-            .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 12))
+                    ofBlock(sBlockCasingsSteam, 8)))
+            .addElement('B', ofBlock(sBlockCasingsSteam, 7))
             .addElement('C', ofBlock(GregTechAPI.sBlockCasings4, 15))
             .build();
     }
@@ -269,29 +270,27 @@ public class MTESteamBlastFurnace extends MTEBetterSteamMultiBase<MTESteamBlastF
         if (side == aFacing) {
             if (aActive) {
                 rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
+                    Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(sBlockCasingsSteam, 8)),
                     TextureFactory.builder()
-                        .addIcon(MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE)
+                        .addIcon(MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE_GLOW)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE)
+                        .addIcon(MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
             } else {
                 rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
+                    Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(sBlockCasingsSteam, 8)),
                     TextureFactory.builder()
-                        .addIcon(MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE)
+                        .addIcon(OVERLAY_BBF_INACTIVE)
                         .extFacing()
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 4)) };
+            rTexture = new ITexture[] {
+                Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(sBlockCasingsSteam, 8)) };
         }
         return rTexture;
     }
