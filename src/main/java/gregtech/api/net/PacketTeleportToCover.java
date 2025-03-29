@@ -39,12 +39,7 @@ public class PacketTeleportToCover extends GTPacket {
 
     @Override
     public GTPacket decode(ByteArrayDataInput buf) {
-        return new PacketTeleportToCover(
-            buf.readInt(),
-            buf.readInt(),
-            buf.readInt(),
-            buf.readInt(),
-            buf.readBoolean());
+        return new PacketTeleportToCover(buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt(), buf.readBoolean());
     }
 
     @Override
