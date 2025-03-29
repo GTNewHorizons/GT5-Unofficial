@@ -1912,6 +1912,7 @@ public enum MetaTileEntityIDs {
     GT4_Electric_Auto_Workbench_LuV(31096),
     GT4_Electric_Auto_Workbench_ZPM(31097),
     GT4_Electric_Auto_Workbench_UV(31098),
+    Controller_SteamMultiSmelter(31099),
     GT4_Crop_Harvester_LV(31111),
     GT4_Crop_Harvester_MV(31112),
     GT4_Crop_Harvester_HV(31113),
