@@ -403,6 +403,8 @@ public enum GregtechItemList implements IGregtechItemContainer {
     Controller_MegaSteamCompressor,
     // Cactus Wonder
     Controller_CactusWonder,
+    // Infernal Coke Oven
+    Controller_InfernalCokeOven,
 
     // Industrial Rock Breaker
     Controller_IndustrialRockBreaker,
