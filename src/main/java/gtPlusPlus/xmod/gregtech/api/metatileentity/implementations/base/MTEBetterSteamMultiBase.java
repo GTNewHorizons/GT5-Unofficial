@@ -53,6 +53,11 @@ public abstract class MTEBetterSteamMultiBase<T extends MTEBetterSteamMultiBase<
     }
 
     @Override
+    protected boolean explodesImmediately() {
+        return false;
+    }
+
+    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
