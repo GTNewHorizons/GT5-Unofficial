@@ -4,6 +4,8 @@ import static gregtech.api.enums.Mods.GregTech;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -164,16 +166,18 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                 GregTechAPI.sWirelessRedstone.forEach((frequency, ignored) -> {
                     boolean isPrivate = frequency > 65535;
                     int displayFreq = isPrivate ? frequency - 65536 : frequency;
-                    result.add(new SnifferEntry(String.valueOf(frequency), isPrivate));
+                    result.add(new SnifferEntry(String.valueOf(displayFreq), isPrivate));
                 });
                 return result;
             }, new SnifferEntryAdapter()
         );
         regularMapSyncer.setChangeListener(() -> {
-            List<SnifferEntry> entries = regularMapSyncer.getValue();
+            List<SnifferEntry> entries = new ArrayList<>(regularMapSyncer.getValue());
             List<IWidget> regularList = new ArrayList<>();
             entries.forEach(entry -> {
-                regularList.add(new Row().setEnabledIf(w -> entry.freq.equals(((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue()))
+                regularList.add(new Row()
+                    .setEnabledIf(w -> ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue().isEmpty()
+                        || entry.freq.equals(((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue()))
                     .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
                     .sizeRel(1f, 0.3f)
                     .expanded()
@@ -423,11 +427,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
         public SnifferEntry(String freq, boolean isPrivate) {
             this.owner = "";
             this.freq = freq;
-            try{
-                this.isPrivate = Integer.parseInt(freq) > 65535;
-            } catch (NumberFormatException ignored){
-                this.isPrivate = false; //only used for regular frequencies
-            }
+            this.isPrivate = isPrivate;
             this.coverPosition = null;
         }
     }
@@ -436,16 +436,23 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
         public SnifferEntry deserialize(PacketBuffer buffer) throws IOException {
             String owner = buffer.readStringFromBuffer(buffer.readInt());
             String freq = buffer.readStringFromBuffer(buffer.readInt());
-            int x,y,z,dim,side;
-            x = buffer.readInt();
-            y = buffer.readInt();
-            z = buffer.readInt();
-            dim = buffer.readInt();
-            side = buffer.readInt();
-            String dimName = buffer.readStringFromBuffer(buffer.readInt());
-            CoverPosition coverPosition = new CoverPosition(new ChunkCoordinates(x,y,z),dimName,dim,side);
+            boolean isPrivate = buffer.readBoolean();
 
-            return new SnifferEntry(owner,freq,coverPosition);
+            if(buffer.readBoolean()){
+                int x,y,z,dim,side;
+                x = buffer.readInt();
+                y = buffer.readInt();
+                z = buffer.readInt();
+                dim = buffer.readInt();
+                side = buffer.readInt();
+                String dimName = buffer.readStringFromBuffer(buffer.readInt());
+                CoverPosition coverPosition = new CoverPosition(new ChunkCoordinates(x,y,z),dimName,dim,side);
+                return new SnifferEntry(owner,freq,coverPosition);
+            } else{
+                return new SnifferEntry(freq, isPrivate);
+            }
+
+
         }
 
         @Override
@@ -456,17 +463,24 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
             buffer.writeInt(value.freq.length());
             buffer.writeStringToBuffer(value.freq);
 
-            buffer.writeInt(value.coverPosition.x);
-            buffer.writeInt(value.coverPosition.y);
-            buffer.writeInt(value.coverPosition.z);
-            buffer.writeInt(value.coverPosition.dim);
-            buffer.writeInt(value.coverPosition.side);
-            buffer.writeInt(value.coverPosition.dimName.length());
-            buffer.writeStringToBuffer(value.coverPosition.dimName);
+            buffer.writeBoolean(value.isPrivate);
+            boolean coverPositionExists = value.coverPosition != null;
+            buffer.writeBoolean(coverPositionExists);
+            if(coverPositionExists){
+                buffer.writeInt(value.coverPosition.x);
+                buffer.writeInt(value.coverPosition.y);
+                buffer.writeInt(value.coverPosition.z);
+                buffer.writeInt(value.coverPosition.dim);
+                buffer.writeInt(value.coverPosition.side);
+                buffer.writeInt(value.coverPosition.dimName.length());
+                buffer.writeStringToBuffer(value.coverPosition.dimName);
+            }
+
         }
 
         @Override
         public boolean areEqual(@NotNull SnifferEntry t1, @NotNull SnifferEntry t2) {
+            if(t1.coverPosition == null) return t1.freq.equals(t2.freq) && t1.isPrivate == t2.isPrivate;
             return t1.coverPosition.equals(t2.coverPosition) && t1.owner.equals(t2.owner) && t1.freq.equals(t2.freq);
         }
     }
