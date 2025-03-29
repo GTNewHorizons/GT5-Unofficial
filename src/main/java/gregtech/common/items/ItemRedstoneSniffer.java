@@ -25,12 +25,14 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.factory.GuiFactories;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
@@ -85,6 +87,8 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
     public ModularPanel buildUI(GuiData guiData, PanelSyncManager guiSyncManager) {
         GameSettings settings = Minecraft.getMinecraft().gameSettings;
         int scale = settings.guiScale > 0 ? settings.guiScale : 4;
+        int textColor = Color.rgb(255, 255, 255);
+
         AtomicReference<String> freqFilter = new AtomicReference<>("");
         AtomicReference<String> ownerFilter = new AtomicReference<>("");
         AtomicInteger lastPage = new AtomicInteger(0);
@@ -119,7 +123,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
             }
         };
         ListWidget regularListWidget = new ListWidget<>();
-        regularListWidget.sizeRel(1, 0.9f);
+        regularListWidget.sizeRel(1);
         ListWidget advancedListWidget = new ListWidget();
         advancedListWidget.sizeRel(1);
 
@@ -168,10 +172,14 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
             return result;
         }, new SnifferEntryAdapter());
         regularMapSyncer.setChangeListener(() -> {
+            AtomicInteger bgStripe = new AtomicInteger(0);
+            int stripe1 = Color.rgb(79, 82, 119);
+            int stripe2 = Color.rgb(67, 58, 96);
             List<SnifferEntry> entries = new ArrayList<>(regularMapSyncer.getValue());
             entries.sort(Comparator.comparingInt(a -> (a.isPrivate ? 1 : 0)));
             List<IWidget> regularList = new ArrayList<>();
             entries.forEach(entry -> {
+                bgStripe.getAndIncrement();
                 regularList.add(
                     new Row().setEnabledIf(
                         w -> ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue()
@@ -180,11 +188,16 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                 ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue()))
                         .sizeRel(1f, 0.1f * scale)
                         .expanded()
+                        .background(
+                            bgStripe.get() % 2 == 0 ? new Rectangle().setColor(stripe1)
+                                : new Rectangle().setColor(stripe2))
                         .child(
                             new TextWidget(entry.freq).widthRel(0.5f)
+                                .color(textColor)
                                 .alignment(Alignment.Center))
                         .child(
                             new TextWidget(entry.isPrivate ? "Yes" : "No").widthRel(0.5f)
+                                .color(textColor)
                                 .alignment(Alignment.Center)));
             });
             regularList.forEach(regularListWidget::child);
@@ -197,11 +210,15 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                 new Row().heightRel(0.1f)
                     .child(
                         new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.5f)
+                            .color(textColor)
                             .alignment(Alignment.Center))
                     .child(
                         new TextWidget(IKey.lang("gt.item.redstone_sniffer.private")).widthRel(0.5f)
+                            .color(textColor)
                             .alignment(Alignment.Center)))
-                .child(regularListWidget));
+                .child(
+                    new SingleChildWidget<>().sizeRel(1, 0.9f)
+                        .child(regularListWidget)));
 
         // Process advanced wireless redstone frequencies
         GenericListSyncHandler<SnifferEntry> advancedMapSyncer = new GenericListSyncHandler<>(() -> {
@@ -232,7 +249,8 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                 entries,
                 advancedListWidget,
                 guiSyncManager,
-                scale));
+                scale,
+                textColor));
 
             advancedList.forEach(advancedListWidget::child);
             WidgetTree.resize(advancedListWidget);
@@ -243,18 +261,22 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                 new Row().heightRel(0.1f)
                     .child(
                         new TextWidget(IKey.lang("gt.item.redstone_sniffer.owner")).widthRel(0.15f)
+                            .color(textColor)
                             .alignment(Alignment.Center))
                     .child(
                         new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.35f)
+                            .color(textColor)
                             .alignment(Alignment.Center))
                     .child(
                         new TextWidget(IKey.lang("gt.item.redstone_sniffer.dimension")).widthRel(0.25f)
+                            .color(textColor)
                             .alignment(Alignment.Center))
                     .child(
                         new TextWidget(IKey.lang("gt.item.redstone_sniffer.action")).widthRel(0.25f)
+                            .color(textColor)
                             .alignment(Alignment.Center)))
                 .child(
-                    new Row().heightRel(0.9f)
+                    new SingleChildWidget<>().sizeRel(1, 0.9f)
                         .child(advancedListWidget)));
 
         panel.child(
@@ -275,9 +297,11 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                         .marginBottom(10)
                         .child(
                             new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency_filter")).widthRel(0.25f)
+                                .color(textColor)
                                 .alignment(Alignment.Center))
                         .child(
                             new TextFieldWidget().sizeRel(0.25f, 0.5f)
+                                .setTextColor(textColor)
                                 .value(
                                     SyncHandlers.string(
                                         () -> ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0"))
@@ -288,9 +312,11 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                         })))
                         .child(
                             new TextWidget(IKey.lang("gt.item.redstone_sniffer.owner_filter")).widthRel(0.25f)
+                                .color(textColor)
                                 .alignment(Alignment.Center))
                         .child(
                             new TextFieldWidget().sizeRel(0.25f, 0.5f)
+                                .setTextColor(textColor)
                                 .value(
                                     SyncHandlers.string(
                                         () -> ((StringSyncValue) guiSyncManager.getSyncHandler("owner_filter:0"))
@@ -300,13 +326,18 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                                 .setStringValue(filter);
                                         }))))
                 .child(data));
+        panel.background(new Rectangle().setColor(Color.rgb(53, 46, 77)));
         return panel;
     }
 
     public List<IWidget> processAdvancedFrequencies(List<SnifferEntry> entryList, ListWidget listWidget,
-        PanelSyncManager guiSyncManager, int scale) {
+        PanelSyncManager guiSyncManager, int scale, int textColor) {
         List<IWidget> result = new ArrayList<>();
+        AtomicInteger bgStripe = new AtomicInteger(0);
+        int stripe1 = Color.rgb(79, 82, 119);
+        int stripe2 = Color.rgb(67, 58, 96);
         entryList.forEach(entry -> {
+            bgStripe.getAndIncrement();
             CoverPosition cover = entry.coverPosition;
             result.add(
                 new Row()
@@ -318,15 +349,21 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                             && entry.freq.contains(
                                 ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue()))
                     .sizeRel(1f, 0.1f * scale)
+                    .background(
+                        (bgStripe.get() % 2 == 0) ? new Rectangle().setColor(stripe1)
+                            : new Rectangle().setColor(stripe2))
                     .expanded()
                     .child(
                         new TextWidget(entry.owner).widthRel(0.15f)
+                            .color(textColor)
                             .alignment(Alignment.Center))
                     .child(
                         new TextWidget(entry.freq).widthRel(0.35f)
+                            .color(textColor)
                             .alignment(Alignment.Center))
                     .child(
                         new TextWidget(cover.getDimName()).widthRel(0.25f)
+                            .color(textColor)
                             .alignment(Alignment.Center))
                     .child(
                         new Row().widthRel(0.25f)
