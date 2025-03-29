@@ -12,7 +12,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
@@ -49,31 +48,6 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L))
                 .duration(2 * SECONDS)
                 .eut(8)
-                .addTo(steamCarpenterRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTUtility.copyAmount(1, aStack),
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Iron, 1))
-                .itemOutputs(ItemList.Iron_Wood_Casing.get(1))
-                .duration(5 * SECONDS)
-                .eut(16)
-                .addTo(steamCarpenterRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTUtility.copyAmount(1, aStack),
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Bronze, 1))
-                .itemOutputs(ItemList.Bronze_Wood_Casing.get(1))
-                .duration(5 * SECONDS)
-                .eut(16)
-                .addTo(steamCarpenterRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTUtility.copyAmount(1, aStack),
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Steel, 1))
-                .itemOutputs(ItemList.Steel_Wood_Casing.get(1))
-                .duration(5 * SECONDS)
-                .eut(16)
                 .addTo(steamCarpenterRecipes);
 
             GTValues.RA.stdBuilder()
