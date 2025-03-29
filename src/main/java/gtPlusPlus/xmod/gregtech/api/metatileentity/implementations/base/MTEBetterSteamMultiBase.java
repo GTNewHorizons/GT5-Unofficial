@@ -16,6 +16,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GTMod;
@@ -62,6 +64,10 @@ public abstract class MTEBetterSteamMultiBase<T extends MTEBetterSteamMultiBase<
         return new ProcessingLogic().setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
+    protected SteamTypes getSteamType() {
+        return SteamTypes.STEAM;
+    }
+
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(V[1]);
@@ -72,9 +78,9 @@ public abstract class MTEBetterSteamMultiBase<T extends MTEBetterSteamMultiBase<
 
     public ArrayList<FluidStack> getAllSteamStacks() {
         ArrayList<FluidStack> aFluids = new ArrayList<>();
-        FluidStack aSteam = FluidUtils.getSteam(1);
+
         for (FluidStack aFluid : this.getStoredFluids()) {
-            if (aFluid.isFluidEqual(aSteam)) {
+            if (aFluid.getFluid() == getSteamType().fluid) {
                 aFluids.add(aFluid);
             }
         }
@@ -93,7 +99,7 @@ public abstract class MTEBetterSteamMultiBase<T extends MTEBetterSteamMultiBase<
         if (getTotalSteamStored() <= 0) {
             return false;
         } else {
-            return this.depleteInput(FluidUtils.getSteam(aAmount));
+            return this.depleteInput(new FluidStack(getSteamType().fluid, aAmount));
         }
     }
 
@@ -400,6 +406,22 @@ public abstract class MTEBetterSteamMultiBase<T extends MTEBetterSteamMultiBase<
         return buildHatchAdder(typeToken).adder(MTEBetterSteamMultiBase::addToMachineList)
             .hatchIds(31040, 15511)
             .shouldReject(t -> !t.mSteamInputFluids.isEmpty());
+    }
+
+    protected enum SteamTypes {
+
+        STEAM(FluidUtils.getSteam(1)
+            .getFluid()),
+        SH_STEAM(FluidUtils.getSuperHeatedSteam(1)
+            .getFluid()),
+        SC_STEAM(FluidRegistry.getFluidStack("supercriticalsteam", 1)
+            .getFluid());
+
+        final Fluid fluid;
+
+        SteamTypes(Fluid fluid) {
+            this.fluid = fluid;
+        }
     }
 
     protected enum SteamHatchElement implements IHatchElement<MTEBetterSteamMultiBase<?>> {
