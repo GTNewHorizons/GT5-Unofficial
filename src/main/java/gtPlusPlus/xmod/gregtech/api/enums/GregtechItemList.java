@@ -401,6 +401,8 @@ public enum GregtechItemList implements IGregtechItemContainer {
     Controller_SteamCarpenter,
     // Mega Steam Compressor
     Controller_MegaSteamCompressor,
+    // Cactus Wonder
+    Controller_CactusWonder,
 
     // Industrial Rock Breaker
     Controller_IndustrialRockBreaker,
