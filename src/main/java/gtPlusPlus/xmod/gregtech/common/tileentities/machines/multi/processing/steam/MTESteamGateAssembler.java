@@ -45,6 +45,7 @@ public class MTESteamGateAssembler extends MTEBetterSteamMultiBase<MTESteamGateA
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addInfo("Uses " + EnumChatFormatting.RED + "Supercritical Steam")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
@@ -161,6 +162,11 @@ public class MTESteamGateAssembler extends MTEBetterSteamMultiBase<MTESteamGateA
         .addElement('H', ofBlock(GregTechAPI.sBlockCasings3, 14))
         .build();
     //spotless:on
+
+    @Override
+    protected SteamTypes getSteamType() {
+        return SteamTypes.SC_STEAM;
+    }
 
     @Override
     public RecipeMap<?> getRecipeMap() {

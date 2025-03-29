@@ -14,14 +14,10 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
-import java.util.ArrayList;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -153,7 +149,7 @@ public class MTESteamMegaCompressor extends MTEBetterSteamMultiBase<MTESteamMega
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Has 256 parallels")
-            .addInfo("Only uses supercritical steam")
+            .addInfo("Uses " + EnumChatFormatting.RED + "Supercritical Steam")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
@@ -165,26 +161,9 @@ public class MTESteamMegaCompressor extends MTEBetterSteamMultiBase<MTESteamMega
         return tt;
     }
 
-    FluidStack scSteam = FluidRegistry.getFluidStack("supercriticalsteam", 1);
-
     @Override
-    public ArrayList<FluidStack> getAllSteamStacks() {
-        ArrayList<FluidStack> aFluids = new ArrayList<>();
-        for (FluidStack aFluid : this.getStoredFluids()) {
-            if (aFluid.isFluidEqual(scSteam)) {
-                aFluids.add(aFluid);
-            }
-        }
-        return aFluids;
-    }
-
-    @Override
-    public boolean tryConsumeSteam(int aAmount) {
-        if (getTotalSteamStored() <= 0) {
-            return false;
-        } else {
-            return this.depleteInput(FluidRegistry.getFluidStack("supercriticalsteam", aAmount));
-        }
+    protected SteamTypes getSteamType() {
+        return SteamTypes.SC_STEAM;
     }
 
     @Override
