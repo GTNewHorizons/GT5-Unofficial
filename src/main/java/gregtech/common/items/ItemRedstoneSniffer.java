@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.GregTech;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -165,6 +166,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
         }, new SnifferEntryAdapter());
         regularMapSyncer.setChangeListener(() -> {
             List<SnifferEntry> entries = new ArrayList<>(regularMapSyncer.getValue());
+            entries.sort(Comparator.comparingInt(a -> (a.isPrivate ? 1 : 0)));
             List<IWidget> regularList = new ArrayList<>();
             entries.forEach(entry -> {
                 regularList.add(
@@ -222,7 +224,8 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
         advancedMapSyncer.setChangeListener(() -> {
             List<SnifferEntry> entries = new ArrayList<>(advancedMapSyncer.getValue());
             entries.sort((a, b) -> {
-                if (a.owner.equals("Public")) return 1;
+                if (a.owner.equals("Public")) return -1;
+                if (b.owner.equals("Public")) return 1;
                 return a.owner.compareTo(b.owner);
             });
             List<IWidget> advancedList = (processAdvancedFrequencies(entries, advancedListWidget, guiSyncManager));
