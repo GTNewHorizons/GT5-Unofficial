@@ -26,8 +26,10 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Input_Bus_SteamMK3;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Bus_Steam;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Bus_SteamMK2;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Bus_SteamMK3;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.Controller_SteamMultiSmelter;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
@@ -47,6 +49,7 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.st
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMegaCompressor;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMegaMacerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMixer;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMultiSmelter;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamRockBreaker;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamWasher;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamWoodcutter;
@@ -109,6 +112,11 @@ public class GregtechSteamMultis {
                 Controller_SteamBlastFurnace.ID,
                 "gtpp.multimachine.steamblastfurnace",
                 "Open Hearth Blast Furnace").getStackForm(1));
+        Controller_SteamMultiSmelter.set(
+            new MTESteamMultiSmelter(
+                MetaTileEntityIDs.Controller_SteamMultiSmelter.ID,
+                "gtpp.multimachine.steammultismelter",
+                "Enhanced Steam Forge").getStackForm(1));
         GregtechItemList.Controller_SteamExtruder.set(
             new MTESteamExtruder(Controller_SteamExtruder.ID, "gtpp.multimachine.steam.extruder", "Steam Conformer")
                 .getStackForm(1));
