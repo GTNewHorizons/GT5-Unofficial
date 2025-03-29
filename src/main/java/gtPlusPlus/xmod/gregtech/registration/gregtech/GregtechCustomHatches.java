@@ -44,6 +44,10 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Output_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Output_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Output_ZPM;
 
+import net.minecraftforge.fluids.FluidRegistry;
+
+import com.google.common.collect.ImmutableSet;
+
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -79,8 +83,9 @@ public class GregtechCustomHatches {
 
         GregtechItemList.Hatch_Input_Cryotheum.set(
             new MTEHatchCustomFluidBase(
-                FluidUtils.getFluidStack("cryotheum", 1)
-                    .getFluid(), // Fluid to restrict hatch to
+                ImmutableSet.of(
+                    FluidUtils.getFluidStack("cryotheum", 1)
+                        .getFluid()), // Fluid to restrict hatch to
                 128000, // Capacity
                 Hatch_Input_Cryotheum.ID, // ID
                 "hatch.cryotheum.input.tier.00", // unlocal name
@@ -90,8 +95,9 @@ public class GregtechCustomHatches {
 
         GregtechItemList.Hatch_Input_Pyrotheum.set(
             new MTEHatchCustomFluidBase(
-                FluidUtils.getFluidStack("pyrotheum", 1)
-                    .getFluid(), // Fluid to restrict hatch to
+                ImmutableSet.of(
+                    FluidUtils.getFluidStack("pyrotheum", 1)
+                        .getFluid()), // Fluid to restrict hatch to
                 128000, // Capacity
                 Hatch_Input_Pyrotheum.ID, // ID
                 "hatch.pyrotheum.input.tier.00", // unlocal name
@@ -132,8 +138,13 @@ public class GregtechCustomHatches {
         // Steam Hatch
         GregtechItemList.Hatch_Input_Steam.set(
             new MTEHatchCustomFluidBase(
-                FluidUtils.getSteam(1)
-                    .getFluid(), // Fluid to restrict hatch to
+                ImmutableSet.of(
+                    FluidUtils.getSteam(1)
+                        .getFluid(),
+                    FluidUtils.getSuperHeatedSteam(1)
+                        .getFluid(),
+                    FluidRegistry.getFluidStack("supercriticalsteam", 1)
+                        .getFluid()),
                 64000, // Capacity
                 Hatch_Input_Steam.ID, // ID
                 "hatch.steam.input.tier.00", // unlocal name
