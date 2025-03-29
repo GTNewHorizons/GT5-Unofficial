@@ -1035,6 +1035,7 @@ import gregtech.common.tileentities.machines.multi.MTELargeBoilerTitanium;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerTungstenSteel;
 import gregtech.common.tileentities.machines.multi.MTELargeChemicalReactor;
 import gregtech.common.tileentities.machines.multi.MTELargeFluidExtractor;
+import gregtech.common.tileentities.machines.multi.MTELargeMolecularAssembler;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineGas;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineGasAdvanced;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteam;
@@ -12542,5 +12543,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Bulk Catalyst Housing",
                 10,
                 Integer.MAX_VALUE).getStackForm(1));
+
+        ItemList.LargeMolecularAssembler.set(
+            new MTELargeMolecularAssembler(
+                LargeMolecularAssembler.ID,
+                "largemolecularassembler",
+                "Large Molecular Assembler").getStackForm(1));
     }
 }
