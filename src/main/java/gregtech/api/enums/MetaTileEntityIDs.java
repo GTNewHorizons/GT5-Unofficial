@@ -1950,6 +1950,7 @@ public enum MetaTileEntityIDs {
     RedstoneStrengthDisplay(31804),
     RedstoneStrengthScale(31805),
     WaterPump(31085),
+    Controller_SteamManufacturer(31995),
     Controller_InfernalCokeOven(31996),
     Controller_CactusWonder(31997),
     Controller_SteamMegaCompressor(31998),

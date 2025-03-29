@@ -13,6 +13,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamExtruder;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamForgeHammer;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamGateAssembler;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMaceratorMulti;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamManufacturer;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMegaCompressor;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMegaMaceratorMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMixerMulti;
@@ -46,6 +47,7 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.st
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamGateAssembler;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamInfernalCokeOven;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMacerator;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamManufacturer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMegaCompressor;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMegaMacerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMixer;
@@ -158,6 +160,12 @@ public class GregtechSteamMultis {
                 "gtpp.multimachine.steam.infernalcokeoven",
                 "Infernal Coke Oven").getStackForm(1));
         addItemTooltip(GregtechItemList.Controller_InfernalCokeOven.get(1), GTValues.AuthorNoc);
+        GregtechItemList.Controller_SteamManufacturer.set(
+            new MTESteamManufacturer(
+                Controller_SteamManufacturer.ID,
+                "gtpp.multimachine.steam.manufacturer",
+                "Steam Manufacturer").getStackForm(1));
+        addItemTooltip(GregtechItemList.Controller_SteamManufacturer.get(1), GTValues.AuthorNoc);
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(
             new MTEHatchSteamBusInput(Hatch_Input_Bus_Steam.ID, "hatch.input_bus.tier.steam", "Simple Input Bus", 0)

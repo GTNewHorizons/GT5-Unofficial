@@ -13,7 +13,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.recipe.RecipeMaps.steamWoodcutterRecipes;
-import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static gregtech.common.items.IDMetaTool01.BRANCHCUTTER;
@@ -707,7 +707,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
         RA.stdBuilder()
             .itemInputs(new ItemStack(saplingIn.getItem(), 0, saplingIn.getItemDamage()))
             .itemOutputs(new ItemStack(log.getItem(), 8, log.getItemDamage()))
-            .duration(2 * MINUTES)
+            .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(steamWoodcutterRecipes);
 

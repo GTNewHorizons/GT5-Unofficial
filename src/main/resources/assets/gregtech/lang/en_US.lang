@@ -396,6 +396,9 @@ gt.recipe.quantumcomputer=QC Components
 gt.recipe.steamextractinator=Extractination
 gt.recipe.cactuswonder=Offers to the Cacti Deity
 gt.recipe.infernalcokeoven=Coke Oven but OP
+gt.recipe.steammanufacturing=Manufacturing
+gt.recipe.steamwoodcutter=Steamic Gardening
+gt.recipe.steamcarpenter=Vaporized Carpentry
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
