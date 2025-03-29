@@ -25,7 +25,7 @@ public abstract class CoverRedstoneWirelessBase extends CoverLegacyData {
 
     @Override
     public void onCoverRemoval() {
-        GregTechAPI.sWirelessRedstone.put(coverData, (byte) 0);
+        GregTechAPI.sWirelessRedstone.remove(coverData);
     }
 
     @Override
