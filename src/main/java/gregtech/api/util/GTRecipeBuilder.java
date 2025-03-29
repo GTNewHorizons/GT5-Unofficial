@@ -266,6 +266,17 @@ public class GTRecipeBuilder {
     }
 
     /**
+     * Item inputs - allow null
+     */
+    public GTRecipeBuilder itemInputsAllowNulls(ItemStack... inputs) {
+        if (skip) return this;
+        inputsBasic = fix(inputs, false);
+        inputsOreDict = null;
+        alts = null;
+        return this;
+    }
+
+    /**
      * Non-OreDicted item inputs. Assumes input is not unified.
      */
     public GTRecipeBuilder itemInputs(ItemStack... inputs) {
