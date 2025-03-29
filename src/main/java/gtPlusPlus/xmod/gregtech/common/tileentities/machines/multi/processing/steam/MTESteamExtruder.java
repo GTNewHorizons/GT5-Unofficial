@@ -311,7 +311,7 @@ public class MTESteamExtruder extends MTESteamMultiBase<MTESteamExtruder> implem
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setSpeedBoost((1f / tierMachine));
+                    .setDurationModifier((1f / tierMachine));
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }

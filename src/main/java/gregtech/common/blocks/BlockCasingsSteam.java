@@ -12,7 +12,7 @@ import gregtech.api.util.GTLanguageManager;
 public class BlockCasingsSteam extends BlockCasingsAbstract {
 
     public BlockCasingsSteam() {
-        super(ItemCasings12.class, "gt.blockcasingssteam", MaterialCasings.INSTANCE, 16);
+        super(ItemCasings.class, "gt.blockcasingssteam", MaterialCasings.INSTANCE, 16);
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Steamgate Ring Block");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Steamgate Chevron Block");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Vibration-Safe Casing");

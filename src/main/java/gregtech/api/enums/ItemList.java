@@ -2245,6 +2245,7 @@ public enum ItemList implements IItemContainer {
     Casing_UMV,
     Casing_UXV,
     Casing_MAXV,
+    Extractinator_Sieve_Mesh,
     //
     Transformer_UEV_UHV,
     Transformer_UIV_UEV,

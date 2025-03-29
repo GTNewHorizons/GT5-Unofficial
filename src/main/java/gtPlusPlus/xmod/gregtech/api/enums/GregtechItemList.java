@@ -396,7 +396,6 @@ public enum GregtechItemList implements IGregtechItemContainer {
     Controller_SteamRockBreaker,
     // Steam Extractinator
     Controller_SteamExtractinator,
-    Extractinator_sieve_mesh,
     // Steam Woodcutter
     Controller_SteamWoodcutter,
     // Steam Carpenter
