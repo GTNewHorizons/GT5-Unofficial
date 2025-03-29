@@ -2611,7 +2611,7 @@ public enum ItemList implements IItemContainer {
     Netherite_Nanoparticles,
     Intensely_Bonded_Netherite_Nanoparticles,
     Hot_Netherite_Scrap,
-	LargeMolecularAssembler
+    LargeMolecularAssembler
 
     // semicolon after the comment to reduce merge conflicts
     ;
