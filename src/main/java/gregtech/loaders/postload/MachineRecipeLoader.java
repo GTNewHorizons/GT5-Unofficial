@@ -14,6 +14,7 @@ import gregtech.loaders.postload.recipes.AutoclaveRecipes;
 import gregtech.loaders.postload.recipes.BenderRecipes;
 import gregtech.loaders.postload.recipes.BlastFurnaceRecipes;
 import gregtech.loaders.postload.recipes.BreweryRecipes;
+import gregtech.loaders.postload.recipes.CactusWonderFakeRecipes;
 import gregtech.loaders.postload.recipes.CannerRecipes;
 import gregtech.loaders.postload.recipes.CentrifugeRecipes;
 import gregtech.loaders.postload.recipes.ChemicalBathRecipes;
@@ -126,6 +127,7 @@ public class MachineRecipeLoader implements Runnable {
         new SteamCarpenterRecipes().run();
         new SteamExtractinatorRecipes().run();
         new AssortedSteamRecipes().run();
+        new CactusWonderFakeRecipes().run();
 
         BauxiteRefineChain.run();
         NaniteChain.run();

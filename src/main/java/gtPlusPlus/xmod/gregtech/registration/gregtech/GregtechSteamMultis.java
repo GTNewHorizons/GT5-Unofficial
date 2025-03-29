@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_CactusWonder;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamAlloySmelterMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamBlastFurnace;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamCarpenter;
@@ -26,6 +27,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Bus_SteamMK2;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Output_Bus_SteamMK3;
 
 import gregtech.api.enums.GTValues;
+import gregtech.common.tileentities.machines.multi.MTECactusWonder;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
@@ -134,6 +136,10 @@ public class GregtechSteamMultis {
                 Controller_SteamMegaCompressor.ID,
                 "gtpp.multimachine.steam.megacompressor",
                 "Steam Supercompressor").getStackForm(1));
+        GregtechItemList.Controller_CactusWonder.set(
+            new MTECactusWonder(Controller_CactusWonder.ID, "gtpp.multimachine.steam.cactuswonder", "Cactus Wonder")
+                .getStackForm(1));
+        addItemTooltip(GregtechItemList.Controller_CactusWonder.get(1), GTValues.AuthorNoc);
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(
             new MTEHatchSteamBusInput(Hatch_Input_Bus_Steam.ID, "hatch.input_bus.tier.steam", "Simple Input Bus", 0)
