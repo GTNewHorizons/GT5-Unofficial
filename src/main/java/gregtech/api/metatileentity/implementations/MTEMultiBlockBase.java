@@ -2854,7 +2854,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return builder.build();
     }
 
-    private ButtonWidget createMaxParallelCheckBox(NumericWidget textField) {
+    public ButtonWidget createMaxParallelCheckBox(NumericWidget textField) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             textField.notifyTooltipChange();
             if (getBaseMetaTileEntity().isClientSide()) return;
