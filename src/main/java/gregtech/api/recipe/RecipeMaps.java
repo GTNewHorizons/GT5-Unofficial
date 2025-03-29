@@ -897,7 +897,7 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_BENDING)
         .build();
     public static final RecipeMap<RecipeMapBackend> alloySmelterRecipes = RecipeMapBuilder.of("gt.recipe.alloysmelter")
-        .maxIO(2, 1, 0, 0)
+        .maxIO(3, 1, 0, 0)
         .minInputs(2, 0)
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_FURNACE : null)

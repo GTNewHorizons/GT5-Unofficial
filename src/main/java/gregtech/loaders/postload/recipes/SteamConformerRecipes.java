@@ -1,6 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GTValues.RA;
+import static gregtech.api.enums.OrePrefixes.bolt;
 import static gregtech.api.enums.OrePrefixes.gearGt;
 import static gregtech.api.enums.OrePrefixes.gearGtSmall;
 import static gregtech.api.enums.OrePrefixes.ingot;
@@ -30,7 +31,7 @@ public class SteamConformerRecipes implements Runnable {
 
         Materials[] Tier1Materials = { Materials.Bronze, Materials.Iron, Materials.Copper, Materials.Tin,
             Materials.Brass, Materials.Steel, Materials.WroughtIron, Materials.Breel, Materials.Stronze,
-            Materials.CompressedSteam };
+            Materials.CompressedSteam, Materials.CrudeSteel, Materials.Rubber };
 
         for (Materials aMaterial : Tier1Materials) {
 
@@ -154,6 +155,15 @@ public class SteamConformerRecipes implements Runnable {
                 RA.stdBuilder()
                     .itemInputs(GTOreDictUnificator.get(ingot, aMaterial, 12), ItemList.Shape_Extruder_Gear.get(0))
                     .itemOutputs(GTOreDictUnificator.get(gearGt, aMaterial, 2))
+                    .duration(4 * SECONDS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(steamConformerRecipes);
+            }
+
+            if (GTOreDictUnificator.get(bolt, aMaterial, 1) != null) {
+                RA.stdBuilder()
+                    .itemInputs(GTOreDictUnificator.get(ingot, aMaterial, 1), ItemList.Shape_Extruder_Bolt.get(0))
+                    .itemOutputs(GTOreDictUnificator.get(bolt, aMaterial, 6))
                     .duration(4 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(steamConformerRecipes);
