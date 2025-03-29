@@ -12,7 +12,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -86,10 +85,7 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
     public void saveNBTData(NBTTagCompound arg0) {}
 
     @Override
-    public float getThickNess() {
-        if (GTMod.instance.isClientSide() && GTClient.hideValue == 1) {
-            return 0.0625F;
-        }
+    public float getCollisionThickness() {
         return 0.5f;
     }
 

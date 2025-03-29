@@ -69,10 +69,10 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     private static final int DEPTH_OFF_SET = 0;
     private static IStructureDefinition<MTEIndustrialMacerator> STRUCTURE_DEFINITION = null;
 
-    private static int getStructureCasingTier(Block b, int m) {
+    private static Integer getStructureCasingTier(Block b, int m) {
         if (b == GregTechAPI.sBlockCasings4 && m == 2) return 1;
         if (b == ModBlocks.blockCasingsMisc && m == 7) return 2;
-        return 0;
+        return null;
     }
 
     public MTEIndustrialMacerator(final int aID, final String aName, final String aNameRegional) {
