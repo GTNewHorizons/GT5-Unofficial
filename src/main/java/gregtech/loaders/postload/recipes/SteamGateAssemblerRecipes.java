@@ -88,7 +88,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
         // Blank recipe for copy-paste convenience
         /*
          * GTValues.RA.stdBuilder()
-         * .itemInputs(
+         * .itemInputsAllowNulls(
          * null, null, null, null, null, null, null, null, null,
          * null, null, null, null, null, null, null, null, null,
          * null, null, null, null, null, null, null, null, null,
@@ -108,7 +108,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
 
         // Steamgate controller
         GTValues.RA.stdBuilder()
-            .itemInputs(
+            .itemInputsAllowNulls(
                 ironWood, steamFieldGen, steamFieldGen, steamEmitter, steamGear, steamEmitter, steamFieldGen, steamFieldGen, ironWood,
                 steamFieldGen, steelWood, superdenseBreel, gatePlate, steamConveyor, gatePlate, superdenseStronze, steelWood, steamFieldGen,
                 steamFieldGen, bronzeWood, pipelessHatch, gatePlate, steamArm, gatePlate, pipelessHatch, bronzeWood, steamFieldGen,
@@ -125,7 +125,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
 
         // Steamgate Ring Block
         GTValues.RA.stdBuilder()
-            .itemInputs(
+            .itemInputsAllowNulls(
                 bronzeWood, bronzeWood, bronzeWood, gateFrame, gateChevron, gateFrame, gateFrame, gatePlate, gatePlate,
                 ironWood, ironWood, ironWood, gateFrame, gateFrame, gateFrame, gatePlate, steamFieldGen, steamFieldGen,
                 bronzeWood, bronzeWood, bronzeWood, gateFrame, gateFrame, gatePlate, steamFieldGen, null, null,
@@ -142,7 +142,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
 
         // Steamgate Chevron Block
         GTValues.RA.stdBuilder()
-            .itemInputs(
+            .itemInputsAllowNulls(
                 null, null, null, null, bronzeWood, null, null, null, null,
                 null, null, null, bronzeWood, ironWood, bronzeWood, null, null, null,
                 null, null, bronzeWood, ironWood, steamFieldGen, ironWood, bronzeWood, null, null,
@@ -159,7 +159,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
 
         // Steamgate Iris Blade
         GTValues.RA.stdBuilder()
-            .itemInputs(
+            .itemInputsAllowNulls(
                 null, null, null, null, null, superdenseBronze, superdenseBronze, superdenseBronze, superdenseBronze,
                 null, null, null, null, superdenseBronze, superdenseSteel, superdenseSteel, superdenseBronze, null,
                 null, null, null, superdenseBronze, superdenseSteel, superdenseSteel, superdenseBronze, null, null,
@@ -176,7 +176,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
 
         // Steamgate Frame
         GTValues.RA.stdBuilder()
-            .itemInputs(
+            .itemInputsAllowNulls(
                 steamLongRod, stronzeLongRod, breelLongRod, stronzeLongRod, steamLongRod, stronzeLongRod, breelLongRod, stronzeLongRod, steamLongRod,
                 stronzeLongRod, breelGear, steamSmallGear, stronzeGear, steamSmallGear, stronzeGear, steamSmallGear, breelGear, stronzeLongRod,
                 breelLongRod, stronzeSmallGear, steamGear, stronzeSmallGear, stronzeGear, stronzeSmallGear, steamGear, stronzeSmallGear, breelLongRod,
@@ -193,7 +193,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
 
         // Steamgate core crystal
         GTValues.RA.stdBuilder()
-            .itemInputs(
+            .itemInputsAllowNulls(
                 null, null, null, null, steamFieldGen, null, null, null, null,
                 null, null, null, null, steamMotor, null, null, null, null,
                 null, null, null, null, steamPiston, null, null, null, null,
@@ -210,7 +210,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
 
         // Steamgate chevron
         GTValues.RA.stdBuilder()
-            .itemInputs(
+            .itemInputsAllowNulls(
                 steelWood, steelWood, steelWood, steelWood, steelWood, steelWood, steelWood, steelWood, steelWood,
                 steelWood, exDiam, exDiam, exDiam, steamConveyor, exDiam, exDiam, exDiam, steelWood,
                 steelWood, exEmer, exEmer, exEmer, breelPipeL, exEmer, exEmer, exEmer, steelWood,
@@ -227,7 +227,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
 
         // Steamgate chevron upgrade
         GTValues.RA.stdBuilder()
-            .itemInputs(
+            .itemInputsAllowNulls(
                 null, null, null, null, null, null, null, null, null,
                 gateFrame, steamPiston, gateFrame, steamFieldGen, gateFrame, steamPiston, gateFrame, null, null,
                 null, gateFrame, gateChevron, steamPiston, gateChevron, gateFrame, null, null, null,
@@ -244,7 +244,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
 
         // Steamgate plate
         GTValues.RA.stdBuilder()
-            .itemInputs(
+            .itemInputsAllowNulls(
                 ironPressure, goldPressure, ironPressure, goldPressure, ironPressure, goldPressure, ironPressure, goldPressure, ironPressure,
                 superdenseSteel, breelPlate, breelPlate, breelPlate, breelPlate, breelPlate, breelPlate, breelPlate, superdenseSteel,
                 superdenseBronze, stronzePlate, stronzePlate, stronzePlate, stronzePlate, stronzePlate, stronzePlate, stronzePlate, superdenseBronze,
@@ -260,7 +260,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
             .addTo(steamGateAssemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
+            .itemInputsAllowNulls(
                 bronzeWood, steelWood, gateIris, gateIris, gateIris, gateIris, gateIris, steelWood, bronzeWood,
                 steelWood, gateIris, null, null, breelGear, null, null, gateIris, steelWood,
                 gateIris, null, null, null, null, stronzeSmallGear, null, null, gateIris,
@@ -276,7 +276,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
             .addTo(steamGateAssemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
+            .itemInputsAllowNulls(
                 stronzePipeH, breelPlate, breelPlate, breelPlate, stronzePipeH, breelPlate, breelPlate, breelPlate, stronzePipeH,
                 breelPlate, stronzePipeH, breelPlate, breelPlate, stronzePipeH, breelPlate, breelPlate, stronzePipeH, breelPlate,
                 breelPlate, breelPlate, stronzePipeH, gateFrame, stronzePipeH, gateFrame, stronzePipeH, breelPlate, breelPlate,
