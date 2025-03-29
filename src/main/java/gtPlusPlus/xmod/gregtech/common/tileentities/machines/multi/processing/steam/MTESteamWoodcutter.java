@@ -122,7 +122,6 @@ public class MTESteamWoodcutter extends MTEBetterSteamMultiBase<MTESteamWoodcutt
             .addInfo(EnumChatFormatting.AQUA + "" + EnumChatFormatting.ITALIC + "Grows trees slowly from saplings.")
             .addInfo("Created by: ")
             .addInfo(AuthorSteamIsTheNumber)
-            .beginStructureBlock(3, 3, 3, false)
             .toolTipFinisher();
         return tt;
     }

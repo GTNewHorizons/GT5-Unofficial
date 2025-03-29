@@ -284,7 +284,6 @@ public class MTESteamExtractinator extends MTESteamMultiBase<MTESteamExtractinat
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "From Steam to rocks, the power of the pressure may bring you infinite wealth!.")
-            .beginStructureBlock(3, 3, 3, false)
             .toolTipFinisher();
         return tt;
     }

@@ -161,7 +161,6 @@ public class MTESteamMegaCompressor extends MTEBetterSteamMultiBase<MTESteamMega
             .addInfo(
                 EnumChatFormatting.AQUA + "" + EnumChatFormatting.ITALIC + "Capable of creating superdense plates...")
             .addInfo("Created by: " + AuthorSteamIsTheNumber)
-            .beginStructureBlock(3, 3, 3, false)
             .toolTipFinisher();
         return tt;
     }
