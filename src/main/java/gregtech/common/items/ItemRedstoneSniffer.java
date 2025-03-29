@@ -56,7 +56,7 @@ import appeng.client.render.BlockPosHighlighter;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.items.GTGenericItem;
-import gregtech.api.net.PacketTeleportToCover;
+import gregtech.api.net.PakcetDebugRedstoneCover;
 import gregtech.common.covers.CoverPosition;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
@@ -384,7 +384,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                                 })
                                             .onMousePressed(mouseButton -> {
                                                 GTValues.NW.sendToServer(
-                                                    new PacketTeleportToCover(
+                                                    new PakcetDebugRedstoneCover(
                                                         cover.dim,
                                                         cover.x,
                                                         cover.y,
@@ -429,7 +429,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                                 })
                                             .onMousePressed(mouseButton -> {
                                                 GTValues.NW.sendToServer(
-                                                    new PacketTeleportToCover(
+                                                    new PakcetDebugRedstoneCover(
                                                         cover.dim,
                                                         cover.x,
                                                         cover.y,

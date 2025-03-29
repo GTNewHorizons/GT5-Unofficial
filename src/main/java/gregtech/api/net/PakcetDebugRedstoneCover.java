@@ -14,14 +14,14 @@ import com.google.common.io.ByteArrayDataInput;
 import appeng.api.util.DimensionalCoord;
 import io.netty.buffer.ByteBuf;
 
-public class PacketTeleportToCover extends GTPacket {
+public class PakcetDebugRedstoneCover extends GTPacket {
 
     private int dim;
     private int[] coords;
     private boolean teleportPlayer;
     private EntityPlayerMP player;
 
-    public PacketTeleportToCover() {}
+    public PakcetDebugRedstoneCover() {}
 
     @Override
     public byte getPacketID() {
@@ -39,7 +39,7 @@ public class PacketTeleportToCover extends GTPacket {
 
     @Override
     public GTPacket decode(ByteArrayDataInput buf) {
-        return new PacketTeleportToCover(buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt(), buf.readBoolean());
+        return new PakcetDebugRedstoneCover(buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt(), buf.readBoolean());
     }
 
     @Override
@@ -88,7 +88,7 @@ public class PacketTeleportToCover extends GTPacket {
 
     }
 
-    public PacketTeleportToCover(int dim, int x, int y, int z, boolean teleportPlayer) {
+    public PakcetDebugRedstoneCover(int dim, int x, int y, int z, boolean teleportPlayer) {
         this.dim = dim;
         this.coords = new int[] { x, y, z };
         this.teleportPlayer = teleportPlayer;
