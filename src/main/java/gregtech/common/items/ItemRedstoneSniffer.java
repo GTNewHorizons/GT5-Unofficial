@@ -10,6 +10,8 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -23,14 +25,12 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.factory.GuiFactories;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
@@ -83,6 +83,8 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
 
     @Override
     public ModularPanel buildUI(GuiData guiData, PanelSyncManager guiSyncManager) {
+        GameSettings settings = Minecraft.getMinecraft().gameSettings;
+        int scale = settings.guiScale > 0 ? settings.guiScale : 4;
         AtomicReference<String> freqFilter = new AtomicReference<>("");
         AtomicReference<String> ownerFilter = new AtomicReference<>("");
         AtomicInteger lastPage = new AtomicInteger(0);
@@ -176,8 +178,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                             .isEmpty()
                             || entry.freq.equals(
                                 ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue()))
-                        .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
-                        .sizeRel(1f, 0.3f)
+                        .sizeRel(1f, 0.1f * scale)
                         .expanded()
                         .child(
                             new TextWidget(entry.freq).widthRel(0.5f)
@@ -227,7 +228,11 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                 if (b.owner.equals("Public")) return 1;
                 return a.owner.compareTo(b.owner);
             });
-            List<IWidget> advancedList = (processAdvancedFrequencies(entries, advancedListWidget, guiSyncManager));
+            List<IWidget> advancedList = (processAdvancedFrequencies(
+                entries,
+                advancedListWidget,
+                guiSyncManager,
+                scale));
 
             advancedList.forEach(advancedListWidget::child);
             WidgetTree.resize(advancedListWidget);
@@ -299,7 +304,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
     }
 
     public List<IWidget> processAdvancedFrequencies(List<SnifferEntry> entryList, ListWidget listWidget,
-        PanelSyncManager guiSyncManager) {
+        PanelSyncManager guiSyncManager, int scale) {
         List<IWidget> result = new ArrayList<>();
         entryList.forEach(entry -> {
             CoverPosition cover = entry.coverPosition;
@@ -312,8 +317,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                 .equals(entry.owner))
                             && entry.freq.contains(
                                 ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue()))
-                    .background(new Rectangle().setColor(Color.LIGHT_BLUE.main))
-                    .sizeRel(1f, 0.3f)
+                    .sizeRel(1f, 0.1f * scale)
                     .expanded()
                     .child(
                         new TextWidget(entry.owner).widthRel(0.15f)
