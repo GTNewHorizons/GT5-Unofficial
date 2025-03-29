@@ -36,6 +36,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.blocks.BlockCasingsSteam;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEBetterSteamMultiBase;
 
 public class MTESteamWoodcutter extends MTEBetterSteamMultiBase<MTESteamWoodcutter> implements ISurvivalConstructable {
@@ -60,27 +61,30 @@ public class MTESteamWoodcutter extends MTEBetterSteamMultiBase<MTESteamWoodcutt
         return StructureDefinition.<MTESteamWoodcutter>builder()
             .addShape(
                 STRUCTURE_PIECE_MAIN,
-                (new String[][] { { "  BBB  ", "       ", "       ", "       ", "       ", "       ", "  B~B  " },
-                    { " BBBBB ", "  AAA  ", "  AAA  ", "  AAA  ", "  AAA  ", "  AAA  ", " BBBBB " },
-                    { "BBBBBBB", " A~~~A ", " A~~~A ", " A~~~A ", " A~~~A ", " A~~~A ", "BBCCCBB" },
-                    { "BBBBBBB", " A~~~A ", " A~~~A ", " A~~~A ", " A~~~A ", " A~~~A ", "BBCCCBB" },
-                    { "BBBBBBB", " A~~~A ", " A~~~A ", " A~~~A ", " A~~~A ", " A~~~A ", "BBCCCBB" },
-                    { " BBBBB ", "  AAA  ", "  AAA  ", "  AAA  ", "  AAA  ", "  AAA  ", " BBBBB " },
-                    { "  BBB  ", "       ", "       ", "       ", "       ", "       ", "  BBB  " } }))
+                (new String[][] { { "  CCC  ", "       ", "       ", "       ", "       ", "       ", "  C~C  " },
+                    { " CCBCC ", "  AAA  ", "  AAA  ", "  AAA  ", "  AAA  ", "  AAA  ", " CCBCC " },
+                    { "CCBDBCC", " A   A ", " A   A ", " A   A ", " A   A ", " A   A ", "CCEEECC" },
+                    { "CBDDDBC", " A   A ", " A   A ", " A   A ", " A   A ", " A   A ", "CBEEEBC" },
+                    { "CCBDBCC", " A   A ", " A   A ", " A   A ", " A   A ", " A   A ", "CCEEECC" },
+                    { " CCBCC ", "  AAA  ", "  AAA  ", "  AAA  ", "  AAA  ", "  AAA  ", " CCBCC " },
+                    { "  CCC  ", "       ", "       ", "       ", "       ", "       ", "  CCC  " } }))
             .addElement('A', chainAllGlasses())
+            .addElement('B', ofBlock(GregTechAPI.sBlockCasingsSteam, 4))
             .addElement(
-                'B',
+                'C',
                 ofChain(
-                    buildSteamInput(MTESteamWoodcutter.class).casingIndex(10)
+                    buildSteamInput(MTESteamWoodcutter.class)
+                        .casingIndex(((BlockCasingsSteam) GregTechAPI.sBlockCasingsSteam).getTextureIndex(5))
                         .dot(1)
                         .build(),
                     buildHatchAdder(MTESteamWoodcutter.class)
                         .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
-                        .casingIndex(10)
+                        .casingIndex(((BlockCasingsSteam) GregTechAPI.sBlockCasingsSteam).getTextureIndex(5))
                         .dot(1)
                         .buildAndChain(),
-                    ofBlock(GregTechAPI.sBlockCasings1, 10)))
-            .addElement('C', ofBlock(Blocks.dirt, 0))
+                    ofBlock(GregTechAPI.sBlockCasingsSteam, 5)))
+            .addElement('D', ofBlock(GregTechAPI.sBlockCasingsSteam, 6))
+            .addElement('E', ofBlock(Blocks.dirt, 0))
             .build();
     }
 
@@ -134,7 +138,7 @@ public class MTESteamWoodcutter extends MTEBetterSteamMultiBase<MTESteamWoodcutt
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsSteam, 5)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE)
                         .extFacing()
@@ -147,7 +151,7 @@ public class MTESteamWoodcutter extends MTEBetterSteamMultiBase<MTESteamWoodcutt
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsSteam, 5)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR)
                         .extFacing()
@@ -160,7 +164,7 @@ public class MTESteamWoodcutter extends MTEBetterSteamMultiBase<MTESteamWoodcutt
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)) };
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsSteam, 5)) };
         }
         return rTexture;
     }

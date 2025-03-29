@@ -20,6 +20,8 @@ public class BlockCasingsSteam extends BlockCasingsAbstract {
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Iron Reinforced Wood");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Bronze Reinforced Wood");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Steel Reinforced Wood");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Breel Pipe Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Stronze-Wrapped Casing");
 
         ItemList.Steamgate_Ring_Block.set(new ItemStack(this, 1, 0));
         ItemList.Steamgate_Chevron_Block.set(new ItemStack(this, 1, 1));
@@ -28,6 +30,8 @@ public class BlockCasingsSteam extends BlockCasingsAbstract {
         ItemList.Iron_Wood_Casing.set(new ItemStack(this, 1, 4));
         ItemList.Bronze_Wood_Casing.set(new ItemStack(this, 1, 5));
         ItemList.Steel_Wood_Casing.set(new ItemStack(this, 1, 6));
+        ItemList.Breel_Pipe_Casing.set(new ItemStack(this, 1, 7));
+        ItemList.Stronze_Casing.set(new ItemStack(this, 1, 8));
     }
 
     @Override
@@ -48,6 +52,8 @@ public class BlockCasingsSteam extends BlockCasingsAbstract {
             case 4 -> Textures.BlockIcons.CASING_WOOD_IRON.getIcon();
             case 5 -> Textures.BlockIcons.CASING_WOOD_BRONZE.getIcon();
             case 6 -> Textures.BlockIcons.CASING_WOOD_STEEL.getIcon();
+            case 7 -> Textures.BlockIcons.MACHINE_PIPE_CASING_BREEL.getIcon();
+            case 8 -> Textures.BlockIcons.MACHINE_CASING_STRONZE.getIcon();
             default -> Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();
         };
     }

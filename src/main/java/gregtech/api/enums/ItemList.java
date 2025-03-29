@@ -1900,6 +1900,8 @@ public enum ItemList implements IItemContainer {
     Iron_Wood_Casing,
     Bronze_Wood_Casing,
     Steel_Wood_Casing,
+    Breel_Pipe_Casing,
+    Stronze_Casing,
 
     Circuit_Board_Coated,
     Circuit_Board_Coated_Basic,
