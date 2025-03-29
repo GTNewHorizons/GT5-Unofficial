@@ -12,16 +12,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.util.GTLanguageManager;
-import gregtech.common.blocks.ItemCasingsAbstract;
+import gregtech.common.blocks.ItemCasings;
 
-public class ItemCasingsSpacetime extends ItemCasingsAbstract {
+public class ItemCasingsSpacetime extends ItemCasings {
 
     public ItemCasingsSpacetime(Block par1) {
         super(par1);
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> tooltip, boolean aF3_H) {
         switch (aStack.getItemDamage()) {
             case 0:
             case 1:
@@ -32,13 +32,13 @@ public class ItemCasingsSpacetime extends ItemCasingsAbstract {
             case 6:
             case 7:
             case 8:
-                aList.add(
+                tooltip.add(
                     GTLanguageManager.addStringLocalization(
                         "EOH.Spacetime.Standard.Tooltip.0",
                         "Supports an internal spacetime volume of up to ")
                         + formatNumbers(pow(10, 5 + aStack.getItemDamage()))
                         + "km³.");
-                aList.add(
+                tooltip.add(
                     EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
                         + GTLanguageManager.addStringLocalization(
                             "EOH.Spacetime.Standard.Tooltip.1",
@@ -46,11 +46,11 @@ public class ItemCasingsSpacetime extends ItemCasingsAbstract {
                         + (aStack.getItemDamage() + 1));
                 break;
             default:
-                aList.add(
+                tooltip.add(
                     EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD
                         + GTLanguageManager
                             .addStringLocalization("EOH.TimeDilation.Error.Tooltip", "Error, report to GTNH team"));
         }
-        aList.add(AuthorColen);
+        tooltip.add(AuthorColen);
     }
 }
