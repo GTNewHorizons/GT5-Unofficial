@@ -188,6 +188,7 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        doExplosion(128);
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && aTick % 10 == 0) {
             if (mFluid != null) {
                 long tFuelValue = getFuelValue(mFluid), tConsumed = consumedFluidPerOperation(mFluid);
