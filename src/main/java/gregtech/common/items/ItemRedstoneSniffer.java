@@ -38,6 +38,7 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
+import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -116,7 +117,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
             }
         };
         ListWidget regularListWidget = new ListWidget<>();
-        regularListWidget.sizeRel(1);
+        regularListWidget.sizeRel(1, 0.9f);
         ListWidget advancedListWidget = new ListWidget();
         advancedListWidget.sizeRel(1);
 
@@ -197,11 +198,9 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                         new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.5f)
                             .alignment(Alignment.Center))
                     .child(
-                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.owner")).widthRel(0.5f)
+                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.private")).widthRel(0.5f)
                             .alignment(Alignment.Center)))
-                .child(
-                    new Row().heightRel(0.9f)
-                        .child(regularListWidget)));
+                .child(regularListWidget));
 
         // Process advanced wireless redstone frequencies
         GenericListSyncHandler<SnifferEntry> advancedMapSyncer = new GenericListSyncHandler<>(() -> {
@@ -270,7 +269,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                     new Row().heightRel(0.1f)
                         .marginBottom(10)
                         .child(
-                            new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.25f)
+                            new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency_filter")).widthRel(0.25f)
                                 .alignment(Alignment.Center))
                         .child(
                             new TextFieldWidget().sizeRel(0.25f, 0.5f)
@@ -283,7 +282,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                                 .setStringValue(filter);
                                         })))
                         .child(
-                            new TextWidget(IKey.lang("gt.item.redstone_sniffer.owner")).widthRel(0.25f)
+                            new TextWidget(IKey.lang("gt.item.redstone_sniffer.owner_filter")).widthRel(0.25f)
                                 .alignment(Alignment.Center))
                         .child(
                             new TextFieldWidget().sizeRel(0.25f, 0.5f)
@@ -328,7 +327,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                     .child(
                         new Row().widthRel(0.25f)
                             .child(
-                                new Column().widthRel(0.5f)
+                                new SingleChildWidget<>().widthRel(0.5f)
                                     .child(
                                         new ButtonWidget<>().size(25, 25)
                                             .align(Alignment.Center)
@@ -367,7 +366,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
                                                 return true;
                                             })))
                             .child(
-                                new Column()
+                                new SingleChildWidget<>()
                                     .setEnabledIf(
                                         w -> ((BooleanSyncValue) guiSyncManager.getSyncHandler("player_is_op:0"))
                                             .getBoolValue())
