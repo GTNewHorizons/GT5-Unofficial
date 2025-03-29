@@ -59,21 +59,22 @@ public class PacketTeleportToCover extends GTPacket {
             if (player.dimension != this.dim) {
                 manager.transferPlayerToDimension(player, this.dim);
             }
-            player.playerNetServerHandler.setPlayerLocation(x, y + 1, z, player.cameraYaw, player.cameraPitch); // try
-                                                                                                                // not
-                                                                                                                // to
-                                                                                                                // tp
-                                                                                                                // the
-                                                                                                                // player
-                                                                                                                // into
-                                                                                                                // the
-                                                                                                                // hull
+            player.playerNetServerHandler
+                .setPlayerLocation(x + 0.5, y + 1, z + 0.5, player.cameraYaw, player.cameraPitch); // try
+            // not
+            // to
+            // tp
+            // the
+            // player
+            // into
+            // the
+            // hull
         }
         ArrayList<DimensionalCoord> list = new ArrayList<>();
         list.add(new DimensionalCoord(x, y, z, this.dim));
-        double deltaX = x - player.posX;
+        double deltaX = x + 0.5 - player.posX;
         double deltaY = y - player.posY - 1;
-        double deltaZ = z - player.posZ;
+        double deltaZ = z + 0.5 - player.posZ;
 
         double distanceXZ = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
 
