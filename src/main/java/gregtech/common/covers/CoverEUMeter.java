@@ -2,54 +2,126 @@ package gregtech.common.covers;
 
 import java.util.function.Function;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
-import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerCycleButtonWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
+import gregtech.common.gui.mui1.cover.EUMeterUIFactory;
 import io.netty.buffer.ByteBuf;
 
-public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
+public class CoverEUMeter extends Cover {
+
+    private EnergyType type;
+    private boolean inverted;
+    /**
+     * The special value {@code 0} means threshold check is disabled.
+     */
+    private long threshold;
 
     public CoverEUMeter(CoverContext context, ITexture coverTexture) {
-        super(context, EUMeterData.class, coverTexture);
+        super(context, coverTexture);
+        initializeData(context.getCoverInitializer());
+    }
+
+    public EnergyType getType() {
+        return this.type;
+    }
+
+    public CoverEUMeter setType(EnergyType type) {
+        this.type = type;
+        return this;
+    }
+
+    public boolean isInverted() {
+        return this.inverted;
+    }
+
+    public CoverEUMeter setInverted(boolean inverted) {
+        this.inverted = inverted;
+        return this;
+    }
+
+    public long getThreshold() {
+        return this.threshold;
+    }
+
+    public CoverEUMeter setThresdhold(long threshold) {
+        this.threshold = threshold;
+        return this;
+    }
+
+    public int getNum() {
+        return type.ordinal() * 2 + (inverted ? 1 : 0);
+    }
+
+    public void setNum(int num) {
+        type = EnergyType.getEnergyType(num / 2);
+        inverted = num % 2 == 1;
     }
 
     @Override
-    protected EUMeterData initializeData() {
-        return new CoverEUMeter.EUMeterData();
+    protected void initializeData() {
+        type = EnergyType.UNIVERSAL_STORAGE;
+        inverted = false;
+        threshold = 0;
     }
 
     @Override
-    public CoverEUMeter.EUMeterData doCoverThings(byte aInputRedstone, long aTimer) {
+    protected void loadFromNbt(NBTBase nbt) {
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        int typeOrdinal = tag.getInteger("typeOrdinal");
+        type = EnergyType.getEnergyType(typeOrdinal);
+        inverted = tag.getBoolean("inverted");
+        threshold = tag.getLong("threshold");
+    }
+
+    @Override
+    protected void readFromPacket(ByteArrayDataInput byteData) {
+        int typeOrdinal = byteData.readInt();
+        type = EnergyType.getEnergyType(typeOrdinal);
+        inverted = byteData.readBoolean();
+        threshold = byteData.readLong();
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("typeOrdinal", type.ordinal());
+        tag.setBoolean("inverted", inverted);
+        tag.setLong("threshold", threshold);
+        return tag;
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeInt(type.ordinal());
+        byteBuf.writeBoolean(inverted);
+        byteBuf.writeLong(threshold);
+    }
+
+    @Override
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         {
             ICoverable coverable = coveredTile.get();
             if (coverable == null) {
-                return coverData;
+                return;
             }
-            final long stored = coverData.type.getTileEntityStoredEnergy(coverable);
-            final long capacity = coverData.type.getTileEntityEnergyCapacity(coverable);
+            final long stored = type.getTileEntityStoredEnergy(coverable);
+            final long capacity = type.getTileEntityEnergyCapacity(coverable);
 
             byte redstoneSignal;
 
@@ -64,26 +136,25 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
                 redstoneSignal = (byte) (1 + (14 * stored) / capacity);
             }
 
-            if (coverData.inverted) {
+            if (inverted) {
                 redstoneSignal = (byte) (15 - redstoneSignal);
             }
 
-            if (coverData.threshold > 0) {
-                if (coverData.inverted && stored >= coverData.threshold) {
+            if (threshold > 0) {
+                if (inverted && stored >= threshold) {
                     redstoneSignal = 0;
-                } else if (!coverData.inverted && stored < coverData.threshold) {
+                } else if (!inverted && stored < threshold) {
                     redstoneSignal = 0;
                 }
             }
 
             coverable.setOutputRedstoneSignal(coverSide, redstoneSignal);
-            return coverData;
         }
     }
 
     @Override
-    public EUMeterData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int num = (coverData.getNum() + (aPlayer.isSneaking() ? -1 : 1) + EnergyType.values().length * 2)
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        int num = (getNum() + (aPlayer.isSneaking() ? -1 : 1) + EnergyType.values().length * 2)
             % (EnergyType.values().length * 2);
         switch (num) {
             case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("031", "Normal Universal Storage"));
@@ -101,8 +172,7 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
             case 11 -> GTUtility
                 .sendChatToPlayer(aPlayer, GTUtility.trans("042", "Inverted Electricity Storage(Including Batteries)"));
         }
-        coverData.setNum(num);
-        return coverData;
+        setNum(num);
     }
 
     // region Static Result Methods
@@ -163,155 +233,7 @@ public class CoverEUMeter extends CoverBehaviorBase<CoverEUMeter.EUMeterData> {
         return new EUMeterUIFactory(buildContext).createWindow();
     }
 
-    private class EUMeterUIFactory extends UIFactory {
-
-        private static final int startX = 10;
-        private static final int startY = 25;
-        private static final int spaceX = 18;
-        private static final int spaceY = 18;
-
-        public EUMeterUIFactory(CoverUIBuildContext buildContext) {
-            super(buildContext);
-        }
-
-        @SuppressWarnings("PointlessArithmeticExpression")
-        @Override
-        protected void addUIWidgets(ModularWindow.Builder builder) {
-            final String INVERTED = GTUtility.trans("INVERTED", "Inverted");
-            final String NORMAL = GTUtility.trans("NORMAL", "Normal");
-
-            final CoverDataFollowerNumericWidget<EUMeterData> numericWidget = new CoverDataFollowerNumericWidget<>();
-
-            builder.widget(
-                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverEUMeter.this::loadFromNbt)
-                    .addFollower(
-                        new CoverDataFollowerCycleButtonWidget<>(),
-                        coverData -> coverData.type.ordinal(),
-                        (coverData, state) -> {
-                            coverData.type = EnergyType.getEnergyType(state);
-                            return coverData;
-                        },
-                        widget -> widget.setLength(EnergyType.values().length)
-                            .addTooltip(
-                                state -> EnergyType.getEnergyType(state)
-                                    .getTooltip())
-                            .setStaticTexture(GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                            .setPos(spaceX * 0, spaceY * 0))
-                    .addFollower(
-                        CoverDataFollowerToggleButtonWidget.ofRedstone(),
-                        coverData -> coverData.inverted,
-                        (coverData, state) -> {
-                            coverData.inverted = state;
-                            return coverData;
-                        },
-                        widget -> widget.addTooltip(0, NORMAL)
-                            .addTooltip(1, INVERTED)
-                            .setPos(spaceX * 0, spaceY * 1))
-                    .addFollower(numericWidget, coverData -> (double) coverData.threshold, (coverData, state) -> {
-                        coverData.threshold = state.longValue();
-                        return coverData;
-                    },
-                        widget -> widget.setScrollValues(1000, 100, 100000)
-                            .setFocusOnGuiOpen(true)
-                            .setPos(spaceX * 0, spaceY * 2 + 2)
-                            .setSize(spaceX * 8, 12))
-                    .setPos(startX, startY))
-                .widget(
-                    new TextWidget()
-                        .setStringSupplier(() -> getCoverData() != null ? getCoverData().type.getTitle() : "")
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX, 4 + startY))
-                .widget(
-                    new TextWidget()
-                        .setStringSupplier(
-                            () -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX, 4 + startY + spaceY))
-                .widget(
-                    new TextWidget(GTUtility.trans("222.1", "Energy threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX, startY + spaceY * 3 + 4))
-
-                .widget(
-                    new FakeSyncWidget.LongSyncer(
-                        () -> getCoverData() != null
-                            ? getCoverData().type.getTileEntityEnergyCapacity(getUIBuildContext().getTile())
-                            : Long.MAX_VALUE,
-                        value -> numericWidget.setMaxValue(value)));
-        }
-    }
-
     // endregion
-
-    public static class EUMeterData implements ISerializableObject {
-
-        private EnergyType type;
-        private boolean inverted;
-        /**
-         * The special value {@code 0} means threshold check is disabled.
-         */
-        private long threshold;
-
-        public EUMeterData() {
-            type = EnergyType.UNIVERSAL_STORAGE;
-            inverted = false;
-            threshold = 0;
-        }
-
-        public EUMeterData(EnergyType type, boolean inverted, long threshold) {
-            this.type = type;
-            this.inverted = inverted;
-            this.threshold = threshold;
-        }
-
-        public int getNum() {
-            return type.ordinal() * 2 + (inverted ? 1 : 0);
-        }
-
-        public void setNum(int num) {
-            type = EnergyType.getEnergyType(num / 2);
-            inverted = num % 2 == 1;
-        }
-
-        @Nonnull
-        @Override
-        public ISerializableObject copy() {
-            return new EUMeterData(type, inverted, threshold);
-        }
-
-        @Nonnull
-        @Override
-        public NBTBase saveDataToNBT() {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setInteger("typeOrdinal", type.ordinal());
-            tag.setBoolean("inverted", inverted);
-            tag.setLong("threshold", threshold);
-            return tag;
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeInt(type.ordinal());
-            aBuf.writeBoolean(inverted);
-            aBuf.writeLong(threshold);
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            NBTTagCompound tag = (NBTTagCompound) aNBT;
-            int typeOrdinal = tag.getInteger("typeOrdinal");
-            type = EnergyType.getEnergyType(typeOrdinal);
-            inverted = tag.getBoolean("inverted");
-            threshold = tag.getLong("threshold");
-        }
-
-        @Override
-        public void readFromPacket(ByteArrayDataInput aBuf) {
-            int typeOrdinal = aBuf.readInt();
-            type = EnergyType.getEnergyType(typeOrdinal);
-            inverted = aBuf.readBoolean();
-            threshold = aBuf.readLong();
-        }
-    }
 
     public enum EnergyType {
 

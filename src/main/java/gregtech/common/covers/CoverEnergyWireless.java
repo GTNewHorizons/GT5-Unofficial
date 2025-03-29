@@ -9,9 +9,8 @@ import java.util.UUID;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.util.ISerializableObject.LegacyCoverData;
 
-public class CoverEnergyWireless extends CoverBehavior {
+public class CoverEnergyWireless extends CoverLegacyData {
 
     private final long transferred_energy_per_operation;
 
@@ -36,11 +35,11 @@ public class CoverEnergyWireless extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
-        if (coverData.get() == 0 || aTimer % ticks_between_energy_addition == 0) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
+        if (coverData == 0 || aTimer % ticks_between_energy_addition == 0) {
             tryFetchingEnergy(coveredTile.get());
         }
-        return LegacyCoverData.of(1);
+        coverData = 1;
     }
 
     private static UUID getOwner(Object te) {

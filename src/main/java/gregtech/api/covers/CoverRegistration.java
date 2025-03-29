@@ -10,7 +10,6 @@ import com.google.common.io.ByteArrayDataInput;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.Cover;
 
 public class CoverRegistration {
@@ -28,10 +27,6 @@ public class CoverRegistration {
 
     public Cover buildCover(ForgeDirection side, ICoverable coverable) {
         return buildCoverFromContext(side, coverable, null);
-    }
-
-    public Cover buildCover(ForgeDirection side, ICoverable coverable, @NotNull ISerializableObject data) {
-        return buildCoverFromContext(side, coverable, data);
     }
 
     public Cover buildCover(ForgeDirection side, ICoverable coverable, @NotNull NBTTagCompound nbt) {
