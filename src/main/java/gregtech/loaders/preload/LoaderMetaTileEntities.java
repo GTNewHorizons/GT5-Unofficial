@@ -10504,12 +10504,14 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerInputHatch() {
-        ItemList.Hatch_Input_ULV
-            .set(new MTEHatchInput(INPUT_HATCH_ULV.ID, "hatch.input.tier.00", "Input Hatch (ULV)", 0).getStackForm(1L));
-        ItemList.Hatch_Input_LV
-            .set(new MTEHatchInput(INPUT_HATCH_LV.ID, "hatch.input.tier.01", "Input Hatch (LV)", 1).getStackForm(1L));
-        ItemList.Hatch_Input_MV
-            .set(new MTEHatchInput(INPUT_HATCH_MV.ID, "hatch.input.tier.02", "Input Hatch (MV)", 2).getStackForm(1L));
+        ItemList.Hatch_Input_ULV.set(
+            new MTEHatchInput(INPUT_HATCH_ULV.ID, "hatch.input.tier.00", "Simple Input Hatch", 0).getStackForm(1L));
+        ItemList.Hatch_Input_LV.set(
+            new MTEHatchInput(INPUT_HATCH_LV.ID, "hatch.input.tier.01", "Stronze-Reinforced Input Hatch", 1)
+                .getStackForm(1L));
+        ItemList.Hatch_Input_MV.set(
+            new MTEHatchInput(INPUT_HATCH_MV.ID, "hatch.input.tier.02", "Steam-Attuned Input Hatch", 2)
+                .getStackForm(1L));
         ItemList.Hatch_Input_HV
             .set(new MTEHatchInput(INPUT_HATCH_HV.ID, "hatch.input.tier.03", "Input Hatch (HV)", 3).getStackForm(1L));
         ItemList.Hatch_Input_EV

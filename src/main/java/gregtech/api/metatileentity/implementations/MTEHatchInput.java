@@ -28,7 +28,15 @@ public class MTEHatchInput extends MTEHatch {
             aNameRegional,
             aTier,
             new String[] { "Fluid Input for Multiblocks",
-                "Capacity: " + GTUtility.formatNumbers(8000L * (1L << aTier)) + "L" });
+                "Capacity: " + GTUtility.formatNumbers(getTankSize(aTier)) + "L" });
+    }
+
+    private static int getTankSize(int aTier) {
+        return switch (aTier) {
+            case 0 -> 16000;
+            case 1 -> 128000;
+            default -> 1024000;
+        };
     }
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -158,7 +166,7 @@ public class MTEHatchInput extends MTEHatch {
 
     @Override
     public int getCapacity() {
-        return 8000 * (1 << mTier);
+        return getTankSize(mTier);
     }
 
 }
