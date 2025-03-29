@@ -3359,6 +3359,18 @@ public class AssemblerRecipes implements Runnable {
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                getModItem(AppliedEnergistics2.ID, "tile.BlockInterface", 8, 0),
+                getModItem(AppliedEnergistics2.ID, "tile.BlockMolecularAssembler", 8, 0),
+                ItemList.Emitter_IV.get(4L),
+                ItemList.Casing_RobustTungstenSteel.get(1L))
+            .itemOutputs(ItemList.LargeMolecularAssembler.get(1))
+            .fluidInputs(Materials.Plastic.getMolten(1296))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(assemblerRecipes);
     }
 
     /**
