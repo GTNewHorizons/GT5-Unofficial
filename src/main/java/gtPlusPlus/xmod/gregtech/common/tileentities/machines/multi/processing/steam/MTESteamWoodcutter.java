@@ -3,10 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.s
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.api.enums.GTValues.AuthorSteamIsTheNumber;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW;
 import static gregtech.api.recipe.RecipeMaps.steamWoodcutterRecipes;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -38,6 +34,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasingsSteam;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEBetterSteamMultiBase;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTESteamWoodcutter extends MTEBetterSteamMultiBase<MTESteamWoodcutter> implements ISurvivalConstructable {
 
@@ -140,26 +137,16 @@ public class MTESteamWoodcutter extends MTEBetterSteamMultiBase<MTESteamWoodcutt
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsSteam, 5)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE)
+                        .addIcon(TexturesGtBlock.oMCATreeFarmActive)
                         .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
                         .build() };
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsSteam, 5)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR)
+                        .addIcon(TexturesGtBlock.oMCATreeFarm)
                         .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW)
-                        .extFacing()
-                        .glow()
                         .build() };
             }
         } else {
