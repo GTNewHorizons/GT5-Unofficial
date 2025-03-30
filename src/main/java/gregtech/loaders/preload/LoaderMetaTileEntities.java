@@ -2872,11 +2872,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerChestBuffer() {
         ItemList.Automation_ChestBuffer_ULV.set(
-            new MTEChestBuffer(
-                CHEST_BUFFER_ULV.ID,
-                "automation.chestbuffer.tier.00",
-                "Hydraulic Chest Buffer",
-                0).getStackForm(1L));
+            new MTEChestBuffer(CHEST_BUFFER_ULV.ID, "automation.chestbuffer.tier.00", "Hydraulic Chest Buffer", 0)
+                .getStackForm(1L));
         ItemList.Automation_ChestBuffer_LV.set(
             new MTEChestBuffer(CHEST_BUFFER_LV.ID, "automation.chestbuffer.tier.01", "Low Voltage Chest Buffer", 1)
                 .getStackForm(1L));
@@ -3034,11 +3031,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerSuperBuffer() {
         ItemList.Automation_SuperBuffer_ULV.set(
-            new MTESuperBuffer(
-                SUPER_BUFFER_ULV.ID,
-                "automation.superbuffer.tier.00",
-                "Hydraulic Super Buffer",
-                0).getStackForm(1L));
+            new MTESuperBuffer(SUPER_BUFFER_ULV.ID, "automation.superbuffer.tier.00", "Hydraulic Super Buffer", 0)
+                .getStackForm(1L));
         ItemList.Automation_SuperBuffer_LV.set(
             new MTESuperBuffer(SUPER_BUFFER_LV.ID, "automation.superbuffer.tier.01", "Low Voltage Super Buffer", 1)
                 .getStackForm(1L));
@@ -3139,11 +3133,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerRecipeFilter() {
         ItemList.Automation_RecipeFilter_ULV.set(
-            new MTERecipeFilter(
-                RECIPE_FILTER_ULV.ID,
-                "automation.recipefilter.tier.00",
-                "Hydraulic Recipe Filter",
-                0).getStackForm(1L));
+            new MTERecipeFilter(RECIPE_FILTER_ULV.ID, "automation.recipefilter.tier.00", "Hydraulic Recipe Filter", 0)
+                .getStackForm(1L));
         ItemList.Automation_RecipeFilter_LV.set(
             new MTERecipeFilter(RECIPE_FILTER_LV.ID, "automation.recipefilter.tier.01", "Low Voltage Recipe Filter", 1)
                 .getStackForm(1L));
