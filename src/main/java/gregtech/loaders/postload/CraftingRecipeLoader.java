@@ -2021,8 +2021,5 @@ public class CraftingRecipeLoader implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.RedAlloy, 1), 'V',
                 ItemList.Circuit_Parts_Vacuum_Tube.get(1), 'B', ItemList.Circuit_Board_Coated_Basic.get(1), 'I',
                 GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Steel, 1) });
-        GTModHandler.addShapelessCraftingRecipe(
-            GTModHandler.getIC2Item("electronicCircuit", 1L),
-            new Object[] { ItemList.Circuit_Integrated.getWildcard(1L) });
     }
 }
