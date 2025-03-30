@@ -22,6 +22,7 @@ public class CactusWonderFakeRecipes implements Runnable {
             .metadata(OFFER_VALUE, 8000l)
             .duration(20)
             .eut(0)
+            .fake()
             .addTo(cactusWonderFakeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -30,6 +31,7 @@ public class CactusWonderFakeRecipes implements Runnable {
             .metadata(OFFER_VALUE, 90000l)
             .duration(20)
             .eut(0)
+            .fake()
             .addTo(cactusWonderFakeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -38,6 +40,7 @@ public class CactusWonderFakeRecipes implements Runnable {
             .metadata(OFFER_VALUE, 1012500l)
             .duration(20)
             .eut(0)
+            .fake()
             .addTo(cactusWonderFakeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -46,6 +49,7 @@ public class CactusWonderFakeRecipes implements Runnable {
             .metadata(OFFER_VALUE, 11390625l)
             .duration(20)
             .eut(0)
+            .fake()
             .addTo(cactusWonderFakeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -54,6 +58,7 @@ public class CactusWonderFakeRecipes implements Runnable {
             .metadata(OFFER_VALUE, 128144531l)
             .duration(20)
             .eut(0)
+            .fake()
             .addTo(cactusWonderFakeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -62,6 +67,7 @@ public class CactusWonderFakeRecipes implements Runnable {
             .metadata(OFFER_VALUE, 1441625977l)
             .duration(20)
             .eut(0)
+            .fake()
             .addTo(cactusWonderFakeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -70,6 +76,7 @@ public class CactusWonderFakeRecipes implements Runnable {
             .metadata(OFFER_VALUE, 16218292236l)
             .duration(20)
             .eut(0)
+            .fake()
             .addTo(cactusWonderFakeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -78,6 +85,7 @@ public class CactusWonderFakeRecipes implements Runnable {
             .metadata(OFFER_VALUE, 16000l)
             .duration(20)
             .eut(0)
+            .fake()
             .addTo(cactusWonderFakeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -86,6 +94,7 @@ public class CactusWonderFakeRecipes implements Runnable {
             .metadata(OFFER_VALUE, 180000l)
             .duration(20)
             .eut(0)
+            .fake()
             .addTo(cactusWonderFakeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -94,6 +103,7 @@ public class CactusWonderFakeRecipes implements Runnable {
             .metadata(OFFER_VALUE, 2025000l)
             .duration(20)
             .eut(0)
+            .fake()
             .addTo(cactusWonderFakeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -102,6 +112,7 @@ public class CactusWonderFakeRecipes implements Runnable {
             .metadata(OFFER_VALUE, 22781250l)
             .duration(20)
             .eut(0)
+            .fake()
             .addTo(cactusWonderFakeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -110,6 +121,7 @@ public class CactusWonderFakeRecipes implements Runnable {
             .metadata(OFFER_VALUE, 256289063l)
             .duration(20)
             .eut(0)
+            .fake()
             .addTo(cactusWonderFakeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -118,6 +130,7 @@ public class CactusWonderFakeRecipes implements Runnable {
             .metadata(OFFER_VALUE, 2883251953l)
             .duration(20)
             .eut(0)
+            .fake()
             .addTo(cactusWonderFakeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -126,6 +139,7 @@ public class CactusWonderFakeRecipes implements Runnable {
             .metadata(OFFER_VALUE, 32436584473l)
             .duration(20)
             .eut(0)
+            .fake()
             .addTo(cactusWonderFakeRecipes);
 
     }

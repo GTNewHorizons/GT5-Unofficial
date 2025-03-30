@@ -582,6 +582,12 @@ public class AssortedSteamRecipes implements Runnable {
                     ItemList.Casing_SolidSteel.get(1), 'D', ItemList.Hydraulic_Pump_Steam.get(1), 'C', ItemList.Hull_HP,
                     'E', ItemList.Casing_BronzePlatedBricks });
 
+            // Cactus Wonder
+            GTModHandler.addCraftingRecipe(
+                GregtechItemList.Controller_CactusWonder.get(1),
+                new Object[] { "ABA", "ACA", "ABA", 'A', new ItemStack(Blocks.cactus, 1), 'B',
+                    ItemList.Casing_BronzePlatedBricks.get(1), 'C', ItemList.Hydraulic_Pump_Steam.get(1) });
+
             // Mega Oreproc
 
             // Mega Grinder
