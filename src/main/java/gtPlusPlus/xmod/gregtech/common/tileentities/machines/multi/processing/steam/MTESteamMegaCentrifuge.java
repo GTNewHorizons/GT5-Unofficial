@@ -274,9 +274,15 @@ public class MTESteamMegaCentrifuge extends MTESteamMultiBase<MTESteamMegaCentri
     }
 
     @Override
+    protected SteamTypes getSteamType() {
+        return SteamTypes.SC_STEAM;
+    }
+
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addInfo("Uses " + EnumChatFormatting.RED + "Supercritical Steam")
             .addInfo("500% faster than using single block steam machines of the same pressure")
             .addInfo("Only consumes steam at 62.5% of the L/s normally required")
             .addInfo("Processes up to 256 items at once")

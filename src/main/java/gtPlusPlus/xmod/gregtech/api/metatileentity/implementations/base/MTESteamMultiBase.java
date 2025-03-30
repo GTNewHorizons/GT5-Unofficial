@@ -19,6 +19,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -103,23 +105,27 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
     }
 
+    protected SteamTypes getSteamType() {
+        return SteamTypes.STEAM;
+    }
+
+    public ArrayList<FluidStack> getAllSteamStacks() {
+        ArrayList<FluidStack> aFluids = new ArrayList<>();
+
+        for (FluidStack aFluid : this.getStoredFluids()) {
+            if (aFluid.getFluid() == getSteamType().fluid) {
+                aFluids.add(aFluid);
+            }
+        }
+        return aFluids;
+    }
+
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(V[getTierRecipes()]);
         // We need to trick the GT_ParallelHelper we have enough amps for all recipe parallels.
         logic.setAvailableAmperage(getMaxParallelRecipes());
         logic.setAmperageOC(false);
-    }
-
-    public ArrayList<FluidStack> getAllSteamStacks() {
-        ArrayList<FluidStack> aFluids = new ArrayList<>();
-        FluidStack aSteam = FluidUtils.getSteam(1);
-        for (FluidStack aFluid : this.getStoredFluids()) {
-            if (aFluid.isFluidEqual(aSteam)) {
-                aFluids.add(aFluid);
-            }
-        }
-        return aFluids;
     }
 
     public int getTotalSteamStored() {
@@ -142,7 +148,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         if (getTotalSteamStored() <= 0) {
             return false;
         } else {
-            return this.depleteInput(FluidUtils.getSteam(aAmount));
+            return this.depleteInput(new FluidStack(getSteamType().fluid, aAmount));
         }
     }
 
@@ -541,5 +547,21 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
             new DrawableWidget().setDrawable(new CircularGaugeDrawable(() -> (float) uiSteamStored / uiSteamCapacity))
                 .setPos(-64 + 21, 100 + 21)
                 .setSize(18, 4));
+    }
+
+    protected enum SteamTypes {
+
+        STEAM(FluidUtils.getSteam(1)
+            .getFluid()),
+        SH_STEAM(FluidUtils.getSuperHeatedSteam(1)
+            .getFluid()),
+        SC_STEAM(FluidRegistry.getFluidStack("supercriticalsteam", 1)
+            .getFluid());
+
+        final Fluid fluid;
+
+        SteamTypes(Fluid fluid) {
+            this.fluid = fluid;
+        }
     }
 }

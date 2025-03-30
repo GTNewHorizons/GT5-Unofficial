@@ -3,6 +3,7 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
+import static gregtech.api.recipe.RecipeMaps.lavaMakerRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.steamCarpenterRecipes;
 import static gregtech.api.recipe.RecipeMaps.steamManufacturerRecipes;
@@ -24,6 +25,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -38,6 +40,13 @@ public class AssortedSteamRecipes implements Runnable {
             .duration(4 * TICKS)
             .eut(2)
             .addTo(mixerRecipes);
+
+        RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.stone, 1))
+            .fluidOutputs(FluidUtils.getLava(1000))
+            .duration(1 * SECONDS)
+            .eut(16)
+            .addTo(lavaMakerRecipes);
 
         RA.stdBuilder()
             .itemInputs(

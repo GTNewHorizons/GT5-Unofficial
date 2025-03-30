@@ -172,8 +172,8 @@ public class MTESteamBlastFurnace extends MTEBetterSteamMultiBase<MTESteamBlastF
                     + " of steam (any variety)")
             .addInfo("Recipe time is converted to total steam consumption")
             .addInfo("Steam: " + EnumChatFormatting.WHITE + "80L = 1s")
-            .addInfo("Superheated Steam: " + EnumChatFormatting.WHITE + "80L = 10s")
-            .addInfo("Supercritical Steam: " + EnumChatFormatting.WHITE + "80L = 100s")
+            .addInfo(EnumChatFormatting.GOLD + "Superheated Steam: " + EnumChatFormatting.WHITE + "80L = 10s")
+            .addInfo(EnumChatFormatting.RED + "Supercritical Steam: " + EnumChatFormatting.WHITE + "80L = 100s")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC

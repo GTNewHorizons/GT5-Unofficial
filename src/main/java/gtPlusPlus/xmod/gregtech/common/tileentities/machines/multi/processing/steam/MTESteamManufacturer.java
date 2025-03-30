@@ -113,7 +113,7 @@ public class MTESteamManufacturer extends MTEBetterSteamMultiBase<MTESteamManufa
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Assembles assemblies assemblically")
-            .addInfo("Requires Super Heated Steam to Work")
+            .addInfo("Uses " + EnumChatFormatting.GOLD + "Superheated Steam")
             .addInfo(EnumChatFormatting.AQUA + "" + EnumChatFormatting.ITALIC + "Slave labor? Not in my GTNH!")
             .toolTipFinisher();
         return tt;

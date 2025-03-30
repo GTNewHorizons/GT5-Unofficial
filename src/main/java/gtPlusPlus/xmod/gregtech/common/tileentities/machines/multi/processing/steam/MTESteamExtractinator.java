@@ -278,6 +278,7 @@ public class MTESteamExtractinator extends MTESteamMultiBase<MTESteamExtractinat
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addInfo("Uses " + EnumChatFormatting.GOLD + "Superheated Steam")
             .addInfo("Vaporizes impurities in different soil slurries to generate usable materials")
             .addInfo("Processes up to 4 recipes at once")
             .addInfo(
@@ -286,6 +287,11 @@ public class MTESteamExtractinator extends MTESteamMultiBase<MTESteamExtractinat
                     + "From Steam to rocks, the power of the pressure may bring you infinite wealth!.")
             .toolTipFinisher();
         return tt;
+    }
+
+    @Override
+    protected SteamTypes getSteamType() {
+        return SteamTypes.SH_STEAM;
     }
 
     @Override

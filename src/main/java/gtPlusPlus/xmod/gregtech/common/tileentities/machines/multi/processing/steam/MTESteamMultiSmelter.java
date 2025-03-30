@@ -51,10 +51,16 @@ public class MTESteamMultiSmelter extends MTEBetterSteamMultiBase<MTESteamMultiS
     }
 
     @Override
+    protected SteamTypes getSteamType() {
+        return SteamTypes.SH_STEAM;
+    }
+
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Smelts up to 32 items at once")
+            .addInfo("Uses " + EnumChatFormatting.GOLD + "Superheated Steam")
+            .addInfo("Smelts up to 32 items per 8 seconds")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
@@ -111,7 +117,7 @@ public class MTESteamMultiSmelter extends MTEBetterSteamMultiBase<MTESteamMultiS
             .setAmperage(getMaxInputAmps())
             .setRecipeEUt(30)
             .setDuration(160)
-            .setAmperageOC(mEnergyHatches.size() != 1)
+            .setAmperageOC(false)
             .setParallel(fakeOriginalMaxParallel);
 
         int maxParallel = 32;

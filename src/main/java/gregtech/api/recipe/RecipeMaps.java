@@ -163,6 +163,11 @@ public final class RecipeMaps {
         .progressBarSteam(GTUITextures.PROGRESSBAR_HAMMER_STEAM)
         .neiHandlerInfo((builder -> builder.setDisplayStack((GregtechItemList.Controller_SteamExtruder.get(1)))))
         .build();
+    public static final RecipeMap<RecipeMapBackend> lavaMakerRecipes = RecipeMapBuilder.of("gt.recipe.lavamaker")
+        .maxIO(1, 0, 0, 1)
+        .progressBarSteam(GTUITextures.PROGRESSBAR_COMPRESS_STEAM)
+        .neiHandlerInfo((builder -> builder.setDisplayStack((GregtechItemList.Controller_SteamLavaMaker.get(1)))))
+        .build();
     public static final RecipeMap<RecipeMapBackend> steamCarpenterRecipes = RecipeMapBuilder
         .of("gt.recipe.steamcarpenter")
         .maxIO(2, 2, 0, 0)
