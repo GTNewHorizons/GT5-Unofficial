@@ -79,7 +79,7 @@ public class MTESteamRockBreaker extends MTESteamMultiBase<MTESteamRockBreaker> 
 
     @Override
     public String getMachineType() {
-        return "Alloy Smelter";
+        return "Rock Breaker";
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -317,9 +317,17 @@ public class MTESteamRockBreaker extends MTESteamMultiBase<MTESteamRockBreaker> 
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("25% faster than using single block steam machines of the same pressure")
-            .addInfo("Only consumes steam at 62.5% of the L/s normally required")
+            .addInfo("Works as a Rock Breaker, but big")
+            .addInfo("Cog 1 = Cobblestone, Cog 2 = Stone, Cog 3 = Obsidian")
             .addInfo("Processes up to 8 recipes at once")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "STOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONE")
+            .addInfo(
+                EnumChatFormatting.AQUA + ""
+                    + EnumChatFormatting.ITALIC
+                    + "Keep an eye for Wallsharing :>")
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .toolTipFinisher();
         return tt;
