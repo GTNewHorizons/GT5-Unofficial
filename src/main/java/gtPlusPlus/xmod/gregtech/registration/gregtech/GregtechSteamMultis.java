@@ -14,8 +14,11 @@ import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamForgeHammer;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamGateAssembler;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMaceratorMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamManufacturer;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMegaCentrifugeMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMegaCompressor;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMegaHammerMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMegaMaceratorMulti;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMegaWasherMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMixerMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamRockBreaker;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamWasherMulti;
@@ -48,8 +51,11 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.st
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamInfernalCokeOven;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMacerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamManufacturer;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMegaCentrifuge;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMegaCompressor;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMegaForgeHammer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMegaMacerator;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMegaWasher;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMixer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMultiSmelter;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamRockBreaker;
@@ -74,6 +80,21 @@ public class GregtechSteamMultis {
                 "gtpp.multimachine.steam.megamacerator",
                 "Mega Steam Grinder").getStackForm(1L));
         addItemTooltip(GregtechItemList.Controller_SteamMegaMaceratorMulti.get(1), GTValues.PipeBluez);
+        GregtechItemList.Controller_SteamMegaWasherMulti.set(
+            new MTESteamMegaWasher(
+                Controller_SteamMegaWasherMulti.ID,
+                "gtpp.multimachine.steam.megawasher",
+                "Mega Steam Purifier").getStackForm(1L));
+        GregtechItemList.Controller_SteamMegaHammerMulti.set(
+            new MTESteamMegaForgeHammer(
+                Controller_SteamMegaHammerMulti.ID,
+                "gtpp.multimachine.steam.megahammer",
+                "Mega Steam Presser").getStackForm(1L));
+        GregtechItemList.Controller_SteamMegaCentrifugeMulti.set(
+            new MTESteamMegaCentrifuge(
+                Controller_SteamMegaCentrifugeMulti.ID,
+                "gtpp.multimachine.steam.megacentrifuge",
+                "Mega Steam Separator").getStackForm(1L));
         GregtechItemList.Controller_SteamCompressorMulti.set(
             new MTESteamCompressor(
                 Controller_SteamCompressorMulti.ID,
