@@ -1913,6 +1913,17 @@ gt.item.adv_sensor_card.tooltip.frequency=Frequency: §b%s
 gt.item.adv_sensor_card.error.deconstructed.1=-ERROR- Machine Deconstructed
 gt.item.adv_sensor_card.error.deconstructed.2=Place machine again to re-enable
 gt.item.adv_sensor_card.error.no_data=No data found
+gt.item.redstone_sniffer.regular_wireless=Regular Wireless
+gt.item.redstone_sniffer.advanced_wireless=Advanced Wireless
+gt.item.redstone_sniffer.frequency=Frequency
+gt.item.redstone_sniffer.frequency_filter=Frequency:
+gt.item.redstone_sniffer.owner=Owner
+gt.item.redstone_sniffer.owner_filter=Owner:
+gt.item.redstone_sniffer.private=Private
+gt.item.redstone_sniffer.dimension=Dimension
+gt.item.redstone_sniffer.action=Action
+gt.item.redstone_sniffer.locate=Locate
+gt.item.redstone_sniffer.teleport=Teleport
 
 gt.cover.info.format.tick_rate=§b%s§r %s
 gt.cover.info.chat.tick_rate=Cover tick rate set to %s

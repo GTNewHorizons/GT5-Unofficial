@@ -12,17 +12,16 @@ import net.minecraft.world.IBlockAccess;
 import com.google.common.io.ByteArrayDataInput;
 
 import appeng.api.util.DimensionalCoord;
-import appeng.client.render.BlockPosHighlighter;
 import io.netty.buffer.ByteBuf;
 
-public class PacketDebugRedstoneCover extends GTPacket {
+public class PakcetDebugRedstoneCover extends GTPacket {
 
     private int dim;
     private int[] coords;
     private boolean teleportPlayer;
     private EntityPlayerMP player;
 
-    public PacketDebugRedstoneCover() {}
+    public PakcetDebugRedstoneCover() {}
 
     @Override
     public byte getPacketID() {
@@ -40,12 +39,7 @@ public class PacketDebugRedstoneCover extends GTPacket {
 
     @Override
     public GTPacket decode(ByteArrayDataInput buf) {
-        return new PacketDebugRedstoneCover(
-            buf.readInt(),
-            buf.readInt(),
-            buf.readInt(),
-            buf.readInt(),
-            buf.readBoolean());
+        return new PakcetDebugRedstoneCover(buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt(), buf.readBoolean());
     }
 
     @Override
@@ -65,21 +59,22 @@ public class PacketDebugRedstoneCover extends GTPacket {
             if (player.dimension != this.dim) {
                 manager.transferPlayerToDimension(player, this.dim);
             }
-            player.playerNetServerHandler.setPlayerLocation(x, y + 1, z, player.cameraYaw, player.cameraPitch); // try
-                                                                                                                // not
-                                                                                                                // to
-                                                                                                                // tp
-                                                                                                                // the
-                                                                                                                // player
-                                                                                                                // into
-                                                                                                                // the
-                                                                                                                // hull
+            player.playerNetServerHandler
+                .setPlayerLocation(x + 0.5, y + 1, z + 0.5, player.cameraYaw, player.cameraPitch); // try
+            // not
+            // to
+            // tp
+            // the
+            // player
+            // into
+            // the
+            // hull
         }
         ArrayList<DimensionalCoord> list = new ArrayList<>();
         list.add(new DimensionalCoord(x, y, z, this.dim));
-        double deltaX = x - player.posX;
+        double deltaX = x + 0.5 - player.posX;
         double deltaY = y - player.posY - 1;
-        double deltaZ = z - player.posZ;
+        double deltaZ = z + 0.5 - player.posZ;
 
         double distanceXZ = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
 
@@ -87,17 +82,13 @@ public class PacketDebugRedstoneCover extends GTPacket {
         float pitch = (float) Math.toDegrees(Math.atan2(-deltaY, distanceXZ));
         if (this.dim == player.dimension) {
             player.playerNetServerHandler.setPlayerLocation(player.posX, player.posY, player.posZ, yaw, pitch);
-            String foundMsg = String
-                .format("Highlighting cover at %d,%d,%d", this.coords[0], this.coords[1], this.coords[2]);
-            BlockPosHighlighter
-                .highlightBlocks(player, list, foundMsg, "Cannot highlight because you're not in the same dimension!");
         } else {
             player.addChatMessage(new ChatComponentText("Cannot highlight because you're not in the same dimension!"));
         }
 
     }
 
-    public PacketDebugRedstoneCover(int dim, int x, int y, int z, boolean teleportPlayer) {
+    public PakcetDebugRedstoneCover(int dim, int x, int y, int z, boolean teleportPlayer) {
         this.dim = dim;
         this.coords = new int[] { x, y, z };
         this.teleportPlayer = teleportPlayer;
