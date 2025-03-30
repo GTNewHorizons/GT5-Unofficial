@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.bop.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -11,6 +12,7 @@ import gtPlusPlus.xmod.bop.blocks.pine.LogPineTree;
 import gtPlusPlus.xmod.bop.blocks.pine.SaplingPineTree;
 import gtPlusPlus.xmod.bop.blocks.rainforest.LeavesRainforestTree;
 import gtPlusPlus.xmod.bop.blocks.rainforest.LogRainforestTree;
+import gtPlusPlus.xmod.bop.blocks.rainforest.SaplingBrickuoia;
 import gtPlusPlus.xmod.bop.blocks.rainforest.SaplingRainforestTree;
 
 public class BOPBlockRegistrator {
@@ -18,6 +20,7 @@ public class BOPBlockRegistrator {
     public static Block log_Rainforest;
     public static Block leaves_Rainforest;
     public static Block sapling_Rainforest;
+    public static Block sapling_Brickuoia;
     public static Block log_Pine;
     public static Block leaves_Pine;
     public static Block sapling_Pine;
@@ -26,6 +29,12 @@ public class BOPBlockRegistrator {
     public static void run() {
         registerTree_Rainforest();
         registerTree_Pine();
+        registerTree_Brickuoia();
+    }
+
+    private static void registerTree_Brickuoia() {
+        sapling_Brickuoia = new SaplingBrickuoia();
+        ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(sapling_Brickuoia), "treeSapling", true);
     }
 
     private static void registerTree_Rainforest() {
@@ -51,6 +60,18 @@ public class BOPBlockRegistrator {
         addRecipeLogsToPlanks(ItemUtils.getSimpleStack(log_Rainforest));
         // Pine
         addRecipeLogsToPlanks(ItemUtils.getSimpleStack(log_Pine));
+
+        GameRegistry.addShapedRecipe(
+            ItemUtils.getSimpleStack(sapling_Brickuoia),
+            "BCB",
+            "CSC",
+            "BCB",
+            'B',
+            new ItemStack(Items.brick),
+            'C',
+            new ItemStack(Items.clay_ball),
+            'S',
+            ItemUtils.getSimpleStack(sapling_Rainforest));
     }
 
     public static void addRecipeLogsToPlanks(ItemStack aStack) {

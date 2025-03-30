@@ -1972,6 +1972,7 @@ item.everglades.trigger.name=§6Alkalus Disk [§cActivated§6]
 tile.blockRainforestOakLog.name=Rainforest Oak
 tile.blockRainforestOakLeaves.name=Oak Leaves
 tile.blockRainforestOakSapling.name=Rainforest Oak Sapling
+tile.blockGiantBrickuoiaSapling.name=Giant Brickuoia Sapling
 tile.blockPineLogLog.name=Pine Log
 tile.blockPineLeaves.name=Pine Leaves
 tile.blockPineSapling.name=Pine Sapling
