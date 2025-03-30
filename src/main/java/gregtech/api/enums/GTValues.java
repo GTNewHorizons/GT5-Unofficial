@@ -608,6 +608,15 @@ public class GTValues {
             DARK_GREEN + BOLD,
             DARK_GREEN + OBFUSCATED + BOLD));
 
+    public static final String AuthorHighPressureRaven = "" + EnumChatFormatting.WHITE
+        + "High"
+        + EnumChatFormatting.GRAY
+        + "Pres"
+        + EnumChatFormatting.DARK_GRAY
+        + "sure"
+        + EnumChatFormatting.LIGHT_PURPLE
+        + "Raven";
+
     public static final Supplier<String> SteamgateCredits = chain(
         text(EnumChatFormatting.WHITE + "Created By:\n"),
         getAuthorSerenibyssLetter("S", 30, 3, LIGHT_PURPLE, 11, WHITE, 25, AQUA),
@@ -646,7 +655,8 @@ public class GTValues {
                 + EnumChatFormatting.WHITE
                 + EnumChatFormatting.ITALIC
                 + "Number\n"),
-        animatedText("PipeBluez", 1, 100, WHITE, WHITE, WHITE, WHITE, AQUA, DARK_AQUA, BLUE, DARK_BLUE, DARK_BLUE));
+        animatedText("PipeBluez", 1, 100, WHITE, WHITE, WHITE, WHITE, AQUA, DARK_AQUA, BLUE, DARK_BLUE, DARK_BLUE),
+        text("\n" + AuthorHighPressureRaven));
 
     public static final Supplier<String> AuthorSteamibyss = chain(
         text("Author: "),
