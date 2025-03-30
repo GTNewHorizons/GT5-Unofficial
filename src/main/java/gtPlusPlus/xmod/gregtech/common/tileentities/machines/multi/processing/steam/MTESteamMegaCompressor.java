@@ -148,8 +148,8 @@ public class MTESteamMegaCompressor extends MTEBetterSteamMultiBase<MTESteamMega
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Has 256 parallels")
             .addInfo("Uses " + EnumChatFormatting.RED + "Supercritical Steam")
+            .addInfo("Has 256 parallels")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC

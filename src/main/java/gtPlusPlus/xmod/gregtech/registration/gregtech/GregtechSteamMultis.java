@@ -13,6 +13,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamExtractinator
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamExtruder;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamForgeHammer;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamGateAssembler;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamLavaMaker;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMaceratorMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamManufacturer;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamMegaCentrifugeMulti;
@@ -51,6 +52,7 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.st
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamForgeHammer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamGateAssembler;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamInfernalCokeOven;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamLavaMaker;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMacerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamManufacturer;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamMegaCentrifuge;
@@ -128,6 +130,11 @@ public class GregtechSteamMultis {
                 Controller_SteamGateAssembler.ID,
                 "gtpp.multimachine.steam.gateassembler",
                 "Perfect Steam Progenitor").getStackForm(1));
+        GregtechItemList.Controller_SteamLavaMaker.set(
+            new MTESteamLavaMaker(
+                Controller_SteamLavaMaker.ID,
+                "gtpp.multimachine.steam.lavamaker",
+                "Stone Superheater").getStackForm(1));
         GregtechItemList.Controller_Steamgate.set(
             new MTESteamgate(Controller_Steamgate.ID, "gtpp.multimachine.steamgate", "Steamgate Base Block")
                 .getStackForm(1));
