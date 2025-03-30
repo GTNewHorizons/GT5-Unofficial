@@ -930,6 +930,8 @@ import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 import gregtech.api.enums.GTValues;
 import net.minecraft.util.EnumChatFormatting;
 
+import codechicken.nei.api.API;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.SoundResource;
@@ -12525,6 +12527,42 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerOven();
         registerNameRemover();
         registerAirFilters();
+
+        // Hide a buncha stuff
+
+        API.hideItem(ItemList.Hatch_Input_Bus_LV.get(1));
+        API.hideItem(ItemList.Hatch_Input_Bus_MV.get(1));
+        API.hideItem(ItemList.Hatch_Input_Bus_HV.get(1));
+        API.hideItem(ItemList.Hatch_Input_Bus_EV.get(1));
+        API.hideItem(ItemList.Hatch_Input_Bus_IV.get(1));
+        API.hideItem(ItemList.Hatch_Input_Bus_LuV.get(1));
+        API.hideItem(ItemList.Hatch_Input_Bus_ZPM.get(1));
+        API.hideItem(ItemList.Hatch_Input_Bus_UV.get(1));
+        API.hideItem(ItemList.Hatch_Input_Bus_MAX.get(1));
+
+        API.hideItem(ItemList.Hatch_Output_Bus_LV.get(1));
+        API.hideItem(ItemList.Hatch_Output_Bus_MV.get(1));
+        API.hideItem(ItemList.Hatch_Output_Bus_HV.get(1));
+        API.hideItem(ItemList.Hatch_Output_Bus_EV.get(1));
+        API.hideItem(ItemList.Hatch_Output_Bus_IV.get(1));
+        API.hideItem(ItemList.Hatch_Output_Bus_LuV.get(1));
+        API.hideItem(ItemList.Hatch_Output_Bus_ZPM.get(1));
+        API.hideItem(ItemList.Hatch_Output_Bus_UV.get(1));
+        API.hideItem(ItemList.Hatch_Output_Bus_MAX.get(1));
+
+        API.hideItem(ItemList.Hatch_Input_EV.get(1));
+        API.hideItem(ItemList.Hatch_Input_IV.get(1));
+        API.hideItem(ItemList.Hatch_Input_LuV.get(1));
+        API.hideItem(ItemList.Hatch_Input_ZPM.get(1));
+        API.hideItem(ItemList.Hatch_Input_UV.get(1));
+        API.hideItem(ItemList.Hatch_Input_MAX.get(1));
+
+        API.hideItem(ItemList.Hatch_Output_EV.get(1));
+        API.hideItem(ItemList.Hatch_Output_IV.get(1));
+        API.hideItem(ItemList.Hatch_Output_LuV.get(1));
+        API.hideItem(ItemList.Hatch_Output_ZPM.get(1));
+        API.hideItem(ItemList.Hatch_Output_UV.get(1));
+        API.hideItem(ItemList.Hatch_Output_MAX.get(1));
 
         ItemList.AdvDebugStructureWriter.set(
             new MTEAdvDebugStructureWriter(

@@ -9,17 +9,11 @@ import static gregtech.api.recipe.RecipeMaps.steamManufacturerRecipes;
 import static gregtech.api.recipe.RecipeMaps.steamWoodcutterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import cpw.mods.fml.common.Mod;
-import gregtech.api.GregTechAPI;
-import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GTValues;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -28,6 +22,9 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaGeneratedTool01;
+import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class AssortedSteamRecipes implements Runnable {
 
@@ -328,7 +325,7 @@ public class AssortedSteamRecipes implements Runnable {
         // Bronze
         RA.stdBuilder()
             .itemInputs(
-                new ItemStack(Blocks.brick_block,1),
+                new ItemStack(Blocks.brick_block, 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 6))
             .itemOutputs(ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings1, 10, 1))
             .duration(2 * SECONDS)
@@ -428,7 +425,8 @@ public class AssortedSteamRecipes implements Runnable {
 
         GTModHandler.addCraftingRecipe(
             ItemList.Vibration_Safe_Casing.get(1),
-            new Object[] { "AAA", "BCB", "AAA", 'A', "plateCrudeSteel", 'B', "frameGtBreel", 'C', ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings2, 0, 1) });
+            new Object[] { "AAA", "BCB", "AAA", 'A', "plateCrudeSteel", 'B', "frameGtBreel", 'C',
+                ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings2, 0, 1) });
 
         // Extractinator Solid Casing
         RA.stdBuilder()
@@ -456,12 +454,7 @@ public class AssortedSteamRecipes implements Runnable {
 
         GTModHandler.addCraftingRecipe(
             ItemList.Extractinator_Sieve_Mesh.get(1),
-            new Object[] {
-                "AAA",
-                "wBh",
-                "AAA",
-                'A', "stickCrudeSteel",
-                'B', "frameGtBreel" });
+            new Object[] { "AAA", "wBh", "AAA", 'A', "stickCrudeSteel", 'B', "frameGtBreel" });
 
         // Stronze Wrapped Casingg
         RA.stdBuilder()
@@ -475,12 +468,7 @@ public class AssortedSteamRecipes implements Runnable {
 
         GTModHandler.addCraftingRecipe(
             ItemList.Stronze_Casing.get(4),
-            new Object[] {
-                "ABA",
-                "BBB",
-                "ABA",
-                'A', "plateStronze",
-                'B', "frameGtCrudeSteel" });
+            new Object[] { "ABA", "BBB", "ABA", 'A', "plateStronze", 'B', "frameGtCrudeSteel" });
 
         // Breel Pipe Casingg
         RA.stdBuilder()
@@ -495,13 +483,8 @@ public class AssortedSteamRecipes implements Runnable {
 
         GTModHandler.addCraftingRecipe(
             ItemList.Breel_Pipe_Casing.get(2),
-            new Object[] {
-                "ABA",
-                "BCB",
-                "ABA",
-                'A', "plateCrudeSteel",
-                'B', "pipeMediumBreel",
-                'C', "frameGtCrudeSteel" });
+            new Object[] { "ABA", "BCB", "ABA", 'A', "plateCrudeSteel", 'B', "pipeMediumBreel", 'C',
+                "frameGtCrudeSteel" });
 
         // Machine Controllers
         {
@@ -509,131 +492,80 @@ public class AssortedSteamRecipes implements Runnable {
             // Steam Fuser
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Controller_SteamAlloySmelterMulti.get(1),
-                new Object[] {
-                    "ABA",
-                    "CDC",
-                    "ABA",
-                    'A', ItemList.Casing_BronzePlatedBricks.get(1),
-                    'B', new ItemStack(Blocks.furnace, 1),
-                    'C', GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Steel,1),
-                    'D', new ItemStack(Blocks.nether_brick, 1)
-                });
+                new Object[] { "ABA", "CDC", "ABA", 'A', ItemList.Casing_BronzePlatedBricks.get(1), 'B',
+                    new ItemStack(Blocks.furnace, 1), 'C',
+                    GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Steel, 1), 'D',
+                    new ItemStack(Blocks.nether_brick, 1) });
 
             // Steam Conformer
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Controller_SteamExtruder.get(1),
-                new Object[] {
-                    "BCA",
-                    "DEF",
-                    "AGA",
-                    'A', ItemList.Casing_BronzePlatedBricks.get(1),
-                    'B', ItemList.Hydraulic_Motor_Steam.get(1),
-                    'C', ItemList.Hydraulic_Piston_Steam.get(1),
-                    'D', new ItemStack(Blocks.anvil, 1),
-                    'E', GregtechItemList.Controller_SteamForgeHammerMulti.get(1),
-                    'F', GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Steel,1),
-                    'G', ItemList.Hydraulic_Conveyor_Steam.get(1)
-                });
+                new Object[] { "BCA", "DEF", "AGA", 'A', ItemList.Casing_BronzePlatedBricks.get(1), 'B',
+                    ItemList.Hydraulic_Motor_Steam.get(1), 'C', ItemList.Hydraulic_Piston_Steam.get(1), 'D',
+                    new ItemStack(Blocks.anvil, 1), 'E', GregtechItemList.Controller_SteamForgeHammerMulti.get(1), 'F',
+                    GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Steel, 1), 'G',
+                    ItemList.Hydraulic_Conveyor_Steam.get(1) });
 
             // Open Heart Blast Furnace
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Controller_SteamBlastFurnace.get(1),
-                new Object[] {
-                    "ABA",
-                    "BCB",
-                    "ABA",
-                    'A', ItemList.Stronze_Casing.get(1),
-                    'B', GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Steel,1),
-                    'C', ItemList.Machine_Bricked_BlastFurnace.get(1)
-                });
+                new Object[] { "ABA", "BCB", "ABA", 'A', ItemList.Stronze_Casing.get(1), 'B',
+                    GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Steel, 1), 'C',
+                    ItemList.Machine_Bricked_BlastFurnace.get(1) });
 
             // Steam Forge
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Controller_SteamMultiSmelter.get(1),
-                new Object[] {
-                    "ABA",
-                    "CDC",
-                    "ABA",
-                    'A', ItemList.Breel_Pipe_Casing.get(1),
-                    'B', new ItemStack(Blocks.furnace, 1),
-                    'C', ItemList.Stronze_Casing.get(1),
-                    'D', GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Stronze, 1)
-                });
+                new Object[] { "ABA", "CDC", "ABA", 'A', ItemList.Breel_Pipe_Casing.get(1), 'B',
+                    new ItemStack(Blocks.furnace, 1), 'C', ItemList.Stronze_Casing.get(1), 'D',
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Stronze, 1) });
 
             // Steam Rock Breaker
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Controller_SteamRockBreaker.get(1),
-                new Object[] {
-                    "ABA",
-                    "CDE",
-                    "ABA",
-                    'A', ItemList.Casing_BronzePlatedBricks.get(1),
-                    'B', ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings2, 12, 1),
-                    'C', new ItemStack(Items.water_bucket, 1),
-                    'D', GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CrudeSteel, 1),
-                    'E', new ItemStack(Items.lava_bucket, 1)
-                });
+                new Object[] { "ABA", "CDE", "ABA", 'A', ItemList.Casing_BronzePlatedBricks.get(1), 'B',
+                    ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings2, 12, 1), 'C',
+                    new ItemStack(Items.water_bucket, 1), 'D',
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CrudeSteel, 1), 'E',
+                    new ItemStack(Items.lava_bucket, 1) });
 
             // Steam Extractinator
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Controller_SteamExtractinator.get(1),
-                new Object[] {
-                    "ABA",
-                    "CDC",
-                    "ABA",
-                    'A', ItemList.Vibration_Safe_Casing.get(1),
-                    'B', ItemList.Casing_BronzePlatedBricks.get(1),
-                    'C', ItemList.Hydraulic_Pump_Steam.get(1),
-                    'D', GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Stronze, 1)
-                });
+                new Object[] { "ABA", "CDC", "ABA", 'A', ItemList.Vibration_Safe_Casing.get(1), 'B',
+                    ItemList.Casing_BronzePlatedBricks.get(1), 'C', ItemList.Hydraulic_Pump_Steam.get(1), 'D',
+                    GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Stronze, 1) });
 
             // Steam Carpenter
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Controller_SteamCarpenter.get(1),
-                new Object[] {
-                    "ABA",
-                    "CDC",
-                    "EEE",
-                    'A', ItemList.Casing_BronzePlatedBricks.get(1),
-                    'B', ItemList.Hydraulic_Piston_Steam.get(1),
-                    'D', new ItemStack(Blocks.glass, 1),
-                    'C', ItemList.Hydraulic_Arm_Steam.get(1),
-                    'E', GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 1)
-                });
+                new Object[] { "ABA", "CDC", "EEE", 'A', ItemList.Casing_BronzePlatedBricks.get(1), 'B',
+                    ItemList.Hydraulic_Piston_Steam.get(1), 'D', new ItemStack(Blocks.glass, 1), 'C',
+                    ItemList.Hydraulic_Arm_Steam.get(1), 'E',
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 1) });
 
             // Steam Wood Cutter
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Controller_SteamWoodcutter.get(1),
-                new Object[] {
-                    "AAA",
-                    "DCD",
-                    "EBE",
-                    'A', ItemList.Bronze_Wood_Casing.get(1),
-                    'B', ItemList.Hydraulic_Pump_Steam.get(1),
-                    'D', new ItemStack(Blocks.glass, 1),
-                    'C', new ItemStack(Blocks.dirt, 1),
-                    'E', GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 1)
-                });
+                new Object[] { "AAA", "DCD", "EBE", 'A', ItemList.Bronze_Wood_Casing.get(1), 'B',
+                    ItemList.Hydraulic_Pump_Steam.get(1), 'D', new ItemStack(Blocks.glass, 1), 'C',
+                    new ItemStack(Blocks.dirt, 1), 'E',
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 1) });
 
             // Steam Manufactrer
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Controller_SteamManufacturer.get(1),
-                new Object[] {
-                    "AAA",
-                    "DCD",
-                    "EBE",
-                    'A', ItemList.Hydraulic_Arm_Steam.get(1),
-                    'B', ItemList.Hydraulic_Conveyor_Steam.get(1),
-                    'D', ItemList.Casing_SolidSteel.get(1),
-                    'C', GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Breel, 1),
-                    'E', ItemList.Casing_Gearbox_Steel.get(1)
-                });
+                new Object[] { "AAA", "DCD", "EBE", 'A', ItemList.Hydraulic_Arm_Steam.get(1), 'B',
+                    ItemList.Hydraulic_Conveyor_Steam.get(1), 'D', ItemList.Casing_SolidSteel.get(1), 'C',
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Breel, 1), 'E',
+                    ItemList.Casing_Gearbox_Steel.get(1) });
 
             // Mega Oreproc
 
             // Mega Grinder
             RA.stdBuilder()
-                .itemInputs(GregtechItemList.Controller_SteamMaceratorMulti.get(64),
+                .itemInputs(
+                    GregtechItemList.Controller_SteamMaceratorMulti.get(64),
                     GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.CompressedSteam, 8))
                 .itemOutputs(GregtechItemList.Controller_SteamMegaMaceratorMulti.get(1))
                 .duration(120 * SECONDS)
@@ -642,7 +574,8 @@ public class AssortedSteamRecipes implements Runnable {
 
             // Mega Washer
             RA.stdBuilder()
-                .itemInputs(GregtechItemList.Controller_SteamWasherMulti.get(64),
+                .itemInputs(
+                    GregtechItemList.Controller_SteamWasherMulti.get(64),
                     GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.CompressedSteam, 8))
                 .itemOutputs(GregtechItemList.Controller_SteamMegaWasherMulti.get(1))
                 .duration(120 * SECONDS)
@@ -651,7 +584,8 @@ public class AssortedSteamRecipes implements Runnable {
 
             // Mega Hammer
             RA.stdBuilder()
-                .itemInputs(GregtechItemList.Controller_SteamForgeHammerMulti.get(64),
+                .itemInputs(
+                    GregtechItemList.Controller_SteamForgeHammerMulti.get(64),
                     GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.CompressedSteam, 8))
                 .itemOutputs(GregtechItemList.Controller_SteamMegaHammerMulti.get(1))
                 .duration(120 * SECONDS)
@@ -660,7 +594,8 @@ public class AssortedSteamRecipes implements Runnable {
 
             // Mega Centrifuge
             RA.stdBuilder()
-                .itemInputs(GregtechItemList.Controller_SteamCentrifugeMulti.get(64),
+                .itemInputs(
+                    GregtechItemList.Controller_SteamCentrifugeMulti.get(64),
                     GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.CompressedSteam, 8))
                 .itemOutputs(GregtechItemList.Controller_SteamMegaCentrifugeMulti.get(1))
                 .duration(120 * SECONDS)
