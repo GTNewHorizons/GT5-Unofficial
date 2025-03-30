@@ -204,6 +204,12 @@ public final class RecipeMaps {
         .progressBarSteam(GTUITextures.PROGRESSBAR_EXTRACT_STEAM)
         .neiHandlerInfo((builder -> builder.setDisplayStack((GregtechItemList.Controller_SteamManufacturer.get(1)))))
         .build();
+    public static final RecipeMap<RecipeMapBackend> steamFusionReactorRecipes = RecipeMapBuilder
+        .of("gt.recipe.steamfusion")
+        .maxIO(0, 0, 2, 1)
+        .progressBarSteam(GTUITextures.PROGRESSBAR_EXTRACT_STEAM)
+        .neiHandlerInfo((builder -> builder.setDisplayStack((GregtechItemList.Controller_SteamFusionReactor.get(1)))))
+        .build();
     public static final RecipeMap<RecipeMapBackend> neutroniumCompressorRecipes = RecipeMapBuilder
         .of("gt.recipe.neutroniumcompressor")
         .maxIO(1, 1, 1, 0)
