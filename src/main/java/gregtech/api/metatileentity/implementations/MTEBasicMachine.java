@@ -60,7 +60,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import gregtech.GTMod;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.gui.modularui.CircularGaugeDrawable;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ICleanroom;
@@ -1450,18 +1450,18 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     protected Widget createSteamProgressBar(ModularWindow.Builder builder) {
         builder.widget(new FakeSyncWidget.LongSyncer(this::getSteamVar, val -> getSteamVar = val));
 
-        return new ProgressBar().setProgress(() -> (float) getSteamVar() / maxSteamStore())
-            .setDirection(ProgressBar.Direction.UP)
-            .setTexture(
-                getSteamVariant() == SteamVariant.BRONZE ? GTUITextures.PROGRESSBAR_STEAM_FILL
-                    : GTUITextures.PROGRESSBAR_STEAM_FILL_STEEL,
-                54)
-            .setSynced(true, false)
-            .dynamicTooltip(() -> Collections.singletonList("Steam: " + getSteamVar + "/" + maxSteamStore() + "L"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setUpdateTooltipEveryTick(true)
-            .setSize(10, 54)
-            .setPos(7, 24);
+        builder.widget(
+            new DrawableWidget().setDrawable(GTUITextures.STEAM_GAUGE_BG)
+                .dynamicTooltip(() -> Collections.singletonList("Steam: " + getSteamVar + "/" + maxSteamStore() + "L"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setUpdateTooltipEveryTick(true)
+                .setSize(64, 42)
+                .setPos(-64, 100));
+
+        return new DrawableWidget()
+            .setDrawable(new CircularGaugeDrawable(() -> (float) getSteamVar / maxSteamStore()))
+            .setPos(-64 + 21, 100 + 21)
+            .setSize(18, 4);
     }
 
     protected Widget setNEITransferRect(Widget widget, String transferRectID) {
