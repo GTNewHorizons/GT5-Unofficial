@@ -26,7 +26,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTESteamgate extends MTEEnhancedMultiBlockBase<MTESteamgate> implements ISurvivalConstructable {
@@ -54,9 +53,10 @@ public class MTESteamgate extends MTEEnhancedMultiBlockBase<MTESteamgate> implem
         int colorIndex, boolean active, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == facing) {
-            rTexture = new ITexture[] {
-                Textures.BlockIcons
-                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsSteam, 0)),
+            rTexture = new ITexture[] { TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.STEAMGATE_CASING)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_STEAMGATE_CONTROLLER)
                     .extFacing()
@@ -64,8 +64,9 @@ public class MTESteamgate extends MTEEnhancedMultiBlockBase<MTESteamgate> implem
                     .build() };
 
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsSteam, 0)) };
+            rTexture = new ITexture[] { TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.STEAMGATE_CASING)
+                .build() };
         }
         return rTexture;
     }

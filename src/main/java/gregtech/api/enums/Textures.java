@@ -1547,7 +1547,9 @@ public class Textures {
         RADIATION_ABSORBENT_CASING,
         HAWKING_GLASS,
         OVERLAY_NANITE_HATCH,
-        OVERLAY_NANITE_HATCH_GLOW
+        OVERLAY_NANITE_HATCH_GLOW,
+
+        STEAMGATE_CASING,
 
         // semicolon after the comment to reduce merge conflicts
         ;

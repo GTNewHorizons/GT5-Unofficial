@@ -47,8 +47,8 @@ public class BlockCasingsSteam extends BlockCasingsAbstract {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
-            case 1 -> ordinalSide > 1 ? Textures.BlockIcons.STEAMGATE_CHEVRON_BLOCK.getIcon()
-                : Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();
+            case 0 -> Textures.BlockIcons.STEAMGATE_CASING.getIcon();
+            case 1 -> Textures.BlockIcons.STEAMGATE_CHEVRON_BLOCK.getIcon();
             case 2 -> Textures.BlockIcons.EXTRACTINATOR_CASING.getIcon();
             case 3 -> ordinalSide > 1 ? Textures.BlockIcons.EXTRACTINATOR_BASE.getIcon()
                 : ordinalSide == 1 ? Textures.BlockIcons.EXTRACTINATOR_BASE_TOP.getIcon()
