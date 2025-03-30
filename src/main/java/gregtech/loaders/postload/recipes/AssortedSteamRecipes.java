@@ -610,10 +610,40 @@ public class AssortedSteamRecipes implements Runnable {
                     'E', ItemList.Casing_Gearbox_Steel.get(1)
                 });
 
-            // Mega Crusher
+            // Mega Oreproc
+
+            // Mega Grinder
             RA.stdBuilder()
-                .itemInputs(GregtechItemList.Controller_SteamMaceratorMulti.get(64))
+                .itemInputs(GregtechItemList.Controller_SteamMaceratorMulti.get(64),
+                    GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.CompressedSteam, 8))
                 .itemOutputs(GregtechItemList.Controller_SteamMegaMaceratorMulti.get(1))
+                .duration(120 * SECONDS)
+                .eut(1600)
+                .addTo(steamManufacturerRecipes);
+
+            // Mega Washer
+            RA.stdBuilder()
+                .itemInputs(GregtechItemList.Controller_SteamWasherMulti.get(64),
+                    GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.CompressedSteam, 8))
+                .itemOutputs(GregtechItemList.Controller_SteamMegaWasherMulti.get(1))
+                .duration(120 * SECONDS)
+                .eut(1600)
+                .addTo(steamManufacturerRecipes);
+
+            // Mega Hammer
+            RA.stdBuilder()
+                .itemInputs(GregtechItemList.Controller_SteamForgeHammerMulti.get(64),
+                    GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.CompressedSteam, 8))
+                .itemOutputs(GregtechItemList.Controller_SteamMegaHammerMulti.get(1))
+                .duration(120 * SECONDS)
+                .eut(1600)
+                .addTo(steamManufacturerRecipes);
+
+            // Mega Centrifuge
+            RA.stdBuilder()
+                .itemInputs(GregtechItemList.Controller_SteamCentrifugeMulti.get(64),
+                    GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.CompressedSteam, 8))
+                .itemOutputs(GregtechItemList.Controller_SteamMegaCentrifugeMulti.get(1))
                 .duration(120 * SECONDS)
                 .eut(1600)
                 .addTo(steamManufacturerRecipes);
