@@ -455,7 +455,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
 
         private final String owner;
         private final String freq;
-        private boolean isPrivate;
+        private final boolean isPrivate;
         private final CoverPosition coverPosition;
 
         public SnifferEntry(String owner, String freq, CoverPosition coverPosition) {
@@ -521,6 +521,8 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
 
         @Override
         public boolean areEqual(@NotNull SnifferEntry t1, @NotNull SnifferEntry t2) {
+            if (t1.coverPosition == null && t2.coverPosition != null // ensure both entries are of the same type
+                || t1.coverPosition != null && t2.coverPosition == null) return false;
             if (t1.coverPosition == null) return t1.freq.equals(t2.freq) && t1.isPrivate == t2.isPrivate;
             return t1.coverPosition.equals(t2.coverPosition) && t1.owner.equals(t2.owner) && t1.freq.equals(t2.freq);
         }
