@@ -23,6 +23,7 @@ public class BlockCasingsSteam extends BlockCasingsAbstract {
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Breel Pipe Casing");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Stronze-Wrapped Casing");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Solar Boiling Cell");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Hydraulic Assembling Casing");
 
         ItemList.Steamgate_Ring_Block.set(new ItemStack(this, 1, 0));
         ItemList.Steamgate_Chevron_Block.set(new ItemStack(this, 1, 1));
@@ -34,6 +35,7 @@ public class BlockCasingsSteam extends BlockCasingsAbstract {
         ItemList.Breel_Pipe_Casing.set(new ItemStack(this, 1, 7));
         ItemList.Stronze_Casing.set(new ItemStack(this, 1, 8));
         ItemList.Solar_Boiler_Cell.set(new ItemStack(this, 1, 9));
+        ItemList.Hydraulic_Assembling_Casing.set(new ItemStack(this, 1, 10));
     }
 
     @Override
@@ -58,6 +60,7 @@ public class BlockCasingsSteam extends BlockCasingsAbstract {
             case 8 -> Textures.BlockIcons.MACHINE_CASING_STRONZE.getIcon();
             case 9 -> ordinalSide == 1 ? Textures.BlockIcons.SOLAR_CELL_TOP.getIcon()
                 : Textures.BlockIcons.SOLAR_CELL_SIDE.getIcon();
+            case 10 -> Textures.BlockIcons.HYDRAULIC_ASSEMBLING_CASING.getIcon();
             default -> Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();
         };
     }

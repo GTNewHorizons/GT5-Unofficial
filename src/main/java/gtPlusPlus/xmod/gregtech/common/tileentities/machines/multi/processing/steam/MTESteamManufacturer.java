@@ -56,9 +56,9 @@ public class MTESteamManufacturer extends MTEBetterSteamMultiBase<MTESteamManufa
                 (new String[][] {
                     { "         ", "         ", "         ", "         ", " AAAAA   ", " BB~BB   ", " AAAAA   " },
                     { "         ", "         ", "         ", "         ", "A     A  ", "B     B  ", "AAAAAAA  " },
-                    { "       D ", "     DDBD", "       D ", "       D ", "A     AD ", "B CCC CD ", "AAAAAAAAA" },
-                    { "    DDDAD", "   BBBBBA", "   B   CA", "   B   CA", "A     ACA", "B C CCCCA", "AAAAAAAAA" },
-                    { "       D ", "     DDBD", "       D ", "       D ", "A     AD ", "B CCC CD ", "AAAAAAAAA" },
+                    { "       D ", "     DDED", "       D ", "       D ", "A     AD ", "B CCC CD ", "AAAAAAAAA" },
+                    { "    DDDAD", "   EEEEEA", "   E   CA", "   E   CA", "A     ACA", "B C CCCCA", "AAAAAAAAA" },
+                    { "       D ", "     DDED", "       D ", "       D ", "A     AD ", "B CCC CD ", "AAAAAAAAA" },
                     { "         ", "         ", "         ", "         ", "A     A  ", "B     B  ", "AAAAAAA  " },
                     { "         ", "         ", "         ", "         ", " AAAAA   ", " BBBBB   ", " AAAAA   " } }))
             .addElement(
@@ -77,6 +77,7 @@ public class MTESteamManufacturer extends MTEBetterSteamMultiBase<MTESteamManufa
             .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 3))
             .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 13))
             .addElement('C', ofFrame(Materials.Steel))
+            .addElement('E', ofBlock(GregTechAPI.sBlockCasingsSteam, 10))
             .build();
     }
 
