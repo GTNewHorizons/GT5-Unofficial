@@ -325,7 +325,6 @@ public class MTESteamExtruder extends MTESteamMultiBase<MTESteamExtruder> implem
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Uses " + EnumChatFormatting.GOLD + "Superheated Steam")
             .addInfo("Uses pressure inside it's pipes to conform metals into desired shapes more efficiently")
             .addInfo("Processes up to 8 recipes at once")
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
@@ -364,11 +363,6 @@ public class MTESteamExtruder extends MTESteamMultiBase<MTESteamExtruder> implem
             .addStructureInfo(EnumChatFormatting.GOLD + "19x" + EnumChatFormatting.GRAY + " Block of Steel")
             .toolTipFinisher();
         return tt;
-    }
-
-    @Override
-    protected SteamTypes getSteamType() {
-        return SteamTypes.SH_STEAM;
     }
 
     @Override
