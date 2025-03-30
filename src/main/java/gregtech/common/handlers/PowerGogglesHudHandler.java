@@ -89,7 +89,7 @@ public class PowerGogglesHudHandler {
             }
             ++measurements;
             hudList.add(new Text(EnumChatFormatting.WHITE+"Wireless EU: " + changeColor+toEngineering(currentEU)));
-            hudList.add(new Text(EnumChatFormatting.WHITE+"5s: " + changeColor+toEngineering(lastChange) + (lastChangeDiff == 0 ? String.format(" (%s eu/t) ",toEngineering(lastChange.divide(BigInteger.valueOf(ticksBetweenMeasurements)))) : "")));
+            hudList.add(new Text(EnumChatFormatting.WHITE+"5s: " + changeColor+toEngineering(lastChange) + (lastChangeDiff != 0 ? String.format(" (%s eu/t) ",toEngineering(lastChange.divide(BigInteger.valueOf(ticksBetweenMeasurements)))) : "")));
 
         }
         ++ticks;
