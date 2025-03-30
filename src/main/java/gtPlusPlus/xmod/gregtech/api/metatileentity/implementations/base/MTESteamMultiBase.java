@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.formatNumbers;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -13,6 +14,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import gregtech.api.gui.modularui.CircularGaugeDrawable;
+import gregtech.api.gui.modularui.GTUITextures;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -118,6 +125,14 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         int aSteam = 0;
         for (FluidStack aFluid : getAllSteamStacks()) {
             aSteam += aFluid.amount;
+        }
+        return aSteam;
+    }
+
+    public int getTotalSteamCapacity() {
+        int aSteam = 0;
+        for (MTEHatchCustomFluidBase tHatch : validMTEList(mSteamInputFluids)) {
+            aSteam += tHatch.getRealCapacity();
         }
         return aSteam;
     }
@@ -501,5 +516,28 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
+    }
+
+    private int uiSteamStored = 0;
+    private int uiSteamCapacity = 0;
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
+        builder.widget(new FakeSyncWidget.IntegerSyncer(this::getTotalSteamCapacity, val -> uiSteamCapacity = val));
+        builder.widget(new FakeSyncWidget.IntegerSyncer(this::getTotalSteamStored, val -> uiSteamStored = val));
+
+        builder.widget(
+            new DrawableWidget().setDrawable(GTUITextures.STEAM_GAUGE_BG)
+                .dynamicTooltip(() -> Collections.singletonList("Steam: " + uiSteamStored + "/" + uiSteamCapacity + "L"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setUpdateTooltipEveryTick(true)
+                .setSize(64, 42)
+                .setPos(-64, 100));
+
+        builder.widget(new DrawableWidget()
+            .setDrawable(new CircularGaugeDrawable(() -> (float) uiSteamStored / uiSteamCapacity))
+            .setPos(-64 + 21, 100 + 21)
+            .setSize(18, 4));
     }
 }
