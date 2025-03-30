@@ -10,6 +10,8 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -149,6 +151,7 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
     }
     // spotless:on
 
+    @Nullable
     public static Integer getFrameTier(Block block, int meta) {
         if (block == GregTechAPI.sBlockFrames) {
             if (meta == Materials.Bronze.mMetaItemSubID) return 1;
