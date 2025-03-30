@@ -58,7 +58,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.LongData;
 import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.TecTech;
@@ -109,11 +108,8 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
 
     protected boolean voidExcessEnabled = false;
 
-    private final LongRunningAverage fluidInputValues1h = new LongRunningAverage(3600 * 20);
-    private final LongRunningAverage fluidOutputValues1h = new LongRunningAverage(3600 * 20);
-
-    private final LongData fluidInputValues1m = fluidInputValues1h.view(60 * 20);
-    private final LongData fluidOutputValues1m = fluidOutputValues1h.view(60 * 20);
+    private final LongRunningAverage fluidInputValues1m = new LongRunningAverage(60 * 20);
+    private final LongRunningAverage fluidOutputValues1m = new LongRunningAverage(60 * 20);
 
     protected Parameters.Group.ParameterIn tickRateSettings;
 
@@ -492,8 +488,8 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
         long tickRate = Math.min(100L, Math.max(1L, (long) tickRateSettings.get()));
         ++workTickCounter;
         if (workTickCounter < tickRate) {
-            fluidInputValues1h.update(totalInput);
-            fluidOutputValues1h.update(totalOutput);
+            fluidInputValues1m.update(totalInput);
+            fluidOutputValues1m.update(totalOutput);
             return true;
         }
         workTickCounter = 0;
@@ -578,8 +574,8 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
                 }
             }
         }
-        fluidInputValues1h.update(totalInput);
-        fluidOutputValues1h.update(totalOutput);
+        fluidInputValues1m.update(totalInput);
+        fluidOutputValues1m.update(totalOutput);
         return true;
     }
 
