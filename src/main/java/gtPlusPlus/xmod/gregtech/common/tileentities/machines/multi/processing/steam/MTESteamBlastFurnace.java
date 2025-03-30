@@ -54,16 +54,18 @@ public class MTESteamBlastFurnace extends MTEBetterSteamMultiBase<MTESteamBlastF
         for (MTEHatchCustomFluidBase tHatch : validMTEList(mSteamInputFluids)) {
             FluidStack steamStack = tHatch.getFillableStack();
             if (steamStack != null) {
-                int drain = Math.min(10, steamStack.amount);
+                int drain = Math.min(3200, steamStack.amount);
+                // Round down to the nearest 80
+                drain = (int) ((double) (drain / 80) * 80);
                 tHatch.drain(drain, true);
                 if (steamStack.isFluidEqual(steam)) {
-                    mProgresstime += drain;
+                    mProgresstime += (drain / 80);
                 } else if (steamStack.isFluidEqual(shSteam)) {
-                    mProgresstime += drain * 10;
+                    mProgresstime += (drain / 80) * 10;
                 } else if (steamStack.getFluid()
                     .getName()
                     .equals("supercriticalsteam")) {
-                        mProgresstime += drain * 100;
+                        mProgresstime += (drain / 80) * 100;
                     }
             }
         }
@@ -165,13 +167,13 @@ public class MTESteamBlastFurnace extends MTEBetterSteamMultiBase<MTESteamBlastF
             .addInfo("Faster than Bricked Blast Furnace and can be automated")
             .addInfo(
                 "Consumes up to " + EnumChatFormatting.WHITE
-                    + "10 L/t"
+                    + "3200 L/t"
                     + EnumChatFormatting.GRAY
                     + " of steam (any variety)")
             .addInfo("Recipe time is converted to total steam consumption")
-            .addInfo("Steam: " + EnumChatFormatting.WHITE + "1L = 1s")
-            .addInfo("Superheated Steam: " + EnumChatFormatting.WHITE + "1L = 10s")
-            .addInfo("Supercritical Steam: " + EnumChatFormatting.WHITE + "1L = 100s")
+            .addInfo("Steam: " + EnumChatFormatting.WHITE + "80L = 1s")
+            .addInfo("Superheated Steam: " + EnumChatFormatting.WHITE + "80L = 10s")
+            .addInfo("Supercritical Steam: " + EnumChatFormatting.WHITE + "80L = 100s")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
