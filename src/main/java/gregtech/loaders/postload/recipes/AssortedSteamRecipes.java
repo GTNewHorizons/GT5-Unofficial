@@ -606,6 +606,18 @@ public class AssortedSteamRecipes implements Runnable {
                 new Object[] { "ABA", "ACA", "ABA", 'A', new ItemStack(Blocks.cactus, 1), 'B',
                     ItemList.Casing_BronzePlatedBricks.get(1), 'C', ItemList.Hydraulic_Pump_Steam.get(1) });
 
+            // Lavamaker
+            RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Stronze_Casing.get(1),
+                    ItemList.Hydraulic_Motor_Steam.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Stronze, 2),
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Breel, 2))
+                .itemOutputs(GregtechItemList.Controller_SteamLavaMaker.get(1))
+                .duration(10 * SECONDS)
+                .eut(200)
+                .addTo(steamManufacturerRecipes);
+
             // Pipeless Hatch
             GTModHandler.addCraftingRecipe(
                 ItemList.Pipeless_Hatch_Steam.get(1),
