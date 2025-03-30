@@ -24,7 +24,7 @@ public class SteamExtractinatorRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.gravel, 16))
             .fluidInputs(FluidUtils.getWater(1000))
             .fluidOutputs(Materials.GravelSluice.getFluid(4000))
-            .duration(15 * SECONDS)
+            .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(mixerRecipes);
 
@@ -32,7 +32,7 @@ public class SteamExtractinatorRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.sand, 16))
             .fluidInputs(FluidUtils.getWater(1000))
             .fluidOutputs(Materials.SandSluice.getFluid(4000))
-            .duration(15 * SECONDS)
+            .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(mixerRecipes);
 
@@ -40,7 +40,7 @@ public class SteamExtractinatorRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.obsidian, 16))
             .fluidInputs(FluidUtils.getWater(1000))
             .fluidOutputs(Materials.ObsidianSluice.getFluid(4000))
-            .duration(15 * SECONDS)
+            .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(mixerRecipes);
 
