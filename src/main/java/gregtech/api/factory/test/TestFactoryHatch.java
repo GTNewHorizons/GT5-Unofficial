@@ -72,7 +72,7 @@ public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactory
         List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
         if (network == null) {
-            data.add("No network");
+            data.add(StatCollector.translateToLocal("GT5U.info.no_network"));
         } else {
             for (TestFactoryHatch hatch : network.getComponents(TestFactoryHatch.class)) {
                 IGregTechTileEntity base = hatch.getBaseMetaTileEntity();

@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -50,7 +51,7 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
     private final short[] numbers = new short[6];
     private boolean transpose = false;
     private boolean showHighlightBox = true;
-    private String[] result = new String[] { "Undefined" };
+    private String[] result = new String[] { StatCollector.translateToLocal("GT5U.info.undefined") };
 
     public MTEAdvDebugStructureWriter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");

@@ -303,9 +303,10 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            "The bus is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
-                : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET };
+        return new String[] { (getProxy() != null && getProxy().isActive())
+            ? StatCollector.translateToLocal("GT5U.info.hatch.crafting_input_me.bus.online")
+            : StatCollector
+                .translateToLocalFormatted("GT5U.info.hatch.crafting_input_me.bus.offline", getAEDiagnostics()) };
     }
 
     @Override

@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -232,35 +233,28 @@ public class MTEBoilerSolar extends MTEBoiler {
 
     @Override
     public String[] getInfoData() {
-        return String
-            .format(
-                "Heat Capacity: " + EnumChatFormatting.GREEN
-                    + "%s %%"
-                    + EnumChatFormatting.RESET
-                    + "    Hot time: "
-                    + EnumChatFormatting.RED
-                    + "%s s"
-                    + EnumChatFormatting.RESET
-                    + "%n"
-                    + "Min output: "
-                    + EnumChatFormatting.RED
-                    + LPS_FMT
-                    + EnumChatFormatting.RESET
-                    + "    Max output: "
-                    + EnumChatFormatting.RED
-                    + LPS_FMT
-                    + EnumChatFormatting.RESET
-                    + "%n"
-                    + "Current Output: "
-                    + EnumChatFormatting.YELLOW
-                    + LPS_FMT
-                    + EnumChatFormatting.RESET,
-                GTUtility.formatNumbers(getHeatCapacityPercent()),
-                GTUtility.formatNumbers(getHotTimeSeconds()),
-                GTUtility.formatNumbers(getMinOutputPerSecond()),
-                GTUtility.formatNumbers(getMaxOutputPerSecond()),
-                GTUtility.formatNumbers(getProductionPerSecond()))
-            .split("\\R");
+        return new String[] {
+            StatCollector.translateToLocalFormatted(
+                "GT5U.info.boiler_solar.heat",
+                String.format(
+                    EnumChatFormatting.GREEN + "%s %%" + EnumChatFormatting.RESET,
+                    GTUtility.formatNumbers(getHeatCapacityPercent())),
+                String.format(
+                    EnumChatFormatting.RED + "%s s" + EnumChatFormatting.RESET,
+                    GTUtility.formatNumbers(getHotTimeSeconds()))),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.info.boiler_solar.output",
+                String.format(
+                    EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET,
+                    GTUtility.formatNumbers(getMinOutputPerSecond())),
+                String.format(
+                    EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET,
+                    GTUtility.formatNumbers(getMaxOutputPerSecond()))),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.info.boiler_solar.current_output",
+                String.format(
+                    EnumChatFormatting.YELLOW + LPS_FMT + EnumChatFormatting.RESET,
+                    GTUtility.formatNumbers(getProductionPerSecond()))) };
     }
 
     public int getHeatCapacityPercent() {

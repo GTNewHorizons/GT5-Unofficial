@@ -2117,6 +2117,52 @@ GT5U.tooltip.tool.heat=Heat: %d K
 GT5U.tooltip.volumetric_flask.empty=Empty
 GT5U.tooltip.volumetric_flask.set_volume=Rightclick on air to set volume (only while empty)
 
+# info data
+GT5U.info.no_network=No Network
+GT5U.info.battery_buffer.stored_items=Stored Items: %s EU / %s EU
+GT5U.info.battery_buffer.average_input=Average input: %s EU/t
+GT5U.info.battery_buffer.average_output=Average output: %s EU/t
+GT5U.info.progress=Progress: %s s / %s s
+GT5U.info.energy=Stored Energy: %s EU / %s EU
+GT5U.info.currently_uses=Currently uses: %s EU/t at %s A
+GT5U.info.cable.failed=Failed to get Power Node info
+GT5U.info.cable.amperage=Amperage: %s / %s A
+GT5U.info.cable.voltage_out=Voltage Out: %s / %s EU/t
+GT5U.info.cable.avg_amperage=Avg Amperage (20t): %s A
+GT5U.info.cable.avg_output=Avg Output (20t): %s EU/t
+
+GT5U.info.hatch.output=Output Hatch
+GT5U.info.hatch.output.fluid=Stored Fluid: %s
+GT5U.info.hatch.output.fluid.none=No Fluid
+GT5U.info.hatch.output.fluid.locked_to.none=Not Locked
+GT5U.info.hatch.output.fluid.locked_to=Locked to %s
+
+GT5U.info.boiler_solar.heat=Heat Capacity: %s    Hot time: %s
+GT5U.info.boiler_solar.output=Min output: %s    Max output: %s
+GT5U.info.boiler_solar.current_output=Current Output: %s
+
+GT5U.info.undefined=Undefined
+
+GT5U.info.hatch.me.diagnostics.proxy=(proxy)
+GT5U.info.hatch.me.diagnostics.node=(node)
+GT5U.info.hatch.me.diagnostics.grid=(grid)
+GT5U.info.hatch.me.diagnostics.channels=(channels)
+GT5U.info.hatch.me.diagnostics.booting=(booting)
+GT5U.info.hatch.me.diagnostics.power=(power)s
+GT5U.info.hatch.crafting_input_me.bus.online=The bus is §aonline§r
+GT5U.info.hatch.crafting_input_me.bus.offline=The bus is §coffline%s§r
+GT5U.info.hatch.internal_inventory=Internal Inventory:
+GT5U.info.hatch.internal_inventory.slot=Slot %d %s
+GT5U.info.hatch.crafting_input_slave.linked_to=This bus is linked to the Crafting Input Buffer at %d, %d, %d.
+GT5U.info.hatch.crafting_input_slave.not_linked_to=This bus is not linked to any Crafting Input Buffer.
+GT5U.info.hatch.output_bus_me.cache_capacity=Item cache capacity: %s
+GT5U.info.hatch.output_bus_me.empty=The bus has no cached items
+GT5U.info.hatch.output_bus_me.contains=The bus contains %d cached stacks:
+GT5U.info.hatch.output_me.cache_capacity=Fluid cache capacity: %s
+GT5U.info.hatch.output_me.empty=The bus has no cached fluids
+GT5U.info.hatch.output_me.contains=The hatch contains %d cached fluids:
+
+
 # Achievements
 
 # 4/2/19

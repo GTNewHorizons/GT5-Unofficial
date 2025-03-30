@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -115,14 +116,13 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         var ret = new ArrayList<String>();
         if (getMaster() != null) {
             ret.add(
-                "This bus is linked to the Crafting Input Buffer at " + masterX
-                    + ", "
-                    + masterY
-                    + ", "
-                    + masterZ
-                    + ".");
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.info.hatch.crafting_input_slave.linked_to",
+                    masterX,
+                    masterY,
+                    masterZ));
             ret.addAll(Arrays.asList(getMaster().getInfoData()));
-        } else ret.add("This bus is not linked to any Crafting Input Buffer.");
+        } else ret.add(StatCollector.translateToLocal("GT5U.info.hatch.crafting_input_slave.not_linked_to"));
         return ret.toArray(new String[0]);
     }
 
