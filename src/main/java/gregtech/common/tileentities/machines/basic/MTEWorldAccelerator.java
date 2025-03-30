@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -136,19 +137,24 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     public String[] getInfoData() {
         List<String> tInfoDisplay = new ArrayList<>();
 
-        tInfoDisplay.add(String.format("Accelerator running in %s mode", mModeStr[mMode]));
         tInfoDisplay.add(
-            String.format(
-                "Speed setting: [%d / %d]",
+            StatCollector.translateToLocalFormatted(
+                "GT5U.info.world_accelerator.mode",
+                StatCollector.translateToLocal(mUnlocalizedModeStr[mMode])));
+        tInfoDisplay.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.info.world_accelerator.speed",
                 mAccelerateStatic[getSpeedTierOverride()],
                 mAccelerateStatic[mTier]));
         tInfoDisplay.add(
-            String.format(
-                "Consuming %d EU/t",
+            StatCollector.translateToLocalFormatted(
+                "GT5U.info.world_accelerator.consuming",
                 getEnergyDemand(getSpeedTierOverride(), getRadiusTierOverride(), mMode == 1)));
 
         // Don't show radius setting if in TE Mode
-        if (mMode == 0) tInfoDisplay.add(String.format("Radius setting: [%d / %d]", getRadiusTierOverride(), mTier));
+        if (mMode == 0) tInfoDisplay.add(
+            StatCollector
+                .translateToLocalFormatted("GT5U.info.world_accelerator.radius", getRadiusTierOverride(), mTier));
 
         return tInfoDisplay.toArray(new String[0]);
     }
@@ -269,6 +275,9 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     }
 
     private static final String[] mModeStr = { "Blocks", "TileEntities" };
+
+    private static final String[] mUnlocalizedModeStr = { "GT5U.word_accelerator.mode.blocks",
+        "GT5U.word_accelerator.mode.tile_entities" };
 
     // This uses the Wrench as second tool to cycle speeds
     @Override

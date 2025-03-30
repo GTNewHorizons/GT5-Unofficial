@@ -36,6 +36,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -183,17 +184,33 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
 
     @Override
     public String[] getInfoData() {
-        return new String[] { "Coordinates:",
-            "X: " + EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetX) + EnumChatFormatting.RESET,
-            "Y: " + EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetY) + EnumChatFormatting.RESET,
-            "Z: " + EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetZ) + EnumChatFormatting.RESET,
-            "Dimension: " + EnumChatFormatting.GREEN + this.mTargetD + EnumChatFormatting.RESET,
-            "Dimension Valid: " + (GTUtility.isRealDimension(this.mTargetD)
-                ? EnumChatFormatting.GREEN + "Yes" + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + "No" + EnumChatFormatting.RESET),
-            "Dimension Registered: " + (DimensionManager.isDimensionRegistered(this.mTargetD)
-                ? EnumChatFormatting.GREEN + "Yes" + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + "No" + EnumChatFormatting.RESET) };
+        return new String[] { StatCollector.translateToLocal("GT5U.info.coordinates"),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.info.coordinates.x",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetX) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.info.coordinates.y",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetY) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.info.coordinates.z",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetZ) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.info.dimension",
+                "" + EnumChatFormatting.GREEN + this.mTargetD + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.info.dimension.valid",
+                (GTUtility.isRealDimension(this.mTargetD)
+                    ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.info.yes")
+                        + EnumChatFormatting.RESET
+                    : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.info.no")
+                        + EnumChatFormatting.RESET)),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.info.dimension.registered",
+                (DimensionManager.isDimensionRegistered(this.mTargetD)
+                    ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.info.yes")
+                        + EnumChatFormatting.RESET
+                    : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.info.no")
+                        + EnumChatFormatting.RESET)) };
     }
 
     @Override

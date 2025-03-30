@@ -34,6 +34,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -1018,30 +1019,38 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         return tt;
     }
 
+    private static String getLocalizedHatchName(int index) {
+        String unlocalizedName = "GT5U.info.wormhole_generator.hatch." + HATCH_NAMES[index].toLowerCase();
+        if(StatCollector.canTranslate(unlocalizedName)) {
+            return StatCollector.translateToLocal(unlocalizedName);
+        }
+        return HATCH_NAMES[index];
+    }
+
     @Override
     public String[] getInfoData() {
 
         List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
         data.add(EnumChatFormatting.STRIKETHROUGH + "-----------------------");
-        data.add("Wormhole Generator Info");
+        data.add(StatCollector.translateToLocal("GT5U.info.wormhole_generator"));
 
         if (mStructureBadGlassTier) {
-            data.add("§cStructure errors:§r");
-            data.add("§cGlass tier must be greater than or equal to the energy hatch tiers.§r");
+            data.add(StatCollector.translateToLocal("GT5U.info.wormhole_generator.structure_error"));
+            data.add(StatCollector.translateToLocal("GT5U.info.wormhole_generator.bad_class_tier"));
         }
 
         if (mLink == null) {
-            data.add("An entangled singularity must be present in the controller slot");
+            data.add(StatCollector.translateToLocal("GT5U.info.wormhole_generator.no_link"));
         } else {
             if (!mLink.isFormed()) {
-                data.add("Wormhole status: §cNo destination§f");
+                data.add(StatCollector.translateToLocal("GT5U.info.wormhole_generator.status.no_destination"));
             } else {
                 if (mLink.mWormholeEnergy > 0) {
                     if (mLink.isActive()) {
-                        data.add("Wormhole status: §bActive§f");
+                        data.add(StatCollector.translateToLocal("GT5U.info.wormhole_generator.status.active"));
                     } else {
-                        data.add("Wormhole status: §6Decaying§f");
+                        data.add(StatCollector.translateToLocal("GT5U.info.wormhole_generator.status.decaying"));
                     }
                 } else {
                     boolean anyTransferable = false;
@@ -1056,16 +1065,16 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     }
 
                     if (anyTransferable) {
-                        data.add("Wormhole status: §7Inactive§f");
+                        data.add(StatCollector.translateToLocal("GT5U.info.wormhole_generator.status.inactive"));
                     } else {
-                        data.add("Wormhole status: §7No energy in input hatches§f");
+                        data.add(StatCollector.translateToLocal("GT5U.info.wormhole_generator.status.no_energy"));
                     }
                 }
 
                 double radius = Math.sqrt(mLink.mWormholeEnergy / 20.0 / 32.0);
-                data.add(String.format("Wormhole diameter: §b%,d§r angstrom", (long) (radius * 2)));
+                data.add(StatCollector.translateToLocalFormatted("GT5U.info.wormhole_generator.diameter", (long) (radius * 2)));
 
-                data.add(String.format("Optimal transfer speed: §b%,.0f§r EU/t", mLink.mWormholeEnergy / 20));
+                data.add(StatCollector.translateToLocalFormatted("GT5U.info.wormhole_generator.optimal_transfer_speed", mLink.mWormholeEnergy / 20));
             }
         }
 
@@ -1097,9 +1106,9 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
             // spotless:off
             if(inputHatch != null) {
-                data.add(String.format(
-                    "%s hatch (%,dA/t %s) transferred §b%,d§f EU (equivalent to %,dA/t) with an efficiency of %.3f%% in the last %d seconds",
-                    HATCH_NAMES[i],
+                data.add(StatCollector.translateToLocalFormatted(
+                    "GT5U.info.wormhole_generator.transferred",
+                    getLocalizedHatchName(i),
                     inputHatch.Amperes,
                     VN[inputHatch.mTier],
                     avgSend,
@@ -1108,9 +1117,9 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     SCAN_AVG_WINDOW
                 ));
             } else if(outputHatch != null) {
-                data.add(String.format(
-                    "%s hatch (%,dA/t %s) received §b%,d§f EU (equivalent to %,dA/t) with an efficiency of %.3f%% in the last %d seconds",
-                    HATCH_NAMES[i],
+                data.add(StatCollector.translateToLocalFormatted(
+                    "GT5U.info.wormhole_generator.received",
+                    getLocalizedHatchName(i),
                     outputHatch.Amperes,
                     VN[outputHatch.mTier],
                     avgReceive,
@@ -1119,7 +1128,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     SCAN_AVG_WINDOW
                 ));
             } else {
-                data.add(String.format("%s hatch is not present", HATCH_NAMES[i]));
+                data.add(StatCollector.translateToLocalFormatted("GT5U.info.wormhole_generator.not_present", getLocalizedHatchName(i)));
             }
             // spotless:on
         }

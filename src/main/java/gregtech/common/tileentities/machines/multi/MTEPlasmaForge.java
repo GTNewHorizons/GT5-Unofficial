@@ -955,7 +955,9 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         return new String[] {
             EnumChatFormatting.STRIKETHROUGH + "------------"
                 + EnumChatFormatting.RESET
-                + " Critical Information "
+                + " "
+                + StatCollector.translateToLocal("GT5U.info.plasma_forge.critical_info")
+                + " "
                 + EnumChatFormatting.STRIKETHROUGH
                 + "------------",
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
@@ -1000,15 +1002,19 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 + GTUtility.formatNumbers(mHeatingCapacity)
                 + EnumChatFormatting.RESET
                 + " K",
-            "Ticks run: " + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(running_time)
-                + EnumChatFormatting.RESET
-                + ", Fuel Discount: "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(100 * (1 - discount))
-                + EnumChatFormatting.RESET
-                + "%",
-            "Convergence: " + (convergence ? EnumChatFormatting.GREEN + "Active" : EnumChatFormatting.RED + "Inactive"),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.info.plasma_forge.ticks_run_fuel_discount",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(running_time) + EnumChatFormatting.RESET,
+                EnumChatFormatting.RED + GTUtility.formatNumbers(100 * (1 - discount))
+                    + EnumChatFormatting.RESET
+                    + "%"),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.info.plasma_forge.convergence",
+                (convergence
+                    ? EnumChatFormatting.GREEN
+                        + StatCollector.translateToLocal("GT5U.info.plasma_forge.convergence.active")
+                    : EnumChatFormatting.RED
+                        + StatCollector.translateToLocal("GT5U.info.plasma_forge.convergence.inactive"))),
             EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
     }
 
