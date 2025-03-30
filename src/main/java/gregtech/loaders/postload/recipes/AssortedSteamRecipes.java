@@ -6,6 +6,7 @@ import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.lavaMakerRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.steamCarpenterRecipes;
+import static gregtech.api.recipe.RecipeMaps.steamFusionReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.steamManufacturerRecipes;
 import static gregtech.api.recipe.RecipeMaps.steamWoodcutterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -33,6 +34,13 @@ public class AssortedSteamRecipes implements Runnable {
 
     @Override
     public void run() {
+
+        RA.stdBuilder()
+            .fluidInputs(GTModHandler.getSteam(15000), Materials.Creosote.getFluid(15000))
+            .fluidOutputs(FluidUtils.getSuperHeatedSteam(15000))
+            .duration(10 * TICKS)
+            .eut(0)
+            .addTo(steamFusionReactorRecipes);
 
         RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1))
@@ -686,6 +694,13 @@ public class AssortedSteamRecipes implements Runnable {
                 .duration(120 * SECONDS)
                 .eut(1600)
                 .addTo(steamManufacturerRecipes);
+
+            // Fusion Reactor
+            GTModHandler.addCraftingRecipe(
+                GregtechItemList.Controller_SteamFusionReactor.get(1),
+                new Object[] { "ABA", "DCD", "ABA", 'A', GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Stronze, 1), 'C',
+                    GregtechItemList.Controller_MegaSolarBoiler.get(1), 'B', GTOreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1),
+                    'D', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Beryllium, 1) });
 
             // Mega Oreproc
 

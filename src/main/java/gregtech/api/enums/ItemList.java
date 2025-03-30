@@ -1906,6 +1906,7 @@ public enum ItemList implements IItemContainer {
     Stronze_Casing,
     Solar_Boiler_Cell,
     Hydraulic_Assembling_Casing,
+    Hyper_Pressure_Breel_Casing,
 
     Circuit_Board_Coated,
     Circuit_Board_Coated_Basic,
