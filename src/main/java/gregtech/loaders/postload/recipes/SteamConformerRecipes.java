@@ -31,7 +31,7 @@ public class SteamConformerRecipes implements Runnable {
 
         Materials[] Tier1Materials = { Materials.Bronze, Materials.Iron, Materials.Copper, Materials.Tin,
             Materials.Brass, Materials.Steel, Materials.WroughtIron, Materials.Breel, Materials.Stronze,
-            Materials.CompressedSteam, Materials.CrudeSteel, Materials.Rubber };
+            Materials.CompressedSteam, Materials.CrudeSteel, Materials.Rubber, Materials.Clay };
 
         for (Materials aMaterial : Tier1Materials) {
 

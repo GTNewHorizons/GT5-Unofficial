@@ -2875,7 +2875,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEChestBuffer(
                 CHEST_BUFFER_ULV.ID,
                 "automation.chestbuffer.tier.00",
-                "Ultra Low Voltage Chest Buffer",
+                "Hydraulic Chest Buffer",
                 0).getStackForm(1L));
         ItemList.Automation_ChestBuffer_LV.set(
             new MTEChestBuffer(CHEST_BUFFER_LV.ID, "automation.chestbuffer.tier.01", "Low Voltage Chest Buffer", 1)
@@ -2929,7 +2929,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerItemFilter() {
         ItemList.Automation_Filter_ULV.set(
-            new MTEFilter(ITEM_FILTER_ULV.ID, "automation.filter.tier.00", "Ultra Low Voltage Item Filter", 0)
+            new MTEFilter(ITEM_FILTER_ULV.ID, "automation.filter.tier.00", "Hydraulic Item Filter", 0)
                 .getStackForm(1L));
         ItemList.Automation_Filter_LV.set(
             new MTEFilter(ITEM_FILTER_LV.ID, "automation.filter.tier.01", "Low Voltage Item Filter", 1)
@@ -2962,7 +2962,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerTypeFilter() {
         ItemList.Automation_TypeFilter_ULV.set(
-            new MTETypeFilter(TYPE_FILTER_ULV.ID, "automation.typefilter.tier.00", "Ultra Low Voltage Type Filter", 0)
+            new MTETypeFilter(TYPE_FILTER_ULV.ID, "automation.typefilter.tier.00", "Hydraulic Type Filter", 0)
                 .getStackForm(1L));
         ItemList.Automation_TypeFilter_LV.set(
             new MTETypeFilter(TYPE_FILTER_LV.ID, "automation.typefilter.tier.01", "Low Voltage Type Filter", 1)
@@ -2998,7 +2998,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerRegulator() {
         ItemList.Automation_Regulator_ULV.set(
-            new MTERegulator(VOLTAGE_REGULATOR_ULV.ID, "automation.regulator.tier.00", "Ultra Low Voltage Regulator", 0)
+            new MTERegulator(VOLTAGE_REGULATOR_ULV.ID, "automation.regulator.tier.00", "Hydraulic Regulator", 0)
                 .getStackForm(1L));
         ItemList.Automation_Regulator_LV.set(
             new MTERegulator(VOLTAGE_REGULATOR_LV.ID, "automation.regulator.tier.01", "Low Voltage Regulator", 1)
@@ -3037,7 +3037,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTESuperBuffer(
                 SUPER_BUFFER_ULV.ID,
                 "automation.superbuffer.tier.00",
-                "Ultra Low Voltage Super Buffer",
+                "Hydraulic Super Buffer",
                 0).getStackForm(1L));
         ItemList.Automation_SuperBuffer_LV.set(
             new MTESuperBuffer(SUPER_BUFFER_LV.ID, "automation.superbuffer.tier.01", "Low Voltage Super Buffer", 1)
@@ -3079,7 +3079,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEItemDistributor(
                 ITEM_DISTRIBUTOR_ULV.ID,
                 "automation.itemdistributor.tier.00",
-                "Ultra Low Voltage Item Distributor",
+                "Hydraulic Item Distributor",
                 0).getStackForm(1L));
         ItemList.Automation_ItemDistributor_LV.set(
             new MTEItemDistributor(
@@ -3142,7 +3142,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTERecipeFilter(
                 RECIPE_FILTER_ULV.ID,
                 "automation.recipefilter.tier.00",
-                "Ultra Low Voltage Recipe Filter",
+                "Hydraulic Recipe Filter",
                 0).getStackForm(1L));
         ItemList.Automation_RecipeFilter_LV.set(
             new MTERecipeFilter(RECIPE_FILTER_LV.ID, "automation.recipefilter.tier.01", "Low Voltage Recipe Filter", 1)
