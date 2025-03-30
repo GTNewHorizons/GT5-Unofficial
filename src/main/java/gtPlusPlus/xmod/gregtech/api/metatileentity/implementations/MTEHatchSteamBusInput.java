@@ -24,10 +24,10 @@ public class MTEHatchSteamBusInput extends MTEHatchInputBus {
 
     public static int getSlots(int tier) {
         switch (tier) {
-            case 1 -> {
+            case 0 -> {
                 return 4;
             }
-            case 2 -> {
+            case 1 -> {
                 return 9;
             }
             default -> {
