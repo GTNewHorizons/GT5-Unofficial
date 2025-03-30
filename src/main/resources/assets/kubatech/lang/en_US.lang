@@ -37,6 +37,25 @@ GT5U.gui.text.EIG_seedOverflow=Too many seeds inside!
 GT5U.gui.text.EIG_missingwater=No water!
 GT5U.gui.text.EIG_ic2glass=Insufficient glass tier!
 
+#info
+kubatech.info.eec.current_mob=Current Mob: §e%s
+kubatech.info.eec.current_mob.none=Current Mob: §eNone
+kubatech.info.eec.animations.enabled=Animations: §eEnabled
+kubatech.info.eec.animations.disabled=Animations: §eDisabled
+kubatech.info.eec.produce_infernal_drops.allowed=Is allowed to produce infernal drops: §eYes
+kubatech.info.eec.produce_infernal_drops.not_allowed=Is not allowed to produce infernal drops: §eNo
+kubatech.info.eec.void_damaged.yes=Void all damaged and enchanted items: §eYes
+kubatech.info.eec.void_damaged.no=Void all damaged and enchanted items: §eNo
+kubatech.info.eec.in_ritual_mode.yes=Is in ritual mode: §eYes
+kubatech.info.eec.in_ritual_mode.no=Is in ritual mode: §eNo
+kubatech.info.eec.connected_to_ritual.yes=Is connected to ritual: §aYes
+kubatech.info.eec.connected_to_ritual.no=Is connected to ritual: §cNo
+kubatech.info.eec.inserted_weapon.yes=Inserted weapon: §eYes
+kubatech.info.eec.inserted_weapon.no=Inserted weapon: §eNo
+kubatech.info.eec.weapon.damage=Weapon attack damage: §e%f
+kubatech.info.eec.weapon.looting_level=Weapon looting level: §e%d
+kubatech.info.eec.total_damage=Total attack damage: §e%f
+
 #Waila
 kubatech.waila.eec.mob_type=Mob Type: %s
 kubatech.waila.eec.no_mob=None
