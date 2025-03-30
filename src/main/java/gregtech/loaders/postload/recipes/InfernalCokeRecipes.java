@@ -26,7 +26,7 @@ public class InfernalCokeRecipes implements Runnable {
         RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.cactus, 1))
             .itemOutputs(GregtechItemList.CactusCharcoal.get(1))
-            .fluidOutputs(Materials.Creosote.getFluid(30))
+            .fluidOutputs(Materials.Creosote.getFluid(60))
             .duration(20 * SECONDS)
             .eut(0)
             .addTo(infernalCockRecipes);
@@ -34,7 +34,7 @@ public class InfernalCokeRecipes implements Runnable {
         RA.stdBuilder()
             .itemInputs(GregtechItemList.CactusCharcoal.get(1))
             .itemOutputs(GregtechItemList.CactusCoke.get(1))
-            .fluidOutputs(Materials.Creosote.getFluid(30))
+            .fluidOutputs(Materials.Creosote.getFluid(60))
             .duration(20 * SECONDS)
             .eut(0)
             .addTo(infernalCockRecipes);
@@ -42,7 +42,7 @@ public class InfernalCokeRecipes implements Runnable {
         RA.stdBuilder()
             .itemInputs(new ItemStack(Items.reeds, 1))
             .itemOutputs(GregtechItemList.SugarCharcoal.get(1))
-            .fluidOutputs(Materials.Creosote.getFluid(30))
+            .fluidOutputs(Materials.Creosote.getFluid(60))
             .duration(20 * SECONDS)
             .eut(0)
             .addTo(infernalCockRecipes);
@@ -50,7 +50,7 @@ public class InfernalCokeRecipes implements Runnable {
         RA.stdBuilder()
             .itemInputs(new ItemStack(Items.reeds, 1))
             .itemOutputs(GregtechItemList.SugarCoke.get(1))
-            .fluidOutputs(Materials.Creosote.getFluid(30))
+            .fluidOutputs(Materials.Creosote.getFluid(60))
             .duration(20 * SECONDS)
             .eut(0)
             .addTo(infernalCockRecipes);
@@ -60,7 +60,7 @@ public class InfernalCokeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 1))
-                .fluidOutputs(Materials.Creosote.getFluid(100))
+                .fluidOutputs(Materials.Creosote.getFluid(200))
                 .duration(20 * SECONDS)
                 .eut(0)
                 .addTo(infernalCockRecipes);
@@ -69,7 +69,7 @@ public class InfernalCokeRecipes implements Runnable {
         RA.stdBuilder()
             .itemInputs(new ItemStack(Items.coal, 1))
             .itemOutputs(GTOreDictUnificator.get("fuelCoke", 1))
-            .fluidOutputs(Materials.Creosote.getFluid(30))
+            .fluidOutputs(Materials.Creosote.getFluid(60))
             .duration(20 * SECONDS)
             .eut(0)
             .addTo(infernalCockRecipes);

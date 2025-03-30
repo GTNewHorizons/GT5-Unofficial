@@ -12,6 +12,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.List;
 
+import gregtech.common.blocks.BlockCasings1;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -90,11 +91,11 @@ public class MTESteamInfernalCokeOven extends MTEBetterSteamMultiBase<MTESteamIn
                 ofChain(
                     buildHatchAdder(MTESteamInfernalCokeOven.class)
                         .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam, OutputHatch)
-                        .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                        .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
                         .dot(1)
                         .buildAndChain(),
-                    ofBlock(GregTechAPI.sBlockCasings2, 0)))
-            .addElement('B', ofBlock(ModBlocks.blockCasingsMisc, 3))
+                    ofBlock(GregTechAPI.sBlockCasings1, 10)))
+            .addElement('B', ofBlock(ModBlocks.blockCasingsMisc, 2))
             .addElement('C', ofBlock(Blocks.nether_brick, 0))
             .build();
     }
@@ -112,7 +113,7 @@ public class MTESteamInfernalCokeOven extends MTEBetterSteamMultiBase<MTESteamIn
     }
 
     private int getCasingTextureID() {
-        return ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
+        return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
     }
 
     @Override
@@ -123,7 +124,7 @@ public class MTESteamInfernalCokeOven extends MTEBetterSteamMultiBase<MTESteamIn
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_ACTIVE)
                         .extFacing()
@@ -136,7 +137,7 @@ public class MTESteamInfernalCokeOven extends MTEBetterSteamMultiBase<MTESteamIn
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR)
                         .extFacing()
@@ -149,7 +150,7 @@ public class MTESteamInfernalCokeOven extends MTEBetterSteamMultiBase<MTESteamIn
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)) };
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)) };
         }
         return rTexture;
     }

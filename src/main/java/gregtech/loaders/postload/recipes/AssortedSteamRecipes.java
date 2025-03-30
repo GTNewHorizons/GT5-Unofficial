@@ -36,8 +36,8 @@ public class AssortedSteamRecipes implements Runnable {
     public void run() {
 
         RA.stdBuilder()
-            .fluidInputs(GTModHandler.getSteam(15000), Materials.Creosote.getFluid(15000))
-            .fluidOutputs(FluidUtils.getSuperHeatedSteam(15000))
+            .fluidInputs(GTModHandler.getSteam(16000), Materials.Creosote.getFluid(4000))
+            .fluidOutputs(FluidUtils.getSuperHeatedSteam(16000))
             .duration(10 * TICKS)
             .eut(0)
             .addTo(steamFusionReactorRecipes);
@@ -120,15 +120,15 @@ public class AssortedSteamRecipes implements Runnable {
 
         RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.cactus, 0))
-            .itemOutputs(new ItemStack(Blocks.cactus, 8))
-            .duration(2 * SECONDS)
+            .itemOutputs(new ItemStack(Blocks.cactus, 64))
+            .duration(2 * SECONDS + 10 * TICKS)
             .eut(16)
             .addTo(steamWoodcutterRecipes);
 
         RA.stdBuilder()
             .itemInputs(new ItemStack(Items.reeds, 0))
-            .itemOutputs(new ItemStack(Items.reeds, 8))
-            .duration(2 * SECONDS)
+            .itemOutputs(new ItemStack(Items.reeds, 64))
+            .duration(2 * SECONDS + 10 * TICKS)
             .eut(16)
             .addTo(steamWoodcutterRecipes);
 
@@ -400,10 +400,10 @@ public class AssortedSteamRecipes implements Runnable {
 
         RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Steel, 2),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 4))
-            .itemOutputs(ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings2, 3, 1))
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Bronze, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4))
+            .itemOutputs(ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings2, 2, 1))
             .duration(2 * SECONDS)
             .eut(16)
             .addTo(steamManufacturerRecipes);
@@ -698,9 +698,20 @@ public class AssortedSteamRecipes implements Runnable {
             // Fusion Reactor
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Controller_SteamFusionReactor.get(1),
-                new Object[] { "ABA", "DCD", "ABA", 'A', GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Stronze, 1), 'C',
-                    GregtechItemList.Controller_MegaSolarBoiler.get(1), 'B', GTOreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1),
-                    'D', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Beryllium, 1) });
+                new Object[] { "ABA", "DCD", "ABA", 'A',
+                    GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Stronze, 1), 'C',
+                    GregtechItemList.Controller_MegaSolarBoiler.get(1), 'B',
+                    GTOreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1), 'D',
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Beryllium, 1) });
+
+            // Infernal Coke Oven
+            GTModHandler.addCraftingRecipe(
+                GregtechItemList.Controller_InfernalCokeOven.get(1),
+                new Object[] { "ABA", "DCD", "ABA", 'A',
+                    new ItemStack(Blocks.nether_brick,1), 'C',
+                    ItemList.Machine_Bricked_BlastFurnace.get(1), 'B',
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Breel, 1), 'D',
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Stronze, 1) });
 
             // Mega Oreproc
 
