@@ -10,6 +10,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTechAPI;
@@ -587,6 +588,72 @@ public class AssortedSteamRecipes implements Runnable {
                 GregtechItemList.Controller_CactusWonder.get(1),
                 new Object[] { "ABA", "ACA", "ABA", 'A', new ItemStack(Blocks.cactus, 1), 'B',
                     ItemList.Casing_BronzePlatedBricks.get(1), 'C', ItemList.Hydraulic_Pump_Steam.get(1) });
+
+            // Pipeless Hatch
+            GTModHandler.addCraftingRecipe(
+                ItemList.Pipeless_Hatch_Steam.get(1),
+                new Object[] { "AEA", "CBD", "AEA", 'A', ItemList.Bronze_Wood_Casing.get(1), 'B',
+                    ItemList.Hatch_Input_LV.get(1), 'C', GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Stronze, 1),
+                'D', GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Breel, 1), 'E', ItemList.Hydraulic_Regulator_Steam.get(1)});
+
+            // Pipeless Vent
+            GTModHandler.addCraftingRecipe(
+                ItemList.Pipeless_Vent_Steam.get(1),
+                new Object[] { "AEA", "CBD", "AEA", 'A', ItemList.Bronze_Wood_Casing.get(1), 'B',
+                    ItemList.Hatch_Output_LV.get(1), 'C', GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Breel, 1),
+                    'D', GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Stronze, 1), 'E', ItemList.Hydraulic_Regulator_Steam.get(1)});
+
+            // Jetstream Hatch
+            RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Pipeless_Hatch_Steam.get(4),
+                    ItemList.Hydraulic_Vapor_Generator.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.CompressedSteam, 2),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Breel, 1))
+                .itemOutputs(ItemList.Pipeless_Hatch_Jetstream.get(1))
+                .duration(20 * SECONDS)
+                .eut(400)
+                .addTo(steamManufacturerRecipes);
+
+            // Jetstream Hatch
+            RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Pipeless_Vent_Steam.get(4),
+                    ItemList.Hydraulic_Vapor_Generator.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.CompressedSteam, 2),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Stronze, 1))
+                .itemOutputs(ItemList.Pipeless_Vent_Jetstream.get(1))
+                .duration(20 * SECONDS)
+                .eut(400)
+                .addTo(steamManufacturerRecipes);
+
+
+            // Supercompressor
+            RA.stdBuilder()
+                .itemInputs(
+                    GregtechItemList.Controller_SteamCompressorMulti.get(64),
+                    ItemList.Hydraulic_Pump_Steam.get(4))
+                .itemOutputs(GregtechItemList.Controller_MegaSteamCompressor.get(1))
+                .duration(120 * SECONDS)
+                .eut(1600)
+                .addTo(steamManufacturerRecipes);
+
+            // Progenitor
+            RA.stdBuilder()
+                .itemInputs(
+                    GregtechItemList.Controller_SteamManufacturer.get(64),
+                    ItemList.Hydraulic_Regulator_Steam.get(16),
+                    ItemList.Hydraulic_Arm_Steam.get(8),
+                    ItemList.Hydraulic_Sensor_Steam.get(4),
+                    ItemList.Hydraulic_Emitter_Steam.get(4),
+                    ItemList.Hydraulic_Vapor_Generator.get(2),
+                    ItemList.Stronze_Casing.get(32),
+                    ItemList.Breel_Pipe_Casing.get(32),
+                    ItemList.Steel_Wood_Casing.get(32))
+                .itemOutputs(GregtechItemList.Controller_SteamGateAssembler.get(1))
+                .duration(120 * SECONDS)
+                .eut(1600)
+                .addTo(steamManufacturerRecipes);
 
             // Mega Oreproc
 
