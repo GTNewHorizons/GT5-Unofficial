@@ -3,7 +3,6 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
-import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.steamCarpenterRecipes;
 import static gregtech.api.recipe.RecipeMaps.steamManufacturerRecipes;
 import static gregtech.api.recipe.RecipeMaps.steamWoodcutterRecipes;
@@ -11,7 +10,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTechAPI;
@@ -492,7 +490,16 @@ public class AssortedSteamRecipes implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Solar_Boiler_Cell.get(1),
             new Object[] { "AAA", "BCB", 'A', new ItemStack(Blocks.glass, 1), 'B',
-                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Stronze, 1), 'C', ItemList.Machine_HP_Solar.get(1) });
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Stronze, 1), 'C',
+                ItemList.Machine_HP_Solar.get(1) });
+
+        // Solar Cell Casing
+        GTModHandler.addCraftingRecipe(
+            ItemList.Hydraulic_Assembling_Casing.get(1),
+            new Object[] { "ABA", "CCC", "ABA", 'A',
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Stronze, 1), 'B',
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Breel, 1), 'C',
+                ItemList.Hydraulic_Arm_Steam.get(1) });
 
         // Machine Controllers
         {
@@ -564,7 +571,7 @@ public class AssortedSteamRecipes implements Runnable {
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Controller_SteamManufacturer.get(1),
                 new Object[] { "AAA", "DCD", "EBE", 'A', ItemList.Hydraulic_Arm_Steam.get(1), 'B',
-                    ItemList.Hydraulic_Conveyor_Steam.get(1), 'D', ItemList.Casing_SolidSteel.get(1), 'C',
+                    ItemList.Hydraulic_Conveyor_Steam.get(1), 'D', ItemList.Hydraulic_Assembling_Casing.get(1), 'C',
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Breel, 1), 'E',
                     ItemList.Casing_Gearbox_Steel.get(1) });
 
@@ -572,9 +579,8 @@ public class AssortedSteamRecipes implements Runnable {
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Controller_MegaSolarBoiler.get(1),
                 new Object[] { "AAA", "DCD", "EBE", 'A', ItemList.Solar_Boiler_Cell.get(1), 'B',
-                    ItemList.Casing_SolidSteel.get(1), 'D', ItemList.Hydraulic_Pump_Steam.get(1), 'C',
-                    ItemList.Hull_HP, 'E',
-                    ItemList.Casing_BronzePlatedBricks });
+                    ItemList.Casing_SolidSteel.get(1), 'D', ItemList.Hydraulic_Pump_Steam.get(1), 'C', ItemList.Hull_HP,
+                    'E', ItemList.Casing_BronzePlatedBricks });
 
             // Mega Oreproc
 

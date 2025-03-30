@@ -14,12 +14,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import gregtech.api.gui.modularui.CircularGaugeDrawable;
-import gregtech.api.gui.modularui.GTUITextures;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,11 +21,18 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.CircularGaugeDrawable;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -529,15 +530,16 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
         builder.widget(
             new DrawableWidget().setDrawable(GTUITextures.STEAM_GAUGE_BG)
-                .dynamicTooltip(() -> Collections.singletonList("Steam: " + uiSteamStored + "/" + uiSteamCapacity + "L"))
+                .dynamicTooltip(
+                    () -> Collections.singletonList("Steam: " + uiSteamStored + "/" + uiSteamCapacity + "L"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setUpdateTooltipEveryTick(true)
                 .setSize(64, 42)
                 .setPos(-64, 100));
 
-        builder.widget(new DrawableWidget()
-            .setDrawable(new CircularGaugeDrawable(() -> (float) uiSteamStored / uiSteamCapacity))
-            .setPos(-64 + 21, 100 + 21)
-            .setSize(18, 4));
+        builder.widget(
+            new DrawableWidget().setDrawable(new CircularGaugeDrawable(() -> (float) uiSteamStored / uiSteamCapacity))
+                .setPos(-64 + 21, 100 + 21)
+                .setSize(18, 4));
     }
 }

@@ -1458,8 +1458,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 .setSize(64, 42)
                 .setPos(-64, 100));
 
-        return new DrawableWidget()
-            .setDrawable(new CircularGaugeDrawable(() -> (float) getSteamVar / maxSteamStore()))
+        return new DrawableWidget().setDrawable(new CircularGaugeDrawable(() -> (float) getSteamVar / maxSteamStore()))
             .setPos(-64 + 21, 100 + 21)
             .setSize(18, 4);
     }
