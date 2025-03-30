@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_CactusWonder;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_InfernalCokeOven;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_MegaSolarBoiler;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamAlloySmelterMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamBlastFurnace;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamCarpenter;
@@ -38,6 +39,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTEMegaSolarBoiler;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamAlloySmelter;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamBlastFurnace;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCactusWonder;
@@ -187,6 +189,12 @@ public class GregtechSteamMultis {
                 "gtpp.multimachine.steam.manufacturer",
                 "Steam Manufacturer").getStackForm(1));
         addItemTooltip(GregtechItemList.Controller_SteamManufacturer.get(1), GTValues.AuthorNoc);
+        GregtechItemList.Controller_MegaSolarBoiler.set(
+            new MTEMegaSolarBoiler(
+                Controller_MegaSolarBoiler.ID,
+                "gtpp.multimachine.steam.megasolarboiler",
+                "Mega Pressure Solar Boiler").getStackForm(1));
+        addItemTooltip(GregtechItemList.Controller_MegaSolarBoiler.get(1), GTValues.AuthorNoc);
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(
             new MTEHatchSteamBusInput(Hatch_Input_Bus_Steam.ID, "hatch.input_bus.tier.steam", "Simple Input Bus", 0)

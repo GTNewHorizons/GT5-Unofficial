@@ -11,6 +11,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTechAPI;
@@ -30,6 +31,17 @@ public class AssortedSteamRecipes implements Runnable {
 
     @Override
     public void run() {
+
+        RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1))
+            .itemOutputs(ItemList.IC2_Mixed_Metal_Ingot.get(3))
+            .duration(5 * SECONDS)
+            .eut(28)
+            .addTo(alloySmelterRecipes);
+
         RA.stdBuilder()
             .fluidInputs(GTModHandler.getSteam(100000))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.CompressedSteam, 1))
@@ -476,6 +488,12 @@ public class AssortedSteamRecipes implements Runnable {
             new Object[] { "ABA", "BCB", "ABA", 'A', "plateCrudeSteel", 'B', "pipeMediumBreel", 'C',
                 "frameGtCrudeSteel" });
 
+        // Solar Cell Casing
+        GTModHandler.addCraftingRecipe(
+            ItemList.Solar_Boiler_Cell.get(1),
+            new Object[] { "AAA", "BCB", 'A', new ItemStack(Blocks.glass, 1), 'B',
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Stronze, 1), 'C', ItemList.Machine_HP_Solar.get(1) });
+
         // Machine Controllers
         {
 
@@ -549,6 +567,14 @@ public class AssortedSteamRecipes implements Runnable {
                     ItemList.Hydraulic_Conveyor_Steam.get(1), 'D', ItemList.Casing_SolidSteel.get(1), 'C',
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Breel, 1), 'E',
                     ItemList.Casing_Gearbox_Steel.get(1) });
+
+            // Mega Solar Boiler
+            GTModHandler.addCraftingRecipe(
+                GregtechItemList.Controller_MegaSolarBoiler.get(1),
+                new Object[] { "AAA", "DCD", "EBE", 'A', ItemList.Solar_Boiler_Cell.get(1), 'B',
+                    ItemList.Casing_SolidSteel.get(1), 'D', ItemList.Hydraulic_Pump_Steam.get(1), 'C',
+                    ItemList.Hull_HP, 'E',
+                    ItemList.Casing_BronzePlatedBricks });
 
             // Mega Oreproc
 
