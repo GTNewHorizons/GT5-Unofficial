@@ -1,5 +1,7 @@
 package gregtech.common.covers;
 
+import java.util.Objects;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
@@ -27,6 +29,14 @@ public class CoverRedstoneTransmitterInternal extends CoverRedstoneWirelessBase 
             return;
         }
         GregTechAPI.sWirelessRedstone.put(coverData, coverable.getOutputRedstoneSignal(coverSide));
+    }
+
+    @Override
+    public void preDataChanged(Cover newCover) {
+        if (newCover instanceof CoverRedstoneTransmitterInternal newTransmitterCover
+            && !Objects.equals(coverData, newTransmitterCover.coverData)) {
+            GregTechAPI.sWirelessRedstone.remove(coverData);
+        }
     }
 
     @Override
