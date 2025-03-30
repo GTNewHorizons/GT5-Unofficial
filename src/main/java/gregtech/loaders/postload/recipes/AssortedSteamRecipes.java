@@ -148,7 +148,7 @@ public class AssortedSteamRecipes implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Hydraulic_Emitter_Steam.get(1),
             new Object[] { "ABC", "BDB", "CBA", 'A', "plateCompressedSteam", 'B', "stickCompressedSteam", 'C',
-                "pipeRestrictiveHugeBreel", 'D', "gemExquisiteSalt" });
+                "pipeHugeBreel", 'D', "gemExquisiteSalt" });
         GTModHandler.addCraftingRecipe(
             ItemList.Hydraulic_Vapor_Generator.get(1),
             new Object[] { "ABC", "BDB", "CBA", 'A', "plateSuperdenseCompressedSteam", 'B', "frameGtCompressedSteam",
@@ -260,7 +260,7 @@ public class AssortedSteamRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Salt, 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.CompressedSteam, 2),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.CompressedSteam, 4),
-                GTOreDictUnificator.get(OrePrefixes.pipeRestrictiveHuge, Materials.Breel, 2))
+                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Breel, 2))
             .itemOutputs(ItemList.Hydraulic_Emitter_Steam.get(1))
             .duration(1 * SECONDS)
             .eut(16)
