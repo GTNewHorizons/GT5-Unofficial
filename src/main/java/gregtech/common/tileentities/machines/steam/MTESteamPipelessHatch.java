@@ -158,7 +158,7 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase {
         if (aTick % 20 == 0) {
             // Validate the proper type
             if (getFluid() != null && getFluidAmount() > 0) {
-                if (selectedSteam.getFluid() == getFluid().getFluid()) {
+                if (selectedSteam.getFluid() != getFluid().getFluid()) {
                     // Refresh the steam type
                     flushSteam();
                     tryFetchingSteam();
