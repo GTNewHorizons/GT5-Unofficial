@@ -96,7 +96,7 @@ public class SteamExtractinatorRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Emerald, 1),
                 GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Ruby, 1),
                 GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Salt, 1))
-            .outputChances(1000, 1000, 1000, 1000)
+            .outputChances(1000, 1000, 1000, 2000)
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(steamExtractinatorRecipes);
