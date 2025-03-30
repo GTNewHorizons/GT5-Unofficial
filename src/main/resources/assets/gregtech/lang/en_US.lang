@@ -379,11 +379,13 @@ gt.recipe.quantumcomputer=QC Components
 gt.recipe.steamgateassembler=Perfect Steam Progenesis
 gt.recipe.steamextruder=Hammer Conformation
 gt.recipe.steamextractinator=Extractination
-gt.recipe.cactuswonder=Offers to the Cacti Deity
+gt.recipe.cactuswonder=Offerings to the Cacti Pantheon
 gt.recipe.infernalcokeoven=Coke Oven but OP
-gt.recipe.steammanufacturing=Manufacturing
-gt.recipe.steamwoodcutter=Steamic Gardening
-gt.recipe.steamcarpenter=Vaporized Carpentry
+gt.recipe.steammanufacturing=Hydraulic Manufacturing
+gt.recipe.steamfusion=Hyper Pressure Reactor
+gt.recipe.steamcarpenter=Steamic Carpentry
+gt.recipe.steamwoodcutter=Vapor Gardening
+gt.recipe.lavamaker=Steam Vapor Melting
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
