@@ -2,6 +2,9 @@ package gtPlusPlus.core.proxy;
 
 import java.util.ArrayList;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import gregtech.common.handlers.PowerGogglesEventHandler;
+import gregtech.common.handlers.PowerGogglesHudHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderFireball;
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,6 +62,9 @@ public class ClientProxy extends CommonProxy {
         new MachineBlockRenderer();
         new FlaskRenderer();
         MinecraftForge.EVENT_BUS.register(new NEIGTPPConfig());
+        FMLCommonHandler.instance().bus().register(new PowerGogglesEventHandler());
+        MinecraftForge.EVENT_BUS.register(new PowerGogglesHudHandler());
+        MinecraftForge.EVENT_BUS.register(new PowerGogglesEventHandler());
         super.init(e);
     }
 
