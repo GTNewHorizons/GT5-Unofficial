@@ -2,7 +2,9 @@ package gregtech.common.items;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CONVEYOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_METRICS_TRANSMITTER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PUMP;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UEV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UHV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UIV;
@@ -283,8 +285,12 @@ import gregtech.api.enums.TCAspects;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
+import gregtech.common.covers.CoverConveyor;
+import gregtech.common.covers.CoverFluidRegulator;
 import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.covers.CoverMetricsTransmitterPlacer;
+import gregtech.common.covers.CoverPump;
 import gregtech.common.covers.CoverSolarPanel;
 
 public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
@@ -321,13 +327,30 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
                 "A crystal made of pure condensed steam...",
                 o));
 
+        final String PartCoverText = " L/t (";
+        final String PartCoverText2 = " L/s) as Cover";
+
+        final String FRText1 = "Configurable up to ";
+        final String FRText2 = " L/sec (as Cover)/n Rightclick/Screwdriver-rightclick/Shift-screwdriver-rightclick/n to adjust the pump speed by 1/16/256 L/sec per click";
+
         // Steam Components
         ItemList.Hydraulic_Motor_Steam.set(addItem(Hydraulic_Motor_Steam.ID, "Hydraulic Motor", ""));
-        ItemList.Hydraulic_Pump_Steam.set(addItem(Hydraulic_Pump_Steam.ID, "Hydraulic Pump", ""));
+        ItemList.Hydraulic_Pump_Steam.set(
+            addItem(
+                Hydraulic_Pump_Steam.ID,
+                "Hydraulic Pump",
+                GTUtility.formatNumbers(1048576) + PartCoverText
+                    + GTUtility.formatNumbers(1048576 * 20)
+                    + PartCoverText2));
         ItemList.Hydraulic_Piston_Steam.set(addItem(Hydraulic_Piston_Steam.ID, "Hydraulic Piston", ""));
         ItemList.Hydraulic_Arm_Steam.set(addItem(Hydraulic_Arm_Steam.ID, "Hydraulic Arm", ""));
-        ItemList.Hydraulic_Conveyor_Steam.set(addItem(Hydraulic_Conveyor_Steam.ID, "Hydraulic Conveyor", ""));
-        ItemList.Hydraulic_Regulator_Steam.set(addItem(Hydraulic_Regulator_Steam.ID, "Hydraulic Regulator", ""));
+        ItemList.Hydraulic_Conveyor_Steam
+            .set(addItem(Hydraulic_Conveyor_Steam.ID, "Hydraulic Conveyor", "16 stacks every 1/20 sec (as Cover)"));
+        ItemList.Hydraulic_Regulator_Steam.set(
+            addItem(
+                Hydraulic_Regulator_Steam.ID,
+                "Hydraulic Regulator",
+                FRText1 + GTUtility.formatNumbers(1048576 * 20) + FRText2));
         ItemList.Hydraulic_Vapor_Generator.set(addItem(Hydraulic_Vapor_Generator.ID, "Hydraulic Vapor Generator", ""));
         ItemList.Hydraulic_Emitter_Steam.set(addItem(Hydraulic_Emitter_Steam.ID, "Hydraulic Steam Jet Spewer", ""));
         ItemList.Hydraulic_Sensor_Steam.set(addItem(Hydraulic_Sensor_Steam.ID, "Hydraulic Steam Receiver", ""));
@@ -1574,6 +1597,19 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
             TextureFactory.of(SOLARPANEL_UIV),
             context -> new CoverSolarPanel(context, 33554432),
             CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
+
+        CoverRegistry.registerCover(
+            ItemList.Hydraulic_Pump_Steam.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[0][0], TextureFactory.of(OVERLAY_PUMP)),
+            context -> new CoverPump(context, 1048576, TextureFactory.of(OVERLAY_PUMP)));
+        CoverRegistry.registerCover(
+            ItemList.Hydraulic_Regulator_Steam.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[0][0], TextureFactory.of(OVERLAY_PUMP)),
+            context -> new CoverFluidRegulator(context, 1048576, TextureFactory.of(OVERLAY_PUMP)));
+        CoverRegistry.registerCover(
+            ItemList.Hydraulic_Conveyor_Steam.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[0][0], TextureFactory.of(OVERLAY_CONVEYOR)),
+            context -> new CoverConveyor(context, 1, 16, TextureFactory.of(OVERLAY_CONVEYOR)));
     }
 
     @Override
