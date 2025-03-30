@@ -925,7 +925,7 @@ public final class RecipeMaps {
             return buildOrEmpty(
                 b.validateNoInputFluid()
                     .validateNoOutputFluid()
-                    .validateInputCount(1, 2)
+                    .validateInputCount(1, 3)
                     .validateOutputCount(1, 1));
         })
         // Avoid steam machine being used as handler icon
