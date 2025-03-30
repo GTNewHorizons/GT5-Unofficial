@@ -16,6 +16,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
@@ -97,6 +98,24 @@ public class AssortedSteamRecipes implements Runnable {
             .duration(2 * SECONDS)
             .eut(16)
             .addTo(steamWoodcutterRecipes);
+
+        RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 2),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 2),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.QuartzSand, 1))
+            .fluidOutputs(Materials.Concrete.getMolten(1000))
+            .duration(4 * SECONDS)
+            .eut(16)
+            .addTo(mixerRecipes);
+
+        RA.stdBuilder()
+            .itemInputs(ItemList.Firebrick.get(6), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gypsum, 2))
+            .fluidInputs(Materials.Concrete.getMolten(1000))
+            .itemOutputs(ItemList.Casing_Firebricks.get(1))
+            .duration(4 * SECONDS)
+            .eut(16)
+            .addTo(compressorRecipes);
 
         GTModHandler.addCraftingRecipe(
             ItemList.Hydraulic_Motor_Steam.get(1),
