@@ -23,7 +23,6 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -36,17 +35,22 @@ public class SaplingBase extends BlockSapling {
     // Sapling types - field_149882_a
     // Iicons - field_149881_b
 
-    protected SaplingBase(String blockNameLocalized, String blockNameUnlocalized, String[] saplingTypes) {
+    protected SaplingBase(String blockNameLocalized, String blockNameUnlocalized, String[] saplingTypes,
+        Class<? extends ItemBlock> itemBlockClass) {
         float f = 0.4F;
         this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f * 2.0F, 0.5F + f);
         this.saplingTypes = saplingTypes;
         this.saplingTextures = new IIcon[saplingTypes.length];
         String blockName = "block" + Utils.sanitizeString(blockNameLocalized);
-        GameRegistry.registerBlock(this, ItemBlock.class, blockName);
+        GameRegistry.registerBlock(this, itemBlockClass, blockName);
         this.setBlockName(blockName);
         ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(this), "treeSapling", true);
         this.setCreativeTab(AddToCreativeTab.tabBOP);
         this.setStepSound(Block.soundTypeGrass);
+    }
+
+    protected SaplingBase(String blockNameLocalized, String blockNameUnlocalized, String[] saplingTypes) {
+        this(blockNameLocalized, blockNameUnlocalized, saplingTypes, ItemBlock.class);
     }
 
     /**
@@ -62,7 +66,6 @@ public class SaplingBase extends BlockSapling {
         try {
             return this.saplingTextures[meta];
         } catch (Throwable T) {
-            Logger.WARNING("Invalid Sapling meta is " + meta);
             return this.saplingTextures[0];
         }
     }
@@ -75,18 +78,14 @@ public class SaplingBase extends BlockSapling {
         if (!world.isRemote) {
             super.updateTick(world, x, y, z, rand);
             if (world.getBlockLightValue(x, y + 1, z) >= 9 && rand.nextInt(7) == 0) {
-                Logger.WARNING("Update Tick");
                 this.updateMeta(world, x, y, z, rand);
-            } else {
-                Logger.WARNING("Tried to Tick.");
-            }
+            } else {}
         }
     }
 
     // Dunno - Think it is doGrow || doGrowthTick
     @Override
     public void func_149853_b(World world, Random rand, int x, int y, int z) {
-        Logger.WARNING("Please find what calls me - func_149853_b");
         this.updateMeta(world, x, y, z, rand);
     }
 
@@ -96,21 +95,17 @@ public class SaplingBase extends BlockSapling {
 
     @Override
     public void func_149879_c(World world, int x, int y, int z, Random rand) {
-        Logger.WARNING("func_149879_c - 1");
         int l = world.getBlockMetadata(x, y, z);
 
         if ((l & 8) == 0) {
-            Logger.WARNING("func_149879_c - 2");
             world.setBlockMetadataWithNotify(x, y, z, l | 8, 4);
         } else {
-            Logger.WARNING("func_149879_c - 3");
             this.func_149878_d(world, x, y, z, rand);
         }
     }
 
     @Override
     public void func_149878_d(World world, int x, int y, int z, Random rand) {
-        Logger.WARNING("func_149878_d - 1");
         if (!net.minecraftforge.event.terraingen.TerrainGen.saplingGrowTree(world, rand, x, y, z)) return;
         int l = world.getBlockMetadata(x, y, z) & 7;
         Object object = rand.nextInt(10) == 0 ? new WorldGenBigTree(true) : new WorldGenTrees(true);
