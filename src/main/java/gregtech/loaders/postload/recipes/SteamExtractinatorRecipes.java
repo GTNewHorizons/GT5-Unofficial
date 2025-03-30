@@ -62,7 +62,7 @@ public class SteamExtractinatorRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Iron, 8),
                 GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Copper, 8),
                 GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Tin, 8),
-                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Clay, 8),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 8),
                 GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Salt, 8),
                 GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Coal, 8))
             .duration(5 * SECONDS)
@@ -75,7 +75,8 @@ public class SteamExtractinatorRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Gold, 8),
                 GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Redstone, 8),
                 GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Zinc, 8),
-                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Ruby, 8))
+                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Ruby, 8),
+                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Sulfur, 8))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(steamExtractinatorRecipes);
