@@ -39,7 +39,12 @@ public class PakcetDebugRedstoneCover extends GTPacket {
 
     @Override
     public GTPacket decode(ByteArrayDataInput buf) {
-        return new PakcetDebugRedstoneCover(buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt(), buf.readBoolean());
+        return new PakcetDebugRedstoneCover(
+            buf.readInt(),
+            buf.readInt(),
+            buf.readInt(),
+            buf.readInt(),
+            buf.readBoolean());
     }
 
     @Override
