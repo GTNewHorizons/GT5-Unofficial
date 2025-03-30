@@ -3,14 +3,15 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.steamCarpenterRecipes;
 import static gregtech.api.recipe.RecipeMaps.steamManufacturerRecipes;
 import static gregtech.api.recipe.RecipeMaps.steamWoodcutterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTechAPI;
@@ -30,6 +31,13 @@ public class AssortedSteamRecipes implements Runnable {
 
     @Override
     public void run() {
+
+        RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1))
+            .itemOutputs(new ItemStack(Items.clay_ball, 1))
+            .duration(4 * TICKS)
+            .eut(2)
+            .addTo(mixerRecipes);
 
         RA.stdBuilder()
             .itemInputs(
@@ -593,15 +601,19 @@ public class AssortedSteamRecipes implements Runnable {
             GTModHandler.addCraftingRecipe(
                 ItemList.Pipeless_Hatch_Steam.get(1),
                 new Object[] { "AEA", "CBD", "AEA", 'A', ItemList.Bronze_Wood_Casing.get(1), 'B',
-                    ItemList.Hatch_Input_LV.get(1), 'C', GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Stronze, 1),
-                'D', GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Breel, 1), 'E', ItemList.Hydraulic_Regulator_Steam.get(1)});
+                    ItemList.Hatch_Input_LV.get(1), 'C',
+                    GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Stronze, 1), 'D',
+                    GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Breel, 1), 'E',
+                    ItemList.Hydraulic_Regulator_Steam.get(1) });
 
             // Pipeless Vent
             GTModHandler.addCraftingRecipe(
                 ItemList.Pipeless_Vent_Steam.get(1),
                 new Object[] { "AEA", "CBD", "AEA", 'A', ItemList.Bronze_Wood_Casing.get(1), 'B',
-                    ItemList.Hatch_Output_LV.get(1), 'C', GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Breel, 1),
-                    'D', GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Stronze, 1), 'E', ItemList.Hydraulic_Regulator_Steam.get(1)});
+                    ItemList.Hatch_Output_LV.get(1), 'C',
+                    GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Breel, 1), 'D',
+                    GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Stronze, 1), 'E',
+                    ItemList.Hydraulic_Regulator_Steam.get(1) });
 
             // Jetstream Hatch
             RA.stdBuilder()
@@ -615,7 +627,7 @@ public class AssortedSteamRecipes implements Runnable {
                 .eut(400)
                 .addTo(steamManufacturerRecipes);
 
-            // Jetstream Hatch
+            // Jetstream Vent
             RA.stdBuilder()
                 .itemInputs(
                     ItemList.Pipeless_Vent_Steam.get(4),
@@ -626,7 +638,6 @@ public class AssortedSteamRecipes implements Runnable {
                 .duration(20 * SECONDS)
                 .eut(400)
                 .addTo(steamManufacturerRecipes);
-
 
             // Supercompressor
             RA.stdBuilder()
