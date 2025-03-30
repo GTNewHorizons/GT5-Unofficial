@@ -78,7 +78,8 @@ public class MTESteamGateAssembler extends MTEBetterSteamMultiBase<MTESteamGateA
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 10, 11, 10, elementBudget, env, false, true);
+        int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 10, 11, 10, realBudget, env, false, true);
     }
 
     @Override

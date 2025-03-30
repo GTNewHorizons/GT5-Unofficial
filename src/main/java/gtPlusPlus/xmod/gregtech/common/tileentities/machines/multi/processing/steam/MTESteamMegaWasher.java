@@ -1,11 +1,13 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTechAPI.sBlockCasings1;
 import static gregtech.api.GregTechAPI.sBlockCasings2;
+import static gregtech.api.enums.GTValues.AuthorSteamIsTheNumber;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -14,12 +16,14 @@ import static net.minecraft.util.EnumChatFormatting.ITALIC;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -42,6 +46,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -58,34 +63,38 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
+import ic2.core.init.BlocksItems;
+import ic2.core.init.InternalName;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTESteamMegaMacerator extends MTESteamMultiBase<MTESteamMegaMacerator> implements ISurvivalConstructable {
+public class MTESteamMegaWasher extends MTESteamMultiBase<MTESteamMegaWasher> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private int casingTier = -1;
+    private int tierPipeCasing = -1;
 
     private int casingAmount = 0;
 
-    public MTESteamMegaMacerator(String aName) {
+    public MTESteamMegaWasher(String aName) {
         super(aName);
     }
 
-    public MTESteamMegaMacerator(int aID, String aName, String aNameRegional) {
+    public MTESteamMegaWasher(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTESteamMegaMacerator(this.mName);
+        return new MTESteamMegaWasher(this.mName);
     }
 
     @Override
     public String getMachineType() {
-        return "Macerator";
+        return "Washer";
     }
 
     protected void updateHatchTexture() {
@@ -112,7 +121,7 @@ public class MTESteamMegaMacerator extends MTESteamMultiBase<MTESteamMegaMacerat
     @Override
     protected ITexture getFrontOverlay() {
         return TextureFactory.builder()
-            .addIcon(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR)
+            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_WASHER)
             .extFacing()
             .build();
     }
@@ -120,7 +129,7 @@ public class MTESteamMegaMacerator extends MTESteamMultiBase<MTESteamMegaMacerat
     @Override
     protected ITexture getFrontOverlayActive() {
         return TextureFactory.builder()
-            .addIcon(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR_ACTIVE)
+            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_WASHER_ACTIVE)
             .extFacing()
             .build();
     }
@@ -140,71 +149,46 @@ public class MTESteamMegaMacerator extends MTESteamMultiBase<MTESteamMegaMacerat
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getIndex()) };
     }
 
+    private int getCasingTextureID() {
+        if (tierPipeCasing == 2 || casingTier == 2)
+            return ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
+        return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
+    }
+
     @Override
-    public IStructureDefinition<MTESteamMegaMacerator> getStructureDefinition() {
+    public IStructureDefinition<MTESteamMegaWasher> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
-    private static final IStructureDefinition<MTESteamMegaMacerator> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTESteamMegaMacerator>builder()
+    private static final IStructureDefinition<MTESteamMegaWasher> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTESteamMegaWasher>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            transpose(
-                new String[][] {
-                    { "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA",
-                        "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA",
-                        "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA" },
-                    { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-                    { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-                    { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-                    { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-                    { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-                    { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-                    { "AAAAAAA~AAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-                    { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-                    { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-                    { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-                    { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-                    { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-                    { "AAAAAAAAAAAAAAA", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "A             A",
-                        "A             A", "A             A", "A             A", "A             A", "AAAAAAAAAAAAAAA" },
-                    { "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA",
-                        "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA",
-                        "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAA",
-                        "AAAAAAAAAAAAAAA" } }))
+            new String[][] { { "             ", "             ", "AAAAA   AAAAA", "AAAAA   AAAAA", "AAAAA   AAAAA" },
+                { "             ", "             ", "A   A   A   A", "ACCCA   ACCCA", "AAAAA   AAAAA" },
+                { "             ", "             ", "A   A   A   A", "ACCCA   ACCCA", "AAAAA   AAAAA" },
+                { "             ", "             ", "A   A   A   A", "ACCCA   ACCCA", "AAAAA   AAAAA" },
+                { "             ", "             ", "A   A   A   A", "ACCCA   ACCCA", "AAAAA   AAAAA" },
+                { "             ", "             ", "A   A   A   A", "ACCCA   ACCCA", "AAAAA   AAAAA" },
+                { "             ", "             ", "AAAAA   AAAAA", "AAAAA   AAAAA", "AAAAA   AAAAA" },
+                { "     AAA     ", "     AAA     ", "     A~A     ", "  B  AAA  B  ", "     AAA     " },
+                { "     AAA     ", "     A A     ", "     A A     ", "  BBBA ABBB  ", "     AAA     " },
+                { "     AAA     ", "     AAA     ", "     AAA     ", "  B  AAA  B  ", "     AAA     " },
+                { "             ", "             ", "AAAAA   AAAAA", "AAAAA   AAAAA", "AAAAA   AAAAA" },
+                { "             ", "             ", "A   A   A   A", "ACCCA   ACCCA", "AAAAA   AAAAA" },
+                { "             ", "             ", "A   A   A   A", "ACCCA   ACCCA", "AAAAA   AAAAA" },
+                { "             ", "             ", "A   A   A   A", "ACCCA   ACCCA", "AAAAA   AAAAA" },
+                { "             ", "             ", "A   A   A   A", "ACCCA   ACCCA", "AAAAA   AAAAA" },
+                { "             ", "             ", "A   A   A   A", "ACCCA   ACCCA", "AAAAA   AAAAA" },
+                { "             ", "             ", "AAAAA   AAAAA", "AAAAA   AAAAA", "AAAAA   AAAAA" } })
         .addElement(
             'A',
             ofChain(
-                buildSteamInput(MTESteamMegaMacerator.class).casingIndex(10)
+                buildSteamInput(MTESteamMegaWasher.class).casingIndex(10)
                     .dot(1)
                     .allowOnly(ForgeDirection.NORTH)
                     .build(),
-                buildHatchAdder(MTESteamMegaMacerator.class)
+                buildHatchAdder(MTESteamMegaWasher.class)
                     .atLeast(
                         SteamHatchElement.InputBus_Steam,
                         SteamHatchElement.OutputBus_Steam,
@@ -215,15 +199,35 @@ public class MTESteamMegaMacerator extends MTESteamMultiBase<MTESteamMegaMacerat
                     .allowOnly(ForgeDirection.NORTH)
                     .buildAndChain(
                         onElementPass(
-                            MTESteamMegaMacerator::onCasingAdded,
+                            MTESteamMegaWasher::onCasingAdded,
                             ofBlocksTiered(
-                                MTESteamMegaMacerator::getTierMachineCasing,
+                                MTESteamMegaWasher::getTierMachineCasing,
                                 ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
                                 -1,
-                                MTESteamMegaMacerator::setCasingTier,
-                                MTESteamMegaMacerator::getCasingTier)))))
+                                MTESteamMegaWasher::setCasingTier,
+                                MTESteamMegaWasher::getCasingTier)))))
+        .addElement(
+            'B',
+            ofBlocksTiered(
+                MTESteamMegaWasher::getTierPipeCasing,
+                ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
+                -1,
+                (t, m) -> t.tierPipeCasing = m,
+                t -> t.tierPipeCasing))
+        .addElement(
+            'C',
+            ofChain(
+                isAir(),
+                ofBlockAnyMeta(Blocks.water),
+                ofBlockAnyMeta(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater))))
 
         .build();
+
+    public static Integer getTierPipeCasing(Block block, int meta) {
+        if (block == sBlockCasings2 && 12 == meta) return 1;
+        if (block == sBlockCasings2 && 13 == meta) return 2;
+        return null;
+    }
 
     public static int getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
@@ -249,50 +253,102 @@ public class MTESteamMegaMacerator extends MTESteamMultiBase<MTESteamMegaMacerat
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        this.buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 7, 7, 0);
+        this.buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 6, 2, 7);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return this.survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 7, 0, realBudget, env, false, true);
+        return this.survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 6, 2, 7, realBudget, env, false, true);
+    }
+
+    private int tierMachine = -1;
+
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public int nextMachineMode() {
+        if (machineMode == MACHINEMODE_OREWASH) return MACHINEMODE_SIMPLEWASH;
+        else return MACHINEMODE_OREWASH;
+    }
+
+    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.clear();
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER);
+    }
+
+    @Override
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_WASH_PLANT.mode." + machineMode);
+    }
+
+    @NotNull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(GTPPRecipeMaps.simpleWasherRecipes, RecipeMaps.oreWasherRecipes);
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        tierMachine = -1;
+        tierPipeCasing = -1;
         casingTier = -1;
-        casingAmount = 0;
-        checkPiece(STRUCTURE_PIECE_MAIN, 7, 7, 0);
-        updateHatchTexture();
-        getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-        return casingTier > 0 && casingAmount >= 700 && !mSteamInputFluids.isEmpty();
+
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 6, 2, 7)) return false;
+        if (tierPipeCasing == 1 && casingTier == 1) {
+            updateHatchTexture();
+            tierMachine = 1;
+            return true;
+        }
+        if (tierPipeCasing == 2 && casingTier == 2) {
+            updateHatchTexture();
+            tierMachine = 2;
+            return true;
+        }
+        return casingAmount >= 300;
     }
+
+    private static final int MACHINEMODE_OREWASH = 0;
+    private static final int MACHINEMODE_SIMPLEWASH = 1;
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.maceratorRecipes;
+        if (machineMode == MACHINEMODE_SIMPLEWASH) {
+            return GTPPRecipeMaps.simpleWasherRecipes;
+        }
+        return RecipeMaps.oreWasherRecipes;
+    }
+
+    @Override
+    public void onValueUpdate(byte aValue) {
+        casingTier = aValue;
     }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
+
         return new ProcessingLogic() {
 
-            @Nonnull
+            @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
                 if (availableVoltage < recipe.mEUt) {
                     return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                }
-                return CheckRecipeResultRegistry.SUCCESSFUL;
+                } else return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
             @Override
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.25 * casingTier)
-                    .setDurationModifier(1.6 / casingTier);
+                    .setEUtDiscount(1.25 * tierMachine)
+                    .setDurationModifier(1F / tierMachine);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
@@ -311,32 +367,13 @@ public class MTESteamMegaMacerator extends MTESteamMultiBase<MTESteamMegaMacerat
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("25% faster than using single block steam machines of the same pressure")
+            .addInfo("100% faster than using single block steam machines of the same pressure")
             .addInfo("Only consumes steam at 62.5% of the L/s normally required")
             .addInfo("Processes up to 256 items at once")
+            .addInfo("Minimum casing: 300")
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-            .addInfo(AQUA + "" + ITALIC + "Before your emperor, you are worthy. Before the Goddess of Justice,")
-            .addInfo(AQUA + "" + ITALIC + "you are worthy. Receive our blessings. Embrace our gifts. ")
-            .addInfo(AQUA + "" + ITALIC + "And rise, ascendant, for this is the ending that we all deserve.")
-            .beginStructureBlock(15, 15, 15, true)
-            .addController("Front center")
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
-            .addInputHatch("Any casing", 1)
-            .addOutputHatch("Any casing", 1)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Steam Input Hatch "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " Any casing")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(EnumChatFormatting.GOLD + "70-800x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
-            .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "700-800x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
+            .addInfo(AQUA + "" + ITALIC + "Ideal for taking baths, washing dishes, or probably some other stuff")
+            .addInfo("Author: " + AuthorSteamIsTheNumber)
             .toolTipFinisher();
         return tt;
     }
@@ -364,14 +401,20 @@ public class MTESteamMegaMacerator extends MTESteamMultiBase<MTESteamMegaMacerat
                 + EnumChatFormatting.BLUE
                 + tag.getInteger("parallel")
                 + EnumChatFormatting.RESET);
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
+                + EnumChatFormatting.WHITE
+                + StatCollector.translateToLocal("GT5U.GTPP_MULTI_WASH_PLANT.mode." + tag.getInteger("mode"))
+                + EnumChatFormatting.RESET);
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("tierMachine", casingTier);
+        tag.setInteger("tierMachine", tierMachine);
         tag.setInteger("parallel", getTrueParallel());
+        tag.setInteger("mode", machineMode);
     }
 
     @Override
@@ -389,7 +432,7 @@ public class MTESteamMegaMacerator extends MTESteamMultiBase<MTESteamMegaMacerat
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
-        return SoundResource.IC2_MACHINES_MACERATOR_OP;
+        return SoundResource.GT_MACHINES_MULTI_ORE_WASHER_PLANT_LOOP;
     }
 
 }
