@@ -175,13 +175,12 @@ public abstract class CoverFacadeBase extends Cover {
     @Override
     public void onPlayerAttach(EntityPlayer player, ItemStack coverItem) {
         ICoverable coverable = coveredTile.get();
-        if (coverable != null && coverable.isClientSide()) GTRenderingWorld.getInstance()
-            .register(
-                coverable.getXCoord(),
-                coverable.getYCoord(),
-                coverable.getZCoord(),
-                getTargetBlock(coverItem),
-                getTargetMeta(coverItem));
+        if (coverable != null && coverable.isClientSide()) GTRenderingWorld.register(
+            coverable.getXCoord(),
+            coverable.getYCoord(),
+            coverable.getZCoord(),
+            getTargetBlock(coverItem),
+            getTargetMeta(coverItem));
     }
 
     @Override
@@ -232,13 +231,12 @@ public abstract class CoverFacadeBase extends Cover {
     @Override
     public void onDataChanged() {
         ICoverable coverable = coveredTile.get();
-        if (coverable != null && coverable.isClientSide()) GTRenderingWorld.getInstance()
-            .register(
-                coverable.getXCoord(),
-                coverable.getYCoord(),
-                coverable.getZCoord(),
-                getTargetBlock(mStack),
-                getTargetMeta(mStack));
+        if (coverable != null && coverable.isClientSide()) GTRenderingWorld.register(
+            coverable.getXCoord(),
+            coverable.getYCoord(),
+            coverable.getZCoord(),
+            getTargetBlock(mStack),
+            getTargetMeta(mStack));
     }
 
     @Override
@@ -257,8 +255,8 @@ public abstract class CoverFacadeBase extends Cover {
                         coverable.getXCoord(),
                         coverable.getYCoord(),
                         coverable.getZCoord(),
-                        getTargetBlock(mStack),
-                        getTargetMeta(mStack));
+                        getTargetBlock(coverData.mStack),
+                        getTargetMeta(coverData.mStack));
         }
     }
 
