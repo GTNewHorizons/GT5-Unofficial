@@ -66,20 +66,21 @@ public class AlloySmelterRecipes implements Runnable {
             ItemStack ingot2 = GTOreDictUnificator.get(OrePrefixes.ingot, materials[1].mMaterial, materials[1].mAmount);
             ItemStack outputIngot = GTOreDictUnificator
                 .get(OrePrefixes.ingot, materials[2].mMaterial, materials[2].mAmount);
+            boolean isStronze = materials[2].mMaterial == Materials.Stronze;
             if (outputIngot != GTValues.NI) {
                 if (ingot1 != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(ingot1, dust2)
                         .itemOutputs(outputIngot)
                         .duration((int) materials[2].mAmount * 50)
-                        .eut(16)
+                        .eut(isStronze ? 128 : 16)
                         .addTo(alloySmelterRecipes);
                     if (ingot2 != null) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(ingot1, ingot2)
                             .itemOutputs(outputIngot)
                             .duration((int) materials[2].mAmount * 50)
-                            .eut(16)
+                            .eut(isStronze ? 128 : 16)
                             .addTo(alloySmelterRecipes);
                     }
                 }
@@ -89,7 +90,7 @@ public class AlloySmelterRecipes implements Runnable {
                         .itemInputs(dust1, ingot2)
                         .itemOutputs(outputIngot)
                         .duration((int) materials[2].mAmount * 50)
-                        .eut(16)
+                        .eut(isStronze ? 128 : 16)
                         .addTo(alloySmelterRecipes);
                 }
 
@@ -97,10 +98,11 @@ public class AlloySmelterRecipes implements Runnable {
                     .itemInputs(dust1, dust2)
                     .itemOutputs(outputIngot)
                     .duration((int) materials[2].mAmount * 50)
-                    .eut(16)
+                    .eut(isStronze ? 128 : 16)
                     .addTo(alloySmelterRecipes);
 
             }
+
         }
 
         // We use rubber

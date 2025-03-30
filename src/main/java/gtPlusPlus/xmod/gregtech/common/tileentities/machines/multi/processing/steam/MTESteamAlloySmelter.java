@@ -274,7 +274,7 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
 
     @Override
     public int getTierRecipes() {
-        return 1;
+        return 2;
     }
 
     @Override
