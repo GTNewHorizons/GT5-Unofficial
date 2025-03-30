@@ -1,6 +1,11 @@
 package gregtech.common.blocks;
 
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
@@ -105,5 +110,14 @@ public class BlockCyclotronCoils extends BlockCasingsAbstract {
 
     public int getVoltageTier(int meta) {
         return meta + 2;
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advancedTooltips) {
+        super.addInformation(stack, player, tooltip, advancedTooltips);
+
+        tooltip.add(
+            StatCollector
+                .translateToLocalFormatted("GT5U.tooltip.channelvalue", stack.getItemDamage() + 1, "solenoid"));
     }
 }

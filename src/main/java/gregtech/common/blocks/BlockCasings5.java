@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.translatedText;
 import static gregtech.api.enums.HeatingCoilLevel.EV;
 import static gregtech.api.enums.HeatingCoilLevel.HV;
 import static gregtech.api.enums.HeatingCoilLevel.IV;
@@ -18,6 +19,7 @@ import static gregtech.api.enums.HeatingCoilLevel.ZPM;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -43,6 +45,9 @@ import gregtech.common.render.GTRendererBlock;
  * 16 subtypes at most.
  */
 public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil, IBlockWithTextures {
+
+    public static final Supplier<String> COIL_HEAT_TOOLTIP = translatedText("gt.coilheattooltip");
+    public static final Supplier<String> COIL_UNIT_TOOLTIP = translatedText("gt.coilunittooltip");
 
     public static final int ACTIVE_OFFSET = 16;
 
@@ -223,8 +228,11 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil,
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advancedTooltips) {
         super.addInformation(stack, player, tooltip, advancedTooltips);
 
-        HeatingCoilLevel coilLevel = getCoilHeat(stack.getItemDamage());
+        int metadata = stack.getItemDamage();
 
-        tooltip.add(StatCollector.translateToLocalFormatted("gt.casing.heat-capacity", coilLevel.getHeat()));
+        HeatingCoilLevel coilLevel = BlockCasings5.getCoilHeatFromDamage(metadata);
+        tooltip.add(COIL_HEAT_TOOLTIP.get() + coilLevel.getHeat() + COIL_UNIT_TOOLTIP.get());
+
+        tooltip.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", metadata + 1, "coil"));
     }
 }

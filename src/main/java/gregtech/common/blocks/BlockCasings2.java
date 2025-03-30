@@ -42,10 +42,10 @@ public class BlockCasings2 extends BlockCasingsAbstract {
         register(9, ItemList.Casing_Assembler, "Assembler Machine Casing");
         register(10, ItemList.Casing_Pump, "Pump Machine Casing");
         register(11, ItemList.Casing_Motor, "Motor Machine Casing");
-        register(12, ItemList.Casing_Pipe_Bronze, "Bronze Pipe Casing", tierTooltip(1));
-        register(13, ItemList.Casing_Pipe_Steel, "Steel Pipe Casing", tierTooltip(2));
-        register(14, ItemList.Casing_Pipe_Titanium, "Titanium Pipe Casing", tierTooltip(3));
-        register(15, ItemList.Casing_Pipe_TungstenSteel, "Tungstensteel Pipe Casing", tierTooltip(4));
+        register(12, ItemList.Casing_Pipe_Bronze, "Bronze Pipe Casing", channelTooltip("pipe", 1));
+        register(13, ItemList.Casing_Pipe_Steel, "Steel Pipe Casing", channelTooltip("pipe", 2));
+        register(14, ItemList.Casing_Pipe_Titanium, "Titanium Pipe Casing", channelTooltip("pipe", 3));
+        register(15, ItemList.Casing_Pipe_TungstenSteel, "Tungstensteel Pipe Casing", channelTooltip("pipe", 4));
     }
 
     @Override
