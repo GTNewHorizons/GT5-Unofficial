@@ -358,14 +358,14 @@ gt.recipe.transcendentplasmamixerrecipes=Transcendent Plasma Mixer
 gt.recipe.fakespaceprojects=Space Projects
 gt.recipe.primitiveblastfurnace=Primitive Blast Furnace
 gt.recipe.implosioncompressor=Implosion Compressor
-gt.recipe.vacu.largechemicalreactor=Large Chemical Reactor
+gt.recipe.vacuumfreezer=Vacuum Freezer
+gt.recipe.largechemicalreactor=Large Chemical Reactor
 gt.recipe.distillationtower=Distillation Tower
 gt.recipe.craker=Oil Cracker
 gt.recipe.pyro=Pyrolyse Oven
 gt.recipe.solarfactory=Solar Factory
 gt.recipe.dieselgeneratorfuel=Combustion Generator Fuels
-gt.recipe.extreumfreezer=Vacuum Freezer
-gt.recipemedieselgeneratorfuel=Extreme Diesel Engine Fuel
+gt.recipe.extremedieselgeneratorfuel=Extreme Diesel Engine Fuel
 gt.recipe.gasturbinefuel=Gas Turbine Fuel
 gt.recipe.thermalgeneratorfuel=Thermal Generator Fuels
 gt.recipe.semifluidboilerfuels=Semifluid Boiler Fuels
@@ -392,7 +392,6 @@ gt.recipe.purificationplantquarkextractor=Baryonic Perfection
 gt.recipe.quantumcomputer=QC Components
 gt.recipe.steamgateassembler=Perfect Steam Progenesis
 gt.recipe.steamextruder=Hammer Conformation
-gt.recipe.quantumcomputer=QC Components
 gt.recipe.steamextractinator=Extractination
 gt.recipe.cactuswonder=Offers to the Cacti Deity
 gt.recipe.infernalcokeoven=Coke Oven but OP
@@ -625,12 +624,14 @@ GT5U.machines.betterjukebox.loop.tooltip=Loop mode (keep discs in input inventor
 GT5U.machines.betterjukebox.shuffle.tooltip=Shuffle mode (play random discs instead of in order)
 GT5U.machines.betterjukebox.headphonesbound=Headphones bound to jukebox
 GT5U.machines.betterjukebox.headphonesunbound=Shift-click on an electric jukebox to bind headphones
+GT5U.machines.computation_hatch.computation=Computation
 GT5U.machines.laser_hatch.amperage=Amperage
 GT5U.machines.hatch_output.lockfluid.label=Locked Fluid
 GT5U.machines.hatch_output.lockfluid.empty=None
 GT5U.machines.basic_tank.liquid_amount=Liquid Amount
 GT5U.machines.computation_hatch.pending_computation=§7Total Computation I/O: §b%d§r
 GT5U.machines.computation_hatch.wasted_computation=§7Wasted Computation: §b%d§r
+
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
@@ -675,6 +676,10 @@ GT5U.gui.button.drone_distance=Sort by §3distance
 GT5U.gui.button.drone_error=Sort by §3shutdown status
 GT5U.gui.button.drone_showLocalName=Show localized name
 GT5U.gui.button.toggle_output_slot_lock=Toggle output slot
+GT5U.gui.button.power_panel=Open Power Panel
+GT5U.gui.button.max_parallel=Always use maximum
+GT5U.gui.text.rangedvalue=Range: %s-%s
+GT5U.gui.text.lockedvalue=Locked: %s
 GT5U.gui.text.success=§aProcessing recipe
 GT5U.gui.text.progress=§fProgress:
 GT5U.gui.text.generating=§aGenerating power
@@ -689,6 +694,9 @@ GT5U.gui.text.no_lubricant=§7No lubricant found
 GT5U.gui.text.no_coolant=§7No coolant found
 GT5U.gui.text.cycle_idle=§6Waiting for cycle to start
 GT5U.gui.text.fuel_quality_too_high=§7Fuel quality too high to run without boost
+GT5U.gui.text.data_stick.saved=Saved Config to Data Stick
+GT5U.gui.text.data_stick.loaded=Loaded Config from Data Stick
+GT5U.gui.text.data_stick.invalid=Invalid Data Stick configuration
 GT5U.gui.text.no_data_sticks=§7No Data Sticks found
 GT5U.gui.text.bio_upgrade_missing=§7Recipe needs Bio Upgrade to start
 GT5U.gui.text.nanites_missing=§7Missing nanites
@@ -773,7 +781,6 @@ GT5U.gui.text.enabled=§aEnabled§f
 GT5U.gui.text.disabled=§cDisabled§f
 GT5U.gui.text.lma_craftingfx=Show Crafting Effects
 
-GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
 GT5U.gui.config.client=Client
 GT5U.gui.config.client.color_modulation=Color Modulation
@@ -818,6 +825,7 @@ GT5U.item.cable.max_voltage=Max Voltage
 GT5U.item.cable.max_amperage=Max Amperage
 GT5U.item.cable.loss=Loss/Meter/Ampere
 GT5U.item.cable.eu_volt=EU-Volt
+GT5U.item.cable.swapped=Cable swapped:
 GT5U.item.tank.locked_to=Content locked to %s
 
 GT5U.item.pipe.capacity=Capacity
@@ -827,6 +835,8 @@ GT5U.item.pipe.gas_proof.yes=Yes
 GT5U.item.pipe.gas_proof.no=No
 GT5U.item.pipe.amount=Pipe Amount
 GT5U.item.pipe.empty=Empty
+
+GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
@@ -897,6 +907,30 @@ GT5U.nei.tier=Tier: %s
 GT5U.nei.start_eu=Start: %s EU (MK %s)
 GT5U.nei.stages=Stages: %s
 GT5U.nei.fuel=Fuel Value: %s EU
+GT5U.nei.qc.heating=Heating Constant: %s
+GT5U.nei.qc.cooling=Cooling Constant: %s
+GT5U.nei.qc.computation=Computation: %s
+GT5U.nei.qc.maxheat=Maximum Heat: %s
+GT5U.nei.large_boiler.burn_time=Burn time in seconds:
+GT5U.nei.large_boiler.bronze_boiler=Bronze Boiler: %.4f
+GT5U.nei.large_boiler.steel_boiler=Steel Boiler: %.4f
+GT5U.nei.large_boiler.steel_boiler.ban=Steel Boiler: Not allowed
+GT5U.nei.large_boiler.titanium_boiler=Titanium Boiler: %.4f
+GT5U.nei.large_boiler.titanium_boiler.ban=Titanium Boiler: Not allowed
+GT5U.nei.large_boiler.tungstensteel_boiler=Tungstenst. Boiler: %.4f
+GT5U.nei.large_boiler.tungstensteel_boiler.ban=Tungstenst. Boiler: Not allowed
+GT5U.nei.large_boiler.solid=Not all solid fuels are listed.\nAny burnable item with a burn\ntime of at least %d / %d\nwill burn in a Large Bronze\n/ Steel Boiler, respectively.
+GT5U.nei.nuclear.model.mox=MOX Model
+GT5U.nei.nuclear.model.uranium=Uranium Model
+GT5U.nei.nuclear.neutron_pulse=Neutron Pulse: %d
+GT5U.nei.nuclear.heat.0=Heat: %.1f * n1 * (n1 + 1)
+GT5U.nei.nuclear.heat.1=Heat: %.1f * (%d + n1) * (%d + n1)
+GT5U.nei.nuclear.energy=Energy: %.1f + n2 * %.1f EU/t
+GT5U.nei.nuclear.breeder.neutron_reflecting=Neutron reflecting Breeder
+GT5U.nei.nuclear.breeder.heat_neutral=Heat neutral Breeder
+GT5U.nei.nuclear.breeder.reactor_hull_heat=Every %d reactor hull heat\nincrease speed by %d00%%
+GT5U.nei.nuclear.breeder.required_pulse=Required pulses: %d
+
 
 GT5U.config.colormodulation=Color Modulator
 GT5U.config.colormodulation.cable_insulation=Cable Insulation
@@ -958,6 +992,16 @@ GT5U.interface.coverTabs.north=North
 GT5U.interface.coverTabs.south=South
 GT5U.interface.coverTabs.west=West
 GT5U.interface.coverTabs.east=East
+GT5U.interface.coverTabs.cover_on=Cover on %s side: %s
+GT5U.interface.coverTabs.emits_redstone=Emits a strong redstone signal on the %s side
+
+GT5U.interface.coverTabs.redstone.bottom=bottom
+GT5U.interface.coverTabs.redstone.top=top
+GT5U.interface.coverTabs.redstone.north=north
+GT5U.interface.coverTabs.redstone.south=south
+GT5U.interface.coverTabs.redstone.west=west
+GT5U.interface.coverTabs.redstone.east=east
+GT5U.interface.coverTabs.redstone.unknown=<unknown>
 
 GT5U.steam_variant.bronze=Bronze
 GT5U.steam_variant.steel=Steel
@@ -1006,7 +1050,26 @@ GT5U.waila.generating.on=Generating Energy
 GT5U.waila.generating.off=Not Generating
 GT5U.waila.status.insufficient_energy=Status: Insufficient energy
 GT5U.waila.status.obstructed_steam_vent=Status: Obstructed steam vent
+GT5U.waila.machine.working_disabled=Working Disabled
+GT5U.waila.machine.idle=Idle
+GT5U.waila.machine.in_progress=In progress: %,.1fs / %,.1fs (%,.1f%%)
+GT5U.waila.machine_facing=Machine Facing: %s
+GT5U.waila.output_facing=Output Facing: %s
+GT5U.waila.facing=Facing: %s
+GT5U.waila.facing.down=DOWN
+GT5U.waila.facing.up=UP
+GT5U.waila.facing.north=NORTH
+GT5U.waila.facing.south=SOUTH
+GT5U.waila.facing.west=WEST
+GT5U.waila.facing.east=EAST
+GT5U.waila.facing.unknown=UNKNOWN
 
+GT5U.waila.multiblock.status.incomplete=** INCOMPLETE STRUCTURE **
+GT5U.waila.multiblock.status.efficiency=  Efficiency: %f%%
+GT5U.waila.multiblock.status.has_problem=** HAS PROBLEMS **
+GT5U.waila.multiblock.status.running_fine=Running Fine
+GT5U.waila.multiblock.status.cpu_load=Average CPU load of ~%s ns
+GT5U.waila.multiblock.status.locked_recipe=Locked Recipe:
 
 achievement.flintpick=First Tools
 achievement.flintpick.desc=Craft a flint pick
@@ -2041,8 +2104,11 @@ GTPP.tooltip.structure.data_orb_repository=Data Orb Repository
 GTPP.tooltip.structure.many_bus_hatch=Input Bus, Output Bus, Input Hatch, Output Bus, Energy Hatch
 GTPP.tooltip.structure.rotor_assembly=Rotor Assembly
 
-
-
+GT5U.tooltip.pollution.produces=Produces %d Pollution/Second
+GT5U.tooltip.pollution.produces.multiblock=A complete Multiblock produces %d Pollution/Second
+GT5U.tooltip.pollution.produces.firebox=Produces %d Pollution/Second per firebox
+GT5U.tooltip.pollution.produces.rocket.ignited=Produces %d Pollution/Second when ignited
+GT5U.tooltip.pollution.produces.rocket.flying=Produces %d Pollution/Second when flying
 
 # GT structure hints
 GT5U.tooltip.structure.data_access_hatch=Data Access Hatch
