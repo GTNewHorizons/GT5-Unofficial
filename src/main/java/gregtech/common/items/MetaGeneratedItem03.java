@@ -1,6 +1,7 @@
 package gregtech.common.items;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
+import static gregtech.api.enums.ItemList.Item_PowerNerdGoggles;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_METRICS_TRANSMITTER;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UEV;
@@ -284,7 +285,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
             OrePrefixes.plateSuperdense);
         INSTANCE = this;
         Object[] o = new Object[0];
-
+        Item_PowerNerdGoggles.set(new ItemPowerNerdGoggles("PowerNerd_Goggles", "Nerd Goggles", "I need to look at power storage 24/7 :nerd:"));
         /*
          * circuit boards tier 1-7: coated circuit board / wood plate + resin Plastic Circuit Board / Plastic + Copper
          * Foil + Sulfuric Acid phenolic circuit board /carton+glue+chemical bath epoxy circuit board /epoxy plate +
