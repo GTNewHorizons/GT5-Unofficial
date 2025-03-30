@@ -58,7 +58,7 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
     protected final IIcon[] mIconDamage = new IIcon[25];
 
     public ItemIntegratedCircuit() {
-        super("integrated_circuit", "Programmed Circuit", "");
+        super("integrated_circuit", "Adjustable Cog", "");
         setHasSubtypes(true);
         setMaxDamage(0);
 
@@ -74,7 +74,7 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Circuit_Integrated.getWithDamage(1L, 0L),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { OrePrefixes.circuit.get(Materials.LV) });
+            new Object[] { OrePrefixes.gearGt.get(Materials.Bronze) });
         long bits = GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE;
         GTModHandler.addCraftingRecipe(
             ItemList.Circuit_Integrated.getWithDamage(1L, 1L),
@@ -198,10 +198,7 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
                 + getConfigurationString(getDamage(aStack)));
         aList.add(
             GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".tooltip.0", "Right click to reconfigure"));
-        aList.add(
-            GTLanguageManager.addStringLocalization(
-                getUnlocalizedName() + ".tooltip.1",
-                "Needs a screwdriver or circuit programming tool"));
+        aList.add(GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".tooltip.1", "Needs a screwdriver"));
     }
 
     @Override
