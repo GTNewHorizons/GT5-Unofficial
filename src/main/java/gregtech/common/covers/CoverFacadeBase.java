@@ -250,13 +250,12 @@ public abstract class CoverFacadeBase extends Cover {
             }
             if (mStack != null)
                 // mStack == null -> cover removed before data reach client
-                GTRenderingWorld.getInstance()
-                    .unregister(
-                        coverable.getXCoord(),
-                        coverable.getYCoord(),
-                        coverable.getZCoord(),
-                        getTargetBlock(coverData.mStack),
-                        getTargetMeta(coverData.mStack));
+                GTRenderingWorld.unregister(
+                    coverable.getXCoord(),
+                    coverable.getYCoord(),
+                    coverable.getZCoord(),
+                    getTargetBlock(mStack),
+                    getTargetMeta(mStack));
         }
     }
 
