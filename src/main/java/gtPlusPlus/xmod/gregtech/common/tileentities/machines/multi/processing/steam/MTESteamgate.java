@@ -155,7 +155,7 @@ public class MTESteamgate extends MTEEnhancedMultiBlockBase<MTESteamgate> implem
             tag.setInteger("z", aBaseMetaTileEntity.getZCoord());
 
             device.stackTagCompound = tag;
-            aPlayer.addChatMessage(new ChatComponentText("Saved Steamgate Data to Data Stick"));
+            aPlayer.addChatMessage(new ChatComponentText("Saved Steamgate Dialing Data"));
         }
     }
 
