@@ -246,10 +246,13 @@ public class MTESteamCactusWonder extends MTEBetterSteamMultiBase<MTESteamCactus
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
-        if (aTick % 20 == 0) {
-            addFuel();
+        if (aBaseMetaTileEntity.isAllowedToWork()) {
+            if (aTick % 20 == 0) {
+                addFuel();
+            }
+            outputSteam();
         }
-        outputSteam();
+
     }
 
     private void addFuel() {
@@ -319,6 +322,7 @@ public class MTESteamCactusWonder extends MTEBetterSteamMultiBase<MTESteamCactus
             .addInfo("Every second the cactus wonder will consume all offers stored")
             .addInfo("The god of cacti will save their value and return it as steam blessings to her faithful zealots.")
             .addInfo("Can only take one type of offer at once.")
+            .addInfo("Needs Fully Grown Cacti on the Sand Blocks to form")
             .addInfo(EnumChatFormatting.AQUA + "" + EnumChatFormatting.ITALIC + "Cactus")
             .toolTipFinisher();
         return tt;
