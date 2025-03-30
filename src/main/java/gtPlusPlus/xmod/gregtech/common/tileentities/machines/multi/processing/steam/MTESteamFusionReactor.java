@@ -10,8 +10,6 @@ import static gregtech.api.recipe.RecipeMaps.steamFusionReactorRecipes;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
-import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -81,8 +79,7 @@ public class MTESteamFusionReactor extends MTEBetterSteamMultiBase<MTESteamFusio
                         .casingIndex(((BlockCasingsSteam) GregTechAPI.sBlockCasingsSteam).getTextureIndex(11))
                         .dot(1)
                         .build(),
-                    buildHatchAdder(MTESteamFusionReactor.class)
-                        .atLeast(InputHatch, OutputHatch)
+                    buildHatchAdder(MTESteamFusionReactor.class).atLeast(InputHatch, OutputHatch)
                         .casingIndex(((BlockCasingsSteam) GregTechAPI.sBlockCasingsSteam).getTextureIndex(11))
                         .dot(1)
                         .buildAndChain(),
