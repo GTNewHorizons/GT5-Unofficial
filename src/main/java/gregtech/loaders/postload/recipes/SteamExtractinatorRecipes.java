@@ -59,33 +59,36 @@ public class SteamExtractinatorRecipes implements Runnable {
         RA.stdBuilder()
             .fluidInputs(Materials.GravelSluice.getFluid(4000))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 4),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 4),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 4),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 4),
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Salt, 4))
-            .duration(10 * SECONDS)
+                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Iron, 8),
+                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Copper, 8),
+                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Tin, 8),
+                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Clay, 8),
+                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Salt, 8),
+                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Coal, 8))
+            .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(steamExtractinatorRecipes);
 
         RA.stdBuilder()
             .fluidInputs(Materials.SandSluice.getFluid(4000))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 4),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 4),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 4),
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Ruby, 4))
-            .duration(10 * SECONDS)
+                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Gold, 8),
+                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Redstone, 8),
+                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Zinc, 8),
+                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Ruby, 8))
+            .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(steamExtractinatorRecipes);
 
         RA.stdBuilder()
             .fluidInputs(Materials.ObsidianSluice.getFluid(4000))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 4),
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Diamond, 4),
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 4))
-            .duration(10 * SECONDS)
+                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Silver, 8),
+                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Diamond, 8),
+                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 8),
+                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Gypsum, 1),
+                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Calcite, 1))
+            .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(steamExtractinatorRecipes);
 
@@ -97,7 +100,7 @@ public class SteamExtractinatorRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Ruby, 1),
                 GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Salt, 1))
             .outputChances(1000, 1000, 1000, 2000)
-            .duration(10 * SECONDS)
+            .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(steamExtractinatorRecipes);
     }
