@@ -97,18 +97,8 @@ public class AssortedSteamRecipes implements Runnable {
             .addTo(steamWoodcutterRecipes);
 
         RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 2),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 2),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.QuartzSand, 1))
-            .fluidOutputs(Materials.Concrete.getMolten(1000))
-            .duration(4 * SECONDS)
-            .eut(16)
-            .addTo(mixerRecipes);
-
-        RA.stdBuilder()
             .itemInputs(ItemList.Firebrick.get(6), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gypsum, 2))
-            .fluidInputs(Materials.Concrete.getMolten(1000))
+            .fluidInputs(Materials.Concrete.getMolten(500))
             .itemOutputs(ItemList.Casing_Firebricks.get(1))
             .duration(4 * SECONDS)
             .eut(16)

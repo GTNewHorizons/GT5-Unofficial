@@ -3953,8 +3953,8 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ChestBuffer_ULV.get(1L),
             bits,
-            new Object[] { "CMV", " X ", 'M', ItemList.Hull_ULV, 'V', ItemList.Conveyor_Module_LV, 'C',
-                OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.ULV) });
+            new Object[] { "CMV", " X ", 'M', ItemList.Hull_Bronze, 'V', ItemList.Hydraulic_Conveyor_Steam, 'C',
+                OreDictNames.craftingChest, 'X', GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Brass, 1) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ChestBuffer_LV.get(1L),
             bits,
@@ -4004,9 +4004,8 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Filter_ULV.get(1L),
             bits,
-            new Object[] { " F ", "CMV", " X ", 'M', ItemList.Hull_ULV, 'V', ItemList.Conveyor_Module_LV, 'C',
-                OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
-                OrePrefixes.circuit.get(Materials.LV) });
+            new Object[] { " F ", "CMV", " F ", 'M', ItemList.Hull_Bronze, 'V', ItemList.Hydraulic_Conveyor_Steam, 'C',
+                OreDictNames.craftingChest, 'F', GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Brass, 1) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Filter_LV.get(1L),
             bits,
@@ -4065,9 +4064,8 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_TypeFilter_ULV.get(1L),
             bits,
-            new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_ULV, 'V', ItemList.Conveyor_Module_LV, 'C',
-                OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
-                OrePrefixes.circuit.get(Materials.LV) });
+            new Object[] { " F ", "VMC", " F ", 'M', ItemList.Hull_Bronze, 'V', ItemList.Hydraulic_Conveyor_Steam, 'C',
+                OreDictNames.craftingChest, 'F', GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Brass, 1) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_TypeFilter_LV.get(1L),
             bits,
@@ -4126,9 +4124,8 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Regulator_ULV.get(1L),
             bits,
-            new Object[] { "XFX", "VMV", "XCX", 'M', ItemList.Hull_ULV, 'V', ItemList.Robot_Arm_LV, 'C',
-                OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
-                OrePrefixes.circuit.get(Materials.LV) });
+            new Object[] { "XXX", "VMV", "XCX", 'M', ItemList.Hull_Bronze, 'V', ItemList.Hydraulic_Arm_Steam, 'C',
+                OreDictNames.craftingChest, 'X', GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Brass, 1) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Regulator_LV.get(1L),
             bits,
@@ -4187,8 +4184,8 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_ULV.get(1L),
             bits,
-            new Object[] { "DMV", 'M', ItemList.Automation_ChestBuffer_ULV, 'V', ItemList.Conveyor_Module_LV, 'D',
-                ItemList.Tool_DataOrb });
+            new Object[] { "DMV", 'M', ItemList.Automation_ChestBuffer_ULV, 'V', ItemList.Hydraulic_Conveyor_Steam, 'D',
+                GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Steel, 1) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_LV.get(1L),
             bits,
@@ -4289,8 +4286,8 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ItemDistributor_ULV.get(1L),
             bits,
-            new Object[] { "XCX", "VMV", " V ", 'M', ItemList.Hull_ULV, 'V', ItemList.Conveyor_Module_LV, 'C',
-                OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.LV) });
+            new Object[] { "XCX", "VMV", " V ", 'M', ItemList.Hull_Bronze, 'V', ItemList.Hydraulic_Conveyor_Steam, 'C',
+                OreDictNames.craftingChest, 'X', GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Brass, 1) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ItemDistributor_LV.get(1L),
             bits,
@@ -4340,9 +4337,8 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_RecipeFilter_ULV.get(1L),
             bits,
-            new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_ULV, 'V', ItemList.Robot_Arm_LV, 'C',
-                OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
-                OrePrefixes.circuit.get(Materials.LV) });
+            new Object[] { " F ", "VMC", " F ", 'M', ItemList.Hull_Bronze, 'V', ItemList.Hydraulic_Arm_Steam, 'C',
+                OreDictNames.craftingChest, 'F', GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Brass, 1) });
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_RecipeFilter_LV.get(1L),
             bits,
