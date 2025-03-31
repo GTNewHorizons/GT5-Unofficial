@@ -266,9 +266,10 @@ public class MTESteamExtractinator extends MTESteamMultiBase<MTESteamExtractinat
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
+    // Arbitrarily high value
     @Override
     public int getTierRecipes() {
-        return 1;
+        return 8;
     }
 
     @Override
