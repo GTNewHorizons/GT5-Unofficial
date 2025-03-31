@@ -2,7 +2,6 @@ package gregtech.common.items;
 
 import static gregtech.api.enums.GTValues.NW;
 
-import gregtech.api.net.GTPacketUpdateItem;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,13 +15,15 @@ import net.minecraft.world.World;
 import appeng.api.util.DimensionalCoord;
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
+import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.net.GTPacketLinkGoggles;
+import gregtech.api.net.GTPacketUpdateItem;
 import gregtech.common.handlers.PowerGogglesEventHandler;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 
-public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble {
+public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble, INetworkUpdatableItem {
 
     public ItemPowerNerdGoggles(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
@@ -77,7 +78,7 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble {
 
     @Override
     public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
-        if(player instanceof EntityPlayerMP mPlayer){
+        if (player instanceof EntityPlayerMP mPlayer) {
 
         }
     }
@@ -97,4 +98,9 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble {
         return true;
     }
 
+    @Override
+    public boolean receive(ItemStack stack, EntityPlayerMP player, NBTTagCompound tag) {
+        stack.setTagCompound(tag);
+        return true;
+    }
 }

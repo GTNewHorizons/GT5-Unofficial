@@ -15,7 +15,7 @@ import io.netty.buffer.ByteBuf;
 
 public class GTPacketLinkGoggles extends GTPacket {
 
-    private DimensionalCoord coords;
+    private DimensionalCoord coords = null;
     private EntityPlayerMP player;
 
     public GTPacketLinkGoggles() {}
