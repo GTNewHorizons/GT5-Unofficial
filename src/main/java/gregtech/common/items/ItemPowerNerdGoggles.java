@@ -15,6 +15,8 @@ import net.minecraft.world.World;
 import appeng.api.util.DimensionalCoord;
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
+import baubles.common.container.InventoryBaubles;
+import baubles.common.lib.PlayerHandler;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
@@ -58,12 +60,40 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble, INet
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) { // called by both server and
                                                                                            // client
-        if (player instanceof EntityPlayerMP mPlayer && player.isSneaking()) {
-            PowerGogglesEventHandler.lscLink = null;
-            stack.setTagCompound(new NBTTagCompound());
-            PowerGogglesEventHandler.forceUpdate = true;
-            PowerGogglesEventHandler.forceRefresh = true;
-            player.addChatMessage(new ChatComponentText("Goggles unlinked."));
+        if (player instanceof EntityPlayerMP) {
+            if (player.isSneaking()) {
+                PowerGogglesEventHandler.lscLink = null;
+                stack.setTagCompound(new NBTTagCompound());
+                PowerGogglesEventHandler.forceUpdate = true;
+                PowerGogglesEventHandler.forceRefresh = true;
+                player.addChatMessage(new ChatComponentText("Goggles unlinked."));
+            } else {
+
+                InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(player);
+                // Try to equip into empty slots first
+                for (int i = 0; i < baubles.getSizeInventory(); i++) {
+                    ItemStack bauble = baubles.getStackInSlot(i);
+                    if (bauble == null) {
+                        baubles.setInventorySlotContents(i, stack.copy());
+                        this.onEquipped(stack, player);
+                        if (!player.capabilities.isCreativeMode) {
+                            player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+                        }
+                        return stack;
+                    }
+                }
+                for (int i = 0; i < baubles.getSizeInventory(); i++) {
+                    ItemStack bauble = baubles.getStackInSlot(i);
+                    if (bauble != null && ((IBauble) bauble.getItem()).canUnequip(bauble, player)) {
+                        baubles.setInventorySlotContents(i, stack.copy());
+                        ((IBauble) bauble.getItem()).onEquipped(bauble, player);
+                        if (!player.capabilities.isCreativeMode) {
+                            player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+                        }
+                        return bauble.copy();
+                    }
+                }
+            }
         }
         return super.onItemRightClick(stack, world, player);
     }
@@ -77,8 +107,7 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble, INet
     public void onWornTick(ItemStack itemstack, EntityLivingBase player) {}
 
     @Override
-    public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
-    }
+    public void onEquipped(ItemStack itemstack, EntityLivingBase player) {}
 
     @Override
     public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {

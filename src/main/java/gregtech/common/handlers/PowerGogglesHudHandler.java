@@ -61,7 +61,7 @@ public class PowerGogglesHudHandler {
                 .getUnlocalizedName()
                 .equals("gt.PowerNerd_Goggles")) gogglesEquipped = true;
         }
-         if (!gogglesEquipped) return;
+        if (!gogglesEquipped) return;
         ScaledResolution resolution = event.resolution;
         int width = resolution.getScaledWidth();
         int height = resolution.getScaledHeight();
