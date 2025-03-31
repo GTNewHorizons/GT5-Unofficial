@@ -9,13 +9,13 @@ import com.google.common.io.ByteArrayDataInput;
 import gregtech.common.handlers.PowerGogglesHudHandler;
 import io.netty.buffer.ByteBuf;
 
-public class GTPacketSendWirelessEU extends GTPacket {
+public class GTPacketUpdatePowerGoggles extends GTPacket {
 
     BigInteger EU;
 
-    public GTPacketSendWirelessEU() {}
+    public GTPacketUpdatePowerGoggles() {}
 
-    public GTPacketSendWirelessEU(BigInteger EU) {
+    public GTPacketUpdatePowerGoggles(BigInteger EU) {
         this.EU = EU;
     }
 
@@ -39,13 +39,13 @@ public class GTPacketSendWirelessEU extends GTPacket {
             eu[i] = buffer.readByte();
         }
         BigInteger EU = new BigInteger(eu);
-        return new GTPacketSendWirelessEU(EU);
+        return new GTPacketUpdatePowerGoggles(EU);
     }
 
     @Override
     public void process(IBlockAccess aWorld) {
         System.out.println("SENDING WIRELESS EU!");
         PowerGogglesHudHandler.setMeasurement(this.EU);
-        PowerGogglesHudHandler.drawTick();
+        PowerGogglesHudHandler.updateClient = true;
     }
 }

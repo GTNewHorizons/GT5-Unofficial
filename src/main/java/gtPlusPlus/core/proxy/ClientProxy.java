@@ -62,11 +62,7 @@ public class ClientProxy extends CommonProxy {
         new MachineBlockRenderer();
         new FlaskRenderer();
         MinecraftForge.EVENT_BUS.register(new NEIGTPPConfig());
-        FMLCommonHandler.instance()
-            .bus()
-            .register(new PowerGogglesEventHandler());
         MinecraftForge.EVENT_BUS.register(new PowerGogglesHudHandler());
-        MinecraftForge.EVENT_BUS.register(new PowerGogglesEventHandler());
         super.init(e);
     }
 
