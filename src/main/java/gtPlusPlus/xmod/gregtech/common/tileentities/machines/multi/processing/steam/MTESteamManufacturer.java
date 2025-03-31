@@ -3,8 +3,10 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.s
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CARPENTER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CARPENTER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MANUFACTURER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MANUFACTURER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MANUFACTURER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MANUFACTURER_GLOW;
 import static gregtech.api.recipe.RecipeMaps.steamManufacturerRecipes;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -156,7 +158,12 @@ public class MTESteamManufacturer extends MTEBetterSteamMultiBase<MTESteamManufa
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_CARPENTER_ACTIVE)
+                        .addIcon(OVERLAY_MANUFACTURER_ACTIVE)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_MANUFACTURER_ACTIVE_GLOW)
+                        .glow()
                         .extFacing()
                         .build() };
             } else {
@@ -164,7 +171,12 @@ public class MTESteamManufacturer extends MTEBetterSteamMultiBase<MTESteamManufa
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_CARPENTER)
+                        .addIcon(OVERLAY_MANUFACTURER)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_MANUFACTURER_GLOW)
+                        .glow()
                         .extFacing()
                         .build() };
             }
