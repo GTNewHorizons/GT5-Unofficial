@@ -26,6 +26,7 @@ public class BlockCasingsSteam extends BlockCasingsAbstract {
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Hydraulic Assembling Casing");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Hyper Pressure Breel Casing");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Breel-Plated Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Steam Compact Pipe Casing");
 
         ItemList.Steamgate_Ring_Block.set(new ItemStack(this, 1, 0));
         ItemList.Steamgate_Chevron_Block.set(new ItemStack(this, 1, 1));
@@ -40,6 +41,7 @@ public class BlockCasingsSteam extends BlockCasingsAbstract {
         ItemList.Hydraulic_Assembling_Casing.set(new ItemStack(this, 1, 10));
         ItemList.Hyper_Pressure_Breel_Casing.set(new ItemStack(this, 1, 11));
         ItemList.Breel_Casing.set(new ItemStack(this, 1, 12));
+        ItemList.Compact_Steam_Pipe_Casing.set(new ItemStack(this, 1, 13));
     }
 
     @Override
@@ -67,6 +69,7 @@ public class BlockCasingsSteam extends BlockCasingsAbstract {
             case 10 -> Textures.BlockIcons.HYDRAULIC_ASSEMBLING_CASING.getIcon();
             case 11 -> Textures.BlockIcons.STEAM_FUSION_CASING.getIcon();
             case 12 -> Textures.BlockIcons.BREEL_CASING.getIcon();
+            case 13 -> Textures.BlockIcons.COMPACT_STEAM_COIL.getIcon();
             default -> Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();
         };
     }

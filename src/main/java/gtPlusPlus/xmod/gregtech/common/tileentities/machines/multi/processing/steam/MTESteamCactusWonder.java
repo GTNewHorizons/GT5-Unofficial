@@ -284,8 +284,8 @@ public class MTESteamCactusWonder extends MTEBetterSteamMultiBase<MTESteamCactus
                 addOutput(FluidUtils.getSuperHeatedSteam((int) Math.min(6400, fueledAmount)));
                 fueledAmount -= (int) Math.min(6400, fueledAmount);
             } else if (currentSteam == 3) {
-                addOutput(FluidRegistry.getFluidStack("supercriticalsteam", (int) Math.min(12800, fueledAmount)));
-                fueledAmount -= (int) Math.min(12800, fueledAmount);
+                addOutput(FluidRegistry.getFluidStack("supercriticalsteam", (int) Math.min(25600, fueledAmount)));
+                fueledAmount -= (int) Math.min(25600, fueledAmount);
             }
 
             if (fueledAmount <= 0) {

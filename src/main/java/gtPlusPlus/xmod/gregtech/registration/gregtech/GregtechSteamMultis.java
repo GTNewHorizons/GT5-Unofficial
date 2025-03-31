@@ -8,6 +8,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamAlloySmelterM
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamBlastFurnace;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamCarpenter;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamCentrifugeMulti;
+import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamCompactFusionReactor;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamCompressorMulti;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamExtractinator;
 import static gregtech.api.enums.MetaTileEntityIDs.Controller_SteamExtruder;
@@ -47,6 +48,7 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.st
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCactusWonder;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCarpenter;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCentrifuge;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCompact;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamCompressor;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamExtractinator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam.MTESteamExtruder;
@@ -210,6 +212,12 @@ public class GregtechSteamMultis {
                 "gtpp.multimachine.steam.fusionreactor",
                 "Hyper Pressure Reactor").getStackForm(1));
         addItemTooltip(GregtechItemList.Controller_SteamFusionReactor.get(1), GTValues.AuthorNoc);
+        GregtechItemList.Controller_SteamCompactFusionReactor.set(
+            new MTESteamCompact(
+                Controller_SteamCompactFusionReactor.ID,
+                "gtpp.multimachine.steam.compactfusionreactor",
+                "Compact Hyper Pressure Reactor").getStackForm(1));
+        addItemTooltip(GregtechItemList.Controller_SteamCompactFusionReactor.get(1), GTValues.AuthorNoc);
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(
             new MTEHatchSteamBusInput(Hatch_Input_Bus_Steam.ID, "hatch.input_bus.tier.steam", "Simple Input Bus", 0)

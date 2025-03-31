@@ -43,7 +43,14 @@ public class AssortedSteamRecipes implements Runnable {
             .addTo(steamFusionReactorRecipes);
 
         RA.stdBuilder()
-            .fluidInputs(FluidUtils.getSuperHeatedSteam(16000), Materials.Lava.getFluid(16000))
+            .fluidInputs(FluidUtils.getSuperHeatedSteam(16000), Materials.Creosote.getFluid(4000))
+            .fluidOutputs(FluidRegistry.getFluidStack("supercriticalsteam", 16000))
+            .duration(10 * TICKS)
+            .eut(0)
+            .addTo(steamFusionReactorRecipes);
+
+        RA.stdBuilder()
+            .fluidInputs(Materials.Water.getFluid(100), Materials.Lava.getFluid(125))
             .fluidOutputs(FluidRegistry.getFluidStack("supercriticalsteam", 16000))
             .duration(10 * TICKS)
             .eut(0)
@@ -51,6 +58,7 @@ public class AssortedSteamRecipes implements Runnable {
 
         RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1))
+            .fluidInputs(Materials.Water.getFluid(100))
             .itemOutputs(new ItemStack(Items.clay_ball, 1))
             .duration(4 * TICKS)
             .eut(2)
@@ -159,7 +167,7 @@ public class AssortedSteamRecipes implements Runnable {
             ItemList.Hydraulic_Pump_Steam.get(1),
             new Object[] { "ABC", "sDw", "CEA", 'A', ItemList.Hydraulic_Motor_Steam.get(1), 'B',
                 ItemList.Simple_Bronze_Turbine.get(1), 'C', "ringRubber", 'D', "pipeLargeBronze", 'E',
-                "screwCrudeSteel" });
+                "boltCrudeSteel" });
         GTModHandler.addCraftingRecipe(
             ItemList.Hydraulic_Arm_Steam.get(1),
             new Object[] { "AAA", "BCB", "DEC", 'A', "plateDoubleCrudeSteel", 'B',
@@ -233,7 +241,7 @@ public class AssortedSteamRecipes implements Runnable {
         RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Rubber, 2),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.CrudeSteel, 1),
+                GTOreDictUnificator.get(OrePrefixes.bolt, Materials.CrudeSteel, 1),
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Bronze, 1),
                 ItemList.Simple_Bronze_Turbine.get(1),
                 ItemList.Hydraulic_Motor_Steam.get(2))
@@ -543,6 +551,17 @@ public class AssortedSteamRecipes implements Runnable {
                 'B', GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Breel, 1), 'C',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CrudeSteel, 1) });
 
+        // Compact Pipe Casing
+        RA.stdBuilder()
+            .itemInputs(
+                ItemList.Breel_Pipe_Casing.get(1),
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.CompressedSteam, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CompressedSteam, 6))
+            .itemOutputs(ItemList.Compact_Steam_Pipe_Casing.get(1))
+            .duration(6 * SECONDS)
+            .eut(24)
+            .addTo(steamManufacturerRecipes);
+
         // Machine Controllers
         {
 
@@ -727,6 +746,23 @@ public class AssortedSteamRecipes implements Runnable {
                     ItemList.Machine_Bricked_BlastFurnace.get(1), 'B',
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Breel, 1), 'D',
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Stronze, 1) });
+
+            // Compact Fusion
+            RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hydraulic_Vapor_Generator.get(1),
+                    ItemList.Hydraulic_Vapor_Generator.get(1),
+                    ItemList.Hydraulic_Vapor_Generator.get(1),
+                    ItemList.Hydraulic_Vapor_Generator.get(1),
+                    GregtechItemList.Controller_SteamFusionReactor.get(64),
+                    ItemList.Hydraulic_Vapor_Generator.get(1),
+                    ItemList.Hydraulic_Vapor_Generator.get(1),
+                    ItemList.Hydraulic_Vapor_Generator.get(1),
+                    ItemList.Hydraulic_Vapor_Generator.get(1))
+                .itemOutputs(GregtechItemList.Controller_SteamCompactFusionReactor.get(1))
+                .duration(120 * SECONDS)
+                .eut(1600)
+                .addTo(steamManufacturerRecipes);
 
             // Mega Oreproc
 
