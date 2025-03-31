@@ -40,13 +40,13 @@ public final class GTCommand extends CommandBase {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "Usage: gt <subcommand>. Valid subcommands are: toggle, chunks, pollution, global_energy_add, global_energy_set, global_energy_join, dump_music_durations.";
+        return "Usage: gt <subcommand>. Valid subcommands are: toggle, chunks, pollution, global_energy_add, global_energy_set, global_energy_join, global_steam_add, global_steam_set, global_steam_join, dump_music_durations.";
     }
 
     private void printHelp(ICommandSender sender) {
         sender.addChatMessage(
             new ChatComponentText(
-                "Usage: gt <toggle|chunks|pollution|global_energy_add|global_energy_set|global_energy_join|dump_music_durations>"));
+                "Usage: gt <toggle|chunks|pollution|global_energy_add|global_energy_set|global_energy_join|global_steam_add|global_steam_set|global_steam_join|dump_music_durations>"));
         sender.addChatMessage(new ChatComponentText("\"toggle D1\" - toggles general.Debug (D1)"));
         sender.addChatMessage(new ChatComponentText("\"toggle D2\" - toggles general.Debug2 (D2)"));
         sender.addChatMessage(new ChatComponentText("\"toggle debugCleanroom\" - toggles cleanroom debug log"));
@@ -78,22 +78,6 @@ public final class GTCommand extends CommandBase {
                     + "[Name] "
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "[EU]"));
-
-        // todo remove these later
-        sender.addChatMessage(new ChatComponentText("Allows you to add Steam to a users pipeless network."));
-        sender.addChatMessage(
-            new ChatComponentText(
-                "Usage:" + EnumChatFormatting.RED
-                    + " global_steam_set "
-                    + EnumChatFormatting.BLUE
-                    + "[Name] "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "[Steam]"));
-        sender.addChatMessage(new ChatComponentText("Shows the amount of Steam in a users pipeless network."));
-        sender.addChatMessage(
-            new ChatComponentText(
-                "Usage:" + EnumChatFormatting.RED + " global_steam_display " + EnumChatFormatting.BLUE + "[Name]"));
-
         sender.addChatMessage(
             new ChatComponentText("Allows you to add EU to a users wireless network. Also accepts negative numbers."));
         sender.addChatMessage(
@@ -117,6 +101,43 @@ public final class GTCommand extends CommandBase {
         sender.addChatMessage(
             new ChatComponentText(
                 "Usage:" + EnumChatFormatting.RED + " global_energy_display " + EnumChatFormatting.BLUE + "[Name]"));
+
+        sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + " --- Global steam controls ---"));
+        sender.addChatMessage(
+            new ChatComponentText("Allows you to set the amount of Steam in a user's wireless network."));
+        sender.addChatMessage(
+            new ChatComponentText(
+                "Usage:" + EnumChatFormatting.RED
+                    + " global_steam_set "
+                    + EnumChatFormatting.BLUE
+                    + "[Name] "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "[L] [type (optional)]"));
+        sender.addChatMessage(
+            new ChatComponentText(
+                "Allows you to add Steam to a user's wireless network. Also accepts negative numbers."));
+        sender.addChatMessage(
+            new ChatComponentText(
+                "Usage:" + EnumChatFormatting.RED
+                    + " global_steam_add "
+                    + EnumChatFormatting.BLUE
+                    + "[Name] "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "[L] [type (optional)]"));
+        sender.addChatMessage(
+            new ChatComponentText(
+                "Allows you to join two users together into one network. Can be undone by writing the users name twice."));
+        sender.addChatMessage(
+            new ChatComponentText(
+                "Usage:" + EnumChatFormatting.RED
+                    + " global_steam_join "
+                    + EnumChatFormatting.BLUE
+                    + "[User joining] [User to join]"));
+        sender.addChatMessage(new ChatComponentText("Shows the amount of Steam in a user's steam network."));
+        sender.addChatMessage(
+            new ChatComponentText(
+                "Usage:" + EnumChatFormatting.RED + " global_steam_display " + EnumChatFormatting.BLUE + "[Name]"));
+
         sender.addChatMessage(
             new ChatComponentText(
                 "\"dump_music_durations\" - dumps soundmeta/durations.json for all registered records in the game to the log. Client-only"));
@@ -135,7 +156,9 @@ public final class GTCommand extends CommandBase {
                 "global_energy_set",
                 "global_energy_join",
                 "global_energy_display",
+                "global_steam_add",
                 "global_steam_set",
+                "global_steam_join",
                 "global_steam_display",
                 "dump_music_durations")
             .anyMatch(s -> s.startsWith(test)))) {
@@ -148,7 +171,9 @@ public final class GTCommand extends CommandBase {
                     "global_energy_set",
                     "global_energy_join",
                     "global_energy_display",
+                    "global_steam_add",
                     "global_steam_set",
+                    "global_steam_join",
                     "global_steam_display",
                     "dump_music_durations")
                 .filter(s -> test.isEmpty() || s.startsWith(test))
@@ -439,6 +464,89 @@ public final class GTCommand extends CommandBase {
                             + EnumChatFormatting.RESET
                             + "L Supercritical Steam"));
                 sender.addChatMessage(new ChatComponentText("in their network."));
+            }
+
+            case "global_steam_add" -> {
+
+                // Usage is /gt global_steam_add username Steam <type>
+
+                String username = strings[1];
+                String formatted_username = EnumChatFormatting.BLUE + username + EnumChatFormatting.RESET;
+                UUID uuid = SpaceProjectManager.getPlayerUUIDFromName(username);
+
+                String Steam_String_0 = strings[2];
+
+                String type = "Steam";
+                GTTeam team = GTTeamManager.getTeam(username, uuid);
+                PipelessSteamManager manager = GTTeamManager.getSteamData(team);
+                if (strings.length > 3) {
+                    String raw = strings[3];
+                    if (raw.equals("sc")) {
+                        type = "Supercritical Steam";
+                        manager.fillSupercriticalSteam(new BigInteger(Steam_String_0));
+                    } else if (raw.equals("sh")) {
+                        type = "Superheated Steam";
+                        manager.fillSuperheatedSteam(new BigInteger(Steam_String_0));
+                    } else {
+                        manager.fillSteam(new BigInteger(Steam_String_0));
+                    }
+                } else {
+                    manager.fillSteam(new BigInteger(Steam_String_0));
+                }
+
+                sender.addChatMessage(
+                    new ChatComponentText(
+                        "Successfully added " + GTUtility.formatNumbers(new BigInteger(Steam_String_0))
+                            + "L "
+                            + type
+                            + " to the global steam network of "
+                            + formatted_username
+                            + "."));
+            }
+
+            case "global_steam_join" -> {
+
+                // Usage is /gt global_energy_join username_of_you username_to_join
+
+                String usernameJoining = strings[1];
+                String usernameOfTeam = strings[2];
+
+                String formattedUsernameSubject = EnumChatFormatting.BLUE + usernameJoining + EnumChatFormatting.RESET;
+                String formattedUsernameTeam = EnumChatFormatting.BLUE + usernameOfTeam + EnumChatFormatting.RESET;
+
+                UUID uuidJoining = SpaceProjectManager.getPlayerUUIDFromName(usernameJoining);
+                UUID uuidTeam = SpaceProjectManager.getPlayerUUIDFromName(usernameOfTeam);
+
+                GTTeam team = GTTeamManager.getTeam(usernameOfTeam, uuidTeam);
+
+                if (team.isTeamMember(uuidJoining)) {
+                    // leave team
+                    team.removeMember(uuidJoining);
+                    sender.addChatMessage(
+                        new ChatComponentText(
+                            "User " + formattedUsernameSubject + " has rejoined their own global steam network."));
+                    break;
+                }
+
+                // join other's team
+
+                if (uuidJoining.equals(uuidTeam)) {
+                    sender.addChatMessage(new ChatComponentText("They are already in the same network!"));
+                    break;
+                }
+
+                team.addMember(uuidJoining);
+
+                sender.addChatMessage(
+                    new ChatComponentText(
+                        "Success! " + formattedUsernameSubject + " has joined " + formattedUsernameTeam + "."));
+                sender.addChatMessage(
+                    new ChatComponentText(
+                        "To undo this simply join your own network again with /gt global_steam_join "
+                            + formattedUsernameSubject
+                            + " "
+                            + formattedUsernameSubject
+                            + "."));
             }
 
             case "dump_music_durations" -> {
