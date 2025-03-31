@@ -137,7 +137,7 @@ public class MTESteamManufacturer extends MTEBetterSteamMultiBase<MTESteamManufa
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setNoOverclock(true);
             }
-        };
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
