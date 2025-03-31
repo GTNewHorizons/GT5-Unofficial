@@ -895,8 +895,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     private HashMap<ItemStack, Double> GUIDropProgress = new HashMap<>();
 
     @Override
-    protected Widget generateCurrentRecipeInfoStringWidget() {
-        if (mSecondaryMode == 1) return super.generateCurrentRecipeInfoStringWidget();
+    protected Widget generateCurrentRecipeInfoWidget() {
+        if (mSecondaryMode == 1) return super.generateCurrentRecipeInfoWidget();
 
         final DynamicPositionedColumn processingDetails = new DynamicPositionedColumn();
         final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;

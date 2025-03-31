@@ -1135,7 +1135,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     }
 
     @Override
-    protected Widget generateCurrentRecipeInfoStringWidget() {
+    protected Widget generateCurrentRecipeInfoWidget() {
 
         final DynamicPositionedColumn processingDetails = new DynamicPositionedColumn();
         final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;

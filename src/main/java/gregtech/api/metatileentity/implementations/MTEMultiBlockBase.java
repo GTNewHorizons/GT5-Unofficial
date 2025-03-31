@@ -2871,7 +2871,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     protected final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
-    protected Widget generateCurrentRecipeInfoStringWidget() {
+    protected Widget generateCurrentRecipeInfoWidget() {
         final DynamicPositionedColumn processingDetails = new DynamicPositionedColumn();
         final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 
@@ -3226,7 +3226,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         widget -> (mOutputFluids != null && mOutputFluids.length > 0)
                             || (mOutputItems != null && mOutputItems.length > 0)));
             final ChangeableWidget recipeOutputItemsWidget = new ChangeableWidget(
-                this::generateCurrentRecipeInfoStringWidget);
+                this::generateCurrentRecipeInfoWidget);
             // Display current recipe
             screenElements.widget(
                 new FakeSyncWidget.ListSyncer<>(
