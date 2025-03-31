@@ -713,6 +713,16 @@ public class AssortedSteamRecipes implements Runnable {
                 .eut(1600)
                 .addTo(steamManufacturerRecipes);
 
+            // Mega Fuser
+            RA.stdBuilder()
+                .itemInputs(
+                    GregtechItemList.Controller_SteamAlloySmelterMulti.get(64),
+                    ItemList.Hydraulic_Emitter_Steam.get(2))
+                .itemOutputs(GregtechItemList.Controller_SteamMegaAlloySmelter.get(1))
+                .duration(120 * SECONDS)
+                .eut(1600)
+                .addTo(steamManufacturerRecipes);
+
             // Progenitor
             RA.stdBuilder()
                 .itemInputs(
