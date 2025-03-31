@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -115,6 +116,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
 
     private int tCountCasing = 0;
 
+    @Nullable
     public Integer getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
             tCountCasing++;
@@ -127,12 +129,14 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         return null;
     }
 
+    @Nullable
     public static Integer getTierGearBoxCasing(Block block, int meta) {
         if (block == sBlockCasings2 && 2 == meta) return 1;
         if (block == sBlockCasings2 && 3 == meta) return 2;
         return null;
     }
 
+    @Nullable
     public static Integer getTierPipeCasing(Block block, int meta) {
         if (block == sBlockCasings2 && 12 == meta) return 1;
         if (block == sBlockCasings2 && 13 == meta) return 2;

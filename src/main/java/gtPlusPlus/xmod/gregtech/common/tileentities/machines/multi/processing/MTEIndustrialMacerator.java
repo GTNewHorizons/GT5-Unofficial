@@ -14,6 +14,8 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -69,6 +71,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     private static final int DEPTH_OFF_SET = 0;
     private static IStructureDefinition<MTEIndustrialMacerator> STRUCTURE_DEFINITION = null;
 
+    @Nullable
     private static Integer getStructureCasingTier(Block b, int m) {
         if (b == GregTechAPI.sBlockCasings4 && m == 2) return 1;
         if (b == ModBlocks.blockCasingsMisc && m == 7) return 2;
