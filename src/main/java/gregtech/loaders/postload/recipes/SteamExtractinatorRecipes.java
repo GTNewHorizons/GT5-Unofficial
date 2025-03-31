@@ -53,7 +53,7 @@ public class SteamExtractinatorRecipes implements Runnable {
             .fluidInputs(FluidUtils.getWater(1000))
             .fluidOutputs(Materials.GemSluice.getFluid(4000))
             .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
+            .eut(300)
             .addTo(mixerRecipes);
 
         RA.stdBuilder()
@@ -66,7 +66,7 @@ public class SteamExtractinatorRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Salt, 8),
                 GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Coal, 8))
             .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
+            .eut(300)
             .addTo(steamExtractinatorRecipes);
 
         RA.stdBuilder()
@@ -78,7 +78,7 @@ public class SteamExtractinatorRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Ruby, 8),
                 GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Sulfur, 8))
             .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
+            .eut(300)
             .addTo(steamExtractinatorRecipes);
 
         RA.stdBuilder()
@@ -90,7 +90,7 @@ public class SteamExtractinatorRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Gypsum, 1),
                 GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Calcite, 1))
             .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
+            .eut(300)
             .addTo(steamExtractinatorRecipes);
 
         RA.stdBuilder()
