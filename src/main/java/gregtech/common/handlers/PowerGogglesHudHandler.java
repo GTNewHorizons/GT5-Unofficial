@@ -30,9 +30,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class PowerGogglesHudHandler {
+
     public static boolean updateClient = false;
     private final static int TICKS = 1;
-    private final static int SECONDS = 20*TICKS;
+    private final static int SECONDS = 20 * TICKS;
     private final static int MINUTES = 60 * SECONDS;
     static List<Text> hudList = new ArrayList<>();
     static LinkedList<BigInteger> measurements = new LinkedList<>();
@@ -67,7 +68,7 @@ public class PowerGogglesHudHandler {
         int factor = resolution.getScaleFactor();
         int xOffset = 0;
         int x = -5;
-        int yOffset = 20;
+        int yOffset = 15;
         int y = (height - yOffset);
 
         FontRenderer fontRenderer = mc.fontRenderer;
@@ -75,7 +76,7 @@ public class PowerGogglesHudHandler {
         GuiHelper.drawHoveringText(
             hudList,
             new Pos2d(x, y),
-            new Size(150, 60),
+            new Size(150, 45),
             150,
             0.75f,
             true,
@@ -115,15 +116,6 @@ public class PowerGogglesHudHandler {
         ++measurementCount;
         hudList
             .add(new Text(EnumChatFormatting.WHITE + "Storage: " + change5mColor + toEngineering(currentEU) + " EU"));
-        hudList.add(
-            new Text(
-                EnumChatFormatting.WHITE + "5s: "
-                    + changeColor
-                    + toEngineering(lastChange)
-                    + " EU"
-                    + (lastChangeDiff != 0 ? String.format(
-                        " (%s eu/t) ",
-                        toEngineering(lastChange.divide(BigInteger.valueOf(ticksBetweenMeasurements)))) : "")));
         hudList.add(
             new Text(
                 EnumChatFormatting.WHITE + "5m: "
@@ -179,7 +171,8 @@ public class PowerGogglesHudHandler {
         if (compareResult < 0) return EnumChatFormatting.RED;
         return EnumChatFormatting.GREEN;
     }
-    public static void clear(){
+
+    public static void clear() {
         measurements.clear();
         lastChange = BigInteger.valueOf(0);
         measurementCount = 0;

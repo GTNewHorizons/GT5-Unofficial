@@ -52,7 +52,6 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
-import gregtech.common.handlers.PowerGogglesEventHandler;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -157,6 +156,7 @@ import gregtech.api.util.GTShapelessRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.config.OPStuff;
+import gregtech.common.handlers.PowerGogglesEventHandler;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
