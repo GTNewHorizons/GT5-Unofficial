@@ -125,6 +125,7 @@ item.tm.itemAstralArrayFabricator.desc2=reaching into the space beyond.
 item.tm.itemAstralArrayFabricator.desc3=Allows for recipe parallelism.
 
 item.tm.fakeItemQGP.name=Fake Item
+item.tm.fakeItemSiren.name=§cWrong Steam type found!
 
 #Death Messages
 death.attack.microwaving=%1$s was dehydrated by radiation.
