@@ -303,7 +303,7 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add("Machine Tier: " + EnumChatFormatting.YELLOW + tierMachine);
-        info.add("Parallel: " + EnumChatFormatting.YELLOW + getMaxParallelRecipes());
+        info.add("Parallel: " + EnumChatFormatting.YELLOW + getTrueParallel());
         return info.toArray(new String[0]);
     }
 

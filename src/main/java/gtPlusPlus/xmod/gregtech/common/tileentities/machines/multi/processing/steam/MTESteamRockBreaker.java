@@ -305,7 +305,7 @@ public class MTESteamRockBreaker extends MTESteamMultiBase<MTESteamRockBreaker> 
                     .setEUtDiscount(1.25 * tierMachine)
                     .setDurationModifier(1.6 / tierMachine);
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -334,7 +334,7 @@ public class MTESteamRockBreaker extends MTESteamMultiBase<MTESteamRockBreaker> 
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add("Machine Tier: " + EnumChatFormatting.YELLOW + tierMachine);
-        info.add("Parallel: " + EnumChatFormatting.YELLOW + getMaxParallelRecipes());
+        info.add("Parallel: " + EnumChatFormatting.YELLOW + getTrueParallel());
         return info.toArray(new String[0]);
     }
 
@@ -360,7 +360,7 @@ public class MTESteamRockBreaker extends MTESteamMultiBase<MTESteamRockBreaker> 
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
-        tag.setInteger("parallel", getMaxParallelRecipes());
+        tag.setInteger("parallel", getTrueParallel());
     }
 
     @Override

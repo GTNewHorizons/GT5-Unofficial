@@ -230,10 +230,7 @@ public class MTESteamExtractinator extends MTESteamMultiBase<MTESteamExtractinat
     }
 
     private boolean checkHatches() {
-        return !mSteamInputFluids.isEmpty() && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()
-            && !mOutputHatches.isEmpty()
-            && !mInputHatches.isEmpty();
+        return !mSteamInputFluids.isEmpty();
     }
 
     @Override
@@ -266,7 +263,7 @@ public class MTESteamExtractinator extends MTESteamMultiBase<MTESteamExtractinat
                 return OverclockCalculator.ofNoOverclock(recipe)
                     .setDurationModifier((1f));
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -297,7 +294,7 @@ public class MTESteamExtractinator extends MTESteamMultiBase<MTESteamExtractinat
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add("Parallel: " + EnumChatFormatting.YELLOW + getMaxParallelRecipes());
+        info.add("Parallel: " + EnumChatFormatting.YELLOW + getTrueParallel());
         return info.toArray(new String[0]);
     }
 
@@ -317,7 +314,7 @@ public class MTESteamExtractinator extends MTESteamMultiBase<MTESteamExtractinat
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("parallel", getMaxParallelRecipes());
+        tag.setInteger("parallel", getTrueParallel());
     }
 
     @Override
