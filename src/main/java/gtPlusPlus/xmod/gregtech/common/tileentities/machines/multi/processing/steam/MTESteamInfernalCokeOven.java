@@ -4,10 +4,9 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_STEAM_COKE_OVEN;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_STEAM_COKE_OVEN_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_STEAM_COKE_OVEN_ACTIVE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.List;
@@ -125,11 +124,11 @@ public class MTESteamInfernalCokeOven extends MTEBetterSteamMultiBase<MTESteamIn
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_ACTIVE)
+                        .addIcon(OVERLAY_STEAM_COKE_OVEN_ACTIVE)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_STEAM_COKE_OVEN_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -138,13 +137,8 @@ public class MTESteamInfernalCokeOven extends MTEBetterSteamMultiBase<MTESteamIn
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR)
+                        .addIcon(OVERLAY_STEAM_COKE_OVEN)
                         .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_INDUSTRIAL_EXTRACTOR_GLOW)
-                        .extFacing()
-                        .glow()
                         .build() };
             }
         } else {
