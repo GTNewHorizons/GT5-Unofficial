@@ -76,6 +76,7 @@ import gregtech.api.recipe.maps.UnpackagerBackend;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
+import gregtech.api.recipe.metadata.SteamFusionTierKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -209,6 +210,10 @@ public final class RecipeMaps {
         .maxIO(0, 0, 2, 1)
         .progressBarSteam(GTUITextures.PROGRESSBAR_EXTRACT_STEAM)
         .neiHandlerInfo((builder -> builder.setDisplayStack((GregtechItemList.Controller_SteamFusionReactor.get(1)))))
+        .neiRecipeComparator(
+            Comparator
+                .<GTRecipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(SteamFusionTierKey.INSTANCE, 0))
+                .thenComparing(GTRecipe::compareTo))
         .build();
     public static final RecipeMap<RecipeMapBackend> neutroniumCompressorRecipes = RecipeMapBuilder
         .of("gt.recipe.neutroniumcompressor")

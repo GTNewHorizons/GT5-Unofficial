@@ -401,6 +401,8 @@ gt.recipe.steamcarpenter=Steamic Carpentry
 gt.recipe.steamwoodcutter=Vapor Gardening
 gt.recipe.lavamaker=Steam Vapor Melting
 
+GT5U.gui.text.metadata.steamfusion=Requires compact HPR
+
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
 gt.recipe.category.plasma_arc_furnace_recycling=Plasma Arc Furnace Recycling
