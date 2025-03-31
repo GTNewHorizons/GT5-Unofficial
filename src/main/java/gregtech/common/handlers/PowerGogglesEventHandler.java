@@ -16,18 +16,9 @@ public class PowerGogglesEventHandler {
 
     private static int ticks = 0;
     public static Minecraft mc;
-    // @SubscribeEvent
-    // public void tickEnd(TickEvent.ClientTickEvent event) {
-    // if (event.phase != TickEvent.Phase.START) return;
-    // if(event.type != TickEvent.Type.CLIENT || event.side != Side.CLIENT) return;
-    // if (mc == null) mc = Minecraft.getMinecraft();
-    // else if (mc.theWorld != null) {
-    // PowerGogglesHudHandler.drawTick();
-    // }
-    // }
 
     @SubscribeEvent
-    public void serverTickEnd(TickEvent.PlayerTickEvent event) {
+    public void playerTickStart(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.START) return;
         if (event.type != TickEvent.Type.PLAYER) return;
         if (event.side == Side.CLIENT) {
@@ -44,12 +35,12 @@ public class PowerGogglesEventHandler {
     }
 
     @SubscribeEvent
-    public void onPlayerJoinEvent(FMLNetworkEvent.ClientConnectedToServerEvent event) {
+    public void clientOnPlayerConnect(FMLNetworkEvent.ClientConnectedToServerEvent event) {
         PowerGogglesHudHandler.drawTick();
     }
 
     @SubscribeEvent
-    public void onPlayerLeaveEvent(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+    public void clientOnPlayerDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
         PowerGogglesHudHandler.clear();
     }
 }
