@@ -120,7 +120,12 @@ public class PowerGogglesHudHandler {
                     + toEngineering(change5m)
                     + " EU"
                     + (change5mDiff != 0
-                        ? String.format(" (%s eu/t) ", toEngineering(change5m.divide(BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements,5 * MINUTES)))))
+                        ? String.format(
+                            " (%s eu/t) ",
+                            toEngineering(
+                                change5m.divide(
+                                    BigInteger.valueOf(
+                                        Math.min(measurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
                         : "")));
         hudList.add(
             new Text(
@@ -129,7 +134,12 @@ public class PowerGogglesHudHandler {
                     + toEngineering(change1h)
                     + " EU"
                     + (change1hDiff != 0
-                        ? String.format(" (%s eu/t) ", toEngineering(change1h.divide(BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements,60 * MINUTES)))))
+                        ? String.format(
+                            " (%s eu/t) ",
+                            toEngineering(
+                                change1h.divide(
+                                    BigInteger.valueOf(
+                                        Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
                         : "")));
 
     }
