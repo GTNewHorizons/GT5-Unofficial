@@ -5,6 +5,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.api.enums.GTValues.AuthorSteamIsTheNumber;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_LAVAMAKER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_LAVAMAKER_ACTIVE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofAnyLava;
@@ -76,18 +77,33 @@ public class MTESteamLavaMaker extends MTEBetterSteamMultiBase<MTESteamLavaMaker
         int aColorIndex, boolean aActive, boolean aRedstone) {
         ITexture[] rTexture;
         if (side == facing) {
-            rTexture = new ITexture[] {
-                Textures.BlockIcons
-                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsSteam, 8)),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_LAVAMAKER)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_LAVAMAKER)
-                    .extFacing()
-                    .glow()
-                    .build() };
+            if (aActive) {
+                rTexture = new ITexture[] {
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsSteam, 8)),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_LAVAMAKER_ACTIVE)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_LAVAMAKER_ACTIVE)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            } else {
+                rTexture = new ITexture[] {
+                    Textures.BlockIcons
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsSteam, 8)),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_LAVAMAKER)
+                        .extFacing()
+                        .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_LAVAMAKER)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
                 .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsSteam, 8)) };
