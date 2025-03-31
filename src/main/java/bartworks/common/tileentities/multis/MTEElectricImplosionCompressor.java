@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -162,7 +163,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                 if (te.piston) {
                     Block candidate = world.getBlock(x, y, z);
                     int candidateMeta = world.getBlockMetadata(x, y, z);
-                    return getTierOfBlock(candidate, candidateMeta) != -1;
+                    return getTierOfBlock(candidate, candidateMeta) != null;
                 }
                 return true;
             }
@@ -237,6 +238,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         return MTEElectricImplosionCompressor::getTierOfBlock;
     }
 
+    @Nullable
     private static Integer getTierOfBlock(Block block, int meta) {
         if (block == null) {
             return null;

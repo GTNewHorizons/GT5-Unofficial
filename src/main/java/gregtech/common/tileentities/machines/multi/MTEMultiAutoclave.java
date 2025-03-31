@@ -27,6 +27,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -87,6 +88,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     protected int itemPipeTier = 0;
     protected int fluidPipeTier = 0;
 
+    @Nullable
     private static Integer getItemPipeTierFromMeta(Block block, Integer metaID) {
         if (block != GregTechAPI.sBlockCasings11) return null;
         if (metaID < 0 || metaID > 7) return null;
@@ -101,6 +103,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         return itemPipeTier;
     }
 
+    @Nullable
     private static Integer getFluidTierFromMeta(Block block, Integer metaID) {
         if (block != GregTechAPI.sBlockCasings2) return null;
         if (metaID < 12 || metaID > 15) return null;
