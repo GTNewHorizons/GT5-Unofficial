@@ -63,8 +63,12 @@ public class PipelessSteamManager implements ITeamData {
                 .multiply(ONE_THOUSAND));
     }
 
-    private void fillSteam(BigInteger steam) {
+    public void fillSteam(BigInteger steam) {
         storedSteam = storedSteam.add(steam);
+        if (storedSteam.compareTo(BigInteger.ZERO) < 0) {
+            // in case of adding a negative value
+            storedSteam = BigInteger.ZERO;
+        }
         TeamWorldSavedData.INSTANCE.markDirty();
     }
 
@@ -78,8 +82,12 @@ public class PipelessSteamManager implements ITeamData {
                 .multiply(ONE_THOUSAND));
     }
 
-    private void fillSuperheatedSteam(BigInteger superheatedSteam) {
+    public void fillSuperheatedSteam(BigInteger superheatedSteam) {
         storedSuperheatedSteam = storedSuperheatedSteam.add(superheatedSteam);
+        if (storedSuperheatedSteam.compareTo(BigInteger.ZERO) < 0) {
+            // in case of adding a negative value
+            storedSuperheatedSteam = BigInteger.ZERO;
+        }
         TeamWorldSavedData.INSTANCE.markDirty();
     }
 
@@ -93,8 +101,12 @@ public class PipelessSteamManager implements ITeamData {
                 .multiply(ONE_THOUSAND));
     }
 
-    private void fillSupercriticalSteam(BigInteger supercriticalSteam) {
+    public void fillSupercriticalSteam(BigInteger supercriticalSteam) {
         storedSupercriticalSteam = storedSupercriticalSteam.add(supercriticalSteam);
+        if (storedSupercriticalSteam.compareTo(BigInteger.ZERO) < 0) {
+            // in case of adding a negative value
+            storedSupercriticalSteam = BigInteger.ZERO;
+        }
         TeamWorldSavedData.INSTANCE.markDirty();
     }
 

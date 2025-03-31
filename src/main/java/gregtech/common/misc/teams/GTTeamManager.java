@@ -37,10 +37,15 @@ public class GTTeamManager {
         GTTeam team = new GTTeam(playerName + "'s Team");
         team.initializeData(TeamDataTypes.values());
         team.addOwner(playerUuid);
+        TeamWorldSavedData.INSTANCE.markDirty();
         return team;
     }
 
     public static PipelessSteamManager getSteamData(GTTeam team) {
         return (PipelessSteamManager) team.getData(TeamDataTypes.PIPELESS);
+    }
+
+    public static void clear() {
+        TEAMS.clear();
     }
 }

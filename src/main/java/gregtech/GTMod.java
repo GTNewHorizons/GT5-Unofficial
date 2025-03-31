@@ -43,6 +43,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import galacticgreg.SpaceDimRegisterer;
 import gregtech.api.GregTechAPI;
@@ -91,6 +92,7 @@ import gregtech.common.misc.GTCommand;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
 import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
+import gregtech.common.misc.teams.GTTeamManager;
 import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
@@ -747,6 +749,11 @@ public class GTMod implements IGTMod {
         }
         // Interrupt IDLE Threads to close down cleanly
         RunnableMachineUpdate.shutdownExecutorService();
+    }
+
+    @Mod.EventHandler
+    public void onServerStopped(FMLServerStoppedEvent aEvent) {
+        GTTeamManager.clear();
     }
 
     @Mod.EventHandler
