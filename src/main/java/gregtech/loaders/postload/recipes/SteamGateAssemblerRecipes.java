@@ -84,6 +84,12 @@ public class SteamGateAssemblerRecipes implements Runnable {
         ItemStack megaCompressor = GregtechItemList.Controller_MegaSteamCompressor.get(1);
         ItemStack extractinator = GregtechItemList.Controller_SteamExtractinator.get(1);
         ItemStack pipelessHatch = ItemList.Pipeless_Hatch_Jetstream.get(1);
+        ItemStack spdMb = GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Molybdenum, 1);
+        ItemStack spdBA = GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.BlueAlloy, 1);
+        ItemStack spdBe = GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Beryllium, 1);
+        ItemStack spdTh = GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Thorium, 1);
+        ItemStack spdSb = GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Antimony, 1);
+        ItemStack Sadbapycat = ItemList.SadBapyCat_Token.get(1);
 
         // Blank recipe for copy-paste convenience
         /*
@@ -198,7 +204,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
                 null, null, null, null, steamMotor, null, null, null, null,
                 null, null, null, null, steamPiston, null, null, null, null,
                 null, null, null, steamMotor, superdenseSteam, steamMotor, null, null, null,
-                steamFieldGen, steamMotor, steamPiston, superdenseSteam, superdenseSteam, superdenseSteam, steamPiston, steamMotor, steamFieldGen,
+                steamFieldGen, steamMotor, steamPiston, superdenseSteam, Sadbapycat, superdenseSteam, steamPiston, steamMotor, steamFieldGen,
                 null, null, null, steamMotor, superdenseSteam, steamMotor, null, null, null,
                 null, null, null, null, steamPiston, null, null, null, null,
                 null, null, null, null, steamMotor, null, null, null, null,
@@ -287,6 +293,24 @@ public class SteamGateAssemblerRecipes implements Runnable {
                 breelPlate, stronzePipeH, breelPlate, breelPlate, stronzePipeH, breelPlate, breelPlate, stronzePipeH, breelPlate,
                 stronzePipeH, breelPlate, breelPlate, breelPlate, stronzePipeH, breelPlate, breelPlate, breelPlate, stronzePipeH)
             .itemOutputs(ItemList.Steamgate_Dialing_Device.get(1))
+            .duration(20 * SECONDS)
+            .eut((int) TierEU.RECIPE_LV)
+            .addTo(steamGateAssemblerRecipes);
+
+
+        // Sadbapycat Token
+        GTValues.RA.stdBuilder()
+            .itemInputsAllowNulls(
+                null, null, null, null, null, null, null, null, null,
+                null, spdBA, spdBA, spdBA, spdBA, spdBA, spdBA, spdBA, null,
+                null, spdBA, spdMb, spdSb, spdTh, spdSb, spdMb, spdBA, null,
+                null, spdBA, spdSb, spdTh, spdBe, spdTh, spdSb, spdBA, null,
+                null, spdBA, spdMb, spdBe, steamFieldGen, spdBe, spdMb, spdBA, null,
+                null, spdBA, spdSb, spdTh, spdBe, spdTh, spdSb, spdBA, null,
+                null, spdBA, spdMb, spdSb, spdTh, spdSb, spdMb, spdBA, null,
+                null, spdBA, spdBA, spdBA, spdBA, spdBA, spdBA, spdBA, null,
+                null, null, null, null, null, null, null, null, null)
+            .itemOutputs(ItemList.SadBapyCat_Token.get(1))
             .duration(20 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(steamGateAssemblerRecipes);
