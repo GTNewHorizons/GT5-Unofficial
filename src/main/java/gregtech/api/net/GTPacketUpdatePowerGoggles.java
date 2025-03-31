@@ -12,11 +12,18 @@ import io.netty.buffer.ByteBuf;
 public class GTPacketUpdatePowerGoggles extends GTPacket {
 
     BigInteger EU;
+    boolean refresh;
 
     public GTPacketUpdatePowerGoggles() {}
 
     public GTPacketUpdatePowerGoggles(BigInteger EU) {
         this.EU = EU;
+        this.refresh = false;
+    }
+
+    public GTPacketUpdatePowerGoggles(BigInteger EU, boolean refresh) {
+        this.EU = EU;
+        this.refresh = refresh;
     }
 
     @Override
@@ -26,6 +33,7 @@ public class GTPacketUpdatePowerGoggles extends GTPacket {
 
     @Override
     public void encode(ByteBuf buffer) {
+        buffer.writeBoolean(refresh);
         byte[] EUBytes = EU.toByteArray();
         buffer.writeInt(EUBytes.length);
         buffer.writeBytes(EUBytes);
@@ -33,19 +41,27 @@ public class GTPacketUpdatePowerGoggles extends GTPacket {
 
     @Override
     public GTPacket decode(ByteArrayDataInput buffer) {
+        boolean refresh = buffer.readBoolean();
         int length = buffer.readInt();
         byte[] eu = new byte[length];
         for (int i = 0; i < length; i++) {
             eu[i] = buffer.readByte();
         }
         BigInteger EU = new BigInteger(eu);
-        return new GTPacketUpdatePowerGoggles(EU);
+        return new GTPacketUpdatePowerGoggles(EU, refresh);
     }
 
     @Override
     public void process(IBlockAccess aWorld) {
-        System.out.println("SENDING WIRELESS EU!");
-        PowerGogglesHudHandler.setMeasurement(this.EU);
-        PowerGogglesHudHandler.updateClient = true;
+        if (this.refresh) {
+            PowerGogglesHudHandler.clear();
+            PowerGogglesHudHandler.setMeasurement(this.EU);
+            PowerGogglesHudHandler.drawTick();
+        } else {
+            System.out.println("SENDING WIRELESS EU!");
+            PowerGogglesHudHandler.setMeasurement(this.EU);
+            PowerGogglesHudHandler.updateClient = true;
+        }
+
     }
 }

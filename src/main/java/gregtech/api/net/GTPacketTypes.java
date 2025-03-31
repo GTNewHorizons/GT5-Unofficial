@@ -39,6 +39,7 @@ public enum GTPacketTypes {
     NODE_INFO(29, new GTPacketNodeInfo()),
     COIL_STATUS(30, new GTCoilStatus()),
     SEND_WIRELESS_EU(31, new GTPacketUpdatePowerGoggles()),
+    LINK_GOGGLES(32, new GTPacketLinkGoggles()),
     // merge conflict prevention comment, keep a trailing comma above
     ;
 
