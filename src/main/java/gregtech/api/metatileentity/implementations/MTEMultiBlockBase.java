@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 import java.util.function.LongConsumer;
 import java.util.stream.Collectors;
 
@@ -32,6 +33,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import codechicken.nei.NEIClientUtils;
+import com.gtnewhorizons.modularui.common.widget.ChangeableWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -2839,18 +2841,129 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     protected final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
-    protected void generateCurrentRecipeScreenElements(DynamicPositionedColumn screenElements) {
-        String[] buffer = generateCurrentRecipeInfoString().split("\n");
-            for (String line : buffer) {
-                screenElements.widget(TextWidget.dynamicString(() -> line)
-                    .setSynced(false)
-                    .setTextAlignment(Alignment.CenterLeft));
+    protected Widget generateCurrentRecipeInfoStringWidget() {
+        final DynamicPositionedColumn processingDetails = new DynamicPositionedColumn();
+        final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+
+        if (mOutputItems != null) {
+            final Map<String, Long> nameToAmount = new HashMap<>();
+
+            for (ItemStack item : mOutputItems) {
+                if (item == null || item.stackSize <= 0) continue;
+                nameToAmount.merge(item.getDisplayName(), (long) item.stackSize, Long::sum);
             }
+
+            final List<Map.Entry<String, Long>> sortedMap = nameToAmount.entrySet()
+                .stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .collect(Collectors.toList());
+
+            for (Map.Entry<String, Long> entry : sortedMap) {
+                Long itemCount = entry.getValue();
+                String itemName = entry.getKey();
+                String itemAmountString = EnumChatFormatting.WHITE + " x " + EnumChatFormatting.GOLD + formatShortenedLong(itemCount) + EnumChatFormatting.WHITE + appendRate(false, itemCount, true);
+                String lineText = EnumChatFormatting.AQUA + NEIClientUtils.cropText(fontRenderer, itemName, 173 - fontRenderer.getStringWidth(itemAmountString)) + itemAmountString;
+                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
+
+                processingDetails.widget(new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft).addTooltip(lineTooltip));
+            }
+        }
+        if (mOutputFluids != null) {
+            final Map<String, Long> nameToAmount = new HashMap<>();
+
+            for (FluidStack fluid : mOutputFluids) {
+                if (fluid == null || fluid.amount <= 0) continue;
+                nameToAmount.merge(fluid.getLocalizedName(), (long) fluid.amount, Long::sum);
+            }
+
+            final List<Map.Entry<String, Long>> sortedMap = nameToAmount.entrySet()
+                .stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .collect(Collectors.toList());
+
+            for (Map.Entry<String, Long> entry : sortedMap) {
+                Long itemCount = entry.getValue();
+                String itemName = entry.getKey();
+                String itemAmountString = EnumChatFormatting.WHITE + " x " + EnumChatFormatting.GOLD + formatShortenedLong(itemCount) + "L" + EnumChatFormatting.WHITE + appendRate(false, itemCount, true);
+                String lineText = EnumChatFormatting.AQUA + NEIClientUtils.cropText(fontRenderer, itemName, 173 - fontRenderer.getStringWidth(itemAmountString)) + itemAmountString;
+                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(true, itemCount, false);
+
+                processingDetails.widget(new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft).addTooltip(lineTooltip));
+            }
+        }
+        return processingDetails;
     }
 
-    protected String generateCurrentRecipeInfoString() {
+    protected static String formatShortenedLong(long number) {
+        if (number < 1000) {
+            return String.valueOf(number);
+        }
+
+        int exp = (int) (Math.log(number) / Math.log(1000));
+        char suffix = "kMGTPE".charAt(exp - 1);
+        double shortened = number / Math.pow(1000, exp);
+
+        if (shortened == (long) shortened) {
+            return String.format("%d%c", (long) shortened, suffix);
+        } else {
+            return String.format("%.1f%c", shortened, suffix);
+        }
+    }
+
+    protected String appendRate(boolean isLiquid, Long amount, boolean isFormatShortened) {
+        final StringBuffer ret = new StringBuffer();
+        final double processPerTick = (double) amount / mMaxProgresstime * 20;
+
+        if (isFormatShortened) {
+            ret.append(" (");
+            if (processPerTick > 1) {
+                ret.append(EnumChatFormatting.GRAY);
+                ret.append(formatShortenedLong((long) (Math.round(processPerTick * 10) / 10.0)));
+                ret.append("/s");
+                ret.append(EnumChatFormatting.WHITE);
+                ret.append(")");
+            } else {
+                ret.append(EnumChatFormatting.GRAY);
+                ret.append(formatShortenedLong((long) (Math.round(1 / processPerTick * 10) / 10.0)));
+                ret.append("s/ea");
+                ret.append(EnumChatFormatting.WHITE);
+                ret.append(")");
+            }
+        } else {
+            int perSecond = (int) (Math.round(processPerTick * 10) / 10.0);
+            String second = formatNumbers(perSecond);
+            String hours = formatNumbers(perSecond * 60L);
+            String days = formatNumbers(perSecond * 1440L);
+
+            int perSecondEa = (int) (Math.round(1 / processPerTick * 10) / 10.0);
+            String secondEa = formatNumbers(perSecondEa);
+            String hoursEa = formatNumbers(perSecond * 60L);
+            String daysEa = formatNumbers(perSecond * 1440L);
+
+            if (processPerTick > 1) {
+                ret.append(EnumChatFormatting.RESET);
+                ret.append("Amount: " + EnumChatFormatting.GOLD + formatNumbers(amount) + (isLiquid ? "L" : "") + EnumChatFormatting.RESET);
+                ret.append("\n");
+                ret.append("Per second: " + EnumChatFormatting.GOLD + second + (isLiquid ? "L" : "") + EnumChatFormatting.RESET);
+                ret.append("\n");
+                ret.append("Per hour: " + EnumChatFormatting.GOLD + hours + (isLiquid ? "L" : "") + EnumChatFormatting.RESET);
+                ret.append("\n");
+                ret.append("Per day: " + EnumChatFormatting.GOLD + days + (isLiquid ? "L" : "") + EnumChatFormatting.RESET);
+            } else {
+                ret.append("Amount: " + EnumChatFormatting.GOLD + formatNumbers(amount) + (isLiquid ? "L" : "") + EnumChatFormatting.RESET);
+                ret.append("\n");
+                ret.append("Per second ea: " + EnumChatFormatting.GOLD + secondEa + (isLiquid ? "L" : "") + EnumChatFormatting.RESET);
+                ret.append("\n");
+                ret.append("Per hour ea: " + EnumChatFormatting.GOLD + hoursEa + (isLiquid ? "L" : "") + EnumChatFormatting.RESET);
+                ret.append("\n");
+                ret.append("Per day ea: " + EnumChatFormatting.GOLD + daysEa + (isLiquid ? "L" : "") + EnumChatFormatting.RESET);
+            }
+        }
+        return ret.toString();
+    }
+
+    protected String generateCurrentProgress() {
         StringBuffer ret = new StringBuffer(StatCollector.translateToLocal("GT5U.gui.text.progress"));
-        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
         ret.append(" ");
 
         numberFormat.setMinimumFractionDigits(2);
@@ -2865,110 +2978,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         ret.append("%)\n");
         numberFormat.setMinimumFractionDigits(0);
         numberFormat.setMaximumFractionDigits(2);
-
-        LongConsumer appendRate = (amount) -> {
-            double processPerTick = (double) amount / mMaxProgresstime * 20;
-            ret.append(" (");
-            if (processPerTick > 1) {
-                ret.append(EnumChatFormatting.GRAY);
-                ret.append(formatNumbers(Math.round(processPerTick * 10) / 10.0));
-                ret.append("/s");
-                ret.append(EnumChatFormatting.WHITE);
-                ret.append(")");
-
-            } else {
-                ret.append(EnumChatFormatting.GRAY);
-                ret.append(formatNumbers(Math.round(1 / processPerTick * 10) / 10.0));
-                ret.append("s/ea");
-                ret.append(EnumChatFormatting.WHITE);
-                ret.append(")");
-            }
-        };
-
-        int lines = 0;
-        int MAX_LINES = 10;
-
-        if (mOutputItems != null) {
-            HashMap<String, Long> nameToAmount = new HashMap<>();
-            for (var item : mOutputItems) {
-                if (item == null || item.stackSize <= 0) continue;
-                nameToAmount.merge(item.getDisplayName(), (long) item.stackSize, Long::sum);
-            }
-            HashMap<String, Long> sortedMap = nameToAmount.entrySet()
-                .stream()
-                .sorted(
-                    Map.Entry.<String, Long>comparingByValue()
-                        .reversed())
-                .collect(
-                    Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (oldValue, newValue) -> oldValue,
-                        LinkedHashMap::new));
-            for (Map.Entry<String, Long> entry : sortedMap.entrySet()) {
-                if (lines >= MAX_LINES) {
-                    ret.append("...");
-                    return ret.toString();
-                }
-                lines++;
-                Long itemCount = entry.getValue();
-                String itemName = entry.getKey();
-                String itemCropName = NEIClientUtils.cropText(fontRenderer, itemName, 100);
-                String itemFullName = EnumChatFormatting.AQUA
-                    + itemCropName
-                    + EnumChatFormatting.WHITE
-                    + " X "
-                    + EnumChatFormatting.GOLD
-                    + formatNumbers(itemCount)
-                    + EnumChatFormatting.WHITE;
-                ret.append(itemFullName);
-                appendRate.accept(entry.getValue());
-                ret.append('\n');
-            }
-        }
-        if (mOutputFluids != null) {
-            HashMap<String, Long> nameToAmount = new HashMap<>();
-            for (var fluid : mOutputFluids) {
-                if (fluid == null || fluid.amount <= 0) continue;
-                nameToAmount.merge(fluid.getLocalizedName(), (long) fluid.amount, Long::sum);
-            }
-            HashMap<String, Long> sortedMap = nameToAmount.entrySet()
-                .stream()
-                .sorted(
-                    Map.Entry.<String, Long>comparingByValue()
-                        .reversed())
-                .collect(
-                    Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (oldValue, newValue) -> oldValue,
-                        LinkedHashMap::new));
-            for (Map.Entry<String, Long> entry : sortedMap.entrySet()) {
-                if (lines >= MAX_LINES) {
-                    ret.append("...");
-                    return ret.toString();
-                }
-                lines++;
-                ret.append(EnumChatFormatting.AQUA)
-                    .append(entry.getKey())
-                    .append(EnumChatFormatting.WHITE)
-                    .append(
-                        entry.getKey()
-                            .length()
-                            + entry.getValue()
-                                .toString()
-                                .length()
-                            + 5 > 30 ? "\n" : "")
-                    .append(" x ")
-                    .append(EnumChatFormatting.GOLD);
-                Long number = entry.getValue();
-                ret.append(formatNumbers(number));
-                ret.append("L")
-                    .append(EnumChatFormatting.WHITE);
-                appendRate.accept(entry.getValue());
-                ret.append("\n");
-            }
-        }
         return ret.toString();
     }
 
@@ -3129,6 +3138,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             .widget(new CheckRecipeResultSyncer(() -> checkRecipeResult, (result) -> checkRecipeResult = result));
 
         if (showRecipeTextInGUI()) {
+            screenElements.widget(TextWidget.dynamicString(this::generateCurrentProgress)
+                .setSynced(false)
+                .setTextAlignment(new Alignment(-1, -1))
+                .setSize(180,12)
+                .setEnabled(
+                    widget -> (mOutputFluids != null && mOutputFluids.length > 0)
+                        || (mOutputItems != null && mOutputItems.length > 0)));
+            final ChangeableWidget recipeOutputItemsWidget = new ChangeableWidget(this::generateCurrentRecipeInfoStringWidget);
             // Display current recipe
             screenElements.widget(
                     new FakeSyncWidget.ListSyncer<>(
@@ -3144,19 +3161,27 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                                 };
                             })
                             .collect(Collectors.toList()) : Collections.emptyList(),
-                        val -> mOutputFluids = val.toArray(new FluidStack[0]),
+                        val -> {
+                            mOutputFluids = val.toArray(new FluidStack[0]);
+                            recipeOutputItemsWidget.notifyChangeNoSync();
+                        },
                         NetworkUtils::writeFluidStack,
                         NetworkUtils::readFluidStack))
                 .widget(
                     new FakeSyncWidget.ListSyncer<>(
                         () -> mOutputItems != null ? Arrays.asList(mOutputItems) : Collections.emptyList(),
-                        val -> mOutputItems = val.toArray(new ItemStack[0]),
+                        val -> {
+                            mOutputItems = val.toArray(new ItemStack[0]);
+                            recipeOutputItemsWidget.notifyChangeNoSync();
+                        },
                         NetworkUtils::writeItemStack,
                         NetworkUtils::readItemStack))
                 .widget(new FakeSyncWidget.IntegerSyncer(() -> mProgresstime, val -> mProgresstime = val))
-                .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> mMaxProgresstime = val));
-            generateCurrentRecipeScreenElements(screenElements);
-
+                .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> {
+                    mMaxProgresstime = val;
+                    recipeOutputItemsWidget.notifyChangeNoSync();
+                }));
+            screenElements.widget(recipeOutputItemsWidget);
         }
 
         screenElements.widget(

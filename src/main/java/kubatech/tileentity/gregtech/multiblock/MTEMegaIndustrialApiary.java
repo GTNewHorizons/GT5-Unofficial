@@ -36,6 +36,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTUtility.formatNumbers;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 import static kubatech.api.utils.ItemUtils.writeItemStackToNBT;
 
@@ -50,10 +51,15 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import codechicken.nei.NEIClientUtils;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -893,23 +899,24 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     private HashMap<ItemStack, Double> GUIDropProgress = new HashMap<>();
 
     @Override
-    protected String generateCurrentRecipeInfoString() {
-        if (mSecondaryMode == 1) return super.generateCurrentRecipeInfoString();
-        StringBuilder ret = new StringBuilder(EnumChatFormatting.WHITE + "Progress: ")
-            .append(String.format("%,.2f", (double) mProgresstime / 20))
-            .append("s / ")
-            .append(String.format("%,.2f", (double) mMaxProgresstime / 20))
-            .append("s (")
-            .append(String.format("%,.1f", (double) mProgresstime / mMaxProgresstime * 100))
-            .append("%)\n");
+    protected Widget generateCurrentRecipeInfoStringWidget() {
+        if (mSecondaryMode == 1) return super.generateCurrentRecipeInfoStringWidget();
+
+        final DynamicPositionedColumn processingDetails = new DynamicPositionedColumn();
+        final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+
+        if (mOutputItems == null && GUIDropProgress == null) return processingDetails;
 
         LinkedHashMap<ItemStack, Double> sortedMap = GUIDropProgress.entrySet().stream()
             .sorted(Comparator.comparingInt(
                 (Map.Entry<ItemStack, Double> entry) ->
-                    Arrays.stream(mOutputItems)
+                {
+                    assert mOutputItems != null;
+                    return Arrays.stream(mOutputItems)
                         .filter(s -> s.isItemEqual(entry.getKey()))
                         .mapToInt(i -> i.stackSize)
-                        .sum()
+                        .sum();
+                }
             ).reversed())
             .collect(Collectors.toMap(
                 Map.Entry::getKey,
@@ -918,29 +925,23 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 LinkedHashMap::new
             ));
 
-
         for (Map.Entry<ItemStack, Double> drop : sortedMap.entrySet()) {
+            assert mOutputItems != null;
             int outputSize = Arrays.stream(mOutputItems)
                 .filter(s -> s.isItemEqual(drop.getKey()))
                 .mapToInt(i -> i.stackSize)
                 .sum();
             if (outputSize != 0) {
-                ret.append(EnumChatFormatting.AQUA)
-                    .append(
-                        drop.getKey()
-                            .getDisplayName())
-                    .append(EnumChatFormatting.WHITE)
-                    .append(": ")
-                    .append(EnumChatFormatting.GOLD)
-                    .append(
-                        String.format(
-                            "x%d %s(+%.2f/sec)\n",
-                            outputSize,
-                            EnumChatFormatting.WHITE,
-                            (double) outputSize / (mMaxProgresstime / 20)));
+                Long itemCount = (long) outputSize;
+                String itemName = drop.getKey().getDisplayName();
+                String itemAmountString = EnumChatFormatting.WHITE + " x " + EnumChatFormatting.GOLD + formatShortenedLong(itemCount) + EnumChatFormatting.WHITE + appendRate(false, itemCount, true);
+                String lineText = EnumChatFormatting.AQUA + NEIClientUtils.cropText(fontRenderer, itemName, 173 - fontRenderer.getStringWidth(itemAmountString)) + itemAmountString;
+                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
+
+                processingDetails.widget(new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft).addTooltip(lineTooltip));
             }
         }
-        return ret.toString();
+        return processingDetails;
     }
 
     @Override

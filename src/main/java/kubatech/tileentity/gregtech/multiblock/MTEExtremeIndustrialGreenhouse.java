@@ -42,13 +42,18 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import codechicken.nei.NEIClientUtils;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -1130,47 +1135,48 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     }
 
     @Override
-    protected String generateCurrentRecipeInfoString() {
-        StringBuilder ret = new StringBuilder(EnumChatFormatting.WHITE + "Progress: ")
-            .append(String.format("%,.2f", (double) this.mProgresstime / 20))
-            .append("s / ")
-            .append(String.format("%,.2f", (double) this.mMaxProgresstime / 20))
-            .append("s (")
-            .append(String.format("%,.1f", (double) this.mProgresstime / this.mMaxProgresstime * 100))
-            .append("%)\n");
+    protected Widget generateCurrentRecipeInfoStringWidget() {
 
-        for (Map.Entry<ItemStack, Double> drop : this.synchedGUIDropTracker.entrySet()
-            .stream()
-            .sorted(
-                Comparator.comparing(
-                    a -> a.getKey()
-                        .toString()
-                        .toLowerCase()))
-            .collect(Collectors.toList())) {
-            int outputSize = Arrays.stream(this.mOutputItems)
+        final DynamicPositionedColumn processingDetails = new DynamicPositionedColumn();
+        final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+
+        if (mOutputItems == null && synchedGUIDropTracker == null) return processingDetails;
+
+        LinkedHashMap<ItemStack, Double> sortedMap = synchedGUIDropTracker.entrySet().stream()
+            .sorted(Comparator.comparingInt(
+                (Map.Entry<ItemStack, Double> entry) ->
+                {
+                    assert mOutputItems != null;
+                    return Arrays.stream(mOutputItems)
+                        .filter(s -> s.isItemEqual(entry.getKey()))
+                        .mapToInt(i -> i.stackSize)
+                        .sum();
+                }
+            ).reversed())
+            .collect(Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue,
+                (e1, e2) -> e1,
+                LinkedHashMap::new
+            ));
+
+        for (Map.Entry<ItemStack, Double> drop : sortedMap.entrySet()) {
+            assert mOutputItems != null;
+            int outputSize = Arrays.stream(mOutputItems)
                 .filter(s -> s.isItemEqual(drop.getKey()))
                 .mapToInt(i -> i.stackSize)
                 .sum();
-            ret.append(EnumChatFormatting.AQUA)
-                .append(
-                    drop.getKey()
-                        .getDisplayName())
-                .append(EnumChatFormatting.WHITE)
-                .append(": ");
-            if (outputSize == 0) {
-                ret.append(String.format("%.2f", drop.getValue() * 100))
-                    .append("%\n");
-            } else {
-                ret.append(EnumChatFormatting.GOLD)
-                    .append(
-                        String.format(
-                            "x%d %s(+%.2f/sec)\n",
-                            outputSize,
-                            EnumChatFormatting.WHITE,
-                            (double) outputSize / (mMaxProgresstime / 20)));
+            if (outputSize != 0) {
+                Long itemCount = (long) outputSize;
+                String itemName = drop.getKey().getDisplayName();
+                String itemAmountString = EnumChatFormatting.WHITE + " x " + EnumChatFormatting.GOLD + formatShortenedLong(itemCount) + EnumChatFormatting.WHITE + appendRate(false, itemCount, true);
+                String lineText = EnumChatFormatting.AQUA + NEIClientUtils.cropText(fontRenderer, itemName, 173 - fontRenderer.getStringWidth(itemAmountString)) + itemAmountString;
+                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
+
+                processingDetails.widget(new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft).addTooltip(lineTooltip));
             }
         }
-        return ret.toString();
+        return processingDetails;
     }
 
     @Override
