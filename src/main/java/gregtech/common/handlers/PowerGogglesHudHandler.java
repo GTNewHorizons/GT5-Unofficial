@@ -28,7 +28,6 @@ import baubles.common.lib.PlayerHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.common.misc.WirelessNetworkManager;
 
 public class PowerGogglesHudHandler {
 
@@ -39,7 +38,7 @@ public class PowerGogglesHudHandler {
     static LinkedList<BigInteger> measurements = new LinkedList<>();
     static Minecraft mc = Minecraft.getMinecraft();
     static int ticks = 0;
-    static final int ticksBetweenMeasurements = 100;
+    public static final int ticksBetweenMeasurements = 100;
     static final int measurementCount5m = 5 * MINUTES / ticksBetweenMeasurements;
     static final int measurementCount1h = 60 * MINUTES / ticksBetweenMeasurements;
     static BigInteger currentEU = BigInteger.valueOf(0);
@@ -88,64 +87,62 @@ public class PowerGogglesHudHandler {
         GL11.glPopMatrix();
     }
 
+    public static void setMeasurement(BigInteger newEU) {
+        measurement = newEU;
+        lastChange = measurementCount <= 1 ? BigInteger.valueOf(0) : measurement.subtract(currentEU);
+        currentEU = measurement;
+    }
+
     @SideOnly(Side.CLIENT)
-    public static void clientTick() {
-        if (Minecraft.getMinecraft().isGamePaused()) return;
-        if (ticks % ticksBetweenMeasurements == 0) {
-            measurement = WirelessNetworkManager.getUserEU(mc.thePlayer.getUniqueID());
-            lastChange = measurementCount == 0 ? BigInteger.valueOf(0) : measurement.subtract(currentEU);
-            currentEU = measurement;
+    public static void drawTick() {
+        if (Minecraft.getMinecraft()
+            .isGamePaused()) return;
+        int lastChangeDiff = lastChange.compareTo(BigInteger.valueOf(0));
+        EnumChatFormatting changeColor = getColor(lastChangeDiff);
 
-            int lastChangeDiff = lastChange.compareTo(BigInteger.valueOf(0));
-            EnumChatFormatting changeColor = getColor(lastChangeDiff);
+        measurements.addFirst(lastChange);
+        if (measurements.size() > measurementCount1h) measurements.removeLast();
 
-            measurements.addFirst(lastChange);
-            if (measurements.size() > measurementCount1h) measurements.removeLast();
+        BigInteger change5m = getReadingSum(measurements, measurementCount5m);
+        int change5mDiff = change5m.compareTo(BigInteger.valueOf(0));
+        EnumChatFormatting change5mColor = getColor(change5mDiff);
 
-            BigInteger change5m = getReadingSum(measurements, measurementCount5m);
-            int change5mDiff = change5m.compareTo(BigInteger.valueOf(0));
-            EnumChatFormatting change5mColor = getColor(change5mDiff);
+        BigInteger change1h = getReadingSum(measurements, measurementCount1h);
+        int change1hDiff = change1h.compareTo(BigInteger.valueOf(0));
+        EnumChatFormatting change1hColor = getColor(change5mDiff);
 
-            BigInteger change1h = getReadingSum(measurements, measurementCount1h);
-            int change1hDiff = change1h.compareTo(BigInteger.valueOf(0));
-            EnumChatFormatting change1hColor = getColor(change5mDiff);
+        hudList = new ArrayList<>();
+        ++measurementCount;
+        hudList
+            .add(new Text(EnumChatFormatting.WHITE + "Storage: " + change5mColor + toEngineering(currentEU) + " EU"));
+        hudList.add(
+            new Text(
+                EnumChatFormatting.WHITE + "5s: "
+                    + changeColor
+                    + toEngineering(lastChange)
+                    + " EU"
+                    + (lastChangeDiff != 0 ? String.format(
+                        " (%s eu/t) ",
+                        toEngineering(lastChange.divide(BigInteger.valueOf(ticksBetweenMeasurements)))) : "")));
+        hudList.add(
+            new Text(
+                EnumChatFormatting.WHITE + "5m: "
+                    + change5mColor
+                    + toEngineering(change5m)
+                    + " EU"
+                    + (change5mDiff != 0
+                        ? String.format(" (%s eu/t) ", toEngineering(change5m.divide(BigInteger.valueOf(5 * MINUTES))))
+                        : "")));
+        hudList.add(
+            new Text(
+                EnumChatFormatting.WHITE + "1h: "
+                    + change1hColor
+                    + toEngineering(change1h)
+                    + " EU"
+                    + (change1hDiff != 0
+                        ? String.format(" (%s eu/t) ", toEngineering(change1h.divide(BigInteger.valueOf(60 * MINUTES))))
+                        : "")));
 
-            hudList = new ArrayList<>();
-            ++measurementCount;
-            hudList
-                .add(new Text(EnumChatFormatting.WHITE + "Storage: " + change5mColor + toEngineering(currentEU) + " EU"));
-            hudList.add(
-                new Text(
-                    EnumChatFormatting.WHITE + "5s: "
-                        + changeColor
-                        + toEngineering(lastChange)
-                        + " EU"
-                        + (lastChangeDiff != 0 ? String.format(
-                            " (%s eu/t) ",
-                            toEngineering(lastChange.divide(BigInteger.valueOf(ticksBetweenMeasurements)))) : "")));
-            hudList
-                .add(
-                    new Text(
-                        EnumChatFormatting.WHITE + "5m: "
-                            + change5mColor
-                            + toEngineering(change5m)
-                            + " EU"
-                            + (change5mDiff != 0 ? String
-                                .format(" (%s eu/t) ", toEngineering(change5m.divide(BigInteger.valueOf(5 * MINUTES))))
-                                : "")));
-            hudList
-                .add(
-                    new Text(
-                        EnumChatFormatting.WHITE + "1h: "
-                            + change1hColor
-                            + toEngineering(change1h)
-                            + " EU"
-                            + (change1hDiff != 0 ? String
-                                .format(" (%s eu/t) ", toEngineering(change1h.divide(BigInteger.valueOf(60 * MINUTES))))
-                                : "")));
-
-        }
-        ++ticks;
     }
 
     private static String toEngineering(BigInteger EU) {

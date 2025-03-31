@@ -16,7 +16,7 @@ public class PowerGogglesEventHandler {
             return;
         if (mc == null) mc = Minecraft.getMinecraft();
         else if (mc.theWorld != null) {
-            PowerGogglesHudHandler.clientTick();
+            // PowerGogglesHudHandler.clientTick();
         }
     }
 }
