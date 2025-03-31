@@ -30,7 +30,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
-import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
@@ -43,6 +42,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +50,7 @@ import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -72,11 +73,13 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.builder.UIInfo;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
@@ -90,6 +93,8 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import bartworks.API.BorosilicateGlass;
+import codechicken.nei.NEIClientUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -183,7 +188,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     /**
      * The tier of the glass on the EIG.
      */
-    private int glassTier = -1;
+    private byte glassTier = 0;
     /**
      * The Amount of Weed-EX used per cycle.
      */
@@ -235,7 +240,10 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     ofBlock(Block.getBlockFromName("ProjRed|Illumination:projectred.illumination.lamp"), 10),
                     ofBlock(Block.getBlockFromName("ProjRed|Illumination:projectred.illumination.lamp"), 26))
                 : ofChain(ofBlock(Blocks.redstone_lamp, 0), ofBlock(Blocks.lit_redstone_lamp, 0)))
-        .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
+        .addElement(
+            'g',
+            BorosilicateGlass
+                .ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(
             'd',
             ofBlock(
@@ -255,15 +263,15 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         mCasing = 0;
-        glassTier = -1;
+        glassTier = 0;
         if (debug) glassTier = 8;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 5, 0)) return false;
 
-        if (this.glassTier < VoltageIndex.UV && !this.mEnergyHatches.isEmpty())
+        if (this.glassTier < 8 && !this.mEnergyHatches.isEmpty())
             for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) if (this.glassTier < hatchEnergy.mTier) return false;
 
-        boolean valid = !this.mEnergyHatches.isEmpty() && this.mCasing >= 70;
+        boolean valid = this.mMaintenanceHatches.size() == 1 && !this.mEnergyHatches.isEmpty() && this.mCasing >= 70;
 
         if (valid) this.updateSeedLimits();
 
@@ -307,13 +315,13 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .addInfo("There are two modes: input / output")
             .addInfo("Input mode: machine will take seeds from input bus and plant them")
             .addInfo("[IC2] You need to also input block that is required under the crop")
-            .addInfo("Output mode: machine will take planted seeds and output them")
-            .addGlassEnergyLimitInfo(VoltageIndex.UV);
+            .addInfo("Output mode: machine will take planted seeds and output them");
         EIGModes.addTooltipInfo(tt);
         tt.beginStructureBlock(5, 6, 5, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Clean Stainless Steel Casings", 70, false)
-            .addCasingInfoExactly("Any Tiered Glass", 32, true)
+            .addOtherStructurePart("Borosilicate Glass", "Hollow two middle layers")
+            .addStructureInfo("The glass tier limits the Energy Input tier")
             .addStructureInfo("The dirt is from RandomThings, must be tilled")
             .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
             .addStructureInfo("Purple lamps are from ProjectRedIllumination. They can be powered and/or inverted")
@@ -514,6 +522,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("version", NBT_REVISION);
+        aNBT.setByte("glassTier", this.glassTier);
         aNBT.setInteger("setupPhase", this.setupPhase);
         aNBT.setString("mode", this.mode.getName());
         aNBT.setBoolean("isNoHumidity", this.useNoHumidity);
@@ -576,6 +585,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
             this.toMigrate = toMigrate.values();
         } else {
+            this.glassTier = aNBT.getByte("glassTier");
             this.setupPhase = aNBT.getInteger("setupPhase");
             this.mode = EIGModes.getModeFromName(aNBT.getString("mode"));
             this.useNoHumidity = aNBT.getBoolean("isNoHumidity");
@@ -1125,47 +1135,52 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     }
 
     @Override
-    protected String generateCurrentRecipeInfoString() {
-        StringBuilder ret = new StringBuilder(EnumChatFormatting.WHITE + "Progress: ")
-            .append(String.format("%,.2f", (double) this.mProgresstime / 20))
-            .append("s / ")
-            .append(String.format("%,.2f", (double) this.mMaxProgresstime / 20))
-            .append("s (")
-            .append(String.format("%,.1f", (double) this.mProgresstime / this.mMaxProgresstime * 100))
-            .append("%)\n");
+    protected Widget generateCurrentRecipeInfoWidget() {
 
-        for (Map.Entry<ItemStack, Double> drop : this.synchedGUIDropTracker.entrySet()
+        final DynamicPositionedColumn processingDetails = new DynamicPositionedColumn();
+        final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+
+        if (mOutputItems == null && synchedGUIDropTracker == null) return processingDetails;
+
+        LinkedHashMap<ItemStack, Double> sortedMap = synchedGUIDropTracker.entrySet()
             .stream()
-            .sorted(
-                Comparator.comparing(
-                    a -> a.getKey()
-                        .toString()
-                        .toLowerCase()))
-            .collect(Collectors.toList())) {
-            int outputSize = Arrays.stream(this.mOutputItems)
+            .sorted(Comparator.comparingInt((Map.Entry<ItemStack, Double> entry) -> {
+                assert mOutputItems != null;
+                return Arrays.stream(mOutputItems)
+                    .filter(s -> s.isItemEqual(entry.getKey()))
+                    .mapToInt(i -> i.stackSize)
+                    .sum();
+            })
+                .reversed())
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+
+        for (Map.Entry<ItemStack, Double> drop : sortedMap.entrySet()) {
+            assert mOutputItems != null;
+            int outputSize = Arrays.stream(mOutputItems)
                 .filter(s -> s.isItemEqual(drop.getKey()))
                 .mapToInt(i -> i.stackSize)
                 .sum();
-            ret.append(EnumChatFormatting.AQUA)
-                .append(
-                    drop.getKey()
-                        .getDisplayName())
-                .append(EnumChatFormatting.WHITE)
-                .append(": ");
-            if (outputSize == 0) {
-                ret.append(String.format("%.2f", drop.getValue() * 100))
-                    .append("%\n");
-            } else {
-                ret.append(EnumChatFormatting.GOLD)
-                    .append(
-                        String.format(
-                            "x%d %s(+%.2f/sec)\n",
-                            outputSize,
-                            EnumChatFormatting.WHITE,
-                            (double) outputSize / (mMaxProgresstime / 20)));
+            if (outputSize != 0) {
+                Long itemCount = (long) outputSize;
+                String itemName = drop.getKey()
+                    .getDisplayName();
+                String itemAmountString = EnumChatFormatting.WHITE + " x "
+                    + EnumChatFormatting.GOLD
+                    + formatShortenedLong(itemCount)
+                    + EnumChatFormatting.WHITE
+                    + appendRate(false, itemCount, true);
+                String lineText = EnumChatFormatting.AQUA
+                    + NEIClientUtils
+                        .cropText(fontRenderer, itemName, 173 - fontRenderer.getStringWidth(itemAmountString))
+                    + itemAmountString;
+                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
+
+                processingDetails.widget(
+                    new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
+                        .addTooltip(lineTooltip));
             }
         }
-        return ret.toString();
+        return processingDetails;
     }
 
     @Override
