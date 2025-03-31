@@ -53,6 +53,7 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase {
 
     private GTTeam ownerTeam;
     private SteamType selectedSteam = SteamType.STEAM;
+    private SteamType previousSteam = null;
 
     public MTESteamPipelessHatch(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -158,10 +159,11 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase {
         if (aTick % 20 == 0) {
             // Validate the proper type
             if (getFluid() != null && getFluidAmount() > 0) {
-                if (selectedSteam.getFluid() != getFluid().getFluid()) {
+                if (previousSteam != null || selectedSteam.getFluid() != getFluid().getFluid()) {
                     // Refresh the steam type
                     flushSteam();
                     tryFetchingSteam();
+                    previousSteam = null;
                 }
             }
         }
@@ -284,6 +286,7 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase {
 
             typeColumn.addChild(new ButtonWidget().setOnClick((data, widget) -> {
                 if (widget.isClient()) return;
+                previousSteam = selectedSteam;
                 selectedSteam = type;
             })
                 .setBackground(() -> {
