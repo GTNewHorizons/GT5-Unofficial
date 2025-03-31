@@ -313,7 +313,7 @@ public class MTESteamExtruder extends MTESteamMultiBase<MTESteamExtruder> implem
                 return OverclockCalculator.ofNoOverclock(recipe)
                     .setDurationModifier((1f / tierMachine));
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -369,7 +369,7 @@ public class MTESteamExtruder extends MTESteamMultiBase<MTESteamExtruder> implem
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add("Machine Tier: " + EnumChatFormatting.YELLOW + tierMachine);
-        info.add("Parallel: " + EnumChatFormatting.YELLOW + getMaxParallelRecipes());
+        info.add("Parallel: " + EnumChatFormatting.YELLOW + getTrueParallel());
         return info.toArray(new String[0]);
     }
 
@@ -395,7 +395,7 @@ public class MTESteamExtruder extends MTESteamMultiBase<MTESteamExtruder> implem
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
-        tag.setInteger("parallel", getMaxParallelRecipes());
+        tag.setInteger("parallel", getTrueParallel());
     }
 
     @Override

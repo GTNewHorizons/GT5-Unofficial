@@ -6,6 +6,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTechAPI.sBlockCasings1;
 import static gregtech.api.GregTechAPI.sBlockCasings2;
+import static gregtech.api.enums.GTValues.AuthorSteamIsTheNumber;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -179,7 +180,7 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
                 .addElement(
                     'C',
                     ofBlocksTiered(
-                        MTESteamForgeHammer::getTierPipeCasing,
+                        MTESteamAlloySmelter::getTierPipeCasing,
                         ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
                         -1,
                         (t, m) -> t.tierPipeCasing = m,
@@ -284,6 +285,7 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
             .addInfo("25% faster than using single block steam machines of the same pressure")
             .addInfo("Only consumes steam at 62.5% of the L/s normally required")
             .addInfo("Processes up to 8 recipes at once")
+            .addInfo("Created by: " + AuthorSteamIsTheNumber)
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .toolTipFinisher();
         return tt;
@@ -293,7 +295,7 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add("Machine Tier: " + EnumChatFormatting.YELLOW + tierMachine);
-        info.add("Parallel: " + EnumChatFormatting.YELLOW + getMaxParallelRecipes());
+        info.add("Parallel: " + EnumChatFormatting.YELLOW + getTrueParallel());
         return info.toArray(new String[0]);
     }
 
@@ -319,7 +321,7 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
-        tag.setInteger("parallel", getMaxParallelRecipes());
+        tag.setInteger("parallel", getTrueParallel());
     }
 
     @Override
