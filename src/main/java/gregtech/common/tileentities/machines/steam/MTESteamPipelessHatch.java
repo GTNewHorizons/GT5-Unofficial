@@ -156,16 +156,13 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase {
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (!aBaseMetaTileEntity.isServerSide()) return;
-        if (aTick % 20 == 0) {
-            // Validate the proper type
-            if (getFluid() != null && getFluidAmount() > 0) {
-                if (previousSteam != null || selectedSteam.getFluid() != getFluid().getFluid()) {
-                    // Refresh the steam type
-                    flushSteam();
-                    tryFetchingSteam();
-                    previousSteam = null;
-                }
+        if (previousSteam != null) {
+            if (getFluid() == null || getFluid().getFluid() != selectedSteam.getFluid()) {
+                // Refresh the steam type
+                flushSteam();
+                tryFetchingSteam();
             }
+            previousSteam = null;
         }
         if (aTick % ticks_between_energy_addition == 0) {
             tryFetchingSteam();
