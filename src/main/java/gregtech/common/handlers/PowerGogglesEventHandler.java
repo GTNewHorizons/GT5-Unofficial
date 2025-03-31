@@ -23,35 +23,46 @@ public class PowerGogglesEventHandler {
     private static int ticks = 0;
     public static Minecraft mc;
     public static DimensionalCoord lscLink = null;
+    public static boolean forceUpdate = false;
+    public static boolean forceRefresh = false;
 
     @SubscribeEvent
-    public void playerTickStart(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.START) return;
+    public void playerTickEnd(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
         if (event.type != TickEvent.Type.PLAYER) return;
         if (event.side == Side.CLIENT) {
             if (PowerGogglesHudHandler.updateClient) PowerGogglesHudHandler.drawTick();
         } else {
-            if ((ticks % PowerGogglesHudHandler.ticksBetweenMeasurements) == 0) {
+            if (ticks == 0 || forceUpdate) {
                 EntityPlayerMP player = (EntityPlayerMP) event.player;
                 if (lscLink != null) {
                     TileEntity tileEntity = player.worldObj.getTileEntity(lscLink.x, lscLink.y, lscLink.z);
                     MTELapotronicSuperCapacitor lsc = (MTELapotronicSuperCapacitor) ((IGregTechTileEntity) tileEntity)
                         .getMetaTileEntity();
-                    NW.sendToPlayer(new GTPacketUpdatePowerGoggles(BigInteger.valueOf(lsc.getEUVar())), player);
+                    NW.sendToPlayer(
+                        new GTPacketUpdatePowerGoggles(BigInteger.valueOf(lsc.getEUVar()), forceRefresh),
+                        player);
                 } else {
                     NW.sendToPlayer(
-                        new GTPacketUpdatePowerGoggles(WirelessNetworkManager.getUserEU((player).getUniqueID())),
+                        new GTPacketUpdatePowerGoggles(
+                            WirelessNetworkManager.getUserEU((player).getUniqueID()),
+                            forceRefresh),
                         player);
                 }
+                if (forceUpdate) ticks = 0;
+                forceUpdate = false;
+                forceRefresh = false;
 
             }
             ticks++;
+            ticks %= PowerGogglesHudHandler.ticksBetweenMeasurements;
         }
     }
 
     @SubscribeEvent
     public void clientOnPlayerConnect(FMLNetworkEvent.ClientConnectedToServerEvent event) {
-        PowerGogglesHudHandler.drawTick();
+        forceUpdate = true;
+        forceRefresh = true;
     }
 
     @SubscribeEvent

@@ -58,7 +58,6 @@ public class GTPacketUpdatePowerGoggles extends GTPacket {
             PowerGogglesHudHandler.setMeasurement(this.EU);
             PowerGogglesHudHandler.drawTick();
         } else {
-            System.out.println("SENDING WIRELESS EU!");
             PowerGogglesHudHandler.setMeasurement(this.EU);
             PowerGogglesHudHandler.updateClient = true;
         }

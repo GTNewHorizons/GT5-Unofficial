@@ -89,8 +89,11 @@ public class PowerGogglesHudHandler {
 
     public static void setMeasurement(BigInteger newEU) {
         measurement = newEU;
-        lastChange = measurementCount <= 1 ? BigInteger.valueOf(0) : measurement.subtract(currentEU);
+        lastChange = measurementCount == 0 ? BigInteger.valueOf(0) : measurement.subtract(currentEU);
         currentEU = measurement;
+        measurements.addFirst(lastChange);
+        if (measurements.size() > measurementCount1h) measurements.removeLast();
+        ++measurementCount;
     }
 
     @SideOnly(Side.CLIENT)
@@ -98,11 +101,6 @@ public class PowerGogglesHudHandler {
         updateClient = false;
         if (Minecraft.getMinecraft()
             .isGamePaused()) return;
-        int lastChangeDiff = lastChange.compareTo(BigInteger.valueOf(0));
-        EnumChatFormatting changeColor = getColor(lastChangeDiff);
-
-        measurements.addFirst(lastChange);
-        if (measurements.size() > measurementCount1h) measurements.removeLast();
 
         BigInteger change5m = getReadingSum(measurements, measurementCount5m);
         int change5mDiff = change5m.compareTo(BigInteger.valueOf(0));
@@ -113,7 +111,6 @@ public class PowerGogglesHudHandler {
         EnumChatFormatting change1hColor = getColor(change5mDiff);
 
         hudList = new ArrayList<>();
-        ++measurementCount;
         hudList
             .add(new Text(EnumChatFormatting.WHITE + "Storage: " + change5mColor + toEngineering(currentEU) + " EU"));
         hudList.add(
