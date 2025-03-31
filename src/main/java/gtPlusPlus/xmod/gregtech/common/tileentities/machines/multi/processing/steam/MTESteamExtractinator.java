@@ -175,7 +175,7 @@ public class MTESteamExtractinator extends MTESteamMultiBase<MTESteamExtractinat
                     'K',
                     ofChain(
                         buildHatchAdder(MTESteamExtractinator.class)
-                            .atLeast(SteamHatchElement.InputBus_Steam, InputHatch)
+                            .atLeast(InputHatch)
                             .casingIndex(10)
                             .dot(1)
                             .buildAndChain(),
@@ -184,7 +184,7 @@ public class MTESteamExtractinator extends MTESteamMultiBase<MTESteamExtractinat
                     'L',
                     ofChain(
                         buildHatchAdder(MTESteamExtractinator.class)
-                            .atLeast(SteamHatchElement.OutputBus_Steam, OutputHatch)
+                            .atLeast(SteamHatchElement.OutputBus_Steam)
                             .casingIndex(10)
                             .dot(2)
                             .buildAndChain(),
@@ -283,6 +283,9 @@ public class MTESteamExtractinator extends MTESteamMultiBase<MTESteamExtractinat
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "From Steam to rocks, the power of the pressure may bring you infinite wealth!.")
+            .addInputHatch("Top Layer of Bronze Casings")
+            .addOutputHatch("Bottom Layer of Bronze Casings")
+            .addEnergyHatch("2 Middle Bronze Casing Layers")
             .toolTipFinisher();
         return tt;
     }

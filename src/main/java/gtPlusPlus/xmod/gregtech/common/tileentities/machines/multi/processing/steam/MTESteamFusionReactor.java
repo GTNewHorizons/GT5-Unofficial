@@ -156,6 +156,8 @@ public class MTESteamFusionReactor extends MTEBetterSteamMultiBase<MTESteamFusio
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "What's this? Fusion? HAHAHA, tell another joke silly!")
+            .addInputHatch("1-8, Blocks Adjacent to Glass", 1)
+            .addOutputHatch("1-8, Blocks Adjacent to Glass", 1)
             .toolTipFinisher();
         return tt;
     }
