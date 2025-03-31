@@ -16,11 +16,13 @@ import java.util.List;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -47,6 +49,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteam
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import tectech.thing.CustomItemList;
 
 public abstract class MTEBetterSteamMultiBase<T extends MTEBetterSteamMultiBase<T>> extends GTPPMultiBlockBase<T> {
 
@@ -107,6 +110,19 @@ public abstract class MTEBetterSteamMultiBase<T extends MTEBetterSteamMultiBase<
         int aSteam = 0;
         for (FluidStack aFluid : getAllSteamStacks()) {
             aSteam += aFluid.amount;
+        }
+        return aSteam;
+    }
+
+    private int getTotalSteamStoredOfAnyType() {
+        int aSteam = 0;
+        for (FluidStack aFluid : this.getStoredFluids()) {
+            if (aFluid == null) continue;
+            for (SteamTypes type : SteamTypes.VALUES) {
+                if (aFluid.getFluid() == type.fluid) {
+                    aSteam += aFluid.amount;
+                }
+            }
         }
         return aSteam;
     }
@@ -426,16 +442,20 @@ public abstract class MTEBetterSteamMultiBase<T extends MTEBetterSteamMultiBase<
 
     protected enum SteamTypes {
 
-        STEAM(FluidUtils.getSteam(1)
+        STEAM("Steam", FluidUtils.getSteam(1)
             .getFluid()),
-        SH_STEAM(FluidUtils.getSuperHeatedSteam(1)
+        SH_STEAM("Superheated Steam", FluidUtils.getSuperHeatedSteam(1)
             .getFluid()),
-        SC_STEAM(FluidRegistry.getFluidStack("supercriticalsteam", 1)
+        SC_STEAM("Supercritical Steam", FluidRegistry.getFluidStack("supercriticalsteam", 1)
             .getFluid());
 
+        static final SteamTypes[] VALUES = values();
+
+        final String name;
         final Fluid fluid;
 
-        SteamTypes(Fluid fluid) {
+        SteamTypes(String name, Fluid fluid) {
+            this.name = name;
             this.fluid = fluid;
         }
     }
@@ -480,17 +500,26 @@ public abstract class MTEBetterSteamMultiBase<T extends MTEBetterSteamMultiBase<
 
     private int uiSteamStored = 0;
     private int uiSteamCapacity = 0;
+    private int uiSteamStoredOfAllTypes = 0;
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
         builder.widget(new FakeSyncWidget.IntegerSyncer(this::getTotalSteamCapacity, val -> uiSteamCapacity = val));
         builder.widget(new FakeSyncWidget.IntegerSyncer(this::getTotalSteamStored, val -> uiSteamStored = val));
+        builder.widget(
+            new FakeSyncWidget.IntegerSyncer(this::getTotalSteamStoredOfAnyType, val -> uiSteamStoredOfAllTypes = val));
 
         builder.widget(
             new DrawableWidget().setDrawable(GTUITextures.STEAM_GAUGE_BG)
-                .dynamicTooltip(
-                    () -> Collections.singletonList("Steam: " + uiSteamStored + "/" + uiSteamCapacity + "L"))
+                .dynamicTooltip(() -> {
+                    List<String> ret = new ArrayList<>();
+                    ret.add(getSteamType().name + ": " + uiSteamStored + "/" + uiSteamCapacity + "L");
+                    if (uiSteamStored == 0 && uiSteamStoredOfAllTypes != 0) {
+                        ret.add(EnumChatFormatting.RED + "Found steam of wrong type!");
+                    }
+                    return ret;
+                })
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setUpdateTooltipEveryTick(true)
                 .setSize(64, 42)
@@ -500,5 +529,10 @@ public abstract class MTEBetterSteamMultiBase<T extends MTEBetterSteamMultiBase<
             new DrawableWidget().setDrawable(new CircularGaugeDrawable(() -> (float) uiSteamStored / uiSteamCapacity))
                 .setPos(-64 + 21, 100 + 21)
                 .setSize(18, 4));
+
+        builder.widget(
+            new ItemDrawable(CustomItemList.Fools_FakeItemSiren.get(1)).asWidget()
+                .setPos(-64 + 21 - 7, 100 - 20)
+                .setEnabled(w -> uiSteamStored == 0 && uiSteamStoredOfAllTypes != 0));
     }
 }

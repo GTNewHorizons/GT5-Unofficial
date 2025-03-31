@@ -425,6 +425,7 @@ public enum CustomItemList implements IItemContainer {
     Godforge_GravitonFlowModulatorTier3,
     Godforge_HarmonicPhononTransmissionConduit,
     Godforge_FakeItemQGP,
+    Fools_FakeItemSiren,
 
     astralArrayFabricator;
 
