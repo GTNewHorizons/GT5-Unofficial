@@ -651,41 +651,41 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         String mobName = getCurrentMob();
         info.add(
-            mobName != null ? StatCollector.translateToLocalFormatted("kubatech.info.eec.current_mob", mobName)
-                : StatCollector.translateToLocal("kubatech.info.eec.current_mob.none"));
+            mobName != null ? StatCollector.translateToLocalFormatted("kubatech.infodata.eec.current_mob", mobName)
+                : StatCollector.translateToLocal("kubatech.infodata.eec.current_mob.none"));
         info.add(
-            mAnimationEnabled ? StatCollector.translateToLocal("kubatech.info.eec.animations.enabled")
-                : StatCollector.translateToLocal("kubatech.info.eec.animations.disabled"));
+            mAnimationEnabled ? StatCollector.translateToLocal("kubatech.infodata.eec.animations.enabled")
+                : StatCollector.translateToLocal("kubatech.infodata.eec.animations.disabled"));
         info.add(
             mIsProducingInfernalDrops
-                ? StatCollector.translateToLocal("kubatech.info.eec.produce_infernal_drops.allowed")
-                : StatCollector.translateToLocal("kubatech.info.eec.produce_infernal_drops.not_allowed"));
+                ? StatCollector.translateToLocal("kubatech.infodata.eec.produce_infernal_drops.allowed")
+                : StatCollector.translateToLocal("kubatech.infodata.eec.produce_infernal_drops.not_allowed"));
         info.add(
-            voidAllDamagedAndEnchantedItems ? StatCollector.translateToLocal("kubatech.info.eec.void_damaged.yes")
-                : StatCollector.translateToLocal("kubatech.info.eec.void_damaged.no"));
+            voidAllDamagedAndEnchantedItems ? StatCollector.translateToLocal("kubatech.infodata.eec.void_damaged.yes")
+                : StatCollector.translateToLocal("kubatech.infodata.eec.void_damaged.no"));
         info.add(
-            isInRitualMode ? StatCollector.translateToLocal("kubatech.info.eec.in_ritual_mode.yes")
-                : StatCollector.translateToLocal("kubatech.info.eec.in_ritual_mode.no"));
+            isInRitualMode ? StatCollector.translateToLocal("kubatech.infodata.eec.in_ritual_mode.yes")
+                : StatCollector.translateToLocal("kubatech.infodata.eec.in_ritual_mode.no"));
         if (isInRitualMode) info.add(
-            isRitualValid() ? StatCollector.translateToLocal("kubatech.info.eec.connected_to_ritual.yes")
-                : StatCollector.translateToLocal("kubatech.info.eec.connected_to_ritual.no"));
+            isRitualValid() ? StatCollector.translateToLocal("kubatech.infodata.eec.connected_to_ritual.yes")
+                : StatCollector.translateToLocal("kubatech.infodata.eec.connected_to_ritual.no"));
         else {
             info.add(
-                weaponCache.isValid ? StatCollector.translateToLocal("kubatech.info.eec.inserted_weapon.yes")
-                    : StatCollector.translateToLocal("kubatech.info.eec.inserted_weapon.no"));
+                weaponCache.isValid ? StatCollector.translateToLocal("kubatech.infodata.eec.inserted_weapon.yes")
+                    : StatCollector.translateToLocal("kubatech.infodata.eec.inserted_weapon.no"));
             if (weaponCache.isValid) {
                 info.add(
                     StatCollector
-                        .translateToLocalFormatted("kubatech.info.eec.weapon.damage", weaponCache.attackDamage));
+                        .translateToLocalFormatted("kubatech.infodata.eec.weapon.damage", weaponCache.attackDamage));
                 info.add(
                     StatCollector
-                        .translateToLocalFormatted("kubatech.info.eec.weapon.looting_level", weaponCache.looting));
+                        .translateToLocalFormatted("kubatech.infodata.eec.weapon.looting_level", weaponCache.looting));
                 info.add(
                     StatCollector.translateToLocalFormatted(
-                        "kubatech.info.eec.total_damage",
+                        "kubatech.infodata.eec.total_damage",
                         DIAMOND_SPIKES_DAMAGE + weaponCache.attackDamage));
-            } else info
-                .add(StatCollector.translateToLocalFormatted("kubatech.info.eec.total_damage", DIAMOND_SPIKES_DAMAGE));
+            } else info.add(
+                StatCollector.translateToLocalFormatted("kubatech.infodata.eec.total_damage", DIAMOND_SPIKES_DAMAGE));
         }
         return info.toArray(new String[0]);
     }
