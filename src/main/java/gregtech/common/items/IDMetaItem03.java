@@ -217,6 +217,8 @@ public enum IDMetaItem03 {
     Steamgate_Dialing_Device(258),
     Simple_Bronze_Turbine(259),
     Simple_Steel_Turbine(260),
+    Steel_Turbine(261),
+    Steam_Turbine(262),
     Circuit_Silicon_Ingot6(721),
     Circuit_Silicon_Wafer6(722),
     Circuit_Silicon_Wafer7(723),

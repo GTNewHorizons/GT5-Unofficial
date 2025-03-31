@@ -324,10 +324,7 @@ public class MTESteamRockBreaker extends MTESteamMultiBase<MTESteamRockBreaker> 
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "STOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONE")
-            .addInfo(
-                EnumChatFormatting.AQUA + ""
-                    + EnumChatFormatting.ITALIC
-                    + "Keep an eye for Wallsharing :>")
+            .addInfo(EnumChatFormatting.AQUA + "" + EnumChatFormatting.ITALIC + "Keep an eye for Wallsharing :>")
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .toolTipFinisher();
         return tt;
