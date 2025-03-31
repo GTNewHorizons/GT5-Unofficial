@@ -348,6 +348,7 @@ public class MTESteamMegaAlloySmelter extends MTESteamMultiBase<MTESteamMegaAllo
             .addInfo("Only consumes steam at 62.5% of the L/s normally required")
             .addInfo("Processes up to 256 items at once")
             .addInfo("Minimum casing: 100")
+            .addInfo("Must be constructed using lava! Can be flowing lava.")
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .addInfo(AQUA + "" + BOLD + "Alloy")
             .addInfo(AQUA + "" + ITALIC + "[ noun al-oi, uh-loi; verb uh-loi ]")
