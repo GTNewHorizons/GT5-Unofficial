@@ -87,45 +87,6 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     addDescription(aList, tTileEntity.getDescription(), tDamage, tSuffix);
                     tMetaTileEntity.addAdditionalTooltipInformation(aStack, aList);
                 }
-                if (tTileEntity.getEUCapacity() > 0L) {
-                    if (tTileEntity.getInputVoltage() > 0L) {
-                        final byte inputTier = GTUtility.getTier(tTileEntity.getInputVoltage());
-                        aList.add(
-                            GTLanguageManager.addStringLocalization("TileEntity_EUp_IN", "Voltage IN: ")
-                                + EnumChatFormatting.GREEN
-                                + GTUtility.formatNumbers(tTileEntity.getInputVoltage())
-                                + " ("
-                                + GTUtility.getColoredTierNameFromTier(inputTier)
-                                + EnumChatFormatting.GREEN
-                                + ")"
-                                + EnumChatFormatting.GRAY);
-                    }
-                    if (tTileEntity.getOutputVoltage() > 0L) {
-                        final byte outputTier = GTUtility.getTier(tTileEntity.getOutputVoltage());
-                        aList.add(
-                            GTLanguageManager.addStringLocalization("TileEntity_EUp_OUT", "Voltage OUT: ")
-                                + EnumChatFormatting.GREEN
-                                + GTUtility.formatNumbers(tTileEntity.getOutputVoltage())
-                                + " ("
-                                + GTUtility.getColoredTierNameFromTier(outputTier)
-                                + EnumChatFormatting.GREEN
-                                + ")"
-                                + EnumChatFormatting.GRAY);
-                    }
-                    if (tTileEntity.getOutputAmperage() > 1L) {
-                        aList.add(
-                            GTLanguageManager.addStringLocalization("TileEntity_EUp_AMOUNT", "Amperage: ")
-                                + EnumChatFormatting.YELLOW
-                                + GTUtility.formatNumbers(tTileEntity.getOutputAmperage())
-                                + EnumChatFormatting.GRAY);
-                    }
-                    aList.add(
-                        GTLanguageManager.addStringLocalization("TileEntity_EUp_STORE", "Capacity: ")
-                            + EnumChatFormatting.BLUE
-                            + GTUtility.formatNumbers(tTileEntity.getEUCapacity())
-                            + EnumChatFormatting.GRAY
-                            + " EU");
-                }
             }
             final NBTTagCompound aNBT = aStack.getTagCompound();
             if (aNBT != null) {
