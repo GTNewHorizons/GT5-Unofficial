@@ -20,6 +20,7 @@ public class GTTeam {
     public GTTeam(String teamName) {
         this.teamName = teamName;
         GTTeamManager.TEAMS.add(this);
+        TeamWorldSavedData.INSTANCE.markDirty();
     }
 
     public String getTeamName() {
@@ -29,6 +30,7 @@ public class GTTeam {
     public boolean renameTeam(String newName) {
         if (GTTeamManager.isTeamNameValid(newName)) {
             this.teamName = newName;
+            TeamWorldSavedData.INSTANCE.markDirty();
             return true;
         }
         return false;
@@ -40,6 +42,13 @@ public class GTTeam {
 
     public void addMember(UUID uuid) {
         members.add(uuid);
+        TeamWorldSavedData.INSTANCE.markDirty();
+    }
+
+    public void removeMember(UUID uuid) {
+        members.remove(uuid);
+        owners.remove(uuid);
+        TeamWorldSavedData.INSTANCE.markDirty();
     }
 
     public List<UUID> getMembers() {
@@ -54,6 +63,7 @@ public class GTTeam {
         owners.add(uuid);
         // owners are also always members
         members.add(uuid);
+        TeamWorldSavedData.INSTANCE.markDirty();
     }
 
     public List<UUID> getOwners() {
