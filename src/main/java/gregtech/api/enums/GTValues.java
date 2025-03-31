@@ -647,7 +647,16 @@ public class GTValues {
                 + EnumChatFormatting.WHITE
                 + EnumChatFormatting.ITALIC
                 + "Number\n"),
-        animatedText("PipeBluez", 1, 100, WHITE, WHITE, WHITE, WHITE, AQUA, DARK_AQUA, BLUE, DARK_BLUE, DARK_BLUE),
+        chain(
+            createPipeBluezLetter(0),
+            createPipeBluezLetter(1),
+            createPipeBluezLetter(2),
+            createPipeBluezLetter(3),
+            createPipeBluezLetter(4),
+            createPipeBluezLetter(5),
+            createPipeBluezLetter(6),
+            createPipeBluezLetter(7),
+            createPipeBluezLetter(8)),
         text("\n" + AuthorHighPressureRaven + "\n"),
         text(EnumChatFormatting.LIGHT_PURPLE + "pippey"));
 
@@ -746,7 +755,38 @@ public class GTValues {
 
     public static final Supplier<String> PipeBluez = chain(
         text("Author: "),
-        animatedText("PipeBluez", 1, 100, WHITE, WHITE, WHITE, WHITE, AQUA, DARK_AQUA, BLUE, DARK_BLUE, DARK_BLUE));
+        createPipeBluezLetter(0),
+        createPipeBluezLetter(1),
+        createPipeBluezLetter(2),
+        createPipeBluezLetter(3),
+        createPipeBluezLetter(4),
+        createPipeBluezLetter(5),
+        createPipeBluezLetter(6),
+        createPipeBluezLetter(7),
+        createPipeBluezLetter(8));
+
+    private static Supplier<String> createPipeBluezLetter(int letterIndex) {
+        char[] letters = "PipeBluez".toCharArray();
+        String[] colors = { WHITE, WHITE, WHITE, WHITE, AQUA, DARK_AQUA, BLUE, DARK_BLUE, DARK_BLUE };
+        int[] order = new int[] { 0, 6, 3, 8, 5, 7, 2, 4, 1 };
+        int length = letters.length * 5 * 4;
+        String letter = Character.toString(letters[letterIndex]);
+
+        String[] colorAlternator = new String[length];
+        int index = 0;
+        int orderIndex = 0;
+        do {
+            String color = colors[Math.floorMod(letterIndex - order[orderIndex], colors.length)];
+            if ((index + 1) % 4 == 0) {
+                color = color + OBFUSCATED;
+                orderIndex++;
+            }
+            colorAlternator[index] = color;
+            index++;
+            if (orderIndex > 8) orderIndex = 0;
+        } while (index != length);
+        return animatedText(letter, 1, 250, colorAlternator);
+    }
 
     // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
     public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {
