@@ -451,6 +451,12 @@ public class MTESteamCompact extends MTEBetterSteamMultiBase<MTESteamCompact> im
             .addInfo("For All the pressure needs you may have")
             .addInfo("Can do up to 256 recipes at once")
             .addInfo(EnumChatFormatting.AQUA + "" + EnumChatFormatting.ITALIC + "What in the world have you done")
+            .addCasingInfoMin("Vibration Safe Casing", 1664, false)
+            .addCasingInfoMin("Steam Compact Pipe Casing", 560, false)
+            .addCasingInfoMin("Compressed Steam Frame Box", 128, false)
+            .addCasingInfoMin("Reinforced Glass", 63, false)
+            .addInputHatch("1-8, Internal Glass Blocks", 1)
+            .addOutputHatch("1-8, Internal Glass Blocks", 1)
             .toolTipFinisher();
         return tt;
     }
