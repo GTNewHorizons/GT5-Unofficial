@@ -40,6 +40,11 @@ public class TeamWorldSavedData extends WorldSavedData {
         super(DATA_NAME);
     }
 
+    @SuppressWarnings("unused")
+    public TeamWorldSavedData(String name) {
+        super(name);
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound NBT) {
         NBTTagList teamList = NBT.getTagList("TeamList", Constants.NBT.TAG_COMPOUND);
