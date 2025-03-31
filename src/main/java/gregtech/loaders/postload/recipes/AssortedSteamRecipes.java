@@ -84,7 +84,7 @@ public class AssortedSteamRecipes implements Runnable {
         RA.stdBuilder()
             .fluidInputs(GTModHandler.getSteam(100000))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.CompressedSteam, 1))
-            .duration(30 * SECONDS)
+            .duration(4 * SECONDS)
             .eut(512)
             .metadata(CompressionTierKey.INSTANCE, 2)
             .addTo(compressorRecipes);
