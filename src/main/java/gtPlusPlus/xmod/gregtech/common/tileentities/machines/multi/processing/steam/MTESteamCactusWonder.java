@@ -4,6 +4,8 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CACTUS_WONDER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CACTUS_WONDER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE_GLOW;
@@ -189,11 +191,11 @@ public class MTESteamCactusWonder extends MTEBetterSteamMultiBase<MTESteamCactus
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE)
+                        .addIcon(OVERLAY_CACTUS_WONDER)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_CACTUS_WONDER_ACTIVE)
                         .extFacing()
                         .glow()
                         .build() };
@@ -202,11 +204,11 @@ public class MTESteamCactusWonder extends MTEBetterSteamMultiBase<MTESteamCactus
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR)
+                        .addIcon(OVERLAY_CACTUS_WONDER)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW)
+                        .addIcon(OVERLAY_CACTUS_WONDER_ACTIVE)
                         .extFacing()
                         .glow()
                         .build() };
