@@ -29,6 +29,13 @@ public class TeamWorldSavedData extends WorldSavedData {
         INSTANCE.markDirty();
     }
 
+    public static void markForSaving() {
+        if (INSTANCE != null) {
+            // if at the time of calling, the instance is null, then there is no need to mark it dirty anyway
+            INSTANCE.markDirty();
+        }
+    }
+
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event) {
         if (!event.world.isRemote && event.world.provider.dimensionId == 0) {

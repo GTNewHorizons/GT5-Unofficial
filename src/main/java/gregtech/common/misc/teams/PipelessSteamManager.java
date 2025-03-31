@@ -28,17 +28,17 @@ public class PipelessSteamManager implements ITeamData {
 
     public void setSteam(BigInteger steam) {
         this.storedSteam = steam;
-        TeamWorldSavedData.INSTANCE.markDirty();
+        markDirty();
     }
 
     public void setSuperheatedSteam(BigInteger superheatedSteam) {
         this.storedSuperheatedSteam = superheatedSteam;
-        TeamWorldSavedData.INSTANCE.markDirty();
+        markDirty();
     }
 
     public void setSupercriticalSteam(BigInteger supercriticalSteam) {
         this.storedSupercriticalSteam = supercriticalSteam;
-        TeamWorldSavedData.INSTANCE.markDirty();
+        markDirty();
     }
 
     public BigInteger getSteam() {
@@ -69,7 +69,7 @@ public class PipelessSteamManager implements ITeamData {
             // in case of adding a negative value
             storedSteam = BigInteger.ZERO;
         }
-        TeamWorldSavedData.INSTANCE.markDirty();
+        markDirty();
     }
 
     public void fillSuperheatedSteam(long superheatedSteam) {
@@ -88,7 +88,7 @@ public class PipelessSteamManager implements ITeamData {
             // in case of adding a negative value
             storedSuperheatedSteam = BigInteger.ZERO;
         }
-        TeamWorldSavedData.INSTANCE.markDirty();
+        markDirty();
     }
 
     public void fillSupercriticalSteam(long supercriticalSteam) {
@@ -107,7 +107,7 @@ public class PipelessSteamManager implements ITeamData {
             // in case of adding a negative value
             storedSupercriticalSteam = BigInteger.ZERO;
         }
-        TeamWorldSavedData.INSTANCE.markDirty();
+        markDirty();
     }
 
     public long drainSteam(long steam, boolean simulate) {
@@ -129,14 +129,14 @@ public class PipelessSteamManager implements ITeamData {
             // we can accommodate the full request
             if (!simulate) {
                 storedSteam = storedSteam.subtract(request);
-                TeamWorldSavedData.INSTANCE.markDirty();
+                markDirty();
             }
             return request;
         } else if (cmp == 0) {
             // we can exactly fulfill the request
             if (!simulate) {
                 storedSteam = BigInteger.ZERO;
-                TeamWorldSavedData.INSTANCE.markDirty();
+                markDirty();
             }
             return request;
         } else {
@@ -144,7 +144,7 @@ public class PipelessSteamManager implements ITeamData {
             BigInteger oldVal = storedSteam;
             if (!simulate) {
                 storedSteam = BigInteger.ZERO;
-                TeamWorldSavedData.INSTANCE.markDirty();
+                markDirty();
             }
             return oldVal;
         }
@@ -169,14 +169,14 @@ public class PipelessSteamManager implements ITeamData {
             // we can accommodate the full request
             if (!simulate) {
                 storedSuperheatedSteam = storedSuperheatedSteam.subtract(request);
-                TeamWorldSavedData.INSTANCE.markDirty();
+                markDirty();
             }
             return request;
         } else if (cmp == 0) {
             // we can exactly fulfill the request
             if (!simulate) {
                 storedSuperheatedSteam = BigInteger.ZERO;
-                TeamWorldSavedData.INSTANCE.markDirty();
+                markDirty();
             }
             return request;
         } else {
@@ -184,7 +184,7 @@ public class PipelessSteamManager implements ITeamData {
             BigInteger oldVal = storedSuperheatedSteam;
             if (!simulate) {
                 storedSuperheatedSteam = BigInteger.ZERO;
-                TeamWorldSavedData.INSTANCE.markDirty();
+                markDirty();
             }
             return oldVal;
         }
@@ -209,14 +209,14 @@ public class PipelessSteamManager implements ITeamData {
             // we can accommodate the full request
             if (!simulate) {
                 storedSupercriticalSteam = storedSupercriticalSteam.subtract(request);
-                TeamWorldSavedData.INSTANCE.markDirty();
+                markDirty();
             }
             return request;
         } else if (cmp == 0) {
             // we can exactly fulfill the request
             if (!simulate) {
                 storedSupercriticalSteam = BigInteger.ZERO;
-                TeamWorldSavedData.INSTANCE.markDirty();
+                markDirty();
             }
             return request;
         } else {
@@ -224,7 +224,7 @@ public class PipelessSteamManager implements ITeamData {
             BigInteger oldVal = storedSupercriticalSteam;
             if (!simulate) {
                 storedSupercriticalSteam = BigInteger.ZERO;
-                TeamWorldSavedData.INSTANCE.markDirty();
+                markDirty();
             }
             return oldVal;
         }
