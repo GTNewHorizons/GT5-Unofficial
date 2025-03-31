@@ -2207,7 +2207,7 @@ GT5U.info.large_fluid_extractor.total_eu_multiplier=Total EU/t Multiplier: %s%.0
 GT5U.info.oil_drill.drilling_fluid=Drilling Fluid: %s
 GT5U.info.oil_drill.drilling_flow=Drilling flow: %s L/t
 
-GT5U.info.plasma_forge.critical_info=Critical Information
+GT5U.info.critical_info=Critical Information
 GT5U.info.plasma_forge.ticks_run_fuel_discount=Ticks run: %s, Fuel Discount: %s
 GT5U.info.plasma_forge.convergence=Convergence: %s
 GT5U.info.plasma_forge.convergence.active=Active
@@ -2271,9 +2271,26 @@ GT5U.info.digital_tank.stored_fluid.empty=No Fluid
 GT5U.info.quantum_tank.name=Quantum Tank
 GT5U.info.super_tank.name=Super Tank
 
-
 GT5U.word_accelerator.mode.blocks=Blocks
 GT5U.word_accelerator.mode.tile_entities=TileEntities
+
+GT5U.voltage_names.ultra_low_voltage=Ultra Low Voltage
+GT5U.voltage_names.low_voltage=Low Voltage
+GT5U.voltage_names.medium_voltage=Medium Voltage
+GT5U.voltage_names.high_voltage=High Voltage
+GT5U.voltage_names.extreme_voltage=Extreme Voltage
+GT5U.voltage_names.insane_voltage=Insane Voltage
+GT5U.voltage_names.ludicrous_voltage=Ludicrous Voltage
+GT5U.voltage_names.zpm_voltage=ZPM Voltage
+GT5U.voltage_names.ultimate_voltage=Ultimate Voltage
+GT5U.voltage_names.ultimate_high_voltage=Ultimate High Voltage
+GT5U.voltage_names.ultimate_extreme_voltage=Ultimate Extreme Voltage
+GT5U.voltage_names.ultimate_insane_voltage=Ultimate Insane Voltage
+GT5U.voltage_names.ultimate_mega_voltage=Ultimate Mega Voltage
+GT5U.voltage_names.ultimate_extended_mega_voltage=Ultimate Extended Mega Voltage
+GT5U.voltage_names.maximum_voltage=Maximum Voltage
+GT5U.voltage_names.error_voltage_report_this=Error Voltage, report this
+
 
 # Achievements
 

@@ -956,7 +956,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             EnumChatFormatting.STRIKETHROUGH + "------------"
                 + EnumChatFormatting.RESET
                 + " "
-                + StatCollector.translateToLocal("GT5U.info.plasma_forge.critical_info")
+                + StatCollector.translateToLocal("GT5U.info.critical_info")
                 + " "
                 + EnumChatFormatting.STRIKETHROUGH
                 + "------------",

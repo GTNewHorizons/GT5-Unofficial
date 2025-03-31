@@ -341,7 +341,9 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         return new String[] {
             EnumChatFormatting.STRIKETHROUGH + "------------"
                 + EnumChatFormatting.RESET
-                + " Critical Information "
+                + " "
+                + StatCollector.translateToLocal("GT5U.info.critical_info")
+                + " "
                 + EnumChatFormatting.STRIKETHROUGH
                 + "------------",
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
@@ -381,9 +383,15 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                 + EnumChatFormatting.YELLOW
                 + GTValues.VN[GTUtility.getTier(getAverageInputVoltage())]
                 + EnumChatFormatting.RESET,
-            "Parallels: " + EnumChatFormatting.BLUE + paras + EnumChatFormatting.RESET,
-            "Speed Bonus: " + EnumChatFormatting.BLUE + moreSpeed + "%" + EnumChatFormatting.RESET,
-            "Energy Discount: " + EnumChatFormatting.BLUE + lessEnergy + "%" + EnumChatFormatting.RESET,
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.abs.mega.parallels",
+                "" + EnumChatFormatting.BLUE + paras + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.abs.mega.speed_bonus",
+                "" + EnumChatFormatting.BLUE + moreSpeed + "%" + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.abs.mega.energy_discount",
+                "" + EnumChatFormatting.BLUE + lessEnergy + "%" + EnumChatFormatting.RESET),
             EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
     }
 

@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -163,10 +164,14 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
     @Override
     public String[] getInfoData() {
         return this.mItemStack == null
-            ? new String[] { "Super Storage Chest", "Stored Items:", "No Items", Integer.toString(0),
+            ? new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.tiered_chest.name"),
+                StatCollector.translateToLocal("GT5U.info.digital_chest.stored_items"),
+                StatCollector.translateToLocal("GT5U.info.digital_chest.stored_items.empty"), Integer.toString(0),
                 Integer.toString(this.getMaxItemCount()) }
-            : new String[] { "Super Storage Chest", "Stored Items:", this.mItemStack.getDisplayName(),
-                Integer.toString(this.mItemCount), Integer.toString(this.getMaxItemCount()) };
+            : new String[] { StatCollector.translateToLocal("gtpp.infodata.tiered_chest.name"),
+                StatCollector.translateToLocal("GT5U.info.digital_chest.stored_items"),
+                this.mItemStack.getDisplayName(), Integer.toString(this.mItemCount),
+                Integer.toString(this.getMaxItemCount()) };
     }
 
     @Override

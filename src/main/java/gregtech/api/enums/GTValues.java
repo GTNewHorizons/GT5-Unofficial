@@ -20,6 +20,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -634,5 +635,16 @@ public class GTValues {
             }
         }
         return EXPLOSION_LOOKUP_POWER[EXPLOSION_LOOKUP_POWER.length - 1];
+    }
+
+    public static String getLocalizedLongVoltageName(int voltage) {
+        if(voltage >= VOLTAGE_NAMES.length) {
+            return StatCollector.translateToLocal("GT5U.voltage_names.error_voltage_report_this");
+        }
+        String unlocalizedName = "GT5U.voltage_names." + VOLTAGE_NAMES[voltage].toLowerCase().replace(",", "").replace(' ', '_');
+        if(StatCollector.canTranslate(unlocalizedName)) {
+            return StatCollector.translateToLocal(unlocalizedName);
+        }
+        return StatCollector.translateToLocal("GT5U.voltage_names.error_voltage_report_this");
     }
 }
