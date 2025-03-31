@@ -70,7 +70,7 @@ public class MTESteamExtractinator extends MTESteamMultiBase<MTESteamExtractinat
 
     @Override
     public String getMachineType() {
-        return "Shape Former";
+        return "Resource Extractor";
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -83,12 +83,12 @@ public class MTESteamExtractinator extends MTESteamMultiBase<MTESteamExtractinat
 
     @Override
     protected ITexture getFrontOverlay() {
-        return TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRUDER_IDLE);
+        return TextureFactory.of(Textures.BlockIcons.OVERLAY_EXTRACTINATOR);
     }
 
     @Override
     protected ITexture getFrontOverlayActive() {
-        return TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRUDER_WORKING);
+        return TextureFactory.of(Textures.BlockIcons.OVERLAY_EXTRACTINATOR_ACTIVE);
     }
 
     @Override
