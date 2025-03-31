@@ -76,7 +76,7 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase {
                     .getFluid(),
                 FluidUtils.getSuperHeatedSteam(1)
                     .getFluid()),
-            aTier == 0 ? 64_000 * (int) ticks_between_energy_addition : Integer.MAX_VALUE,
+            aTier == 0 ? 4_000 * (int) ticks_between_energy_addition : Integer.MAX_VALUE,
             aName,
             aTier,
             new String[] { "" },
