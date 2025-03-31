@@ -1928,6 +1928,9 @@ public enum MetaTileEntityIDs {
     Controller_SteamMegaWasherMulti(31374),
     Controller_SteamMegaHammerMulti(31375),
     Controller_SteamMegaCentrifugeMulti(31376),
+    Controller_SteamExtruder(31766),
+    Controller_SteamRockBreaker(31767),
+    Controller_SteamExtractinator(31768),
     GT_MetaTileEntity_ChiselBus_LV(31778),
     GT_MetaTileEntity_ChiselBus_MV(31779),
     GT_MetaTileEntity_ChiselBus_HV(31780),
@@ -1996,10 +1999,7 @@ public enum MetaTileEntityIDs {
     NeutronAcceleratorUHV(32761),
     NeutronAcceleratorUEV(32762),
     NeutronAcceleratorUIV(32763),
-    NeutronAcceleratorUMV(32764),
-    Controller_SteamExtruder(31765),
-    Controller_SteamRockBreaker(31766),
-    Controller_SteamExtractinator(31767);
+    NeutronAcceleratorUMV(32764),;
 
     public final int ID;
 
