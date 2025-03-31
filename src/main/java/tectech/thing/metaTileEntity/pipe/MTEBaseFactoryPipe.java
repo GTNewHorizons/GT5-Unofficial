@@ -9,6 +9,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
@@ -184,6 +185,7 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
     @Override
     public String[] getInfoData() {
         return new String[] {
-            getActive() ? EnumChatFormatting.GREEN + "Active." : EnumChatFormatting.RED + "Not active." };
+            getActive() ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("tt.infodata.pipe.active")
+                : EnumChatFormatting.RED + StatCollector.translateToLocal("tt.infodata.pipe.inactive") };
     }
 }

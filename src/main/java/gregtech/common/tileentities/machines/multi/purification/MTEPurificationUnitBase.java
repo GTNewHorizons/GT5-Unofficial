@@ -689,7 +689,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         } else ret.add(StatCollector.translateToLocal("GT5U.info.purification_unit_base.not_linked"));
         ret.add(
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.purification_unit_base.parallel",
+                "GT5U.info.parallel.current",
                 "" + EnumChatFormatting.YELLOW + this.effectiveParallel));
         return ret.toArray(new String[0]);
     }

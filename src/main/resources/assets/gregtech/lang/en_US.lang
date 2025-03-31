@@ -2126,6 +2126,7 @@ GT5U.info.progress=Progress: %s s / %s s
 GT5U.info.energy=Stored Energy: %s EU / %s EU
 GT5U.info.currently_uses=Currently uses: %s EU/t at %s A
 GT5U.info.probably_uses=Probably uses: %s EU/t
+GT5U.info.parallel.current=Current Parallel: %s
 GT5U.info.max_energy_income_tier=Max Energy Income: %s EU/t(*2A) Tier: %s
 GT5U.info.problems_efficiency=Problems: %s Efficiency: %s
 GT5U.info.cable.failed=Failed to get Power Node info
@@ -2185,6 +2186,7 @@ GT5U.info.dimension.valid=Dimension Valid: %s
 GT5U.info.dimension.registered=Dimension Registered: %s
 GT5U.info.yes=Yes
 GT5U.info.no=No
+
 
 GT5U.info.world_accelerator.mode=Accelerator running in %s mode
 GT5U.info.world_accelerator.speed=Speed setting: [%d / %d]
@@ -2246,7 +2248,6 @@ GT5U.info.pubp.quark_combination=Quark Combination correctly identified: %s
 GT5U.info.purification_unit_base.linked_at=This Purification Unit is linked to the Water Purification Plant at %d, %d, %d.
 GT5U.info.purification_unit_base.success_chance=Success chance: %s
 GT5U.info.purification_unit_base.not_linked=This Purification Unit is not linked to any Water Purification Plant.
-GT5U.info.purification_unit_base.parallel=Current parallel: %s
 
 GT5U.info.purification_unit_degasser.control_signal=Current control signal (binary): 0b%s
 GT5U.info.purification_unit_degasser.output_multiplier=Current output multiplier: %s
