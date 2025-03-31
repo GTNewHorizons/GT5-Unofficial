@@ -219,6 +219,7 @@ public enum IDMetaItem03 {
     Simple_Steel_Turbine(268),
     Steel_Turbine(269),
     Steam_Turbine(270),
+    SadBapyCat_Token(271),
     Circuit_Silicon_Ingot6(721),
     Circuit_Silicon_Wafer6(722),
     Circuit_Silicon_Wafer7(723),

@@ -401,6 +401,7 @@ public enum ItemList implements IItemContainer {
     Simple_Iron_Turbine,
     Steel_Turbine,
     Steam_Turbine,
+    SadBapyCat_Token,
 
     Electric_Motor_LV,
     Electric_Motor_MV,

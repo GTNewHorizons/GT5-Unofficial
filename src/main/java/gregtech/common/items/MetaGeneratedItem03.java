@@ -232,6 +232,7 @@ import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Top;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Unaligned;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Up;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
+import static gregtech.common.items.IDMetaItem03.SadBapyCat_Token;
 import static gregtech.common.items.IDMetaItem03.Simple_Bronze_Turbine;
 import static gregtech.common.items.IDMetaItem03.Simple_Steel_Turbine;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
@@ -373,6 +374,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
 
         ItemList.Steel_Turbine.set(addItem(Steel_Turbine.ID, "Steel Turbine", "Stable like a Table"));
         ItemList.Steam_Turbine.set(addItem(Steam_Turbine.ID, "Compressed Steam Turbine", "Infinite Throughtput"));
+        ItemList.SadBapyCat_Token.set(addItem(SadBapyCat_Token.ID, "SadBapyCat Token", ":sadbapycat:"));
 
         /*
          * circuit boards tier 1-7: coated circuit board / wood plate + resin Plastic Circuit Board / Plastic + Copper
