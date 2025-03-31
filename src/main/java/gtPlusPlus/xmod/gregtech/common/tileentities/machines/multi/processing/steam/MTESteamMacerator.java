@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -94,7 +95,8 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
 
     private int tierMachineCasing = -1;
 
-    public int getTierMachineCasing(Block block, int meta) {
+    @Nullable
+    public Integer getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
             mCounCasing++;
             return 1;
@@ -103,7 +105,7 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
             mCounCasing++;
             return 2;
         }
-        return 0;
+        return null;
     }
 
     protected void updateHatchTexture() {
@@ -204,7 +206,6 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
         tierMachineCasing = -1;
         mCounCasing = 0;
         if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierMachineCasing < 0) return false;
         if (tierMachineCasing == 1 && mCounCasing >= 14 && checkHatches()) {
             updateHatchTexture();
             tierMachine = 1;
@@ -328,7 +329,7 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
-        tag.setInteger("parallel", getMaxParallelRecipes());
+        tag.setInteger("parallel", getTrueParallel());
     }
 
     @Override

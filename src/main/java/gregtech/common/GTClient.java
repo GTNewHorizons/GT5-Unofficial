@@ -875,11 +875,12 @@ public class GTClient extends GTProxy implements Runnable {
             GTMusicSystem.ClientSystem.tick();
 
             if (changeDetected > 0) changeDetected--;
-            final int newHideValue = shouldHeldItemHideThings();
-            if (newHideValue != hideValue) {
-                hideValue = newHideValue;
+            final boolean newHideValue = shouldHeldItemHideThings();
+            if (newHideValue != hideThings) {
+                hideThings = newHideValue;
                 changeDetected = 5;
             }
+            forceFullBlockBoundingBoxes = shouldHeldItemForceFullBlockBoundingBoxes();
             mAnimationTick++;
             if (mAnimationTick % 50L == 0L) {
                 mAnimationDirection = !mAnimationDirection;
@@ -968,7 +969,11 @@ public class GTClient extends GTProxy implements Runnable {
         return renderTickTime;
     }
 
-    public static int hideValue = 0;
+    private static boolean hideThings = false;
+
+    public static boolean shouldHideThings() {
+        return hideThings;
+    }
 
     /**
      * <p>
@@ -981,37 +986,42 @@ public class GTClient extends GTProxy implements Runnable {
      */
     public static int changeDetected = 0;
 
-    private static int shouldHeldItemHideThings() {
-        try {
-            final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-            if (player == null) return 0;
-            final ItemStack tCurrentItem = player.getCurrentEquippedItem();
-            if (tCurrentItem == null) return 0;
-            final int[] ids = OreDictionary.getOreIDs(tCurrentItem);
-            int hide = 0;
-            for (int i : ids) {
-                if (OreDictionary.getOreName(i)
-                    .equals("craftingToolSolderingIron")) {
-                    hide |= 0x1;
-                    break;
-                }
+    private static boolean shouldHeldItemHideThings() {
+        final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        if (player == null) return false;
+        final ItemStack tCurrentItem = player.getCurrentEquippedItem();
+        if (tCurrentItem == null) return false;
+        final int[] ids = OreDictionary.getOreIDs(tCurrentItem);
+        for (int i : ids) {
+            String oreName = OreDictionary.getOreName(i);
+            if (oreName != null && oreName.equals("craftingToolSolderingIron")) {
+                return true;
             }
-            if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)
-                || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList)
-                || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftHammerList)
-                || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)
-                || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
-                || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)
-                || CoverRegistry.isCover(tCurrentItem)
-                || (tCurrentItem.getItem() instanceof ItemMachines
-                    && GregTechAPI.METATILEENTITIES[tCurrentItem.getItemDamage()] instanceof MetaPipeEntity
-                    && player.isSneaking())) {
-                hide |= 0x2;
-            }
-            return hide;
-        } catch (Exception e) {
-            return 0;
         }
+        return false;
+    }
+
+    private static boolean forceFullBlockBoundingBoxes;
+
+    public static boolean shouldForceFullBlockBoundingBoxes() {
+        return forceFullBlockBoundingBoxes;
+    }
+
+    private static boolean shouldHeldItemForceFullBlockBoundingBoxes() {
+        final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        if (player == null) return false;
+        final ItemStack tCurrentItem = player.getCurrentEquippedItem();
+        if (tCurrentItem == null) return false;
+        return GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftHammerList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)
+            || CoverRegistry.isCover(tCurrentItem)
+            || (tCurrentItem.getItem() instanceof ItemMachines
+                && GregTechAPI.METATILEENTITIES[tCurrentItem.getItemDamage()] instanceof MetaPipeEntity
+                && player.isSneaking());
     }
 
     public static void recieveChunkPollutionPacket(ChunkCoordIntPair chunk, int pollution) {

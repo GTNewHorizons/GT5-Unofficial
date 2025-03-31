@@ -16,6 +16,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_RAINBOWSCREEN_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -548,7 +549,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     private static final IStructureDefinition<MTEPlasmaForge> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEPlasmaForge>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure_string)
-        .addElement('C', ofCoil(MTEPlasmaForge::setCoilLevel, MTEPlasmaForge::getCoilLevel))
+        .addElement('C', activeCoils(ofCoil(MTEPlasmaForge::setCoilLevel, MTEPlasmaForge::getCoilLevel)))
         .addElement(
             'b',
             buildHatchAdder(MTEPlasmaForge.class)
