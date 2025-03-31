@@ -46,6 +46,7 @@ public class MTESteamLavaMaker extends MTEBetterSteamMultiBase<MTESteamLavaMaker
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Uses " + EnumChatFormatting.GOLD + "Superheated Steam")
+            .addInfo("Can melt up to 4 stones at a time")
             .addInfo(EnumChatFormatting.AQUA + "" + EnumChatFormatting.ITALIC + "Turning up the heat")
             .addInfo("Author: " + AuthorSteamIsTheNumber)
             .toolTipFinisher();
@@ -152,6 +153,12 @@ public class MTESteamLavaMaker extends MTEBetterSteamMultiBase<MTESteamLavaMaker
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         return checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        // Max call to prevent seeing -16 parallels in waila for unformed multi
+        return 4;
     }
 
     @Override

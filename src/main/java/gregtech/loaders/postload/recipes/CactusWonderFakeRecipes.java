@@ -63,7 +63,7 @@ public class CactusWonderFakeRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.QuadrupleCompressedCactusCharcoal.get(1))
-            .fluidOutputs(FluidRegistry.getFluidStack("supercriticalsteam", 256000))
+            .fluidOutputs(FluidRegistry.getFluidStack("supercriticalsteam", 512000))
             .metadata(OFFER_VALUE, 1441625977l)
             .duration(20)
             .eut(0)
@@ -72,7 +72,7 @@ public class CactusWonderFakeRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.CactusCharcoal.get(1))
-            .fluidOutputs(FluidRegistry.getFluidStack("supercriticalsteam", 256000))
+            .fluidOutputs(FluidRegistry.getFluidStack("supercriticalsteam", 512000))
             .metadata(OFFER_VALUE, 16218292236l)
             .duration(20)
             .eut(0)
@@ -126,7 +126,7 @@ public class CactusWonderFakeRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.QuadrupleCompressedCactusCoke.get(1))
-            .fluidOutputs(FluidRegistry.getFluidStack("supercriticalsteam", 256000))
+            .fluidOutputs(FluidRegistry.getFluidStack("supercriticalsteam", 512000))
             .metadata(OFFER_VALUE, 2883251953l)
             .duration(20)
             .eut(0)
@@ -135,7 +135,7 @@ public class CactusWonderFakeRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.QuintupleCompressedCactusCoke.get(1))
-            .fluidOutputs(FluidRegistry.getFluidStack("supercriticalsteam", 256000))
+            .fluidOutputs(FluidRegistry.getFluidStack("supercriticalsteam", 512000))
             .metadata(OFFER_VALUE, 32436584473l)
             .duration(20)
             .eut(0)

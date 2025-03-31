@@ -1909,6 +1909,7 @@ public enum ItemList implements IItemContainer {
     Hydraulic_Assembling_Casing,
     Hyper_Pressure_Breel_Casing,
     Breel_Casing,
+    Compact_Steam_Pipe_Casing,
 
     Circuit_Board_Coated,
     Circuit_Board_Coated_Basic,
