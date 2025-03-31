@@ -1,15 +1,14 @@
 package gregtech.api.items.armor.behaviors;
 
-import gregtech.api.items.armor.ArmorHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
-import vazkii.botania.api.mana.ManaItemHandler;
 
-import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
+import org.jetbrains.annotations.NotNull;
+
+import gregtech.api.items.armor.ArmorHelper;
 
 public class WaterBreathingBehavior implements IArmorBehavior {
 
@@ -24,8 +23,10 @@ public class WaterBreathingBehavior implements IArmorBehavior {
 
     @Override
     public void onArmorTick(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
-        if (player.isInWater() && stack.hasTagCompound() && stack.getTagCompound().getBoolean(ArmorHelper.WATER_BREATHING_KEY)) {
-            if(player.getAir() <= 1 && ArmorHelper.drainArmor(stack, 5000)) {
+        if (player.isInWater() && stack.hasTagCompound()
+            && stack.getTagCompound()
+                .getBoolean(ArmorHelper.WATER_BREATHING_KEY)) {
+            if (player.getAir() <= 1 && ArmorHelper.drainArmor(stack, 5000)) {
                 player.setAir(300);
             }
         }
