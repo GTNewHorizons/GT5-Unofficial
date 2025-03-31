@@ -1,11 +1,20 @@
 package gregtech.common.items;
 
+import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
+import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import gregtech.api.items.GTGenericItem;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.World;
 
 public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble {
 
@@ -15,6 +24,20 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
     }
 
+    @Override
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
+                                  int ordinalSide, float hitX, float hitY, float hitZ) {
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        if(tileEntity instanceof IGregTechTileEntity bla){
+            if (bla.getMetaTileEntity() instanceof MTELapotronicSuperCapacitor blabla){
+                player.addChatMessage(new ChatComponentText("\"Linking\" the LSC..."));
+            } else{
+                player.addChatMessage(new ChatComponentText("Dude... That's not an LSC. Are you dumb?"));
+            }
+            return true;
+        }
+        return super.onItemUseFirst(stack,player,world,x,y,z,ordinalSide,hitX,hitY,hitZ);
+    }
     @Override
     public BaubleType getBaubleType(ItemStack itemstack) {
         return BaubleType.UNIVERSAL;
