@@ -155,7 +155,9 @@ public final class RecipeMaps {
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_COMPRESSOR_STEAM
                 : null)
         .progressBarSteam(GTUITextures.PROGRESSBAR_COMPRESS_STEAM)
-        .neiHandlerInfo(builder -> builder.setDisplayStack(GregtechItemList.Controller_SteamGateAssembler.get(1)))
+        .neiHandlerInfo(
+            builder -> builder.setDisplayStack(GregtechItemList.Controller_SteamGateAssembler.get(1))
+                .setMaxRecipesPerPage(1))
         .frontend(SteamGateAssemblerFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> steamConformerRecipes = RecipeMapBuilder
