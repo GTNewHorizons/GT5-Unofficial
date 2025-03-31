@@ -4,8 +4,14 @@ import static gregtech.api.enums.GTValues.NW;
 
 import java.math.BigInteger;
 
+import baubles.common.container.InventoryBaubles;
+import baubles.common.lib.PlayerHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.network.play.INetHandlerPlayServer;
 import net.minecraft.tileentity.TileEntity;
 
 import appeng.api.util.DimensionalCoord;
@@ -68,5 +74,28 @@ public class PowerGogglesEventHandler {
     @SubscribeEvent
     public void clientOnPlayerDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
         PowerGogglesHudHandler.clear();
+    }
+    @SubscribeEvent
+    public void serverOnPlayerConnect(FMLNetworkEvent.ServerConnectionFromClientEvent event){
+        EntityPlayerMP player = ((NetHandlerPlayServer) event.handler).playerEntity;
+        InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(player);
+        for (ItemStack bauble : baubles.stackList) {
+            if (bauble == null) continue;
+            if (bauble.getUnlocalizedName().equals("gt.PowerNerd_Goggles")) {
+                setLink(bauble);
+            }
+        }
+    }
+    private void setLink(ItemStack item){
+        if (item.getTagCompound().hasNoTags()) lscLink = null;
+        else {
+            NBTTagCompound tag = item.getTagCompound();
+            lscLink = new DimensionalCoord(tag.getInteger("x"),tag.getInteger("y"),tag.getInteger("z"),tag.getInteger("dim"));
+        }
+    }
+    @SubscribeEvent
+    public void serverOnPlayerDisconnect(FMLNetworkEvent.ServerDisconnectionFromClientEvent event) {
+        EntityPlayerMP player = ((NetHandlerPlayServer) event.handler).playerEntity;
+        lscLink = null;
     }
 }
