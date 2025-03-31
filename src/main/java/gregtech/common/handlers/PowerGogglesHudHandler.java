@@ -2,7 +2,6 @@ package gregtech.common.handlers;
 
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
-import com.cleanroommc.modularui.utils.Color;
 import com.google.common.math.BigIntegerMath;
 import com.gtnewhorizons.modularui.api.drawable.GuiHelper;
 import com.gtnewhorizons.modularui.api.drawable.Text;
@@ -25,17 +24,24 @@ import org.lwjgl.opengl.GL11;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class PowerGogglesHudHandler {
+    private final static int TICKS = 1;
+    private final static int SECONDS = 20;
+    private final static int MINUTES = 60*SECONDS;
     static List<Text> hudList = new ArrayList<>();
+    static LinkedList<BigInteger> measurements = new LinkedList<>();
     static Minecraft mc = Minecraft.getMinecraft();
     static int ticks = 0;
     static final int ticksBetweenMeasurements = 100;
+    static final int measurementCount5m = 5*MINUTES / ticksBetweenMeasurements;
+    static final int measurementCount1h = 60*MINUTES / ticksBetweenMeasurements;
     static BigInteger currentEU = BigInteger.valueOf(0);
     static BigInteger lastChange = BigInteger.valueOf(0);
     static BigInteger measurement = BigInteger.valueOf(0);
-    static int measurements = 0;
+    static int measurementCount = 0;
 
 
     @SubscribeEvent
@@ -59,12 +65,12 @@ public class PowerGogglesHudHandler {
         int factor = resolution.getScaleFactor();
         int xOffset = 0;
         int x = -5;
-        int yOffset = 10;
+        int yOffset = 20;
         int y = (height - yOffset);
 
         FontRenderer fontRenderer = mc.fontRenderer;
         GL11.glPushMatrix();
-        GuiHelper.drawHoveringText(hudList, new Pos2d(x, y), new Size(150,30), 150, 0.75f, true, Alignment.CenterLeft, false);
+        GuiHelper.drawHoveringText(hudList, new Pos2d(x, y), new Size(150,60), 150, 0.75f, true, Alignment.CenterLeft, false);
 
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glPopMatrix();
@@ -73,29 +79,35 @@ public class PowerGogglesHudHandler {
     public static void clientTick() {
         if(ticks % ticksBetweenMeasurements == 0){
             measurement = WirelessNetworkManager.getUserEU(mc.thePlayer.getUniqueID());
-            lastChange = measurements == 0 ? BigInteger.valueOf(0) : measurement.subtract(currentEU);
+            lastChange = measurementCount == 0 ? BigInteger.valueOf(0) : measurement.subtract(currentEU);
             currentEU = measurement;
-            EnumChatFormatting changeColor = EnumChatFormatting.WHITE;
+
             int lastChangeDiff = lastChange.compareTo(BigInteger.valueOf(0));
+            EnumChatFormatting changeColor = getColor(lastChangeDiff);
 
+            measurements.addFirst(lastChange);
+            if(measurements.size() > measurementCount1h) measurements.removeLast();
 
+            BigInteger change5m = getReadingSum(measurements, measurementCount5m);
+            int change5mDiff = change5m.compareTo(BigInteger.valueOf(0));
+            EnumChatFormatting change5mColor = getColor(change5mDiff);
+
+            BigInteger change1h = getReadingSum(measurements, measurementCount1h);
+            int change1hDiff = change1h.compareTo(BigInteger.valueOf(0));
+            EnumChatFormatting change1hColor = getColor(change5mDiff);
 
             hudList = new ArrayList<>();
-            if(measurements > 0){
-                if(lastChangeDiff < 0) {
-                    changeColor = EnumChatFormatting.RED;
-                } else if(lastChangeDiff > 0) {
-                    changeColor = EnumChatFormatting.GREEN;
-                }
-            }
-            ++measurements;
+            ++measurementCount;
             hudList.add(new Text(EnumChatFormatting.WHITE+"Storage: " + changeColor+toEngineering(currentEU) + " EU"));
             hudList.add(new Text(EnumChatFormatting.WHITE+"5s: " + changeColor+toEngineering(lastChange) + " EU" + (lastChangeDiff != 0 ? String.format(" (%s eu/t) ",toEngineering(lastChange.divide(BigInteger.valueOf(ticksBetweenMeasurements)))) : "")));
+            hudList.add(new Text(EnumChatFormatting.WHITE+"5m: " + change5mColor+toEngineering(change5m) + " EU" + (change5mDiff != 0 ? String.format(" (%s eu/t) ",toEngineering(change5m.divide(BigInteger.valueOf(5*MINUTES)))) : "")));
+            hudList.add(new Text(EnumChatFormatting.WHITE+"1h: " + change1hColor+toEngineering(change1h) + " EU" + (change1hDiff != 0 ? String.format(" (%s eu/t) ",toEngineering(change1h.divide(BigInteger.valueOf(60*MINUTES)))) : "")));
+
 
         }
         ++ticks;
     }
-    public static String toEngineering(BigInteger EU){
+    private static String toEngineering(BigInteger EU){
         if(EU.abs().compareTo(BigInteger.valueOf(1)) < 0){
             return "0";
         }
@@ -111,5 +123,18 @@ public class PowerGogglesHudHandler {
         String decimal = euString.substring(remainder+1+negative,Math.min(exponent, remainder+4));
         int E = exponent-remainder; //Round down to nearest 10^3k
         return String.format("%s.%sE%d",base, decimal, E);
+    }
+    private static BigInteger getReadingSum(LinkedList<BigInteger> list, int count){
+        BigInteger result = BigInteger.ZERO;
+        int actualCount = Math.min(list.size(), count);
+        for(int i = 0; i < actualCount; i++){
+            result = result.add(list.get(i));
+        }
+        return result;
+    }
+    private static EnumChatFormatting getColor(int compareResult){
+        if (compareResult == 0) return EnumChatFormatting.WHITE;
+        if (compareResult < 0 ) return EnumChatFormatting.RED;
+        return EnumChatFormatting.GREEN;
     }
 }
