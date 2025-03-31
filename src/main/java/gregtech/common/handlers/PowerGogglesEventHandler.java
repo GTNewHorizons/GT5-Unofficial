@@ -1,13 +1,14 @@
 package gregtech.common.handlers;
 
+import net.minecraft.client.Minecraft;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
-import net.minecraft.client.Minecraft;
 
 public class PowerGogglesEventHandler {
-    public static Minecraft mc;
 
+    public static Minecraft mc;
 
     @SubscribeEvent
     public void tickEnd(TickEvent.ClientTickEvent event) {
