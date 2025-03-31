@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
@@ -174,8 +173,7 @@ public class MTESteamExtractinator extends MTESteamMultiBase<MTESteamExtractinat
                 .addElement(
                     'K',
                     ofChain(
-                        buildHatchAdder(MTESteamExtractinator.class)
-                            .atLeast(InputHatch)
+                        buildHatchAdder(MTESteamExtractinator.class).atLeast(InputHatch)
                             .casingIndex(10)
                             .dot(1)
                             .buildAndChain(),
@@ -183,8 +181,7 @@ public class MTESteamExtractinator extends MTESteamMultiBase<MTESteamExtractinat
                 .addElement(
                     'L',
                     ofChain(
-                        buildHatchAdder(MTESteamExtractinator.class)
-                            .atLeast(SteamHatchElement.OutputBus_Steam)
+                        buildHatchAdder(MTESteamExtractinator.class).atLeast(SteamHatchElement.OutputBus_Steam)
                             .casingIndex(10)
                             .dot(2)
                             .buildAndChain(),
