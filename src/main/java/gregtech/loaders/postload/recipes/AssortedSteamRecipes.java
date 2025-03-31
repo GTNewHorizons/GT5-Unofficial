@@ -22,6 +22,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.recipe.metadata.CompressionTierKey;
+import gregtech.api.recipe.metadata.SteamFusionTierKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -54,6 +55,7 @@ public class AssortedSteamRecipes implements Runnable {
             .fluidOutputs(FluidRegistry.getFluidStack("supercriticalsteam", 16000))
             .duration(10 * TICKS)
             .eut(0)
+            .metadata(SteamFusionTierKey.INSTANCE, 1)
             .addTo(steamFusionReactorRecipes);
 
         RA.stdBuilder()
