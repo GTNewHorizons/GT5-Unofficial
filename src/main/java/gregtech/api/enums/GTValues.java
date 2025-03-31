@@ -638,11 +638,13 @@ public class GTValues {
     }
 
     public static String getLocalizedLongVoltageName(int voltage) {
-        if(voltage >= VOLTAGE_NAMES.length) {
+        if (voltage >= VOLTAGE_NAMES.length) {
             return StatCollector.translateToLocal("GT5U.voltage_names.error_voltage_report_this");
         }
-        String unlocalizedName = "GT5U.voltage_names." + VOLTAGE_NAMES[voltage].toLowerCase().replace(",", "").replace(' ', '_');
-        if(StatCollector.canTranslate(unlocalizedName)) {
+        String unlocalizedName = "GT5U.voltage_names." + VOLTAGE_NAMES[voltage].toLowerCase()
+            .replace(",", "")
+            .replace(' ', '_');
+        if (StatCollector.canTranslate(unlocalizedName)) {
             return StatCollector.translateToLocal(unlocalizedName);
         }
         return StatCollector.translateToLocal("GT5U.voltage_names.error_voltage_report_this");
