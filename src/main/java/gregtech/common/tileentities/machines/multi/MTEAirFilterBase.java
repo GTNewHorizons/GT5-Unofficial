@@ -608,35 +608,35 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     public String[] getInfoData() {
         return new String[] {
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.progress",
+                "GT5U.infodata.progress",
                 EnumChatFormatting.GREEN + Integer.toString(mProgresstime / 20) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + Integer.toString(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.energy",
+                "GT5U.infodata.energy",
                 EnumChatFormatting.GREEN + Long.toString(getBaseMetaTileEntity().getStoredEU())
                     + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + Long.toString(getBaseMetaTileEntity().getEUCapacity())
                     + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.probably_uses",
+                "GT5U.infodata.probably_uses",
                 // negative EU triggers special EU consumption behavior. however it does not produce power.
                 EnumChatFormatting.RED + Integer.toString(Math.abs(mEUt)) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.max_energy_income_tie",
+                "GT5U.infodata.max_energy_income_tie",
                 EnumChatFormatting.YELLOW + Long.toString(getMaxInputVoltage()) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + VN[GTUtility.getTier(getMaxInputVoltage())] + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.problems_efficiency",
+                "GT5U.infodata.problems_efficiency",
                 EnumChatFormatting.RED + Integer.toString(getIdealStatus() - getRepairStatus())
                     + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + Float.toString(mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %"),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.air_filter.pollution_reduction",
+                "GT5U.infodata.air_filter.pollution_reduction",
                 EnumChatFormatting.GREEN
                     + Integer.toString(
                         getPollutionCleaningRatePerTick(baseEff / 10000f, mEfficiency / 10000f, isFilterLoaded))
                     + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted("GT5U.info.air_filter.has_filter", isFilterLoaded),
-            StatCollector.translateToLocalFormatted("GT5U.info.air_filter.remaining_cycles", filterUsageRemaining) };
+            StatCollector.translateToLocalFormatted("GT5U.infodata.air_filter.has_filter", isFilterLoaded),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.air_filter.remaining_cycles", filterUsageRemaining) };
     }
 }

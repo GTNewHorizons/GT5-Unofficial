@@ -235,7 +235,7 @@ public class MTEBoilerSolar extends MTEBoiler {
     public String[] getInfoData() {
         return new String[] {
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.boiler_solar.heat",
+                "GT5U.infodata.boiler_solar.heat",
                 String.format(
                     EnumChatFormatting.GREEN + "%s %%" + EnumChatFormatting.RESET,
                     GTUtility.formatNumbers(getHeatCapacityPercent())),
@@ -243,7 +243,7 @@ public class MTEBoilerSolar extends MTEBoiler {
                     EnumChatFormatting.RED + "%s s" + EnumChatFormatting.RESET,
                     GTUtility.formatNumbers(getHotTimeSeconds()))),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.boiler_solar.output",
+                "GT5U.infodata.boiler_solar.output",
                 String.format(
                     EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET,
                     GTUtility.formatNumbers(getMinOutputPerSecond())),
@@ -251,7 +251,7 @@ public class MTEBoilerSolar extends MTEBoiler {
                     EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET,
                     GTUtility.formatNumbers(getMaxOutputPerSecond()))),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.boiler_solar.current_output",
+                "GT5U.infodata.boiler_solar.current_output",
                 String.format(
                     EnumChatFormatting.YELLOW + LPS_FMT + EnumChatFormatting.RESET,
                     GTUtility.formatNumbers(getProductionPerSecond()))) };

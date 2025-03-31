@@ -387,10 +387,10 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                     + " "
                     + StatCollector.translateToLocal("GT5U.machines.chunks"),
                 StatCollector.translateToLocalFormatted(
-                    "GT5U.info.oil_drill.drilling_fluid",
+                    "GT5U.infodata.oil_drill.drilling_fluid",
                     EnumChatFormatting.GREEN + getFluidName() + EnumChatFormatting.RESET),
                 StatCollector.translateToLocalFormatted(
-                    "GT5U.info.oil_drill.drilling_flow",
+                    "GT5U.infodata.oil_drill.drilling_flow",
                     EnumChatFormatting.GREEN + GTUtility.formatNumbers(getFlowRatePerTick())
                         + EnumChatFormatting.RESET)));
         l.addAll(Arrays.asList(super.getInfoData()));

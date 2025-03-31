@@ -635,19 +635,19 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         List<String> ss = new ArrayList<>();
         ss.add(
             (getProxy() != null && getProxy().isActive())
-                ? StatCollector.translateToLocal("GT5U.info.hatch.crafting_input_me.bus.online")
+                ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
                 : StatCollector
-                    .translateToLocalFormatted("GT5U.info.hatch.crafting_input_me.bus.offline", getAEDiagnostics()));
+                    .translateToLocalFormatted("GT5U.infodata.hatch.crafting_input_me.bus.offline", getAEDiagnostics()));
         ss.add(
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.hatch.output_me.cache_capacity",
+                "GT5U.infodata.hatch.output_me.cache_capacity",
                 EnumChatFormatting.GOLD + GTUtility.formatNumbers(getCacheCapacity())
                     + " L"
                     + EnumChatFormatting.RESET));
         if (fluidCache.isEmpty()) {
-            ss.add(StatCollector.translateToLocal("GT5U.info.hatch.output_me.empty"));
+            ss.add(StatCollector.translateToLocal("GT5U.infodata.hatch.output_me.empty"));
         } else {
-            ss.add(StatCollector.translateToLocalFormatted("GT5U.info.hatch.output_me.contains", fluidCache.size()));
+            ss.add(StatCollector.translateToLocalFormatted("GT5U.infodata.hatch.output_me.contains", fluidCache.size()));
             int counter = 0;
             for (IAEFluidStack s : fluidCache) {
                 ss.add(

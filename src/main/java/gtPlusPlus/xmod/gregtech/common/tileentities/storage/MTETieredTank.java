@@ -136,15 +136,15 @@ public class MTETieredTank extends MTEBasicTank {
                 StatCollector.translateToLocalFormatted(
                     "gtpp.infodata.tiered_tank.name",
                     GTValues.getLocalizedLongVoltageName(this.mTier)),
-                StatCollector.translateToLocal("GT5U.info.digital_tank.stored_fluid"),
-                StatCollector.translateToLocal("GT5U.info.digital_tank.stored_fluid.empty"), 0 + "L",
+                StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
+                StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid.empty"), 0 + "L",
                 this.getCapacity() + "L" };
         }
         return new String[] {
             StatCollector.translateToLocalFormatted(
                 "gtpp.infodata.tiered_tank.name",
                 GTValues.getLocalizedLongVoltageName(this.mTier)),
-            StatCollector.translateToLocal("GT5U.info.digital_tank.stored_fluid"), this.mFluid.getLocalizedName(),
+            StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"), this.mFluid.getLocalizedName(),
             this.mFluid.amount + "L", this.getCapacity() + "L" };
     }
 

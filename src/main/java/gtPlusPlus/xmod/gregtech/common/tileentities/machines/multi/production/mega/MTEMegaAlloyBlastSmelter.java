@@ -342,7 +342,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             EnumChatFormatting.STRIKETHROUGH + "------------"
                 + EnumChatFormatting.RESET
                 + " "
-                + StatCollector.translateToLocal("GT5U.info.critical_info")
+                + StatCollector.translateToLocal("GT5U.infodata.critical_info")
                 + " "
                 + EnumChatFormatting.STRIKETHROUGH
                 + "------------",

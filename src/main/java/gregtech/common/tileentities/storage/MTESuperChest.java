@@ -18,7 +18,7 @@ public class MTESuperChest extends MTEQuantumChest {
 
     @Override
     protected String localizedChestName() {
-        return StatCollector.translateToLocal("GT5U.info.super_chest.name");
+        return StatCollector.translateToLocal("GT5U.infodata.super_chest.name");
     }
 
     @Override

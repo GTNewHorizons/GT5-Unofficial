@@ -572,7 +572,7 @@ public class MTEPurificationUnitBaryonicPerfection
 
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add(StatCollector.translateToLocal("GT5U.info.pubp.catalyst_history"));
+        info.add(StatCollector.translateToLocal("GT5U.infodata.pubp.catalyst_history"));
         for (int i = 0; i < insertedCatalysts.size(); ++i) {
             ItemStack stack = insertedCatalysts.get(i);
             String name = stack.getDisplayName();
@@ -588,7 +588,7 @@ public class MTEPurificationUnitBaryonicPerfection
                     + split[1]);
         }
         info.add(
-            StatCollector.translateToLocalFormatted("GT5U.info.pubp.quark_combination", getCorrectlyDecodedString()));
+            StatCollector.translateToLocalFormatted("GT5U.infodata.pubp.quark_combination", getCorrectlyDecodedString()));
         return info.toArray(new String[] {});
     }
 

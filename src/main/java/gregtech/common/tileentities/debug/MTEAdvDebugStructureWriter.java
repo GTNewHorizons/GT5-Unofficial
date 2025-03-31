@@ -51,7 +51,7 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
     private final short[] numbers = new short[6];
     private boolean transpose = false;
     private boolean showHighlightBox = true;
-    private String[] result = new String[] { StatCollector.translateToLocal("GT5U.info.undefined") };
+    private String[] result = new String[] { StatCollector.translateToLocal("GT5U.infodata.undefined") };
 
     public MTEAdvDebugStructureWriter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");

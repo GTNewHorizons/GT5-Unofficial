@@ -186,7 +186,7 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
         }
 
         return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.info.extreme_diesel_engine")
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.extreme_diesel_engine")
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN

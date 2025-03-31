@@ -671,10 +671,10 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         List<String> ret = new ArrayList<>();
         ret.add(
             (getProxy() != null && getProxy().isActive())
-                ? StatCollector.translateToLocal("GT5U.info.hatch.crafting_input_me.bus.online")
+                ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
                 : StatCollector
-                    .translateToLocalFormatted("GT5U.info.hatch.crafting_input_me.bus.offline", getAEDiagnostics()));
-        ret.add(StatCollector.translateToLocal("GT5U.info.hatch.internal_inventory"));
+                    .translateToLocalFormatted("GT5U.infodata.hatch.crafting_input_me.bus.offline", getAEDiagnostics()));
+        ret.add(StatCollector.translateToLocal("GT5U.infodata.hatch.internal_inventory"));
         int i = 0;
         for (PatternSlot slot : internalInventory) {
             if (slot == null) continue;
@@ -683,7 +683,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             i += 1;
             ret.add(
                 StatCollector.translateToLocalFormatted(
-                    "GT5U.info.hatch.internal_inventory.slot",
+                    "GT5U.infodata.hatch.internal_inventory.slot",
                     i,
                     EnumChatFormatting.BLUE + describePattern(slot.patternDetails) + EnumChatFormatting.RESET));
             Map<GTUtility.ItemId, Long> itemMap = GTUtility.convertItemListToMap(slot.itemInventory);

@@ -117,12 +117,12 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         if (getMaster() != null) {
             ret.add(
                 StatCollector.translateToLocalFormatted(
-                    "GT5U.info.hatch.crafting_input_slave.linked_to",
+                    "GT5U.infodata.hatch.crafting_input_slave.linked_to",
                     masterX,
                     masterY,
                     masterZ));
             ret.addAll(Arrays.asList(getMaster().getInfoData()));
-        } else ret.add(StatCollector.translateToLocal("GT5U.info.hatch.crafting_input_slave.not_linked_to"));
+        } else ret.add(StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_slave.not_linked_to"));
         return ret.toArray(new String[0]);
     }
 

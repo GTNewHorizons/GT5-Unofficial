@@ -62,7 +62,7 @@ public class MTEQuantumChest extends MTEDigitalChestBase {
 
     @Override
     protected String localizedChestName() {
-        return StatCollector.translateToLocal("GT5U.info.quantum_chest.name");
+        return StatCollector.translateToLocal("GT5U.infodata.quantum_chest.name");
     }
 
     @Override

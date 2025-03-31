@@ -762,13 +762,13 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     }
 
     private static String generateInfoStringForBit(int i, ControlBitStatus status) {
-        String base = StatCollector.translateToLocalFormatted("GT5U.info.purification_unit_degasser.bit", (i + 1));
+        String base = StatCollector.translateToLocalFormatted("GT5U.infodata.purification_unit_degasser.bit", (i + 1));
         if (status.satisfied) {
             return base + EnumChatFormatting.GREEN
-                + StatCollector.translateToLocal("GT5U.info.purification_unit_degasser.bit.ok");
+                + StatCollector.translateToLocal("GT5U.infodata.purification_unit_degasser.bit.ok");
         } else {
             return base + EnumChatFormatting.RED
-                + StatCollector.translateToLocal("GT5U.info.purification_unit_degasser.bit.not_ok");
+                + StatCollector.translateToLocal("GT5U.infodata.purification_unit_degasser.bit.not_ok");
         }
     }
 
@@ -777,16 +777,16 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add(
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.purification_unit_degasser.control_signal",
+                "GT5U.infodata.purification_unit_degasser.control_signal",
                 EnumChatFormatting.YELLOW + controlSignal.toString()));
         info.add(
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.purification_unit_degasser.output_multiplier",
+                "GT5U.infodata.purification_unit_degasser.output_multiplier",
                 "" + EnumChatFormatting.YELLOW + outputMultiplier));
         for (FluidStack stack : insertedStuffThisCycle.values()) {
             info.add(
                 StatCollector.translateToLocalFormatted(
-                    "GT5U.info.purification_unit_degasser.fluid_inserted",
+                    "GT5U.infodata.purification_unit_degasser.fluid_inserted",
                     "" + EnumChatFormatting.YELLOW + stack.amount,
                     stack.getLocalizedName()));
         }

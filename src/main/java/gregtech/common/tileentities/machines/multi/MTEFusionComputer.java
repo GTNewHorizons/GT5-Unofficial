@@ -505,7 +505,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
         }
 
         return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.info.fusion_reactor_mk")
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.fusion_reactor_mk")
                 + " "
                 + EnumChatFormatting.RESET
                 + tier,

@@ -184,32 +184,32 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
 
     @Override
     public String[] getInfoData() {
-        return new String[] { StatCollector.translateToLocal("GT5U.info.coordinates"),
+        return new String[] { StatCollector.translateToLocal("GT5U.infodata.coordinates"),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.coordinates.x",
+                "GT5U.infodata.coordinates.x",
                 EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetX) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.coordinates.y",
+                "GT5U.infodata.coordinates.y",
                 EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetY) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.coordinates.z",
+                "GT5U.infodata.coordinates.z",
                 EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetZ) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.dimension",
+                "GT5U.infodata.dimension",
                 "" + EnumChatFormatting.GREEN + this.mTargetD + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.dimension.valid",
+                "GT5U.infodata.dimension.valid",
                 (GTUtility.isRealDimension(this.mTargetD)
-                    ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.info.yes")
+                    ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.infodata.yes")
                         + EnumChatFormatting.RESET
-                    : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.info.no")
+                    : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.infodata.no")
                         + EnumChatFormatting.RESET)),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.dimension.registered",
+                "GT5U.infodata.dimension.registered",
                 (DimensionManager.isDimensionRegistered(this.mTargetD)
-                    ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.info.yes")
+                    ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.infodata.yes")
                         + EnumChatFormatting.RESET
-                    : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.info.no")
+                    : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.infodata.no")
                         + EnumChatFormatting.RESET)) };
     }
 

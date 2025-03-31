@@ -671,7 +671,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         if (getController() != null) {
             ret.add(
                 StatCollector.translateToLocalFormatted(
-                    "GT5U.info.purification_unit_base.linked_at",
+                    "GT5U.infodata.purification_unit_base.linked_at",
                     controllerX,
                     controllerY,
                     controllerZ));
@@ -680,16 +680,16 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             if (this.mMaxProgresstime != 0) {
                 ret.add(
                     StatCollector.translateToLocalFormatted(
-                        "GT5U.info.purification_unit_base.success_chance",
+                        "GT5U.infodata.purification_unit_base.success_chance",
                         EnumChatFormatting.YELLOW + GTUtility.formatNumbers(this.calculateFinalSuccessChance())
                             + "%"
                             + EnumChatFormatting.RESET));
             }
 
-        } else ret.add(StatCollector.translateToLocal("GT5U.info.purification_unit_base.not_linked"));
+        } else ret.add(StatCollector.translateToLocal("GT5U.infodata.purification_unit_base.not_linked"));
         ret.add(
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.parallel.current",
+                "GT5U.infodata.parallel.current",
                 "" + EnumChatFormatting.YELLOW + this.effectiveParallel));
         return ret.toArray(new String[0]);
     }

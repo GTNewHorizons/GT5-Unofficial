@@ -165,11 +165,11 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
     public String[] getInfoData() {
         return this.mItemStack == null
             ? new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.tiered_chest.name"),
-                StatCollector.translateToLocal("GT5U.info.digital_chest.stored_items"),
-                StatCollector.translateToLocal("GT5U.info.digital_chest.stored_items.empty"), Integer.toString(0),
+                StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
+                StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items.empty"), Integer.toString(0),
                 Integer.toString(this.getMaxItemCount()) }
             : new String[] { StatCollector.translateToLocal("gtpp.infodata.tiered_chest.name"),
-                StatCollector.translateToLocal("GT5U.info.digital_chest.stored_items"),
+                StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
                 this.mItemStack.getDisplayName(), Integer.toString(this.mItemCount),
                 Integer.toString(this.getMaxItemCount()) };
     }

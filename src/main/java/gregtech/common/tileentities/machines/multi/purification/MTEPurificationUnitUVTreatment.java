@@ -427,16 +427,16 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
         if (this.lensCycle != null) {
             infoData.add(
                 StatCollector.translateToLocalFormatted(
-                    "GT5U.info.purification_unit_uv_treatment.lens_swaps",
+                    "GT5U.infodata.purification_unit_uv_treatment.lens_swaps",
                     "" + EnumChatFormatting.YELLOW + numSwapsPerformed));
             infoData.add(
                 StatCollector.translateToLocalFormatted(
-                    "GT5U.info.purification_unit_uv_treatment.lens_requested",
+                    "GT5U.infodata.purification_unit_uv_treatment.lens_requested",
                     EnumChatFormatting.GREEN + lensCycle.current()
                         .getDisplayName()));
             if (removedTooEarly) {
                 infoData
-                    .add(StatCollector.translateToLocal("GT5U.info.purification_unit_uv_treatment.removed_too_early"));
+                    .add(StatCollector.translateToLocal("GT5U.infodata.purification_unit_uv_treatment.removed_too_early"));
             }
         }
         return infoData.toArray(new String[] {});

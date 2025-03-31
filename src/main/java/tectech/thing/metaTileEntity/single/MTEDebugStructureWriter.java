@@ -43,7 +43,7 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
     private static ITexture MARK;
     public short[] numbers = new short[6];
     public boolean size = false;
-    public String[] result = new String[] { StatCollector.translateToLocal("GT5U.info.undefined") };
+    public String[] result = new String[] { StatCollector.translateToLocal("GT5U.infodata.undefined") };
 
     public MTEDebugStructureWriter(int aID, String aName, String aNameRegional, int aTier) {
         super(

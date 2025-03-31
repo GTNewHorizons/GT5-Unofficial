@@ -228,7 +228,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
         ArrayList<String> str = new ArrayList<>();
         str.add(
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.progress",
+                "GT5U.infodata.progress",
                 GREEN + formatNumbers(mProgresstime / 20) + RESET,
                 YELLOW + formatNumbers(mMaxProgresstime / 20) + RESET));
         str.add(
@@ -241,7 +241,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
                 RESET + formatNumbers(getActualParallel())));
         str.add(
             YELLOW + StatCollector.translateToLocalFormatted(
-                "GT5U.info.parallel.current",
+                "GT5U.infodata.parallel.current",
                 RESET + (getBaseMetaTileEntity().isActive() ? formatNumbers(currentParallel) : "0")));
         str.add(
             YELLOW + StatCollector.translateToLocalFormatted(

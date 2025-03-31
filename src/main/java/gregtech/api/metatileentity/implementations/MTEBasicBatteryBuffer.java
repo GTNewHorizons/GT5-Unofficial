@@ -299,14 +299,14 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
 
         return new String[] { EnumChatFormatting.BLUE + getLocalName() + EnumChatFormatting.RESET,
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.battery_buffer.stored_items",
+                "GT5U.infodata.battery_buffer.stored_items",
                 EnumChatFormatting.GREEN + GTUtility.formatNumbers(mStored) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mMax) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.battery_buffer.average_input",
+                "GT5U.infodata.battery_buffer.average_input",
                 GTUtility.formatNumbers(getBaseMetaTileEntity().getAverageElectricInput())),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.battery_buffer.average_output",
+                "GT5U.infodata.battery_buffer.average_output",
                 GTUtility.formatNumbers(getBaseMetaTileEntity().getAverageElectricOutput())) };
     }
 

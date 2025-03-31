@@ -139,22 +139,22 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
 
         tInfoDisplay.add(
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.world_accelerator.mode",
+                "GT5U.infodata.world_accelerator.mode",
                 StatCollector.translateToLocal(mUnlocalizedModeStr[mMode])));
         tInfoDisplay.add(
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.world_accelerator.speed",
+                "GT5U.infodata.world_accelerator.speed",
                 mAccelerateStatic[getSpeedTierOverride()],
                 mAccelerateStatic[mTier]));
         tInfoDisplay.add(
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.world_accelerator.consuming",
+                "GT5U.infodata.world_accelerator.consuming",
                 getEnergyDemand(getSpeedTierOverride(), getRadiusTierOverride(), mMode == 1)));
 
         // Don't show radius setting if in TE Mode
         if (mMode == 0) tInfoDisplay.add(
             StatCollector
-                .translateToLocalFormatted("GT5U.info.world_accelerator.radius", getRadiusTierOverride(), mTier));
+                .translateToLocalFormatted("GT5U.infodata.world_accelerator.radius", getRadiusTierOverride(), mTier));
 
         return tInfoDisplay.toArray(new String[0]);
     }

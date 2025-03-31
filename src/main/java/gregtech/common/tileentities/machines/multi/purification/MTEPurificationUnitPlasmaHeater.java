@@ -527,11 +527,11 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
         infoData.add(
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.purification_unit_plasma_heater.temperature",
+                "GT5U.infodata.purification_unit_plasma_heater.temperature",
                 "" + EnumChatFormatting.YELLOW + currentTemperature));
         infoData.add(
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.purification_unit_plasma_heater.heating_cycles",
+                "GT5U.infodata.purification_unit_plasma_heater.heating_cycles",
                 "" + EnumChatFormatting.YELLOW + cyclesCompleted));
         return infoData.toArray(new String[] {});
     }

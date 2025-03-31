@@ -1020,7 +1020,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     private static String getLocalizedHatchName(int index) {
-        String unlocalizedName = "GT5U.info.wormhole_generator.hatch." + HATCH_NAMES[index].toLowerCase();
+        String unlocalizedName = "GT5U.infodata.wormhole_generator.hatch." + HATCH_NAMES[index].toLowerCase();
         if (StatCollector.canTranslate(unlocalizedName)) {
             return StatCollector.translateToLocal(unlocalizedName);
         }
@@ -1033,24 +1033,24 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
         data.add(EnumChatFormatting.STRIKETHROUGH + "-----------------------");
-        data.add(StatCollector.translateToLocal("GT5U.info.wormhole_generator"));
+        data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator"));
 
         if (mStructureBadGlassTier) {
-            data.add(StatCollector.translateToLocal("GT5U.info.wormhole_generator.structure_error"));
-            data.add(StatCollector.translateToLocal("GT5U.info.wormhole_generator.bad_class_tier"));
+            data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.structure_error"));
+            data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.bad_class_tier"));
         }
 
         if (mLink == null) {
-            data.add(StatCollector.translateToLocal("GT5U.info.wormhole_generator.no_link"));
+            data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.no_link"));
         } else {
             if (!mLink.isFormed()) {
-                data.add(StatCollector.translateToLocal("GT5U.info.wormhole_generator.status.no_destination"));
+                data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.status.no_destination"));
             } else {
                 if (mLink.mWormholeEnergy > 0) {
                     if (mLink.isActive()) {
-                        data.add(StatCollector.translateToLocal("GT5U.info.wormhole_generator.status.active"));
+                        data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.status.active"));
                     } else {
-                        data.add(StatCollector.translateToLocal("GT5U.info.wormhole_generator.status.decaying"));
+                        data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.status.decaying"));
                     }
                 } else {
                     boolean anyTransferable = false;
@@ -1065,20 +1065,20 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     }
 
                     if (anyTransferable) {
-                        data.add(StatCollector.translateToLocal("GT5U.info.wormhole_generator.status.inactive"));
+                        data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.status.inactive"));
                     } else {
-                        data.add(StatCollector.translateToLocal("GT5U.info.wormhole_generator.status.no_energy"));
+                        data.add(StatCollector.translateToLocal("GT5U.infodata.wormhole_generator.status.no_energy"));
                     }
                 }
 
                 double radius = Math.sqrt(mLink.mWormholeEnergy / 20.0 / 32.0);
                 data.add(
                     StatCollector
-                        .translateToLocalFormatted("GT5U.info.wormhole_generator.diameter", (long) (radius * 2)));
+                        .translateToLocalFormatted("GT5U.infodata.wormhole_generator.diameter", (long) (radius * 2)));
 
                 data.add(
                     StatCollector.translateToLocalFormatted(
-                        "GT5U.info.wormhole_generator.optimal_transfer_speed",
+                        "GT5U.infodata.wormhole_generator.optimal_transfer_speed",
                         mLink.mWormholeEnergy / 20));
             }
         }
@@ -1112,7 +1112,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             // spotless:off
             if(inputHatch != null) {
                 data.add(StatCollector.translateToLocalFormatted(
-                    "GT5U.info.wormhole_generator.transferred",
+                    "GT5U.infodata.wormhole_generator.transferred",
                     getLocalizedHatchName(i),
                     inputHatch.Amperes,
                     VN[inputHatch.mTier],
@@ -1123,7 +1123,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 ));
             } else if(outputHatch != null) {
                 data.add(StatCollector.translateToLocalFormatted(
-                    "GT5U.info.wormhole_generator.received",
+                    "GT5U.infodata.wormhole_generator.received",
                     getLocalizedHatchName(i),
                     outputHatch.Amperes,
                     VN[outputHatch.mTier],
@@ -1133,7 +1133,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     SCAN_AVG_WINDOW
                 ));
             } else {
-                data.add(StatCollector.translateToLocalFormatted("GT5U.info.wormhole_generator.not_present", getLocalizedHatchName(i)));
+                data.add(StatCollector.translateToLocalFormatted("GT5U.infodata.wormhole_generator.not_present", getLocalizedHatchName(i)));
             }
             // spotless:on
         }

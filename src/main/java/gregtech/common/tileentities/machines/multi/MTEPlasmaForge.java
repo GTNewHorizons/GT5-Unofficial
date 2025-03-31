@@ -956,7 +956,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             EnumChatFormatting.STRIKETHROUGH + "------------"
                 + EnumChatFormatting.RESET
                 + " "
-                + StatCollector.translateToLocal("GT5U.info.critical_info")
+                + StatCollector.translateToLocal("GT5U.infodata.critical_info")
                 + " "
                 + EnumChatFormatting.STRIKETHROUGH
                 + "------------",
@@ -1003,18 +1003,18 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 + EnumChatFormatting.RESET
                 + " K",
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.plasma_forge.ticks_run_fuel_discount",
+                "GT5U.infodata.plasma_forge.ticks_run_fuel_discount",
                 EnumChatFormatting.GREEN + GTUtility.formatNumbers(running_time) + EnumChatFormatting.RESET,
                 EnumChatFormatting.RED + GTUtility.formatNumbers(100 * (1 - discount))
                     + EnumChatFormatting.RESET
                     + "%"),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.plasma_forge.convergence",
+                "GT5U.infodata.plasma_forge.convergence",
                 (convergence
                     ? EnumChatFormatting.GREEN
-                        + StatCollector.translateToLocal("GT5U.info.plasma_forge.convergence.active")
+                        + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.active")
                     : EnumChatFormatting.RED
-                        + StatCollector.translateToLocal("GT5U.info.plasma_forge.convergence.inactive"))),
+                        + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.inactive"))),
             EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
     }
 

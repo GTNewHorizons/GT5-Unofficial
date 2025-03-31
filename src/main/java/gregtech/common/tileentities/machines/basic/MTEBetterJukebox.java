@@ -456,21 +456,21 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
     public String[] getInfoData() {
         return new String[] {
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.juke_box.uuid",
-                (jukeboxUuid == UNSET_UUID) ? StatCollector.translateToLocal("GT5U.info.juke_box.uuid.unset")
+                "GT5U.infodata.juke_box.uuid",
+                (jukeboxUuid == UNSET_UUID) ? StatCollector.translateToLocal("GT5U.infodata.juke_box.uuid.unset")
                     : jukeboxUuid),
-            StatCollector.translateToLocalFormatted("GT5U.info.juke_box.loop_mode", loopMode),
-            StatCollector.translateToLocalFormatted("GT5U.info.juke_box.shuffle_mode", shuffleMode),
-            StatCollector.translateToLocalFormatted("GT5U.info.juke_box.played", discProgressMs),
-            StatCollector.translateToLocalFormatted("GT5U.info.juke_box.current", discDurationMs),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.loop_mode", loopMode),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.shuffle_mode", shuffleMode),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.played", discProgressMs),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.current", discDurationMs),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.juke_box.playback_range",
+                "GT5U.infodata.juke_box.playback_range",
                 BalanceMath.volumeToAttenuationDistance(playbackVolume)),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.juke_box.p2p_range",
+                "GT5U.infodata.juke_box.p2p_range",
                 BalanceMath.volumeToAttenuationDistance(playbackVolume)),
-            StatCollector.translateToLocalFormatted("GT5U.info.juke_box.raw_playback_strength", playbackVolume),
-            StatCollector.translateToLocalFormatted("GT5U.info.juke_box.raw_p2p_strength", p2pVolume) };
+            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.raw_playback_strength", playbackVolume),
+            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.raw_p2p_strength", p2pVolume) };
     }
 
     @Override

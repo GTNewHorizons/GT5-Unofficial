@@ -428,12 +428,12 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     @Override
     public String[] getInfoData() {
         return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.info.hatch.output")
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.hatch.output")
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.hatch.output.fluid",
+                "GT5U.infodata.hatch.output.fluid",
                 EnumChatFormatting.GOLD
-                    + (mFluid == null ? StatCollector.translateToLocal("GT5U.info.hatch.output.fluid.none")
+                    + (mFluid == null ? StatCollector.translateToLocal("GT5U.infodata.hatch.output.fluid.none")
                         : mFluid.getLocalizedName())
                     + EnumChatFormatting.RESET),
             EnumChatFormatting.GREEN + GTUtility.formatNumbers(mFluid == null ? 0 : mFluid.amount)
@@ -445,9 +445,9 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                 + " L"
                 + EnumChatFormatting.RESET,
             (!isFluidLocked() || lockedFluidName == null)
-                ? StatCollector.translateToLocal("GT5U.info.hatch.output.fluid.locked_to.none")
+                ? StatCollector.translateToLocal("GT5U.infodata.hatch.output.fluid.locked_to.none")
                 : (StatCollector.translateToLocalFormatted(
-                    "GT5U.info.hatch.output.fluid.locked_to",
+                    "GT5U.infodata.hatch.output.fluid.locked_to",
                     StatCollector.translateToLocal(
                         FluidRegistry.getFluidStack(lockedFluidName, 1)
                             .getUnlocalizedName()))) };

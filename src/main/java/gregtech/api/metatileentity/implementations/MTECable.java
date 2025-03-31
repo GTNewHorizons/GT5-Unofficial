@@ -556,7 +556,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         path.reloadLocks();
 
         if (path == null)
-            return new String[] { EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.info.cable.failed")
+            return new String[] { EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.infodata.cable.failed")
                 + EnumChatFormatting.RESET };
 
         final long currAmp = path.getAmperage();
@@ -569,18 +569,18 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
         return new String[] {
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.cable.amperage",
+                "GT5U.infodata.cable.amperage",
                 EnumChatFormatting.GREEN + GTUtility.formatNumbers(currAmp) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mAmperage) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.cable.voltage_out",
+                "GT5U.infodata.cable.voltage_out",
                 EnumChatFormatting.GREEN + GTUtility.formatNumbers(currVoltage) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + GTUtility.formatNumbers(maxVoltageOut) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.cable.avg_amperage",
+                "GT5U.infodata.cable.avg_amperage",
                 EnumChatFormatting.YELLOW + GTUtility.formatNumbers(avgAmp) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.cable.avg_output",
+                "GT5U.infodata.cable.avg_output",
                 EnumChatFormatting.YELLOW + GTUtility.formatNumbers(avgVoltage) + EnumChatFormatting.RESET) };
     }
 

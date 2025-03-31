@@ -864,17 +864,17 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     public String[] getInfoData() {
         return new String[] {
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.progress",
+                "GT5U.infodata.progress",
                 EnumChatFormatting.GREEN + GTUtility.formatNumbers((mProgresstime / 20)) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.energy",
+                "GT5U.infodata.energy",
                 EnumChatFormatting.GREEN + GTUtility.formatNumbers(getBaseMetaTileEntity().getStoredEU())
                     + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + GTUtility.formatNumbers(getBaseMetaTileEntity().getEUCapacity())
                     + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.currently_uses",
+                "GT5U.infodata.currently_uses",
                 EnumChatFormatting.RED + GTUtility.formatNumbers(mEUt) + EnumChatFormatting.RESET,
                 EnumChatFormatting.RED + GTUtility.formatNumbers(mEUt == 0 ? 0 : mAmperage)
                     + EnumChatFormatting.RESET) };

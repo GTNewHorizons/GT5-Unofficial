@@ -461,7 +461,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
         infoData.add(
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.purification_unit_flocculation.consumed",
+                "GT5U.infodata.purification_unit_flocculation.consumed",
                 INPUT_CHEMICAL.mLocalizedName,
                 "" + EnumChatFormatting.RED + inputFluidConsumed));
         return infoData.toArray(new String[] {});

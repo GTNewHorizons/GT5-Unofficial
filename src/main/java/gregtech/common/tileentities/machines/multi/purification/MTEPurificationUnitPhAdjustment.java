@@ -569,7 +569,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
         infoData.add(
             StatCollector.translateToLocalFormatted(
-                "GT5U.info.purification_unit_ph_adjustment.ph",
+                "GT5U.infodata.purification_unit_ph_adjustment.ph",
                 "" + EnumChatFormatting.YELLOW + currentpHValue));
         return infoData.toArray(new String[] {});
     }

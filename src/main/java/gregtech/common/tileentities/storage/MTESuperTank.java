@@ -28,10 +28,10 @@ public class MTESuperTank extends MTEDigitalTankBase {
 
         if (mFluid == null) {
             return new String[] {
-                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.info.super_tank.name")
+                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.super_tank.name")
                     + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.info.digital_tank.stored_fluid"),
-                EnumChatFormatting.GOLD + StatCollector.translateToLocal("GT5U.info.digital_tank.stored_fluid.empty")
+                StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
+                EnumChatFormatting.GOLD + StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid.empty")
                     + EnumChatFormatting.RESET,
                 EnumChatFormatting.GREEN + "0 L"
                     + EnumChatFormatting.RESET
@@ -42,9 +42,9 @@ public class MTESuperTank extends MTEDigitalTankBase {
                     + EnumChatFormatting.RESET };
         }
         return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.info.super_tank.name")
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.super_tank.name")
                 + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.info.digital_tank.stored_fluid"),
+            StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
             EnumChatFormatting.GOLD + mFluid.getLocalizedName() + EnumChatFormatting.RESET,
             EnumChatFormatting.GREEN + GTUtility.formatNumbers(mFluid.amount)
                 + " L"
