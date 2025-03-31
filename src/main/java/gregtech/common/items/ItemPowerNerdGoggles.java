@@ -78,9 +78,6 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble, INet
 
     @Override
     public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
-        if (player instanceof EntityPlayerMP mPlayer) {
-
-        }
     }
 
     @Override
