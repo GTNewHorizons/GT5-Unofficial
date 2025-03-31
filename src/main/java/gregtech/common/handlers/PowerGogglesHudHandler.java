@@ -90,6 +90,7 @@ public class PowerGogglesHudHandler {
 
     @SideOnly(Side.CLIENT)
     public static void clientTick() {
+        if (Minecraft.getMinecraft().isGamePaused()) return;
         if (ticks % ticksBetweenMeasurements == 0) {
             measurement = WirelessNetworkManager.getUserEU(mc.thePlayer.getUniqueID());
             lastChange = measurementCount == 0 ? BigInteger.valueOf(0) : measurement.subtract(currentEU);
@@ -112,7 +113,7 @@ public class PowerGogglesHudHandler {
             hudList = new ArrayList<>();
             ++measurementCount;
             hudList
-                .add(new Text(EnumChatFormatting.WHITE + "Storage: " + changeColor + toEngineering(currentEU) + " EU"));
+                .add(new Text(EnumChatFormatting.WHITE + "Storage: " + change5mColor + toEngineering(currentEU) + " EU"));
             hudList.add(
                 new Text(
                     EnumChatFormatting.WHITE + "5s: "
