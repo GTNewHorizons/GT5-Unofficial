@@ -30,14 +30,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class PowerGogglesHudHandler {
-
+    public static boolean updateClient = false;
     private final static int TICKS = 1;
-    private final static int SECONDS = 20;
+    private final static int SECONDS = 20*TICKS;
     private final static int MINUTES = 60 * SECONDS;
     static List<Text> hudList = new ArrayList<>();
     static LinkedList<BigInteger> measurements = new LinkedList<>();
     static Minecraft mc = Minecraft.getMinecraft();
-    static int ticks = 0;
     public static final int ticksBetweenMeasurements = 100;
     static final int measurementCount5m = 5 * MINUTES / ticksBetweenMeasurements;
     static final int measurementCount1h = 60 * MINUTES / ticksBetweenMeasurements;
@@ -95,6 +94,7 @@ public class PowerGogglesHudHandler {
 
     @SideOnly(Side.CLIENT)
     public static void drawTick() {
+        updateClient = false;
         if (Minecraft.getMinecraft()
             .isGamePaused()) return;
         int lastChangeDiff = lastChange.compareTo(BigInteger.valueOf(0));
@@ -178,5 +178,10 @@ public class PowerGogglesHudHandler {
         if (compareResult == 0) return EnumChatFormatting.WHITE;
         if (compareResult < 0) return EnumChatFormatting.RED;
         return EnumChatFormatting.GREEN;
+    }
+    public static void clear(){
+        measurements.clear();
+        lastChange = BigInteger.valueOf(0);
+        measurementCount = 0;
     }
 }

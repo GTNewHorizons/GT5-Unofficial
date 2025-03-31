@@ -52,6 +52,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
+import gregtech.common.handlers.PowerGogglesEventHandler;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -1083,6 +1084,10 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         FMLCommonHandler.instance()
             .bus()
             .register(new GTWorldgenerator.OregenPatternSavedData(""));
+        FMLCommonHandler.instance()
+            .bus()
+            .register(new PowerGogglesEventHandler());
+        MinecraftForge.EVENT_BUS.register(new PowerGogglesEventHandler());
 
         // IC2 Hazmat
         addFullHazmatToIC2Item("hazmatHelmet");
