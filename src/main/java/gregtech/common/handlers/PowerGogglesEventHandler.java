@@ -2,6 +2,9 @@ package gregtech.common.handlers;
 
 import static gregtech.api.enums.GTValues.NW;
 
+import appeng.api.util.DimensionalCoord;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 
@@ -11,12 +14,15 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.api.net.GTPacketUpdatePowerGoggles;
 import gregtech.common.misc.WirelessNetworkManager;
+import net.minecraft.tileentity.TileEntity;
+
+import java.math.BigInteger;
 
 public class PowerGogglesEventHandler {
 
     private static int ticks = 0;
     public static Minecraft mc;
-
+    public static DimensionalCoord lscLink = null;
     @SubscribeEvent
     public void playerTickStart(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.START) return;
@@ -26,9 +32,18 @@ public class PowerGogglesEventHandler {
         } else {
             if ((ticks % PowerGogglesHudHandler.ticksBetweenMeasurements) == 0) {
                 EntityPlayerMP player = (EntityPlayerMP) event.player;
-                NW.sendToPlayer(
-                    new GTPacketUpdatePowerGoggles(WirelessNetworkManager.getUserEU((player).getUniqueID())),
-                    player);
+                if(lscLink != null) {
+                    TileEntity tileEntity = player.worldObj.getTileEntity(lscLink.x, lscLink.y, lscLink.z);
+                    MTELapotronicSuperCapacitor lsc = (MTELapotronicSuperCapacitor) ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
+                    NW.sendToPlayer(
+                        new GTPacketUpdatePowerGoggles(BigInteger.valueOf(lsc.getEUVar())),
+                        player);
+                } else {
+                    NW.sendToPlayer(
+                        new GTPacketUpdatePowerGoggles(WirelessNetworkManager.getUserEU((player).getUniqueID())),
+                        player);
+                }
+
             }
             ticks++;
         }

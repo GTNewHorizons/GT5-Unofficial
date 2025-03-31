@@ -1,12 +1,17 @@
 package gregtech.common.items;
 
+import appeng.api.util.DimensionalCoord;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.common.handlers.PowerGogglesEventHandler;
+import gregtech.common.handlers.PowerGogglesHudHandler;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 
 import baubles.api.BaubleType;
@@ -29,7 +34,12 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble {
                                   int ordinalSide, float hitX, float hitY, float hitZ) {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         if(tileEntity instanceof IGregTechTileEntity bla){
-            if (bla.getMetaTileEntity() instanceof MTELapotronicSuperCapacitor blabla){
+            if (bla.getMetaTileEntity() instanceof MTELapotronicSuperCapacitor lsc){
+                if(player instanceof EntityClientPlayerMP mPlayer){
+                    PowerGogglesEventHandler.lscLink = new DimensionalCoord(tileEntity);
+                } else{
+
+                }
                 player.addChatMessage(new ChatComponentText("\"Linking\" the LSC..."));
             } else{
                 player.addChatMessage(new ChatComponentText("Dude... That's not an LSC. Are you dumb?"));
