@@ -21,8 +21,7 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble {
     }
 
     @Override
-    public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
-    }
+    public void onWornTick(ItemStack itemstack, EntityLivingBase player) {}
 
     @Override
     public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
