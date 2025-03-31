@@ -2,9 +2,6 @@ package gtPlusPlus.core.proxy;
 
 import java.util.ArrayList;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import gregtech.common.handlers.PowerGogglesEventHandler;
-import gregtech.common.handlers.PowerGogglesHudHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderFireball;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,12 +15,15 @@ import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import gregtech.common.handlers.PowerGogglesEventHandler;
+import gregtech.common.handlers.PowerGogglesHudHandler;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.client.renderer.CustomItemBlockRenderer;
@@ -62,7 +62,9 @@ public class ClientProxy extends CommonProxy {
         new MachineBlockRenderer();
         new FlaskRenderer();
         MinecraftForge.EVENT_BUS.register(new NEIGTPPConfig());
-        FMLCommonHandler.instance().bus().register(new PowerGogglesEventHandler());
+        FMLCommonHandler.instance()
+            .bus()
+            .register(new PowerGogglesEventHandler());
         MinecraftForge.EVENT_BUS.register(new PowerGogglesHudHandler());
         MinecraftForge.EVENT_BUS.register(new PowerGogglesEventHandler());
         super.init(e);
