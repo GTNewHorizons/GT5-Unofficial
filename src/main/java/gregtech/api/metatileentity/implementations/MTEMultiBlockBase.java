@@ -20,21 +20,14 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
-import java.util.function.LongConsumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import codechicken.nei.NEIClientUtils;
-import com.gtnewhorizons.modularui.common.widget.ChangeableWidget;
-import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
@@ -71,6 +64,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.ChangeableWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
@@ -79,6 +73,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
+import codechicken.nei.NEIClientUtils;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -2855,17 +2850,28 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
             final List<Map.Entry<String, Long>> sortedMap = nameToAmount.entrySet()
                 .stream()
-                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .sorted(
+                    Map.Entry.<String, Long>comparingByValue()
+                        .reversed())
                 .collect(Collectors.toList());
 
             for (Map.Entry<String, Long> entry : sortedMap) {
                 Long itemCount = entry.getValue();
                 String itemName = entry.getKey();
-                String itemAmountString = EnumChatFormatting.WHITE + " x " + EnumChatFormatting.GOLD + formatShortenedLong(itemCount) + EnumChatFormatting.WHITE + appendRate(false, itemCount, true);
-                String lineText = EnumChatFormatting.AQUA + NEIClientUtils.cropText(fontRenderer, itemName, 173 - fontRenderer.getStringWidth(itemAmountString)) + itemAmountString;
+                String itemAmountString = EnumChatFormatting.WHITE + " x "
+                    + EnumChatFormatting.GOLD
+                    + formatShortenedLong(itemCount)
+                    + EnumChatFormatting.WHITE
+                    + appendRate(false, itemCount, true);
+                String lineText = EnumChatFormatting.AQUA
+                    + NEIClientUtils
+                        .cropText(fontRenderer, itemName, 173 - fontRenderer.getStringWidth(itemAmountString))
+                    + itemAmountString;
                 String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
 
-                processingDetails.widget(new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft).addTooltip(lineTooltip));
+                processingDetails.widget(
+                    new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
+                        .addTooltip(lineTooltip));
             }
         }
         if (mOutputFluids != null) {
@@ -2878,17 +2884,29 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
             final List<Map.Entry<String, Long>> sortedMap = nameToAmount.entrySet()
                 .stream()
-                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .sorted(
+                    Map.Entry.<String, Long>comparingByValue()
+                        .reversed())
                 .collect(Collectors.toList());
 
             for (Map.Entry<String, Long> entry : sortedMap) {
                 Long itemCount = entry.getValue();
                 String itemName = entry.getKey();
-                String itemAmountString = EnumChatFormatting.WHITE + " x " + EnumChatFormatting.GOLD + formatShortenedLong(itemCount) + "L" + EnumChatFormatting.WHITE + appendRate(false, itemCount, true);
-                String lineText = EnumChatFormatting.AQUA + NEIClientUtils.cropText(fontRenderer, itemName, 173 - fontRenderer.getStringWidth(itemAmountString)) + itemAmountString;
+                String itemAmountString = EnumChatFormatting.WHITE + " x "
+                    + EnumChatFormatting.GOLD
+                    + formatShortenedLong(itemCount)
+                    + "L"
+                    + EnumChatFormatting.WHITE
+                    + appendRate(false, itemCount, true);
+                String lineText = EnumChatFormatting.AQUA
+                    + NEIClientUtils
+                        .cropText(fontRenderer, itemName, 173 - fontRenderer.getStringWidth(itemAmountString))
+                    + itemAmountString;
                 String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(true, itemCount, false);
 
-                processingDetails.widget(new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft).addTooltip(lineTooltip));
+                processingDetails.widget(
+                    new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
+                        .addTooltip(lineTooltip));
             }
         }
         return processingDetails;
@@ -2942,21 +2960,47 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
             if (processPerTick > 1) {
                 ret.append(EnumChatFormatting.RESET);
-                ret.append("Amount: " + EnumChatFormatting.GOLD + formatNumbers(amount) + (isLiquid ? "L" : "") + EnumChatFormatting.RESET);
+                ret.append(
+                    "Amount: " + EnumChatFormatting.GOLD
+                        + formatNumbers(amount)
+                        + (isLiquid ? "L" : "")
+                        + EnumChatFormatting.RESET);
                 ret.append("\n");
-                ret.append("Per second: " + EnumChatFormatting.GOLD + second + (isLiquid ? "L" : "") + EnumChatFormatting.RESET);
+                ret.append(
+                    "Per second: " + EnumChatFormatting.GOLD
+                        + second
+                        + (isLiquid ? "L" : "")
+                        + EnumChatFormatting.RESET);
                 ret.append("\n");
-                ret.append("Per hour: " + EnumChatFormatting.GOLD + hours + (isLiquid ? "L" : "") + EnumChatFormatting.RESET);
+                ret.append(
+                    "Per hour: " + EnumChatFormatting.GOLD + hours + (isLiquid ? "L" : "") + EnumChatFormatting.RESET);
                 ret.append("\n");
-                ret.append("Per day: " + EnumChatFormatting.GOLD + days + (isLiquid ? "L" : "") + EnumChatFormatting.RESET);
+                ret.append(
+                    "Per day: " + EnumChatFormatting.GOLD + days + (isLiquid ? "L" : "") + EnumChatFormatting.RESET);
             } else {
-                ret.append("Amount: " + EnumChatFormatting.GOLD + formatNumbers(amount) + (isLiquid ? "L" : "") + EnumChatFormatting.RESET);
+                ret.append(
+                    "Amount: " + EnumChatFormatting.GOLD
+                        + formatNumbers(amount)
+                        + (isLiquid ? "L" : "")
+                        + EnumChatFormatting.RESET);
                 ret.append("\n");
-                ret.append("Per second ea: " + EnumChatFormatting.GOLD + secondEa + (isLiquid ? "L" : "") + EnumChatFormatting.RESET);
+                ret.append(
+                    "Per second ea: " + EnumChatFormatting.GOLD
+                        + secondEa
+                        + (isLiquid ? "L" : "")
+                        + EnumChatFormatting.RESET);
                 ret.append("\n");
-                ret.append("Per hour ea: " + EnumChatFormatting.GOLD + hoursEa + (isLiquid ? "L" : "") + EnumChatFormatting.RESET);
+                ret.append(
+                    "Per hour ea: " + EnumChatFormatting.GOLD
+                        + hoursEa
+                        + (isLiquid ? "L" : "")
+                        + EnumChatFormatting.RESET);
                 ret.append("\n");
-                ret.append("Per day ea: " + EnumChatFormatting.GOLD + daysEa + (isLiquid ? "L" : "") + EnumChatFormatting.RESET);
+                ret.append(
+                    "Per day ea: " + EnumChatFormatting.GOLD
+                        + daysEa
+                        + (isLiquid ? "L" : "")
+                        + EnumChatFormatting.RESET);
             }
         }
         return ret.toString();
@@ -3138,35 +3182,37 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             .widget(new CheckRecipeResultSyncer(() -> checkRecipeResult, (result) -> checkRecipeResult = result));
 
         if (showRecipeTextInGUI()) {
-            screenElements.widget(TextWidget.dynamicString(this::generateCurrentProgress)
-                .setSynced(false)
-                .setTextAlignment(new Alignment(-1, -1))
-                .setSize(180,12)
-                .setEnabled(
-                    widget -> (mOutputFluids != null && mOutputFluids.length > 0)
-                        || (mOutputItems != null && mOutputItems.length > 0)));
-            final ChangeableWidget recipeOutputItemsWidget = new ChangeableWidget(this::generateCurrentRecipeInfoStringWidget);
+            screenElements.widget(
+                TextWidget.dynamicString(this::generateCurrentProgress)
+                    .setSynced(false)
+                    .setTextAlignment(new Alignment(-1, -1))
+                    .setSize(180, 12)
+                    .setEnabled(
+                        widget -> (mOutputFluids != null && mOutputFluids.length > 0)
+                            || (mOutputItems != null && mOutputItems.length > 0)));
+            final ChangeableWidget recipeOutputItemsWidget = new ChangeableWidget(
+                this::generateCurrentRecipeInfoStringWidget);
             // Display current recipe
             screenElements.widget(
-                    new FakeSyncWidget.ListSyncer<>(
-                        () -> mOutputFluids != null ? Arrays.stream(mOutputFluids)
-                            .map(fluidStack -> {
-                                if (fluidStack == null) return null;
-                                return new FluidStack(fluidStack, fluidStack.amount) {
+                new FakeSyncWidget.ListSyncer<>(
+                    () -> mOutputFluids != null ? Arrays.stream(mOutputFluids)
+                        .map(fluidStack -> {
+                            if (fluidStack == null) return null;
+                            return new FluidStack(fluidStack, fluidStack.amount) {
 
-                                    @Override
-                                    public boolean isFluidEqual(FluidStack other) {
-                                        return super.isFluidEqual(other) && amount == other.amount;
-                                    }
-                                };
-                            })
-                            .collect(Collectors.toList()) : Collections.emptyList(),
-                        val -> {
-                            mOutputFluids = val.toArray(new FluidStack[0]);
-                            recipeOutputItemsWidget.notifyChangeNoSync();
-                        },
-                        NetworkUtils::writeFluidStack,
-                        NetworkUtils::readFluidStack))
+                                @Override
+                                public boolean isFluidEqual(FluidStack other) {
+                                    return super.isFluidEqual(other) && amount == other.amount;
+                                }
+                            };
+                        })
+                        .collect(Collectors.toList()) : Collections.emptyList(),
+                    val -> {
+                        mOutputFluids = val.toArray(new FluidStack[0]);
+                        recipeOutputItemsWidget.notifyChangeNoSync();
+                    },
+                    NetworkUtils::writeFluidStack,
+                    NetworkUtils::readFluidStack))
                 .widget(
                     new FakeSyncWidget.ListSyncer<>(
                         () -> mOutputItems != null ? Arrays.asList(mOutputItems) : Collections.emptyList(),

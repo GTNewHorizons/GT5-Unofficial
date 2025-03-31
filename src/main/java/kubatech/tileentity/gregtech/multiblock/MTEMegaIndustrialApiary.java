@@ -36,7 +36,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.formatNumbers;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 import static kubatech.api.utils.ItemUtils.writeItemStackToNBT;
 
@@ -51,20 +50,15 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import codechicken.nei.NEIClientUtils;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.widget.Widget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -72,7 +66,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.apache.commons.lang3.tuple.Triple;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
@@ -85,11 +78,13 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.builder.UIInfo;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
@@ -104,6 +99,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import bartworks.API.BorosilicateGlass;
+import codechicken.nei.NEIClientUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.apiculture.EnumBeeType;
@@ -907,23 +903,17 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
         if (mOutputItems == null && GUIDropProgress == null) return processingDetails;
 
-        LinkedHashMap<ItemStack, Double> sortedMap = GUIDropProgress.entrySet().stream()
-            .sorted(Comparator.comparingInt(
-                (Map.Entry<ItemStack, Double> entry) ->
-                {
-                    assert mOutputItems != null;
-                    return Arrays.stream(mOutputItems)
-                        .filter(s -> s.isItemEqual(entry.getKey()))
-                        .mapToInt(i -> i.stackSize)
-                        .sum();
-                }
-            ).reversed())
-            .collect(Collectors.toMap(
-                Map.Entry::getKey,
-                Map.Entry::getValue,
-                (e1, e2) -> e1,
-                LinkedHashMap::new
-            ));
+        LinkedHashMap<ItemStack, Double> sortedMap = GUIDropProgress.entrySet()
+            .stream()
+            .sorted(Comparator.comparingInt((Map.Entry<ItemStack, Double> entry) -> {
+                assert mOutputItems != null;
+                return Arrays.stream(mOutputItems)
+                    .filter(s -> s.isItemEqual(entry.getKey()))
+                    .mapToInt(i -> i.stackSize)
+                    .sum();
+            })
+                .reversed())
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
         for (Map.Entry<ItemStack, Double> drop : sortedMap.entrySet()) {
             assert mOutputItems != null;
@@ -933,12 +923,22 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 .sum();
             if (outputSize != 0) {
                 Long itemCount = (long) outputSize;
-                String itemName = drop.getKey().getDisplayName();
-                String itemAmountString = EnumChatFormatting.WHITE + " x " + EnumChatFormatting.GOLD + formatShortenedLong(itemCount) + EnumChatFormatting.WHITE + appendRate(false, itemCount, true);
-                String lineText = EnumChatFormatting.AQUA + NEIClientUtils.cropText(fontRenderer, itemName, 173 - fontRenderer.getStringWidth(itemAmountString)) + itemAmountString;
+                String itemName = drop.getKey()
+                    .getDisplayName();
+                String itemAmountString = EnumChatFormatting.WHITE + " x "
+                    + EnumChatFormatting.GOLD
+                    + formatShortenedLong(itemCount)
+                    + EnumChatFormatting.WHITE
+                    + appendRate(false, itemCount, true);
+                String lineText = EnumChatFormatting.AQUA
+                    + NEIClientUtils
+                        .cropText(fontRenderer, itemName, 173 - fontRenderer.getStringWidth(itemAmountString))
+                    + itemAmountString;
                 String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
 
-                processingDetails.widget(new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft).addTooltip(lineTooltip));
+                processingDetails.widget(
+                    new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
+                        .addTooltip(lineTooltip));
             }
         }
         return processingDetails;

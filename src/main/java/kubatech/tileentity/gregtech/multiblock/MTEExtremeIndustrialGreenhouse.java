@@ -48,9 +48,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import codechicken.nei.NEIClientUtils;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.widget.Widget;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -76,11 +73,13 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.builder.UIInfo;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
@@ -95,6 +94,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import bartworks.API.BorosilicateGlass;
+import codechicken.nei.NEIClientUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -1142,23 +1142,17 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
         if (mOutputItems == null && synchedGUIDropTracker == null) return processingDetails;
 
-        LinkedHashMap<ItemStack, Double> sortedMap = synchedGUIDropTracker.entrySet().stream()
-            .sorted(Comparator.comparingInt(
-                (Map.Entry<ItemStack, Double> entry) ->
-                {
-                    assert mOutputItems != null;
-                    return Arrays.stream(mOutputItems)
-                        .filter(s -> s.isItemEqual(entry.getKey()))
-                        .mapToInt(i -> i.stackSize)
-                        .sum();
-                }
-            ).reversed())
-            .collect(Collectors.toMap(
-                Map.Entry::getKey,
-                Map.Entry::getValue,
-                (e1, e2) -> e1,
-                LinkedHashMap::new
-            ));
+        LinkedHashMap<ItemStack, Double> sortedMap = synchedGUIDropTracker.entrySet()
+            .stream()
+            .sorted(Comparator.comparingInt((Map.Entry<ItemStack, Double> entry) -> {
+                assert mOutputItems != null;
+                return Arrays.stream(mOutputItems)
+                    .filter(s -> s.isItemEqual(entry.getKey()))
+                    .mapToInt(i -> i.stackSize)
+                    .sum();
+            })
+                .reversed())
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
         for (Map.Entry<ItemStack, Double> drop : sortedMap.entrySet()) {
             assert mOutputItems != null;
@@ -1168,12 +1162,22 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                 .sum();
             if (outputSize != 0) {
                 Long itemCount = (long) outputSize;
-                String itemName = drop.getKey().getDisplayName();
-                String itemAmountString = EnumChatFormatting.WHITE + " x " + EnumChatFormatting.GOLD + formatShortenedLong(itemCount) + EnumChatFormatting.WHITE + appendRate(false, itemCount, true);
-                String lineText = EnumChatFormatting.AQUA + NEIClientUtils.cropText(fontRenderer, itemName, 173 - fontRenderer.getStringWidth(itemAmountString)) + itemAmountString;
+                String itemName = drop.getKey()
+                    .getDisplayName();
+                String itemAmountString = EnumChatFormatting.WHITE + " x "
+                    + EnumChatFormatting.GOLD
+                    + formatShortenedLong(itemCount)
+                    + EnumChatFormatting.WHITE
+                    + appendRate(false, itemCount, true);
+                String lineText = EnumChatFormatting.AQUA
+                    + NEIClientUtils
+                        .cropText(fontRenderer, itemName, 173 - fontRenderer.getStringWidth(itemAmountString))
+                    + itemAmountString;
                 String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
 
-                processingDetails.widget(new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft).addTooltip(lineTooltip));
+                processingDetails.widget(
+                    new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
+                        .addTooltip(lineTooltip));
             }
         }
         return processingDetails;
