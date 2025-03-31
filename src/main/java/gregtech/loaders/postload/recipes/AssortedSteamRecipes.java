@@ -1,6 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GTValues.RA;
+import static gregtech.api.enums.Mods.StorageDrawers;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.lavaMakerRecipes;
@@ -18,9 +19,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.recipe.metadata.SteamFusionTierKey;
 import gregtech.api.util.GTModHandler;
@@ -355,6 +358,27 @@ public class AssortedSteamRecipes implements Runnable {
             .duration(23 * SECONDS)
             .eut(512)
             .addTo(steamManufacturerRecipes);
+
+        RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Wood, 3),
+                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Iron, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1),
+                new ItemStack(Blocks.cobblestone, 4))
+            .itemOutputs(new ItemStack(Blocks.piston, 1))
+            .duration(3 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+
+        if (StorageDrawers.isModLoaded()) {
+            // Drawer template
+            GTValues.RA.stdBuilder()
+                .itemInputs(new ItemStack(Blocks.piston, 1), GTOreDictUnificator.get("drawerBasic", 1))
+                .itemOutputs(GTModHandler.getModItem(StorageDrawers.ID, "upgradeTemplate", 3, 0))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(steamManufacturerRecipes);
+        }
 
         // Spotless:off
 

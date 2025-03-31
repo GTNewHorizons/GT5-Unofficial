@@ -1,9 +1,11 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GTValues.RA;
+import static gregtech.api.enums.OrePrefixes.block;
 import static gregtech.api.enums.OrePrefixes.bolt;
 import static gregtech.api.enums.OrePrefixes.gearGt;
 import static gregtech.api.enums.OrePrefixes.gearGtSmall;
+import static gregtech.api.enums.OrePrefixes.gem;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.itemCasing;
 import static gregtech.api.enums.OrePrefixes.pipeHuge;
@@ -11,6 +13,7 @@ import static gregtech.api.enums.OrePrefixes.pipeLarge;
 import static gregtech.api.enums.OrePrefixes.pipeMedium;
 import static gregtech.api.enums.OrePrefixes.pipeSmall;
 import static gregtech.api.enums.OrePrefixes.pipeTiny;
+import static gregtech.api.enums.OrePrefixes.plate;
 import static gregtech.api.enums.OrePrefixes.ring;
 import static gregtech.api.enums.OrePrefixes.rotor;
 import static gregtech.api.enums.OrePrefixes.stick;
@@ -32,6 +35,10 @@ public class SteamConformerRecipes implements Runnable {
         Materials[] Tier1Materials = { Materials.Bronze, Materials.Iron, Materials.Copper, Materials.Tin,
             Materials.Brass, Materials.Steel, Materials.WroughtIron, Materials.Breel, Materials.Stronze,
             Materials.CompressedSteam, Materials.CrudeSteel, Materials.Rubber, Materials.Beryllium };
+
+        Materials[] gems = { Materials.Diamond, Materials.Ruby, Materials.Emerald };
+
+        Materials[] Obsidian = { Materials.Obsidian };
 
         for (Materials aMaterial : Tier1Materials) {
 
@@ -164,6 +171,46 @@ public class SteamConformerRecipes implements Runnable {
                 RA.stdBuilder()
                     .itemInputs(GTOreDictUnificator.get(ingot, aMaterial, 1), ItemList.Shape_Extruder_Bolt.get(0))
                     .itemOutputs(GTOreDictUnificator.get(bolt, aMaterial, 6))
+                    .duration(4 * SECONDS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(steamConformerRecipes);
+            }
+        }
+
+        for (Materials aMaterial : gems) {
+            if (GTOreDictUnificator.get(stick, aMaterial, 1) != null) {
+                RA.stdBuilder()
+                    .itemInputs(GTOreDictUnificator.get(gem, aMaterial, 2), ItemList.Shape_Extruder_Rod.get(0))
+                    .itemOutputs(GTOreDictUnificator.get(stick, aMaterial, 3))
+                    .duration(4 * SECONDS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(steamConformerRecipes);
+            }
+
+            if (GTOreDictUnificator.get(plate, aMaterial, 1) != null) {
+                RA.stdBuilder()
+                    .itemInputs(GTOreDictUnificator.get(gem, aMaterial, 2), ItemList.Shape_Extruder_Plate.get(0))
+                    .itemOutputs(GTOreDictUnificator.get(plate, aMaterial, 3))
+                    .duration(4 * SECONDS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(steamConformerRecipes);
+            }
+        }
+
+        for (Materials aMaterial : Obsidian) {
+            if (GTOreDictUnificator.get(stick, aMaterial, 1) != null) {
+                RA.stdBuilder()
+                    .itemInputs(GTOreDictUnificator.get(block, aMaterial, 1), ItemList.Shape_Extruder_Rod.get(0))
+                    .itemOutputs(GTOreDictUnificator.get(stick, aMaterial, 3))
+                    .duration(4 * SECONDS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(steamConformerRecipes);
+            }
+
+            if (GTOreDictUnificator.get(plate, aMaterial, 1) != null) {
+                RA.stdBuilder()
+                    .itemInputs(GTOreDictUnificator.get(block, aMaterial, 1), ItemList.Shape_Extruder_Plate.get(0))
+                    .itemOutputs(GTOreDictUnificator.get(plate, aMaterial, 3))
                     .duration(4 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(steamConformerRecipes);
