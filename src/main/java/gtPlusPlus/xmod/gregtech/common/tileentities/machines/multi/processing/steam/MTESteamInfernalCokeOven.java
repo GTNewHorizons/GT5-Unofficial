@@ -12,7 +12,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.List;
 
-import gregtech.common.blocks.BlockCasings1;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -46,7 +45,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.blocks.BlockCasings1;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEBetterSteamMultiBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;

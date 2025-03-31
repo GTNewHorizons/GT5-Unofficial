@@ -229,6 +229,7 @@ import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
 import static gregtech.common.items.IDMetaItem03.Simple_Bronze_Turbine;
 import static gregtech.common.items.IDMetaItem03.Simple_Steel_Turbine;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
+import static gregtech.common.items.IDMetaItem03.Steam_Turbine;
 import static gregtech.common.items.IDMetaItem03.Steamgate_Chevron;
 import static gregtech.common.items.IDMetaItem03.Steamgate_Chevron_Upgrade;
 import static gregtech.common.items.IDMetaItem03.Steamgate_Core_Crystal;
@@ -237,6 +238,7 @@ import static gregtech.common.items.IDMetaItem03.Steamgate_Frame;
 import static gregtech.common.items.IDMetaItem03.Steamgate_Iris_Blade;
 import static gregtech.common.items.IDMetaItem03.Steamgate_Iris_Upgrade;
 import static gregtech.common.items.IDMetaItem03.Steamgate_Plate;
+import static gregtech.common.items.IDMetaItem03.Steel_Turbine;
 import static gregtech.common.items.IDMetaItem03.Thermal_Superconductor;
 import static gregtech.common.items.IDMetaItem03.Timepiece;
 import static gregtech.common.items.IDMetaItem03.Transdimensional_Alignment_Matrix;
@@ -361,6 +363,9 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
         ItemList.Simple_Bronze_Turbine
             .set(addItem(Simple_Bronze_Turbine.ID, "Simple Bronze Turbine", "Spin me round round"));
         ItemList.Simple_Iron_Turbine.set(addItem(Simple_Steel_Turbine.ID, "Simple Iron Turbine", "spin me right now"));
+
+        ItemList.Steel_Turbine.set(addItem(Steel_Turbine.ID, "Steel Turbine", "Stable like a Table"));
+        ItemList.Steam_Turbine.set(addItem(Steam_Turbine.ID, "Compressed Steam Turbine", "Infinite Throughtput"));
 
         /*
          * circuit boards tier 1-7: coated circuit board / wood plate + resin Plastic Circuit Board / Plastic + Copper

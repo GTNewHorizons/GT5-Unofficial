@@ -33,7 +33,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.blocks.BlockCasingsSteam;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEBetterSteamMultiBase;
 
 public class MTESteamManufacturer extends MTEBetterSteamMultiBase<MTESteamManufacturer>
@@ -71,17 +71,17 @@ public class MTESteamManufacturer extends MTEBetterSteamMultiBase<MTESteamManufa
                 'A',
                 ofChain(
                     buildSteamInput(MTESteamManufacturer.class)
-                        .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                        .casingIndex(((BlockCasingsSteam) GregTechAPI.sBlockCasingsSteam).getTextureIndex(12))
                         .dot(1)
                         .build(),
                     buildHatchAdder(MTESteamManufacturer.class)
                         .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
-                        .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                        .casingIndex(((BlockCasingsSteam) GregTechAPI.sBlockCasingsSteam).getTextureIndex(12))
                         .dot(1)
                         .buildAndChain(),
-                    ofBlock(GregTechAPI.sBlockCasings2, 0)))
+                    ofBlock(GregTechAPI.sBlockCasingsSteam, 12)))
             .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 3))
-            .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 13))
+            .addElement('D', ofBlock(GregTechAPI.sBlockCasingsSteam, 7))
             .addElement('C', ofFrame(Materials.Steel))
             .addElement('E', ofBlock(GregTechAPI.sBlockCasingsSteam, 10))
             .build();

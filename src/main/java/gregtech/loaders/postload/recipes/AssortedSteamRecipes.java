@@ -15,6 +15,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
@@ -24,7 +25,6 @@ import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -38,6 +38,13 @@ public class AssortedSteamRecipes implements Runnable {
         RA.stdBuilder()
             .fluidInputs(GTModHandler.getSteam(16000), Materials.Creosote.getFluid(4000))
             .fluidOutputs(FluidUtils.getSuperHeatedSteam(16000))
+            .duration(10 * TICKS)
+            .eut(0)
+            .addTo(steamFusionReactorRecipes);
+
+        RA.stdBuilder()
+            .fluidInputs(FluidUtils.getSuperHeatedSteam(16000), Materials.Lava.getFluid(16000))
+            .fluidOutputs(FluidRegistry.getFluidStack("supercriticalsteam", 16000))
             .duration(10 * TICKS)
             .eut(0)
             .addTo(steamFusionReactorRecipes);
@@ -165,8 +172,7 @@ public class AssortedSteamRecipes implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Hydraulic_Regulator_Steam.get(1),
             new Object[] { "ABC", "BDB", "CBA", 'A', "gearBronze", 'B', "pipeTinyBronze", 'C',
-                MetaGeneratedTool01.INSTANCE.getToolWithStats(170, 1, Materials.Steel, Materials.Steel, null), 'D',
-                ItemList.Hydraulic_Pump_Steam.get(1) });
+                ItemList.Steel_Turbine.get(1), 'D', ItemList.Hydraulic_Pump_Steam.get(1) });
         GTModHandler.addCraftingRecipe(
             ItemList.Hydraulic_Sensor_Steam.get(1),
             new Object[] { "ABC", "ACB", "DAA", 'A', "plateCompressedSteam", 'B', "plateRubber", 'C', "pipeHugeStronze",
@@ -178,8 +184,7 @@ public class AssortedSteamRecipes implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Hydraulic_Vapor_Generator.get(1),
             new Object[] { "ABC", "BDB", "CBA", 'A', "plateSuperdenseCompressedSteam", 'B', "frameGtCompressedSteam",
-                'C', ItemList.Hydraulic_Emitter_Steam.get(1), 'D', MetaGeneratedTool01.INSTANCE
-                    .getToolWithStats(170, 1, Materials.CompressedSteam, Materials.CompressedSteam, null) });
+                'C', ItemList.Hydraulic_Emitter_Steam.get(1), 'D', ItemList.Steam_Turbine.get(1) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Simple_Iron_Turbine.get(1),
@@ -261,7 +266,7 @@ public class AssortedSteamRecipes implements Runnable {
 
         RA.stdBuilder()
             .itemInputs(
-                MetaGeneratedTool01.INSTANCE.getToolWithStats(170, 2, Materials.Steel, Materials.Steel, null),
+                ItemList.Steel_Turbine.get(2),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Bronze, 2),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Bronze, 4),
                 ItemList.Hydraulic_Pump_Steam.get(1))
@@ -294,8 +299,7 @@ public class AssortedSteamRecipes implements Runnable {
 
         RA.stdBuilder()
             .itemInputs(
-                MetaGeneratedTool01.INSTANCE
-                    .getToolWithStats(170, 1, Materials.CompressedSteam, Materials.CompressedSteam, null),
+                ItemList.Steam_Turbine.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.CompressedSteam, 2),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CompressedSteam, 4),
                 ItemList.Hydraulic_Emitter_Steam.get(2))
@@ -328,7 +332,7 @@ public class AssortedSteamRecipes implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.turbineBlade, Materials.Steel, 4),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Stronze, 1))
-            .itemOutputs(MetaGeneratedTool01.INSTANCE.getToolWithStats(170, 2, Materials.Steel, Materials.Steel, null))
+            .itemOutputs(ItemList.Steel_Turbine.get(1))
             .duration(23 * SECONDS)
             .eut(512)
             .addTo(steamManufacturerRecipes);
@@ -337,9 +341,7 @@ public class AssortedSteamRecipes implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.turbineBlade, Materials.CompressedSteam, 4),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Breel, 1))
-            .itemOutputs(
-                MetaGeneratedTool01.INSTANCE
-                    .getToolWithStats(170, 2, Materials.CompressedSteam, Materials.CompressedSteam, null))
+            .itemOutputs(ItemList.Steam_Turbine.get(1))
             .duration(23 * SECONDS)
             .eut(512)
             .addTo(steamManufacturerRecipes);
@@ -519,13 +521,27 @@ public class AssortedSteamRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Stronze, 1), 'C',
                 ItemList.Machine_HP_Solar.get(1) });
 
-        // Solar Cell Casing
+        // Hydraulic Assembling Casing
         GTModHandler.addCraftingRecipe(
             ItemList.Hydraulic_Assembling_Casing.get(1),
             new Object[] { "ABA", "CCC", "ABA", 'A',
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Stronze, 1), 'B',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Breel, 1), 'C',
                 ItemList.Hydraulic_Arm_Steam.get(1) });
+
+        // Hyper Pressure Breel Casing
+        GTModHandler.addCraftingRecipe(
+            ItemList.Hyper_Pressure_Breel_Casing.get(1),
+            new Object[] { "AAA", "BCB", "AAA", 'A', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Breel, 1),
+                'B', GTOreDictUnificator.get(OrePrefixes.stick, Materials.Beryllium, 1), 'C',
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Beryllium, 1) });
+
+        // Breel-Plated Casing
+        GTModHandler.addCraftingRecipe(
+            ItemList.Breel_Casing.get(1),
+            new Object[] { "AAA", "BCB", "AAA", 'A', GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Breel, 1),
+                'B', GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Breel, 1), 'C',
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CrudeSteel, 1) });
 
         // Machine Controllers
         {
@@ -612,7 +628,7 @@ public class AssortedSteamRecipes implements Runnable {
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Controller_CactusWonder.get(1),
                 new Object[] { "ABA", "ACA", "ABA", 'A', new ItemStack(Blocks.cactus, 1), 'B',
-                    ItemList.Casing_BronzePlatedBricks.get(1), 'C', ItemList.Hydraulic_Pump_Steam.get(1) });
+                    ItemList.Casing_BronzePlatedBricks.get(1), 'C', ItemList.Hydraulic_Regulator_Steam.get(1) });
 
             // Lavamaker
             RA.stdBuilder()
@@ -707,8 +723,7 @@ public class AssortedSteamRecipes implements Runnable {
             // Infernal Coke Oven
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Controller_InfernalCokeOven.get(1),
-                new Object[] { "ABA", "DCD", "ABA", 'A',
-                    new ItemStack(Blocks.nether_brick,1), 'C',
+                new Object[] { "ABA", "DCD", "ABA", 'A', new ItemStack(Blocks.nether_brick, 1), 'C',
                     ItemList.Machine_Bricked_BlastFurnace.get(1), 'B',
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Breel, 1), 'D',
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Stronze, 1) });

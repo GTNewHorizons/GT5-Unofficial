@@ -399,6 +399,8 @@ public enum ItemList implements IItemContainer {
     Steamgate_Dialing_Device,
     Simple_Bronze_Turbine,
     Simple_Iron_Turbine,
+    Steel_Turbine,
+    Steam_Turbine,
 
     Electric_Motor_LV,
     Electric_Motor_MV,
@@ -1906,6 +1908,7 @@ public enum ItemList implements IItemContainer {
     Solar_Boiler_Cell,
     Hydraulic_Assembling_Casing,
     Hyper_Pressure_Breel_Casing,
+    Breel_Casing,
 
     Circuit_Board_Coated,
     Circuit_Board_Coated_Basic,

@@ -48,7 +48,7 @@ public class InfernalCokeRecipes implements Runnable {
             .addTo(infernalCockRecipes);
 
         RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.reeds, 1))
+            .itemInputs(GregtechItemList.SugarCharcoal.get(1))
             .itemOutputs(GregtechItemList.SugarCoke.get(1))
             .fluidOutputs(Materials.Creosote.getFluid(60))
             .duration(20 * SECONDS)
