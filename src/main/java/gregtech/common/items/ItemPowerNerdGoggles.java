@@ -17,9 +17,7 @@ import baubles.api.IBauble;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.net.GTPacketLinkGoggles;
-import gregtech.api.net.GTPacketUpdatePowerGoggles;
 import gregtech.common.handlers.PowerGogglesEventHandler;
-import gregtech.common.misc.WirelessNetworkManager;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 
 public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble {
@@ -35,7 +33,7 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble {
         if (tileEntity instanceof IGregTechTileEntity te) {
             if (te.getMetaTileEntity() instanceof MTELapotronicSuperCapacitor lsc) {
                 if (player instanceof EntityClientPlayerMP && !player.isSneaking()) {
-                    NW.sendToServer(new GTPacketLinkGoggles(new DimensionalCoord(tileEntity), lsc.getEUVar()));
+                    NW.sendToServer(new GTPacketLinkGoggles(new DimensionalCoord(tileEntity)));
                     player.addChatMessage(
                         new ChatComponentText(String.format("Goggles linked to LSC at %d,%d,%d", x, y, z)));
                 }
@@ -52,9 +50,8 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble {
                                                                                            // client
         if (player instanceof EntityPlayerMP mPlayer && player.isSneaking()) {
             PowerGogglesEventHandler.lscLink = null;
-            NW.sendToPlayer(
-                new GTPacketUpdatePowerGoggles(WirelessNetworkManager.getUserEU(mPlayer.getUniqueID()), true),
-                mPlayer);
+            PowerGogglesEventHandler.forceUpdate = true;
+            PowerGogglesEventHandler.forceRefresh = true;
             player.addChatMessage(new ChatComponentText("Goggles unlinked."));
         }
         return super.onItemRightClick(stack, world, player);
