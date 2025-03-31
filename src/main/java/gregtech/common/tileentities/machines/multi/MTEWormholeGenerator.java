@@ -1021,7 +1021,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
     private static String getLocalizedHatchName(int index) {
         String unlocalizedName = "GT5U.info.wormhole_generator.hatch." + HATCH_NAMES[index].toLowerCase();
-        if(StatCollector.canTranslate(unlocalizedName)) {
+        if (StatCollector.canTranslate(unlocalizedName)) {
             return StatCollector.translateToLocal(unlocalizedName);
         }
         return HATCH_NAMES[index];
@@ -1072,9 +1072,14 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 }
 
                 double radius = Math.sqrt(mLink.mWormholeEnergy / 20.0 / 32.0);
-                data.add(StatCollector.translateToLocalFormatted("GT5U.info.wormhole_generator.diameter", (long) (radius * 2)));
+                data.add(
+                    StatCollector
+                        .translateToLocalFormatted("GT5U.info.wormhole_generator.diameter", (long) (radius * 2)));
 
-                data.add(StatCollector.translateToLocalFormatted("GT5U.info.wormhole_generator.optimal_transfer_speed", mLink.mWormholeEnergy / 20));
+                data.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.info.wormhole_generator.optimal_transfer_speed",
+                        mLink.mWormholeEnergy / 20));
             }
         }
 

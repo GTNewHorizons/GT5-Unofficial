@@ -2235,6 +2235,43 @@ GT5U.info.wormhole_generator.hatch.right=Right
 GT5U.info.wormhole_generator.hatch.back=Back
 GT5U.info.wormhole_generator.hatch.front=Front
 
+GT5U.info.purification_plant.linked_units=Linked Purification Units:
+GT5U.info.purification_plant.linked_units.status.online=Online
+GT5U.info.purification_plant.linked_units.status.disabled=Disabled
+GT5U.info.purification_plant.linked_units.status.incomplete=Incomplete Structure
+
+GT5U.info.pubp.catalyst_history=Catalyst insertion history for this recipe cycle
+GT5U.info.pubp.quark_combination=Quark Combination correctly identified: %s
+
+GT5U.info.purification_unit_base.linked_at=This Purification Unit is linked to the Water Purification Plant at %d, %d, %d.
+GT5U.info.purification_unit_base.success_chance=Success chance: %s
+GT5U.info.purification_unit_base.not_linked=This Purification Unit is not linked to any Water Purification Plant.
+GT5U.info.purification_unit_base.parallel=Current parallel: %s
+
+GT5U.info.purification_unit_degasser.control_signal=Current control signal (binary): 0b%s
+GT5U.info.purification_unit_degasser.output_multiplier=Current output multiplier: %s
+GT5U.info.purification_unit_degasser.fluid_inserted=Fluid inserted this cycle: %sL %s
+GT5U.info.purification_unit_degasser.bit=Bit %d status: %s
+GT5U.info.purification_unit_degasser.bit.ok=OK
+GT5U.info.purification_unit_degasser.bit.not_ok=NOT OK
+GT5U.info.purification_unit_flocculation.consumed=%s consumed this cycle: %sL
+GT5U.info.purification_unit_ph_adjustment.ph=Current pH Value: %s pH
+GT5U.info.purification_unit_plasma_heater.temperature=Current temperature: %sK
+GT5U.info.purification_unit_plasma_heater.heating_cycles=Heating cycles completed this run: %s
+GT5U.info.purification_unit_uv_treatment.lens_swaps=Lens swaps performed this run:
+GT5U.info.purification_unit_uv_treatment.lens_requested=Current lens requested: %s
+GT5U.info.purification_unit_uv_treatment.removed_too_early=Removed lens too early. Failing this recipe.
+
+GT5U.info.digital_chest.stored_items=Stored Items:
+GT5U.info.digital_chest.stored_items.empty=No Items
+GT5U.info.quantum_chest.name=Quantum Chest
+GT5U.info.super_chest.name=Super Chest
+GT5U.info.digital_tank.stored_fluid=Stored Fluid:
+GT5U.info.digital_tank.stored_fluid.empty=No Fluid
+GT5U.info.quantum_tank.name=Quantum Tank
+GT5U.info.super_tank.name=Super Tank
+
+
 GT5U.word_accelerator.mode.blocks=Blocks
 GT5U.word_accelerator.mode.tile_entities=TileEntities
 

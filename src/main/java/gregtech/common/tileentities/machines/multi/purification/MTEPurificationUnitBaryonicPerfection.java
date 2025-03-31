@@ -24,6 +24,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -571,7 +572,7 @@ public class MTEPurificationUnitBaryonicPerfection
 
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add("Catalyst insertion history for this recipe cycle");
+        info.add(StatCollector.translateToLocal("GT5U.info.pubp.catalyst_history"));
         for (int i = 0; i < insertedCatalysts.size(); ++i) {
             ItemStack stack = insertedCatalysts.get(i);
             String name = stack.getDisplayName();
@@ -586,7 +587,8 @@ public class MTEPurificationUnitBaryonicPerfection
                     + "-"
                     + split[1]);
         }
-        info.add("Quark Combination correctly identified: " + getCorrectlyDecodedString());
+        info.add(
+            StatCollector.translateToLocalFormatted("GT5U.info.pubp.quark_combination", getCorrectlyDecodedString()));
         return info.toArray(new String[] {});
     }
 

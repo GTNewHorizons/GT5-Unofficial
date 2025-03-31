@@ -323,8 +323,10 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     public String[] getInfoData() {
 
         if (getItemStack() == null) {
-            return new String[] { EnumChatFormatting.BLUE + chestName() + EnumChatFormatting.RESET, "Stored Items:",
-                EnumChatFormatting.GOLD + "No Items" + EnumChatFormatting.RESET,
+            return new String[] { EnumChatFormatting.BLUE + localizedChestName() + EnumChatFormatting.RESET,
+                StatCollector.translateToLocal("GT5U.info.digital_chest.stored_items"),
+                EnumChatFormatting.GOLD + StatCollector.translateToLocal("GT5U.info.digital_chest.stored_items.empty")
+                    + EnumChatFormatting.RESET,
                 EnumChatFormatting.GREEN + "0"
                     + EnumChatFormatting.RESET
                     + " "
@@ -332,7 +334,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     + GTUtility.formatNumbers(getMaxItemCount())
                     + EnumChatFormatting.RESET };
         }
-        return new String[] { EnumChatFormatting.BLUE + chestName() + EnumChatFormatting.RESET, "Stored Items:",
+        return new String[] { EnumChatFormatting.BLUE + localizedChestName() + EnumChatFormatting.RESET,
+            StatCollector.translateToLocal("GT5U.info.digital_chest.stored_items"),
             EnumChatFormatting.GOLD + getItemStack().getDisplayName() + EnumChatFormatting.RESET,
             EnumChatFormatting.GREEN + GTUtility.formatNumbers(getItemCount())
                 + EnumChatFormatting.RESET
@@ -347,7 +350,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         return mInventory;
     }
 
-    protected abstract String chestName();
+    protected abstract String localizedChestName();
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
