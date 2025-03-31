@@ -56,14 +56,15 @@ public class PowerGogglesHudHandler {
         ScaledResolution resolution = event.resolution;
         int width = resolution.getScaledWidth();
         int height = resolution.getScaledHeight();
+        int factor = resolution.getScaleFactor();
         int xOffset = 0;
-        int x = 0;
-        int yOffset = 30;
-        int y = height - yOffset;
+        int x = -5;
+        int yOffset = 10;
+        int y = (height - yOffset);
 
         FontRenderer fontRenderer = mc.fontRenderer;
         GL11.glPushMatrix();
-        GuiHelper.drawHoveringText(hudList, new Pos2d(x, y), new Size(width, height), width, 90/100F, true, Alignment.CenterLeft, false);
+        GuiHelper.drawHoveringText(hudList, new Pos2d(x, y), new Size(150,30), 150, 0.75f, true, Alignment.CenterLeft, false);
 
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glPopMatrix();
@@ -88,8 +89,8 @@ public class PowerGogglesHudHandler {
                 }
             }
             ++measurements;
-            hudList.add(new Text(EnumChatFormatting.WHITE+"Wireless EU: " + changeColor+toEngineering(currentEU)));
-            hudList.add(new Text(EnumChatFormatting.WHITE+"5s: " + changeColor+toEngineering(lastChange) + (lastChangeDiff != 0 ? String.format(" (%s eu/t) ",toEngineering(lastChange.divide(BigInteger.valueOf(ticksBetweenMeasurements)))) : "")));
+            hudList.add(new Text(EnumChatFormatting.WHITE+"Storage: " + changeColor+toEngineering(currentEU) + " EU"));
+            hudList.add(new Text(EnumChatFormatting.WHITE+"5s: " + changeColor+toEngineering(lastChange) + " EU" + (lastChangeDiff != 0 ? String.format(" (%s eu/t) ",toEngineering(lastChange.divide(BigInteger.valueOf(ticksBetweenMeasurements)))) : "")));
 
         }
         ++ticks;
