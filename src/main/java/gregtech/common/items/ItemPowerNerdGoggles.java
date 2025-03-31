@@ -22,8 +22,6 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble {
 
     @Override
     public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
-//        if ((ticks++ % PowerGogglesHudHandler.ticksBetweenMeasurements) == 0)
-//            NW.sendToServer(new GTPacketRequestWirelessEU(player.getUniqueID()));
     }
 
     @Override
