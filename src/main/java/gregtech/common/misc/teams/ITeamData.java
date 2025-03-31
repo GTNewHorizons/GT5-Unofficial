@@ -8,6 +8,10 @@ public interface ITeamData {
 
     void readFromNBT(NBTTagCompound NBT);
 
+    default void markDirty() {
+        TeamWorldSavedData.markForSaving();
+    }
+
     ITeamData UNIMPLEMENTED = new ITeamData() {
 
         @Override
