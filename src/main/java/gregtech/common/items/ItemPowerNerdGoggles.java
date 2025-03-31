@@ -2,11 +2,13 @@ package gregtech.common.items;
 
 import static gregtech.api.enums.GTValues.NW;
 
+import gregtech.api.net.GTPacketUpdateItem;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
@@ -33,6 +35,13 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble {
         if (tileEntity instanceof IGregTechTileEntity te) {
             if (te.getMetaTileEntity() instanceof MTELapotronicSuperCapacitor lsc) {
                 if (player instanceof EntityClientPlayerMP && !player.isSneaking()) {
+                    NBTTagCompound tag = new NBTTagCompound();
+                    tag.setInteger("x", x);
+                    tag.setInteger("y", y);
+                    tag.setInteger("z", z);
+                    tag.setInteger("dim", player.dimension);
+                    NW.sendToServer(new GTPacketUpdateItem(tag));
+                    stack.setTagCompound(tag);
                     NW.sendToServer(new GTPacketLinkGoggles(new DimensionalCoord(tileEntity)));
                     player.addChatMessage(
                         new ChatComponentText(String.format("Goggles linked to LSC at %d,%d,%d", x, y, z)));
@@ -50,6 +59,7 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble {
                                                                                            // client
         if (player instanceof EntityPlayerMP mPlayer && player.isSneaking()) {
             PowerGogglesEventHandler.lscLink = null;
+            stack.setTagCompound(new NBTTagCompound());
             PowerGogglesEventHandler.forceUpdate = true;
             PowerGogglesEventHandler.forceRefresh = true;
             player.addChatMessage(new ChatComponentText("Goggles unlinked."));
@@ -67,7 +77,9 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble {
 
     @Override
     public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
+        if(player instanceof EntityPlayerMP mPlayer){
 
+        }
     }
 
     @Override
