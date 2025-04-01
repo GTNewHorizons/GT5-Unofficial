@@ -324,7 +324,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
 
     @Override
     public int getTierRecipes() {
-        return 1;
+        return 9;
     }
 
     @Override
