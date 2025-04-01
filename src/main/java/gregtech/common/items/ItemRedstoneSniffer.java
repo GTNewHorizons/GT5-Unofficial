@@ -85,8 +85,13 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
 
     @Override
     public ModularPanel buildUI(GuiData guiData, PanelSyncManager guiSyncManager) {
-        GameSettings settings = Minecraft.getMinecraft().gameSettings;
-        int scale = settings.guiScale > 0 ? settings.guiScale : 4;
+        int scale;
+        if (NetworkUtils.isClient()) {
+            GameSettings settings = Minecraft.getMinecraft().gameSettings;
+            scale = settings.guiScale > 0 ? settings.guiScale : 4;
+        } else {
+            scale = 1;
+        }
         int textColor = Color.rgb(255, 255, 255);
 
         AtomicReference<String> freqFilter = new AtomicReference<>("");
