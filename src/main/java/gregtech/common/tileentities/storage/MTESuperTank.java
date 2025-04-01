@@ -31,7 +31,8 @@ public class MTESuperTank extends MTEDigitalTankBase {
                 EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.super_tank.name")
                     + EnumChatFormatting.RESET,
                 StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
-                EnumChatFormatting.GOLD + StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid.empty")
+                EnumChatFormatting.GOLD
+                    + StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid.empty")
                     + EnumChatFormatting.RESET,
                 EnumChatFormatting.GREEN + "0 L"
                     + EnumChatFormatting.RESET

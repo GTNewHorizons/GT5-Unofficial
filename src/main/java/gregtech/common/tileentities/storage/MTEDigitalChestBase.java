@@ -325,7 +325,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         if (getItemStack() == null) {
             return new String[] { EnumChatFormatting.BLUE + localizedChestName() + EnumChatFormatting.RESET,
                 StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
-                EnumChatFormatting.GOLD + StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items.empty")
+                EnumChatFormatting.GOLD
+                    + StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items.empty")
                     + EnumChatFormatting.RESET,
                 EnumChatFormatting.GREEN + "0"
                     + EnumChatFormatting.RESET

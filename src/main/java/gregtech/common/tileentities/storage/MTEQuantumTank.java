@@ -31,7 +31,8 @@ public class MTEQuantumTank extends MTEDigitalTankBase {
                 EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.quantum_tank.name")
                     + EnumChatFormatting.RESET,
                 StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
-                EnumChatFormatting.GOLD + StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid.empty")
+                EnumChatFormatting.GOLD
+                    + StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid.empty")
                     + EnumChatFormatting.RESET,
                 EnumChatFormatting.GREEN + Integer.toString(0)
                     + " L"

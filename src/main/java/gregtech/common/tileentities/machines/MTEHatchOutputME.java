@@ -636,8 +636,9 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         ss.add(
             (getProxy() != null && getProxy().isActive())
                 ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
-                : StatCollector
-                    .translateToLocalFormatted("GT5U.infodata.hatch.crafting_input_me.bus.offline", getAEDiagnostics()));
+                : StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.hatch.crafting_input_me.bus.offline",
+                    getAEDiagnostics()));
         ss.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.hatch.output_me.cache_capacity",
@@ -647,7 +648,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         if (fluidCache.isEmpty()) {
             ss.add(StatCollector.translateToLocal("GT5U.infodata.hatch.output_me.empty"));
         } else {
-            ss.add(StatCollector.translateToLocalFormatted("GT5U.infodata.hatch.output_me.contains", fluidCache.size()));
+            ss.add(
+                StatCollector.translateToLocalFormatted("GT5U.infodata.hatch.output_me.contains", fluidCache.size()));
             int counter = 0;
             for (IAEFluidStack s : fluidCache) {
                 ss.add(

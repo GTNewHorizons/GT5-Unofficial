@@ -569,8 +569,9 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         ss.add(
             (getProxy() != null && getProxy().isActive())
                 ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
-                : StatCollector
-                    .translateToLocalFormatted("GT5U.infodata.hatch.crafting_input_me.bus.offline", getAEDiagnostics()));
+                : StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.hatch.crafting_input_me.bus.offline",
+                    getAEDiagnostics()));
         ss.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.hatch.output_bus_me.cache_capacity",
@@ -578,7 +579,9 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         if (itemCache.isEmpty()) {
             ss.add(StatCollector.translateToLocal("GT5U.infodata.hatch.output_bus_me.empty"));
         } else {
-            ss.add(StatCollector.translateToLocalFormatted("GT5U.infodata.hatch.output_bus_me.contains", itemCache.size()));
+            ss.add(
+                StatCollector
+                    .translateToLocalFormatted("GT5U.infodata.hatch.output_bus_me.contains", itemCache.size()));
             int counter = 0;
             for (IAEItemStack s : itemCache) {
                 ss.add(

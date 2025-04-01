@@ -672,8 +672,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         ret.add(
             (getProxy() != null && getProxy().isActive())
                 ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
-                : StatCollector
-                    .translateToLocalFormatted("GT5U.infodata.hatch.crafting_input_me.bus.offline", getAEDiagnostics()));
+                : StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.hatch.crafting_input_me.bus.offline",
+                    getAEDiagnostics()));
         ret.add(StatCollector.translateToLocal("GT5U.infodata.hatch.internal_inventory"));
         int i = 0;
         for (PatternSlot slot : internalInventory) {
