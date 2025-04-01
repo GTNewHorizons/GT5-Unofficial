@@ -567,16 +567,21 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     public String[] getInfoData() {
         List<String> ss = new ArrayList<>();
         ss.add(
-            "The bus is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
-                : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET);
+            (getProxy() != null && getProxy().isActive())
+                ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
+                : StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.hatch.crafting_input_me.bus.offline",
+                    getAEDiagnostics()));
         ss.add(
-            "Item cache capacity: " + EnumChatFormatting.GOLD
-                + GTUtility.formatNumbers(getCacheCapacity())
-                + EnumChatFormatting.RESET);
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.hatch.output_bus_me.cache_capacity",
+                EnumChatFormatting.GOLD + GTUtility.formatNumbers(getCacheCapacity()) + EnumChatFormatting.RESET));
         if (itemCache.isEmpty()) {
-            ss.add("The bus has no cached items");
+            ss.add(StatCollector.translateToLocal("GT5U.infodata.hatch.output_bus_me.empty"));
         } else {
-            ss.add(String.format("The bus contains %d cached stacks: ", itemCache.size()));
+            ss.add(
+                StatCollector
+                    .translateToLocalFormatted("GT5U.infodata.hatch.output_bus_me.contains", itemCache.size()));
             int counter = 0;
             for (IAEItemStack s : itemCache) {
                 ss.add(

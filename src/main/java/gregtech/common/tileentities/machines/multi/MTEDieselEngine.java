@@ -347,7 +347,9 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
                 .getEUCapacity();
         }
 
-        return new String[] { EnumChatFormatting.BLUE + "Diesel Engine" + EnumChatFormatting.RESET,
+        return new String[] {
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.diesel_engine")
+                + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(storedEnergy)

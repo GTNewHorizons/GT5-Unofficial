@@ -773,20 +773,24 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     protected String getAEDiagnostics() {
         try {
-            if (getProxy() == null) return "(proxy)";
-            if (getProxy().getNode() == null) return "(node)";
+            if (getProxy() == null) return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.proxy");
+            if (getProxy().getNode() == null)
+                return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.node");
             if (getProxy().getNode()
-                .getGrid() == null) return "(grid)";
+                .getGrid() == null) return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.grid");
             if (!getProxy().getNode()
-                .meetsChannelRequirements()) return "(channels)";
+                .meetsChannelRequirements())
+                return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.channels");
             IPathingGrid pg = getProxy().getNode()
                 .getGrid()
                 .getCache(IPathingGrid.class);
-            if (!pg.isNetworkBooting()) return "(booting)";
+            if (!pg.isNetworkBooting())
+                return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.booting");
             IEnergyGrid eg = getProxy().getNode()
                 .getGrid()
                 .getCache(IEnergyGrid.class);
-            if (!eg.isNetworkPowered()) return "(power)";
+            if (!eg.isNetworkPowered())
+                return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.power");
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
