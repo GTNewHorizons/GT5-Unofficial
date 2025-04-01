@@ -30,6 +30,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -217,6 +218,32 @@ public class AssortedSteamRecipes implements Runnable {
                 .eut(16)
                 .addTo(steamManufacturerRecipes);
         }
+
+        Materials[] pipeMaterials = { Materials.Bronze, Materials.WroughtIron, Materials.Copper, Materials.Steel,
+            Materials.Stronze, Materials.CompressedSteam };
+
+        for (Materials aMat : pipeMaterials) {
+            RA.stdBuilder()
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.pipeMedium, aMat, 4), GTUtility.getIntegratedCircuit(9))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeQuadruple, aMat, 1))
+                .duration(3 * SECONDS)
+                .eut(4)
+                .addTo(steamManufacturerRecipes);
+
+            RA.stdBuilder()
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.pipeSmall, aMat, 9), GTUtility.getIntegratedCircuit(9))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeNonuple, aMat, 1))
+                .duration(3 * SECONDS)
+                .eut(4)
+                .addTo(steamManufacturerRecipes);
+        }
+
+        RA.stdBuilder()
+            .itemInputs(MaterialsAlloy.TUMBAGA.getRod(4), GTUtility.getIntegratedCircuit(24))
+            .itemOutputs(MaterialsAlloy.TUMBAGA.getFrameBox(1))
+            .duration(5 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
 
         RA.stdBuilder()
             .itemInputs(
@@ -625,6 +652,21 @@ public class AssortedSteamRecipes implements Runnable {
             .itemOutputs(ItemList.Compact_Steam_Pipe_Casing.get(1))
             .duration(6 * SECONDS)
             .eut(24)
+            .addTo(steamManufacturerRecipes);
+
+        // Weighted Pressure Plates
+        RA.stdBuilder()
+            .itemInputs(Materials.Gold.getPlates(2), GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 4))
+            .itemOutputs(new ItemStack(Blocks.light_weighted_pressure_plate))
+            .duration(5 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+
+        RA.stdBuilder()
+            .itemInputs(Materials.Iron.getPlates(2), GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 4))
+            .itemOutputs(new ItemStack(Blocks.heavy_weighted_pressure_plate))
+            .duration(5 * SECONDS)
+            .eut(16)
             .addTo(steamManufacturerRecipes);
 
         // Machine Controllers

@@ -26,6 +26,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.core.material.MaterialsAlloy;
 
 public class SteamConformerRecipes implements Runnable {
 
@@ -209,7 +210,7 @@ public class SteamConformerRecipes implements Runnable {
 
             if (GTOreDictUnificator.get(plate, aMaterial, 1) != null) {
                 RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get(block, aMaterial, 1), ItemList.Shape_Extruder_Plate.get(0))
+                    .itemInputs(GTOreDictUnificator.get(block, aMaterial, 2), ItemList.Shape_Extruder_Plate.get(0))
                     .itemOutputs(GTOreDictUnificator.get(plate, aMaterial, 3))
                     .duration(4 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
@@ -217,5 +218,33 @@ public class SteamConformerRecipes implements Runnable {
             }
         }
 
+        // Tumbaga because it had to be special
+        RA.stdBuilder()
+            .itemInputs(MaterialsAlloy.TUMBAGA.getIngot(2), ItemList.Shape_Extruder_Rod.get(0))
+            .itemOutputs(MaterialsAlloy.TUMBAGA.getRod(3))
+            .duration(4 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(steamConformerRecipes);
+
+        RA.stdBuilder()
+            .itemInputs(MaterialsAlloy.TUMBAGA.getIngot(15), ItemList.Shape_Extruder_Rotor.get(0))
+            .itemOutputs(MaterialsAlloy.TUMBAGA.getRotor(2))
+            .duration(4 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(steamConformerRecipes);
+
+        RA.stdBuilder()
+            .itemInputs(MaterialsAlloy.TUMBAGA.getIngot(2), ItemList.Shape_Extruder_Ring.get(0))
+            .itemOutputs(MaterialsAlloy.TUMBAGA.getRing(6))
+            .duration(4 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(steamConformerRecipes);
+
+        RA.stdBuilder()
+            .itemInputs(MaterialsAlloy.TUMBAGA.getIngot(12), ItemList.Shape_Extruder_Gear.get(0))
+            .itemOutputs(MaterialsAlloy.TUMBAGA.getGear(2))
+            .duration(4 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(steamConformerRecipes);
     }
 }
