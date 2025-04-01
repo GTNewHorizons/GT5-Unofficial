@@ -60,7 +60,7 @@ public class GTPacketLinkGoggles extends GTPacket {
     @Override
     public void process(IBlockAccess world) {
 
-        PowerGogglesEventHandler.lscLinkMap.put(player.getUniqueID(), this.coords);
+        PowerGogglesEventHandler.setLscLink(player, this.coords);
         PowerGogglesEventHandler.forceUpdate = true;
         PowerGogglesEventHandler.forceRefresh = true;
     }

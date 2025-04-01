@@ -32,6 +32,7 @@ public class PowerGogglesEventHandler {
 
     private static int ticks = 0;
     public static Minecraft mc;
+    public static Map<UUID, MTELapotronicSuperCapacitor> playerLscMap = new HashMap<>();
     public static Map<UUID, DimensionalCoord> lscLinkMap = new HashMap<>();
     public static DimensionalCoord lscLink = null;
     public static boolean forceUpdate = false;
@@ -58,11 +59,8 @@ public class PowerGogglesEventHandler {
         } else {
             if (ticks == 0 || forceUpdate) {
                 EntityPlayerMP player = (EntityPlayerMP) event.player;
-                if (lscLinkMap.get(player.getUniqueID()) != null) {
-                    DimensionalCoord lscCoords = lscLinkMap.get(player.getUniqueID());
-                    TileEntity tileEntity = player.worldObj.getTileEntity(lscCoords.x, lscCoords.y, lscCoords.z);
-                    MTELapotronicSuperCapacitor lsc = (MTELapotronicSuperCapacitor) ((IGregTechTileEntity) tileEntity)
-                        .getMetaTileEntity();
+                if (playerLscMap.get(player.getUniqueID()) != null) {
+                    MTELapotronicSuperCapacitor lsc = playerLscMap.get(player.getUniqueID());
                     NW.sendToPlayer(
                         new GTPacketUpdatePowerGoggles(BigInteger.valueOf(lsc.getEUVar()), forceRefresh),
                         player);
@@ -114,9 +112,20 @@ public class PowerGogglesEventHandler {
         }
     }
 
+    public static void setLscLink(EntityPlayer player, DimensionalCoord coords) {
+        if (coords == null) {
+            playerLscMap.put(player.getUniqueID(), null);
+            return;
+        }
+        TileEntity tileEntity = player.worldObj.getTileEntity(coords.x, coords.y, coords.z);
+        MTELapotronicSuperCapacitor lsc = (MTELapotronicSuperCapacitor) ((IGregTechTileEntity) tileEntity)
+            .getMetaTileEntity();
+        playerLscMap.put(player.getUniqueID(), lsc);
+    }
+
     @SubscribeEvent
     public void serverOnPlayerDisconnect(FMLNetworkEvent.ServerDisconnectionFromClientEvent event) {
         EntityPlayerMP player = ((NetHandlerPlayServer) event.handler).playerEntity;
-        lscLinkMap.put(player.getUniqueID(), null);
+        setLscLink(player, null);
     }
 }
