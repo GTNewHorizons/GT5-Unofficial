@@ -110,6 +110,7 @@ public class PowerGogglesHudHandler {
         if (change5m.compareTo(BigInteger.ZERO) >= 0) {
             gradientLeft = Color.GREEN;
         } else {
+            double scale = 100d / 33d;
             double severity = measurement.compareTo(BigInteger.ZERO) == 0 ? 1
                 : Math.min(
                     1,
@@ -118,10 +119,10 @@ public class PowerGogglesHudHandler {
                             .divide(new BigDecimal(highest), RoundingMode.FLOOR)
                             .intValue() / 100f));
             int gradientFactor = (int) (255 * (severity));
-            gradientLeft = new Color(255, 255 - gradientFactor, 0);
+            gradientLeft = new Color(255, Math.min(255, Math.max(0, 255 - (int) (gradientFactor * scale))), 0);
             gradientRight = new Color(
-                Math.min(255, (int) (gradientFactor * 1.5f)),
-                255 - (int) (gradientFactor * Math.sqrt(severity)),
+                Math.min(255, (int) (gradientFactor * 1.5f * scale)),
+                Math.min(255, Math.max(0, 255 - (int) (gradientFactor * Math.sqrt(severity) * scale))),
                 0);
         }
 
@@ -232,5 +233,6 @@ public class PowerGogglesHudHandler {
         measurements.clear();
         lastChange = BigInteger.valueOf(0);
         measurementCount = 0;
+        highest = BigInteger.valueOf(0);
     }
 }
