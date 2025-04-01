@@ -435,8 +435,8 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                     EnumChatFormatting.GREEN + lensCycle.current()
                         .getDisplayName()));
             if (removedTooEarly) {
-                infoData
-                    .add(StatCollector.translateToLocal("GT5U.infodata.purification_unit_uv_treatment.removed_too_early"));
+                infoData.add(
+                    StatCollector.translateToLocal("GT5U.infodata.purification_unit_uv_treatment.removed_too_early"));
             }
         }
         return infoData.toArray(new String[] {});

@@ -588,7 +588,8 @@ public class MTEPurificationUnitBaryonicPerfection
                     + split[1]);
         }
         info.add(
-            StatCollector.translateToLocalFormatted("GT5U.infodata.pubp.quark_combination", getCorrectlyDecodedString()));
+            StatCollector
+                .translateToLocalFormatted("GT5U.infodata.pubp.quark_combination", getCorrectlyDecodedString()));
         return info.toArray(new String[] {});
     }
 

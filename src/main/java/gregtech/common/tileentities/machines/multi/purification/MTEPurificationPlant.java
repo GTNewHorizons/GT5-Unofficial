@@ -548,11 +548,13 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 }
                 case DISABLED -> {
                     text = text + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GT5U.infodata.purification_plant.linked_units.status.disabled");
+                        + StatCollector
+                            .translateToLocal("GT5U.infodata.purification_plant.linked_units.status.disabled");
                 }
                 case INCOMPLETE_STRUCTURE -> {
                     text = text + EnumChatFormatting.RED
-                        + StatCollector.translateToLocal("GT5U.infodata.purification_plant.linked_units.status.incomplete");
+                        + StatCollector
+                            .translateToLocal("GT5U.infodata.purification_plant.linked_units.status.incomplete");
                 }
             }
             ret.add(text);
