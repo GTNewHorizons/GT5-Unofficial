@@ -38,19 +38,19 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             .getItem();
         if (aOreDictName.startsWith("plankWood") && aStack.getItem() != gtPlank) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, aStack))
+                .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(1))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L))
                 .duration(10 * TICKS)
                 .eut(8)
                 .addTo(latheRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, aStack))
+                .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(1))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L))
                 .duration(2 * SECONDS)
                 .eut(8)
                 .addTo(steamCarpenterRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, aStack))
+                .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(2))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 2L))
                 .duration(2 * SECONDS)
                 .eut(8)
