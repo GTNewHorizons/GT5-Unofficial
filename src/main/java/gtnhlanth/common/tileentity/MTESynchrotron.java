@@ -18,7 +18,6 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Objects;
 
 import net.minecraft.block.Block;
@@ -85,8 +84,6 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
     public ArrayList<BlockAntennaCasing> mAntennaCasings = new ArrayList<>();
 
-    private static HashMap<Block, Integer> allowedAntennas = new HashMap<>(2);
-
     private static final int CASING_INDEX = 1662;
 
     private int energyHatchTier;
@@ -104,9 +101,6 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     // TODO: E > 1200eV for x-ray lithography
     // spotless:off
     static {
-
-    	allowedAntennas.put(LanthItemList.ANTENNA_CASING_T1, 0);
-    	allowedAntennas.put(LanthItemList.ANTENNA_CASING_T2, 0);
 
         STRUCTURE_DEFINITION = StructureDefinition.<MTESynchrotron>builder().addShape(
                 STRUCTURE_PIECE_ENTRANCE,
@@ -462,7 +456,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy.or(ExoticEnergy), 4)).adder(MTESynchrotron::addEnergyInputToMachineList).dot(6).casingIndex(CASING_INDEX).build())
                 .addElement('n', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
                 .addElement('a', withChannel("antenna", StructureUtility.ofBlocksTiered(
-                		(Block block, int meta) -> (block == LanthItemList.ANTENNA_CASING_T1 ? 1 : block == LanthItemList.ANTENNA_CASING_T2 ? 2 : null),
+                		MTESynchrotron::getAntennaBlockTier,
                 		ImmutableList.of(
                 				Pair.of(LanthItemList.ANTENNA_CASING_T1, 0),
                 				Pair.of(LanthItemList.ANTENNA_CASING_T2, 0)),
@@ -653,8 +647,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
 
-        boolean firstHatch = false;
-        if (this.mEnergyHatches.isEmpty() && this.mExoticEnergyHatches.isEmpty()) firstHatch = true;
+        boolean firstHatch = this.mEnergyHatches.isEmpty() && this.mExoticEnergyHatches.isEmpty();
 
         if (aMetaTileEntity instanceof MTEHatch hatch) {
 
@@ -720,6 +713,12 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         return this.antennaeTier;
     }
 
+    public static Integer getAntennaBlockTier(Block block, int meta) {
+        if (block == LanthItemList.ANTENNA_CASING_T1) return 1;
+        else if (block == LanthItemList.ANTENNA_CASING_T2) return 2;
+        else return null;
+    }
+
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
@@ -729,72 +728,47 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     @Override
     public CheckRecipeResult checkProcessing() {
 
-        float inputEnergy = 0;
-        float inputFocus = 0;
-        float inputRate = 0;
-        int inputParticleId = 0;
-
-        machineFocus = 0;
-        machineTemp = 0;
-
-        outputEnergy = 0;
-        outputFocus = 0;
-        outputRate = 0;
-        outputParticle = 0;
-
-        float tempFactor = 0;
-
-        float voltageFactor = 0;
+        BeamInformation inputInfo = this.getInputInformation();
+        if (inputInfo == null || inputInfo.getEnergy() == 0 || inputInfo.getFocus() < MIN_INPUT_FOCUS)
+            return CheckRecipeResultRegistry.NO_RECIPE;
 
         ArrayList<FluidStack> fluidList = this.getStoredFluids();
 
         if (fluidList.isEmpty()) {
-
             this.stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.nocoolant"));
-
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
+        FluidStack primaryFluid = fluidList.get(0);
+        int fluidTemperature = Util.coolantFluidTemperature(primaryFluid);
 
-        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
 
-        if (this.getInputInformation() == null) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        if (this.getInputInformation()
-            .getEnergy() == 0) { // Only really applies if there's no input
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        if (this.getInputInformation()
-            .getFocus() < MIN_INPUT_FOCUS) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        inputParticleId = this.getInputInformation()
-            .getParticleId();
-
-        Particle inputParticle = Particle.getParticleFromId(inputParticleId);
+        float inputEnergy;
+        float inputFocus;
+        float inputRate;
+        Particle inputParticle = Particle.getParticleFromId(inputInfo.getParticleId());
 
         if (!inputParticle.canAccelerate()) {
             stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.noaccel"));
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        mMaxProgresstime = TickTime.SECOND;
+        this.machineFocus = 0;
+        this.machineTemp = 0;
+        this.outputEnergy = 0;
+        this.outputFocus = 0;
+        this.outputRate = 0;
+        this.outputParticle = 1; // Photon
 
-        long voltage = 0;
+        float voltageFactor;
 
-        voltage = this.getMaxInputEu();
+        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+        this.mEfficiencyIncrease = 10000;
+        this.mMaxProgresstime = TickTime.SECOND;
+
+        long voltage = this.getMaxInputEu();
 
         lEUt = -GTValues.VP[GTUtility.getTier(this.getAverageInputVoltage())] * this.getMaxInputAmps();
 
-        outputParticle = 1; // Photon
-
-        FluidStack primaryFluid = fluidList.get(0);
-
-        int fluidTemperature = Util.coolantFluidTemperature(primaryFluid);
 
         machineTemp = fluidTemperature; // Solely for tricorder info
 
@@ -813,11 +787,10 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                                                  // In general, as input focus increases, output scales better with
                                                  // machine focus
 
-        voltageFactor = getVoltageFactor(voltage, this.antennaeTier);
+        voltageFactor = getVoltageFactor(voltage);
 
         inputEnergy = this.getInputInformation()
             .getEnergy();
-        float mass = inputParticle.getMass();
 
         // Perhaps divide by mass somehow here too
         outputEnergy = (float) calculateOutputParticleEnergy(voltage, inputEnergy, this.antennaeTier); // maybe
@@ -850,8 +823,6 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         if (Objects.isNull(fluidOutput)) return CheckRecipeResultRegistry.NO_RECIPE;
 
         FluidStack fluidOutputStack = new FluidStack(fluidOutput, CONSUMED_FLUID);
-
-        if (Objects.isNull(fluidOutputStack)) return CheckRecipeResultRegistry.NO_RECIPE;
 
         this.addFluidOutputs(new FluidStack[] { fluidOutputStack });
 
@@ -898,12 +869,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         return null;
     }
 
-    private static float getVoltageFactor(long mEU, int antennaTier) {
-        // float factor = (float) Math.pow(1.00004, -mEU * Math.pow(antennaTier, 1.0/3.0) + 80000);
-        // float factor = (float) -Math.pow(1.1, -mEU / 2000 * Math.pow(antennaTier, 2.0 / 3.0)) + 1; // Strictly
-        // improves
-        // with higher tier
-        // antenna
+    private static float getVoltageFactor(long mEU) {
         return (float) (Math.sqrt(mEU) / 1500);
     }
 
