@@ -2146,6 +2146,182 @@ GT5U.tooltip.tool.heat=Heat: %d K
 GT5U.tooltip.volumetric_flask.empty=Empty
 GT5U.tooltip.volumetric_flask.set_volume=Rightclick on air to set volume (only while empty)
 
+# info data
+GT5U.infodata.no_network=No Network
+GT5U.infodata.battery_buffer.stored_items=Stored Items: %s EU / %s EU
+GT5U.infodata.battery_buffer.average_input=Average input: %s EU/t
+GT5U.infodata.battery_buffer.average_output=Average output: %s EU/t
+GT5U.infodata.progress=Progress: %s s / %s s
+GT5U.infodata.energy=Stored Energy: %s EU / %s EU
+GT5U.infodata.currently_uses=Currently uses: %s EU/t at %s A
+GT5U.infodata.probably_uses=Probably uses: %s EU/t
+GT5U.infodata.parallel.current=Current Parallel: %s
+GT5U.infodata.max_energy_income_tier=Max Energy Income: %s EU/t(*2A) Tier: %s
+GT5U.infodata.problems_efficiency=Problems: %s Efficiency: %s
+GT5U.infodata.cable.failed=Failed to get Power Node info
+GT5U.infodata.cable.amperage=Amperage: %s / %s A
+GT5U.infodata.cable.voltage_out=Voltage Out: %s / %s EU/t
+GT5U.infodata.cable.avg_amperage=Avg Amperage (20t): %s A
+GT5U.infodata.cable.avg_output=Avg Output (20t): %s EU/t
+
+GT5U.infodata.hatch.output=Output Hatch
+GT5U.infodata.hatch.output.fluid=Stored Fluid: %s
+GT5U.infodata.hatch.output.fluid.none=No Fluid
+GT5U.infodata.hatch.output.fluid.locked_to.none=Not Locked
+GT5U.infodata.hatch.output.fluid.locked_to=Locked to %s
+
+GT5U.infodata.boiler_solar.heat=Heat Capacity: %s    Hot time: %s
+GT5U.infodata.boiler_solar.output=Min output: %s    Max output: %s
+GT5U.infodata.boiler_solar.current_output=Current Output: %s
+
+GT5U.infodata.undefined=Undefined
+
+GT5U.infodata.hatch.me.diagnostics.proxy=(proxy)
+GT5U.infodata.hatch.me.diagnostics.node=(node)
+GT5U.infodata.hatch.me.diagnostics.grid=(grid)
+GT5U.infodata.hatch.me.diagnostics.channels=(channels)
+GT5U.infodata.hatch.me.diagnostics.booting=(booting)
+GT5U.infodata.hatch.me.diagnostics.power=(power)s
+GT5U.infodata.hatch.crafting_input_me.bus.online=The bus is §aonline§r
+GT5U.infodata.hatch.crafting_input_me.bus.offline=The bus is §coffline%s§r
+GT5U.infodata.hatch.internal_inventory=Internal Inventory:
+GT5U.infodata.hatch.internal_inventory.slot=Slot %d %s
+GT5U.infodata.hatch.crafting_input_slave.linked_to=This bus is linked to the Crafting Input Buffer at %d, %d, %d.
+GT5U.infodata.hatch.crafting_input_slave.not_linked_to=This bus is not linked to any Crafting Input Buffer.
+GT5U.infodata.hatch.output_bus_me.cache_capacity=Item cache capacity: %s
+GT5U.infodata.hatch.output_bus_me.empty=The bus has no cached items
+GT5U.infodata.hatch.output_bus_me.contains=The bus contains %d cached stacks:
+GT5U.infodata.hatch.output_me.cache_capacity=Fluid cache capacity: %s
+GT5U.infodata.hatch.output_me.empty=The bus has no cached fluids
+GT5U.infodata.hatch.output_me.contains=The hatch contains %d cached fluids:
+
+GT5U.infodata.juke_box.uuid=Jukebox UUID: %s
+GT5U.infodata.juke_box.uuid.unset=unset
+GT5U.infodata.juke_box.loop_mode=Loop mode: %b
+GT5U.infodata.juke_box.shuffle_mode=Shuffle mode: %b
+GT5U.infodata.juke_box.played=Played the disc for [ms]: %d
+GT5U.infodata.juke_box.current=Current disc duration [ms]: %d
+GT5U.infodata.juke_box.playback_range=Playback range [blocks]: %f
+GT5U.infodata.juke_box.p2p_range=P2P range [blocks]: %f
+GT5U.infodata.juke_box.raw_playback_strength=Raw playback strength: %f
+GT5U.infodata.juke_box.raw_p2p_strength=Raw p2p strength: %f
+
+GT5U.infodata.coordinates=Coordinates:
+GT5U.infodata.coordinates.x=X: %s
+GT5U.infodata.coordinates.y=Y: %s
+GT5U.infodata.coordinates.z=Z: %s
+GT5U.infodata.dimension=Dimension: %s
+GT5U.infodata.dimension.valid=Dimension Valid: %s
+GT5U.infodata.dimension.registered=Dimension Registered: %s
+GT5U.infodata.yes=Yes
+GT5U.infodata.no=No
+
+
+GT5U.infodata.world_accelerator.mode=Accelerator running in %s mode
+GT5U.infodata.world_accelerator.speed=Speed setting: [%d / %d]
+GT5U.infodata.world_accelerator.consuming=Consuming %d EU/t
+GT5U.infodata.world_accelerator.radius=Radius setting: [%d / %d]
+
+GT5U.infodata.air_filter.has_filter=Has a filter in it: %b
+GT5U.infodata.air_filter.pollution_reduction=Pollution reduction: %s gibbl/t
+GT5U.infodata.air_filter.remaining_cycles=remaining cycles for the filter (if present): %d
+
+GT5U.infodata.diesel_engine=Diesel Engine
+GT5U.infodata.extreme_diesel_engine=Extreme Diesel Engine
+GT5U.infodata.fusion_reactor_mk=Fusion Reactor MK
+
+GT5U.infodata.large_fluid_extractor.max_parallels=Max Parallels: %s%d%s
+GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus=Heating Coil Speed Bonus: +%s%.0f%s %%
+GT5U.infodata.large_fluid_extractor.total_speed_multiplier=Total Speed Multiplier: %s%.0f%s %%
+GT5U.infodata.large_fluid_extractor.total_eu_multiplier=Total EU/t Multiplier: %s%.0f%s %%
+
+GT5U.infodata.oil_drill.drilling_fluid=Drilling Fluid: %s
+GT5U.infodata.oil_drill.drilling_flow=Drilling flow: %s L/t
+
+GT5U.infodata.critical_info=Critical Information
+GT5U.infodata.plasma_forge.ticks_run_fuel_discount=Ticks run: %s, Fuel Discount: %s
+GT5U.infodata.plasma_forge.convergence=Convergence: %s
+GT5U.infodata.plasma_forge.convergence.active=Active
+GT5U.infodata.plasma_forge.convergence.inactive=Inactive
+
+GT5U.infodata.wormhole_generator=Wormhole Generator Info
+GT5U.infodata.wormhole_generator.structure_error=§cStructure errors:§r
+GT5U.infodata.wormhole_generator.bad_class_tier=§cGlass tier must be greater than or equal to the energy hatch tiers.§r
+GT5U.infodata.wormhole_generator.no_link=An entangled singularity must be present in the controller slot
+GT5U.infodata.wormhole_generator.status.no_destination=Wormhole status: §cNo destination§f
+GT5U.infodata.wormhole_generator.status.active=Wormhole status: §bActive§f
+GT5U.infodata.wormhole_generator.status.decaying=Wormhole status: §6Decaying§f
+GT5U.infodata.wormhole_generator.status.inactive=Wormhole status: §7Inactive§f
+GT5U.infodata.wormhole_generator.status.no_energy=Wormhole status: §7No energy in input hatches§f
+GT5U.infodata.wormhole_generator.diameter=Wormhole diameter: §b%,d§r angstrom
+GT5U.infodata.wormhole_generator.optimal_transfer_speed=Optimal transfer speed: §b%,.0f§r EU/t
+GT5U.infodata.wormhole_generator.transferred=%s hatch (%,dA/t %s) transferred §b%,d§f EU (equivalent to %,dA/t) with an efficiency of %.3f%% in the last %d seconds
+GT5U.infodata.wormhole_generator.received=%s hatch (%,dA/t %s) received §b%,d§f EU (equivalent to %,dA/t) with an efficiency of %.3f%% in the last %d seconds
+GT5U.infodata.wormhole_generator.not_present=%s hatch is not present
+
+GT5U.infodata.wormhole_generator.hatch.top=Top
+GT5U.infodata.wormhole_generator.hatch.bottom=Bottom
+GT5U.infodata.wormhole_generator.hatch.left=Left
+GT5U.infodata.wormhole_generator.hatch.right=Right
+GT5U.infodata.wormhole_generator.hatch.back=Back
+GT5U.infodata.wormhole_generator.hatch.front=Front
+
+GT5U.infodata.purification_plant.linked_units=Linked Purification Units:
+GT5U.infodata.purification_plant.linked_units.status.online=Online
+GT5U.infodata.purification_plant.linked_units.status.disabled=Disabled
+GT5U.infodata.purification_plant.linked_units.status.incomplete=Incomplete Structure
+
+GT5U.infodata.pubp.catalyst_history=Catalyst insertion history for this recipe cycle
+GT5U.infodata.pubp.quark_combination=Quark Combination correctly identified: %s
+
+GT5U.infodata.purification_unit_base.linked_at=This Purification Unit is linked to the Water Purification Plant at %d, %d, %d.
+GT5U.infodata.purification_unit_base.success_chance=Success chance: %s
+GT5U.infodata.purification_unit_base.not_linked=This Purification Unit is not linked to any Water Purification Plant.
+
+GT5U.infodata.purification_unit_degasser.control_signal=Current control signal (binary): 0b%s
+GT5U.infodata.purification_unit_degasser.output_multiplier=Current output multiplier: %s
+GT5U.infodata.purification_unit_degasser.fluid_inserted=Fluid inserted this cycle: %sL %s
+GT5U.infodata.purification_unit_degasser.bit=Bit %d status: %s
+GT5U.infodata.purification_unit_degasser.bit.ok=OK
+GT5U.infodata.purification_unit_degasser.bit.not_ok=NOT OK
+GT5U.infodata.purification_unit_flocculation.consumed=%s consumed this cycle: %sL
+GT5U.infodata.purification_unit_ph_adjustment.ph=Current pH Value: %s pH
+GT5U.infodata.purification_unit_plasma_heater.temperature=Current temperature: %sK
+GT5U.infodata.purification_unit_plasma_heater.heating_cycles=Heating cycles completed this run: %s
+GT5U.infodata.purification_unit_uv_treatment.lens_swaps=Lens swaps performed this run:
+GT5U.infodata.purification_unit_uv_treatment.lens_requested=Current lens requested: %s
+GT5U.infodata.purification_unit_uv_treatment.removed_too_early=Removed lens too early. Failing this recipe.
+
+GT5U.infodata.digital_chest.stored_items=Stored Items:
+GT5U.infodata.digital_chest.stored_items.empty=No Items
+GT5U.infodata.quantum_chest.name=Quantum Chest
+GT5U.infodata.super_chest.name=Super Chest
+GT5U.infodata.digital_tank.stored_fluid=Stored Fluid:
+GT5U.infodata.digital_tank.stored_fluid.empty=No Fluid
+GT5U.infodata.quantum_tank.name=Quantum Tank
+GT5U.infodata.super_tank.name=Super Tank
+
+GT5U.word_accelerator.mode.blocks=Blocks
+GT5U.word_accelerator.mode.tile_entities=TileEntities
+
+GT5U.voltage_names.ultra_low_voltage=Ultra Low Voltage
+GT5U.voltage_names.low_voltage=Low Voltage
+GT5U.voltage_names.medium_voltage=Medium Voltage
+GT5U.voltage_names.high_voltage=High Voltage
+GT5U.voltage_names.extreme_voltage=Extreme Voltage
+GT5U.voltage_names.insane_voltage=Insane Voltage
+GT5U.voltage_names.ludicrous_voltage=Ludicrous Voltage
+GT5U.voltage_names.zpm_voltage=ZPM Voltage
+GT5U.voltage_names.ultimate_voltage=Ultimate Voltage
+GT5U.voltage_names.ultimate_high_voltage=Ultimate High Voltage
+GT5U.voltage_names.ultimate_extreme_voltage=Ultimate Extreme Voltage
+GT5U.voltage_names.ultimate_insane_voltage=Ultimate Insane Voltage
+GT5U.voltage_names.ultimate_mega_voltage=Ultimate Mega Voltage
+GT5U.voltage_names.ultimate_extended_mega_voltage=Ultimate Extended Mega Voltage
+GT5U.voltage_names.maximum_voltage=Maximum Voltage
+GT5U.voltage_names.error_voltage_report_this=Error Voltage, report this
+
+
 # Achievements
 
 # 4/2/19

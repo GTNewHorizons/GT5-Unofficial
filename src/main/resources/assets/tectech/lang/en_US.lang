@@ -1908,3 +1908,61 @@ GT5U.gui.config.general.debug=Debug
 GT5U.gui.config.general.features=Features
 GT5U.gui.config.general.teslatweaks=Tesla Tweaks
 GT5U.gui.config.general.visual=Visual
+
+tt.eoh.fancy_names.crude=Crude
+tt.eoh.fancy_names.primitive=Primitive
+tt.eoh.fancy_names.stable=Stable
+tt.eoh.fancy_names.Advanced=Advanced
+tt.eoh.fancy_names.superb=Superb
+tt.eoh.fancy_names.exotic=Exotic
+tt.eoh.fancy_names.perfect=Perfect
+tt.eoh.fancy_names.tipler=Tipler
+tt.eoh.fancy_names.gallifreyan=Gallifreyan
+tt.eoh.fancy_names.unknown=Unknown
+
+# Info data
+
+tt.infodata.multi.energy_hatches=Energy Hatches: %s EU / %s EU
+tt.infodata.multi.currently_generates=Currently generates: %s EU/t at %s A
+tt.infodata.multi.computation=Computation: %s / %s
+tt.infodata.multi.max_parallel=Max Parallel: %s
+tt.infodata.multi.multiplier.recipe_time=Recipe time multiplier: %s
+tt.infodata.multi.multiplier.energy=Energy multiplier: %s
+tt.infodata.multi.divisor.recipe_time.non_perfect_oc=Recipe time divisor per non-perfect OC: %s
+tt.infodata.multi.currently_using=Currently using: %s EU/t
+tt.infodata.multi.capacity.heat=Heat Capacity: %s
+tt.infodata.multi.capacity.heat.effective=Effective Heat Capacity: %s
+
+## Eye of Harmony
+tt.infodata.eoh.control_block_statistics=Control Block Statistics
+tt.infodata.eoh.spacetime_compression.grade=Spacetime Compression Field Grade: %s (%s)
+tt.infodata.eoh.spacetime_compression.grade.none=Spacetime Compression Field Grade: None
+tt.infodata.eoh.time_dilation.grade=Time Dilation Field Grade: %s (%s)
+tt.infodata.eoh.time_dilation.grade.none=Time Dilation Field Grade: None
+tt.infodata.eoh.stabilisation_grade=Stabilisation Field Grade: %s (%s)
+tt.infodata.eoh.stabilisation_grade.none=Stabilisation Field Grade: None
+tt.infodata.eoh.internal_storage=Internal Storage
+tt.infodata.eoh.astral_array_fabricators=Astral Array Fabricators
+tt.infodata.eoh.other_stats=Other Stats
+tt.infodata.eoh.success_chance=Recipe Success Chance: %s
+tt.infodata.eoh.recipe_yield=Recipe Yield: %s
+tt.infodata.eoh.effective_astral_array_fabricators=Effective Astral Array Fabricators: %s
+tt.infodata.eoh.total_parallel=Total Parallel: %s
+tt.infodata.eoh.eu_output=EU Output: %s EU
+tt.infodata.eoh.eu_input=EU Input: %s EU
+tt.infodata.eoh.avg_output=Average %s Output: %s L, %s L/s
+tt.infodata.eoh.estimated_eu=Estimated EU/t: %s EU/t
+
+## Quantum Computer
+tt.infodata.qc.wireless_mode.enabled=Wireless mode: §aenabled
+tt.infodata.qc.wireless_mode.disabled=Wireless mode: §cdisabled
+tt.infodata.qc.total_wireless_computation=Total wireless computation available: %s
+
+## Forge of gods
+tt.infodata.fog.rings=Number of Rings: %s
+tt.infodata.fog.upgrades.unlocked=Total Upgrades Unlocked: %s
+tt.infodata.fog.connected=Connected Modules: %s
+
+## Base factory pipe
+tt.infodata.pipe.active=Active.
+tt.infodata.pipe.inactive=Not active.

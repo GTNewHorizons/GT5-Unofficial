@@ -634,17 +634,20 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     public String[] getInfoData() {
         List<String> ss = new ArrayList<>();
         ss.add(
-            "The hatch is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
-                : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET);
+            (getProxy() != null && getProxy().isActive())
+                ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
+                : StatCollector
+                    .translateToLocalFormatted("GT5U.infodata.hatch.crafting_input_me.bus.offline", getAEDiagnostics()));
         ss.add(
-            "Fluid cache capacity: " + EnumChatFormatting.GOLD
-                + GTUtility.formatNumbers(getCacheCapacity())
-                + " L"
-                + EnumChatFormatting.RESET);
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.hatch.output_me.cache_capacity",
+                EnumChatFormatting.GOLD + GTUtility.formatNumbers(getCacheCapacity())
+                    + " L"
+                    + EnumChatFormatting.RESET));
         if (fluidCache.isEmpty()) {
-            ss.add("The bus has no cached fluids");
+            ss.add(StatCollector.translateToLocal("GT5U.infodata.hatch.output_me.empty"));
         } else {
-            ss.add(String.format("The hatch contains %d cached fluids: ", fluidCache.size()));
+            ss.add(StatCollector.translateToLocalFormatted("GT5U.infodata.hatch.output_me.contains", fluidCache.size()));
             int counter = 0;
             for (IAEFluidStack s : fluidCache) {
                 ss.add(
