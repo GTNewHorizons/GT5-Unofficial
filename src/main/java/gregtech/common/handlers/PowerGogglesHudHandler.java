@@ -1,6 +1,10 @@
 package gregtech.common.handlers;
 
+import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
+import static org.lwjgl.opengl.GL11.GL_LIGHTING;
+
 import java.awt.*;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -11,7 +15,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -21,14 +24,15 @@ import org.lwjgl.opengl.GL11;
 import com.google.common.math.BigIntegerMath;
 import com.gtnewhorizons.modularui.api.drawable.GuiHelper;
 import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.math.Size;
 
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 
 public class PowerGogglesHudHandler {
 
@@ -45,6 +49,7 @@ public class PowerGogglesHudHandler {
     static BigInteger currentEU = BigInteger.valueOf(0);
     static BigInteger lastChange = BigInteger.valueOf(0);
     static BigInteger measurement = BigInteger.valueOf(0);
+    static BigInteger highest = BigInteger.valueOf(0);
     static int measurementCount = 0;
 
     @SubscribeEvent
@@ -67,83 +72,72 @@ public class PowerGogglesHudHandler {
         int width = resolution.getScaledWidth();
         int height = resolution.getScaledHeight();
         int factor = resolution.getScaleFactor();
-        int xOffset = 0;
         int x = -5;
-        int yOffset = 15;
-        int y = (height - yOffset);
+        int textOffset = 15;
+        int y = (height - textOffset);
 
         FontRenderer fontRenderer = mc.fontRenderer;
         GL11.glPushMatrix();
         GL11.glEnable(GL_CULL_FACE);
-        // GuiHelper.drawHoveringText(
-        // hudList,
-        // new Pos2d(x, y),
-        // new Size(150, 45),
-        // 150,
-        // 0.75f,
-        // false,
-        // Alignment.CenterLeft,
-        // false);
-        // drawGradientRect(0, height-60-45, 300, 150, height-45, Color.RED.getRGB(), Color.GREEN.getRGB());
+        GuiHelper.drawHoveringText(
+            hudList,
+            new Pos2d(x, y),
+            new Size(150, 45),
+            150,
+            0.75f,
+            false,
+            Alignment.CenterLeft,
+            false);
 
-
-        GL11.glPushMatrix();
-        int xoff = 50;
-        int yoff = 15;
-        int w = 15;
-        int h = 150;
-        int left = h+xoff;
-        int up = height-h-yoff;
-        int right = left+w;
-        int down = up+h;
-        GL11.glTranslated(left, down, 0);
-        GL11.glRotated(90, 0, 0, -1);
-        GL11.glTranslated(-left, -down, 0);
-//        GuiHelper.drawGradientRect(300, 50, height - 100 - 10, 100, height - 100, Color.RED.getRGB(), Color.GREEN.getRGB());
-        GuiHelper.drawGradientRect(300, left,up, right, down, Color.RED.getRGB(), Color.GREEN.getRGB());
-
-
-//        GuiHelper.drawGradientRect(300, height-100, 100, height-100-10, 50, Color.RED.getRGB(), Color.GREEN.getRGB());
-        GL11.glPopMatrix();
-//        GuiHelper
-//            .drawGradientRect(300, 50, height - 100 - 10, 100, height - 100, Color.RED.getRGB(), Color.GREEN.getRGB());
-
+        int xOffset = 30;
+        int yOffset = 80;
+        int w = 10;
+        int h = 80;
+        drawPowerRectangle(xOffset, yOffset, w, h, height);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glPopMatrix();
     }
 
-    public static void drawGradientRect(int bottomLeftX, int topLeftY, float z, int topRightX, int bottomRightY,
-        int colorStart, int colorEnd) {
-        float var7 = (colorStart >> 24 & 255) / 255F;
-        float var8 = (colorStart >> 16 & 255) / 255F;
-        float var9 = (colorStart >> 8 & 255) / 255F;
-        float var10 = (colorStart & 255) / 255F;
-        float var11 = (colorEnd >> 24 & 255) / 255F;
-        float var12 = (colorEnd >> 16 & 255) / 255F;
-        float var13 = (colorEnd >> 8 & 255) / 255F;
-        float var14 = (colorEnd & 255) / 255F;
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glShadeModel(GL11.GL_SMOOTH);
-        Tessellator var15 = Tessellator.instance;
-        var15.startDrawingQuads();
-        var15.setColorRGBA_F(var8, var9, var10, var7);
-        var15.addVertex(topRightX, topLeftY, z);
-        var15.addVertex(bottomLeftX, topLeftY, z);
-        var15.setColorRGBA_F(var12, var13, var14, var11);
-        var15.addVertex(bottomLeftX, bottomRightY, z);
-        var15.addVertex(topRightX, bottomRightY, z);
-        var15.draw();
-        GL11.glShadeModel(GL11.GL_FLAT);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+    private static void drawPowerRectangle(int xOffset, int yOffset, int w, int h, int screenHeight) {
+        int left = h + xOffset;
+        int up = screenHeight - h - yOffset;
+        int right = left + w;
+        int down = up + h;
+
+        Color gradientLeft;
+        Color gradientRight = Color.GREEN;
+        BigInteger change5m = getReadingSum(measurements, measurementCount5m);
+        if (change5m.compareTo(BigInteger.ZERO) >= 0) {
+            gradientLeft = Color.GREEN;
+        } else {
+            double severity = measurement.compareTo(BigInteger.ZERO) == 0 ? 1
+                : Math.min(
+                    1,
+                    Math.abs(
+                        new BigDecimal(change5m.multiply(BigInteger.valueOf(100)))
+                            .divide(new BigDecimal(highest), RoundingMode.FLOOR)
+                            .intValue() / 100f));
+            int gradientFactor = (int) (255 * (severity));
+            gradientLeft = new Color(255, 255 - gradientFactor, 0);
+            gradientRight = new Color(
+                Math.min(255, (int) (gradientFactor * 1.5f)),
+                255 - (int) (gradientFactor * Math.sqrt(severity)),
+                0);
+        }
+
+        GL11.glPushMatrix();
+        GL11.glTranslated(left, down, 0);
+        GL11.glRotated(90, 0, 0, -1);
+        GL11.glTranslated(-left, -down, 0);
+        GuiHelper.drawGradientRect(300, left, up, right, down, gradientLeft.getRGB(), gradientRight.getRGB());
+        GL11.glDisable(GL_LIGHTING);
+        GL11.glPopMatrix();
+
     }
 
     public static void setMeasurement(BigInteger newEU) {
         measurement = newEU;
+        if (highest.compareTo(measurement) < 0) highest = measurement;
         lastChange = measurementCount == 0 ? BigInteger.valueOf(0) : measurement.subtract(currentEU);
         currentEU = measurement;
         if (measurementCount > 0) measurements.addFirst(lastChange);
