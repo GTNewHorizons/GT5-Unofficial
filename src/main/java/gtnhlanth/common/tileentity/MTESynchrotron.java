@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -69,8 +71,6 @@ import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import gtnhlanth.util.DescTextLocalization;
 import gtnhlanth.util.Util;
-
-import javax.annotation.Nullable;
 
 public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotron> implements ISurvivalConstructable {
 
