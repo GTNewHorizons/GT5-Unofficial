@@ -170,9 +170,9 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
     @Override
     public boolean onMiddleClick(final MetaBaseItem item, final ItemStack itemStack, final EntityPlayer player) {
-        if (player.isSneaking()) {
+        if (isCtrlDown()) {
             sendPacket(GTPacketInfiniteSpraycan.Action.LOCK_CAN);
-        } else if (isCtrlDown()) {
+        } else if (isShiftDown()) {
             sendPacket(GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK);
         } else if (isLocked(itemStack)) {
             displayLockedMessage();
@@ -196,6 +196,26 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
         return true;
     }
+
+   private boolean isShiftDown() {
+        // Yes, there's a duplicate method in GT++, but I didn't feel right including GT++ code here. We can extract
+        // this later if it is useful elsewhere.
+        try {
+            // noinspection DuplicatedCode
+            if (!Keyboard.isCreated()) {
+                return false;
+            }
+
+            boolean isShiftKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
+            if (!isShiftKeyDown && Minecraft.isRunningOnMac)
+                isShiftKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
+
+            return isShiftKeyDown;
+        } catch (IllegalStateException ignored) {
+            return false;
+        }
+    }
+    // endregion
 
     private boolean isCtrlDown() {
         // Yes, there's a duplicate method in GT++, but I didn't feel right including GT++ code here. We can extract
