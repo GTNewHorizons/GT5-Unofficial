@@ -125,7 +125,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
                 steamFieldGen, steelWood, superdenseStronze, gatePlate, steamConveyor, gatePlate, superdenseBreel, steelWood, steamFieldGen,
                 ironWood, steamFieldGen, steamFieldGen, steamEmitter, steamGear, steamEmitter, steamFieldGen, steamFieldGen, ironWood)
             .itemOutputs(GregtechItemList.Controller_Steamgate.get(1))
-            .duration(20 * SECONDS)
+            .duration(120 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(steamGateAssemblerRecipes);
 
@@ -176,7 +176,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
                 superdenseBronze, steelWood, steamPiston, steamPiston, superdenseSteel, superdenseSteel, superdenseSteel, superdenseBronze, null,
                 bronzeWood, superdenseBronze, superdenseBronze, superdenseBronze, superdenseBronze, superdenseBronze, superdenseBronze, superdenseBronze, superdenseBronze)
             .itemOutputs(ItemList.Steamgate_Iris_Blade.get(1))
-            .duration(20 * SECONDS)
+            .duration(1 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(steamGateAssemblerRecipes);
 
@@ -193,7 +193,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
                 stronzeLongRod, breelGear, steamSmallGear, stronzeGear, steamSmallGear, stronzeGear, steamSmallGear, breelGear, stronzeLongRod,
                 steamLongRod, stronzeLongRod, breelLongRod, stronzeLongRod, steamLongRod, stronzeLongRod, breelLongRod, stronzeLongRod, steamLongRod)
             .itemOutputs(gateFrame)
-            .duration(20 * SECONDS)
+            .duration(2)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(steamGateAssemblerRecipes);
 
@@ -227,7 +227,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
                 null, null, null, steelWood, steamArm, steelWood, null, null, null,
                 null, null, null, null, steelWood, null, null, null, null)
             .itemOutputs(gateChevron)
-            .duration(20 * SECONDS)
+            .duration(1 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(steamGateAssemblerRecipes);
 
@@ -244,7 +244,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
                 null, null, null, null, null, gateFrame, null, null, null,
                 null, null, null, null, null, null, null, null, null)
             .itemOutputs(gateChevronUpgrade)
-            .duration(20 * SECONDS)
+            .duration(1 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(steamGateAssemblerRecipes);
 
@@ -261,7 +261,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
                 superdenseSteel, breelPlate, breelPlate, breelPlate, breelPlate, breelPlate, breelPlate, breelPlate, superdenseSteel,
                 ironPressure, goldPressure, ironPressure, goldPressure, ironPressure, goldPressure, ironPressure, goldPressure, ironPressure)
             .itemOutputs(gatePlate)
-            .duration(20 * SECONDS)
+            .duration(1 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(steamGateAssemblerRecipes);
 
@@ -277,7 +277,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
                 steelWood, gateIris, null, null, breelGear, null, null, gateIris, steelWood,
                 bronzeWood, steelWood, gateIris, gateIris, gateIris, gateIris, gateIris, steelWood, bronzeWood)
             .itemOutputs(gateIrisUpgrade)
-            .duration(20 * SECONDS)
+            .duration(1 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(steamGateAssemblerRecipes);
 
@@ -293,7 +293,7 @@ public class SteamGateAssemblerRecipes implements Runnable {
                 breelPlate, stronzePipeH, breelPlate, breelPlate, stronzePipeH, breelPlate, breelPlate, stronzePipeH, breelPlate,
                 stronzePipeH, breelPlate, breelPlate, breelPlate, stronzePipeH, breelPlate, breelPlate, breelPlate, stronzePipeH)
             .itemOutputs(ItemList.Steamgate_Dialing_Device.get(1))
-            .duration(20 * SECONDS)
+            .duration(120 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(steamGateAssemblerRecipes);
 
