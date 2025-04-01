@@ -207,15 +207,11 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
             }
 
             boolean isShiftKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
-            if (!isShiftKeyDown && Minecraft.isRunningOnMac)
-                isShiftKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
-
             return isShiftKeyDown;
         } catch (IllegalStateException ignored) {
             return false;
         }
     }
-    // endregion
 
     private boolean isCtrlDown() {
         // Yes, there's a duplicate method in GT++, but I didn't feel right including GT++ code here. We can extract
