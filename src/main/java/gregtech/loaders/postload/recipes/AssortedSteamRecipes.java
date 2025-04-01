@@ -527,7 +527,7 @@ public class AssortedSteamRecipes implements Runnable {
                 ItemList.Bronze_Wood_Casing.get(4),
                 GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Stronze, 1),
                 GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Breel, 1),
-                ItemList.Hatch_Input_Bus_LV.get(1),
+                ItemList.Hatch_Input_LV.get(1),
                 ItemList.Hydraulic_Regulator_Steam.get(2),
                 GTUtility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Pipeless_Hatch_Steam.get(1))
@@ -540,7 +540,7 @@ public class AssortedSteamRecipes implements Runnable {
                 ItemList.Bronze_Wood_Casing.get(4),
                 GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Breel, 1),
                 GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Stronze, 1),
-                ItemList.Hatch_Output_Bus_LV.get(1),
+                ItemList.Hatch_Output_LV.get(1),
                 ItemList.Hydraulic_Regulator_Steam.get(2),
                 GTUtility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.Pipeless_Vent_Steam.get(1))
@@ -1052,7 +1052,7 @@ public class AssortedSteamRecipes implements Runnable {
             GTModHandler.addCraftingRecipe(
                 ItemList.Pipeless_Hatch_Steam.get(1),
                 new Object[] { "AEA", "CBD", "AEA", 'A', ItemList.Bronze_Wood_Casing.get(1), 'B',
-                    ItemList.Hatch_Input_Bus_LV.get(1), 'C',
+                    ItemList.Hatch_Input_LV.get(1), 'C',
                     GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Stronze, 1), 'D',
                     GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Breel, 1), 'E',
                     ItemList.Hydraulic_Regulator_Steam.get(1) });
@@ -1061,7 +1061,7 @@ public class AssortedSteamRecipes implements Runnable {
             GTModHandler.addCraftingRecipe(
                 ItemList.Pipeless_Vent_Steam.get(1),
                 new Object[] { "AEA", "CBD", "AEA", 'A', ItemList.Bronze_Wood_Casing.get(1), 'B',
-                    ItemList.Hatch_Output_Bus_LV.get(1), 'C',
+                    ItemList.Hatch_Output_LV.get(1), 'C',
                     GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Breel, 1), 'D',
                     GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Stronze, 1), 'E',
                     ItemList.Hydraulic_Regulator_Steam.get(1) });
