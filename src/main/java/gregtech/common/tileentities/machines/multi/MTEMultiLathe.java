@@ -20,6 +20,8 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -76,6 +78,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     protected int pipeTier = -1;
 
     // get tier from block meta
+    @Nullable
     private static Integer getTierFromMeta(Block block, Integer metaID) {
         if (block != GregTechAPI.sBlockCasings11) return null;
         if (metaID < 0 || metaID > 7) return null;

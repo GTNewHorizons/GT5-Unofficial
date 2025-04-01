@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -106,12 +107,14 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
 
     private int tierSimpleBlock = -1;
 
+    @Nullable
     public static Integer getTierSimpleBlock(Block block, int meta) {
         if (block == Blocks.iron_block && meta == 0) return 1;
         if (block == GregTechAPI.sBlockMetal6 && meta == 13) return 2;
         return null;
     }
 
+    @Nullable
     public Integer getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
             tCountCasing++;
@@ -124,6 +127,7 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
         return null;
     }
 
+    @Nullable
     public static Integer getTierPipeCasing(Block block, int meta) {
         if (block == sBlockCasings2 && 12 == meta) return 1;
         if (block == sBlockCasings2 && 13 == meta) return 2;

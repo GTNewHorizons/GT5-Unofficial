@@ -12,6 +12,8 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -85,6 +87,7 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
 
     private int itemPipeTier = -1;
 
+    @Nullable
     private static Integer getItemPipeTierFromMeta(Block block, Integer metaID) {
         if (block != GregTechAPI.sBlockCasings11) return null;
         if (metaID < 0 || metaID > 7) return null;

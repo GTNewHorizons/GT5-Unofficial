@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -94,6 +95,7 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
 
     private int tierMachineCasing = -1;
 
+    @Nullable
     public Integer getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
             mCounCasing++;
