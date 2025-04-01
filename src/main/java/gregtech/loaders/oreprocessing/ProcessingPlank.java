@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.recipe.RecipeMaps.steamCarpenterRecipes;
@@ -56,12 +56,12 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 .eut(8)
                 .addTo(steamCarpenterRecipes);
 
-            GTValues.RA.stdBuilder()
+            RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(8, aStack), GTUtility.getIntegratedCircuit(8))
                 .itemOutputs(new ItemStack(Blocks.chest, 1))
-                .duration(40 * SECONDS)
+                .duration(2 * SECONDS)
                 .eut(4)
-                .addTo(assemblerRecipes);
+                .addTo(steamCarpenterRecipes);
 
             if (aStack.getItemDamage() == 32767) {
                 for (byte i = 0; i < 64; i = (byte) (i + 1)) {
