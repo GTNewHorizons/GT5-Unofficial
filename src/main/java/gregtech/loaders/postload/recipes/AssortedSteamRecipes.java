@@ -468,6 +468,17 @@ public class AssortedSteamRecipes implements Runnable {
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(steamManufacturerRecipes);
+
+            // Drawer controller
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTModHandler.getModItem(StorageDrawers.ID, "upgradeTemplate", 1, 0),
+                    GTOreDictUnificator.get("drawerBasic", 1),
+                    GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Breel, 2))
+                .itemOutputs(GTModHandler.getModItem(StorageDrawers.ID, "controller", 1, 0))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(steamManufacturerRecipes);
         }
 
         // Spotless:off
