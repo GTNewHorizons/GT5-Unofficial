@@ -226,10 +226,7 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
     }
 
     private boolean checkHatches() {
-        return !mSteamInputFluids.isEmpty() && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()
-            && mOutputHatches.isEmpty()
-            && mInputHatches.isEmpty();
+        return !mSteamInputFluids.isEmpty() && !mSteamInputs.isEmpty() && !mSteamOutputs.isEmpty();
     }
 
     @Override
