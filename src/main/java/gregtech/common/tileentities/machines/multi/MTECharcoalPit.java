@@ -48,6 +48,11 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
     }
 
     @Override
+    protected boolean explodesImmediately() {
+        return false;
+    }
+
+    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return (facing.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0;
     }
