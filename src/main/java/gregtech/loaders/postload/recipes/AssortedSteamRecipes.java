@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.enums.Mods.BuildCraftFactory;
+import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.StorageDrawers;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
@@ -476,6 +477,17 @@ public class AssortedSteamRecipes implements Runnable {
                     GTOreDictUnificator.get("drawerBasic", 1),
                     GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Breel, 2))
                 .itemOutputs(GTModHandler.getModItem(StorageDrawers.ID, "controller", 1, 0))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(steamManufacturerRecipes);
+        }
+
+        if (ExtraUtilities.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Diamond, 3),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Obsidian, 2))
+                .itemOutputs(GTModHandler.getModItem(ExtraUtilities.ID, "defoliageAxe", 1, 0))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(steamManufacturerRecipes);
