@@ -617,13 +617,10 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     () -> getBaseMetaTileEntity().wasShutdown(),
                     wasShutDown -> getBaseMetaTileEntity().setShutdownStatus(wasShutDown)));
         screenElements.widget(
-            TextWidget.dynamicString(this::generateCurrentProgress)
+            TextWidget.dynamicString(this::generateCurrentRecipeInfoString)
                 .setSynced(false)
-                .setTextAlignment(new Alignment(-1, -1))
-                .setSize(180, 12)
-                .setEnabled(
-                    widget -> (mOutputFluids != null && mOutputFluids.length > 0)
-                        || (mOutputItems != null && mOutputItems.length > 0)))
+                .setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(widget -> (mMaxProgresstime > 0)))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> mProgresstime, val -> mProgresstime = val))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> mMaxProgresstime = val));
     }
