@@ -32,6 +32,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
@@ -534,7 +535,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     public String[] getInfoData() {
         var ret = new ArrayList<String>();
         // Show linked purification units and their status
-        ret.add("Linked Purification Units: ");
+        ret.add(StatCollector.translateToLocal("GT5U.infodata.purification_plant.linked_units"));
         for (LinkedPurificationUnit unit : this.mLinkedUnits) {
             String text = EnumChatFormatting.AQUA + unit.metaTileEntity()
                 .getLocalName() + ": ";
@@ -542,13 +543,18 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 .status();
             switch (status) {
                 case ONLINE -> {
-                    text = text + EnumChatFormatting.GREEN + "Online";
+                    text = text + EnumChatFormatting.GREEN
+                        + StatCollector.translateToLocal("GT5U.infodata.purification_plant.linked_units.status.online");
                 }
                 case DISABLED -> {
-                    text = text + EnumChatFormatting.YELLOW + "Disabled";
+                    text = text + EnumChatFormatting.YELLOW
+                        + StatCollector
+                            .translateToLocal("GT5U.infodata.purification_plant.linked_units.status.disabled");
                 }
                 case INCOMPLETE_STRUCTURE -> {
-                    text = text + EnumChatFormatting.RED + "Incomplete Structure";
+                    text = text + EnumChatFormatting.RED
+                        + StatCollector
+                            .translateToLocal("GT5U.infodata.purification_plant.linked_units.status.incomplete");
                 }
             }
             ret.add(text);
@@ -611,13 +617,10 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     () -> getBaseMetaTileEntity().wasShutdown(),
                     wasShutDown -> getBaseMetaTileEntity().setShutdownStatus(wasShutDown)));
         screenElements.widget(
-            TextWidget.dynamicString(this::generateCurrentProgress)
+            TextWidget.dynamicString(this::generateCurrentRecipeInfoString)
                 .setSynced(false)
-                .setTextAlignment(new Alignment(-1, -1))
-                .setSize(180, 12)
-                .setEnabled(
-                    widget -> (mOutputFluids != null && mOutputFluids.length > 0)
-                        || (mOutputItems != null && mOutputItems.length > 0)))
+                .setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(widget -> (mMaxProgresstime > 0)))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> mProgresstime, val -> mProgresstime = val))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> mMaxProgresstime, val -> mMaxProgresstime = val));
     }

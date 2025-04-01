@@ -44,17 +44,14 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -78,13 +75,11 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
-import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.builder.UIInfo;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
@@ -99,7 +94,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import bartworks.API.BorosilicateGlass;
-import codechicken.nei.NEIClientUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.apiculture.EnumBeeType;
@@ -555,20 +549,20 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add(
-            "Running in mode: " + EnumChatFormatting.GOLD
-                + (mPrimaryMode == 0 ? "Input mode"
-                    : (mPrimaryMode == 1 ? "Output mode"
-                        : (mSecondaryMode == 0 ? "Operating mode (NORMAL)" : "Operating mode (SWARMER)"))));
+            StatCollector.translateToLocal("kubatech.infodata.running_mode") + " "
+                + EnumChatFormatting.GOLD
+                + (mPrimaryMode == 0 ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.input")
+                    : (mPrimaryMode == 1 ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.output")
+                        : (mSecondaryMode == 0
+                            ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.operating.normal")
+                            : StatCollector
+                                .translateToLocal("kubatech.infodata.mia.running_mode.operating.swarmer")))));
         info.add(
-            "Bee storage (" + EnumChatFormatting.GOLD
-                + mStorage.size()
-                + EnumChatFormatting.RESET
-                + "/"
-                + (mStorage.size() > mMaxSlots ? EnumChatFormatting.DARK_RED.toString()
-                    : EnumChatFormatting.GOLD.toString())
-                + mMaxSlots
-                + EnumChatFormatting.RESET
-                + "):");
+            StatCollector.translateToLocalFormatted(
+                "kubatech.infodata.mia.running_mode.bee_storage",
+                "" + EnumChatFormatting.GOLD + mStorage.size() + EnumChatFormatting.RESET,
+                (mStorage.size() > mMaxSlots ? EnumChatFormatting.DARK_RED.toString()
+                    : EnumChatFormatting.GOLD.toString()) + mMaxSlots + EnumChatFormatting.RESET));
         HashMap<String, Integer> infos = new HashMap<>();
         for (int i = 0; i < mStorage.size(); i++) {
             StringBuilder builder = new StringBuilder();
@@ -895,53 +889,42 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     private HashMap<ItemStack, Double> GUIDropProgress = new HashMap<>();
 
     @Override
-    protected Widget generateCurrentRecipeInfoWidget() {
-        if (mSecondaryMode == 1) return super.generateCurrentRecipeInfoWidget();
+    protected String generateCurrentRecipeInfoString() {
+        if (mSecondaryMode == 1) return super.generateCurrentRecipeInfoString();
+        StringBuilder ret = new StringBuilder(EnumChatFormatting.WHITE + "Progress: ")
+            .append(String.format("%,.2f", (double) mProgresstime / 20))
+            .append("s / ")
+            .append(String.format("%,.2f", (double) mMaxProgresstime / 20))
+            .append("s (")
+            .append(String.format("%,.1f", (double) mProgresstime / mMaxProgresstime * 100))
+            .append("%)\n");
 
-        final DynamicPositionedColumn processingDetails = new DynamicPositionedColumn();
-        final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-
-        if (mOutputItems == null && GUIDropProgress == null) return processingDetails;
-
-        LinkedHashMap<ItemStack, Double> sortedMap = GUIDropProgress.entrySet()
-            .stream()
-            .sorted(Comparator.comparingInt((Map.Entry<ItemStack, Double> entry) -> {
-                assert mOutputItems != null;
-                return Arrays.stream(mOutputItems)
-                    .filter(s -> s.isItemEqual(entry.getKey()))
-                    .mapToInt(i -> i.stackSize)
-                    .sum();
-            })
-                .reversed())
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-
-        for (Map.Entry<ItemStack, Double> drop : sortedMap.entrySet()) {
-            assert mOutputItems != null;
+        for (Map.Entry<ItemStack, Double> drop : GUIDropProgress.entrySet()) {
             int outputSize = Arrays.stream(mOutputItems)
                 .filter(s -> s.isItemEqual(drop.getKey()))
                 .mapToInt(i -> i.stackSize)
                 .sum();
-            if (outputSize != 0) {
-                Long itemCount = (long) outputSize;
-                String itemName = drop.getKey()
-                    .getDisplayName();
-                String itemAmountString = EnumChatFormatting.WHITE + " x "
-                    + EnumChatFormatting.GOLD
-                    + formatShortenedLong(itemCount)
-                    + EnumChatFormatting.WHITE
-                    + appendRate(false, itemCount, true);
-                String lineText = EnumChatFormatting.AQUA
-                    + NEIClientUtils
-                        .cropText(fontRenderer, itemName, 173 - fontRenderer.getStringWidth(itemAmountString))
-                    + itemAmountString;
-                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
-
-                processingDetails.widget(
-                    new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
-                        .addTooltip(lineTooltip));
+            ret.append(EnumChatFormatting.AQUA)
+                .append(
+                    drop.getKey()
+                        .getDisplayName())
+                .append(EnumChatFormatting.WHITE)
+                .append(": ");
+            if (outputSize == 0) {
+                ret.append(String.format("%.2f", drop.getValue() * 100))
+                    .append("%\n");
+            } else {
+                ret.append(EnumChatFormatting.GOLD)
+                    .append(
+                        String.format(
+                            "x%d %s(+%.2f/sec)\n",
+                            outputSize,
+                            EnumChatFormatting.WHITE,
+                            (double) outputSize / (mMaxProgresstime / 20)));
             }
         }
-        return processingDetails;
+
+        return ret.toString();
     }
 
     @Override

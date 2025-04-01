@@ -257,7 +257,8 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         String[] ret = new String[origin.length + 1];
         System.arraycopy(origin, 0, ret, 0, origin.length);
         ret[origin.length] = StatCollector.translateToLocal("scanner.info.CASS.tier")
-            + (casingTier >= 0 ? GTValues.VN[casingTier + 1] : "None!");
+            + (casingTier >= 0 ? GTValues.VN[casingTier + 1]
+                : StatCollector.translateToLocal("scanner.info.CASS.tier.none"));
         return ret;
     }
 
