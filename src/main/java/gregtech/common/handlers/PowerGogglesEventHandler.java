@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.WorldServer;
 
 import appeng.api.util.DimensionalCoord;
 import baubles.common.container.InventoryBaubles;
@@ -59,12 +60,20 @@ public class PowerGogglesEventHandler {
         } else {
             if (ticks == 0 || forceUpdate) {
                 EntityPlayerMP player = (EntityPlayerMP) event.player;
-                if (playerLscMap.get(player.getUniqueID()) != null) {
-                    MTELapotronicSuperCapacitor lsc = playerLscMap.get(player.getUniqueID());
+                if (isValidLink(player, lscLinkMap.get(player.getUniqueID()))) {
+                    DimensionalCoord coords = lscLinkMap.get(player.getUniqueID());
+                    WorldServer lscDim = player.mcServer.worldServerForDimension(coords.getDimension());
+                    TileEntity tileEntity = lscDim.getTileEntity(coords.x, coords.y, coords.z);
+                    MTELapotronicSuperCapacitor lsc = ((MTELapotronicSuperCapacitor) ((IGregTechTileEntity) tileEntity)
+                        .getMetaTileEntity());
                     NW.sendToPlayer(
                         new GTPacketUpdatePowerGoggles(BigInteger.valueOf(lsc.getEUVar()), forceRefresh),
                         player);
                 } else {
+                    if (lscLinkMap.get(player.getUniqueID()) != null) {
+                        lscLinkMap.put(player.getUniqueID(), null);
+                        forceRefresh = true;
+                    }
                     NW.sendToPlayer(
                         new GTPacketUpdatePowerGoggles(
                             WirelessNetworkManager.getUserEU((player).getUniqueID()),
@@ -112,15 +121,16 @@ public class PowerGogglesEventHandler {
         }
     }
 
-    public static void setLscLink(EntityPlayer player, DimensionalCoord coords) {
-        if (coords == null) {
-            playerLscMap.put(player.getUniqueID(), null);
-            return;
-        }
-        TileEntity tileEntity = player.worldObj.getTileEntity(coords.x, coords.y, coords.z);
-        MTELapotronicSuperCapacitor lsc = (MTELapotronicSuperCapacitor) ((IGregTechTileEntity) tileEntity)
-            .getMetaTileEntity();
-        playerLscMap.put(player.getUniqueID(), lsc);
+    public static boolean isValidLink(EntityPlayerMP player, DimensionalCoord coords) {
+        if (coords == null) return false;
+        WorldServer lscDim = player.mcServer.worldServerForDimension(coords.getDimension());
+        TileEntity tileEntity = lscDim.getTileEntity(coords.x, coords.y, coords.z);
+        if (!(tileEntity instanceof IGregTechTileEntity gte)) return false;
+        return gte.getMetaTileEntity() instanceof MTELapotronicSuperCapacitor;
+    }
+
+    public static void setLscLink(EntityPlayerMP player, DimensionalCoord coords) {
+        lscLinkMap.put(player.getUniqueID(), coords);
     }
 
     @SubscribeEvent

@@ -60,9 +60,9 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble, INet
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) { // called by both server and
                                                                                            // client
-        if (player instanceof EntityPlayerMP) {
+        if (player instanceof EntityPlayerMP mPlayer) {
             if (player.isSneaking()) {
-                PowerGogglesEventHandler.setLscLink(player, null);
+                PowerGogglesEventHandler.setLscLink(mPlayer, null);
                 stack.setTagCompound(new NBTTagCompound());
                 PowerGogglesEventHandler.forceUpdate = true;
                 PowerGogglesEventHandler.forceRefresh = true;
@@ -107,7 +107,9 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble, INet
     public void onWornTick(ItemStack itemstack, EntityLivingBase player) {}
 
     @Override
-    public void onEquipped(ItemStack itemstack, EntityLivingBase player) {}
+    public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
+
+    }
 
     @Override
     public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
