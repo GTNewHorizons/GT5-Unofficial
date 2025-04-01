@@ -409,6 +409,28 @@ public class AssortedSteamRecipes implements Runnable {
 
         // Spotless:off
 
+        RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 4),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Clay, 1),
+                GTUtility.getIntegratedCircuit(4))
+            .itemOutputs(GregtechItemList.GTFluidTank_ULV.get(1))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+
+        RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(Blocks.chest, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 5),
+                GTUtility.getIntegratedCircuit(5))
+            .itemOutputs(new ItemStack(Blocks.hopper, 1))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+
         // Hatches
 
         // Steam Hatch
