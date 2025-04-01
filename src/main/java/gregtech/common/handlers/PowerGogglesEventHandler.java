@@ -3,12 +3,16 @@ package gregtech.common.handlers;
 import static gregtech.api.enums.GTValues.NW;
 
 import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.tileentity.TileEntity;
 
 import appeng.api.util.DimensionalCoord;
@@ -28,6 +32,7 @@ public class PowerGogglesEventHandler {
 
     private static int ticks = 0;
     public static Minecraft mc;
+    public static Map<UUID, DimensionalCoord> lscLinkMap = new HashMap<>();
     public static DimensionalCoord lscLink = null;
     public static boolean forceUpdate = false;
     public static boolean forceRefresh = false;
@@ -53,8 +58,9 @@ public class PowerGogglesEventHandler {
         } else {
             if (ticks == 0 || forceUpdate) {
                 EntityPlayerMP player = (EntityPlayerMP) event.player;
-                if (lscLink != null) {
-                    TileEntity tileEntity = player.worldObj.getTileEntity(lscLink.x, lscLink.y, lscLink.z);
+                if (lscLinkMap.get(player.getUniqueID()) != null) {
+                    DimensionalCoord lscCoords = lscLinkMap.get(player.getUniqueID());
+                    TileEntity tileEntity = player.worldObj.getTileEntity(lscCoords.x, lscCoords.y, lscCoords.z);
                     MTELapotronicSuperCapacitor lsc = (MTELapotronicSuperCapacitor) ((IGregTechTileEntity) tileEntity)
                         .getMetaTileEntity();
                     NW.sendToPlayer(
@@ -110,6 +116,7 @@ public class PowerGogglesEventHandler {
 
     @SubscribeEvent
     public void serverOnPlayerDisconnect(FMLNetworkEvent.ServerDisconnectionFromClientEvent event) {
-        lscLink = null;
+        EntityPlayerMP player = ((NetHandlerPlayServer) event.handler).playerEntity;
+        lscLinkMap.put(player.getUniqueID(), null);
     }
 }
