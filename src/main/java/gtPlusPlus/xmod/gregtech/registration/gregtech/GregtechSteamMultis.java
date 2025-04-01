@@ -158,19 +158,19 @@ public class GregtechSteamMultis {
         GregtechItemList.Controller_SteamExtruder.set(
             new MTESteamExtruder(Controller_SteamExtruder.ID, "gtpp.multimachine.steam.extruder", "Steam Conformer")
                 .getStackForm(1));
-        addItemTooltip(GregtechItemList.Controller_SteamExtruder.get(1), GTValues.AuthorNoc);
+        addItemTooltip(GregtechItemList.Controller_SteamExtruder.get(1), GTValues.AuthorNocSteam);
         GregtechItemList.Controller_SteamRockBreaker.set(
             new MTESteamRockBreaker(
                 Controller_SteamRockBreaker.ID,
                 "gtpp.multimachine.steam.rockbreaker",
                 "Steam Cobbler").getStackForm(1));
-        addItemTooltip(GregtechItemList.Controller_SteamRockBreaker.get(1), GTValues.AuthorNoc);
+        addItemTooltip(GregtechItemList.Controller_SteamRockBreaker.get(1), GTValues.AuthorNocSteam);
         GregtechItemList.Controller_SteamExtractinator.set(
             new MTESteamExtractinator(
                 Controller_SteamExtractinator.ID,
                 "gtpp.multimachine.steam.extractinator",
                 "Steam Extractinator").getStackForm(1));
-        addItemTooltip(GregtechItemList.Controller_SteamExtractinator.get(1), GTValues.AuthorNoc);
+        addItemTooltip(GregtechItemList.Controller_SteamExtractinator.get(1), GTValues.AuthorNocSteam);
         GregtechItemList.Controller_SteamCarpenter.set(
             new MTESteamCarpenter(Controller_SteamCarpenter.ID, "gtpp.multimachine.steam.carpenter", "Steam Carpenter")
                 .getStackForm(1));
@@ -189,43 +189,43 @@ public class GregtechSteamMultis {
                 Controller_CactusWonder.ID,
                 "gtpp.multimachine.steam.cactuswonder",
                 "Cactus Wonder").getStackForm(1));
-        addItemTooltip(GregtechItemList.Controller_CactusWonder.get(1), GTValues.AuthorNoc);
+        addItemTooltip(GregtechItemList.Controller_CactusWonder.get(1), GTValues.AuthorNocSteam);
         GregtechItemList.Controller_InfernalCokeOven.set(
             new MTESteamInfernalCokeOven(
                 Controller_InfernalCokeOven.ID,
                 "gtpp.multimachine.steam.infernalcokeoven",
                 "Infernal Coke Oven").getStackForm(1));
-        addItemTooltip(GregtechItemList.Controller_InfernalCokeOven.get(1), GTValues.AuthorNoc);
+        addItemTooltip(GregtechItemList.Controller_InfernalCokeOven.get(1), GTValues.AuthorNocSteam);
         GregtechItemList.Controller_SteamManufacturer.set(
             new MTESteamManufacturer(
                 Controller_SteamManufacturer.ID,
                 "gtpp.multimachine.steam.manufacturer",
                 "Steam Manufacturer").getStackForm(1));
-        addItemTooltip(GregtechItemList.Controller_SteamManufacturer.get(1), GTValues.AuthorNoc);
+        addItemTooltip(GregtechItemList.Controller_SteamManufacturer.get(1), GTValues.AuthorNocSteam);
         GregtechItemList.Controller_MegaSolarBoiler.set(
             new MTEMegaSolarBoiler(
                 Controller_MegaSolarBoiler.ID,
                 "gtpp.multimachine.steam.megasolarboiler",
                 "Mega Pressure Solar Boiler").getStackForm(1));
-        addItemTooltip(GregtechItemList.Controller_MegaSolarBoiler.get(1), GTValues.AuthorNoc);
+        addItemTooltip(GregtechItemList.Controller_MegaSolarBoiler.get(1), GTValues.AuthorNocSteam);
         GregtechItemList.Controller_SteamFusionReactor.set(
             new MTESteamFusionReactor(
                 Controller_SteamFusionReactor.ID,
                 "gtpp.multimachine.steam.fusionreactor",
                 "Hyper Pressure Reactor").getStackForm(1));
-        addItemTooltip(GregtechItemList.Controller_SteamFusionReactor.get(1), GTValues.AuthorNoc);
+        addItemTooltip(GregtechItemList.Controller_SteamFusionReactor.get(1), GTValues.AuthorNocSteam);
         GregtechItemList.Controller_SteamCompactFusionReactor.set(
             new MTESteamCompact(
                 Controller_SteamCompactFusionReactor.ID,
                 "gtpp.multimachine.steam.compactsteamreactor",
                 "Compact Hyper Pressure Reactor").getStackForm(1));
-        addItemTooltip(GregtechItemList.Controller_SteamCompactFusionReactor.get(1), GTValues.AuthorNoc);
+        addItemTooltip(GregtechItemList.Controller_SteamCompactFusionReactor.get(1), GTValues.AuthorNocSteam);
         GregtechItemList.Controller_SteamMegaAlloySmelter.set(
             new MTESteamMegaAlloySmelter(
                 Controller_SteamMegaAlloySmelter.ID,
                 "gtpp.multimachine.steam.megaalloysmelter",
                 "Mega Steam Fuser").getStackForm(1));
-        addItemTooltip(GregtechItemList.Controller_SteamMegaAlloySmelter.get(1), GTValues.AuthorNoc);
+        addItemTooltip(GregtechItemList.Controller_SteamMegaAlloySmelter.get(1), GTValues.AuthorNocSteam);
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(
             new MTEHatchSteamBusInput(Hatch_Input_Bus_Steam.ID, "hatch.input_bus.tier.steam", "Simple Input Bus", 0)

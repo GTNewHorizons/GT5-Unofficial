@@ -927,7 +927,6 @@ import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
-import gregtech.api.enums.GTValues;
 import net.minecraft.util.EnumChatFormatting;
 
 import codechicken.nei.api.API;

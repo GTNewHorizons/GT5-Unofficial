@@ -16,8 +16,6 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.WHITE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.animatedText;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
-import static net.minecraft.util.EnumChatFormatting.DARK_GREEN;
-import static net.minecraft.util.EnumChatFormatting.GOLD;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -632,6 +630,12 @@ public class GTValues {
         text("\n"),
         animatedText(
             "Brass",
+            0,
+            500,
+            GOLD + BOLD,
+            DARK_GREEN + BOLD,
+            GOLD + BOLD,
+            DARK_GREEN + BOLD,
             DARK_GREEN + OBFUSCATED + BOLD),
         animatedText(
             "Noccles",
@@ -694,7 +698,7 @@ public class GTValues {
         + EnumChatFormatting.ITALIC
         + "Number";
 
-    public static final Supplier<String> AuthorNoc = chain(
+    public static final Supplier<String> AuthorNocSteam = chain(
         text("Author: "),
         animatedText(
             "Brass",
