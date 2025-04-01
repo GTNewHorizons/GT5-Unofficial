@@ -2261,7 +2261,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Hatch_Output_ULV.get(1L),
             bits,
             new Object[] { "ASA", "AFA", "APA", 'S', GTModHandler.getModItem(BuildCraftFactory.ID, "tankBlock", 1L, 0),
-                'F', ItemList.Hull_ULV.get(1L), 'A', OrePrefixes.plate.get(Materials.Rubber), 'P',
+                'F', ItemList.Casing_BronzePlatedBricks.get(1L), 'A', OrePrefixes.plate.get(Materials.Rubber), 'P',
                 OrePrefixes.ring.get(Materials.Rubber) });
         GTModHandler.addCraftingRecipe(
             ItemList.Hatch_Output_LV.get(1L),
@@ -2280,7 +2280,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Hatch_Input_ULV.get(1L),
             bits,
             new Object[] { "ASA", "AFA", "APA", 'S', GTModHandler.getModItem(BuildCraftFactory.ID, "tankBlock", 1L, 0),
-                'F', ItemList.Hull_ULV.get(1L), 'A', OrePrefixes.plate.get(Materials.Rubber), 'P',
+                'F', ItemList.Casing_BronzePlatedBricks.get(1L), 'A', OrePrefixes.plate.get(Materials.Rubber), 'P',
                 OrePrefixes.gear.get(Materials.Rubber) });
         GTModHandler.addCraftingRecipe(
             ItemList.Hatch_Input_LV.get(1L),

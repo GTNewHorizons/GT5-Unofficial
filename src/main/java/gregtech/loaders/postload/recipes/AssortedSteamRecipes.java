@@ -1,6 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GTValues.RA;
+import static gregtech.api.enums.Mods.BuildCraftFactory;
 import static gregtech.api.enums.Mods.StorageDrawers;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
@@ -408,6 +409,146 @@ public class AssortedSteamRecipes implements Runnable {
 
         // Spotless:off
 
+        // Hatches
+
+        RA.stdBuilder()
+            .itemInputs(
+                GTModHandler.getModItem(BuildCraftFactory.ID, "tankBlock", 1L, 0),
+                ItemList.Casing_BronzePlatedBricks.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Rubber, 6),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Rubber, 1),
+                GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Hatch_Input_ULV.get(1L))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+        RA.stdBuilder()
+            .itemInputs(
+                GTModHandler.getModItem(BuildCraftFactory.ID, "tankBlock", 1L, 0),
+                ItemList.Casing_BronzePlatedBricks.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Rubber, 6),
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.Rubber, 1),
+                GTUtility.getIntegratedCircuit(2))
+            .itemOutputs(ItemList.Hatch_Output_ULV.get(1L))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+
+        RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Input_ULV.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Stronze, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Stronze, 6),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Stronze, 1),
+                GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Hatch_Input_LV.get(1L))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+        RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Output_ULV.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Stronze, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Stronze, 6),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Stronze, 1),
+                GTUtility.getIntegratedCircuit(2))
+            .itemOutputs(ItemList.Hatch_Output_LV.get(1L))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+
+        RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Input_LV.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.CompressedSteam, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CompressedSteam, 6),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.CompressedSteam, 1),
+                GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Hatch_Input_MV.get(1L))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+        RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Output_LV.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.CompressedSteam, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CompressedSteam, 6),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.CompressedSteam, 1),
+                GTUtility.getIntegratedCircuit(2))
+            .itemOutputs(ItemList.Hatch_Output_MV.get(1L))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+
+        // Buses
+
+        RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(Blocks.hopper, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4),
+                MaterialsAlloy.TUMBAGA.getPlate(4),
+                GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(GregtechItemList.Hatch_Input_Bus_Steam.get(1L))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+        RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(Blocks.hopper, 1),
+                MaterialsAlloy.TUMBAGA.getPlate(4),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4),
+                GTUtility.getIntegratedCircuit(2))
+            .itemOutputs(GregtechItemList.Hatch_Output_Bus_Steam.get(1L))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+
+        RA.stdBuilder()
+            .itemInputs(
+                GregtechItemList.Hatch_Input_Bus_Steam.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Stronze, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Stronze, 6),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Stronze, 1),
+                GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(GregtechItemList.Hatch_Input_Bus_SteamMK2.get(1L))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+        RA.stdBuilder()
+            .itemInputs(
+                GregtechItemList.Hatch_Output_Bus_Steam.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Stronze, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Stronze, 6),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Stronze, 1),
+                GTUtility.getIntegratedCircuit(2))
+            .itemOutputs(GregtechItemList.Hatch_Output_Bus_SteamMK2.get(1L))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+
+        RA.stdBuilder()
+            .itemInputs(
+                GregtechItemList.Hatch_Input_Bus_SteamMK2.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.CompressedSteam, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CompressedSteam, 6),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.CompressedSteam, 1),
+                GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(GregtechItemList.Hatch_Input_Bus_SteamMK3.get(1L))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+        RA.stdBuilder()
+            .itemInputs(
+                GregtechItemList.Hatch_Output_Bus_SteamMK2.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.CompressedSteam, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CompressedSteam, 6),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.CompressedSteam, 1),
+                GTUtility.getIntegratedCircuit(2))
+            .itemOutputs(GregtechItemList.Hatch_Output_Bus_SteamMK3.get(1L))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+
         // Machine Casings
 
         // Bronze
@@ -772,7 +913,7 @@ public class AssortedSteamRecipes implements Runnable {
             GTModHandler.addCraftingRecipe(
                 ItemList.Pipeless_Hatch_Steam.get(1),
                 new Object[] { "AEA", "CBD", "AEA", 'A', ItemList.Bronze_Wood_Casing.get(1), 'B',
-                    ItemList.Hatch_Input_LV.get(1), 'C',
+                    ItemList.Hatch_Input_Bus_LV.get(1), 'C',
                     GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Stronze, 1), 'D',
                     GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Breel, 1), 'E',
                     ItemList.Hydraulic_Regulator_Steam.get(1) });
@@ -781,7 +922,7 @@ public class AssortedSteamRecipes implements Runnable {
             GTModHandler.addCraftingRecipe(
                 ItemList.Pipeless_Vent_Steam.get(1),
                 new Object[] { "AEA", "CBD", "AEA", 'A', ItemList.Bronze_Wood_Casing.get(1), 'B',
-                    ItemList.Hatch_Output_LV.get(1), 'C',
+                    ItemList.Hatch_Output_Bus_LV.get(1), 'C',
                     GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Breel, 1), 'D',
                     GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Stronze, 1), 'E',
                     ItemList.Hydraulic_Regulator_Steam.get(1) });
