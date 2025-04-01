@@ -411,6 +411,49 @@ public class AssortedSteamRecipes implements Runnable {
 
         // Hatches
 
+        // Steam Hatch
+
+        RA.stdBuilder()
+            .itemInputs(
+                GregtechItemList.GTFluidTank_ULV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 6),
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Stronze, 2),
+                GTUtility.getIntegratedCircuit(3))
+            .itemOutputs(GregtechItemList.Hatch_Input_Steam.get(1))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+
+        // Pipeless
+
+        RA.stdBuilder()
+            .itemInputs(
+                ItemList.Bronze_Wood_Casing.get(4),
+                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Stronze, 1),
+                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Breel, 1),
+                ItemList.Hatch_Input_Bus_LV.get(1),
+                ItemList.Hydraulic_Regulator_Steam.get(2),
+                GTUtility.getIntegratedCircuit(3))
+            .itemOutputs(ItemList.Pipeless_Hatch_Steam.get(1))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+
+        RA.stdBuilder()
+            .itemInputs(
+                ItemList.Bronze_Wood_Casing.get(4),
+                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Breel, 1),
+                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Stronze, 1),
+                ItemList.Hatch_Output_Bus_LV.get(1),
+                ItemList.Hydraulic_Regulator_Steam.get(2),
+                GTUtility.getIntegratedCircuit(3))
+            .itemOutputs(ItemList.Pipeless_Vent_Steam.get(1))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+
+        // Fluid hatches
+
         RA.stdBuilder()
             .itemInputs(
                 GTModHandler.getModItem(BuildCraftFactory.ID, "tankBlock", 1L, 0),
