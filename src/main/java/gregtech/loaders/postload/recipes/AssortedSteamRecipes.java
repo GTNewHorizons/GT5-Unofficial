@@ -17,7 +17,6 @@ import static gregtech.api.recipe.RecipeMaps.steamWoodcutterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -146,7 +145,8 @@ public class AssortedSteamRecipes implements Runnable {
 
         RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Silver, 3), GTUtility.getIntegratedCircuit(3))
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Silver, 3),
+                GTUtility.getIntegratedCircuit(3))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateTriple, Materials.Silver, 1))
             .duration(2 * SECONDS)
             .eut(28)
@@ -154,33 +154,31 @@ public class AssortedSteamRecipes implements Runnable {
 
         RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 5), GTUtility.getIntegratedCircuit(5))
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 5),
+                GTUtility.getIntegratedCircuit(5))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Steel, 1))
             .duration(2 * SECONDS)
             .eut(28)
             .addTo(hammerRecipes);
 
         RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1))
             .fluidInputs(FluidUtils.getSuperHeatedSteam(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.WroughtIron, 1))
-            .duration(4*TICKS)
+            .duration(4 * TICKS)
             .eut(28)
             .addTo(mixerRecipes);
 
         RA.stdBuilder()
-            .itemInputs(
-                new ItemStack(Items.clay_ball, 16), ItemList.Shape_Extruder_Pipe_Large.get(0))
+            .itemInputs(new ItemStack(Items.clay_ball, 16), ItemList.Shape_Extruder_Pipe_Large.get(0))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Clay, 1))
-            .duration(4*TICKS)
+            .duration(4 * TICKS)
             .eut(28)
             .addTo(steamConformerRecipes);
 
         RA.stdBuilder()
-            .itemInputs(
-                new ItemStack(Blocks.cobblestone,8), GTUtility.getIntegratedCircuit(8))
-            .itemOutputs(new ItemStack(Blocks.furnace,8))
+            .itemInputs(new ItemStack(Blocks.cobblestone, 8), GTUtility.getIntegratedCircuit(8))
+            .itemOutputs(new ItemStack(Blocks.furnace, 8))
             .duration(1 * SECONDS)
             .eut(8)
             .addTo(steamManufacturerRecipes);
@@ -199,7 +197,7 @@ public class AssortedSteamRecipes implements Runnable {
         RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 5),
-                new ItemStack(Blocks.brick_block,3))
+                new ItemStack(Blocks.brick_block, 3))
             .itemOutputs(ItemList.Hull_HP_Bricks.get(1))
             .duration(1 * SECONDS)
             .eut(16)
