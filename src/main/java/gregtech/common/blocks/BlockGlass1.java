@@ -12,7 +12,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 /**
  * The glass is split into separate files because they are registered as regular blocks, and a regular block can have

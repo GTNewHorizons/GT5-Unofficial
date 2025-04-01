@@ -175,9 +175,8 @@ public class AssortedSteamRecipes implements Runnable {
                 "boltCrudeSteel" });
         GTModHandler.addCraftingRecipe(
             ItemList.Hydraulic_Arm_Steam.get(1),
-            new Object[] { "AAA", "BCB", "DEC", 'A', "plateDoubleCrudeSteel", 'B',
-                ItemList.Hydraulic_Motor_Steam.get(1), 'C', "stickIron", 'D', ItemList.Hydraulic_Piston_Steam.get(1),
-                'E', "gearCrudeSteel" });
+            new Object[] { "AAA", "BCB", "DEC", 'A', "plateCrudeSteel", 'B', ItemList.Hydraulic_Motor_Steam.get(1), 'C',
+                "stickIron", 'D', ItemList.Hydraulic_Piston_Steam.get(1), 'E', "gearCrudeSteel" });
         GTModHandler.addCraftingRecipe(
             ItemList.Hydraulic_Conveyor_Steam.get(1),
             new Object[] { "AAA", "BCB", "AAA", 'A', "plateRubber", 'B', ItemList.Hydraulic_Motor_Steam.get(1), 'C',
@@ -258,7 +257,7 @@ public class AssortedSteamRecipes implements Runnable {
         RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 2),
-                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.CrudeSteel, 3),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CrudeSteel, 3),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.CrudeSteel, 1),
                 ItemList.Hydraulic_Piston_Steam.get(1),
                 ItemList.Hydraulic_Motor_Steam.get(2))
@@ -549,6 +548,16 @@ public class AssortedSteamRecipes implements Runnable {
                 "frameGtCrudeSteel" });
 
         // Solar Cell Casing
+        RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(Blocks.glass, 3),
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Stronze, 2),
+                ItemList.Machine_HP_Solar.get(1))
+            .itemOutputs(ItemList.Solar_Boiler_Cell.get(1))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+
         GTModHandler.addCraftingRecipe(
             ItemList.Solar_Boiler_Cell.get(1),
             new Object[] { "AAA", "BCB", 'A', new ItemStack(Blocks.glass, 1), 'B',
@@ -556,6 +565,16 @@ public class AssortedSteamRecipes implements Runnable {
                 ItemList.Machine_HP_Solar.get(1) });
 
         // Hydraulic Assembling Casing
+        RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Stronze, 4),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Breel, 2),
+                ItemList.Hydraulic_Arm_Steam.get(3))
+            .itemOutputs(ItemList.Hydraulic_Assembling_Casing.get(1))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+
         GTModHandler.addCraftingRecipe(
             ItemList.Hydraulic_Assembling_Casing.get(1),
             new Object[] { "ABA", "CCC", "ABA", 'A',
@@ -564,6 +583,16 @@ public class AssortedSteamRecipes implements Runnable {
                 ItemList.Hydraulic_Arm_Steam.get(1) });
 
         // Hyper Pressure Breel Casing
+        RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Beryllium, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Breel, 6),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Beryllium, 1))
+            .itemOutputs(ItemList.Hyper_Pressure_Breel_Casing.get(1))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+
         GTModHandler.addCraftingRecipe(
             ItemList.Hyper_Pressure_Breel_Casing.get(1),
             new Object[] { "AAA", "BCB", "AAA", 'A', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Breel, 1),
@@ -571,10 +600,20 @@ public class AssortedSteamRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Beryllium, 1) });
 
         // Breel-Plated Casing
+        RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Breel, 2),
+                GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Breel, 6),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CrudeSteel, 1))
+            .itemOutputs(ItemList.Breel_Casing.get(1))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+
         GTModHandler.addCraftingRecipe(
             ItemList.Breel_Casing.get(1),
             new Object[] { "AAA", "BCB", "AAA", 'A', GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Breel, 1),
-                'B', GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Breel, 1), 'C',
+                'B', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Breel, 1), 'C',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CrudeSteel, 1) });
 
         // Compact Pipe Casing
