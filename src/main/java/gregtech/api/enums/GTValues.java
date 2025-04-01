@@ -658,7 +658,7 @@ public class GTValues {
             createPipeBluezLetter(7),
             createPipeBluezLetter(8)),
         text("\n" + AuthorHighPressureRaven + "\n"),
-        text(EnumChatFormatting.LIGHT_PURPLE + "pippey"));
+        text(EnumChatFormatting.GOLD + "Gear" + EnumChatFormatting.DARK_PURPLE + "ix"));
 
     public static final Supplier<String> AuthorSteamibyss = chain(
         text("Author: "),
