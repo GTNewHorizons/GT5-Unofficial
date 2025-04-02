@@ -36,13 +36,13 @@
 dependencies {
     api("com.github.GTNewHorizons:StructureLib:1.4.6:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-    api("com.github.GTNewHorizons:NotEnoughItems:2.7.31-GTNH:dev")
+    api("com.github.GTNewHorizons:NotEnoughItems:2.7.34-GTNH:dev")
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.6:dev")
-    api("com.github.GTNewHorizons:GTNHLib:0.6.16:dev")
+    api("com.github.GTNewHorizons:GTNHLib:0.6.17:dev")
     api("com.github.GTNewHorizons:ModularUI:1.2.18:dev")
     api("com.github.GTNewHorizons:ModularUI2:2.2.6-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.8.4:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-554-GTNH:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-563-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.36-gtnh:dev")
     api('com.github.GTNewHorizons:Yamcl:0.7.0:dev')
     api("com.github.GTNewHorizons:Postea:1.0.13:dev")
@@ -70,7 +70,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:ThaumicBases:1.8.3:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:EnderCore:0.4.6:dev") { transitive = false }
     compileOnly('com.github.GTNewHorizons:VisualProspecting:1.4.2:dev') { transitive = false }
-    compileOnly("com.github.GTNewHorizons:Galaxy-Space-GTNH:1.1.106-GTNH:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Galaxy-Space-GTNH:1.1.109-GTNH:dev") { transitive = false }
 
     compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.3.5-GTNH:dev") { transitive = false }
     implementation("com.github.GTNewHorizons:TinkersConstruct:1.13.13-GTNH:dev")

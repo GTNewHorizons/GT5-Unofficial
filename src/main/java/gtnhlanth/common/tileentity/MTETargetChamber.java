@@ -198,7 +198,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addController("Front bottom")
             .addCasingInfoExactly("Grate Machine Casing", 29, false)
             .addCasingInfoExactly("Shielded Accelerator Casing", 28, false)
-            .addCasingInfoExactly("Borosilicate Glass", 16, true)
+            .addCasingInfoExactly("Any Tiered Glass", 16, false)
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 34, false)
             .addCasingInfoExactly(LanthItemList.TARGET_RECEPTACLE_CASING.getLocalizedName(), 4, false)
             .addCasingInfoExactly(LanthItemList.FOCUS_MANIPULATION_CASING.getLocalizedName(), 4, false)
@@ -210,6 +210,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addInputBus(addDotText(3))
             .addOutputBus(addDotText(4))
             .addOtherStructurePart("Beamline Input Hatch", addDotText(5))
+            .addSubChannelUsage("glass", "Glass Tier")
             .toolTipFinisher();
         return tt;
     }
@@ -382,8 +383,8 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         if (tFocusItemArray != null) {
             for (ItemStack stack : tFocusItemArray) {
 
-                if (focusDurabilityDepletion + stack.getItemDamage() > stack.getMaxDamage()) {
-                    focusDurabilityDepletion -= stack.getMaxDamage() - stack.getItemDamage();
+                if (focusDurabilityDepletion + stack.getItemDamage() >= stack.getMaxDamage() + 1) {
+                    focusDurabilityDepletion -= stack.getMaxDamage() + 1 - stack.getItemDamage();
                     stack.stackSize--;
                 } else {
                     stack.setItemDamage(stack.getItemDamage() + focusDurabilityDepletion);

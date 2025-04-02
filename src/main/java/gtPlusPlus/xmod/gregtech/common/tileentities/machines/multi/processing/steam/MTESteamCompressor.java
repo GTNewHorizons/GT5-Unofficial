@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -98,7 +99,8 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
 
     private int tierMachineCasing = -1;
 
-    public int getTierMachineCasing(Block block, int meta) {
+    @Nullable
+    public Integer getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
             mCountCasing++;
             return 1;
@@ -107,7 +109,7 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
             mCountCasing++;
             return 2;
         }
-        return 0;
+        return null;
     }
 
     protected void updateHatchTexture() {
@@ -208,7 +210,6 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
         mCountCasing = 0;
         tierMachineCasing = -1;
         if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierMachineCasing < 0) return false;
         if (tierMachineCasing == 1 && mCountCasing >= 25 && checkHatches()) {
             updateHatchTexture();
             tierMachine = 1;

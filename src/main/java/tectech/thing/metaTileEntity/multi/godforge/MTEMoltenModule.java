@@ -61,7 +61,7 @@ public class MTEMoltenModule extends MTEBaseModule {
                     return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 }
 
-                wirelessEUt = (long) recipe.mEUt * getMaxParallel();
+                wirelessEUt = (long) recipe.mEUt * getActualParallel();
                 if (getUserEU(userUUID).compareTo(BigInteger.valueOf(wirelessEUt * recipe.mDuration)) < 0) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
                 }
@@ -104,7 +104,7 @@ public class MTEMoltenModule extends MTEBaseModule {
         logic.setAvailableVoltage(Long.MAX_VALUE);
         logic.setAvailableAmperage(Integer.MAX_VALUE);
         logic.setAmperageOC(false);
-        logic.setMaxParallel(getMaxParallel());
+        logic.setMaxParallel(getActualParallel());
         logic.setSpeedBonus(getSpeedBonus());
         logic.setEuModifier(getEnergyDiscount());
     }
@@ -131,7 +131,7 @@ public class MTEMoltenModule extends MTEBaseModule {
                 + (getBaseMetaTileEntity().isActive() ? formatNumbers(EUt) : "0")
                 + RESET
                 + " EU/t");
-        str.add(YELLOW + "Max Parallel: " + RESET + formatNumbers(getMaxParallel()));
+        str.add(YELLOW + "Max Parallel: " + RESET + formatNumbers(getActualParallel()));
         str.add(
             YELLOW + "Current Parallel: "
                 + RESET

@@ -1,13 +1,13 @@
 package gregtech.common.blocks;
 
-import net.minecraft.item.ItemStack;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.translatedText;
+
 import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GTLanguageManager;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
@@ -16,52 +16,25 @@ import gregtech.api.util.GTLanguageManager;
 public class BlockCasings9 extends BlockCasingsAbstract {
 
     public BlockCasings9() {
-        super(ItemCasings9.class, "gt.blockcasings9", MaterialCasings.INSTANCE, 16);
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "PBI Pipe Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Advanced Filter Casing");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".1.tooltip", "Less than five 0.1μm particles per m^3");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Primitive Wooden Casing");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".3.name", "Superplasticizer-Treated High Strength Concrete");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Sterile Water Plant Casing");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".5.name", "Reinforced Sterile Water Plant Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Slick Sterile Flocculation Casing");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".7.name", "Stabilized Naquadah Water Plant Casing");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".8.name", "Inert Neutralization Water Plant Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Reactive Gas Containment Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Inert Filtration Casing");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".11.name", "Heat-Resistant Trinium Plated Casing");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".12.name", "Naquadria-Reinforced Water Plant Casing");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".13.name", "High Energy Ultraviolet Emitter Casing");
-        // placeholder name
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".14.name", "Particle Beam Guidance Pipe Casing");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".15.name", "Femtometer-Calibrated Particle Beam Casing");
+        super(ItemCasings.class, "gt.blockcasings9", MaterialCasings.INSTANCE, 16);
 
-        ItemList.Casing_Pipe_Polybenzimidazole.set(new ItemStack(this, 1, 0));
-        ItemList.Casing_Vent_T2.set(new ItemStack(this, 1, 1));
-        ItemList.WoodenCasing.set(new ItemStack(this, 1, 2));
-        ItemList.BlockIndustrialStrengthConcrete.set(new ItemStack(this, 1, 3));
-        ItemList.BlockIndustrialWaterPlantCasing.set(new ItemStack(this, 1, 4));
-        ItemList.BlockSterileWaterPlantCasing.set(new ItemStack(this, 1, 5));
-        ItemList.BlockFlocculationCasing.set(new ItemStack(this, 1, 6));
-        ItemList.BlockNaquadahReinforcedWaterPlantCasing.set(new ItemStack(this, 1, 7));
-        ItemList.BlockExtremeCorrosionResistantCasing.set(new ItemStack(this, 1, 8));
-        ItemList.BlockHighPressureResistantCasing.set(new ItemStack(this, 1, 9));
-        ItemList.BlockOzoneCasing.set(new ItemStack(this, 1, 10));
-        ItemList.BlockPlasmaHeatingCasing.set(new ItemStack(this, 1, 11));
-        ItemList.BlockNaquadriaReinforcedWaterPlantCasing.set(new ItemStack(this, 1, 12));
-        ItemList.BlockUltraVioletLaserEmitter.set(new ItemStack(this, 1, 13));
-        ItemList.BlockQuarkPipe.set(new ItemStack(this, 1, 14));
-        ItemList.BlockQuarkReleaseChamber.set(new ItemStack(this, 1, 15));
+        register(0, ItemList.Casing_Pipe_Polybenzimidazole, "PBI Pipe Casing");
+        register(1, ItemList.Casing_Vent_T2, "Advanced Filter Casing", translatedText("gt.casings.advanced-filter"));
+        register(2, ItemList.WoodenCasing, "Primitive Wooden Casing");
+        register(3, ItemList.BlockIndustrialStrengthConcrete, "Superplasticizer-Treated High Strength Concrete");
+        register(4, ItemList.BlockIndustrialWaterPlantCasing, "Sterile Water Plant Casing");
+        register(5, ItemList.BlockSterileWaterPlantCasing, "Reinforced Sterile Water Plant Casing");
+        register(6, ItemList.BlockFlocculationCasing, "Slick Sterile Flocculation Casing");
+        register(7, ItemList.BlockNaquadahReinforcedWaterPlantCasing, "Stabilized Naquadah Water Plant Casing");
+        register(8, ItemList.BlockExtremeCorrosionResistantCasing, "Inert Neutralization Water Plant Casing");
+        register(9, ItemList.BlockHighPressureResistantCasing, "Reactive Gas Containment Casing");
+        register(10, ItemList.BlockOzoneCasing, "Inert Filtration Casing");
+        register(11, ItemList.BlockPlasmaHeatingCasing, "Heat-Resistant Trinium Plated Casing");
+        register(12, ItemList.BlockNaquadriaReinforcedWaterPlantCasing, "Naquadria-Reinforced Water Plant Casing");
+        register(13, ItemList.BlockUltraVioletLaserEmitter, "High Energy Ultraviolet Emitter Casing");
+        // placeholder name
+        register(14, ItemList.BlockQuarkPipe, "Particle Beam Guidance Pipe Casing");
+        register(15, ItemList.BlockQuarkReleaseChamber, "Femtometer-Calibrated Particle Beam Casing");
     }
 
     @Override
