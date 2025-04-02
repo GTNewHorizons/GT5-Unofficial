@@ -1,12 +1,12 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static bartworks.API.GlassTier.getGlassTier;
 import static gregtech.api.enums.GTValues.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.BLOCK_PLASCRETE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_CLEANROOM_GLOW;
+import static gregtech.api.util.GlassTier.getGlassBlockTier;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -285,8 +285,12 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         if ((allowedMask & MASK_FILTER) != 0 && block == FILTER_BLOCK && meta == FILTER_META)
             return CleanroomBlockType.FILTER;
 
-        if ((allowedMask & MASK_GLASS) != 0 && getGlassTier(block, meta) >= MIN_GLASS_TIER)
-            return CleanroomBlockType.GLASS;
+        if ((allowedMask & MASK_GLASS) != 0) {
+            Integer glassTier = getGlassBlockTier(block, meta);
+            if (glassTier != null && glassTier >= MIN_GLASS_TIER) {
+                return CleanroomBlockType.GLASS;
+            }
+        }
 
         if ((allowedMask & MASK_OTHER) != 0 && (ALLOWED_BLOCKS.contains(block.getUnlocalizedName())
             || ALLOWED_BLOCKS.contains(block.getUnlocalizedName() + ":" + meta))) return CleanroomBlockType.OTHER;

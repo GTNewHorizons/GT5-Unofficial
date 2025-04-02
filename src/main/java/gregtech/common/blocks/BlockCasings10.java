@@ -1,13 +1,11 @@
 package gregtech.common.blocks;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GTLanguageManager;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
@@ -16,42 +14,24 @@ import gregtech.api.util.GTLanguageManager;
 public class BlockCasings10 extends BlockCasingsAbstract {
 
     public BlockCasings10() {
-        super(ItemCasings10.class, "gt.blockcasings10", MaterialCasings.INSTANCE, 16);
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "MagTech Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Laser Containment Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Quark Exclusion Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Pressure Containment Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Electric Compressor Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Compression Pipe Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Neutronium Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Active Neutronium Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Neutronium Stabilization Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Coolant Duct");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Heating Duct");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".11.name", "Extreme Density Space-Bending Casing");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".12.name", "Background Radiation Absorbent Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Solidifier Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Solidifier Radiator");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Reinforced Wooden Casing");
+        super(ItemCasings.class, "gt.blockcasings10", MaterialCasings.INSTANCE, 16);
 
-        ItemList.Casing_Electromagnetic_Separator.set(new ItemStack(this, 1, 0));
-        ItemList.Casing_Laser.set(new ItemStack(this, 1, 1));
-        ItemList.BlockQuarkContainmentCasing.set(new ItemStack(this, 1, 2));
-        ItemList.Casing_Autoclave.set(new ItemStack(this, 1, 3));
-        ItemList.Compressor_Casing.set(new ItemStack(this, 1, 4));
-        ItemList.Compressor_Pipe_Casing.set(new ItemStack(this, 1, 5));
-        ItemList.Neutronium_Casing.set(new ItemStack(this, 1, 6));
-        ItemList.Neutronium_Active_Casing.set(new ItemStack(this, 1, 7));
-        ItemList.Neutronium_Stable_Casing.set(new ItemStack(this, 1, 8));
-        ItemList.Coolant_Duct_Casing.set(new ItemStack(this, 1, 9));
-        ItemList.Heating_Duct_Casing.set(new ItemStack(this, 1, 10));
-        ItemList.Extreme_Density_Casing.set(new ItemStack(this, 1, 11));
-        ItemList.Background_Radiation_Casing.set(new ItemStack(this, 1, 12));
-        ItemList.Casing_Fluid_Solidifier.set(new ItemStack(this, 1, 13));
-        ItemList.Radiator_Fluid_Solidifier.set(new ItemStack(this, 1, 14));
-        ItemList.Casing_Reinforced_Wood.set(new ItemStack(this, 1, 15));
+        register(0, ItemList.Casing_Electromagnetic_Separator, "MagTech Casing");
+        register(1, ItemList.Casing_Laser, "Laser Containment Casing");
+        register(2, ItemList.BlockQuarkContainmentCasing, "Quark Exclusion Casing");
+        register(3, ItemList.Casing_Autoclave, "Pressure Containment Casing");
+        register(4, ItemList.Compressor_Casing, "Electric Compressor Casing");
+        register(5, ItemList.Compressor_Pipe_Casing, "Compression Pipe Casing");
+        register(6, ItemList.Neutronium_Casing, "Neutronium Casing");
+        register(7, ItemList.Neutronium_Active_Casing, "Active Neutronium Casing");
+        register(8, ItemList.Neutronium_Stable_Casing, "Neutronium Stabilization Casing");
+        register(9, ItemList.Coolant_Duct_Casing, "Coolant Duct");
+        register(10, ItemList.Heating_Duct_Casing, "Heating Duct");
+        register(11, ItemList.Extreme_Density_Casing, "Extreme Density Space-Bending Casing");
+        register(12, ItemList.Background_Radiation_Casing, "Background Radiation Absorbent Casing");
+        register(13, ItemList.Casing_Fluid_Solidifier, "Solidifier Casing");
+        register(14, ItemList.Radiator_Fluid_Solidifier, "Solidifier Radiator");
+        register(15, ItemList.Casing_Reinforced_Wood, "Reinforced Wooden Casing");
     }
 
     @Override

@@ -771,7 +771,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 + EnumChatFormatting.LIGHT_PURPLE
                 + GTUtility.formatNumbers(this.guiActiveEnergy)
                 + EnumChatFormatting.RESET
-                + " EU/t",
+                + " EU/s",
             StatCollector.translateToLocal("gui.AntimatterForge.3") + ": "
                 + EnumChatFormatting.AQUA
                 + GTUtility.formatNumbers(this.guiAntimatterChange)
