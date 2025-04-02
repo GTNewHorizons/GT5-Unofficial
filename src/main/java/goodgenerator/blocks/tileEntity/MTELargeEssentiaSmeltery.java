@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -227,19 +228,26 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[8] = "Parallel: " + EnumChatFormatting.YELLOW
+        info[8] = StatCollector.translateToLocal("gg.scanner.info.les.parallel") + " "
+            + EnumChatFormatting.YELLOW
             + Math.round(this.mParallel)
             + EnumChatFormatting.RESET
-            + " Node Power: "
+            + " "
+            + StatCollector.translateToLocal("gg.scanner.info.les.node_power")
+            + " "
             + EnumChatFormatting.RED
             + this.nodePower
             + EnumChatFormatting.RESET
-            + " Purification Efficiency: "
+            + " "
+            + StatCollector.translateToLocal("gg.scanner.info.les.purification_efficiency")
+            + " "
             + EnumChatFormatting.AQUA
             + this.nodePurificationEfficiency
             + "%"
             + EnumChatFormatting.RESET
-            + " Speed Up: "
+            + " "
+            + StatCollector.translateToLocal("gg.scanner.info.les.speed_up")
+            + " "
             + EnumChatFormatting.GRAY
             + this.nodeIncrease
             + "%"
