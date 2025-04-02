@@ -128,6 +128,10 @@ public class Client {
         @Config.DefaultBoolean(false)
         public boolean singleBlockInitialFilter;
 
+        @Config.Comment("If true, scrolling up while hovering a ghost circuit in a machine UI will increment the circuit number.")
+        @Config.DefaultBoolean(false)
+        public boolean invertCircuitScrollDirection;
+
         @Config.Comment({
             "Overrides the MC total playable sounds limit. MC's default is 28, which causes problems with many machine sounds at once",
             "If sounds are causing large amounts of lag, try lowering this.",

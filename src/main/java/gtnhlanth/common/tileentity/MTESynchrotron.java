@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -165,7 +167,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
                     	},
                     	{
-                    		"  ccc   ccccccccccccccccc           ",
+                    		"  ccc  cccccccccccccccccc           ",
                     		" ckkkccc-----------------cc         ",
                     		"ck---kc-------------------cc        ",
                     		"ck---kc--------------------c        ",
@@ -373,8 +375,8 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
                     	},
                     	{
-                    		"     ccccc             ccccc        ",
-                    		"    c-----cc         cc-----c       ",
+                    		"     ccccc             cccccc       ",
+                    		"    c-----cc         cc------c      ",
                     		"   c-------cc       cc-------cc     ",
                     		"   c-------cc       cc-------cc     ",
                     		"   c-------cc       cc-------cc     ",
@@ -389,7 +391,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                     		"    c--------ccccccc--------cccc    ",
                     		"    c--------ccccccc--------cccc    ",
                     		"    cc-----cccc   cccc------cc      ",
-                    		"      ccccc           cccccc        "
+                    		"      ccccc           ccccccc       "
 
                     	},
                     	{
@@ -399,7 +401,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                     		"    c---------kdkdk--------ccccccccc",
                     		"    c---------kdkdk--------ccccccccc",
                     		"     cc-------ccccc--------cccc     ",
-                    		"       ccccccc     cccccccc         "
+                    		"       ccccccc     cccccccccc       "
 
                     	},
                     	{
@@ -408,8 +410,8 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                     		"     cc---------------------------cg",
                     		"     c----------------------------cg",
                     		"     cc---------------------------cg",
-                    		"       c-------------------ccccccccc",
-                    		"        ccccccccccccccccccc         "
+                    		"      cc-------------------ccccccccc",
+                    		"        cccccccccccccccccccc        "
 
                     	},
                     	{
@@ -418,8 +420,8 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                     		"       c--------------------------cg",
                     		"      cc---------------------------b",
                     		"       c--------------------------cg",
-                    		"        c-----------------cccccccccc",
-                    		"         ccccccccccccccccc          "
+                    		"       cc-----------------cccccccccc",
+                    		"         ccccccccccccccccccc        "
 
                     	},
                     	{
@@ -429,7 +431,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                     		"        cc------------------------cg",
                     		"        cc------------------------cg",
                     		"         ccc-------------ccccccccccc",
-                    		"            ccccccccccccc           "
+                    		"            ccccccccccccccc         "
 
                     	},
                     	{
@@ -462,7 +464,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy.or(ExoticEnergy), 4)).adder(MTESynchrotron::addEnergyInputToMachineList).dot(6).casingIndex(CASING_INDEX).build())
                 .addElement('n', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
                 .addElement('a', withChannel("antenna", StructureUtility.ofBlocksTiered(
-                		(Block block, int meta) -> (block == LanthItemList.ANTENNA_CASING_T1 ? 1 : block == LanthItemList.ANTENNA_CASING_T2 ? 2 : null),
+                		MTESynchrotron::getAntennaBlockTier,
                 		ImmutableList.of(
                 				Pair.of(LanthItemList.ANTENNA_CASING_T1, 0),
                 				Pair.of(LanthItemList.ANTENNA_CASING_T2, 0)),
@@ -718,6 +720,13 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
     public int getAntennaTier() {
         return this.antennaeTier;
+    }
+
+    @Nullable
+    public static Integer getAntennaBlockTier(Block block, int meta) {
+        if (block == LanthItemList.ANTENNA_CASING_T1) return 1;
+        else if (block == LanthItemList.ANTENNA_CASING_T2) return 2;
+        else return null;
     }
 
     @Override
