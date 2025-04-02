@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -300,8 +301,13 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
 
     @Override
     public String[] getInfoData() {
-        return new String[] { this.getLocalName(), "Current Pollution: " + this.mCurrentPollution,
-            "Average/10 Sec: " + this.mAveragePollution, "Emit Redstone at pollution level: " + this.mRedstoneLevel };
+        return new String[] { this.getLocalName(),
+            StatCollector
+                .translateToLocalFormatted("gtpp.infodata.pollution_creator.pollution", this.mCurrentPollution),
+            StatCollector
+                .translateToLocalFormatted("gtpp.infodata.pollution_detector.pollution.avg", this.mAveragePollution),
+            StatCollector
+                .translateToLocalFormatted("gtpp.infodata.pollution_detector.redstone_level", this.mRedstoneLevel) };
     }
 
     @Override

@@ -167,7 +167,7 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
     }
 
     private static ITierConverter<Integer> anvilTierConverter(Map<Block, Integer> anvilTiers) {
-        return (block, meta) -> block == null ? 0 : anvilTiers.getOrDefault(block, 0);
+        return (block, meta) -> block == null ? null : anvilTiers.getOrDefault(block, null);
     }
 
     @Override
