@@ -393,7 +393,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
             for (MTEHatchOutputBeamline o : mOutputBeamline) {
 
-                o.q = packet;
+                o.dataPacket = packet;
             }
         }
     }
@@ -544,9 +544,9 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         for (MTEHatchInputBeamline in : this.mInputBeamline) { // Easy way to find the desired input. Efficient? No.
                                                                // Will it matter? No :boubs_glasses:
 
-            if (in.q == null) return new BeamInformation(0, 0, 0, 0);
+            if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
 
-            return in.q.getContent();
+            return in.dataPacket.getContent();
         }
         return null;
     }

@@ -402,9 +402,9 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
         for (MTEHatchInputBeamline in : this.mInputBeamline) {
 
-            if (in.q == null) return new BeamInformation(0, 0, 0, 0);
+            if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
 
-            return in.q.getContent();
+            return in.dataPacket.getContent();
         }
         return null;
     }

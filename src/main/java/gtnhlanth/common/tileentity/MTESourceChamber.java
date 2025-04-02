@@ -244,7 +244,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
 
             for (MTEHatchOutputBeamline o : mOutputBeamline) {
 
-                o.q = packet;
+                o.dataPacket = packet;
             }
         }
     }
