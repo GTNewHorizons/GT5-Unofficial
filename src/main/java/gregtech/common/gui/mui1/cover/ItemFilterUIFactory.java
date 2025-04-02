@@ -15,7 +15,7 @@ import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerSlotWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
-public class ItemFilterUIFactory extends CoverUiFactory<CoverItemFilter> {
+public class ItemFilterUIFactory extends CoverUIFactory<CoverItemFilter> {
 
     private static final int startX = 10;
     private static final int startY = 25;

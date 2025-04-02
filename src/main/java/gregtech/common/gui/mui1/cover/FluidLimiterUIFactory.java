@@ -9,7 +9,7 @@ import gregtech.common.covers.CoverFluidLimiter;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 
-public class FluidLimiterUIFactory extends CoverUiFactory<CoverFluidLimiter> {
+public class FluidLimiterUIFactory extends CoverUIFactory<CoverFluidLimiter> {
 
     private static final int startX = 10;
     private static final int startY = 25;

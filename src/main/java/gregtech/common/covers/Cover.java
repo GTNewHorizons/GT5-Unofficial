@@ -33,7 +33,7 @@ import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.mui1.cover.CoverUiFactory;
+import gregtech.common.gui.mui1.cover.CoverUIFactory;
 import gregtech.common.text.ClientTickRateFormatter;
 import io.netty.buffer.ByteBuf;
 
@@ -283,7 +283,7 @@ public class Cover {
     // region UI stuff
 
     protected ModularWindow createWindow(CoverUIBuildContext buildContext) {
-        return new CoverUiFactory<>(buildContext).createWindow();
+        return new CoverUIFactory<>(buildContext).createWindow();
     }
 
     public ModularUIContainer createCoverContainer(EntityPlayer player) {

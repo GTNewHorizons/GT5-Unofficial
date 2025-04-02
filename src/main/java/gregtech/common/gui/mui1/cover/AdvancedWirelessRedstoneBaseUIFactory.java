@@ -13,7 +13,7 @@ import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
 public abstract class AdvancedWirelessRedstoneBaseUIFactory<C extends CoverAdvancedWirelessRedstoneBase>
-    extends CoverUiFactory<C> {
+    extends CoverUIFactory<C> {
 
     protected static final int startX = 10;
     protected static final int startY = 25;

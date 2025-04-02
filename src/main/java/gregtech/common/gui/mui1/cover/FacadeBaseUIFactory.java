@@ -11,7 +11,7 @@ import gregtech.common.covers.CoverFacadeBase;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
-public class FacadeBaseUIFactory extends CoverUiFactory<CoverFacadeBase> {
+public class FacadeBaseUIFactory extends CoverUIFactory<CoverFacadeBase> {
 
     private static final int startX = 10;
     private static final int startY = 25;
