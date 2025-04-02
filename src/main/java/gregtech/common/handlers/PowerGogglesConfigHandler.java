@@ -16,6 +16,7 @@ public class PowerGogglesConfigHandler {
     public static double subTextScaling;
     public static String gradientPreset;
     public static String numberFormatting;
+    public static String readingType;
 
     public static void init(File confFile) {
         if (config == null) {
@@ -30,8 +31,8 @@ public class PowerGogglesConfigHandler {
         try {
             mainOffsetX = config.get(Configuration.CATEGORY_GENERAL, "Render Offset X", 10, "")
                 .getInt(10);
-            mainOffsetY = config.get(Configuration.CATEGORY_GENERAL, "Render Offset Y", 10, "")
-                .getInt(10);
+            mainOffsetY = config.get(Configuration.CATEGORY_GENERAL, "Render Offset Y", 40, "")
+                .getInt(40);
             rectangleWidth = config.get(Configuration.CATEGORY_GENERAL, "Power Rectangle Width", 120, "")
                 .getInt(120);
             rectangleHeight = config.get(Configuration.CATEGORY_GENERAL, "Power Rectangle Height", 10, "")
@@ -55,6 +56,13 @@ public class PowerGogglesConfigHandler {
                     "Number Formatting",
                     "SCIENTIFIC",
                     "Available options: SI, SCIENTIFIC, ENGINEERING")
+                .getString();
+            readingType = config
+                .get(
+                    Configuration.CATEGORY_GENERAL,
+                    "Timed Reading Type",
+                    "BOTH",
+                    "Available options: TOTAL, EUT, BOTH")
                 .getString();
 
         } catch (Exception e) {
