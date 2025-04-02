@@ -197,7 +197,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         return true;
     }
 
-   private boolean isShiftDown() {
+    private boolean isShiftDown() {
         // Yes, there's a duplicate method in GT++, but I didn't feel right including GT++ code here. We can extract
         // this later if it is useful elsewhere.
         try {
