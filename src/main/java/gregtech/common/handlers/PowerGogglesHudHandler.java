@@ -50,9 +50,13 @@ public class PowerGogglesHudHandler {
     static int change5mColor;
     static int change1hColor;
 
-    static String storage;
-    static String change5mString;
-    static String change1hString;
+    static String storage = "";
+    static String change5mString = "";
+    static String change1hString = "";
+    static BigInteger change5m = BigInteger.valueOf(0);
+    static BigInteger change1h = BigInteger.valueOf(0);
+    static int change5mDiff;
+    static int change1hDiff;
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
@@ -111,7 +115,6 @@ public class PowerGogglesHudHandler {
 
         Color gradientLeft;
         Color gradientRight = Color.GREEN;
-        BigInteger change5m = getReadingSum(measurements, measurementCount5m);
         if (change5m.compareTo(BigInteger.ZERO) >= 0) {
             gradientLeft = Color.GREEN;
         } else {
@@ -152,6 +155,52 @@ public class PowerGogglesHudHandler {
             new Color(47, 20, 76).getRGB(),
             new Color(47, 20, 76).getRGB());
 
+        storage = toEngineering(currentEU) + " EU";
+        change5mString = "5m: " + toEngineering(change5m)
+            + " EU "
+            + (change5mDiff != 0
+            ? String.format(
+            " (%s eu/t) ",
+            toEngineering(
+                change5m.divide(
+                    BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
+            : "");
+        change1hString = "1h: " + toEngineering(change1h)
+            + " EU "
+            + (change1hDiff != 0 ? String.format(
+            " (%s eu/t)",
+            toEngineering(
+                change1h.divide(
+                    BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
+            : "");
+        int mode = 1;
+        switch(mode){
+            case 0:
+                break;
+            case 1:
+                change5mString = "5m: " + toEngineering(change5m);
+                change1hString = "1h: " + toEngineering(change1h);
+                break;
+            case 2:
+                change5mString = "5m: "
+                    + (change5mDiff != 0
+                    ? String.format(
+                    " (%s eu/t) ",
+                    toEngineering(
+                        change5m.divide(
+                            BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
+                    : "");
+                change1hString = "1h: "
+                    + (change1hDiff != 0 ? String.format(
+                    " (%s eu/t)",
+                    toEngineering(
+                        change1h.divide(
+                            BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
+                    : "");
+                break;
+            default:
+                break;
+        }
         fontRenderer.drawStringWithShadow(
             storage,
             xOffset,
@@ -200,12 +249,12 @@ public class PowerGogglesHudHandler {
         if (Minecraft.getMinecraft()
             .isGamePaused()) return;
 
-        BigInteger change5m = getReadingSum(measurements, measurementCount5m);
-        int change5mDiff = change5m.compareTo(BigInteger.valueOf(0));
+        change5m = getReadingSum(measurements, measurementCount5m);
+        change5mDiff = change5m.compareTo(BigInteger.valueOf(0));
         change5mColor = getColor(change5mDiff);
 
-        BigInteger change1h = getReadingSum(measurements, measurementCount1h);
-        int change1hDiff = change1h.compareTo(BigInteger.valueOf(0));
+        change1h = getReadingSum(measurements, measurementCount1h);
+        change1hDiff = change1h.compareTo(BigInteger.valueOf(0));
         change1hColor = getColor(change5mDiff);
 
         hudList = new ArrayList<>();
