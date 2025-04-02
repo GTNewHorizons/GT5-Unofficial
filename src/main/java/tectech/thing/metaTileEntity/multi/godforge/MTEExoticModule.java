@@ -212,7 +212,7 @@ public class MTEExoticModule extends MTEBaseModule {
     }
 
     private GTRecipe generateQuarkGluonRecipe() {
-        actualParallel = getMaxParallel();
+        actualParallel = getActualParallel();
         numberOfFluids = GodforgeMath.getRandomIntInRange(0, NUMBER_OF_INPUTS);
         numberOfItems = NUMBER_OF_INPUTS - numberOfFluids;
         randomizedFluidInput = getRandomFluidInputs(exoticModulePlasmaFluidMap, numberOfFluids);
@@ -245,7 +245,7 @@ public class MTEExoticModule extends MTEBaseModule {
     }
 
     private GTRecipe generateMagmatterRecipe() {
-        actualParallel = getMaxParallel();
+        actualParallel = getActualParallel();
         randomizedItemInput = getRandomItemInputs(exoticModuleMagmatterItemMap, 1);
         numberOfItems = 1;
         numberOfFluids = 2;
@@ -837,11 +837,11 @@ public class MTEExoticModule extends MTEBaseModule {
                 + (getBaseMetaTileEntity().isActive() ? formatNumbers(EUt * actualParallel) : "0")
                 + RESET
                 + " EU/t");
-        str.add(YELLOW + "Max Parallel: " + RESET + formatNumbers(getMaxParallel()));
+        str.add(YELLOW + "Max Parallel: " + RESET + formatNumbers(getActualParallel()));
         str.add(
             YELLOW + "Current Parallel: "
                 + RESET
-                + (getBaseMetaTileEntity().isActive() ? formatNumbers(getMaxParallel()) : "0"));
+                + (getBaseMetaTileEntity().isActive() ? formatNumbers(getActualParallel()) : "0"));
         str.add(YELLOW + "Recipe time multiplier: " + RESET + formatNumbers(getSpeedBonus()));
         str.add(YELLOW + "Energy multiplier: " + RESET + formatNumbers(getEnergyDiscount()));
         str.add(YELLOW + "Recipe time divisor per non-perfect OC: " + RESET + formatNumbers(getOverclockTimeFactor()));

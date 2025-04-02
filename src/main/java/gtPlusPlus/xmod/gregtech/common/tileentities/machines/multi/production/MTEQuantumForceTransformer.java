@@ -231,10 +231,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             return false;
         }
 
-        if (mOutputBusses.isEmpty() || mOutputHatches.isEmpty()) {
-            return false;
-        }
-
         // Maintenance hatch not required but left for compatibility.
         // Don't allow more than 1, no free casing spam!
         if (mMaintenanceHatches.size() > 1) {
@@ -282,7 +278,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     public static ITierConverter<Integer> craftingTierConverter() {
         return (block, meta) -> {
             if (block == null) {
-                return -1;
+                return null;
             } else if (block == ModBlocks.blockCasings5Misc) { // Resonance Chambers
                 switch (meta) {
                     case 7 -> {
@@ -299,14 +295,14 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     }
                 }
             }
-            return -1;
+            return null;
         };
     }
 
     public static ITierConverter<Integer> focusingTierConverter() {
         return (block, meta) -> {
             if (block == null) {
-                return -1;
+                return null;
             } else if (block == ModBlocks.blockCasings5Misc) { // Generation Coils
                 switch (meta) {
                     case 11 -> {
@@ -323,7 +319,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     }
                 }
             }
-            return -1;
+            return null;
         };
     }
 
@@ -574,11 +570,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public int getMaxEfficiency(final ItemStack aStack) {
         return 10000;
-    }
-
-    @Override
-    public int getPollutionPerSecond(final ItemStack aStack) {
-        return 0;
     }
 
     @Override
