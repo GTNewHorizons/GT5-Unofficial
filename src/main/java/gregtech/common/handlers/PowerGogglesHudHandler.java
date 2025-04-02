@@ -23,6 +23,7 @@ import org.lwjgl.opengl.GL11;
 import com.google.common.math.BigIntegerMath;
 import com.gtnewhorizons.modularui.api.drawable.GuiHelper;
 import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.math.Color;
 
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
@@ -75,12 +76,9 @@ public class PowerGogglesHudHandler {
         }
         // if (!gogglesEquipped) return;
         ScaledResolution resolution = event.resolution;
-        int width = resolution.getScaledWidth();
         int screenHeight = resolution.getScaledHeight();
-        int factor = resolution.getScaleFactor();
-        int x = -5;
-        int textOffset = 15;
-        int y = (screenHeight - textOffset);
+
+
 
         FontRenderer fontRenderer = mc.fontRenderer;
         GL11.glPushMatrix();
@@ -95,10 +93,10 @@ public class PowerGogglesHudHandler {
         // Alignment.CenterLeft,
         // false);
 
-        int xOffset = 10;
-        int yOffset = 40;
-        int w = 120;
-        int h = 10;
+        int xOffset = PowerGogglesConfigHandler.mainOffsetX;
+        int yOffset = PowerGogglesConfigHandler.mainOffsetY;
+        int w = PowerGogglesConfigHandler.rectangleWidth;
+        int h = PowerGogglesConfigHandler.rectangleHeight;
         drawPowerRectangle(xOffset, yOffset, h, w, screenHeight);
         GL11.glPopMatrix();
     }
@@ -109,10 +107,10 @@ public class PowerGogglesHudHandler {
         int right = left + w;
         int down = up + h;
 
-        Color gradientLeft;
-        Color gradientRight = Color.GREEN;
+        int gradientLeft;
+        int gradientRight = Color.rgb(0,255,0);
         if (change5m.compareTo(BigInteger.ZERO) >= 0) {
-            gradientLeft = Color.GREEN;
+            gradientLeft = Color.rgb(0,255,0);
         } else {
             double scale = 100d / 33d;
             double severity = measurement.compareTo(BigInteger.ZERO) == 0 ? 1
@@ -123,8 +121,8 @@ public class PowerGogglesHudHandler {
                             .divide(new BigDecimal(measurement), RoundingMode.FLOOR)
                             .intValue() / 100f));
             int gradientFactor = (int) (255 * (severity));
-            gradientLeft = new Color(255, Math.min(255, Math.max(0, 255 - (int) (gradientFactor * scale))), 0);
-            gradientRight = new Color(
+            gradientLeft = Color.rgb(255, Math.min(255, Math.max(0, 255 - (int) (gradientFactor * scale))), 0);
+            gradientRight = Color.rgb(
                 Math.min(255, (int) (gradientFactor * 1.5f * scale)),
                 Math.min(255, Math.max(0, 255 - (int) (gradientFactor * Math.sqrt(severity) * scale))),
                 0); // Calculation done by trial and error until it looked decent in-game
@@ -134,25 +132,27 @@ public class PowerGogglesHudHandler {
         GL11.glTranslated(left, down, 0);
         GL11.glRotated(90, 0, 0, -1);
         GL11.glTranslated(-left, -down, 0);
-        GuiHelper.drawGradientRect(300, left, up, right, down, gradientLeft.getRGB(), gradientRight.getRGB());
+        GuiHelper.drawGradientRect(300, left, up, right, down, gradientLeft, gradientRight);
         GL11.glDisable(GL_LIGHTING);
         GL11.glPopMatrix();
 
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        int textYOffset = 5;
-        double scaleReduction = 1.35;
+        int gapBetweenLines = 2;
+        double mainScale = PowerGogglesConfigHandler.mainTextScaling;
+        double subScale = PowerGogglesConfigHandler.subTextScaling;
         int borderRadius = 3;
+        int bgColor = Color.argb(47, 20, 76, (int)(255*0.85));
         GuiHelper.drawGradientRect(
             -1,
             xOffset - borderRadius,
-            screenHeight - yOffset - w - textYOffset - fontRenderer.FONT_HEIGHT - borderRadius,
+            screenHeight - yOffset - w - gapBetweenLines - fontRenderer.FONT_HEIGHT - borderRadius,
             xOffset + h + borderRadius,
             screenHeight - yOffset
-                + textYOffset * 2
-                + (int) (fontRenderer.FONT_HEIGHT * 2 / scaleReduction)
+                + gapBetweenLines * 2
+                + (int) (fontRenderer.FONT_HEIGHT * 2 * subScale)
                 + borderRadius,
-            new Color(47, 20, 76).getRGB(),
-            new Color(47, 20, 76).getRGB());
+            bgColor,
+            bgColor);
 
         storage = toEngineering(currentEU) + " EU";
         change5mString = "5m: " + toEngineering(change5m)
@@ -199,33 +199,35 @@ public class PowerGogglesHudHandler {
             default:
                 break;
         }
-        fontRenderer.drawStringWithShadow(
+        drawScaledString(
+            fontRenderer,
             storage,
             xOffset,
-            screenHeight - yOffset - w - textYOffset - fontRenderer.FONT_HEIGHT,
-            change5mColor);
+            screenHeight - yOffset - w - gapBetweenLines - fontRenderer.FONT_HEIGHT,
+            change5mColor,
+            mainScale);
         drawScaledString(
             fontRenderer,
             change5mString,
             xOffset,
-            screenHeight - yOffset + textYOffset,
+            screenHeight - yOffset + gapBetweenLines,
             change5mColor,
-            scaleReduction);
+            subScale);
         drawScaledString(
             fontRenderer,
             change1hString,
             xOffset,
-            screenHeight - yOffset + textYOffset * 2 + (int) (fontRenderer.FONT_HEIGHT / scaleReduction),
+            screenHeight - yOffset + gapBetweenLines*2 + (int) (fontRenderer.FONT_HEIGHT * subScale),
             change1hColor,
-            scaleReduction);
+            subScale);
 
     }
 
     private static void drawScaledString(FontRenderer fontRenderer, String string, int xOffset, int yOffset, int color,
-        double scaleReduction) {
+        double scale) {
         GL11.glPushMatrix();
         GL11.glTranslated(xOffset, yOffset, 0);
-        GL11.glScaled(1 / scaleReduction, 1 / scaleReduction, 1);
+        GL11.glScaled(scale, scale, 1);
         GL11.glTranslated(-xOffset, -yOffset, 0);
         fontRenderer.drawStringWithShadow(string, xOffset, yOffset, color);
         GL11.glPopMatrix();
@@ -307,9 +309,9 @@ public class PowerGogglesHudHandler {
     }
 
     private static int getColor(int compareResult) {
-        if (compareResult == 0) return Color.WHITE.getRGB();
-        if (compareResult < 0) return Color.RED.getRGB();
-        return Color.GREEN.getRGB();
+        if (compareResult == 0) return Color.rgb(255,255,255);
+        if (compareResult < 0) return Color.rgb(255,0,0);
+        return Color.rgb(0,255,0);
     }
 
     public static void clear() {
