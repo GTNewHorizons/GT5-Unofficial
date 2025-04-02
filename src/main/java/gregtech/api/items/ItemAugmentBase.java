@@ -3,9 +3,6 @@ package gregtech.api.items;
 import java.util.Collection;
 import java.util.Collections;
 
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 
 public class ItemAugmentBase extends GTGenericItem {
@@ -25,7 +22,6 @@ public class ItemAugmentBase extends GTGenericItem {
      * ##
      */
     public String[] size = new String[] { "##", "#~", "##" };
-    public UITexture gridDisplay = GTUITextures.OVERLAY_EQ_GRID_FIREIMMUNITY;
 
     public ItemAugmentBase(String aUnlocalized, String aEnglish, String aEnglishTooltip,
         Collection<IArmorBehavior> attachedBehaviors, Collection<IArmorBehavior> requiredBehaviors,

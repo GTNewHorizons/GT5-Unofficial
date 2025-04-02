@@ -465,8 +465,11 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_dehp_steam");
 
     // Overlays for the Equipment Grid as part of Mechanical Armor
-    public static final UITexture OVERLAY_EQ_GRID_FIREIMMUNITY = UITexture
-        .fullImage(GregTech.ID, "gui/equipment_grid/grid_augment_fireimmunity");
+    // TODO get this out of this class into a MUI2 registry once one is made
+    public static final com.cleanroommc.modularui.drawable.UITexture OVERLAY_EQ_GRID_FIREIMMUNITY = com.cleanroommc.modularui.drawable.UITexture
+        .builder()
+        .location(GregTech.ID, "gui/equipment_grid/grid_augment_fireimmunity")
+        .build();
 
     /**
      * Can adjust size as needed.

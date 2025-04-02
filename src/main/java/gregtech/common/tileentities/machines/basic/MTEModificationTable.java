@@ -1,35 +1,33 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static gregtech.api.gui.modularui.GTUITextures.OVERLAY_EQ_GRID_FIREIMMUNITY;
 import static gregtech.api.registries.MechanicalArmorRegistry.getMechanicalAugment;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.common.util.Constants;
 
+import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.drawable.GuiTextures;
+import com.cleanroommc.modularui.drawable.ItemDrawable;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.Widget;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.ItemSlot;
+import com.cleanroommc.modularui.widgets.ListWidget;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -56,8 +54,7 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
         return new MTEModificationTable(mName, mTier, mDescriptionArray, mTextures);
     }
 
-    private final ItemStackHandler inputHandler = new ItemStackHandler(2);
-    private ItemStackHandler equipmentGridHandler = new ItemStackHandler(16);
+    private ItemStackHandler gridInventoryHandler = new ItemStackHandler(16);
 
     private void setTagFromItem(ItemStack armorItem, ItemStack modItem) {
         NBTTagCompound tag = getOrCreateNbtCompound(armorItem);
@@ -90,7 +87,7 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
         augment.getAttachedBehaviors()
             .forEach(behavior -> behavior.addBehaviorNBT(armorItem, tag));
 
-        if (--modItem.stackSize == 0) inputHandler.setStackInSlot(0, null);
+        if (--modItem.stackSize == 0) inventoryHandler.setStackInSlot(0, null);
 
         /*
          * else if (modItem.isItemEqual(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1))) {
@@ -129,7 +126,7 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
         return false;
     }
 
-    public NBTTagList saveSlotsToNBT(MultiChildWidget parent, MechArmorBase armor) {
+    public NBTTagList saveSlotsToNBT(ListWidget parent, MechArmorBase armor) {
         NBTTagList augments = armor.getStack()
             .getTagCompound()
             .getTagList("augments", Constants.NBT.TAG_STRING);
@@ -138,9 +135,9 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
 
         for (int i = 0; i < slots.size(); i++) {
             Widget ugh = slots.get(i);
-            SlotWidget slot = (SlotWidget) ugh;
-            if (!(ugh instanceof SlotWidget)) continue;
-            BaseSlot mcSlot = slot.getMcSlot();
+            ItemSlot slot = (ItemSlot) ugh;
+            if (!(ugh instanceof ItemSlot)) continue;
+            Slot mcSlot = slot.getVanillaSlot();
             if (mcSlot.getHasStack()) {
                 if (mcSlot.getStack()
                     .getItem() instanceof ItemAugmentBase aug) {
@@ -222,54 +219,69 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
         return otherIndex;
     }
 
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        openGui(aPlayer);
+        return true;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // super.addUIWidgets(builder, buildContext);
+    // }
+
     final static int MOD_WINDOW_ID = 250;
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new SlotWidget(inputHandler, 0).setFilter((x) -> x.getItem() instanceof ItemAugmentBase)
-                .setAccess(true, true)
-                .setPos(79, 34))
-            .widget(
-                new SlotWidget(inputHandler, 1).setFilter((x) -> x.getItem() instanceof MechArmorBase)
-                    .setAccess(true, true)
-                    .setPos(79, 50)
-                    .setBackground(() -> new IDrawable[] { new ItemDrawable(new ItemStack(Items.iron_helmet)) }))
-            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                ItemStack coreItem = inputHandler.getStackInSlot(0);
-                ItemStack armorItem = inputHandler.getStackInSlot(1);
+    // TODO background on the button children
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
+        ModularPanel ui = new ModularPanel("gt:modification_table");
+        IPanelHandler popupPanel = syncManager
+            .panel("popup_panel", (manager, syncHandler) -> createMUI2Grid(inventoryHandler.getStackInSlot(1)), true);
+        syncManager.registerSlotGroup("main_group", 2);
+        ui.child(
+            new ItemSlot()
+                .slot(
+                    new ModularSlot(inventoryHandler, 0).filter((x) -> x.getItem() instanceof ItemAugmentBase)
+                        .accessibility(true, true))
+                .pos(79, 34));
+        ui.child(
+            new ItemSlot().slot(
+                new ModularSlot(inventoryHandler, 1).filter((x) -> x.getItem() instanceof MechArmorBase)
+                    .accessibility(true, true)
+                    .slotGroup("main_group"))
+                .pos(79, 50)
+                .background(new ItemDrawable(new ItemStack(Items.iron_helmet))));
+        ui.child(new ButtonWidget<>().onMousePressed(mouseButton -> {
+            ItemStack coreItem = inventoryHandler.getStackInSlot(0);
+            ItemStack armorItem = inventoryHandler.getStackInSlot(1);
 
-                if (coreItem == null || armorItem == null) return;
-                setTagFromItem(armorItem, coreItem);
-            })
-                .setPos(20, 20)
-                .setSize(16, 16)
-                .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(GTUITextures.BUTTON_STANDARD);
-                    ret.add(GTUITextures.OVERLAY_BUTTON_CHECKMARK);
-                    return ret.toArray(new IDrawable[0]);
-                }))
-            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                ItemStack armorItem = inputHandler.getStackInSlot(1);
-                if (armorItem == null || !(armorItem.getItem() instanceof MechArmorBase)) return;
-                if (!widget.isClient()) widget.getContext()
-                    .openSyncedWindow(MOD_WINDOW_ID);
-            })
-                .setPos(36, 20)
-                .setSize(16, 16)
-                .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(GTUITextures.BUTTON_STANDARD);
-                    ret.add(GTUITextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM);
-                    return ret.toArray(new IDrawable[0]);
-                }));
-        buildContext
-            .addSyncedWindow(MOD_WINDOW_ID, player -> createEquipmentGrid(player, inputHandler.getStackInSlot(1)));
+            if (coreItem == null || armorItem == null) return false;
+            setTagFromItem(armorItem, coreItem);
+            return true;
+        })
+            .pos(20, 20)
+            .size(16, 16));
+        ui.child(new ButtonWidget<>().onMousePressed(mouseButton -> {
+            ItemStack armorItem = inventoryHandler.getStackInSlot(1);
+            if (armorItem == null || !(armorItem.getItem() instanceof MechArmorBase)) return false;
+            popupPanel.openPanel();
+            return true;
+        })
+            .pos(36, 20)
+            .size(16, 16));
+
+        return ui.bindPlayerInventory();
     }
 
     // TODO handle NPE when you insert armor without frame data
-    private ModularWindow createEquipmentGrid(final EntityPlayer player, ItemStack armorItem) {
+    private ModularPanel createMUI2Grid(ItemStack armorItem) {
+        ModularPanel ui = new ModularPanel("gt:modification_table_grid");
 
         MechArmorBase mechArmorBase = (MechArmorBase) armorItem.getItem();
 
@@ -279,56 +291,44 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
             armorItem.getTagCompound()
                 .getInteger("frame")).size;
 
-        ModularWindow.Builder builder = ModularWindow
-            .builder((frameData[0].length() * 18) + 10, (frameData.length * 18) + 10);
-        builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
-        builder.setGuiTint(this.getGUIColorization());
-        builder.setDraggable(true);
-
+        ui.background(GuiTextures.MC_BACKGROUND);
         int maxSlots = getTotalSlots(frameData);
-        equipmentGridHandler.setSize(maxSlots + 1);
+        gridInventoryHandler.setSize(maxSlots + 1);
 
-        MultiChildWidget slots = createSlotWidgets(frameData);
-        for (int i = 0; i < slots.getChildren()
-            .size(); i++) {
+        ListWidget slots = createSlotWidgets(frameData);
+        List children = slots.getChildren();
+        for (int i = 0; i < children.size(); i++) {
+            ItemSlot slot = (ItemSlot) children.get(i);
+            if (!(children.get(i) instanceof ItemSlot)) continue;
             final int tempI = i;
-            ((SlotWidget) slots.getChildren()
-                .get(i)).setFilter((ItemStack stack) -> canPutStack(stack, tempI, frameData, slots, maxSlots));
+            ((ItemSlot) children.get(i)).getSlot()
+                .filter((stack) -> canPutStack(stack, tempI, frameData, slots, maxSlots));
         }
-        populateSlotWidgets(data, slots, builder);
+        populateSlotWidgets(data, slots, ui);
 
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (!widget.isClient()) {
-                // remaking NBT every time is probably bad practice, but the other option involves looking through the
-                // whole thing anyway
-                armorItem.getTagCompound()
-                    .setTag("augments", saveSlotsToNBT(slots, mechArmorBase));
-                widget.getContext()
-                    .closeWindow(MOD_WINDOW_ID);
-            }
+        ui.child(new ButtonWidget<>().onMousePressed(mouseButton -> {
+            armorItem.getTagCompound()
+                .setTag("augments", saveSlotsToNBT(slots, mechArmorBase));
+            ui.closeIfOpen(false);
+            return true;
+            // TODO add background
         })
-            .setPos(5, slots.getPos().y - 10)
-            .setSize(16, 16)
-            .setBackground(() -> {
-                List<UITexture> tex = new ArrayList<>();
-                tex.add(GTUITextures.BUTTON_STANDARD);
-                tex.add(GTUITextures.OVERLAY_BUTTON_DISABLE);
-                return tex.toArray(new IDrawable[0]);
-            }));
-        // updateTextures(builder, slots, frameData);
-        builder.widget(slots);
-        return builder.build();
+            .pos(5, -10)
+            .size(16, 16));
+
+        ui.child(slots);
+        return ui;
     }
 
-    private MultiChildWidget createSlotWidgets(String[] frameData) {
-        MultiChildWidget parent = new MultiChildWidget();
+    private ListWidget createSlotWidgets(String[] frameData) {
+        ListWidget parent = new ListWidget();
         int slotIndex = 0;
         for (int i = 0; i < frameData.length; i++) {
             String row = frameData[i];
             for (int j = 0; j < row.length(); j++) {
                 char frameSlot = row.toCharArray()[j];
                 if (frameSlot == '#') {
-                    Widget slot = new SlotWidget(new BaseSlot(equipmentGridHandler, slotIndex) {
+                    Widget slot = new ItemSlot().slot(new ModularSlot(gridInventoryHandler, slotIndex) {
 
                         @Override
                         public int getSlotStackLimit() {
@@ -340,8 +340,9 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
                         public void onSlotChanged() {
                             super.onSlotChanged();
                         }
-                    }).setPos((18 * j) + 5, (18 * i) + 5);
-                    parent.addChild(slot);
+                    })
+                        .pos((18 * j) + 5, (18 * i) + 5);
+                    parent.addChild(slot, slotIndex);
                     slotIndex++;
                 }
             }
@@ -349,7 +350,7 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
         return parent;
     }
 
-    private void populateSlotWidgets(NBTTagList dataList, MultiChildWidget slots, ModularWindow.Builder builder) {
+    private void populateSlotWidgets(NBTTagList dataList, ListWidget slots, ModularPanel panel) {
         for (int i = 0; i < dataList.tagCount(); i++) {
             String data = dataList.getStringTagAt(i);
             if (data.isEmpty()) continue;
@@ -357,56 +358,20 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
             int index = getIndexFromAugmentNBT(new NBTTagString(data));
 
             if (slots.getChildren()
-                .get(index) instanceof SlotWidget slot) {
-                slot.getMcSlot()
+                .get(index) instanceof ItemSlot slot) {
+                slot.getVanillaSlot()
                     .putStack(new ItemStack(augment, 1));
                 // Create the texture overlay for "big" augment
-                builder.widget(
-                    new DrawableWidget().setDrawable(GTUITextures.OVERLAY_EQ_GRID_FIREIMMUNITY)
-                        .setPos(slot.getPos())
-                        .setSize(augment.size[0].length() * 18, augment.size.length * 18));
+                panel.child(
+                    OVERLAY_EQ_GRID_FIREIMMUNITY.asWidget()
+                        .pos(slot.getSlot().xDisplayPosition, slot.getSlot().yDisplayPosition));
             }
         }
     }
 
-    // TODO remake this method
-    private void updateTextures(ModularWindow.Builder builder, MultiChildWidget slots, String[] frameData) {
-        for (int slot = 0; slot < equipmentGridHandler.getSlots(); slot++) {
-            ItemStack item = equipmentGridHandler.getStackInSlot(slot);
-            if (item == null) return;
-            if (!(item.getItem() instanceof ItemAugmentBase augment)) return;
-            if (!augment.isSimpleAugment()) return;
-            for (int i = 0; i < augment.size.length; i++) {
-                String row = augment.size[i];
-                for (int j = 0; j < row.length(); j++) {
-                    builder.widget(
-                        new DrawableWidget().setDrawable(new ItemDrawable(item))
-                            .setSize(16, 16)
-                            .setPos(
-                                slots.getChildren()
-                                    .get(slot)
-                                    .getPos().x + (18 * (i * frameData[0].length())),
-                                slots.getChildren()
-                                    .get(slot)
-                                    .getPos().y + (18 * j)));
-                    // .setPos(getSlotOffset(slots, slot, frameData)));
-                }
-            }
-        }
-    }
-
-    private Pos2d getSlotOffset(MultiChildWidget slots, int slot, String[] frameData) {
-        int x = slots.getPos().x + ((slot % 4) * 16);
-        int y = slots.getPos().y + ((slot / 4) * 16);
-
-        return new Pos2d(x + 5, y + 2);
-    }
-
-    public boolean canPutStack(ItemStack stack, int augIndex, String[] frameData, MultiChildWidget parent,
-        int maxSlots) {
+    public boolean canPutStack(ItemStack stack, int augIndex, String[] frameData, ListWidget slots, int maxSlots) {
         if (!(stack.getItem() instanceof ItemAugmentBase augment) || !augment.isSimpleAugment()) return false;
         int totalAugIndex = getOtherIndex(frameData, augIndex);
-        List<Widget> slots = parent.getChildren();
         String[] size = augment.size;
 
         for (int i = 0; i < size.length; i++) {
@@ -424,8 +389,10 @@ public class MTEModificationTable extends MTEBasicMachine implements IAddUIWidge
                 // TODO rename this terrible variable name
                 int lookForIndex = augIndex + ((i * frameData[0].length()) + j);
                 if (lookForIndex > maxSlots) return false;
-                if (((SlotWidget) slots.get(augIndex + ((i * frameData[0].length()) + j))).getMcSlot()
-                    .getHasStack()) return false;
+                if (((ItemSlot) slots.getChildren()
+                    .get(augIndex + ((i * frameData[0].length()) + j))).getVanillaSlot()
+                        .getHasStack())
+                    return false;
             }
         }
         return true;
