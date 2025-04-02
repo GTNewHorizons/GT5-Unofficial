@@ -488,7 +488,7 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_268", "Overflow Voiding Mode Enabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_269", "Void Full Mode Disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_270", "Void Full Mode Enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_271", "unspecified");
+        addStringLocalization("Interaction_DESCRIPTION_Index_271", "Machine enabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_272", "Recipe by: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_273", "Original Recipe by: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_274", "Modified by: ");
