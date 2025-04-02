@@ -43,10 +43,10 @@ public class PowerGogglesConfigHandler {
             subTextScaling = config
                 .get(
                     Configuration.CATEGORY_GENERAL,
-                    "Time Change Text Scale",
-                    1 / 1.35,
+                    "Timed Reading Text Scale",
+                    0.75,
                     "Text size of the 5m and 1h readings")
-                .getDouble(1 / 1.35);
+                .getDouble(0.75);
             gradientPreset = config
                 .get(Configuration.CATEGORY_GENERAL, "Gradient Preset", "NORMAL", "Available options: NORMAL")
                 .getString();
