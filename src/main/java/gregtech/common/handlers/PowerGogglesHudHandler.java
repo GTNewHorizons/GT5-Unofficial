@@ -78,8 +78,6 @@ public class PowerGogglesHudHandler {
         ScaledResolution resolution = event.resolution;
         int screenHeight = resolution.getScaledHeight();
 
-
-
         FontRenderer fontRenderer = mc.fontRenderer;
         GL11.glPushMatrix();
         GL11.glEnable(GL_CULL_FACE);
@@ -108,9 +106,9 @@ public class PowerGogglesHudHandler {
         int down = up + h;
 
         int gradientLeft;
-        int gradientRight = Color.rgb(0,255,0);
+        int gradientRight = Color.rgb(0, 255, 0);
         if (change5m.compareTo(BigInteger.ZERO) >= 0) {
-            gradientLeft = Color.rgb(0,255,0);
+            gradientLeft = Color.rgb(0, 255, 0);
         } else {
             double scale = 100d / 33d;
             double severity = measurement.compareTo(BigInteger.ZERO) == 0 ? 1
@@ -141,7 +139,7 @@ public class PowerGogglesHudHandler {
         double mainScale = PowerGogglesConfigHandler.mainTextScaling;
         double subScale = PowerGogglesConfigHandler.subTextScaling;
         int borderRadius = 3;
-        int bgColor = Color.argb(47, 20, 76, (int)(255*0.85));
+        int bgColor = Color.argb(47, 20, 76, (int) (255 * 0.85));
         GuiHelper.drawGradientRect(
             -1,
             xOffset - borderRadius,
@@ -217,7 +215,7 @@ public class PowerGogglesHudHandler {
             fontRenderer,
             change1hString,
             xOffset,
-            screenHeight - yOffset + gapBetweenLines*2 + (int) (fontRenderer.FONT_HEIGHT * subScale),
+            screenHeight - yOffset + gapBetweenLines * 2 + (int) (fontRenderer.FONT_HEIGHT * subScale),
             change1hColor,
             subScale);
 
@@ -309,9 +307,9 @@ public class PowerGogglesHudHandler {
     }
 
     private static int getColor(int compareResult) {
-        if (compareResult == 0) return Color.rgb(255,255,255);
-        if (compareResult < 0) return Color.rgb(255,0,0);
-        return Color.rgb(0,255,0);
+        if (compareResult == 0) return Color.rgb(255, 255, 255);
+        if (compareResult < 0) return Color.rgb(255, 0, 0);
+        return Color.rgb(0, 255, 0);
     }
 
     public static void clear() {
