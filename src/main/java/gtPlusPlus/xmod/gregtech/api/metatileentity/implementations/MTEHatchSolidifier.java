@@ -76,11 +76,29 @@ public class MTEHatchSolidifier extends MTEHatchMultiInput {
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
-        ItemStack oldMoldSlot = getStackInSlot(2);
+
         if (getSizeInventory() > 1) {
+            boolean migrated = false;
+
+            if (getMold() != null) {
+                for (ItemStack mold : solidifierMolds) {
+                    if (mold.getItem() == getMold().getItem()) {
+                        migrated = true;
+                        break;
+                    }
+                }
+            }
+
+            if (migrated) {
+                return;
+            }
+
+            ItemStack oldMoldSlot = getStackInSlot(2);
+
             for (int i = 1; i < getSizeInventory(); i++) {
                 setInventorySlotContents(i, null);
             }
+
             setInventorySlotContents(0, oldMoldSlot);
         }
     }
