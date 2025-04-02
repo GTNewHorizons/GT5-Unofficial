@@ -20,6 +20,8 @@ import static gtnhlanth.util.DescTextLocalization.addDotText;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -68,8 +70,6 @@ import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import gtnhlanth.util.DescTextLocalization;
 import gtnhlanth.util.Util;
-
-import javax.annotation.Nullable;
 
 public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotron> implements ISurvivalConstructable {
 
@@ -646,8 +646,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 hatchNormal.updateTexture(aBaseCasingIndex);
                 hatchNormal.updateCraftingIcon(this.getMachineCraftingIcon());
                 return mEnergyHatches.add(hatchNormal);
-            }
-            else if (aMetaTileEntity instanceof MTEHatch hatchExotic
+            } else if (aMetaTileEntity instanceof MTEHatch hatchExotic
                 && ExoticEnergyInputHelper.isExoticEnergyInput(aMetaTileEntity)) {
                     if (firstHatch) this.usingExotic = true;
 
@@ -656,10 +655,8 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                     hatchExotic.updateTexture(aBaseCasingIndex);
                     hatchExotic.updateCraftingIcon(this.getMachineCraftingIcon());
                     return mExoticEnergyHatches.add(hatchExotic);
-                }
-            else return false; // Not an energy hatch
-        }
-        else return false; // Not a hatch of any kind
+                } else return false; // Not an energy hatch
+        } else return false; // Not a hatch of any kind
     }
 
     public void setAntennaTier(int t) {
@@ -697,9 +694,12 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         FluidStack primaryFluid = fluidList.get(0);
         int fluidTemperature = Util.coolantFluidTemperature(primaryFluid);
 
-        float inputEnergy = this.getInputInformation().getEnergy();
-        float inputFocus = this.getInputInformation().getFocus();
-        float inputRate = this.getInputInformation().getRate();
+        float inputEnergy = this.getInputInformation()
+            .getEnergy();
+        float inputFocus = this.getInputInformation()
+            .getFocus();
+        float inputRate = this.getInputInformation()
+            .getRate();
         Particle inputParticle = Particle.getParticleFromId(inputInfo.getParticleId());
 
         if (!inputParticle.canAccelerate()) {
@@ -724,12 +724,12 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         this.outputEnergy = (float) calculateOutputParticleEnergy(voltage, inputEnergy, this.antennaeTier);
 
         /*
-        If input focus > machine focus, divide their sum by 2.5, else weigh the former by the latter.
-        This punishes having too low a machine focus for low values of input focus.
-        EX: An input focus of 50 requires a machine focus of 100 to get an output focus of 50,
-        whereas an input focus of 60 only requires around 80.
-        In general, as input focus increases, output scales better with machine focus
-        */
+         * If input focus > machine focus, divide their sum by 2.5, else weigh the former by the latter.
+         * This punishes having too low a machine focus for low values of input focus.
+         * EX: An input focus of 50 requires a machine focus of 100 to get an output focus of 50,
+         * whereas an input focus of 60 only requires around 80.
+         * In general, as input focus increases, output scales better with machine focus
+         */
         this.outputFocus = (inputFocus > this.machineFocus) ? ((inputFocus + this.machineFocus) / 2.5f)
             : inputFocus * (this.machineFocus / 100);
 
@@ -745,7 +745,9 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        Fluid fluidOutput = BeamlineRecipeLoader.coolantMap.get(primaryFluid.getFluid().getName());
+        Fluid fluidOutput = BeamlineRecipeLoader.coolantMap.get(
+            primaryFluid.getFluid()
+                .getName());
         if (Objects.isNull(fluidOutput)) return CheckRecipeResultRegistry.NO_RECIPE;
 
         primaryFluid.amount -= CONSUMED_FLUID;
@@ -759,11 +761,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     private void outputAfterRecipe() {
         if (!this.mOutputBeamline.isEmpty()) {
             BeamLinePacket packet = new BeamLinePacket(
-                new BeamInformation(
-                    this.outputEnergy,
-                    this.outputRate,
-                    this.outputParticle,
-                    this.outputFocus));
+                new BeamInformation(this.outputEnergy, this.outputRate, this.outputParticle, this.outputFocus));
             for (MTEHatchOutputBeamline o : this.mOutputBeamline) {
                 o.dataPacket = packet;
             }
@@ -798,11 +796,12 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
      * and the antenna tier.
      * LaTeX:
      * E_{Out} = \frac{E_{In}^{1.13*AntennaTier^{\frac{4}{9}}}}{40,000,000} *
-     *           (-0.15^{\frac{2*EU_{In}}{60768*AntennaTier^{2.5}}}+1)
+     * (-0.15^{\frac{2*EU_{In}}{60768*AntennaTier^{2.5}}}+1)
+     * 
      * @return The particle energy, in kEV
      */
     private static double calculateOutputParticleEnergy(long voltage, double inputParticleEnergy, int antennaTier) {
-        return (Math.pow(inputParticleEnergy, 1.13 * Math.pow(antennaTier, 4.0/9.0)) / 40_000_000)
+        return (Math.pow(inputParticleEnergy, 1.13 * Math.pow(antennaTier, 4.0 / 9.0)) / 40_000_000)
             * (-(Math.pow(0.15, (2.0 * voltage) / ((Math.pow(antennaTier, 2.5) * 60768.0)))) + 1);
 
     }
@@ -811,10 +810,10 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         return (float) Math.max(Math.min(Math.pow(1.5, -1.0 / 40.0 * (temperature - 480)), 90), 10);
     }
 
-
     private static float getOutputRatio(float voltageFactor, int antennaTier) {
         /*
-        Scale ratio with antenna tier, such a high exponential should be fine so long as there are only a few antenna tiers
+         * Scale ratio with antenna tier, such a high exponential should be fine so long as there are only a few antenna
+         * tiers
          */
         return (float) (voltageFactor / (10.0 / Math.pow(2.5, antennaTier)));
     }
@@ -945,15 +944,14 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 + this.outputEnergy * 1000
                 + EnumChatFormatting.RESET
                 + " eV",
-            StatCollector.translateToLocal(
-                "beamline.focus") + ": " // "Focus:"
+            StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
                 + EnumChatFormatting.BLUE
-                + this.outputFocus + " "
+                + this.outputFocus
+                + " "
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
                 + EnumChatFormatting.LIGHT_PURPLE
-                + this.outputRate
-        };
+                + this.outputRate };
     }
 
     @Override

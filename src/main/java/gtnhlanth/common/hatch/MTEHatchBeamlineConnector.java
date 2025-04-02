@@ -3,7 +3,6 @@ package gtnhlanth.common.hatch;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static tectech.util.CommonValues.MOVE_AT;
 
-import gtnhlanth.common.beamline.BeamLinePacket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -13,6 +12,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
+import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
 
 public abstract class MTEHatchBeamlineConnector extends MTEHatch implements IConnectsToBeamline {

@@ -61,11 +61,11 @@ public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector implements
         if (meta instanceof MTEBeamlinePipe) {
             ((MTEBeamlinePipe) meta).markUsed();
             return (IConnectsToBeamline) meta;
-        }
-        else if (meta instanceof MTEHatchInputBeamline && ((MTEHatchInputBeamline) meta).canConnect(
-            base.getFrontFacing().getOpposite())) {
-            return (IConnectsToBeamline) meta;
-        }
+        } else if (meta instanceof MTEHatchInputBeamline && ((MTEHatchInputBeamline) meta).canConnect(
+            base.getFrontFacing()
+                .getOpposite())) {
+                    return (IConnectsToBeamline) meta;
+                }
         return null;
     }
 
