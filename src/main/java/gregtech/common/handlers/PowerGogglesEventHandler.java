@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -20,12 +21,15 @@ import appeng.api.util.DimensionalCoord;
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.InputEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GTPacketLinkGoggles;
 import gregtech.api.net.GTPacketUpdatePowerGoggles;
+import gregtech.common.gui.PowerGogglesGuiHudConfig;
 import gregtech.common.misc.WirelessNetworkManager;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 
@@ -105,6 +109,17 @@ public class PowerGogglesEventHandler {
     @SubscribeEvent
     public void serverOnPlayerConnect(FMLNetworkEvent.ServerConnectionFromClientEvent event) {
 
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void onKeyInput(InputEvent.KeyInputEvent event) {
+        EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+
+        if (PowerGogglesKeybindHandler.openConfigGui.isPressed()) {
+            Minecraft.getMinecraft()
+                .displayGuiScreen(new PowerGogglesGuiHudConfig());
+        }
     }
 
     private void setLink(ItemStack item) {
