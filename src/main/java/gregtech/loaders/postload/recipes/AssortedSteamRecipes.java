@@ -2,7 +2,6 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.enums.Mods.BuildCraftFactory;
-import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.StorageDrawers;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
@@ -68,7 +67,7 @@ public class AssortedSteamRecipes implements Runnable {
             .addTo(steamFusionReactorRecipes);
 
         RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1), GTUtility.getIntegratedCircuit(1))
             .fluidInputs(Materials.Water.getFluid(100))
             .itemOutputs(new ItemStack(Items.clay_ball, 1))
             .duration(4 * TICKS)
@@ -477,17 +476,6 @@ public class AssortedSteamRecipes implements Runnable {
                     GTOreDictUnificator.get("drawerBasic", 1),
                     GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Breel, 2))
                 .itemOutputs(GTModHandler.getModItem(StorageDrawers.ID, "controller", 1, 0))
-                .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(steamManufacturerRecipes);
-        }
-
-        if (ExtraUtilities.isModLoaded()) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Diamond, 3),
-                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Obsidian, 2))
-                .itemOutputs(GTModHandler.getModItem(ExtraUtilities.ID, "defoliageAxe", 1, 0))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(steamManufacturerRecipes);
