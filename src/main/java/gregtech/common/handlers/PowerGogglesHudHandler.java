@@ -109,10 +109,6 @@ public class PowerGogglesHudHandler {
         int right = left + w;
         int down = up + h;
 
-
-
-
-
         Color gradientLeft;
         Color gradientRight = Color.GREEN;
         if (change5m.compareTo(BigInteger.ZERO) >= 0) {
@@ -151,7 +147,10 @@ public class PowerGogglesHudHandler {
             xOffset - borderRadius,
             screenHeight - yOffset - w - textYOffset - fontRenderer.FONT_HEIGHT - borderRadius,
             xOffset + h + borderRadius,
-            screenHeight - yOffset + textYOffset*2 + (int) (fontRenderer.FONT_HEIGHT * 2 / scaleReduction) + borderRadius,
+            screenHeight - yOffset
+                + textYOffset * 2
+                + (int) (fontRenderer.FONT_HEIGHT * 2 / scaleReduction)
+                + borderRadius,
             new Color(47, 20, 76).getRGB(),
             new Color(47, 20, 76).getRGB());
 
@@ -159,22 +158,22 @@ public class PowerGogglesHudHandler {
         change5mString = "5m: " + toEngineering(change5m)
             + " EU "
             + (change5mDiff != 0
-            ? String.format(
-            " (%s eu/t) ",
-            toEngineering(
-                change5m.divide(
-                    BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
-            : "");
+                ? String.format(
+                    " (%s eu/t) ",
+                    toEngineering(
+                        change5m.divide(
+                            BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
+                : "");
         change1hString = "1h: " + toEngineering(change1h)
             + " EU "
             + (change1hDiff != 0 ? String.format(
-            " (%s eu/t)",
-            toEngineering(
-                change1h.divide(
-                    BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
-            : "");
+                " (%s eu/t)",
+                toEngineering(
+                    change1h.divide(
+                        BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
+                : "");
         int mode = 1;
-        switch(mode){
+        switch (mode) {
             case 0:
                 break;
             case 1:
@@ -182,20 +181,19 @@ public class PowerGogglesHudHandler {
                 change1hString = "1h: " + toEngineering(change1h);
                 break;
             case 2:
-                change5mString = "5m: "
-                    + (change5mDiff != 0
-                    ? String.format(
+                change5mString = "5m: " + (change5mDiff != 0 ? String.format(
                     " (%s eu/t) ",
                     toEngineering(
                         change5m.divide(
                             BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
                     : "");
-                change1hString = "1h: "
-                    + (change1hDiff != 0 ? String.format(
-                    " (%s eu/t)",
-                    toEngineering(
-                        change1h.divide(
-                            BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
+                change1hString = "1h: " + (change1hDiff != 0
+                    ? String.format(
+                        " (%s eu/t)",
+                        toEngineering(
+                            change1h.divide(
+                                BigInteger
+                                    .valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
                     : "");
                 break;
             default:
@@ -217,7 +215,7 @@ public class PowerGogglesHudHandler {
             fontRenderer,
             change1hString,
             xOffset,
-            screenHeight - yOffset + textYOffset*2 + (int) (fontRenderer.FONT_HEIGHT / scaleReduction),
+            screenHeight - yOffset + textYOffset * 2 + (int) (fontRenderer.FONT_HEIGHT / scaleReduction),
             change1hColor,
             scaleReduction);
 
