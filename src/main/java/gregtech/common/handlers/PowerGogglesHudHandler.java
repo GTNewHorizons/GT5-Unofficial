@@ -16,7 +16,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 import org.lwjgl.opengl.GL11;
@@ -24,9 +23,6 @@ import org.lwjgl.opengl.GL11;
 import com.google.common.math.BigIntegerMath;
 import com.gtnewhorizons.modularui.api.drawable.GuiHelper;
 import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.math.Size;
 
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
@@ -51,6 +47,12 @@ public class PowerGogglesHudHandler {
     static BigInteger measurement = BigInteger.valueOf(0);
     static BigInteger highest = BigInteger.valueOf(0);
     static int measurementCount = 0;
+    static int change5mColor;
+    static int change1hColor;
+
+    static String storage;
+    static String change5mString;
+    static String change1hString;
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
@@ -70,31 +72,30 @@ public class PowerGogglesHudHandler {
         // if (!gogglesEquipped) return;
         ScaledResolution resolution = event.resolution;
         int width = resolution.getScaledWidth();
-        int height = resolution.getScaledHeight();
+        int screenHeight = resolution.getScaledHeight();
         int factor = resolution.getScaleFactor();
         int x = -5;
         int textOffset = 15;
-        int y = (height - textOffset);
+        int y = (screenHeight - textOffset);
 
         FontRenderer fontRenderer = mc.fontRenderer;
         GL11.glPushMatrix();
         GL11.glEnable(GL_CULL_FACE);
-        GuiHelper.drawHoveringText(
-            hudList,
-            new Pos2d(x, y),
-            new Size(150, 45),
-            150,
-            0.75f,
-            false,
-            Alignment.CenterLeft,
-            false);
+        // GuiHelper.drawHoveringText(
+        // hudList,
+        // new Pos2d(x, y),
+        // new Size(150, 45),
+        // 150,
+        // 0.75f,
+        // false,
+        // Alignment.CenterLeft,
+        // false);
 
-        int xOffset = 30;
-        int yOffset = 80;
-        int w = 10;
-        int h = 80;
-        drawPowerRectangle(xOffset, yOffset, w, h, height);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        int xOffset = 10;
+        int yOffset = 40;
+        int w = 120;
+        int h = 10;
+        drawPowerRectangle(xOffset, yOffset, h, w, screenHeight);
         GL11.glPopMatrix();
     }
 
@@ -103,6 +104,10 @@ public class PowerGogglesHudHandler {
         int up = screenHeight - h - yOffset;
         int right = left + w;
         int down = up + h;
+
+
+
+
 
         Color gradientLeft;
         Color gradientRight = Color.GREEN;
@@ -123,7 +128,7 @@ public class PowerGogglesHudHandler {
             gradientRight = new Color(
                 Math.min(255, (int) (gradientFactor * 1.5f * scale)),
                 Math.min(255, Math.max(0, 255 - (int) (gradientFactor * Math.sqrt(severity) * scale))),
-                0); //Calculation done by trial and error until it looked decent in-game
+                0); // Calculation done by trial and error until it looked decent in-game
         }
 
         GL11.glPushMatrix();
@@ -134,6 +139,49 @@ public class PowerGogglesHudHandler {
         GL11.glDisable(GL_LIGHTING);
         GL11.glPopMatrix();
 
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        int textYOffset = 5;
+        double scaleReduction = 1.35;
+        int borderRadius = 3;
+        GuiHelper.drawGradientRect(
+            -1,
+            xOffset - borderRadius,
+            screenHeight - yOffset - w - textYOffset - fontRenderer.FONT_HEIGHT - borderRadius,
+            xOffset + h + borderRadius,
+            screenHeight - yOffset + textYOffset*2 + (int) (fontRenderer.FONT_HEIGHT * 2 / scaleReduction) + borderRadius,
+            new Color(47, 20, 76).getRGB(),
+            new Color(47, 20, 76).getRGB());
+
+        fontRenderer.drawStringWithShadow(
+            storage,
+            xOffset,
+            screenHeight - yOffset - w - textYOffset - fontRenderer.FONT_HEIGHT,
+            change5mColor);
+        drawScaledString(
+            fontRenderer,
+            change5mString,
+            xOffset,
+            screenHeight - yOffset + textYOffset,
+            change5mColor,
+            scaleReduction);
+        drawScaledString(
+            fontRenderer,
+            change1hString,
+            xOffset,
+            screenHeight - yOffset + textYOffset*2 + (int) (fontRenderer.FONT_HEIGHT / scaleReduction),
+            change1hColor,
+            scaleReduction);
+
+    }
+
+    private static void drawScaledString(FontRenderer fontRenderer, String string, int xOffset, int yOffset, int color,
+        double scaleReduction) {
+        GL11.glPushMatrix();
+        GL11.glTranslated(xOffset, yOffset, 0);
+        GL11.glScaled(1 / scaleReduction, 1 / scaleReduction, 1);
+        GL11.glTranslated(-xOffset, -yOffset, 0);
+        fontRenderer.drawStringWithShadow(string, xOffset, yOffset, color);
+        GL11.glPopMatrix();
     }
 
     public static void setMeasurement(BigInteger newEU) {
@@ -154,43 +202,31 @@ public class PowerGogglesHudHandler {
 
         BigInteger change5m = getReadingSum(measurements, measurementCount5m);
         int change5mDiff = change5m.compareTo(BigInteger.valueOf(0));
-        EnumChatFormatting change5mColor = getColor(change5mDiff);
+        change5mColor = getColor(change5mDiff);
 
         BigInteger change1h = getReadingSum(measurements, measurementCount1h);
         int change1hDiff = change1h.compareTo(BigInteger.valueOf(0));
-        EnumChatFormatting change1hColor = getColor(change5mDiff);
+        change1hColor = getColor(change5mDiff);
 
         hudList = new ArrayList<>();
-        hudList
-            .add(new Text(EnumChatFormatting.WHITE + "Storage: " + change5mColor + toEngineering(currentEU) + " EU"));
-        hudList.add(
-            new Text(
-                EnumChatFormatting.WHITE + "5m: "
-                    + change5mColor
-                    + toEngineering(change5m)
-                    + " EU"
-                    + (change5mDiff != 0
-                        ? String.format(
-                            " (%s eu/t) ",
-                            toEngineering(
-                                change5m.divide(
-                                    BigInteger.valueOf(
-                                        Math.min(measurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
-                        : "")));
-        hudList.add(
-            new Text(
-                EnumChatFormatting.WHITE + "1h: "
-                    + change1hColor
-                    + toEngineering(change1h)
-                    + " EU"
-                    + (change1hDiff != 0
-                        ? String.format(
-                            " (%s eu/t) ",
-                            toEngineering(
-                                change1h.divide(
-                                    BigInteger.valueOf(
-                                        Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
-                        : "")));
+        storage = toEngineering(currentEU) + " EU";
+        change5mString = "5m: " + toEngineering(change5m)
+            + " EU "
+            + (change5mDiff != 0
+                ? String.format(
+                    " (%s eu/t) ",
+                    toEngineering(
+                        change5m.divide(
+                            BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
+                : "");
+        change1hString = "1h: " + toEngineering(change1h)
+            + " EU "
+            + (change1hDiff != 0 ? String.format(
+                " (%s eu/t)",
+                toEngineering(
+                    change1h.divide(
+                        BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
+                : "");
 
     }
 
@@ -223,10 +259,10 @@ public class PowerGogglesHudHandler {
         return result;
     }
 
-    private static EnumChatFormatting getColor(int compareResult) {
-        if (compareResult == 0) return EnumChatFormatting.WHITE;
-        if (compareResult < 0) return EnumChatFormatting.RED;
-        return EnumChatFormatting.GREEN;
+    private static int getColor(int compareResult) {
+        if (compareResult == 0) return Color.WHITE.getRGB();
+        if (compareResult < 0) return Color.RED.getRGB();
+        return Color.GREEN.getRGB();
     }
 
     public static void clear() {
