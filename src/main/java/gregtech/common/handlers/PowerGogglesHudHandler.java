@@ -170,7 +170,7 @@ public class PowerGogglesHudHandler {
                     change1h.divide(
                         BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
                 : "");
-        int mode = 1;
+        int mode = 0;
         switch (mode) {
             case 0:
                 break;
@@ -184,7 +184,7 @@ public class PowerGogglesHudHandler {
                     toEngineering(
                         change5m.divide(
                             BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
-                    : "");
+                    : "0");
                 change1hString = "1h: " + (change1hDiff != 0
                     ? String.format(
                         " (%s eu/t)",
@@ -192,7 +192,7 @@ public class PowerGogglesHudHandler {
                             change1h.divide(
                                 BigInteger
                                     .valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
-                    : "");
+                    : "0");
                 break;
             default:
                 break;
