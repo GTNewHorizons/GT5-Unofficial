@@ -6,7 +6,9 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.recipe.check.SingleRecipeCheck.getDisplayString;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.formatNumbers;
+import static gregtech.api.util.GTUtility.formatShortenedLong;
 import static gregtech.api.util.GTUtility.min;
+import static gregtech.api.util.GTUtility.truncateText;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
@@ -28,6 +30,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import codechicken.lib.gui.GuiDraw;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
@@ -2871,9 +2874,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     protected final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
+
+
     protected Widget generateCurrentRecipeInfoWidget() {
         final DynamicPositionedColumn processingDetails = new DynamicPositionedColumn();
-        final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 
         if (mOutputItems != null) {
             final Map<String, Long> nameToAmount = new HashMap<>();
@@ -2898,10 +2902,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     + formatShortenedLong(itemCount)
                     + EnumChatFormatting.WHITE
                     + appendRate(false, itemCount, true);
-                String lineText = EnumChatFormatting.AQUA
-                    + NEIClientUtils
-                        .cropText(fontRenderer, itemName, 173 - fontRenderer.getStringWidth(itemAmountString))
-                    + itemAmountString;
+                String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 40 - itemAmountString.length()) + itemAmountString;
                 String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
 
                 processingDetails.widget(
@@ -2933,10 +2934,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     + "L"
                     + EnumChatFormatting.WHITE
                     + appendRate(false, itemCount, true);
-                String lineText = EnumChatFormatting.AQUA
-                    + NEIClientUtils
-                        .cropText(fontRenderer, itemName, 173 - fontRenderer.getStringWidth(itemAmountString))
-                    + itemAmountString;
+                String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 40 - itemAmountString.length()) + itemAmountString;
                 String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(true, itemCount, false);
 
                 processingDetails.widget(
@@ -2945,22 +2943,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
         }
         return processingDetails;
-    }
-
-    protected static String formatShortenedLong(long number) {
-        if (number < 1000) {
-            return String.valueOf(number);
-        }
-
-        int exp = (int) (Math.log(number) / Math.log(1000));
-        char suffix = "kMGTPE".charAt(exp - 1);
-        double shortened = number / Math.pow(1000, exp);
-
-        if (shortened == (long) shortened) {
-            return String.format("%d%c", (long) shortened, suffix);
-        } else {
-            return String.format("%.1f%c", shortened, suffix);
-        }
     }
 
     protected String appendRate(boolean isLiquid, Long amount, boolean isFormatShortened) {

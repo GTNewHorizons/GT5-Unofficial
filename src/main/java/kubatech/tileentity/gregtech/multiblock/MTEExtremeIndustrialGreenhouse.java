@@ -31,6 +31,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
+import static gregtech.api.util.GTUtility.formatShortenedLong;
+import static gregtech.api.util.GTUtility.truncateText;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 
@@ -1136,11 +1138,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
     @Override
     protected Widget generateCurrentRecipeInfoWidget() {
-
         final DynamicPositionedColumn processingDetails = new DynamicPositionedColumn();
-        final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 
-        if (mOutputItems == null && synchedGUIDropTracker == null) return processingDetails;
+        if (mOutputItems == null || synchedGUIDropTracker == null) return processingDetails;
 
         LinkedHashMap<ItemStack, Double> sortedMap = synchedGUIDropTracker.entrySet()
             .stream()
@@ -1169,10 +1169,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     + formatShortenedLong(itemCount)
                     + EnumChatFormatting.WHITE
                     + appendRate(false, itemCount, true);
-                String lineText = EnumChatFormatting.AQUA
-                    + NEIClientUtils
-                        .cropText(fontRenderer, itemName, 173 - fontRenderer.getStringWidth(itemAmountString))
-                    + itemAmountString;
+                String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 20) + itemAmountString;
                 String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
 
                 processingDetails.widget(
