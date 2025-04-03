@@ -59,13 +59,13 @@ public class MTESteamBlastFurnace extends MTEBetterSteamMultiBase<MTESteamBlastF
                 drain = (int) ((double) (drain / 80) * 80);
                 tHatch.drain(drain, true);
                 if (steamStack.isFluidEqual(steam)) {
-                    mProgresstime += (drain / 80);
+                    mProgresstime += (drain / 80) * 20;
                 } else if (steamStack.isFluidEqual(shSteam)) {
-                    mProgresstime += (drain / 80) * 10;
+                    mProgresstime += (drain / 80) * 200;
                 } else if (steamStack.getFluid()
                     .getName()
                     .equals("supercriticalsteam")) {
-                        mProgresstime += (drain / 80) * 100;
+                        mProgresstime += (drain / 80) * 2000;
                     }
             }
         }
