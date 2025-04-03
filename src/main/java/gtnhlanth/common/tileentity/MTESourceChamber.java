@@ -311,7 +311,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Output:"
                 + EnumChatFormatting.GOLD
                 + Particle.getParticleFromId(this.outputParticle)
-                .getLocalisedName()
+                    .getLocalisedName()
                 + " "
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"

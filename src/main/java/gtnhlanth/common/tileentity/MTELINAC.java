@@ -18,6 +18,8 @@ import static gtnhlanth.util.DescTextLocalization.addDotText;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -59,8 +61,6 @@ import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import gtnhlanth.util.DescTextLocalization;
 import gtnhlanth.util.Util;
-
-import javax.annotation.Nullable;
 
 public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISurvivalConstructable {
 
@@ -275,8 +275,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         long voltage = (this.mEnergyHatches.size() == 1) ? this.getMaxInputVoltage() : this.getMaxInputPower();
         float machineEnergy = (float) Math.max((this.length - 1) / 4.0 * Math.pow(voltage, 1.0 / 3.0), 50);
         inputEnergy = Math.min(inputEnergy, 7500); // Does not scale past 7500 keV, prevents double LINAC issue
-        this.outputEnergy = (float) Math.pow(10,
-            1 + inputEnergy / inputParticle.maxSourceEnergy()) * machineEnergy;
+        this.outputEnergy = (float) Math.pow(10, 1 + inputEnergy / inputParticle.maxSourceEnergy()) * machineEnergy;
 
         this.outputParticleID = inputParticleID;
 
@@ -476,56 +475,54 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         return new String[] {
             // from super()
             /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-            + EnumChatFormatting.GREEN
-            + GTUtility.formatNumbers(mProgresstime / 20)
-            + EnumChatFormatting.RESET
-            + " s / "
-            + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(mMaxProgresstime / 20)
-            + EnumChatFormatting.RESET
-            + " s",
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(mProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s / "
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(mMaxProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s",
             /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-            + EnumChatFormatting.GREEN
-            + GTUtility.formatNumbers(storedEnergy)
-            + EnumChatFormatting.RESET
-            + " EU / "
-            + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(maxEnergy)
-            + EnumChatFormatting.RESET
-            + " EU",
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(storedEnergy)
+                + EnumChatFormatting.RESET
+                + " EU / "
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(maxEnergy)
+                + EnumChatFormatting.RESET
+                + " EU",
             /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-            + EnumChatFormatting.RED
-            + GTUtility.formatNumbers(getActualEnergyUsage())
-            + EnumChatFormatting.RESET
-            + " EU/t",
+                + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(getActualEnergyUsage())
+                + EnumChatFormatting.RESET
+                + " EU/t",
             /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-            + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(getMaxInputVoltage())
-            + EnumChatFormatting.RESET
-            + " EU/t(*"
-            + getMaxInputAmps()
-            + "A)"
-            + StatCollector.translateToLocal("GT5U.machines.tier")
-            + ": "
-            + EnumChatFormatting.YELLOW
-            + VN[GTUtility.getTier(getMaxInputVoltage())]
-            + EnumChatFormatting.RESET,
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(getMaxInputVoltage())
+                + EnumChatFormatting.RESET
+                + " EU/t(*"
+                + getMaxInputAmps()
+                + "A)"
+                + StatCollector.translateToLocal("GT5U.machines.tier")
+                + ": "
+                + EnumChatFormatting.YELLOW
+                + VN[GTUtility.getTier(getMaxInputVoltage())]
+                + EnumChatFormatting.RESET,
             /* 5 */ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-            + EnumChatFormatting.RED
-            + (getIdealStatus() - getRepairStatus())
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-            + ": "
-            + EnumChatFormatting.YELLOW
-            + mEfficiency / 100.0F
-            + EnumChatFormatting.RESET
-            + " %",
+                + EnumChatFormatting.RED
+                + (getIdealStatus() - getRepairStatus())
+                + EnumChatFormatting.RESET
+                + " "
+                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                + ": "
+                + EnumChatFormatting.YELLOW
+                + mEfficiency / 100.0F
+                + EnumChatFormatting.RESET
+                + " %",
             /* 6 Pollution not included */
             // Beamline-specific
-            EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.info")
-                + ": "
-                + EnumChatFormatting.RESET,
+            EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.info") + ": " + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("beamline.temperature") + ": " // Temperature:
                 + EnumChatFormatting.DARK_RED
                 + machineTemp
@@ -542,7 +539,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Input:"
                 + EnumChatFormatting.GOLD
                 + Particle.getParticleFromId(information.getParticleId())
-                .getLocalisedName() // e.g. "Electron (e-)"
+                    .getLocalisedName() // e.g. "Electron (e-)"
                 + " "
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
@@ -565,7 +562,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Output:"
                 + EnumChatFormatting.GOLD
                 + Particle.getParticleFromId(this.outputParticleID)
-                .getLocalisedName()
+                    .getLocalisedName()
                 + " "
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"

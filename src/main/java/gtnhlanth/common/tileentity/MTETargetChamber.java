@@ -17,6 +17,8 @@ import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -55,8 +57,6 @@ import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeAdder2;
 import gtnhlanth.common.tileentity.recipe.beamline.RecipeTC;
 import gtnhlanth.util.DescTextLocalization;
-
-import javax.annotation.Nullable;
 
 public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber> implements ISurvivalConstructable {
 
@@ -257,8 +257,8 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
                 int particle = recipeTc.particleId;
 
                 if (recipeInInfo != null) {
-                    return (particle == recipeInInfo.getParticleId()
-                        && !(recipeInInfo.getEnergy() < recipeTc.minEnergy || recipeInInfo.getEnergy() > recipeTc.maxEnergy));
+                    return (particle == recipeInInfo.getParticleId() && !(recipeInInfo.getEnergy() < recipeTc.minEnergy
+                        || recipeInInfo.getEnergy() > recipeTc.maxEnergy));
                 }
 
                 return false;
@@ -487,7 +487,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Input:"
                 + EnumChatFormatting.GOLD
                 + Particle.getParticleFromId(information.getParticleId())
-                .getLocalisedName() // e.g. "Electron (e-)"
+                    .getLocalisedName() // e.g. "Electron (e-)"
                 + " "
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
