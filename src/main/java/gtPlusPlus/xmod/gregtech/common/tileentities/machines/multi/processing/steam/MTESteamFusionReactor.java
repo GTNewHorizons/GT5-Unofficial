@@ -129,12 +129,6 @@ public class MTESteamFusionReactor extends MTEBetterSteamMultiBase<MTESteamFusio
     }
 
     @Override
-    public boolean onRunningTick(ItemStack aStack) {
-        doActivitySound(getActivitySoundLoop());
-        return super.onRunningTick(aStack);
-    };
-
-    @Override
     public int getMaxParallelRecipes() {
         // Max call to prevent seeing -16 parallels in waila for unformed multi
         return 1;
