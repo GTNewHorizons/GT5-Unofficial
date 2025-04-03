@@ -145,7 +145,7 @@ public class CoverFluidStorageMonitor extends Cover {
     }
 
     @Override
-    protected void loadFromNbt(NBTBase nbt) {
+    protected void readFromNbt(NBTBase nbt) {
         NBTTagCompound tag = (NBTTagCompound) nbt;
         fluidLookupSide = ForgeDirection.getOrientation(tag.getByte("coverSide"));
         slot = tag.getInteger("slot");

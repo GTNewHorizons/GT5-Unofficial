@@ -67,7 +67,7 @@ public class CoverMetricsTransmitter extends Cover {
     }
 
     @Override
-    protected void loadFromNbt(NBTBase nbt) {
+    protected void readFromNbt(NBTBase nbt) {
         if (nbt instanceof final NBTTagCompound tag) {
             frequency = new UUID(tag.getLong(FREQUENCY_MSB_KEY), tag.getLong(FREQUENCY_LSB_KEY));
         } else {

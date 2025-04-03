@@ -45,7 +45,7 @@ public class CoverLegacyData extends Cover {
     public final void initializeData() {}
 
     @Override
-    protected void loadFromNbt(NBTBase nbt) {
+    protected void readFromNbt(NBTBase nbt) {
         this.coverData = nbt instanceof NBTTagInt ? ((NBTTagInt) nbt).func_150287_d() : 0;
     }
 

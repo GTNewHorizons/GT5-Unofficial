@@ -66,7 +66,7 @@ public class CoverLiquidMeter extends Cover {
     }
 
     @Override
-    protected void loadFromNbt(NBTBase nbt) {
+    protected void readFromNbt(NBTBase nbt) {
         NBTTagCompound tag = (NBTTagCompound) nbt;
         inverted = tag.getBoolean("invert");
         threshold = tag.getInteger("threshold");

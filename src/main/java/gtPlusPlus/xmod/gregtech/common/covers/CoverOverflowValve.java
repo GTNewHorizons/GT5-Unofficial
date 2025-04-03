@@ -91,7 +91,7 @@ public class CoverOverflowValve extends Cover {
     }
 
     @Override
-    protected void loadFromNbt(NBTBase nbt) {
+    protected void readFromNbt(NBTBase nbt) {
         if (nbt instanceof NBTTagCompound tag) {
             overflowPoint = tag.getInteger("overflowPoint");
             voidingRate = tag.getInteger("voidingRate");

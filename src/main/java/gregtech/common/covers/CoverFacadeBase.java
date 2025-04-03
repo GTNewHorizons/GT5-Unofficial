@@ -95,7 +95,7 @@ public abstract class CoverFacadeBase extends Cover {
     }
 
     @Override
-    protected void loadFromNbt(NBTBase nbt) {
+    protected void readFromNbt(NBTBase nbt) {
         final NBTTagCompound tag = (NBTTagCompound) nbt;
         mStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("mStack"));
         mFlags = tag.getByte("mFlags");

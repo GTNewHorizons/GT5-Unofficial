@@ -60,7 +60,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
     }
 
     @Override
-    protected void loadFromNbt(NBTBase nbt) {
+    protected void readFromNbt(NBTBase nbt) {
         NBTTagCompound tag = (NBTTagCompound) nbt;
         frequency = tag.getInteger("frequency");
         if (tag.hasKey("uuid")) {

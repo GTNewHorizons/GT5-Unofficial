@@ -81,7 +81,7 @@ public class CoverEUMeter extends Cover {
     }
 
     @Override
-    protected void loadFromNbt(NBTBase nbt) {
+    protected void readFromNbt(NBTBase nbt) {
         NBTTagCompound tag = (NBTTagCompound) nbt;
         int typeOrdinal = tag.getInteger("typeOrdinal");
         type = EnergyType.getEnergyType(typeOrdinal);

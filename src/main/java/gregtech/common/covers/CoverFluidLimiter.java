@@ -47,7 +47,7 @@ public class CoverFluidLimiter extends Cover {
     }
 
     @Override
-    protected void loadFromNbt(NBTBase nbt) {
+    protected void readFromNbt(NBTBase nbt) {
         if (nbt instanceof NBTTagCompound tag) {
             this.threshold = tag.getFloat("threshold");
         }

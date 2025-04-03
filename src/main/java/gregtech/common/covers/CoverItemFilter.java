@@ -65,7 +65,7 @@ public class CoverItemFilter extends Cover {
     }
 
     @Override
-    protected void loadFromNbt(NBTBase nbt) {
+    protected void readFromNbt(NBTBase nbt) {
         NBTTagCompound tag = (NBTTagCompound) nbt;
         mWhitelist = tag.getBoolean("mWhitelist");
         if (tag.hasKey("mFilter", Constants.NBT.TAG_COMPOUND))

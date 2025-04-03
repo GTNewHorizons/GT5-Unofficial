@@ -52,8 +52,8 @@ public class CoverWirelessDoesWorkDetector extends CoverAdvancedRedstoneTransmit
     }
 
     @Override
-    protected void loadFromNbt(NBTBase nbt) {
-        super.loadFromNbt(nbt);
+    protected void readFromNbt(NBTBase nbt) {
+        super.readFromNbt(nbt);
 
         NBTTagCompound tag = (NBTTagCompound) nbt;
         mode = ActivityMode.values()[tag.getInteger("mode")];

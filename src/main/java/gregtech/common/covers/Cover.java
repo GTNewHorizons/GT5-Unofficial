@@ -63,7 +63,7 @@ public class Cover {
         if (coverData instanceof ItemStack coverStack) {
             loadFromItemStack(coverStack);
         } else if (coverData instanceof NBTTagCompound nbt && nbt.hasKey(NBT_DATA)) {
-            loadFromNbt(nbt.getTag(NBT_DATA));
+            readFromNbt(nbt.getTag(NBT_DATA));
         } else {
             initializeData();
         }
@@ -89,7 +89,7 @@ public class Cover {
         initializeData();
     }
 
-    protected void loadFromNbt(NBTBase nbt) {}
+    protected void readFromNbt(NBTBase nbt) {}
 
     public void readFromPacket(ByteArrayDataInput byteData) {}
 

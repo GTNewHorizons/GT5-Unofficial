@@ -71,7 +71,7 @@ public class CoverItemMeter extends Cover {
     }
 
     @Override
-    protected void loadFromNbt(NBTBase nbt) {
+    protected void readFromNbt(NBTBase nbt) {
         NBTTagCompound tag = (NBTTagCompound) nbt;
         inverted = tag.getBoolean("invert");
         slot = tag.getInteger("slot");

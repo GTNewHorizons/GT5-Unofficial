@@ -52,7 +52,7 @@ public class CoverChest extends Cover {
     }
 
     @Override
-    protected void loadFromNbt(NBTBase nbt) {
+    protected void readFromNbt(NBTBase nbt) {
         initializeData();
         if (!(nbt instanceof NBTTagCompound)) return;
         items.deserializeNBT((NBTTagCompound) nbt);
