@@ -15,7 +15,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -143,8 +145,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                                 onElementPass(
                                     x -> x.casingAmount++,
                                     StructureUtility.ofBlocksTiered(
-                                        (block, meta) -> block == Loaders.impreciseUnitCasing ? -1
-                                            : block == Loaders.preciseUnitCasing ? meta : null,
+                                        MTEPreciseAssembler::getCasingBlockTier,
                                         ImmutableList.of(
                                             Pair.of(Loaders.impreciseUnitCasing, 0),
                                             Pair.of(Loaders.preciseUnitCasing, 0),
@@ -427,6 +428,13 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
 
     public void setMachineTier(int i) {
         machineTier = i;
+    }
+
+    @Nullable
+    public static Integer getCasingBlockTier(Block block, int meta) {
+        if (block == Loaders.impreciseUnitCasing) return -1;
+        else if (block == Loaders.preciseUnitCasing) return meta;
+        else return null;
     }
 
     public void reUpdate(int texture) {

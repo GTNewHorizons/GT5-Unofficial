@@ -4005,7 +4005,7 @@ gtpp.tooltip.base_particles.type.unknown=Unknown
 gtpp.tooltip.integrated_circuit.configuration=Configuration == %d
 gtpp.tooltip.scrubber_turbine.early_tier=An early tier Turbine for Atmospheric Reconditioning.
 gtpp.tooltip.scrubber_turbine.uses_left=%d/%d uses left.
-gtpp.tooltip.buffer_core.key_crafting_component=A key crafting component for %s Applicances
+gtpp.tooltip.buffer_core.key_crafting_component=A key crafting component for %s Appliances
 gtpp.tooltip.magic_feather.0=Does not need to be the item held in your hand to work
 gtpp.tooltip.magic_feather.1=Needs to be within beacon range
 gtpp.tooltip.magic_feather.2=Range is beacon level * 10 + 10
