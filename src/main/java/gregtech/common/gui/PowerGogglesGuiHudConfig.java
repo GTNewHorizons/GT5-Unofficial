@@ -125,7 +125,7 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
                 .set(PowerGogglesConfigHandler.mainOffsetX);
             PowerGogglesConfigHandler.config.get(Configuration.CATEGORY_GENERAL, "Render Offset Y", 40, "")
                 .set(PowerGogglesConfigHandler.mainOffsetY);
-
+            PowerGogglesConfigHandler.config.save();
             draggingHud = false;
         }
         super.mouseMovedOrUp(x, y, action);
