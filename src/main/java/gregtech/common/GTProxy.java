@@ -136,7 +136,6 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
-import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.GTUODimensionList;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
@@ -685,6 +684,12 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
      * continuous line
      */
     public int tooltipFinisherStyle = 1;
+
+    /**
+     * Enables scrolling up while hovering the ghost circuit of a machine UI to increment the circuit number instead of
+     * decrement
+     */
+    public boolean invertCircuitScrollDirection = false;
 
     /**
      * Whether to show seconds or ticks on NEI
@@ -2684,14 +2689,9 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
 
     @SubscribeEvent
     public void onItemTooltip(ItemTooltipEvent event) {
-        if (event.itemStack != null) {
-            ItemStack aStackTemp = event.itemStack;
-            GTItemStack aStack = new GTItemStack(aStackTemp);
-            if (HazardProtection.providesFullHazmatProtection(aStackTemp)) {
-                event.toolTip.add(
-                    EnumChatFormatting.LIGHT_PURPLE
-                        + StatCollector.translateToLocal("GT5U.providesfullhazmatprotection"));
-            }
+        if (HazardProtection.providesFullHazmatProtection(event.itemStack)) {
+            event.toolTip.add(
+                EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal("GT5U.providesfullhazmatprotection"));
         }
     }
 

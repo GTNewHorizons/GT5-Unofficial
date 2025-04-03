@@ -13,7 +13,7 @@ import gregtech.api.enums.Textures;
 public class BlockCasings12 extends BlockCasingsAbstract {
 
     public BlockCasings12() {
-        super(ItemCasings12.class, "gt.blockcasings12", MaterialCasings.INSTANCE, 16);
+        super(ItemCasings.class, "gt.blockcasings12", MaterialCasings.INSTANCE, 16);
     }
 
     @Override

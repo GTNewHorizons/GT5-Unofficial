@@ -1,6 +1,5 @@
 package gregtech.common.blocks;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -10,7 +9,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTRenderingWorld;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 
@@ -24,51 +22,32 @@ public class BlockCasings8 extends BlockCasingsAbstract {
 
     // WATCH OUT FOR TEXTURE ID's
     public BlockCasings8() {
-        super(ItemCasings8.class, "gt.blockcasings8", MaterialCasings.INSTANCE, 15);
+        super(ItemCasings.class, "gt.blockcasings8", MaterialCasings.INSTANCE, 15);
         /*
          * DO NOT USE INDEX 15 ! USED HERE: https://github.com/GTNewHorizons/KubaTech/pull/101
          */
 
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Chemically Inert Machine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "PTFE Pipe Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Mining Neutronium Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Mining Black Plutonium Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Extreme Engine Intake Casing");
-        GTLanguageManager.addStringLocalization(
-            getUnlocalizedName() + ".5.name",
-            "Europium Reinforced Radiation Proof Machine Casing");
-        GTLanguageManager.addStringLocalization(
-            getUnlocalizedName() + ".6.name",
-            "Advanced Rhodium Plated Palladium Machine Casing");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".7.name", "Advanced Iridium Plated Machine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Magical Machine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "HSS-S Turbine Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Radiant Naquadah Alloy Casing");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".11.name", "Basic Photolithographic Framework Casing");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".12.name", "Reinforced Photolithographic Framework Casing");
-        GTLanguageManager.addStringLocalization(
-            getUnlocalizedName() + ".13.name",
+        register(0, ItemList.Casing_Chemically_Inert, "Chemically Inert Machine Casing");
+        register(1, ItemList.Casing_Pipe_Polytetrafluoroethylene, "PTFE Pipe Casing");
+        register(2, ItemList.Casing_MiningNeutronium, "Mining Neutronium Casing");
+        register(3, ItemList.Casing_MiningBlackPlutonium, "Mining Black Plutonium Casing");
+        register(4, ItemList.Casing_ExtremeEngineIntake, "Extreme Engine Intake Casing");
+        register(5, ItemList.Casing_AdvancedRadiationProof, "Europium Reinforced Radiation Proof Machine Casing");
+        register(6, ItemList.Casing_Advanced_Rhodium_Palladium, "Advanced Rhodium Plated Palladium Machine Casing");
+        register(7, ItemList.Casing_Advanced_Iridium, "Advanced Iridium Plated Machine Casing");
+        register(8, ItemList.Casing_Magical, "Magical Machine Casing");
+        register(9, ItemList.Casing_TurbineGasAdvanced, "HSS-S Turbine Casing");
+        register(10, ItemList.RadiantNaquadahAlloyCasing, "Radiant Naquadah Alloy Casing");
+        register(11, ItemList.BasicPhotolithographicFrameworkCasing, "Basic Photolithographic Framework Casing");
+        register(
+            12,
+            ItemList.ReinforcedPhotolithographicFrameworkCasing,
+            "Reinforced Photolithographic Framework Casing");
+        register(
+            13,
+            ItemList.RadiationProofPhotolithographicFrameworkCasing,
             "Radiation Proof Photolithographic Framework Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Infinity Cooled Casing");
-
-        ItemList.Casing_Chemically_Inert.set(new ItemStack(this, 1, 0));
-        ItemList.Casing_Pipe_Polytetrafluoroethylene.set(new ItemStack(this, 1, 1));
-        ItemList.Casing_MiningNeutronium.set(new ItemStack(this, 1, 2));
-        ItemList.Casing_MiningBlackPlutonium.set(new ItemStack(this, 1, 3));
-        ItemList.Casing_ExtremeEngineIntake.set(new ItemStack(this, 1, 4));
-        ItemList.Casing_AdvancedRadiationProof.set(new ItemStack(this, 1, 5));
-        ItemList.Casing_Advanced_Rhodium_Palladium.set(new ItemStack(this, 1, 6));
-        ItemList.Casing_Advanced_Iridium.set(new ItemStack(this, 1, 7));
-        ItemList.Casing_Magical.set(new ItemStack(this, 1, 8));
-        ItemList.Casing_TurbineGasAdvanced.set(new ItemStack(this, 1, 9));
-        ItemList.RadiantNaquadahAlloyCasing.set(new ItemStack(this, 1, 10));
-        ItemList.BasicPhotolithographicFrameworkCasing.set(new ItemStack(this, 1, 11));
-        ItemList.ReinforcedPhotolithographicFrameworkCasing.set(new ItemStack(this, 1, 12));
-        ItemList.RadiationProofPhotolithographicFrameworkCasing.set(new ItemStack(this, 1, 13));
-        ItemList.InfinityCooledCasing.set(new ItemStack(this, 1, 14));
+        register(14, ItemList.InfinityCooledCasing, "Infinity Cooled Casing");
     }
 
     @Override
@@ -84,8 +63,8 @@ public class BlockCasings8 extends BlockCasingsAbstract {
             case 1 -> Textures.BlockIcons.MACHINE_CASING_PIPE_POLYTETRAFLUOROETHYLENE.getIcon();
             case 2 -> Textures.BlockIcons.MACHINE_CASING_MINING_NEUTRONIUM.getIcon();
             case 3 -> Textures.BlockIcons.MACHINE_CASING_MINING_BLACKPLUTONIUM.getIcon();
-            case 4 -> Textures.BlockIcons.MACHINE_CASING_EXTREME_ENGINE_INTAKE.getIcon(); // changed color in a
-            // terrible way
+            // changed color in a terrible way
+            case 4 -> Textures.BlockIcons.MACHINE_CASING_EXTREME_ENGINE_INTAKE.getIcon();
             case 5 -> Textures.BlockIcons.MACHINE_CASING_ADVANCEDRADIATIONPROOF.getIcon();
             case 6 -> Textures.BlockIcons.MACHINE_CASING_RHODIUM_PALLADIUM.getIcon();
             case 7 -> Textures.BlockIcons.MACHINE_CASING_IRIDIUM.getIcon();

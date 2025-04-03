@@ -18,7 +18,6 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.GT_Version;
 import gregtech.api.objects.XSTR;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTETesseractGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTETesseractTerminal;
 
@@ -54,8 +53,6 @@ public class GTPPCore {
 
     // BookMap
     public static final Map<String, ItemStack> sBookList = new ConcurrentHashMap<>();
-
-    public static final GT_Materials[] sMU_GeneratedMaterials = new GT_Materials[1000];
 
     public static void crash() {
         crash("Generic Crash");
