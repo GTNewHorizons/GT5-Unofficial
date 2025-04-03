@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.enums.Mods.BuildCraftFactory;
+import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.StorageDrawers;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
@@ -224,6 +225,17 @@ public class AssortedSteamRecipes implements Runnable {
             .duration(4 * SECONDS)
             .eut(16)
             .addTo(compressorRecipes);
+
+        if (ExtraUtilities.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Diamond, 3),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Obsidian, 2))
+                .itemOutputs(GTModHandler.getModItem(ExtraUtilities.ID, "defoliageAxe", 1, 0))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(steamManufacturerRecipes);
+        }
 
         GTModHandler.addCraftingRecipe(
             ItemList.Hydraulic_Motor_Steam.get(1),
