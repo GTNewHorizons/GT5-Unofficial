@@ -335,16 +335,16 @@ public class GregtechCustomHatches {
 
     private static void run6() {
         GregtechItemList.Hatch_Solidifier_I.set(
-            new MTEHatchSolidifier(Hatch_Solidifier_I.ID, "hatch.solidifier.tier.05", "Solidifier Hatch I", 5)
+            new MTEHatchSolidifier(Hatch_Solidifier_I.ID, 4, "hatch.solidifier.tier.05", "Solidifier Hatch I", 5)
                 .getStackForm(1L));
         GregtechItemList.Hatch_Solidifier_II.set(
-            new MTEHatchSolidifier(Hatch_Solidifier_II.ID, "hatch.solidifier.tier.06", "Solidifier Hatch II", 6)
+            new MTEHatchSolidifier(Hatch_Solidifier_II.ID, 4, "hatch.solidifier.tier.06", "Solidifier Hatch II", 6)
                 .getStackForm(1L));
         GregtechItemList.Hatch_Solidifier_III.set(
-            new MTEHatchSolidifier(Hatch_Solidifier_III.ID, "hatch.solidifier.tier.07", "Solidifier Hatch III", 7)
+            new MTEHatchSolidifier(Hatch_Solidifier_III.ID, 4, "hatch.solidifier.tier.07", "Solidifier Hatch III", 7)
                 .getStackForm(1L));
         GregtechItemList.Hatch_Solidifier_IV.set(
-            new MTEHatchSolidifier(Hatch_Solidifier_IV.ID, "hatch.solidifier.tier.08", "Solidifier Hatch IV", 8)
+            new MTEHatchSolidifier(Hatch_Solidifier_IV.ID, 4, "hatch.solidifier.tier.08", "Solidifier Hatch IV", 8)
                 .getStackForm(1L));
     }
 
