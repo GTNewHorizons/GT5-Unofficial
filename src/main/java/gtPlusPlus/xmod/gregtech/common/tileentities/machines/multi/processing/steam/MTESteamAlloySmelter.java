@@ -270,7 +270,7 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
                     .setEUtDiscount(1.25 * tierMachine)
                     .setDurationModifier(1.6 / tierMachine);
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
