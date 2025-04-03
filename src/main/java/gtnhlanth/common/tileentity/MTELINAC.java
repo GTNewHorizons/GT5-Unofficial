@@ -365,7 +365,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             length += 2;
         }
 
-        length += 7;
+        length += 9;
 
         return this.mInputBeamline.size() == 1 && this.mOutputBeamline.size() == 1
             && this.mEnergyHatches.size() <= 2
