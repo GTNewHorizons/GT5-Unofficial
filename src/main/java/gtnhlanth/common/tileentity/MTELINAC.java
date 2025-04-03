@@ -301,11 +301,13 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         FluidStack fluidOutputStack = new FluidStack(fluidOutput, fluidConsumed);
         this.addFluidOutputs(new FluidStack[] { fluidOutputStack });
 
-        outputAfterRecipe();
+        outputPacketAfterRecipe();
+
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    private void outputAfterRecipe() {
+    private void outputPacketAfterRecipe() {
+
         if (!mOutputBeamline.isEmpty()) {
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(outputEnergy, outputRate, outputParticleID, outputFocus));

@@ -682,12 +682,15 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         FluidStack fluidOutputStack = new FluidStack(fluidOutput, CONSUMED_FLUID);
         this.addFluidOutputs(new FluidStack[] { fluidOutputStack });
 
-        outputAfterRecipe();
+        outputPacketAfterRecipe();
+
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    private void outputAfterRecipe() {
-        if (!this.mOutputBeamline.isEmpty()) {
+    private void outputPacketAfterRecipe() {
+
+        if (!mOutputBeamline.isEmpty()) {
+
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(this.outputEnergy, this.outputRate, this.outputParticleID, this.outputFocus));
             for (MTEHatchOutputBeamline o : this.mOutputBeamline) {
