@@ -492,9 +492,9 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
                 + EnumChatFormatting.DARK_RED
-                + information.getEnergy()
+                + information.getEnergy() * 1000 // In line with the synchrotron's output
                 + EnumChatFormatting.RESET
-                + " keV", // e.g. "10240 keV"
+                + " eV", // e.g. "10240 eV"
             StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
                 + EnumChatFormatting.BLUE
                 + information.getFocus()

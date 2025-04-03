@@ -567,9 +567,9 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
                 + EnumChatFormatting.DARK_RED
-                + this.outputEnergy * 1000
+                + this.outputEnergy
                 + EnumChatFormatting.RESET
-                + " eV",
+                + " keV",
             StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
                 + EnumChatFormatting.BLUE
                 + this.outputFocus
