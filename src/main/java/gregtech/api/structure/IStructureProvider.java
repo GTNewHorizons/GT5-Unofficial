@@ -13,8 +13,8 @@ public interface IStructureProvider<MTE extends MTEMultiBlockBase & IAlignment &
     /**
      * Gets the minimal (default trigger w/ stackSize = 1) structure definition.
      * Override {@link #getMaxDefinition()} if your structure has a variable size.
-     * Used primarily to determine the controller offset and casing counts, but it is also passed to
-     * {@link #compile(String[][])}.
+     * This is primarily used to determine the controller offset, casing counts, and the structure dimensions, but it is
+     * also passed to {@link #compile(String[][])}.
      */
     String[][] getDefinition();
 

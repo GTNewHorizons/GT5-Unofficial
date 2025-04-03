@@ -155,6 +155,7 @@ GT5U.MBTT.InputBus=Input Bus
 GT5U.MBTT.InputHatch=Input Hatch
 GT5U.MBTT.OutputBus=Output Bus
 GT5U.MBTT.OutputHatch=Output Hatch
+GT5U.MBTT.TecTechMultiAmp=Supports TecTech Multi-Amp Hatches!
 GT5U.MBTT.TecTechHatch=Supports TecTech Multi-Amp and Laser Hatches!
 GT5U.MBTT.Param=Parametrizer Hatch
 GT5U.MBTT.Uncertainty=Uncertainty Hatch
