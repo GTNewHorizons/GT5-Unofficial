@@ -52,7 +52,7 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
         int formatButtonWidth = fontRenderer.getStringWidth("Main Text Scale+") * 2 + 10;
 
         int x = width / 2;
-        int y = (int) (height / 2);
+        int y = (height / 2);
         buttonList.clear();
         notationToggleButton = new GuiButton(
             0,
@@ -200,9 +200,6 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
     @Override
     public void drawScreen(int x, int y, float partial) {
         GL11.glPushMatrix();
-        // GL11.glTranslated(width / 2f, height / 2f, 0);
-        // GL11.glScaled(0.8, 0.8, 1);
-        // GL11.glTranslated(-width / 2f, -height / 2f, 0);
         super.drawScreen(x, y, partial);
         GL11.glPopMatrix();
 
@@ -216,9 +213,6 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
             dragCenterX + dragWidth / 2,
             dragCenterY + dragHeight / 2,
             Color.argb(40, 24, 163, 255 * 0.75f));
-
-        // GuiHelper.drawGradientRect(300, 150, height-100, 250, height-20, Color.rgb(255,255,255),
-        // Color.rgb(255,255,0));
     }
 
     @Override
