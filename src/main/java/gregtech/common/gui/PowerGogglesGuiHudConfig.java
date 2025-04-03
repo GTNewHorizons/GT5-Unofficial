@@ -111,33 +111,70 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
 
     @Override
     protected void actionPerformed(GuiButton button) {
-        if (button.id == 0) {
-            String current = PowerGogglesConfigHandler.numberFormatting;
-            String next = current.equals("SCIENTIFIC") ? "ENGINEERING"
-                : current.equals("ENGINEERING") ? "SI" : "SCIENTIFIC";
-            PowerGogglesConfigHandler.numberFormatting = next;
-            PowerGogglesConfigHandler.config
-                .get(
+        String current;
+        String next;
+        double scale;
+        switch(button.id){
+            case 0:
+                current = PowerGogglesConfigHandler.numberFormatting;
+                next = current.equals("SCIENTIFIC") ? "ENGINEERING"
+                    : current.equals("ENGINEERING") ? "SI" : "SCIENTIFIC";
+                PowerGogglesConfigHandler.numberFormatting = next;
+                PowerGogglesConfigHandler.config
+                    .get(
+                        Configuration.CATEGORY_GENERAL,
+                        "Number Formatting",
+                        "SCIENTIFIC",
+                        "Available options: SI, SCIENTIFIC, ENGINEERING")
+                    .set(next);
+                PowerGogglesConfigHandler.config.save();
+                return;
+            case 1:
+                current = PowerGogglesConfigHandler.readingType;
+                next = current.equals("BOTH") ? "TOTAL" : current.equals("TOTAL") ? "EUT" : "BOTH";
+                PowerGogglesConfigHandler.readingType = next;
+                PowerGogglesConfigHandler.config
+                    .get(
+                        Configuration.CATEGORY_GENERAL,
+                        "Timed Reading Type",
+                        "BOTH",
+                        "Available options: TOTAL, EUT, BOTH")
+                    .set(next);
+                PowerGogglesConfigHandler.config.save();
+                return;
+            case 2:
+                scale = PowerGogglesConfigHandler.mainTextScaling - 0.1;
+                PowerGogglesConfigHandler.mainTextScaling = scale;
+                PowerGogglesConfigHandler.config.get(Configuration.CATEGORY_GENERAL, "Storage Text Scale", 1, "Text size of the storage EU reading")
+                    .set(scale);
+                PowerGogglesConfigHandler.config.save();
+                return;
+            case 3:
+                scale = PowerGogglesConfigHandler.mainTextScaling + 0.1;
+                PowerGogglesConfigHandler.mainTextScaling = scale;
+                PowerGogglesConfigHandler.config.get(Configuration.CATEGORY_GENERAL, "Storage Text Scale", 1, "Text size of the storage EU reading")
+                    .set(scale);
+                PowerGogglesConfigHandler.config.save();
+                return;
+            case 4:
+                scale = PowerGogglesConfigHandler.subTextScaling - 0.1;
+                PowerGogglesConfigHandler.subTextScaling = scale;
+                PowerGogglesConfigHandler.config.get(
                     Configuration.CATEGORY_GENERAL,
-                    "Number Formatting",
-                    "SCIENTIFIC",
-                    "Available options: SI, SCIENTIFIC, ENGINEERING")
-                .set(next);
-            PowerGogglesConfigHandler.config.save();
-            return;
-        }
-        if (button.id == 1){
-            String current = PowerGogglesConfigHandler.readingType;
-            String next = current.equals("BOTH") ? "TOTAL" : current.equals("TOTAL") ? "EUT" : "BOTH";
-            PowerGogglesConfigHandler.readingType = next;
-            PowerGogglesConfigHandler.config
-                .get(
+                    "Timed Reading Text Scale",
+                    0.75,
+                    "Text size of the 5m and 1h readings").set(scale);
+                PowerGogglesConfigHandler.config.save();
+                return;
+            case 5:
+                scale = PowerGogglesConfigHandler.subTextScaling + 0.1;
+                PowerGogglesConfigHandler.subTextScaling = scale;
+                PowerGogglesConfigHandler.config.get(
                     Configuration.CATEGORY_GENERAL,
-                    "Timed Reading Type",
-                    "BOTH",
-                    "Available options: TOTAL, EUT, BOTH")
-                .set(next);
-            PowerGogglesConfigHandler.config.save();
+                    "Timed Reading Text Scale",
+                    0.75,
+                    "Text size of the 5m and 1h readings").set(scale);
+                PowerGogglesConfigHandler.config.save();
         }
     }
 

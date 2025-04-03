@@ -142,7 +142,7 @@ public class PowerGogglesHudHandler {
         GuiHelper.drawGradientRect(
             -1,
             xOffset - borderRadius,
-            screenHeight - yOffset - w - gapBetweenLines - fontRenderer.FONT_HEIGHT - borderRadius,
+            screenHeight - yOffset - w - gapBetweenLines - (int)(fontRenderer.FONT_HEIGHT*mainScale) - borderRadius,
             xOffset + h + borderRadius,
             screenHeight - yOffset
                 + gapBetweenLines * 2
@@ -199,7 +199,7 @@ public class PowerGogglesHudHandler {
             fontRenderer,
             storage,
             xOffset,
-            screenHeight - yOffset - w - gapBetweenLines - fontRenderer.FONT_HEIGHT,
+            screenHeight - yOffset - w - gapBetweenLines - (int)(fontRenderer.FONT_HEIGHT*mainScale),
             change5mColor,
             mainScale);
         drawScaledString(
