@@ -15,8 +15,6 @@ public class DescTextLocalization {
     }
 
     public static String addDotText(int dotNum) {
-
         return StatCollector.translateToLocalFormatted("gtnhlanth.tt.hintdot", dotNum + "");
-
     }
 }
