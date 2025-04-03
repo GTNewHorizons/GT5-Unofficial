@@ -71,7 +71,7 @@ public class CactusWonderFakeRecipes implements Runnable {
             .addTo(cactusWonderFakeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.CactusCharcoal.get(1))
+            .itemInputs(GregtechItemList.QuintupleCompressedCactusCharcoal.get(1))
             .fluidOutputs(FluidRegistry.getFluidStack("supercriticalsteam", 512000))
             .metadata(OFFER_VALUE, 16218292236l)
             .duration(20)
