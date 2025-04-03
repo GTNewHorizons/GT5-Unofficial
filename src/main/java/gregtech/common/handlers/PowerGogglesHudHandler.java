@@ -43,7 +43,6 @@ public class PowerGogglesHudHandler {
     static final int measurementCount5m = 5 * MINUTES / ticksBetweenMeasurements;
     static final int measurementCount1h = 60 * MINUTES / ticksBetweenMeasurements;
     static BigInteger currentEU = BigInteger.valueOf(0);
-    static BigInteger lastChange = BigInteger.valueOf(0);
     static BigInteger measurement = BigInteger.valueOf(0);
     static BigInteger highest = BigInteger.valueOf(0);
     static int measurementCount = 0;
@@ -218,9 +217,8 @@ public class PowerGogglesHudHandler {
     public static void setMeasurement(BigInteger newEU) {
         measurement = newEU;
         if (highest.compareTo(measurement) < 0) highest = measurement;
-        lastChange = measurementCount == 0 ? BigInteger.valueOf(0) : measurement.subtract(currentEU);
         currentEU = measurement;
-        if (measurementCount > 0) measurements.addFirst(lastChange);
+        measurements.addFirst(measurement);
         if (measurements.size() > measurementCount1h) measurements.removeLast();
         ++measurementCount;
     }
@@ -242,11 +240,11 @@ public class PowerGogglesHudHandler {
             .min(255, Math.max(0, gradientRight.getBlue() + (int) (diffBlue * Math.min(1, severity * scale))));
 
         int newRightRed = Math
-            .min(255, Math.max(0, gradientRight.getRed() + (int) (diffRed * Math.min(1, severity * scale / 1.5))));
+            .min(255, Math.max(0, gradientRight.getRed() + (int) (diffRed * Math.min(1, severity * scale *0.75))));
         int newRightGreen = Math
-            .min(255, Math.max(0, gradientRight.getGreen() + (int) (diffGreen * Math.min(1, severity * scale / 1.5))));
+            .min(255, Math.max(0, gradientRight.getGreen() + (int) (diffGreen * Math.min(1, severity * scale *0.75))));
         int newRightBlue = Math
-            .min(255, Math.max(0, gradientRight.getBlue() + (int) (diffBlue * Math.min(1, severity * scale / 1.5))));
+            .min(255, Math.max(0, gradientRight.getBlue() + (int) (diffBlue * Math.min(1, severity * scale *0.75))));
 
         newGradientLeft = Color.rgb(newLeftRed, newLeftGreen, newLeftBlue);
         newGradientRight = Color.rgb(newRightRed, newRightGreen, newRightBlue);
@@ -271,11 +269,11 @@ public class PowerGogglesHudHandler {
         if (Minecraft.getMinecraft()
             .isGamePaused()) return;
 
-        change5m = getReadingSum(measurements, measurementCount5m);
+        change5m = getTotalChange(measurements, measurementCount5m);
         change5mDiff = change5m.compareTo(BigInteger.valueOf(0));
         change5mColor = getColor(change5mDiff);
 
-        change1h = getReadingSum(measurements, measurementCount1h);
+        change1h = getTotalChange(measurements, measurementCount1h);
         change1hDiff = change1h.compareTo(BigInteger.valueOf(0));
         change1hColor = getColor(change5mDiff);
 
@@ -340,13 +338,9 @@ public class PowerGogglesHudHandler {
         return String.format("%s.%sE%d", base, decimal, E);
     }
 
-    private static BigInteger getReadingSum(LinkedList<BigInteger> list, int count) {
-        BigInteger result = BigInteger.ZERO;
-        int actualCount = Math.min(list.size(), count);
-        for (int i = 0; i < actualCount; i++) {
-            result = result.add(list.get(i));
-        }
-        return result;
+    private static BigInteger getTotalChange(LinkedList<BigInteger> list, int count) {
+        if(list.isEmpty()) return BigInteger.valueOf(0);
+        return list.get(0).subtract(list.get(Math.min(count, list.size()-1)));
     }
 
     private static int getColor(int compareResult) {
@@ -357,7 +351,6 @@ public class PowerGogglesHudHandler {
 
     public static void clear() {
         measurements.clear();
-        lastChange = BigInteger.valueOf(0);
         measurementCount = 0;
         highest = BigInteger.valueOf(0);
     }
