@@ -129,7 +129,8 @@ public class PowerGogglesHudHandler {
         GL11.glTranslated(left, down, 0);
         GL11.glRotated(90, 0, 0, -1);
         GL11.glTranslated(-left, -down, 0);
-        GuiHelper.drawGradientRect(300, left, up, right, down, gradientLeft, gradientRight);
+        int[] gradients = getGradient(new java.awt.Color(255,0,0), new java.awt.Color(0,255,0));
+        GuiHelper.drawGradientRect(300, left, up, right, down, gradients[0], gradients[1]);
         GL11.glDisable(GL_LIGHTING);
         GL11.glPopMatrix();
 
@@ -238,7 +239,36 @@ public class PowerGogglesHudHandler {
         if (measurements.size() > measurementCount1h) measurements.removeLast();
         ++measurementCount;
     }
+    public static int[] getGradient(java.awt.Color gradientLeft, java.awt.Color gradientRight){
+        int newGradientLeft = gradientLeft.getRGB();
+        int newGradientRight = gradientRight.getRGB();
+        if (change5m.compareTo(BigInteger.ZERO) >= 0) {
+            newGradientLeft = gradientRight.getRGB();
+        } else {
+            double scale = 100d / 33d;
+            double severity = measurement.compareTo(BigInteger.ZERO) == 0 ? 1
+                : Math.min(
+                1,
+                Math.abs(
+                    new BigDecimal(change5m.multiply(BigInteger.valueOf(100)))
+                        .divide(new BigDecimal(measurement), RoundingMode.FLOOR)
+                        .intValue() / 100f));
 
+            int gradientFactor = (int) (255 * (severity));
+            int diffRed =gradientRight.getRed() - gradientLeft.getRed();
+            int diffGreen =gradientRight.getGreen() - gradientLeft.getGreen();
+            int diffBlue =gradientRight.getBlue() - gradientLeft.getBlue();
+            int newLeftRed = (int) ((gradientRight.getRed() - gradientLeft.getRed())*severity);
+            int newLeftGreen = (int) ((gradientRight.getGreen() - gradientLeft.getGreen())*severity);
+            int newLeftBlue = (int) ((gradientRight.getBlue() - gradientLeft.getBlue())*severity);
+            newGradientLeft = Color.rgb(gradientRight.getRed() - newLeftRed, gradientRight.getGreen() - newLeftGreen, gradientRight.getBlue() - newLeftBlue);
+            newGradientRight = Color.rgb(
+                Math.min(255, (int) (gradientFactor * 1.5f * scale)),
+                Math.min(255, Math.max(0, 255 - (int) (gradientFactor * Math.sqrt(severity) * scale))),
+                0); // Calculation done by trial and error until it looked decent in-game
+        }
+        return new int[]{newGradientLeft, newGradientRight};
+    }
     @SideOnly(Side.CLIENT)
     public static void drawTick() {
         updateClient = false;
