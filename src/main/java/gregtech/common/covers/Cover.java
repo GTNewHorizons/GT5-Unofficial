@@ -309,7 +309,7 @@ public class Cover {
      * If it lets you rightclick the Machine normally
      */
     public final boolean isGUIClickable() {
-        return CoverRegistry.getCoverPlacer(coverID)
+        return CoverRegistry.getCoverPlacer(GTUtility.intToStack(coverID))
             .isGuiClickable();
     }
 

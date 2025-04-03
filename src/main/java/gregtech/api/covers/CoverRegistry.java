@@ -32,24 +32,22 @@ public final class CoverRegistry {
         .build();
 
     /**
-     * The Icon List for Covers
+     * The List of Cover Registrations for the Covers containing cover factories, placement conditions and base textures
      */
-    private static final Map<GTItemStack, ITexture> coverTextures = new ConcurrentHashMap<>();
-    /**
-     * The List of Cover Behaviors for the Covers
-     */
-    private static final Map<GTItemStack, CoverRegistration> coverFactories = new ConcurrentHashMap<>();
-    private static final CoverRegistration coverNone = new CoverRegistration(CoverNone::new, PRIMITIVE_COVER_PLACER);
-    public static final Cover NO_COVER = coverNone.getFactory()
-        .buildCover(new CoverContext(GTUtility.intToStack(0), ForgeDirection.UNKNOWN, null));
+    private static final Map<GTItemStack, CoverRegistration> covers = new ConcurrentHashMap<>();
+    public static final Cover NO_COVER = new CoverNone(
+        new CoverContext(GTUtility.intToStack(0), ForgeDirection.UNKNOWN, null));
+    private static final CoverRegistration coverNone = new CoverRegistration(
+        context -> NO_COVER,
+        PRIMITIVE_COVER_PLACER,
+        null);
 
     private static GUIColorOverride colorOverride;
     private static final String guiTexturePath = "gregtech:textures/gui/GuiCover.png";
     private static final String NBT_ID = "id";
 
     static {
-        GregTechAPI.sItemStackMappings.add(coverTextures);
-        GregTechAPI.sItemStackMappings.add(coverFactories);
+        GregTechAPI.sItemStackMappings.add(covers);
     }
 
     public static void registerDecorativeCover(@NotNull ItemStack stack, ITexture cover) {
@@ -60,14 +58,21 @@ public final class CoverRegistry {
         registerCover(stack, cover, constructor, DEFAULT_COVER_PLACER);
     }
 
-    public static void registerCover(@NotNull ItemStack stack, ITexture cover, @NotNull CoverFactory constructor,
+    public static void registerCover(@NotNull ItemStack stack, ITexture coverTexture, @NotNull CoverFactory constructor,
         CoverPlacer factory) {
-        if (!coverTextures.containsKey(new GTItemStack(stack))) {
-            coverTextures.put(
-                new GTItemStack(stack),
-                cover == null || !cover.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0] : cover);
+        GTItemStack key = new GTItemStack(stack);
+        if (!covers.containsKey(key)) {
+            CoverRegistration coverRegistration = new CoverRegistration(
+                constructor,
+                factory,
+                sanitizeTexture(coverTexture));
+            covers.put(key, coverRegistration);
         }
-        coverFactories.put(new GTItemStack(stack), new CoverRegistration(constructor, factory));
+    }
+
+    private static ITexture sanitizeTexture(ITexture coverTexture) {
+        return coverTexture == null || !coverTexture.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0]
+            : coverTexture;
     }
 
     @NotNull
@@ -75,9 +80,9 @@ public final class CoverRegistry {
         if (stack == null || stack.getItem() == null) {
             return coverNone;
         }
-        CoverRegistration factory = coverFactories.get(new GTItemStack(stack));
+        CoverRegistration factory = covers.get(new GTItemStack(stack));
         if (factory == null) {
-            factory = coverFactories.get(new GTItemStack(stack, true));
+            factory = covers.get(new GTItemStack(stack, true));
         }
         return factory == null ? coverNone : factory;
     }
@@ -88,20 +93,17 @@ public final class CoverRegistry {
             .buildCover(new CoverContext(coverItem, side, coverable));
     }
 
-    public static CoverPlacer getCoverPlacer(ItemStack stack) {
-        return getRegistration(stack).getCoverPlacer();
+    public static CoverPlacer getCoverPlacer(ItemStack coverId) {
+        return getRegistration(coverId).getCoverPlacer();
     }
 
-    public static CoverPlacer getCoverPlacer(int coverId) {
-        return getCoverPlacer(GTUtility.intToStack(coverId));
+    public static boolean isCover(@NotNull ItemStack coverId) {
+        return GTUtility.isStackInList(new GTItemStack(coverId), covers.keySet());
     }
 
-    public static boolean isCover(@NotNull ItemStack stack) {
-        return GTUtility.isStackInList(new GTItemStack(stack), coverTextures.keySet());
-    }
-
-    public static ITexture getCoverTexture(int coverId) {
-        return coverTextures.get(new GTItemStack(coverId));
+    public static ITexture getCoverTexture(ItemStack coverId) {
+        return covers.get(new GTItemStack(coverId))
+            .getCoverTexture();
     }
 
     public static void reloadCoverColorOverrides() {
