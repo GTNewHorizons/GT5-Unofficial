@@ -23,7 +23,7 @@ import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
 
 public class BlockCompressedObsidian extends BlockObsidian {
 
-    private final IIcon[] textureArray = new IIcon[11];
+    private final IIcon[] textureArray = new IIcon[14];
 
     public BlockCompressedObsidian() {
         this.setBlockName("blockCompressedObsidian");
@@ -60,6 +60,9 @@ public class BlockCompressedObsidian extends BlockObsidian {
         this.textureArray[8] = iicon.registerIcon(GTPlusPlus.ID + ":compressed/glowstone3");
         this.textureArray[9] = iicon.registerIcon(GTPlusPlus.ID + ":compressed/glowstone4");
         this.textureArray[10] = iicon.registerIcon(GTPlusPlus.ID + ":compressed/glowstone5");
+        this.textureArray[11] = iicon.registerIcon(GTPlusPlus.ID + ":compressed/netherrack1");
+        this.textureArray[12] = iicon.registerIcon(GTPlusPlus.ID + ":compressed/netherrack2");
+        this.textureArray[13] = iicon.registerIcon(GTPlusPlus.ID + ":compressed/netherrack3");
     }
 
     /**
@@ -78,7 +81,7 @@ public class BlockCompressedObsidian extends BlockObsidian {
 
     @Override
     public void getSubBlocks(final Item item, final CreativeTabs tab, final List list) {
-        for (int i = 0; i < 11; i++) {
+        for (int i = 0; i < 14; i++) {
             list.add(new ItemStack(item, 1, i));
         }
     }
