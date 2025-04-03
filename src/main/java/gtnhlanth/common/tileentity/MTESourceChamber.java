@@ -211,7 +211,6 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         this.updateSlots();
 
         outputPacketAfterRecipe();
-
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -221,7 +220,6 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
     }
 
     private void outputPacketAfterRecipe() {
-
         if (!mOutputBeamline.isEmpty()) {
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(outputEnergy, outputRate, outputParticle, outputFocus));
