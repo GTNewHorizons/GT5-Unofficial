@@ -155,7 +155,7 @@ public class CoverFluidStorageMonitor extends Cover {
     }
 
     @Override
-    protected void readFromPacket(ByteArrayDataInput byteData) {
+    public void readFromPacket(ByteArrayDataInput byteData) {
         this.fluidLookupSide = ForgeDirection.getOrientation(byteData.readByte());
         this.slot = byteData.readInt();
         this.fluid = Util.getFluid(byteData.readInt());

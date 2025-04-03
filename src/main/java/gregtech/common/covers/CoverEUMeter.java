@@ -90,7 +90,7 @@ public class CoverEUMeter extends Cover {
     }
 
     @Override
-    protected void readFromPacket(ByteArrayDataInput byteData) {
+    public void readFromPacket(ByteArrayDataInput byteData) {
         int typeOrdinal = byteData.readInt();
         type = EnergyType.getEnergyType(typeOrdinal);
         inverted = byteData.readBoolean();

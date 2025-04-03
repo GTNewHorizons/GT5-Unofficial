@@ -69,7 +69,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
     }
 
     @Override
-    protected void readFromPacket(ByteArrayDataInput byteData) {
+    public void readFromPacket(ByteArrayDataInput byteData) {
         frequency = byteData.readInt();
         if (byteData.readBoolean()) {
             uuid = new UUID(byteData.readLong(), byteData.readLong());

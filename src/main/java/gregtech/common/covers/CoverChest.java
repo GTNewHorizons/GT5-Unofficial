@@ -60,7 +60,7 @@ public class CoverChest extends Cover {
     }
 
     @Override
-    protected void readFromPacket(ByteArrayDataInput byteData) {
+    public void readFromPacket(ByteArrayDataInput byteData) {
         initializeData();
         items.deserializeNBT(GTByteBuffer.readCompoundTagFromGreggyByteBuf(byteData));
     }

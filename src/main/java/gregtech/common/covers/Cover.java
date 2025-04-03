@@ -64,8 +64,6 @@ public class Cover {
             loadFromItemStack(coverStack);
         } else if (coverData instanceof NBTTagCompound nbt && nbt.hasKey(NBT_DATA)) {
             loadFromNbt(nbt.getTag(NBT_DATA));
-        } else if (coverData instanceof ByteArrayDataInput byteData) {
-            readFromPacket(byteData);
         } else {
             initializeData();
         }
@@ -93,7 +91,7 @@ public class Cover {
 
     protected void loadFromNbt(NBTBase nbt) {}
 
-    protected void readFromPacket(ByteArrayDataInput byteData) {}
+    public void readFromPacket(ByteArrayDataInput byteData) {}
 
     public final NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         nbt.setInteger(NBT_TICK_RATE_ADDITION, tickRateAddition);

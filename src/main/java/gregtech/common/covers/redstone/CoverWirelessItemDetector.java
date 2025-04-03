@@ -84,7 +84,7 @@ public class CoverWirelessItemDetector extends CoverAdvancedRedstoneTransmitterB
     }
 
     @Override
-    protected void readFromPacket(ByteArrayDataInput byteData) {
+    public void readFromPacket(ByteArrayDataInput byteData) {
         super.readFromPacket(byteData);
         threshold = byteData.readInt();
         slot = byteData.readInt();

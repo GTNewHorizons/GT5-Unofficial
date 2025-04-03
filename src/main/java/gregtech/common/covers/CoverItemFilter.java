@@ -74,7 +74,7 @@ public class CoverItemFilter extends Cover {
     }
 
     @Override
-    protected void readFromPacket(ByteArrayDataInput byteData) {
+    public void readFromPacket(ByteArrayDataInput byteData) {
         mWhitelist = byteData.readBoolean();
         mFilter = GTByteBuffer.readItemStackFromGreggyByteBuf(byteData);
     }

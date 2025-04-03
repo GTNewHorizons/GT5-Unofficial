@@ -69,7 +69,8 @@ public class GTPacketSendCoverData extends GTPacket {
             int coverId = data.readInt();
             ForgeDirection side = ForgeDirection.getOrientation(data.readByte());
             Cover cover = CoverRegistry.getRegistration(coverId)
-                .buildCover(side, coverable, data);
+                .buildCover(side, coverable);
+            cover.readFromPacket(data);
             coverable.updateAttachedCover(cover);
         }
     }

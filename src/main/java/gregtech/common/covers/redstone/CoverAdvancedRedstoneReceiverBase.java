@@ -46,7 +46,7 @@ public abstract class CoverAdvancedRedstoneReceiverBase extends CoverAdvancedWir
     }
 
     @Override
-    protected void readFromPacket(ByteArrayDataInput byteData) {
+    public void readFromPacket(ByteArrayDataInput byteData) {
         super.readFromPacket(byteData);
         mode = GateMode.values()[byteData.readByte()];
     }

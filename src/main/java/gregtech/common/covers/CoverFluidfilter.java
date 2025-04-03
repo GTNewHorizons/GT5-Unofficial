@@ -80,7 +80,7 @@ public class CoverFluidfilter extends Cover {
     }
 
     @Override
-    protected void readFromPacket(ByteArrayDataInput byteData) {
+    public void readFromPacket(ByteArrayDataInput byteData) {
         mFilterMode = byteData.readByte();
         mFluidID = byteData.readInt();
     }

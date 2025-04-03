@@ -50,7 +50,7 @@ public class CoverLegacyData extends Cover {
     }
 
     @Override
-    protected void readFromPacket(ByteArrayDataInput byteData) {
+    public void readFromPacket(ByteArrayDataInput byteData) {
         coverData = byteData.readInt();
     }
 

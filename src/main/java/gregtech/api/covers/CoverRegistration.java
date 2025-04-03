@@ -6,8 +6,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.io.ByteArrayDataInput;
-
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
@@ -31,10 +29,6 @@ public final class CoverRegistration {
 
     public Cover buildCover(ForgeDirection side, ICoverable coverable, @NotNull NBTTagCompound nbt) {
         return buildCoverFromContext(side, coverable, nbt);
-    }
-
-    public Cover buildCover(ForgeDirection side, ICoverable coverable, @NotNull ByteArrayDataInput data) {
-        return buildCoverFromContext(side, coverable, data);
     }
 
     public Cover buildCover(@NotNull ForgeDirection side, ICoverable coverable, @NotNull ItemStack coverItem) {

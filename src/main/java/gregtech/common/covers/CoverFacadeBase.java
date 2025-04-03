@@ -102,7 +102,7 @@ public abstract class CoverFacadeBase extends Cover {
     }
 
     @Override
-    protected void readFromPacket(ByteArrayDataInput byteData) {
+    public void readFromPacket(ByteArrayDataInput byteData) {
         mFlags = byteData.readByte();
         mStack = GTByteBuffer.readItemStackFromGreggyByteBuf(byteData);
     }

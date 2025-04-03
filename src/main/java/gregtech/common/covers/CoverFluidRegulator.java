@@ -86,7 +86,7 @@ public class CoverFluidRegulator extends Cover {
     }
 
     @Override
-    protected void readFromPacket(ByteArrayDataInput byteData) {
+    public void readFromPacket(ByteArrayDataInput byteData) {
         this.tickRate = byteData.readInt();
         this.speed = byteData.readInt();
         this.condition = Conditional.VALUES[byteData.readUnsignedByte()];

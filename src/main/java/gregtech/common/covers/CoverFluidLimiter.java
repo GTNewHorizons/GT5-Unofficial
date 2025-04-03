@@ -54,7 +54,7 @@ public class CoverFluidLimiter extends Cover {
     }
 
     @Override
-    protected void readFromPacket(ByteArrayDataInput byteData) {
+    public void readFromPacket(ByteArrayDataInput byteData) {
         this.threshold = byteData.readFloat();
     }
 

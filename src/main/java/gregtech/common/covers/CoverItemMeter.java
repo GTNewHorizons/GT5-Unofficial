@@ -79,7 +79,7 @@ public class CoverItemMeter extends Cover {
     }
 
     @Override
-    protected void readFromPacket(ByteArrayDataInput byteData) {
+    public void readFromPacket(ByteArrayDataInput byteData) {
         inverted = byteData.readBoolean();
         slot = byteData.readInt();
         threshold = byteData.readInt();

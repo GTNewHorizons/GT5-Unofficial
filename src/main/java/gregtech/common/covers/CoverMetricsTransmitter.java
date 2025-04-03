@@ -76,7 +76,7 @@ public class CoverMetricsTransmitter extends Cover {
     }
 
     @Override
-    protected void readFromPacket(ByteArrayDataInput byteData) {
+    public void readFromPacket(ByteArrayDataInput byteData) {
         this.frequency = new UUID(byteData.readLong(), byteData.readLong());
     }
 

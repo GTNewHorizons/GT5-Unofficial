@@ -65,7 +65,7 @@ public class CoverWirelessDoesWorkDetector extends CoverAdvancedRedstoneTransmit
     }
 
     @Override
-    protected void readFromPacket(ByteArrayDataInput byteData) {
+    public void readFromPacket(ByteArrayDataInput byteData) {
         super.readFromPacket(byteData);
         mode = ActivityMode.values()[byteData.readInt()];
         physical = byteData.readBoolean();

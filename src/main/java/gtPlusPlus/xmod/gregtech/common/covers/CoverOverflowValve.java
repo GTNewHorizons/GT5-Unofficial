@@ -103,7 +103,7 @@ public class CoverOverflowValve extends Cover {
     }
 
     @Override
-    protected void readFromPacket(ByteArrayDataInput byteData) {
+    public void readFromPacket(ByteArrayDataInput byteData) {
         overflowPoint = byteData.readInt();
         voidingRate = byteData.readInt();
         canFluidInput = byteData.readBoolean();

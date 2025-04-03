@@ -73,7 +73,7 @@ public class CoverLiquidMeter extends Cover {
     }
 
     @Override
-    protected void readFromPacket(ByteArrayDataInput byteData) {
+    public void readFromPacket(ByteArrayDataInput byteData) {
         inverted = byteData.readBoolean();
         threshold = byteData.readInt();
     }
