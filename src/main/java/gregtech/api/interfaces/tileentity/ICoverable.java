@@ -1,6 +1,7 @@
 package gregtech.api.interfaces.tileentity;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -56,11 +57,11 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
     void issueCoverUpdate(ForgeDirection side);
 
     /**
-     * Receiving a packet with cover data.
+     * Receiving nbt with cover data.
      *
-     * @param cover
+     * @param nbt
      */
-    void updateAttachedCover(Cover cover);
+    void updateAttachedCover(int coverId, ForgeDirection side, NBTTagCompound nbt);
 
     /**
      * Receiving a packet with cover data.

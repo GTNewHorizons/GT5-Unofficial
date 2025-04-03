@@ -411,17 +411,13 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     @Override
-    public void updateAttachedCover(Cover cover) {
-        final ForgeDirection side = cover.getSide();
-        if (side == ForgeDirection.UNKNOWN) return;
-
-        final Cover oldCover = getCoverAtSide(side);
-
-        if (!oldCover.isValid()) return;
-        applyCover(cover, side);
+    public void updateAttachedCover(int coverId, ForgeDirection side, NBTTagCompound nbt) {
+        final Cover cover = getCoverAtSide(side);
+        if (!cover.isValid() || cover.getCoverID() != coverId) return;
+        cover.readFromNbt(nbt);
 
         if (isClientSide()) {
-            getCoverAtSide(side).onDataChanged();
+            cover.onDataChanged();
         }
     }
 

@@ -8,7 +8,6 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 
@@ -53,11 +52,13 @@ public class CoverDataControllerWidget<T extends Cover>
         }
     }
 
-    protected boolean updateCoverInWorld(Cover cover) {
-        if (!isCoverValid()) return false;
+    protected boolean updateCoverInWorld(PacketBuffer buf) throws IOException {
         ICoverable coverable = coverUiContext.getTile();
-        coverable.updateAttachedCover(cover);
-        return true;
+        if (isCoverValid() && NetworkUtils.readNBTBase(buf) instanceof NBTTagCompound tag) {
+            coverable.updateAttachedCover(coverUiContext.getCoverID(), coverUiContext.getCoverSide(), tag);
+            return true;
+        }
+        return false;
     }
 
     private boolean isCoverValid() {
@@ -72,7 +73,6 @@ public class CoverDataControllerWidget<T extends Cover>
         widget.setStateSetter(state -> {
             T newData = dataUpdater.apply(getLastData(), state);
             lastData = newData;
-            updateCoverInWorld(getLastData());
             syncDataToServer(newData);
         });
         applyForWidget.accept(widget);
@@ -88,17 +88,6 @@ public class CoverDataControllerWidget<T extends Cover>
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    protected Cover readFromPacket(PacketBuffer buffer) throws IOException {
-        NBTBase nbt = NetworkUtils.readNBTBase(buffer);
-        Cover cover = null;
-        if (nbt instanceof NBTTagCompound tag) {
-            cover = CoverRegistry.getRegistrationFromNbt(tag)
-                .buildCover(coverUiContext.getCoverSide(), coverUiContext.getTile());
-            cover.readFromNbt(tag);
-        }
-        return cover;
     }
 
     protected T getLastData() {
@@ -141,7 +130,7 @@ public class CoverDataControllerWidget<T extends Cover>
     @Override
     public void readOnClient(int id, PacketBuffer buf) throws IOException {
         if (id == 0) {
-            updateCoverInWorld(readFromPacket(buf));
+            updateCoverInWorld(buf);
             lastData = getCover();
             updateChildren();
         }
@@ -150,7 +139,7 @@ public class CoverDataControllerWidget<T extends Cover>
     @Override
     public void readOnServer(int id, PacketBuffer buf) throws IOException {
         if (id == 0) {
-            boolean coverIsValid = updateCoverInWorld(readFromPacket(buf));
+            boolean coverIsValid = updateCoverInWorld(buf);
             lastData = getCover();
             if (coverIsValid) {
                 markForUpdate();
