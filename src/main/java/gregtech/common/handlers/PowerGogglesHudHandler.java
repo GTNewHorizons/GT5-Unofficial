@@ -3,7 +3,6 @@ package gregtech.common.handlers;
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_LIGHTING;
 
-import java.awt.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
@@ -152,21 +151,21 @@ public class PowerGogglesHudHandler {
             bgColor,
             bgColor);
 
-        storage = toEngineering(currentEU) + " EU";
-        change5mString = "5m: " + toEngineering(change5m)
+        storage = toFormatted(currentEU) + " EU";
+        change5mString = "5m: " + toFormatted(change5m)
             + " EU "
             + (change5mDiff != 0
                 ? String.format(
                     " (%s eu/t) ",
-                    toEngineering(
+                    toFormatted(
                         change5m.divide(
                             BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
                 : "");
-        change1hString = "1h: " + toEngineering(change1h)
+        change1hString = "1h: " + toFormatted(change1h)
             + " EU "
             + (change1hDiff != 0 ? String.format(
                 " (%s eu/t)",
-                toEngineering(
+                toFormatted(
                     change1h.divide(
                         BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
                 : "");
@@ -175,20 +174,20 @@ public class PowerGogglesHudHandler {
             case 0:
                 break;
             case 1:
-                change5mString = "5m: " + toEngineering(change5m);
-                change1hString = "1h: " + toEngineering(change1h);
+                change5mString = "5m: " + toFormatted(change5m);
+                change1hString = "1h: " + toFormatted(change1h);
                 break;
             case 2:
                 change5mString = "5m: " + (change5mDiff != 0 ? String.format(
                     " (%s eu/t) ",
-                    toEngineering(
+                    toFormatted(
                         change5m.divide(
                             BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
                     : "0");
                 change1hString = "1h: " + (change1hDiff != 0
                     ? String.format(
                         " (%s eu/t)",
-                        toEngineering(
+                        toFormatted(
                             change1h.divide(
                                 BigInteger
                                     .valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
@@ -256,34 +255,51 @@ public class PowerGogglesHudHandler {
         change1hColor = getColor(change5mDiff);
 
         hudList = new ArrayList<>();
-        storage = toEngineering(currentEU) + " EU";
-        change5mString = "5m: " + toEngineering(change5m)
+        storage = toFormatted(currentEU) + " EU";
+        change5mString = "5m: " + toFormatted(change5m)
             + " EU "
             + (change5mDiff != 0
                 ? String.format(
                     " (%s eu/t) ",
-                    toEngineering(
+                    toFormatted(
                         change5m.divide(
                             BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
                 : "");
-        change1hString = "1h: " + toEngineering(change1h)
+        change1hString = "1h: " + toFormatted(change1h)
             + " EU "
             + (change1hDiff != 0 ? String.format(
                 " (%s eu/t)",
-                toEngineering(
+                toFormatted(
                     change1h.divide(
                         BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
                 : "");
 
     }
 
-    private static String toEngineering(BigInteger EU) {
+    private static String toFormatted(BigInteger EU) {
+        switch (PowerGogglesConfigHandler.numberFormatting) {
+            case "ENGINEERING":
+                return toCustom(EU);
+            case "SI":
+                return toCustom(EU, true, 3);
+            default:
+                return toCustom(EU, false, 1);
+        }
+
+    }
+
+    private static String toCustom(BigInteger EU) {
+        return toCustom(EU, false, 3);
+    }
+
+    private static String toCustom(BigInteger EU, boolean overrideEngineering, int baseDigits) {
+        String[] suffixes = { "", "K", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q" };
         if (EU.abs()
             .compareTo(BigInteger.valueOf(1)) < 0) {
             return "0";
         }
         int exponent = BigIntegerMath.log10(EU.abs(), RoundingMode.FLOOR);
-        int remainder = exponent % 3;
+        int remainder = exponent % baseDigits;
 
         String euString = EU.toString();
         if (EU.abs()
@@ -294,6 +310,8 @@ public class PowerGogglesHudHandler {
         String base = euString.substring(0, remainder + 1 + negative);
         String decimal = euString.substring(remainder + 1 + negative, Math.min(exponent, remainder + 4));
         int E = exponent - remainder; // Round down to nearest 10^3k
+
+        if (overrideEngineering) return String.format("%s.%s%s", base, decimal, suffixes[E / 3]);
         return String.format("%s.%sE%d", base, decimal, E);
     }
 
