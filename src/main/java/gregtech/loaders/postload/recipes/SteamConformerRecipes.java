@@ -176,6 +176,15 @@ public class SteamConformerRecipes implements Runnable {
                     .eut(TierEU.RECIPE_LV)
                     .addTo(steamConformerRecipes);
             }
+
+            if (aMaterial == Materials.Rubber) {
+                RA.stdBuilder()
+                    .itemInputs(GTOreDictUnificator.get(ingot, aMaterial, 2), ItemList.Shape_Extruder_Plate.get(0))
+                    .itemOutputs(GTOreDictUnificator.get(plate, aMaterial, 3))
+                    .duration(4 * SECONDS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(steamConformerRecipes);
+            }
         }
 
         for (Materials aMaterial : gems) {
