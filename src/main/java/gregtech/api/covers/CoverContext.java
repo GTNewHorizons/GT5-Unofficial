@@ -4,7 +4,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
 
-public class CoverContext {
+public final class CoverContext {
 
     private final int coverId;
     private final ForgeDirection side;

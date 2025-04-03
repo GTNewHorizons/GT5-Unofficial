@@ -33,15 +33,10 @@ import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.mui1.cover.CoverUiFactory;
+import gregtech.common.gui.mui1.cover.CoverUIFactory;
 import gregtech.common.text.ClientTickRateFormatter;
 import io.netty.buffer.ByteBuf;
 
-/**
- * For Covers with a special behavior.
- *
- * @author glease
- */
 public class Cover {
 
     // One minute
@@ -100,7 +95,7 @@ public class Cover {
 
     protected void readFromPacket(ByteArrayDataInput byteData) {}
 
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+    public final NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         nbt.setInteger(NBT_TICK_RATE_ADDITION, tickRateAddition);
         nbt.setTag(NBT_DATA, saveDataToNbt());
         return nbt;
@@ -110,15 +105,20 @@ public class Cover {
         return new NBTTagCompound();
     }
 
-    public void writeToByteBuf(ByteBuf byteBuf) {
+    public final void writeToByteBuf(ByteBuf byteBuf) {
         byteBuf.writeInt(tickRateAddition);
         writeDataToByteBuf(byteBuf);
     }
 
     protected void writeDataToByteBuf(ByteBuf byteBuf) {}
 
-    // region facade
-
+    /**
+     * Get the special foreground cover texture associated with this cover. Return null if one should use the texture
+     * passed to {@link CoverRegistry#registerCover(ItemStack, ITexture, CoverFactory, CoverPlacer)} or its
+     * overloads.
+     * <br>
+     * This texture will be overlaid on top of the block's base texture for that face.
+     */
     public ITexture getOverlayTexture() {
         return coverFGTexture;
     }
@@ -126,8 +126,6 @@ public class Cover {
     public void doCoverThings(byte aRedstone, long aTickTimer) {}
 
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {}
-
-    // endregion
 
     public boolean isValid() {
         return coverID != 0 && coverSide != ForgeDirection.UNKNOWN;
@@ -285,7 +283,7 @@ public class Cover {
     // region UI stuff
 
     protected ModularWindow createWindow(CoverUIBuildContext buildContext) {
-        return new CoverUiFactory<>(buildContext).createWindow();
+        return new CoverUIFactory<>(buildContext).createWindow();
     }
 
     public ModularUIContainer createCoverContainer(EntityPlayer player) {

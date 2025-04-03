@@ -141,8 +141,7 @@ public class CoverFluidRegulator extends Cover {
     }
 
     private String getScredriverClickChat() {
-        if (Math.abs(speed) > mTransferRate * tickRate) {
-            speed = mTransferRate * tickRate * (speed > 0 ? 1 : -1);
+        if (Math.abs(speed) == mTransferRate * tickRate) {
             return GTUtility.trans("316", "Pump speed limit reached!");
         }
         if (tickRate == 1) {
@@ -165,6 +164,9 @@ public class CoverFluidRegulator extends Cover {
             speed += step;
         } else {
             speed -= step;
+        }
+        if (Math.abs(speed) > mTransferRate * tickRate) {
+            speed = mTransferRate * tickRate * (speed > 0 ? 1 : -1);
         }
         GTUtility.sendChatToPlayer(aPlayer, getScredriverClickChat());
     }

@@ -21,7 +21,7 @@ import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import gregtech.common.gui.modularui.widget.ItemWatcherSlotWidget;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 
-public class ItemMeterUIFactory extends CoverUiFactory<CoverItemMeter> {
+public class ItemMeterUIFactory extends CoverUIFactory<CoverItemMeter> {
 
     private static final int startX = 10;
     private static final int startY = 25;

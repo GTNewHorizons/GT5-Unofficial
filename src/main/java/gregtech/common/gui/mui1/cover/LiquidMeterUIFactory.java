@@ -18,7 +18,7 @@ import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
-public class LiquidMeterUIFactory extends CoverUiFactory<CoverLiquidMeter> {
+public class LiquidMeterUIFactory extends CoverUIFactory<CoverLiquidMeter> {
 
     private static final int startX = 10;
     private static final int startY = 25;

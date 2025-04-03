@@ -12,7 +12,7 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 
-public class CoverRegistration {
+public final class CoverRegistration {
 
     // Keeping an ItemStack reference so it remains valid through world load item remaps.
     private final ItemStack coverIdStack;

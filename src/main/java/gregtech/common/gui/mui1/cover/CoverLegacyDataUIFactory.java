@@ -4,7 +4,7 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverLegacyData;
 
-public abstract class CoverLegacyDataUIFactory extends CoverUiFactory<CoverLegacyData> {
+public abstract class CoverLegacyDataUIFactory extends CoverUIFactory<CoverLegacyData> {
 
     protected CoverLegacyDataUIFactory(CoverUIBuildContext buildContext) {
         super(buildContext);

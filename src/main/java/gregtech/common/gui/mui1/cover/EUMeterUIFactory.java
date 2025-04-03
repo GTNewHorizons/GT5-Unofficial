@@ -14,7 +14,7 @@ import gregtech.common.gui.modularui.widget.CoverDataFollowerCycleButtonWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
-public class EUMeterUIFactory extends CoverUiFactory<CoverEUMeter> {
+public class EUMeterUIFactory extends CoverUIFactory<CoverEUMeter> {
 
     private static final int startX = 10;
     private static final int startY = 25;

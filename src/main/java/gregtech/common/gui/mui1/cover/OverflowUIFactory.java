@@ -13,7 +13,7 @@ import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverOverflowValve;
 
-public final class OverflowUIFactory extends CoverUiFactory<CoverOverflowValve> {
+public final class OverflowUIFactory extends CoverUIFactory<CoverOverflowValve> {
 
     // width and height of text input for "Overflow Point" and "Voiding Rate"
     private static final int width = 71;

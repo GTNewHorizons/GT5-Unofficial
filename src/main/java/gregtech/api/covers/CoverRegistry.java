@@ -20,7 +20,7 @@ import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverDecorative;
 import gregtech.common.covers.CoverNone;
 
-public class CoverRegistry {
+public final class CoverRegistry {
 
     private static final CoverPlacer DEFAULT_COVER_PLACER = CoverPlacer.builder()
         .build();

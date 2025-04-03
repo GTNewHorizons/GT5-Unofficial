@@ -19,7 +19,7 @@ import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
-public class FluidRegulatorUIFactory extends CoverUiFactory<CoverFluidRegulator> {
+public class FluidRegulatorUIFactory extends CoverUIFactory<CoverFluidRegulator> {
 
     private static final int startX = 10;
     private static final int startY = 25;

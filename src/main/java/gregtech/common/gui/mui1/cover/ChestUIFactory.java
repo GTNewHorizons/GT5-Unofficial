@@ -11,7 +11,7 @@ import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverChest;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 
-public class ChestUIFactory extends CoverUiFactory<CoverChest> {
+public class ChestUIFactory extends CoverUIFactory<CoverChest> {
 
     private static final int spaceX = 18;
     private static final int spaceY = 18;

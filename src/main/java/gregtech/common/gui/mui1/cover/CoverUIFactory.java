@@ -26,16 +26,11 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 
-/**
- * Creates {@link ModularWindow} for this cover. This is separated from base
- * class, as attaching the same covers in
- * different sides of the same tile needs different UI with different context.
- */
-public class CoverUiFactory<C> {
+public class CoverUIFactory<C> {
 
     private final CoverUIBuildContext uiBuildContext;
 
-    public CoverUiFactory(CoverUIBuildContext buildContext) {
+    public CoverUIFactory(CoverUIBuildContext buildContext) {
         this.uiBuildContext = buildContext;
     }
 
