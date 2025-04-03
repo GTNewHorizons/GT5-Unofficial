@@ -152,7 +152,14 @@ public enum Mixin {
             .setPhase(Phase.LATE)
             .setSide(Side.BOTH)
             .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.rocketsPollute)
-            .addTargetedMod(TargetedMod.GALACTICRAFT_CORE));
+            .addTargetedMod(TargetedMod.GALACTICRAFT_CORE)),
+
+    FUCK_OFF_COREMOD(
+        new Builder("Stop Coremod from removing the steam recipes").addMixinClasses("coremod.MixinRecipeRemover")
+            .setPhase(Phase.LATE)
+            .setSide(Side.BOTH)
+            .setApplyIf(() -> true)
+            .addTargetedMod(TargetedMod.NEWHORIZONSCOREMOD));
 
     public static final Logger LOGGER = LogManager.getLogger("GregTech-Mixin");
 

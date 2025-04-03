@@ -1,6 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.steamManufacturerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
@@ -98,6 +99,18 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         ((int) (aPrefix.mSecondaryMaterial.mAmount * 400L / OrePrefixes.ring.mMaterialAmount)) * TICKS)
                     .eut(4)
                     .addTo(assemblerRecipes);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(
+                        GTOreDictUnificator.get(
+                            OrePrefixes.ring,
+                            Materials.Steel,
+                            aPrefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.mMaterialAmount),
+                        GTOreDictUnificator.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true))
+                    .itemOutputs(GTUtility.copyAmount(1, aStack))
+                    .duration(10 * SECONDS)
+                    .eut(4)
+                    .addTo(steamManufacturerRecipes);
             }
             case pipeQuadruple -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
