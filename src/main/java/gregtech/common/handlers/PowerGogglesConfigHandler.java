@@ -15,8 +15,9 @@ public class PowerGogglesConfigHandler {
     public static double mainTextScaling;
     public static double subTextScaling;
     public static String gradientPreset;
-    public static String numberFormatting;
-    public static String readingType;
+    public static int formatIndex;
+    public static int readingIndex;
+    public static int gradientIndex;
 
     public static void init(File confFile) {
         if (config == null) {
@@ -47,23 +48,24 @@ public class PowerGogglesConfigHandler {
                     0.75,
                     "Text size of the 5m and 1h readings")
                 .getDouble(0.75);
+
             gradientPreset = config
                 .get(Configuration.CATEGORY_GENERAL, "Gradient Preset", "NORMAL", "Available options: NORMAL")
                 .getString();
-            numberFormatting = config
+
+            formatIndex = config
                 .get(
                     Configuration.CATEGORY_GENERAL,
-                    "Number Formatting",
-                    "SCIENTIFIC",
+                    "Format Index",
+                    0,
                     "Available options: SI, SCIENTIFIC, ENGINEERING")
-                .getString();
-            readingType = config
-                .get(
-                    Configuration.CATEGORY_GENERAL,
-                    "Timed Reading Type",
-                    "BOTH",
-                    "Available options: TOTAL, EUT, BOTH")
-                .getString();
+                .getInt();
+            readingIndex = config
+                .get(Configuration.CATEGORY_GENERAL, "Reading Index", 0, "Available options: TOTAL, EUT, BOTH")
+                .getInt();
+            gradientIndex = config
+                .get(Configuration.CATEGORY_GENERAL, "Gradient Index", 0, "Available options: NORMAL, DEUTERANOPIA")
+                .getInt();
 
         } catch (Exception e) {
             System.out.println("Unable to load Config");

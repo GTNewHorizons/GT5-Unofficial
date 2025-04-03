@@ -80,15 +80,6 @@ public class PowerGogglesHudHandler {
         FontRenderer fontRenderer = mc.fontRenderer;
         GL11.glPushMatrix();
         GL11.glEnable(GL_CULL_FACE);
-        // GuiHelper.drawHoveringText(
-        // hudList,
-        // new Pos2d(x, y),
-        // new Size(150, 45),
-        // 150,
-        // 0.75f,
-        // false,
-        // Alignment.CenterLeft,
-        // false);
 
         int xOffset = PowerGogglesConfigHandler.mainOffsetX;
         int yOffset = PowerGogglesConfigHandler.mainOffsetY;
@@ -104,33 +95,27 @@ public class PowerGogglesHudHandler {
         int right = left + w;
         int down = up + h;
 
-        int gradientLeft;
-        int gradientRight = Color.rgb(0, 255, 0);
-        if (change5m.compareTo(BigInteger.ZERO) >= 0) {
-            gradientLeft = Color.rgb(0, 255, 0);
-        } else {
-            double scale = 100d / 33d;
-            double severity = measurement.compareTo(BigInteger.ZERO) == 0 ? 1
-                : Math.min(
-                    1,
-                    Math.abs(
-                        new BigDecimal(change5m.multiply(BigInteger.valueOf(100)))
-                            .divide(new BigDecimal(measurement), RoundingMode.FLOOR)
-                            .intValue() / 100f));
-            int gradientFactor = (int) (255 * (severity));
-            gradientLeft = Color.rgb(255, Math.min(255, Math.max(0, 255 - (int) (gradientFactor * scale))), 0);
-            gradientRight = Color.rgb(
-                Math.min(255, (int) (gradientFactor * 1.5f * scale)),
-                Math.min(255, Math.max(0, 255 - (int) (gradientFactor * Math.sqrt(severity) * scale))),
-                0); // Calculation done by trial and error until it looked decent in-game
-        }
-
         GL11.glPushMatrix();
         GL11.glTranslated(left, down, 0);
         GL11.glRotated(90, 0, 0, -1);
         GL11.glTranslated(-left, -down, 0);
-        int[] gradients = getGradient(new java.awt.Color(255,0,0), new java.awt.Color(0,255,0));
-        GuiHelper.drawGradientRect(300, left, up, right, down, gradients[0], gradients[1]);
+
+        double scale = 3.3;
+        double severity = measurement.compareTo(BigInteger.ZERO) == 0 ? 0
+            : new BigDecimal(change5m.multiply(BigInteger.valueOf(100)))
+                .divide(new BigDecimal(measurement), RoundingMode.FLOOR)
+                .intValue() / 100f;
+
+        java.awt.Color[] gradientSet = getGradientSet(PowerGogglesConfigHandler.gradientIndex);
+        int[] gradients;
+        if (severity < 0) {
+            gradients = getGradient(-severity, scale, gradientSet[0], gradientSet[1]);
+            GuiHelper.drawGradientRect(300, left, up, right, down, gradients[0], gradients[1]);
+        } else {
+            gradients = getGradient(severity, scale * 1.4f, gradientSet[2], gradientSet[1]);
+            GuiHelper.drawGradientRect(300, left, up, right, down, gradients[1], gradients[0]);
+        }
+
         GL11.glDisable(GL_LIGHTING);
         GL11.glPopMatrix();
 
@@ -143,7 +128,7 @@ public class PowerGogglesHudHandler {
         GuiHelper.drawGradientRect(
             -1,
             xOffset - borderRadius,
-            screenHeight - yOffset - w - gapBetweenLines - (int)(fontRenderer.FONT_HEIGHT*mainScale) - borderRadius,
+            screenHeight - yOffset - w - gapBetweenLines - (int) (fontRenderer.FONT_HEIGHT * mainScale) - borderRadius,
             xOffset + h + borderRadius,
             screenHeight - yOffset
                 + gapBetweenLines * 2
@@ -170,14 +155,14 @@ public class PowerGogglesHudHandler {
                     change1h.divide(
                         BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
                 : "");
-        switch (PowerGogglesConfigHandler.readingType) {
-            case "BOTH":
+        switch (PowerGogglesConfigHandler.readingIndex) {
+            case 0:
                 break;
-            case "TOTAL":
+            case 1:
                 change5mString = "5m: " + toFormatted(change5m) + " EU";
                 change1hString = "1h: " + toFormatted(change1h) + " EU";
                 break;
-            case "EUT":
+            case 2:
                 change5mString = "5m: " + (change5mDiff != 0 ? String.format(
                     " (%s EU/t) ",
                     toFormatted(
@@ -200,7 +185,7 @@ public class PowerGogglesHudHandler {
             fontRenderer,
             storage,
             xOffset,
-            screenHeight - yOffset - w - gapBetweenLines - (int)(fontRenderer.FONT_HEIGHT*mainScale),
+            screenHeight - yOffset - w - gapBetweenLines - (int) (fontRenderer.FONT_HEIGHT * mainScale),
             change5mColor,
             mainScale);
         drawScaledString(
@@ -239,36 +224,47 @@ public class PowerGogglesHudHandler {
         if (measurements.size() > measurementCount1h) measurements.removeLast();
         ++measurementCount;
     }
-    public static int[] getGradient(java.awt.Color gradientLeft, java.awt.Color gradientRight){
+
+    public static int[] getGradient(double severity, double scale, java.awt.Color gradientLeft,
+        java.awt.Color gradientRight) {
         int newGradientLeft = gradientLeft.getRGB();
         int newGradientRight = gradientRight.getRGB();
-        if (change5m.compareTo(BigInteger.ZERO) >= 0) {
-            newGradientLeft = gradientRight.getRGB();
-        } else {
-            double scale = 100d / 33d;
-            double severity = measurement.compareTo(BigInteger.ZERO) == 0 ? 1
-                : Math.min(
-                1,
-                Math.abs(
-                    new BigDecimal(change5m.multiply(BigInteger.valueOf(100)))
-                        .divide(new BigDecimal(measurement), RoundingMode.FLOOR)
-                        .intValue() / 100f));
 
-            int gradientFactor = (int) (255 * (severity));
-            int diffRed =gradientRight.getRed() - gradientLeft.getRed();
-            int diffGreen =gradientRight.getGreen() - gradientLeft.getGreen();
-            int diffBlue =gradientRight.getBlue() - gradientLeft.getBlue();
-            int newLeftRed = (int) ((gradientRight.getRed() - gradientLeft.getRed())*severity);
-            int newLeftGreen = (int) ((gradientRight.getGreen() - gradientLeft.getGreen())*severity);
-            int newLeftBlue = (int) ((gradientRight.getBlue() - gradientLeft.getBlue())*severity);
-            newGradientLeft = Color.rgb(gradientRight.getRed() - newLeftRed, gradientRight.getGreen() - newLeftGreen, gradientRight.getBlue() - newLeftBlue);
-            newGradientRight = Color.rgb(
-                Math.min(255, (int) (gradientFactor * 1.5f * scale)),
-                Math.min(255, Math.max(0, 255 - (int) (gradientFactor * Math.sqrt(severity) * scale))),
-                0); // Calculation done by trial and error until it looked decent in-game
-        }
-        return new int[]{newGradientLeft, newGradientRight};
+        int diffRed = gradientLeft.getRed() - gradientRight.getRed();
+        int diffGreen = gradientLeft.getGreen() - gradientRight.getGreen();
+        int diffBlue = gradientLeft.getBlue() - gradientRight.getBlue();
+
+        int newLeftRed = Math
+            .min(255, Math.max(0, gradientRight.getRed() + (int) (diffRed * Math.min(1, severity * scale))));
+        int newLeftGreen = Math
+            .min(255, Math.max(0, gradientRight.getGreen() + (int) (diffGreen * Math.min(1, severity * scale))));
+        int newLeftBlue = Math
+            .min(255, Math.max(0, gradientRight.getBlue() + (int) (diffBlue * Math.min(1, severity * scale))));
+
+        int newRightRed = Math
+            .min(255, Math.max(0, gradientRight.getRed() + (int) (diffRed * Math.min(1, severity * scale / 1.5))));
+        int newRightGreen = Math
+            .min(255, Math.max(0, gradientRight.getGreen() + (int) (diffGreen * Math.min(1, severity * scale / 1.5))));
+        int newRightBlue = Math
+            .min(255, Math.max(0, gradientRight.getBlue() + (int) (diffBlue * Math.min(1, severity * scale / 1.5))));
+
+        newGradientLeft = Color.rgb(newLeftRed, newLeftGreen, newLeftBlue);
+        newGradientRight = Color.rgb(newRightRed, newRightGreen, newRightBlue);
+
+        return new int[] { newGradientLeft, newGradientRight };
     }
+
+    private static java.awt.Color[] getGradientSet(int index) {
+        switch (index) {
+            case 1:
+                return new java.awt.Color[] { new java.awt.Color(255, 25, 134), new java.awt.Color(229, 200, 0),
+                    new java.awt.Color(11, 165, 255) };
+            default:
+                return new java.awt.Color[] { new java.awt.Color(255, 0, 0), new java.awt.Color(0, 255, 0),
+                    new java.awt.Color(0, 0, 255) };
+        }
+    }
+
     @SideOnly(Side.CLIENT)
     public static void drawTick() {
         updateClient = false;
@@ -306,10 +302,10 @@ public class PowerGogglesHudHandler {
     }
 
     private static String toFormatted(BigInteger EU) {
-        switch (PowerGogglesConfigHandler.numberFormatting) {
-            case "ENGINEERING":
+        switch (PowerGogglesConfigHandler.formatIndex) {
+            case 1:
                 return toCustom(EU);
-            case "SI":
+            case 2:
                 return toCustom(EU, true, 3);
             default:
                 return toCustom(EU, false, 1);
