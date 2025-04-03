@@ -9,6 +9,8 @@ import java.util.function.ToIntFunction;
 
 import net.minecraft.item.ItemStack;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
@@ -31,7 +33,7 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 /**
  * An extended tooltip builder with some compat for the structure wrapper system.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> & IStructureProvider<MTE>>
     extends MultiblockTooltipBuilder {
 
@@ -40,8 +42,7 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
     private final Object2ObjectArrayMap<ICasing, String> casingNameOverrides = new Object2ObjectArrayMap<>();
     private final Object2ObjectArrayMap<IHatchElement<? super MTE>, String> hatchNameOverrides = new Object2ObjectArrayMap<>();
     private final Object2ObjectArrayMap<IHatchElement<? super MTE>, String> hatchInfoOverrides = new Object2ObjectArrayMap<>();
-    private final List<IHatchElement<? super MTE>> hatchOrder = new ArrayList<>();
-    private boolean hasMultiampHatches = false, printMultiampSupport = true;
+    private boolean hasExoticHatches = false, hasMultiAmpHatches = false, printMultiampSupport = true;
 
     public MultiblockTooltipBuilder2(StructureWrapper<MTE> structure) {
         this.structure = structure;
@@ -103,19 +104,22 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
         return this;
     }
 
-    /**
-     * Adds a casing to the casing list manually.
-     */
-    public MultiblockTooltipBuilder2<MTE> addCasing(ICasing casing) {
-        addCasingInfoAuto(this, casing);
+    public MultiblockTooltipBuilder2<MTE> addCasingInfoAuto(ICasing casing) {
+        if (structure.getCasingMax(casing) != structure.getCasingMin(casing)) {
+            addCasingInfoRange(casing);
+        } else {
+            addCasingInfoExact(casing);
+        }
+
         return this;
     }
 
-    public void addCasingInfoExact(MultiblockTooltipBuilder tt, ICasing casing) {
-        tt.addCasingInfoExactly(casing.getLocalizedName(), structure.getCasingMax(casing), casing.isTiered());
+    public MultiblockTooltipBuilder2<MTE> addCasingInfoExact(ICasing casing) {
+        addCasingInfoExactly(casing.getLocalizedName(), structure.getCasingMax(casing), casing.isTiered());
+        return this;
     }
 
-    public void addCasingInfoRange(MultiblockTooltipBuilder tt, ICasing casing) {
+    public MultiblockTooltipBuilder2<MTE> addCasingInfoRange(ICasing casing) {
         String name;
 
         if (casingNameOverrides.containsKey(casing)) {
@@ -124,15 +128,9 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
             name = casing.getLocalizedName();
         }
 
-        tt.addCasingInfoRange(name, structure.getCasingMin(casing), structure.getCasingMax(casing), casing.isTiered());
-    }
+        addCasingInfoRange(name, structure.getCasingMin(casing), structure.getCasingMax(casing), casing.isTiered());
 
-    public void addCasingInfoAuto(MultiblockTooltipBuilder tt, ICasing casing) {
-        if (structure.getCasingMax(casing) != structure.getCasingMin(casing)) {
-            addCasingInfoRange(tt, casing);
-        } else {
-            addCasingInfoExact(tt, casing);
-        }
+        return this;
     }
 
     /**
@@ -177,19 +175,10 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
     }
 
     /**
-     * Forces the hatches to be sorted in a specific order in case your special hatches are acting up
-     */
-    public MultiblockTooltipBuilder2<MTE> setHatchOrder(List<IHatchElement<? super MTE>> hatches) {
-        hatchOrder.clear();
-        hatchOrder.addAll(hatches);
-        return this;
-    }
-
-    /**
      * Add a hatch line manually.
      */
     public MultiblockTooltipBuilder2<MTE> addHatch(ICasing casing, IHatchElement<? super MTE> hatch, int... dots) {
-        String override = hatchNameOverrides.get(hatch);
+        String nameOverride = hatchNameOverrides.get(hatch);
 
         String info = hatchInfoOverrides.get(hatch);
 
@@ -203,8 +192,8 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
                 String.join(", ", GTUtility.mapToList(new IntArrayList(dots), Object::toString)));
         }
 
-        if (override != null) {
-            addOtherStructurePart(override, info, dots);
+        if (nameOverride != null) {
+            addOtherStructurePart(nameOverride, info, dots);
         } else {
             // try to use an existing addXHatch method if possible
             if (hatch instanceof HatchElement gtHatch) {
@@ -218,10 +207,11 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
                     case ExoticEnergy:
                         addOtherStructurePart(GTUtility.translate("GT5U.MBTT.MultiampEnergyHatch"), info, dots);
                         addOtherStructurePart(GTUtility.translate("GT5U.MBTT.LaserTargetHatch"), info, dots);
-                        hasMultiampHatches = true;
+                        hasExoticHatches = true;
                         break;
                     case MultiAmpEnergy:
                         addOtherStructurePart(GTUtility.translate("GT5U.MBTT.MultiampEnergyHatch"), info, dots);
+                        hasMultiAmpHatches = true;
                         break;
                     case InputBus:
                         addInputBus(info, dots);
@@ -249,12 +239,12 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
                     case EnergyMulti -> {
                         addOtherStructurePart(GTUtility.translate("GT5U.MBTT.MultiampEnergyHatch"), info, dots);
                         addOtherStructurePart(GTUtility.translate("GT5U.MBTT.LaserTargetHatch"), info, dots);
-                        hasMultiampHatches = true;
+                        hasExoticHatches = true;
                     }
                     case DynamoMulti -> {
                         addOtherStructurePart(GTUtility.translate("GT5U.MBTT.MultiampEnergyDynamo"), info, dots);
                         addOtherStructurePart(GTUtility.translate("GT5U.MBTT.LaserSourceHatch"), info, dots);
-                        hasMultiampHatches = true;
+                        hasExoticHatches = true;
                     }
                     default -> {
                         addOtherStructurePart(ttHatch.getDisplayName(), info, dots);
@@ -273,14 +263,20 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
      * Automatically adds casing and hatch lines.
      */
     public MultiblockTooltipBuilder2<MTE> addAllCasingInfo() {
-        addAllCasingInfo(null);
+        addAllCasingInfo(null, null);
         return this;
     }
 
     /**
      * Automatically adds casing and hatch lines.
+     * If this doesn't do something you need, add it if it's simple. If it's something cursed or complex don't bother,
+     * just call the proper methods manually. This method should only cover normal use cases.
+     * 
+     * @see MultiblockTooltipBuilder2#addCasingInfoAuto(ICasing)
+     * @see MultiblockTooltipBuilder2#addHatch(ICasing, IHatchElement, int...)
      */
-    public MultiblockTooltipBuilder2<MTE> addAllCasingInfo(List<ICasing> casingOrder) {
+    public MultiblockTooltipBuilder2<MTE> addAllCasingInfo(@Nullable List<ICasing> casingOrder,
+        @Nullable List<IHatchElement<? super MTE>> hatchOrder) {
         ObjectArraySet<ICasing> addedCasings = new ObjectArraySet<>();
         ObjectArraySet<IHatchElement<?>> addedHatches = new ObjectArraySet<>();
 
@@ -314,7 +310,7 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
             // add a line for casings as we see them, but don't add them twice if the same ICasing was used multiple
             // times
             if (addedCasings.add(casingInfo.casing)) {
-                addCasingInfoAuto(this, casingInfo.casing);
+                addCasingInfoAuto(casingInfo.casing);
             }
 
             // keep track of any hatches in this structure element and their dots
@@ -327,7 +323,7 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
 
         List<Pair<ICasing, IHatchElement<? super MTE>>> hatchesSorted = new ArrayList<>(new HashSet<>(hatches.keys()));
 
-        if (!hatchOrder.isEmpty()) {
+        if (hatchOrder != null && !hatchOrder.isEmpty()) {
             // if we were given a hatch order, use it
             hatchesSorted.sort((p1, p2) -> {
                 int i1 = hatchOrder.indexOf(p1.right());
@@ -374,8 +370,12 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
         }
 
         // add the tectech multi amp hatch info line if it should be added
-        if (printMultiampSupport && hasMultiampHatches) {
+        if (printMultiampSupport && hasExoticHatches) {
             addTecTechHatchInfo();
+        }
+
+        if (printMultiampSupport && hasMultiAmpHatches) {
+            addMultiAmpHatchInfo();
         }
 
         return this;
