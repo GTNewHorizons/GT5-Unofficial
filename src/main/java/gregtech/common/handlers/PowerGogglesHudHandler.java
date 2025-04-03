@@ -260,8 +260,8 @@ public class PowerGogglesHudHandler {
                 return new java.awt.Color[] { new java.awt.Color(255, 25, 134), new java.awt.Color(229, 200, 0),
                     new java.awt.Color(11, 165, 255) };
             default:
-                return new java.awt.Color[] { new java.awt.Color(255, 0, 0), new java.awt.Color(0, 255, 0),
-                    new java.awt.Color(0, 0, 255) };
+                return new java.awt.Color[] { new java.awt.Color(255, 50, 50), new java.awt.Color(50, 255, 50),
+                    new java.awt.Color(50, 50, 255) };
         }
     }
 
