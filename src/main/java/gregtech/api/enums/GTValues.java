@@ -9,6 +9,8 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RESET;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.animatedText;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
+import static net.minecraft.util.EnumChatFormatting.DARK_GREEN;
+import static net.minecraft.util.EnumChatFormatting.GOLD;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -174,13 +176,13 @@ public class GTValues {
 
     public static final String[] TIER_COLORS = new String[] { EnumChatFormatting.RED.toString(), // ULV, 0
         EnumChatFormatting.GRAY.toString(), // LV, 1
-        EnumChatFormatting.GOLD.toString(), // MV, 2
+        GOLD.toString(), // MV, 2
         EnumChatFormatting.YELLOW.toString(), // HV, 3
         EnumChatFormatting.DARK_GRAY.toString(), // EV, 4
         EnumChatFormatting.GREEN.toString(), // IV, 5
         EnumChatFormatting.LIGHT_PURPLE.toString(), // LuV, 6
         EnumChatFormatting.AQUA.toString(), // ZPM, 7
-        EnumChatFormatting.DARK_GREEN.toString(), // UV, 8
+        DARK_GREEN.toString(), // UV, 8
         EnumChatFormatting.DARK_RED.toString(), // UHV, 9
         EnumChatFormatting.DARK_PURPLE.toString(), // UEV, 10
         EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD, // UIV, 11
@@ -457,7 +459,7 @@ public class GTValues {
         + EnumChatFormatting.ITALIC
         + EnumChatFormatting.UNDERLINE
         + "C"
-        + EnumChatFormatting.GOLD
+        + GOLD
         + EnumChatFormatting.BOLD
         + EnumChatFormatting.ITALIC
         + EnumChatFormatting.UNDERLINE
@@ -485,13 +487,13 @@ public class GTValues {
         + EnumChatFormatting.RED
         + EnumChatFormatting.BOLD
         + "u"
-        + EnumChatFormatting.GOLD
+        + GOLD
         + EnumChatFormatting.BOLD
         + "b"
         + EnumChatFormatting.YELLOW
         + EnumChatFormatting.BOLD
         + "a"
-        + EnumChatFormatting.DARK_GREEN
+        + DARK_GREEN
         + EnumChatFormatting.BOLD
         + "6"
         + EnumChatFormatting.GREEN
@@ -555,10 +557,7 @@ public class GTValues {
         + EnumChatFormatting.ITALIC
         + "Number";
     public static final String Ollie = EnumChatFormatting.GREEN.toString() + EnumChatFormatting.BOLD + "Ollie";
-    public static final String authorBaps = "Author: " + EnumChatFormatting.GOLD
-        + "Ba"
-        + EnumChatFormatting.LIGHT_PURPLE
-        + "ps";
+    public static final String authorBaps = "Author: " + GOLD + "Ba" + EnumChatFormatting.LIGHT_PURPLE + "ps";
     public static final String AuthorOmdaCZ = "Author: " + EnumChatFormatting.BLUE
         + "Omda"
         + EnumChatFormatting.RED
@@ -570,7 +569,7 @@ public class GTValues {
         + EnumChatFormatting.BLUE
         + EnumChatFormatting.BOLD
         + "War"
-        + EnumChatFormatting.GOLD
+        + GOLD
         + EnumChatFormatting.BOLD
         + "Gold";
     public static final String AuthorVolence = "Author: " + EnumChatFormatting.AQUA + "Volence";
@@ -588,6 +587,18 @@ public class GTValues {
         + "APenguin";
 
     public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
+
+    public static final Supplier<String> AuthorNoc = chain(
+        text("Author: "),
+        animatedText(
+            "Noc",
+            0,
+            500,
+            GOLD + BOLD,
+            DARK_GREEN + BOLD,
+            GOLD + BOLD,
+            DARK_GREEN + BOLD,
+            DARK_GREEN + OBFUSCATED + BOLD));
 
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
