@@ -29,7 +29,7 @@ public class CoverFluidLimiter extends Cover {
 
     public CoverFluidLimiter(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
-        initializeData(context.getCoverInitializer());
+        threshold = 1F;
     }
 
     public float getThreshold() {
@@ -39,11 +39,6 @@ public class CoverFluidLimiter extends Cover {
     public CoverFluidLimiter setThreshold(float threshold) {
         this.threshold = threshold;
         return this;
-    }
-
-    @Override
-    protected void initializeData() {
-        threshold = 1F;
     }
 
     @Override

@@ -20,6 +20,7 @@ public abstract class CoverAdvancedRedstoneReceiverBase extends CoverAdvancedWir
 
     public CoverAdvancedRedstoneReceiverBase(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
+        this.mode = GateMode.AND;
     }
 
     public GateMode getGateMode() {
@@ -29,12 +30,6 @@ public abstract class CoverAdvancedRedstoneReceiverBase extends CoverAdvancedWir
     public CoverAdvancedRedstoneReceiverBase setMode(GateMode mode) {
         this.mode = mode;
         return this;
-    }
-
-    @Override
-    protected void initializeData() {
-        super.initializeData();
-        this.mode = GateMode.AND;
     }
 
     @Override

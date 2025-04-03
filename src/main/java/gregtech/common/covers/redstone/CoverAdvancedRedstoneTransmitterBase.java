@@ -23,6 +23,7 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
 
     public CoverAdvancedRedstoneTransmitterBase(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
+        this.invert = false;
     }
 
     public boolean isInverted() {
@@ -32,12 +33,6 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
     public CoverAdvancedRedstoneTransmitterBase setInverted(boolean inverted) {
         this.invert = inverted;
         return this;
-    }
-
-    @Override
-    protected void initializeData() {
-        super.initializeData();
-        this.invert = false;
     }
 
     @Override

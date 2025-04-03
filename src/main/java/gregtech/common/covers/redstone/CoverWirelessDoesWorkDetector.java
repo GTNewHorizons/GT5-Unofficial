@@ -24,6 +24,8 @@ public class CoverWirelessDoesWorkDetector extends CoverAdvancedRedstoneTransmit
 
     public CoverWirelessDoesWorkDetector(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
+        this.mode = ActivityMode.MACHINE_IDLE;
+        this.physical = true;
     }
 
     public ActivityMode getMode() {
@@ -42,13 +44,6 @@ public class CoverWirelessDoesWorkDetector extends CoverAdvancedRedstoneTransmit
     public CoverWirelessDoesWorkDetector setPhysical(boolean physical) {
         this.physical = physical;
         return this;
-    }
-
-    @Override
-    protected void initializeData() {
-        super.initializeData();
-        this.mode = ActivityMode.MACHINE_IDLE;
-        this.physical = true;
     }
 
     @Override

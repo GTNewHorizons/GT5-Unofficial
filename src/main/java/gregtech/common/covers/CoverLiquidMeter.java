@@ -38,7 +38,8 @@ public class CoverLiquidMeter extends Cover {
 
     public CoverLiquidMeter(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
-        initializeData(context.getCoverInitializer());
+        inverted = false;
+        threshold = 0;
     }
 
     public boolean isInverted() {
@@ -57,12 +58,6 @@ public class CoverLiquidMeter extends Cover {
     public CoverLiquidMeter setThresdhold(int threshold) {
         this.threshold = threshold;
         return this;
-    }
-
-    @Override
-    protected void initializeData() {
-        inverted = false;
-        threshold = 0;
     }
 
     @Override

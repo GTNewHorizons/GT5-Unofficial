@@ -35,7 +35,7 @@ public class CoverChest extends Cover {
         super(context, coverTexture);
         if (slots <= 0) throw new IllegalArgumentException("slots must be greater than 0");
         this.slots = slots;
-        initializeData(context.getCoverInitializer());
+        this.items = new LimitingItemStackHandler(slots, stackSizeLimit);
     }
 
     public int getSlotCount() {
@@ -47,13 +47,7 @@ public class CoverChest extends Cover {
     }
 
     @Override
-    public void initializeData() {
-        this.items = new LimitingItemStackHandler(slots, stackSizeLimit);
-    }
-
-    @Override
     protected void readDataFromNbt(NBTBase nbt) {
-        initializeData();
         if (!(nbt instanceof NBTTagCompound)) return;
         items.deserializeNBT((NBTTagCompound) nbt);
         firstTick = true;
@@ -61,7 +55,6 @@ public class CoverChest extends Cover {
 
     @Override
     public void readDataFromPacket(ByteArrayDataInput byteData) {
-        initializeData();
         items.deserializeNBT(GTByteBuffer.readCompoundTagFromGreggyByteBuf(byteData));
     }
 

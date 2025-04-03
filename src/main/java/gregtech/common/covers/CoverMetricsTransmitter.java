@@ -54,7 +54,7 @@ public class CoverMetricsTransmitter extends Cover {
 
     public CoverMetricsTransmitter(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
-        initializeData(context.getCoverInitializer());
+        this.frequency = UUID.randomUUID();
     }
 
     public UUID getFrequency() {
@@ -62,16 +62,9 @@ public class CoverMetricsTransmitter extends Cover {
     }
 
     @Override
-    protected void initializeData() {
-        this.frequency = UUID.randomUUID();
-    }
-
-    @Override
     protected void readDataFromNbt(NBTBase nbt) {
         if (nbt instanceof final NBTTagCompound tag) {
             frequency = new UUID(tag.getLong(FREQUENCY_MSB_KEY), tag.getLong(FREQUENCY_LSB_KEY));
-        } else {
-            initializeData();
         }
     }
 

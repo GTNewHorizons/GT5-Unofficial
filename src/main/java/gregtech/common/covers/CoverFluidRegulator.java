@@ -36,7 +36,9 @@ public class CoverFluidRegulator extends Cover {
     public CoverFluidRegulator(CoverContext context, int aTransferRate, ITexture coverTexture) {
         super(context, coverTexture);
         this.mTransferRate = aTransferRate;
-        initializeData(context.getCoverInitializer());
+        this.tickRate = TICK_RATE_MIN;
+        this.speed = 0;
+        this.condition = Conditional.Always;
     }
 
     public int getTransferRate() {
@@ -68,13 +70,6 @@ public class CoverFluidRegulator extends Cover {
     public CoverFluidRegulator setCondition(Conditional condition) {
         this.condition = condition;
         return this;
-    }
-
-    @Override
-    protected void initializeData() {
-        this.tickRate = TICK_RATE_MIN;
-        this.speed = 0;
-        this.condition = Conditional.Always;
     }
 
     @Override

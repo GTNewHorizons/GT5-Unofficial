@@ -32,7 +32,8 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
 
     public CoverAdvancedWirelessRedstoneBase(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
-        initializeData(context.getCoverInitializer());
+        this.frequency = 0;
+        this.uuid = null;
     }
 
     public int getFrequency() {
@@ -51,12 +52,6 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
     public CoverAdvancedWirelessRedstoneBase setUuid(UUID uuid) {
         this.uuid = uuid;
         return this;
-    }
-
-    @Override
-    protected void initializeData() {
-        this.frequency = 0;
-        this.uuid = null;
     }
 
     @Override

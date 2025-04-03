@@ -35,7 +35,10 @@ public class CoverOverflowValve extends Cover {
     public CoverOverflowValve(CoverContext context, int maxOverflowPoint) {
         super(context, null);
         this.maxOverflowPoint = maxOverflowPoint;
-        initializeData(context.getCoverInitializer());
+        this.overflowPoint = maxOverflowPoint;
+        this.voidingRate = maxOverflowPoint / 10;
+        this.canFluidInput = true;
+        this.canFluidOutput = true;
     }
 
     public int getMinOverflowPoint() {
@@ -83,22 +86,12 @@ public class CoverOverflowValve extends Cover {
     }
 
     @Override
-    protected void initializeData() {
-        overflowPoint = maxOverflowPoint;
-        voidingRate = maxOverflowPoint / 10;
-        canFluidInput = true;
-        canFluidOutput = true;
-    }
-
-    @Override
     protected void readDataFromNbt(NBTBase nbt) {
         if (nbt instanceof NBTTagCompound tag) {
             overflowPoint = tag.getInteger("overflowPoint");
             voidingRate = tag.getInteger("voidingRate");
             canFluidInput = tag.getBoolean("canFluidInput");
             canFluidOutput = tag.getBoolean("canFluidOutput");
-        } else {
-            initializeData();
         }
     }
 

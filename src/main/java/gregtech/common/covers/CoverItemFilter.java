@@ -37,7 +37,8 @@ public class CoverItemFilter extends Cover {
     public CoverItemFilter(CoverContext context, boolean isExport, ITexture coverTexture) {
         super(context, coverTexture);
         this.mExport = isExport;
-        initializeData(context.getCoverInitializer());
+        this.mWhitelist = false;
+        this.mFilter = null;
     }
 
     public boolean isWhitelist() {
@@ -56,12 +57,6 @@ public class CoverItemFilter extends Cover {
     public CoverItemFilter setFilter(ItemStack filter) {
         this.mFilter = filter;
         return this;
-    }
-
-    @Override
-    protected void initializeData() {
-        mWhitelist = false;
-        mFilter = null;
     }
 
     @Override

@@ -41,7 +41,8 @@ public class CoverFluidfilter extends Cover {
 
     public CoverFluidfilter(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
-        initializeData(context.getCoverInitializer());
+        this.mFluidID = -1;
+        this.mFilterMode = 0;
     }
 
     public int getFluidId() {
@@ -63,19 +64,11 @@ public class CoverFluidfilter extends Cover {
     }
 
     @Override
-    protected void initializeData() {
-        this.mFluidID = -1;
-        this.mFilterMode = 0;
-    }
-
-    @Override
     protected void readDataFromNbt(NBTBase nbt) {
         if (nbt instanceof NBTTagCompound tNBT) {
             mFilterMode = tNBT.getInteger("mFilterMode");
             if (tNBT.hasKey("mFluid", NBT.TAG_STRING)) mFluidID = FluidRegistry.getFluidID(tNBT.getString("mFluid"));
             else mFluidID = -1;
-        } else {
-            initializeData();
         }
     }
 

@@ -11,6 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -66,7 +67,14 @@ public abstract class CoverFacadeBase extends Cover {
      */
     public CoverFacadeBase(CoverContext context) {
         super(context, null);
-        initializeData(context.getCoverInitializer());
+        ItemStack coverItem = context.getCoverInitializer();
+        mStack = copyItemStackIfPresent(coverItem);
+        mFlags = 0;
+    }
+
+    private static @Nullable ItemStack copyItemStackIfPresent(ItemStack coverItem) {
+        if (coverItem == null) return null;
+        return GTUtility.copyAmount(1, coverItem);
     }
 
     public ItemStack getStack() {
@@ -80,18 +88,6 @@ public abstract class CoverFacadeBase extends Cover {
     public CoverFacadeBase setFlags(int flags) {
         this.mFlags = flags;
         return this;
-    }
-
-    @Override
-    protected void initializeData() {
-        mStack = null;
-        mFlags = 0;
-    }
-
-    @Override
-    public void loadFromItemStack(@NotNull ItemStack cover) {
-        mStack = GTUtility.copyAmount(1, cover);
-        mFlags = 0;
     }
 
     @Override

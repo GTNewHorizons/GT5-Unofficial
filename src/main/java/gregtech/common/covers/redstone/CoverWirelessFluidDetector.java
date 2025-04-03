@@ -25,6 +25,8 @@ public class CoverWirelessFluidDetector extends CoverAdvancedRedstoneTransmitter
 
     public CoverWirelessFluidDetector(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
+        this.threshold = 0;
+        this.physical = true;
     }
 
     public int getThreshold() {
@@ -43,13 +45,6 @@ public class CoverWirelessFluidDetector extends CoverAdvancedRedstoneTransmitter
     public CoverWirelessFluidDetector setPhysical(boolean physical) {
         this.physical = physical;
         return this;
-    }
-
-    @Override
-    protected void initializeData() {
-        super.initializeData();
-        this.threshold = 0;
-        this.physical = true;
     }
 
     @Override

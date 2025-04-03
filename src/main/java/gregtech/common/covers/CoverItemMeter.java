@@ -33,7 +33,9 @@ public class CoverItemMeter extends Cover {
 
     public CoverItemMeter(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
-        initializeData(context.getCoverInitializer());
+        inverted = false;
+        slot = -1;
+        threshold = 0;
     }
 
     public int getSlot() {
@@ -61,13 +63,6 @@ public class CoverItemMeter extends Cover {
     public CoverItemMeter setThresdhold(int threshold) {
         this.threshold = threshold;
         return this;
-    }
-
-    @Override
-    protected void initializeData() {
-        inverted = false;
-        slot = -1;
-        threshold = 0;
     }
 
     @Override

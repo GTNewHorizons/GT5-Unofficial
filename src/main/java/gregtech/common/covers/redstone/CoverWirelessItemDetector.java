@@ -31,6 +31,9 @@ public class CoverWirelessItemDetector extends CoverAdvancedRedstoneTransmitterB
 
     public CoverWirelessItemDetector(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
+        this.threshold = 0;
+        this.slot = -1;
+        this.physical = true;
     }
 
     public int getSlot() {
@@ -58,14 +61,6 @@ public class CoverWirelessItemDetector extends CoverAdvancedRedstoneTransmitterB
     public CoverWirelessItemDetector setPhysical(boolean physical) {
         this.physical = physical;
         return this;
-    }
-
-    @Override
-    protected void initializeData() {
-        super.initializeData();
-        this.threshold = 0;
-        this.slot = -1;
-        this.physical = true;
     }
 
     @Override

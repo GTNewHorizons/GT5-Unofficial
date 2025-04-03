@@ -58,23 +58,9 @@ public class Cover {
         setTickRateAddition(getDefaultTickRateAddition());
     }
 
-    protected void initializeData(ItemStack coverData) {
-        if (coverData != null) {
-            loadFromItemStack(coverData);
-        } else {
-            initializeData();
-        }
-    }
-
     private int getDefaultTickRateAddition() {
         if (!allowsTickRateAddition()) return 0;
         return getDefaultTickRate() - this.getMinimumTickRate();
-    }
-
-    protected void initializeData() {}
-
-    protected void loadFromItemStack(@NotNull ItemStack cover) {
-        initializeData();
     }
 
     public final void readFromNbt(NBTTagCompound nbt) {

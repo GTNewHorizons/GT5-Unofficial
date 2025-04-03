@@ -72,7 +72,11 @@ public class CoverFluidStorageMonitor extends Cover {
 
     public CoverFluidStorageMonitor(CoverContext context) {
         super(context, null);
-        initializeData(context.getCoverInitializer());
+        this.fluidLookupSide = ForgeDirection.UNKNOWN;
+        this.slot = 0;
+        this.fluid = null;
+        this.scale = 0;
+        this.dirty = false;
     }
 
     public CoverFluidStorageMonitor setSide(ForgeDirection coverSide) {
@@ -133,15 +137,6 @@ public class CoverFluidStorageMonitor extends Cover {
             this.dirty = false;
         }
         return this;
-    }
-
-    @Override
-    protected void initializeData() {
-        this.fluidLookupSide = ForgeDirection.UNKNOWN;
-        this.slot = 0;
-        this.fluid = null;
-        this.scale = 0;
-        this.dirty = false;
     }
 
     @Override

@@ -34,7 +34,9 @@ public class CoverEUMeter extends Cover {
 
     public CoverEUMeter(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
-        initializeData(context.getCoverInitializer());
+        type = EnergyType.UNIVERSAL_STORAGE;
+        inverted = false;
+        threshold = 0;
     }
 
     public EnergyType getType() {
@@ -71,13 +73,6 @@ public class CoverEUMeter extends Cover {
     public void setNum(int num) {
         type = EnergyType.getEnergyType(num / 2);
         inverted = num % 2 == 1;
-    }
-
-    @Override
-    protected void initializeData() {
-        type = EnergyType.UNIVERSAL_STORAGE;
-        inverted = false;
-        threshold = 0;
     }
 
     @Override

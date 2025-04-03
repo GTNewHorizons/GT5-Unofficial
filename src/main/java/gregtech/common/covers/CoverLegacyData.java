@@ -29,7 +29,7 @@ public class CoverLegacyData extends Cover {
 
     protected CoverLegacyData(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
-        initializeData(context.getCoverInitializer());
+        this.coverData = 0;
     }
 
     public int getVariable() {
@@ -40,9 +40,6 @@ public class CoverLegacyData extends Cover {
         this.coverData = newValue;
         return this;
     }
-
-    @Override
-    public final void initializeData() {}
 
     @Override
     protected void readDataFromNbt(NBTBase nbt) {

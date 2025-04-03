@@ -29,6 +29,8 @@ public class CoverWirelessMaintenanceDetector extends CoverAdvancedRedstoneTrans
 
     public CoverWirelessMaintenanceDetector(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
+        this.mode = MaintenanceMode.ONE_ISSUE;
+        this.physical = true;
     }
 
     public MaintenanceMode getMode() {
@@ -47,13 +49,6 @@ public class CoverWirelessMaintenanceDetector extends CoverAdvancedRedstoneTrans
     public CoverWirelessMaintenanceDetector setPhysical(boolean physical) {
         this.physical = physical;
         return this;
-    }
-
-    @Override
-    protected void initializeData() {
-        super.initializeData();
-        this.mode = MaintenanceMode.ONE_ISSUE;
-        this.physical = true;
     }
 
     @Override
