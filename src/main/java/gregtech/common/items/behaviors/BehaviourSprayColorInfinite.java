@@ -143,9 +143,8 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.switch"));
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.gui"));
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.pick"));
-        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.lock"));
-        aList.add(
-            StatCollector.translateToLocalFormatted("gt.behaviour.paintspray.infinite.tooltip.prevent_shake", ctrlKey));
+        aList.add(StatCollector.translateToLocalFormatted("gt.behaviour.paintspray.infinite.tooltip.lock", ctrlKey));
+        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.prevent_shake"));
         aList.add(" ");
         aList.add(AuthorQuerns);
 
