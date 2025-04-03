@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.util.GTLanguageManager.FACES;
 import static gregtech.api.util.GTLanguageManager.getTranslation;
+import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -117,27 +118,28 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             : new byte[] { 15, 15, 15, 15, 15, 15 };
         mStrongRedstone = aNBT.getByte("mStrongRedstone");
 
-        if (aNBT.hasKey(GTValues.NBT.COVERS)) {
-            readCoversNBT(aNBT);
-        }
+        applyCovers(readCoversNBT(aNBT, this));
     }
 
-    public void readCoversNBT(NBTTagCompound aNBT) {
-        final NBTTagList tList = aNBT.getTagList(GTValues.NBT.COVERS, 10);
-        for (byte i = 0; i < tList.tagCount(); i++) {
-            final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
-            final Cover cover = buildCover(tNBT);
+    private void applyCovers(List<Cover> storedCovers) {
+        for (Cover cover : storedCovers) {
             this.applyCover(cover, cover.getSide());
-            if (cover.isDataNeededOnClient()) issueCoverUpdate(ForgeDirection.getOrientation(i));
+            if (cover.isDataNeededOnClient()) issueCoverUpdate(cover.getSide());
         }
     }
 
-    private Cover buildCover(NBTTagCompound nbt) {
-        ForgeDirection side = ForgeDirection.getOrientation(nbt.getByte(NBT_COVER_SIDE));
-        Cover cover = CoverRegistry.getRegistrationFromNbt(nbt)
-            .buildCover(side, this);
-        cover.readFromNbt(nbt);
-        return cover;
+    public static List<Cover> readCoversNBT(NBTTagCompound aNBT, CoverableTileEntity coverableTileEntity) {
+        if (aNBT.hasKey(GTValues.NBT.COVERS)) {
+            final NBTTagList tList = aNBT.getTagList(GTValues.NBT.COVERS, TAG_COMPOUND);
+            List<Cover> storedCovers = new ArrayList<>();
+            for (byte i = 0; i < tList.tagCount(); i++) {
+                final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
+                ForgeDirection side = ForgeDirection.getOrientation(tNBT.getByte(NBT_COVER_SIDE));
+                storedCovers.add(CoverRegistry.buildCoverFromNbt(tNBT, side, coverableTileEntity));
+            }
+            return storedCovers;
+        }
+        return Collections.emptyList();
     }
 
     public abstract boolean isStillValid();
@@ -457,11 +459,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final NBTTagCompound tag = accessor.getNBTData();
         final ForgeDirection currentFacing = accessor.getSide();
 
-        final NBTTagList tList = tag.getTagList(GTValues.NBT.COVERS, 10);
-        for (byte i = 0; i < tList.tagCount(); i++) {
-            final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
-            final Cover cover = buildCover(tNBT);
-            if (!cover.isValid()) continue;
+        for (final Cover cover : covers) {
+            if (cover == null || !cover.isValid()) continue;
 
             final ItemStack coverStack = cover.asItemStack();
             if (coverStack != null) {
@@ -507,8 +506,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
         for (byte i = 0; i < tList.tagCount(); i++) {
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
-            final Cover cover = CoverRegistry.getRegistrationFromNbt(tNBT)
-                .buildCover(ForgeDirection.UNKNOWN, null);
+            byte sideValue = tNBT.getByte(NBT_COVER_SIDE);
+            final Cover cover = CoverRegistry.buildCoverFromNbt(tNBT, ForgeDirection.getOrientation(sideValue), null);
             cover.readFromNbt(tNBT);
             if (!cover.isValid()) continue;
 
@@ -517,7 +516,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                 aList.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.interface.coverTabs.cover_on",
-                        getTranslation(FACES[tNBT.getByte(NBT_COVER_SIDE)]),
+                        getTranslation(FACES[sideValue]),
                         coverStack.getDisplayName()));
             }
         }

@@ -43,8 +43,7 @@ public final class CoverPlacer {
      * sets the Cover upon placement.
      */
     public void placeCover(EntityPlayer player, ItemStack coverItem, ICoverable tileEntity, ForgeDirection side) {
-        Cover cover = CoverRegistry.getRegistration(coverItem)
-            .buildCover(side, tileEntity, coverItem);
+        Cover cover = CoverRegistry.buildCover(coverItem, side, tileEntity);
         tileEntity.attachCover(cover);
         cover.onPlayerAttach(player, coverItem);
     }

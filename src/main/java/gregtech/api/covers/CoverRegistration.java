@@ -1,40 +1,20 @@
 package gregtech.api.covers;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+final class CoverRegistration {
 
-import org.jetbrains.annotations.NotNull;
-
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GTUtility;
-import gregtech.common.covers.Cover;
-
-public final class CoverRegistration {
-
-    // Keeping an ItemStack reference so it remains valid through world load item remaps.
-    private final ItemStack coverIdStack;
     private final CoverFactory factory;
     private final CoverPlacer coverPlacer;
 
-    public CoverRegistration(ItemStack coverIdStack, CoverFactory factory, CoverPlacer coverPlacer) {
-        this.coverIdStack = coverIdStack;
+    CoverRegistration(CoverFactory factory, CoverPlacer coverPlacer) {
         this.factory = factory;
         this.coverPlacer = coverPlacer;
     }
 
-    public Cover buildCover(ForgeDirection side, ICoverable coverable) {
-        return buildCoverFromContext(side, coverable, null);
+    CoverFactory getFactory() {
+        return factory;
     }
 
-    public Cover buildCover(@NotNull ForgeDirection side, ICoverable coverable, @NotNull ItemStack coverItem) {
-        return buildCoverFromContext(side, coverable, coverItem);
-    }
-
-    private Cover buildCoverFromContext(ForgeDirection side, ICoverable coverable, Object initializer) {
-        return factory.buildCover(new CoverContext(GTUtility.stackToInt(coverIdStack), side, coverable, initializer));
-    }
-
-    public CoverPlacer getCoverPlacer() {
+    CoverPlacer getCoverPlacer() {
         return coverPlacer;
     }
 }

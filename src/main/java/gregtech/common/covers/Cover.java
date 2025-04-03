@@ -26,7 +26,6 @@ import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.covers.CoverFactory;
 import gregtech.api.covers.CoverPlacer;
-import gregtech.api.covers.CoverRegistration;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUIInfos;
@@ -59,9 +58,9 @@ public class Cover {
         setTickRateAddition(getDefaultTickRateAddition());
     }
 
-    protected void initializeData(Object coverData) {
-        if (coverData instanceof ItemStack coverStack) {
-            loadFromItemStack(coverStack);
+    protected void initializeData(ItemStack coverData) {
+        if (coverData != null) {
+            loadFromItemStack(coverData);
         } else {
             initializeData();
         }
@@ -133,7 +132,7 @@ public class Cover {
     }
 
     /**
-     * This cover id should only be used to get the {@link CoverRegistration} from the {@link CoverRegistry}, or to
+     * This cover id should only be used to get the {@link CoverPlacer} from the {@link CoverRegistry}, or to
      * compare 2 covers to see if they're of the same type.
      */
     public int getCoverID() {
