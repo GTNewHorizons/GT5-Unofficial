@@ -4,20 +4,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
-import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
+import gregtech.common.gui.mui1.cover.ShutterUIFactory;
 
-public class CoverShutter extends CoverBehavior {
+public class CoverShutter extends CoverLegacyData {
 
     public CoverShutter(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
@@ -29,27 +25,20 @@ public class CoverShutter extends CoverBehavior {
     }
 
     @Override
-    public ISerializableObject.LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY,
-        float aZ) {
-        ICoverable coverable = coveredTile.get();
-        if (coverable == null) {
-            return coverData;
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        this.coverData = (this.coverData + (aPlayer.isSneaking() ? -1 : 1)) % 4;
+        if (this.coverData < 0) {
+            this.coverData = 3;
         }
-        int coverDataValue = coverData.get();
-        coverDataValue = (coverDataValue + (aPlayer.isSneaking() ? -1 : 1)) % 4;
-        if (coverDataValue < 0) {
-            coverDataValue = 3;
-        }
-        switch (coverDataValue) {
+        switch (this.coverData) {
             case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("082", "Open if work enabled"));
             case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("083", "Open if work disabled"));
             case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("084", "Only Output allowed"));
             case 3 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("085", "Only Input allowed"));
         }
-        if (coverable instanceof BaseMetaPipeEntity bmpe) {
+        if (coveredTile.get() instanceof BaseMetaPipeEntity bmpe) {
             bmpe.reloadLocks();
         }
-        return ISerializableObject.LegacyCoverData.of(coverDataValue);
     }
 
     public boolean letsRedstoneGoIn() {
@@ -88,12 +77,11 @@ public class CoverShutter extends CoverBehavior {
     }
 
     private boolean shouldAllow(int shutterMode) {
-        int coverDataValue = coverData.get();
-        if (coverDataValue >= 2) {
-            return coverDataValue == shutterMode;
+        if (this.coverData >= 2) {
+            return this.coverData == shutterMode;
         }
         return !(coveredTile.get() instanceof IMachineProgress machine)
-            || machine.isAllowedToWork() == (coverDataValue % 2 == 0);
+            || machine.isAllowedToWork() == (this.coverData % 2 == 0);
     }
 
     @Override
@@ -113,59 +101,4 @@ public class CoverShutter extends CoverBehavior {
         return new ShutterUIFactory(buildContext).createWindow();
     }
 
-    private class ShutterUIFactory extends UIFactory {
-
-        private static final int startX = 10;
-        private static final int startY = 25;
-        private static final int spaceX = 18;
-        private static final int spaceY = 18;
-
-        public ShutterUIFactory(CoverUIBuildContext buildContext) {
-            super(buildContext);
-        }
-
-        @SuppressWarnings("PointlessArithmeticExpression")
-        @Override
-        protected void addUIWidgets(ModularWindow.Builder builder) {
-            builder
-                .widget(
-                    new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        this::getCoverData,
-                        this::setCoverData,
-                        CoverShutter.this::loadFromNbt,
-                        (index, coverData) -> index == convert(coverData),
-                        (index, coverData) -> new ISerializableObject.LegacyCoverData(index))
-                            .addToggleButton(
-                                0,
-                                CoverDataFollowerToggleButtonWidget.ofCheck(),
-                                widget -> widget.setPos(spaceX * 0, spaceY * 0))
-                            .addToggleButton(
-                                1,
-                                CoverDataFollowerToggleButtonWidget.ofCheck(),
-                                widget -> widget.setPos(spaceX * 0, spaceY * 1))
-                            .addToggleButton(
-                                2,
-                                CoverDataFollowerToggleButtonWidget.ofCheck(),
-                                widget -> widget.setPos(spaceX * 0, spaceY * 2))
-                            .addToggleButton(
-                                3,
-                                CoverDataFollowerToggleButtonWidget.ofCheck(),
-                                widget -> widget.setPos(spaceX * 0, spaceY * 3))
-                            .setPos(startX, startY))
-                .widget(
-                    new TextWidget(GTUtility.trans("082", "Open if work enabled"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 0))
-                .widget(
-                    new TextWidget(GTUtility.trans("083", "Open if work disabled"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 1))
-                .widget(
-                    new TextWidget(GTUtility.trans("084", "Only Output allowed")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 2))
-                .widget(
-                    new TextWidget(GTUtility.trans("085", "Only Input allowed")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 3));
-        }
-    }
 }
