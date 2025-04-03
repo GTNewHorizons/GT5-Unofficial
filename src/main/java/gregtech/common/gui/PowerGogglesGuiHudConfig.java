@@ -20,9 +20,13 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
     private GuiScreen parentScreen;
     private boolean draggingHud = false;
     private GuiButton notationToggleButton;
+    private GuiButton readingToggleButton;
     private int dragOffsetX = 0;
     private int dragOffsetY = 0;
-
+    private int dragCenterX;
+    private int dragCenterY;
+    private int dragWidth;
+    private int dragHeight;
     public PowerGogglesGuiHudConfig() {}
 
     public PowerGogglesGuiHudConfig(GuiScreen parentScreen) {
@@ -33,24 +37,37 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
     public void initGui() {
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
         super.initGui();
-        int buttonWidth = fontRenderer.getStringWidth("Toggle Notation: ENGINEERING") + 5;
+        int formatButtonWidth = fontRenderer.getStringWidth("Toggle Notation: ENGINEERING") + 5;
+        int readingButtonWidth = fontRenderer.getStringWidth("Toggle Reading Type: BOTH") + 5;
 
         int x = width / 2;
         int y = height / 2;
         buttonList.clear();
         notationToggleButton = new GuiButton(
             0,
-            x - buttonWidth / 2,
-            y - fontRenderer.FONT_HEIGHT - 5,
+            x - formatButtonWidth / 2,
+            y,
             "Toggle Notation: " + PowerGogglesConfigHandler.numberFormatting);
-        notationToggleButton.width = buttonWidth;
+        notationToggleButton.width = formatButtonWidth;
+        notationToggleButton.yPosition -= notationToggleButton.height-2;
+
+        readingToggleButton = new GuiButton(
+            1,
+            x - readingButtonWidth / 2,
+            y,
+            "Toggle Reading Type: " + PowerGogglesConfigHandler.numberFormatting);
+        readingToggleButton.width = formatButtonWidth;
+        readingToggleButton.yPosition += 2;
+
         buttonList.add(notationToggleButton);
+        buttonList.add(readingToggleButton);
 
     }
 
     @Override
     public void updateScreen() {
         notationToggleButton.displayString = "Toggle Notation: " + PowerGogglesConfigHandler.numberFormatting;
+        readingToggleButton.displayString = "Toggle Reading Type: " + PowerGogglesConfigHandler.readingType;
     }
 
     @Override
@@ -68,6 +85,20 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
                     "Available options: SI, SCIENTIFIC, ENGINEERING")
                 .set(next);
             PowerGogglesConfigHandler.config.save();
+            return;
+        }
+        if (button.id == 1){
+            String current = PowerGogglesConfigHandler.readingType;
+            String next = current.equals("BOTH") ? "TOTAL" : current.equals("TOTAL") ? "EUT" : "BOTH";
+            PowerGogglesConfigHandler.readingType = next;
+            PowerGogglesConfigHandler.config
+                .get(
+                    Configuration.CATEGORY_GENERAL,
+                    "Timed Reading Type",
+                    "BOTH",
+                    "Available options: TOTAL, EUT, BOTH")
+                .set(next);
+            PowerGogglesConfigHandler.config.save();
         }
     }
 
@@ -80,16 +111,16 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
         super.drawScreen(x, y, partial);
         GL11.glPopMatrix();
 
-        int dragCenterX = PowerGogglesConfigHandler.mainOffsetX;
-        int dragCenterY = height - PowerGogglesConfigHandler.mainOffsetY - PowerGogglesConfigHandler.rectangleHeight;
-        int dragWidth = 20;
-        int dragHeight = 20;
+        dragCenterX = PowerGogglesConfigHandler.mainOffsetX + PowerGogglesConfigHandler.rectangleWidth ;
+        dragCenterY = height - PowerGogglesConfigHandler.mainOffsetY - PowerGogglesConfigHandler.rectangleHeight;
+        dragWidth = 10;
+        dragHeight = 10;
         drawRect(
             dragCenterX - dragWidth / 2,
             dragCenterY - dragHeight / 2,
             dragCenterX + dragWidth / 2,
             dragCenterY + dragHeight / 2,
-            Color.argb(255, 255, 255, 255 * 0.85f));
+            Color.argb(40, 24, 163, 255 * 0.75f));
 
         // GuiHelper.drawGradientRect(300, 150, height-100, 250, height-20, Color.rgb(255,255,255),
         // Color.rgb(255,255,0));
@@ -109,10 +140,6 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
     }
 
     private boolean isOnDragRectangle(int x, int y) {
-        int dragCenterX = PowerGogglesConfigHandler.mainOffsetX;
-        int dragCenterY = height - PowerGogglesConfigHandler.mainOffsetY - PowerGogglesConfigHandler.rectangleHeight;
-        int dragWidth = 20;
-        int dragHeight = 20;
         return x <= dragCenterX + dragWidth / 2 && x >= dragCenterX - dragWidth / 2
             && y >= dragCenterY - dragHeight
             && y <= dragCenterY + dragHeight;

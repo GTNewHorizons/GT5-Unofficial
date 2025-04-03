@@ -169,29 +169,28 @@ public class PowerGogglesHudHandler {
                     change1h.divide(
                         BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
                 : "");
-        int mode = 0;
-        switch (mode) {
-            case 0:
+        switch (PowerGogglesConfigHandler.readingType) {
+            case "BOTH":
                 break;
-            case 1:
-                change5mString = "5m: " + toFormatted(change5m);
-                change1hString = "1h: " + toFormatted(change1h);
+            case "TOTAL":
+                change5mString = "5m: " + toFormatted(change5m) + " EU";
+                change1hString = "1h: " + toFormatted(change1h) + " EU";
                 break;
-            case 2:
+            case "EUT":
                 change5mString = "5m: " + (change5mDiff != 0 ? String.format(
-                    " (%s eu/t) ",
+                    " (%s EU/t) ",
                     toFormatted(
                         change5m.divide(
                             BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
-                    : "0");
+                    : "0 EU/t");
                 change1hString = "1h: " + (change1hDiff != 0
                     ? String.format(
-                        " (%s eu/t)",
+                        " (%s EU/t)",
                         toFormatted(
                             change1h.divide(
                                 BigInteger
                                     .valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
-                    : "0");
+                    : "0 EU/t");
                 break;
             default:
                 break;
