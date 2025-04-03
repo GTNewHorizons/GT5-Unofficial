@@ -480,10 +480,10 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
                 + EnumChatFormatting.RESET
                 + " %",
             /* 6 Pollution not included */
-            /* 7 */ EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.in_pre")
+            // Beamline-specific
+            EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.in_pre")
                 + ": "
                 + EnumChatFormatting.RESET,
-            // Beamline-specific
             StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Input:"
                 + EnumChatFormatting.GOLD
                 + Particle.getParticleFromId(information.getParticleId())
@@ -504,5 +504,4 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
                 + EnumChatFormatting.LIGHT_PURPLE
                 + information.getRate() };
     }
-
 }

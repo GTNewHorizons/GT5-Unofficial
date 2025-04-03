@@ -304,10 +304,10 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                 + EnumChatFormatting.RESET
                 + " %",
             /* 6 Pollution not included */
-            /* 7 */ EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.out_pre")
+            // Beamline-specific
+            EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.out_pre")
                 + ": "
                 + EnumChatFormatting.RESET,
-            // Beamline-specific
             StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Output:"
                 + EnumChatFormatting.GOLD
                 + Particle.getParticleFromId(this.outputParticle)
