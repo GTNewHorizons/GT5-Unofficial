@@ -95,7 +95,8 @@ public class CoverDataControllerWidget<T extends Cover>
         Cover cover = null;
         if (nbt instanceof NBTTagCompound tag) {
             cover = CoverRegistry.getRegistrationFromNbt(tag)
-                .buildCover(coverUiContext.getCoverSide(), coverUiContext.getTile(), tag);
+                .buildCover(coverUiContext.getCoverSide(), coverUiContext.getTile());
+            cover.readFromNbt(tag);
         }
         return cover;
     }

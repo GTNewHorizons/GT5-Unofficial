@@ -41,6 +41,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.events.MetricsCoverDataEvent;
 import gregtech.common.events.MetricsCoverHostDeconstructedEvent;
@@ -308,9 +309,12 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
                 .getTagList(GTValues.NBT.COVERS, TAG_COMPOUND);
             return IntStream.range(0, tagList.tagCount())
                 .mapToObj(tagList::getCompoundTagAt)
-                .map(
-                    nbt -> CoverRegistry.getRegistrationFromNbt(nbt)
-                        .buildCover(ForgeDirection.UNKNOWN, null, nbt))
+                .map(nbt -> {
+                    Cover cover = CoverRegistry.getRegistrationFromNbt(nbt)
+                        .buildCover(ForgeDirection.UNKNOWN, null);
+                    cover.readFromNbt(nbt);
+                    return cover;
+                })
                 .filter(cover -> cover instanceof CoverMetricsTransmitter)
                 .map(cover -> ((CoverMetricsTransmitter) cover).getFrequency());
         }

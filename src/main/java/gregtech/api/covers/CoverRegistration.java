@@ -1,7 +1,6 @@
 package gregtech.api.covers;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -25,10 +24,6 @@ public final class CoverRegistration {
 
     public Cover buildCover(ForgeDirection side, ICoverable coverable) {
         return buildCoverFromContext(side, coverable, null);
-    }
-
-    public Cover buildCover(ForgeDirection side, ICoverable coverable, @NotNull NBTTagCompound nbt) {
-        return buildCoverFromContext(side, coverable, nbt);
     }
 
     public Cover buildCover(@NotNull ForgeDirection side, ICoverable coverable, @NotNull ItemStack coverItem) {

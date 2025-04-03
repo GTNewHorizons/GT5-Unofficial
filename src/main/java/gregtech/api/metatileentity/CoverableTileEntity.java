@@ -133,8 +133,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     private Cover buildCover(NBTTagCompound nbt) {
         ForgeDirection side = ForgeDirection.getOrientation(nbt.getByte(NBT_COVER_SIDE));
-        return CoverRegistry.getRegistrationFromNbt(nbt)
-            .buildCover(side, this, nbt);
+        Cover cover = CoverRegistry.getRegistrationFromNbt(nbt)
+            .buildCover(side, this);
+        cover.readFromNbt(nbt);
+        return cover;
     }
 
     public abstract boolean isStillValid();
@@ -495,7 +497,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         for (byte i = 0; i < tList.tagCount(); i++) {
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
             final Cover cover = CoverRegistry.getRegistrationFromNbt(tNBT)
-                .buildCover(ForgeDirection.UNKNOWN, null, tNBT);
+                .buildCover(ForgeDirection.UNKNOWN, null);
+            cover.readFromNbt(tNBT);
             if (!cover.isValid()) continue;
 
             final ItemStack coverStack = cover.asItemStack();

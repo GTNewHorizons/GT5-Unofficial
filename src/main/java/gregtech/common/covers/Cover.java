@@ -62,8 +62,6 @@ public class Cover {
     protected void initializeData(Object coverData) {
         if (coverData instanceof ItemStack coverStack) {
             loadFromItemStack(coverStack);
-        } else if (coverData instanceof NBTTagCompound nbt && nbt.hasKey(NBT_DATA)) {
-            readFromNbt(nbt.getTag(NBT_DATA));
         } else {
             initializeData();
         }
@@ -87,6 +85,12 @@ public class Cover {
 
     protected void loadFromItemStack(@NotNull ItemStack cover) {
         initializeData();
+    }
+
+    public final void readFromNbt(NBTTagCompound nbt) {
+        if (nbt.hasKey(NBT_DATA)) {
+            readFromNbt(nbt.getTag(NBT_DATA));
+        }
     }
 
     protected void readFromNbt(NBTBase nbt) {}
