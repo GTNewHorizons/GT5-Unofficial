@@ -5,6 +5,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.io.ByteArrayDataInput;
+
 import gregtech.common.covers.Cover;
 
 public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer {
@@ -59,4 +61,11 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
      * @param cover
      */
     void updateAttachedCover(Cover cover);
+
+    /**
+     * Receiving a packet with cover data.
+     *
+     * @param data
+     */
+    void updateAttachedCover(ByteArrayDataInput data);
 }

@@ -1,6 +1,7 @@
 package gregtech.common.covers.redstone;
 
 import java.util.Objects;
+import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
@@ -14,7 +15,6 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.Cover;
 import io.netty.buffer.ByteBuf;
 
 public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvancedWirelessRedstoneBase {
@@ -42,15 +42,28 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
 
     @Override
     protected void readDataFromNbt(NBTBase nbt) {
+        int oldFrequency = frequency;
+        UUID oldUuid = uuid;
         super.readDataFromNbt(nbt);
+        unregisterOldSignal(oldUuid, oldFrequency);
 
         NBTTagCompound tag = (NBTTagCompound) nbt;
         invert = tag.getBoolean("invert");
     }
 
+    private void unregisterOldSignal(UUID oldUuid, int oldFrequency) {
+        if (oldUuid != null && (!Objects.equals(uuid, oldUuid) || frequency != oldFrequency)) {
+            unregisterSignal(oldUuid, oldFrequency);
+        }
+    }
+
     @Override
     public void readDataFromPacket(ByteArrayDataInput byteData) {
+        int oldFrequency = frequency;
+        UUID oldUuid = uuid;
         super.readDataFromPacket(byteData);
+        unregisterOldSignal(oldUuid, oldFrequency);
+
         invert = byteData.readBoolean();
     }
 
@@ -69,10 +82,14 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
     }
 
     private void unregisterSignal() {
+        unregisterSignal(uuid, frequency);
+    }
+
+    private void unregisterSignal(UUID oldUuid, int oldFrequency) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) return;
         final long hash = hashCoverCoords(coverable, coverSide);
-        removeSignalAt(uuid, frequency, hash);
+        removeSignalAt(oldUuid, oldFrequency, hash);
     }
 
     @Override
@@ -91,15 +108,5 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
         GTUtility
             .sendChatToPlayer(aPlayer, invert ? GTUtility.trans("054", "Inverted") : GTUtility.trans("055", "Normal"));
     }
-
-    @Override
-    public void preDataChanged(Cover newCover) {
-        if (newCover instanceof CoverAdvancedRedstoneTransmitterBase newTransmitterCover
-            && (frequency != newTransmitterCover.frequency || !Objects.equals(uuid, newTransmitterCover.uuid))) {
-            unregisterSignal();
-        }
-    }
-
-    // GUI stuff
 
 }

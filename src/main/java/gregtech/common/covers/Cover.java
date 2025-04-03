@@ -265,11 +265,6 @@ public class Cover {
     public void onBaseTEDestroyed() {}
 
     /**
-     * Called before receiving data from network. Use {@link ICoverable#isClientSide()} to determine the side.
-     */
-    public void preDataChanged(Cover newCover) {}
-
-    /**
      * Called upon receiving data from network. Use {@link ICoverable#isClientSide()} to determine the side.
      */
     public void onDataChanged() {}

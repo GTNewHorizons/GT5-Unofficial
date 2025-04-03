@@ -29,6 +29,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
@@ -274,8 +275,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public final @NotNull Cover getCoverAtSide(ForgeDirection side) {
-        final int ordinalSide = side.ordinal();
         if (side != ForgeDirection.UNKNOWN) {
+            final int ordinalSide = side.ordinal();
             Cover cover = covers[ordinalSide];
             if (cover == null) cover = (covers[ordinalSide] = CoverRegistry.NO_COVER);
             return cover;
@@ -417,11 +418,25 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final Cover oldCover = getCoverAtSide(side);
 
         if (!oldCover.isValid()) return;
-        oldCover.preDataChanged(cover);
         applyCover(cover, side);
 
         if (isClientSide()) {
             getCoverAtSide(side).onDataChanged();
+        }
+    }
+
+    @Override
+    public void updateAttachedCover(ByteArrayDataInput data) {
+        // ByteArrayDataInput field read order matters. Do not reorder these declarations.
+        int coverId = data.readInt();
+        ForgeDirection side = ForgeDirection.getOrientation(data.readByte());
+
+        final Cover cover = getCoverAtSide(side);
+        if (!cover.isValid() || cover.getCoverID() != coverId) return;
+        cover.readFromPacket(data);
+
+        if (isClientSide()) {
+            cover.onDataChanged();
         }
     }
 
