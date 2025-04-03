@@ -129,7 +129,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     public static List<Cover> readCoversNBT(NBTTagCompound aNBT, CoverableTileEntity coverableTileEntity) {
-        if (aNBT.hasKey(GTValues.NBT.COVERS)) {
+        if (aNBT != null && aNBT.hasKey(GTValues.NBT.COVERS)) {
             final NBTTagList tList = aNBT.getTagList(GTValues.NBT.COVERS, TAG_COMPOUND);
             List<Cover> storedCovers = new ArrayList<>();
             for (byte i = 0; i < tList.tagCount(); i++) {
