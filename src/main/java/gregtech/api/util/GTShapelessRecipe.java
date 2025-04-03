@@ -20,6 +20,8 @@ public class GTShapelessRecipe extends ShapelessOreRecipe implements IGTCrafting
     private final Enchantment[] mEnchantmentsAdded;
     private final int[] mEnchantmentLevelsAdded;
 
+    private boolean mNonRemovableByCoremod;
+
     public GTShapelessRecipe(ItemStack aResult, boolean aDismantleable, boolean aRemovableByGT, boolean aKeepingNBT,
         boolean overwriteNBT, Enchantment[] aEnchantmentsAdded, int[] aEnchantmentLevelsAdded, Object... aRecipe) {
         super(aResult, aRecipe);
@@ -121,5 +123,14 @@ public class GTShapelessRecipe extends ShapelessOreRecipe implements IGTCrafting
     @Override
     public boolean isRemovable() {
         return mRemovableByGT;
+    }
+
+    public GTShapelessRecipe setRemovableByCoremod(boolean b) {
+        this.mNonRemovableByCoremod = b;
+        return this;
+    }
+
+    public boolean isRemovableByCoremod() {
+        return !this.mNonRemovableByCoremod;
     }
 }

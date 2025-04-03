@@ -492,6 +492,7 @@ public class GTModHandler {
             false,
             false,
             true,
+            true,
             aRecipe);
     }
 
@@ -553,6 +554,7 @@ public class GTModHandler {
             (aBitMask & RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0,
             (aBitMask & RecipeBits.ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT) != 0,
             (aBitMask & RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL) != 0,
+            (aBitMask & RecipeBits.FUCK_OFF_COREMOD) != 0,
             aRecipe);
     }
 
@@ -825,7 +827,8 @@ public class GTModHandler {
         boolean aRemovable, boolean aReversible, boolean aRemoveAllOthersWithSameOutput,
         boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, boolean aRemoveAllOtherShapedsWithSameOutput,
         boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions,
-        boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
+        boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, boolean removableByCoremod,
+        Object[] aRecipe) {
 
         aResult = GTOreDictUnificator.get(true, aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return false;
@@ -1049,7 +1052,8 @@ public class GTModHandler {
                     aKeepNBT,
                     aEnchantmentsAdded,
                     aEnchantmentLevelsAdded,
-                    aRecipe).setMirrored(aMirrored));
+                    aRecipe).setRemovableByCoremod(removableByCoremod)
+                        .setMirrored(aMirrored));
             else GameRegistry.addRecipe(
                 new GTShapedRecipe(
                     GTUtility.copyOrNull(aResult),
@@ -1058,7 +1062,8 @@ public class GTModHandler {
                     aKeepNBT,
                     aEnchantmentsAdded,
                     aEnchantmentLevelsAdded,
-                    aRecipe).setMirrored(aMirrored));
+                    aRecipe).setRemovableByCoremod(removableByCoremod)
+                        .setMirrored(aMirrored));
         }
         return true;
     }
@@ -1086,6 +1091,7 @@ public class GTModHandler {
             (aBitMask & RecipeBits.DISMANTLEABLE) != 0,
             (aBitMask & RecipeBits.NOT_REMOVABLE) == 0,
             (aBitMask & RecipeBits.OVERWRITE_NBT) != 0,
+            (aBitMask & RecipeBits.FUCK_OFF_COREMOD) != 0,
             aRecipe);
     }
 
@@ -1094,7 +1100,7 @@ public class GTModHandler {
      */
     private static boolean addShapelessCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
         int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aKeepNBT, boolean aDismantleable, boolean aRemovable,
-        boolean overwriteNBT, Object[] aRecipe) {
+        boolean overwriteNBT, boolean removableByCoremod, Object[] aRecipe) {
         aResult = GTOreDictUnificator.get(true, aResult);
         if (aRecipe == null || aRecipe.length == 0) return false;
         for (byte i = 0; i < aRecipe.length; i++) {
@@ -1142,7 +1148,7 @@ public class GTModHandler {
                 overwriteNBT,
                 aEnchantmentsAdded,
                 aEnchantmentLevelsAdded,
-                aRecipe));
+                aRecipe).setRemovableByCoremod(removableByCoremod));
         else GameRegistry.addRecipe(
             new GTShapelessRecipe(
                 GTUtility.copyOrNull(aResult),
@@ -1152,7 +1158,7 @@ public class GTModHandler {
                 overwriteNBT,
                 aEnchantmentsAdded,
                 aEnchantmentLevelsAdded,
-                aRecipe));
+                aRecipe).setRemovableByCoremod(removableByCoremod));
         return true;
     }
 
@@ -1974,6 +1980,8 @@ public class GTModHandler {
          * tags with output item's NBT tags if exists
          */
         public static long OVERWRITE_NBT = B[14];
+
+        public static long FUCK_OFF_COREMOD = B[15];
 
         /**
          * Combination of common bits.

@@ -36,6 +36,7 @@ import gregtech.loaders.postload.recipes.FluidSolidifierRecipes;
 import gregtech.loaders.postload.recipes.ForgeHammerRecipes;
 import gregtech.loaders.postload.recipes.FormingPressRecipes;
 import gregtech.loaders.postload.recipes.FuelRecipes;
+import gregtech.loaders.postload.recipes.FullPackSteamRecipes;
 import gregtech.loaders.postload.recipes.FusionReactorRecipes;
 import gregtech.loaders.postload.recipes.ImplosionCompressorRecipes;
 import gregtech.loaders.postload.recipes.InfernalCokeRecipes;
@@ -131,6 +132,7 @@ public class MachineRecipeLoader implements Runnable {
         new AssortedSteamRecipes().run();
         new CactusWonderFakeRecipes().run();
         new InfernalCokeRecipes().run();
+        new FullPackSteamRecipes().run();
 
         BauxiteRefineChain.run();
         NaniteChain.run();

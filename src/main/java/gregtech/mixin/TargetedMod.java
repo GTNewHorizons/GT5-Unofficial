@@ -35,6 +35,7 @@ public enum TargetedMod {
     MINECHEM("Minechem", null, "minechem"),
     MINEFACTORY_RELOADED("MineFactory Reloaded", null, "MineFactoryReloaded"),
     MRTJPCORE("MrTJPCore", null, "MrTJPCoreMod"),
+    NEWHORIZONSCOREMOD("NewHorizonsCoreMod", "com.dreammaster.coremod.DreamCoreMod", "dreamcraft"),
     NOTENOUGHITEMS("NotEnoughItems", "codechicken.nei.asm.NEICorePlugin", "NotEnoughItems"),
     OPTIFINE("Optifine", "optifine.OptiFineForgeTweaker", "Optifine"),
     PORTAL_GUN("PortalGun", null, "PortalGun"),
