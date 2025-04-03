@@ -1,6 +1,12 @@
 package gtnhlanth.common.tileentity.recipe.beamline;
 
+import java.util.Objects;
+
 import net.minecraft.item.ItemStack;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import gregtech.api.util.GTUtility;
 
 public class TargetChamberMetadata {
 
@@ -24,6 +30,39 @@ public class TargetChamberMetadata {
         this.minFocus = minFocus;
         this.energyRatio = energyRatio;
         this.focusItem = focusItem;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(particleID, amount, minEnergy, maxEnergy, minEnergy, energyRatio, focusItem);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TargetChamberMetadata that = (TargetChamberMetadata) o;
+
+        if (particleID != that.particleID) return false;
+        if (amount != that.amount) return false;
+        if (minEnergy != that.minEnergy) return false;
+        if (maxEnergy != that.maxEnergy) return false;
+        if (minFocus != that.minFocus) return false;
+        if (energyRatio != that.energyRatio) return false;
+        return GTUtility.areStacksEqual(focusItem, that.focusItem);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("particleID", particleID)
+            .append("amount", amount)
+            .append("minEnergy", minEnergy)
+            .append("maxEnergy", maxEnergy)
+            .append("minFocus", minFocus)
+            .append("energyRatio", energyRatio)
+            .append("focusItem", focusItem)
+            .toString();
     }
 
     public static Builder builder(ItemStack focusItem) {

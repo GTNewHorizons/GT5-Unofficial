@@ -257,7 +257,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
                 if (metadata == null) return false;
 
                 BeamInformation recipeInInfo = this.getInputInformation();
-                int particle = metadata.particleId;
+                int particle = metadata.particleID;
 
                 if (recipeInInfo != null) {
                     return (particle == recipeInInfo.getParticleId() && !(recipeInInfo.getEnergy() < metadata.minEnergy
@@ -270,7 +270,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .find();
         if (tRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        TargetChamberMetadata metadata = tRecipe.getMetadata();
+        TargetChamberMetadata metadata = tRecipe.getMetadata(TARGET_CHAMBER_METADATA);
         if (metadata == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
         BeamInformation inputInfo = this.getInputInformation();

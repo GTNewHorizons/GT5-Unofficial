@@ -1,5 +1,9 @@
 package gtnhlanth.common.tileentity.recipe.beamline;
 
+import java.util.Objects;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class SourceChamberMetadata {
 
     public final int particleID;
@@ -14,6 +18,35 @@ public class SourceChamberMetadata {
         this.maxEnergy = maxEnergy;
         this.focus = focus;
         this.energyRatio = energyRatio;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(particleID, rate, maxEnergy, focus, energyRatio);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SourceChamberMetadata that = (SourceChamberMetadata) o;
+
+        if (particleID != that.particleID) return false;
+        if (rate != that.rate) return false;
+        if (maxEnergy != that.maxEnergy) return false;
+        if (focus != that.focus) return false;
+        return energyRatio == that.energyRatio;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("particleID", particleID)
+            .append("rate", rate)
+            .append("maxEnergy", maxEnergy)
+            .append("focus", focus)
+            .append("energyRatio", energyRatio)
+            .toString();
     }
 
     public static Builder builder() {
