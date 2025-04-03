@@ -21,6 +21,10 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
     private boolean draggingHud = false;
     private GuiButton notationToggleButton;
     private GuiButton readingToggleButton;
+    private GuiButton mainScaleUpButton;
+    private GuiButton mainScaleDownButton;
+    private GuiButton subScaleUpButton;
+    private GuiButton subScaleDownButton;
     private int dragOffsetX = 0;
     private int dragOffsetY = 0;
     private int dragCenterX;
@@ -37,11 +41,10 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
     public void initGui() {
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
         super.initGui();
-        int formatButtonWidth = fontRenderer.getStringWidth("Toggle Notation: ENGINEERING") + 5;
-        int readingButtonWidth = fontRenderer.getStringWidth("Toggle Reading Type: BOTH") + 5;
+        int formatButtonWidth = fontRenderer.getStringWidth("Main Text Scale+")*2 + 10;
 
         int x = width / 2;
-        int y = height / 2;
+        int y = (int) (height / 2.5);
         buttonList.clear();
         notationToggleButton = new GuiButton(
             0,
@@ -53,14 +56,50 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
 
         readingToggleButton = new GuiButton(
             1,
-            x - readingButtonWidth / 2,
+            x - formatButtonWidth / 2,
             y,
-            "Toggle Reading Type: " + PowerGogglesConfigHandler.numberFormatting);
+            "Toggle Reading Type: " + PowerGogglesConfigHandler.readingType);
         readingToggleButton.width = formatButtonWidth;
         readingToggleButton.yPosition += 2;
 
+        mainScaleDownButton = new GuiButton(
+            2,
+            x - formatButtonWidth / 2,
+            readingToggleButton.yPosition + readingToggleButton.height,
+            "Main Text Scale-"
+        );
+        mainScaleDownButton.width = formatButtonWidth/2;
+
+        mainScaleUpButton = new GuiButton(
+            3,
+            x,
+            readingToggleButton.yPosition + readingToggleButton.height,
+            "Main Text Scale+"
+        );
+        mainScaleUpButton.width = formatButtonWidth/2;
+
+        subScaleDownButton = new GuiButton(
+            4,
+            x - formatButtonWidth / 2,
+            readingToggleButton.yPosition + readingToggleButton.height+mainScaleDownButton.height,
+            "Sub Text Scale-"
+        );
+        subScaleDownButton.width = formatButtonWidth/2;
+
+        subScaleUpButton = new GuiButton(
+            5,
+            x,
+            readingToggleButton.yPosition + readingToggleButton.height+mainScaleUpButton.height,
+            "Sub Text Scale+"
+        );
+        subScaleUpButton.width = formatButtonWidth/2;
+
         buttonList.add(notationToggleButton);
         buttonList.add(readingToggleButton);
+        buttonList.add(mainScaleDownButton);
+        buttonList.add(mainScaleUpButton);
+        buttonList.add(subScaleDownButton);
+        buttonList.add(subScaleUpButton);
 
     }
 
