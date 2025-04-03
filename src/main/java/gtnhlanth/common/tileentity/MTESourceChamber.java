@@ -12,6 +12,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.SOURCE_CHAMBER_METADATA;
 import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
@@ -39,17 +40,18 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import gtnhlanth.common.register.LanthItemList;
-import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeAdder2;
-import gtnhlanth.common.tileentity.recipe.beamline.RecipeSC;
+import gtnhlanth.common.tileentity.recipe.beamline.SourceChamberMetadata;
 import gtnhlanth.util.DescTextLocalization;
 
 public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber> implements ISurvivalConstructable {
@@ -171,12 +173,16 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         long tVoltageMaxTier = this.getMaxInputVoltage(); // Used to keep old math the same
         long tVoltageActual = GTValues.VP[(int) this.getInputVoltageTier()];
 
-        RecipeSC tRecipe = (RecipeSC) BeamlineRecipeAdder2.instance.SourceChamberRecipes.findRecipeQuery()
+        GTRecipe tRecipe = LanthanidesRecipeMaps.sourceChamberRecipes.findRecipeQuery()
             .items(tItems)
             .voltage(tVoltageActual)
             .find();
+        if (tRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, new FluidStack[] {}, tItems)) {
+        SourceChamberMetadata metadata = tRecipe.getMetadata(SOURCE_CHAMBER_METADATA);
+        if (metadata == null) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        if (!tRecipe.isRecipeInputEqual(true, new FluidStack[] {}, tItems)) {
             return CheckRecipeResultRegistry.NO_RECIPE; // Consumes input item
         }
 
@@ -191,13 +197,13 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         this.mEUt = (int) -tVoltageActual;
         if (this.mEUt > 0) this.mEUt = (-this.mEUt);
 
-        outputParticle = tRecipe.particleId;
+        outputParticle = metadata.particleID;
         float maxParticleEnergy = Particle.getParticleFromId(outputParticle)
             .maxSourceEnergy();
-        float maxMaterialEnergy = tRecipe.maxEnergy; // The maximum energy for the recipe processed
+        float maxMaterialEnergy = metadata.maxEnergy; // The maximum energy for the recipe processed
 
         this.outputEnergy = (float) Math.min(
-            (-maxMaterialEnergy) * Math.pow(1.001, -(tRecipe.energyRatio) * (tVoltageMaxTier - tRecipe.mEUt))
+            (-maxMaterialEnergy) * Math.pow(1.001, -(metadata.energyRatio) * (tVoltageMaxTier - tRecipe.mEUt))
                 + maxMaterialEnergy,
             maxParticleEnergy);
         if (outputEnergy <= 0) {
@@ -205,8 +211,8 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        this.outputFocus = tRecipe.focus;
-        this.outputRate = tRecipe.rate;
+        this.outputFocus = metadata.focus;
+        this.outputRate = metadata.rate;
         this.mOutputItems = tRecipe.mOutputs;
         this.updateSlots();
 
@@ -241,7 +247,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return BeamlineRecipeAdder2.instance.SourceChamberRecipes;
+        return LanthanidesRecipeMaps.sourceChamberRecipes;
     }
 
     @Override
