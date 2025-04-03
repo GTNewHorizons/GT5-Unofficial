@@ -52,8 +52,8 @@ public class CoverWirelessDoesWorkDetector extends CoverAdvancedRedstoneTransmit
     }
 
     @Override
-    protected void readFromNbt(NBTBase nbt) {
-        super.readFromNbt(nbt);
+    protected void readDataFromNbt(NBTBase nbt) {
+        super.readDataFromNbt(nbt);
 
         NBTTagCompound tag = (NBTTagCompound) nbt;
         mode = ActivityMode.values()[tag.getInteger("mode")];
@@ -65,8 +65,8 @@ public class CoverWirelessDoesWorkDetector extends CoverAdvancedRedstoneTransmit
     }
 
     @Override
-    public void readFromPacket(ByteArrayDataInput byteData) {
-        super.readFromPacket(byteData);
+    public void readDataFromPacket(ByteArrayDataInput byteData) {
+        super.readDataFromPacket(byteData);
         mode = ActivityMode.values()[byteData.readInt()];
         physical = byteData.readBoolean();
     }

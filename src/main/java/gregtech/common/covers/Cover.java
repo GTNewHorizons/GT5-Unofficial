@@ -56,7 +56,7 @@ public class Cover {
         this.coverID = context.getCoverId();
         this.coveredTile = new WeakReference<>(context.getCoverable());
         this.coverFGTexture = coverFGTexture;
-        setTickRateAddition(initializeTickRateAddition(context.getCoverInitializer()));
+        setTickRateAddition(getDefaultTickRateAddition());
     }
 
     protected void initializeData(Object coverData) {
@@ -65,15 +65,6 @@ public class Cover {
         } else {
             initializeData();
         }
-    }
-
-    private int initializeTickRateAddition(Object coverData) {
-        if (coverData instanceof NBTTagCompound nbt && nbt.hasKey(NBT_TICK_RATE_ADDITION)) {
-            return nbt.getInteger(NBT_TICK_RATE_ADDITION);
-        } else if (coverData instanceof ByteArrayDataInput byteData) {
-            return byteData.readInt();
-        }
-        return getDefaultTickRateAddition();
     }
 
     private int getDefaultTickRateAddition() {
@@ -88,14 +79,22 @@ public class Cover {
     }
 
     public final void readFromNbt(NBTTagCompound nbt) {
+        if (nbt.hasKey(NBT_TICK_RATE_ADDITION)) {
+            setTickRateAddition(nbt.getInteger(NBT_TICK_RATE_ADDITION));
+        }
         if (nbt.hasKey(NBT_DATA)) {
-            readFromNbt(nbt.getTag(NBT_DATA));
+            readDataFromNbt(nbt.getTag(NBT_DATA));
         }
     }
 
-    protected void readFromNbt(NBTBase nbt) {}
+    protected void readDataFromNbt(NBTBase nbt) {}
 
-    public void readFromPacket(ByteArrayDataInput byteData) {}
+    public final void readFromPacket(ByteArrayDataInput byteData) {
+        setTickRateAddition(byteData.readInt());
+        readDataFromPacket(byteData);
+    }
+
+    protected void readDataFromPacket(ByteArrayDataInput byteData) {}
 
     public final NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         nbt.setInteger(NBT_TICK_RATE_ADDITION, tickRateAddition);

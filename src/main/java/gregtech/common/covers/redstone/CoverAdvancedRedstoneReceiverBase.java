@@ -38,16 +38,16 @@ public abstract class CoverAdvancedRedstoneReceiverBase extends CoverAdvancedWir
     }
 
     @Override
-    protected void readFromNbt(NBTBase nbt) {
-        super.readFromNbt(nbt);
+    protected void readDataFromNbt(NBTBase nbt) {
+        super.readDataFromNbt(nbt);
 
         NBTTagCompound tag = (NBTTagCompound) nbt;
         mode = GateMode.values()[tag.getByte("mode")];
     }
 
     @Override
-    public void readFromPacket(ByteArrayDataInput byteData) {
-        super.readFromPacket(byteData);
+    public void readDataFromPacket(ByteArrayDataInput byteData) {
+        super.readDataFromPacket(byteData);
         mode = GateMode.values()[byteData.readByte()];
     }
 

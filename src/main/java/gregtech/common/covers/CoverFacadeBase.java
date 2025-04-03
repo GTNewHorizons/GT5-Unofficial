@@ -95,14 +95,14 @@ public abstract class CoverFacadeBase extends Cover {
     }
 
     @Override
-    protected void readFromNbt(NBTBase nbt) {
+    protected void readDataFromNbt(NBTBase nbt) {
         final NBTTagCompound tag = (NBTTagCompound) nbt;
         mStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("mStack"));
         mFlags = tag.getByte("mFlags");
     }
 
     @Override
-    public void readFromPacket(ByteArrayDataInput byteData) {
+    public void readDataFromPacket(ByteArrayDataInput byteData) {
         mFlags = byteData.readByte();
         mStack = GTByteBuffer.readItemStackFromGreggyByteBuf(byteData);
     }

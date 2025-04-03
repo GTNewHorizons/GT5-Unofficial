@@ -65,7 +65,7 @@ public class CoverItemFilter extends Cover {
     }
 
     @Override
-    protected void readFromNbt(NBTBase nbt) {
+    protected void readDataFromNbt(NBTBase nbt) {
         NBTTagCompound tag = (NBTTagCompound) nbt;
         mWhitelist = tag.getBoolean("mWhitelist");
         if (tag.hasKey("mFilter", Constants.NBT.TAG_COMPOUND))
@@ -74,7 +74,7 @@ public class CoverItemFilter extends Cover {
     }
 
     @Override
-    public void readFromPacket(ByteArrayDataInput byteData) {
+    public void readDataFromPacket(ByteArrayDataInput byteData) {
         mWhitelist = byteData.readBoolean();
         mFilter = GTByteBuffer.readItemStackFromGreggyByteBuf(byteData);
     }

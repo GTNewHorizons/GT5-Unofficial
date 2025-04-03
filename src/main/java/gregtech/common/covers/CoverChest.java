@@ -52,7 +52,7 @@ public class CoverChest extends Cover {
     }
 
     @Override
-    protected void readFromNbt(NBTBase nbt) {
+    protected void readDataFromNbt(NBTBase nbt) {
         initializeData();
         if (!(nbt instanceof NBTTagCompound)) return;
         items.deserializeNBT((NBTTagCompound) nbt);
@@ -60,7 +60,7 @@ public class CoverChest extends Cover {
     }
 
     @Override
-    public void readFromPacket(ByteArrayDataInput byteData) {
+    public void readDataFromPacket(ByteArrayDataInput byteData) {
         initializeData();
         items.deserializeNBT(GTByteBuffer.readCompoundTagFromGreggyByteBuf(byteData));
     }

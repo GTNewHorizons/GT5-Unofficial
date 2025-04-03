@@ -145,7 +145,7 @@ public class CoverFluidStorageMonitor extends Cover {
     }
 
     @Override
-    protected void readFromNbt(NBTBase nbt) {
+    protected void readDataFromNbt(NBTBase nbt) {
         NBTTagCompound tag = (NBTTagCompound) nbt;
         fluidLookupSide = ForgeDirection.getOrientation(tag.getByte("coverSide"));
         slot = tag.getInteger("slot");
@@ -155,7 +155,7 @@ public class CoverFluidStorageMonitor extends Cover {
     }
 
     @Override
-    public void readFromPacket(ByteArrayDataInput byteData) {
+    public void readDataFromPacket(ByteArrayDataInput byteData) {
         this.fluidLookupSide = ForgeDirection.getOrientation(byteData.readByte());
         this.slot = byteData.readInt();
         this.fluid = Util.getFluid(byteData.readInt());

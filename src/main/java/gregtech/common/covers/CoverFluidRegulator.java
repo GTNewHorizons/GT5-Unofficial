@@ -78,7 +78,7 @@ public class CoverFluidRegulator extends Cover {
     }
 
     @Override
-    protected void readFromNbt(NBTBase nbt) {
+    protected void readDataFromNbt(NBTBase nbt) {
         if (!(nbt instanceof NBTTagCompound tag)) return; // not very good...
         speed = tag.getInteger("mSpeed");
         tickRate = tag.getInteger("mTickRate");
@@ -86,7 +86,7 @@ public class CoverFluidRegulator extends Cover {
     }
 
     @Override
-    public void readFromPacket(ByteArrayDataInput byteData) {
+    public void readDataFromPacket(ByteArrayDataInput byteData) {
         this.tickRate = byteData.readInt();
         this.speed = byteData.readInt();
         this.condition = Conditional.VALUES[byteData.readUnsignedByte()];

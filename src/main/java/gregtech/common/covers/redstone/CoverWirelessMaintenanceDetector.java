@@ -57,8 +57,8 @@ public class CoverWirelessMaintenanceDetector extends CoverAdvancedRedstoneTrans
     }
 
     @Override
-    protected void readFromNbt(NBTBase nbt) {
-        super.readFromNbt(nbt);
+    protected void readDataFromNbt(NBTBase nbt) {
+        super.readDataFromNbt(nbt);
 
         NBTTagCompound tag = (NBTTagCompound) nbt;
         mode = MaintenanceMode.values()[tag.getInteger("mode")];
@@ -70,8 +70,8 @@ public class CoverWirelessMaintenanceDetector extends CoverAdvancedRedstoneTrans
     }
 
     @Override
-    public void readFromPacket(ByteArrayDataInput byteData) {
-        super.readFromPacket(byteData);
+    public void readDataFromPacket(ByteArrayDataInput byteData) {
+        super.readDataFromPacket(byteData);
         mode = MaintenanceMode.values()[byteData.readInt()];
         physical = byteData.readBoolean();
     }

@@ -60,7 +60,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
     }
 
     @Override
-    protected void readFromNbt(NBTBase nbt) {
+    protected void readDataFromNbt(NBTBase nbt) {
         NBTTagCompound tag = (NBTTagCompound) nbt;
         frequency = tag.getInteger("frequency");
         if (tag.hasKey("uuid")) {
@@ -69,7 +69,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
     }
 
     @Override
-    public void readFromPacket(ByteArrayDataInput byteData) {
+    public void readDataFromPacket(ByteArrayDataInput byteData) {
         frequency = byteData.readInt();
         if (byteData.readBoolean()) {
             uuid = new UUID(byteData.readLong(), byteData.readLong());

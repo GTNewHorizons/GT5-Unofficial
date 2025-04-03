@@ -69,7 +69,7 @@ public class CoverFluidfilter extends Cover {
     }
 
     @Override
-    protected void readFromNbt(NBTBase nbt) {
+    protected void readDataFromNbt(NBTBase nbt) {
         if (nbt instanceof NBTTagCompound tNBT) {
             mFilterMode = tNBT.getInteger("mFilterMode");
             if (tNBT.hasKey("mFluid", NBT.TAG_STRING)) mFluidID = FluidRegistry.getFluidID(tNBT.getString("mFluid"));
@@ -80,7 +80,7 @@ public class CoverFluidfilter extends Cover {
     }
 
     @Override
-    public void readFromPacket(ByteArrayDataInput byteData) {
+    public void readDataFromPacket(ByteArrayDataInput byteData) {
         mFilterMode = byteData.readByte();
         mFluidID = byteData.readInt();
     }

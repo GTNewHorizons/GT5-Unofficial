@@ -69,8 +69,8 @@ public class CoverWirelessItemDetector extends CoverAdvancedRedstoneTransmitterB
     }
 
     @Override
-    protected void readFromNbt(NBTBase nbt) {
-        super.readFromNbt(nbt);
+    protected void readDataFromNbt(NBTBase nbt) {
+        super.readDataFromNbt(nbt);
 
         NBTTagCompound tag = (NBTTagCompound) nbt;
         threshold = tag.getInteger("threshold");
@@ -84,8 +84,8 @@ public class CoverWirelessItemDetector extends CoverAdvancedRedstoneTransmitterB
     }
 
     @Override
-    public void readFromPacket(ByteArrayDataInput byteData) {
-        super.readFromPacket(byteData);
+    public void readDataFromPacket(ByteArrayDataInput byteData) {
+        super.readDataFromPacket(byteData);
         threshold = byteData.readInt();
         slot = byteData.readInt();
         physical = byteData.readBoolean();

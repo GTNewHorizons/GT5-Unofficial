@@ -91,7 +91,7 @@ public class CoverOverflowValve extends Cover {
     }
 
     @Override
-    protected void readFromNbt(NBTBase nbt) {
+    protected void readDataFromNbt(NBTBase nbt) {
         if (nbt instanceof NBTTagCompound tag) {
             overflowPoint = tag.getInteger("overflowPoint");
             voidingRate = tag.getInteger("voidingRate");
@@ -103,7 +103,7 @@ public class CoverOverflowValve extends Cover {
     }
 
     @Override
-    public void readFromPacket(ByteArrayDataInput byteData) {
+    public void readDataFromPacket(ByteArrayDataInput byteData) {
         overflowPoint = byteData.readInt();
         voidingRate = byteData.readInt();
         canFluidInput = byteData.readBoolean();

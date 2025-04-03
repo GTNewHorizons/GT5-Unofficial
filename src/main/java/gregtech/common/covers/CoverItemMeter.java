@@ -71,7 +71,7 @@ public class CoverItemMeter extends Cover {
     }
 
     @Override
-    protected void readFromNbt(NBTBase nbt) {
+    protected void readDataFromNbt(NBTBase nbt) {
         NBTTagCompound tag = (NBTTagCompound) nbt;
         inverted = tag.getBoolean("invert");
         slot = tag.getInteger("slot");
@@ -79,7 +79,7 @@ public class CoverItemMeter extends Cover {
     }
 
     @Override
-    public void readFromPacket(ByteArrayDataInput byteData) {
+    public void readDataFromPacket(ByteArrayDataInput byteData) {
         inverted = byteData.readBoolean();
         slot = byteData.readInt();
         threshold = byteData.readInt();
