@@ -84,11 +84,13 @@ public class PowerGogglesHudHandler {
         int yOffset = PowerGogglesConfigHandler.mainOffsetY;
         int w = PowerGogglesConfigHandler.rectangleWidth;
         int h = PowerGogglesConfigHandler.rectangleHeight;
-        drawPowerRectangle(xOffset, yOffset, h, w, screenHeight);
+        int borderRadius = 3;
+        int chartOffsetY = drawPowerRectangle(xOffset, yOffset, h, w, screenHeight, borderRadius);
+        drawPowerChart(xOffset-borderRadius,chartOffsetY, 100,100, screenHeight, borderRadius);
         GL11.glPopMatrix();
     }
 
-    private static void drawPowerRectangle(int xOffset, int yOffset, int w, int h, int screenHeight) {
+    private static int drawPowerRectangle(int xOffset, int yOffset, int w, int h, int screenHeight, int borderRadius) {
         int left = h + xOffset;
         int up = screenHeight - h - yOffset;
         int right = left + w;
@@ -122,12 +124,12 @@ public class PowerGogglesHudHandler {
         int gapBetweenLines = 2;
         double mainScale = PowerGogglesConfigHandler.mainTextScaling;
         double subScale = PowerGogglesConfigHandler.subTextScaling;
-        int borderRadius = 3;
         int bgColor = Color.argb(47, 20, 76, (int) (255 * 0.85));
+        int highestPoint = screenHeight - yOffset - w - gapBetweenLines - (int) (fontRenderer.FONT_HEIGHT * mainScale) - borderRadius;
         GuiHelper.drawGradientRect(
             -1,
             xOffset - borderRadius,
-            screenHeight - yOffset - w - gapBetweenLines - (int) (fontRenderer.FONT_HEIGHT * mainScale) - borderRadius,
+            highestPoint,
             xOffset + h + borderRadius,
             screenHeight - yOffset
                 + gapBetweenLines * 2
@@ -201,9 +203,27 @@ public class PowerGogglesHudHandler {
             screenHeight - yOffset + gapBetweenLines * 2 + (int) (fontRenderer.FONT_HEIGHT * subScale),
             change1hColor,
             subScale);
+        return highestPoint;
+    }
+    private void drawPowerChart(int xOffset,int yOffset, int chartWidth,int chartHeight, int screenHeight, int borderRadius){
+        int left = xOffset;
+        int right = xOffset+chartWidth;
+        int top = yOffset - chartHeight;
+        int bottom = yOffset;
+        int bgColor = Color.argb(19,14,91, (int)(255*0.75f));
+        GuiHelper.drawGradientRect(-1, left, top, right, bottom, bgColor, bgColor);
+
+        BigInteger minReading = measurements.get(0);
+        BigInteger maxReading = measurements.get(0);
+        int readings = Math.min(measurements.size(), measurementCount5m);
+        for(int i = 0 ; i < readings; i++){
+            BigInteger temp = measurements.get(i);
+            if (temp.compareTo(minReading) < 0) minReading = temp;
+            if (maxReading.compareTo(temp) < 0) maxReading = temp;
+        }
+
 
     }
-
     private static void drawScaledString(FontRenderer fontRenderer, String string, int xOffset, int yOffset, int color,
         double scale) {
         GL11.glPushMatrix();
