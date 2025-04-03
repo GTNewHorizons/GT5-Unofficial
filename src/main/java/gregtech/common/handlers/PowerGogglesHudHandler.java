@@ -2,6 +2,7 @@ package gregtech.common.handlers;
 
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_LIGHTING;
+import static org.lwjgl.opengl.GL11.GL_LINES;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -14,12 +15,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 import org.lwjgl.opengl.GL11;
 
 import com.google.common.math.BigIntegerMath;
+import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.drawable.GuiHelper;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.Color;
@@ -75,6 +78,7 @@ public class PowerGogglesHudHandler {
         // if (!gogglesEquipped) return;
         ScaledResolution resolution = event.resolution;
         int screenHeight = resolution.getScaledHeight();
+        int screenWidth = resolution.getScaledWidth();
 
         FontRenderer fontRenderer = mc.fontRenderer;
         GL11.glPushMatrix();
@@ -86,7 +90,7 @@ public class PowerGogglesHudHandler {
         int h = PowerGogglesConfigHandler.rectangleHeight;
         int borderRadius = 3;
         int chartOffsetY = drawPowerRectangle(xOffset, yOffset, h, w, screenHeight, borderRadius);
-        drawPowerChart(xOffset-borderRadius,chartOffsetY, 100,100, screenHeight, borderRadius);
+        drawPowerChart(xOffset, chartOffsetY - borderRadius, 100, 100, screenHeight, screenWidth, borderRadius);
         GL11.glPopMatrix();
     }
 
@@ -125,7 +129,11 @@ public class PowerGogglesHudHandler {
         double mainScale = PowerGogglesConfigHandler.mainTextScaling;
         double subScale = PowerGogglesConfigHandler.subTextScaling;
         int bgColor = Color.argb(47, 20, 76, (int) (255 * 0.85));
-        int highestPoint = screenHeight - yOffset - w - gapBetweenLines - (int) (fontRenderer.FONT_HEIGHT * mainScale) - borderRadius;
+        int highestPoint = screenHeight - yOffset
+            - w
+            - gapBetweenLines
+            - (int) (fontRenderer.FONT_HEIGHT * mainScale)
+            - borderRadius;
         GuiHelper.drawGradientRect(
             -1,
             xOffset - borderRadius,
@@ -205,25 +213,99 @@ public class PowerGogglesHudHandler {
             subScale);
         return highestPoint;
     }
-    private void drawPowerChart(int xOffset,int yOffset, int chartWidth,int chartHeight, int screenHeight, int borderRadius){
+
+    private void drawPowerChart(int xOffset, int yOffset, int chartWidth, int chartHeight, int screenHeight,
+        int screenWidth, int borderRadius) {
+        int readings = Math.min(measurements.size(), measurementCount5m);
         int left = xOffset;
-        int right = xOffset+chartWidth;
+        int right = xOffset + chartWidth;
         int top = yOffset - chartHeight;
         int bottom = yOffset;
-        int bgColor = Color.argb(19,14,91, (int)(255*0.75f));
+        int bgColor = Color.argb(19, 14, 91, (int) (255 * 0.75f));
         GuiHelper.drawGradientRect(-1, left, top, right, bottom, bgColor, bgColor);
-
+        int borderColor = Color.rgb(81, 79, 104);
+        GuiHelper.drawGradientRect(
+            -2,
+            left - borderRadius,
+            top - borderRadius,
+            right + borderRadius,
+            bottom + borderRadius,
+            borderColor,
+            borderColor);
+        if (measurements.isEmpty()) return;
         BigInteger minReading = measurements.get(0);
         BigInteger maxReading = measurements.get(0);
-        int readings = Math.min(measurements.size(), measurementCount5m);
-        for(int i = 0 ; i < readings; i++){
+        for (int i = 0; i < readings; i++) {
             BigInteger temp = measurements.get(i);
             if (temp.compareTo(minReading) < 0) minReading = temp;
             if (maxReading.compareTo(temp) < 0) maxReading = temp;
         }
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        double scale = 0.5f;
+        drawScaledString(
+            fontRenderer,
+            toCustom(minReading),
+            xOffset,
+            yOffset - (int) (fontRenderer.FONT_HEIGHT * scale),
+            Color.rgb(255, 0, 0),
+            scale);
+        drawScaledString(
+            fontRenderer,
+            minReading.compareTo(maxReading) == 0 ? "" : toCustom(maxReading),
+            xOffset,
+            yOffset - chartHeight,
+            Color.rgb(255, 0, 0),
+            scale);
+        if (readings < 2) return;
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.disableAlpha();
+        GlStateManager.tryBlendFuncSeparate(
+            GlStateManager.SourceFactor.SRC_ALPHA,
+            GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+            GlStateManager.SourceFactor.ONE,
+            GlStateManager.DestFactor.ZERO);
+        GlStateManager.shadeModel(GL11.GL_SMOOTH);
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawing(GL_LINES);
 
+        BigInteger lastReading = measurements.get(0);
+        double pointsWidth = chartWidth * 0.8d;
+        double lastX = xOffset + chartWidth;
+        double lastY = (yOffset + (chartHeight * (-1 + Math.min(
+            1,
+            1 - lastReading.subtract(minReading)
+                .floatValue()
+                / maxReading.subtract(minReading)
+                    .floatValue()))));
+        for (int i = 1; i < readings; i++) {
+            BigInteger reading = measurements.get(i);
+            double x = xOffset + chartWidth - (pointsWidth / (readings)) * i;
+            double y = (yOffset + (chartHeight * (-1 + Math.min(
+                1,
+                1 - reading.subtract(minReading)
+                    .floatValue()
+                    / maxReading.subtract(minReading)
+                        .floatValue()))));
+            if (reading.compareTo(lastReading) > 0) {
+                tessellator.setColorRGBA_F(255, 0, 0, 255);
+            } else {
+                tessellator.setColorRGBA_F(0, 255, 0, 255);
+            }
+            lastReading = reading;
+            tessellator.addVertex(lastX, lastY, 0);
+            tessellator.addVertex(x, y, 0);
+            lastX = x;
+            lastY = y;
+        }
+        tessellator.draw();
+        GlStateManager.shadeModel(GL11.GL_FLAT);
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlpha();
+        GlStateManager.enableTexture2D();
 
     }
+
     private static void drawScaledString(FontRenderer fontRenderer, String string, int xOffset, int yOffset, int color,
         double scale) {
         GL11.glPushMatrix();
@@ -260,11 +342,11 @@ public class PowerGogglesHudHandler {
             .min(255, Math.max(0, gradientRight.getBlue() + (int) (diffBlue * Math.min(1, severity * scale))));
 
         int newRightRed = Math
-            .min(255, Math.max(0, gradientRight.getRed() + (int) (diffRed * Math.min(1, severity * scale *0.75))));
+            .min(255, Math.max(0, gradientRight.getRed() + (int) (diffRed * Math.min(1, severity * scale * 0.75))));
         int newRightGreen = Math
-            .min(255, Math.max(0, gradientRight.getGreen() + (int) (diffGreen * Math.min(1, severity * scale *0.75))));
+            .min(255, Math.max(0, gradientRight.getGreen() + (int) (diffGreen * Math.min(1, severity * scale * 0.75))));
         int newRightBlue = Math
-            .min(255, Math.max(0, gradientRight.getBlue() + (int) (diffBlue * Math.min(1, severity * scale *0.75))));
+            .min(255, Math.max(0, gradientRight.getBlue() + (int) (diffBlue * Math.min(1, severity * scale * 0.75))));
 
         newGradientLeft = Color.rgb(newLeftRed, newLeftGreen, newLeftBlue);
         newGradientRight = Color.rgb(newRightRed, newRightGreen, newRightBlue);
@@ -359,8 +441,9 @@ public class PowerGogglesHudHandler {
     }
 
     private static BigInteger getTotalChange(LinkedList<BigInteger> list, int count) {
-        if(list.isEmpty()) return BigInteger.valueOf(0);
-        return list.get(0).subtract(list.get(Math.min(count, list.size()-1)));
+        if (list.isEmpty()) return BigInteger.valueOf(0);
+        return list.get(0)
+            .subtract(list.get(Math.min(count, list.size() - 1)));
     }
 
     private static int getColor(int compareResult) {
