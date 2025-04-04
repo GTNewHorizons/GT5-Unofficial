@@ -447,7 +447,8 @@ public class GTValues {
     public static final ItemStack[] emptyItemStackArray = new ItemStack[0];
     public static final IIconContainer[] emptyIconContainerArray = new IIconContainer[3];
 
-    public static boolean DEVENV = (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+    public static boolean DEVENV = Launch.blackboard == null ? true
+        : (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
     /**
      * Pretty formatting for author names.
