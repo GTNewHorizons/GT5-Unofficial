@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.config.Configuration;
 
 import appeng.api.util.DimensionalCoord;
 import baubles.common.container.InventoryBaubles;
@@ -119,9 +120,13 @@ public class PowerGogglesEventHandler {
         if (PowerGogglesKeybindHandler.openConfigGui.isPressed()) {
             Minecraft.getMinecraft()
                 .displayGuiScreen(new PowerGogglesGuiHudConfig());
+
         }
         if (PowerGogglesKeybindHandler.toggleChart.isPressed()) {
             PowerGogglesConfigHandler.showPowerChart = !PowerGogglesConfigHandler.showPowerChart;
+            PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                .get("Show Power Chart")
+                .set(PowerGogglesConfigHandler.showPowerChart);
             PowerGogglesConfigHandler.config.save();
         }
     }
