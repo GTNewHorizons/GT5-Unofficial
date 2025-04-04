@@ -163,6 +163,15 @@ public class AssortedSteamRecipes implements Runnable {
             .addTo(hammerRecipes);
 
         RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Obsidian, 9),
+                GTUtility.getIntegratedCircuit(9))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Obsidian, 1))
+            .duration(2 * SECONDS)
+            .eut(28)
+            .addTo(hammerRecipes);
+
+        RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1))
             .fluidInputs(FluidUtils.getSuperHeatedSteam(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.WroughtIron, 1))
