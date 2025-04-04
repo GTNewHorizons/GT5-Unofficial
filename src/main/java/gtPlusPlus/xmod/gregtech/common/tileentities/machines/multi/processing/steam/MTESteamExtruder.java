@@ -125,6 +125,11 @@ public class MTESteamExtruder extends MTESteamMultiBase<MTESteamExtruder> implem
         for (MTEHatch h : mSteamInputFluids) h.updateTexture(getCasingTextureID());
     }
 
+    @Override
+    public boolean getDefaultInputSeparationMode() {
+        return true;
+    }
+
     private int getCasingTextureID() {
         if (tierMachineCasing == 2) return ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
         return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);

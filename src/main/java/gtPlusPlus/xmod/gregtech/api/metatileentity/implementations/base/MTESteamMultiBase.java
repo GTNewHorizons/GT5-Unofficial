@@ -24,6 +24,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -46,6 +48,8 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
 import gregtech.api.util.HatchElementBuilder;
@@ -101,6 +105,74 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     private int getCasingTextureIndex() {
         return 10;
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
+        return true;
+    }
+
+    @NotNull
+    @Override
+    protected CheckRecipeResult doCheckRecipe() {
+        CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
+
+        result = checkRecipeForCustomHatches(result);
+        if (result.wasSuccessful()) {
+            return result;
+        }
+
+        processingLogic.setInputFluids(getStoredFluids());
+
+        if (isInputSeparationEnabled()) {
+            if (mSteamInputs.isEmpty()) {
+                CheckRecipeResult foundResult = processingLogic.process();
+                if (foundResult.wasSuccessful()) {
+                    return foundResult;
+                }
+                if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                    // Recipe failed in interesting way, so remember that and continue searching
+                    result = foundResult;
+                }
+            } else {
+                for (MTEHatchSteamBusInput bus : mSteamInputs) {
+                    List<ItemStack> inputItems = new ArrayList<>();
+                    for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                        ItemStack stored = bus.getStackInSlot(i);
+                        if (stored != null) {
+                            inputItems.add(stored);
+                        }
+                    }
+                    if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                        inputItems.add(getControllerSlot());
+                    }
+                    processingLogic.setInputItems(inputItems);
+                    CheckRecipeResult foundResult = processingLogic.process();
+                    if (foundResult.wasSuccessful()) {
+                        return foundResult;
+                    }
+                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                        // Recipe failed in interesting way, so remember that and continue searching
+                        result = foundResult;
+                    }
+                }
+            }
+        } else {
+            List<ItemStack> inputItems = getStoredInputs();
+            if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                inputItems.add(getControllerSlot());
+            }
+            processingLogic.setInputItems(inputItems);
+            CheckRecipeResult foundResult = processingLogic.process();
+            if (foundResult.wasSuccessful()) {
+                return foundResult;
+            }
+            if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                // Recipe failed in interesting way, so remember that
+                result = foundResult;
+            }
+        }
+        return result;
     }
 
     @Override

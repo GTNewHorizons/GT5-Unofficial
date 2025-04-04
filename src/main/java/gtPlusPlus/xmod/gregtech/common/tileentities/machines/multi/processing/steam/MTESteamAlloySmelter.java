@@ -250,6 +250,11 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
     }
 
     @Override
+    public boolean getDefaultInputSeparationMode() {
+        return true;
+    }
+
+    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
