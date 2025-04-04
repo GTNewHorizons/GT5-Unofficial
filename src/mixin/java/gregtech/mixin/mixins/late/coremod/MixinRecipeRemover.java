@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.function.Function;
 
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -39,6 +41,19 @@ public class MixinRecipeRemover {
             } else if (r instanceof GTShapelessRecipe gtShapeless) {
                 return gtShapeless.isRemovableByCoremod();
             } else return !(r instanceof FullPackSteamRecipes.UpgradeBackpackRecipe);
+        });
+    }
+
+    /**
+     * @author serenibyss
+     * @reason because coremod wants to remove my custom recipes
+     */
+    @Overwrite(remap = false)
+    private static void removeRecipeShapedDelayed(Object aOutput) {
+        addToBuffer(getItemsHashed(aOutput, false), r -> {
+            if (r instanceof GTShapedRecipe gtShaped) {
+                return gtShaped.isRemovableByCoremod();
+            } else return r instanceof ShapedOreRecipe || r instanceof ShapedRecipes;
         });
     }
 }
