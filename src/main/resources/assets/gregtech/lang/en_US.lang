@@ -778,7 +778,7 @@ GT5U.gui.config.client.color_modulation.construction_foam=Construction Foam
 GT5U.gui.config.client.color_modulation.machine_metal=Machine Metal (Default GUI Color)
 GT5U.gui.config.client.interface=Interface
 GT5U.gui.config.client.preference=Preference
-GT5U.gui.config.client.preference.tooltip_temperature=Tooltip Temperature Measurement Units
+GT5U.gui.config.client.preference.tooltip_temperature=Temperature Measurement Units
 GT5U.gui.config.client.render=Render
 GT5U.gui.config.client.waila=Waila
 GT5U.gui.config.client.nei=NEI
@@ -891,7 +891,7 @@ GT5U.multiblock.itemPipeTier=Item Pipe Tier
 GT5U.multiblock.coilLevel=Heating Coil Level
 
 # NEI recipe handlers
-GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
+GT5U.nei.heat_capacity=Heat Capacity:
 GT5U.nei.tier=Tier: %s
 GT5U.nei.start_eu=Start: %s EU (MK %s)
 GT5U.nei.stages=Stages: %s
@@ -2121,8 +2121,7 @@ GT5U.tooltip.mega_apiary.only_producer=Will only be produced in mega Apiary
 GT5U.tooltip.electric.tier=Tier: %d
 GT5U.tooltip.electric.tier.s=Tier: %s
 
-gt.coilheattooltip=Base Heating Capacity =
-gt.coilunittooltip= Kelvin
+gt.coilheattooltip=Base Heating Capacity:
 
 GT5U.tootlip.tool.turbine.steam=Steam
 GT5U.tootlip.tool.turbine.loose=Loose

@@ -1,5 +1,7 @@
 package gregtech.common.items;
 
+import static gregtech.api.util.TemperatureUtils.getTemperatureAsCurrentUnit;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +66,7 @@ public class ItemFluidDisplay extends GTGenericItem {
             aList.add(
                 EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.tooltip.fluid.temperature")
                     + " "
-                    + GTUtility.getTemperatureAsUnit(aNBT.getLong("mFluidDisplayHeat"))
+                    + getTemperatureAsCurrentUnit(aNBT.getLong("mFluidDisplayHeat"))
                     + EnumChatFormatting.GRAY);
             aList.add(
                 EnumChatFormatting.GREEN

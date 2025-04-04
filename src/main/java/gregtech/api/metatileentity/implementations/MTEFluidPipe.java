@@ -8,7 +8,7 @@ import static gregtech.api.metatileentity.implementations.MTEFluidPipe.Border.LE
 import static gregtech.api.metatileentity.implementations.MTEFluidPipe.Border.RIGHT;
 import static gregtech.api.metatileentity.implementations.MTEFluidPipe.Border.TOP;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
-import static gregtech.api.util.GTUtility.getTemperatureAsUnit;
+import static gregtech.api.util.TemperatureUtils.getTemperatureAsCurrentUnit;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
 import static net.minecraftforge.common.util.ForgeDirection.NORTH;
@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.util.TemperatureUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -923,7 +924,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
                 + "%%% L/sec"
                 + EnumChatFormatting.GRAY);
         descriptions.add(
-            EnumChatFormatting.RED + "Heat Limit: " + getTemperatureAsUnit(mHeatResistance) + EnumChatFormatting.GRAY);
+            EnumChatFormatting.RED + "Heat Limit: " + TemperatureUtils.getTemperatureAsCurrentUnit(mHeatResistance) + EnumChatFormatting.GRAY);
         if (!mGasProof) {
             descriptions.add(EnumChatFormatting.DARK_GREEN + "Cannot handle gas" + EnumChatFormatting.GRAY);
         }

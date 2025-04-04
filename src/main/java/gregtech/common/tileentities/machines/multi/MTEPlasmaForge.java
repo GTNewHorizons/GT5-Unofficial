@@ -20,6 +20,7 @@ import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.TemperatureUtils.getTemperatureAsCurrentUnit;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.api.util.TemperatureUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -999,9 +1001,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mHeatingCapacity)
-                + EnumChatFormatting.RESET
-                + " K",
+                + TemperatureUtils.getTemperatureAsCurrentUnit(mHeatingCapacity),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.plasma_forge.ticks_run_fuel_discount",
                 EnumChatFormatting.GREEN + GTUtility.formatNumbers(running_time) + EnumChatFormatting.RESET,

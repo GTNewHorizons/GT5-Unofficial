@@ -25,11 +25,14 @@ import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
+import static gregtech.api.util.TemperatureUtils.convertKelvinIncreaseToCurrentUnit;
+import static gregtech.api.util.TemperatureUtils.getTemperatureAsCurrentUnit;
 
 import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.util.TemperatureUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -159,10 +162,14 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         tt.addMachineType("Blast Furnace, MEBF, MBF")
             .addParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
-            .addInfo("Each 900K over the min. Heat required reduces power consumption by 5% (multiplicatively)")
-            .addInfo("Each 1800K over the min. Heat allows for an overclock to be upgraded to a perfect overclock.")
+            .addInfo(
+                "Each " + TemperatureUtils.getTemperatureAsCurrentUnit(900)
+                    + " over the min. Heat required reduces power consumption by 5% (multiplicatively)")
+            .addInfo(
+                "Each " + TemperatureUtils.getTemperatureAsCurrentUnit(1800)
+                    + " over the min. Heat allows for an overclock to be upgraded to a perfect overclock.")
             .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency).")
-            .addInfo("Additionally gives +100K for every tier past MV")
+            .addInfo("Additionally gives " + convertKelvinIncreaseToCurrentUnit(100) + " for every tier past MV")
             .addTecTechHatchInfo()
             .addGlassEnergyLimitInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
@@ -259,9 +266,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     protected String[] getExtendedInfoData() {
         return new String[] { StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
             + EnumChatFormatting.GREEN
-            + GTUtility.formatNumbers(this.mHeatingCapacity)
-            + EnumChatFormatting.RESET
-            + " K" };
+            + TemperatureUtils.getTemperatureAsCurrentUnit(this.mHeatingCapacity) };
     }
 
     @Override

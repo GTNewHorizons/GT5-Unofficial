@@ -15,6 +15,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.recipe.RecipeMaps.purificationPlasmaHeatingRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.TemperatureUtils.convertKelvinIncreaseToCurrentUnit;
+import static gregtech.api.util.TemperatureUtils.getTemperatureAsCurrentUnit;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -286,15 +288,14 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             .addSeparator()
             .addInfo(
                 "Complete heating cycles by first heating the water to " + EnumChatFormatting.RED
-                    + HEATING_POINT
-                    + "K"
+                    + getTemperatureAsCurrentUnit(HEATING_POINT)
                     + EnumChatFormatting.GRAY
                     + ",")
             .addInfo(
-                "and then cooling it back down to " + EnumChatFormatting.RED + "0K" + EnumChatFormatting.GRAY + ".")
+                "and then cooling it back down to " + EnumChatFormatting.RED + getTemperatureAsCurrentUnit(0) + EnumChatFormatting.GRAY + ".")
             .addInfo(
                 "Initial temperature is reset to " + EnumChatFormatting.RED
-                    + "0K"
+                    + getTemperatureAsCurrentUnit(0)
                     + EnumChatFormatting.GRAY
                     + " on recipe start.")
             .addInfo(
@@ -306,8 +307,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + ".")
             .addInfo(
                 "If the temperature ever reaches " + EnumChatFormatting.RED
-                    + MAX_TEMP
-                    + "K"
+                    + getTemperatureAsCurrentUnit(MAX_TEMP)
                     + EnumChatFormatting.GRAY
                     + " the recipe will fail and output steam.")
             .addSeparator()
@@ -333,8 +333,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.GRAY
                     + "the temperature by "
                     + EnumChatFormatting.RED
-                    + PLASMA_TEMP_PER_LITER
-                    + "K"
+                    + convertKelvinIncreaseToCurrentUnit(PLASMA_TEMP_PER_LITER)
                     + EnumChatFormatting.GRAY
                     + " per liter of plasma consumed.")
             .addInfo(
@@ -342,8 +341,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.GRAY
                     + "the temperature by "
                     + EnumChatFormatting.RED
-                    + -COOLANT_TEMP_PER_LITER
-                    + "K"
+                    + convertKelvinIncreaseToCurrentUnit(-COOLANT_TEMP_PER_LITER)
                     + EnumChatFormatting.GRAY
                     + " per liter of coolant consumed.")
             .addSeparator()
