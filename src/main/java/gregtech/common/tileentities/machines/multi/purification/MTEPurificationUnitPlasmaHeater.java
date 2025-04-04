@@ -292,7 +292,10 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.GRAY
                     + ",")
             .addInfo(
-                "and then cooling it back down to " + EnumChatFormatting.RED + getTemperatureAsCurrentUnit(0) + EnumChatFormatting.GRAY + ".")
+                "and then cooling it back down to " + EnumChatFormatting.RED
+                    + getTemperatureAsCurrentUnit(0)
+                    + EnumChatFormatting.GRAY
+                    + ".")
             .addInfo(
                 "Initial temperature is reset to " + EnumChatFormatting.RED
                     + getTemperatureAsCurrentUnit(0)

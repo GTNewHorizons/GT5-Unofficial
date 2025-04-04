@@ -4953,5 +4953,4 @@ public class GTUtility {
     public static float getClientReachDistance() {
         return Minecraft.getMinecraft().playerController.getBlockReachDistance();
     }
-
 }

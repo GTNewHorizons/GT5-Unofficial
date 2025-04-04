@@ -1,17 +1,15 @@
 package gregtech.nei.formatter;
 
-import static gregtech.api.util.TemperatureUtils.getTemperatureAsCurrentUnit;
-
 import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import gregtech.api.util.TemperatureUtils;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.api.util.TemperatureUtils;
 import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
