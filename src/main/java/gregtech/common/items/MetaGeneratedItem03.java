@@ -1,7 +1,6 @@
 package gregtech.common.items;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
-import static gregtech.api.enums.ItemList.Item_PowerNerdGoggles;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_METRICS_TRANSMITTER;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UEV;
@@ -285,7 +284,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
             OrePrefixes.plateSuperdense);
         INSTANCE = this;
         Object[] o = new Object[0];
-        Item_PowerNerdGoggles.set(
+        ItemList.Item_PowerNerdGoggles.set(
             new ItemPowerNerdGoggles(
                 "PowerNerd_Goggles",
                 "Nerd Goggles",
