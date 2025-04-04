@@ -525,7 +525,7 @@ public class AssortedSteamRecipes implements Runnable {
             .itemInputs(
                 GregtechItemList.GTFluidTank_ULV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 6),
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Stronze, 2),
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Bronze, 2),
                 GTUtility.getIntegratedCircuit(3))
             .itemOutputs(GregtechItemList.Hatch_Input_Steam.get(1))
             .duration(2 * SECONDS)
@@ -637,7 +637,8 @@ public class AssortedSteamRecipes implements Runnable {
             .itemInputs(
                 new ItemStack(Blocks.hopper, 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4),
-                MaterialsAlloy.TUMBAGA.getPlate(4),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 2),
+                MaterialsAlloy.TUMBAGA.getPlate(2),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GregtechItemList.Hatch_Input_Bus_Steam.get(1L))
             .duration(2 * SECONDS)
@@ -646,8 +647,9 @@ public class AssortedSteamRecipes implements Runnable {
         RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Blocks.hopper, 1),
-                MaterialsAlloy.TUMBAGA.getPlate(4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4),
+                MaterialsAlloy.TUMBAGA.getPlate(2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 2),
                 GTUtility.getIntegratedCircuit(2))
             .itemOutputs(GregtechItemList.Hatch_Output_Bus_Steam.get(1L))
             .duration(2 * SECONDS)
