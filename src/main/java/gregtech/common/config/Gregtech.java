@@ -372,6 +372,11 @@ public class Gregtech {
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean loggingExplosions;
+
+        @Config.LangKey("GT5U.gui.config.client.preference.tooltip_temperature")
+        @Config.DefaultEnum("Kelvin")
+        @Config.RequiresMcRestart
+        public GTProxy.TooltipTemperatureUnits tooltipTemperature = GTProxy.TooltipTemperatureUnits.Kelvin;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.harvest_level")

@@ -62,9 +62,10 @@ public class ItemFluidDisplay extends GTGenericItem {
                         + EnumChatFormatting.GRAY);
             }
             aList.add(
-                EnumChatFormatting.RED + StatCollector.translateToLocalFormatted(
-                    "GT5U.tooltip.fluid.temperature",
-                    GTUtility.formatNumbers(aNBT.getLong("mFluidDisplayHeat"))) + EnumChatFormatting.GRAY);
+                EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.tooltip.fluid.temperature")
+                    + " "
+                    + GTUtility.getTemperatureAsUnit(aNBT.getLong("mFluidDisplayHeat"))
+                    + EnumChatFormatting.GRAY);
             aList.add(
                 EnumChatFormatting.GREEN
                     + StatCollector.translateToLocalFormatted(

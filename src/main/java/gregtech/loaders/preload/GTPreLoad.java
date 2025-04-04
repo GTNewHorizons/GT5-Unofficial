@@ -407,6 +407,7 @@ public class GTPreLoad {
             Blocks.mob_spawner.setHardness(500.0F)
                 .setResistance(6000000.0F);
         }
+        GTMod.gregtechproxy.tooltipTemperatureUnits = Gregtech.general.tooltipTemperature;
 
         // machines
         GTValues.ticksBetweenSounds = Gregtech.machines.ticksBetweenSounds;

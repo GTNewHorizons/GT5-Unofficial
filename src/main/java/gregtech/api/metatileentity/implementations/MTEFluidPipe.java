@@ -8,6 +8,7 @@ import static gregtech.api.metatileentity.implementations.MTEFluidPipe.Border.LE
 import static gregtech.api.metatileentity.implementations.MTEFluidPipe.Border.RIGHT;
 import static gregtech.api.metatileentity.implementations.MTEFluidPipe.Border.TOP;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+import static gregtech.api.util.GTUtility.getTemperatureAsUnit;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
 import static net.minecraftforge.common.util.ForgeDirection.NORTH;
@@ -38,6 +39,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import org.apache.commons.lang3.tuple.MutableTriple;
 
+import codechicken.translocator.TileLiquidTranslocator;
 import cpw.mods.fml.common.Optional;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
@@ -66,6 +68,7 @@ import gregtech.common.covers.CoverDrain;
 import gregtech.common.covers.CoverFluidRegulator;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import tconstruct.smeltery.logic.FaucetLogic;
 
 public class MTEFluidPipe extends MetaPipeEntity {
 
@@ -729,13 +732,13 @@ public class MTEFluidPipe extends MetaPipeEntity {
     @Optional.Method(modid = Mods.Names.TINKER_CONSTRUCT)
     private boolean isTConstructFaucet(TileEntity tTileEntity) {
         // Tinker Construct Faucets return a null tank info, so check the class
-        return tTileEntity instanceof tconstruct.smeltery.logic.FaucetLogic;
+        return tTileEntity instanceof FaucetLogic;
     }
 
     @Optional.Method(modid = Mods.Names.TRANSLOCATOR)
     private boolean isTranslocator(TileEntity tTileEntity) {
         // Translocators return a TankInfo, but it's of 0 length - so check the class if we see this pattern
-        return tTileEntity instanceof codechicken.translocator.TileLiquidTranslocator;
+        return tTileEntity instanceof TileLiquidTranslocator;
     }
 
     @Override
@@ -920,10 +923,7 @@ public class MTEFluidPipe extends MetaPipeEntity {
                 + "%%% L/sec"
                 + EnumChatFormatting.GRAY);
         descriptions.add(
-            EnumChatFormatting.RED + "Heat Limit: %%%"
-                + GTUtility.formatNumbers(mHeatResistance)
-                + "%%% K"
-                + EnumChatFormatting.GRAY);
+            EnumChatFormatting.RED + "Heat Limit: " + getTemperatureAsUnit(mHeatResistance) + EnumChatFormatting.GRAY);
         if (!mGasProof) {
             descriptions.add(EnumChatFormatting.DARK_GREEN + "Cannot handle gas" + EnumChatFormatting.GRAY);
         }

@@ -1180,7 +1180,7 @@ GTPP.MBTT.SteamOutputBus=输出总线(蒸汽)
 
 
 GT5U.tooltip.fluid.amount=数量: %s L
-GT5U.tooltip.fluid.temperature=温度: %s K
+GT5U.tooltip.fluid.temperature=温度:
 GT5U.tooltip.fluid.stat=状态: %s
 GT5U.tooltip.fluid.stat.gas=气体
 GT5U.tooltip.fluid.stat.liquid=液体

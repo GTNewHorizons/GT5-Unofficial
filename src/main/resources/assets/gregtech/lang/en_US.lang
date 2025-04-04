@@ -778,6 +778,7 @@ GT5U.gui.config.client.color_modulation.construction_foam=Construction Foam
 GT5U.gui.config.client.color_modulation.machine_metal=Machine Metal (Default GUI Color)
 GT5U.gui.config.client.interface=Interface
 GT5U.gui.config.client.preference=Preference
+GT5U.gui.config.client.preference.tooltip_temperature=Tooltip Temperature Measurement Units
 GT5U.gui.config.client.render=Render
 GT5U.gui.config.client.waila=Waila
 GT5U.gui.config.client.nei=NEI
@@ -2109,7 +2110,7 @@ GT5U.tooltip.structure.lens_indicator=Lens Indicator
 
 GT5U.tooltip.fluid.registry=Registry: %s
 GT5U.tooltip.fluid.amount=Amount: %s L
-GT5U.tooltip.fluid.temperature=Temperature: %s K
+GT5U.tooltip.fluid.temperature=Temperature:
 GT5U.tooltip.fluid.stat=State: %s
 GT5U.tooltip.fluid.stat.gas=Gas
 GT5U.tooltip.fluid.stat.liquid=Liquid
