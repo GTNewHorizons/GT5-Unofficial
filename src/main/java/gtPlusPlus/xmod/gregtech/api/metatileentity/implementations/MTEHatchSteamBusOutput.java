@@ -2,27 +2,35 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Textures.BlockIcons.ITEM_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
+import static gregtech.api.util.GTUtility.areStacksEqual;
+import static gregtech.api.util.GTUtility.isStackInvalid;
 import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.Nullable;
+
+import com.gtnewhorizons.modularui.api.forge.ItemHandlerHelper;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.GTMod;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.widgets.PhantomItemButton;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IItemLockable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gtPlusPlus.core.lib.GTPPCore;
 
-public class MTEHatchSteamBusOutput extends MTEHatch {
+public class MTEHatchSteamBusOutput extends MTEHatch implements IItemLockable {
 
     public MTEHatchSteamBusOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -233,5 +241,107 @@ public class MTEHatchSteamBusOutput extends MTEHatch {
             case 2 -> getBaseMetaTileEntity().add4by4Slots(builder);
             default -> getBaseMetaTileEntity().add1by1Slot(builder);
         }
+
+        if (acceptsItemLock()) {
+            builder.widget(
+                new PhantomItemButton(this).setPos(getGUIWidth() - 25, 40)
+                    .setBackground(PhantomItemButton.FILTER_BACKGROUND));
+        }
+    }
+
+    protected ItemStack lockedItem = null;
+    private static final String LOCKED_ITEM_NBT_KEY = "lockedItem";
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        if (lockedItem != null) {
+            aNBT.setTag(LOCKED_ITEM_NBT_KEY, lockedItem.writeToNBT(new NBTTagCompound()));
+        }
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if (aNBT.hasKey(LOCKED_ITEM_NBT_KEY)) {
+            lockedItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(LOCKED_ITEM_NBT_KEY));
+        }
+    }
+
+    @Override
+    public void setLockedItem(@Nullable ItemStack itemStack) {
+        if (itemStack == null) {
+            clearLock();
+        } else {
+            lockedItem = ItemHandlerHelper.copyStackWithSize(itemStack, 1);
+        }
+    }
+
+    @Nullable
+    @Override
+    public ItemStack getLockedItem() {
+        return lockedItem;
+    }
+
+    @Override
+    public void clearLock() {
+        lockedItem = null;
+    }
+
+    @Override
+    public boolean isLocked() {
+        return lockedItem != null;
+    }
+
+    @Override
+    public boolean acceptsItemLock() {
+        return true;
+    }
+
+    public boolean storePartial(ItemStack aStack) {
+        return storePartial(aStack, false);
+    }
+
+    /**
+     * Attempt to store as many items as possible into the internal inventory of this output bus. If you need atomicity
+     * you should use {@link gregtech.api.interfaces.tileentity.IHasInventory#addStackToSlot(int, ItemStack)}
+     *
+     * @param stack    The stack to insert. Will be modified by this method (will contain whatever items could not be
+     *                 inserted; stackSize will be 0 when everything was inserted).
+     * @param simulate When true this bus will not be modified.
+     * @return true if stack is fully accepted. false is stack is partially accepted or nothing is accepted
+     */
+    public boolean storePartial(ItemStack stack, boolean simulate) {
+        markDirty();
+
+        if (lockedItem != null && !lockedItem.isItemEqual(stack)) return false;
+
+        int invLength = mInventory.length;
+
+        for (int i = 0; i < invLength && stack.stackSize > 0; i++) {
+            @Nullable
+            ItemStack slot = mInventory[i];
+
+            // the slot has an item and the stacks can't be merged; ignore it
+            if (!isStackInvalid(slot) && !areStacksEqual(slot, stack)) continue;
+
+            int inSlot = slot == null ? 0 : slot.stackSize;
+
+            int toInsert = Math
+                .min(Math.min(getInventoryStackLimit(), stack.getMaxStackSize() - inSlot), stack.stackSize);
+
+            if (toInsert == 0) continue;
+
+            if (!simulate) {
+                // if the slot is invalid create an empty stack in it
+                if (isStackInvalid(slot)) mInventory[i] = slot = stack.splitStack(0);
+
+                slot.stackSize += toInsert;
+            }
+
+            stack.stackSize -= toInsert;
+        }
+
+        return stack.stackSize == 0;
     }
 }

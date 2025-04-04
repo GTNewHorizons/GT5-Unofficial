@@ -214,6 +214,11 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     @Override
+    protected boolean explodesImmediately() {
+        return false;
+    }
+
+    @Override
     public boolean isCorrectMachinePart(ItemStack itemStack) {
         return true;
     }

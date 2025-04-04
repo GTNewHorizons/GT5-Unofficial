@@ -162,6 +162,15 @@ public class AssortedSteamRecipes implements Runnable {
             .addTo(hammerRecipes);
 
         RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Obsidian, 9),
+                GTUtility.getIntegratedCircuit(9))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Obsidian, 1))
+            .duration(2 * SECONDS)
+            .eut(28)
+            .addTo(hammerRecipes);
+
+        RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1))
             .fluidInputs(FluidUtils.getSuperHeatedSteam(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.WroughtIron, 1))
@@ -224,6 +233,17 @@ public class AssortedSteamRecipes implements Runnable {
             .duration(4 * SECONDS)
             .eut(16)
             .addTo(compressorRecipes);
+
+        if (ExtraUtilities.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Diamond, 3),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Obsidian, 2))
+                .itemOutputs(GTModHandler.getModItem(ExtraUtilities.ID, "defoliageAxe", 1, 0))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(steamManufacturerRecipes);
+        }
 
         GTModHandler.addCraftingRecipe(
             ItemList.Hydraulic_Motor_Steam.get(1),
@@ -513,7 +533,7 @@ public class AssortedSteamRecipes implements Runnable {
             .itemInputs(
                 GregtechItemList.GTFluidTank_ULV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 6),
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Stronze, 2),
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Bronze, 2),
                 GTUtility.getIntegratedCircuit(3))
             .itemOutputs(GregtechItemList.Hatch_Input_Steam.get(1))
             .duration(2 * SECONDS)
@@ -625,7 +645,8 @@ public class AssortedSteamRecipes implements Runnable {
             .itemInputs(
                 new ItemStack(Blocks.hopper, 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4),
-                MaterialsAlloy.TUMBAGA.getPlate(4),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 2),
+                MaterialsAlloy.TUMBAGA.getPlate(2),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GregtechItemList.Hatch_Input_Bus_Steam.get(1L))
             .duration(2 * SECONDS)
@@ -634,8 +655,9 @@ public class AssortedSteamRecipes implements Runnable {
         RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Blocks.hopper, 1),
-                MaterialsAlloy.TUMBAGA.getPlate(4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4),
+                MaterialsAlloy.TUMBAGA.getPlate(2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 2),
                 GTUtility.getIntegratedCircuit(2))
             .itemOutputs(GregtechItemList.Hatch_Output_Bus_Steam.get(1L))
             .duration(2 * SECONDS)
@@ -645,9 +667,9 @@ public class AssortedSteamRecipes implements Runnable {
         RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.Hatch_Input_Bus_Steam.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Stronze, 1),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Stronze, 6),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Stronze, 1),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Breel, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Breel, 6),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Breel, 1),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GregtechItemList.Hatch_Input_Bus_SteamMK2.get(1L))
             .duration(2 * SECONDS)

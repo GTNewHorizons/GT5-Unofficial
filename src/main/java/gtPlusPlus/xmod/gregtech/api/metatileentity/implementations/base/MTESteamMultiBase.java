@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.formatNumbers;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
@@ -24,6 +25,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -39,6 +42,7 @@ import gregtech.api.gui.modularui.CircularGaugeDrawable;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IItemLockable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -46,6 +50,8 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
 import gregtech.api.util.HatchElementBuilder;
@@ -101,6 +107,74 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     private int getCasingTextureIndex() {
         return 10;
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
+        return true;
+    }
+
+    @NotNull
+    @Override
+    protected CheckRecipeResult doCheckRecipe() {
+        CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
+
+        result = checkRecipeForCustomHatches(result);
+        if (result.wasSuccessful()) {
+            return result;
+        }
+
+        processingLogic.setInputFluids(getStoredFluids());
+
+        if (isInputSeparationEnabled()) {
+            if (mSteamInputs.isEmpty()) {
+                CheckRecipeResult foundResult = processingLogic.process();
+                if (foundResult.wasSuccessful()) {
+                    return foundResult;
+                }
+                if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                    // Recipe failed in interesting way, so remember that and continue searching
+                    result = foundResult;
+                }
+            } else {
+                for (MTEHatchSteamBusInput bus : mSteamInputs) {
+                    List<ItemStack> inputItems = new ArrayList<>();
+                    for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                        ItemStack stored = bus.getStackInSlot(i);
+                        if (stored != null) {
+                            inputItems.add(stored);
+                        }
+                    }
+                    if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                        inputItems.add(getControllerSlot());
+                    }
+                    processingLogic.setInputItems(inputItems);
+                    CheckRecipeResult foundResult = processingLogic.process();
+                    if (foundResult.wasSuccessful()) {
+                        return foundResult;
+                    }
+                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                        // Recipe failed in interesting way, so remember that and continue searching
+                        result = foundResult;
+                    }
+                }
+            }
+        } else {
+            List<ItemStack> inputItems = getStoredInputs();
+            if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                inputItems.add(getControllerSlot());
+            }
+            processingLogic.setInputItems(inputItems);
+            CheckRecipeResult foundResult = processingLogic.process();
+            if (foundResult.wasSuccessful()) {
+                return foundResult;
+            }
+            if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                // Recipe failed in interesting way, so remember that
+                result = foundResult;
+            }
+        }
+        return result;
     }
 
     @Override
@@ -331,18 +405,15 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     public boolean addOutput(ItemStack aStack) {
         if (GTUtility.isStackInvalid(aStack)) return false;
         aStack = GTUtility.copy(aStack);
+
+        final List<MTEHatchSteamBusOutput> validBusses = filterValidMTEs(mSteamOutputs);
+        if (dumpItem(validBusses, aStack, true, false)) return true;
+        if (dumpItem(validBusses, aStack, false, false)) return true;
+
         boolean outputSuccess = true;
         while (outputSuccess && aStack.stackSize > 0) {
             outputSuccess = false;
             ItemStack single = aStack.splitStack(1);
-            for (MTEHatchSteamBusOutput tHatch : validMTEList(mSteamOutputs)) {
-                if (!outputSuccess) {
-                    for (int i = tHatch.getSizeInventory() - 1; i >= 0 && !outputSuccess; i--) {
-                        if (tHatch.getBaseMetaTileEntity()
-                            .addStackToSlot(i, single)) outputSuccess = true;
-                    }
-                }
-            }
             for (MTEHatchOutput tHatch : validMTEList(mOutputHatches)) {
                 if (!outputSuccess && tHatch.outputsItems()) {
                     if (tHatch.getBaseMetaTileEntity()
@@ -351,6 +422,20 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
             }
         }
         return outputSuccess;
+    }
+
+    private boolean dumpItem(List<MTEHatchSteamBusOutput> outputBuses, ItemStack itemStack,
+        boolean restrictiveBusesOnly, boolean simulate) {
+        for (MTEHatchSteamBusOutput outputBus : outputBuses) {
+            if (restrictiveBusesOnly && !outputBus.isLocked()) {
+                continue;
+            }
+
+            if (outputBus.storePartial(itemStack, simulate)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -373,7 +458,20 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         for (final MTEHatch tBus : validMTEList(mSteamOutputs)) {
             final IInventory tBusInv = tBus.getBaseMetaTileEntity();
             for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
-                ret.add(tBus.getStackInSlot(i));
+                final ItemStack stackInSlot = tBus.getStackInSlot(i);
+
+                if (stackInSlot == null && tBus instanceof IItemLockable lockable && lockable.isLocked()) {
+                    // getItemOutputSlots is only used to calculate free room for the purposes of parallels and
+                    // void protection. We can use a fake item stack here without creating weirdness in the output
+                    // bus' actual inventory.
+                    assert lockable.getLockedItem() != null;
+                    ItemStack fakeItemStack = lockable.getLockedItem()
+                        .copy();
+                    fakeItemStack.stackSize = 0;
+                    ret.add(fakeItemStack);
+                } else {
+                    ret.add(stackInSlot);
+                }
             }
         }
         return ret;
