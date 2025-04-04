@@ -2,9 +2,6 @@ package gtPlusPlus.core.block.general;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import gregtech.api.util.GTUtility;
-import gtPlusPlus.xmod.gregtech.api.items.GTMetaItem;
-import gtPlusPlus.xmod.gregtech.api.items.GTMetaTool;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -77,8 +74,10 @@ public class BlockFluidTankInfinite extends BlockContainer {
             if (tank != null) {
                 if (player.isSneaking()) {
                     switch (tank.changeMode()) {
-                        case TileEntityInfiniteFluid.SINGLE_FLUID -> PlayerUtils.messagePlayer(player, "This tank is now in single fluid mode.");
-                        case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> PlayerUtils.messagePlayer(player, "This tank is now in supply all fluids mode.");
+                        case TileEntityInfiniteFluid.SINGLE_FLUID -> PlayerUtils
+                            .messagePlayer(player, "This tank is now in single fluid mode.");
+                        case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> PlayerUtils
+                            .messagePlayer(player, "This tank is now in supply all fluids mode.");
                     }
                     return true;
                 }
@@ -92,28 +91,31 @@ public class BlockFluidTankInfinite extends BlockContainer {
                 if (handStack != null) {
                     if (FluidContainerRegistry.isEmptyContainer(player.getHeldItem())) {
                         tank.setFluid(null);
-                    }
-                    else if (FluidContainerRegistry.isFilledContainer(player.getHeldItem())) {
+                    } else if (FluidContainerRegistry.isFilledContainer(player.getHeldItem())) {
                         FluidStack newFluid = FluidContainerRegistry.getFluidForFilledItem(player.getHeldItem());
                         tank.setFluid(newFluid);
-                    }
-                    else if (handItem instanceof IFluidContainerItem container) {
+                    } else if (handItem instanceof IFluidContainerItem container) {
                         tank.setFluid(container.getFluid(player.getHeldItem()));
                     }
                 }
 
                 // report new stats after update
                 if (tank.getFluid() != null) {
-                    String fluidName = tank.getFluid().getLocalizedName();
+                    String fluidName = tank.getFluid()
+                        .getLocalizedName();
                     switch (tank.mode) {
-                        case TileEntityInfiniteFluid.SINGLE_FLUID -> PlayerUtils.messagePlayer(player, "This tank contains " + fluidName + ".");
-                        case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> PlayerUtils.messagePlayer(player, "This tank contains " + fluidName + " and can supply any fluid that is requested from it.");
+                        case TileEntityInfiniteFluid.SINGLE_FLUID -> PlayerUtils
+                            .messagePlayer(player, "This tank contains " + fluidName + ".");
+                        case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> PlayerUtils.messagePlayer(
+                            player,
+                            "This tank contains " + fluidName + " and can supply any fluid that is requested from it.");
                     }
-                }
-                else {
+                } else {
                     switch (tank.mode) {
-                        case TileEntityInfiniteFluid.SINGLE_FLUID -> PlayerUtils.messagePlayer(player, "This tank is empty.");
-                        case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> PlayerUtils.messagePlayer(player, "This tank can supply any fluid that is requested from it.");
+                        case TileEntityInfiniteFluid.SINGLE_FLUID -> PlayerUtils
+                            .messagePlayer(player, "This tank is empty.");
+                        case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> PlayerUtils
+                            .messagePlayer(player, "This tank can supply any fluid that is requested from it.");
                     }
                 }
                 return true;
