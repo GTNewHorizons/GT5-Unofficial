@@ -726,6 +726,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         addFluidOutputs(mOutputFluids);
                         mOutputFluids = null;
                     }
+                    outputAfterRecipe();
                     mEfficiency = Math.max(
                         0,
                         Math.min(
@@ -754,6 +755,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
             if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
         }
+    }
+
+    protected void outputAfterRecipe() {
+
     }
 
     public boolean polluteEnvironment(int aPollutionLevel) {
@@ -2831,7 +2836,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return builder.build();
     }
 
-    private ButtonWidget createMaxParallelCheckBox(NumericWidget textField) {
+    public ButtonWidget createMaxParallelCheckBox(NumericWidget textField) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             textField.notifyTooltipChange();
             if (getBaseMetaTileEntity().isClientSide()) return;

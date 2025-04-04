@@ -556,7 +556,8 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         path.reloadLocks();
 
         if (path == null)
-            return new String[] { EnumChatFormatting.RED + "Failed to get Power Node info" + EnumChatFormatting.RESET };
+            return new String[] { EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.infodata.cable.failed")
+                + EnumChatFormatting.RESET };
 
         final long currAmp = path.getAmperage();
         final long currVoltage = path.getVoltage();
@@ -567,30 +568,20 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         final long maxVoltageOut = (mVoltage - mCableLossPerMeter) * mAmperage;
 
         return new String[] {
-            "Amperage: " + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(currAmp)
-                + EnumChatFormatting.RESET
-                + " / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mAmperage)
-                + EnumChatFormatting.RESET
-                + " A",
-            "Voltage Out: " + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(currVoltage)
-                + EnumChatFormatting.RESET
-                + " / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxVoltageOut)
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            "Avg Amperage (20t): " + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(avgAmp)
-                + EnumChatFormatting.RESET
-                + " A",
-            "Avg Output (20t): " + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(avgVoltage)
-                + EnumChatFormatting.RESET
-                + " EU/t" };
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.cable.amperage",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(currAmp) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mAmperage) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.cable.voltage_out",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(currVoltage) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(maxVoltageOut) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.cable.avg_amperage",
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(avgAmp) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.cable.avg_output",
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(avgVoltage) + EnumChatFormatting.RESET) };
     }
 
     @Override

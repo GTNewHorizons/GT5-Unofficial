@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
@@ -173,7 +174,9 @@ public class MTEAdvFusionMk4 extends MTEFusionComputer {
             }
         }
 
-        return new String[] { "Fusion Reactor MK " + tier, "EU Required: " + powerRequired + "EU/t",
-            "Stored EU: " + mEUStore + " / " + maxEUStore(), "Plasma Output: " + plasmaOut + "L/t" };
+        return new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.name", tier),
+            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.eu_required", powerRequired),
+            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.stored_eu", mEUStore, maxEUStore()),
+            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.plasma_output", plasmaOut) };
     }
 }
