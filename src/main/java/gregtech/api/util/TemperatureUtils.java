@@ -14,7 +14,7 @@ public class TemperatureUtils {
      *         unit. Will clamp values to max/min int if there is an over/underflow in the conversion.
      */
     public static String getTemperatureAsCurrentUnit(int temp) {
-        return switch (GTMod.gregtechproxy.tooltipTemperatureUnits) {
+        return switch (GTMod.gregtechproxy.temperatureUnitSystem) {
             case Celsius -> formatNumbers(safeInt(temp - 273, 0)) + " C";
             case Fahrenheit -> formatNumbers(safeInt((long) (((double) temp / ((double) 5 / 9)) - 459.67), 0)) + " F";
             case Rankine -> formatNumbers(safeInt((long) ((double) temp * ((double) 9 / 5)), 0)) + " R";
@@ -34,7 +34,7 @@ public class TemperatureUtils {
      *         unit.
      */
     public static String getTemperatureAsCurrentUnit(long temp) {
-        return switch (GTMod.gregtechproxy.tooltipTemperatureUnits) {
+        return switch (GTMod.gregtechproxy.temperatureUnitSystem) {
             case Celsius -> formatNumbers(temp - 273) + " C";
             case Fahrenheit -> formatNumbers((long) (((double) temp / ((double) 5 / 9)) - 459.67)) + " F";
             case Rankine -> formatNumbers((long) ((double) temp * ((double) 9 / 5))) + " R";
@@ -53,7 +53,7 @@ public class TemperatureUtils {
      *         unit. The + sign will be automatically converted to a - sign if T is negative.
      */
     public static String convertKelvinIncreaseToCurrentUnit(long increase) {
-        String temp = switch (GTMod.gregtechproxy.tooltipTemperatureUnits) {
+        String temp = switch (GTMod.gregtechproxy.temperatureUnitSystem) {
             case Celsius -> formatNumbers(increase) + " C";
             case Fahrenheit -> formatNumbers((double) increase * 1.8) + " F";
             case Rankine -> formatNumbers((double) increase * 1.8) + " R";
@@ -61,7 +61,7 @@ public class TemperatureUtils {
             case Newton -> formatNumbers((double) increase * 0.33) + " N";
             case Reaumur -> formatNumbers((double) increase * 0.8) + " Ré";
             case Romer -> formatNumbers((double) increase * 0.525) + " Rø";
-            default -> GTUtility.formatNumbers(increase) + " K";
+            default -> formatNumbers(increase) + " K";
         };
         if (temp.toCharArray()[0] == '-') {
             return temp;
@@ -73,7 +73,7 @@ public class TemperatureUtils {
      * @return The name of the currently configured temperature measurement
      */
     public static String getCurrentTemperatureUnitName() {
-        return switch (GTMod.gregtechproxy.tooltipTemperatureUnits) {
+        return switch (GTMod.gregtechproxy.temperatureUnitSystem) {
             case Celsius -> "Celsius";
             case Fahrenheit -> "Fahrenheit";
             case Rankine -> "Rankine";
