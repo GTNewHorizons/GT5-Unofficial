@@ -15,4 +15,7 @@ public interface IDualInputInventory {
 
     GTDualInputs getPatternInputs();
 
+    default boolean shouldBeCached() {
+        return true;
+    }
 }
