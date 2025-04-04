@@ -1502,6 +1502,7 @@ public enum MetaTileEntityIDs {
     SpaceElevatorModuleManager(14012),
     SpaceElevatorModuleResearch(14013),
     SpaceElevatorModulePumpT3(14014),
+    LargeMolecularAssembler(14101),
     ExtremeEntityCrusherController(14201),
     ExtremeIndustrialApiaryController(14202),
     BETTER_JUKEBOX_LV(14301),
