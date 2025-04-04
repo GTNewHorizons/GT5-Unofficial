@@ -7,7 +7,7 @@ import net.minecraftforge.common.config.Configuration;
 public class PowerGogglesConfigHandler {
 
     public static Configuration config;
-
+    public static double hudScale;
     public static int mainOffsetX;
     public static int mainOffsetY;
     public static int rectangleWidth;
@@ -58,15 +58,17 @@ public class PowerGogglesConfigHandler {
                     "Format Index",
                     0,
                     "Available options: SI, SCIENTIFIC, ENGINEERING")
-                .getInt();
+                .getInt(0);
             readingIndex = config
                 .get(Configuration.CATEGORY_GENERAL, "Reading Index", 0, "Available options: TOTAL, EUT, BOTH")
-                .getInt();
+                .getInt(0);
             gradientIndex = config
                 .get(Configuration.CATEGORY_GENERAL, "Gradient Index", 0, "Available options: NORMAL, DEUTERANOPIA")
-                .getInt();
+                .getInt(0);
             showPowerChart = config.get(Configuration.CATEGORY_GENERAL, "Show Power Chart", false, "")
-                .getBoolean();
+                .getBoolean(false);
+            hudScale = config.get(Configuration.CATEGORY_GENERAL, "HUD Scale", 1.0, "")
+                .getDouble(1.0);
 
         } catch (Exception e) {
             System.out.println("Unable to load Config");
