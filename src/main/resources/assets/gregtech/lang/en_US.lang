@@ -124,7 +124,9 @@ GT5U.infinite_spray_can.color.Cable Insulation=Cable Insulation
 GT5U.infinite_spray_can.color.Construction Foam=Construction Foam
 GT5U.infinite_spray_can.color.Machine Metal=Machine Metal
 
-
+# Power Goggles
+GT5U.power_goggles.open_config_gui=Open Goggles Config
+GT5U.power_goggles.toggle_power_chart=Toggle Power Chart
 
 GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was found
 GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found

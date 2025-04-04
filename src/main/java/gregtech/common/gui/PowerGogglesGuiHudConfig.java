@@ -129,68 +129,56 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
             case 0:
                 PowerGogglesConfigHandler.formatIndex = (PowerGogglesConfigHandler.formatIndex + 1)
                     % formatTypes.length;
-                PowerGogglesConfigHandler.config
-                    .get(
-                        Configuration.CATEGORY_GENERAL,
-                        "Format Index",
-                        0,
-                        "Available options: SI, SCIENTIFIC, ENGINEERING")
+                PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                    .get("Format Index")
                     .set(PowerGogglesConfigHandler.formatIndex);
                 PowerGogglesConfigHandler.config.save();
                 return;
             case 1:
                 PowerGogglesConfigHandler.readingIndex = (PowerGogglesConfigHandler.readingIndex + 1)
                     % readingTypes.length;
-                PowerGogglesConfigHandler.config
-                    .get(Configuration.CATEGORY_GENERAL, "Reading Index", 0, "Available options: TOTAL, EUT, BOTH")
-                    .set(PowerGogglesConfigHandler.formatIndex);
+                PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                    .get("Reading Index")
+                    .set(PowerGogglesConfigHandler.readingIndex);
                 PowerGogglesConfigHandler.config.save();
                 return;
             case 2:
                 PowerGogglesConfigHandler.gradientIndex = (PowerGogglesConfigHandler.gradientIndex + 1)
                     % gradientTypes.length;
-                PowerGogglesConfigHandler.config
-                    .get(Configuration.CATEGORY_GENERAL, "Gradient Index", 0, "Available options: NORMAL, DEUTERANOPIA")
+                PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                    .get("Gradient Index")
                     .set(PowerGogglesConfigHandler.gradientIndex);
                 PowerGogglesConfigHandler.config.save();
                 return;
             case 3:
                 scale = PowerGogglesConfigHandler.mainTextScaling - 0.1;
                 PowerGogglesConfigHandler.mainTextScaling = scale;
-                PowerGogglesConfigHandler.config
-                    .get(Configuration.CATEGORY_GENERAL, "Storage Text Scale", 1, "Text size of the storage EU reading")
+                PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                    .get("Storage Text Scale")
                     .set(scale);
                 PowerGogglesConfigHandler.config.save();
                 return;
             case 4:
                 scale = PowerGogglesConfigHandler.mainTextScaling + 0.1;
                 PowerGogglesConfigHandler.mainTextScaling = scale;
-                PowerGogglesConfigHandler.config
-                    .get(Configuration.CATEGORY_GENERAL, "Storage Text Scale", 1, "Text size of the storage EU reading")
+                PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                    .get("Storage Text Scale")
                     .set(scale);
                 PowerGogglesConfigHandler.config.save();
                 return;
             case 5:
                 scale = PowerGogglesConfigHandler.subTextScaling - 0.1;
                 PowerGogglesConfigHandler.subTextScaling = scale;
-                PowerGogglesConfigHandler.config
-                    .get(
-                        Configuration.CATEGORY_GENERAL,
-                        "Timed Reading Text Scale",
-                        0.75,
-                        "Text size of the 5m and 1h readings")
+                PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                    .get("Timed Reading Text Scale")
                     .set(scale);
                 PowerGogglesConfigHandler.config.save();
                 return;
             case 6:
                 scale = PowerGogglesConfigHandler.subTextScaling + 0.1;
                 PowerGogglesConfigHandler.subTextScaling = scale;
-                PowerGogglesConfigHandler.config
-                    .get(
-                        Configuration.CATEGORY_GENERAL,
-                        "Timed Reading Text Scale",
-                        0.75,
-                        "Text size of the 5m and 1h readings")
+                PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                    .get("Timed Reading Text Scale")
                     .set(scale);
                 PowerGogglesConfigHandler.config.save();
 

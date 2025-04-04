@@ -18,6 +18,7 @@ public class PowerGogglesConfigHandler {
     public static int formatIndex;
     public static int readingIndex;
     public static int gradientIndex;
+    public static boolean showPowerChart;
 
     public static void init(File confFile) {
         if (config == null) {
@@ -48,11 +49,9 @@ public class PowerGogglesConfigHandler {
                     0.75,
                     "Text size of the 5m and 1h readings")
                 .getDouble(0.75);
-
             gradientPreset = config
                 .get(Configuration.CATEGORY_GENERAL, "Gradient Preset", "NORMAL", "Available options: NORMAL")
                 .getString();
-
             formatIndex = config
                 .get(
                     Configuration.CATEGORY_GENERAL,
@@ -66,6 +65,8 @@ public class PowerGogglesConfigHandler {
             gradientIndex = config
                 .get(Configuration.CATEGORY_GENERAL, "Gradient Index", 0, "Available options: NORMAL, DEUTERANOPIA")
                 .getInt();
+            showPowerChart = config.get(Configuration.CATEGORY_GENERAL, "Show Power Chart", false, "")
+                .getBoolean();
 
         } catch (Exception e) {
             System.out.println("Unable to load Config");

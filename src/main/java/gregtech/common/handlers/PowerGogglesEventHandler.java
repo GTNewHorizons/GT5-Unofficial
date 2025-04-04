@@ -120,6 +120,10 @@ public class PowerGogglesEventHandler {
             Minecraft.getMinecraft()
                 .displayGuiScreen(new PowerGogglesGuiHudConfig());
         }
+        if (PowerGogglesKeybindHandler.toggleChart.isPressed()) {
+            PowerGogglesConfigHandler.showPowerChart = !PowerGogglesConfigHandler.showPowerChart;
+            PowerGogglesConfigHandler.config.save();
+        }
     }
 
     private void setLink(ItemStack item) {

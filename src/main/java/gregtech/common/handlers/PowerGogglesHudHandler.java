@@ -90,7 +90,10 @@ public class PowerGogglesHudHandler {
         int h = PowerGogglesConfigHandler.rectangleHeight;
         int borderRadius = 3;
         int chartOffsetY = drawPowerRectangle(xOffset, yOffset, h, w, screenHeight, borderRadius);
-        drawPowerChart(xOffset, chartOffsetY - borderRadius, 100, 100, screenHeight, screenWidth, borderRadius);
+
+        if (PowerGogglesConfigHandler.showPowerChart) {
+            drawPowerChart(xOffset, chartOffsetY - borderRadius, 100, 100, screenHeight, screenWidth, borderRadius);
+        }
         GL11.glPopMatrix();
     }
 
@@ -244,17 +247,17 @@ public class PowerGogglesHudHandler {
         double scale = 0.5f;
         drawScaledString(
             fontRenderer,
-            toCustom(minReading),
+            toFormatted(minReading),
             xOffset,
             yOffset - (int) (fontRenderer.FONT_HEIGHT * scale),
-            Color.rgb(255, 0, 0),
+            Color.rgb(237, 2, 158),
             scale);
         drawScaledString(
             fontRenderer,
-            minReading.compareTo(maxReading) == 0 ? "" : toCustom(maxReading),
+            minReading.compareTo(maxReading) == 0 ? "" : toFormatted(maxReading),
             xOffset,
             yOffset - chartHeight,
-            Color.rgb(255, 0, 0),
+            Color.rgb(237, 2, 158),
             scale);
         if (readings < 2) return;
         GlStateManager.disableTexture2D();
