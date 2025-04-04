@@ -668,9 +668,9 @@ public class AssortedSteamRecipes implements Runnable {
         RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.Hatch_Input_Bus_Steam.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Stronze, 1),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Stronze, 6),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Stronze, 1),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Breel, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Breel, 6),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Breel, 1),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(GregtechItemList.Hatch_Input_Bus_SteamMK2.get(1L))
             .duration(2 * SECONDS)
