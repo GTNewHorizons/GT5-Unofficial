@@ -19,35 +19,35 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverDecorative;
 import gregtech.common.covers.CoverNone;
-import gregtech.common.covers.CoverPlacerInterceptsRightClick;
-import gregtech.common.covers.PrimitiveCoverPlacer;
 
-public class CoverRegistry {
+public final class CoverRegistry {
+
+    private static final CoverPlacer DEFAULT_COVER_PLACER = CoverPlacer.builder()
+        .build();
+    public static final CoverPlacer PRIMITIVE_COVER_PLACER = CoverPlacer.builder()
+        .allowOnPrimitiveBlock()
+        .build();
+    public static final CoverPlacer INTERCEPTS_RIGHT_CLICK_COVER_PLACER = CoverPlacer.builder()
+        .blocksCoverableGuiOpening()
+        .build();
 
     /**
-     * The Icon List for Covers
+     * The List of Cover Registrations for the Covers containing cover factories, placement conditions and base textures
      */
-    private static final Map<GTItemStack, ITexture> coverTextures = new ConcurrentHashMap<>();
-    /**
-     * The List of Cover Behaviors for the Covers
-     */
-    private static final Map<GTItemStack, CoverRegistration> coverFactories = new ConcurrentHashMap<>();
+    private static final Map<GTItemStack, CoverRegistration> covers = new ConcurrentHashMap<>();
+    public static final Cover NO_COVER = new CoverNone(
+        new CoverContext(GTUtility.intToStack(0), ForgeDirection.UNKNOWN, null));
     private static final CoverRegistration coverNone = new CoverRegistration(
-        null,
-        CoverNone::new,
-        new PrimitiveCoverPlacer());
-    public static final Cover NO_COVER = coverNone.buildCover(ForgeDirection.UNKNOWN, null);
-    private static final CoverPlacer DEFAULT_COVER_PLACER = new CoverPlacerBase();
-    public static final CoverPlacer PRIMITIVE_COVER_PLACER = new PrimitiveCoverPlacer();
-    public static final CoverPlacer INTERCEPTS_RIGHT_CLICK_COVER_PLACER = new CoverPlacerInterceptsRightClick();
+        context -> NO_COVER,
+        PRIMITIVE_COVER_PLACER,
+        null);
 
     private static GUIColorOverride colorOverride;
     private static final String guiTexturePath = "gregtech:textures/gui/GuiCover.png";
     private static final String NBT_ID = "id";
 
     static {
-        GregTechAPI.sItemStackMappings.add(coverTextures);
-        GregTechAPI.sItemStackMappings.add(coverFactories);
+        GregTechAPI.sItemStackMappings.add(covers);
     }
 
     public static void registerDecorativeCover(@NotNull ItemStack stack, ITexture cover) {
@@ -58,49 +58,52 @@ public class CoverRegistry {
         registerCover(stack, cover, constructor, DEFAULT_COVER_PLACER);
     }
 
-    public static void registerCover(@NotNull ItemStack stack, ITexture cover, @NotNull CoverFactory constructor,
-        @NotNull CoverPlacer factory) {
-        if (!coverTextures.containsKey(new GTItemStack(stack))) {
-            coverTextures.put(
-                new GTItemStack(stack),
-                cover == null || !cover.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0] : cover);
+    public static void registerCover(@NotNull ItemStack stack, ITexture coverTexture, @NotNull CoverFactory constructor,
+        CoverPlacer factory) {
+        GTItemStack key = new GTItemStack(stack);
+        if (!covers.containsKey(key)) {
+            CoverRegistration coverRegistration = new CoverRegistration(
+                constructor,
+                factory,
+                sanitizeTexture(coverTexture));
+            covers.put(key, coverRegistration);
         }
-        coverFactories.put(new GTItemStack(stack), new CoverRegistration(stack, constructor, factory));
+    }
+
+    private static ITexture sanitizeTexture(ITexture coverTexture) {
+        return coverTexture == null || !coverTexture.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0]
+            : coverTexture;
     }
 
     @NotNull
-    public static CoverRegistration getRegistration(ItemStack stack) {
+    private static CoverRegistration getRegistration(ItemStack stack) {
         if (stack == null || stack.getItem() == null) {
             return coverNone;
         }
-        CoverRegistration factory = coverFactories.get(new GTItemStack(stack));
+        CoverRegistration factory = covers.get(new GTItemStack(stack));
         if (factory == null) {
-            factory = coverFactories.get(new GTItemStack(stack, true));
+            factory = covers.get(new GTItemStack(stack, true));
         }
         return factory == null ? coverNone : factory;
     }
 
-    @NotNull
-    public static CoverRegistration getRegistration(int coverId) {
-        return getRegistration(GTUtility.intToStack(coverId));
+    public static Cover buildCover(@NotNull ItemStack coverItem, ForgeDirection side, ICoverable coverable) {
+        CoverRegistration registration = getRegistration(coverItem);
+        return registration.getFactory()
+            .buildCover(new CoverContext(coverItem, side, coverable));
     }
 
-    @NotNull
-    public static CoverPlacer getCoverPlacer(ItemStack stack) {
-        return getRegistration(stack).getCoverPlacer();
+    public static CoverPlacer getCoverPlacer(ItemStack coverId) {
+        return getRegistration(coverId).getCoverPlacer();
     }
 
-    @NotNull
-    public static CoverPlacer getCoverPlacer(int coverId) {
-        return getCoverPlacer(GTUtility.intToStack(coverId));
+    public static boolean isCover(@NotNull ItemStack coverId) {
+        return GTUtility.isStackInList(new GTItemStack(coverId), covers.keySet());
     }
 
-    public static boolean isCover(@NotNull ItemStack stack) {
-        return GTUtility.isStackInList(new GTItemStack(stack), coverTextures.keySet());
-    }
-
-    public static ITexture getCoverTexture(int coverId) {
-        return coverTextures.get(new GTItemStack(coverId));
+    public static ITexture getCoverTexture(ItemStack coverId) {
+        return covers.get(new GTItemStack(coverId))
+            .getCoverTexture();
     }
 
     public static void reloadCoverColorOverrides() {
@@ -111,9 +114,13 @@ public class CoverRegistry {
         return colorOverride.getTextColorOrDefault(textType, defaultColor);
     }
 
-    public static CoverRegistration getRegistrationFromNbt(NBTTagCompound nbt) {
-        int coverID = nbt.getInteger(NBT_ID);
-        return getRegistration(coverID);
+    public static Cover buildCoverFromNbt(NBTTagCompound nbt, ForgeDirection side, ICoverable coverable) {
+        ItemStack coverItem = GTUtility.intToStack(nbt.getInteger(NBT_ID));
+        CoverRegistration registration = getRegistration(coverItem);
+        Cover cover = registration.getFactory()
+            .buildCover(new CoverContext(coverItem, side, coverable));
+        cover.readFromNbt(nbt);
+        return cover;
     }
 
     public static void writeCoverToNbt(Cover cover, NBTTagCompound nbt) {
@@ -133,11 +140,11 @@ public class CoverRegistry {
      * @param east      cover id
      */
     public static void cover(ICoverable coverable, int down, int up, int north, int south, int west, int east) {
-        coverable.attachCover(getRegistration(down).buildCover(ForgeDirection.DOWN, coverable));
-        coverable.attachCover(getRegistration(up).buildCover(ForgeDirection.UP, coverable));
-        coverable.attachCover(getRegistration(north).buildCover(ForgeDirection.NORTH, coverable));
-        coverable.attachCover(getRegistration(south).buildCover(ForgeDirection.SOUTH, coverable));
-        coverable.attachCover(getRegistration(west).buildCover(ForgeDirection.WEST, coverable));
-        coverable.attachCover(getRegistration(east).buildCover(ForgeDirection.EAST, coverable));
+        coverable.attachCover(buildCover(GTUtility.intToStack(down), ForgeDirection.DOWN, coverable));
+        coverable.attachCover(buildCover(GTUtility.intToStack(up), ForgeDirection.UP, coverable));
+        coverable.attachCover(buildCover(GTUtility.intToStack(north), ForgeDirection.NORTH, coverable));
+        coverable.attachCover(buildCover(GTUtility.intToStack(south), ForgeDirection.SOUTH, coverable));
+        coverable.attachCover(buildCover(GTUtility.intToStack(west), ForgeDirection.WEST, coverable));
+        coverable.attachCover(buildCover(GTUtility.intToStack(east), ForgeDirection.EAST, coverable));
     }
 }

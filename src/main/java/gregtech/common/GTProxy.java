@@ -1346,7 +1346,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     }
 
     public void onServerStarted() {
-        GregTechAPI.sWirelessRedstone.clear();
         MTEDroneCentre.getCentreMap()
             .clear();
         GTLog.out.println(
@@ -1376,6 +1375,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         GTMusicSystem.ServerSystem.reset();
         File tSaveDirectory = getSaveDirectory();
         GregTechAPI.sWirelessRedstone.clear();
+        GregTechAPI.sAdvancedWirelessRedstone.clear();
         if (tSaveDirectory != null) {
             for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
                 if (GregTechAPI.METATILEENTITIES[i] != null) {

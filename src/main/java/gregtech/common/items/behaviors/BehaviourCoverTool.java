@@ -79,8 +79,9 @@ public class BehaviourCoverTool extends BehaviourNone {
                         chats = ImmutableList.of("Please Copy a Valid Cover First.");
                     } else if (targetCover.getCoverID() == copiedCoverId) {
                         coverable.updateAttachedCover(
-                            CoverRegistry.getRegistration(copiedCoverId)
-                                .buildCover(targetCover.getSide(), coverable, tNBT.getCompoundTag(NBT_COVER_DATA)));
+                            copiedCoverId,
+                            targetCover.getSide(),
+                            tNBT.getCompoundTag(NBT_COVER_DATA));
                         chats = ImmutableList.of("Cover Data Pasted.");
                     } else {
                         chats = ImmutableList.of("Not Matched Cover.");

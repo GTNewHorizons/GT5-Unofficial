@@ -780,16 +780,14 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sScrewdriverList)) {
                     if (!hasCoverAtSide(side) && hasCoverAtSide(wrenchingSide)) {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
-                            setCoverDataAtSide(
-                                wrenchingSide,
-                                getCoverAtSide(wrenchingSide).onCoverScrewdriverClick(aPlayer, 0.5F, 0.5F, 0.5F));
+                            getCoverAtSide(wrenchingSide).onCoverScrewdriverClick(aPlayer, 0.5F, 0.5F, 0.5F);
                             mMetaTileEntity.onScrewdriverRightClick(wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem);
                             mMetaTileEntity.markDirty();
                             sendSoundToPlayers(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1);
                         }
                     } else {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                            setCoverDataAtSide(side, getCoverAtSide(side).onCoverScrewdriverClick(aPlayer, aX, aY, aZ));
+                            getCoverAtSide(side).onCoverScrewdriverClick(aPlayer, aX, aY, aZ);
                             mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tCurrentItem);
                             mMetaTileEntity.markDirty();
                             sendSoundToPlayers(SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1);

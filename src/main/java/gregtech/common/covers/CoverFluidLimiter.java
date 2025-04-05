@@ -1,7 +1,5 @@
 package gregtech.common.covers;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,46 +8,75 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
-import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
+import gregtech.common.gui.mui1.cover.FluidLimiterUIFactory;
 import io.netty.buffer.ByteBuf;
 
 /***
  * @author TrainerSnow#5086
  */
-public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.FluidLimiterData> {
+public class CoverFluidLimiter extends Cover {
+
+    private float threshold;
 
     public CoverFluidLimiter(CoverContext context, ITexture coverTexture) {
-        super(context, FluidLimiterData.class, coverTexture);
+        super(context, coverTexture);
+        threshold = 1F;
+    }
+
+    public float getThreshold() {
+        return this.threshold;
+    }
+
+    public CoverFluidLimiter setThreshold(float threshold) {
+        this.threshold = threshold;
+        return this;
     }
 
     @Override
-    protected FluidLimiterData initializeData() {
-        return new CoverFluidLimiter.FluidLimiterData(1F);
-    }
-
-    @Override
-    public FluidLimiterData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (coveredTile.get() instanceof IFluidHandler) {
-            adjustThreshold(coverData, !aPlayer.isSneaking());
-            GTUtility.sendChatToPlayer(aPlayer, String.format("Threshold: %f", coverData.threshold));
+    protected void readDataFromNbt(NBTBase nbt) {
+        if (nbt instanceof NBTTagCompound tag) {
+            this.threshold = tag.getFloat("threshold");
         }
-        return coverData;
+    }
+
+    @Override
+    public void readDataFromPacket(ByteArrayDataInput byteData) {
+        this.threshold = byteData.readFloat();
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setFloat("threshold", this.threshold);
+        return tag;
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeFloat(this.threshold);
+    }
+
+    @Override
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (coveredTile.get() instanceof IFluidHandler) {
+            adjustThreshold(!aPlayer.isSneaking());
+            GTUtility.sendChatToPlayer(aPlayer, String.format("Threshold: %f", threshold));
+        }
     }
 
     @Override
     public boolean letsFluidIn(Fluid aFluid) {
         if (coveredTile.get() instanceof IFluidHandler fluidHandler) {
-            return coverData.threshold > getFillLevelInputSlots(fluidHandler);
+            return threshold > getFillLevelInputSlots(fluidHandler);
         }
         return false;
     }
@@ -63,19 +90,19 @@ public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.Fluid
      * Helpers
      */
 
-    private void adjustThreshold(FluidLimiterData coverVariable, boolean way) {
+    private void adjustThreshold(boolean way) {
         if (way) {
-            if ((coverVariable.threshold + 0.05f) > 1F) {
-                coverVariable.threshold = 0F;
+            if ((threshold + 0.05f) > 1F) {
+                threshold = 0F;
                 return;
             }
-            coverVariable.threshold += 0.05F;
+            threshold += 0.05F;
         } else {
-            if ((Math.abs(coverVariable.threshold) - 0.05F) < 0F) {
-                coverVariable.threshold = 1F;
+            if ((Math.abs(threshold) - 0.05F) < 0F) {
+                threshold = 1F;
                 return;
             }
-            coverVariable.threshold -= 0.05F;
+            threshold -= 0.05F;
         }
     }
 
@@ -95,50 +122,6 @@ public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.Fluid
         return 0F;
     }
 
-    /*
-     * Data
-     */
-
-    public static class FluidLimiterData implements ISerializableObject {
-
-        private float threshold;
-
-        public FluidLimiterData(float threshold) {
-            this.threshold = threshold;
-        }
-
-        @Nonnull
-        @Override
-        public ISerializableObject copy() {
-            return new FluidLimiterData(threshold);
-        }
-
-        @Nonnull
-        @Override
-        public NBTBase saveDataToNBT() {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setFloat("threshold", this.threshold);
-            return tag;
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeFloat(this.threshold);
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            if (aNBT instanceof NBTTagCompound tag) {
-                this.threshold = tag.getFloat("threshold");
-            }
-        }
-
-        @Override
-        public void readFromPacket(ByteArrayDataInput aBuf) {
-            this.threshold = aBuf.readFloat();
-        }
-    }
-
     // GUI stuff
 
     @Override
@@ -151,37 +134,4 @@ public class CoverFluidLimiter extends CoverBehaviorBase<CoverFluidLimiter.Fluid
         return new FluidLimiterUIFactory(buildContext).createWindow();
     }
 
-    private class FluidLimiterUIFactory extends UIFactory {
-
-        private static final int startX = 10;
-        private static final int startY = 25;
-        private static final int spaceX = 18;
-        private static final int spaceY = 18;
-
-        public FluidLimiterUIFactory(CoverUIBuildContext buildContext) {
-            super(buildContext);
-        }
-
-        @Override
-        protected void addUIWidgets(ModularWindow.Builder builder) {
-            builder.widget(
-                new CoverDataControllerWidget<>(
-                    this::getCoverData,
-                    this::setCoverData,
-                    CoverFluidLimiter.this::loadFromNbt).addFollower(
-                        new CoverDataFollowerNumericWidget<>(),
-                        coverData -> (double) Math.round(coverData.threshold * 100),
-                        (coverData, val) -> {
-                            coverData.threshold = val.floatValue() / 100;
-                            return coverData;
-                        },
-                        widget -> widget.setBounds(0, 100)
-                            .setFocusOnGuiOpen(true)
-                            .setPos(startX, startY + spaceY * 2 - 24)
-                            .setSize(spaceX * 4 - 3, 12)))
-                .widget(
-                    new TextWidget("Percent threshold").setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX, startY + spaceY * 2 - 35));
-        }
-    }
 }
