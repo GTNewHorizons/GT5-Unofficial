@@ -11,6 +11,7 @@ import static gregtech.api.enums.GTValues.AuthorSteamIsTheNumber;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static net.minecraft.util.EnumChatFormatting.AQUA;
 import static net.minecraft.util.EnumChatFormatting.ITALIC;
 
@@ -216,10 +217,7 @@ public class MTESteamMegaWasher extends MTESteamMultiBase<MTESteamMegaWasher> im
                 t -> t.tierPipeCasing))
         .addElement(
             'C',
-            ofChain(
-                isAir(),
-                ofBlockAnyMeta(Blocks.water),
-                ofBlockAnyMeta(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater))))
+            ofAnyWater(false))
 
         .build();
 
