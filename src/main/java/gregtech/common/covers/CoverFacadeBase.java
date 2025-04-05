@@ -171,13 +171,12 @@ public abstract class CoverFacadeBase extends Cover {
     @Override
     public void onPlayerAttach(EntityPlayer player, ItemStack coverItem) {
         ICoverable coverable = coveredTile.get();
-        if (coverable != null && coverable.isClientSide()) GTRenderingWorld.getInstance()
-            .register(
-                coverable.getXCoord(),
-                coverable.getYCoord(),
-                coverable.getZCoord(),
-                getTargetBlock(coverItem),
-                getTargetMeta(coverItem));
+        if (coverable != null && coverable.isClientSide()) GTRenderingWorld.register(
+            coverable.getXCoord(),
+            coverable.getYCoord(),
+            coverable.getZCoord(),
+            getTargetBlock(coverItem),
+            getTargetMeta(coverItem));
     }
 
     @Override
@@ -228,7 +227,7 @@ public abstract class CoverFacadeBase extends Cover {
     @Override
     public void onDataChanged() {
         ICoverable coverable = coveredTile.get();
-        if (coverable != null && coverable.isClientSide()) GTRenderingWorld.getInstance()
+        if (coverable != null && coverable.isClientSide()) GTRenderingWorld.register()
             .register(
                 coverable.getXCoord(),
                 coverable.getYCoord(),
@@ -248,7 +247,7 @@ public abstract class CoverFacadeBase extends Cover {
             }
             if (mStack != null)
                 // mStack == null -> cover removed before data reach client
-                GTRenderingWorld.getInstance()
+                GTRenderingWorld.unregister()
                     .unregister(
                         coverable.getXCoord(),
                         coverable.getYCoord(),
