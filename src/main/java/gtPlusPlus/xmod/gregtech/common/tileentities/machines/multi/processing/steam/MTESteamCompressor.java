@@ -247,9 +247,7 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
             @Nonnull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                if (availableVoltage < recipe.mEUt) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                }
+                if (availableVoltage < recipe.mEUt) return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) > 0)
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 return CheckRecipeResultRegistry.SUCCESSFUL;
