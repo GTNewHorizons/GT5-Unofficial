@@ -93,7 +93,7 @@ public class PowerGogglesHudHandler {
         int chartOffsetY = drawPowerRectangle(xOffset, yOffset, h, w, screenHeight, borderRadius);
 
         if (PowerGogglesConfigHandler.showPowerChart) {
-            drawPowerChart(xOffset, chartOffsetY - borderRadius, 100, 100, screenHeight, screenWidth, borderRadius);
+            drawPowerChart(xOffset, chartOffsetY - borderRadius, PowerGogglesConfigHandler.rectangleWidth, 100, screenHeight, screenWidth, borderRadius);
         }
         GL11.glPopMatrix();
     }
