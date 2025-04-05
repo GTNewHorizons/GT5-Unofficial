@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import gregtech.common.covers.Cover;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -18,7 +19,6 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverPosition;
 import io.netty.buffer.ByteBuf;
 
@@ -65,7 +65,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
     }
 
     @Override
-    protected void readFromPacket(ByteArrayDataInput byteData) {
+    public void readFromPacket(ByteArrayDataInput byteData) {
         if (byteData.readBoolean()) {
             uuid = new UUID(byteData.readLong(), byteData.readLong());
         }
