@@ -9,13 +9,11 @@ import static gregtech.api.enums.GTValues.W;
 import static gregtech.api.enums.GTValues.debugEntityCramming;
 import static gregtech.api.enums.Mods.AdvancedSolarPanel;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
-import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.BetterLoadingScreen;
 import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.ElectroMagicTools;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.GraviSuite;
@@ -126,6 +124,7 @@ import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.fluid.GTFluidFactory;
+import gregtech.api.hazards.Hazard;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IBlockOnWalkOver;
 import gregtech.api.interfaces.IProjectileItem;
@@ -1089,26 +1088,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             .bus()
             .register(new GTWorldgenerator.OregenPatternSavedData(""));
 
-        // IC2 Hazmat
-        addFullHazmatToIC2Item("hazmatHelmet");
-        addFullHazmatToIC2Item("hazmatChestplate");
-        addFullHazmatToIC2Item("hazmatLeggings");
-        addFullHazmatToIC2Item("hazmatBoots");
-        addFullHazmatToIC2Item("nanoHelmet");
-        addFullHazmatToIC2Item("nanoBoots");
-        addFullHazmatToIC2Item("nanoLeggings");
-        addFullHazmatToIC2Item("nanoBodyarmor");
-        addFullHazmatToIC2Item("quantumHelmet");
-        addFullHazmatToIC2Item("quantumBodyarmor");
-        addFullHazmatToIC2Item("quantumLeggings");
-        addFullHazmatToIC2Item("quantumBoots");
-
-        // GT++ Hazmat
-        addFullHazmatToGeneralItem(GTPlusPlus.ID, "itemArmorHazmatHelmetEx", 1);
-        addFullHazmatToGeneralItem(GTPlusPlus.ID, "itemArmorHazmatChestplateEx", 1);
-        addFullHazmatToGeneralItem(GTPlusPlus.ID, "itemArmorHazmatLeggingsEx", 1);
-        addFullHazmatToGeneralItem(GTPlusPlus.ID, "itemArmorRubBootsEx", 1);
-
         // GraviSuite Hazmat
         addFullHazmatToGeneralItem(GraviSuite.ID, "graviChestPlate", 1L);
         addFullHazmatToGeneralItem(GraviSuite.ID, "advNanoChestPlate", 1L);
@@ -1179,18 +1158,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         addFullHazmatToGeneralItem(GalaxySpace.ID, "item.spacesuit_leg", 1L);
         addFullHazmatToGeneralItem(GalaxySpace.ID, "item.spacesuit_boots", 1L);
         addFullHazmatToGeneralItem(GalaxySpace.ID, "item.spacesuit_gravityboots", 1L);
-
-        // Extra Hazmat
-        GregTechAPI.sElectroHazmatList.add(new ItemStack(Items.chainmail_helmet, 1, W));
-        GregTechAPI.sElectroHazmatList.add(new ItemStack(Items.chainmail_chestplate, 1, W));
-        GregTechAPI.sElectroHazmatList.add(new ItemStack(Items.chainmail_leggings, 1, W));
-        GregTechAPI.sElectroHazmatList.add(new ItemStack(Items.chainmail_boots, 1, W));
-
-        // Infinity Hazmat
-        addFullHazmatToGeneralItem(Avaritia.ID, "Infinity_Helm", 1L);
-        addFullHazmatToGeneralItem(Avaritia.ID, "Infinity_Chest", 1L);
-        addFullHazmatToGeneralItem(Avaritia.ID, "Infinity_Pants", 1L);
-        addFullHazmatToGeneralItem(Avaritia.ID, "Infinity_Shoes", 1L);
 
         // EnderIO Hazmat
         addFullHazmatToGeneralItem(EnderIO.ID, "item.endSteel_helmet", 1L);
@@ -2673,11 +2640,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         addItemToHazmatLists(item);
     }
 
-    public static void addFullHazmatToIC2Item(String aItem) {
-        ItemStack item = GTModHandler.getIC2Item(aItem, 1L, W);
-        addItemToHazmatLists(item);
-    }
-
     private static void addItemToHazmatLists(ItemStack item) {
         GregTechAPI.sGasHazmatList.add(item);
         GregTechAPI.sBioHazmatList.add(item);
@@ -2692,6 +2654,10 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         if (HazardProtection.providesFullHazmatProtection(event.itemStack)) {
             event.toolTip.add(
                 EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal("GT5U.providesfullhazmatprotection"));
+        } else if (HazardProtection.protectsAgainstHazard(event.itemStack, Hazard.ELECTRICAL)) {
+            event.toolTip.add(
+                EnumChatFormatting.LIGHT_PURPLE
+                    + StatCollector.translateToLocal("GT5U.provideselectricalhazmatprotection"));
         }
     }
 

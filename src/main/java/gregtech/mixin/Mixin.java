@@ -56,6 +56,7 @@ public enum Mixin {
             "minecraft.accessors.VanillaShapelessRecipeMixin",
             "minecraft.accessors.ForgeShapedRecipeMixin",
             "minecraft.accessors.ForgeShapelessRecipeMixin",
+            "minecraft.accessors.ItemArmorMixin",
             "minecraft.accessors.PotionMixin",
             "minecraft.accessors.EntityPlayerMPMixin")
         .addTargetedMod(VANILLA)
@@ -81,12 +82,20 @@ public enum Mixin {
         .setApplyIf(() -> true)
         .setPhase(Phase.LATE)
         .setSide(Side.BOTH)),
+
+    // Hazmat armors
     IC2_HAZMAT(new Builder("Hazmat").setPhase(Phase.LATE)
         .setSide(Side.BOTH)
-        .addMixinClasses("ic2.MixinIc2Hazmat")
+        .addMixinClasses("ic2.MixinIc2Hazmat", "ic2.MixinIc2Nano", "ic2.MixinIc2Quantum")
         .setApplyIf(() -> true)
         .addTargetedMod(TargetedMod.IC2)
         .addExcludedMod(TargetedMod.GT6)),
+
+    AVARITIA_HAZMAT(new Builder("Adds Hazmat to Infinity armor").setPhase(Phase.LATE)
+        .setSide(Side.BOTH)
+        .addMixinClasses("avaritia.MixinInfinityArmor")
+        .setApplyIf(() -> true)
+        .addTargetedMod(TargetedMod.AVARITIA)),
 
     // Pollution
     POLLUTION_RENDER_BLOCKS(new Builder("Changes colors of certain blocks based on pollution levels")
