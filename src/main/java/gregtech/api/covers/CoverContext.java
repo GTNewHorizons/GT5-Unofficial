@@ -4,7 +4,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GTUtility;
 
 public final class CoverContext {
 
@@ -18,11 +17,7 @@ public final class CoverContext {
         this.coverItem = coverItem;
     }
 
-    public int getCoverId() {
-        return GTUtility.stackToInt(coverItem);
-    }
-
-    public ItemStack getCoverInitializer() {
+    public ItemStack getCoverItem() {
         return coverItem;
     }
 

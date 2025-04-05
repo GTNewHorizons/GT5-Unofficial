@@ -67,7 +67,7 @@ public abstract class CoverFacadeBase extends Cover {
      */
     public CoverFacadeBase(CoverContext context) {
         super(context, null);
-        ItemStack coverItem = context.getCoverInitializer();
+        ItemStack coverItem = context.getCoverItem();
         mStack = copyItemStackIfPresent(coverItem);
         mFlags = 0;
     }

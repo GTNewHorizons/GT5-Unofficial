@@ -99,7 +99,7 @@ public class CoverWirelessItemDetector extends CoverAdvancedRedstoneTransmitterB
 
     @Override
     protected void writeDataToByteBuf(ByteBuf byteBuf) {
-        super.writeToByteBuf(byteBuf);
+        super.writeDataToByteBuf(byteBuf);
         byteBuf.writeInt(threshold);
         byteBuf.writeInt(slot);
         byteBuf.writeBoolean(physical);

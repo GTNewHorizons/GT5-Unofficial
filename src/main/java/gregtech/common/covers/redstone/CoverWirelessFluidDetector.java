@@ -79,7 +79,7 @@ public class CoverWirelessFluidDetector extends CoverAdvancedRedstoneTransmitter
 
     @Override
     protected void writeDataToByteBuf(ByteBuf byteBuf) {
-        super.writeToByteBuf(byteBuf);
+        super.writeDataToByteBuf(byteBuf);
         byteBuf.writeInt(threshold);
         byteBuf.writeBoolean(physical);
     }

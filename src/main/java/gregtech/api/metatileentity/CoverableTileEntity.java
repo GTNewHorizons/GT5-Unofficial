@@ -426,10 +426,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final Cover cover = getCoverAtSide(side);
         if (!cover.isValid() || cover.getCoverID() != coverId) return;
         cover.readFromNbt(nbt);
-
-        if (isClientSide()) {
-            cover.onDataChanged();
-        }
+        cover.onDataChanged();
     }
 
     @Override
@@ -441,10 +438,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final Cover cover = getCoverAtSide(side);
         if (!cover.isValid() || cover.getCoverID() != coverId) return;
         cover.readFromPacket(data);
-
-        if (isClientSide()) {
-            cover.onDataChanged();
-        }
+        cover.onDataChanged();
     }
 
     protected void sendCoverDataIfNeeded() {
@@ -465,7 +459,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
-        final NBTTagCompound tag = accessor.getNBTData();
         final ForgeDirection currentFacing = accessor.getSide();
 
         for (final Cover cover : covers) {
@@ -500,7 +493,11 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
         // While we have some cover data on the client (enough to render it); we don't have all the information we want,
         // such as details on the fluid filter, so send it all here.
-        writeCoverNBT(tag, false);
+        for (final Cover cover : covers) {
+            if (cover.isValid()) {
+                NW.sendToPlayer(new GTPacketSendCoverData(cover, this, cover.getSide()), player);
+            }
+        }
     }
 
     /**
@@ -517,7 +514,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
             byte sideValue = tNBT.getByte(NBT_COVER_SIDE);
             final Cover cover = CoverRegistry.buildCoverFromNbt(tNBT, ForgeDirection.getOrientation(sideValue), null);
-            cover.readFromNbt(tNBT);
             if (!cover.isValid()) continue;
 
             final ItemStack coverStack = cover.asItemStack();
