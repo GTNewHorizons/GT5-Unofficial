@@ -49,17 +49,17 @@ public final class CoverRegistry {
         GregTechAPI.sItemStackMappings.add(covers);
     }
 
-    public static void registerDecorativeCover(@NotNull ItemStack stack, ITexture cover) {
-        registerCover(stack, cover, CoverDecorative::new, PRIMITIVE_COVER_PLACER);
+    public static void registerDecorativeCover(@NotNull ItemStack coverItem, ITexture cover) {
+        registerCover(coverItem, cover, CoverDecorative::new, PRIMITIVE_COVER_PLACER);
     }
 
-    public static void registerCover(@NotNull ItemStack stack, ITexture cover, @NotNull CoverFactory constructor) {
-        registerCover(stack, cover, constructor, DEFAULT_COVER_PLACER);
+    public static void registerCover(@NotNull ItemStack coverItem, ITexture cover, @NotNull CoverFactory constructor) {
+        registerCover(coverItem, cover, constructor, DEFAULT_COVER_PLACER);
     }
 
-    public static void registerCover(@NotNull ItemStack stack, ITexture coverTexture, @NotNull CoverFactory constructor,
-        CoverPlacer factory) {
-        GTItemStack key = new GTItemStack(stack);
+    public static void registerCover(@NotNull ItemStack coverItem, ITexture coverTexture,
+        @NotNull CoverFactory constructor, CoverPlacer factory) {
+        GTItemStack key = new GTItemStack(coverItem);
         if (!covers.containsKey(key)) {
             CoverRegistration coverRegistration = new CoverRegistration(
                 constructor,
@@ -75,13 +75,13 @@ public final class CoverRegistry {
     }
 
     @NotNull
-    private static CoverRegistration getRegistration(ItemStack stack) {
-        if (stack == null || stack.getItem() == null) {
+    private static CoverRegistration getRegistration(ItemStack coverItem) {
+        if (coverItem == null || coverItem.getItem() == null) {
             return coverNone;
         }
-        CoverRegistration factory = covers.get(new GTItemStack(stack));
+        CoverRegistration factory = covers.get(new GTItemStack(coverItem));
         if (factory == null) {
-            factory = covers.get(new GTItemStack(stack, true));
+            factory = covers.get(new GTItemStack(coverItem, true));
         }
         return factory == null ? coverNone : factory;
     }
@@ -92,16 +92,16 @@ public final class CoverRegistry {
             .buildCover(new CoverContext(coverItem, side, coverable));
     }
 
-    public static CoverPlacer getCoverPlacer(ItemStack coverId) {
-        return getRegistration(coverId).getCoverPlacer();
+    public static CoverPlacer getCoverPlacer(ItemStack coverItem) {
+        return getRegistration(coverItem).getCoverPlacer();
     }
 
-    public static boolean isCover(ItemStack coverId) {
-        return GTUtility.isStackInList(new GTItemStack(coverId), covers.keySet());
+    public static boolean isCover(ItemStack coverItem) {
+        return GTUtility.isStackInList(new GTItemStack(coverItem), covers.keySet());
     }
 
-    public static ITexture getCoverTexture(ItemStack coverId) {
-        return covers.get(new GTItemStack(coverId))
+    public static ITexture getCoverTexture(ItemStack coverItem) {
+        return covers.get(new GTItemStack(coverItem))
             .getCoverTexture();
     }
 
