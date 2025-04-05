@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -445,6 +446,14 @@ public class GTValues {
     public static final FluidStack[] emptyFluidStack = new FluidStack[0];
     public static final ItemStack[] emptyItemStackArray = new ItemStack[0];
     public static final IIconContainer[] emptyIconContainerArray = new IIconContainer[3];
+
+    /**
+     * Detects if we're in a deobfuscated environment, meaning that additional sanity checks should be ran.
+     * If the blackboard is null, we're in a unit test that hasn't set its env up properly and also want those checks to
+     * be ran.
+     */
+    public static boolean DEVENV = Launch.blackboard == null ? true
+        : (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
     /**
      * Pretty formatting for author names.
