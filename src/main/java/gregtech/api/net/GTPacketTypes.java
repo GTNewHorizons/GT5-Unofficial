@@ -38,8 +38,8 @@ public enum GTPacketTypes {
     CREATE_TILE_ENTITY(28, new GTPacketCreateTE()),
     NODE_INFO(29, new GTPacketNodeInfo()),
     COIL_STATUS(30, new GTCoilStatus()),
-    SEND_WIRELESS_EU(32, new GTPacketUpdatePowerGoggles()),
-    LINK_GOGGLES(33, new GTPacketLinkGoggles()),
+    SEND_WIRELESS_EU(33, new GTPacketUpdatePowerGoggles()),
+    LINK_GOGGLES(34, new GTPacketLinkGoggles()),
     // merge conflict prevention comment, keep a trailing comma above
     ;
 
