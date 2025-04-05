@@ -132,7 +132,7 @@ public class PowerGogglesEventHandler {
     }
 
     private void setLink(ItemStack item) {
-        if (item.getTagCompound()
+        if (item.getTagCompound() == null || item.getTagCompound()
             .hasNoTags()) NW.sendToServer(new GTPacketLinkGoggles());
         else {
             NBTTagCompound tag = item.getTagCompound();
