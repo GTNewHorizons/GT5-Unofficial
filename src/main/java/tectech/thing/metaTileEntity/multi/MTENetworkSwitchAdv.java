@@ -39,9 +39,9 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.IStructureInstance;
 import gregtech.api.structure.IStructureProvider;
-import gregtech.api.structure.MultiblockTooltipBuilder2;
 import gregtech.api.structure.StructureWrapper;
 import gregtech.api.structure.StructureWrapperInstanceInfo;
+import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import it.unimi.dsi.fastutil.Pair;
@@ -262,7 +262,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder2<MTENetworkSwitchAdv> tt = new MultiblockTooltipBuilder2<>(structure);
+        StructureWrapperTooltipBuilder<MTENetworkSwitchAdv> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("Network Switch With QoS")
             .addInfo("Variable-length version of the standard Network Switch.")
