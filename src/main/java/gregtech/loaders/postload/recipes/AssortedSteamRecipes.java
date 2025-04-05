@@ -443,7 +443,7 @@ public class AssortedSteamRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 4),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 2))
             .itemOutputs(ItemList.Simple_Iron_Turbine.get(1))
-            .duration(2 * SECONDS)
+            .duration(10 * TICKS)
             .eut(16)
             .addTo(steamManufacturerRecipes);
 
@@ -453,7 +453,7 @@ public class AssortedSteamRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Bronze, 2))
             .itemOutputs(ItemList.Simple_Bronze_Turbine.get(1))
-            .duration(2 * SECONDS)
+            .duration(10 * TICKS)
             .eut(16)
             .addTo(steamManufacturerRecipes);
 
@@ -462,7 +462,7 @@ public class AssortedSteamRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.turbineBlade, Materials.Steel, 4),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Stronze, 1))
             .itemOutputs(ItemList.Steel_Turbine.get(1))
-            .duration(23 * SECONDS)
+            .duration(20 * SECONDS)
             .eut(512)
             .addTo(steamManufacturerRecipes);
 
@@ -471,7 +471,7 @@ public class AssortedSteamRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.turbineBlade, Materials.CompressedSteam, 4),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Breel, 1))
             .itemOutputs(ItemList.Steam_Turbine.get(1))
-            .duration(23 * SECONDS)
+            .duration(20 * SECONDS)
             .eut(512)
             .addTo(steamManufacturerRecipes);
 
@@ -482,7 +482,7 @@ public class AssortedSteamRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1),
                 new ItemStack(Blocks.cobblestone, 4))
             .itemOutputs(new ItemStack(Blocks.piston, 1))
-            .duration(3 * SECONDS)
+            .duration(1 * SECONDS)
             .eut(16)
             .addTo(steamManufacturerRecipes);
 

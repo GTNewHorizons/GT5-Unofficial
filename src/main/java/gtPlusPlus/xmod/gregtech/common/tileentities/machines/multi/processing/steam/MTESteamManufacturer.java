@@ -108,7 +108,7 @@ public class MTESteamManufacturer extends MTEBetterSteamMultiBase<MTESteamManufa
     @Override
     public int getMaxParallelRecipes() {
         // Max call to prevent seeing -16 parallels in waila for unformed multi
-        return 4;
+        return 8;
     }
 
     @Override
