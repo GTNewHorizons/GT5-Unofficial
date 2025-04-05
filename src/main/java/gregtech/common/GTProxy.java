@@ -12,7 +12,6 @@ import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.BetterLoadingScreen;
 import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.ElectroMagicTools;
-import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalaxySpace;
@@ -1151,16 +1150,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         addFullHazmatToGeneralItem(GalaxySpace.ID, "item.spacesuit_leg", 1L);
         addFullHazmatToGeneralItem(GalaxySpace.ID, "item.spacesuit_boots", 1L);
         addFullHazmatToGeneralItem(GalaxySpace.ID, "item.spacesuit_gravityboots", 1L);
-
-        // EnderIO Hazmat
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.endSteel_helmet", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.endSteel_chestplate", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.endSteel_leggings", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.endSteel_boots", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.stellar_helmet", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.stellar_chestplate", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.stellar_leggings", 1L);
-        addFullHazmatToGeneralItem(EnderIO.ID, "item.stellar_boots", 1L);
 
         GregTechAPI.sLoadStarted = true;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
