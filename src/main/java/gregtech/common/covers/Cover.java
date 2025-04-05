@@ -52,7 +52,7 @@ public class Cover {
 
     public Cover(@NotNull CoverContext context, ITexture coverFGTexture) {
         this.coverSide = context.getSide();
-        this.coverID = context.getCoverId();
+        this.coverID = GTUtility.stackToInt(context.getCoverItem());
         this.coveredTile = new WeakReference<>(context.getCoverable());
         this.coverFGTexture = coverFGTexture;
         setTickRateAddition(getDefaultTickRateAddition());
