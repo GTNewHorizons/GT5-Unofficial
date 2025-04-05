@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -445,6 +446,9 @@ public class GTValues {
     public static final FluidStack[] emptyFluidStack = new FluidStack[0];
     public static final ItemStack[] emptyItemStackArray = new ItemStack[0];
     public static final IIconContainer[] emptyIconContainerArray = new IIconContainer[3];
+
+    public static boolean DEVENV = Launch.blackboard == null ? true
+        : (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
     /**
      * Pretty formatting for author names.
