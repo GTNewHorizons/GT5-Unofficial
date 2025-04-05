@@ -502,7 +502,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
             byte sideValue = tNBT.getByte(NBT_COVER_SIDE);
             final Cover cover = CoverRegistry.buildCoverFromNbt(tNBT, ForgeDirection.getOrientation(sideValue), null);
-            cover.readFromNbt(tNBT);
             if (!cover.isValid()) continue;
 
             final ItemStack coverStack = cover.asItemStack();
