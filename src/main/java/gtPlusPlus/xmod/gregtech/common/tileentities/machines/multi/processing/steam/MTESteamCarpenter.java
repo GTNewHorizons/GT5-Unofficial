@@ -87,6 +87,12 @@ public class MTESteamCarpenter extends MTEBetterSteamMultiBase<MTESteamCarpenter
     }
 
     @Override
+    public int getMaxParallelRecipes() {
+        // Max call to prevent seeing -16 parallels in waila for unformed multi
+        return 16;
+    }
+
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
