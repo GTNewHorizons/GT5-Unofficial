@@ -14,6 +14,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -24,11 +26,15 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 import gregtech.common.blocks.BlockCasingsSteam;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEBetterSteamMultiBase;
@@ -36,6 +42,9 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatch
 
 public class MTESteamBlastFurnace extends MTEBetterSteamMultiBase<MTESteamBlastFurnace>
     implements ISurvivalConstructable {
+
+    final static int STEAM_PER_OPERATION = 320;
+    final static int MAX_STEAM_USAGE_PER_SECOND = 3200;
 
     public MTESteamBlastFurnace(String aName) {
         super(aName);
@@ -50,22 +59,34 @@ public class MTESteamBlastFurnace extends MTEBetterSteamMultiBase<MTESteamBlastF
         return super.onRunningTick(aStack);
     }
 
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+
+            @Override
+            protected double calculateDuration(@NotNull GTRecipe recipe, @NotNull ParallelHelper helper,
+                @NotNull OverclockCalculator calculator) {
+                return super.calculateDuration(recipe, helper, calculator) * helper.getCurrentParallel();
+            }
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
     private void doProgress() {
         for (MTEHatchCustomFluidBase tHatch : validMTEList(mSteamInputFluids)) {
             FluidStack steamStack = tHatch.getFillableStack();
             if (steamStack != null) {
-                int drain = Math.min(3200, steamStack.amount);
-                // Round down to the nearest 80
-                drain = (int) ((double) (drain / 80) * 80);
+                int drain = Math.min(MAX_STEAM_USAGE_PER_SECOND, steamStack.amount);
+                // Round down to the nearest STEAM_PER_OPERATION
+                drain = (int) ((double) (drain / STEAM_PER_OPERATION) * STEAM_PER_OPERATION);
                 tHatch.drain(drain, true);
                 if (steamStack.isFluidEqual(steam)) {
-                    mProgresstime += (drain / 80) * 20;
+                    mProgresstime += (drain / STEAM_PER_OPERATION) * 20;
                 } else if (steamStack.isFluidEqual(shSteam)) {
-                    mProgresstime += (drain / 80) * 200;
+                    mProgresstime += (drain / STEAM_PER_OPERATION) * 200;
                 } else if (steamStack.getFluid()
                     .getName()
                     .equals("supercriticalsteam")) {
-                        mProgresstime += (drain / 80) * 2000;
+                        mProgresstime += (drain / STEAM_PER_OPERATION) * 2000;
                     }
             }
         }
@@ -152,7 +173,12 @@ public class MTESteamBlastFurnace extends MTEBetterSteamMultiBase<MTESteamBlastF
 
     @Override
     public int getMaxParallelRecipes() {
-        return 1;
+        return batchMode ? Integer.MAX_VALUE : 1;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
     }
 
     @Override
@@ -167,13 +193,22 @@ public class MTESteamBlastFurnace extends MTEBetterSteamMultiBase<MTESteamBlastF
             .addInfo("Faster than Bricked Blast Furnace and can be automated")
             .addInfo(
                 "Consumes up to " + EnumChatFormatting.WHITE
-                    + "3200 L/t"
+                    + MAX_STEAM_USAGE_PER_SECOND
+                    + " L/t"
                     + EnumChatFormatting.GRAY
                     + " of steam (any variety)")
             .addInfo("Recipe time is converted to total steam consumption")
-            .addInfo("Steam: " + EnumChatFormatting.WHITE + "80L = 1s")
-            .addInfo(EnumChatFormatting.GOLD + "Superheated Steam: " + EnumChatFormatting.WHITE + "80L = 10s")
-            .addInfo(EnumChatFormatting.RED + "Supercritical Steam: " + EnumChatFormatting.WHITE + "80L = 100s")
+            .addInfo("Steam: " + EnumChatFormatting.WHITE + STEAM_PER_OPERATION + "L = 1s")
+            .addInfo(
+                EnumChatFormatting.GOLD + "Superheated Steam: "
+                    + EnumChatFormatting.WHITE
+                    + STEAM_PER_OPERATION
+                    + "L = 10s")
+            .addInfo(
+                EnumChatFormatting.RED + "Supercritical Steam: "
+                    + EnumChatFormatting.WHITE
+                    + STEAM_PER_OPERATION
+                    + "L = 100s")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
@@ -188,6 +223,11 @@ public class MTESteamBlastFurnace extends MTEBetterSteamMultiBase<MTESteamBlastF
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
+    }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
