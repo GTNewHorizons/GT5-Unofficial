@@ -72,7 +72,7 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
 
     @Override
     protected void writeDataToByteBuf(ByteBuf byteBuf) {
-        super.writeToByteBuf(byteBuf);
+        super.writeDataToByteBuf(byteBuf);
         byteBuf.writeBoolean(invert);
     }
 

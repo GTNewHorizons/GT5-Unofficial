@@ -82,7 +82,7 @@ public class CoverWirelessMaintenanceDetector extends CoverAdvancedRedstoneTrans
 
     @Override
     protected void writeDataToByteBuf(ByteBuf byteBuf) {
-        super.writeToByteBuf(byteBuf);
+        super.writeDataToByteBuf(byteBuf);
         byteBuf.writeInt(mode.ordinal());
         byteBuf.writeBoolean(physical);
     }

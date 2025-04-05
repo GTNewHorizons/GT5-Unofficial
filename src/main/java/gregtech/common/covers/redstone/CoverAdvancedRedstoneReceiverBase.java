@@ -56,7 +56,7 @@ public abstract class CoverAdvancedRedstoneReceiverBase extends CoverAdvancedWir
 
     @Override
     protected void writeDataToByteBuf(ByteBuf byteBuf) {
-        super.writeToByteBuf(byteBuf);
+        super.writeDataToByteBuf(byteBuf);
         byteBuf.writeByte(mode.ordinal());
     }
 
