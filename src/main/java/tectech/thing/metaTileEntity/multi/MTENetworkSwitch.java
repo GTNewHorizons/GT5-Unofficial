@@ -217,6 +217,7 @@ public class MTENetworkSwitch extends TTMultiblockBase implements ISurvivalConst
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.switch.name")) // Machine Type: Network
                                                                                             // Switch With QoS
+            .addInfo(EnumChatFormatting.RED + "DEPRECATED! This machine will be removed in the next major update.")
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.0")) // Controller block of the
                                                                                          // Network
             // Switch With QoS
