@@ -6,6 +6,7 @@ import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.StorageDrawers;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.lavaMakerRecipes;
@@ -74,6 +75,15 @@ public class AssortedSteamRecipes implements Runnable {
             .duration(4 * TICKS)
             .eut(2)
             .addTo(mixerRecipes);
+
+        RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.cactus, 1))
+            .fluidOutputs(Materials.Water.getFluid(1000))
+            .itemOutputs(ItemList.IC2_Plantball.get(1))
+            .outputChances(1000)
+            .duration(10 * TICKS)
+            .eut(4)
+            .addTo(centrifugeRecipes);
 
         RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.stone, 1))
