@@ -419,7 +419,7 @@ public class AssortedSteamRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Stronze, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Rubber, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.CompressedSteam, 4),
-                ItemList.Hydraulic_Regulator_Steam.get(1))
+                ItemList.Hydraulic_Pump_Steam.get(1))
             .itemOutputs(ItemList.Hydraulic_Sensor_Steam.get(1))
             .duration(1 * SECONDS)
             .eut(16)
