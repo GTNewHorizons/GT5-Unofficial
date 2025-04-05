@@ -18,6 +18,7 @@ import gregtech.api.casing.ICasing;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import it.unimi.dsi.fastutil.Pair;
@@ -34,7 +35,7 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
  * An extended tooltip builder with some compat for the structure wrapper system.
  */
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
-public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> & IStructureProvider<MTE>>
+public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBase<?> & IStructureProvider<MTE>>
     extends MultiblockTooltipBuilder {
 
     public final StructureWrapper<MTE> structure;
@@ -44,14 +45,14 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
     private final Object2ObjectArrayMap<IHatchElement<? super MTE>, String> hatchInfoOverrides = new Object2ObjectArrayMap<>();
     private boolean hasExoticHatches = false, hasMultiAmpHatches = false, printMultiampSupport = true;
 
-    public MultiblockTooltipBuilder2(StructureWrapper<MTE> structure) {
+    public StructureWrapperTooltipBuilder(StructureWrapper<MTE> structure) {
         this.structure = structure;
     }
 
     /**
      * Adds the structure size info.
      */
-    public MultiblockTooltipBuilder2<MTE> beginStructureBlock(boolean hollow) {
+    public StructureWrapperTooltipBuilder<MTE> beginStructureBlock(boolean hollow) {
         if (!structure.minSize.equals(structure.maxSize)) {
             super.beginVariableStructureBlock(
                 structure.minSize.get0(),
@@ -75,7 +76,7 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
     /**
      * Adds the structure size info.
      */
-    public MultiblockTooltipBuilder2<MTE> beginStructureBlock() {
+    public StructureWrapperTooltipBuilder<MTE> beginStructureBlock() {
         if (!structure.minSize.equals(structure.maxSize)) {
             super.beginVariableStructureBlock(
                 structure.minSize.get0(),
@@ -99,12 +100,12 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
     /**
      * Sets the name for a hatch instead of using the default name.
      */
-    public MultiblockTooltipBuilder2<MTE> addCasingNameOverride(ICasing casing, String newName) {
+    public StructureWrapperTooltipBuilder<MTE> addCasingNameOverride(ICasing casing, String newName) {
         casingNameOverrides.put(casing, newName);
         return this;
     }
 
-    public MultiblockTooltipBuilder2<MTE> addCasingInfoAuto(ICasing casing) {
+    public StructureWrapperTooltipBuilder<MTE> addCasingInfoAuto(ICasing casing) {
         if (structure.getCasingMax(casing) != structure.getCasingMin(casing)) {
             addCasingInfoRange(casing);
         } else {
@@ -114,12 +115,12 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
         return this;
     }
 
-    public MultiblockTooltipBuilder2<MTE> addCasingInfoExact(ICasing casing) {
+    public StructureWrapperTooltipBuilder<MTE> addCasingInfoExact(ICasing casing) {
         addCasingInfoExactly(casing.getLocalizedName(), structure.getCasingMax(casing), casing.isTiered());
         return this;
     }
 
-    public MultiblockTooltipBuilder2<MTE> addCasingInfoRange(ICasing casing) {
+    public StructureWrapperTooltipBuilder<MTE> addCasingInfoRange(ICasing casing) {
         String name;
 
         if (casingNameOverrides.containsKey(casing)) {
@@ -136,7 +137,7 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
     /**
      * Sets the name for a hatch instead of using the default name.
      */
-    public MultiblockTooltipBuilder2<MTE> addHatchNameOverride(IHatchElement<? super MTE> hatch, String newName) {
+    public StructureWrapperTooltipBuilder<MTE> addHatchNameOverride(IHatchElement<? super MTE> hatch, String newName) {
         hatchNameOverrides.put(hatch, newName);
         return this;
     }
@@ -144,7 +145,7 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
     /**
      * Sets the name for a hatch instead of using the default name.
      */
-    public MultiblockTooltipBuilder2<MTE> addHatchNameOverride(IHatchElement<? super MTE> hatch, ItemStack stack) {
+    public StructureWrapperTooltipBuilder<MTE> addHatchNameOverride(IHatchElement<? super MTE> hatch, ItemStack stack) {
         hatchNameOverrides.put(hatch, stack.getDisplayName());
         return this;
     }
@@ -152,7 +153,7 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
     /**
      * Sets the location/casing for a hatch instead of using the default location.
      */
-    public MultiblockTooltipBuilder2<MTE> addHatchLocationOverride(IHatchElement<? super MTE> hatch,
+    public StructureWrapperTooltipBuilder<MTE> addHatchLocationOverride(IHatchElement<? super MTE> hatch,
         String newLocation) {
         hatchInfoOverrides.put(hatch, newLocation);
         return this;
@@ -161,7 +162,7 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
     /**
      * Sets the location/casing for a hatch instead of using the default location.
      */
-    public MultiblockTooltipBuilder2<MTE> addHatchLocationOverride(Collection<IHatchElement<? super MTE>> hatches,
+    public StructureWrapperTooltipBuilder<MTE> addHatchLocationOverride(Collection<IHatchElement<? super MTE>> hatches,
         String newLocation) {
         for (var hatch : hatches) {
             hatchInfoOverrides.put(hatch, newLocation);
@@ -169,7 +170,7 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
         return this;
     }
 
-    public MultiblockTooltipBuilder2<MTE> disableMultiAmpHatchLine() {
+    public StructureWrapperTooltipBuilder<MTE> disableMultiAmpHatchLine() {
         printMultiampSupport = false;
         return this;
     }
@@ -177,7 +178,7 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
     /**
      * Add a hatch line manually.
      */
-    public MultiblockTooltipBuilder2<MTE> addHatch(ICasing casing, IHatchElement<? super MTE> hatch, int... dots) {
+    public StructureWrapperTooltipBuilder<MTE> addHatch(ICasing casing, IHatchElement<? super MTE> hatch, int... dots) {
         String nameOverride = hatchNameOverrides.get(hatch);
 
         String info = hatchInfoOverrides.get(hatch);
@@ -189,7 +190,7 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
         if (dots.length > 0) {
             info += GTUtility.translate(
                 "GT5U.MBTT.HatchDots",
-                String.join(", ", GTUtility.mapToList(new IntArrayList(dots), Object::toString)));
+                String.join(", ", GTDataUtils.mapToList(new IntArrayList(dots), Object::toString)));
         }
 
         if (nameOverride != null) {
@@ -262,7 +263,7 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
     /**
      * Automatically adds casing and hatch lines.
      */
-    public MultiblockTooltipBuilder2<MTE> addAllCasingInfo() {
+    public StructureWrapperTooltipBuilder<MTE> addAllCasingInfo() {
         addAllCasingInfo(null, null);
         return this;
     }
@@ -271,11 +272,11 @@ public class MultiblockTooltipBuilder2<MTE extends MTEEnhancedMultiBlockBase<?> 
      * Automatically adds casing and hatch lines.
      * If this doesn't do something you need, add it if it's simple. If it's something cursed or complex don't bother,
      * just call the proper methods manually. This method should only cover normal use cases.
-     * 
-     * @see MultiblockTooltipBuilder2#addCasingInfoAuto(ICasing)
-     * @see MultiblockTooltipBuilder2#addHatch(ICasing, IHatchElement, int...)
+     *
+     * @see StructureWrapperTooltipBuilder#addCasingInfoAuto(ICasing)
+     * @see StructureWrapperTooltipBuilder#addHatch(ICasing, IHatchElement, int...)
      */
-    public MultiblockTooltipBuilder2<MTE> addAllCasingInfo(@Nullable List<ICasing> casingOrder,
+    public StructureWrapperTooltipBuilder<MTE> addAllCasingInfo(@Nullable List<ICasing> casingOrder,
         @Nullable List<IHatchElement<? super MTE>> hatchOrder) {
         ObjectArraySet<ICasing> addedCasings = new ObjectArraySet<>();
         ObjectArraySet<IHatchElement<?>> addedHatches = new ObjectArraySet<>();

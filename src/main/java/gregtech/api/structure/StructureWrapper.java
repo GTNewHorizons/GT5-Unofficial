@@ -3,19 +3,16 @@ package gregtech.api.structure;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -68,69 +65,78 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
         try {
             String[][] definitionText = provider.getDefinition();
 
-            // find the controller offset, calculate the multi size, and calculate the min/default casing counts
-            {
-                int width = 0;
-                int height = 0;
-                int length = definitionText.length;
+            analyzeMinDefinition(definitionText);
 
-                int z = 0;
-                for (String[] a : definitionText) {
-                    int y = 0;
-                    height = Math.max(height, a.length);
-                    for (String b : a) {
-                        width = Math.max(width, b.length());
-                        for (int x = 0; x < b.length(); x++) {
-                            char c = b.charAt(x);
-                            if (c == ' ' || c == '-' || c == '+') continue;
-
-                            minCasingCounts.mergeInt(c, 1, Integer::sum);
-
-                            if (c == '~') {
-                                controllerOffset = new Vec3Impl(x, y, z);
-                            }
-                        }
-                        y++;
-                    }
-                    z++;
-                }
-
-                minSize = new Vec3Impl(width, height, length);
-            }
-
-            if (controllerOffset == null) {
-                throw new IllegalStateException(
-                    "Structure definition for " + provider
-                        + " did not contain a tilde! This is required so that the wrapper knows where the controller is.");
-            }
-
-            // calculate the max casing counts
-            {
-                String[][] maxDefinitionText = provider.getMaxDefinition();
-
-                int width = 0;
-                int height = 0;
-                int length = maxDefinitionText.length;
-
-                for (String[] a : maxDefinitionText) {
-                    height = Math.max(height, a.length);
-                    for (String b : a) {
-                        width = Math.max(width, b.length());
-                        for (char c : b.toCharArray()) {
-                            if (c == ' ' || c == '-' || c == '+' || c == '~') continue;
-
-                            maxCasingCounts.mergeInt(c, 1, Integer::sum);
-                        }
-                    }
-                }
-
-                maxSize = new Vec3Impl(width, height, length);
-            }
+            analyzeMaxDefinition();
 
             structureDefinition = provider.compile(definitionText);
         } catch (Throwable t) {
             GTMod.GT_FML_LOGGER.error("Could not compile structure", t);
         }
+    }
+
+    private void analyzeMinDefinition(String[][] definitionText) {
+        // find the controller offset, calculate the multi size, and calculate the min/default casing counts
+        int width = 0;
+        int height = 0;
+        int length = definitionText.length;
+
+        int z = 0;
+        for (String[] a : definitionText) {
+            int y = 0;
+            height = Math.max(height, a.length);
+            for (String b : a) {
+                width = Math.max(width, b.length());
+                for (int x = 0; x < b.length(); x++) {
+                    char c = b.charAt(x);
+                    if (c == ' ' || c == '-' || c == '+') continue;
+
+                    minCasingCounts.mergeInt(c, 1, Integer::sum);
+
+                    if (c == '~') {
+                        if (controllerOffset != null) {
+                            throw new IllegalStateException(
+                                "Structure definition for " + provider + " contains two tildes");
+                        }
+
+                        controllerOffset = new Vec3Impl(x, y, z);
+                    }
+                }
+                y++;
+            }
+            z++;
+        }
+
+        minSize = new Vec3Impl(width, height, length);
+
+        if (controllerOffset == null) {
+            throw new IllegalStateException(
+                "Structure definition for " + provider
+                    + " did not contain a tilde! This is required so that the wrapper knows where the controller is.");
+        }
+    }
+
+    private void analyzeMaxDefinition() {
+        // calculate the max casing counts
+        String[][] maxDefinitionText = provider.getMaxDefinition();
+
+        int width = 0;
+        int height = 0;
+        int length = maxDefinitionText.length;
+
+        for (String[] a : maxDefinitionText) {
+            height = Math.max(height, a.length);
+            for (String b : a) {
+                width = Math.max(width, b.length());
+                for (char c : b.toCharArray()) {
+                    if (c == ' ' || c == '-' || c == '+' || c == '~') continue;
+
+                    maxCasingCounts.mergeInt(c, 1, Integer::sum);
+                }
+            }
+        }
+
+        maxSize = new Vec3Impl(width, height, length);
     }
 
     private void ensureStructureLoaded() {
@@ -284,46 +290,36 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
     public IStructureElement<MTE> getStructureElement(char c) {
         CasingInfo<MTE> casing = casings.get(c);
 
+        IStructureElement<MTE> element;
+
         if (casing.elementOverride != null) {
-            IStructureElement<MTE> element = casing.elementOverride.apply(casing.tierGroup);
-
-            if (casing.elementWrapper != null) {
-                element = casing.elementWrapper.apply(element);
-            }
-
-            return element;
+            element = casing.elementOverride.apply(casing.casingGroup);
         } else if (casing.maxHatches != 0) {
             Objects.requireNonNull(casing.casing, "CasingInfo.casing cannot be null");
 
-            IStructureElement<MTE> element = onElementPass(
+            element = onElementPass(
                 instance -> instance.getStructureInstance()
                     .onCasingEncountered(c),
-                casing.casing.asElement(() -> casing.tierGroup));
+                casing.casing.asElement(() -> casing.casingGroup));
 
             element = HatchElementBuilder.<MTE>builder()
                 .atLeast(casing.hatches)
                 .casingIndex(casing.casing.getTextureId())
                 .dot(casing.dot)
                 .buildAndChain(element);
-
-            if (casing.channel != null) {
-                element = withChannel(casing.channel, element);
-            }
-
-            if (casing.elementWrapper != null) {
-                element = casing.elementWrapper.apply(element);
-            }
-
-            return element;
         } else {
-            IStructureElement<MTE> element = casing.casing.asElement(() -> casing.tierGroup);
-
-            if (casing.elementWrapper != null) {
-                element = casing.elementWrapper.apply(element);
-            }
-
-            return element;
+            element = casing.casing.asElement(() -> casing.casingGroup);
         }
+
+        if (casing.channel != null) {
+            element = withChannel(casing.channel, element);
+        }
+
+        if (casing.elementWrapper != null) {
+            element = casing.elementWrapper.apply(element);
+        }
+
+        return element;
     }
 
     public int getCasingMin(char c) {
@@ -362,13 +358,11 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
         return sum;
     }
 
-    public CasingBuilder addCasing(char c, ICasing casing) {
-        Objects.requireNonNull(casing);
-
+    public CasingBuilder addCasing(char c, @Nonnull ICasing casing) {
         CasingInfo<MTE> casingInfo = new CasingInfo<>();
 
         casingInfo.casing = casing;
-        casingInfo.tierGroup = ICasingGroup.ofCasing(casing);
+        casingInfo.casingGroup = ICasingGroup.ofCasing(casing);
 
         casings.put(c, casingInfo);
 
@@ -397,30 +391,6 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
      */
     public IStructureDefinition<MTE> buildStructure(String[][] definition) {
         return getStructureBuilder(Arrays.asList(Pair.of(StructureWrapper.STRUCTURE_SHAPE_MAIN, definition))).build();
-    }
-
-    /**
-     * Should be called in {@link IConstructable#getStructureDescription(ItemStack)} so that blockrenderer will show the
-     * proper tooltips for hatches in its gui.
-     */
-    public List<String> getStructureDescription(ItemStack trigger) {
-        ArrayList<String> desc = new ArrayList<>();
-
-        // unlocalized and hardcoded because for some insane reason, blockrenderer parses this text to show its hatch
-        // tooltips in its preview
-        for (CasingInfo<?> casing : casings.values()) {
-            if (casing.hatches != null) {
-                desc.add(
-                    MessageFormat.format(
-                        "Hint {0} dot: {1}",
-                        casing.dot,
-                        Stream.of(casing.hatches)
-                            .map(IHatchElement::getDisplayName)
-                            .collect(Collectors.joining(", "))));
-            }
-        }
-
-        return desc;
     }
 
     @SuppressWarnings("FieldCanBeLocal")
@@ -480,8 +450,8 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
             return this;
         }
 
-        public CasingBuilder withTierGroup(ICasingGroup group) {
-            casingInfo.tierGroup = group;
+        public CasingBuilder withCasingGroup(ICasingGroup group) {
+            casingInfo.casingGroup = group;
 
             return this;
         }

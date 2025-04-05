@@ -1,14 +1,11 @@
 package gregtech.api.structure;
 
-import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-
-import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 
 /**
  * An object which manages a multi's structure. Usually implemented by the multi itself.
  */
-public interface IStructureProvider<MTE extends MTEMultiBlockBase & IAlignment & IStructureProvider<MTE>> {
+public interface IStructureProvider<MTE> {
 
     /**
      * Gets the minimal (default trigger w/ stackSize = 1) structure definition.
@@ -28,7 +25,7 @@ public interface IStructureProvider<MTE extends MTEMultiBlockBase & IAlignment &
     /**
      * Compiles a structure definition. Usually configures a {@link StructureWrapper}, then calls
      * {@link StructureWrapper#buildStructure(String[][])}.
-     * 
+     *
      * @param definition The return value of {@link #getDefinition()}
      * @return A valid structure definition
      */
