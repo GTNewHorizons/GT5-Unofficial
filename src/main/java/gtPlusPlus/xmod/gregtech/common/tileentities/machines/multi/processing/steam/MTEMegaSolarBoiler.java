@@ -192,7 +192,7 @@ public class MTEMegaSolarBoiler extends MTEBetterSteamMultiBase<MTEMegaSolarBoil
 
         if (aBaseMetaTileEntity.isAllowedToWork()) {
             if (aBaseMetaTileEntity.getWorld()
-                .isDaytime() || !depleteInputReal(Materials.Water.getFluid(30), true)) {
+                .isDaytime() && !depleteInputReal(Materials.Water.getFluid(30), true)) {
                 addOutput(FluidUtils.getSteam(4800));
                 depleteInputReal(Materials.Water.getFluid(30));
                 state = "Boiling! :D";
