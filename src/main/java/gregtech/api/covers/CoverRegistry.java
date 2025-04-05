@@ -35,8 +35,7 @@ public final class CoverRegistry {
      * The List of Cover Registrations for the Covers containing cover factories, placement conditions and base textures
      */
     private static final Map<GTItemStack, CoverRegistration> covers = new ConcurrentHashMap<>();
-    public static final Cover NO_COVER = new CoverNone(
-        new CoverContext(GTUtility.intToStack(0), ForgeDirection.UNKNOWN, null));
+    public static final Cover NO_COVER = new CoverNone(new CoverContext(null, ForgeDirection.UNKNOWN, null));
     private static final CoverRegistration coverNone = new CoverRegistration(
         CoverNone::new,
         PRIMITIVE_COVER_PLACER,
@@ -87,7 +86,7 @@ public final class CoverRegistry {
         return factory == null ? coverNone : factory;
     }
 
-    public static Cover buildCover(@NotNull ItemStack coverItem, ForgeDirection side, ICoverable coverable) {
+    public static Cover buildCover(ItemStack coverItem, ForgeDirection side, ICoverable coverable) {
         CoverRegistration registration = getRegistration(coverItem);
         return registration.getFactory()
             .buildCover(new CoverContext(coverItem, side, coverable));
@@ -97,7 +96,7 @@ public final class CoverRegistry {
         return getRegistration(coverId).getCoverPlacer();
     }
 
-    public static boolean isCover(@NotNull ItemStack coverId) {
+    public static boolean isCover(ItemStack coverId) {
         return GTUtility.isStackInList(new GTItemStack(coverId), covers.keySet());
     }
 
