@@ -489,7 +489,8 @@ public class ParallelHelper {
             return;
         }
 
-        calculator.calculate();
+        calculator.setCurrentParallel(currentParallel)
+            .calculate();
         // If Batch Mode is enabled determine how many extra parallels we can get
         if (batchMode && currentParallel > 0 && calculator.getDuration() < MAX_BATCH_MODE_TICK_TIME) {
             int tExtraParallels;
