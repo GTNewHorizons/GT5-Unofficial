@@ -60,6 +60,11 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
     }
 
     @Override
+    public boolean willExplodeInRain() {
+        return false;
+    }
+
+    @Override
     public byte getTileEntityBaseType() {
         return (byte) (Math.min(3, mTier <= 0 ? 0 : 1 + ((mTier - 1) / 4)));
     }
