@@ -450,7 +450,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
-        final NBTTagCompound tag = accessor.getNBTData();
         final ForgeDirection currentFacing = accessor.getSide();
 
         for (final Cover cover : covers) {
@@ -485,7 +484,11 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
         // While we have some cover data on the client (enough to render it); we don't have all the information we want,
         // such as details on the fluid filter, so send it all here.
-        writeCoverNBT(tag, false);
+        for (final Cover cover : covers) {
+            if (cover.isValid()) {
+                NW.sendToPlayer(new GTPacketSendCoverData(cover, this, cover.getSide()), player);
+            }
+        }
     }
 
     /**
