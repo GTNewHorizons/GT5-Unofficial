@@ -1,0 +1,284 @@
+package gregtech.common.gui;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraftforge.common.config.Configuration;
+
+import org.lwjgl.opengl.GL11;
+
+import com.gtnewhorizons.modularui.api.math.Color;
+
+import gregtech.common.handlers.PowerGogglesConfigHandler;
+
+/**
+ * Created by brandon3055 on 11/2/2016.
+ */
+public class PowerGogglesGuiHudConfig extends GuiScreen {
+
+    private String[] formatTypes = new String[] { "SCIENTIFIC", "ENGINEERING", "SI" };
+    private String[] readingTypes = new String[] { "BOTH", "TOTAL", "EU/T" };
+    private String[] gradientTypes = new String[] { "NORMAL", "DEUTERANOPIA" };
+    private GuiScreen parentScreen;
+    private boolean draggingHud = false;
+
+    private GuiButton notationToggleButton;
+    private GuiButton readingToggleButton;
+    private GuiButton gradientToggleButton;
+
+    private GuiButton mainScaleUpButton;
+    private GuiButton mainScaleDownButton;
+    private GuiButton subScaleUpButton;
+    private GuiButton subScaleDownButton;
+    private GuiButton hudScaleUpButton;
+    private GuiButton hudScaleDownButton;
+
+    private int dragOffsetX = 0;
+    private int dragOffsetY = 0;
+    private int dragCenterX;
+    private int dragCenterY;
+    private int dragWidth;
+    private int dragHeight;
+
+    public PowerGogglesGuiHudConfig() {}
+
+    public PowerGogglesGuiHudConfig(GuiScreen parentScreen) {
+        this.parentScreen = parentScreen;
+    }
+
+    @Override
+    public void initGui() {
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        super.initGui();
+        int formatButtonWidth = fontRenderer.getStringWidth("Main Text Scale+") * 2 + 10;
+
+        int x = width / 2;
+        int y = (height / 2);
+        buttonList.clear();
+        notationToggleButton = new GuiButton(
+            0,
+            x - formatButtonWidth / 2,
+            y - 75,
+            "Toggle Notation: " + formatTypes[PowerGogglesConfigHandler.formatIndex]);
+        notationToggleButton.width = formatButtonWidth;
+
+        readingToggleButton = new GuiButton(
+            1,
+            x - formatButtonWidth / 2,
+            notationToggleButton.yPosition + notationToggleButton.height,
+            "Toggle Reading Type: " + readingTypes[PowerGogglesConfigHandler.readingIndex]);
+        readingToggleButton.width = formatButtonWidth;
+
+        gradientToggleButton = new GuiButton(
+            2,
+            x - formatButtonWidth / 2,
+            readingToggleButton.yPosition + readingToggleButton.height,
+            "Toggle Gradient: " + gradientTypes[PowerGogglesConfigHandler.gradientIndex]);
+        gradientToggleButton.width = formatButtonWidth;
+
+        mainScaleDownButton = new GuiButton(
+            3,
+            x - formatButtonWidth / 2,
+            gradientToggleButton.yPosition + gradientToggleButton.height,
+            "Main Text Scale-");
+        mainScaleDownButton.width = formatButtonWidth / 2;
+
+        mainScaleUpButton = new GuiButton(
+            4,
+            x,
+            gradientToggleButton.yPosition + gradientToggleButton.height,
+            "Main Text Scale+");
+        mainScaleUpButton.width = formatButtonWidth / 2;
+
+        subScaleDownButton = new GuiButton(
+            5,
+            x - formatButtonWidth / 2,
+            mainScaleDownButton.yPosition + mainScaleDownButton.height,
+            "Sub Text Scale-");
+        subScaleDownButton.width = formatButtonWidth / 2;
+        subScaleUpButton = new GuiButton(
+            6,
+            x,
+            mainScaleUpButton.yPosition + mainScaleUpButton.height,
+            "Sub Text Scale+");
+        subScaleUpButton.width = formatButtonWidth / 2;
+
+        hudScaleDownButton = new GuiButton(
+            7,
+            x - formatButtonWidth / 2,
+            subScaleDownButton.yPosition + subScaleDownButton.height,
+            "HUD Scale-");
+        hudScaleDownButton.width = formatButtonWidth / 2;
+        hudScaleUpButton = new GuiButton(8, x, subScaleUpButton.yPosition + subScaleUpButton.height, "HUD Scale+");
+        hudScaleUpButton.width = formatButtonWidth / 2;
+
+        buttonList.add(notationToggleButton);
+        buttonList.add(readingToggleButton);
+        buttonList.add(gradientToggleButton);
+        buttonList.add(mainScaleDownButton);
+        buttonList.add(mainScaleUpButton);
+        buttonList.add(subScaleDownButton);
+        buttonList.add(subScaleUpButton);
+        buttonList.add(hudScaleDownButton);
+        buttonList.add(hudScaleUpButton);
+
+    }
+
+    @Override
+    public void updateScreen() {
+        notationToggleButton.displayString = "Toggle Notation: " + formatTypes[PowerGogglesConfigHandler.formatIndex];
+        readingToggleButton.displayString = "Toggle Reading Type: "
+            + readingTypes[PowerGogglesConfigHandler.readingIndex];
+        gradientToggleButton.displayString = "Toggle Gradient: "
+            + gradientTypes[PowerGogglesConfigHandler.gradientIndex];
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) {
+        double scale;
+        switch (button.id) {
+            case 0:
+                PowerGogglesConfigHandler.formatIndex = (PowerGogglesConfigHandler.formatIndex + 1)
+                    % formatTypes.length;
+                PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                    .get("Format Index")
+                    .set(PowerGogglesConfigHandler.formatIndex);
+                break;
+            case 1:
+                PowerGogglesConfigHandler.readingIndex = (PowerGogglesConfigHandler.readingIndex + 1)
+                    % readingTypes.length;
+                PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                    .get("Reading Index")
+                    .set(PowerGogglesConfigHandler.readingIndex);
+                break;
+            case 2:
+                PowerGogglesConfigHandler.gradientIndex = (PowerGogglesConfigHandler.gradientIndex + 1)
+                    % gradientTypes.length;
+                PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                    .get("Gradient Index")
+                    .set(PowerGogglesConfigHandler.gradientIndex);
+                break;
+            case 3:
+                scale = PowerGogglesConfigHandler.mainTextScaling - 0.1;
+                PowerGogglesConfigHandler.mainTextScaling = scale;
+                PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                    .get("Storage Text Scale")
+                    .set(scale);
+                break;
+            case 4:
+                scale = PowerGogglesConfigHandler.mainTextScaling + 0.1;
+                PowerGogglesConfigHandler.mainTextScaling = scale;
+                PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                    .get("Storage Text Scale")
+                    .set(scale);
+                break;
+            case 5:
+                scale = PowerGogglesConfigHandler.subTextScaling - 0.1;
+                PowerGogglesConfigHandler.subTextScaling = scale;
+                PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                    .get("Timed Reading Text Scale")
+                    .set(scale);
+                break;
+            case 6:
+                scale = PowerGogglesConfigHandler.subTextScaling + 0.1;
+                PowerGogglesConfigHandler.subTextScaling = scale;
+                PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                    .get("Timed Reading Text Scale")
+                    .set(scale);
+                break;
+            case 7:
+                scale = PowerGogglesConfigHandler.hudScale - 0.1;
+                PowerGogglesConfigHandler.hudScale = scale;
+                PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                    .get("HUD Scale")
+                    .set(scale);
+                break;
+            case 8:
+                scale = PowerGogglesConfigHandler.hudScale + 0.1;
+                PowerGogglesConfigHandler.hudScale = scale;
+                PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
+                    .get("HUD Scale")
+                    .set(scale);
+                break;
+        }
+        PowerGogglesConfigHandler.config.save();
+
+    }
+
+    @Override
+    public void drawScreen(int x, int y, float partial) {
+        GL11.glPushMatrix();
+        super.drawScreen(x, y, partial);
+        GL11.glPopMatrix();
+
+        dragCenterX = (int) ((PowerGogglesConfigHandler.mainOffsetX + PowerGogglesConfigHandler.rectangleWidth)
+            * PowerGogglesConfigHandler.hudScale);
+        dragCenterY = (int) ((height - PowerGogglesConfigHandler.mainOffsetY
+            - PowerGogglesConfigHandler.rectangleHeight) * PowerGogglesConfigHandler.hudScale);
+        dragWidth = (int) (10 * PowerGogglesConfigHandler.hudScale);
+        dragHeight = (int) (10 * PowerGogglesConfigHandler.hudScale);
+        drawRect(
+            dragCenterX - dragWidth / 2,
+            dragCenterY - dragHeight / 2,
+            dragCenterX + dragWidth / 2,
+            dragCenterY + dragHeight / 2,
+            Color.argb(40, 24, 163, 255 * 0.75f));
+    }
+
+    @Override
+    protected void mouseClicked(int x, int y, int button) {
+        if (isOnDragRectangle(x, y)) {
+            draggingHud = true;
+            dragOffsetX = (int) ((x - PowerGogglesConfigHandler.mainOffsetX * PowerGogglesConfigHandler.hudScale));
+            dragOffsetY = (int) ((height - PowerGogglesConfigHandler.mainOffsetY * PowerGogglesConfigHandler.hudScale
+                - y));
+        }
+
+        super.mouseClicked(x, y, button);
+    }
+
+    private boolean isOnDragRectangle(int x, int y) {
+        return x <= dragCenterX + dragWidth / 2 && x >= dragCenterX - dragWidth / 2
+            && y >= dragCenterY - dragHeight
+            && y <= dragCenterY + dragHeight;
+    }
+
+    @Override
+    protected void mouseMovedOrUp(int x, int y, int action) {
+        if (draggingHud) {
+            PowerGogglesConfigHandler.config.get(Configuration.CATEGORY_GENERAL, "Render Offset X", 10, "")
+                .set(PowerGogglesConfigHandler.mainOffsetX);
+            PowerGogglesConfigHandler.config.get(Configuration.CATEGORY_GENERAL, "Render Offset Y", 40, "")
+                .set(PowerGogglesConfigHandler.mainOffsetY);
+            PowerGogglesConfigHandler.config.save();
+            draggingHud = false;
+        }
+        super.mouseMovedOrUp(x, y, action);
+
+    }
+
+    @Override
+    protected void mouseClickMove(int x, int y, int action, long time) {
+        if (draggingHud) {
+            PowerGogglesConfigHandler.mainOffsetX = (int) ((x - dragOffsetX) / PowerGogglesConfigHandler.hudScale);
+            PowerGogglesConfigHandler.mainOffsetY = (int) ((height - y - dragOffsetY)
+                / PowerGogglesConfigHandler.hudScale);
+        }
+        super.mouseClickMove(x, y, action, time);
+    }
+
+    @Override
+    public boolean doesGuiPauseGame() {
+        return false;
+    }
+
+    @Override
+    protected void keyTyped(char keyChar, int keyInt) {
+        if (keyInt == 1) {
+            Minecraft.getMinecraft()
+                .displayGuiScreen(parentScreen); // return to parent???
+            return;
+        }
+    }
+}

@@ -6,6 +6,7 @@ import static gregtech.GT_Version.VERSION_PATCH;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.util.GTRecipe.setItemStacks;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -87,6 +88,7 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.config.OPStuff;
 import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
+import gregtech.common.handlers.PowerGogglesConfigHandler;
 import gregtech.common.misc.GTCommand;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
@@ -253,6 +255,8 @@ public class GTMod implements IGTMod {
         GTPreLoad.createLogFiles(
             aEvent.getModConfigurationDirectory()
                 .getParentFile());
+
+        PowerGogglesConfigHandler.init(new File(aEvent.getModConfigurationDirectory() + "/Gregtech/Goggles.cfg"));
 
         gregtechproxy.onPreLoad();
 
