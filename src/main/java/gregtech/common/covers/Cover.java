@@ -74,7 +74,7 @@ public class Cover {
 
     protected void readDataFromNbt(NBTBase nbt) {}
 
-    public final void readFromPacket(ByteArrayDataInput byteData) {
+    public void readFromPacket(ByteArrayDataInput byteData) {
         setTickRateAddition(byteData.readInt());
         readDataFromPacket(byteData);
     }
