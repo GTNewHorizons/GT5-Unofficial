@@ -38,7 +38,7 @@ public final class CoverRegistry {
     public static final Cover NO_COVER = new CoverNone(
         new CoverContext(GTUtility.intToStack(0), ForgeDirection.UNKNOWN, null));
     private static final CoverRegistration coverNone = new CoverRegistration(
-        context -> NO_COVER,
+        CoverNone::new,
         PRIMITIVE_COVER_PLACER,
         null);
 
