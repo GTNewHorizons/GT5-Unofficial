@@ -143,9 +143,8 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.switch"));
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.gui"));
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.pick"));
-        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.lock"));
-        aList.add(
-            StatCollector.translateToLocalFormatted("gt.behaviour.paintspray.infinite.tooltip.prevent_shake", ctrlKey));
+        aList.add(StatCollector.translateToLocalFormatted("gt.behaviour.paintspray.infinite.tooltip.lock", ctrlKey));
+        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.prevent_shake"));
         aList.add(" ");
         aList.add(AuthorQuerns);
 
@@ -170,9 +169,9 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
     @Override
     public boolean onMiddleClick(final MetaBaseItem item, final ItemStack itemStack, final EntityPlayer player) {
-        if (player.isSneaking()) {
+        if (isCtrlDown()) {
             sendPacket(GTPacketInfiniteSpraycan.Action.LOCK_CAN);
-        } else if (isCtrlDown()) {
+        } else if (isShiftDown()) {
             sendPacket(GTPacketInfiniteSpraycan.Action.TOGGLE_SHAKE_LOCK);
         } else if (isLocked(itemStack)) {
             displayLockedMessage();
@@ -195,6 +194,22 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         }
 
         return true;
+    }
+
+    private boolean isShiftDown() {
+        // Yes, there's a duplicate method in GT++, but I didn't feel right including GT++ code here. We can extract
+        // this later if it is useful elsewhere.
+        try {
+            // noinspection DuplicatedCode
+            if (!Keyboard.isCreated()) {
+                return false;
+            }
+
+            boolean isShiftKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
+            return isShiftKeyDown;
+        } catch (IllegalStateException ignored) {
+            return false;
+        }
     }
 
     private boolean isCtrlDown() {
