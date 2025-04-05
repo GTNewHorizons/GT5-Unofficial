@@ -38,6 +38,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import org.apache.commons.lang3.tuple.MutableTriple;
 
+import codechicken.translocator.TileLiquidTranslocator;
 import cpw.mods.fml.common.Optional;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
@@ -58,6 +59,7 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.TemperatureUtils;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Other;
@@ -66,6 +68,7 @@ import gregtech.common.covers.CoverDrain;
 import gregtech.common.covers.CoverFluidRegulator;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import tconstruct.smeltery.logic.FaucetLogic;
 
 public class MTEFluidPipe extends MetaPipeEntity {
 
@@ -729,13 +732,13 @@ public class MTEFluidPipe extends MetaPipeEntity {
     @Optional.Method(modid = Mods.Names.TINKER_CONSTRUCT)
     private boolean isTConstructFaucet(TileEntity tTileEntity) {
         // Tinker Construct Faucets return a null tank info, so check the class
-        return tTileEntity instanceof tconstruct.smeltery.logic.FaucetLogic;
+        return tTileEntity instanceof FaucetLogic;
     }
 
     @Optional.Method(modid = Mods.Names.TRANSLOCATOR)
     private boolean isTranslocator(TileEntity tTileEntity) {
         // Translocators return a TankInfo, but it's of 0 length - so check the class if we see this pattern
-        return tTileEntity instanceof codechicken.translocator.TileLiquidTranslocator;
+        return tTileEntity instanceof TileLiquidTranslocator;
     }
 
     @Override
@@ -920,9 +923,8 @@ public class MTEFluidPipe extends MetaPipeEntity {
                 + "%%% L/sec"
                 + EnumChatFormatting.GRAY);
         descriptions.add(
-            EnumChatFormatting.RED + "Heat Limit: %%%"
-                + GTUtility.formatNumbers(mHeatResistance)
-                + "%%% K"
+            EnumChatFormatting.RED + "Heat Limit: "
+                + TemperatureUtils.getTemperatureAsCurrentUnit(mHeatResistance)
                 + EnumChatFormatting.GRAY);
         if (!mGasProof) {
             descriptions.add(EnumChatFormatting.DARK_GREEN + "Cannot handle gas" + EnumChatFormatting.GRAY);
