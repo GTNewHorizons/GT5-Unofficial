@@ -91,12 +91,6 @@ public enum Mixin {
         .addTargetedMod(TargetedMod.IC2)
         .addExcludedMod(TargetedMod.GT6)),
 
-    AVARITIA_HAZMAT(new Builder("Adds Hazmat to Infinity armor").setPhase(Phase.LATE)
-        .setSide(Side.BOTH)
-        .addMixinClasses("avaritia.MixinInfinityArmor")
-        .setApplyIf(() -> true)
-        .addTargetedMod(TargetedMod.AVARITIA)),
-
     // Pollution
     POLLUTION_RENDER_BLOCKS(new Builder("Changes colors of certain blocks based on pollution levels")
         .addMixinClasses("minecraft.pollution.MixinRenderBlocks_PollutionWithoutOptifine")
