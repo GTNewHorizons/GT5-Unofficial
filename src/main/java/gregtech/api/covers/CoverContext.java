@@ -1,36 +1,36 @@
 package gregtech.api.covers;
 
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.util.GTUtility;
 
-public class CoverContext {
+public final class CoverContext {
 
-    private final int coverId;
+    private final ItemStack coverItem;
     private final ForgeDirection side;
     private final ICoverable coverable;
-    private final Object coverData;
 
-    public CoverContext(int coverId, ForgeDirection side, ICoverable coverable, Object coverData) {
+    public CoverContext(ItemStack coverItem, ForgeDirection side, ICoverable coverable) {
         this.side = side;
-        this.coverId = coverId;
         this.coverable = coverable;
-        this.coverData = coverData;
+        this.coverItem = coverItem;
+    }
+
+    public int getCoverId() {
+        return GTUtility.stackToInt(coverItem);
+    }
+
+    public ItemStack getCoverInitializer() {
+        return coverItem;
     }
 
     public ForgeDirection getSide() {
         return side;
     }
 
-    public int getCoverId() {
-        return coverId;
-    }
-
     public ICoverable getCoverable() {
         return coverable;
-    }
-
-    public Object getCoverData() {
-        return coverData;
     }
 }
