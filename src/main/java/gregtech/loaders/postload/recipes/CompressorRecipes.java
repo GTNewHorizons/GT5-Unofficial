@@ -150,7 +150,7 @@ public class CompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 8L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Wood, 1L))
-            .duration(15 * SECONDS)
+            .duration(5 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
 

@@ -142,7 +142,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .itemOutputs(
                                 GTUtility.copyOrNull(tPlanks),
                                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
-                            .duration(10 * SECONDS)
+                            .duration(4 * SECONDS)
                             .eut(8)
                             .addTo(steamCarpenterRecipes);
 

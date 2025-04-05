@@ -291,6 +291,11 @@ public class AssortedSteamRecipes implements Runnable {
             ItemList.Simple_Bronze_Turbine.get(1),
             new Object[] { "ABw", "BDB", "hBA", 'A', "stickBronze", 'B', "plateBronze", 'D', "ringBronze" });
 
+        GTModHandler.addCraftingRecipe(
+            ItemList.Spray_Color_Infinite.get(1),
+            new Object[] { " B ", "ACA", "ACA", 'A', "plateStronze", 'C', ItemList.Large_Fluid_Cell_Steel.get(1), 'B',
+                "pipeTinyBreel" });
+
         Materials[] Tier1Materials = { Materials.Bronze, Materials.Iron, Materials.Copper, Materials.Tin,
             Materials.Brass, Materials.Steel, Materials.WroughtIron, Materials.Breel, Materials.Stronze,
             Materials.CompressedSteam, Materials.CrudeSteel };
@@ -299,7 +304,7 @@ public class AssortedSteamRecipes implements Runnable {
             RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, aMat, 4), GTUtility.getIntegratedCircuit(24))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.frameGt, aMat, 1))
-                .duration(5 * SECONDS)
+                .duration(5 * TICKS)
                 .eut(16)
                 .addTo(steamManufacturerRecipes);
         }
@@ -326,7 +331,7 @@ public class AssortedSteamRecipes implements Runnable {
         RA.stdBuilder()
             .itemInputs(MaterialsAlloy.TUMBAGA.getRod(4), GTUtility.getIntegratedCircuit(24))
             .itemOutputs(MaterialsAlloy.TUMBAGA.getFrameBox(1))
-            .duration(5 * SECONDS)
+            .duration(5 * TICKS)
             .eut(16)
             .addTo(steamManufacturerRecipes);
 
@@ -498,6 +503,70 @@ public class AssortedSteamRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Breel, 2))
                 .itemOutputs(GTModHandler.getModItem(StorageDrawers.ID, "controller", 1, 0))
                 .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(steamManufacturerRecipes);
+
+            // Controller Slave
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get("drawerBasic", 1),
+                    GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Breel, 1))
+                .itemOutputs(GTModHandler.getModItem(StorageDrawers.ID, "controllerSlave", 1, 0))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(steamManufacturerRecipes);
+
+            // Upgrade Diamond
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Diamond, 1),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 4),
+                    GTModHandler.getModItem(StorageDrawers.ID, "upgradeTemplate", 1, 0))
+                .itemOutputs(GTModHandler.getModItem(StorageDrawers.ID, "upgrade", 1, 5))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(steamManufacturerRecipes);
+
+            // Upgrade Emerald
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Emerald, 1),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Emerald, 4),
+                    GTModHandler.getModItem(StorageDrawers.ID, "upgradeTemplate", 1, 0))
+                .itemOutputs(GTModHandler.getModItem(StorageDrawers.ID, "upgrade", 1, 6))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(steamManufacturerRecipes);
+
+            // Upgrade Ruby
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Ruby, 1),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Ruby, 4),
+                    GTModHandler.getModItem(StorageDrawers.ID, "upgradeTemplate", 1, 0))
+                .itemOutputs(GTModHandler.getModItem(StorageDrawers.ID, "upgrade", 1, 7))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(steamManufacturerRecipes);
+
+            // Upgrade Tanzanite
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.CompressedSteam, 1),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.CompressedSteam, 4),
+                    GTModHandler.getModItem(StorageDrawers.ID, "upgradeTemplate", 1, 0))
+                .itemOutputs(GTModHandler.getModItem(StorageDrawers.ID, "upgrade", 1, 8))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(steamManufacturerRecipes);
+
+            // Upgrade Diamond
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 3),
+                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2))
+                .itemOutputs(GTModHandler.getModItem(StorageDrawers.ID, "trim", 1, 0))
+                .duration(5 * TICKS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(steamManufacturerRecipes);
         }
@@ -901,6 +970,16 @@ public class AssortedSteamRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Breel, 2),
                 ItemList.Hydraulic_Arm_Steam.get(3))
             .itemOutputs(ItemList.Hydraulic_Assembling_Casing.get(1))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(steamManufacturerRecipes);
+
+        RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CompressedSteam, 4),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Stronze, 2),
+                ItemList.Hydraulic_Arm_Steam.get(1))
+            .itemOutputs(ItemList.Hydraulic_Assembling_Casing.get(3))
             .duration(2 * SECONDS)
             .eut(16)
             .addTo(steamManufacturerRecipes);
