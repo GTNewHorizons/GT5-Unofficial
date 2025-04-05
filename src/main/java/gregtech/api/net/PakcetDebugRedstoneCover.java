@@ -65,15 +65,8 @@ public class PakcetDebugRedstoneCover extends GTPacket {
                 manager.transferPlayerToDimension(player, this.dim);
             }
             player.playerNetServerHandler
-                .setPlayerLocation(x + 0.5, y + 1, z + 0.5, player.cameraYaw, player.cameraPitch); // try
-            // not
-            // to
-            // tp
-            // the
-            // player
-            // into
-            // the
-            // hull
+                .setPlayerLocation(x + 0.5, y + 1, z + 0.5, player.cameraYaw, player.cameraPitch);
+            // try not to tp the player into the hull
         }
         ArrayList<DimensionalCoord> list = new ArrayList<>();
         list.add(new DimensionalCoord(x, y, z, this.dim));
