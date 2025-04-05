@@ -10,9 +10,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject.LegacyCoverData;
 
-public class CoverSolarPanel extends CoverBehavior {
+public class CoverSolarPanel extends CoverLegacyData {
 
     private final int mVoltage;
 
@@ -26,22 +25,24 @@ public class CoverSolarPanel extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
-        int coverDataValue = coverData.get();
-        if (coverSide != ForgeDirection.UP) return LegacyCoverData.of(0);
-        int coverState = coverDataValue & 0x3;
-        int coverNum = coverDataValue >> 2;
+        if (coverSide != ForgeDirection.UP) {
+            coverData = 0;
+            return;
+        }
+        int coverState = this.coverData & 0x3;
+        int coverNum = this.coverData >> 2;
         if (aTimer % 100L == 0L) {
             if (coverable.getWorld()
                 .isThundering()) {
-                return LegacyCoverData.of(
-                    coverable.getBiome().rainfall > 0.0F && coverable.getSkyAtSide(coverSide)
-                        ? Math.min(20, coverNum) << 2
-                        : coverNum << 2);
+                coverData = coverable.getBiome().rainfall > 0.0F && coverable.getSkyAtSide(coverSide)
+                    ? Math.min(20, coverNum) << 2
+                    : coverNum << 2;
+                return;
             } else {
                 if (coverable.getWorld()
                     .isRaining() && coverable.getBiome().rainfall > 0.0F) { // really rains
@@ -51,7 +52,8 @@ public class CoverSolarPanel extends CoverBehavior {
                             .isDaytime()) {
                             coverState = 2;
                         } else {
-                            return LegacyCoverData.of(coverNum << 2);
+                            coverData = coverNum << 2;
+                            return;
                         }
                     }
                 } else { // not rains
@@ -71,14 +73,14 @@ public class CoverSolarPanel extends CoverBehavior {
                 1L);
         }
         if (aTimer % 28800L == 0L && coverNum < 100 && (coverNum > 10 || XSTR_INSTANCE.nextInt(3) == 2)) coverNum++;
-        return LegacyCoverData.of(coverState + (coverNum << 2));
+        coverData = coverState + (coverNum << 2);
     }
 
     @Override
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.capabilities.isCreativeMode) {
-            GTUtility.sendChatToPlayer(aPlayer, "Cleaned solar panel from " + (coverData.get() >> 2) + "% dirt");
-            coverData.set(coverData.get() & 0x3);
+            GTUtility.sendChatToPlayer(aPlayer, "Cleaned solar panel from " + (coverData >> 2) + "% dirt");
+            coverData = coverData & 0x3;
             return true;
         }
         for (int i = 0; i < aPlayer.inventory.mainInventory.length; i++) {
@@ -88,8 +90,8 @@ public class CoverSolarPanel extends CoverBehavior {
                 .equals(new ItemStack(Items.water_bucket).getUnlocalizedName())) {
                 aPlayer.inventory.mainInventory[i] = new ItemStack(Items.bucket);
                 if (aPlayer.inventoryContainer != null) aPlayer.inventoryContainer.detectAndSendChanges();
-                GTUtility.sendChatToPlayer(aPlayer, "Cleaned solar panel from " + (coverData.get() >> 2) + "% dirt");
-                coverData.set(coverData.get() & 0x3);
+                GTUtility.sendChatToPlayer(aPlayer, "Cleaned solar panel from " + (coverData >> 2) + "% dirt");
+                coverData = coverData & 0x3;
                 return true;
             }
         }

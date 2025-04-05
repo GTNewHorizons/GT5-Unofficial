@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -22,8 +23,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.events.MetricsCoverDataEvent;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.GlobalMetricsCoverDatabase.State;
@@ -36,7 +37,11 @@ import io.netty.buffer.ByteBuf;
  * This cover will retrieve information, preferentially, using {@link IMetricsExporter#reportMetrics()}. Absent this
  * method, it will resort to {@link BaseMetaTileEntity#getInfoData()} instead.
  */
-public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTransmitter.MetricsTransmitterData> {
+public class CoverMetricsTransmitter extends Cover {
+
+    public static boolean isCoverPlaceable(ForgeDirection side, ItemStack coverItem, ICoverable coverable) {
+        return coverable instanceof final IGregTechDeviceInformation device && device.isGivingInformation();
+    }
 
     @SuppressWarnings("SpellCheckingInspection")
     public static final String FREQUENCY_MSB_KEY = "gt.metricscover.freq_msb";
@@ -45,13 +50,41 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
     public static final String MACHINE_KEY = "machine_name";
     public static final String CARD_STATE_KEY = "card_state";
 
+    private UUID frequency;
+
     public CoverMetricsTransmitter(CoverContext context, ITexture coverTexture) {
-        super(context, MetricsTransmitterData.class, coverTexture);
+        super(context, coverTexture);
+        this.frequency = UUID.randomUUID();
+    }
+
+    public UUID getFrequency() {
+        return frequency;
     }
 
     @Override
-    protected MetricsTransmitterData initializeData() {
-        return new CoverMetricsTransmitter.MetricsTransmitterData();
+    protected void readDataFromNbt(NBTBase nbt) {
+        if (nbt instanceof final NBTTagCompound tag) {
+            frequency = new UUID(tag.getLong(FREQUENCY_MSB_KEY), tag.getLong(FREQUENCY_LSB_KEY));
+        }
+    }
+
+    @Override
+    public void readDataFromPacket(ByteArrayDataInput byteData) {
+        this.frequency = new UUID(byteData.readLong(), byteData.readLong());
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setLong(FREQUENCY_MSB_KEY, frequency.getMostSignificantBits());
+        tag.setLong(FREQUENCY_LSB_KEY, frequency.getLeastSignificantBits());
+        return tag;
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeLong(frequency.getMostSignificantBits());
+        byteBuf.writeLong(frequency.getLeastSignificantBits());
     }
 
     @Override
@@ -60,12 +93,8 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
     }
 
     @Override
-    public CoverMetricsTransmitter.MetricsTransmitterData doCoverThings(byte aInputRedstone, long aTimer) {
-        ICoverable coverable = coveredTile.get();
-        if (coverable == null) {
-            return coverData;
-        }
-        if (coverable instanceof final BaseMetaTileEntity baseMTE && baseMTE.isGivingInformation()) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
+        if (coveredTile.get() instanceof final BaseMetaTileEntity baseMTE && baseMTE.isGivingInformation()) {
             final List<String> payload;
 
             if (baseMTE.getMetaTileEntity() instanceof final IMetricsExporter metricsExporter) {
@@ -75,7 +104,7 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
             }
 
             MinecraftForge.EVENT_BUS.post(new MetricsCoverDataEvent(
-                coverData.frequency,
+                frequency,
                 payload,
                 new GlobalMetricsCoverDatabase.Coordinates(
                     baseMTE.getWorld().provider.getDimensionName(),
@@ -85,8 +114,6 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
                 )
             ));
         }
-
-        return coverData;
     }
 
     @Override
@@ -112,8 +139,7 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
         }
 
         cardStack.setTagCompound(tagCompound);
-        coverable.getCoverAtSide(coverSide)
-            .setCoverData(new MetricsTransmitterData(newFrequency));
+        frequency = newFrequency;
 
         final EntityItem cardEntity = new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, cardStack);
         cardEntity.delayBeforeCanPickup = 0;
@@ -131,57 +157,6 @@ public class CoverMetricsTransmitter extends CoverBehaviorBase<CoverMetricsTrans
         return ImmutableList.of(
             StatCollector.translateToLocalFormatted(
                 "gt.item.adv_sensor_card.tooltip.frequency",
-                EnumChatFormatting.UNDERLINE.toString() + EnumChatFormatting.YELLOW + coverData.frequency.toString()));
-    }
-
-    public static class MetricsTransmitterData implements ISerializableObject {
-
-        private UUID frequency;
-
-        public MetricsTransmitterData() {
-            this.frequency = UUID.randomUUID();
-        }
-
-        public MetricsTransmitterData(@NotNull UUID frequency) {
-            this.frequency = frequency;
-        }
-
-        @NotNull
-        public UUID getFrequency() {
-            return frequency;
-        }
-
-        @NotNull
-        @Override
-        public ISerializableObject copy() {
-            return new MetricsTransmitterData(frequency);
-        }
-
-        @NotNull
-        @Override
-        public NBTBase saveDataToNBT() {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setLong(FREQUENCY_MSB_KEY, frequency.getMostSignificantBits());
-            tag.setLong(FREQUENCY_LSB_KEY, frequency.getLeastSignificantBits());
-            return tag;
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            if (aNBT instanceof final NBTTagCompound tag) {
-                frequency = new UUID(tag.getLong(FREQUENCY_MSB_KEY), tag.getLong(FREQUENCY_LSB_KEY));
-            }
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeLong(frequency.getMostSignificantBits());
-            aBuf.writeLong(frequency.getLeastSignificantBits());
-        }
-
-        @Override
-        public void readFromPacket(ByteArrayDataInput aBuf) {
-            this.frequency = new UUID(aBuf.readLong(), aBuf.readLong());
-        }
+                EnumChatFormatting.UNDERLINE.toString() + EnumChatFormatting.YELLOW + frequency.toString()));
     }
 }

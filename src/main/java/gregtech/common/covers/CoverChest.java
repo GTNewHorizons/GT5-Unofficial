@@ -11,41 +11,61 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.ISerializableObject;
-import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
+import gregtech.api.util.GTByteBuffer;
+import gregtech.common.gui.mui1.cover.ChestUIFactory;
 import io.netty.buffer.ByteBuf;
 
-public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
+public class CoverChest extends Cover {
 
     private final int slots;
     private final int stackSizeLimit = 1;
+    private LimitingItemStackHandler items;
+    private boolean firstTick;
 
     public CoverChest(CoverContext context, int slots, ITexture coverTexture) {
-        super(context, ChestInventory.class, coverTexture);
+        super(context, coverTexture);
         if (slots <= 0) throw new IllegalArgumentException("slots must be greater than 0");
         this.slots = slots;
-        Object initializer = context.getCoverData();
-        if (initializer == null || initializer instanceof ItemStack) {
-            // Re-initialization required until we merge covers and their data objects,
-            // since this relies on an instance field.
-            coverData = initializeData();
-        }
+        this.items = new LimitingItemStackHandler(slots, stackSizeLimit);
+    }
+
+    public int getSlotCount() {
+        return slots;
+    }
+
+    public IItemHandlerModifiable getItems() {
+        return this.items;
     }
 
     @Override
-    public CoverChest.ChestInventory initializeData() {
-        return new CoverChest.ChestInventory(slots, stackSizeLimit);
+    protected void readDataFromNbt(NBTBase nbt) {
+        if (!(nbt instanceof NBTTagCompound)) return;
+        items.deserializeNBT((NBTTagCompound) nbt);
+        firstTick = true;
+    }
+
+    @Override
+    public void readDataFromPacket(ByteArrayDataInput byteData) {
+        items.deserializeNBT(GTByteBuffer.readCompoundTagFromGreggyByteBuf(byteData));
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        return items.serializeNBT();
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        ByteBufUtils.writeTag(byteBuf, items.serializeNBT());
     }
 
     @Override
@@ -67,111 +87,54 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
     public void onCoverRemoval() {
         ICoverable iCoverable = coveredTile.get();
         if (iCoverable == null || iCoverable.getWorld().isRemote) return;
-        coverData.dropAll(iCoverable, coverSide);
+        dropAll(iCoverable, coverSide);
+    }
+
+    private void dropAll(ICoverable coverable, ForgeDirection direction) {
+        for (int i = 0; i < items.getSlots(); i++) {
+            ItemStack tItem = items.getStackInSlot(i);
+            if (tItem == null) {
+                continue;
+            }
+            dropItem(coverable, direction, tItem);
+            items.setStackInSlot(i, null);
+        }
     }
 
     @Override
     public int getMinimumTickRate() {
-        return coverData.firstTick ? 1 : 0;
+        return firstTick ? 1 : 0;
     }
 
     @Override
-    public ChestInventory doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
         // migrate slots. mostly needed while in development. still can be useful if we ever resize the inventory in the
         // future
-        if (coverData.items.getSlots() != slots) {
-            if (coverData.items.getSlots() > slots) {
-                for (int i = slots; i < coverData.items.getSlots(); i++) {
-                    ItemStack item = coverData.items.getStackInSlot(i);
+        if (items.getSlots() != slots) {
+            if (items.getSlots() > slots) {
+                for (int i = slots; i < items.getSlots(); i++) {
+                    ItemStack item = items.getStackInSlot(i);
                     if (item != null) {
                         dropItem(coverable, coverSide, item);
                     }
                 }
             }
-
-            ChestInventory newData = initializeData();
-            int toCopy = Math.min(newData.items.getSlots(), coverData.items.getSlots());
+            this.items = new LimitingItemStackHandler(slots, stackSizeLimit);
+            int toCopy = Math.min(items.getSlots(), items.getSlots());
             for (int i = 0; i < toCopy; i++) {
-                newData.items.setStackInSlot(i, coverData.items.getStackInSlot(i));
+                items.setStackInSlot(i, items.getStackInSlot(i));
             }
-            return newData;
         }
-        coverData.firstTick = false;
-        return coverData;
+        firstTick = false;
     }
 
     @Override
     public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new ChestUIFactory(buildContext).createWindow();
-    }
-
-    public class ChestUIFactory extends UIFactory {
-
-        private static final int spaceX = 18;
-        private static final int spaceY = 18;
-
-        public ChestUIFactory(CoverUIBuildContext buildContext) {
-            super(buildContext);
-        }
-
-        @Override
-        protected int getGUIHeight() {
-            int height = slots / 3 * 18 + 8;
-            if (!getUIBuildContext().isAnotherWindow()) {
-                // player inv is 4 row
-                return height + 4 * 18 + 14;
-            }
-            return height;
-        }
-
-        @Override
-        protected void addTitleToUI(ModularWindow.Builder builder) {}
-
-        @Override
-        protected int getGUIWidth() {
-            if (getUIBuildContext().isAnotherWindow()) {
-                return 18 * 3 + 20;
-            } else {
-                return 18 * 9 + 20;
-            }
-        }
-
-        @Override
-        protected void addUIWidgets(ModularWindow.Builder builder) {
-            CoverDataControllerWidget<ChestInventory> w = new CoverDataControllerWidget<>(
-                this::getCoverData,
-                this::setCoverData,
-                CoverChest.this::loadFromNbt);
-            ChestInventory d = getCoverData();
-            LimitingItemStackHandler h;
-            if (d == null) {
-                // ???
-                return;
-            }
-            h = d.items;
-            SlotGroup slotGroup = SlotGroup.ofItemHandler(h, 3)
-                .build();
-            if (getUIBuildContext().isAnotherWindow()) {
-                slotGroup.setPos(4, 4);
-            } else {
-                slotGroup.setPos(getGUIWidth() / 2 - 18 * 3 / 2, 6);
-            }
-            w.addChild(slotGroup);
-            builder.widget(w);
-
-            builder.setPos(
-                (size, mainWindow) -> Alignment.Center.getAlignedPos(size, new Size(getGUIWidth(), getGUIHeight()))
-                    .subtract(getUIBuildContext().isAnotherWindow() ? getGUIWidth() + 80 : 0, 0));
-        }
-
-        @Override
-        protected boolean doesBindPlayerInventory() {
-            return true;
-        }
     }
 
     private static class LimitingItemStackHandler extends ItemStackHandler {
@@ -186,60 +149,6 @@ public class CoverChest extends CoverBehaviorBase<CoverChest.ChestInventory> {
         @Override
         public int getSlotLimit(int slot) {
             return slotLimit;
-        }
-    }
-
-    public static class ChestInventory implements ISerializableObject {
-
-        final LimitingItemStackHandler items;
-        boolean firstTick;
-
-        public ChestInventory(int slots, int stackSize) {
-            items = new LimitingItemStackHandler(slots, stackSize);
-        }
-
-        @Override
-        public void readFromPacket(ByteArrayDataInput aBuf) {
-            items.deserializeNBT(ISerializableObject.readCompoundTagFromGreggyByteBuf(aBuf));
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            ByteBufUtils.writeTag(aBuf, items.serializeNBT());
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            if (!(aNBT instanceof NBTTagCompound)) return;
-            items.deserializeNBT((NBTTagCompound) aNBT);
-            firstTick = true;
-        }
-
-        @NotNull
-        @Override
-        public NBTBase saveDataToNBT() {
-            return items.serializeNBT();
-        }
-
-        @NotNull
-        @Override
-        public ISerializableObject copy() {
-            ChestInventory copy = new ChestInventory(items.getSlots(), items.getSlotLimit(0));
-            for (int i = 0; i < items.getSlots(); i++) {
-                copy.items.setStackInSlot(i, items.getStackInSlot(i));
-            }
-            return copy;
-        }
-
-        public void dropAll(ICoverable coverable, ForgeDirection direction) {
-            for (int i = 0; i < items.getSlots(); i++) {
-                ItemStack tItem = items.getStackInSlot(i);
-                if (tItem == null) {
-                    continue;
-                }
-                dropItem(coverable, direction, tItem);
-                items.setStackInSlot(i, null);
-            }
         }
     }
 
