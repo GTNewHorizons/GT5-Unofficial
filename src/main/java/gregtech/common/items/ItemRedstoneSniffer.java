@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.cleanroommc.modularui.widgets.CategoryList;
+import gregtech.common.gui.modularui.uifactory.RedstoneSnifferGuiBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
@@ -86,253 +87,254 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
 
     @Override
     public ModularPanel buildUI(GuiData guiData, PanelSyncManager guiSyncManager) {
-        int scale;
-        if (NetworkUtils.isClient()) {
-            GameSettings settings = Minecraft.getMinecraft().gameSettings;
-            scale = settings.guiScale > 0 ? settings.guiScale : 4;
-        } else {
-            scale = 1;
-        }
-        int textColor = Color.rgb(255, 255, 255);
-
-        AtomicReference<String> freqFilter = new AtomicReference<>("");
-        AtomicReference<String> ownerFilter = new AtomicReference<>("");
-        AtomicInteger lastPage = new AtomicInteger(0);
-        if (guiData.getMainHandItem()
-            .getTagCompound() != null && guiData.getMainHandItem()
-                .getTagCompound()
-                .hasKey("last_page")) {
-            lastPage.set(
-                guiData.getMainHandItem()
-                    .getTagCompound()
-                    .getInteger("last_page"));
-        }
-        IntSyncValue pageSyncer = new IntSyncValue(lastPage::get, (page) -> {
-            lastPage.set(page);
-            if (guiData.getMainHandItem()
-                .getTagCompound() == null)
-                guiData.getMainHandItem()
-                    .setTagCompound(new NBTTagCompound());
-            NBTTagCompound tag = guiData.getMainHandItem()
-                .getTagCompound();
-            tag.setInteger("last_page", page);
-        });
-        guiSyncManager.syncValue("last_page", pageSyncer);
-
-        PagedWidget.Controller controller = new PagedWidget.Controller() {
-
-            @Override
-            public void setPage(int page) {
-                super.setPage(page);
-                ((IntSyncValue) guiSyncManager.getSyncHandler("last_page:0")).setValue(page);
-            }
-        };
-        ListWidget<IWidget, CategoryList.Root> regularListWidget = new ListWidget<>();
-        regularListWidget.sizeRel(1);
-        ListWidget<IWidget, CategoryList.Root> advancedListWidget = new ListWidget<>();
-        advancedListWidget.sizeRel(1);
-
-        guiSyncManager.syncValue("player_is_op", new BooleanSyncValue(() -> false, () -> {
-            EntityPlayerMP player = (EntityPlayerMP) guiData.getPlayer();
-            return player.mcServer.getConfigurationManager()
-                .func_152596_g(player.getGameProfile());
-        }));
-        StringSyncValue freqFilterSyncer = new StringSyncValue(freqFilter::get, freqFilter::set);
-        freqFilterSyncer.setChangeListener(() -> {
-            if (NetworkUtils.isClient()) {
-                WidgetTree.resize(regularListWidget);
-                WidgetTree.resize(advancedListWidget);
-            }
-        });
-        guiSyncManager.syncValue("freq_filter", freqFilterSyncer);
-        StringSyncValue ownerFilterSyncer = new StringSyncValue(ownerFilter::get, ownerFilter::set);
-        ownerFilterSyncer.setChangeListener(() -> {
-            if (NetworkUtils.isClient()) {
-                WidgetTree.resize(advancedListWidget);
-            }
-        });
-        guiSyncManager.syncValue("owner_filter", ownerFilterSyncer);
-        ModularPanel panel = ModularPanel.defaultPanel("redstone_sniffer");
-        panel.flex()
-            .sizeRel(0.5f, 0.75f)
-            .align(Alignment.Center);
-
-        PagedWidget<?> data = new PagedWidget() {
-
-            @Override
-            public void afterInit() {
-                setPage(lastPage.get());
-            }
-        };
-        data.sizeRel(1, 0.7f);
-        data.controller(controller);
-        // Process regular wireless redstone frequencies
-        GenericListSyncHandler<SnifferEntry> regularMapSyncer = new GenericListSyncHandler<>(() -> {
-            List<SnifferEntry> result = new ArrayList<>();
-            GregTechAPI.sWirelessRedstone.forEach((frequency, ignored) -> {
-                boolean isPrivate = frequency > 65535;
-                int displayFreq = isPrivate ? frequency - 65536 : frequency;
-                result.add(new SnifferEntry(String.valueOf(displayFreq), isPrivate));
-            });
-            return result;
-        }, new SnifferEntryAdapter());
-        regularMapSyncer.setChangeListener(() -> {
-            AtomicInteger bgStripe = new AtomicInteger(0);
-            int stripe1 = Color.rgb(79, 82, 119);
-            int stripe2 = Color.rgb(67, 58, 96);
-            List<SnifferEntry> entries = new ArrayList<>(regularMapSyncer.getValue());
-            entries.sort(Comparator.comparingInt(a -> (a.isPrivate ? 1 : 0)));
-            List<IWidget> regularList = new ArrayList<>();
-            entries.forEach(entry -> {
-                bgStripe.getAndIncrement();
-                regularList.add(
-                    new Row().setEnabledIf(
-                        w -> ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue()
-                            .isEmpty()
-                            || entry.freq.equals(
-                                ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue()))
-                        .sizeRel(1f, 0.1f * scale)
-                        .expanded()
-                        .background(
-                            bgStripe.get() % 2 == 0 ? new Rectangle().setColor(stripe1)
-                                : new Rectangle().setColor(stripe2))
-                        .child(
-                            new TextWidget(entry.freq).widthRel(0.5f)
-                                .color(textColor)
-                                .alignment(Alignment.Center))
-                        .child(
-                            new TextWidget(entry.isPrivate ? "Yes" : "No").widthRel(0.5f)
-                                .color(textColor)
-                                .alignment(Alignment.Center)));
-            });
-            regularList.forEach(regularListWidget::child);
-            WidgetTree.resize(regularListWidget);
-        });
-        guiSyncManager.syncValue("regular_map", regularMapSyncer);
-
-        data.addPage(
-            new Column().child(
-                new Row().heightRel(0.1f)
-                    .child(
-                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.5f)
-                            .color(textColor)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.private")).widthRel(0.5f)
-                            .color(textColor)
-                            .alignment(Alignment.Center)))
-                .child(
-                    new SingleChildWidget<>().sizeRel(1, 0.9f)
-                        .child(regularListWidget)));
-
-        // Process advanced wireless redstone frequencies
-        GenericListSyncHandler<SnifferEntry> advancedMapSyncer = new GenericListSyncHandler<>(() -> {
-            List<SnifferEntry> result = new ArrayList<>();
-            GregTechAPI.sAdvancedWirelessRedstone.forEach((uuid, coverMap) -> {
-                if (canSeeCovers(guiData, uuid)) {
-                    String owner = uuid.equals("null") ? "Public"
-                        : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(uuid));
-                    coverMap.forEach(
-                        (frequency, covers) -> {
-                            covers.forEach(
-                                (coverPosition, ignored) -> {
-                                    result.add(new SnifferEntry(owner, frequency, coverPosition));
-                                });
-                        });
-                }
-            });
-            return result;
-        }, new SnifferEntryAdapter());
-        advancedMapSyncer.setChangeListener(() -> {
-            List<SnifferEntry> entries = new ArrayList<>(advancedMapSyncer.getValue());
-            entries.sort((a, b) -> {
-                if (a.owner.equals("Public")) return -1;
-                if (b.owner.equals("Public")) return 1;
-                return a.owner.compareTo(b.owner);
-            });
-            List<IWidget> advancedList = (processAdvancedFrequencies(
-                entries,
-                advancedListWidget,
-                guiSyncManager,
-                scale,
-                textColor));
-
-            advancedList.forEach(advancedListWidget::child);
-            WidgetTree.resize(advancedListWidget);
-        });
-        guiSyncManager.syncValue("adv_map", advancedMapSyncer);
-        data.addPage(
-            new Column().child(
-                new Row().heightRel(0.1f)
-                    .child(
-                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.owner")).widthRel(0.15f)
-                            .color(textColor)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.35f)
-                            .color(textColor)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.dimension")).widthRel(0.25f)
-                            .color(textColor)
-                            .alignment(Alignment.Center))
-                    .child(
-                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.action")).widthRel(0.25f)
-                            .color(textColor)
-                            .alignment(Alignment.Center)))
-                .child(
-                    new SingleChildWidget<>().sizeRel(1, 0.9f)
-                        .child(advancedListWidget)));
-
-        panel.child(
-            new Column().margin(10)
-                .child(
-                    new Row().heightRel(0.1f)
-                        .marginBottom(10)
-                        .child(
-                            new PageButton(0, controller).widthRel(0.5f)
-                                .align(Alignment.CenterLeft)
-                                .overlay(IKey.lang("gt.item.redstone_sniffer.regular_wireless")))
-                        .child(
-                            new PageButton(1, controller).widthRel(0.5f)
-                                .align(Alignment.CenterRight)
-                                .overlay(IKey.lang("gt.item.redstone_sniffer.advanced_wireless"))))
-                .child(
-                    new Row().heightRel(0.1f)
-                        .marginBottom(10)
-                        .child(
-                            new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency_filter")).widthRel(0.25f)
-                                .color(textColor)
-                                .alignment(Alignment.Center))
-                        .child(
-                            new TextFieldWidget().sizeRel(0.25f, 0.5f)
-                                .setTextColor(textColor)
-                                .value(
-                                    SyncHandlers.string(
-                                        () -> ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0"))
-                                            .getStringValue(),
-                                        filter -> {
-                                            ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0"))
-                                                .setStringValue(filter);
-                                        })))
-                        .child(
-                            new TextWidget(IKey.lang("gt.item.redstone_sniffer.owner_filter")).widthRel(0.25f)
-                                .color(textColor)
-                                .alignment(Alignment.Center))
-                        .child(
-                            new TextFieldWidget().sizeRel(0.25f, 0.5f)
-                                .setTextColor(textColor)
-                                .value(
-                                    SyncHandlers.string(
-                                        () -> ((StringSyncValue) guiSyncManager.getSyncHandler("owner_filter:0"))
-                                            .getStringValue(),
-                                        filter -> {
-                                            ((StringSyncValue) guiSyncManager.getSyncHandler("owner_filter:0"))
-                                                .setStringValue(filter);
-                                        }))))
-                .child(data));
-        panel.background(new Rectangle().setColor(Color.rgb(53, 46, 77)));
-        return panel;
+        return new RedstoneSnifferGuiBuilder(guiData, guiSyncManager).build();
+//        int scale;
+//        if (NetworkUtils.isClient()) {
+//            GameSettings settings = Minecraft.getMinecraft().gameSettings;
+//            scale = settings.guiScale > 0 ? settings.guiScale : 4;
+//        } else {
+//            scale = 1;
+//        }
+//        int textColor = Color.rgb(255, 255, 255);
+//
+//        AtomicReference<String> freqFilter = new AtomicReference<>("");
+//        AtomicReference<String> ownerFilter = new AtomicReference<>("");
+//        AtomicInteger lastPage = new AtomicInteger(0);
+//        if (guiData.getMainHandItem()
+//            .getTagCompound() != null && guiData.getMainHandItem()
+//                .getTagCompound()
+//                .hasKey("last_page")) {
+//            lastPage.set(
+//                guiData.getMainHandItem()
+//                    .getTagCompound()
+//                    .getInteger("last_page"));
+//        }
+//        IntSyncValue pageSyncer = new IntSyncValue(lastPage::get, (page) -> {
+//            lastPage.set(page);
+//            if (guiData.getMainHandItem()
+//                .getTagCompound() == null)
+//                guiData.getMainHandItem()
+//                    .setTagCompound(new NBTTagCompound());
+//            NBTTagCompound tag = guiData.getMainHandItem()
+//                .getTagCompound();
+//            tag.setInteger("last_page", page);
+//        });
+//        guiSyncManager.syncValue("last_page", pageSyncer);
+//
+//        PagedWidget.Controller controller = new PagedWidget.Controller() {
+//
+//            @Override
+//            public void setPage(int page) {
+//                super.setPage(page);
+//                ((IntSyncValue) guiSyncManager.getSyncHandler("last_page:0")).setValue(page);
+//            }
+//        };
+//        ListWidget<IWidget, CategoryList.Root> regularListWidget = new ListWidget<>();
+//        regularListWidget.sizeRel(1);
+//        ListWidget<IWidget, CategoryList.Root> advancedListWidget = new ListWidget<>();
+//        advancedListWidget.sizeRel(1);
+//
+//        guiSyncManager.syncValue("player_is_op", new BooleanSyncValue(() -> false, () -> {
+//            EntityPlayerMP player = (EntityPlayerMP) guiData.getPlayer();
+//            return player.mcServer.getConfigurationManager()
+//                .func_152596_g(player.getGameProfile());
+//        }));
+//        StringSyncValue freqFilterSyncer = new StringSyncValue(freqFilter::get, freqFilter::set);
+//        freqFilterSyncer.setChangeListener(() -> {
+//            if (NetworkUtils.isClient()) {
+//                WidgetTree.resize(regularListWidget);
+//                WidgetTree.resize(advancedListWidget);
+//            }
+//        });
+//        guiSyncManager.syncValue("freq_filter", freqFilterSyncer);
+//        StringSyncValue ownerFilterSyncer = new StringSyncValue(ownerFilter::get, ownerFilter::set);
+//        ownerFilterSyncer.setChangeListener(() -> {
+//            if (NetworkUtils.isClient()) {
+//                WidgetTree.resize(advancedListWidget);
+//            }
+//        });
+//        guiSyncManager.syncValue("owner_filter", ownerFilterSyncer);
+//        ModularPanel panel = ModularPanel.defaultPanel("redstone_sniffer");
+//        panel.flex()
+//            .sizeRel(0.5f, 0.75f)
+//            .align(Alignment.Center);
+//
+//        PagedWidget<?> data = new PagedWidget() {
+//
+//            @Override
+//            public void afterInit() {
+//                setPage(lastPage.get());
+//            }
+//        };
+//        data.sizeRel(1, 0.7f);
+//        data.controller(controller);
+//        // Process regular wireless redstone frequencies
+//        GenericListSyncHandler<SnifferEntry> regularMapSyncer = new GenericListSyncHandler<>(() -> {
+//            List<SnifferEntry> result = new ArrayList<>();
+//            GregTechAPI.sWirelessRedstone.forEach((frequency, ignored) -> {
+//                boolean isPrivate = frequency > 65535;
+//                int displayFreq = isPrivate ? frequency - 65536 : frequency;
+//                result.add(new SnifferEntry(String.valueOf(displayFreq), isPrivate));
+//            });
+//            return result;
+//        }, new SnifferEntryAdapter());
+//        regularMapSyncer.setChangeListener(() -> {
+//            AtomicInteger bgStripe = new AtomicInteger(0);
+//            int stripe1 = Color.rgb(79, 82, 119);
+//            int stripe2 = Color.rgb(67, 58, 96);
+//            List<SnifferEntry> entries = new ArrayList<>(regularMapSyncer.getValue());
+//            entries.sort(Comparator.comparingInt(a -> (a.isPrivate ? 1 : 0)));
+//            List<IWidget> regularList = new ArrayList<>();
+//            entries.forEach(entry -> {
+//                bgStripe.getAndIncrement();
+//                regularList.add(
+//                    new Row().setEnabledIf(
+//                        w -> ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue()
+//                            .isEmpty()
+//                            || entry.freq.equals(
+//                                ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue()))
+//                        .sizeRel(1f, 0.1f * scale)
+//                        .expanded()
+//                        .background(
+//                            bgStripe.get() % 2 == 0 ? new Rectangle().setColor(stripe1)
+//                                : new Rectangle().setColor(stripe2))
+//                        .child(
+//                            new TextWidget(entry.freq).widthRel(0.5f)
+//                                .color(textColor)
+//                                .alignment(Alignment.Center))
+//                        .child(
+//                            new TextWidget(entry.isPrivate ? "Yes" : "No").widthRel(0.5f)
+//                                .color(textColor)
+//                                .alignment(Alignment.Center)));
+//            });
+//            regularList.forEach(regularListWidget::child);
+//            WidgetTree.resize(regularListWidget);
+//        });
+//        guiSyncManager.syncValue("regular_map", regularMapSyncer);
+//
+//        data.addPage(
+//            new Column().child(
+//                new Row().heightRel(0.1f)
+//                    .child(
+//                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.5f)
+//                            .color(textColor)
+//                            .alignment(Alignment.Center))
+//                    .child(
+//                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.private")).widthRel(0.5f)
+//                            .color(textColor)
+//                            .alignment(Alignment.Center)))
+//                .child(
+//                    new SingleChildWidget<>().sizeRel(1, 0.9f)
+//                        .child(regularListWidget)));
+//
+//        // Process advanced wireless redstone frequencies
+//        GenericListSyncHandler<SnifferEntry> advancedMapSyncer = new GenericListSyncHandler<>(() -> {
+//            List<SnifferEntry> result = new ArrayList<>();
+//            GregTechAPI.sAdvancedWirelessRedstone.forEach((uuid, coverMap) -> {
+//                if (canSeeCovers(guiData, uuid)) {
+//                    String owner = uuid.equals("null") ? "Public"
+//                        : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(uuid));
+//                    coverMap.forEach(
+//                        (frequency, covers) -> {
+//                            covers.forEach(
+//                                (coverPosition, ignored) -> {
+//                                    result.add(new SnifferEntry(owner, frequency, coverPosition));
+//                                });
+//                        });
+//                }
+//            });
+//            return result;
+//        }, new SnifferEntryAdapter());
+//        advancedMapSyncer.setChangeListener(() -> {
+//            List<SnifferEntry> entries = new ArrayList<>(advancedMapSyncer.getValue());
+//            entries.sort((a, b) -> {
+//                if (a.owner.equals("Public")) return -1;
+//                if (b.owner.equals("Public")) return 1;
+//                return a.owner.compareTo(b.owner);
+//            });
+//            List<IWidget> advancedList = (processAdvancedFrequencies(
+//                entries,
+//                advancedListWidget,
+//                guiSyncManager,
+//                scale,
+//                textColor));
+//
+//            advancedList.forEach(advancedListWidget::child);
+//            WidgetTree.resize(advancedListWidget);
+//        });
+//        guiSyncManager.syncValue("adv_map", advancedMapSyncer);
+//        data.addPage(
+//            new Column().child(
+//                new Row().heightRel(0.1f)
+//                    .child(
+//                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.owner")).widthRel(0.15f)
+//                            .color(textColor)
+//                            .alignment(Alignment.Center))
+//                    .child(
+//                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.35f)
+//                            .color(textColor)
+//                            .alignment(Alignment.Center))
+//                    .child(
+//                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.dimension")).widthRel(0.25f)
+//                            .color(textColor)
+//                            .alignment(Alignment.Center))
+//                    .child(
+//                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.action")).widthRel(0.25f)
+//                            .color(textColor)
+//                            .alignment(Alignment.Center)))
+//                .child(
+//                    new SingleChildWidget<>().sizeRel(1, 0.9f)
+//                        .child(advancedListWidget)));
+//
+//        panel.child(
+//            new Column().margin(10)
+//                .child(
+//                    new Row().heightRel(0.1f)
+//                        .marginBottom(10)
+//                        .child(
+//                            new PageButton(0, controller).widthRel(0.5f)
+//                                .align(Alignment.CenterLeft)
+//                                .overlay(IKey.lang("gt.item.redstone_sniffer.regular_wireless")))
+//                        .child(
+//                            new PageButton(1, controller).widthRel(0.5f)
+//                                .align(Alignment.CenterRight)
+//                                .overlay(IKey.lang("gt.item.redstone_sniffer.advanced_wireless"))))
+//                .child(
+//                    new Row().heightRel(0.1f)
+//                        .marginBottom(10)
+//                        .child(
+//                            new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency_filter")).widthRel(0.25f)
+//                                .color(textColor)
+//                                .alignment(Alignment.Center))
+//                        .child(
+//                            new TextFieldWidget().sizeRel(0.25f, 0.5f)
+//                                .setTextColor(textColor)
+//                                .value(
+//                                    SyncHandlers.string(
+//                                        () -> ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0"))
+//                                            .getStringValue(),
+//                                        filter -> {
+//                                            ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0"))
+//                                                .setStringValue(filter);
+//                                        })))
+//                        .child(
+//                            new TextWidget(IKey.lang("gt.item.redstone_sniffer.owner_filter")).widthRel(0.25f)
+//                                .color(textColor)
+//                                .alignment(Alignment.Center))
+//                        .child(
+//                            new TextFieldWidget().sizeRel(0.25f, 0.5f)
+//                                .setTextColor(textColor)
+//                                .value(
+//                                    SyncHandlers.string(
+//                                        () -> ((StringSyncValue) guiSyncManager.getSyncHandler("owner_filter:0"))
+//                                            .getStringValue(),
+//                                        filter -> {
+//                                            ((StringSyncValue) guiSyncManager.getSyncHandler("owner_filter:0"))
+//                                                .setStringValue(filter);
+//                                        }))))
+//                .child(data));
+//        panel.background(new Rectangle().setColor(Color.rgb(53, 46, 77)));
+//        return panel;
     }
 
     public List<IWidget> processAdvancedFrequencies(List<SnifferEntry> entryList, ListWidget<IWidget, CategoryList.Root> listWidget,
@@ -458,10 +460,10 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
 
     public static class SnifferEntry {
 
-        private final String owner;
-        private final String freq;
-        private final boolean isPrivate;
-        private final CoverPosition coverPosition;
+        public final String owner;
+        public final String freq;
+        public final boolean isPrivate;
+        public final CoverPosition coverPosition;
 
         public SnifferEntry(String owner, String freq, CoverPosition coverPosition) {
             this.owner = owner;
