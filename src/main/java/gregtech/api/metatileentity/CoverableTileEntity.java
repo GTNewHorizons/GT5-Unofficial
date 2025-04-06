@@ -417,7 +417,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final Cover cover = getCoverAtSide(side);
         if (!cover.isValid() || cover.getCoverID() != coverId) return;
         cover.readFromNbt(nbt);
-        cover.onDataChanged();
     }
 
     @Override
@@ -429,7 +428,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final Cover cover = getCoverAtSide(side);
         if (!cover.isValid() || cover.getCoverID() != coverId) return;
         cover.readFromPacket(data);
-        cover.onDataChanged();
     }
 
     protected void sendCoverDataIfNeeded() {

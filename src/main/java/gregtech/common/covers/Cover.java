@@ -250,11 +250,6 @@ public class Cover {
     public void onBaseTEDestroyed() {}
 
     /**
-     * Called upon receiving data from network. Use {@link ICoverable#isClientSide()} to determine the side.
-     */
-    public void onDataChanged() {}
-
-    /**
      * Gives a small Text for the status of the Cover.
      */
     public String getDescription() {

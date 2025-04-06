@@ -81,6 +81,21 @@ public abstract class CoverFacadeBase extends Cover {
         return this.mStack;
     }
 
+    public CoverFacadeBase setStack(ItemStack stack) {
+        this.mStack = stack;
+        ICoverable coverable = coveredTile.get();
+        if (coverable != null && coverable.isClientSide()) {
+            GTRenderingWorld.getInstance()
+                .register(
+                    coverable.getXCoord(),
+                    coverable.getYCoord(),
+                    coverable.getZCoord(),
+                    getTargetBlock(mStack),
+                    getTargetMeta(mStack));
+        }
+        return this;
+    }
+
     public int getFlags() {
         return this.mFlags;
     }
@@ -93,14 +108,14 @@ public abstract class CoverFacadeBase extends Cover {
     @Override
     protected void readDataFromNbt(NBTBase nbt) {
         final NBTTagCompound tag = (NBTTagCompound) nbt;
-        mStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("mStack"));
-        mFlags = tag.getByte("mFlags");
+        setStack(ItemStack.loadItemStackFromNBT(tag.getCompoundTag("mStack")));
+        setFlags(tag.getByte("mFlags"));
     }
 
     @Override
     public void readDataFromPacket(ByteArrayDataInput byteData) {
-        mFlags = byteData.readByte();
-        mStack = GTByteBuffer.readItemStackFromGreggyByteBuf(byteData);
+        setFlags(byteData.readByte());
+        setStack(GTByteBuffer.readItemStackFromGreggyByteBuf(byteData));
     }
 
     @Override
@@ -223,18 +238,6 @@ public abstract class CoverFacadeBase extends Cover {
     @Override
     public boolean isDataNeededOnClient() {
         return true;
-    }
-
-    @Override
-    public void onDataChanged() {
-        ICoverable coverable = coveredTile.get();
-        if (coverable != null && coverable.isClientSide()) GTRenderingWorld.getInstance()
-            .register(
-                coverable.getXCoord(),
-                coverable.getYCoord(),
-                coverable.getZCoord(),
-                getTargetBlock(mStack),
-                getTargetMeta(mStack));
     }
 
     @Override
