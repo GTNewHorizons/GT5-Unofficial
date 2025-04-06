@@ -59,8 +59,8 @@ public class SteamExtractinatorRecipes implements Runnable {
         RA.stdBuilder()
             .fluidInputs(Materials.GravelSluice.getFluid(4000))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Iron, 8),
-                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Copper, 8),
+                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Iron, 24),
+                GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Copper, 16),
                 GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Tin, 8),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 8),
                 GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Salt, 8),
