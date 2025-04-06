@@ -9,13 +9,13 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 
-public class CoverNone extends CoverBehavior {
+public class CoverNone extends Cover {
 
     /**
      * This is the Dummy, if there is no Cover
      */
     public CoverNone(CoverContext context) {
-        super(context);
+        super(context, null);
     }
 
     @Override
@@ -56,11 +56,6 @@ public class CoverNone extends CoverBehavior {
     @Override
     public boolean letsItemsOut(int aSlot) {
         return true;
-    }
-
-    @Override
-    public boolean isRedstoneSensitive(long aTimer) {
-        return false;
     }
 
     @Override
