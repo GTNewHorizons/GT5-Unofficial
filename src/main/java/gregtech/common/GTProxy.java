@@ -2540,14 +2540,14 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             .equals("blockAlloyGlass")) GregTechAPI.causeMachineUpdate(event.world, event.x, event.y, event.z);
     }
 
-    private void addHazardTooltip(ItemTooltipEvent event, String translationKey) {
+    private void addHazmatTooltip(ItemTooltipEvent event, String translationKey) {
         event.toolTip.add(EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal(translationKey));
     }
 
     @SubscribeEvent
     public void onItemTooltip(ItemTooltipEvent event) {
         if (HazardProtection.providesFullHazmatProtection(event.itemStack)) {
-            addHazardTooltip(event, HazardProtectionTooltip.FULL_PROTECTION_TRANSLATION_KEY);
+            addHazmatTooltip(event, HazardProtectionTooltip.FULL_PROTECTION_TRANSLATION_KEY);
             return;
         }
 
@@ -2560,15 +2560,15 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         }
         if (protections.containsAll(HazardProtectionTooltip.CBRN_HAZARDS)) {
             protections.removeAll(HazardProtectionTooltip.CBRN_HAZARDS);
-            addHazardTooltip(event, HazardProtectionTooltip.CBRN_TRANSLATION_KEY);
+            addHazmatTooltip(event, HazardProtectionTooltip.CBRN_TRANSLATION_KEY);
         } ;
 
         if (protections.containsAll(HazardProtectionTooltip.TEMPERATURE_HAZARDS)) {
             protections.removeAll(HazardProtectionTooltip.TEMPERATURE_HAZARDS);
-            addHazardTooltip(event, HazardProtectionTooltip.EXTREME_TEMP_TRANSLATION_KEY);
+            addHazmatTooltip(event, HazardProtectionTooltip.EXTREME_TEMP_TRANSLATION_KEY);
         } ;
         for (Hazard hazard : protections) {
-            addHazardTooltip(event, HazardProtectionTooltip.singleHazardTranslationKey(hazard));
+            addHazmatTooltip(event, HazardProtectionTooltip.singleHazardTranslationKey(hazard));
         }
     }
 
