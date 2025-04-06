@@ -1,8 +1,11 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.Mods.ExtraUtilities;
+import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.steamCarpenterRecipes;
 import static gregtech.api.recipe.RecipeMaps.steamManufacturerRecipes;
+import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.stream.IntStream;
@@ -225,6 +228,13 @@ public class FullPackSteamRecipes implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.ring, Materials.Iron, 2))
                     .itemOutputs(GTModHandler.getModItem(Mods.BuildCraftFactory.ID, "tankBlock", 1))
                     .duration(5 * SECONDS).eut(4).addTo(steamManufacturerRecipes);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(
+                        new ItemStack(Blocks.glass, 1),
+                        GTOreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 4L))
+                    .itemOutputs(getModItem(ExtraUtilities.ID, "decorativeBlock2", 1, 5)).duration(10 * SECONDS)
+                    .eut(8).addTo(alloySmelterRecipes);
             }
         }
 
