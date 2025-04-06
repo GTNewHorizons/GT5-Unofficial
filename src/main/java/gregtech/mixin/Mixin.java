@@ -90,6 +90,11 @@ public enum Mixin {
         .setApplyIf(() -> true)
         .addTargetedMod(TargetedMod.IC2)
         .addExcludedMod(TargetedMod.GT6)),
+    ADV_SOLAR_HAZMAT(new Builder("Applies Hazmat API to Advanced Solar helmets").setSide(Side.BOTH)
+        .setPhase(Phase.LATE)
+        .addMixinClasses("advanced_solar_panels.MixinAdvancedSolarHelmet")
+        .setApplyIf(() -> true)
+        .addTargetedMod(TargetedMod.ADVANCED_SOLAR_PANELS)),
 
     // Pollution
     POLLUTION_RENDER_BLOCKS(new Builder("Changes colors of certain blocks based on pollution levels")
