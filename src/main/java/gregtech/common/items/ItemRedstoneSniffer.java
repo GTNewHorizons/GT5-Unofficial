@@ -10,6 +10,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import com.cleanroommc.modularui.widgets.CategoryList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
@@ -124,12 +125,11 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
             public void setPage(int page) {
                 super.setPage(page);
                 ((IntSyncValue) guiSyncManager.getSyncHandler("last_page:0")).setValue(page);
-                System.out.println(String.format("set page to %d", page));
             }
         };
-        ListWidget regularListWidget = new ListWidget<>();
+        ListWidget<IWidget, CategoryList.Root> regularListWidget = new ListWidget<>();
         regularListWidget.sizeRel(1);
-        ListWidget advancedListWidget = new ListWidget();
+        ListWidget<IWidget, CategoryList.Root> advancedListWidget = new ListWidget<>();
         advancedListWidget.sizeRel(1);
 
         guiSyncManager.syncValue("player_is_op", new BooleanSyncValue(() -> false, () -> {
@@ -157,7 +157,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
             .sizeRel(0.5f, 0.75f)
             .align(Alignment.Center);
 
-        PagedWidget data = new PagedWidget() {
+        PagedWidget<?> data = new PagedWidget() {
 
             @Override
             public void afterInit() {
@@ -335,7 +335,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
         return panel;
     }
 
-    public List<IWidget> processAdvancedFrequencies(List<SnifferEntry> entryList, ListWidget listWidget,
+    public List<IWidget> processAdvancedFrequencies(List<SnifferEntry> entryList, ListWidget<IWidget, CategoryList.Root> listWidget,
         PanelSyncManager guiSyncManager, int scale, int textColor) {
         List<IWidget> result = new ArrayList<>();
         AtomicInteger bgStripe = new AtomicInteger(0);
@@ -456,7 +456,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
             .equals(leader);
     }
 
-    public class SnifferEntry {
+    public static class SnifferEntry {
 
         private final String owner;
         private final String freq;
@@ -478,7 +478,7 @@ public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<Gui
         }
     }
 
-    public class SnifferEntryAdapter implements IByteBufAdapter<SnifferEntry> {
+    public static class SnifferEntryAdapter implements IByteBufAdapter<SnifferEntry> {
 
         public SnifferEntry deserialize(PacketBuffer buffer) throws IOException {
             String owner = buffer.readStringFromBuffer(buffer.readInt());
