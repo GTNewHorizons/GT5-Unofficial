@@ -30,7 +30,7 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.net.PakcetDebugRedstoneCover;
+import gregtech.api.net.PacketDebugRedstoneCover;
 import gregtech.common.covers.CoverPosition;
 import gregtech.common.items.ItemRedstoneSniffer;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
@@ -369,7 +369,7 @@ public class RedstoneSnifferGuiBuilder {
                                                 })
                                             .onMousePressed(mouseButton -> {
                                                 GTValues.NW.sendToServer(
-                                                    new PakcetDebugRedstoneCover(
+                                                    new PacketDebugRedstoneCover(
                                                         cover.dim,
                                                         cover.x,
                                                         cover.y,
@@ -414,7 +414,7 @@ public class RedstoneSnifferGuiBuilder {
                                                 })
                                             .onMousePressed(mouseButton -> {
                                                 GTValues.NW.sendToServer(
-                                                    new PakcetDebugRedstoneCover(
+                                                    new PacketDebugRedstoneCover(
                                                         cover.dim,
                                                         cover.x,
                                                         cover.y,
