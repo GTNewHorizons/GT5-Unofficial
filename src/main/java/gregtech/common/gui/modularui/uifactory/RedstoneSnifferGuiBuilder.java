@@ -201,7 +201,7 @@ public class RedstoneSnifferGuiBuilder {
         GenericListSyncHandler<ItemRedstoneSniffer.SnifferEntry> advancedMapSyncer = new GenericListSyncHandler<>(() -> {
             List<ItemRedstoneSniffer.SnifferEntry> result = new ArrayList<>();
             GregTechAPI.sAdvancedWirelessRedstone.forEach((uuid, coverMap) -> {
-                if (canSeeCovers(guiData, uuid)) {
+                if (((BooleanSyncValue) guiSyncManager.getSyncHandler("player_is_op:0")).getBoolValue() || canSeeCovers(guiData, uuid)) {
                     String owner = uuid.equals("null") ? "Public"
                         : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(uuid));
                     coverMap.forEach(
@@ -306,6 +306,7 @@ public class RedstoneSnifferGuiBuilder {
         panel.background(new Rectangle().setColor(Color.rgb(53, 46, 77)));
         return panel;
     }
+
     public boolean canSeeCovers(GuiData guiData, String uuid) {
         UUID leader = SpaceProjectManager.getLeader(
             guiData.getPlayer()
@@ -319,9 +320,10 @@ public class RedstoneSnifferGuiBuilder {
         AtomicInteger bgStripe = new AtomicInteger(0);
         int stripe1 = Color.rgb(79, 82, 119);
         int stripe2 = Color.rgb(67, 58, 96);
-        entryList.forEach(entry -> {
+        for(ItemRedstoneSniffer.SnifferEntry entry : entryList){
             bgStripe.getAndIncrement();
             CoverPosition cover = entry.coverPosition;
+            if(cover == null) continue;
             result.add(
                 new Row()
                     .setEnabledIf(
@@ -422,7 +424,7 @@ public class RedstoneSnifferGuiBuilder {
                                                     .closeIfOpen(false);
                                                 return true;
                                             })))));
-        });
+        }
         return result;
     }
 }
