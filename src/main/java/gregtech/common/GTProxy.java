@@ -10,7 +10,6 @@ import static gregtech.api.enums.GTValues.debugEntityCramming;
 import static gregtech.api.enums.Mods.AdvancedSolarPanel;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.BetterLoadingScreen;
-import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.ElectroMagicTools;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
@@ -1109,16 +1108,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemElectricVoid", 1L);
         addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemVoidMeteor", 1L);
         addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemVoidComet", 1L);
-
-        // DraconicEvolution Hazmat
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "draconicBoots", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "draconicHelm", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "draconicLeggs", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "draconicChest", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "wyvernBoots", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "wyvernHelm", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "wyvernLeggs", 1L, 0);
-        addFullHazmatToGeneralItem(DraconicEvolution.ID, "wyvernChest", 1L, 0);
 
         // AdvancedSolarPanel
         addFullHazmatToGeneralItem(AdvancedSolarPanel.ID, "advanced_solar_helmet", 1L);
