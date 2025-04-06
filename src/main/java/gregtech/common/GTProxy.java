@@ -10,7 +10,6 @@ import static gregtech.api.enums.GTValues.debugEntityCramming;
 import static gregtech.api.enums.Mods.AdvancedSolarPanel;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.BetterLoadingScreen;
-import static gregtech.api.enums.Mods.ElectroMagicTools;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GregTech;
@@ -1083,16 +1082,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         FMLCommonHandler.instance()
             .bus()
             .register(new GTWorldgenerator.OregenPatternSavedData(""));
-
-        // EMT Hazmat
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "itemArmorQuantumChestplate", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "NanoBootsTraveller", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "NanosuitGogglesRevealing", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "QuantumBootsTraveller", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "QuantumGogglesRevealing", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "SolarHelmetRevealing", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "NanosuitWing", 1L);
-        addFullHazmatToGeneralItem(ElectroMagicTools.ID, "QuantumWing", 1L);
 
         // Thaumic Boots Hazmat
         addFullHazmatToGeneralItem(ThaumicBoots.ID, "item.ItemQuantumVoid", 1L);
