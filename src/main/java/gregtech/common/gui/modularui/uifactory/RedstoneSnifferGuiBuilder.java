@@ -154,6 +154,8 @@ public class RedstoneSnifferGuiBuilder {
             return result;
         }, new ItemRedstoneSniffer.SnifferEntryAdapter());
         regularMapSyncer.setChangeListener(() -> {
+            if (!regularListWidget.getChildren()
+                .isEmpty()) return;
             AtomicInteger bgStripe = new AtomicInteger(0);
             int stripe1 = Color.rgb(79, 82, 119);
             int stripe2 = Color.rgb(67, 58, 96);
@@ -227,6 +229,8 @@ public class RedstoneSnifferGuiBuilder {
             },
             new ItemRedstoneSniffer.SnifferEntryAdapter());
         advancedMapSyncer.setChangeListener(() -> {
+            if (!advancedListWidget.getChildren()
+                .isEmpty()) return;
             List<ItemRedstoneSniffer.SnifferEntry> entries = new ArrayList<>(advancedMapSyncer.getValue());
             entries.sort((a, b) -> {
                 if (a.owner.equals("Public")) return -1;
