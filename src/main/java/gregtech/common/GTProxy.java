@@ -15,7 +15,6 @@ import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.IguanaTweaksTinkerConstruct;
 import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.enums.Mods.TaintedMagic;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.ThaumicBoots;
 import static gregtech.api.enums.Mods.TinkerConstruct;
@@ -1098,16 +1097,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         addFullHazmatToGeneralItem(AdvancedSolarPanel.ID, "advanced_solar_helmet", 1L);
         addFullHazmatToGeneralItem(AdvancedSolarPanel.ID, "hybrid_solar_helmet", 1L);
         addFullHazmatToGeneralItem(AdvancedSolarPanel.ID, "ultimate_solar_helmet", 1L);
-
-        // TaintedMagic Hazmat
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemVoidwalkerBoots", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemShadowFortressHelmet", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemShadowFortressChestplate", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemShadowFortressLeggings", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemVoidFortressHelmet", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemVoidFortressChestplate", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemVoidFortressLeggings", 1L);
-        addFullHazmatToGeneralItem(TaintedMagic.ID, "ItemVoidmetalGoggles", 1L);
 
         GregTechAPI.sLoadStarted = true;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
