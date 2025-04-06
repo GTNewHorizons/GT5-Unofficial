@@ -5,9 +5,7 @@ import static gregtech.api.enums.FluidState.GAS;
 import static gregtech.api.enums.FluidState.LIQUID;
 import static gregtech.api.enums.FluidState.MOLTEN;
 import static gregtech.api.enums.FluidState.PLASMA;
-import static gregtech.api.enums.GTValues.W;
 import static gregtech.api.enums.GTValues.debugEntityCramming;
-import static gregtech.api.enums.Mods.AdvancedSolarPanel;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.BetterLoadingScreen;
 import static gregtech.api.enums.Mods.Forestry;
@@ -1080,11 +1078,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         FMLCommonHandler.instance()
             .bus()
             .register(new GTWorldgenerator.OregenPatternSavedData(""));
-
-        // AdvancedSolarPanel
-        addFullHazmatToGeneralItem(AdvancedSolarPanel.ID, "advanced_solar_helmet", 1L);
-        addFullHazmatToGeneralItem(AdvancedSolarPanel.ID, "hybrid_solar_helmet", 1L);
-        addFullHazmatToGeneralItem(AdvancedSolarPanel.ID, "ultimate_solar_helmet", 1L);
 
         GregTechAPI.sLoadStarted = true;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
@@ -2545,25 +2538,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public void onBlockEvent(BlockEvent event) {
         if (event.block.getUnlocalizedName()
             .equals("blockAlloyGlass")) GregTechAPI.causeMachineUpdate(event.world, event.x, event.y, event.z);
-    }
-
-    public static void addFullHazmatToGeneralItem(String aModID, String aItem, long aAmount, int aMeta) {
-        ItemStack item = GTModHandler.getModItem(aModID, aItem, aAmount, aMeta);
-        addItemToHazmatLists(item);
-    }
-
-    public static void addFullHazmatToGeneralItem(String aModID, String aItem, long aAmount) {
-        ItemStack item = GTModHandler.getModItem(aModID, aItem, aAmount, W);
-        addItemToHazmatLists(item);
-    }
-
-    private static void addItemToHazmatLists(ItemStack item) {
-        GregTechAPI.sGasHazmatList.add(item);
-        GregTechAPI.sBioHazmatList.add(item);
-        GregTechAPI.sFrostHazmatList.add(item);
-        GregTechAPI.sHeatHazmatList.add(item);
-        GregTechAPI.sRadioHazmatList.add(item);
-        GregTechAPI.sElectroHazmatList.add(item);
     }
 
     private void addHazardTooltip(ItemTooltipEvent event, String translationKey) {
