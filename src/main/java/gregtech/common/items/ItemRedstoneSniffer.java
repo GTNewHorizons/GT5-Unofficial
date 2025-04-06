@@ -3,7 +3,6 @@ package gregtech.common.items;
 import java.io.IOException;
 import java.util.List;
 
-import gregtech.common.gui.modularui.uifactory.RedstoneSnifferGuiBuilder;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
@@ -21,6 +20,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.items.GTGenericItem;
 import gregtech.common.covers.CoverPosition;
+import gregtech.common.gui.modularui.uifactory.RedstoneSnifferGuiBuilder;
 
 public class ItemRedstoneSniffer extends GTGenericItem implements IGuiHolder<GuiData> {
 

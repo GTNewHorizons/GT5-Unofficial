@@ -1,7 +1,20 @@
 package gregtech.common.gui.modularui.uifactory;
 
-import appeng.api.util.DimensionalCoord;
-import appeng.client.render.BlockPosHighlighter;
+import static gregtech.api.enums.Mods.GregTech;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.Rectangle;
@@ -28,28 +41,18 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+
+import appeng.api.util.DimensionalCoord;
+import appeng.client.render.BlockPosHighlighter;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.net.PacketDebugRedstoneCover;
 import gregtech.common.covers.CoverPosition;
 import gregtech.common.items.ItemRedstoneSniffer;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-
-import static gregtech.api.enums.Mods.GregTech;
 
 public class RedstoneSnifferGuiBuilder {
+
     private final GuiData guiData;
     private final PanelSyncManager guiSyncManager;
 
@@ -73,8 +76,8 @@ public class RedstoneSnifferGuiBuilder {
         AtomicInteger lastPage = new AtomicInteger(0);
         if (guiData.getMainHandItem()
             .getTagCompound() != null && guiData.getMainHandItem()
-            .getTagCompound()
-            .hasKey("last_page")) {
+                .getTagCompound()
+                .hasKey("last_page")) {
             lastPage.set(
                 guiData.getMainHandItem()
                     .getTagCompound()
@@ -130,7 +133,7 @@ public class RedstoneSnifferGuiBuilder {
             .sizeRel(0.5f, 0.75f)
             .align(Alignment.Center);
 
-        @SuppressWarnings({"rawtypes"})
+        @SuppressWarnings({ "rawtypes" })
         PagedWidget<?> data = new PagedWidget() {
 
             @Override
@@ -161,9 +164,9 @@ public class RedstoneSnifferGuiBuilder {
                 bgStripe.getAndIncrement();
                 regularList.add(
                     new Row().setEnabledIf(
-                            w -> ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue()
-                                .isEmpty()
-                                || entry.freq.equals(
+                        w -> ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue()
+                            .isEmpty()
+                            || entry.freq.equals(
                                 ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue()))
                         .sizeRel(1f, 0.1f * scale)
                         .expanded()
@@ -175,9 +178,13 @@ public class RedstoneSnifferGuiBuilder {
                                 .color(textColor)
                                 .alignment(Alignment.Center))
                         .child(
-                            new TextWidget(entry.isPrivate ? IKey.lang("gui.yes").toString() : IKey.lang("gui.no").toString()).widthRel(0.5f)
-                                .color(textColor)
-                                .alignment(Alignment.Center)));
+                            new TextWidget(
+                                entry.isPrivate ? IKey.lang("gui.yes")
+                                    .toString()
+                                    : IKey.lang("gui.no")
+                                        .toString()).widthRel(0.5f)
+                                            .color(textColor)
+                                            .alignment(Alignment.Center)));
             });
             regularList.forEach(regularListWidget::child);
             WidgetTree.resize(regularListWidget);
@@ -186,37 +193,39 @@ public class RedstoneSnifferGuiBuilder {
 
         data.addPage(
             new Column().child(
-                    new Row().heightRel(0.1f)
-                        .child(
-                            new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.5f)
-                                .color(textColor)
-                                .alignment(Alignment.Center))
-                        .child(
-                            new TextWidget(IKey.lang("gt.item.redstone_sniffer.private")).widthRel(0.5f)
-                                .color(textColor)
-                                .alignment(Alignment.Center)))
+                new Row().heightRel(0.1f)
+                    .child(
+                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.5f)
+                            .color(textColor)
+                            .alignment(Alignment.Center))
+                    .child(
+                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.private")).widthRel(0.5f)
+                            .color(textColor)
+                            .alignment(Alignment.Center)))
                 .child(
                     new SingleChildWidget<>().sizeRel(1, 0.9f)
                         .child(regularListWidget)));
 
         // Process advanced wireless redstone frequencies
-        GenericListSyncHandler<ItemRedstoneSniffer.SnifferEntry> advancedMapSyncer = new GenericListSyncHandler<>(() -> {
-            List<ItemRedstoneSniffer.SnifferEntry> result = new ArrayList<>();
-            GregTechAPI.sAdvancedWirelessRedstone.forEach((uuid, coverMap) -> {
-                if (((BooleanSyncValue) guiSyncManager.getSyncHandler("player_is_op:0")).getBoolValue() || canSeeCovers(guiData, uuid)) {
-                    String owner = uuid.equals("null") ? "Public"
-                        : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(uuid));
-                    coverMap.forEach(
-                        (frequency, covers) -> {
+        GenericListSyncHandler<ItemRedstoneSniffer.SnifferEntry> advancedMapSyncer = new GenericListSyncHandler<>(
+            () -> {
+                List<ItemRedstoneSniffer.SnifferEntry> result = new ArrayList<>();
+                GregTechAPI.sAdvancedWirelessRedstone.forEach((uuid, coverMap) -> {
+                    if (((BooleanSyncValue) guiSyncManager.getSyncHandler("player_is_op:0")).getBoolValue()
+                        || canSeeCovers(guiData, uuid)) {
+                        String owner = uuid.equals("null") ? "Public"
+                            : SpaceProjectManager.getPlayerNameFromUUID(UUID.fromString(uuid));
+                        coverMap.forEach((frequency, covers) -> {
                             covers.forEach(
                                 (coverPosition, ignored) -> {
                                     result.add(new ItemRedstoneSniffer.SnifferEntry(owner, frequency, coverPosition));
                                 });
                         });
-                }
-            });
-            return result;
-        }, new ItemRedstoneSniffer.SnifferEntryAdapter());
+                    }
+                });
+                return result;
+            },
+            new ItemRedstoneSniffer.SnifferEntryAdapter());
         advancedMapSyncer.setChangeListener(() -> {
             List<ItemRedstoneSniffer.SnifferEntry> entries = new ArrayList<>(advancedMapSyncer.getValue());
             entries.sort((a, b) -> {
@@ -237,23 +246,23 @@ public class RedstoneSnifferGuiBuilder {
         guiSyncManager.syncValue("adv_map", advancedMapSyncer);
         data.addPage(
             new Column().child(
-                    new Row().heightRel(0.1f)
-                        .child(
-                            new TextWidget(IKey.lang("gt.item.redstone_sniffer.owner")).widthRel(0.15f)
-                                .color(textColor)
-                                .alignment(Alignment.Center))
-                        .child(
-                            new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.35f)
-                                .color(textColor)
-                                .alignment(Alignment.Center))
-                        .child(
-                            new TextWidget(IKey.lang("gt.item.redstone_sniffer.dimension")).widthRel(0.25f)
-                                .color(textColor)
-                                .alignment(Alignment.Center))
-                        .child(
-                            new TextWidget(IKey.lang("gt.item.redstone_sniffer.action")).widthRel(0.25f)
-                                .color(textColor)
-                                .alignment(Alignment.Center)))
+                new Row().heightRel(0.1f)
+                    .child(
+                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.owner")).widthRel(0.15f)
+                            .color(textColor)
+                            .alignment(Alignment.Center))
+                    .child(
+                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.frequency")).widthRel(0.35f)
+                            .color(textColor)
+                            .alignment(Alignment.Center))
+                    .child(
+                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.dimension")).widthRel(0.25f)
+                            .color(textColor)
+                            .alignment(Alignment.Center))
+                    .child(
+                        new TextWidget(IKey.lang("gt.item.redstone_sniffer.action")).widthRel(0.25f)
+                            .color(textColor)
+                            .alignment(Alignment.Center)))
                 .child(
                     new SingleChildWidget<>().sizeRel(1, 0.9f)
                         .child(advancedListWidget)));
@@ -316,25 +325,26 @@ public class RedstoneSnifferGuiBuilder {
         return uuid.equals("null") || SpaceProjectManager.getLeader(UUID.fromString(uuid))
             .equals(leader);
     }
-    public List<IWidget> processAdvancedFrequencies(List<ItemRedstoneSniffer.SnifferEntry> entryList, ListWidget<IWidget, CategoryList.Root> listWidget,
-                                                    PanelSyncManager guiSyncManager, int scale, int textColor) {
+
+    public List<IWidget> processAdvancedFrequencies(List<ItemRedstoneSniffer.SnifferEntry> entryList,
+        ListWidget<IWidget, CategoryList.Root> listWidget, PanelSyncManager guiSyncManager, int scale, int textColor) {
         List<IWidget> result = new ArrayList<>();
         AtomicInteger bgStripe = new AtomicInteger(0);
         int stripe1 = Color.rgb(79, 82, 119);
         int stripe2 = Color.rgb(67, 58, 96);
-        for(ItemRedstoneSniffer.SnifferEntry entry : entryList){
+        for (ItemRedstoneSniffer.SnifferEntry entry : entryList) {
             bgStripe.getAndIncrement();
             CoverPosition cover = entry.coverPosition;
-            if(cover == null) continue;
+            if (cover == null) continue;
             result.add(
                 new Row()
                     .setEnabledIf(
                         w -> ((((StringSyncValue) guiSyncManager.getSyncHandler("owner_filter:0")).getStringValue()
                             .isEmpty()
                             || entry.owner.contains(
-                            ((StringSyncValue) guiSyncManager.getSyncHandler("owner_filter:0")).getStringValue()))
+                                ((StringSyncValue) guiSyncManager.getSyncHandler("owner_filter:0")).getStringValue()))
                             && entry.freq.contains(
-                            ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue())))
+                                ((StringSyncValue) guiSyncManager.getSyncHandler("freq_filter:0")).getStringValue())))
                     .sizeRel(1f, 0.1f * scale)
                     .background(
                         (bgStripe.get() % 2 == 0) ? new Rectangle().setColor(stripe1)
@@ -377,20 +387,24 @@ public class RedstoneSnifferGuiBuilder {
                                                         cover.y,
                                                         cover.z,
                                                         false));
-                                                ArrayList<DimensionalCoord> list = new ArrayList<>();
-                                                list.add(new DimensionalCoord(cover.x, cover.y, cover.z, cover.dim));
-                                                String foundMsg = StatCollector.translateToLocalFormatted(
-                                                    "gt.item.redstone_sniffer.highlight_message",
-                                                    cover.x,
-                                                    cover.y,
-                                                    cover.z);
-                                                BlockPosHighlighter.highlightBlocks(
-                                                    guiSyncManager.getPlayer(),
-                                                    list,
-                                                    foundMsg,
-                                                    StatCollector.translateToLocal("gt.item.redstone_sniffer.wrong_dim_message"));
-                                                listWidget.getPanel()
-                                                    .closeIfOpen(false);
+                                                if (NetworkUtils.isClient()) {
+                                                    ArrayList<DimensionalCoord> list = new ArrayList<>();
+                                                    list.add(
+                                                        new DimensionalCoord(cover.x, cover.y, cover.z, cover.dim));
+                                                    String foundMsg = StatCollector.translateToLocalFormatted(
+                                                        "gt.item.redstone_sniffer.highlight_message",
+                                                        cover.x,
+                                                        cover.y,
+                                                        cover.z);
+                                                    BlockPosHighlighter.highlightBlocks(
+                                                        guiSyncManager.getPlayer(),
+                                                        list,
+                                                        foundMsg,
+                                                        StatCollector.translateToLocal(
+                                                            "gt.item.redstone_sniffer.wrong_dim_message"));
+                                                    listWidget.getPanel()
+                                                        .closeIfOpen(false);
+                                                }
                                                 return true;
                                             })))
                             .child(
