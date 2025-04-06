@@ -40,6 +40,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -122,6 +123,7 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.hazards.Hazard;
 import gregtech.api.hazards.HazardProtection;
+import gregtech.api.hazards.HazardProtectionTooltip;
 import gregtech.api.interfaces.IBlockOnWalkOver;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.IToolStats;
@@ -2610,15 +2612,35 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         GregTechAPI.sElectroHazmatList.add(item);
     }
 
+    private void addHazardTooltip(ItemTooltipEvent event, String translationKey) {
+        event.toolTip.add(EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal(translationKey));
+    }
+
     @SubscribeEvent
     public void onItemTooltip(ItemTooltipEvent event) {
         if (HazardProtection.providesFullHazmatProtection(event.itemStack)) {
-            event.toolTip.add(
-                EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal("GT5U.providesfullhazmatprotection"));
-        } else if (HazardProtection.protectsAgainstHazard(event.itemStack, Hazard.ELECTRICAL)) {
-            event.toolTip.add(
-                EnumChatFormatting.LIGHT_PURPLE
-                    + StatCollector.translateToLocal("GT5U.provideselectricalhazmatprotection"));
+            addHazardTooltip(event, HazardProtectionTooltip.FULL_PROTECTION_TRANSLATION_KEY);
+            return;
+        }
+
+        // TreeSet so it's always the same order
+        TreeSet<Hazard> protections = new TreeSet<Hazard>();
+        for (Hazard hazard : Hazard.values()) {
+            if (HazardProtection.protectsAgainstHazard(event.itemStack, hazard)) {
+                protections.add(hazard);
+            }
+        }
+        if (protections.containsAll(HazardProtectionTooltip.CBRN_HAZARDS)) {
+            protections.removeAll(HazardProtectionTooltip.CBRN_HAZARDS);
+            addHazardTooltip(event, HazardProtectionTooltip.CBRN_TRANSLATION_KEY);
+        } ;
+
+        if (protections.containsAll(HazardProtectionTooltip.TEMPERATURE_HAZARDS)) {
+            protections.removeAll(HazardProtectionTooltip.TEMPERATURE_HAZARDS);
+            addHazardTooltip(event, HazardProtectionTooltip.EXTREME_TEMP_TRANSLATION_KEY);
+        } ;
+        for (Hazard hazard : protections) {
+            addHazardTooltip(event, HazardProtectionTooltip.singleHazardTranslationKey(hazard));
         }
     }
 

@@ -130,7 +130,14 @@ GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was 
 GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found
 GT5U.autoplace.error.no_mte.class_name=§cSuggested to place machine with class name §4%d§c but none was found
 GT5U.providesfullhazmatprotection=Provides full hazmat protection.
-GT5U.provideselectricalhazmatprotection=Provides electrical shock protection.
+GT5U.providesCBRNprotection=Provides CBRN protection.
+GT5U.providesextremetemperatureprotection=Provides thermal protection.
+GT5U.providesbiologicalhazmatprotection=Provides biological hazard protection.
+GT5U.providesfrosthazmatprotection=Provides frost protection.
+GT5U.providesheathazmatprotection=Provides heat protection.
+GT5U.providesradiohazmatprotection=Provides radiation protection.
+GT5U.provideselectricalhazmatprotection=Provides electrical protection.
+GT5U.providesgashazmatprotection=Provides gas protection.
 
 # Multiblock Tooltip Builder Keywords
 # Context can be found in the class gregtech.api.util.MultiblockTooltipBuilder
