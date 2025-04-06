@@ -1922,6 +1922,8 @@ gt.item.redstone_sniffer.dimension=Dimension
 gt.item.redstone_sniffer.action=Action
 gt.item.redstone_sniffer.locate=Locate
 gt.item.redstone_sniffer.teleport=Teleport
+gt.item.redstone_sniffer.highlight_message=Highlighting cover at %d,%d,%d
+gt.item.redstone_sniffer.wrong_dim_message=Cannot highlight because you're not in the same dimension!
 
 gt.cover.info.format.tick_rate=§b%s§r %s
 gt.cover.info.chat.tick_rate=Cover tick rate set to %s

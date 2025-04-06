@@ -38,6 +38,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -129,6 +130,7 @@ public class RedstoneSnifferGuiBuilder {
             .sizeRel(0.5f, 0.75f)
             .align(Alignment.Center);
 
+        @SuppressWarnings({"rawtypes"})
         PagedWidget<?> data = new PagedWidget() {
 
             @Override
@@ -173,7 +175,7 @@ public class RedstoneSnifferGuiBuilder {
                                 .color(textColor)
                                 .alignment(Alignment.Center))
                         .child(
-                            new TextWidget(entry.isPrivate ? "Yes" : "No").widthRel(0.5f)
+                            new TextWidget(entry.isPrivate ? IKey.lang("gui.yes").toString() : IKey.lang("gui.no").toString()).widthRel(0.5f)
                                 .color(textColor)
                                 .alignment(Alignment.Center)));
             });
@@ -377,8 +379,8 @@ public class RedstoneSnifferGuiBuilder {
                                                         false));
                                                 ArrayList<DimensionalCoord> list = new ArrayList<>();
                                                 list.add(new DimensionalCoord(cover.x, cover.y, cover.z, cover.dim));
-                                                String foundMsg = String.format(
-                                                    "Highlighting cover at %d,%d,%d",
+                                                String foundMsg = StatCollector.translateToLocalFormatted(
+                                                    "gt.item.redstone_sniffer.highlight_message",
                                                     cover.x,
                                                     cover.y,
                                                     cover.z);
@@ -386,7 +388,7 @@ public class RedstoneSnifferGuiBuilder {
                                                     guiSyncManager.getPlayer(),
                                                     list,
                                                     foundMsg,
-                                                    "Cannot highlight because you're not in the same dimension!");
+                                                    StatCollector.translateToLocal("gt.item.redstone_sniffer.wrong_dim_message"));
                                                 listWidget.getPanel()
                                                     .closeIfOpen(false);
                                                 return true;
