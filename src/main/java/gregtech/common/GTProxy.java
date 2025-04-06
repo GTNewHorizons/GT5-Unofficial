@@ -13,7 +13,6 @@ import static gregtech.api.enums.Mods.BetterLoadingScreen;
 import static gregtech.api.enums.Mods.ElectroMagicTools;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
-import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.IguanaTweaksTinkerConstruct;
 import static gregtech.api.enums.Mods.Railcraft;
@@ -1084,10 +1083,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         FMLCommonHandler.instance()
             .bus()
             .register(new GTWorldgenerator.OregenPatternSavedData(""));
-
-        // GraviSuite Hazmat
-        addFullHazmatToGeneralItem(GraviSuite.ID, "graviChestPlate", 1L);
-        addFullHazmatToGeneralItem(GraviSuite.ID, "advNanoChestPlate", 1L);
 
         // EMT Hazmat
         addFullHazmatToGeneralItem(ElectroMagicTools.ID, "itemArmorQuantumChestplate", 1L);
