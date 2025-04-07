@@ -421,6 +421,6 @@ public class OverclockCalculator {
         int regularMultiplier = (int) Math
             .pow(durationDecreasePerOC, Math.max(regularOverclocks - neededOverclocks, 0));
 
-        return Math.max(heatMultiplier * regularMultiplier, 1);
+        return heatMultiplier * regularMultiplier;
     }
 }
