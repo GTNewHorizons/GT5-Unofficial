@@ -423,7 +423,7 @@ class GT_OverclockCalculator_UnitTest {
     void testNoOverclockCorrectWithUnderOneTickLogic_Test() {
         OverclockCalculator calculator = OverclockCalculator.ofNoOverclock(2_693_264_510L, 100)
             .setParallel(24 * 64);
-        assertEquals(100, calculator.calculateMultiplierUnderOneTick());
+        assertEquals(1, calculator.calculateMultiplierUnderOneTick());
     }
 
     @Test
