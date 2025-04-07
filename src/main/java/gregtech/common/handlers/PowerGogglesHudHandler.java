@@ -64,7 +64,7 @@ public class PowerGogglesHudHandler {
     @SideOnly(Side.CLIENT)
     public void drawHUD(RenderGameOverlayEvent.Post event) {
         if (event.type != RenderGameOverlayEvent.ElementType.ALL || mc.gameSettings.showDebugInfo
-            || mc.currentScreen instanceof GuiChat) return;
+            || (PowerGogglesConfigHandler.hideWhenChatOpen && mc.currentScreen instanceof GuiChat)) return;
 
         InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(mc.thePlayer);
         boolean gogglesEquipped = false;

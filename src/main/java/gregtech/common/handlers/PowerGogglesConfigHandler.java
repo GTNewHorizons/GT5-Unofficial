@@ -19,6 +19,7 @@ public class PowerGogglesConfigHandler {
     public static int readingIndex;
     public static int gradientIndex;
     public static boolean showPowerChart;
+    public static boolean hideWhenChatOpen;
 
     public static void init(File confFile) {
         if (config == null) {
@@ -69,6 +70,8 @@ public class PowerGogglesConfigHandler {
                 .getBoolean(false);
             hudScale = config.get(Configuration.CATEGORY_GENERAL, "HUD Scale", 1.0, "")
                 .getDouble(1.0);
+            hideWhenChatOpen = config.get(Configuration.CATEGORY_GENERAL, "Hide HUD", false, "Hide the HUD when the in-game chat is open")
+                .getBoolean(false);
 
         } catch (Exception e) {
             System.out.println("Unable to load Config");
