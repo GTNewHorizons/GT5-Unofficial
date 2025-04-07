@@ -407,15 +407,20 @@ public class OverclockCalculator {
         int neededHeatOverclocks = (int) Math.max((Math.log(duration) / Math.log(durationDecreasePerHeatOC)), 0);
         duration /= Math.pow(durationDecreasePerHeatOC, heatOverclocks);
         neededOverclocks = (int) Math.max((Math.log(duration) / Math.log(durationDecreasePerOC)), 0);
+        duration /= Math.pow(durationDecreasePerOC, neededOverclocks);
+
+        // To avoid rounding issues, need to round neededOverclocks down,
+        // but this can cause the multiplier to happen even if the oc still
+        // decreases duration to 1 tick with duration decrease above 2
+        if (!(duration < 2)) {
+            neededOverclocks++;
+        }
 
         int heatMultiplier = (int) Math
             .pow(durationDecreasePerHeatOC, Math.max(heatOverclocks - neededHeatOverclocks, 0));
         int regularMultiplier = (int) Math
             .pow(durationDecreasePerOC, Math.max(regularOverclocks - neededOverclocks, 0));
-        duration /= Math.pow(durationDecreasePerOC, neededOverclocks);
 
-        // If an oc has a 4x duration decrease, multiplier becomes 4 if a 2 tick duration gets another oc, dividing by
-        // duration makes sure parallel only doubles
-        return Math.max(heatMultiplier * regularMultiplier / duration, 1);
+        return Math.max(heatMultiplier * regularMultiplier, 1);
     }
 }
