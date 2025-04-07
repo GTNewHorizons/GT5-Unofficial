@@ -89,7 +89,18 @@ public class PowerGogglesHudHandler {
         int w = PowerGogglesConfigHandler.rectangleWidth;
         int h = PowerGogglesConfigHandler.rectangleHeight;
         int borderRadius = 3;
+
+        double subScale = PowerGogglesConfigHandler.subTextScaling;
+        int gapBetweenLines = 2;
+        int scaleOffsetX = xOffset - borderRadius;
+        int scaleOffsetY = screenHeight - yOffset
+            + gapBetweenLines * 2
+            + (int) (fontRenderer.FONT_HEIGHT * 2 * subScale)
+            + borderRadius;
+        GL11.glTranslated(scaleOffsetX, scaleOffsetY, 0);
         GL11.glScaled(PowerGogglesConfigHandler.hudScale, PowerGogglesConfigHandler.hudScale, 1);
+        GL11.glTranslated(-scaleOffsetX, -scaleOffsetY, 0);
+
         int chartOffsetY = drawPowerRectangle(xOffset, yOffset, h, w, screenHeight, borderRadius);
 
         if (PowerGogglesConfigHandler.showPowerChart) {

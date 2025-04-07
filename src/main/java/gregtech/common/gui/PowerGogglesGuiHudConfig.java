@@ -118,7 +118,7 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
             subScaleDownButton.yPosition + subScaleDownButton.height,
             "HUD Scale-");
         hudScaleDownButton.width = buttonWidth / 2;
-        hudScaleUpButton = new GuiButton(8, x, subScaleUpButton.yPosition + subScaleUpButton.height, "HUD Scale+");
+        hudScaleUpButton = new GuiButton(9, x, subScaleUpButton.yPosition + subScaleUpButton.height, "HUD Scale+");
         hudScaleUpButton.width = buttonWidth / 2;
 
         buttonList.add(notationToggleButton);
@@ -228,12 +228,20 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
         super.drawScreen(x, y, partial);
         GL11.glPopMatrix();
 
-        dragCenterX = (int) ((PowerGogglesConfigHandler.mainOffsetX + PowerGogglesConfigHandler.rectangleWidth)
-            * PowerGogglesConfigHandler.hudScale);
-        dragCenterY = (int) ((height - PowerGogglesConfigHandler.mainOffsetY
-            - PowerGogglesConfigHandler.rectangleHeight) * PowerGogglesConfigHandler.hudScale);
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        int gapBetweenLines = 2;
+        int borderRadius = 3;
+        int bottomLeftCorner = height - PowerGogglesConfigHandler.mainOffsetY
+            + gapBetweenLines * 2
+            + (int) (fontRenderer.FONT_HEIGHT * 2 * PowerGogglesConfigHandler.subTextScaling)
+            + borderRadius;
+
+        dragCenterX = (int) ((PowerGogglesConfigHandler.mainOffsetX + PowerGogglesConfigHandler.rectangleWidth * PowerGogglesConfigHandler.hudScale) );
+        dragCenterY = (int) ((height - PowerGogglesConfigHandler.mainOffsetY - PowerGogglesConfigHandler.rectangleHeight) +
+            (PowerGogglesConfigHandler.mainOffsetY - bottomLeftCorner)*(1-PowerGogglesConfigHandler.hudScale));
         dragWidth = (int) (10 * PowerGogglesConfigHandler.hudScale);
         dragHeight = (int) (10 * PowerGogglesConfigHandler.hudScale);
+        
         drawRect(
             dragCenterX - dragWidth / 2,
             dragCenterY - dragHeight / 2,
@@ -246,9 +254,8 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
     protected void mouseClicked(int x, int y, int button) {
         if (isOnDragRectangle(x, y)) {
             draggingHud = true;
-            dragOffsetX = (int) ((x - PowerGogglesConfigHandler.mainOffsetX * PowerGogglesConfigHandler.hudScale));
-            dragOffsetY = (int) ((height - PowerGogglesConfigHandler.mainOffsetY * PowerGogglesConfigHandler.hudScale
-                - y));
+            dragOffsetX = (int) ((x - PowerGogglesConfigHandler.mainOffsetX));
+            dragOffsetY = (int) ((height - PowerGogglesConfigHandler.mainOffsetY - y));
         }
 
         super.mouseClicked(x, y, button);
@@ -277,9 +284,8 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
     @Override
     protected void mouseClickMove(int x, int y, int action, long time) {
         if (draggingHud) {
-            PowerGogglesConfigHandler.mainOffsetX = (int) ((x - dragOffsetX) / PowerGogglesConfigHandler.hudScale);
-            PowerGogglesConfigHandler.mainOffsetY = (int) ((height - y - dragOffsetY)
-                / PowerGogglesConfigHandler.hudScale);
+            PowerGogglesConfigHandler.mainOffsetX = (int) ((x - dragOffsetX));
+            PowerGogglesConfigHandler.mainOffsetY = (int) ((height - y - dragOffsetY));
         }
         super.mouseClickMove(x, y, action, time);
     }
