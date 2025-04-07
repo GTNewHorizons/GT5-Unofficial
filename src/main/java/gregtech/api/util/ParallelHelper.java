@@ -418,11 +418,7 @@ public class ParallelHelper {
         // Save the original max parallel before calculating our overclocking under 1 tick
         int originalMaxParallel = maxParallel;
         calculator.setParallel(originalMaxParallel);
-        double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
-        if (tickTimeAfterOC < 1) {
-            maxParallel = GTUtility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
-        }
-
+        maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
         int maxParallelBeforeBatchMode = maxParallel;
         if (batchMode) {
             maxParallel = GTUtility.safeInt((long) maxParallel * batchModifier, 0);
