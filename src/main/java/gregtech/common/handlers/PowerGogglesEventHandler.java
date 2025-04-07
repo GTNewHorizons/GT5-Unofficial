@@ -38,9 +38,7 @@ public class PowerGogglesEventHandler {
 
     private static int ticks = 0;
     public static Minecraft mc;
-    public static Map<UUID, MTELapotronicSuperCapacitor> playerLscMap = new HashMap<>();
     public static Map<UUID, DimensionalCoord> lscLinkMap = new HashMap<>();
-    public static DimensionalCoord lscLink = null;
     public static boolean forceUpdate = false;
     public static boolean forceRefresh = false;
     public static boolean firstClientTick = true;
@@ -97,7 +95,6 @@ public class PowerGogglesEventHandler {
 
     @SubscribeEvent
     public void clientOnPlayerConnect(FMLNetworkEvent.ClientConnectedToServerEvent event) {
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
     }
 
@@ -115,7 +112,6 @@ public class PowerGogglesEventHandler {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) {
-        EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 
         if (PowerGogglesKeybindHandler.openConfigGui.isPressed()) {
             Minecraft.getMinecraft()
