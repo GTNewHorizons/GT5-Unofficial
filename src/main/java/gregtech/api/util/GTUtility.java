@@ -3791,6 +3791,10 @@ public class GTUtility {
         }
     }
 
+    public static String translate(String key, Object... parameters) {
+        return StatCollector.translateToLocalFormatted(key, parameters);
+    }
+
     /*
      * Check if stack has enough items of given type and subtract from stack, if there's no creative or 111 stack.
      */
@@ -4461,8 +4465,16 @@ public class GTUtility {
             .count();
     }
 
+    public static long clamp(long val, long lo, long hi) {
+        return val < lo ? lo : val > hi ? hi : val;
+    }
+
     public static int clamp(int val, int lo, int hi) {
         return MathHelper.clamp_int(val, lo, hi);
+    }
+
+    public static float clamp(float val, float lo, float hi) {
+        return val < lo ? lo : val > hi ? hi : val;
     }
 
     public static int min(int first, int... rest) {
@@ -4534,6 +4546,10 @@ public class GTUtility {
         v.z = signum(v.z);
 
         return v;
+    }
+
+    public static int mod(int value, int divisor) {
+        return ((value % divisor) + divisor) % divisor;
     }
 
     /**
