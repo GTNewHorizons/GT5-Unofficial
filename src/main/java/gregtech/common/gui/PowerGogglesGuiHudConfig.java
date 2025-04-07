@@ -231,17 +231,18 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
         int gapBetweenLines = 2;
         int borderRadius = 3;
-        int bottomLeftCorner = height - PowerGogglesConfigHandler.mainOffsetY
-            + gapBetweenLines * 2
+        int rectangleHeightToBorderBottom = PowerGogglesConfigHandler.rectangleHeight + gapBetweenLines * 2
             + (int) (fontRenderer.FONT_HEIGHT * 2 * PowerGogglesConfigHandler.subTextScaling)
             + borderRadius;
-
-        dragCenterX = (int) ((PowerGogglesConfigHandler.mainOffsetX + PowerGogglesConfigHandler.rectangleWidth * PowerGogglesConfigHandler.hudScale) );
-        dragCenterY = (int) ((height - PowerGogglesConfigHandler.mainOffsetY - PowerGogglesConfigHandler.rectangleHeight) +
-            (PowerGogglesConfigHandler.mainOffsetY - bottomLeftCorner)*(1-PowerGogglesConfigHandler.hudScale));
+        dragCenterX = (int) ((PowerGogglesConfigHandler.mainOffsetX
+            + PowerGogglesConfigHandler.rectangleWidth * PowerGogglesConfigHandler.hudScale
+            - 1));
+        dragCenterY = (int) ((height - PowerGogglesConfigHandler.mainOffsetY
+            - PowerGogglesConfigHandler.rectangleHeight)
+            + (rectangleHeightToBorderBottom) * (1 - PowerGogglesConfigHandler.hudScale));
         dragWidth = (int) (10 * PowerGogglesConfigHandler.hudScale);
         dragHeight = (int) (10 * PowerGogglesConfigHandler.hudScale);
-        
+
         drawRect(
             dragCenterX - dragWidth / 2,
             dragCenterY - dragHeight / 2,
