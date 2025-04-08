@@ -5,8 +5,15 @@ import net.minecraft.block.Block;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.util.data.BlockSupplier;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
+import bartworks.API.BorosilicateGlass;
+import cpw.mods.fml.common.registry.GameRegistry;
+import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Mods;
+import gregtech.api.structure.IStructureProvider;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.block.ModBlocks;
 import tectech.thing.block.BlockQuantumGlass;
 import tectech.thing.casing.BlockGTCasingsTT;
@@ -51,6 +58,39 @@ public enum Casings implements ICasing {
     SterileFarmCasing
         (() -> ModBlocks.blockCasings2Misc, 15, gtpp(1, 15)),
 
+    YellowStripesBlockA
+        (() -> GregTechAPI.sBlockCasings3, 0, gt(0, 32 + 0)),
+    YellowStripesBlockB
+        (() -> GregTechAPI.sBlockCasings3, 1, gt(0, 32 + 1)),
+    RadioactiveHazardSignBlock
+        (() -> GregTechAPI.sBlockCasings3, 2, gt(0, 32 + 2)),
+    BioHazardSignBlock
+        (() -> GregTechAPI.sBlockCasings3, 3, gt(0, 32 + 3)),
+    ExplosionHazardSignBlock
+        (() -> GregTechAPI.sBlockCasings3, 4, gt(0, 32 + 4)),
+    FireHazardSignBlock
+        (() -> GregTechAPI.sBlockCasings3, 5, gt(0, 32 + 5)),
+    AcidHazardSignBlock
+        (() -> GregTechAPI.sBlockCasings3, 6, gt(0, 32 + 6)),
+    MagicHazardSignBlock
+        (() -> GregTechAPI.sBlockCasings3, 7, gt(0, 32 + 7)),
+    FrostHazardSignBlock
+        (() -> GregTechAPI.sBlockCasings3, 8, gt(0, 32 + 8)),
+    NoiseHazardSignBlock
+        (() -> GregTechAPI.sBlockCasings3, 9, gt(0, 32 + 9)),
+    GrateMachineCasing
+        (() -> GregTechAPI.sBlockCasings3, 10, gt(0, 32 + 10)),
+    FilterMachineCasing
+        (() -> GregTechAPI.sBlockCasings3, 11, gt(0, 32 + 11)),
+    RadiationProofMachineCasing
+        (() -> GregTechAPI.sBlockCasings3, 12, gt(0, 32 + 12)),
+    BronzeFireboxCasing
+        (() -> GregTechAPI.sBlockCasings3, 13, gt(0, 32 + 13)),
+    SteelFireboxCasing
+        (() -> GregTechAPI.sBlockCasings3, 14, gt(0, 32 + 14)),
+    TungstensteelFireboxCasing
+        (() -> GregTechAPI.sBlockCasings3, 15, gt(0, 32 + 15)),
+
     TinItemPipeCasing
         (() -> GregTechAPI.sBlockCasings11, 0, gt(16, 64 + 0)),
     BrassItemPipeCasing
@@ -68,6 +108,9 @@ public enum Casings implements ICasing {
     BlackPlutoniumItemPipeCasing
         (() -> GregTechAPI.sBlockCasings11, 7, gt(16, 64 + 7)),
 
+    EntropyResistantCasing
+        (() -> GregTechAPI.sBlockCasings12, 10, gt(16, 80 + 10)),
+
     ChemicalGradeGlass
         (() -> GregTechAPI.sBlockGlass1, 0, gt(16, 0)),
     ElectronPermeableNeutroniumCoatedGlass
@@ -83,6 +126,44 @@ public enum Casings implements ICasing {
         (() -> ModBlocks.blockCasings6Misc, 0, gtpp(3, 4)),
     AdvancedFusionCoilII
         (() -> ModBlocks.blockCasings6Misc, 1, gtpp(3, 5)),
+
+    MagicCasing
+        (() -> Loaders.magicCasing, 0, -1),
+
+    BorosilicateGlassAny(BorosilicateGlass::getGlassBlock, 0, -1) {
+        @Override
+        public String getLocalizedName() {
+            return GTUtility.translate("GT5U.MBTT.BoroGlassAny");
+        }
+
+        @Override
+        public <T> IStructureElement<T> asElement(CasingElementContext context) {
+            return BorosilicateGlass.ofBoroGlassAnyTier();
+        }
+    },
+
+    BorosilicateGlassTiered(BorosilicateGlass::getGlassBlock, 0, -1) {
+        @Override
+        public String getLocalizedName() {
+            return GTUtility.translate("GT5U.MBTT.BoroGlassTiered");
+        }
+
+        @Override
+        public <T> IStructureElement<T> asElement(CasingElementContext context) {
+            return BorosilicateGlass.ofBoroGlass(
+                (byte) -2,
+                (T multi, Byte tier) -> ((IStructureProvider<?>)multi).getStructureInstance().setCasingTier(context.getGroup(), tier),
+                (T multi) -> (byte) ((IStructureProvider<?>)multi).getStructureInstance().getCasingTier(context.getGroup(), -2));
+        }
+
+        @Override
+        public boolean isTiered() {
+            return true;
+        }
+    },
+
+    WardedGlass
+        (() -> GameRegistry.findBlock(Mods.Thaumcraft.ID, "blockCosmeticOpaque"), 2, -1),
 
     QuantumGlass
         (() -> BlockQuantumGlass.INSTANCE, 0, -1),
@@ -121,6 +202,7 @@ public enum Casings implements ICasing {
     // spotless:on
 
     public final BlockSupplier blockGetter;
+    private volatile Block block;
     public final int meta;
     public final int textureId;
 
@@ -132,7 +214,11 @@ public enum Casings implements ICasing {
 
     @Override
     public @NotNull Block getBlock() {
-        return blockGetter.get();
+        if (block == null) {
+            block = blockGetter.get();
+        }
+
+        return block;
     }
 
     @Override
