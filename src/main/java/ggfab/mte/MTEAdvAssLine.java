@@ -723,8 +723,16 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 continue;
             }
 
+            // Check voltage tier is at least recipe tier.
             if (recipe.mEUt > inputVoltage) {
+                // TODO: This should have its own result.
                 result = CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                continue;
+            }
+
+            // Check all slices can run with provided power.
+            if ((long) recipe.mInputs.length * recipe.mEUt > inputEUt) {
+                result = CheckRecipeResultRegistry.insufficientPower((long) recipe.mInputs.length * recipe.mEUt);
                 continue;
             }
 
