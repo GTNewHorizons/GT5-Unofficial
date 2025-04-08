@@ -2,8 +2,6 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GTValues.AuthorOmdaCZ;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -122,12 +120,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                 "C            CCCCCCC            C"
             }})
 
-    .addElement(
-            'A',
-            withChannel(
-                "glass",
-                BorosilicateGlass
-                    .ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier)))
+        .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(
             'C',
             buildHatchAdder(MTEMultiSolidifier.class).atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, MultiAmpEnergy)
@@ -213,7 +206,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             .addInfo("Decays at double the rate that it speeds up at")
             .addInfo("Only uses 80% of the EU/t normally required")
             .addInfo("Processes an additional " + 20 + " items per voltage")
-            .addInfo("Energy hatch limited by glass tier, UMV Glass unlocks all")
+            .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addInfo(EnumChatFormatting.RED + "Limit to one energy hatch if using a Multi-Amp")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .addController("Front Center bottom")
@@ -221,7 +214,8 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             .addCasingInfoMin("Solidifier Radiator", 73, false)
             .addCasingInfoMin("Heat Proof Machine Casing", 16, false)
             .addCasingInfoMin("Clean Stainless Steel Machine Casing", 16, false)
-            .addCasingInfoMin("Glass", 110, true)InputBus("Any Casing", 1)
+            .addCasingInfoMin("Any Tiered Glass", 110, true)
+            .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
@@ -253,6 +247,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        glassTier = -1;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 16, 4, 1)) return false;
 
         if (!mExoticEnergyHatches.isEmpty()) {
