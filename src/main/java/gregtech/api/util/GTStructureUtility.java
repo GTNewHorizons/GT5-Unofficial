@@ -42,9 +42,6 @@ import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
-
-import cofh.asmhooks.block.BlockTickingWater;
-import cofh.asmhooks.block.BlockWater;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
@@ -62,6 +59,29 @@ import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.*;
+
+import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode.EXACT;
+import static gregtech.api.enums.Mods.*;
 
 public class GTStructureUtility {
 
@@ -190,7 +210,8 @@ public class GTStructureUtility {
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
-                if (check(t, world, x, y, z)) return SKIP;
+                int mode = ItemConstructableTrigger.getMode(trigger);
+                if (mode < 2 && check(t, world, x, y, z)) return SKIP;
                 ItemStack tFrameStack = getFrameStack();
                 if (!GTUtility.isStackValid(tFrameStack) || !(tFrameStack.getItem() instanceof ItemBlock))
                     return REJECT; // honestly, this is more like a programming error or pack issue
@@ -301,12 +322,13 @@ public class GTStructureUtility {
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
-                if (shouldSkip != null) {
+                int mode = ItemConstructableTrigger.getMode(trigger);
+                if (mode < 2 && shouldSkip != null) {
                     TileEntity tileEntity = world.getTileEntity(x, y, z);
                     if (tileEntity instanceof IGregTechTileEntity
                         && shouldSkip.test(t, (IGregTechTileEntity) tileEntity)) return SKIP;
                 }
-                if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) return REJECT;
+                if (mode == 0 && !StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) return REJECT;
                 Class<? extends IMetaTileEntity> clazz = aMetaId.apply(t);
                 if (clazz == null) return REJECT;
                 ItemStack taken = env.getSource()
@@ -386,12 +408,13 @@ public class GTStructureUtility {
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
-                if (shouldSkip != null) {
+                int mode = ItemConstructableTrigger.getMode(trigger);
+                if (mode < 2 && shouldSkip != null) {
                     TileEntity tileEntity = world.getTileEntity(x, y, z);
                     if (tileEntity instanceof IGregTechTileEntity
                         && shouldSkip.test(t, (IGregTechTileEntity) tileEntity)) return SKIP;
                 }
-                if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) return REJECT;
+                if (mode == 0 && !StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) return REJECT;
                 ItemMachines item = (ItemMachines) Item.getItemFromBlock(GregTechAPI.sBlockMachines);
                 int meta = aMetaId.applyAsInt(t);
                 if (meta < 0) return REJECT;
@@ -462,7 +485,8 @@ public class GTStructureUtility {
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
                 IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
-                if (check(t, world, x, y, z)) return SKIP;
+                int mode = ItemConstructableTrigger.getMode(trigger);
+                if (mode < 2 && check(t, world, x, y, z)) return SKIP;
                 return com.gtnewhorizon.structurelib.structure.StructureUtility
                     .survivalPlaceBlock(placeCasing, placeCasingMeta, world, x, y, z, s, actor, chatter);
             }
@@ -578,10 +602,11 @@ public class GTStructureUtility {
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
+                int mode = ItemConstructableTrigger.getMode(trigger);
                 Block block = world.getBlock(x, y, z);
                 boolean isCoil = block instanceof IHeatingCoil
                     && ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z)) == getHeatFromHint(trigger);
-                if (isCoil) return SKIP;
+                if (mode == 0 && isCoil) return SKIP;
                 return com.gtnewhorizon.structurelib.structure.StructureUtility.survivalPlaceBlock(
                     GregTechAPI.sBlockCasings5,
                     getMetaFromHint(trigger),
@@ -692,12 +717,13 @@ public class GTStructureUtility {
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
+                int mode = ItemConstructableTrigger.getMode(trigger);
                 Block block = world.getBlock(x, y, z);
 
                 boolean isCoil = block == GregTechAPI.sSolenoidCoilCasings
                     && world.getBlockMetadata(x, y, z) == getMetaFromHint(trigger);
 
-                if (isCoil) return SKIP;
+                if (mode == 0 && isCoil) return SKIP;
 
                 return com.gtnewhorizon.structurelib.structure.StructureUtility.survivalPlaceBlock(
                     GregTechAPI.sSolenoidCoilCasings,

@@ -161,8 +161,17 @@ public class HatchElementBuilder<T> {
                                         .longValue()))
                     .shouldSkip(
                         (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c,
-                            t) -> t != null && list.stream()
-                                .anyMatch(clazz -> clazz.isInstance(t.getMetaTileEntity())))
+                            t) -> {
+                            System.out.println(t);
+                            System.out.println(t != null ? t.getMetaTileEntity() : null);
+                            return t != null && list.stream()
+                                .anyMatch(clazz -> {
+                                    System.out.println(clazz);
+                                    System.out.println(t.getMetaTileEntity());
+                                    System.out.println(clazz.isInstance(t.getMetaTileEntity()));
+                                    return clazz.isInstance(t.getMetaTileEntity());
+                                });
+                        })
                     .cacheHint(
                         () -> elements.keySet()
                             .stream()
@@ -490,10 +499,16 @@ public class HatchElementBuilder<T> {
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
+                System.out.printf("Checking in survivalPlaceBlock for coords %d,%d,%d\n", x, y, z);
                 if (mShouldSkip != null) {
+                    System.out.println("shouldSkip was not null");
                     TileEntity tileEntity = world.getTileEntity(x, y, z);
                     if (tileEntity instanceof IGregTechTileEntity
-                        && mShouldSkip.test(t, (IGregTechTileEntity) tileEntity)) return PlaceResult.SKIP;
+                        && mShouldSkip.test(t, (IGregTechTileEntity) tileEntity)) {
+                        System.out.printf("skipping block at %d,%d,%d\n", x, y, z);
+                        new Throwable().printStackTrace();
+                        return PlaceResult.SKIP;
+                    }
                 }
                 if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
                     return PlaceResult.REJECT;
