@@ -31,8 +31,6 @@ public class OverclockCalculator {
     private double eutIncreasePerOC = 4;
     /** How much the duration would be divided by per overclock made that isn't an overclock from HEAT */
     private double durationDecreasePerOC = 2;
-    /** Whether the multi should use laser overclocks. */
-    private boolean laserOC;
     /** Whether the multi should use amperage to overclock normally. */
     private boolean amperageOC;
     /** Maximum number of overclocks to perform. Defaults to no limit. */
@@ -217,12 +215,6 @@ public class OverclockCalculator {
     }
 
     @Nonnull
-    public OverclockCalculator setLaserOC(boolean laserOC) {
-        this.laserOC = laserOC;
-        return this;
-    }
-
-    @Nonnull
     public OverclockCalculator setAmperageOC(boolean amperageOC) {
         this.amperageOC = amperageOC;
         return this;
@@ -311,23 +303,6 @@ public class OverclockCalculator {
             return;
         }
 
-        // Special handling for laser overclocking.
-        if (laserOC) {
-            double eutLaserOverclock = recipePower;
-            overclocks = 0;
-
-            // Keep increasing power until it hits the machine's limit.
-            while (eutLaserOverclock * (4.0 + 0.3 * (overclocks + 1)) < machinePower) {
-                eutLaserOverclock *= (4.0 + 0.3 * (overclocks + 1));
-                overclocks++;
-            }
-
-            calculatedConsumption = (long) Math.ceil(eutLaserOverclock);
-            duration /= Math.pow(durationDecreasePerOC, overclocks);
-            calculatedDuration = (int) Math.max(duration, 1);
-            return;
-        }
-
         // Limit overclocks allowed by power tier.
         overclocks = Math.min(maxOverclocks, (int) (machinePowerTier - recipePowerTier));
 
@@ -369,19 +344,6 @@ public class OverclockCalculator {
 
         // If overclocking is disabled, use the base values and return.
         if (noOverclock) return duration;
-
-        // Special handling for laser overclocking.
-        if (laserOC) {
-            double eutLaserOverclock = recipePower;
-            int overclocks = 0;
-
-            while (eutLaserOverclock * (4.0 + 0.3 * (overclocks + 1)) < machinePower) {
-                eutLaserOverclock *= (4.0 + 0.3 * (overclocks + 1));
-                overclocks++;
-            }
-
-            return duration / Math.pow(durationDecreasePerOC, overclocks);
-        }
 
         // Limit overclocks allowed by power tier.
         int overclocks = Math.min(maxOverclocks, (int) (machinePowerTier - recipePowerTier));

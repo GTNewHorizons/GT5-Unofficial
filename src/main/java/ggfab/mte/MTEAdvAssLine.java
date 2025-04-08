@@ -21,7 +21,6 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
-import static gregtech.api.util.GTUtility.formatNumbers;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
@@ -67,7 +66,6 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import ggfab.ConfigurationHandler;
 import ggfab.mui.ClickableTextWidget;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -108,7 +106,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  */
 public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine> implements ISurvivalConstructable {
 
-    public static final double LASER_OVERCLOCK_PENALTY_FACTOR = ConfigurationHandler.laserOCPenaltyFactor;
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";
@@ -309,20 +306,18 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Assembly Line, AAL")
-            .addInfo("Built exactly the same as standard Assembly Line")
             .addInfo("Assembly Line with item pipelining")
-            .addInfo("All fluids are however consumed at start")
-            .addInfo("Use voltage of worst energy hatch for overclocking")
-            .addInfo("Performs normal overclock with given voltage")
-            .addInfo("Recipe tier limited by the Energy Hatch tier")
-            .addTecTechHatchInfo()
-            .addInfo("Performs laser overclock with extra amperage from multi-amp energy hatches")
-            .addInfo("Each laser overclock reduces recipe time by 50%")
+            .addInfo("All fluids are consumed at the start of the recipe")
+            .addSeparator(EnumChatFormatting.GOLD)
+            .addInfo("Recipe tier is limited by the lowest Energy Hatch tier")
             .addInfo(
-                "and multiplies power by (4 + " + formatNumbers(LASER_OVERCLOCK_PENALTY_FACTOR)
-                    + " * total laser overclock count)")
-            .addInfo(EnumChatFormatting.BOLD + "Will not overclock beyond 1 tick.")
-            .addInfo("EU/t is (number of slices working) * (overclocked EU/t)")
+                EnumChatFormatting.AQUA + "Power usage = (active slices) × (overclocked EU/t)"
+                    + EnumChatFormatting.GRAY)
+            .addInfo("Overclocking assumes all recipe slices are active")
+            .addInfo(EnumChatFormatting.BOLD + "Will not overclock beyond 1 tick")
+            .addSeparator(EnumChatFormatting.GOLD)
+            .addInfo("Constructed identically to the Assembly Line")
+            .addTecTechHatchInfo()
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
             .addStructureInfo("From Bottom to Top, Left to Right")
             .addStructureInfo(
@@ -736,27 +731,10 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             int originalMaxParallel = 1;
             int maxParallel = originalMaxParallel;
 
-            OverclockCalculator calculator;
-
-            OverclockCalculator normalOCCalculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
+            OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
                 .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
                 .setParallel(originalMaxParallel)
-                .setEUt(inputVoltage);
-
-            if (!mExoticEnergyHatches.isEmpty()) {
-                normalOCCalculator
-                    .setCurrentParallel((int) Math.max(1 / normalOCCalculator.calculateDurationUnderOneTick(), 1))
-                    .calculate();
-                int normalOverclockCount = normalOCCalculator.getPerformedOverclocks();
-
-                calculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
-                    .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
-                    .setLaserOC(true)
-                    .setParallel(originalMaxParallel)
-                    .setEUt(inputEUt / recipe.mInputs.length);
-            } else {
-                calculator = normalOCCalculator;
-            }
+                .setEUt(inputEUt / recipe.mInputs.length);
 
             // Disabled to disable overclocking under one tick.
             /*
