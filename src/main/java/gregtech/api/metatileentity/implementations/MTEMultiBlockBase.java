@@ -2142,6 +2142,44 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         boolean isActive = tag.getBoolean("isActive");
+
+        if (isActive) {
+            long energyTier = tag.getLong("energyTier");
+            long actualEnergyUsage = tag.getLong("energyUsage");
+            if (energyTier > 0) {
+                if (actualEnergyUsage > 0) {
+                    currentTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.waila.energy.use_with_amperage",
+                            formatNumbers(actualEnergyUsage),
+                            GTUtility.getAmperageForTier(actualEnergyUsage, (byte) energyTier),
+                            GTUtility.getColoredTierNameFromTier((byte) energyTier)));
+                } else if (actualEnergyUsage < 0) {
+                    currentTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.waila.energy.produce_with_amperage",
+                            formatNumbers(-actualEnergyUsage),
+                            GTUtility.getAmperageForTier(-actualEnergyUsage, (byte) energyTier),
+                            GTUtility.getColoredTierNameFromTier((byte) energyTier)));
+                }
+            } else {
+                if (actualEnergyUsage > 0) {
+                    currentTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.waila.energy.use",
+                            formatNumbers(actualEnergyUsage),
+                            GTUtility.getColoredTierNameFromVoltage(actualEnergyUsage)));
+                } else if (actualEnergyUsage < 0) {
+                    currentTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.waila.energy.produce",
+                            formatNumbers(-actualEnergyUsage),
+                            GTUtility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
+                }
+            }
+
+
+
         boolean isLockedToRecipe = tag.getBoolean("isLockedToRecipe");
         String lockedRecipe = tag.getString("lockedRecipeName");
 
