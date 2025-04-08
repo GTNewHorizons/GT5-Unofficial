@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -18,6 +19,7 @@ import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 
 /**
  * This makes it easier to build multi tooltips, with a standardized format. <br>
@@ -217,7 +219,6 @@ public class MultiblockTooltipBuilder {
                 + "L"
                 + EnumChatFormatting.GRAY
                 + ") "
-                + EnumChatFormatting.RED
                 + (hollow ? EnumChatFormatting.RED + TT_hollow : ""));
         sLines.add(EnumChatFormatting.WHITE + TT_structure + COLON);
         return this;
@@ -547,12 +548,66 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
+     * Supports TecTech Multi-Amp Hatches!
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addMultiAmpHatchInfo() {
+        iLines.add(EnumChatFormatting.GREEN + GTUtility.translate("GT5U.MBTT.TecTechMultiAmp"));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
      * Supports TecTech Multi-Amp and Laser Hatches!
      *
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addTecTechHatchInfo() {
         iLines.add(EnumChatFormatting.GREEN + TT_tectechhatch);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * t-tier Glass required for TecTech Laser Hatches.
+     *
+     * @param t Tier of glass that unlocks all energy hatches
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addMinGlassForLaser(int t) {
+        iLines.add(
+            GTValues.TIER_COLORS[t] + GTValues.VN[t]
+                + EnumChatFormatting.GRAY
+                + StatCollector.translateToLocal("GT5U.MBTT.Structure.MinGlassForLaser"));
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * Energy Hatch limited by Glass tier.
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addGlassEnergyLimitInfo() {
+        iLines.add(StatCollector.translateToLocal("GT5U.MBTT.Structure.GlassEnergyLimit") + ".");
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * Energy Hatch limited by Glass tier, t-tier Glass unlocks all.
+     *
+     * @param t Tier of glass that unlocks all energy hatches
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addGlassEnergyLimitInfo(int t) {
+        iLines.add(
+            StatCollector.translateToLocal("GT5U.MBTT.Structure.GlassEnergyLimit") + ", "
+                + GTValues.TIER_COLORS[t]
+                + GTValues.VN[t]
+                + EnumChatFormatting.GRAY
+                + StatCollector.translateToLocal("GT5U.MBTT.Structure.GlassEnergyLimitTier"));
         return this;
     }
 
@@ -751,6 +806,17 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addStructureHint(String nameKey, int... dots) {
         for (int dot : dots) hBlocks.put(dot, StatCollector.translateToLocal(nameKey));
+        return this;
+    }
+
+    /**
+     * Useful for maintaining the flow when you need to run an arbitrary operation on the builder.
+     * 
+     * @param fn The operation.
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder pipe(Consumer<MultiblockTooltipBuilder> fn) {
+        fn.accept(this);
         return this;
     }
 

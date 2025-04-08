@@ -11,10 +11,12 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
@@ -23,7 +25,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import bartworks.util.Pair;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.items.GGMaterial;
@@ -67,16 +68,16 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
 
     static {
         excitedLiquid = Arrays.asList(
-            new Pair<>(MaterialsUEVplus.Space.getMolten(20L), ExcitedLiquidCoe[0]),
-            new Pair<>(GGMaterial.atomicSeparationCatalyst.getMolten(20), ExcitedLiquidCoe[1]),
-            new Pair<>(Materials.Naquadah.getMolten(20L), ExcitedLiquidCoe[2]),
-            new Pair<>(Materials.Uranium235.getMolten(180L), ExcitedLiquidCoe[3]),
-            new Pair<>(Materials.Caesium.getMolten(180L), ExcitedLiquidCoe[4]));
+            Pair.of(MaterialsUEVplus.Space.getMolten(20L), ExcitedLiquidCoe[0]),
+            Pair.of(GGMaterial.atomicSeparationCatalyst.getMolten(20), ExcitedLiquidCoe[1]),
+            Pair.of(Materials.Naquadah.getMolten(20L), ExcitedLiquidCoe[2]),
+            Pair.of(Materials.Uranium235.getMolten(180L), ExcitedLiquidCoe[3]),
+            Pair.of(Materials.Caesium.getMolten(180L), ExcitedLiquidCoe[4]));
         coolant = Arrays.asList(
-            new Pair<>(MaterialsUEVplus.Time.getMolten(20L), CoolantEfficiency[0]),
-            new Pair<>(FluidRegistry.getFluidStack("cryotheum", 1000), CoolantEfficiency[1]),
-            new Pair<>(Materials.SuperCoolant.getFluid(1000L), CoolantEfficiency[2]),
-            new Pair<>(FluidRegistry.getFluidStack("ic2coolant", 1000), CoolantEfficiency[3]));
+            Pair.of(MaterialsUEVplus.Time.getMolten(20L), CoolantEfficiency[0]),
+            Pair.of(FluidRegistry.getFluidStack("cryotheum", 1000), CoolantEfficiency[1]),
+            Pair.of(Materials.SuperCoolant.getFluid(1000L), CoolantEfficiency[2]),
+            Pair.of(FluidRegistry.getFluidStack("ic2coolant", 1000), CoolantEfficiency[3]));
     }
 
     @Override
@@ -277,14 +278,16 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[4] = "Currently generates: " + EnumChatFormatting.RED
-            + GTUtility.formatNumbers(Math.abs(this.trueOutput))
-            + EnumChatFormatting.RESET
-            + " EU/t";
-        info[6] = "Problems: " + EnumChatFormatting.RED
+        info[4] = StatCollector.translateToLocalFormatted(
+            "gg.scanner.info.generator.generates",
+            EnumChatFormatting.RED + GTUtility.formatNumbers(Math.abs(this.trueOutput)) + EnumChatFormatting.RESET);
+        info[6] = StatCollector.translateToLocal("gg.scanner.info.generator.problems") + " "
+            + EnumChatFormatting.RED
             + (this.getIdealStatus() - this.getRepairStatus())
             + EnumChatFormatting.RESET
-            + " Efficiency: "
+            + " "
+            + StatCollector.translateToLocal("gg.scanner.info.generator.efficiency")
+            + " "
             + EnumChatFormatting.YELLOW
             + trueEff
             + EnumChatFormatting.RESET
