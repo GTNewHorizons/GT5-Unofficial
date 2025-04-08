@@ -25,6 +25,8 @@ import gregtech.api.net.GTPacketUpdateItem;
 import gregtech.common.handlers.PowerGogglesEventHandler;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 
+import java.util.List;
+
 public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble, INetworkUpdatableItem {
 
     public ItemPowerNerdGoggles(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
@@ -43,6 +45,7 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble, INet
                     tag.setInteger("y", y);
                     tag.setInteger("z", z);
                     tag.setInteger("dim", player.dimension);
+                    tag.setString("dimName", te.getWorld().provider.getDimensionName());
                     NW.sendToServer(new GTPacketUpdateItem(tag));
                     stack.setTagCompound(tag);
                     NW.sendToServer(new GTPacketLinkGoggles(new DimensionalCoord(tileEntity)));
@@ -97,7 +100,13 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble, INet
         }
         return super.onItemRightClick(stack, world, player);
     }
-
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
+        NBTTagCompound tag = stack.getTagCompound();
+        if(tag != null && !stack.getTagCompound().hasNoTags()){
+            tooltip.add(String.format("Linked to LSC at %d,%d,%d: %s", tag.getInteger("x"),tag.getInteger("y"),tag.getInteger("z"),tag.getString("dimName")));
+        }
+    }
     @Override
     public BaubleType getBaubleType(ItemStack itemstack) {
         return BaubleType.UNIVERSAL;
