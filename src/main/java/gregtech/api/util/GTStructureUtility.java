@@ -1,16 +1,20 @@
 package gregtech.api.util;
 
+import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.*;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.ACCEPT;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.ACCEPT_STOP;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.REJECT;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.SKIP;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode.EXACT;
+import static gregtech.api.enums.Mods.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.*;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -20,8 +24,6 @@ import java.util.function.ToIntFunction;
 
 import javax.annotation.Nonnull;
 
-import cofh.asmhooks.block.BlockTickingWater;
-import cofh.asmhooks.block.BlockWater;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -45,6 +47,9 @@ import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
+
+import cofh.asmhooks.block.BlockTickingWater;
+import cofh.asmhooks.block.BlockWater;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
@@ -62,29 +67,6 @@ import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
-
-import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.*;
-
-import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.*;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode.EXACT;
-import static gregtech.api.enums.Mods.*;
 
 public class GTStructureUtility {
 
@@ -331,7 +313,8 @@ public class GTStructureUtility {
                     if (tileEntity instanceof IGregTechTileEntity
                         && shouldSkip.test(t, (IGregTechTileEntity) tileEntity)) return SKIP;
                 }
-                if (mode == 0 && !StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) return REJECT;
+                if (mode == 0 && !StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
+                    return REJECT;
                 Class<? extends IMetaTileEntity> clazz = aMetaId.apply(t);
                 if (clazz == null) return REJECT;
                 ItemStack taken = env.getSource()
@@ -417,7 +400,8 @@ public class GTStructureUtility {
                     if (tileEntity instanceof IGregTechTileEntity
                         && shouldSkip.test(t, (IGregTechTileEntity) tileEntity)) return SKIP;
                 }
-                if (mode == 0 && !StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) return REJECT;
+                if (mode == 0 && !StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
+                    return REJECT;
                 ItemMachines item = (ItemMachines) Item.getItemFromBlock(GregTechAPI.sBlockMachines);
                 int meta = aMetaId.applyAsInt(t);
                 if (meta < 0) return REJECT;

@@ -159,19 +159,17 @@ public class HatchElementBuilder<T> {
                                     .count(obj)
                                     >= e.getValue()
                                         .longValue()))
-                    .shouldSkip(
-                        (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c,
-                            t) -> {
-                            System.out.println(t);
-                            System.out.println(t != null ? t.getMetaTileEntity() : null);
-                            return t != null && list.stream()
-                                .anyMatch(clazz -> {
-                                    System.out.println(clazz);
-                                    System.out.println(t.getMetaTileEntity());
-                                    System.out.println(clazz.isInstance(t.getMetaTileEntity()));
-                                    return clazz.isInstance(t.getMetaTileEntity());
-                                });
-                        })
+                    .shouldSkip((BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> {
+                        System.out.println(t);
+                        System.out.println(t != null ? t.getMetaTileEntity() : null);
+                        return t != null && list.stream()
+                            .anyMatch(clazz -> {
+                                System.out.println(clazz);
+                                System.out.println(t.getMetaTileEntity());
+                                System.out.println(clazz.isInstance(t.getMetaTileEntity()));
+                                return clazz.isInstance(t.getMetaTileEntity());
+                            });
+                    })
                     .cacheHint(
                         () -> elements.keySet()
                             .stream()
