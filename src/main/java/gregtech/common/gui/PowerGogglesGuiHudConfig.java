@@ -255,8 +255,8 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
     protected void mouseClicked(int x, int y, int button) {
         if (isOnDragRectangle(x, y)) {
             draggingHud = true;
-            dragOffsetX = (int) ((x - PowerGogglesConfigHandler.mainOffsetX));
-            dragOffsetY = (int) ((height - PowerGogglesConfigHandler.mainOffsetY - y));
+            dragOffsetX = (x - PowerGogglesConfigHandler.mainOffsetX);
+            dragOffsetY = (height - PowerGogglesConfigHandler.mainOffsetY - y);
         }
 
         super.mouseClicked(x, y, button);
@@ -285,8 +285,8 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
     @Override
     protected void mouseClickMove(int x, int y, int action, long time) {
         if (draggingHud) {
-            PowerGogglesConfigHandler.mainOffsetX = (int) ((x - dragOffsetX));
-            PowerGogglesConfigHandler.mainOffsetY = (int) ((height - y - dragOffsetY));
+            PowerGogglesConfigHandler.mainOffsetX = (x - dragOffsetX);
+            PowerGogglesConfigHandler.mainOffsetY = (height - y - dragOffsetY);
         }
         super.mouseClickMove(x, y, action, time);
     }
@@ -301,7 +301,6 @@ public class PowerGogglesGuiHudConfig extends GuiScreen {
         if (keyInt == 1) {
             Minecraft.getMinecraft()
                 .displayGuiScreen(parentScreen); // return to parent???
-            return;
         }
     }
 }

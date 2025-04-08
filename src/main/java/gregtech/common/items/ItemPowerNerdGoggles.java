@@ -50,7 +50,7 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble, INet
                         new ChatComponentText(String.format("Goggles linked to LSC at %d,%d,%d", x, y, z)));
                 }
             } else {
-                player.addChatMessage(new ChatComponentText("Dude... That's not an LSC. Are you dumb?"));
+                player.addChatMessage(new ChatComponentText("That's not an LSC..."));
             }
             return true;
         }
