@@ -2179,8 +2179,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
         }
 
-
-
         boolean isLockedToRecipe = tag.getBoolean("isLockedToRecipe");
         String lockedRecipe = tag.getString("lockedRecipeName");
 
