@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GTValues.AuthorVolence;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -67,6 +66,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.misc.GTStructureChannels;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -162,8 +162,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         .addElement('C', ofFrame(Materials.Polytetrafluoroethylene)) // PTFE Frame
         .addElement(
             'D',
-            withChannel(
-                "pipe",
+            GTStructureChannels.PIPE_CASING.use(
                 ofBlocksTiered(
                     MTEMultiAutoclave::getFluidTierFromMeta,
                     ImmutableList.of(
@@ -176,8 +175,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
                     MTEMultiAutoclave::getFluidPipeTier)))
         .addElement(
             'E',
-            withChannel(
-                "item_pipe",
+            GTStructureChannels.ITEM_PIPE_CASING.use(
                 ofBlocksTiered(
                     MTEMultiAutoclave::getItemPipeTierFromMeta,
                     ImmutableList.of(
@@ -194,7 +192,8 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
                     MTEMultiAutoclave::getItemPipeTier)))
         .addElement(
             'F',
-            withChannel("coil", activeCoils(ofCoil(MTEMultiAutoclave::setCoilLevel, MTEMultiAutoclave::getCoilLevel))))
+            GTStructureChannels.HEATING_COIL
+                .use(activeCoils(ofCoil(MTEMultiAutoclave::setCoilLevel, MTEMultiAutoclave::getCoilLevel))))
         .build();
 
     @Override
@@ -224,10 +223,10 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addOutputHatch("Any Pressure Containment Casing", 1)
             .addEnergyHatch("Any Pressure Containment Casing", 1)
             .addMaintenanceHatch("Any Pressure Containment Casing", 1)
-            .addSubChannelUsage("glass", "Glass Tier")
-            .addSubChannelUsage("item_pipe", "Item Pipe Casing Tier")
-            .addSubChannelUsage("pipe", "Pipe Casing Tier")
-            .addSubChannelUsage("coil", "Heating Coils Tier")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING, "Item Pipe Casing Tier")
+            .addSubChannelUsage(GTStructureChannels.PIPE_CASING, "Pipe Casing Tier")
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL, "Heating Coils Tier")
             .toolTipFinisher(AuthorVolence);
         return tt;
     }

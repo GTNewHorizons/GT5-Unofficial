@@ -12,6 +12,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.MTEBeamlinePipe;
 import gtnhlanth.common.block.BlockAntennaCasing;
 import gtnhlanth.common.block.BlockCasing;
@@ -183,5 +184,7 @@ public final class LanthItemList {
 
         }
 
+        GTStructureChannels.SYNCHROTRON_ANTENNA.registerAsIndicator(new ItemStack(ANTENNA_CASING_T1), 1);
+        GTStructureChannels.SYNCHROTRON_ANTENNA.registerAsIndicator(new ItemStack(ANTENNA_CASING_T2), 2);
     }
 }

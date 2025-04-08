@@ -58,6 +58,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
@@ -412,7 +413,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
             .addCasingInfoRange("YOTTank Casing", 25, 43, false)
             .addInputHatch("Hint block with dot 1")
             .addOutputHatch("Hint block with dot 3")
-            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

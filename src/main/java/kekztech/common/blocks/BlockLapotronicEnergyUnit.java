@@ -17,6 +17,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.common.misc.GTStructureChannels;
 import kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit;
 
 public class BlockLapotronicEnergyUnit extends BaseGTUpdateableBlock {
@@ -85,6 +86,18 @@ public class BlockLapotronicEnergyUnit extends BaseGTUpdateableBlock {
         INSTANCE.setHardness(5.0f);
         INSTANCE.setResistance(6.0f);
         GameRegistry.registerBlock(INSTANCE, ItemBlockLapotronicEnergyUnit.class, blockName);
+
+        int value = 1;
+        GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 6), value++);
+        GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 7), value++);
+        GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 1), value++);
+        GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 2), value++);
+        GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 3), value++);
+        GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 4), value++);
+        GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 5), value++);
+        GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 8), value++);
+        GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 9), value++);
+        GTStructureChannels.LSC_CAPACITOR.registerAsIndicator(new ItemStack(INSTANCE, 1, 10), value++);
 
         return INSTANCE;
     }

@@ -11,6 +11,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.MaterialCasings;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGrinderMultiblock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -70,6 +71,13 @@ public class GregtechMetaCasingBlocks5 extends GregtechMetaCasingBlocksAbstract 
         GregtechItemList.InfinityInfusedShieldingCore.set(new ItemStack(this, 1, 13));
         GregtechItemList.SpaceTimeBendingCore.set(new ItemStack(this, 1, 14));
         GregtechItemList.ForceFieldGlass.set(new ItemStack(this, 1, 15));
+
+        for (int i = 0; i < 4; i++) {
+            GTStructureChannels.QFT_MANIPULATOR.registerAsIndicator(new ItemStack(this, 1, i + 7), i + 1);
+        }
+        for (int i = 0; i < 4; i++) {
+            GTStructureChannels.QFT_SHIELDING.registerAsIndicator(new ItemStack(this, 1, i + 11), i + 1);
+        }
     }
 
     @Override

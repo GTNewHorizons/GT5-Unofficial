@@ -46,6 +46,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTENeutroniumCompressor>
     implements ISurvivalConstructable {
@@ -163,7 +164,7 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
             .addOutputBus("Any Neutronium Casing", 1)
             .addEnergyHatch("Any Neutronium Casing", 1)
             .addMaintenanceHatch("Any Neutronium Casing", 1)
-            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorFourIsTheNumber, Ollie);
         return tt;
     }

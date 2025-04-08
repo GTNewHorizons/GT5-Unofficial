@@ -158,3 +158,5 @@ kekztech.infodata.tank.tfft.total=Total Capacity: %sL
 kekztech.infodata.tank.tfft.per_fluid_capacity=Per-Fluid Capacity: %sL
 kekztech.infodata.tank.tfft.running_cost=Running Cost: %dEU/t
 kekztech.infodata.tank.tfft.auto_voiding=Auto-voiding: %b
+
+kekztech.structure.glass_incompatible=§cGlass configuration incompatible

@@ -14,7 +14,6 @@
 package bartworks.common.tileentities.multis.mega;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE;
@@ -65,6 +64,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 
 public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace> implements ISurvivalConstructable {
@@ -83,9 +83,8 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         .addElement('m', Muffler.newAny(CASING_INDEX, 2))
         .addElement(
             'C',
-            withChannel(
-                "coil",
-                activeCoils(ofCoil(MTEMegaBlastFurnace::setCoilLevel, MTEMegaBlastFurnace::getCoilLevel))))
+            GTStructureChannels.HEATING_COIL
+                .use(activeCoils(ofCoil(MTEMegaBlastFurnace::setCoilLevel, MTEMegaBlastFurnace::getCoilLevel))))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(
             'b',
@@ -181,8 +180,8 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
             .addOutputBus("Any bottom layer casing")
             .addOutputHatch("Any Heat Proof Machine Casing")
             .addStructureHint("This Mega Multiblock is too big to have its structure hologram displayed fully.")
-            .addSubChannelUsage("glass", "Glass Tier")
-            .addSubChannelUsage("coil", "Heating Coils Tier")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL, "Heating Coils Tier")
             .toolTipFinisher();
         return tt;
     }
