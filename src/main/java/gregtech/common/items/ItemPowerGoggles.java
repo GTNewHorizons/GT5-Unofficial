@@ -2,6 +2,8 @@ package gregtech.common.items;
 
 import static gregtech.api.enums.GTValues.NW;
 
+import java.util.List;
+
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,8 +26,6 @@ import gregtech.api.net.GTPacketLinkPowerGoggles;
 import gregtech.api.net.GTPacketUpdateItem;
 import gregtech.common.handlers.PowerGogglesEventHandler;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
-
-import java.util.List;
 
 public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetworkUpdatableItem {
 
@@ -99,13 +99,22 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
         }
         return super.onItemRightClick(stack, world, player);
     }
+
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean bool) {
         NBTTagCompound tag = stack.getTagCompound();
-        if(tag != null && !stack.getTagCompound().hasNoTags()){
-            tooltip.add(String.format("Linked to LSC at %d,%d,%d: %s", tag.getInteger("x"),tag.getInteger("y"),tag.getInteger("z"),tag.getString("dimName")));
+        if (tag != null && !stack.getTagCompound()
+            .hasNoTags()) {
+            tooltip.add(
+                String.format(
+                    "Linked to LSC at %d,%d,%d: %s",
+                    tag.getInteger("x"),
+                    tag.getInteger("y"),
+                    tag.getInteger("z"),
+                    tag.getString("dimName")));
         }
     }
+
     @Override
     public BaubleType getBaubleType(ItemStack itemstack) {
         return BaubleType.UNIVERSAL;
@@ -117,14 +126,19 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
     @Override
     public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
         NBTTagCompound tag = itemstack.getTagCompound();
-        if(tag != null && !tag.hasNoTags()){
-            NW.sendToServer(new GTPacketLinkPowerGoggles(new DimensionalCoord(tag.getInteger("x"),tag.getInteger("y"),tag.getInteger("z"),tag.getInteger("dim"))));
+        if (tag != null && !tag.hasNoTags()) {
+            NW.sendToServer(
+                new GTPacketLinkPowerGoggles(
+                    new DimensionalCoord(
+                        tag.getInteger("x"),
+                        tag.getInteger("y"),
+                        tag.getInteger("z"),
+                        tag.getInteger("dim"))));
         }
     }
 
     @Override
-    public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
-    }
+    public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {}
 
     @Override
     public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {

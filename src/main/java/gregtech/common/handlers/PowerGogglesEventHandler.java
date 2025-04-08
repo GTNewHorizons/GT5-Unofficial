@@ -150,9 +150,11 @@ public class PowerGogglesEventHandler {
     public static void setLscLink(EntityPlayerMP player, DimensionalCoord coords) {
         lscLinkMap.put(player.getUniqueID(), coords);
     }
-    public static DimensionalCoord getLscLink(UUID uuid){
+
+    public static DimensionalCoord getLscLink(UUID uuid) {
         return lscLinkMap.get(uuid);
     }
+
     @SubscribeEvent
     public void serverOnPlayerDisconnect(FMLNetworkEvent.ServerDisconnectionFromClientEvent event) {
         EntityPlayerMP player = ((NetHandlerPlayServer) event.handler).playerEntity;
