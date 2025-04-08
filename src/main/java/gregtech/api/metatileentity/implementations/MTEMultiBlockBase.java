@@ -2142,57 +2142,26 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         boolean isActive = tag.getBoolean("isActive");
-        if (isActive) {
-            long energyTier = tag.getLong("energyTier");
-            long actualEnergyUsage = tag.getLong("energyUsage");
-            if (energyTier > 0) {
-                if (actualEnergyUsage > 0) {
-                    currentTip.add(
-                        StatCollector.translateToLocalFormatted(
-                            "GT5U.waila.energy.use_with_amperage",
-                            formatNumbers(actualEnergyUsage),
-                            GTUtility.getAmperageForTier(actualEnergyUsage, (byte) energyTier),
-                            GTUtility.getColoredTierNameFromTier((byte) energyTier)));
-                } else if (actualEnergyUsage < 0) {
-                    currentTip.add(
-                        StatCollector.translateToLocalFormatted(
-                            "GT5U.waila.energy.produce_with_amperage",
-                            formatNumbers(-actualEnergyUsage),
-                            GTUtility.getAmperageForTier(-actualEnergyUsage, (byte) energyTier),
-                            GTUtility.getColoredTierNameFromTier((byte) energyTier)));
-                }
-            } else {
-                if (actualEnergyUsage > 0) {
-                    currentTip.add(
-                        StatCollector.translateToLocalFormatted(
-                            "GT5U.waila.energy.use",
-                            formatNumbers(actualEnergyUsage),
-                            GTUtility.getColoredTierNameFromVoltage(actualEnergyUsage)));
-                } else if (actualEnergyUsage < 0) {
-                    currentTip.add(
-                        StatCollector.translateToLocalFormatted(
-                            "GT5U.waila.energy.produce",
-                            formatNumbers(-actualEnergyUsage),
-                            GTUtility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
-                }
-            }
+        boolean isLockedToRecipe = tag.getBoolean("isLockedToRecipe");
+        String lockedRecipe = tag.getString("lockedRecipeName");
 
+        if (!isActive && isLockedToRecipe && !lockedRecipe.isEmpty()) {
+            // Display locked recipe when the machine is idle
+            currentTip.add(StatCollector.translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
+            String[] lines = lockedRecipe.split("\n");
+            for (String line : lines) {
+                currentTip.add(line);
+            }
+        } else if (isActive) {
             int outputItemLength = tag.getInteger("outputItemLength");
             int outputFluidLength = tag.getInteger("outputFluidLength");
             int totalOutputs = outputItemLength + outputFluidLength;
 
-            if (tag.getBoolean("isLockedToRecipe")) {
-                String lockedRecipe = tag.getString("lockedRecipeName");
-                if (!lockedRecipe.isEmpty()) {
-                    currentTip.add(StatCollector.translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
-                    String[] lines = lockedRecipe.split("\n");
-                    for (String line : lines) {
-                        currentTip.add(line);
-                    }
-                }
-            } else if (totalOutputs > 0) {
-                // If not locked, show "Producing"
+            if (totalOutputs > 0) {
                 currentTip.add(StatCollector.translateToLocal("GT5U.waila.producing"));
+                if (isLockedToRecipe) {
+                    currentTip.add(StatCollector.translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
+                }
                 for (int i = 0; i < min(3, outputItemLength); i++) {
                     currentTip.add(
                         "  " + tag.getString("outputItem" + i)
