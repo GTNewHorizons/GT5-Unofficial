@@ -492,7 +492,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         // While we have some cover data on the client (enough to render it); we don't have all the information we want,
         // such as details on the fluid filter, so send it all here.
         for (final Cover cover : covers) {
-            if (cover.isValid()) {
+            if (cover != null && cover.isValid()) {
                 NW.sendToPlayer(new GTPacketSendCoverData(cover, this, cover.getSide()), player);
             }
         }
