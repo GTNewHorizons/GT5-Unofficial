@@ -48,7 +48,6 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble, INet
                     tag.setString("dimName", te.getWorld().provider.getDimensionName());
                     NW.sendToServer(new GTPacketUpdateItem(tag));
                     stack.setTagCompound(tag);
-                    NW.sendToServer(new GTPacketLinkGoggles(new DimensionalCoord(tileEntity)));
                     player.addChatMessage(
                         new ChatComponentText(String.format("Goggles linked to LSC at %d,%d,%d", x, y, z)));
                 }
@@ -117,12 +116,14 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble, INet
 
     @Override
     public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
-
+        NBTTagCompound tag = itemstack.getTagCompound();
+        if(tag != null && !tag.hasNoTags()){
+            NW.sendToServer(new GTPacketLinkGoggles(new DimensionalCoord(tag.getInteger("x"),tag.getInteger("y"),tag.getInteger("z"),tag.getInteger("dim"))));
+        }
     }
 
     @Override
     public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
-
     }
 
     @Override
