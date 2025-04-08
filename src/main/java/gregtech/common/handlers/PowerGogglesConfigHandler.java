@@ -4,6 +4,8 @@ import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
 
+import com.gtnewhorizons.modularui.api.math.Color;
+
 public class PowerGogglesConfigHandler {
 
     public static Configuration config;
@@ -20,6 +22,10 @@ public class PowerGogglesConfigHandler {
     public static int gradientIndex;
     public static boolean showPowerChart;
     public static boolean hideWhenChatOpen;
+
+    public static int gradientBadColor;
+    public static int gradientOkColor;
+    public static int gradientGoodColor;
 
     public static void init(File confFile) {
         if (config == null) {
@@ -73,6 +79,14 @@ public class PowerGogglesConfigHandler {
             hideWhenChatOpen = config
                 .get(Configuration.CATEGORY_GENERAL, "Hide HUD", false, "Hide the HUD when the in-game chat is open")
                 .getBoolean(false);
+            int gradientBadRed = config
+                .get(Configuration.CATEGORY_GENERAL, "Bad Gradient Red", 255, "RGB values of the bad gradient", 0, 255)
+                .getInt();
+            int gradientBadGreen = config.get(Configuration.CATEGORY_GENERAL, "Bad Gradient Green", 50, "", 0, 255)
+                .getInt();
+            int gradientBadBlue = config.get(Configuration.CATEGORY_GENERAL, "Bad Gradient Blue", 50, "", 0, 255)
+                .getInt();
+            gradientBadColor = Color.rgb(gradientBadRed, gradientBadGreen, gradientBadBlue);
 
         } catch (Exception e) {
             System.out.println("Unable to load Config");

@@ -21,6 +21,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import gregtech.common.gui.PowerGogglesGuiOverlay;
 import gregtech.common.handlers.PowerGogglesHudHandler;
 import gregtech.common.handlers.PowerGogglesKeybindHandler;
 import gtPlusPlus.GTplusplus;
@@ -52,6 +53,7 @@ public class ClientProxy extends CommonProxy {
         super.preInit(e);
         // Do this weird things for textures.
         GTplusplus.loadTextures();
+        PowerGogglesGuiOverlay.init();
     }
 
     @Override

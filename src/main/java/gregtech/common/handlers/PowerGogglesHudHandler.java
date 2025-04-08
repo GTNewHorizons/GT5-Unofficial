@@ -97,6 +97,7 @@ public class PowerGogglesHudHandler {
             + gapBetweenLines * 2
             + (int) (fontRenderer.FONT_HEIGHT * 2 * subScale)
             + borderRadius;
+
         GL11.glTranslated(scaleOffsetX, scaleOffsetY, 0);
         GL11.glScaled(PowerGogglesConfigHandler.hudScale, PowerGogglesConfigHandler.hudScale, 1);
         GL11.glTranslated(-scaleOffsetX, -scaleOffsetY, 0);
@@ -410,7 +411,8 @@ public class PowerGogglesHudHandler {
                     " (%s eu/t) ",
                     toFormatted(
                         change5m.divide(
-                            BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
+                            BigInteger.valueOf(
+                                Math.min(Math.min(1, measurements.size() * ticksBetweenMeasurements), 5 * MINUTES)))))
                 : "");
         change1hString = "1h: " + toFormatted(change1h)
             + " EU "

@@ -112,8 +112,9 @@ public class PowerGogglesEventHandler {
     public void onKeyInput(InputEvent.KeyInputEvent event) {
 
         if (PowerGogglesKeybindHandler.openConfigGui.isPressed()) {
+            Minecraft screenInfo = Minecraft.getMinecraft();
             Minecraft.getMinecraft()
-                .displayGuiScreen(new PowerGogglesGuiHudConfig());
+                .displayGuiScreen(new PowerGogglesGuiHudConfig(screenInfo.displayWidth, screenInfo.displayHeight));
 
         }
         if (PowerGogglesKeybindHandler.toggleChart.isPressed()) {
