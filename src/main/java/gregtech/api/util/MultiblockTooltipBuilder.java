@@ -219,7 +219,6 @@ public class MultiblockTooltipBuilder {
                 + "L"
                 + EnumChatFormatting.GRAY
                 + ") "
-                + EnumChatFormatting.RED
                 + (hollow ? EnumChatFormatting.RED + TT_hollow : ""));
         sLines.add(EnumChatFormatting.WHITE + TT_structure + COLON);
         return this;
