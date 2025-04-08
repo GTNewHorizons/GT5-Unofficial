@@ -944,7 +944,7 @@ public class AssortedSteamRecipes implements Runnable {
         RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CrudeSteel, 1),
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Breel, 1),
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Breel, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.CrudeSteel, 4))
             .itemOutputs(ItemList.Breel_Pipe_Casing.get(2))
             .duration(2 * SECONDS)
