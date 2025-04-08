@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,7 +26,7 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.net.GTPacketLinkGoggles;
+import gregtech.api.net.GTPacketLinkPowerGoggles;
 import gregtech.api.net.GTPacketUpdatePowerGoggles;
 import gregtech.common.gui.PowerGogglesGuiHudConfig;
 import gregtech.common.misc.WirelessNetworkManager;
@@ -53,7 +51,7 @@ public class PowerGogglesEventHandler {
                 for (ItemStack bauble : baubles.stackList) {
                     if (bauble == null) continue;
                     if (bauble.getUnlocalizedName()
-                        .equals("gt.PowerNerd_Goggles")) {
+                        .equals("gt.Power_Goggles")) {
                         setLink(bauble);
                     }
                 }
@@ -129,7 +127,7 @@ public class PowerGogglesEventHandler {
 
     private void setLink(ItemStack item) {
         if (!item.hasTagCompound() || item.getTagCompound()
-            .hasNoTags()) NW.sendToServer(new GTPacketLinkGoggles());
+            .hasNoTags()) NW.sendToServer(new GTPacketLinkPowerGoggles());
         else {
             NBTTagCompound tag = item.getTagCompound();
             DimensionalCoord coords = new DimensionalCoord(
@@ -137,7 +135,7 @@ public class PowerGogglesEventHandler {
                 tag.getInteger("y"),
                 tag.getInteger("z"),
                 tag.getInteger("dim"));
-            NW.sendToServer(new GTPacketLinkGoggles(coords));
+            NW.sendToServer(new GTPacketLinkPowerGoggles(coords));
         }
     }
 

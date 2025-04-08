@@ -13,14 +13,14 @@ import appeng.api.util.DimensionalCoord;
 import gregtech.common.handlers.PowerGogglesEventHandler;
 import io.netty.buffer.ByteBuf;
 
-public class GTPacketLinkGoggles extends GTPacket {
+public class GTPacketLinkPowerGoggles extends GTPacket {
 
     private DimensionalCoord coords = null;
     private EntityPlayerMP player;
 
-    public GTPacketLinkGoggles() {}
+    public GTPacketLinkPowerGoggles() {}
 
-    public GTPacketLinkGoggles(DimensionalCoord coords) {
+    public GTPacketLinkPowerGoggles(DimensionalCoord coords) {
         this.coords = coords;
     }
 
@@ -41,13 +41,13 @@ public class GTPacketLinkGoggles extends GTPacket {
 
     @Override
     public GTPacket decode(ByteArrayDataInput buffer) {
-        if (buffer.readBoolean()) return new GTPacketLinkGoggles(null);
+        if (buffer.readBoolean()) return new GTPacketLinkPowerGoggles(null);
         DimensionalCoord coords = new DimensionalCoord(
             buffer.readInt(),
             buffer.readInt(),
             buffer.readInt(),
             buffer.readInt());
-        return new GTPacketLinkGoggles(coords);
+        return new GTPacketLinkPowerGoggles(coords);
     }
 
     @Override

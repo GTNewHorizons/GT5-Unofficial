@@ -20,16 +20,16 @@ import baubles.common.lib.PlayerHandler;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
-import gregtech.api.net.GTPacketLinkGoggles;
+import gregtech.api.net.GTPacketLinkPowerGoggles;
 import gregtech.api.net.GTPacketUpdateItem;
 import gregtech.common.handlers.PowerGogglesEventHandler;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 
 import java.util.List;
 
-public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble, INetworkUpdatableItem {
+public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetworkUpdatableItem {
 
-    public ItemPowerNerdGoggles(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
+    public ItemPowerGoggles(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
     }
 
@@ -118,7 +118,7 @@ public class ItemPowerNerdGoggles extends GTGenericItem implements IBauble, INet
     public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
         NBTTagCompound tag = itemstack.getTagCompound();
         if(tag != null && !tag.hasNoTags()){
-            NW.sendToServer(new GTPacketLinkGoggles(new DimensionalCoord(tag.getInteger("x"),tag.getInteger("y"),tag.getInteger("z"),tag.getInteger("dim"))));
+            NW.sendToServer(new GTPacketLinkPowerGoggles(new DimensionalCoord(tag.getInteger("x"),tag.getInteger("y"),tag.getInteger("z"),tag.getInteger("dim"))));
         }
     }
 

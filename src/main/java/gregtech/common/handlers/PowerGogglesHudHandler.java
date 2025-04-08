@@ -73,7 +73,7 @@ public class PowerGogglesHudHandler {
             if (bauble == null) continue;
             if (baubles.getStackInSlot(i)
                 .getUnlocalizedName()
-                .equals("gt.PowerNerd_Goggles")) gogglesEquipped = true;
+                .equals("gt.Power_Goggles")) gogglesEquipped = true;
         }
         if (!gogglesEquipped) return;
         ScaledResolution resolution = event.resolution;

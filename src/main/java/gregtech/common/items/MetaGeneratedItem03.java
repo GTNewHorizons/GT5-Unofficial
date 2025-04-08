@@ -284,10 +284,10 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
             OrePrefixes.plateSuperdense);
         INSTANCE = this;
         Object[] o = new Object[0];
-        ItemList.Item_PowerNerdGoggles.set(
-            new ItemPowerNerdGoggles(
-                "PowerNerd_Goggles",
-                "Nerd Goggles",
+        ItemList.Item_Power_Goggles.set(
+            new ItemPowerGoggles(
+                "Power_Goggles",
+                "Power Goggles",
                 "I need to look at power storage 24/7 :nerd:"));
         /*
          * circuit boards tier 1-7: coated circuit board / wood plate + resin Plastic Circuit Board / Plastic + Copper
