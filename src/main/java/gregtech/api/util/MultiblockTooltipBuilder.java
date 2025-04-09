@@ -20,6 +20,7 @@ import com.gtnewhorizon.structurelib.StructureLibAPI;
 
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
+import gregtech.api.structure.IStructureChannels;
 
 /**
  * This makes it easier to build multi tooltips, with a standardized format. <br>
@@ -780,8 +781,22 @@ public class MultiblockTooltipBuilder {
      * @param purpose the purpose of subchannel
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addSubChannelUsage(String channel, String purpose) {
-        sLines.add(TAB + StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel, purpose));
+    public MultiblockTooltipBuilder addSubChannelUsage(IStructureChannels channel, String purpose) {
+        sLines.add(TAB + StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), purpose));
+        return this;
+    }
+
+    /**
+     * Use this method to add non-standard structural info.<br>
+     * (indent)info
+     *
+     * @param channel the name of subchannel
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addSubChannelUsage(IStructureChannels channel) {
+        sLines.add(
+            TAB + StatCollector
+                .translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), channel.getDefaultTooltip()));
         return this;
     }
 
@@ -811,7 +826,7 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Useful for maintaining the flow when you need to run an arbitrary operation on the builder.
-     * 
+     *
      * @param fn The operation.
      * @return Instance this method was called on.
      */
