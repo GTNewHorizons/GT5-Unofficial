@@ -74,12 +74,12 @@ public class Cover {
 
     protected void readDataFromNbt(NBTBase nbt) {}
 
-    public void readFromPacket(ByteArrayDataInput byteData) {
+    public final void readFromPacket(ByteArrayDataInput byteData) {
         setTickRateAddition(byteData.readInt());
         readDataFromPacket(byteData);
     }
 
-    protected final void readDataFromPacket(ByteArrayDataInput byteData) {}
+    protected void readDataFromPacket(ByteArrayDataInput byteData) {}
 
     public final NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         nbt.setInteger(NBT_TICK_RATE_ADDITION, tickRateAddition);

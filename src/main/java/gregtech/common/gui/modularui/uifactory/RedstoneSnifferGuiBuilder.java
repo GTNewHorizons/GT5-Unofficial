@@ -7,7 +7,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
@@ -55,6 +54,8 @@ public class RedstoneSnifferGuiBuilder {
 
     private final GuiData guiData;
     private final PanelSyncManager guiSyncManager;
+    private String freqFilter = "";
+    private String ownerFilter = "";
 
     public RedstoneSnifferGuiBuilder(GuiData guiData, PanelSyncManager guiSyncManager) {
         this.guiData = guiData;
@@ -71,8 +72,6 @@ public class RedstoneSnifferGuiBuilder {
         }
         int textColor = Color.rgb(255, 255, 255);
 
-        AtomicReference<String> freqFilter = new AtomicReference<>("");
-        AtomicReference<String> ownerFilter = new AtomicReference<>("");
         AtomicInteger lastPage = new AtomicInteger(0);
         if (guiData.getMainHandItem()
             .getTagCompound() != null && guiData.getMainHandItem()
@@ -113,20 +112,20 @@ public class RedstoneSnifferGuiBuilder {
             return player.mcServer.getConfigurationManager()
                 .func_152596_g(player.getGameProfile());
         }));
-        StringSyncValue freqFilterSyncer = new StringSyncValue(freqFilter::get, freqFilter::set);
-        freqFilterSyncer.setChangeListener(() -> {
-            if (NetworkUtils.isClient()) {
+        StringSyncValue freqFilterSyncer = new StringSyncValue(() -> this.freqFilter, (freq -> {
+            this.freqFilter = freq;
+            if (guiSyncManager.isClient()) {
                 WidgetTree.resize(regularListWidget);
                 WidgetTree.resize(advancedListWidget);
             }
-        });
+        }));
         guiSyncManager.syncValue("freq_filter", freqFilterSyncer);
-        StringSyncValue ownerFilterSyncer = new StringSyncValue(ownerFilter::get, ownerFilter::set);
-        ownerFilterSyncer.setChangeListener(() -> {
-            if (NetworkUtils.isClient()) {
+        StringSyncValue ownerFilterSyncer = new StringSyncValue(() -> ownerFilter, (owner -> {
+            ownerFilter = owner;
+            if (guiSyncManager.isClient()) {
                 WidgetTree.resize(advancedListWidget);
             }
-        });
+        }));
         guiSyncManager.syncValue("owner_filter", ownerFilterSyncer);
         ModularPanel panel = ModularPanel.defaultPanel("redstone_sniffer");
         panel.flex()

@@ -80,7 +80,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
     }
 
     @Override
-    public void readFromPacket(ByteArrayDataInput byteData) {
+    public void readDataFromPacket(ByteArrayDataInput byteData) {
         if (byteData.readBoolean()) {
             uuid = new UUID(byteData.readLong(), byteData.readLong());
         }
@@ -107,8 +107,8 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
     protected void writeDataToByteBuf(ByteBuf byteBuf) {
         byteBuf.writeBoolean(uuid != null);
         if (uuid != null) {
-            byteBuf.writeLong(uuid.getLeastSignificantBits());
             byteBuf.writeLong(uuid.getMostSignificantBits());
+            byteBuf.writeLong(uuid.getLeastSignificantBits());
         }
         byteBuf.writeInt(frequency.length());
         for (int i = 0; i < frequency.length(); i++) {
