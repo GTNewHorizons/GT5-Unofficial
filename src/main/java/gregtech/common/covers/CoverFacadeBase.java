@@ -85,13 +85,12 @@ public abstract class CoverFacadeBase extends Cover {
         this.mStack = stack;
         ICoverable coverable = coveredTile.get();
         if (coverable != null && coverable.isClientSide()) {
-            GTRenderingWorld.getInstance()
-                .register(
-                    coverable.getXCoord(),
-                    coverable.getYCoord(),
-                    coverable.getZCoord(),
-                    getTargetBlock(mStack),
-                    getTargetMeta(mStack));
+            GTRenderingWorld.register(
+                coverable.getXCoord(),
+                coverable.getYCoord(),
+                coverable.getZCoord(),
+                getTargetBlock(mStack),
+                getTargetMeta(mStack));
         }
         return this;
     }
@@ -237,17 +236,6 @@ public abstract class CoverFacadeBase extends Cover {
     @Override
     public boolean isDataNeededOnClient() {
         return true;
-    }
-
-    @Override
-    public void onDataChanged() {
-        ICoverable coverable = coveredTile.get();
-        if (coverable != null && coverable.isClientSide()) GTRenderingWorld.register(
-            coverable.getXCoord(),
-            coverable.getYCoord(),
-            coverable.getZCoord(),
-            getTargetBlock(mStack),
-            getTargetMeta(mStack));
     }
 
     @Override
