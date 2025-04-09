@@ -175,7 +175,7 @@ public class PowerGogglesHudHandler {
             + " EU "
             + (change5mDiff != 0
                 ? String.format(
-                    " (%s eu/t) ",
+                    "(%s eu/t) ",
                     toFormatted(
                         change5m.divide(
                             BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
@@ -183,7 +183,7 @@ public class PowerGogglesHudHandler {
         change1hString = "1h: " + toFormatted(change1h)
             + " EU "
             + (change1hDiff != 0 ? String.format(
-                " (%s eu/t)",
+                "(%s eu/t)",
                 toFormatted(
                     change1h.divide(
                         BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 60 * MINUTES)))))
@@ -197,14 +197,14 @@ public class PowerGogglesHudHandler {
                 break;
             case 2:
                 change5mString = "5m: " + (change5mDiff != 0 ? String.format(
-                    " (%s EU/t) ",
+                    "(%s EU/t) ",
                     toFormatted(
                         change5m.divide(
                             BigInteger.valueOf(Math.min(measurements.size() * ticksBetweenMeasurements, 5 * MINUTES)))))
                     : "0 EU/t");
                 change1hString = "1h: " + (change1hDiff != 0
                     ? String.format(
-                        " (%s EU/t)",
+                        "(%s EU/t)",
                         toFormatted(
                             change1h.divide(
                                 BigInteger
@@ -382,17 +382,6 @@ public class PowerGogglesHudHandler {
         newGradientRight = Color.rgb(newRightRed, newRightGreen, newRightBlue);
 
         return new int[] { newGradientLeft, newGradientRight };
-    }
-
-    private static java.awt.Color[] getGradientSet(int index) {
-        switch (index) {
-            case 1:
-                return new java.awt.Color[] { new java.awt.Color(255, 25, 134), new java.awt.Color(229, 200, 0),
-                    new java.awt.Color(11, 165, 255) };
-            default:
-                return new java.awt.Color[] { new java.awt.Color(255, 50, 50), new java.awt.Color(50, 255, 50),
-                    new java.awt.Color(50, 50, 255) };
-        }
     }
 
     @SideOnly(Side.CLIENT)
