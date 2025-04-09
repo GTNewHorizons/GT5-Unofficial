@@ -744,8 +744,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 .setEUt(inputVoltage);
 
             if (!mExoticEnergyHatches.isEmpty()) {
-                normalOCCalculator
-                    .setCurrentParallel((int) Math.max(1 / normalOCCalculator.calculateDurationUnderOneTick(), 1))
+                normalOCCalculator.setCurrentParallel((int) normalOCCalculator.calculateMultiplierUnderOneTick())
                     .calculate();
                 int normalOverclockCount = normalOCCalculator.getPerformedOverclocks();
 
@@ -760,7 +759,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
 
             // Disabled to disable overclocking under one tick.
             /*
-             * double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
+             * double tickTimeAfterOC = calculator.calculateMultiplierUnderOneTick();
              * if (tickTimeAfterOC < 1) {
              * maxParallel = GTUtility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
              * }
