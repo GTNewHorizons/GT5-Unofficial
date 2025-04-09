@@ -9,9 +9,8 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.ItemCasings;
 
 public class ItemCasingsSpacetime extends ItemCasings {
@@ -33,23 +32,15 @@ public class ItemCasingsSpacetime extends ItemCasings {
             case 7:
             case 8:
                 tooltip.add(
-                    GTLanguageManager.addStringLocalization(
-                        "EOH.Spacetime.Standard.Tooltip.0",
-                        "Supports an internal spacetime volume of up to ")
-                        + formatNumbers(pow(10, 5 + aStack.getItemDamage()))
-                        + "km³.");
+                    StatCollector.translateToLocalFormatted(
+                        "tt.eoh.spacetime.standard.tooltip.0",
+                        formatNumbers(pow(10, 5 + aStack.getItemDamage()))));
                 tooltip.add(
-                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + GTLanguageManager.addStringLocalization(
-                            "EOH.Spacetime.Standard.Tooltip.1",
-                            "Capable of running recipes up to tier ")
-                        + (aStack.getItemDamage() + 1));
+                    StatCollector
+                        .translateToLocalFormatted("tt.eoh.spacetime.standard.tooltip.1", aStack.getItemDamage() + 1));
                 break;
             default:
-                tooltip.add(
-                    EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD
-                        + GTLanguageManager
-                            .addStringLocalization("EOH.TimeDilation.Error.Tooltip", "Error, report to GTNH team"));
+                tooltip.add(StatCollector.translateToLocal("tt.eoh.time_dilation.error.tooltip"));
         }
         tooltip.add(AuthorColen);
     }
