@@ -79,7 +79,7 @@ public class Cover {
         readDataFromPacket(byteData);
     }
 
-    protected void readDataFromPacket(ByteArrayDataInput byteData) {}
+    protected final void readDataFromPacket(ByteArrayDataInput byteData) {}
 
     public final NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         nbt.setInteger(NBT_TICK_RATE_ADDITION, tickRateAddition);
