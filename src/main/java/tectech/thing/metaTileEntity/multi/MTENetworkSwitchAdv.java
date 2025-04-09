@@ -276,7 +276,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         tt.beginStructureBlock();
         tt.addAllCasingInfo();
 
-        tt.addSubChannelUsage("length", "middle slice count");
+        //tt.addSubChannelUsage("length", "middle slice count");
 
         tt.toolTipFinisher();
 
