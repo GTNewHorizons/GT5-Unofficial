@@ -1608,7 +1608,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff EuropiumChlorideConcentrate = new Werkstoff(
         new short[] { 240, 200, 240 },
         "Europium Chloride Concentrate",
-        subscriptNumbers("??Sm??Cl??"),
+        subscriptNumbers("??Eu??Cl??"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
