@@ -747,7 +747,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
                 .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
                 .setParallel(originalMaxParallel)
-                .setEUt(inputEUt / recipe.mInputs.length);
+                .setEUt(inputEUt / recipe.mInputs.length)
+                .setLaserOC(true);
 
             // Disabled to disable overclocking under one tick.
             /*
