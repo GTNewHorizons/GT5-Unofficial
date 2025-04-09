@@ -134,7 +134,8 @@ public class PowerGogglesHudHandler {
                 .divide(new BigDecimal(measurement), RoundingMode.FLOOR)
                 .intValue() / 100f;
 
-        java.awt.Color[] gradientSet = getGradientSet(PowerGogglesConfigHandler.gradientIndex);
+        int[] gradientSet = new int[] { PowerGogglesConfigHandler.gradientBadColor,
+            PowerGogglesConfigHandler.gradientOkColor, PowerGogglesConfigHandler.gradientGoodColor };
         int[] gradients;
         if (severity < 0) {
             gradients = getGradient(-severity, scale, gradientSet[0], gradientSet[1]);
@@ -348,28 +349,30 @@ public class PowerGogglesHudHandler {
         ++measurementCount;
     }
 
-    public static int[] getGradient(double severity, double scale, java.awt.Color gradientLeft,
-        java.awt.Color gradientRight) {
-        int newGradientLeft = gradientLeft.getRGB();
-        int newGradientRight = gradientRight.getRGB();
+    public static int[] getGradient(double severity, double scale, int gradientLeft, int gradientRight) {
+        int newGradientLeft = gradientLeft;
+        int newGradientRight = gradientRight;
 
-        int diffRed = gradientLeft.getRed() - gradientRight.getRed();
-        int diffGreen = gradientLeft.getGreen() - gradientRight.getGreen();
-        int diffBlue = gradientLeft.getBlue() - gradientRight.getBlue();
+        int diffRed = Color.getRed(gradientLeft) - Color.getRed(gradientRight);
+        int diffGreen = Color.getGreen(gradientLeft) - Color.getGreen(gradientRight);
+        int diffBlue = Color.getBlue(gradientLeft) - Color.getBlue(gradientRight);
 
         int newLeftRed = Math
-            .min(255, Math.max(0, gradientRight.getRed() + (int) (diffRed * Math.min(1, severity * scale))));
+            .min(255, Math.max(0, Color.getRed(gradientRight) + (int) (diffRed * Math.min(1, severity * scale))));
         int newLeftGreen = Math
-            .min(255, Math.max(0, gradientRight.getGreen() + (int) (diffGreen * Math.min(1, severity * scale))));
+            .min(255, Math.max(0, Color.getGreen(gradientRight) + (int) (diffGreen * Math.min(1, severity * scale))));
         int newLeftBlue = Math
-            .min(255, Math.max(0, gradientRight.getBlue() + (int) (diffBlue * Math.min(1, severity * scale))));
+            .min(255, Math.max(0, Color.getBlue(gradientRight) + (int) (diffBlue * Math.min(1, severity * scale))));
 
-        int newRightRed = Math
-            .min(255, Math.max(0, gradientRight.getRed() + (int) (diffRed * Math.min(1, severity * scale * 0.75))));
-        int newRightGreen = Math
-            .min(255, Math.max(0, gradientRight.getGreen() + (int) (diffGreen * Math.min(1, severity * scale * 0.75))));
-        int newRightBlue = Math
-            .min(255, Math.max(0, gradientRight.getBlue() + (int) (diffBlue * Math.min(1, severity * scale * 0.75))));
+        int newRightRed = Math.min(
+            255,
+            Math.max(0, Color.getRed(gradientRight) + (int) (diffRed * Math.min(1, severity * scale * 0.75))));
+        int newRightGreen = Math.min(
+            255,
+            Math.max(0, Color.getGreen(gradientRight) + (int) (diffGreen * Math.min(1, severity * scale * 0.75))));
+        int newRightBlue = Math.min(
+            255,
+            Math.max(0, Color.getBlue(gradientRight) + (int) (diffBlue * Math.min(1, severity * scale * 0.75))));
 
         newGradientLeft = Color.rgb(newLeftRed, newLeftGreen, newLeftBlue);
         newGradientRight = Color.rgb(newRightRed, newRightGreen, newRightBlue);
@@ -471,14 +474,19 @@ public class PowerGogglesHudHandler {
     }
 
     private static int getColor(int compareResult) {
-        if (compareResult == 0) return Color.rgb(255, 255, 255);
-        if (compareResult < 0) return Color.rgb(255, 0, 0);
-        return Color.rgb(0, 255, 0);
+        if (compareResult == 0) return PowerGogglesConfigHandler.textOkColor;
+        if (compareResult < 0) return PowerGogglesConfigHandler.textBadColor;
+        return PowerGogglesConfigHandler.textGoodColor;
     }
 
     public static void clear() {
         measurements.clear();
         measurementCount = 0;
         highest = BigInteger.valueOf(0);
+    }
+
+    public static void updateColors() {
+        change5mColor = getColor(change5mDiff);
+        change1hColor = getColor(change1hDiff);
     }
 }

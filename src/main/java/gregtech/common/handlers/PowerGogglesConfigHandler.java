@@ -102,7 +102,13 @@ public class PowerGogglesConfigHandler {
             gradientOkColor = Color.rgb(gradientOKRed, gradientOKGreen, gradientOKBlue);
 
             int gradientGoodRed = config
-                .get(Configuration.CATEGORY_GENERAL, "Good Gradient Red", 50, "RGB values of the gradient gradient", 0, 255)
+                .get(
+                    Configuration.CATEGORY_GENERAL,
+                    "Good Gradient Red",
+                    50,
+                    "RGB values of the gradient gradient",
+                    0,
+                    255)
                 .getInt();
             int gradientGoodGreen = config.get(Configuration.CATEGORY_GENERAL, "Good Gradient Green", 50, "", 0, 255)
                 .getInt();
@@ -111,7 +117,13 @@ public class PowerGogglesConfigHandler {
             gradientGoodColor = Color.rgb(gradientGoodRed, gradientGoodGreen, gradientGoodBlue);
 
             int textBadRed = config
-                .get(Configuration.CATEGORY_GENERAL, "Bad Text Red", 255, "RGB values of the negative EU change text", 0, 255)
+                .get(
+                    Configuration.CATEGORY_GENERAL,
+                    "Bad Text Red",
+                    255,
+                    "RGB values of the negative EU change text",
+                    0,
+                    255)
                 .getInt();
             int textBadGreen = config.get(Configuration.CATEGORY_GENERAL, "Bad Text Green", 0, "", 0, 255)
                 .getInt();
@@ -129,7 +141,13 @@ public class PowerGogglesConfigHandler {
             textOkColor = Color.rgb(textOKRed, textOKGreen, textOKBlue);
 
             int textGoodRed = config
-                .get(Configuration.CATEGORY_GENERAL, "Good Text Red", 0, "RGB values of the positive EU change text", 0, 255)
+                .get(
+                    Configuration.CATEGORY_GENERAL,
+                    "Good Text Red",
+                    0,
+                    "RGB values of the positive EU change text",
+                    0,
+                    255)
                 .getInt();
             int textGoodGreen = config.get(Configuration.CATEGORY_GENERAL, "Good Text Green", 255, "", 0, 255)
                 .getInt();
