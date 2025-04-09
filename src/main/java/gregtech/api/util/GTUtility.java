@@ -4265,7 +4265,19 @@ public class GTUtility {
         char[] chars = Long.toString(no)
             .toCharArray();
         for (int i = 0; i < chars.length; i++) {
-            chars[i] += 8272;
+            chars[i] = switch (chars[i]) {
+                case '0' -> CustomGlyphs.SUBSCRIPT0.charAt(0);
+                case '1' -> '\u2081';
+                case '2' -> '\u2082';
+                case '3' -> '\u2083';
+                case '4' -> '\u2084';
+                case '5' -> '\u2085';
+                case '6' -> '\u2086';
+                case '7' -> '\u2087';
+                case '8' -> '\u2088';
+                case '9' -> '\u2089';
+                default -> chars[i];
+            };
         }
         return new String(chars);
     }
