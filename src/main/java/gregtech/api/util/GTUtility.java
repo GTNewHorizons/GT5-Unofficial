@@ -4969,4 +4969,32 @@ public class GTUtility {
     public static float getClientReachDistance() {
         return Minecraft.getMinecraft().playerController.getBlockReachDistance();
     }
+
+    public static String formatShortenedLong(long number) {
+        if (number < 1000) {
+            return String.valueOf(number);
+        }
+
+        int exp = (int) (Math.log(number) / Math.log(1000));
+        char suffix = "kMGTPE".charAt(exp - 1);
+        double shortened = number / Math.pow(1000, exp);
+
+        if (shortened == (long) shortened) {
+            return String.format("%d%c", (long) shortened, suffix);
+        } else {
+            return String.format("%.1f%c", shortened, suffix);
+        }
+    }
+
+    public static String truncateText(String text, int limit) {
+        if (limit < 0) limit = 1;
+        if (text == null) {
+            return null;
+        }
+        if (text.length() <= limit) {
+            return text;
+        } else {
+            return text.substring(0, limit) + "...";
+        }
+    }
 }
