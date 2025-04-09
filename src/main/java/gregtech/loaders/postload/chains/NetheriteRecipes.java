@@ -13,6 +13,7 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.centrifugeNonCellRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
 
+import gregtech.api.recipe.metadata.CompressionTierKey;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -225,7 +226,7 @@ public class NetheriteRecipes {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Netherite, 1))
             .duration(500 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
-            .metadata(COMPRESSION_TIER, 1)
+            .metadata(CompressionTierKey.INSTANCE, 1)
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
