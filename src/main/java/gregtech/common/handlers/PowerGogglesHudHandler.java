@@ -293,6 +293,8 @@ public class PowerGogglesHudHandler {
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawing(GL_LINES);
 
+        int negative = PowerGogglesConfigHandler.textBadColor;
+        int positive = PowerGogglesConfigHandler.textGoodColor;
         BigInteger lastReading = measurements.get(0);
         double pointsWidth = chartWidth * 0.8d;
         double lastX = xOffset + chartWidth;
@@ -312,9 +314,11 @@ public class PowerGogglesHudHandler {
                     / maxReading.subtract(minReading)
                         .floatValue()))));
             if (reading.compareTo(lastReading) > 0) {
-                tessellator.setColorRGBA_F(255, 0, 0, 255);
+                tessellator
+                    .setColorRGBA_F(Color.getRed(negative), Color.getGreen(negative), Color.getBlue(negative), 255);
             } else {
-                tessellator.setColorRGBA_F(0, 255, 0, 255);
+                tessellator
+                    .setColorRGBA_F(Color.getRed(positive), Color.getGreen(positive), Color.getBlue(positive), 255);
             }
             lastReading = reading;
             tessellator.addVertex(lastX, lastY, 0);
