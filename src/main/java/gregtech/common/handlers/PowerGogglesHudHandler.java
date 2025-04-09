@@ -48,7 +48,7 @@ public class PowerGogglesHudHandler {
     static BigInteger currentEU = BigInteger.valueOf(0);
     static BigInteger measurement = BigInteger.valueOf(0);
     static BigInteger highest = BigInteger.valueOf(0);
-    static BigInteger capacity = BigInteger.valueOf(0);
+    static long capacity = 0; // If this is higher than 0 there's a linked LSC
     static int measurementCount = 0;
     static int change5mColor;
     static int change1hColor;
@@ -215,7 +215,8 @@ public class PowerGogglesHudHandler {
             default:
                 break;
         }
-        String percentage = String.format("%.2f%%",100 * measurement.floatValue() / highest.floatValue());
+        String percentage = String
+            .format("%.2f%%", 100 * measurement.floatValue() / (capacity > 0 ? capacity : highest.floatValue()));
         drawScaledString(
             fontRenderer,
             storage,
@@ -226,7 +227,7 @@ public class PowerGogglesHudHandler {
         drawScaledString(
             fontRenderer,
             percentage,
-            xOffset + (int) ((h - fontRenderer.getStringWidth(String.format(percentage)))*PowerGogglesConfigHandler.hudScale),
+            xOffset + (int) ((h - fontRenderer.getStringWidth(percentage)) * PowerGogglesConfigHandler.hudScale),
             screenHeight - yOffset - w - gapBetweenLines - (int) (fontRenderer.FONT_HEIGHT * mainScale),
             change5mColor,
             mainScale);
@@ -351,6 +352,11 @@ public class PowerGogglesHudHandler {
         GL11.glTranslated(-xOffset, -yOffset, 0);
         fontRenderer.drawStringWithShadow(string, xOffset, yOffset, color);
         GL11.glPopMatrix();
+    }
+
+    public static void setMeasurement(BigInteger newEU, long lscCapacity) {
+        capacity = lscCapacity;
+        setMeasurement(newEU);
     }
 
     public static void setMeasurement(BigInteger newEU) {
@@ -485,6 +491,7 @@ public class PowerGogglesHudHandler {
         measurements.clear();
         measurementCount = 0;
         highest = BigInteger.valueOf(0);
+        capacity = 0;
     }
 
     public static void updateColors() {

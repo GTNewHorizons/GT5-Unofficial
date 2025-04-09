@@ -68,7 +68,10 @@ public class PowerGogglesEventHandler {
                     MTELapotronicSuperCapacitor lsc = ((MTELapotronicSuperCapacitor) ((IGregTechTileEntity) tileEntity)
                         .getMetaTileEntity());
                     NW.sendToPlayer(
-                        new GTPacketUpdatePowerGoggles(BigInteger.valueOf(lsc.getEUVar()), forceRefresh),
+                        new GTPacketUpdatePowerGoggles(
+                            BigInteger.valueOf(lsc.getEUVar()),
+                            lsc.maxEUStore(),
+                            forceRefresh),
                         player);
                 } else {
                     if (lscLinkMap.get(player.getUniqueID()) != null) {

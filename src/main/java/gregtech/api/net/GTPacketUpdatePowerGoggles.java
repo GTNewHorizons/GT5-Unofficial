@@ -12,6 +12,7 @@ import io.netty.buffer.ByteBuf;
 public class GTPacketUpdatePowerGoggles extends GTPacket {
 
     BigInteger EU;
+    long lscCapacity;
     boolean refresh;
 
     public GTPacketUpdatePowerGoggles() {}
@@ -19,11 +20,18 @@ public class GTPacketUpdatePowerGoggles extends GTPacket {
     public GTPacketUpdatePowerGoggles(BigInteger EU) {
         this.EU = EU;
         this.refresh = false;
+        this.lscCapacity = 0;
+    }
+
+    public GTPacketUpdatePowerGoggles(BigInteger EU, long lscCapacity, boolean refresh) {
+        this(EU, refresh);
+        this.lscCapacity = lscCapacity;
     }
 
     public GTPacketUpdatePowerGoggles(BigInteger EU, boolean refresh) {
         this.EU = EU;
         this.refresh = refresh;
+        this.lscCapacity = 0;
     }
 
     @Override
@@ -37,6 +45,7 @@ public class GTPacketUpdatePowerGoggles extends GTPacket {
         byte[] EUBytes = EU.toByteArray();
         buffer.writeInt(EUBytes.length);
         buffer.writeBytes(EUBytes);
+        buffer.writeLong(lscCapacity);
     }
 
     @Override
@@ -48,17 +57,18 @@ public class GTPacketUpdatePowerGoggles extends GTPacket {
             eu[i] = buffer.readByte();
         }
         BigInteger EU = new BigInteger(eu);
-        return new GTPacketUpdatePowerGoggles(EU, refresh);
+        long lscCapacity = buffer.readLong();
+        return new GTPacketUpdatePowerGoggles(EU, lscCapacity, refresh);
     }
 
     @Override
     public void process(IBlockAccess aWorld) {
         if (this.refresh) {
             PowerGogglesHudHandler.clear();
-            PowerGogglesHudHandler.setMeasurement(this.EU);
+            PowerGogglesHudHandler.setMeasurement(this.EU, lscCapacity);
             PowerGogglesHudHandler.drawTick();
         } else {
-            PowerGogglesHudHandler.setMeasurement(this.EU);
+            PowerGogglesHudHandler.setMeasurement(this.EU, lscCapacity);
             PowerGogglesHudHandler.updateClient = true;
         }
 
