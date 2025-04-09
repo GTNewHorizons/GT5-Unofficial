@@ -24,7 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.FishPondFakeRecipe;
+import gregtech.api.util.FishPondRecipes;
 import gregtech.api.util.SemiFluidFuelHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -228,7 +228,7 @@ public class GTplusplus {
     protected void generateGregtechRecipeMaps() {
 
         RecipeGenBlastSmelterGTNH.generateGTNHBlastSmelterRecipesFromEBFList();
-        FishPondFakeRecipe.generateFishPondRecipes();
+        FishPondRecipes.generateFishPondRecipes();
         SemiFluidFuelHandler.generateFuels();
 
         RecipeGenMultisUsingFluidInsteadOfCells
