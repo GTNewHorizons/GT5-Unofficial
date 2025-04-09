@@ -37,6 +37,50 @@ GT5U.gui.text.EIG_seedOverflow=Too many seeds inside!
 GT5U.gui.text.EIG_missingwater=No water!
 GT5U.gui.text.EIG_ic2glass=Insufficient glass tier!
 
+# info data
+## general
+kubatech.infodata.running_mode=Running in mode:
+
+## Extreme Entity Crusher
+kubatech.infodata.eec.current_mob=Current Mob: §e%s
+kubatech.infodata.eec.current_mob.none=Current Mob: §eNone
+kubatech.infodata.eec.animations.enabled=Animations: §eEnabled
+kubatech.infodata.eec.animations.disabled=Animations: §eDisabled
+kubatech.infodata.eec.produce_infernal_drops.allowed=Is allowed to produce infernal drops: §eYes
+kubatech.infodata.eec.produce_infernal_drops.not_allowed=Is not allowed to produce infernal drops: §eNo
+kubatech.infodata.eec.void_damaged.yes=Void all damaged and enchanted items: §eYes
+kubatech.infodata.eec.void_damaged.no=Void all damaged and enchanted items: §eNo
+kubatech.infodata.eec.in_ritual_mode.yes=Is in ritual mode: §eYes
+kubatech.infodata.eec.in_ritual_mode.no=Is in ritual mode: §eNo
+kubatech.infodata.eec.connected_to_ritual.yes=Is connected to ritual: §aYes
+kubatech.infodata.eec.connected_to_ritual.no=Is connected to ritual: §cNo
+kubatech.infodata.eec.inserted_weapon.yes=Inserted weapon: §eYes
+kubatech.infodata.eec.inserted_weapon.no=Inserted weapon: §eNo
+kubatech.infodata.eec.weapon.damage=Weapon attack damage: §e%f
+kubatech.infodata.eec.weapon.looting_level=Weapon looting level: §e%d
+kubatech.infodata.eec.total_damage=Total attack damage: §e%f
+
+## Exreme Industrial Greenhouse
+kubatech.infodata.eig.running_mode.setup_mode.input=Setup mode (input)
+kubatech.infodata.eig.running_mode.setup_mode.output=Setup mode (output)
+kubatech.infodata.eig.uses.water=Uses %dL/operation of water
+kubatech.infodata.eig.uses.weedex=Uses %dL/second of Weed-EX 9000
+kubatech.infodata.eig.max_slots=Max slots:
+kubatech.infodata.eig.used_slots=Used slots:
+kubatech.infodata.bucket.humidity=Humidity:
+kubatech.infodata.bucket.humidity.on=On
+kubatech.infodata.bucket.humidity.off=Off
+kubatech.infodata.eig.too_many_types=There are too many seed types inside to run!
+kubatech.infodata.eig.too_many_seeds=There are too many seeds inside to run!
+
+## Mega Industrial Apiary
+kubatech.infodata.mia.running_mode.input=Input mode
+kubatech.infodata.mia.running_mode.output=Output mode
+kubatech.infodata.mia.running_mode.operating.normal=Operating mode (NORMAL)
+kubatech.infodata.mia.running_mode.operating.swarmer=Operating mode (SWARMER)
+kubatech.infodata.mia.running_mode.bee_storage=Bee storage (%s/%s):
+
+
 #Waila
 kubatech.waila.eec.mob_type=Mob Type: %s
 kubatech.waila.eec.no_mob=None
