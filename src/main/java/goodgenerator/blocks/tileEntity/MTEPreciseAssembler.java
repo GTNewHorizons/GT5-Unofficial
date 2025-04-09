@@ -371,8 +371,8 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addMufflerHatch("Any Casing")
             .addMaintenanceHatch("Any Casing")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING, "Precise Electronic Unit Casing Tier")
-            .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING, "Machine Casing Tier")
+            .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING)
+            .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
             .toolTipFinisher();
         return tt;
     }

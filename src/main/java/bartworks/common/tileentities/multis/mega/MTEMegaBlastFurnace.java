@@ -181,7 +181,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
             .addOutputHatch("Any Heat Proof Machine Casing")
             .addStructureHint("This Mega Multiblock is too big to have its structure hologram displayed fully.")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL, "Heating Coils Tier")
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }

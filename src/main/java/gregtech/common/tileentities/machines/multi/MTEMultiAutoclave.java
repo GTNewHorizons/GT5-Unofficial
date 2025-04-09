@@ -224,9 +224,9 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addEnergyHatch("Any Pressure Containment Casing", 1)
             .addMaintenanceHatch("Any Pressure Containment Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING, "Item Pipe Casing Tier")
-            .addSubChannelUsage(GTStructureChannels.PIPE_CASING, "Pipe Casing Tier")
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL, "Heating Coils Tier")
+            .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
+            .addSubChannelUsage(GTStructureChannels.PIPE_CASING)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher(AuthorVolence);
         return tt;
     }

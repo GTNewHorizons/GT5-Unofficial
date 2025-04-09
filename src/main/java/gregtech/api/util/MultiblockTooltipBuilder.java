@@ -783,7 +783,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSubChannelUsage(IStructureChannels channel, String purpose) {
-        sLines.add(TAB + StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel, purpose));
+        sLines.add(TAB + StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), purpose));
         return this;
     }
 
@@ -797,7 +797,7 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addSubChannelUsage(IStructureChannels channel) {
         sLines.add(
             TAB + StatCollector
-                .translateToLocalFormatted("GT5U.MBTT.subchannel", channel, channel.getDefaultTooltip()));
+                .translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), channel.getDefaultTooltip()));
         return this;
     }
 

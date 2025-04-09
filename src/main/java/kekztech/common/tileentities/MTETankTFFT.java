@@ -10,7 +10,6 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.math.BigInteger;
@@ -370,7 +369,8 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        int layer = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT - 1, MAX_LAYER_AMOUNT + 1);
+        int layer = GTStructureChannels.STRUCTURE_HEIGHT
+            .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT - 1, MAX_LAYER_AMOUNT + 1);
         buildPiece(STRUCTURE_PIECE_TOP, stackSize, hintsOnly, 2, 2, 0);
         for (int i = -1; i >= 1 - layer; i--) buildPiece(STRUCTURE_PIECE_MID, stackSize, hintsOnly, 2, 2, i);
         buildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, hintsOnly, 2, 2, -layer);
@@ -381,7 +381,8 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         if (mMachine) return -1;
         int build = survivialBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, elementBudget, env, false, true);
         if (build >= 0) return build;
-        int layer = GTStructureChannels.STRUCTURE_HEIGHT.getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT - 1, MAX_LAYER_AMOUNT + 1);
+        int layer = GTStructureChannels.STRUCTURE_HEIGHT
+            .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT - 1, MAX_LAYER_AMOUNT + 1);
         for (int i = -1; i >= 1 - layer; i--) {
             build = survivialBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, 2, i, elementBudget, env, false, true);
             if (build >= 0) return build;
