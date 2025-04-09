@@ -48,6 +48,7 @@ public class PowerGogglesHudHandler {
     static BigInteger currentEU = BigInteger.valueOf(0);
     static BigInteger measurement = BigInteger.valueOf(0);
     static BigInteger highest = BigInteger.valueOf(0);
+    static BigInteger capacity = BigInteger.valueOf(0);
     static int measurementCount = 0;
     static int change5mColor;
     static int change1hColor;
@@ -214,10 +215,18 @@ public class PowerGogglesHudHandler {
             default:
                 break;
         }
+        String percentage = String.format("%.2f%%",100 * measurement.floatValue() / highest.floatValue());
         drawScaledString(
             fontRenderer,
             storage,
             xOffset,
+            screenHeight - yOffset - w - gapBetweenLines - (int) (fontRenderer.FONT_HEIGHT * mainScale),
+            change5mColor,
+            mainScale);
+        drawScaledString(
+            fontRenderer,
+            percentage,
+            xOffset + (int) ((h - fontRenderer.getStringWidth(String.format(percentage)))*PowerGogglesConfigHandler.hudScale),
             screenHeight - yOffset - w - gapBetweenLines - (int) (fontRenderer.FONT_HEIGHT * mainScale),
             change5mColor,
             mainScale);
