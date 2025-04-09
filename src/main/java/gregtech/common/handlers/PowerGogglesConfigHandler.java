@@ -27,6 +27,10 @@ public class PowerGogglesConfigHandler {
     public static int gradientOkColor;
     public static int gradientGoodColor;
 
+    public static int textBadColor;
+    public static int textOkColor;
+    public static int textGoodColor;
+
     public static void init(File confFile) {
         if (config == null) {
             config = new Configuration(confFile);
@@ -87,6 +91,51 @@ public class PowerGogglesConfigHandler {
             int gradientBadBlue = config.get(Configuration.CATEGORY_GENERAL, "Bad Gradient Blue", 50, "", 0, 255)
                 .getInt();
             gradientBadColor = Color.rgb(gradientBadRed, gradientBadGreen, gradientBadBlue);
+
+            int gradientOKRed = config
+                .get(Configuration.CATEGORY_GENERAL, "OK Gradient Red", 50, "RGB values of the ok gradient", 0, 255)
+                .getInt();
+            int gradientOKGreen = config.get(Configuration.CATEGORY_GENERAL, "OK Gradient Green", 255, "", 0, 255)
+                .getInt();
+            int gradientOKBlue = config.get(Configuration.CATEGORY_GENERAL, "OK Gradient Blue", 50, "", 0, 255)
+                .getInt();
+            gradientOkColor = Color.rgb(gradientOKRed, gradientOKGreen, gradientOKBlue);
+
+            int gradientGoodRed = config
+                .get(Configuration.CATEGORY_GENERAL, "Good Gradient Red", 50, "RGB values of the gradient gradient", 0, 255)
+                .getInt();
+            int gradientGoodGreen = config.get(Configuration.CATEGORY_GENERAL, "Good Gradient Green", 50, "", 0, 255)
+                .getInt();
+            int gradientGoodBlue = config.get(Configuration.CATEGORY_GENERAL, "Good Gradient Blue", 255, "", 0, 255)
+                .getInt();
+            gradientGoodColor = Color.rgb(gradientGoodRed, gradientGoodGreen, gradientGoodBlue);
+
+            int textBadRed = config
+                .get(Configuration.CATEGORY_GENERAL, "Bad Text Red", 255, "RGB values of the negative EU change text", 0, 255)
+                .getInt();
+            int textBadGreen = config.get(Configuration.CATEGORY_GENERAL, "Bad Text Green", 0, "", 0, 255)
+                .getInt();
+            int textBadBlue = config.get(Configuration.CATEGORY_GENERAL, "Bad Text Blue", 0, "", 0, 255)
+                .getInt();
+            textBadColor = Color.rgb(textBadRed, textBadGreen, textBadBlue);
+
+            int textOKRed = config
+                .get(Configuration.CATEGORY_GENERAL, "OK Text Red", 255, "RGB values of the 0 EU change text", 0, 255)
+                .getInt();
+            int textOKGreen = config.get(Configuration.CATEGORY_GENERAL, "OK Text Green", 255, "", 0, 255)
+                .getInt();
+            int textOKBlue = config.get(Configuration.CATEGORY_GENERAL, "OK Text Blue", 255, "", 0, 255)
+                .getInt();
+            textOkColor = Color.rgb(textOKRed, textOKGreen, textOKBlue);
+
+            int textGoodRed = config
+                .get(Configuration.CATEGORY_GENERAL, "Good Text Red", 0, "RGB values of the positive EU change text", 0, 255)
+                .getInt();
+            int textGoodGreen = config.get(Configuration.CATEGORY_GENERAL, "Good Text Green", 255, "", 0, 255)
+                .getInt();
+            int textGoodBlue = config.get(Configuration.CATEGORY_GENERAL, "Good Text Blue", 0, "", 0, 255)
+                .getInt();
+            textGoodColor = Color.rgb(textGoodRed, textGoodGreen, textGoodBlue);
 
         } catch (Exception e) {
             System.out.println("Unable to load Config");
