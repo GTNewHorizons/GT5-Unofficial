@@ -410,18 +410,18 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
             }
 
             // Logic for MTEHatchInput
-            for (MTEHatchInput solidifierHatch : mInputHatches) {
-                if (solidifierHatch instanceof MTEHatchSolidifier) {
-                    ItemStack mold = ((MTEHatchSolidifier) solidifierHatch).getMold();
-                    FluidStack fluid = solidifierHatch.getFluid();
+            for (MTEHatchInput hatch : mInputHatches) {
+                if (hatch instanceof MTEHatchSolidifier solidifierHatch) {
+                    ItemStack mold = solidifierHatch.getMold();
+                    FluidStack[] fluids = solidifierHatch.getStoredFluid();
 
-                    if (mold != null && fluid != null) {
+                    if (mold != null && fluids.length != 0) {
                         List<ItemStack> inputItems = new ArrayList<>();
                         inputItems.add(mold);
                         inputItems.add(GTUtility.getIntegratedCircuit(22));
 
-                        processingLogic.setInputItems(inputItems.toArray(new ItemStack[0]));
-                        processingLogic.setInputFluids(fluid);
+                        processingLogic.setInputItems(inputItems);
+                        processingLogic.setInputFluids(fluids);
 
                         CheckRecipeResult foundResult = processingLogic.process();
                         if (foundResult.wasSuccessful()) {
