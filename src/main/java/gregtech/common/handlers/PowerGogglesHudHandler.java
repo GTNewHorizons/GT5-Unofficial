@@ -274,6 +274,9 @@ public class PowerGogglesHudHandler {
             if (temp.compareTo(minReading) < 0) minReading = temp;
             if (maxReading.compareTo(temp) < 0) maxReading = temp;
         }
+        int exponent = BigIntegerMath.log10(minReading, RoundingMode.DOWN);
+        minReading = BigInteger.valueOf(10).pow(exponent);
+
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
         double scale = 0.5f;
         drawScaledString(
