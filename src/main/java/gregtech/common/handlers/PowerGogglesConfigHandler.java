@@ -32,11 +32,9 @@ public class PowerGogglesConfigHandler {
     public static int textGoodColor;
 
     public static void init(File confFile) {
-        if (config == null) {
-            config = new Configuration(confFile);
-            config.load();
-            syncConfig();
-        }
+        config = new Configuration(confFile);
+        config.load();
+        syncConfig();
     }
 
     public static void syncConfig() {

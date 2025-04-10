@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.NW;
 
 import java.util.List;
 
+import li.cil.oc.integration.util.Power;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -72,7 +73,7 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
                 // Try to equip into empty slots first
                 for (int i = 0; i < baubles.getSizeInventory(); i++) {
                     ItemStack bauble = baubles.getStackInSlot(i);
-                    if (bauble == null) {
+                    if (bauble == null && canEquip(stack, player)) {
                         baubles.setInventorySlotContents(i, stack.copy());
                         this.onEquipped(stack, player);
                         if (!player.capabilities.isCreativeMode) {
@@ -83,7 +84,7 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
                 }
                 for (int i = 0; i < baubles.getSizeInventory(); i++) {
                     ItemStack bauble = baubles.getStackInSlot(i);
-                    if (bauble != null && ((IBauble) bauble.getItem()).canUnequip(bauble, player)) {
+                    if (bauble != null && canEquip(stack, player) && ((IBauble) bauble.getItem()).canUnequip(bauble, player)) {
                         baubles.setInventorySlotContents(i, stack.copy());
                         ((IBauble) bauble.getItem()).onEquipped(bauble, player);
                         if (!player.capabilities.isCreativeMode) {
@@ -138,10 +139,21 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
     }
 
     @Override
-    public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {}
+    public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
+    }
 
     @Override
     public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {
+        InventoryBaubles baubles = PlayerHandler.getPlayerBaubles((EntityPlayer) player);
+        for (int i = 0; i < baubles.getSizeInventory(); i++) {
+            ItemStack bauble = baubles.getStackInSlot(i);
+            if (bauble == null) continue;
+            if (baubles.getStackInSlot(i)
+                .getUnlocalizedName()
+                .equals("gt.Power_Goggles")) {
+                return false;
+            }
+        }
         return true;
     }
 
