@@ -207,12 +207,12 @@ public class OverclockCalculator {
     }
 
     /**
-     * Limit the amount of overclocks that can be performed, regardless of how much power is available. Mainly used for
-     * fusion reactors.
+     * Sets the maximum number of overclocks that can be performed, regardless of how much power is available.
+     * Negative values are rounded up to 0. Mainly used for fusion reactors.
      */
     @Nonnull
-    public OverclockCalculator limitOverclockCount(int maxOverclocks) {
-        this.maxOverclocks = maxOverclocks;
+    public OverclockCalculator setMaxOverclocks(int maxOverclocks) {
+        this.maxOverclocks = Math.max(maxOverclocks, 0);
         return this;
     }
 
@@ -313,16 +313,24 @@ public class OverclockCalculator {
 
         // Special handling for laser overclocking.
         if (laserOC) {
-            double eutLaserOverclock = recipePower;
-            overclocks = 0;
+            double eutOverclock = recipePower;
 
-            // Keep increasing power until it hits the machine's limit.
-            while (eutLaserOverclock * (4.0 + 0.3 * (overclocks + 1)) < machinePower) {
-                eutLaserOverclock *= (4.0 + 0.3 * (overclocks + 1));
-                overclocks++;
+            // Keep increasing power until normal overclocks are used.
+            int regularOverclocks = 0;
+            while (eutOverclock * 4.0 < machinePower && regularOverclocks < maxOverclocks) {
+                eutOverclock *= 4.0;
+                regularOverclocks++;
             }
 
-            calculatedConsumption = (long) Math.ceil(eutLaserOverclock);
+            // Keep increasing power until it hits the machine's limit.
+            int laserOverclocks = 0;
+            while (eutOverclock * (4.0 + 0.3 * (laserOverclocks + 1)) < machinePower) {
+                eutOverclock *= (4.0 + 0.3 * (laserOverclocks + 1));
+                laserOverclocks++;
+            }
+
+            overclocks = regularOverclocks + laserOverclocks;
+            calculatedConsumption = (long) Math.ceil(eutOverclock);
             duration /= Math.pow(durationDecreasePerOC, overclocks);
             calculatedDuration = (int) Math.max(duration, 1);
             return;
