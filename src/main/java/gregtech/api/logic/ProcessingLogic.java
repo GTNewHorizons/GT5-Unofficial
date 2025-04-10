@@ -117,6 +117,9 @@ public class ProcessingLogic {
     }
 
     public boolean craftingPatternHandler(IDualInputInventory slot) {
+        if (!slot.shouldBeCached()) {
+            return true;
+        }
         if (craftingPatternRecipeCache.containsKey(slot)) {
             craftingPattern = slot;
             return true;
