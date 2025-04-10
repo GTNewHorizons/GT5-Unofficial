@@ -37,8 +37,8 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
         int ordinalSide, float hitX, float hitY, float hitZ) { // this is only ever called by client
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity instanceof IGregTechTileEntity te) {
-            if (te.getMetaTileEntity() instanceof MTELapotronicSuperCapacitor lsc) {
-                if (player instanceof EntityClientPlayerMP && !player.isSneaking()) {
+            if (te.getMetaTileEntity() instanceof MTELapotronicSuperCapacitor) {
+                if (!player.isSneaking()) {
                     NBTTagCompound tag = new NBTTagCompound();
                     tag.setInteger("x", x);
                     tag.setInteger("y", y);
