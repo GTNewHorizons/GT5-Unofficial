@@ -754,6 +754,10 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 .setLaserOC(true)
                 .setMaxRegularOverclocks(getTier(inputVoltage) - getTier(recipe.mEUt));
 
+            double fractionalDuration = calculator.calculateFractionalDuration();
+            double fractionalMultiplier = Math.ceil(fractionalDuration) / fractionalDuration;
+            maxParallel = (int) Math.floor(maxParallel * fractionalMultiplier);
+
             // Disabled to disable overclocking under one tick.
             /*
              * double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
