@@ -233,20 +233,20 @@ public abstract class MetaBaseItem extends GTGenericItem
             if (tStats[3] > 0) {
                 aList.add(
                     EnumChatFormatting.AQUA + String.format(
-                        transItem("009", "Contains %s EU   Tier: %s"),
+                        getItemDescLoc("stored_eu"),
                         formatNumbers(tStats[3]),
                         "" + (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
             } else {
                 long tCharge = getRealCharge(aStack);
                 if (tStats[3] == -2 && tCharge <= 0) {
                     aList.add(
-                        EnumChatFormatting.AQUA + transItem("010", "Empty. You should recycle it properly.")
+                        EnumChatFormatting.AQUA + getItemDescLoc("empty")
                             + EnumChatFormatting.GRAY);
                 } else {
                     aList.add(
                         EnumChatFormatting.AQUA
                             + String.format(
-                                transItem("011", "%s / %s EU - Voltage: %s"),
+                                getItemDescLoc("eu_info"),
                                 formatNumbers(tCharge),
                                 formatNumbers(Math.abs(tStats[0])),
                                 "" + V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)])
@@ -259,11 +259,11 @@ public abstract class MetaBaseItem extends GTGenericItem
         if (tStats != null && tStats[0] > 0) {
             FluidStack tFluid = getFluidContent(aStack);
             aList.add(
-                EnumChatFormatting.BLUE + ((tFluid == null ? transItem("012", "No Fluids Contained")
+                EnumChatFormatting.BLUE + ((tFluid == null ? getItemDescLoc("no_fluid")
                     : GTUtility.getFluidName(tFluid, true))) + EnumChatFormatting.GRAY);
             aList.add(
                 EnumChatFormatting.BLUE + String.format(
-                    transItem("013", "%sL / %sL"),
+                    getItemDescLoc("fluid_info"),
                     tFluid == null ? 0 : formatNumbers(tFluid.amount),
                     formatNumbers(tStats[0])) + EnumChatFormatting.GRAY);
         }

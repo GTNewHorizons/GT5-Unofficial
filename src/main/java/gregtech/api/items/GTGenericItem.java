@@ -145,8 +145,8 @@ public class GTGenericItem extends Item implements IProjectileItem {
         return getContainerItem(aStack) != null;
     }
 
-    public String transItem(String aKey, String aEnglish) {
-        return GTLanguageManager.addStringLocalization("Item_DESCRIPTION_Index_" + aKey, aEnglish);
+    public String getItemDescLoc(String aKey) {
+        return StatCollector.translateToLocal("gt.item.desc." + aKey);
     }
 
     public static class GT_Item_Dispense extends BehaviorProjectileDispense {

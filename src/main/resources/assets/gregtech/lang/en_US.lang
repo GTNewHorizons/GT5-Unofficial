@@ -145,6 +145,34 @@ item.gt.pollen.name=Pollen
 item.gt.propolis.name=Propolis
 tile.gt.dronerender.name=Drone Renderer
 
+# GT Item Descriptions
+gt.item.desc.stored_heat=Stored Heat: %s
+gt.item.desc.durability=Durability: %s/%s
+gt.item.desc.tier=%s Tier %s
+gt.item.desc.level=%s lvl %s
+gt.item.desc.damage=Attack Damage: %s
+gt.item.desc.mine_speed=Mining Speed: %s
+gt.item.desc.base_eff=Base Efficiency: %s
+gt.item.desc.fuel_eff=Fuel | Optimal Flow > EU/t Produced | Efficiency
+gt.item.desc.gas_energy=Energy from Optimal Gas Flow: %s EU/t
+gt.item.desc.plasma_energy=Energy from Optimal Plasma Flow: %s EU/t
+gt.item.desc.stored_eu=Contains %s EU   Tier: %s
+gt.item.desc.empty=Empty. You should recycle it properly.
+gt.item.desc.eu_info=%s / %s EU - Voltage: %s
+gt.item.desc.no_fluid=No Fluids Contained
+gt.item.desc.fluid_info=%sL / %sL
+gt.item.desc.miss_coord=Missing Coordinates!
+gt.item.desc.device_at=Device at:
+gt.item.desc.state=State: %s
+gt.item.desc.breeder_tip=Bath with neutron in a hot reactor
+gt.item.desc.progress=Progress: %s/%s
+gt.item.desc.haz_rad=Radiation Hazard
+gt.item.desc.turbine_eff=Turbine Efficiency (Loose): %s
+gt.item.desc.steam_rate=Optimal Steam flow (Loose): %s L/t
+gt.item.desc.eff_tier=Overflow Efficiency Tier: %s
+gt.item.desc.steam_eut=Energy from Optimal Steam Flow: %s EU/t
+gt.item.desc.steam_eut_loose=Energy from Optimal Steam Flow (Loose): %s EU/t
+
 # GT++ items
 item.GTPP.air_intake_hatch.name=Air Intake Hatch
 item.GTPP.catalyst_housing.name=Catalyst Housing
