@@ -215,8 +215,9 @@ public class PowerGogglesHudHandler {
             default:
                 break;
         }
-        String percentage = String
-            .format("%.2f%%", 100 * measurement.floatValue() / (capacity > 0 ? capacity : highest.floatValue()));
+        String percentage = measurement.compareTo(BigInteger.ZERO) == 0 ? "0%"
+            : String
+                .format("%.2f%%", 100 * measurement.floatValue() / (capacity > 0 ? capacity : highest.floatValue()));
         drawScaledString(
             fontRenderer,
             storage,
@@ -276,8 +277,9 @@ public class PowerGogglesHudHandler {
         }
         int exponent = minReading.compareTo(BigInteger.ZERO) == 0 ? 0
             : BigIntegerMath.log10(minReading, RoundingMode.DOWN);
-        minReading = BigInteger.valueOf(10)
-            .pow(exponent);
+        minReading = minReading.compareTo(BigInteger.ZERO) == 0 ? BigInteger.ZERO
+            : BigInteger.valueOf(10)
+                .pow(exponent);
 
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
         double scale = 0.5f;
