@@ -99,7 +99,6 @@ GTPP.tooltip.catalyst.active_reaction_agent=Active Reaction Agent
 GTPP.tooltip.milling_ball.tumble=Tumble Tumble Tumble
 
 # Infinite Spray Can
-
 item.GT5U.infinite_spray_can.name.solvent=Infinite Spray Can %cSolvent%c
 item.GT5U.infinite_spray_can.name.colored=Infinite Spray Can %c%s%c
 
@@ -124,12 +123,43 @@ GT5U.infinite_spray_can.color.Cable Insulation=Cable Insulation
 GT5U.infinite_spray_can.color.Construction Foam=Construction Foam
 GT5U.infinite_spray_can.color.Machine Metal=Machine Metal
 
+GT5U.generic.true=True
+GT5U.generic.false=False
 
+# Algae
+GTPP.algae.euglenoids.name=Euglenoids
+GTPP.algae.golden-brown_algae.name=Golden-Brown Algae
+GTPP.algae.fire_algae.name=Fire Algae
+GTPP.algae.green_algae.name=Green Algae
+GTPP.algae.red_algae.name=Red Algae
+GTPP.algae.brown_algae.name=Brown Algae
+GTPP.algae.yellow-green_algae.name=Yellow-Green Algae
+
+GTPP.algae.tooltip.requires_light=Requires Light: %s
+GTPP.algae.tooltip.salt_water=Salt Water: %s
+GTPP.algae.tooltip.fresh_water=Fresh Water: %s
+GTPP.algae.tooltip.temp_tolerance=Temp Tolerance: %d
+GTPP.algae.tooltip.growth=Growth: %d
+GTPP.algae.tooltip.production=Production: %d
+GTPP.algae.tooltip.lifespan=Lifespan in days: %d
+GTPP.algae.tooltip.generation=Generation: %d
+
+# Power Goggles
+GT5U.power_goggles.open_config_gui=Open Goggles Config
+GT5U.power_goggles.toggle_power_chart=Toggle Power Chart
 
 GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was found
 GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found
 GT5U.autoplace.error.no_mte.class_name=§cSuggested to place machine with class name §4%d§c but none was found
 GT5U.providesfullhazmatprotection=Provides full hazmat protection.
+GT5U.providesCBRNprotection=Provides CBRN protection.
+GT5U.providesextremetemperatureprotection=Provides thermal protection.
+GT5U.providesbiologicalhazmatprotection=Provides biological hazard protection.
+GT5U.providesfrosthazmatprotection=Provides frost protection.
+GT5U.providesheathazmatprotection=Provides heat protection.
+GT5U.providesradiohazmatprotection=Provides radiation protection.
+GT5U.provideselectricalhazmatprotection=Provides electrical protection.
+GT5U.providesgashazmatprotection=Provides gas protection.
 
 # Multiblock Tooltip Builder Keywords
 # Context can be found in the class gregtech.api.util.MultiblockTooltipBuilder
@@ -145,11 +175,22 @@ GT5U.MBTT.MaintenanceHatch=Maintenance Hatch
 GT5U.MBTT.MufflerHatch=Muffler Hatch
 GT5U.MBTT.EnergyHatch=Energy Hatch
 GT5U.MBTT.DynamoHatch=Dynamo Hatch
+GT5U.MBTT.MultiampEnergyHatch=Multi-Amp Energy Hatch
+GT5U.MBTT.MultiampEnergyDynamo=Multi-Amp Dynamo Hatch
+GT5U.MBTT.LaserTargetHatch=Laser Target Hatch
+GT5U.MBTT.LaserSourceHatch=Laser Source Hatch
+GT5U.MBTT.ExoticEnergyHatch=Laser/Multi-Amp Energy Hatch
+GT5U.MBTT.ExoticEnergyDynamo=Laser/Multi-Amp Dynamo Hatch
 GT5U.MBTT.InputBus=Input Bus
 GT5U.MBTT.InputHatch=Input Hatch
 GT5U.MBTT.OutputBus=Output Bus
 GT5U.MBTT.OutputHatch=Output Hatch
+GT5U.MBTT.TecTechMultiAmp=Supports TecTech Multi-Amp Hatches!
 GT5U.MBTT.TecTechHatch=Supports TecTech Multi-Amp and Laser Hatches!
+GT5U.MBTT.Param=Parametrizer Hatch
+GT5U.MBTT.Uncertainty=Uncertainty Hatch
+GT5U.MBTT.InputData=Data Reception Connector
+GT5U.MBTT.OutputData=Data Transmission Connector
 GT5U.MBTT.Causes=Causes
 GT5U.MBTT.PPS=pollution per second
 GT5U.MBTT.Hold=Hold
@@ -163,6 +204,10 @@ GT5U.MBTT.Structure.SeeStructure2=Hologram Projector on the Controller!
 GT5U.MBTT.Structure.MinGlassForLaser=-tier glass required for §9Tec§1Tech§7 Laser Hatches.
 GT5U.MBTT.Structure.GlassEnergyLimit=Energy Hatch limited by Glass tier
 GT5U.MBTT.Structure.GlassEnergyLimitTier=-tier Glass unlocks all.
+GT5U.MBTT.HatchInfo=Any %s
+GT5U.MBTT.HatchDots= (dots: %s)
+GT5U.MBTT.BoroGlassAny=Borosilicate Glass (any, mixed)
+GT5U.MBTT.BoroGlassTiered=Borosilicate Glass (any)
 
 GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
 GT5U.tooltip.channelvalue=Use value §6%d§r§7 for sub channel §6%s
@@ -745,7 +790,8 @@ GT5U.gui.text.low_wafer_tier=Found wafer is too low tier for the recipe
 GT5U.gui.text.not_enough_wafer=Found wafer but recipe requires more than given
 GT5U.gui.text.static_mode=Static Mode
 GT5U.gui.text.unneeded_muffler=Does not accept Muffler Hatches
-GT5U.gui.missing_casings=Too few casings: needs %s but has %s
+GT5U.gui.missing_casings=Too few casings: need %s but have %s
+GT5U.gui.missing_casings_specific=Too few %s: need %s but have %s
 GT5U.gui.missing_hatch=Missing %s
 GT5U.gui.too_many_hatches=Too many %ses (max %s)
 GT5U.gui.text.power_panel=Power Control Panel
@@ -753,6 +799,7 @@ GT5U.gui.text.too_uncertain=Too Uncertain.
 GT5U.gui.text.invalid_parameters=Invalid Parameters.
 GT5U.gui.text.enabled=§aEnabled§f
 GT5U.gui.text.disabled=§cDisabled§f
+GT5U.gui.text.repair_tip=Click with Tool to repair.
 
 
 GT5U.gui.config.client=Client
@@ -794,6 +841,10 @@ GT5U.item.programmed_circuit.no_screwdriver.1=Your thumb is not a screwdriver. T
 GT5U.item.programmed_circuit.no_screwdriver.2=Chuck Norris stares at the circuit until it reprograms itself. You do not.
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
+GT5U.item.programmed_circuit.tooltip.0=Configuration %s
+GT5U.item.programmed_circuit.tooltip.1=Right click to reconfigure
+GT5U.item.programmed_circuit.tooltip.2=Needs a screwdriver or programming tool
+
 GT5U.item.cable.max_voltage=Max Voltage
 GT5U.item.cable.max_amperage=Max Amperage
 GT5U.item.cable.loss=Loss/Meter/Ampere
@@ -809,8 +860,6 @@ GT5U.item.pipe.gas_proof.no=No
 GT5U.item.pipe.amount=Pipe Amount
 GT5U.item.pipe.empty=Empty
 GT5U.item.pipe.swap=Pipe Swapped:
-
-GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak middle-click to unlock.
@@ -1043,8 +1092,8 @@ GT5U.waila.multiblock.status.running_fine=Running Fine
 GT5U.waila.multiblock.status.cpu_load=Average CPU load of ~%s ns
 GT5U.waila.multiblock.status.locked_recipe=Locked Recipe:
 
-achievement.flintpick=First Tools
-achievement.flintpick.desc=Craft a flint pick
+achievement.gettingstartedwithgt=Getting Started with GT
+achievement.gettingstartedwithgt.desc=Craft a wooden pickaxe
 achievement.crops=Farming
 achievement.crops.desc=Craft Crops
 achievement.havestlead=Harvest Lead
@@ -1075,8 +1124,6 @@ achievement.hammertime=Hammertime
 achievement.hammertime.desc=Craft a Jackhammer
 achievement.repair=Repairs
 achievement.repair.desc=Craft a Disassembler
-achievement.unitool=Universal Tool
-achievement.unitool.desc=Craft a Universal Spade
 achievement.recycling=Recycling
 achievement.recycling.desc=Craft an Arc Furnace
 achievement.crushed=Crushed
