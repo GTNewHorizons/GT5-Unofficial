@@ -752,7 +752,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 .setParallel(originalMaxParallel)
                 .setEUt(inputEUt / recipe.mInputs.length)
                 .setLaserOC(true)
-                .setMaxOverclocks(getTier(inputVoltage) - getTier(recipe.mEUt));
+                .setMaxRegularOverclocks(getTier(inputVoltage) - getTier(recipe.mEUt));
 
             // Disabled to disable overclocking under one tick.
             /*
