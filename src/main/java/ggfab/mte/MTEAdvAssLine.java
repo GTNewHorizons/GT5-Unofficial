@@ -744,10 +744,12 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 .setEUt(inputVoltage);
 
             if (!mExoticEnergyHatches.isEmpty()) {
-                normalOCCalculator
-                    .setCurrentParallel((int) Math.max(1 / normalOCCalculator.calculateDurationUnderOneTick(), 1))
+                double fractionalDuration = normalOCCalculator.calculateFractionalDuration();
+                double fractionalMultiplier = Math.ceil(fractionalDuration) / fractionalDuration;
+                maxParallel = (int) Math.floor(maxParallel * fractionalMultiplier);
+
+                normalOCCalculator.setCurrentParallel(maxParallel)
                     .calculate();
-                int normalOverclockCount = normalOCCalculator.getPerformedOverclocks();
 
                 calculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
                     .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
