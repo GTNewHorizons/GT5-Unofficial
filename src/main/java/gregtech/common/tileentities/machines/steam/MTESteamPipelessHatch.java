@@ -94,9 +94,9 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase {
         if (mTier == 0) {
             // Pipeless Steam Hatch
             return new String[] {
-                GRAY               + "Stores steam globally in a network, up to 2^(2^31) L.",
+                GRAY               + "Stores Steam globally in a network, up to 2^(2^31) L.",
                 GRAY               + "Does not connect to pipes. This block withdraws Steam from the network.",
-                GRAY               + "Supports Steam, Superheated Steam and Supercritical Steam (and their dense variants).",
+                GRAY               + "Supports Steam, Superheated Steam, and Supercritical Steam (and their dense variants).",
                 GRAY               + "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
                 AQUA + "" + ITALIC + "Where does it come from? Capable of extracting Steam from seemingly nowhere, and even",
                 AQUA + "" + ITALIC + "without any type of Pipes, you begin to question what you thought you knew about this",
@@ -105,9 +105,9 @@ public class MTESteamPipelessHatch extends MTEHatchCustomFluidBase {
         }
         // Pipeless Jetstream Hatch
         return new String[] {
-            GRAY               + "Stores steam globally in a network, up to 2^(2^31) L.",
+            GRAY               + "Stores Steam globally in a network, up to 2^(2^31) L.",
             GRAY               + "Does not connect to pipes. This block withdraws Steam from the network.",
-            GRAY               + "Supports Steam, Superheated Steam and Supercritical Steam (and their dense variants).",
+            GRAY               + "Supports Steam, Superheated Steam, and Supercritical Steam (and their dense variants).",
             GRAY               + "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
             AQUA + "" + ITALIC + "Your dream recalled a 'Wireless Energy Hatch,' but you don't remember anything like the",
             AQUA + "" + ITALIC + "power of this hatch. By utilizing the immense strength of dehumidification, you've found",
