@@ -64,10 +64,7 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
                                                                                            // client
         if (player instanceof EntityPlayerMP mPlayer) {
             if (player.isSneaking()) {
-                PowerGogglesEventHandler.setLscLink(mPlayer, null);
                 stack.setTagCompound(new NBTTagCompound());
-                PowerGogglesEventHandler.forceUpdate = true;
-                PowerGogglesEventHandler.forceRefresh = true;
                 player.addChatMessage(new ChatComponentText("Goggles unlinked."));
             } else {
 

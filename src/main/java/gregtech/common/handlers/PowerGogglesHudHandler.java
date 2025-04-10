@@ -1,5 +1,6 @@
 package gregtech.common.handlers;
 
+import static org.lwjgl.opengl.GL11.GL_ALL_ATTRIB_BITS;
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_LIGHTING;
 import static org.lwjgl.opengl.GL11.GL_LINES;
@@ -125,6 +126,7 @@ public class PowerGogglesHudHandler {
         int down = up + h;
 
         GL11.glPushMatrix();
+        GL11.glPushAttrib(GL_ALL_ATTRIB_BITS);
         GL11.glTranslated(left, down, 0);
         GL11.glRotated(90, 0, 0, -1);
         GL11.glTranslated(-left, -down, 0);
@@ -148,6 +150,7 @@ public class PowerGogglesHudHandler {
 
         GL11.glDisable(GL_LIGHTING);
         GL11.glPopMatrix();
+        GL11.glPopAttrib();
 
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
         int gapBetweenLines = 2;
@@ -298,15 +301,7 @@ public class PowerGogglesHudHandler {
             Color.rgb(237, 2, 158),
             scale);
         if (readings < 2) return;
-        GlStateManager.disableTexture2D();
-        GlStateManager.enableBlend();
-        GlStateManager.disableAlpha();
-        GlStateManager.tryBlendFuncSeparate(
-            GlStateManager.SourceFactor.SRC_ALPHA,
-            GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
-            GlStateManager.SourceFactor.ONE,
-            GlStateManager.DestFactor.ZERO);
-        GlStateManager.shadeModel(GL11.GL_SMOOTH);
+
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawing(GL_LINES);
 
@@ -344,10 +339,6 @@ public class PowerGogglesHudHandler {
             lastY = y;
         }
         tessellator.draw();
-        GlStateManager.shadeModel(GL11.GL_FLAT);
-        GlStateManager.disableBlend();
-        GlStateManager.enableAlpha();
-        GlStateManager.enableTexture2D();
 
     }
 
