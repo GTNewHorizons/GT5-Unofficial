@@ -61,7 +61,7 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) { // called by both server and
                                                                                            // client
-        if (player instanceof EntityPlayerMP mPlayer) {
+        if (!world.isRemote) {
             if (player.isSneaking()) {
                 stack.setTagCompound(new NBTTagCompound());
                 player.addChatMessage(new ChatComponentText("Goggles unlinked."));
@@ -86,7 +86,7 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
                         && bauble.getUnlocalizedName()
                             .equals("gt.Power_Goggles")) {
                         baubles.setInventorySlotContents(i, stack.copy());
-                        ((IBauble) bauble.getItem()).onEquipped(bauble, player);
+                        ((IBauble) bauble.getItem()).onEquipped(stack, player);
                         if (!player.capabilities.isCreativeMode) {
                             player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
                         }
