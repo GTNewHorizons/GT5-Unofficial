@@ -131,6 +131,9 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
                         tag.getInteger("y"),
                         tag.getInteger("z"),
                         tag.getInteger("dim"))));
+        } else {
+            NW.sendToServer(
+                new GTPacketLinkPowerGoggles());
         }
     }
 
