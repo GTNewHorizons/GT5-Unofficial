@@ -4,7 +4,6 @@ import static gregtech.api.enums.GTValues.NW;
 
 import java.util.List;
 
-import li.cil.oc.integration.util.Power;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,7 +24,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.net.GTPacketLinkPowerGoggles;
 import gregtech.api.net.GTPacketUpdateItem;
-import gregtech.common.handlers.PowerGogglesEventHandler;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 
 public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetworkUpdatableItem {
@@ -84,7 +82,9 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
                 }
                 for (int i = 0; i < baubles.getSizeInventory(); i++) {
                     ItemStack bauble = baubles.getStackInSlot(i);
-                    if (bauble != null && ((IBauble) bauble.getItem()).canUnequip(bauble, player) && bauble.getUnlocalizedName().equals("gt.Power_Goggles")) {
+                    if (bauble != null && ((IBauble) bauble.getItem()).canUnequip(bauble, player)
+                        && bauble.getUnlocalizedName()
+                            .equals("gt.Power_Goggles")) {
                         baubles.setInventorySlotContents(i, stack.copy());
                         ((IBauble) bauble.getItem()).onEquipped(bauble, player);
                         if (!player.capabilities.isCreativeMode) {
@@ -133,14 +133,12 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
                         tag.getInteger("z"),
                         tag.getInteger("dim"))));
         } else {
-            NW.sendToServer(
-                new GTPacketLinkPowerGoggles());
+            NW.sendToServer(new GTPacketLinkPowerGoggles());
         }
     }
 
     @Override
-    public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
-    }
+    public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {}
 
     @Override
     public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {
