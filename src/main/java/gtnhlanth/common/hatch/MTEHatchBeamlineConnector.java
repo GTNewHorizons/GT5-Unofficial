@@ -12,16 +12,13 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
+import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
-import tectech.mechanics.dataTransport.DataPacket;
 
-public abstract class MTEHatchBeamlineConnector<T extends DataPacket> extends MTEHatch implements IConnectsToBeamline {
+public abstract class MTEHatchBeamlineConnector extends MTEHatch implements IConnectsToBeamline {
 
     private String clientLocale = "en_US";
-
-    public T q;
-
-    public short id = -1;
+    public BeamLinePacket dataPacket = null;
 
     protected MTEHatchBeamlineConnector(int aID, String aName, String aNameRegional, int aTier, String descr) {
         super(aID, aName, aNameRegional, aTier, 0, descr);
@@ -34,28 +31,24 @@ public abstract class MTEHatchBeamlineConnector<T extends DataPacket> extends MT
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setShort("eID", id);
-        if (q != null) {
-            aNBT.setTag("eDATA", q.toNbt());
+        if (this.dataPacket != null) {
+            aNBT.setTag("eDATA", this.dataPacket.toNbt());
         }
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        id = aNBT.getShort("eID");
         if (aNBT.hasKey("eDATA")) {
-            q = loadPacketFromNBT(aNBT.getCompoundTag("eDATA"));
+            this.dataPacket = new BeamLinePacket(aNBT.getCompoundTag("eDATA"));
         }
     }
-
-    protected abstract T loadPacketFromNBT(NBTTagCompound nbt);
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (MOVE_AT == aTick % 20) {
-                if (q == null) {
+                if (this.dataPacket == null) {
                     getBaseMetaTileEntity().setActive(false);
                 } else {
                     getBaseMetaTileEntity().setActive(true);
@@ -73,7 +66,7 @@ public abstract class MTEHatchBeamlineConnector<T extends DataPacket> extends MT
             return true;
         }
         if (aPlayer instanceof EntityPlayerMPAccessor) {
-            clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
+            this.clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
         }
         return true;
     }
@@ -100,23 +93,13 @@ public abstract class MTEHatchBeamlineConnector<T extends DataPacket> extends MT
 
     @Override
     public String[] getInfoData() {
-        if (id > 0) {
-            return new String[] {
-                translateToLocalFormatted("tt.keyword.ID", clientLocale) + ": " + EnumChatFormatting.AQUA + id,
-                translateToLocalFormatted("tt.keyword.Content", clientLocale) + ": "
-                    + EnumChatFormatting.AQUA
-                    + (q != null ? q.getContentString() : 0),
-                translateToLocalFormatted("tt.keyword.PacketHistory", clientLocale) + ": "
-                    + EnumChatFormatting.RED
-                    + (q != null ? q.getTraceSize() : 0), };
-        }
         return new String[] {
-            translateToLocalFormatted("tt.keyword.Content", clientLocale) + ": "
+            translateToLocalFormatted("tt.keyword.Content", this.clientLocale) + ": "
                 + EnumChatFormatting.AQUA
-                + (q != null ? q.getContentString() : 0),
-            translateToLocalFormatted("tt.keyword.PacketHistory", clientLocale) + ": "
+                + (this.dataPacket != null ? this.dataPacket.getContentString() : 0),
+            translateToLocalFormatted("tt.keyword.PacketHistory", this.clientLocale) + ": "
                 + EnumChatFormatting.RED
-                + (q != null ? q.getTraceSize() : 0), };
+                + (this.dataPacket != null ? this.dataPacket.getTraceSize() : 0), };
     }
 
     @Override

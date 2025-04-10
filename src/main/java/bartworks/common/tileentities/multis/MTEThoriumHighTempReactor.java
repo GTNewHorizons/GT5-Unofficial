@@ -23,6 +23,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -328,18 +329,25 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
 
     @Override
     public String[] getInfoData() {
-        return new String[] { "Progress:",
-            GTUtility.formatNumbers(this.mProgresstime / 20) + "secs /"
-                + GTUtility.formatNumbers(this.mMaxProgresstime / 20)
-                + "secs",
-            "TRISO-Pebbles:",
-            GTUtility.formatNumbers(this.fuelSupply) + "pcs. / " + GTUtility.formatNumbers(this.fuelSupply) + "psc.",
-            "Helium-Level:",
-            GTUtility.formatNumbers(this.HeliumSupply) + "L / "
-                + GTUtility.formatNumbers(MTEThoriumHighTempReactor.HELIUM_NEEDED)
-                + "L",
-            "Coolant/t:", GTUtility.formatNumbers(this.mProgresstime == 0 ? 0 : this.coolingPerTick) + "L/t",
-            "Problems:", String.valueOf(this.getIdealStatus() - this.getRepairStatus()) };
+        return new String[] {
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.thtr.progress",
+                GTUtility.formatNumbers(this.mProgresstime / 20),
+                GTUtility.formatNumbers(this.mMaxProgresstime / 20)),
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.thtr.triso_pebbles",
+                GTUtility.formatNumbers(this.fuelSupply),
+                GTUtility.formatNumbers(this.fuelSupply)),
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.htr.helium_level",
+                GTUtility.formatNumbers(this.HeliumSupply),
+                GTUtility.formatNumbers(MTEThoriumHighTempReactor.HELIUM_NEEDED)),
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.thtr.coolant",
+                GTUtility.formatNumbers(this.mProgresstime == 0 ? 0 : this.coolingPerTick)),
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.htr.problems",
+                String.valueOf(this.getIdealStatus() - this.getRepairStatus())) };
     }
 
     @Override

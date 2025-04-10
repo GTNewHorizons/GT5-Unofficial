@@ -43,7 +43,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTGCCompat;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTClient;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverSolarPanel;
@@ -113,7 +112,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         if (!mInsulated) return new ITexture[] { TextureFactory
             .of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], Dyes.getModulation(colorIndex, mMaterial.mRGBa)) };
         if (active) {
-            float tThickNess = getThickNess();
+            float tThickNess = getThickness();
             if (tThickNess < 0.124F) return new ITexture[] { TextureFactory
                 .of(Textures.BlockIcons.INSULATION_FULL, Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
             if (tThickNess < 0.374F) // 0.375 x1
@@ -528,8 +527,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     }
 
     @Override
-    public float getThickNess() {
-        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x1) != 0) return 0.0625F;
+    public float getCollisionThickness() {
         return mThickNess;
     }
 
@@ -558,7 +556,8 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         path.reloadLocks();
 
         if (path == null)
-            return new String[] { EnumChatFormatting.RED + "Failed to get Power Node info" + EnumChatFormatting.RESET };
+            return new String[] { EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.infodata.cable.failed")
+                + EnumChatFormatting.RESET };
 
         final long currAmp = path.getAmperage();
         final long currVoltage = path.getVoltage();
@@ -569,30 +568,20 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         final long maxVoltageOut = (mVoltage - mCableLossPerMeter) * mAmperage;
 
         return new String[] {
-            "Amperage: " + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(currAmp)
-                + EnumChatFormatting.RESET
-                + " / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mAmperage)
-                + EnumChatFormatting.RESET
-                + " A",
-            "Voltage Out: " + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(currVoltage)
-                + EnumChatFormatting.RESET
-                + " / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxVoltageOut)
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            "Avg Amperage (20t): " + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(avgAmp)
-                + EnumChatFormatting.RESET
-                + " A",
-            "Avg Output (20t): " + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(avgVoltage)
-                + EnumChatFormatting.RESET
-                + " EU/t" };
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.cable.amperage",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(currAmp) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mAmperage) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.cable.voltage_out",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(currVoltage) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(maxVoltageOut) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.cable.avg_amperage",
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(avgAmp) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.cable.avg_output",
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(avgVoltage) + EnumChatFormatting.RESET) };
     }
 
     @Override

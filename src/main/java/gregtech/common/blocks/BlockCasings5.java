@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.translatedText;
 import static gregtech.api.enums.HeatingCoilLevel.EV;
 import static gregtech.api.enums.HeatingCoilLevel.HV;
 import static gregtech.api.enums.HeatingCoilLevel.IV;
@@ -18,9 +19,12 @@ import static gregtech.api.enums.HeatingCoilLevel.ZPM;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.Nullable;
@@ -33,7 +37,6 @@ import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.config.Client;
 import gregtech.common.render.GTRendererBlock;
 
@@ -43,39 +46,28 @@ import gregtech.common.render.GTRendererBlock;
  */
 public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil, IBlockWithTextures {
 
+    public static final Supplier<String> COIL_HEAT_TOOLTIP = translatedText("gt.coilheattooltip");
+    public static final Supplier<String> COIL_UNIT_TOOLTIP = translatedText("gt.coilunittooltip");
+
     public static final int ACTIVE_OFFSET = 16;
 
     public BlockCasings5() {
-        super(ItemCasings5.class, "gt.blockcasings5", MaterialCasings.INSTANCE, 16);
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Cupronickel Coil Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Kanthal Coil Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Nichrome Coil Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "TPV-Alloy Coil Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "HSS-G Coil Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Naquadah Coil Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Naquadah Alloy Coil Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Electrum Flux Coil Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Awakened Draconium Coil Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "HSS-S Coil Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Trinium Coil Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Infinity Coil Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Hypogen Coil Block");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Eternal Coil Block");
+        super(ItemCasings.class, "gt.blockcasings5", MaterialCasings.INSTANCE, 16);
 
-        ItemList.Casing_Coil_Cupronickel.set(new ItemStack(this, 1, 0));
-        ItemList.Casing_Coil_Kanthal.set(new ItemStack(this, 1, 1));
-        ItemList.Casing_Coil_Nichrome.set(new ItemStack(this, 1, 2));
-        ItemList.Casing_Coil_TungstenSteel.set(new ItemStack(this, 1, 3));
-        ItemList.Casing_Coil_HSSG.set(new ItemStack(this, 1, 4));
-        ItemList.Casing_Coil_Naquadah.set(new ItemStack(this, 1, 5));
-        ItemList.Casing_Coil_NaquadahAlloy.set(new ItemStack(this, 1, 6));
-        ItemList.Casing_Coil_ElectrumFlux.set(new ItemStack(this, 1, 7));
-        ItemList.Casing_Coil_AwakenedDraconium.set(new ItemStack(this, 1, 8));
-        ItemList.Casing_Coil_HSSS.set(new ItemStack(this, 1, 9));
-        ItemList.Casing_Coil_Trinium.set(new ItemStack(this, 1, 10));
-        ItemList.Casing_Coil_Infinity.set(new ItemStack(this, 1, 11));
-        ItemList.Casing_Coil_Hypogen.set(new ItemStack(this, 1, 12));
-        ItemList.Casing_Coil_Eternal.set(new ItemStack(this, 1, 13));
+        register(0, ItemList.Casing_Coil_Cupronickel, "Cupronickel Coil Block");
+        register(1, ItemList.Casing_Coil_Kanthal, "Kanthal Coil Block");
+        register(2, ItemList.Casing_Coil_Nichrome, "Nichrome Coil Block");
+        register(3, ItemList.Casing_Coil_TungstenSteel, "TPV-Alloy Coil Block");
+        register(4, ItemList.Casing_Coil_HSSG, "HSS-G Coil Block");
+        register(5, ItemList.Casing_Coil_Naquadah, "Naquadah Coil Block");
+        register(6, ItemList.Casing_Coil_NaquadahAlloy, "Naquadah Alloy Coil Block");
+        register(7, ItemList.Casing_Coil_ElectrumFlux, "Electrum Flux Coil Block");
+        register(8, ItemList.Casing_Coil_AwakenedDraconium, "Awakened Draconium Coil Block");
+        register(9, ItemList.Casing_Coil_HSSS, "HSS-S Coil Block");
+        register(10, ItemList.Casing_Coil_Trinium, "Trinium Coil Block");
+        register(11, ItemList.Casing_Coil_Infinity, "Infinity Coil Block");
+        register(12, ItemList.Casing_Coil_Hypogen, "Hypogen Coil Block");
+        register(13, ItemList.Casing_Coil_Eternal, "Eternal Coil Block");
     }
 
     @Override
@@ -230,5 +222,17 @@ public class BlockCasings5 extends BlockCasingsAbstract implements IHeatingCoil,
     @Override
     public HeatingCoilLevel getCoilHeat(int meta) {
         return getCoilHeatFromDamage(meta % ACTIVE_OFFSET);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advancedTooltips) {
+        super.addInformation(stack, player, tooltip, advancedTooltips);
+
+        int metadata = stack.getItemDamage();
+
+        HeatingCoilLevel coilLevel = BlockCasings5.getCoilHeatFromDamage(metadata);
+        tooltip.add(COIL_HEAT_TOOLTIP.get() + coilLevel.getHeat() + COIL_UNIT_TOOLTIP.get());
+
+        tooltip.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.channelvalue", metadata + 1, "coil"));
     }
 }

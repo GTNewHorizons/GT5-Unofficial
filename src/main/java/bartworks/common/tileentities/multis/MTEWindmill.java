@@ -37,6 +37,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -436,9 +437,11 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
 
     @Override
     public String[] getInfoData() {
-        return new String[] { "Progress:",
-            this.mProgresstime + " Grindings of " + this.mMaxProgresstime + " needed Grindings", "GrindPower:",
-            this.rotorBlock.getGrindPower() + "KU/t" };
+        return new String[] {
+            StatCollector
+                .translateToLocalFormatted("BW.infoData.wind_mill.progress", this.mProgresstime, this.mMaxProgresstime),
+            StatCollector
+                .translateToLocalFormatted("BW.infoData.wind_mill.grind_power", this.rotorBlock.getGrindPower()) };
     }
 
     @SideOnly(Side.CLIENT)
