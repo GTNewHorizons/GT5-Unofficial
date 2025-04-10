@@ -47,7 +47,7 @@ public class MTESteamPipelessHatchOutput extends MTEHatchOutput implements IFlui
             // Pipeless Steam Vent
             return new String[] {
                 GRAY               + "Stores Steam globally in a network, up to 2^(2^31) L.",
-                GRAY               + "Does not connect to Pipes. This block accepts Steam into the network.",
+                GRAY               + "Can connect to pipes to accept Steam from other sources. This block accepts Steam into the network.",
                 GRAY               + "Supports Steam, Superheated Steam, and Supercritical Steam (and their dense variants).",
                 GRAY               + "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
                 AQUA + "" + ITALIC + "In a dream, you remember something named a 'Wireless Energy Dynamo,' or something like",
@@ -58,7 +58,7 @@ public class MTESteamPipelessHatchOutput extends MTEHatchOutput implements IFlui
         // Pipeless Jetstream Vent
         return new String[] {
             GRAY               + "Stores Steam globally in a network, up to 2^(2^31) L.",
-            GRAY               + "Does not connect to Pipes. This block accepts Steam into the network.",
+            GRAY               + "Can connect to pipes to accept Steam from other sources. This block accepts Steam into the network.",
             GRAY               + "Supports Steam, Superheated Steam, and Supercritical Steam (and their dense variants).",
             GRAY               + "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
             AQUA + "" + ITALIC + "You've heard whispers of a mechanism called the 'Steamgate.' In your research, you're still unsure of",
@@ -135,6 +135,11 @@ public class MTESteamPipelessHatchOutput extends MTEHatchOutput implements IFlui
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    public boolean isLiquidInput(ForgeDirection side) {
+        return true;
     }
 
     @Override
