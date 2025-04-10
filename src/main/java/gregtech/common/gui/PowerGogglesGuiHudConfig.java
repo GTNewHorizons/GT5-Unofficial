@@ -3,6 +3,7 @@ package gregtech.common.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.Configuration;
 
 import com.gtnewhorizons.modularui.api.math.Color;
@@ -14,8 +15,15 @@ import gregtech.common.handlers.PowerGogglesConfigHandler;
  */
 public class PowerGogglesGuiHudConfig extends GuiScreen {
 
-    public String[] formatTypes = new String[] { "SCIENTIFIC", "ENGINEERING", "SI" };
-    public String[] readingTypes = new String[] { "BOTH", "TOTAL", "EU/T" };
+    public String[] formatTypes = new String[] {
+        StatCollector.translateToLocal("GT5U.power_goggles_config.notation_scientific"),
+        StatCollector.translateToLocal("GT5U.power_goggles_config.notation_engineering"),
+        StatCollector.translateToLocal("GT5U.power_goggles_config.notation_si") };
+
+    public String[] readingTypes = new String[] {
+        StatCollector.translateToLocal("GT5U.power_goggles_config.reading_both"),
+        StatCollector.translateToLocal("GT5U.power_goggles_config.reading_total"),
+        StatCollector.translateToLocal("GT5U.power_goggles_config.reading_eut") };
     public GuiScreen parentScreen;
     private boolean draggingHud = false;
 

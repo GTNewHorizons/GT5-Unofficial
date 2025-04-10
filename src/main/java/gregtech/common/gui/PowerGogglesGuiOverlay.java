@@ -1,6 +1,7 @@
 package gregtech.common.gui;
 
 import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.Configuration;
 
 import org.jetbrains.annotations.NotNull;
@@ -30,8 +31,10 @@ import gregtech.common.handlers.PowerGogglesHudHandler;
 
 public class PowerGogglesGuiOverlay {
 
-    private static String[] settings = { "General settings", "Scale settings", "Color Scheme: Gradient",
-        "Color Scheme: Text" };
+    private static String[] settings = { StatCollector.translateToLocal("GT5U.power_goggles_config.settings_general"),
+        StatCollector.translateToLocal("GT5U.power_goggles_config.settings_scale"),
+        StatCollector.translateToLocal("GT5U.power_goggles_config.settings_color_gradient"),
+        StatCollector.translateToLocal("GT5U.power_goggles_config.settings_color_text") };
     private static int settingsPage = 0;
 
     public static void init() {
@@ -54,8 +57,10 @@ public class PowerGogglesGuiOverlay {
                 return true;
             });
 
-            ButtonWidget<?> notationButton = new ButtonWidget<>()
-                .overlay(IKey.str("Toggle Notation: " + gui.formatTypes[PowerGogglesConfigHandler.formatIndex]));
+            ButtonWidget<?> notationButton = new ButtonWidget<>().overlay(
+                IKey.lang(
+                    "GT5U.power_goggles_config.toggle_notation",
+                    gui.formatTypes[PowerGogglesConfigHandler.formatIndex]));
             notationButton.onMousePressed(mouseButton -> {
                 PowerGogglesConfigHandler.formatIndex = (PowerGogglesConfigHandler.formatIndex + 1)
                     % gui.formatTypes.length;
@@ -68,8 +73,10 @@ public class PowerGogglesGuiOverlay {
                 return true;
             });
 
-            ButtonWidget<?> readingButton = new ButtonWidget<>()
-                .overlay(IKey.str("Toggle Reading Type: " + gui.readingTypes[PowerGogglesConfigHandler.readingIndex]));
+            ButtonWidget<?> readingButton = new ButtonWidget<>().overlay(
+                IKey.lang(
+                    "GT5U.power_goggles_config.toggle_reading",
+                    gui.readingTypes[PowerGogglesConfigHandler.readingIndex]));
             readingButton.onMousePressed(mouseButton -> {
                 PowerGogglesConfigHandler.readingIndex = (PowerGogglesConfigHandler.readingIndex + 1)
                     % gui.formatTypes.length;
@@ -78,14 +85,16 @@ public class PowerGogglesGuiOverlay {
                     .set(PowerGogglesConfigHandler.readingIndex);
                 PowerGogglesConfigHandler.config.save();
                 readingButton.overlay(
-                    IKey.str("Toggle Reading Type: " + gui.readingTypes[PowerGogglesConfigHandler.readingIndex]));
+                    IKey.lang(
+                        "GT5U.power_goggles_config.toggle_reading",
+                        gui.readingTypes[PowerGogglesConfigHandler.readingIndex]));
                 return true;
             });
 
             ButtonWidget<?> chatHidesHudButton = new ButtonWidget<>().overlay(
-                IKey.str(
-                    "Hide HUD with chat open: "
-                        + (PowerGogglesConfigHandler.hideWhenChatOpen ? IKey.lang("gui.yes") : IKey.lang("gui.no"))));
+                IKey.lang(
+                    "GT5U.power_goggles_config.toggle_hud_with_chat",
+                    (PowerGogglesConfigHandler.hideWhenChatOpen ? IKey.lang("gui.yes") : IKey.lang("gui.no"))));
             chatHidesHudButton.onMousePressed(mouseButton -> {
                 PowerGogglesConfigHandler.hideWhenChatOpen = !PowerGogglesConfigHandler.hideWhenChatOpen;
                 PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
@@ -93,9 +102,9 @@ public class PowerGogglesGuiOverlay {
                     .set(PowerGogglesConfigHandler.hideWhenChatOpen);
                 PowerGogglesConfigHandler.config.save();
                 chatHidesHudButton.overlay(
-                    IKey.str(
-                        "Hide HUD with chat open: " + (PowerGogglesConfigHandler.hideWhenChatOpen ? IKey.lang("gui.yes")
-                            : IKey.lang("gui.no"))));
+                    IKey.lang(
+                        "GT5U.power_goggles_config.toggle_hud_with_chat",
+                        (PowerGogglesConfigHandler.hideWhenChatOpen ? IKey.lang("gui.yes") : IKey.lang("gui.no"))));
                 return true;
             });
 
@@ -114,7 +123,8 @@ public class PowerGogglesGuiOverlay {
                         chatHidesHudButton.sizeRel(0.8f, 0.15f)
                             .posRel(0.5f, 0.4f)));
 
-            ButtonWidget<?> mainTextScaleUpButton = new ButtonWidget<>().overlay(IKey.str("Storage Text Scale-"));
+            ButtonWidget<?> mainTextScaleUpButton = new ButtonWidget<>()
+                .overlay(IKey.str(IKey.lang("GT5U.power_goggles_config.main_text_scale") + "-"));
             mainTextScaleUpButton.onMousePressed(mouseButton -> {
                 PowerGogglesConfigHandler.mainTextScaling -= 0.1;
                 PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
@@ -123,7 +133,8 @@ public class PowerGogglesGuiOverlay {
                 PowerGogglesConfigHandler.config.save();
                 return true;
             });
-            ButtonWidget<?> mainTextScaleDownButton = new ButtonWidget<>().overlay(IKey.str("Storage Text Scale+"));
+            ButtonWidget<?> mainTextScaleDownButton = new ButtonWidget<>()
+                .overlay(IKey.str(IKey.lang("GT5U.power_goggles_config.main_text_scale") + "+"));
             mainTextScaleDownButton.onMousePressed(mouseButton -> {
                 PowerGogglesConfigHandler.mainTextScaling += 0.1;
                 PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
@@ -133,7 +144,8 @@ public class PowerGogglesGuiOverlay {
                 return true;
             });
 
-            ButtonWidget<?> subTextScaleUpButton = new ButtonWidget<>().overlay(IKey.str("Sub Text Scale-"));
+            ButtonWidget<?> subTextScaleUpButton = new ButtonWidget<>()
+                .overlay(IKey.str(IKey.lang("GT5U.power_goggles_config.sub_text_scale") + "-"));
             subTextScaleUpButton.onMousePressed(mouseButton -> {
                 PowerGogglesConfigHandler.subTextScaling -= 0.1;
                 PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
@@ -142,7 +154,8 @@ public class PowerGogglesGuiOverlay {
                 PowerGogglesConfigHandler.config.save();
                 return true;
             });
-            ButtonWidget<?> subTextScaleDownButton = new ButtonWidget<>().overlay(IKey.str("Sub Text Scale+"));
+            ButtonWidget<?> subTextScaleDownButton = new ButtonWidget<>()
+                .overlay(IKey.str(IKey.lang("GT5U.power_goggles_config.sub_text_scale") + "+"));
             subTextScaleDownButton.onMousePressed(mouseButton -> {
                 PowerGogglesConfigHandler.subTextScaling += 0.1;
                 PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
@@ -152,7 +165,8 @@ public class PowerGogglesGuiOverlay {
                 return true;
             });
 
-            ButtonWidget<?> hudScaleUpButton = new ButtonWidget<>().overlay(IKey.str("HUD Scale-"));
+            ButtonWidget<?> hudScaleUpButton = new ButtonWidget<>()
+                .overlay(IKey.str(IKey.lang("GT5U.power_goggles_config.hud_scale") + "-"));
             hudScaleUpButton.onMousePressed(mouseButton -> {
                 PowerGogglesConfigHandler.hudScale -= 0.1;
                 PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
@@ -161,7 +175,8 @@ public class PowerGogglesGuiOverlay {
                 PowerGogglesConfigHandler.config.save();
                 return true;
             });
-            ButtonWidget<?> hudScaleDownButton = new ButtonWidget<>().overlay(IKey.str("HUD Scale+"));
+            ButtonWidget<?> hudScaleDownButton = new ButtonWidget<>()
+                .overlay(IKey.str(IKey.lang("GT5U.power_goggles_config.hud_scale") + "+"));
             hudScaleDownButton.onMousePressed(mouseButton -> {
                 PowerGogglesConfigHandler.hudScale += 0.1;
                 PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
@@ -244,11 +259,10 @@ public class PowerGogglesGuiOverlay {
     private static IWidget createBadRgbConfig() {
         return new Column().sizeRel(1, 0.3f)
             .child(
-                IKey.str("Bad Gradient RGB")
+                IKey.lang("GT5U.power_goggles_config.gradient_bad")
                     .asWidget()
                     .tooltip(
-                        t -> t.add(
-                            "Affects what color the power rectangle's gradient approaches as EU change goes lower"))
+                        t -> t.add(StatCollector.translateToLocal("GT5U.power_goggles_config.gradient_bad_tooltip")))
                     .color(Color.WHITE.main)
                     .background(new Rectangle().setColor(Color.argb(11, 22, 145, (int) (255 * 0.65f))))
                     .sizeRel(1, 0.5f)
@@ -304,11 +318,10 @@ public class PowerGogglesGuiOverlay {
     private static IWidget createOkRgbConfig() {
         return new Column().sizeRel(1, 0.3f)
             .child(
-                IKey.str("OK Gradient RGB")
+                IKey.lang("GT5U.power_goggles_config.gradient_ok")
                     .asWidget()
                     .tooltip(
-                        t -> t.add(
-                            "Affects what color the power rectangle's gradient approaches as EU change approaches 0"))
+                        t -> t.add(StatCollector.translateToLocal("GT5U.power_goggles_config.gradient_ok_tooltip")))
                     .color(Color.WHITE.main)
                     .background(new Rectangle().setColor(Color.argb(11, 22, 145, (int) (255 * 0.65f))))
                     .sizeRel(1, 0.5f)
@@ -364,11 +377,10 @@ public class PowerGogglesGuiOverlay {
     private static IWidget createGoodRgbConfig() {
         return new Column().sizeRel(1, 0.3f)
             .child(
-                IKey.str("Good Gradient RGB")
+                IKey.lang("GT5U.power_goggles_config.gradient_good")
                     .asWidget()
                     .tooltip(
-                        t -> t.add(
-                            "Affects what color the power rectangle's gradient approaches as EU change goes higher"))
+                        t -> t.add(StatCollector.translateToLocal("GT5U.power_goggles_config.gradient_good_tooltip")))
                     .color(Color.WHITE.main)
                     .background(new Rectangle().setColor(Color.argb(11, 22, 145, (int) (255 * 0.65f))))
                     .sizeRel(1, 0.5f)
@@ -425,9 +437,9 @@ public class PowerGogglesGuiOverlay {
     private static IWidget createBadTextConfig() {
         return new Column().sizeRel(1, 0.3f)
             .child(
-                IKey.str("Bad Text Color RGB")
+                IKey.lang("GT5U.power_goggles_config.text_bad")
                     .asWidget()
-                    .tooltip(t -> t.add("Affects Text color when EU change is negative"))
+                    .tooltip(t -> t.add(StatCollector.translateToLocal("GT5U.power_goggles_config.text_bad_tooltip")))
                     .color(Color.WHITE.main)
                     .background(new Rectangle().setColor(Color.argb(11, 22, 145, (int) (255 * 0.65f))))
                     .sizeRel(1, 0.5f)
@@ -486,9 +498,9 @@ public class PowerGogglesGuiOverlay {
     private static IWidget createOkTextConfig() {
         return new Column().sizeRel(1, 0.3f)
             .child(
-                IKey.str("OK Text RGB")
+                IKey.lang("GT5U.power_goggles_config.text_ok")
                     .asWidget()
-                    .tooltip(t -> t.add("Affects Text color when EU change is 0"))
+                    .tooltip(t -> t.add(StatCollector.translateToLocal("GT5U.power_goggles_config.text_ok_tooltip")))
                     .color(Color.WHITE.main)
                     .background(new Rectangle().setColor(Color.argb(11, 22, 145, (int) (255 * 0.65f))))
                     .sizeRel(1, 0.5f)
@@ -548,9 +560,9 @@ public class PowerGogglesGuiOverlay {
     private static IWidget createGoodTextConfig() {
         return new Column().sizeRel(1, 0.3f)
             .child(
-                IKey.str("Good Text RGB")
+                IKey.lang("GT5U.power_goggles_config.text_good")
                     .asWidget()
-                    .tooltip(t -> t.add("Affects Text color when EU change is positive"))
+                    .tooltip(t -> t.add(StatCollector.translateToLocal("GT5U.power_goggles_config.text_good_tooltip")))
                     .color(Color.WHITE.main)
                     .background(new Rectangle().setColor(Color.argb(11, 22, 145, (int) (255 * 0.65f))))
                     .sizeRel(1, 0.5f)

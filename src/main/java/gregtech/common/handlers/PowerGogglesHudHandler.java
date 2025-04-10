@@ -275,7 +275,8 @@ public class PowerGogglesHudHandler {
             if (maxReading.compareTo(temp) < 0) maxReading = temp;
         }
         int exponent = BigIntegerMath.log10(minReading, RoundingMode.DOWN);
-        minReading = BigInteger.valueOf(10).pow(exponent);
+        minReading = BigInteger.valueOf(10)
+            .pow(exponent);
 
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
         double scale = 0.5f;
@@ -455,7 +456,7 @@ public class PowerGogglesHudHandler {
         return toCustom(EU, false, 3);
     }
 
-    private static String toCustom(BigInteger EU, boolean overrideEngineering, int baseDigits) {
+    private static String toCustom(BigInteger EU, boolean useSuffix, int baseDigits) {
         String[] suffixes = { "", "K", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q" };
         if (EU.abs()
             .compareTo(BigInteger.valueOf(1)) < 0) {
@@ -474,7 +475,7 @@ public class PowerGogglesHudHandler {
         String decimal = euString.substring(remainder + 1 + negative, Math.min(exponent, remainder + 4));
         int E = exponent - remainder; // Round down to nearest 10^3k
 
-        if (overrideEngineering) return String.format("%s.%s%s", base, decimal, suffixes[E / 3]);
+        if (useSuffix) return String.format("%s.%s%s", base, decimal, suffixes[E / 3]);
         return String.format("%s.%sE%d", base, decimal, E);
     }
 
