@@ -314,7 +314,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             .addInfo("Recipe tier is limited by the lowest Energy Hatch tier")
             .addSeparator(EnumChatFormatting.GOLD, 67)
             .addInfo("Uses regular overclocks until Energy Hatch tier")
-            .addInfo("Additional overclocks increase the power multiplier")
+            .addInfo("Additional overclocks become increasingly more expensive")
             .addInfo(
                 EnumChatFormatting.AQUA
                     + "Multiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)"
