@@ -565,6 +565,6 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "MPM", "LSL", "PRP", 'M', ItemList.Cover_Screen.get(1), 'P',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'L',
                 GTOreDictUnificator.get(OrePrefixes.lens, Materials.GarnetYellow, 1L), 'S', ItemList.Sensor_IV.get(1),
-                'R', GTOreDictUnificator.get(OrePrefixes.foil, Materials.StyreneButadieneRubber, 1) });
+                'R', OrePrefixes.foil.get(Materials.AnySyntheticRubber) });
     }
 }
