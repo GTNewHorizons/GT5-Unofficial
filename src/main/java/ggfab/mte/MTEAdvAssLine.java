@@ -312,17 +312,19 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             .addInfo("Assembly Line with item pipelining")
             .addInfo("All fluids are consumed at the start of the recipe")
             .addInfo("Recipe tier is limited by the lowest Energy Hatch tier")
-            .addSeparator(EnumChatFormatting.GOLD, 63)
-            .addInfo("Each overclock halves processing time and increases the power multiplier")
+            .addSeparator(EnumChatFormatting.GOLD, 67)
+            .addInfo("Uses regular overclocks until Energy Hatch tier")
+            .addInfo("Additional overclocks increase the power multiplier")
             .addInfo(
-                EnumChatFormatting.AQUA + "Multiplier = 4.3 × 4.6 × … × (4 + 0.3 × Overclocks)"
+                EnumChatFormatting.AQUA
+                    + "Multiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)"
                     + EnumChatFormatting.GRAY)
             .addInfo(
                 EnumChatFormatting.AQUA + "Power usage = Multiplier × (Active Slices) × (Recipe EU/t)"
                     + EnumChatFormatting.GRAY)
             .addInfo("Overclocking assumes all recipe slices are active")
             .addInfo(EnumChatFormatting.BOLD + "Will not overclock beyond 1 tick")
-            .addSeparator(EnumChatFormatting.GOLD, 63)
+            .addSeparator(EnumChatFormatting.GOLD, 67)
             .addInfo("Constructed identically to the Assembly Line")
             .addTecTechHatchInfo()
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
@@ -344,7 +346,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 "Optional, next to controller",
                 2)
             .addSubChannelUsage("glass", "Glass Tier")
-            .toolTipFinisher(EnumChatFormatting.GRAY, 63);
+            .toolTipFinisher(EnumChatFormatting.GRAY, 67);
         return tt;
     }
 
