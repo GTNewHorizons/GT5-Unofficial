@@ -84,7 +84,7 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
                 }
                 for (int i = 0; i < baubles.getSizeInventory(); i++) {
                     ItemStack bauble = baubles.getStackInSlot(i);
-                    if (bauble != null && canEquip(stack, player) && ((IBauble) bauble.getItem()).canUnequip(bauble, player)) {
+                    if (bauble != null && ((IBauble) bauble.getItem()).canUnequip(bauble, player) && bauble.getUnlocalizedName().equals("gt.Power_Goggles")) {
                         baubles.setInventorySlotContents(i, stack.copy());
                         ((IBauble) bauble.getItem()).onEquipped(bauble, player);
                         if (!player.capabilities.isCreativeMode) {
