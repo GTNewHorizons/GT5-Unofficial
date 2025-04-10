@@ -2604,6 +2604,10 @@ GT5U.tooltip.tool.heat=Heat: %d K
 GT5U.tooltip.volumetric_flask.empty=Empty
 GT5U.tooltip.volumetric_flask.set_volume=Rightclick on air to set volume (only while empty)
 
+GT5U.tooltip.purify.1=Throw into Cauldron to get clean Dust
+GT5U.tooltip.purify.2=Can be used as Enriched Naquadah Fuel Substitute
+GT5U.tooltip.nqgen=Can be used as Enriched Naquadah Fuel Substitute
+
 # info data
 GT5U.infodata.no_network=No Network
 GT5U.infodata.battery_buffer.stored_items=Stored Items: %s EU / %s EU
