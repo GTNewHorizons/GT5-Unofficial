@@ -18,6 +18,7 @@ import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.TemperatureUtils.convertKelvinIncreaseToCurrentUnit;
 
 import javax.annotation.Nonnull;
 
@@ -53,6 +54,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.TemperatureUtils;
 
 public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectricBlastFurnace>
     implements ISurvivalConstructable {
@@ -105,10 +107,14 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Furnace, EBF")
             .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
-            .addInfo("Each 900K over the min. Heat required reduces power consumption by 5% (multiplicatively)")
-            .addInfo("Each 1800K over the min. Heat allows for an overclock to be upgraded to a perfect overclock.")
+            .addInfo(
+                "Each " + TemperatureUtils.getTemperatureAsCurrentUnit(900)
+                    + " over the min. Heat required reduces power consumption by 5% (multiplicatively)")
+            .addInfo(
+                "Each " + TemperatureUtils.getTemperatureAsCurrentUnit(1800)
+                    + " over the min. Heat allows for an overclock to be upgraded to a perfect overclock.")
             .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency).")
-            .addInfo("Additionally gives +100K for every tier past MV")
+            .addInfo("Additionally gives " + convertKelvinIncreaseToCurrentUnit(100) + " for every tier past MV")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
             .addController("Front bottom")
@@ -261,9 +267,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
                 + " %",
             StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mHeatingCapacity)
-                + EnumChatFormatting.RESET
-                + " K",
+                + TemperatureUtils.getTemperatureAsCurrentUnit(mHeatingCapacity),
             StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()
