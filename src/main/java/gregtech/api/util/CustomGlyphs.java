@@ -13,6 +13,11 @@ public class CustomGlyphs {
     public static final String ARROW_CORNER_SOUTH_EAST = "\uE008";
     public static final String ARROW_CORNER_NORTH_WEST = "\uE009";
     public static final String HIGH_VOLTAGE = "\uE00A";
+    public static final String STAR = "\uE00B";
+    public static final String GALAXY = "\uE00C";
+    public static final String SPARKLES = "\uE00D";
+    public static final String MAGNET = "\uE00E";
+    public static final String EMPTY_SET = "\uE00F";
     public static final String SUPERSCRIPT0 = "\uE010";
     public static final String SUPERSCRIPT1 = "\uE011";
     public static final String SUPERSCRIPT2 = "\uE012";
@@ -24,4 +29,6 @@ public class CustomGlyphs {
     public static final String SUPERSCRIPT8 = "\uE018";
     public static final String SUPERSCRIPT9 = "\uE019";
     public static final String SUBSCRIPT0 = "\uE01A";
+    public static final String ALEPH = "\uE01B";
+    public static final String OMEGA = "\uE01C";
 }

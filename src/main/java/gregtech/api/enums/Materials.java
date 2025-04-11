@@ -1944,10 +1944,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Forcicium.mChemicalFormula = "\u25C3\u25C1\u25C0";
         Forcillium.mChemicalFormula = "\u25B6\u25B7\u25B9";
         DarkIron.mChemicalFormula = "Sp\u2086Fe" + CustomGlyphs.PICKAXE;
-        IronMagnetic.mChemicalFormula = "Fe" + CustomGlyphs.HIGH_VOLTAGE;
-        SteelMagnetic.mChemicalFormula = "Fe\u2085" + CustomGlyphs.SUBSCRIPT0 + "C" + CustomGlyphs.HIGH_VOLTAGE;
-        NeodymiumMagnetic.mChemicalFormula = "Nd" + CustomGlyphs.HIGH_VOLTAGE;
-        SamariumMagnetic.mChemicalFormula = "Sm" + CustomGlyphs.HIGH_VOLTAGE;
+        IronMagnetic.mChemicalFormula = "Fe" + CustomGlyphs.MAGNET;
+        SteelMagnetic.mChemicalFormula = "Fe\u2085" + CustomGlyphs.SUBSCRIPT0 + "C" + CustomGlyphs.MAGNET;
+        NeodymiumMagnetic.mChemicalFormula = "Nd" + CustomGlyphs.MAGNET;
+        SamariumMagnetic.mChemicalFormula = "Sm" + CustomGlyphs.MAGNET;
         MetalMixture.mChemicalFormula = "??Fe??O??";
         Void.mChemicalFormula = "ShFeMa\u2083";
         Shadow.mChemicalFormula = "Sh\u2086(FeMa\u2083)\u2082";
@@ -2037,9 +2037,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MaterialsUEVplus.Universium.mChemicalFormula = "A tear into the space beyond space";
         MaterialsUEVplus.Eternity.mChemicalFormula = "En\u29BC";
         MaterialsUEVplus.MagMatter.mChemicalFormula = "M\u238B";
+        MaterialsUEVplus.RawStarMatter.mChemicalFormula = CustomGlyphs.GALAXY;
         MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.mChemicalFormula = "\u21F2"
             + CustomGlyphs.ARROW_CORNER_SOUTH_EAST
-            + MaterialsUEVplus.Eternity.mChemicalFormula
+            + CustomGlyphs.GALAXY
             + CustomGlyphs.ARROW_CORNER_NORTH_WEST
             + "\u21F1";
         Longasssuperconductornameforuvwire.mChemicalFormula = "Nq*\u2084(Ir\u2083Os)\u2083EuSm";
@@ -2060,9 +2061,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         FlocculationWasteLiquid.mChemicalFormula = "Al\u2082(OH)\u2083??Cl\u2083";
         TengamRaw.mChemicalFormula = "??M??";
         TengamPurified.mChemicalFormula = "M";
-        TengamAttuned.mChemicalFormula = CustomGlyphs.HIGH_VOLTAGE + "M" + CustomGlyphs.HIGH_VOLTAGE;
+        TengamAttuned.mChemicalFormula = CustomGlyphs.HIGH_VOLTAGE + "M" + CustomGlyphs.MAGNET;
         MaterialsUEVplus.ExcitedDTSC.mChemicalFormula = "[-Stellar-Stellar-]";
         MaterialsUEVplus.DimensionallyTranscendentStellarCatalyst.mChemicalFormula = "Stellar";
+        MaterialsUEVplus.DimensionallyTranscendentResidue.mChemicalFormula = CustomGlyphs.SPARKLES + "-"
+            + CustomGlyphs.EMPTY_SET;
         PolyAluminiumChloride.mChemicalFormula = "Al\u2082(OH)\u2083Cl\u2083";
         MaterialsUEVplus.QuarkGluonPlasma.mChemicalFormula = EnumChatFormatting.OBFUSCATED + "X"
             + EnumChatFormatting.RESET
