@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import gregtech.api.util.TurbineStatCalculator;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,6 +58,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.TurbineStatCalculator;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
 
