@@ -1,6 +1,8 @@
 package gregtech.common.covers;
 
+import static gregtech.api.util.GTUtility.getDescLoc;
 import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
+import static gregtech.api.util.GTUtility.sendChatToPlayer;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -14,7 +16,6 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.mui1.cover.ConveyorUIFactory;
 
 public class CoverConveyor extends CoverLegacyData {
@@ -71,18 +72,18 @@ public class CoverConveyor extends CoverLegacyData {
             coverData = 11;
         }
         switch (coverData) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("o"));
-            case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("i"));
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("o_c"));
-            case 3 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("i_c"));
-            case 4 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("o_c_i"));
-            case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("i_c_i"));
-            case 6 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("i2o"));
-            case 7 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("o2i"));
-            case 8 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("i2o_c"));
-            case 9 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("o2i_c"));
-            case 10 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("i2o_c_i"));
-            case 11 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("o2i_c_i"));
+            case 0 -> sendChatToPlayer(aPlayer, getDescLoc("o"));
+            case 1 -> sendChatToPlayer(aPlayer, getDescLoc("i"));
+            case 2 -> sendChatToPlayer(aPlayer, getDescLoc("o_c"));
+            case 3 -> sendChatToPlayer(aPlayer, getDescLoc("i_c"));
+            case 4 -> sendChatToPlayer(aPlayer, getDescLoc("o_c_i"));
+            case 5 -> sendChatToPlayer(aPlayer, getDescLoc("i_c_i"));
+            case 6 -> sendChatToPlayer(aPlayer, getDescLoc("i2o"));
+            case 7 -> sendChatToPlayer(aPlayer, getDescLoc("o2i"));
+            case 8 -> sendChatToPlayer(aPlayer, getDescLoc("i2o_c"));
+            case 9 -> sendChatToPlayer(aPlayer, getDescLoc("o2i_c"));
+            case 10 -> sendChatToPlayer(aPlayer, getDescLoc("i2o_c_i"));
+            case 11 -> sendChatToPlayer(aPlayer, getDescLoc("o2i_c_i"));
         }
     }
 

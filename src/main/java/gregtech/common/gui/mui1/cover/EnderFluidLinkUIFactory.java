@@ -1,5 +1,6 @@
 package gregtech.common.gui.mui1.cover;
 
+import static gregtech.api.util.GTUtility.getDescLoc;
 import static tectech.thing.cover.CoverEnderFluidLink.PUBLIC_PRIVATE_MASK;
 import static tectech.thing.cover.CoverEnderFluidLink.toggleBit;
 
@@ -16,7 +17,6 @@ import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverLegacyData;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
@@ -80,34 +80,34 @@ public class EnderFluidLinkUIFactory extends CoverLegacyDataUIFactory {
                             PUBLIC_BUTTON_ID,
                             CoverDataFollowerToggleButtonWidget.ofDisableable(),
                             widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_WHITELIST)
-                                .addTooltip(GTUtility.trans("326", "Public"))
+                                .addTooltip(getDescLoc("public"))
                                 .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 2))
                         .addToggleButton(
                             PRIVATE_BUTTON_ID,
                             CoverDataFollowerToggleButtonWidget.ofDisableable(),
                             widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLACKLIST)
-                                .addTooltip(GTUtility.trans("327", "Private"))
+                                .addTooltip(getDescLoc("private"))
                                 .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 2))
                         .addToggleButton(
                             IMPORT_BUTTON_ID,
                             CoverDataFollowerToggleButtonWidget.ofDisableable(),
                             widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                                .addTooltip(GTUtility.getDescLoc("i"))
+                                .addTooltip(getDescLoc("i"))
                                 .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 3))
                         .addToggleButton(
                             EXPORT_BUTTON_ID,
                             CoverDataFollowerToggleButtonWidget.ofDisableable(),
                             widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                                .addTooltip(GTUtility.getDescLoc("o"))
+                                .addTooltip(getDescLoc("o"))
                                 .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 3)))
             .widget(
-                new TextWidget(GTUtility.trans("328", "Channel")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(getDescLoc("channel")).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(START_X + SPACE_X * 5, 4 + START_Y + SPACE_Y * 0))
             .widget(
-                new TextWidget(GTUtility.trans("329", "Public/Private")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(getDescLoc("set_perm")).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 2))
             .widget(
-                new TextWidget(GTUtility.trans("229", "Import/Export")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(getDescLoc("set_io")).setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(START_X + SPACE_X * 2, 4 + START_Y + SPACE_Y * 3));
     }
 

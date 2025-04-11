@@ -1,5 +1,8 @@
 package gregtech.common.covers;
 
+import static gregtech.api.util.GTUtility.getDescLoc;
+import static gregtech.api.util.GTUtility.sendChatToPlayer;
+
 import java.lang.ref.WeakReference;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +19,6 @@ import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.mui1.cover.ControlsWorkUIFactory;
 
 public class CoverControlsWork extends CoverLegacyData {
@@ -85,7 +87,7 @@ public class CoverControlsWork extends CoverLegacyData {
                             if (player != null) {
                                 lastPlayer = null;
                                 mPlayerNotified = true;
-                                GTUtility.sendChatToPlayer(
+                                sendChatToPlayer(
                                     player,
                                     coverable.getInventoryName() + "at "
                                         + String.format(
@@ -162,19 +164,19 @@ public class CoverControlsWork extends CoverLegacyData {
             newCoverData = 2;
         }
         if (newCoverData == 0) {
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("signal_on"));
+            sendChatToPlayer(aPlayer, getDescLoc("signal_on"));
         }
         if (newCoverData == 1) {
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("signal_inverted"));
+            sendChatToPlayer(aPlayer, getDescLoc("signal_inverted"));
         }
         if (newCoverData == 2) {
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("signal_off"));
+            sendChatToPlayer(aPlayer, getDescLoc("signal_off"));
         }
         if (newCoverData == 3) {
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("signal_on_safe"));
+            sendChatToPlayer(aPlayer, getDescLoc("signal_on_safe"));
         }
         if (newCoverData == 4) {
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("signal_inverted_safe"));
+            sendChatToPlayer(aPlayer, getDescLoc("signal_inverted_safe"));
         }
         // TODO: Set lastPlayer
         coverData = newCoverData;
