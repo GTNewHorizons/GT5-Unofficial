@@ -4005,7 +4005,7 @@ gtpp.tooltip.base_particles.type.unknown=Unknown
 gtpp.tooltip.integrated_circuit.configuration=Configuration == %d
 gtpp.tooltip.scrubber_turbine.early_tier=An early tier Turbine for Atmospheric Reconditioning.
 gtpp.tooltip.scrubber_turbine.uses_left=%d/%d uses left.
-gtpp.tooltip.buffer_core.key_crafting_component=A key crafting component for %s Applicances
+gtpp.tooltip.buffer_core.key_crafting_component=A key crafting component for %s Appliances
 gtpp.tooltip.magic_feather.0=Does not need to be the item held in your hand to work
 gtpp.tooltip.magic_feather.1=Needs to be within beacon range
 gtpp.tooltip.magic_feather.2=Range is beacon level * 10 + 10
@@ -4031,3 +4031,40 @@ gtpp.tooltip.tool.optimal_gas_flow=Optimal Gas flow(EU burnvalue per tick):
 gtpp.tooltip.tool.optimal_plasma_flow=Optimal Plasma flow(Plasma energyvalue per tick):
 gtpp.tooltip.tool.attack_damage=Attack Damage:
 gtpp.tooltip.tool.mining_speed=Mining Speed:
+
+#gtpp info data
+gtpp.infodata.multi_block.total_time=Total Time Since Built: %s Weeks, %s Days,
+gtpp.infodata.multi_block.total_time.0=%s Hours, %s Minutes, %s Seconds.
+gtpp.infodata.multi_block.total_time.in_ticks=Total Time in ticks: %s
+gtpp.infodata.tesseract_generator.name=Tesseract Generator
+gtpp.infodata.tesseract_generator.frequency=Frequency: %d
+gtpp.infodata.tesseract_generator.status.active=Active
+gtpp.infodata.tesseract_generator.status.inactive=Inactive
+gtpp.infodata.rtg.running_at=RTG - Running at tier %d
+gtpp.infodata.rtg.active=Active: %b
+gtpp.infodata.rtg.output=Current Output: %s EU/t
+gtpp.infodata.rtg.remaining.days=Days of Fuel remaining: %s
+gtpp.infodata.rtg.remaining.hours=Hours of Fuel remaining: %s
+gtpp.infodata.rtg.remaining.ticks=Ticks of %dv remaining: %d
+gtpp.infodata.atmospheric_reconditioner.maximum_pollution_removed=Maximum pollution removed per second: %d
+gtpp.infodata.atmospheric_reconditioner.air_sides=Air Sides: %d
+gtpp.infodata.pollution_creator.pollution=Current Pollution: %d
+gtpp.infodata.pollution_creator.pollution.avg=Average/10 minutes: %d
+gtpp.infodata.pollution_detector.pollution.avg=Average/10 Sec: %d
+gtpp.infodata.pollution_detector.redstone_level=Emit Redstone at pollution level: %d
+gtpp.infodata.adv_fusion.name=Fusion Reactor MK %s
+gtpp.infodata.adv_fusion.eu_required=EU Required: %dEU/t
+gtpp.infodata.adv_fusion.stored_eu=Stored EU: %d / %d
+gtpp.infodata.adv_fusion.plasma_output=Plasma Output: %dL/t
+gtpp.infodata.multi.steam.tier=Machine Tier: %s
+gtpp.infodata.multi.steam.parallel=Parallel: %s
+gtpp.infodata.abs.mega.parallels=Parallels: %s
+gtpp.infodata.abs.mega.speed_bonus=Speed Bonus: %s
+gtpp.infodata.abs.mega.energy_discount=Energy Discount: %s
+gtpp.infodata.solar_heater.testificate=Testificate
+gtpp.infodata.energy_buffer.eu_stored=%s EU stored
+gtpp.infodata.energy_buffer.eu_capacity=%s EU capacity
+gtpp.infodata.tiered_chest.name=Super Storage Chest
+gtpp.infodata.tiered_tank.name=%s Fluid Tank
+
+

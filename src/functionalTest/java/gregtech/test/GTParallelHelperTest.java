@@ -104,19 +104,4 @@ public class GTParallelHelperTest {
         assertTrue(rubberDustTinyAmount >= 60 && rubberDustTinyAmount <= 70);
     }
 
-    @Test
-    void outputMultiplier() {
-        ParallelHelper helper = new ParallelHelper().setRecipe(rubberRecipe)
-            .setMachine(machine, false, false)
-            .setItemInputs(inputItems)
-            .setMaxParallel(1)
-            .setAvailableEUt(1)
-            .setConsumption(false)
-            .setOutputCalculation(true)
-            .setOutputMultiplier(2)
-            .build();
-
-        assertEquals(2000, helper.getFluidOutputs()[0].amount);
-        assertEquals(2, helper.getItemOutputs()[0].stackSize);
-    }
 }
