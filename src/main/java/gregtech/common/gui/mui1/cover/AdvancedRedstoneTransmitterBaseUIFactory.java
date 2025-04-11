@@ -35,11 +35,8 @@ public abstract class AdvancedRedstoneTransmitterBaseUIFactory<C extends CoverAd
     protected void addUIWidgets(ModularWindow.Builder builder) {
         super.addUIWidgets(builder);
         builder.widget(
-            TextWidget
-                .dynamicString(
-                    getCoverString(
-                        c -> c.isInverted() ? GTUtility.trans("INVERTED", "Inverted")
-                            : GTUtility.trans("NORMAL", "Normal")))
+            TextWidget.dynamicString(
+                getCoverString(c -> c.isInverted() ? GTUtility.getDescLoc("inverted") : GTUtility.getDescLoc("normal")))
                 .setSynced(false)
                 .setDefaultColor(COLOR_TEXT_GRAY.get())
                 .setPos(startX + spaceX * 10, 4 + startY + spaceY * getButtonRow()));
@@ -55,8 +52,8 @@ public abstract class AdvancedRedstoneTransmitterBaseUIFactory<C extends CoverAd
                 coverData.setInverted(state);
                 return coverData;
             },
-            widget -> widget.addTooltip(0, GTUtility.trans("NORMAL", "Normal"))
-                .addTooltip(1, GTUtility.trans("INVERTED", "Inverted"))
+            widget -> widget.addTooltip(0, GTUtility.getDescLoc("normal"))
+                .addTooltip(1, GTUtility.getDescLoc("inverted"))
                 .setPos(spaceX * 9, spaceY * getButtonRow()));
     }
 }

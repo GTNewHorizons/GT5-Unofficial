@@ -41,8 +41,8 @@ public class LiquidMeterUIFactory extends CoverUIFactory<CoverLiquidMeter> {
     @SuppressWarnings("PointlessArithmeticExpression")
     @Override
     protected void addUIWidgets(ModularWindow.Builder builder) {
-        final String INVERTED = GTUtility.trans("INVERTED", "Inverted");
-        final String NORMAL = GTUtility.trans("NORMAL", "Normal");
+        final String INVERTED = GTUtility.getDescLoc("inverted");
+        final String NORMAL = GTUtility.getDescLoc("normal");
 
         setMaxCapacity();
 

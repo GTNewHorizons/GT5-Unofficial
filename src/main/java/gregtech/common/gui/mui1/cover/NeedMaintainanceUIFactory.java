@@ -33,8 +33,7 @@ public class NeedMaintainanceUIFactory extends CoverLegacyDataUIFactory {
         final String[] buttonText = { GTUtility.trans("247", "1 Issue"), GTUtility.trans("248", "2 Issues"),
             GTUtility.trans("249", "3 Issues"), GTUtility.trans("250", "4 " + "Issues"),
             GTUtility.trans("251", "5 Issues"), GTUtility.trans("252", "Rotor" + " < 20%"),
-            GTUtility.trans("253", "Rotor ≈ 0%"), GTUtility.trans("INVERTED", "Inverted"),
-            GTUtility.trans("NORMAL", "Normal"), };
+            GTUtility.trans("253", "Rotor ≈ 0%"), GTUtility.getDescLoc("inverted"), GTUtility.getDescLoc("normal"), };
 
         builder
             .widget(

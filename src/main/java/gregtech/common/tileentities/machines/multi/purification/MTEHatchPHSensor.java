@@ -148,8 +148,8 @@ public class MTEHatchPHSensor extends MTEHatch {
     }
 
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        final String INVERTED = GTUtility.trans("INVERTED", "Inverted");
-        final String NORMAL = GTUtility.trans("NORMAL", "Normal");
+        final String INVERTED = GTUtility.getDescLoc("inverted");
+        final String NORMAL = GTUtility.getDescLoc("normal");
 
         builder.widget(
             new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
