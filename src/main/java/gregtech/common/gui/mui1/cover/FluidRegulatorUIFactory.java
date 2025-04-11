@@ -57,14 +57,14 @@ public class FluidRegulatorUIFactory extends CoverUIFactory<CoverFluidRegulator>
                     coverData -> coverData.getSpeed() >= 0,
                     (coverData, state) -> coverData.setSpeed(Math.abs(coverData.getSpeed())),
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                        .addTooltip(GTUtility.trans("006", "Export"))
+                        .addTooltip(GTUtility.getDescLoc("o"))
                         .setPos(spaceX * 0, spaceY * 0))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),
                     coverData -> coverData.getSpeed() <= 0,
                     (coverData, state) -> coverData.setSpeed(-Math.abs(coverData.getSpeed())),
                     widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                        .addTooltip(GTUtility.trans("007", "Import"))
+                        .addTooltip(GTUtility.getDescLoc("i"))
                         .setPos(spaceX * 1, spaceY * 0))
                 .addFollower(
                     CoverDataFollowerToggleButtonWidget.ofDisableable(),

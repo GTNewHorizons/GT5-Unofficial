@@ -92,13 +92,13 @@ public class EnderFluidLinkUIFactory extends CoverLegacyDataUIFactory {
                             IMPORT_BUTTON_ID,
                             CoverDataFollowerToggleButtonWidget.ofDisableable(),
                             widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                                .addTooltip(GTUtility.trans("007", "Import"))
+                                .addTooltip(GTUtility.getDescLoc("i"))
                                 .setPos(START_X + SPACE_X * 0, START_Y + SPACE_Y * 3))
                         .addToggleButton(
                             EXPORT_BUTTON_ID,
                             CoverDataFollowerToggleButtonWidget.ofDisableable(),
                             widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                                .addTooltip(GTUtility.trans("006", "Export"))
+                                .addTooltip(GTUtility.getDescLoc("o"))
                                 .setPos(START_X + SPACE_X * 1, START_Y + SPACE_Y * 3)))
             .widget(
                 new TextWidget(GTUtility.trans("328", "Channel")).setDefaultColor(COLOR_TEXT_GRAY.get())

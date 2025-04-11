@@ -71,18 +71,18 @@ public class CoverConveyor extends CoverLegacyData {
             coverData = 11;
         }
         switch (coverData) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("006", "Export"));
-            case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("007", "Import"));
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("008", "Export (conditional)"));
-            case 3 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("009", "Import (conditional)"));
-            case 4 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("010", "Export (invert cond)"));
-            case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("011", "Import (invert cond)"));
-            case 6 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("012", "Export allow Input"));
-            case 7 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("013", "Import allow Output"));
-            case 8 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("014", "Export allow Input (conditional)"));
-            case 9 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("015", "Import allow Output (conditional)"));
-            case 10 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("016", "Export allow Input (invert cond)"));
-            case 11 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("017", "Import allow Output (invert cond)"));
+            case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("o"));
+            case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("i"));
+            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("o_c"));
+            case 3 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("i_c"));
+            case 4 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("o_c_i"));
+            case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("i_c_i"));
+            case 6 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("i2o"));
+            case 7 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("o2i"));
+            case 8 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("i2o_c"));
+            case 9 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("o2i_c"));
+            case 10 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("i2o_c_i"));
+            case 11 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("o2i_c_i"));
         }
     }
 

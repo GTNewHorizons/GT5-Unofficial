@@ -451,9 +451,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                             "" + EnumChatFormatting.BLUE + (int) Math.ceil(turbine.getEfficiency() * 100))
                         + "%"
                         + EnumChatFormatting.GRAY);
-                aList.add(
-                    tOffset + 3,
-                    EnumChatFormatting.GRAY + getItemDescLoc("fuel_eff"));
+                aList.add(tOffset + 3, EnumChatFormatting.GRAY + getItemDescLoc("fuel_eff"));
                 aList.add(
                     tOffset + 4,
                     EnumChatFormatting.WHITE
@@ -586,9 +584,9 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         "" + getHarvestLevel(aStack, "")) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 2,
-                    EnumChatFormatting.WHITE + String.format(
-                        getItemDescLoc("damage"),
-                        "" + EnumChatFormatting.BLUE + getToolCombatDamage(aStack)) + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.WHITE + String
+                        .format(getItemDescLoc("damage"), "" + EnumChatFormatting.BLUE + getToolCombatDamage(aStack))
+                        + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 3,
                     EnumChatFormatting.WHITE

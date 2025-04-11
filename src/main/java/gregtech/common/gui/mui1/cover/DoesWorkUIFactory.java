@@ -71,8 +71,8 @@ public class DoesWorkUIFactory extends CoverLegacyDataUIFactory {
                 TextWidget
                     .dynamicString(
                         getCoverString(
-                            c -> isFlagSet(c.getVariable(), FLAG_INVERTED) ? GTUtility.trans("INVERTED", "Inverted")
-                                : GTUtility.trans("NORMAL", "Normal")))
+                            c -> isFlagSet(c.getVariable(), FLAG_INVERTED) ? GTUtility.getDescLoc("inverted")
+                                : GTUtility.getDescLoc("normal")))
                     .setSynced(false)
                     .setDefaultColor(COLOR_TEXT_GRAY.get())
                     .setPos(startX + spaceX * 3, 4 + startY + spaceY * 1));
