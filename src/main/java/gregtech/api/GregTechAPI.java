@@ -45,6 +45,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.GTDummyWorld;
+import gregtech.common.covers.CoverPosition;
 
 /**
  * Please do not include this File in your Mod-download as it ruins compatibility, like with the IC2-API You may just
@@ -109,7 +110,7 @@ public class GregTechAPI {
     /**
      * The Advanced Redstone Frequencies
      */
-    public static final Map<String, Map<Integer, Map<Long, Byte>>> sAdvancedWirelessRedstone = new ConcurrentHashMap<>();
+    public static final Map<String, Map<String, Map<CoverPosition, Byte>>> sAdvancedWirelessRedstone = new ConcurrentHashMap<>();
 
     /**
      * The IDSU Frequencies

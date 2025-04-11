@@ -1,5 +1,10 @@
 package gregtech.common.covers;
 
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
@@ -13,6 +18,11 @@ public class CoverRedstoneTransmitterInternal extends CoverRedstoneWirelessBase 
 
     public boolean isRedstoneSensitive(long aTimer) {
         return false;
+    }
+
+    @Override
+    public void onCoverRemoval() {
+        GregTechAPI.sWirelessRedstone.remove(coverData);
     }
 
     @Override
@@ -32,5 +42,21 @@ public class CoverRedstoneTransmitterInternal extends CoverRedstoneWirelessBase 
     @Override
     public boolean manipulatesSidedRedstoneOutput() {
         return true;
+    }
+
+    @Override
+    protected void readDataFromNbt(NBTBase nbt) {
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        if (tag.hasKey("frequency") && !(tag.getInteger("frequency") == coverData)) {
+            GregTechAPI.sWirelessRedstone.remove(coverData);
+        }
+        coverData = tag.getInteger("frequency");
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("frequency", coverData);
+        return tag;
     }
 }

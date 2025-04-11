@@ -9,7 +9,7 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollowerTextFieldWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
 public abstract class AdvancedWirelessRedstoneBaseUIFactory<C extends CoverAdvancedWirelessRedstoneBase>
@@ -50,15 +50,13 @@ public abstract class AdvancedWirelessRedstoneBaseUIFactory<C extends CoverAdvan
 
     protected void addUIForDataController(CoverDataControllerWidget<C> controller) {
         controller.addFollower(
-            new CoverDataFollowerNumericWidget<>(),
-            coverData -> (double) coverData.getFrequency(),
+            new CoverDataFollowerTextFieldWidget<>(),
+            CoverAdvancedWirelessRedstoneBase::getFrequency,
             (coverData, state) -> {
-                coverData.setFrequency(state.intValue());
+                coverData.setFrequency(state);
                 return coverData;
             },
-            widget -> widget.setScrollValues(1, 1000, 10)
-                .setBounds(0, Integer.MAX_VALUE)
-                .setPos(1, 2 + spaceY * getFrequencyRow())
+            widget -> widget.setPos(1, 2 + spaceY * getFrequencyRow())
                 .setSize(spaceX * 5 - 4, 12))
             .addFollower(
                 CoverDataFollowerToggleButtonWidget.ofCheck(),
