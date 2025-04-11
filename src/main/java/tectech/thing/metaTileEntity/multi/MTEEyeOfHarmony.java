@@ -9,7 +9,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.formatNumbers;
-import static gregtech.api.util.ParallelHelper.calculateChancedOutputMultiplier;
+import static gregtech.api.util.ParallelHelper.calculateIntegralChancedOutputMultiplier;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static java.lang.Math.exp;
@@ -1371,7 +1371,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         // And stellar plasma is the second last.
         stellarPlasma = new FluidStackLong(outputFluids.get(outputFluids.size() - 2));
 
-        successfulParallelAmount = (long) calculateChancedOutputMultiplier(
+        successfulParallelAmount = calculateIntegralChancedOutputMultiplier(
             (int) (10000 * successChance),
             (int) parallelAmount);
         // Iterate over item output list and apply yield & successful parallel values.
