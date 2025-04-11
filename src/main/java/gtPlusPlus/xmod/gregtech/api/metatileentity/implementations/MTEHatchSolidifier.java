@@ -15,12 +15,13 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.util.GTUtility;
 
-public class MTEHatchSolidifier extends MTEHatchInput {
+public class MTEHatchSolidifier extends MTEHatchMultiInput {
 
-    static final int moldSlot = 2;
+    static final int moldSlot = 0;
+
     static final ItemStack[] solidifierMolds = { ItemList.Shape_Mold_Bottle.get(1), ItemList.Shape_Mold_Plate.get(1),
         ItemList.Shape_Mold_Ingot.get(1), ItemList.Shape_Mold_Casing.get(1), ItemList.Shape_Mold_Gear.get(1),
         ItemList.Shape_Mold_Gear_Small.get(1), ItemList.Shape_Mold_Credit.get(1), ItemList.Shape_Mold_Nugget.get(1),
@@ -38,14 +39,14 @@ public class MTEHatchSolidifier extends MTEHatchInput {
         GGItemList.Shape_One_Use_craftingToolHardHammer.get(1), GGItemList.Shape_One_Use_craftingToolSoftHammer.get(1),
         GGItemList.Shape_One_Use_craftingToolScrewdriver.get(1), GGItemList.Shape_One_Use_craftingToolSaw.get(1) };
 
-    public MTEHatchSolidifier(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier);
+    public MTEHatchSolidifier(int aID, int aSlot, String aName, String aNameRegional, int aTier) {
+        super(aID, aSlot, aName, aNameRegional, aTier);
     }
 
     @Override
     public String[] getDescription() {
         return new String[] {
-            "Fluid Input with Mold for " + EnumChatFormatting.YELLOW + "Fluid Shaper" + EnumChatFormatting.RESET,
+            "4x Fluid Input with Mold for " + EnumChatFormatting.YELLOW + "Fluid Shaper" + EnumChatFormatting.RESET,
             "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
             "Added by: " + EnumChatFormatting.AQUA
                 + "Quetz4l"
@@ -69,7 +70,37 @@ public class MTEHatchSolidifier extends MTEHatchInput {
         public boolean isItemValidPhantom(ItemStack stack) {
             return super.isItemValidPhantom(stack) && getBaseMetaTileEntity().isItemValidForSlot(getSlotIndex(), stack);
         }
+    }
 
+    // Migration from 1x to 4x solidifier hatch. Migrates the mold, but does not fluid.
+    @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+
+        if (getSizeInventory() > 1) {
+            boolean migrated = false;
+
+            if (getMold() != null) {
+                for (ItemStack mold : solidifierMolds) {
+                    if (mold.getItem() == getMold().getItem()) {
+                        migrated = true;
+                        break;
+                    }
+                }
+            }
+
+            if (migrated) {
+                return;
+            }
+
+            ItemStack oldMoldSlot = getStackInSlot(2);
+
+            for (int i = 1; i < getSizeInventory(); i++) {
+                setInventorySlotContents(i, null);
+            }
+
+            setInventorySlotContents(0, oldMoldSlot);
+        }
     }
 
     @Override

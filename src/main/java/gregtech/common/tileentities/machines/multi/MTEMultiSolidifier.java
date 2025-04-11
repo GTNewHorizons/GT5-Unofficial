@@ -448,17 +448,17 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     @Nonnull
     @Override
     protected CheckRecipeResult checkRecipeForCustomHatches(CheckRecipeResult lastResult) {
-        for (MTEHatchInput solidifierHatch : mInputHatches) {
-            if (solidifierHatch instanceof MTEHatchSolidifier hatch) {
-                ItemStack mold = hatch.getMold();
-                FluidStack fluid = solidifierHatch.getFluid();
+        for (MTEHatchInput hatch : mInputHatches) {
+            if (hatch instanceof MTEHatchSolidifier solidifierHatch) {
+                ItemStack mold = solidifierHatch.getMold();
+                FluidStack[] fluids = solidifierHatch.getStoredFluid();
 
-                if (mold != null && fluid != null) {
+                if (mold != null && fluids.length != 0) {
                     List<ItemStack> inputItems = new ArrayList<>();
                     inputItems.add(mold);
 
                     processingLogic.setInputItems(inputItems);
-                    processingLogic.setInputFluids(fluid);
+                    processingLogic.setInputFluids(fluids);
 
                     CheckRecipeResult foundResult = processingLogic.process();
                     if (foundResult.wasSuccessful()) {
