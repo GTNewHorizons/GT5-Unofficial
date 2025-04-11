@@ -523,14 +523,12 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             .setPos(0, 0);
 
         screenElements.widget(
-            new TextWidget(
-                EnumChatFormatting.UNDERLINE
-                    + StatCollector.translateToLocal("GT5U.artificialorganisms.traitname" + activeTraitWindow.id))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setTextAlignment(Alignment.Center)
-                        .setSize(170, 20));
+            new TextWidget(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal(activeTraitWindow.nameLocKey))
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setTextAlignment(Alignment.Center)
+                .setSize(170, 20));
         screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.traitdesc" + activeTraitWindow.id))
+            new TextWidget(StatCollector.translateToLocal(activeTraitWindow.descLocKey))
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setTextAlignment(Alignment.Center)
                 .setSize(170, 20));
@@ -554,7 +552,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             .setBackground(
                 () -> new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
                     new ItemDrawable(new ItemStack(trait.cultureItem)) })
-            .addTooltip(StatCollector.translateToLocal("GT5U.artificialorganisms.traitname" + trait.id))
+            .addTooltip(StatCollector.translateToLocal(trait.nameLocKey))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(pos)
             .setSize(16, 16);

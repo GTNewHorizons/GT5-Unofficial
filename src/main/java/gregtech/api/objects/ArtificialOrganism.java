@@ -170,25 +170,36 @@ public class ArtificialOrganism {
 
     public enum Trait {
 
-        Photosynthetic(ItemList.IC2_Plantball.getItem(), 6, 3, 1, 1),
-        HiveMind(Item.getItemFromBlock(Blocks.red_mushroom), 5, 5, 5, 2),
-        Laborer(Items.beef, 3, 8, 5, 3),
-        Cooperative(Items.poisonous_potato, 5, 5, 5, 4),
-        Decaying(Items.rotten_flesh, 10, 10, 10, 5),
-        Genius(Items.poisonous_potato, 5, 5, 5, 6),
-        Cancerous(Items.poisonous_potato, 5, 5, 5, 7),
-        Immortal(Items.nether_star, 10, 10, 10, 10);
+        Photosynthetic(ItemList.IC2_Plantball.getItem(), 6, 3, 1, 1,
+            "GT5U.artificialorganisms.traitname.photosynthetic", "GT5U.artificialorganisms.traitdesc.photosynthetic"),
+        HiveMind(Item.getItemFromBlock(Blocks.red_mushroom), 5, 5, 5, 2, "GT5U.artificialorganisms.traitname.hivemind",
+            "GT5U.artificialorganisms.traitdesc.hivemind"),
+        Laborer(Items.beef, 3, 8, 5, 3, "GT5U.artificialorganisms.traitname.laborer",
+            "GT5U.artificialorganisms.traitdesc.laborer"),
+        Cooperative(Items.poisonous_potato, 5, 5, 5, 4, "GT5U.artificialorganisms.traitname.cooperative",
+            "GT5U.artificialorganisms.traitdesc.cooperative"),
+        Decaying(Items.rotten_flesh, 10, 10, 10, 5, "GT5U.artificialorganisms.traitname.decaying",
+            "GT5U.artificialorganisms.traitdesc.decaying"),
+        Genius(Items.poisonous_potato, 5, 5, 5, 6, "GT5U.artificialorganisms.traitname.genius",
+            "GT5U.artificialorganisms.traitdesc.genius"),
+        Cancerous(Items.poisonous_potato, 5, 5, 5, 7, "GT5U.artificialorganisms.traitname.cancerous",
+            "GT5U.artificialorganisms.traitdesc.cancerous"),
+        Immortal(Items.nether_star, 10, 10, 10, 10, "GT5U.artificialorganisms.traitname.immortal",
+            "GT5U.artificialorganisms.traitdesc.immortal");
 
         public final Item cultureItem;
         public final int baseInt, baseStr, baseRep;
         public final int id;
+        public final String nameLocKey, descLocKey;
 
-        Trait(Item cultureItem, int baseInt, int baseStr, int baseRep, int id) {
+        Trait(Item cultureItem, int baseInt, int baseStr, int baseRep, int id, String nameLocKey, String descLocKey) {
             this.cultureItem = cultureItem;
             this.baseInt = baseInt;
             this.baseStr = baseStr;
             this.baseRep = baseRep;
             this.id = id;
+            this.nameLocKey = nameLocKey;
+            this.descLocKey = descLocKey;
         }
     }
 }
