@@ -3661,7 +3661,7 @@ public class GTUtility {
     }
 
     /**
-     * @deprecated Use standard translation with {@link StatCollector}.
+     * @deprecated Use getDescLoc down below.
      */
     @Deprecated
     public static String trans(String aKey, String aEnglish) {
@@ -3669,11 +3669,12 @@ public class GTUtility {
     }
 
     /**
-     * @deprecated Use standard translation with {@link StatCollector}.
+     * Used to localize any interaction related displayed text.
+     * Be sure to add new entries to the lang file.
+     * Also check if it's already there to be reused (like common lines as 'Normal' 'Inverted' or so).
      */
-    @Deprecated
-    public static String getTrans(String aKey) {
-        return GTLanguageManager.getTranslation("Interaction_DESCRIPTION_Index_" + aKey);
+    public static String getDescLoc(String aKey) {
+        return StatCollector.translateToLocal("gt.interact.desc." + aKey);
     }
 
     /**

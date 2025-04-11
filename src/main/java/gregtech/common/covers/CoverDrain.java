@@ -112,12 +112,12 @@ public class CoverDrain extends CoverLegacyData {
             this.coverData = 5;
         }
         switch (this.coverData) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("022", "Import"));
-            case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("023", "Import (conditional)"));
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("024", "Import (invert cond)"));
-            case 3 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("025", "Keep Liquids Away"));
-            case 4 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("026", "Keep Liquids Away (conditional)"));
-            case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("027", "Keep Liquids Away (invert cond)"));
+            case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("i"));
+            case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("i_c"));
+            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("i_c_i"));
+            case 3 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("no_fluid"));
+            case 4 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("no_fluid_c"));
+            case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("no_fluid_c_i"));
         }
     }
 

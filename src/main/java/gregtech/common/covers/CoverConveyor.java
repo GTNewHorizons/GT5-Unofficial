@@ -1,6 +1,8 @@
 package gregtech.common.covers;
 
+import static gregtech.api.util.GTUtility.getDescLoc;
 import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
+import static gregtech.api.util.GTUtility.sendChatToPlayer;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -14,7 +16,6 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.mui1.cover.ConveyorUIFactory;
 
 public class CoverConveyor extends CoverLegacyData {
@@ -71,18 +72,18 @@ public class CoverConveyor extends CoverLegacyData {
             coverData = 11;
         }
         switch (coverData) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("006", "Export"));
-            case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("007", "Import"));
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("008", "Export (conditional)"));
-            case 3 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("009", "Import (conditional)"));
-            case 4 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("010", "Export (invert cond)"));
-            case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("011", "Import (invert cond)"));
-            case 6 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("012", "Export allow Input"));
-            case 7 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("013", "Import allow Output"));
-            case 8 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("014", "Export allow Input (conditional)"));
-            case 9 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("015", "Import allow Output (conditional)"));
-            case 10 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("016", "Export allow Input (invert cond)"));
-            case 11 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("017", "Import allow Output (invert cond)"));
+            case 0 -> sendChatToPlayer(aPlayer, getDescLoc("o"));
+            case 1 -> sendChatToPlayer(aPlayer, getDescLoc("i"));
+            case 2 -> sendChatToPlayer(aPlayer, getDescLoc("o_c"));
+            case 3 -> sendChatToPlayer(aPlayer, getDescLoc("i_c"));
+            case 4 -> sendChatToPlayer(aPlayer, getDescLoc("o_c_i"));
+            case 5 -> sendChatToPlayer(aPlayer, getDescLoc("i_c_i"));
+            case 6 -> sendChatToPlayer(aPlayer, getDescLoc("i2o"));
+            case 7 -> sendChatToPlayer(aPlayer, getDescLoc("o2i"));
+            case 8 -> sendChatToPlayer(aPlayer, getDescLoc("i2o_c"));
+            case 9 -> sendChatToPlayer(aPlayer, getDescLoc("o2i_c"));
+            case 10 -> sendChatToPlayer(aPlayer, getDescLoc("i2o_c_i"));
+            case 11 -> sendChatToPlayer(aPlayer, getDescLoc("o2i_c_i"));
         }
     }
 

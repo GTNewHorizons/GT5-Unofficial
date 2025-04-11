@@ -1,5 +1,9 @@
 package gregtech.common.covers;
 
+import static gregtech.api.util.GTUtility.getDescLoc;
+import static gregtech.api.util.GTUtility.sendChatToPlayer;
+import static gregtech.common.gui.mui1.cover.NeedMaintainanceUIFactory.maintLoc;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -14,7 +18,6 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.mui1.cover.NeedMaintainanceUIFactory;
 
 public class CoverNeedMaintainance extends CoverLegacyData {
@@ -83,31 +86,20 @@ public class CoverNeedMaintainance extends CoverLegacyData {
             this.coverData = 13;
         }
         switch (this.coverData) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("056", "Emit if 1 Maintenance Needed"));
-            case 1 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.trans("057", "Emit if 1 Maintenance Needed(inverted)"));
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("058", "Emit if 2 Maintenance Needed"));
-            case 3 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.trans("059", "Emit if 2 Maintenance Needed(inverted)"));
-            case 4 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("060", "Emit if 3 Maintenance Needed"));
-            case 5 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.trans("061", "Emit if 3 Maintenance Needed(inverted)"));
-            case 6 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("062", "Emit if 4 Maintenance Needed"));
-            case 7 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.trans("063", "Emit if 4 Maintenance Needed(inverted)"));
-            case 8 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("064", "Emit if 5 Maintenance Needed"));
-            case 9 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.trans("065", "Emit if 5 Maintenance Needed(inverted)"));
-            case 10 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.trans("066", "Emit if rotor needs maintenance low accuracy mod"));
-            case 11 -> GTUtility.sendChatToPlayer(
-                aPlayer,
-                GTUtility.trans("067", "Emit if rotor needs maintenance low accuracy mod(inverted)"));
-            case 12 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.trans("068", "Emit if rotor needs maintenance high accuracy mod"));
-            case 13 -> GTUtility.sendChatToPlayer(
-                aPlayer,
-                GTUtility.trans("069", "Emit if rotor needs maintenance high accuracy mod(inverted)"));
+            case 0 -> sendChatToPlayer(aPlayer, maintLoc(1, false));
+            case 1 -> sendChatToPlayer(aPlayer, maintLoc(1, true));
+            case 2 -> sendChatToPlayer(aPlayer, maintLoc(2, false));
+            case 3 -> sendChatToPlayer(aPlayer, maintLoc(2, true));
+            case 4 -> sendChatToPlayer(aPlayer, maintLoc(3, false));
+            case 5 -> sendChatToPlayer(aPlayer, maintLoc(3, true));
+            case 6 -> sendChatToPlayer(aPlayer, maintLoc(4, false));
+            case 7 -> sendChatToPlayer(aPlayer, maintLoc(4, true));
+            case 8 -> sendChatToPlayer(aPlayer, maintLoc(5, false));
+            case 9 -> sendChatToPlayer(aPlayer, maintLoc(5, true));
+            case 10 -> sendChatToPlayer(aPlayer, getDescLoc("need_maint_rotor_lo"));
+            case 11 -> sendChatToPlayer(aPlayer, getDescLoc("need_maint_rotor_lo") + getDescLoc("inverted_b"));
+            case 12 -> sendChatToPlayer(aPlayer, getDescLoc("need_maint_rotor_hi"));
+            case 13 -> sendChatToPlayer(aPlayer, getDescLoc("need_maint_rotor_hi") + getDescLoc("inverted_b"));
         }
     }
 

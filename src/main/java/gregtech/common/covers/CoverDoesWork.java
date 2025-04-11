@@ -65,17 +65,17 @@ public class CoverDoesWork extends CoverLegacyData {
             this.coverData = 5;
         }
         switch (this.coverData) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("018", "Normal"));
+            case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("normal"));
             // Progress scaled
-            case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("019", "Inverted"));
+            case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("inverted"));
             // ^ inverted
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("020", "Ready to work"));
+            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("ready"));
             // Not Running
-            case 3 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("021", "Not ready to work"));
+            case 3 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("not_ready"));
             // Running
-            case 4 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("028", "Machine Enabled"));
+            case 4 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("mach_on"));
             // Enabled
-            case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("029", "Machine Disabled"));
+            case 5 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.getDescLoc("mach_off"));
             // Disabled
         }
     }
