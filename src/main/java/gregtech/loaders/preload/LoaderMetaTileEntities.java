@@ -934,8 +934,6 @@ import net.minecraft.util.EnumChatFormatting;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TierEU;
 import gregtech.api.factory.artificialorganisms.MTEBioPipe;
 import gregtech.api.factory.artificialorganisms.MTEHatchAOInput;
 import gregtech.api.factory.artificialorganisms.MTEHatchAOOutput;

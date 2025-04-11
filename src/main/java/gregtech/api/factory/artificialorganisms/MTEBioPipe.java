@@ -26,7 +26,6 @@ import gregtech.api.objects.ArtificialOrganism;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
-import gregtech.common.covers.CoverInfo;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.pipe.MTEBaseFactoryPipe;
@@ -158,16 +157,6 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
             GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("215", "Disconnected"));
         }
         AOFactoryGrid.INSTANCE.addElement(this);
-    }
-
-    @Override
-    public boolean letsIn(CoverInfo coverInfo) {
-        return true;
-    }
-
-    @Override
-    public boolean letsOut(CoverInfo coverInfo) {
-        return true;
     }
 
     @Override

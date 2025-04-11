@@ -74,11 +74,6 @@ public class MTEHatchAOOutput extends MTEBaseFactoryHatch implements AOFactoryEl
     }
 
     @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
     public ConnectionType getConnectionType() {
         return ConnectionType.BIO;
     }

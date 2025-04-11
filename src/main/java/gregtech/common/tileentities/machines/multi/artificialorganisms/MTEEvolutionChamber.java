@@ -18,9 +18,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.Scrollable;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -47,6 +44,7 @@ import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -74,6 +72,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.objects.ArtificialOrganism;
 import gregtech.api.objects.ArtificialOrganism.Trait;
 import gregtech.api.render.TextureFactory;
@@ -306,12 +305,12 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             return false;
         }
 
-         for (MTEHatchInput hatch : mInputHatches) {
+        for (MTEHatchInput hatch : mInputHatches) {
             if (drain(hatch, nutrientUsage, true)) {
                 return true;
             }
-         }
-         return false;
+        }
+        return false;
     }
 
     private void triggerNutrientLoss() {
@@ -502,7 +501,11 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     }
 
     private ModularWindow createTraitWindow(final EntityPlayer player) {
-        ModularWindow.Builder builder = ModularWindow.builder(getBaseMetaTileEntity().getMetaTileEntity().getGUIWidth(), getBaseMetaTileEntity().getMetaTileEntity().getGUIHeight())
+        ModularWindow.Builder builder = ModularWindow.builder(
+            getBaseMetaTileEntity().getMetaTileEntity()
+                .getGUIWidth(),
+            getBaseMetaTileEntity().getMetaTileEntity()
+                .getGUIHeight())
             .setDraggable(false);
 
         builder.widget(
@@ -523,10 +526,14 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             new TextWidget(
                 EnumChatFormatting.UNDERLINE
                     + StatCollector.translateToLocal("GT5U.artificialorganisms.traitname" + activeTraitWindow.id))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get()).setTextAlignment(Alignment.Center).setSize(170, 20));
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setTextAlignment(Alignment.Center)
+                        .setSize(170, 20));
         screenElements.widget(
             new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.traitdesc" + activeTraitWindow.id))
-                .setDefaultColor(COLOR_TEXT_WHITE.get()).setTextAlignment(Alignment.Center).setSize(170, 20));
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setTextAlignment(Alignment.Center)
+                .setSize(170, 20));
 
         builder.widget(screenElements);
 
@@ -537,8 +544,10 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             activeTraitWindow = trait;
             if (!widget.isClient()) {
-                widget.getContext().closeWindow(TRAIT_WINDOW_ID);
-                widget.getContext().openSyncedWindow(TRAIT_WINDOW_ID);
+                widget.getContext()
+                    .closeWindow(TRAIT_WINDOW_ID);
+                widget.getContext()
+                    .openSyncedWindow(TRAIT_WINDOW_ID);
             }
         })
             .setPlayClickSound(supportsVoidProtection())

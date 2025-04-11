@@ -12,7 +12,6 @@ import static gregtech.api.util.GTRecipeConstants.AO_DATA;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -58,7 +57,6 @@ public class BioSynthesizerRecipes implements Runnable {
             .fluidOutputs(Materials.NeuralFluid.getFluid(8000))
             .duration(15 * SECONDS)
             .eut(RECIPE_UV)
-            .noOptimize()
             .addTo(mixerRecipes);
 
         // BREWERY
@@ -70,7 +68,6 @@ public class BioSynthesizerRecipes implements Runnable {
             .fluidOutputs(Materials.NutrientBroth.getFluid(32000))
             .duration(60 * SECONDS)
             .eut(RECIPE_LV)
-            .noOptimize()
             .addTo(brewingRecipes);
 
         // SYNTHESIZER

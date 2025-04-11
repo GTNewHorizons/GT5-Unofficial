@@ -1225,7 +1225,6 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .logo(GTUITextures.PICTURE_AO_LOGO)
         .logoPos(152, 100)
-        .disableOptimize()
         .frontend(BioSynthesizerFrontEnd::new)
         .build();
 
@@ -1236,7 +1235,6 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .logo(GTUITextures.PICTURE_AO_LOGO)
         .logoPos(152, 100)
-        .disableOptimize()
         .frontend(BioSynthesizerFrontEnd::new)
         .build();
 }
