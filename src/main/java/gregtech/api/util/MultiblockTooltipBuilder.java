@@ -153,6 +153,15 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
+     * Add a colored separator line
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addSeparator(EnumChatFormatting color) {
+        return addSeparator(color, 41);
+    }
+
+    /**
      * Add a colored separator line with specified length
      *
      * @return Instance this method was called on.
@@ -219,7 +228,6 @@ public class MultiblockTooltipBuilder {
                 + "L"
                 + EnumChatFormatting.GRAY
                 + ") "
-                + EnumChatFormatting.RED
                 + (hollow ? EnumChatFormatting.RED + TT_hollow : ""));
         sLines.add(EnumChatFormatting.WHITE + TT_structure + COLON);
         return this;
@@ -812,7 +820,7 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Useful for maintaining the flow when you need to run an arbitrary operation on the builder.
-     * 
+     *
      * @param fn The operation.
      * @return Instance this method was called on.
      */
