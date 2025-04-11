@@ -277,6 +277,9 @@ gt.casing.tier=Casing Tier: §e%s§r
 
 gt.casing.chemical-resistant=Able to resist the most extreme chemical conditions.
 gt.casing.hawking-focus=Controls the outward flow of Hawking Radiation to stabilize a black hole.
+gt.casing.hazard-shielded=Protects the interior from corrosion, radiation, and electromagnetic fields.
+gt.casing.dynamic-bio-regulation=Adapts to the needs of organisms, optimizing their environment.
+gt.casing.symbiotic-vat=Living casing which directly interfaces with organic life and machine alike.
 gt.casings.advanced-filter=Less than five 0.1μm particles per m^3
 
 # Machine types
