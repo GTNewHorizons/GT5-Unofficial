@@ -376,6 +376,11 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     issueBlockUpdate();
                 }
 
+                if (mNeedsTileUpdate) {
+                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    mNeedsTileUpdate = false;
+                }
+
                 if (mTickTimer > 20 && mMetaTileEntity.isElectric()) {
                     mAcceptedAmperes = 0;
 
